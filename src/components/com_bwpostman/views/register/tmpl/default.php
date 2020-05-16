@@ -27,23 +27,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\HTML\HTMLHelper;
-use \Joomla\CMS\Language\Text;
-use \Joomla\CMS\Factory;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.formvalidator');
-JHtml::_('formbehavior.chosen', 'select');
+HtmlHelper::_('behavior.keepalive');
+HtmlHelper::_('behavior.formvalidator');
+HtmlHelper::_('formbehavior.chosen', 'select');
 
 HTMLHelper::_('bootstrap.tooltip');
 
 // Depends on jQuery UI
 if(version_compare(JVERSION, '3.999.999', 'le'))
 {
-	JHtml::_('jquery.ui', array('core'));
+	HtmlHelper::_('jquery.ui', array('core'));
 }
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
@@ -71,7 +73,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 				</p>
 				<?php // End Spamcheck
 
-				echo JLayoutHelper::render(
+				echo LayoutHelper::render(
 					'default',
 					array('subscriber' => $this->subscriber, 'params' => $this->params, 'lists' => $this->lists),
 					$basePath = JPATH_COMPONENT . '/layouts/subscriber'
@@ -98,7 +100,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					<div class="captcha">
 						<p class="captcha-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
 						<p class="security_question_lbl">
-							<img src="<?php echo JUri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
+							<img src="<?php echo Uri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
 						</p>
 						<p class="captcha-result input-append">
 							<label id="captcha" for="stringCaptcha"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
@@ -187,7 +189,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 			<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field'); ?>" />
 			<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special'); ?>" />
 			<input type="hidden" name="registration_ip" value="<?php echo $remote_ip; ?>" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo HtmlHelper::_('form.token'); ?>
 			</form>
 			<!-- The Modal -->
 			<div id="bwp_Modal" class="bwp_modal">

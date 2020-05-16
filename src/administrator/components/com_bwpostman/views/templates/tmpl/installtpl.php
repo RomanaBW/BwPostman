@@ -27,24 +27,29 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_import.js');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_import.js');
 ?>
 <div id="checkResult" class="row-fluid">
 	<div class="span6 inner well">
-		<h2><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL'); ?></h2>
-		<p id="step1" class="well"><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_1'); ?></p>
-		<p id="step2" class="well"><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_2'); ?></p>
-		<p id="step3" class="well"><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_3'); ?></p>
-		<p id="step4" class="well"><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_4'); ?></p>
-		<p id="step5" class="well"><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_5'); ?></p>
+		<h2><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL'); ?></h2>
+		<p id="step1" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_1'); ?></p>
+		<p id="step2" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_2'); ?></p>
+		<p id="step3" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_3'); ?></p>
+		<p id="step4" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_4'); ?></p>
+		<p id="step5" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_5'); ?></p>
 	</div>
 	<div class="span6 well well-small resultSet">
-		<h2><?php echo JText::_('COM_BWPOSTMAN_TPL_INSTALL_RESULT'); ?></h2>
+		<h2><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_RESULT'); ?></h2>
 		<div id="result"></div>
 	</div>
 </div>
 
-<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=templates.installtpl&format=json&<?php echo JSession::getFormToken(); ?>=1" />
+<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=templates.installtpl&format=json&<?php echo Session::getFormToken(); ?>=1" />
 
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 

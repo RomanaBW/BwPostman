@@ -27,24 +27,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HtmlHelper::_('behavior.tooltip');
 ?>
 
-<form id="adminForm" action="<?php JRoute::_('index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component'); ?>"
+<form id="adminForm" action="<?php Route::_('index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component'); ?>"
 		method="post" name="adminForm">
 	<table class="adminform">
 		<tr>
 			<td width="100%">
-				<?php echo JText::_('JSEARCH_FILTER_LABEL'); ?>
+				<?php echo Text::_('JSEARCH_FILTER_LABEL'); ?>
 				<input type="text" name="search" title="search" id="search"
 						value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" />
-				<button onclick="this.form.submit();" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"
+				<button onclick="this.form.submit();" class="btn hasTooltip" title="<?php echo HtmlHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"
 						data-placement="bottom" style="margin-bottom:9px;">
-					<span class="icon-search"></span><?php echo '&#160;' . JText::_('JSEARCH_FILTER_SUBMIT'); ?>
+					<span class="icon-search"></span><?php echo '&#160;' . Text::_('JSEARCH_FILTER_SUBMIT'); ?>
 				</button>
-				<button type="button" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_CLEAR'); ?>"
+				<button type="button" class="btn hasTooltip" title="<?php echo HtmlHelper::tooltipText('JSEARCH_FILTER_CLEAR'); ?>"
 						data-placement="bottom" onclick="this.form.getElementById('search').setAttribute('value', '');this.form.submit();" style="margin-bottom:9px;">
-					<span class="icon-remove"></span><?php echo '&#160;' . JText::_('JSEARCH_FILTER_CLEAR'); ?>
+					<span class="icon-remove"></span><?php echo '&#160;' . Text::_('JSEARCH_FILTER_CLEAR'); ?>
 				</button>
 			</td>
 		</tr>
@@ -54,10 +58,10 @@ JHtml::_('behavior.tooltip');
 	<table class="adminlist table">
 		<thead>
 			<tr>
-				<th width="10"><?php echo JHtml::_('grid.sort', 'ID', 'a.id', $this->lists['order_Dir'], $this->lists['order']); ?></th>
-				<th class="title"><?php echo JHtml::_('grid.sort', 'Subject', 'a.subject', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+				<th width="10"><?php echo HtmlHelper::_('grid.sort', 'ID', 'a.id', $this->lists['order_Dir'], $this->lists['order']); ?></th>
+				<th class="title"><?php echo HtmlHelper::_('grid.sort', 'Subject', 'a.subject', $this->lists['order_Dir'], $this->lists['order']); ?></th>
 				<th class="title" style="text-align:center;">
-					<?php echo JHtml::_(
+					<?php echo HtmlHelper::_(
 						'grid.sort',
 						'COM_BWPOSTMAN_NL_MAILING_DATE',
 						'a.mailing_date',
@@ -66,10 +70,10 @@ JHtml::_('behavior.tooltip');
 					); ?>
 				</th>
 				<th class="title" style="text-align:center;">
-					<?php echo JText::_('JPUBLISHED'); ?>
+					<?php echo Text::_('JPUBLISHED'); ?>
 				</th>
 				<th class="title" style="text-align:center;">
-					<?php echo JHtml::_('grid.sort', 'Archived', 'a.archive_flag', $this->lists['order_Dir'], $this->lists['order']); ?>
+					<?php echo HtmlHelper::_('grid.sort', 'Archived', 'a.archive_flag', $this->lists['order_Dir'], $this->lists['order']); ?>
 				</th>
 			</tr>
 		</thead>
@@ -88,7 +92,7 @@ JHtml::_('behavior.tooltip');
 				<tr class="row<?php echo $i % 2; ?>">
 					<td align="center"><?php echo $item->id; ?></td>
 					<td>
-						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');?>
+						<span class="editlinktip hasTip" title="<?php echo Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');?>
 								<?php echo "<br /><br /><strong>" . $item->subject . ":</strong><br />" . $item->description; ?>">
 							<a style="cursor:pointer;" onclick="window.parent.SelectNewsletter('<?php echo $item->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $item->subject ); ?>');">
 								<?php echo htmlspecialchars($item->subject, ENT_QUOTES, 'UTF-8'); ?>
@@ -96,7 +100,7 @@ JHtml::_('behavior.tooltip');
 						</span>
 					</td>
 					<td align="center" style="text-align:center;"><?php echo $item->mailing_date; ?></td>
-					<td align="center" style="text-align:center;"><?php echo JHtml::_('grid.published', $item, $i); ?></td>
+					<td align="center" style="text-align:center;"><?php echo HtmlHelper::_('grid.published', $item, $i); ?></td>
 					<td align="center" style="text-align:center;">
 						<?php
 						$archived = ($item->archive_flag === 1) ? '<i class="icon-archive"></i>' : '';
@@ -108,7 +112,7 @@ JHtml::_('behavior.tooltip');
 			else
 			{ ?>
 				<tr class="row1">
-					<td colspan="5"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+					<td colspan="5"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 				</tr><?php
 			}
 			?>
@@ -120,5 +124,5 @@ JHtml::_('behavior.tooltip');
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HtmlHelper::_('form.token'); ?>
 </form>

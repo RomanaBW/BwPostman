@@ -295,8 +295,8 @@ $option	= $jinput->getCmd('option');
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
 	<?php echo HTMLHelper::_('form.token'); ?>
 
-	<input type="hidden" id="importAlertEmail" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_REMOVING_EMAIL', true); ?>" />
-	<input type="hidden" id="importAlertFields" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_MATCH_FIELDS', true); ?>" />
+	<input type="hidden" id="importAlertEmail" value="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_REMOVING_EMAIL', true); ?>" />
+	<input type="hidden" id="importAlertFields" value="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_MATCH_FIELDS', true); ?>" />
 </form>
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>

@@ -27,9 +27,12 @@
 // No direct access.
 defined('_JEXEC') or die('Restricted access');
 
-echo JHtml::_('tabs.start', 'tpl_tags', array('startOffset' => 0));
-echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_TAGS_HEAD_LABEL'), 'panel1');
-echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+echo HtmlHelper::_('tabs.start', 'tpl_tags', array('startOffset' => 0));
+echo HtmlHelper::_('tabs.panel', Text::_('COM_BWPOSTMAN_TPL_TAGS_HEAD_LABEL'), 'panel1');
+echo Text::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 ?>
 <fieldset class="panelform">
 	<ul class="adminformlist unstyled">
@@ -38,7 +41,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 			<div class="controls"><?php echo $this->form->getInput('tpl_tags_head'); ?></div>
 		</li>
 		<li>
-			<p><label><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
+			<p><label><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
 			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->headTag)); ?></div>
 		</li>
 		<li>
@@ -48,8 +51,8 @@ echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 	</ul>
 </fieldset>
 <?php
-echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_TAGS_BODY_LABEL'), 'panel2');
-echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
+echo HtmlHelper::_('tabs.panel', Text::_('COM_BWPOSTMAN_TPL_TAGS_BODY_LABEL'), 'panel2');
+echo Text::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 ?>
 <fieldset class="panelform">
 	<ul class="adminformlist unstyled">
@@ -58,7 +61,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 			<div class="controls"><?php echo $this->form->getInput('tpl_tags_body'); ?></div>
 		</li>
 		<li>
-			<p><label><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
+			<p><label><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
 			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->bodyTag)); ?></div>
 		</li>
 		<li>
@@ -68,8 +71,8 @@ echo JText::_('COM_BWPOSTMAN_TPL_HEAD_DESC');
 	</ul>
 </fieldset>
 <?php
-echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_LABEL'), 'panel3');
-echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC');
+echo HtmlHelper::_('tabs.panel', Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_LABEL'), 'panel3');
+echo Text::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC');
 ?>
 <fieldset class="panelform">
 	<ul class="adminformlist unstyled">
@@ -78,11 +81,11 @@ echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC');
 			<div class="controls"><?php echo $this->form->getInput('tpl_tags_article'); ?></div>
 		</li>
 		<li>
-			<p><label><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
+			<p><label><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
 			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->articleTagBegin)); ?></div>
 		</li>
 		<li>
-			<p><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></p>
+			<p><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></p>
 		</li>
 		<li>
 			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->articleTagEnd)); ?></div>
@@ -92,7 +95,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC');
 			<?php echo $this->form->getInput('tpl_tags_article_advanced_b'); ?>
 		</li>
 		<li>
-			<p><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></p>
+			<p><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></p>
 		</li>
 		<li>
 			<?php echo $this->form->getInput('tpl_tags_article_advanced_e'); ?>
@@ -100,8 +103,8 @@ echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC');
 	</ul>
 </fieldset>
 <?php
-echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_TAGS_READON_LABEL'), 'panel4');
-echo JText::_('COM_BWPOSTMAN_TPL_READON_DESC');
+echo HtmlHelper::_('tabs.panel', Text::_('COM_BWPOSTMAN_TPL_TAGS_READON_LABEL'), 'panel4');
+echo Text::_('COM_BWPOSTMAN_TPL_READON_DESC');
 ?>
 <fieldset class="panelform">
 	<ul class="adminformlist unstyled">
@@ -110,7 +113,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_READON_DESC');
 			<div class="controls"><?php echo $this->form->getInput('tpl_tags_readon'); ?></div>
 		</li>
 		<li>
-			<p><label><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
+			<p><label><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
 			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->readonTag)); ?></div>
 		</li>
 		<li>
@@ -120,8 +123,8 @@ echo JText::_('COM_BWPOSTMAN_TPL_READON_DESC');
 	</ul>
 </fieldset>
 <?php
-echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_LABEL'), 'panel5');
-echo JText::_('COM_BWPOSTMAN_TPL_LEGAL_DESC');
+echo HtmlHelper::_('tabs.panel', Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_LABEL'), 'panel5');
+echo Text::_('COM_BWPOSTMAN_TPL_LEGAL_DESC');
 ?>
 <fieldset class="panelform">
 	<ul class="adminformlist unstyled">
@@ -130,11 +133,11 @@ echo JText::_('COM_BWPOSTMAN_TPL_LEGAL_DESC');
 			<div class="controls"><?php echo $this->form->getInput('tpl_tags_legal'); ?></div>
 		</li>
 		<li>
-			<p><label><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
+			<p><label><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?></label></p>
 			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->legalTagBegin)); ?></div>
 		</li>
 		<li>
-			<p><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></p>
+			<p><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></p>
 		</li>
 		<li>
 			<div class="textarea inputbox"><?php echo nl2br(htmlentities($this->legalTagEnd)); ?></div>
@@ -144,7 +147,7 @@ echo JText::_('COM_BWPOSTMAN_TPL_LEGAL_DESC');
 			<?php echo $this->form->getInput('tpl_tags_legal_advanced_b'); ?>
 		</li>
 		<li>
-			<p><?php echo JText::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></p>
+			<p><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></p>
 		</li>
 		<li>
 			<?php echo $this->form->getInput('tpl_tags_legal_advanced_e'); ?>
@@ -153,5 +156,5 @@ echo JText::_('COM_BWPOSTMAN_TPL_LEGAL_DESC');
 </fieldset>
 
 <?php
-echo JHtml::_('tabs.end');
+echo HtmlHelper::_('tabs.end');
 

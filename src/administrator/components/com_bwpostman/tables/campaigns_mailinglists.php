@@ -24,6 +24,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\Database\DatabaseDriver;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -56,7 +60,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since
 	 */
@@ -98,7 +102,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		foreach ($lists as $list)
@@ -123,10 +127,40 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_COPY_MAILINGLISTS_FAILED'), 'error');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_COPY_MAILINGLISTS_FAILED'), 'error');
 			}
 		}
 
 		return true;
+	}
+
+	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 *
+	 * @since  2.4.0
+	 */
+	public function getId()
+	{
+		$key = $this->getKeyName();
+
+		return $this->$key;
+	}
+
+	/**
+	 * Check if the record has a property (applying a column alias if it exists)
+	 *
+	 * @param string $key key to be checked
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.4.0
+	 */
+	public function hasField($key)
+	{
+		$key = $this->getColumnAlias($key);
+
+		return property_exists($this, $key);
 	}
 }

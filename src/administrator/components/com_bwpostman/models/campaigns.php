@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 
@@ -98,7 +100,7 @@ class BwPostmanModelCampaigns extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
 		$layout = $app->input->get('layout');
@@ -298,7 +300,7 @@ class BwPostmanModelCampaigns extends JModelList
 	 */
 	private function getFilterByAccessLevelFilter()
 	{
-		if (JFactory::getApplication()->isClient('site'))
+		if (Factory::getApplication()->isClient('site'))
 		{
 			$access = $this->getState('filter.access');
 			if ($access)
@@ -321,9 +323,9 @@ class BwPostmanModelCampaigns extends JModelList
 	 */
 	private function getFilterByViewLevel()
 	{
-		if (JFactory::getApplication()->isClient('site'))
+		if (Factory::getApplication()->isClient('site'))
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 
 			if (!$user->authorise('core.admin'))
 			{
@@ -336,11 +338,13 @@ class BwPostmanModelCampaigns extends JModelList
 	/**
 	 * Method to get the filter by BwPostman permissions
 	 *
-	 * @access 	private
+	 * @access    private
 	 *
-	 * @return 	void
+	 * @return    void
 	 *
-	 * @since   2.0.0
+	 * @throws Exception
+	 *
+	 * @since     2.0.0
 	 */
 	private function getFilterByComponentPermissions()
 	{

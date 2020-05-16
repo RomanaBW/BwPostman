@@ -27,6 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Database\DatabaseDriver;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Mail\MailHelper;
+
 /**
  * #__bwpostman_newsletters table handler
  * Table to store the newsletters
@@ -294,7 +300,7 @@ class BwPostmanTableNewsletters extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -371,16 +377,16 @@ class BwPostmanTableNewsletters extends JTable
 	/**
 	 * Method to get the parent asset id for the record
 	 *
-	 * @param   JTable   $table  A JTable object (optional) for the asset parent
+	 * @param   Table   $table  A Table object (optional) for the asset parent
 	 * @param   integer  $id     The id (optional) of the content.
 	 *
 	 * @return  integer
 	 *
 	 * @since   11.1
 	 */
-	protected function _getAssetParentId(JTable $table = null, $id = null)
+	protected function _getAssetParentId(Table $table = null, $id = null)
 	{
-		$asset = JTable::getInstance('Asset');
+		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_bwpostman.newsletter');
 		return $asset->id;
 	}
@@ -420,7 +426,7 @@ class BwPostmanTableNewsletters extends JTable
 		}
 		else
 		{
-			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+			throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
 		// Cast properties
@@ -444,7 +450,7 @@ class BwPostmanTableNewsletters extends JTable
 	{
 		jimport('joomla.mail.helper');
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$query	= $this->_db->getQuery(true);
 		$fault	= false;
 		$xid    = 0;
@@ -461,7 +467,7 @@ class BwPostmanTableNewsletters extends JTable
 		// no subject is unkind
 		if ($this->subject == '')
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_SUBJECT'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_SUBJECT'), 'error');
 			$fault	= true;
 		}
 
@@ -483,34 +489,34 @@ class BwPostmanTableNewsletters extends JTable
 
 		if ($xid && $xid != intval($this->id))
 		{
-			$app->enqueueMessage((JText::sprintf('COM_BWPOSTMAN_NL_WARNING_SUBJECT_DOUBLE', $this->subject)), 'warning');
+			$app->enqueueMessage((Text::sprintf('COM_BWPOSTMAN_NL_WARNING_SUBJECT_DOUBLE', $this->subject)), 'warning');
 		}
 
 		// some text should be, too
 		if (($this->html_version == '') && ($this->text_version == ''))
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_CONTENT'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_CONTENT'), 'error');
 			$fault	= true;
 		}
 
 		// from name is mandatory
 		if (empty($this->from_name))
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_FROMNAME'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_FROMNAME'), 'error');
 			$fault	= true;
 		}
 
 		// from email is mandatory
-		if ((empty($this->from_email))  || (!JMailHelper::isEmailAddress(trim($this->from_email))))
+		if ((empty($this->from_email))  || (!MailHelper::isEmailAddress(trim($this->from_email))))
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_FROMEMAIL'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_FROMEMAIL'), 'error');
 			$fault	= true;
 		}
 
 		// reply email is mandatory
-		if ((empty($this->reply_email))  || (!JMailHelper::isEmailAddress(trim($this->reply_email))))
+		if ((empty($this->reply_email))  || (!MailHelper::isEmailAddress(trim($this->reply_email))))
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_REPLYEMAIL'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_REPLYEMAIL'), 'error');
 			$fault	= true;
 		}
 
@@ -566,7 +572,7 @@ class BwPostmanTableNewsletters extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return true;
@@ -618,7 +624,7 @@ class BwPostmanTableNewsletters extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $newIsTemplate;
@@ -626,7 +632,7 @@ class BwPostmanTableNewsletters extends JTable
 
 
 	/**
-	 * Overridden JTable::store to set created/modified and user id.
+	 * Overridden Table::store to set created/modified and user id.
 	 *
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
@@ -638,9 +644,9 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$date	= JFactory::getDate();
-		$user	= JFactory::getUser();
-		$app	= JFactory::getApplication();
+		$date	= Factory::getDate();
+		$user	= Factory::getUser();
+		$app	= Factory::getApplication();
 		$id		= $this->id;
 
 		if ($id)
@@ -660,5 +666,35 @@ class BwPostmanTableNewsletters extends JTable
 		$app->setUserState('com_bwpostman.newsletter.id', $this->id);
 
 		return $res;
+	}
+
+	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 *
+	 * @since  2.4.0
+	 */
+	public function getId()
+	{
+		$key = $this->getKeyName();
+
+		return $this->$key;
+	}
+
+	/**
+	 * Check if the record has a property (applying a column alias if it exists)
+	 *
+	 * @param string $key key to be checked
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.4.0
+	 */
+	public function hasField($key)
+	{
+		$key = $this->getColumnAlias($key);
+
+		return property_exists($this, $key);
 	}
 }

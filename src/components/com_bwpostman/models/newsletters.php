@@ -27,7 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Registry\Registry as JRegistry;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Database\DatabaseQuery;
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
@@ -124,7 +129,7 @@ class BwPostmanModelNewsletters extends JModelList
 	{
 		parent::__construct();
 
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		$id = $jinput->get('id');
 		$this->setId((int) $id);
@@ -155,13 +160,13 @@ class BwPostmanModelNewsletters extends JModelList
 	 * @param	string	$prefix     A prefix for the table class name. Optional.
 	 * @param	array	$config     Configuration array for model. Optional.
 	 *
-	 * @return	JTable	A database object
+	 * @return	Table	A database object
 	 *
 	 * @since  1.0.1
 	 */
 	public function getTable($type = 'Newsletters', $prefix = 'BwPostmanTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -179,7 +184,7 @@ class BwPostmanModelNewsletters extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialize variables.
-		$app	= JFactory::getApplication('site');
+		$app	= Factory::getApplication('site');
 		$jinput	= $app->input;
 		$pk		= $jinput->getInt('id');
 
@@ -187,8 +192,8 @@ class BwPostmanModelNewsletters extends JModelList
 		$this->setState('newsletter.id', $pk);
 
 		// Load the parameters. Merge Global and Menu Item params into new object
-		$params     = JComponentHelper::getParams($this->extension);
-		$menuParams = new JRegistry;
+		$params     = ComponentHelper::getParams($this->extension);
+		$menuParams = new Registry;
 		$menu       = $app->getMenu()->getActive();
 
 		if ($menu)
@@ -233,7 +238,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		$this->setState('list.direction', $listOrder);
 
-		$this->setState('layout', JFactory::getApplication()->input->getCmd('layout'));
+		$this->setState('layout', Factory::getApplication()->input->getCmd('layout'));
 
 		$limit = (int) $app->getUserStateFromRequest('com_bwpostman.newsletters.list.limit', 'limit', $params->get('display_num'), 'uint');
 		$this->setState('list.limit', $limit);
@@ -296,7 +301,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 * Returns a record count for the query.
 	 * Override because fast COUNT version will result in wrong number
 	 *
-	 * @param	JDatabaseQuery|string  $query  The query.
+	 * @param	DatabaseQuery|string  $query  The query.
 	 *
 	 * @return	integer  Number of rows for query.
 	 *
@@ -309,8 +314,8 @@ class BwPostmanModelNewsletters extends JModelList
 		// fall back to inefficient way of counting all results.
 		$result = 0;
 
-		// Remove the limit and offset part if it's a JDatabaseQuery object
-		if ($query instanceof JDatabaseQuery)
+		// Remove the limit and offset part if it's a DatabaseQuery object
+		if ($query instanceof DatabaseQuery)
 		{
 			$query = clone $query;
 			$query->clear('limit')->clear('offset');
@@ -324,7 +329,7 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $result;
@@ -333,7 +338,7 @@ class BwPostmanModelNewsletters extends JModelList
 	/**
 	 * Method to get a list of newsletters.
 	 *
-	 * Overridden to inject convert the attributes field into a JParameter object.
+	 * Overridden to inject convert the attributes field into a Parameter object.
 	 *
 	 * @return	mixed	An array of objects on success, false on failure.
 	 *
@@ -342,7 +347,7 @@ class BwPostmanModelNewsletters extends JModelList
 	public function getItems()
 	{
 		$items	= parent::getItems();
-		$user	= JFactory::getUser();
+		$user	= Factory::getUser();
 		$userId	= $user->get('id');
 		$guest	= $user->get('guest');
 		$groups	= $user->getAuthorisedViewLevels();
@@ -436,7 +441,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		// Define null and now dates, get params
 		$nullDate	= $_db->quote($_db->getNullDate());
-		$nowDate	= $_db->quote(JFactory::getDate()->toSql());
+		$nowDate	= $_db->quote(Factory::getDate()->toSql());
 		$params      = $this->getAppropriateParams();
 
 		// get accessible mailing lists
@@ -607,7 +612,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @param integer $menuItem
 	 *
-	 * @return 	\Joomla\Registry\Registry
+	 * @return 	Registry
 	 *
 	 * @throws Exception
 	 *
@@ -615,7 +620,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	public function getParamsFromSelectedMenuEntry($menuItem)
 	{
-		$menu	= JFactory::getApplication()->getMenu();
+		$menu	= Factory::getApplication()->getMenu();
 		$params	= $menu->getParams($menuItem);
 
 		return $params;
@@ -632,7 +637,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	public function getItemid()
 	{
-		$itemid = JFactory::getApplication()->getUserState('com_bwpostman.newsletters.itemid', null);
+		$itemid = Factory::getApplication()->getUserState('com_bwpostman.newsletters.itemid', null);
 
 		if ($itemid === null)
 		{
@@ -651,7 +656,7 @@ class BwPostmanModelNewsletters extends JModelList
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -669,13 +674,13 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	public function getAllowedMailinglists()
 	{
-		$user 		    = JFactory::getUser();
+		$user 		    = Factory::getUser();
 		$mailinglists   = null;
 		$_db		    = $this->_db;
 		$query		    = $_db->getQuery(true);
 
 		// get authorized viewlevels
-		$accesslevels	= JAccess::getAuthorisedViewLevels($user->id);
+		$accesslevels	= Access::getAuthorisedViewLevels($user->id);
 
 		$query->select('id');
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
@@ -689,7 +694,7 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$allowed	= array();
@@ -739,7 +744,7 @@ class BwPostmanModelNewsletters extends JModelList
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			$mls		= array();
@@ -764,7 +769,7 @@ class BwPostmanModelNewsletters extends JModelList
 		if ($all_mls || $check != 'no')
 		{
 			// get authorized viewlevels
-			$accesslevels	= JAccess::getAuthorisedViewLevels(JFactory::getUser()->id);
+			$accesslevels	= Access::getAuthorisedViewLevels(Factory::getUser()->id);
 			if (is_array($accesslevels) && count($accesslevels) > 0)
 			{
 				foreach ($accesslevels as $key => $value) {
@@ -790,7 +795,7 @@ class BwPostmanModelNewsletters extends JModelList
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			$acc_mls	= array(0);
@@ -817,7 +822,7 @@ class BwPostmanModelNewsletters extends JModelList
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 		else
@@ -867,7 +872,7 @@ class BwPostmanModelNewsletters extends JModelList
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			$cams		= array();
@@ -892,7 +897,7 @@ class BwPostmanModelNewsletters extends JModelList
 		if ($all_cams || $check != 'no')
 		{
 			// get authorized viewlevels
-			$accesslevels	= JAccess::getAuthorisedViewLevels(JFactory::getUser()->id);
+			$accesslevels	= Access::getAuthorisedViewLevels(Factory::getUser()->id);
 			if (is_array($accesslevels) && count($accesslevels) > 0)
 			{
 				foreach ($accesslevels as $key => $value)
@@ -918,7 +923,7 @@ class BwPostmanModelNewsletters extends JModelList
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			$acc_mls	= array(0);
@@ -941,7 +946,7 @@ class BwPostmanModelNewsletters extends JModelList
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			if (is_array($acc_cams) && count($acc_cams) > 0)
@@ -975,7 +980,7 @@ class BwPostmanModelNewsletters extends JModelList
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 		else
@@ -1022,7 +1027,7 @@ class BwPostmanModelNewsletters extends JModelList
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			$groups		= array();
@@ -1063,7 +1068,7 @@ class BwPostmanModelNewsletters extends JModelList
 		// Check permission, if desired
 		if ($all_groups || $check != 'no')
 		{
-			$user		= JFactory::getUser();
+			$user		= Factory::getUser();
 			$acc_groups	= $user->getAuthorisedGroups();
 
 			//convert usergroups to match bwPostman's needs
@@ -1103,7 +1108,7 @@ class BwPostmanModelNewsletters extends JModelList
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 		else
@@ -1128,7 +1133,7 @@ class BwPostmanModelNewsletters extends JModelList
 	private function getModuleById($id = 0)
 	{
 		$module = null;
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select('m.id, m.title, m.module, m.position, m.content, m.showtitle, m.params');
@@ -1142,7 +1147,7 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $module;
@@ -1153,13 +1158,13 @@ class BwPostmanModelNewsletters extends JModelList
 	 * If we come from a module and there is set to take the params from a menu item, take them. If no menu item is
 	 * selected, take the module params.
 	 *
-	 * @return JRegistry
+	 * @return Registry
 	 *
 	 * @throws Exception
 	 *
 	 * @since 2.4.0
 	 */
-	protected function getAppropriateParams(): JRegistry
+	protected function getAppropriateParams(): Registry
 	{
 		$params = $this->state->params;
 		$mod_id = $this->getState('module.id', null);
@@ -1167,7 +1172,7 @@ class BwPostmanModelNewsletters extends JModelList
 		if (!is_null($mod_id))
 		{
 			$module = $this->getModuleById($mod_id);
-			$params = new JRegistry($module->params);
+			$params = new Registry($module->params);
 
 			$menuItem = $params->get('menu_item', '');
 

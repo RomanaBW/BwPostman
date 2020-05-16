@@ -27,6 +27,12 @@
  // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Version;
+
 /**
  * Script file of BwTimeControl plugin
  *
@@ -35,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 class plgBwpostmanBwtimecontrolInstallerScript
 {
 	/**
-	 * @var JAdapterInstance $parentInstaller
+	 * @var  $parentInstaller
 	 *
 	 * @since       2.3.0
 	 */
@@ -85,7 +91,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
   */
   function uninstall()
   {
-		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWTIMECONTROL_UNINSTALL_THANKYOU'), 'message');
+		Factory::getApplication()->enqueueMessage(Text::_('PLG_BWTIMECONTROL_UNINSTALL_THANKYOU'), 'message');
   }
 
   /**
@@ -114,13 +120,13 @@ class plgBwpostmanBwtimecontrolInstallerScript
 	 */
   function preflight($type, $parent)
   {
-	$app 		= JFactory::getApplication();
-	$jversion	= new JVersion();
+	$app 		= Factory::getApplication();
+	$jversion	= new Version();
 
 	// Check if php module curl is installed at installation or update
 	if ($type != 'uninstall' && !extension_loaded('curl'))
 	{
-		$app->enqueueMessage(JText::_('PLG_BWTIMECONTROL_CURL_NOT_INSTALLED'), 'error');
+		$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_CURL_NOT_INSTALLED'), 'error');
 		return false;
 	}
 
@@ -133,13 +139,13 @@ class plgBwpostmanBwtimecontrolInstallerScript
 	// abort if the current Joomla release is older
 	if(version_compare($jversion->getShortVersion(), $this->minimum_joomla_release, 'lt'))
 	{
-		$app->enqueueMessage(JText::sprintf('PLG_BWTIMECONTROL_INSTALL_ERROR_JVERSION', $this->minimum_joomla_release), 'error');
+		$app->enqueueMessage(Text::sprintf('PLG_BWTIMECONTROL_INSTALL_ERROR_JVERSION', $this->minimum_joomla_release), 'error');
 		return false;
 	}
 
 	if(version_compare(phpversion(), '5.3.10', 'lt'))
 	{
-		$app->enqueueMessage(JText::_('BWPOSTMAN_USES_PHP5'), 'error');
+		$app->enqueueMessage(Text::_('BWPOSTMAN_USES_PHP5'), 'error');
 		return false;
 	}
 
@@ -150,12 +156,12 @@ class plgBwpostmanBwtimecontrolInstallerScript
 
 		if ($bwpmVersion === false)
 		{
-			$app->enqueueMessage(JText::_('PLG_BWPOSTMAN_PLUGIN_BWTIMECONTROL_COMPONENT_NOT_INSTALLED'), 'error');
+			$app->enqueueMessage(Text::_('PLG_BWPOSTMAN_PLUGIN_BWTIMECONTROL_COMPONENT_NOT_INSTALLED'), 'error');
 			return false;
 		}
 
 		if (version_compare($bwpmVersion, $this->bwpmMinRelease, 'lt')) {
-			$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_PLUGIN_BWTIMECONTROL_COMPONENT_MIN_VERSION', $this->bwpmMinRelease), 'error');
+			$app->enqueueMessage(Text::sprintf('PLG_BWPOSTMAN_PLUGIN_BWTIMECONTROL_COMPONENT_MIN_VERSION', $this->bwpmMinRelease), 'error');
 			return false;
 		}
 	}
@@ -167,7 +173,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 		$app->setUserState('PLG_BWPOSTMAN.update.oldRelease', $oldRelease);
 
 		if (version_compare( $this->release, $oldRelease, 'lt')) {
-			$app->enqueueMessage(JText::sprintf('PLG_BWTIMECONTROL_INSTALL_ERROR_INCORRECT_VERSION_SEQUENCE', $oldRelease, $this->release), 'error');
+			$app->enqueueMessage(Text::sprintf('PLG_BWTIMECONTROL_INSTALL_ERROR_INCORRECT_VERSION_SEQUENCE', $oldRelease, $this->release), 'error');
 			return false;
 		}
 	}
@@ -199,7 +205,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 	 */
 	private function getManifestVar($name, $extension)
 	{
-		$db		= JFactory::getDbo();
+		$db		= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));
@@ -230,7 +236,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 	 */
 	public function showFinished($update){
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		//Load first english files
 		$lang->load('plg_bwpostman_bwtimecontrol.sys', JPATH_PLUGINS . '/bwpostman/bwtimecontrol', 'en_GB',true);
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_PLUGINS . '/bwpostman/bwtimecontrol', 'en_GB',true);
@@ -257,15 +263,15 @@ class plgBwpostmanBwtimecontrolInstallerScript
 
 		if ($update)
 		{
-			$string_special		= JText::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_SPECIAL_NOTE_DESC');
+			$string_special		= Text::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_SPECIAL_NOTE_DESC');
 		}
 		else
 		{
-			$string_special		= JText::_('PLG_BWTIMECONTROL_INSTALLATION_INSTALL_SPECIAL_NOTE_DESC');
+			$string_special		= Text::_('PLG_BWTIMECONTROL_INSTALLATION_INSTALL_SPECIAL_NOTE_DESC');
 		}
-		$string_new			= JText::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_NEW_DESC');
-		$string_improvement	= JText::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_IMPROVEMENT_DESC');
-		$string_bugfix		= JText::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_BUGFIX_DESC');
+		$string_new			= Text::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_NEW_DESC');
+		$string_improvement	= Text::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_IMPROVEMENT_DESC');
+		$string_bugfix		= Text::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_BUGFIX_DESC');
 
 		if (($string_bugfix != '' || $string_improvement != '' || $string_new != '') && $update)
 		{
@@ -287,19 +293,19 @@ class plgBwpostmanBwtimecontrolInstallerScript
 <div class="top_line"></div>
 
 <div id="plg_bwp_install_outer">
-	<h1><?php echo JText::_('PLG_BWTIMECONTROL_INSTALLATION_WELCOME') ?></h1>
+	<h1><?php echo Text::_('PLG_BWTIMECONTROL_INSTALLATION_WELCOME') ?></h1>
 	<div id="plg_bwp_install_left">
 		<div class="plg_bwp_install_welcome">
-			<p><?php echo JText::_('PLG_BWTIMECONTROL_DESC') ?></p>
+			<p><?php echo Text::_('PLG_BWTIMECONTROL_DESC') ?></p>
 		</div>
 		<div class="plg_bwp_install_finished">
 			<h2>
 			<?php
 			if($update){
-				echo JText::sprintf('PLG_BWPOSTMAN_UPGRADE_SUCCESSFUL', $this->release);
-//				echo '<br />'.JText::_('PLG_BWPOSTMAN_EXTENSION_UPGRADE_REMIND');
+				echo Text::sprintf('PLG_BWPOSTMAN_UPGRADE_SUCCESSFUL', $this->release);
+//				echo '<br />'.Text::_('PLG_BWPOSTMAN_EXTENSION_UPGRADE_REMIND');
 			} else {
-				echo JText::sprintf('PLG_BWTIMECONTROL_INSTALLATION_SUCCESSFUL', $this->release);
+				echo Text::sprintf('PLG_BWTIMECONTROL_INSTALLATION_SUCCESSFUL', $this->release);
 			}
 			?>
 			</h2>
@@ -307,21 +313,21 @@ class plgBwpostmanBwtimecontrolInstallerScript
 		<?php if ($show_right) { ?>
 			<div class="cpanel">
 				<div class="icon" >
-					<a href="<?php echo JRoute::_('index.php?option=com_plugins&amp;filter_search=timecontrol'); ?>">
-            			<img alt="<?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-bwpostman.png">
-						<span><?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?></span>
+					<a href="<?php echo Route::_('index.php?option=com_plugins&amp;filter_search=timecontrol'); ?>">
+            			<img alt="<?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-bwpostman.png">
+						<span><?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $manual; ?>" target="_blank">
-						<img alt="<?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_MANUAL'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-manual.png">
-						<span><?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_MANUAL'); ?></span>
+						<img alt="<?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_MANUAL'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-manual.png">
+						<span><?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_MANUAL'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $forum; ?>" target="_blank">
-						<img alt="<?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_FORUM'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-forum.png">
-						<span><?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_FORUM'); ?></span>
+						<img alt="<?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_FORUM'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-forum.png">
+						<span><?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_FORUM'); ?></span>
 					</a>
 				</div>
 			</div>
@@ -334,12 +340,12 @@ class plgBwpostmanBwtimecontrolInstallerScript
 			<?php if ($string_special != '')
 			{ ?>
 				<div class="plg_bwp_install_specialnote">
-					<h2><?php echo JText::_('PLG_BWTIMECONTROL_INSTALLATION_SPECIAL_NOTE_LBL') ?></h2>
+					<h2><?php echo Text::_('PLG_BWTIMECONTROL_INSTALLATION_SPECIAL_NOTE_LBL') ?></h2>
 					<div class="urgent"><?php echo $string_special; ?></div>
 					<div class="icon">
-						<a href="<?php echo JRoute::_('index.php?option=com_plugins&amp;filter_search=timecontrol'); ?>">
-							<img alt="<?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-bwpostman.png">
-							<span><?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?></span>
+						<a href="<?php echo Route::_('index.php?option=com_plugins&amp;filter_search=timecontrol'); ?>">
+							<img alt="<?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-bwpostman.png">
+							<span><?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?></span>
 						</a>
 					</div>
 				</div>
@@ -349,21 +355,21 @@ class plgBwpostmanBwtimecontrolInstallerScript
 			<?php if ($show_update)
 			{ ?>
 				<div class="plg_bwp_install_updateinfo">
-					<h2><?php echo JText::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATEINFO') ?></h2>
+					<h2><?php echo Text::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATEINFO') ?></h2>
 					<?php if ($string_new != '') { ?>
-						<h3><?php echo JText::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
+						<h3><?php echo Text::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
 						<p><?php echo $string_new; ?></p>
 					<?php
 					}?>
 					<?php if ($string_improvement != '')
 					{ ?>
-					<h3><?php echo JText::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
+					<h3><?php echo Text::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
 						<p><?php echo $string_improvement; ?></p>
 					<?php
 					}?>
 					<?php if ($string_bugfix != '')
 					{ ?>
-						<h3><?php echo JText::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
+						<h3><?php echo Text::_('PLG_BWTIMECONTROL_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
 						<p><?php echo $string_bugfix; ?></p>
 					<?php
 					}?>
@@ -376,21 +382,21 @@ class plgBwpostmanBwtimecontrolInstallerScript
 		{ ?>
 			<div class="cpanel">
 				<div class="icon" >
-					<a href="<?php echo JRoute::_('index.php?option=com_plugins&amp;filter_search=timecontrol&amp;token='.JUtility::getToken()); ?>">
-            <img alt="<?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-bwpostman.png">
-						<span><?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?></span>
+					<a href="<?php echo Route::_('index.php?option=com_plugins&amp;filter_search=timecontrol&amp;token='.Session::getToken()); ?>">
+            <img alt="<?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-bwpostman.png">
+						<span><?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_GO_PLUGINS'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $manual; ?>" target="_blank">
-						<img alt="<?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_MANUAL'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-manual.png">
-						<span><?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_MANUAL'); ?></span>
+						<img alt="<?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_MANUAL'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-manual.png">
+						<span><?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_MANUAL'); ?></span>
 					</a>
 				</div>
 				<div class="icon">
 					<a href="<?php echo $forum; ?>" target="_blank">
-						<img alt="<?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_FORUM'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-forum.png">
-						<span><?php echo JText::_('PLG_BWTIMECONTROL_INSTALL_FORUM'); ?></span>
+						<img alt="<?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_FORUM'); ?>" src="../plugins/bwpostman/bwtimecontrol/assets/images/icon-48-forum.png">
+						<span><?php echo Text::_('PLG_BWTIMECONTROL_INSTALL_FORUM'); ?></span>
 					</a>
 				</div>
 			</div>
@@ -400,7 +406,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 	<div class="clr"></div>
 
 	<div class="plg_bwp_install_footer">
-		<p class="small"><?php echo JText::_('&copy; 2013-'); echo date (" Y")?> by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a></p>
+		<p class="small"><?php echo Text::_('&copy; 2013-'); echo date (" Y")?> by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a></p>
 	</div>
 </div>
 <br /><br /><br />

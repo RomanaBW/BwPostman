@@ -26,11 +26,15 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.plugin.plugin');
 
-if (!JComponentHelper::isEnabled('com_bwpostman')) {
-	JFactory::getApplication()->enqueueMessage(
-		JText::_('PLG_BWPOSTMAN_PLUGIN_DEMO_ERROR') . ', ' . JText::_('PLG_BWPOSTMAN_PLUGIN_DEMO_COMPONENT_NOT_INSTALLED'),
+if (!ComponentHelper::isEnabled('com_bwpostman')) {
+	Factory::getApplication()->enqueueMessage(
+		Text::_('PLG_BWPOSTMAN_PLUGIN_DEMO_ERROR') . ', ' . Text::_('PLG_BWPOSTMAN_PLUGIN_DEMO_COMPONENT_NOT_INSTALLED'),
 		'error'
 	);
 	return false;

@@ -27,38 +27,41 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HtmlHelper::_('bootstrap.tooltip');
+HtmlHelper::_('formbehavior.chosen', 'select');
+HtmlHelper::_('behavior.formvalidator');
+
 // declare image for tooltip
-$image = '';
-
-JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.formvalidator');
-
 $image = '<i class="icon-info"></i>';
 
 // Load the tooltip behavior for the notes
-JHtml::_('behavior.modal');
-JHtml::_('behavior.keepalive');
+HtmlHelper::_('behavior.modal');
+HtmlHelper::_('behavior.keepalive');
 
-$new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $this->item->status);
+$new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $this->item->status);
 ?>
 
 <div id="bwp_editform">
 	<?php
 	if ($this->queueEntries)
 	{
-		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=edit&id='.(int) $this->item->id); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&layout=edit&id='.(int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-horizontal form-validate">
 		<div class="tab-wrapper-bwp">
-			<?php echo JHtml::_('bootstrap.startTabSet', 'subscriber_tabs', array('active' => 'details')); ?>
-			<?php echo JHtml::_(
+			<?php echo HtmlHelper::_('bootstrap.startTabSet', 'subscriber_tabs', array('active' => 'details')); ?>
+			<?php echo HtmlHelper::_(
 				'bootstrap.addTab',
 				'subscriber_tabs',
 				'details',
-				is_null($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_SUB') : JText::sprintf('COM_BWPOSTMAN_EDIT_SUB', $this->item->id)
+				is_null($this->item->id) ? Text::_('COM_BWPOSTMAN_NEW_SUB') : Text::sprintf('COM_BWPOSTMAN_EDIT_SUB', $this->item->id)
 			); ?>
 			<fieldset class="adminform">
 				<div class="well well-small">
@@ -111,11 +114,11 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 						<ul class="adminformlist width_50 unstyled">
 							<li>
 								<a class="modal btn btn-info btn-block" href="
-									<?php echo JRoute::_(
+									<?php echo Route::_(
 									'index.php?option=com_bwpostman&view=subscriber&layout=print&format=raw&task=insideModal&id='
 									. (int) $this->item->id
 								); ?>" rel="{handler: 'iframe', size: {x: 700, y: 500}, iframeOptions: {name: 'subsData'}}">
-									<?php echo JText::_('COM_BWPOSTMAN_PRINT_SUB_DAT'); ?>
+									<?php echo Text::_('COM_BWPOSTMAN_PRINT_SUB_DAT'); ?>
 								</a>
 							</li>
 							<li>
@@ -160,7 +163,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 						</ul>
 					</div>
 					<div class="clr clearfix"></div>
-					<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+					<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 				</div>
 			</fieldset>
 
@@ -168,17 +171,17 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 				<div class="width-100 fltlft row-fluid">
 					<fieldset id="subs_mailinglists" class="adminform">
 						<legend>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE_NOTE'); ?>">
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
-							<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE'); ?></span>
+							<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE'); ?></span>
 						</legend>
 						<div class="width-33 fltlft span4">
 							<div class="well well-small">
 								<fieldset class="adminform">
 									<legend>
 										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
+												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
 											<?php echo $image; ?>
 										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_available'); ?></span>
@@ -195,7 +198,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 										{ ?>
 											<div class="width-50 fltlft span6">
 												<label class="mailinglist_label noclear checkbox">
-													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+													<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
 												</label>
 											</div><?php
 										}
@@ -210,7 +213,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 								<fieldset class="adminform">
 									<legend>
 										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
+												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
 											<?php echo $image; ?>
 										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_unavailable'); ?></span>
@@ -227,7 +230,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 										{ ?>
 											<div class="width-50 fltlft span6">
 												<label class="mailinglist_label noclear checkbox">
-													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+													<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
 												</label>
 											</div><?php
 										}
@@ -242,7 +245,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 								<fieldset class="adminform">
 									<legend>
 										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo JText::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
+												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
 											<?php echo $image; ?>
 										</span>
 										<span>&nbsp;<?php echo $this->form->getLabel('ml_intern'); ?></span>
@@ -259,7 +262,7 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 										{ ?>
 											<div class="width-50 fltlft span6">
 												<label class="mailinglist_label noclear checkbox">
-													<?php JText::_('COM_BWPOSTMAN_NO_DATA') ?>
+													<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
 												</label>
 											</div><?php
 										}
@@ -271,25 +274,25 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 					</fieldset>
 				</div>
 			<?php  endif ?>
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
+			<?php echo HtmlHelper::_('bootstrap.endTab'); ?>
 			<?php
 			if (BwPostmanHelper::canAdmin('subscriber')): ?>
-				<?php echo JHtml::_('bootstrap.addTab', 'subscriber_tabs', 'permissions', JText::_('COM_BWPOSTMAN_SUBS_FIELDSET_RULES')); ?>
+				<?php echo HtmlHelper::_('bootstrap.addTab', 'subscriber_tabs', 'permissions', Text::_('COM_BWPOSTMAN_SUBS_FIELDSET_RULES')); ?>
 				<div class="well well-small">
 					<fieldset class="adminform">
 						<?php echo $this->form->getInput('rules'); ?>
 					</fieldset>
 				</div>
-				<?php echo JHtml::_('bootstrap.endTab'); ?>
+				<?php echo HtmlHelper::_('bootstrap.endTab'); ?>
 			<?php endif
 			?>
 		</div>
 		<div class="clearfix"></div>
-		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+		<?php echo HtmlHelper::_('bootstrap.endTabSet'); ?>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 
 		<?php
-			$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+			$remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
 			$this->form->setValue('ip', '', $remote_ip);
 			echo $this->form->getInput('ip');
@@ -301,6 +304,6 @@ $new_test	= JFactory::getApplication()->getUserState('com_bwpostman.subscriber.n
 		<input type="hidden" name="jform[special_field_obligation]" value="<?php echo $this->obligation['special']; ?>" />
 		<input type="hidden" id="jform_title" name="jform[title]" value="<?php echo $this->form->getValue('title') ?>">
 		<?php echo $this->form->getInput('asset_id'); ?>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HtmlHelper::_('form.token'); ?>
 	</form>
 </div>

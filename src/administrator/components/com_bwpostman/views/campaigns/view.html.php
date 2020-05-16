@@ -296,7 +296,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		// Special archive button because we need a confirm dialog with 3 options
 		if (BwPostmanHelper::canArchive('campaign'))
 		{
-			$bar = JToolbar::getInstance('toolbar');
+			$bar = Toolbar::getInstance('toolbar');
 			$alt = "COM_BWPOSTMAN_ARC";
 			$bar->appendButton(
 				'Popup',
@@ -320,7 +320,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		// trigger BwTimeControl event
 		Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepareToolbar', array());
 
-		$bar = \Joomla\CMS\Toolbar\Toolbar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
 		$manualLink = BwPostmanHTMLHelper::getManualLink('campaigns');

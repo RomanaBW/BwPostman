@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+
 // Import MODEL object class
 jimport('joomla.application.component.modelitem');
 
@@ -48,11 +51,11 @@ class BwPostmanModelNewsletter extends JModelItem
 	 */
 	public function getContent()
 	{
-		$id		    = (int) JFactory::getApplication()->input->get('id', 0);
+		$id		    = (int) Factory::getApplication()->input->get('id', 0);
 		$newsletter = null;
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		$user	= JFactory::getUser();
+		$user	= Factory::getUser();
 
 		// build query
 		$query->select($_db->quoteName('body'));
@@ -67,14 +70,14 @@ class BwPostmanModelNewsletter extends JModelItem
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get the dispatcher and include bwpostman plugins
-		JPluginHelper::importPlugin('bwpostman');
+		PluginHelper::importPlugin('bwpostman');
 
 		// Fire the onBwPostmanPersonalize event.
-		JFactory::getApplication()->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.view', &$newsletter, $user->id));
+		Factory::getApplication()->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.view', &$newsletter, $user->id));
 
 		return $newsletter;
 	}
@@ -87,7 +90,7 @@ class BwPostmanModelNewsletter extends JModelItem
 	 * @return  object
 	 *
 	 * @since 4.0.0
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function getItem($pk = null)
 	{
@@ -98,5 +101,4 @@ class BwPostmanModelNewsletter extends JModelItem
 
 		return $item;
 	}
-
 }

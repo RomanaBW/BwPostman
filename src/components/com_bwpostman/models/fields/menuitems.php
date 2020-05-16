@@ -26,7 +26,10 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('list');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+
+FormHelper::loadFieldClass('list');
 
 /**
  * Form Field class for the Joomla Platform.
@@ -59,7 +62,7 @@ class JFormFieldMenuItems extends JFormFieldList
 	protected function getOptions()
 	{
 		$options    = null;
-		$_db	    = JFactory::getDbo();
+		$_db	    = Factory::getDbo();
 		$query	    = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id') . ' AS value');
@@ -79,7 +82,7 @@ class JFormFieldMenuItems extends JFormFieldList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

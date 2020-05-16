@@ -14,8 +14,6 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Toolbar\ToolbarButton;
 use Joomla\CMS\Language\Text;
 
-// require_once JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar';
-
 /**
  * Renders an external link button
  *
@@ -47,12 +45,12 @@ class JButtonExtlink extends ToolbarButton
 	{
 		// Store all data to the options array for use with JLayout
 		$options = array();
-		$options['text'] = \JText::_($text);
+		$options['text'] = Text::_($text);
 		$options['class'] = $this->fetchIconClass($name);
 		$options['doTask'] = $this->_getCommand($url);
 		$this->options = $options;
 
-		// Instantiate a new JLayoutFile instance and render the layout
+		// Instantiate a new LayoutFile instance and render the layout
 		$layout = new FileLayout('layouts.toolbar.extlink', JPATH_COMPONENT_ADMINISTRATOR );
 
 		return $layout->render($options);

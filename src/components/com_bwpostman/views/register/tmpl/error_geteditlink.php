@@ -27,8 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // needed to validate email
-JHtml::_('behavior.formvalidator');
+HtmlHelper::_('behavior.formvalidator');
 
 // Displays a button to send the editlink
 // Will be shown if
@@ -46,25 +50,25 @@ JHtml::_('behavior.formvalidator');
 		<?php
 		}
 
-		echo '<p class="bwp-error">' . JText::_('COM_BWPOSTMAN_ERROR') . '</p>';
-		echo '<p class="error-message">' . JText::_($this->error->err_msg) . '</p>';
+		echo '<p class="bwp-error">' . Text::_('COM_BWPOSTMAN_ERROR') . '</p>';
+		echo '<p class="error-message">' . Text::_($this->error->err_msg) . '</p>';
 		?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
+		<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
 				name="bwp_com_form" class="form-validate">
 			<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<p class="getlink">
-					<label id="emailmsg" for="email"> <?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?>:</label>
+					<label id="emailmsg" for="email"> <?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:</label>
 					<input type="text" id="email" name="email" size="40" value="" class="inputbox required validate-email" maxlength="100" />
 				</p>
 			</div>
 
-			<button class="button validate btn" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_SENDEDITLINK'); ?></button>
+			<button class="button validate btn" type="submit"><?php echo Text::_('COM_BWPOSTMAN_BUTTON_SENDEDITLINK'); ?></button>
 			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="view" value="edit" />
 			<input type="hidden" name="task" value="sendEditlink" />
 			<input type="hidden" name="id" value="<?php echo (property_exists($this->error, 'err_code')) ? $this->error->err_code : ''; ?>" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo HtmlHelper::_('form.token'); ?>
 		</form>
 
 		<?php

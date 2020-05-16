@@ -24,9 +24,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Installer\InstallerAdapter;
 
 /**
  * Script file of BwPostman module
@@ -87,7 +90,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 */
 	public function uninstall()
 	{
-		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_UNINSTALL_THANKYOU'), 'message');
+		Factory::getApplication()->enqueueMessage(Text::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_UNINSTALL_THANKYOU'), 'message');
 	}
 
 	/**
@@ -106,8 +109,8 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	/**
 	 * Method to run before an install/update/uninstall method
 	 *
-	 * @param  string                                   $type       is the type of change (install, update or discover_install)
-	 * @param  Joomla\CMS\Installer\InstallerAdapter    $parent     is the class calling this method
+	 * @param  string             $type       is the type of change (install, update or discover_install)
+	 * @param  InstallerAdapter   $parent     is the class calling this method
 	 *
 	 * @return     bool    true on success
 	 *
@@ -115,9 +118,9 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	function preflight($type, Joomla\CMS\Installer\InstallerAdapter $parent)
+	function preflight($type, InstallerAdapter $parent)
 	{
-		$app 		= JFactory::getApplication ();
+		$app 		= Factory::getApplication ();
 
 		// Get component manifest file version
 		$manifest = $parent->getManifest();
@@ -129,13 +132,13 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 		// abort if the current Joomla release is older
 		if(version_compare(JVERSION, $this->minJoomlaRelease, 'lt'))
 		{
-			$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_INSTALL_ERROR_JVERSION', $this->minJoomlaRelease), 'error');
+			$app->enqueueMessage(Text::sprintf('PLG_BWPOSTMAN_INSTALL_ERROR_JVERSION', $this->minJoomlaRelease), 'error');
 			return false;
 		}
 
 		if(version_compare(phpversion(), $this->minPhpRelease, 'lt'))
 		{
-			$app->enqueueMessage(JText::_('PLG_BWPOSTMAN_INSTALL_ERROR_PHP5'), 'error');
+			$app->enqueueMessage(Text::_('PLG_BWPOSTMAN_INSTALL_ERROR_PHP5'), 'error');
 			return false;
 		}
 
@@ -146,12 +149,12 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 
 			if ($bwpmVersion === false)
 			{
-				$app->enqueueMessage(JText::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_COMPONENT_NOT_INSTALLED'), 'error');
+				$app->enqueueMessage(Text::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_COMPONENT_NOT_INSTALLED'), 'error');
 				return false;
 			}
 
 			if (version_compare($bwpmVersion, $this->bwpmMinRelease, 'lt')) {
-				$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_COMPONENT_MIN_VERSION', $this->bwpmMinRelease), 'error');
+				$app->enqueueMessage(Text::sprintf('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_COMPONENT_MIN_VERSION', $this->bwpmMinRelease), 'error');
 				return false;
 			}
 		}
@@ -162,7 +165,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 			$oldRelease = $this->getManifestVar('version', 'footerusedmailinglists');
 
 			if (version_compare( $this->release, $oldRelease, 'lt')) {
-				$app->enqueueMessage(JText::sprintf('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_OLD_VERSION', $oldRelease, $this->release), 'error');
+				$app->enqueueMessage(Text::sprintf('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_OLD_VERSION', $oldRelease, $this->release), 'error');
 				return false;
 			}
 		}
@@ -183,7 +186,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 		// We only need to perform this if the extension is being installed, not updated
 		if ($type == 'install')
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			$fields = array(
@@ -216,7 +219,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 */
 	private function getManifestVar($name, $extension)
 	{
-		$db		= JFactory::getDbo();
+		$db		= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));

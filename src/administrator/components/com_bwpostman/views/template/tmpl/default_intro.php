@@ -27,11 +27,15 @@
 // No direct access.
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Plugin\PluginHelper;
+
 $fieldSets = $this->form->getFieldsets('intro');
 foreach ($fieldSets as $name => $fieldSet) :
 	?>
 	<fieldset class="panelform">
-		<legend><?php echo $this->escape(JText::_($fieldSet->label)); ?></legend>
+		<legend><?php echo $this->escape(Text::_($fieldSet->label)); ?></legend>
 		<div class="well well-small">
 			<ul class="adminformlist unstyled">
 				<?php foreach ($this->form->getFieldset($name) as $field) : ?>
@@ -41,12 +45,12 @@ foreach ($fieldSets as $name => $fieldSet) :
 				<?php endforeach; ?>
 			</ul>
 			<div class="clr clearfix"></div>
-			<div><?php echo JText::_('COM_BWPOSTMAN_TPL_INTRO_TEXT_DESC'); ?></div>
+			<div><?php echo Text::_('COM_BWPOSTMAN_TPL_INTRO_TEXT_DESC'); ?></div>
 			<?php
-			$link = JUri::base() . '#';
-			if(JPluginHelper::isEnabled('bwpostman', 'personalize'))
+			$link = Uri::base() . '#';
+			if(PluginHelper::isEnabled('bwpostman', 'personalize'))
 			{
-				$button_text = JText::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
+				$button_text = Text::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
 				$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
 			}
 			else
@@ -57,12 +61,12 @@ foreach ($fieldSets as $name => $fieldSet) :
 			foreach ($linktexts as $key => $linktext)
 			{
 				echo "                    <a class=\"btn btn-small pull-left\" onclick=\"InsertAtCaret('" . $linktext . "');\">" . $linktext . "</a>";
-				echo '                     <p>&nbsp;' . JText::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
+				echo '                     <p>&nbsp;' . Text::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
 			}
 
-			if(JPluginHelper::isEnabled('bwpostman', 'personalize'))
+			if(PluginHelper::isEnabled('bwpostman', 'personalize'))
 			{
-				echo JText::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
+				echo Text::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
 			}
 			?>
 		</div>

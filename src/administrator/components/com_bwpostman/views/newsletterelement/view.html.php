@@ -29,10 +29,10 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\String\StringHelper;
 
 /**
  * Class BwPostmanViewNewsletterelement

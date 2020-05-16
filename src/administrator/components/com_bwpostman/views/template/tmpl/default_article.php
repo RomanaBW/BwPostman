@@ -24,6 +24,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Language\Text;
+
 // No direct access.
 defined('_JEXEC') or die('Restricted access');
 
@@ -32,7 +34,7 @@ $fieldSets = $this->form->getFieldsets('article');
 foreach ($fieldSets as $name => $fieldSet) :
 ?>
 	<fieldset class="panelform">
-		<legend><?php echo $this->escape(JText::_($fieldSet->label)); ?></legend>
+		<legend><?php echo $this->escape(Text::_($fieldSet->label)); ?></legend>
 		<div class="well well-small">
 			<ul class="adminformlist unstyled">
 				<?php foreach ($this->form->getFieldset($name) as $field) : ?>

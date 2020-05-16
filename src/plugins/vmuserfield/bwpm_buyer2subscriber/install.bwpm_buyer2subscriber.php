@@ -27,6 +27,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Installer\InstallerAdapter;
+
 /**
  * Installation script for the plugin
  *
@@ -80,7 +85,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * Called before any type of action
 	 *
 	 * @param   string  			$type		Which action is happening (install|uninstall|discover_install|update)
-	 * @param   JAdapterInstance	$parent		The object responsible for running this script
+	 * @param   InstallerAdapter	$parent		The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -89,7 +94,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * @since       0.9.6.3
 	 */
 
-	public function preflight($type, JAdapterInstance $parent)
+	public function preflight($type, InstallerAdapter $parent)
 	{
 		if ($type == 'install')
 		{
@@ -98,8 +103,8 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 
 			if (version_compare($BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
 			{
-				JFactory::getApplication()->enqueueMessage(
-					JText::sprintf('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_COMPONENT_BWPOSTMAN_NEEDED', $this->min_bwpostman_version),
+				Factory::getApplication()->enqueueMessage(
+					Text::sprintf('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_COMPONENT_BWPOSTMAN_NEEDED', $this->min_bwpostman_version),
 					'error'
 				);
 				return false;
@@ -109,7 +114,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 
 			if (!$plugin_installed)
 			{
-				JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_PLUGIN_USER2SUBSCRIBER_NEEDED'), 'error');
+				Factory::getApplication()->enqueueMessage(Text::_('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_PLUGIN_USER2SUBSCRIBER_NEEDED'), 'error');
 				return false;
 			}
 		}
@@ -129,7 +134,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	protected function getComponentVersion()
 	{
 		$version    = '0.0.0';
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -144,7 +149,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $version;
@@ -164,7 +169,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$plugin_installed  = false;
 		$plugin_id         = null;
 
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('extension_id'));
@@ -179,7 +184,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if ($plugin_id !== null)
@@ -194,7 +199,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * Called after any type of action
 	 *
 	 * @param   string  			$type		Which action is happening (install|uninstall|discover_install)
-	 * @param   JAdapterInstance	$parent		The object responsible for running this script
+	 * @param   InstallerAdapter	$parent		The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -203,7 +208,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 * @since   2.0.0
 	 */
 
-	public function postflight($type, JAdapterInstance $parent)
+	public function postflight($type, InstallerAdapter $parent)
 	{
 		if ($type == 'install') {
 			// create custom user fields for VM for message, subscription, gender, special and newsletter format
@@ -225,13 +230,13 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	/**
 	 * Called on deinstallation
 	 *
-	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
+	 * @param   InstallerAdapter  $adapter  The object responsible for running this script
 	 *
 	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function uninstall(JAdapterInstance $adapter)
+	public function uninstall(InstallerAdapter $adapter)
 	{
 		$bw_userfield_ids = $this->getBwUserfieldIDs();
 
@@ -251,8 +256,8 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function setInitialValues()
 	{
-		$this->user_id  = JFactory::getUser()->get('id');
-		$this->now_date = JFactory::getDate()->toSql();
+		$this->user_id  = Factory::getUser()->get('id');
+		$this->now_date = Factory::getDate()->toSql();
 
 		$this->vm_vendor_id = $this->getVmVendorId();
 
@@ -272,7 +277,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$vm_vendor_id   = 0;
 
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('virtuemart_vendor_id'));
@@ -287,7 +292,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 		}
 
 		return $vm_vendor_id;
@@ -306,7 +311,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function setUserfieldInsertOrderingPosition($field_name)
 	{
-		$_db    = JFactory::getDbo();
+		$_db    = Factory::getDbo();
 		$query  = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('ordering'));
@@ -323,7 +328,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 		}
 
 		$this->userfield_insert_ordering_position = ++$result;
@@ -343,7 +348,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$this->freeOrderingPosition();
 
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 
 		$userfield_values = array(
 			$_db->quote(0) . ',' .
@@ -415,7 +420,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$this->freeOrderingPosition();
 
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 
 		$userfield_values = array(
 			$_db->quote(0) . ',' .
@@ -506,7 +511,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$this->freeOrderingPosition();
 
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 
 		$userfield_values = array(
 			$_db->quote(0) . ',' .
@@ -597,7 +602,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$this->freeOrderingPosition();
 
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 
 		$userfield_values = array(
 			$_db->quote(0) . ',' .
@@ -706,7 +711,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$this->freeOrderingPosition();
 
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 
 		$userfield_values = array(
 			$_db->quote(0) . ',' .
@@ -776,7 +781,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function freeOrderingPosition()
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('ordering'));
@@ -804,7 +809,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function incrementOrderingColumnAtInstallation()
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__virtuemart_userfields'));
@@ -819,7 +824,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 		}
 	}
 
@@ -836,7 +841,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function writeUserfieldToVmTable($values)
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->insert($_db->quoteName('#__virtuemart_userfields'));
@@ -885,7 +890,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 		}
 
 		$inserted_id = $_db->insertid();
@@ -906,7 +911,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function writeUserfieldValuesToVmTable($values)
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->insert($_db->quoteName('#__virtuemart_userfield_values'));
@@ -936,7 +941,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 		}
 	}
 
@@ -954,7 +959,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$bw_userfield_ids   = array();
 
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$bw_userfield_names = array(
@@ -977,7 +982,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 		}
 
 		return $bw_userfield_ids;
@@ -1023,7 +1028,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$ordering_number = null;
 
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('ordering'));
@@ -1038,7 +1043,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 		}
 
 		return $ordering_number;
@@ -1055,7 +1060,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function deleteItemAtUninstall($item)
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->delete($_db->quoteName('#__virtuemart_userfields'));
@@ -1069,7 +1074,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 		}
 	}
 
@@ -1086,7 +1091,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function decrementOrderingColumnAtUninstall($ordering_number)
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__virtuemart_userfields'));
@@ -1101,7 +1106,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 		}
 	}
 
@@ -1118,7 +1123,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function deleteBwUserfieldValues($bw_userfield_ids)
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->delete($_db->quoteName('#__virtuemart_userfield_values'));
@@ -1132,7 +1137,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 		}
 	}
 }

@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 // Import MODEL and Helper object class
 jimport('joomla.application.component.model');
 
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
+use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
@@ -2326,7 +2326,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		// @ToDo: Use simpleXml correctly
 		$query = $this->db->getQuery(true);
-		$data  = array();
 
 		// Get the data from table
 		$query->select('*');

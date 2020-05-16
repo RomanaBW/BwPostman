@@ -30,6 +30,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+
 /**
  * HTML View class for the Media component
  *
@@ -105,7 +108,7 @@ class MediaViewImagesList extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Do not allow cache
-		JFactory::getApplication()->allowCache(false);
+		Factory::getApplication()->allowCache(false);
 
         $list = $this->get('list');
 
@@ -115,13 +118,13 @@ class MediaViewImagesList extends JViewLegacy
             $images[] = $i;
         }
         foreach($list['docs'] as $d) {
-            $d->thumb = JURI::root() . 'media/media/images' . substr($d->icon_32, strpos($d->icon_32, '/'));
+            $d->thumb = Uri::root() . 'media/media/images' . substr($d->icon_32, strpos($d->icon_32, '/'));
             $d->width_60 = 32;
             $d->height_60 = 32;
             $images[] = $d;
         }
         foreach($list['videos'] as $v) {
-            $v->thumb = JURI::root() . 'media/media/images' . substr($v->icon_32, strpos($v->icon_32, '/'));
+            $v->thumb = Uri::root() . 'media/media/images' . substr($v->icon_32, strpos($v->icon_32, '/'));
             $v->width_60 = 32;
             $v->height_60 = 32;
             $images[] = $v;

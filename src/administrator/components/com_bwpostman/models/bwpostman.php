@@ -27,6 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Access\Rules;
+
 // Import MODEL object class
 jimport('joomla.application.component.model');
 
@@ -43,25 +49,9 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
 class BwPostmanModelBwPostman extends JModelLegacy
 {
 	/**
-	 * General statistic data
-	 *
-	 * @var array
-	 *
-	 * @since       0.9.1
-	 */
-	private $general = null;
-
-	/**
-	 * Archive statistic data
-	 *
-	 * @var array
-	 *
-	 * @since       0.9.1
-	 */
-	private $archive = null;
-
-	/**
 	 * Constructor
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -84,7 +74,8 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	public function getGeneraldata()
 	{
 		$general	= array();
-		$db		= $this->_db;
+		$app        = Factory::getApplication();
+		$db		    = Factory::getDbo();
 		$query		= $db->getQuery(true);
 
 		// Get # of all unsent newsletters
@@ -100,7 +91,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get # of all sent newsletters
@@ -117,7 +108,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get # of all subscribers
@@ -134,7 +125,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get # of all test-recipients
@@ -151,7 +142,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get # of all campaigns
@@ -167,7 +158,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get # of all published mailinglists
@@ -199,7 +190,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get # of all text templates
@@ -216,7 +207,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get total # of general statistic
@@ -239,7 +230,8 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	public function getArchivedata()
 	{
 		$archive	= array();
-		$db		= $this->_db;
+		$app        = Factory::getApplication();
+		$db		    = Factory::getDbo();
 		$query		= $db->getQuery(true);
 
 		// Get # of all archived newsletters
@@ -254,7 +246,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get # of all archived subscribers
@@ -270,7 +262,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get # of all archived campaigns
@@ -286,7 +278,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get # of all archived mailinglists
@@ -309,7 +301,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get # of all text templates
@@ -326,7 +318,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Get total # of general statistic
@@ -353,10 +345,11 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	 */
 	public function storePermissions($permission = null)
 	{
-		$app  = JFactory::getApplication();
-		$user = JFactory::getUser();
+		$app  = Factory::getApplication();
+		$db   = Factory::getDbo();
+		$user = Factory::getUser();
 
-		$statePermissions	= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$statePermissions	= $app->getUserState('com_bwpm.permissions');
 
 		if (is_null($permission))
 		{
@@ -386,7 +379,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		// We are creating a new item so we don't have an item id so don't allow.
 		if (substr($permission['component'], -6) === '.false')
 		{
-			$app->enqueueMessage(JText::_('JLIB_RULES_SAVE_BEFORE_CHANGE_PERMISSIONS'), 'error');
+			$app->enqueueMessage(Text::_('JLIB_RULES_SAVE_BEFORE_CHANGE_PERMISSIONS'), 'error');
 
 			return false;
 		}
@@ -402,7 +395,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		// Check if the user is authorized to do this.
 		if (!$statePermissions['com']['admin'] && !$sectionPermission)
 		{
-			$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'error');
+			$app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
 
 			return false;
 		}
@@ -413,13 +406,13 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$isGlobalConfig = $permission['component'] === 'root.1';
 
 		// Check if changed group has Super User permissions.
-		$isSuperUserGroupBefore = JAccess::checkGroup($permission['rule'], 'core.admin');
+		$isSuperUserGroupBefore = Access::checkGroup($permission['rule'], 'core.admin');
 
 		// Check if current user belongs to changed group.
 		$currentUserBelongsToGroup = in_array((int) $permission['rule'], $user->groups) ? true : false;
 
 		// Get current user groups tree.
-		$currentUserGroupsTree = JAccess::getGroupsByUser($user->id, true);
+		$currentUserGroupsTree = Access::getGroupsByUser($user->id, true);
 
 		// Check if current user belongs to changed group.
 		$currentUserSuperUser = $user->authorise('core.admin');
@@ -427,7 +420,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		// If user is not Super User cannot change the permissions of a group it belongs to.
 		if (!$currentUserSuperUser && $currentUserBelongsToGroup)
 		{
-			$app->enqueueMessage(JText::_('JLIB_USER_ERROR_CANNOT_CHANGE_OWN_GROUPS'), 'error');
+			$app->enqueueMessage(Text::_('JLIB_USER_ERROR_CANNOT_CHANGE_OWN_GROUPS'), 'error');
 
 			return false;
 		}
@@ -435,7 +428,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		// If user is not Super User cannot change the permissions of a group it belongs to.
 		if (!$currentUserSuperUser && in_array((int) $permission['rule'], $currentUserGroupsTree))
 		{
-			$app->enqueueMessage(JText::_('JLIB_USER_ERROR_CANNOT_CHANGE_OWN_PARENT_GROUPS'), 'error');
+			$app->enqueueMessage(Text::_('JLIB_USER_ERROR_CANNOT_CHANGE_OWN_PARENT_GROUPS'), 'error');
 
 			return false;
 		}
@@ -443,7 +436,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		// If user is not Super User cannot change the permissions of a Super User Group.
 		if (!$currentUserSuperUser && $isSuperUserGroupBefore && !$currentUserBelongsToGroup)
 		{
-			$app->enqueueMessage(JText::_('JLIB_USER_ERROR_CANNOT_CHANGE_SUPER_USER'), 'error');
+			$app->enqueueMessage(Text::_('JLIB_USER_ERROR_CANNOT_CHANGE_SUPER_USER'), 'error');
 
 			return false;
 		}
@@ -451,14 +444,14 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		// If user is not Super User cannot change the Super User permissions in any group it belongs to.
 		if ($isSuperUserGroupBefore && $currentUserBelongsToGroup && $permission['action'] === 'core.admin')
 		{
-			$app->enqueueMessage(JText::_('JLIB_USER_ERROR_CANNOT_DEMOTE_SELF'), 'error');
+			$app->enqueueMessage(Text::_('JLIB_USER_ERROR_CANNOT_DEMOTE_SELF'), 'error');
 
 			return false;
 		}
 
 		try
 		{
-			$asset  = JTable::getInstance('asset');
+			$asset  = Table::getInstance('asset');
 			$result = $asset->loadByName($permission['component']);
 
 			if ($result === false)
@@ -466,13 +459,13 @@ class BwPostmanModelBwPostman extends JModelLegacy
 				// @ToDo: Check this path
 				$data = array($permission['action'] => array($permission['rule'] => $permission['value']));
 
-				$rules        = new JAccessRules($data);
+				$rules        = new Rules($data);
 				$asset->rules = (string) $rules;
 				$asset->name  = (string) $permission['component'];
 				$asset->title = (string) $permission['title'];
 
 				// Get the parent asset id so we have a correct tree.
-				$parentAsset = JTable::getInstance('Asset');
+				$parentAsset = Table::getInstance('Asset');
 
 				if (strpos($asset->name, '.') !== false)
 				{
@@ -542,7 +535,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 
 			if (!$asset->check() || !$asset->store())
 			{
-				$app->enqueueMessage(JText::_('JLIB_UNKNOWN'), 'error');
+				$app->enqueueMessage(Text::_('JLIB_UNKNOWN'), 'error');
 
 				return false;
 			}
@@ -566,14 +559,14 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		try
 		{
 			// Get the asset id by the name of the component.
-			$query = $this->_db->getQuery(true)
-				->select($this->_db->quoteName('id'))
-				->from($this->_db->quoteName('#__assets'))
-				->where($this->_db->quoteName('name') . ' = ' . $this->_db->quote($permission['component']));
+			$query = $db->getQuery(true)
+				->select($db->quoteName('id'))
+				->from($db->quoteName('#__assets'))
+				->where($db->quoteName('name') . ' = ' . $db->quote($permission['component']));
 
-			$this->_db->setQuery($query);
+			$db->setQuery($query);
 
-			$assetId = (int) $this->_db->loadResult();
+			$assetId = (int) $db->loadResult();
 
 			// Fetch the parent asset id.
 			$parentAssetId = null;
@@ -585,39 +578,25 @@ class BwPostmanModelBwPostman extends JModelLegacy
 			 * Also, currently it uses the component permission, but should use the calculated permissions for achild of the component/section.
 			 */
 
-			// If not in global config we need the parent_id asset to calculate permissions.
-			if (!$isGlobalConfig)
-			{
-				// In this case we need to get the component rules too.
-				$query->clear()
-					->select($this->_db->quoteName('parent_id'))
-					->from($this->_db->quoteName('#__assets'))
-					->where($this->_db->quoteName('id') . ' = ' . $assetId);
-
-				$this->_db->setQuery($query);
-
-				$parentAssetId = (int) $this->_db->loadResult();
-			}
-
 			// Get the group parent id of the current group.
 			$query->clear()
-				->select($this->_db->quoteName('parent_id'))
-				->from($this->_db->quoteName('#__usergroups'))
-				->where($this->_db->quoteName('id') . ' = ' . (int) $permission['rule']);
+				->select($db->quoteName('parent_id'))
+				->from($db->quoteName('#__usergroups'))
+				->where($db->quoteName('id') . ' = ' . (int) $permission['rule']);
 
-			$this->_db->setQuery($query);
+			$db->setQuery($query);
 
-			$parentGroupId = (int) $this->_db->loadResult();
+			$parentGroupId = (int) $db->loadResult();
 
 			// Count the number of child groups of the current group.
 			$query->clear()
-				->select('COUNT(' . $this->_db->quoteName('id') . ')')
-				->from($this->_db->quoteName('#__usergroups'))
-				->where($this->_db->quoteName('parent_id') . ' = ' . (int) $permission['rule']);
+				->select('COUNT(' . $db->quoteName('id') . ')')
+				->from($db->quoteName('#__usergroups'))
+				->where($db->quoteName('parent_id') . ' = ' . (int) $permission['rule']);
 
-			$this->_db->setQuery($query);
+			$db->setQuery($query);
 
-			$totalChildGroups = (int) $this->_db->loadResult();
+			$totalChildGroups = (int) $db->loadResult();
 		}
 		catch (Exception $e)
 		{
@@ -627,33 +606,22 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		}
 
 		// Clear access statistics.
-		JAccess::clearStatics();
+		Access::clearStatics();
 
 		// After current group permission is changed we need to check again if the group has Super User permissions.
-		$isSuperUserGroupAfter = JAccess::checkGroup($permission['rule'], 'core.admin');
+		$isSuperUserGroupAfter = Access::checkGroup($permission['rule'], 'core.admin');
 
 		// Get the rule for just this asset (non-recursive) and get the actual setting for the action for this group.
-		$assetRule = JAccess::getAssetRules($assetId, false, false)->allow($permission['action'], $permission['rule']);
+		$assetRule = Access::getAssetRules($assetId, false, false)->allow($permission['action'], $permission['rule']);
 
 		// Get the group, group parent id, and group global config recursive calculated permission for the chosen action.
-		$inheritedGroupRule = JAccess::checkGroup($permission['rule'], $permission['action'], $assetId);
-
-		if (!empty($parentAssetId))
-		{
-			$inheritedGroupParentAssetRule = JAccess::checkGroup($permission['rule'], $permission['action'], $parentAssetId);
-		}
-		else
-		{
-			$inheritedGroupParentAssetRule = null;
-		}
-
-		$inheritedParentGroupRule = !empty($parentGroupId) ? JAccess::checkGroup($parentGroupId, $permission['action'], $assetId) : null;
+		$inheritedGroupRule = Access::checkGroup($permission['rule'], $permission['action'], $assetId);
 
 		// Current group is a Super User group, so calculated setting is "Allowed (Super User)".
 		if ($isSuperUserGroupAfter)
 		{
 			$result['class'] = 'label label-success';
-			$result['text'] = '<span class="icon-lock icon-white" aria-hidden="true"></span>' . JText::_('JLIB_RULES_ALLOWED_ADMIN');
+			$result['text'] = '<span class="icon-lock icon-white" aria-hidden="true"></span>' . Text::_('JLIB_RULES_ALLOWED_ADMIN');
 		}
 		// Not super user.
 		else
@@ -664,13 +632,13 @@ class BwPostmanModelBwPostman extends JModelLegacy
 			if ($inheritedGroupRule === null || $inheritedGroupRule === false)
 			{
 				$result['class'] = 'label label-important';
-				$result['text']  = JText::_('JLIB_RULES_NOT_ALLOWED_INHERITED');
+				$result['text']  = Text::_('JLIB_RULES_NOT_ALLOWED_INHERITED');
 			}
 			// If recursive calculated setting is "Allowed". Calculated permission is "Allowed (Inherited)".
 			else
 			{
 				$result['class'] = 'label label-success';
-				$result['text']  = JText::_('JLIB_RULES_ALLOWED_INHERITED');
+				$result['text']  = Text::_('JLIB_RULES_ALLOWED_INHERITED');
 			}
 
 			// Second part: Overwrite the calculated permissions labels if there is an explicity permission in the current group.
@@ -685,13 +653,13 @@ class BwPostmanModelBwPostman extends JModelLegacy
 			if ($assetRule === false)
 			{
 				$result['class'] = 'label label-important';
-				$result['text']  = JText::_('JLIB_RULES_NOT_ALLOWED');
+				$result['text']  = Text::_('JLIB_RULES_NOT_ALLOWED');
 			}
 			// If there is an explicitly permission is "Allowed". Calculated permission is "Allowed".
 			elseif ($assetRule === true)
 			{
 				$result['class'] = 'label label-success';
-				$result['text']  = JText::_('JLIB_RULES_ALLOWED');
+				$result['text']  = Text::_('JLIB_RULES_ALLOWED');
 			}
 
 			// Third part: Overwrite the calculated permissions labels for special cases.
@@ -700,31 +668,20 @@ class BwPostmanModelBwPostman extends JModelLegacy
 			if (empty($parentGroupId) && $isGlobalConfig === true && $assetRule === null)
 			{
 				$result['class'] = 'label label-important';
-				$result['text']  = JText::_('JLIB_RULES_NOT_ALLOWED_DEFAULT');
+				$result['text']  = Text::_('JLIB_RULES_NOT_ALLOWED_DEFAULT');
 			}
-
-			/**
-			 * Component/Item with explicit "Denied" permission at parent Asset (Category, Component or Global config) configuration.
-			 * Or some parent group has an explicit "Denied".
-			 * Calculated permission is "Not Allowed (Locked)".
-			 */
-/*			elseif ($inheritedGroupParentAssetRule === false || $inheritedParentGroupRule === false)
-			{
-				$result['class'] = 'label label-important';
-				$result['text']  = '<span class="icon-lock icon-white" aria-hidden="true"></span>' . JText::_('JLIB_RULES_NOT_ALLOWED_LOCKED');
-			}
-*/		}
+		}
 
 		// If removed or added super user from group, we need to refresh the page to recalculate all settings.
 		if ($isSuperUserGroupBefore != $isSuperUserGroupAfter)
 		{
-			$app->enqueueMessage(JText::_('JLIB_RULES_NOTICE_RECALCULATE_GROUP_PERMISSIONS'), 'notice');
+			$app->enqueueMessage(Text::_('JLIB_RULES_NOTICE_RECALCULATE_GROUP_PERMISSIONS'), 'notice');
 		}
 
 		// If this group has child groups, we need to refresh the page to recalculate the child settings.
 		if ($totalChildGroups > 0)
 		{
-			$app->enqueueMessage(JText::_('JLIB_RULES_NOTICE_RECALCULATE_GROUP_CHILDS_PERMISSIONS'), 'notice');
+			$app->enqueueMessage(Text::_('JLIB_RULES_NOTICE_RECALCULATE_GROUP_CHILDS_PERMISSIONS'), 'notice');
 		}
 
 		return $result;

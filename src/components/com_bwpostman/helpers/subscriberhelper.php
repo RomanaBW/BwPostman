@@ -26,6 +26,14 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+
 /**
  * Class BwPostmanSubscriberHelper
  *
@@ -48,7 +56,7 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function loginGuest($subscriberid = 0, $itemid = null)
 	{
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 
 		$session_subscriberid = array('id' => $subscriberid);
 		$session->set('session_subscriberid', $session_subscriberid);
@@ -78,7 +86,7 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function getSubscriberID($uid)
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
@@ -93,7 +101,7 @@ class BwPostmanSubscriberHelper
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if (empty($id))
@@ -121,7 +129,7 @@ class BwPostmanSubscriberHelper
 	public static function getSubscriberData($id)
 	{
 		$subscriber = null;
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select('*');
@@ -136,7 +144,7 @@ class BwPostmanSubscriberHelper
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $subscriber;
@@ -157,8 +165,8 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function errorSubscriberData($err, &$subscriberid = null, $email = null)
 	{
-		$jinput        = JFactory::getApplication()->input;
-		$session       = JFactory::getSession();
+		$jinput        = Factory::getApplication()->input;
+		$session       = Factory::getSession();
 		$session_error = array();
 
 		// The error code numbers 4-6 are the same like in the subscribers-table check function
@@ -230,8 +238,8 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function errorEditlink()
 	{
-		$jinput  = JFactory::getApplication()->input;
-		$session = JFactory::getSession();
+		$jinput  = Factory::getApplication()->input;
+		$session = Factory::getSession();
 
 		$session_error = array('err_msg' => 'COM_BWPOSTMAN_ERROR_WRONGEDITLINK');
 		$session->set('session_error', $session_error);
@@ -251,8 +259,8 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function errorActivationCode($err_msg)
 	{
-		$jinput  = JFactory::getApplication()->input;
-		$session = JFactory::getSession();
+		$jinput  = Factory::getApplication()->input;
+		$session = Factory::getSession();
 
 		$session_error = array(
 			'err_msg' => $err_msg,
@@ -275,11 +283,11 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function errorUnsubscribe($err_msg)
 	{
-		$jinput  = JFactory::getApplication()->input;
+		$jinput  = Factory::getApplication()->input;
 		require_once(JPATH_SITE . '/components/com_bwpostman/models/edit.php');
 		$model = new BwPostmanModelEdit();
 		$itemid  = $model->getItemid(); // Itemid from edit-view
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 
 		$session_error = array(
 			'err_msg'    => $err_msg,
@@ -303,8 +311,8 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function errorSendingEmail($err_msg, $email = null)
 	{
-		$jinput        = JFactory::getApplication()->input;
-		$session       = JFactory::getSession();
+		$jinput        = Factory::getApplication()->input;
+		$session       = Factory::getSession();
 		$session_error = array(
 			'err_msg'   => $err_msg,
 			'err_email' => $email
@@ -329,8 +337,8 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function success($success_msg, $editlink = null, $itemid = null)
 	{
-		$jinput          = JFactory::getApplication()->input;
-		$session         = JFactory::getSession();
+		$jinput          = Factory::getApplication()->input;
+		$session         = Factory::getSession();
 		$session_success = array(
 			'success_msg' => $success_msg,
 			'editlink'    => $editlink,
@@ -352,13 +360,13 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @return    boolean True on success | error object
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
 	public static function sendMail(&$subscriber, $type, $itemid = null)
 	{
-		$params    = JComponentHelper::getParams('com_bwpostman');
+		$params    = ComponentHelper::getParams('com_bwpostman');
 		$email     = $subscriber->email;
 		$name      = $subscriber->name;
 		$firstname = $subscriber->firstname;
@@ -367,22 +375,22 @@ class BwPostmanSubscriberHelper
 			$name = $firstname . ' ' . $name;
 		}
 
-		$sitename          = JFactory::getConfig()->get('sitename');
+		$sitename          = Factory::getConfig()->get('sitename');
 		$mailfrom          = $params->get('default_from_email');
-		$fromname          = JText::_($params->get('default_from_name'));
-		$active_title      = JText::_($params->get('activation_salutation_text'));
-		$active_intro      = JText::_($params->get('activation_text'));
-		$permission_text   = JText::_($params->get('permission_text'));
-		$legal_information = JText::_($params->get('legal_information_text'));
+		$fromname          = Text::_($params->get('default_from_name'));
+		$active_title      = Text::_($params->get('activation_salutation_text'));
+		$active_intro      = Text::_($params->get('activation_text'));
+		$permission_text   = Text::_($params->get('permission_text'));
+		$legal_information = Text::_($params->get('legal_information_text'));
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$subscriber_id = $app->getUserState("com_bwpostman.subscriber.id");
 
 		if(isset($subscriber_id))
 		{
-			JPluginHelper::importPlugin('bwpostman');
+			PluginHelper::importPlugin('bwpostman');
 
-			if (JPluginHelper::isEnabled('bwpostman', 'personalize'))
+			if (PluginHelper::isEnabled('bwpostman', 'personalize'))
 			{
 				$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$active_title, $subscriber_id));
 			}
@@ -400,12 +408,12 @@ class BwPostmanSubscriberHelper
 		$message           = '';
 		$subject           = '';
 
-		$siteURL = JUri::root();
+		$siteURL = Uri::root();
 
 		switch ($type)
 		{
 			case 0: // Send Registration email
-				$subject = JText::sprintf('COM_BWPOSTMAN_SEND_REGISTRATION_SUBJECT', $sitename);
+				$subject = Text::sprintf('COM_BWPOSTMAN_SEND_REGISTRATION_SUBJECT', $sitename);
 
 				if (is_null($itemid))
 				{
@@ -417,14 +425,14 @@ class BwPostmanSubscriberHelper
 						. "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}";
 				}
 
-				$message = $active_msg . JText::_('COM_BWPOSTMAN_ACTIVATION_CODE_MSG') . " " . $link . "\n\n" . $permission_text;
+				$message = $active_msg . Text::_('COM_BWPOSTMAN_ACTIVATION_CODE_MSG') . " " . $link . "\n\n" . $permission_text;
 				break;
 			case 1: // Send Editlink
 				$editlink = $subscriber->editlink;
-				$subject  = JText::sprintf('COM_BWPOSTMAN_SEND_EDITLINK_SUBJECT', $sitename);
+				$subject  = Text::sprintf('COM_BWPOSTMAN_SEND_EDITLINK_SUBJECT', $sitename);
 				if (is_null($itemid))
 				{
-					$message = JText::sprintf(
+					$message = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_EDITLINK_MSG',
 						$name,
 						$sitename,
@@ -433,7 +441,7 @@ class BwPostmanSubscriberHelper
 				}
 				else
 				{
-					$message = JText::sprintf(
+					$message = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_EDITLINK_MSG',
 						$name,
 						$sitename,
@@ -442,10 +450,10 @@ class BwPostmanSubscriberHelper
 				}
 				break;
 			case 2: // Send Activation reminder
-				$subject = JText::sprintf('COM_BWPOSTMAN_SEND_ACTVIATIONCODE_SUBJECT', $sitename);
+				$subject = Text::sprintf('COM_BWPOSTMAN_SEND_ACTVIATIONCODE_SUBJECT', $sitename);
 				if (is_null($itemid))
 				{
-					$message = JText::sprintf(
+					$message = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG',
 						$name,
 						$sitename,
@@ -454,7 +462,7 @@ class BwPostmanSubscriberHelper
 				}
 				else
 				{
-					$message = JText::sprintf(
+					$message = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG',
 						$name,
 						$sitename,
@@ -463,10 +471,10 @@ class BwPostmanSubscriberHelper
 				}
 				break;
 			case 3: // Send confirmation mail because the email address has been changed
-				$subject = JText::sprintf('COM_BWPOSTMAN_SEND_CONFIRMEMAIL_SUBJECT', $sitename);
+				$subject = Text::sprintf('COM_BWPOSTMAN_SEND_CONFIRMEMAIL_SUBJECT', $sitename);
 				if (is_null($itemid))
 				{
-					$message = JText::sprintf(
+					$message = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG',
 						$name,
 						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
@@ -474,13 +482,13 @@ class BwPostmanSubscriberHelper
 				}
 				else
 				{
-					$message = JText::sprintf(
+					$message = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG',
 						$name,
 						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
 					);
 				}
-				JFactory::getApplication()->enqueueMessage(JText::_("COM_BWPOSTMAN_SEND_CONFIRM_SCREEN_MSG"));
+				Factory::getApplication()->enqueueMessage(Text::_("COM_BWPOSTMAN_SEND_CONFIRM_SCREEN_MSG"));
 				break;
 		}
 
@@ -489,7 +497,7 @@ class BwPostmanSubscriberHelper
 		$message = html_entity_decode($message, ENT_QUOTES);
 
 		// Get a JMail instance
-		$mailer = JFactory::getMailer();
+		$mailer = Factory::getMailer();
 		$sender = array();
 		$reply  = array();
 
@@ -531,7 +539,7 @@ class BwPostmanSubscriberHelper
 			$gender .= ' selected="selected"';
 		}
 
-		$gender .= '>' . JText::_('COM_BWPOSTMAN_NO_GENDER') . '</option>';
+		$gender .= '>' . Text::_('COM_BWPOSTMAN_NO_GENDER') . '</option>';
 
 		$gender .= '<option value="0"';
 		if ($gender_selected == '0')
@@ -539,7 +547,7 @@ class BwPostmanSubscriberHelper
 			$gender .= ' selected="selected"';
 		}
 
-		$gender .= '>' . JText::_('COM_BWPOSTMAN_MALE') . '</option>';
+		$gender .= '>' . Text::_('COM_BWPOSTMAN_MALE') . '</option>';
 
 		$gender .= '<option value="1"';
 		if ($gender_selected == '1')
@@ -547,7 +555,7 @@ class BwPostmanSubscriberHelper
 			$gender .= ' selected="selected"';
 		}
 
-		$gender .= '>' . JText::_('COM_BWPOSTMAN_FEMALE') . '</option>';
+		$gender .= '>' . Text::_('COM_BWPOSTMAN_FEMALE') . '</option>';
 
 		$gender .= '</select>';
 
@@ -573,7 +581,7 @@ class BwPostmanSubscriberHelper
 		}
 
 		$emailformat .= ' />';
-		$emailformat .= '<label for="formatText"><span>' . JText::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
+		$emailformat .= '<label for="formatText"><span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
 		$emailformat .= '<input type="radio" name="emailformat" id="formatHtml" value="1"';
 		if ($mailformat_selected)
 		{
@@ -581,7 +589,7 @@ class BwPostmanSubscriberHelper
 		}
 
 		$emailformat .= ' />';
-		$emailformat .= '<label for="formatHtml"><span>' . JText::_('COM_BWPOSTMAN_HTML') . '</span></label>';
+		$emailformat .= '<label for="formatHtml"><span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
 		$emailformat .= '</fieldset>';
 
 		return $emailformat;
@@ -600,7 +608,7 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function deleteMailinglistsOfSubscriber($subscriber_id)
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 		$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 		$query->where($_db->quoteName('subscriber_id') . ' =  ' . (int) $subscriber_id);
@@ -614,7 +622,7 @@ class BwPostmanSubscriberHelper
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 
 			return false;
 		}
@@ -634,7 +642,7 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function storeMailinglistsOfSubscriber($subscriber_id, $mailinglist_ids)
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->columns(
@@ -663,7 +671,7 @@ class BwPostmanSubscriberHelper
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			return false;
 		}
 	}
@@ -679,7 +687,7 @@ class BwPostmanSubscriberHelper
 	public static function fillVoidSubscriber()
 	{
 		// Load an empty subscriber
-		$subscriber = JTable::getInstance('subscribers', 'BwPostmanTable');
+		$subscriber = Table::getInstance('subscribers', 'BwPostmanTable');
 		$subscriber->load();
 		$subscriber->mailinglists  = array();
 
@@ -699,14 +707,14 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function getAuthorizedMailinglists($id)
 	{
-		$app		    = JFactory::getApplication();
+		$app		    = Factory::getApplication();
 		$user_id	    = self::getUserId($id);
 		$mailinglists   = null;
-		$_db		    = JFactory::getDbo();
+		$_db		    = Factory::getDbo();
 		$query		    = $_db->getQuery(true);
 
 		// get authorized viewlevels
-		$accesslevels	= JAccess::getAuthorisedViewLevels($user_id);
+		$accesslevels	= Access::getAuthorisedViewLevels($user_id);
 
 		if (!in_array('3', $accesslevels))
 		{
@@ -799,7 +807,7 @@ class BwPostmanSubscriberHelper
 	public static function getUserId($id)
 	{
 		$user_id    = null;
-		$_db	    = JFactory::getDbo();
+		$_db	    = Factory::getDbo();
 		$query	    = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('user_id'));
@@ -814,7 +822,7 @@ class BwPostmanSubscriberHelper
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if (is_null($user_id))
@@ -839,7 +847,7 @@ class BwPostmanSubscriberHelper
 	public static function getModParams($id = 0)
 	{
 		$params = null;
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select('m.params');
@@ -853,7 +861,7 @@ class BwPostmanSubscriberHelper
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $params;

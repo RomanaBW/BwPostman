@@ -27,6 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // Displays a error message and a mailto-link of the admin email address
 // Will be shown if
 // 1. the confirmation email could not be sent
@@ -44,25 +48,25 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		}
 
-		$admin_email = $this->params->def('default_from_email', JFactory::getConfig()->get('mailfrom'));
+		$admin_email = $this->params->def('default_from_email', Factory::getConfig()->get('mailfrom'));
 
-		echo '<p class="bwp-error">' . JText::_('COM_BWPOSTMAN_ERROR') . '</p>';
+		echo '<p class="bwp-error">' . Text::_('COM_BWPOSTMAN_ERROR') . '</p>';
 
 		if ($this->error->err_email)
 		{
 			// Case 1
-			$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $this->error->err_email) . '</p>';
+			$msg = '<p class="error-message">' . Text::sprintf($this->error->err_msg, $this->error->err_email) . '</p>';
 			echo $msg;
 		}
 		else
 		{
 			// Case 2
 			// Case 3
-			echo '<p class="error-message">' . JText::_($this->error->err_msg) . '</p>';
+			echo '<p class="error-message">' . Text::_($this->error->err_msg) . '</p>';
 		}
 
-		$msg1 = '<p class="contact-admin">' . JText::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email) . '</p>';
-		echo JHtml::_('content.prepare', $msg1);
+		$msg1 = '<p class="contact-admin">' . Text::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email) . '</p>';
+		echo HtmlHelper::_('content.prepare', $msg1);
 
 		if ($this->params->get('show_boldt_link') === '1')
 		{ ?>

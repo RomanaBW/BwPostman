@@ -28,13 +28,23 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Form\Form;
+use Joomla\Event\DispatcherInterface;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Log\LogEntry;
+
 jimport('joomla.plugin.plugin');
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 require_once(JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
-
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 /**
  * Class User2Subscriber
@@ -155,7 +165,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	/**
 	 * PlgSystemBWPM_User2Subscriber constructor.
 	 *
-	 * @param Joomla\Event\DispatcherInterface $subject
+	 * @param DispatcherInterface $subject
 	 * @param array  $config
 	 *
 	 * @since   2.0.0
@@ -164,8 +174,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-		JFormHelper::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/fields');
-		JFormHelper::addFieldPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form/fields');
+		FormHelper::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/fields');
+		FormHelper::addFieldPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form/fields');
 
 		$log_options    = array();
 		$this->logger   = BwLogger::getInstance($log_options);
@@ -185,7 +195,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function setBwPostmanComponentStatus()
 	{
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -201,14 +211,14 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component is enabled: %s', $enabled), JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new LogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
 		{
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
-			$this->logger->addEntry(new JLogEntry($e->getMessage(), JLog::ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -221,7 +231,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function setBwPostmanComponentVersion()
 	{
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -236,14 +246,14 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component version is: %s', $manifest['version']), JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new LogEntry(sprintf('Component version is: %s', $manifest['version']), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
 		{
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentVersion = '0.0.0';
-			$this->logger->addEntry(new JLogEntry($e->getMessage(), JLog::ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -254,7 +264,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function loadLanguageFiles()
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 
 		//Load first english file of component
 		$lang->load('com_bwpostman', JPATH_SITE, 'en-GB', true);
@@ -281,10 +291,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onContentPrepareForm($form, $data)
 	{
-		if ($this->debug)
-		{
-			$this->logger->addEntry(new JLogEntry('onContentPrepareForm reached', JLog::DEBUG, $this->log_cat));
-		}
+		$this->logger->addEntry(new LogEntry('onContentPrepareForm reached', BwLogger::BW_DEBUG, $this->log_cat));
 
 		if (!$this->prerequisitesFulfilled())
 		{
@@ -295,7 +302,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry(sprintf('Context is: %s', $context), JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry(sprintf('Context is: %s', $context), BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!in_array($context, $this->allowedContext))
@@ -306,14 +313,14 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$this->loadLanguageFiles();
 
 		$mailinglists   = $this->params->get('ml_available', array());
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$session->set('plg_bwpm_user2subscriber.ml_available', $mailinglists);
 		$session->set('plg_bwpm_user2subscriber.show_desc', $this->params->get('show_desc', 'true'));
 		$session->set('plg_bwpm_user2subscriber.desc_length', $this->params->get('desc_length', '150'));
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry(sprintf('Count mailinglists is: %s', count($mailinglists)), JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry(sprintf('Count mailinglists is: %s', count($mailinglists)), BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!count($mailinglists))
@@ -330,18 +337,18 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry(sprintf('Array data_helper is empty: %s', !empty($data_helper)), JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry(sprintf('Array data_helper is empty: %s', !empty($data_helper)), BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (version_compare(JVERSION, '3.999.999', 'le') && !empty($data_helper))
 		{
-			$this->logger->addEntry(new JLogEntry('Array is not okay'));
+			$this->logger->addEntry(new LogEntry('Array is not okay'));
 			return true;
 		}
 
 		$this->form = $form;
 
-		JForm::addFormPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form');
+		Form::addFormPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form');
 
 		if (version_compare(JVERSION, '3.99', 'le'))
 		{
@@ -354,27 +361,27 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$this->group = null;
 		}
 
-		if (!($this->form instanceof JForm))
+		if (!($this->form instanceof Form))
 		{
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry('Form is not an instance of JForm', JLog::DEBUG, $this->log_cat));
+				$this->logger->addEntry(new LogEntry('Form is not an instance of JForm', BwLogger::BW_DEBUG, $this->log_cat));
 			}
 
 			return false;
 		}
 
-		$this->logger->addEntry(new JLogEntry('Form U2S is instance'));
+		$this->logger->addEntry(new LogEntry('Form U2S is instance'));
 
 		// Add CSS and JS for the radio fields
-		$doc = JFactory::getDocument();
+		$doc = Factory::getDocument();
 
-		$css_file   = JUri::base(true) . '/plugins/system/bwpm_user2subscriber/assets/css/bwpm_user2subscriber.css';
+		$css_file   = Uri::base(true) . '/plugins/system/bwpm_user2subscriber/assets/css/bwpm_user2subscriber.css';
 		$doc->addStyleSheet($css_file);
 
 		// makes sure that jQuery is loaded first
-		JHtml::_('jquery.framework');
-		$js_file = JUri::base(true) . '/plugins/system/bwpm_user2subscriber/assets/js/bwpm_user2subscriber.js';
+		HTMLHelper::_('jquery.framework');
+		$js_file = Uri::base(true) . '/plugins/system/bwpm_user2subscriber/assets/js/bwpm_user2subscriber.js';
 
 		$doc->addScript($js_file);
 
@@ -397,7 +404,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$this->removeDisclaimerField();
 		}
 
-		$this->logger->addEntry(new JLogEntry('Script and CSS added'));
+		$this->logger->addEntry(new LogEntry('Script and CSS added'));
 
 		$this->processGenderField();
 		$this->processLastnameField();
@@ -430,7 +437,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component version not met!'), JLog::ERROR, $this->log_cat));
+				$this->logger->addEntry(new LogEntry(sprintf('Component version not met!'), BwLogger::BW_ERROR, $this->log_cat));
 			}
 
 			return false;
@@ -446,7 +453,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function processGenderField()
 	{
-		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$com_params = ComponentHelper::getParams('com_bwpostman');
 
 		if (!$com_params->get('show_gender'))
 		{
@@ -461,7 +468,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function processLastnameField()
 	{
-		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$com_params = ComponentHelper::getParams('com_bwpostman');
 
 		if ($com_params->get('name_field_obligation'))
 		{
@@ -481,7 +488,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function processFirstnameField()
 	{
-		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$com_params = ComponentHelper::getParams('com_bwpostman');
 
 		if ($com_params->get('firstname_field_obligation'))
 		{
@@ -501,7 +508,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function processAdditionalField()
 	{
-		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$com_params = ComponentHelper::getParams('com_bwpostman');
 
 		if ($com_params->get('special_field_obligation'))
 		{
@@ -519,12 +526,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 			if ($special_label != '')
 			{
-				$this->form->setFieldAttribute('special', 'label', JText::_($special_label), $this->group);
+				$this->form->setFieldAttribute('special', 'label', Text::_($special_label), $this->group);
 			}
 
 			if ($special_desc != '')
 			{
-				$this->form->setFieldAttribute('special', 'description', JText::_($special_desc), $this->group);
+				$this->form->setFieldAttribute('special', 'description', Text::_($special_desc), $this->group);
 			}
 		}
 	}
@@ -536,7 +543,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function processNewsletterFormatField()
 	{
-		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$com_params = ComponentHelper::getParams('com_bwpostman');
 
 		$this->form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), $this->group);
 
@@ -575,7 +582,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$captcha = BwPostmanHelper::getCaptcha(1);
 		$this->form->setFieldAttribute('bw_captcha', 'name', 'bwp-' . $captcha, $this->group);
 
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$session->set('plg_bwpm_user2subscriber.captcha', $captcha);
 	}
 
@@ -588,7 +595,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function getDisclaimerLink()
 	{
-		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$com_params = ComponentHelper::getParams('com_bwpostman');
 		$disclaimer_link = '';
 
 		if ($this->params->get('disclaimer') && $com_params->get('disclaimer'))
@@ -599,12 +606,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			if ($com_params->get('disclaimer_selection') == 1 && $com_params->get('article_id') > 0)
 			{
 				JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-				$disclaimer_link = JRoute::_(ContentHelperRoute::getArticleRoute($com_params->get('article_id'))) . $tpl_com;
+				$disclaimer_link = Route::_(ContentHelperRoute::getArticleRoute($com_params->get('article_id'))) . $tpl_com;
 			}
 			// Disclaimer menu item and target_blank or not
 			elseif ($com_params->get('disclaimer_selection') == 2 && $com_params->get('disclaimer_menuitem') > 0)
 			{
-				$disclaimer_link = JRoute::_('index.php?Itemid=' . $com_params->get('disclaimer_menuitem')) . $tpl_com;
+				$disclaimer_link = Route::_('index.php?Itemid=' . $com_params->get('disclaimer_menuitem')) . $tpl_com;
 			}
 			// Disclaimer url and target_blank or not
 			else
@@ -641,7 +648,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('onUserBeforeSave reached', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('onUserBeforeSave reached', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -662,7 +669,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$changeMail = true;
 		}
 
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$session->set('plg_bwpm_user2subscriber.changeMail', $changeMail);
 
 		if ($old_activation != '' && ($old_activation != $new_activation))
@@ -692,7 +699,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('onUserAfterSave reached', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('onUserAfterSave reached', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -705,7 +712,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return false;
 		}
 
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 
 		$session->set('plg_bwpm_user2subscriber.form_prepared', false);
 
@@ -758,15 +765,15 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		$activation     = $session->get('plg_bwpm_user2subscriber.activation');
 		$changeMail     = $session->get('plg_bwpm_user2subscriber.changeMail');
-		$task           = JFactory::getApplication()->input->get->get('task', '', 'string');
-		$token          = JFactory::getApplication()->input->get->get('token', '', 'string');
+		$task           = Factory::getApplication()->input->get->get('task', '', 'string');
+		$token          = Factory::getApplication()->input->get->get('token', '', 'string');
 		$session->clear('plg_bwpm_user2subscriber');
 
 		$this->stored_subscriber_data = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
 		$subscriber_id                = BWPM_User2SubscriberHelper::hasSubscription($user_mail);
 		$subscriber_is_to_activate    = BWPM_User2SubscriberHelper::isToActivate($user_mail);
 
-		if (($task == 'registration.activate' && $token == $activation) || (JFactory::getApplication()->isClient('administrator') && $activation != ''))
+		if (($task == 'registration.activate' && $token == $activation) || (Factory::getApplication()->isClient('administrator') && $activation != ''))
 		{
 			if ($subscriber_is_to_activate)
 			{
@@ -811,7 +818,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('process new user', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('process new user', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		$subscription_wanted    = ArrayHelper::getValue($subscriber_data, 'bwpm_user2subscriber', 0, 'int');
@@ -869,7 +876,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('subscribe to BwPostman', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('subscribe to BwPostman', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		try
@@ -925,7 +932,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('activate subscription reached', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('activate subscription reached', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if ($user_mail == '')
@@ -933,13 +940,13 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return false;
 		}
 
-		$activation_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+		$activation_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 		$subscriber_id  = BWPM_User2SubscriberHelper::getSubscriberIdByEmail($user_mail);
 
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
-		$date   = JFactory::getDate();
+		$date   = Factory::getDate();
 		$time   = $date->toSql();
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -955,7 +962,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			$res = $_db->execute();
 
-			$params    = JComponentHelper::getParams('com_bwpostman');
+			$params    = ComponentHelper::getParams('com_bwpostman');
 			$send_mail = $params->get('activation_to_webmaster');
 
 			// @ToDo: How could I get here with no object $this->stored_subscriber_data
@@ -987,7 +994,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('update mail address', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('update mail address', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		$update_email_result    = false;
@@ -1019,7 +1026,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function updateEmailOfSubscription()
 	{
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -1048,7 +1055,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('onUserAfterDelete reached', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('onUserAfterDelete reached', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!$this->BwPostmanComponentEnabled)
@@ -1088,7 +1095,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('delete subscription', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('delete subscription', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		try
@@ -1133,12 +1140,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('delete subscriber', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('delete subscriber', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		try
 		{
-			$_db	= JFactory::getDbo();
+			$_db	= Factory::getDbo();
 			$query	= $_db->getQuery(true);
 
 			$query->delete($_db->quoteName('#__bwpostman_subscribers'));
@@ -1168,12 +1175,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('delete mailinglists', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('delete mailinglists', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		try
 		{
-			$_db	= JFactory::getDbo();
+			$_db	= Factory::getDbo();
 			$query	= $_db->getQuery(true);
 
 			$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
@@ -1205,7 +1212,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('remove UserID from subscription', JLog::DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('remove UserID from subscription', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		try
@@ -1219,7 +1226,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 			if ($this->stored_subscriber_data['id'] != 0)
 			{
-				$_db	= JFactory::getDbo();
+				$_db	= Factory::getDbo();
 				$query	= $_db->getQuery(true);
 
 				$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -1237,7 +1244,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return false;
 		}
 
-		JFactory::getUser();
+		Factory::getUser();
 
 		return $res_update_subscriber;
 	}
@@ -1253,7 +1260,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onAfterRender()
 	{
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$jinput  = $this->app->input;
 
 		$confirm             = (int) $jinput->get('confirm', 0);

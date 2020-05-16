@@ -27,6 +27,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Installer\InstallerAdapter;
+
 /**
  * Installation script for the plugin
  *
@@ -44,8 +48,8 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	/**
 	 * Called before any type of action
 	 *
-	 * @param   string  			                    $type		Which action is happening (install|uninstall|discover_install|update)
-	 * @param   Joomla\CMS\Installer\InstallerAdapter	$parent		The object responsible for running this script
+	 * @param   string              $type		Which action is happening (install|uninstall|discover_install|update)
+	 * @param   InstallerAdapter	$parent		The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -54,7 +58,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 * @since       0.9.6.3
 	 */
 
-	public function preflight($type, Joomla\CMS\Installer\InstallerAdapter $parent)
+	public function preflight($type, InstallerAdapter $parent)
 	{
 		if ($type == 'install')
 		{
@@ -63,7 +67,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 
 			if (version_compare($BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
 			{
-				JFactory::getApplication()->enqueueMessage(
+				Factory::getApplication()->enqueueMessage(
 					sprintf('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_COMPONENT_BWPOSTMAN_NEEDED', $this->min_bwpostman_version),
 					'error'
 				);
@@ -86,7 +90,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	protected function getComponentVersion()
 	{
 		$version    = '0.0.0';
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -101,7 +105,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $version;

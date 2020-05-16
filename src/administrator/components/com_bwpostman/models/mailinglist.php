@@ -27,10 +27,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\Utilities\ArrayHelper;
+
 // Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
-
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
@@ -77,7 +80,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	{
 		parent::__construct();
 
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 		$cids	= $jinput->get('cid',  array(0), '');
 		$this->setId((int) $cids[0]);
 	}
@@ -95,7 +98,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 */
 	public function getTable($type = 'Mailinglists', $prefix = 'BwPostmanTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -116,11 +119,13 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	/**
 	 * Method to test whether a record can have its state edited.
 	 *
-	 * @param	object	$record	A record object.
+	 * @param object $record A record object.
 	 *
-	 * @return	boolean	True if allowed to change the state of the record.
+	 * @return    boolean    True if allowed to change the state of the record.
 	 *
-	 * @since	1.0.1
+	 * @throws Exception
+	 *
+	 * @since    1.0.1
 	 */
 	protected function canEditState($record)
 	{
@@ -142,7 +147,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$data	= $app->getUserState('com_bwpostman.edit.mailinglist.data', null);
 
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
@@ -184,7 +189,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			return false;
 		}
 
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 
 		// The front end calls this model and uses a_id to avoid id clashes so we need to check for that first.
 		if ($jinput->get('a_id'))
@@ -212,7 +217,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			$form->setFieldAttribute('parent_id', 'action', 'bwpm.create');
 		}
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		// Check for existing mailinglist.
 		// Modify the form based on Edit State access controls.
@@ -263,10 +268,10 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 */
 	protected function loadFormData()
 	{
-		$recordId = JFactory::getApplication()->getUserState('com_bwpostman.edit.mailinglist.id');
+		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.mailinglist.id');
 
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_bwpostman.edit.mailinglist.data', array());
+		$data = Factory::getApplication()->getUserState('com_bwpostman.edit.mailinglist.data', array());
 
 		if (empty($data) || (is_object($data) &&$recordId != $data->id))
 		{
@@ -294,8 +299,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	public function archive($cid = array(0), $archive = 1)
 	{
 		$_db	= $this->_db;
-		$date	= JFactory::getDate();
-		$uid	= JFactory::getUser()->get('id');
+		$date	= Factory::getDate();
+		$uid	= Factory::getUser()->get('id');
 
 		if ($archive == 1)
 		{
@@ -343,7 +348,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -366,7 +371,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		if (count($pks))
 		{
@@ -380,33 +385,33 @@ class BwPostmanModelMailinglist extends JModelAdmin
 				}
 			}
 
-			$lists_table	= JTable::getInstance('mailinglists', 'BwPostmanTable');
+			$lists_table	= Table::getInstance('mailinglists', 'BwPostmanTable');
 
 			// Delete all entries from the mailinglists-table
 			foreach ($pks as $id)
 			{
 				if (!$lists_table->delete($id))
 				{
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_ML_DELETED', $id), 'error');
+					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_ML_DELETED', $id), 'error');
 					return false;
 				}
 
 				if (!$this->deleteMailinglistsCampaignsEntry($id))
 				{
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_ML_CAM_DELETED', $id), 'error');
+					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_ML_CAM_DELETED', $id), 'error');
 					return false;
 				}
 
 				if (!$this->deleteMailinglistSubscribers($id))
 				{
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_SUBS_DELETED', $id), 'error');
+					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_SUBS_DELETED', $id), 'error');
 					return false;
 				}
 
 				// Delete all entries from the newsletters_mailinglists-table
 				if (!$this->deleteMailinglistNewsletters($id))
 				{
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_NLS_DELETED', $id), 'error');
+					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_NLS_DELETED', $id), 'error');
 					return false;
 				}
 			}
@@ -462,7 +467,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			return false;
 		}
 
@@ -494,7 +499,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			return false;
 		}
 
@@ -526,7 +531,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			return false;
 		}
 

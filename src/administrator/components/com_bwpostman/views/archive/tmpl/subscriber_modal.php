@@ -27,11 +27,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 ?>
 <table>
 	<tr>
-		<td><img src="<?php echo JUri::base() . 'components/com_bwpostman/assets/images/icon-48-subscribers.png'; ?>" /></td>
-		<td><strong><?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_SUB') ?></strong></td>
+		<td><img src="<?php echo Uri::base() . 'components/com_bwpostman/assets/images/icon-48-subscribers.png'; ?>" /></td>
+		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_SUB') ?></strong></td>
 	</tr>
 </table>
 
@@ -40,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_NAME');
+					<?php echo Text::_('COM_BWPOSTMAN_NAME');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -49,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_EMAIL');
+					<?php echo Text::_('COM_BWPOSTMAN_EMAIL');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -58,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_EMAILFORMAT');
+					<?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -67,7 +69,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_SUB_REGISTRATION_DATE');
+					<?php echo Text::_('COM_BWPOSTMAN_SUB_REGISTRATION_DATE');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -76,7 +78,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_SUB_REGISTERED_BY');
+					<?php echo Text::_('COM_BWPOSTMAN_SUB_REGISTERED_BY');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -85,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRMATION_DATE');
+					<?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRMATION_DATE');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -94,7 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_SUB_CONFIRMED_BY');
+					<?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRMED_BY');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -103,7 +105,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_SUB_ARCHIVE_DATE');
+					<?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVE_DATE');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -112,7 +114,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_SUB_ARCHIVED_BY');
+					<?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVED_BY');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -124,7 +126,7 @@ defined('_JEXEC') or die('Restricted access');
 <fieldset class="adminform">
 	<table width="100%" border="0">
 		<tr>
-			<td><strong><?php echo JText::_('COM_BWPOSTMAN_SUB_ML_SUBSCRIBED'); ?></strong></td>
+			<td><strong><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_SUBSCRIBED'); ?></strong></td>
 		</tr>
 		<tr>
 			<td>
@@ -142,7 +144,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 				else
 					{
-					echo JText::_('COM_BWPOSTMAN_ARC_SUB_NO_ASSIGNED_ML');
+					echo Text::_('COM_BWPOSTMAN_ARC_SUB_NO_ASSIGNED_ML');
 				}
 				?>
 			</td>

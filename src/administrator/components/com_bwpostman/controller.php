@@ -27,6 +27,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+
 // Import CONTROLLER object class
 jimport('joomla.application.component.controller');
 
@@ -68,12 +73,12 @@ class BwPostmanController extends JControllerLegacy
 	 */
 	public function addtext()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		$jinput->set('hidemainmenu', 1);
 		$jinput->set('view', 'template');
 		$jinput->set('layout', 'default_text');
-		$link = JRoute::_('index.php?option=com_bwpostman&view=template&layout=default_text', false);
+		$link = Route::_('index.php?option=com_bwpostman&view=template&layout=default_text', false);
 		$this->setRedirect($link);
 	}
 
@@ -86,12 +91,12 @@ class BwPostmanController extends JControllerLegacy
 	 */
 	public function addhtml()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		$jinput->set('hidemainmenu', 1);
 		$jinput->set('view', 'template');
 		$jinput->set('layout', 'default_add');
-		$link = JRoute::_('index.php?option=com_bwpostman&view=template&layout=default_html', false);
+		$link = Route::_('index.php?option=com_bwpostman&view=template&layout=default_html', false);
 		$this->setRedirect($link);
 	}
 
@@ -106,7 +111,7 @@ class BwPostmanController extends JControllerLegacy
 	 */
 	public function storePermission()
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		// Send json mime type.
 		$app->mimeType = 'application/json';
@@ -114,9 +119,9 @@ class BwPostmanController extends JControllerLegacy
 		$app->sendHeaders();
 
 		// Check if user token is valid.
-		if (!JSession::checkToken('get'))
+		if (!Session::checkToken('get'))
 		{
-			$app->enqueueMessage(JText::_('JINVALID_TOKEN'), 'error');
+			$app->enqueueMessage(Text::_('JINVALID_TOKEN'), 'error');
 			echo new JResponseJson;
 			$app->close();
 		}

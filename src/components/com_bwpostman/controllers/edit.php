@@ -27,6 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+
 // Import CONTROLLER object class
 jimport('joomla.application.component.controller');
 
@@ -76,7 +82,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		// Register Extra tasks
 		$this->registerTask('sendEditLink', 'sendEditLink');
 
-		$session		= JFactory::getSession();
+		$session		= Factory::getSession();
 
 		//clear session error and success
 		$session_error = $session->get('session_error');
@@ -97,7 +103,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$err			= new stdClass();
 		$err->err_code	= 0;
 
-		$user 	        = JFactory::getUser();
+		$user 	        = Factory::getUser();
 		$user_is_guest  = $user->get('guest');
 		$userid 		= (int) $user->get('id');
 
@@ -108,7 +114,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		}
 
 		// Check if the variable editlink exists in the uri
-		$uri		= JUri::getInstance();
+		$uri		= Uri::getInstance();
 		$editlink	= $uri->getVar("editlink", null);
 
 		// Get subscriber id from session, clear session if necessary
@@ -161,7 +167,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		}
 		else
 		{ // Guest with unknown subscriber id (not stored in the session)
-			$link = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=register&layout=error_geteditlink';
+			$link = Uri::base() . 'index.php?option=com_bwpostman&view=register&layout=error_geteditlink';
 			if (is_null($editlink))
 			{
 			}
@@ -216,7 +222,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 */
 	public function setData($subscriberid = 0, $userid = 0)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$app->setUserState('subscriber.id', $subscriberid);
 
 		$this->subscriberid = $subscriberid;
@@ -237,9 +243,9 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
-		$session		= JFactory::getSession();
+		$session		= Factory::getSession();
 		$session_error	= $session->get('session_error');
 
 		$jinput->set('view', 'edit');
@@ -274,13 +280,13 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 */
 	public function save()
 	{
-		$jinput	= JFactory::getApplication()->input;
-		$app	= JFactory::getApplication();
+		$jinput	= Factory::getApplication()->input;
+		$app	= Factory::getApplication();
 
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		$post	= $jinput->getArray(
@@ -308,17 +314,13 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		if (isset($post['unsubscribe']))
 		{
 			$this->unsubscribe($post['id']);
-			$link = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=register';
-			//@ToDo: With the following routing with SEO activated don't work
-//			$link = JRoute::_('index.php?option=com_bwpostman&view=register', false);
+			$link = Uri::base() . 'index.php?option=com_bwpostman&view=register';
 		}
 		else
 		{
 			$model  = $this->getModel('edit');
 			$itemid = $model->getItemid();
-			$link   = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=edit&Itemid=' . $itemid;
-			//@ToDo: With the following routing with SEO activated don't work
-//			$link   = JRoute::_('index.php?option=com_bwpostman&view=edit&Itemid=' . $itemid, false);
+			$link   = Uri::base() . 'index.php?option=com_bwpostman&view=edit&Itemid=' . $itemid;
 
 			// Email address has changed
 			if (($post['email'] != "") && ($post['email'] != $model->getEmailaddress($post['id'])))
@@ -334,7 +336,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			if (!$model->save($post))
 			{
 				// Store the input data into the session object
-				$session			= JFactory::getSession();
+				$session			= Factory::getSession();
 				$error              = $model->getError();
 				$subscriber_data	= array(
 					'id' => $post['id'],
@@ -378,7 +380,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 						BwPostmanSubscriberHelper::errorSendingEmail($err_msg, $post['email']);
 					}
 
-					$session				= JFactory::getSession();
+					$session				= Factory::getSession();
 					$session_subscriberid	= $session->get('session_subscriberid');
 
 					if(isset($session_subscriberid) && is_array($session_subscriberid))
@@ -387,20 +389,18 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 
 					$jinput->set('view', 'register');
-					$link   = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=register';
-					//@ToDo: With the following routing with SEO activated don't work
-//					$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
+					$link   = Uri::base() . 'index.php?option=com_bwpostman&view=register';
 				}
 				else
 				{
 					// No new email address has been stored --> the account doesn't need to be confirmed again
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_CHANGES_SAVED_SUCCESSFULLY', 'message'));
+					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_CHANGES_SAVED_SUCCESSFULLY', 'message'));
 
 					// If the user has chosen the button "save modifications & leave edit mode" we clear the session object
 					// now no subscriber_id is stored into the session
 					if ($post['edit'] == "submitleave")
 					{
-						$session				= JFactory::getSession();
+						$session				= Factory::getSession();
 						$session_subscriberid	= $session->get('session_subscriberid');
 
 						if(isset($session_subscriberid) && is_array($session_subscriberid))
@@ -410,9 +410,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 
 						$jinput->set('view', 'register');
 						$app->setUserState('subscriber.id', 0);
-						$link   = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=register';
-						//@ToDo: With the following routing with SEO activated don't work
-//						$link   = JRoute::_('index.php?option=com_bwpostman&view=register', false);
+						$link   = Uri::base() . 'index.php?option=com_bwpostman&view=register';
 					}
 					else
 					{
@@ -444,13 +442,12 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	public function unsubscribe($id = null)
 	{
 		// Initialize some variables
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 		$model	= $this->getModel('register');
 		$itemid	= $model->getItemid();
-		$email  = '';
 
 		// Check if the variable editlink exists in the uri
-		$uri		= JUri::getInstance();
+		$uri		= Uri::getInstance();
 		$email		= $uri->getVar("email", null);
 		$editlink	= $uri->getVar("code", null);
 
@@ -492,7 +489,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 
 		// If we come from the edit view we have to clear the session object
 		// otherwise the subscriber can get to the edit view again
-		$session				= JFactory::getSession();
+		$session				= Factory::getSession();
 		$session_subscriberid	= $session->get('session_subscriberid');
 
 		if(isset($session_subscriberid) && is_array($session_subscriberid))
@@ -500,7 +497,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			$session->clear('session_subscriberid');
 		}
 
-		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_SUCCESS_UNSUBSCRIBE'), $msg_type);
+		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_SUCCESS_UNSUBSCRIBE'), $msg_type);
 		$jinput->set('view', 'register');
 		parent::display();
 	}
@@ -515,7 +512,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 */
 	public function sendEditlink()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 		$model	= $this->getModel('register');
 		$post	= $jinput->getArray(
 			array(
@@ -527,9 +524,9 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		);
 
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		$id				= $model->isRegSubscriber($post['email']);
@@ -545,10 +542,10 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			$subs_id		= null;
 			$err->err_id    = $id;
 			$err->err_code	= 408; // Email address doesn't exist
-			$err->err_msg	= JText::sprintf(
+			$err->err_msg	= Text::sprintf(
 				'COM_BWPOSTMAN_ERROR_EMAILDOESNTEXIST',
 				$post['email'],
-				JRoute::_('index.php?option=com_bwpostman&view=register')
+				Route::_('index.php?option=com_bwpostman&view=register')
 			);
 		}
 		elseif ($subscriberdata->archive_flag == 1)

@@ -27,8 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
+use Joomla\Database\DatabaseDriver;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
 
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
 
 /**
  * #__bwpostman_sendmailqueue table handler
@@ -100,7 +104,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -145,7 +149,7 @@ class BwPostmanTableSendmailqueue extends JTable
 			}
 			else
 			{
-				throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+				throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 			}
 
 			// Cast properties
@@ -153,7 +157,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		}
 		catch (BwException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return parent::bind($data, $ignore);
@@ -197,9 +201,9 @@ class BwPostmanTableSendmailqueue extends JTable
 		$query->where($_db->quoteName('trial') . ' < ' . (int) $trial);
 		$query->order($_db->quoteName($this->_tbl_key) . ' ASC LIMIT 0,1');
 
-		JPluginHelper::importPlugin('bwpostman');
+		PluginHelper::importPlugin('bwpostman');
 
-		JFactory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, $fromComponent));
+		Factory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, $fromComponent));
 
 		$_db->setQuery($query);
 
@@ -209,7 +213,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if ($result !== null && count($result))
@@ -279,7 +283,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return true;
@@ -362,7 +366,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return true;
@@ -422,7 +426,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return true;
@@ -487,7 +491,7 @@ class BwPostmanTableSendmailqueue extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		foreach ($sub_res as $result)
@@ -519,7 +523,7 @@ class BwPostmanTableSendmailqueue extends JTable
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -552,9 +556,39 @@ class BwPostmanTableSendmailqueue extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return true;
+	}
+
+	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 *
+	 * @since  2.4.0
+	 */
+	public function getId()
+	{
+		$key = $this->getKeyName();
+
+		return $this->$key;
+	}
+
+	/**
+	 * Check if the record has a property (applying a column alias if it exists)
+	 *
+	 * @param string $key key to be checked
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.4.0
+	 */
+	public function hasField($key)
+	{
+		$key = $this->getColumnAlias($key);
+
+		return property_exists($this, $key);
 	}
 }

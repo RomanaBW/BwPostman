@@ -27,6 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // Displays a link to the registration form or the editlink form
 // Will be shown if
 // 1. the unsubscribe process failed --> the editlink or email address is wrong
@@ -45,32 +51,32 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		}
 
-		echo '<p class="bwp-error">' . JText::_('COM_BWPOSTMAN_ERROR') . '</p>';
+		echo '<p class="bwp-error">' . Text::_('COM_BWPOSTMAN_ERROR') . '</p>';
 
 		if (is_null($this->error->err_code))
 		{
 			if ($this->error->err_msg == 'COM_BWPOSTMAN_ERROR_UNSUBSCRIBE')
 			{ // Case 4
-				echo '<p class="error-message">' . JText::_($this->error->err_msg) . '</p>';
+				echo '<p class="error-message">' . Text::_($this->error->err_msg) . '</p>';
 
-				$admin_email = $this->params->def('default_from_email', JFactory::getConfig()->get('mailfrom'));
+				$admin_email = $this->params->def('default_from_email', Factory::getConfig()->get('mailfrom'));
 
-				$msg1 = '<p class="contact-admin">' . JText::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email) . '</p>';
-				echo JHtml::_('content.prepare', $msg1);
+				$msg1 = '<p class="contact-admin">' . Text::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email) . '</p>';
+				echo HtmlHelper::_('content.prepare', $msg1);
 			}
 			else
 			{
 				// Case 1
 				if (!property_exists($this->error, 'err_itemid'))
 				{
-					$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=edit");
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit");
 				}
 				else
 				{
-					$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;Itemid={$this->error->err_itemid}");
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;Itemid={$this->error->err_itemid}");
 				}
 
-				$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $link) . '</p>';
+				$msg = '<p class="error-message">' . Text::sprintf($this->error->err_msg, $link) . '</p>';
 			}
 		}
 		else
@@ -79,11 +85,11 @@ defined('_JEXEC') or die('Restricted access');
 				// Case 2
 				if (!property_exists($this->error, 'err_itemid'))
 				{
-					$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=register");
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=register");
 				}
 				else
 				{
-					$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=register&amp;Itemid={$this->error->err_itemid}");
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=register&amp;Itemid={$this->error->err_itemid}");
 				}
 			}
 			else
@@ -91,15 +97,15 @@ defined('_JEXEC') or die('Restricted access');
 				// Case 3
 				if (!property_exists($this->error, 'err_itemid'))
 				{
-					$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=edit");
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit");
 				}
 				else
 				{
-					$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;Itemid={$this->error->err_itemid}");
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;Itemid={$this->error->err_itemid}");
 				}
 			}
 
-			$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $this->error->err_email, $link) . '</p>';
+			$msg = '<p class="error-message">' . Text::sprintf($this->error->err_msg, $this->error->err_email, $link) . '</p>';
 		}
 
 		echo $msg;

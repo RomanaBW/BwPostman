@@ -27,7 +27,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\Registry\Registry as JRegistry;
+use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Plugin\PluginHelper;
 
 /**
  * Class JFormFieldBwpSpacer
@@ -57,14 +59,14 @@ class JFormFieldBwpSpacer extends JFormField
 	 */
 	protected function getInput()
 	{
-		$plugin = JPluginHelper::getPlugin('system', 'bwpm_user2subscriber');
-		$params = new JRegistry($plugin->params);
+		$plugin = PluginHelper::getPlugin('system', 'bwpm_user2subscriber');
+		$params = new Registry($plugin->params);
 
 		$html = array();
 		$class = !empty($this->class) ? ' class="' . $this->class . '"' : '';
 		$html[] = '<p' . $class . '>';
 
-		$text = $params->get('register_message_option') ? JText::_($params->get('register_message_option')) : '';
+		$text = $params->get('register_message_option') ? Text::_($params->get('register_message_option')) : '';
 
 		$html[] = $text . '</p>';
 

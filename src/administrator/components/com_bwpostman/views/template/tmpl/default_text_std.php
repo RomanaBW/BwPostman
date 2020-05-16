@@ -27,11 +27,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 
 // Load the tooltip behavior for the notes
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.keepalive');
+HtmlHelper::_('bootstrap.tooltip');
+HtmlHelper::_('behavior.keepalive');
 
 $image = '<i class="icon-info"></i>';
 
@@ -52,10 +56,10 @@ $options = array(
 <div id="bwp_view_lists" class="well well-small">
 	<?php
 	if ($this->queueEntries) {
-		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=template&layout=default&id=' . (int) $this->item->id); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=template&layout=default&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<fieldset class="adminform">
 			<legend>
@@ -72,11 +76,11 @@ $options = array(
 			<div class="well well-small">
 				<div class="fltlft width-40 span5 control-group">
 					<?php
-						echo JHtml::_('tabs.start', 'template_tabs', $options);
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'), 'panel1');
+						echo HtmlHelper::_('tabs.start', 'template_tabs', $options);
+						echo HtmlHelper::_('tabs.panel', Text::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'), 'panel1');
 					?>
 					<fieldset class="panelform">
-						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'); ?></legend>
+						<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_BASICS_LABEL'); ?></legend>
 						<div class="well well-small">
 							<ul class="adminformlist unstyled">
 								<li>
@@ -92,14 +96,14 @@ $options = array(
 									<div class="controls"><?php echo $this->form->getInput('thumbnail'); ?></div>
 								</li>
 							</ul>
-							<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+							<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 						</div>
 					</fieldset>
 					<?php
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'), 'panel2');
+						echo HtmlHelper::_('tabs.panel', Text::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'), 'panel2');
 					?>
 					<fieldset class="panelform">
-						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'); ?></legend>
+						<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_HEADER_LABEL'); ?></legend>
 						<div class="well well-small">
 							<ul class="adminformlist unstyled">
 								<?php
@@ -116,12 +120,12 @@ $options = array(
 						</div>
 					</fieldset>
 					<?php
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_INTRO_LABEL'), 'panel3');
+						echo HtmlHelper::_('tabs.panel', Text::_('COM_BWPOSTMAN_TPL_INTRO_LABEL'), 'panel3');
 						echo $this->loadTemplate('intro');
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'), 'panel4');
+						echo HtmlHelper::_('tabs.panel', Text::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'), 'panel4');
 					?>
 					<fieldset class="panelform">
-						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'); ?></legend>
+						<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_ARTICLE_LABEL'); ?></legend>
 						<div class="well well-small">
 							<ul class="adminformlist unstyled">
 								<?php
@@ -144,10 +148,10 @@ $options = array(
 						</div>
 					</fieldset>
 					<?php
-						echo JHtml::_('tabs.panel', JText::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'), 'panel5');
+						echo HtmlHelper::_('tabs.panel', Text::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'), 'panel5');
 					?>
 					<fieldset class="panelform">
-						<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'); ?></legend>
+						<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_FOOTER_LABEL'); ?></legend>
 						<div class="well well-small">
 							<ul class="adminformlist unstyled">
 								<?php
@@ -170,15 +174,15 @@ $options = array(
 								$i = 1;
 
 								echo '  <li><div class="clr clearfix"></div>';
-								echo JHtml::_('tabs.start', 'buttons', array('startOffset' => 0));
+								echo HtmlHelper::_('tabs.start', 'buttons', array('startOffset' => 0));
 
 								while ($i <= 5) :
 									$fieldSets = $this->form->getFieldsets('button' . $i);
 									foreach ($fieldSets as $name => $fieldSet) :
-										echo JHtml::_('tabs.panel', JText::_($fieldSet->label) . ' ' . $i, 'bpanel' . $i);
+										echo HtmlHelper::_('tabs.panel', Text::_($fieldSet->label) . ' ' . $i, 'bpanel' . $i);
 										?>
 											<fieldset class="panelform">
-												<legend><?php echo $this->escape(JText::_($fieldSet->label)) . ' ' . $i; ?></legend>
+												<legend><?php echo $this->escape(Text::_($fieldSet->label)) . ' ' . $i; ?></legend>
 												<div class="well well-small">
 													<ul class="adminformlist unstyled">
 													<?php
@@ -203,22 +207,22 @@ $options = array(
 
 									$i++;
 								endwhile;
-								echo JHtml::_('tabs.end');
+								echo HtmlHelper::_('tabs.end');
 								echo '  </li>';
 								?>
 							</ul>
 						</div>
 					</fieldset>
 					<?php
-						echo JHtml::_('tabs.end');
+						echo HtmlHelper::_('tabs.end');
 					?>
 					<div class="clr clearfix"></div>
-					<div class="well-note well-small"><?php echo JText::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>
+					<div class="well-note well-small"><?php echo Text::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>
 				</div>
 				<div id="email_preview" class="fltlft span7">
 					<p>
 						<button class="btn btn-large btn-block btn-primary"
-								type="submit"><?php echo JText::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;
+								type="submit"><?php echo Text::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;
 					</p>
 					<iframe id="myIframe" name="myIframeHtml"
 							src="index.php?option=com_bwpostman&amp;view=template&amp;layout=template_preview&amp;format=raw&amp;id=<?php echo $this->item->id; ?>"
@@ -237,17 +241,17 @@ $options = array(
 		<?php echo $this->form->getInput('checked_out'); ?>
 		<?php echo $this->form->getInput('archive_flag'); ?>
 		<?php echo $this->form->getInput('archive_time'); ?>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HtmlHelper::_('form.token'); ?>
 
-		<input type="hidden" id="cancelText" value="<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>" />
-		<input type="hidden" id="titleErrorText" value="<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>" />
-		<input type="hidden" id="descriptionErrorText" value="<?php echo JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>" />
+		<input type="hidden" id="cancelText" value="<?php echo Text::_('COM_BWPOSTMAN_TPL_CONFIRM_CANCEL', true); ?>" />
+		<input type="hidden" id="titleErrorText" value="<?php echo Text::_('COM_BWPOSTMAN_TPL_ERROR_TITLE', true); ?>" />
+		<input type="hidden" id="descriptionErrorText" value="<?php echo Text::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>" />
 
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 	</form>
 </div>
 
 <?php
-JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_checkValues.js');
-JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_text_buttonClick.js');
-JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_base.js');
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_checkValues.js');
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_text_buttonClick.js');
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_base.js');

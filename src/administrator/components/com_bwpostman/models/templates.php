@@ -379,7 +379,7 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @return 	void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -916,7 +916,7 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @return  string  The file name
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.1.0
 	 */
@@ -950,7 +950,7 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @return  string
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since	2.1.0
 	 */
@@ -1031,8 +1031,8 @@ class BwPostmanModelTemplates extends JModelList
 				}
 				catch (RuntimeException $e)
 				{
-					$errormsg = Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-					$this->errRedirect($errormsg);
+					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					$this->errRedirect($e->getMessage());
 				}
 
 				// Load values
@@ -1118,7 +1118,7 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @return  string
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since	2.1.0
 	 */
@@ -1227,7 +1227,7 @@ class BwPostmanModelTemplates extends JModelList
 	 * @param string    $errormsg
 	 * @param string    $type
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since	2.1.0
 	 */

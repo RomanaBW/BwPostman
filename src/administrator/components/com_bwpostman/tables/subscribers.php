@@ -27,10 +27,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Registry\Registry as JRegistry;
-
-// Require component admin helper class
-//require_once (JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+use Joomla\Database\DatabaseDriver;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Mail\MailHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
+use Joomla\Filter\InputFilter;
 
 // needed for plugin support!!!!
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
@@ -234,7 +239,7 @@ class BwPostmanTableSubscribers extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -311,16 +316,16 @@ class BwPostmanTableSubscribers extends JTable
 	/**
 	 * Method to get the parent asset id for the record
 	 *
-	 * @param   JTable   $table  A JTable object (optional) for the asset parent
+	 * @param   Table   $table  A Table object (optional) for the asset parent
 	 * @param   integer  $id     The id (optional) of the content.
 	 *
 	 * @return  integer
 	 *
 	 * @since   11.1
 	 */
-	protected function _getAssetParentId(JTable $table = null, $id = null)
+	protected function _getAssetParentId(Table $table = null, $id = null)
 	{
-		$asset = JTable::getInstance('Asset');
+		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_bwpostman.subscriber');
 		return $asset->id;
 	}
@@ -360,7 +365,7 @@ class BwPostmanTableSubscribers extends JTable
 		}
 		else
 		{
-			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+			throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
 		// Cast properties
@@ -385,8 +390,8 @@ class BwPostmanTableSubscribers extends JTable
 		//Initialize
 		jimport('joomla.mail.helper');
 
-		$params	= JComponentHelper::getParams('com_bwpostman');
-		$app	= JFactory::getApplication();
+		$params	= ComponentHelper::getParams('com_bwpostman');
+		$app	= Factory::getApplication();
 		$import	= $app->getUserState('com_bwpostman.subscriber.import', false);
 		$xtest	= $app->getUserState('com_bwpostman.subscriber.new_test', $this->status);
 		$data	= $app->getUserState('com_bwpostman.subscriber.register.data', array());
@@ -396,14 +401,14 @@ class BwPostmanTableSubscribers extends JTable
 			// if data from module, we need module params
 			// we can't use JoomlaModuleHelper, because module isn't shown on frontend
 			$params = BwPostmanSubscriberHelper::getModParams($data['mod_id']);
-			$module_params  = new JRegistry($params->params);
+			$module_params  = new Registry($params->params);
 			if ($module_params->get('com_params') == 0)
 			{
 				$params = $module_params;
 			}
 		}
 
-		$session	= JFactory::getSession();
+		$session	= Factory::getSession();
 		$err		= $session->get('session_error');
 		$fault		= false;
 
@@ -424,7 +429,7 @@ class BwPostmanTableSubscribers extends JTable
 		}
 
 		// Remove all HTML tags from the name, firstname, email and special
-		$filter				= new JFilterInput(array(), array(), 0, 0);
+		$filter				= new InputFilter(array(), array(), 0, 0);
 		$this->name 		= $filter->clean($this->name);
 		$this->firstname	= $filter->clean($this->firstname);
 		$this->email		= $filter->clean($this->email);
@@ -437,7 +442,7 @@ class BwPostmanTableSubscribers extends JTable
 			{
 				if (trim($this->firstname) == '')
 				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_FIRSTNAME'), 'error');
+					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_ERROR_FIRSTNAME'), 'error');
 					$fault	= true;
 				}
 			}
@@ -447,7 +452,7 @@ class BwPostmanTableSubscribers extends JTable
 			{
 				if (trim($this->name) == '')
 				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_NAME'), 'error');
+					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_ERROR_NAME'), 'error');
 					$fault	= true;
 				}
 			}
@@ -457,7 +462,7 @@ class BwPostmanTableSubscribers extends JTable
 			{
 				if (trim($this->special) == '')
 				{
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', $params->get('special_label') != '' ? JText::_($params->get('special_label')) : JText::_('COM_BWPOSTMAN_SPECIAL')), 'error');
+					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', $params->get('special_label') != '' ? Text::_($params->get('special_label')) : Text::_('COM_BWPOSTMAN_SPECIAL')), 'error');
 					$fault	= true;
 				}
 			}
@@ -466,13 +471,13 @@ class BwPostmanTableSubscribers extends JTable
 		// Check for valid email address
 		if (trim($this->email) == '')
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_SUB_ERROR_EMAIL'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_ERROR_EMAIL'), 'error');
 			$fault	= true;
 		}
 		// If there is a email address check if the address is valid
-		elseif (!JMailHelper::isEmailAddress(trim($this->email)))
+		elseif (!MailHelper::isEmailAddress(trim($this->email)))
 		{
-			$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_EMAIL_INVALID', $this->email), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_EMAIL_INVALID', $this->email), 'error');
 			$fault	= true;
 		}
 
@@ -481,7 +486,7 @@ class BwPostmanTableSubscribers extends JTable
 			// Check if any mailinglist is checked
 			if(!$data['mailinglists'])
 			{
-				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_LISTCHECK'), 'error');
+				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_LISTCHECK'), 'error');
 				$fault	= true;
 			}
 
@@ -490,7 +495,7 @@ class BwPostmanTableSubscribers extends JTable
 			{
 				if(!isset($data['agreecheck']) || (isset($data['mod_id']) && $fault))
 				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_AGREECHECK'), 'error');
+					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_AGREECHECK'), 'error');
 					$fault	= true;
 				}
 			}
@@ -500,7 +505,7 @@ class BwPostmanTableSubscribers extends JTable
 			if($data['falle'] != '')
 			{
 				// input wrong - set error
-				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_SPAMCHECK'), 'error');
+				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_SPAMCHECK'), 'error');
 				$fault	= true;
 			}
 
@@ -509,7 +514,7 @@ class BwPostmanTableSubscribers extends JTable
 			if(!isset($data['bwp-' . BwPostmanHelper::getCaptcha(1)]) && !isset($data['bwp-' . BwPostmanHelper::getCaptcha(2)]))
 			{
 				// input wrong - set error
-				$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_SPAMCHECK2'), 'error');
+				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_SPAMCHECK2'), 'error');
 				$fault	= true;
 			}
 
@@ -521,7 +526,7 @@ class BwPostmanTableSubscribers extends JTable
 				if(trim($data['stringQuestion']) != trim($params->get('security_answer')) || (isset($data['mod_id']) && $fault))
 				{
 					// input wrong - set error
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');
+					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');
 					$fault	= true;
 				}
 			}
@@ -538,7 +543,7 @@ class BwPostmanTableSubscribers extends JTable
 				if(!$resultCaptcha || (isset($data['mod_id']) && $fault))
 				{
 					// input wrong - set error
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');
+					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');
 					$fault	= true;
 				}
 			}
@@ -612,7 +617,7 @@ class BwPostmanTableSubscribers extends JTable
 					if (($testrecipient->archive_flag == 0) && ($testrecipient->emailformat == $this->emailformat))
 					{
 						$app->enqueueMessage(
-							JText::sprintf(
+							Text::sprintf(
 								'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTEXISTS',
 								$this->email,
 								$format_txt[$this->emailformat],
@@ -621,7 +626,7 @@ class BwPostmanTableSubscribers extends JTable
 							'error'
 						);
 						$err['err_code'] = 409;
-						$err['err_msg'] = JText::sprintf(
+						$err['err_msg'] = Text::sprintf(
 							'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTEXISTS',
 							$this->email,
 							$format_txt[$this->emailformat],
@@ -630,7 +635,7 @@ class BwPostmanTableSubscribers extends JTable
 						$err['err_id'] = $xid;
 						$app->setUserState('com_bwpostman.subscriber.register.error', $err);
 						$app->enqueueMessage(
-							JText::sprintf(
+							Text::sprintf(
 								'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTEXISTS',
 								$this->email,
 								$format_txt[$this->emailformat],
@@ -646,7 +651,7 @@ class BwPostmanTableSubscribers extends JTable
 					if (($testrecipient->archive_flag == 1) && ($testrecipient->emailformat == $this->emailformat))
 					{
 						$app->enqueueMessage(
-							JText::sprintf(
+							Text::sprintf(
 								'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTARCHIVED',
 								$this->email,
 								$format_txt[$this->emailformat],
@@ -655,7 +660,7 @@ class BwPostmanTableSubscribers extends JTable
 							'error'
 						);
 						$err['err_code'] = 410;
-						$err['err_msg'] = JText::sprintf(
+						$err['err_msg'] = Text::sprintf(
 							'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTARCHIVED',
 							$this->email,
 							$format_txt[$this->emailformat],
@@ -664,7 +669,7 @@ class BwPostmanTableSubscribers extends JTable
 						$err['err_id'] = $xid;
 						$app->setUserState('com_bwpostman.subscriber.register.error', $err);
 						$app->enqueueMessage(
-							JText::sprintf(
+							Text::sprintf(
 								'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTARCHIVED',
 								$this->email,
 								$format_txt[$this->emailformat],
@@ -707,11 +712,11 @@ class BwPostmanTableSubscribers extends JTable
 				if (($subscriber->archive_flag == 1) && ($subscriber->archived_by > 0))
 				{
 					$err['err_code']	= 405;
-					$err['err_msg']		= JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xid);
+					$err['err_msg']		= Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xid);
 					$err['err_id']		= $xid;
 					$err['err_email']	= $this->email;
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-//					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xid), 'error');
+//					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xid), 'error');
 					$session->set('session_error', $err);
 					return false;
 				}
@@ -720,12 +725,12 @@ class BwPostmanTableSubscribers extends JTable
 				if ($subscriber->status == 0)
 				{
 					$err['err_code'] = 406;
-					$err['err_msg']	= JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xid);
+					$err['err_msg']	= Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xid);
 					$err['err_id'] = $xid;
 					$err['err_email']	= $this->email;
 
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-//					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xid), 'error');
+//					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xid), 'error');
 					$session->set('session_error', $err);
 
 					return false;
@@ -734,11 +739,10 @@ class BwPostmanTableSubscribers extends JTable
 				// Account already exists
 				if (($subscriber->status == 1) && ($subscriber->archive_flag != 1))
 				{
-					$link = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=edit';
+					$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
 					//@ToDo: With the following routing with SEO activated don't work
-//					$link = JRoute::_('index.php?option=com_bwpostman&view=edit');
 					$err['err_code'] = 407;
-					$err['err_msg'] = JText::sprintf(
+					$err['err_msg'] = Text::sprintf(
 						'COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS',
 						$this->email,
 						$link
@@ -746,7 +750,6 @@ class BwPostmanTableSubscribers extends JTable
 					$err['err_id'] = $xid;
 					$err['err_email']	= $this->email;
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-//					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $this->email, $link), 'error');
 					$session->set('session_error', $err);
 					return false;
 				}
@@ -787,14 +790,14 @@ class BwPostmanTableSubscribers extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $result;
 	}
 
 	/**
-	 * Overridden JTable::store to set created/modified and user id.
+	 * Overridden Table::store to set created/modified and user id.
 	 *
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
@@ -806,9 +809,9 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$app	= JFactory::getApplication();
-		$date	= JFactory::getDate();
-		$user	= JFactory::getUser();
+		$app	= Factory::getApplication();
+		$date	= Factory::getDate();
+		$user	= Factory::getUser();
 
 		if ($this->gender == '')
 		{
@@ -840,7 +843,7 @@ class BwPostmanTableSubscribers extends JTable
 	}
 
 	/**
-	 * Overridden JTable::delete
+	 * Overridden Table::delete
 	 *
 	 * @param	mixed	$pk     An optional primary key value to delete.  If not set the
 	 *				        	instance property value is used.
@@ -852,5 +855,35 @@ class BwPostmanTableSubscribers extends JTable
 	public function delete($pk = null)
 	{
 		return parent::delete($pk);
+	}
+
+	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 *
+	 * @since  2.4.0
+	 */
+	public function getId()
+	{
+		$key = $this->getKeyName();
+
+		return $this->$key;
+	}
+
+	/**
+	 * Check if the record has a property (applying a column alias if it exists)
+	 *
+	 * @param string $key key to be checked
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.4.0
+	 */
+	public function hasField($key)
+	{
+		$key = $this->getColumnAlias($key);
+
+		return property_exists($this, $key);
 	}
 }

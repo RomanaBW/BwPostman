@@ -26,6 +26,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Access\Access;
+use Joomla\Registry\Registry;
+use Joomla\CMS\HTML\HTMLHelper;
+
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 
 /**
@@ -38,7 +44,7 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Retrieve list of newsletters
 	 *
-	 * @param   \Joomla\Registry\Registry  &$params  module parameters
+	 * @param   Registry  &$params  module parameters
 	 * @param   int     $module_id      id of this module
 	 *
 	 * @return  array   $lists      array of newsletter objects
@@ -58,19 +64,19 @@ class ModBwPostmanOverviewHelper
 
 		foreach ($rows as $row)
 		{
-			$date = JFactory::getDate($row->mailing_date);
+			$date = Factory::getDate($row->mailing_date);
 
 			$sent_month	= $date->format('m');
 			$sent_year	= $date->format('Y');
 
-			$sent_year_cal	= JHtml::_('date', $row->mailing_date, 'Y');
-			$month_name_cal	= JHtml::_('date', $row->mailing_date, 'F');
+			$sent_year_cal	= HtmlHelper::_('date', $row->mailing_date, 'Y');
+			$month_name_cal	= HtmlHelper::_('date', $row->mailing_date, 'F');
 
 			$lists[$i]		= new stdClass;
 
 			$lists[$i]->link	= 'index.php?option=com_bwpostman&view=newsletters&mid=' . $module_id . '&year=' . $sent_year
 				. '&month=' . $sent_month . $itemid;
-			$lists[$i]->text	= JText::sprintf('MOD_BWPOSTMAN_OVERVIEW_DATE', $month_name_cal, $sent_year_cal) . ' (' . $row->count_month . ')';
+			$lists[$i]->text	= Text::sprintf('MOD_BWPOSTMAN_OVERVIEW_DATE', $month_name_cal, $sent_year_cal) . ' (' . $row->count_month . ')';
 
 			$i++;
 		}
@@ -81,7 +87,7 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Gets the items depending on Module or Menuitem params
 	 *
-	 * @param   \Joomla\Registry\Registry  &$params  module parameters
+	 * @param   Registry  &$params  module parameters
 	 *
 	 * @return  array   $rows       array of newsletter objects
 	 *
@@ -108,12 +114,12 @@ class ModBwPostmanOverviewHelper
 		}
 
 		// Get database
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		// Define null and now dates
 		$nullDate	= $_db->quote($_db->getNullDate());
-		$nowDate	= $_db->quote(JFactory::getDate()->toSql());
+		$nowDate	= $_db->quote(Factory::getDate()->toSql());
 
 		// get accessible mailing lists
 		$mls	= self::getAccessibleMailinglists($params);
@@ -235,7 +241,7 @@ class ModBwPostmanOverviewHelper
 	 *
 	 * @param   int     $id     id of menu item
 	 *
-	 * @return  Joomla\Registry\Registry  The field option objects.
+	 * @return  Registry  The field option objects.
 	 *
 	 * @throws Exception
 	 *
@@ -243,7 +249,7 @@ class ModBwPostmanOverviewHelper
 	 */
 	protected static function getMenuItemParams($id = 0)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$menu	= $app->getMenu();
 		$params	= $menu->getParams($id);
 
@@ -255,7 +261,7 @@ class ModBwPostmanOverviewHelper
 	 *
 	 * @access 	public
 	 *
-	 * @param   \Joomla\Registry\Registry  &$params  module parameters
+	 * @param   Registry  &$params  module parameters
 	 *
 	 * @return 	array	$mailinglists       ID and title of allowed mailinglists
 	 *
@@ -263,7 +269,7 @@ class ModBwPostmanOverviewHelper
 	 */
 	private static function getAccessibleMailinglists(&$params)
 	{
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
 		$check		= $params->get('access-check', 1);
 
@@ -302,7 +308,7 @@ class ModBwPostmanOverviewHelper
 		if ($all_mls || $check != 'no')
 		{
 			// get authorized viewlevels
-			$accesslevels	= JAccess::getAuthorisedViewLevels(JFactory::getUser()->id);
+			$accesslevels	= Access::getAuthorisedViewLevels(Factory::getUser()->id);
 			$acc_levels     = array();
 			if (count($accesslevels) > 0)
 			{
@@ -349,7 +355,7 @@ class ModBwPostmanOverviewHelper
 	 *
 	 * @access 	public
 	 *
-	 * @param   \Joomla\Registry\Registry  &$params  module parameters
+	 * @param   Registry  &$params  module parameters
 	 *
 	 * @return 	array	$campaigns          array of ids of allowed campaigns
 	 *
@@ -357,7 +363,7 @@ class ModBwPostmanOverviewHelper
 	 */
 	private static function getAccessibleCampaigns(&$params)
 	{
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
 		$check		= $params->get('access-check');
 
@@ -396,7 +402,7 @@ class ModBwPostmanOverviewHelper
 		if ($all_cams != 'no' || $check != 'no')
 		{
 			// get authorized viewlevels
-			$accesslevels	= JAccess::getAuthorisedViewLevels(JFactory::getUser()->id);
+			$accesslevels	= Access::getAuthorisedViewLevels(Factory::getUser()->id);
 			$acc_levels     = array();
 			if (count($accesslevels) > 0)
 			{
@@ -460,7 +466,7 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Method to get all user groups which the user is authorized to see
 	 *
-	 * @param   \Joomla\Registry\Registry  &$params  module parameters
+	 * @param   Registry  &$params  module parameters
 	 *
 	 * @return 	array	$groups             array of ids of user groups
 	 *
@@ -468,7 +474,7 @@ class ModBwPostmanOverviewHelper
 	 */
 	private static function getAccessibleUsergroups(&$params)
 	{
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
 		$check		= $params->get('access-check', 1);
 
@@ -523,7 +529,7 @@ class ModBwPostmanOverviewHelper
 		// Check permission, if desired
 		if ($all_groups || $check != 'no')
 		{
-			$user		= JFactory::getUser();
+			$user		= Factory::getUser();
 			$acc_groups	= $user->getAuthorisedGroups();
 
 			//convert usergroups to match bwPostman's needs

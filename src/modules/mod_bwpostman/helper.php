@@ -27,6 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 /**
  * Class modBwPostmanHelper
  *
@@ -45,11 +46,11 @@ class ModBwPostmanHelper
 	 */
 	public static function getSubscriberID()
 	{
-		$user 	= JFactory::getUser();
+		$user 	= Factory::getUser();
 
 		if ($user->get('guest'))
 		{ // User is guest
-			$session = JFactory::getSession();
+			$session = Factory::getSession();
 			$session_subscriberid = $session->get('session_subscriberid');
 
 			if(isset($session_subscriberid) && is_array($session_subscriberid))
@@ -80,7 +81,7 @@ class ModBwPostmanHelper
 	 */
 	public static function getItemid()
 	{
-		$_db = JFactory::getDbo();
+		$_db = Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
@@ -120,7 +121,7 @@ class ModBwPostmanHelper
 	 */
 	public static function getMailinglists($usertype, $mod_mls)
 	{
-		$_db = JFactory::getDbo();
+		$_db = Factory::getDbo();
 
 		// if mailinglists are checked in the module parameters
 		if (isset($mod_mls) && count($mod_mls) && $mod_mls[0] !== "")
@@ -192,7 +193,7 @@ class ModBwPostmanHelper
 	 */
 	public static function getSubscriberIdFromUserID($userid)
 	{
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
@@ -219,7 +220,7 @@ class ModBwPostmanHelper
 	 */
 	public static function getUserData($userid)
 	{
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$id		= 0;
 		$query	= $_db->getQuery(true);
 
@@ -249,7 +250,7 @@ class ModBwPostmanHelper
 	 */
 	public static function getUsertype($userid)
 	{
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 		$usertype	= '';
 
 		if ($userid)

@@ -27,11 +27,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 if(version_compare(JVERSION, '3.999.999', 'le'))
 {
-	JHtml::_('jquery.ui', array('searchtools'));
+	HtmlHelper::_('jquery.ui', array('searchtools'));
 }
-JHtml::_('formbehavior.chosen', 'select');
+HtmlHelper::_('formbehavior.chosen', 'select');
 
 /**
  * BwPostman Newsletter Overview Layout
@@ -62,26 +67,26 @@ if ($moduleId !== null && $moduleId !== '')
 			</h1>
 		<?php endif; ?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters&' . $actionSuffix); ?>" method="post"
+		<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&' . $actionSuffix); ?>" method="post"
 				name="adminForm" id="adminForm" class="form-inline form-horizontal">
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="js-tools clearfix">
 				<div class="clearfix">
 					<div class="search_left">
 						<?php if ($this->params->get('filter_field') != "hide") : ?>
 							<label for="filter_search" class="element-invisible">
-								<?php echo JText::_('JSEARCH_FILTER'); ?>
+								<?php echo Text::_('JSEARCH_FILTER'); ?>
 							</label>
 							<div class="btn-wrapper input-append">
 								<input type="text" name="filter_search" id="filter_search" class="inputbox go"
 										value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
-										title="<?php echo JText::_('COM_BWPOSTMAN_FILTER_SEARCH_DESC'); ?>"
-										placeholder="<?php echo JText::_('COM_BWPOSTMAN_SEARCH'); ?> " />
+										title="<?php echo Text::_('COM_BWPOSTMAN_FILTER_SEARCH_DESC'); ?>"
+										placeholder="<?php echo Text::_('COM_BWPOSTMAN_SEARCH'); ?> " />
 								<button type="submit" class="append-area hasTooltip"
-										title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>">
+										title="<?php echo HtmlHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>">
 									<i class="icon-search"></i>
 								</button>
 								<button type="button" class="append-area hasTooltip js-stools-btn-clear reset"
-										title="<?php echo JHtml::tooltipText('COM_BWPOSTMAN_RESET'); ?>"
+										title="<?php echo HtmlHelper::tooltipText('COM_BWPOSTMAN_RESET'); ?>"
 										onclick="document.getElementById('filter_search').setAttribute('value','');this.form.submit();">
 									<i class="icon-remove"></i>
 								</button>
@@ -97,7 +102,7 @@ if ($moduleId !== null && $moduleId !== '')
 						<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
 						{ ?>
 							<div class="js-stools-field-filter filter_mls">
-								<?php echo JHtml::_(
+								<?php echo HtmlHelper::_(
 									'select.genericlist',
 									$this->mailinglists,
 									'filter.mailinglist',
@@ -116,7 +121,7 @@ if ($moduleId !== null && $moduleId !== '')
 						} ?>
 						<?php if ($this->params->get('groups_filter_enable') != 'hide' && is_array($this->usergroups) && count($this->usergroups) > 2) : ?>
 							<div class="js-stools-field-filter filter_groups">
-								<?php echo JHtml::_(
+								<?php echo HtmlHelper::_(
 									'select.genericlist',
 									$this->usergroups,
 									'filter.usergroup',
@@ -130,7 +135,7 @@ if ($moduleId !== null && $moduleId !== '')
 						<?php endif; ?>
 						<?php if ($this->params->get('cam_filter_enable') != 'hide' && is_array($this->campaigns) && count($this->campaigns) > 2) : ?>
 							<div class="js-stools-field-filter filter_cams">
-								<?php echo JHtml::_(
+								<?php echo HtmlHelper::_(
 									'select.genericlist',
 									$this->campaigns,
 									'filter.campaign',
@@ -150,13 +155,13 @@ if ($moduleId !== null && $moduleId !== '')
 				<thead>
 					<tr>
 						<th class="date_head">
-							<?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_DATE', 'a.mailing_date', $listDirn, $listOrder); ?>
+							<?php echo HtmlHelper::_('grid.sort',  'COM_BWPOSTMAN_DATE', 'a.mailing_date', $listDirn, $listOrder); ?>
 						</th>
 						<th class="subject_head">
-							<?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
+							<?php echo HtmlHelper::_('grid.sort',  'COM_BWPOSTMAN_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
 						</th>
 						<th class="clicks_head">
-							<?php echo JHtml::_('grid.sort',  'COM_BWPOSTMAN_HITS', 'a.hits', $listDirn, $listOrder); ?>
+							<?php echo HtmlHelper::_('grid.sort',  'COM_BWPOSTMAN_HITS', 'a.hits', $listDirn, $listOrder); ?>
 						</th>
 					</tr>
 				</thead>
@@ -171,11 +176,11 @@ if ($moduleId !== null && $moduleId !== '')
 						?>
 						<tr class="row<?php echo $i % 2; ?>">
 							<td class="date">
-								<?php $date = JHtml::date($item->mailing_date, JText::_('DATE_FORMAT_LC3'));
+								<?php $date = HtmlHelper::date($item->mailing_date, Text::_('DATE_FORMAT_LC3'));
 								echo $date; ?>
 							</td>
 							<td class="subject">
-								<a href="<?php echo JRoute::_("index.php?option=com_bwpostman&amp;view=newsletter&amp;id={$item->id}");
+								<a href="<?php echo Route::_("index.php?option=com_bwpostman&amp;view=newsletter&amp;id={$item->id}");
 								?>">
 									<?php echo $item->subject; ?>
 								</a>
@@ -184,8 +189,8 @@ if ($moduleId !== null && $moduleId !== '')
 								{
 									foreach ($attachments as $attachment)
 									{ ?>
-										<a class="link-attachment" href="<?php echo JUri::base() . '/' . $attachment; ?>" target="_blank">
-											<span class="icon_attachment" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
+										<a class="link-attachment" href="<?php echo Uri::base() . '/' . $attachment; ?>" target="_blank">
+											<span class="icon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
 										</a>
 									<?php
 									}
@@ -199,7 +204,7 @@ if ($moduleId !== null && $moduleId !== '')
 				else
 				{ ?>
 					<tr class="row0">
-						<td colspan="3"><?php echo JText::_('COM_BWPOSTMAN_NO_NEWSLETTERS_FOUND'); ?></td> <?php
+						<td colspan="3"><?php echo Text::_('COM_BWPOSTMAN_NO_NEWSLETTERS_FOUND'); ?></td> <?php
 				} ?>
 				</tbody>
 			</table>
@@ -220,7 +225,7 @@ if ($moduleId !== null && $moduleId !== '')
 			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 			<input type="hidden" name="limitstart" value="<?php echo $limitstart; ?>" />
 			<input type="hidden" name="id" value="<?php //echo $this->items->id; ?>" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo HtmlHelper::_('form.token'); ?>
 		</form>
 
 		<?php
@@ -264,9 +269,9 @@ $j(".filter-campaign").on("change", function()
 <noscript>
 	<div id="system-message">
 		<div class="alert alert-warning">
-			<h4 class="alert-heading"><?php echo JText::_('WARNING'); ?></h4>
+			<h4 class="alert-heading"><?php echo Text::_('WARNING'); ?></h4>
 			<div>
-				<p><?php echo JText::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
+				<p><?php echo Text::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
 			</div>
 		</div>
 	</div>

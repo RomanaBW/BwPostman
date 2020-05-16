@@ -26,6 +26,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
+
 /**
  * Class BwPostmanHelperQuery
  *
@@ -106,10 +110,6 @@ class BwPostmanHelperQuery
 				$orderby = 'a.hits';
 				break;
 
-			case 'order':
-				$orderby = 'a.ordering';
-				break;
-
 			case 'author':
 				$orderby = 'author';
 				break;
@@ -122,6 +122,7 @@ class BwPostmanHelperQuery
 				$orderby = 'a.featured DESC, fp.ordering, ' . $queryDate . ' DESC ';
 				break;
 
+			case 'order':
 			default:
 				$orderby = 'a.ordering';
 				break;
@@ -141,7 +142,7 @@ class BwPostmanHelperQuery
 	 */
 	public static function getQueryDate($orderDate)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		switch ($orderDate)
 		{
@@ -169,7 +170,7 @@ class BwPostmanHelperQuery
 	/**
 	 * Get join information for the voting query.
 	 *
-	 * @param	\Joomla\Registry\Registry	$params		An options object for the newsletter.
+	 * @param	Registry	$params		An options object for the newsletter.
 	 *
 	 * @return	array  A named array with "select" and "join" keys.
 	 *
@@ -179,7 +180,7 @@ class BwPostmanHelperQuery
 	{
 		if (!$params)
 		{
-			$params = JComponentHelper::getParams('com_content');
+			$params = ComponentHelper::getParams('com_content');
 		}
 
 		$voting = $params->get('show_vote');

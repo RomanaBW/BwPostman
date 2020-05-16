@@ -209,7 +209,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_TPLS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_templates.js');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_templates.js');
 
 		$options['name'] = 'back';
 		$options['url'] = 'index.php?option=com_bwpostman&view=templates';
@@ -347,7 +347,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_TPLS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_templates.js');
+		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_templates.js');
 
 		switch ($layout)
 		{

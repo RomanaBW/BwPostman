@@ -27,6 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 
@@ -94,7 +98,7 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$jinput	= $app->input;
 
 		// Adjust the context to support modal layouts.
@@ -131,11 +135,13 @@ class BwPostmanModelSubscribers extends JModelList
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param	string		$id	A prefix for the store id.
+	 * @param string $id A prefix for the store id.
 	 *
-	 * @return	string		A store id.
+	 * @return    string        A store id.
 	 *
-	 * @since	1.0.1
+	 * @throws Exception
+	 *
+	 * @since    1.0.1
 	 */
 	protected function getStoreId($id = '')
 	{
@@ -144,7 +150,7 @@ class BwPostmanModelSubscribers extends JModelList
 		$id	.= ':' . $this->getState('filter.search_filter');
 		$id	.= ':' . $this->getState('filter.emailformat');
 		$id	.= ':' . $this->getState('filter.mailinglist');
-		$id	.= ':' . JFactory::getApplication()->getUserState('com_bwpostman.subscribers.tab', 'confirmed');
+		$id	.= ':' . Factory::getApplication()->getUserState('com_bwpostman.subscribers.tab', 'confirmed');
 
 		return parent::getStoreId($id);
 	}
@@ -282,7 +288,7 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	private function getFilterByAccessLevelFilter()
 	{
-		if (JFactory::getApplication()->isClient('site'))
+		if (Factory::getApplication()->isClient('site'))
 		{
 			$access = $this->getState('filter.access');
 			if ($access)
@@ -305,9 +311,9 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	private function getFilterByViewLevel()
 	{
-		if (JFactory::getApplication()->isClient('site'))
+		if (Factory::getApplication()->isClient('site'))
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 
 			if (!$user->authorise('core.admin'))
 			{
@@ -353,11 +359,11 @@ class BwPostmanModelSubscribers extends JModelList
 	private function getFilterBySubscriberState()
 	{
 		//Get the tab in which we are for correct query
-		$tab	= JFactory::getApplication()->input->get('tab', '');
+		$tab	= Factory::getApplication()->input->get('tab', '');
 
 		if ($tab === '')
 		{
-			$tab = JFactory::getApplication()->getUserState('com_bwpostman.subscribers.layout', 'confirmed');
+			$tab = Factory::getApplication()->getUserState('com_bwpostman.subscribers.layout', 'confirmed');
 		}
 
 		switch ($tab)
@@ -508,11 +514,11 @@ class BwPostmanModelSubscribers extends JModelList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$mailinglists 	= array ();
-		$mailinglists[]	= JHtml::_('select.option',  '', '- ' . JText::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') . ' -');
+		$mailinglists[]	= HtmlHelper::_('select.option',  '', '- ' . Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') . ' -');
 		$mailinglists 	= array_merge($mailinglists, $result);
 
 		return $mailinglists;

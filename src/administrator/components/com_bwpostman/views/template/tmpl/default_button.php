@@ -27,18 +27,21 @@
 // No direct access.
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 $i = 1;
 
 echo '  <li><div class="clr clearfix"></div>';
-echo JHtml::_('tabs.start', 'buttons', array('startOffset' => 0));
+echo HtmlHelper::_('tabs.start', 'buttons', array('startOffset' => 0));
 
 while ($i <= 5) :
 	$fieldSets = $this->form->getFieldsets('button' . $i);
 	foreach ($fieldSets as $name => $fieldSet) :
-		echo JHtml::_('tabs.panel', JText::_($fieldSet->label) . ' ' . $i, 'bpanel' . $i);
+		echo HtmlHelper::_('tabs.panel', Text::_($fieldSet->label) . ' ' . $i, 'bpanel' . $i);
 		?>
 		<fieldset class="panelform">
-			<legend><?php echo $this->escape(JText::_($fieldSet->label)) . ' ' . $i; ?></legend>
+			<legend><?php echo $this->escape(Text::_($fieldSet->label)) . ' ' . $i; ?></legend>
 			<div class="well well-small">
 				<ul class="adminformlist unstyled">
 					<?php foreach ($this->form->getFieldset($name) as $field) : ?>
@@ -54,5 +57,5 @@ while ($i <= 5) :
 	$i++;
 endwhile;
 
-echo JHtml::_('tabs.end');
+echo HtmlHelper::_('tabs.end');
 echo '  </li>';

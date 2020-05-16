@@ -27,17 +27,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // Load the tooltip behavior for the notes
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+HtmlHelper::_('behavior.tooltip');
+HtmlHelper::_('behavior.keepalive');
+HtmlHelper::_('formbehavior.chosen', 'select');
 
 //Load tabs behavior for the Tabs
 //jimport('joomla.html.html.tabs');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/bwtabs.php');
 
 // Load the modal behavior for the newsletter preview
-JHtml::_('behavior.modal', 'a.popup');
+HtmlHelper::_('behavior.modal', 'a.popup');
 
 $tab_options = array(
 	'onActive' => 'function(title, description){
@@ -65,38 +70,38 @@ $tab_options = array(
 	<?php
 	if ($this->queueEntries)
 	{
-		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm">
 		<?php
 		echo JHtmlBwTabs::start('bwp-cam-nl-pane', $tab_options);
 
 			// Start Tab basic
-		$title = JText::_('COM_BWPOSTMAN_NEW_CAM');
+		$title = Text::_('COM_BWPOSTMAN_NEW_CAM');
 
 		if ($this->item->id)
 		{
-			$title = JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id);
+			$title = Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id);
 		}
 
 		echo JHtmlBwTabs::panel($title, 'basic', '');
 		echo $this->loadTemplate('basic');
 
 		// Start Tab assigned/unsent newsletters
-		$text	= JText::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
+		$text	= Text::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
 		echo JHtmlBwTabs::panel($text, 'unsent', '');
 		echo $this->loadTemplate('unsent');
 
 		// Start Tab sent newsletters
-		echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_NL_SENT'), 'sent', '');
+		echo JHtmlBwTabs::panel(Text::_('COM_BWPOSTMAN_NL_SENT'), 'sent', '');
 		echo $this->loadTemplate('sent');
 
 		// Start Tab permissions
 		if ($this->permissions['com']['admin'] || $this->permissions['admin']['campaign'])
 		{
-			echo JHtmlBwTabs::panel(JText::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'), 'rules', '');
+			echo JHtmlBwTabs::panel(Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'), 'rules', '');
 			echo $this->loadTemplate('rules');
 		}
 
@@ -110,10 +115,10 @@ $tab_options = array(
 		<?php echo $this->form->getInput('checked_out'); ?>
 		<?php echo $this->form->getInput('archive_flag'); ?>
 		<?php echo $this->form->getInput('archive_time'); ?>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HtmlHelper::_('form.token'); ?>
 
-		<input type="hidden" id="alertTitle" value="<?php echo JText::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>" />
-		<input type="hidden" id="alertRecipients" value="<?php echo JText::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'); ?>" />
+		<input type="hidden" id="alertTitle" value="<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>" />
+		<input type="hidden" id="alertRecipients" value="<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'); ?>" />
 	</form>
 
 	<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

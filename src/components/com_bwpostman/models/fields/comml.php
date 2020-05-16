@@ -27,13 +27,14 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\FormHelper;
 
 HTMLHelper::_('jquery.framework');
 HTMLHelper::_('script', 'bw_postman/bwpm_menuhelper.js', array('version' => 'auto', 'relative' => true));
 
-JFormHelper::loadFieldClass('checkboxes');
+FormHelper::loadFieldClass('checkboxes');
 
 /**
  * Form Field class.
@@ -95,25 +96,25 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 		$html[] = '					<tr>';
 		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
-			$html[] = '						<th width="30" nowrap="nowrap">' . JText::_('JGRID_HEADING_ID') . '</th>';
+			$html[] = '						<th width="30" nowrap="nowrap">' . Text::_('JGRID_HEADING_ID') . '</th>';
 			$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="'
-				. JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
-			$html[] = '						<th width="70" nowrap="nowrap">' . JText::_('COM_BWPOSTMAN_ARCHIVED') . '</th>';
-			$html[] = '						<th width="200" nowrap="nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
-			$html[] = '						<th nowrap="nowrap">' . JText::_('JGLOBAL_DESCRIPTION') . '</th>';
-			$html[] = '						<th width="80" nowrap="nowrap">' . JText::_('COM_BWPOSTMAN_PUBLISHED') . '</th>';
-			$html[] = '						<th width="80" nowrap="nowrap">' . JText::_('JFIELD_ACCESS_LABEL') . '</th>';
+				. Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+			$html[] = '						<th width="70" nowrap="nowrap">' . Text::_('COM_BWPOSTMAN_ARCHIVED') . '</th>';
+			$html[] = '						<th width="200" nowrap="nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
+			$html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_DESCRIPTION') . '</th>';
+			$html[] = '						<th width="80" nowrap="nowrap">' . Text::_('COM_BWPOSTMAN_PUBLISHED') . '</th>';
+			$html[] = '						<th width="80" nowrap="nowrap">' . Text::_('JFIELD_ACCESS_LABEL') . '</th>';
 		}
 		else
 		{
-			$html[] = '						<th scope="col" style="width: 3%;">' . JText::_('JGRID_HEADING_ID') . '</th>';
+			$html[] = '						<th scope="col" style="width: 3%;">' . Text::_('JGRID_HEADING_ID') . '</th>';
 			$html[] = '						<th scope="col" style="width: 1%;" class="text-center"><input type="checkbox" name="checkall-toggle" value="" title="'
-				. JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
-			$html[] = '						<th style="width: 10%;" scope="col">' . JText::_('COM_BWPOSTMAN_ARCHIVED') . '</th>';
-			$html[] = '						<th style="min-width: 100px;" scope="col">' . JText::_('JGLOBAL_TITLE') . '</th>';
-			$html[] = '						<th class="d-none d-lg-table-cell" style="min-width: 250px;" scope="col">' . JText::_('JGLOBAL_DESCRIPTION') . '</th>';
-			$html[] = '						<th style="width: 10%;" scope="col">' . JText::_('COM_BWPOSTMAN_PUBLISHED') . '</th>';
-			$html[] = '						<th style="width: 10%;" scope="col">' . JText::_('JFIELD_ACCESS_LABEL') . '</th>';
+				. Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+			$html[] = '						<th style="width: 10%;" scope="col">' . Text::_('COM_BWPOSTMAN_ARCHIVED') . '</th>';
+			$html[] = '						<th style="min-width: 100px;" scope="col">' . Text::_('JGLOBAL_TITLE') . '</th>';
+			$html[] = '						<th class="d-none d-lg-table-cell" style="min-width: 250px;" scope="col">' . Text::_('JGLOBAL_DESCRIPTION') . '</th>';
+			$html[] = '						<th style="width: 10%;" scope="col">' . Text::_('COM_BWPOSTMAN_PUBLISHED') . '</th>';
+			$html[] = '						<th style="width: 10%;" scope="col">' . Text::_('JFIELD_ACCESS_LABEL') . '</th>';
 		}
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
@@ -136,25 +137,25 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 				$html[] = '							<tr class="row' . $i % 2 . '">';
 				if(version_compare(JVERSION, '3.999.999', 'le'))
 				{
-					$html[] = '								<td align="center">' . JText::_($option->value) . '</td>';
+					$html[] = '								<td align="center">' . Text::_($option->value) . '</td>';
 					$html[] = '								<td><input type="checkbox" id="mb' . $i . '" name="' . $this->name . '" value="'
 						. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
 					$html[] = '								<td style="text-align: center;">' . $archived . '</td>';
-					$html[] = '								<td>' . JText::_($option->text) . '</td>';
-					$html[] = '								<td>' . JText::_($option->description) . '</td>';
+					$html[] = '								<td>' . Text::_($option->text) . '</td>';
+					$html[] = '								<td>' . Text::_($option->description) . '</td>';
 					$html[] = '								<td style="text-align: center;">' . $published . '</td>';
-					$html[] = '								<td>' . JText::_($option->access_level) . '</td>';
+					$html[] = '								<td>' . Text::_($option->access_level) . '</td>';
 				}
 				else
 				{
-					$html[] = '								<td class="text-center">' . JText::_($option->value) . '</td>';
+					$html[] = '								<td class="text-center">' . Text::_($option->value) . '</td>';
 					$html[] = '								<td class="text-center"><input type="checkbox" id="mb' . $i . '" name="' . $this->name . '" value="'
 						. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
 					$html[] = '								<td class="text-center"><span class="tbody-icon ">' . $archived . '</span></td>';
-					$html[] = '								<td>' . JText::_($option->text) . '</td>';
-					$html[] = '								<td class="d-none d-lg-table-cell">' . JText::_($option->description) . '</td>';
+					$html[] = '								<td>' . Text::_($option->text) . '</td>';
+					$html[] = '								<td class="d-none d-lg-table-cell">' . Text::_($option->description) . '</td>';
 					$html[] = '								<td class="text-center"><span class="tbody-icon">' . $published . '</span></td>';
-					$html[] = '								<td>' . JText::_($option->access_level) . '</td>';
+					$html[] = '								<td>' . Text::_($option->access_level) . '</td>';
 				}
 				$html[] = '						  </tr>';
 			}
@@ -162,7 +163,7 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 		else
 		{
 			$html[] = '							<tr class="row1">';
-			$html[] = '								<td colspan="7"><strong>' . JText::_('COM_BWPOSTMAN_NO_ML') . '</strong></td>';
+			$html[] = '								<td colspan="7"><strong>' . Text::_('COM_BWPOSTMAN_NO_ML') . '</strong></td>';
 			$html[] = '							</tr>';
 		}
 
@@ -187,11 +188,11 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 	 */
 	protected function getOptions()
 	{
-		$app	    = JFactory::getApplication();
+		$app	    = Factory::getApplication();
 		$options    = null;
 
 		// prepare query
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
 
 		$query->select(

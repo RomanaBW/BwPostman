@@ -27,14 +27,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.tooltip');
 
 ?>
 
 <div id="bwp_mod_link_to_edit">
 	<p id="linktoeditform">
-		<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&amp;view=edit&amp;Itemid=' . $itemid); ?>">
-			<?php echo JText::_('MOD_BWPOSTMANLINK_TO_EDITLINKFORM'); ?>
+		<a href="<?php echo Route::_('index.php?option=com_bwpostman&amp;view=edit&amp;Itemid=' . $itemid); ?>">
+			<?php echo Text::_('MOD_BWPOSTMANLINK_TO_EDITLINKFORM'); ?>
 		</a>
 	</p>
 </div>

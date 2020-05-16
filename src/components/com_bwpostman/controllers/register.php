@@ -30,7 +30,12 @@ defined('_JEXEC') or die('Restricted access');
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controller');
 
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
 
 // Require component helper classes and exception class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
@@ -105,17 +110,17 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 */
 	public function save()
 	{
-		$jinput	= JFactory::getApplication()->input;
-		$app	= JFactory::getApplication();
+		$jinput	= Factory::getApplication()->input;
+		$app	= Factory::getApplication();
 
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		$model		= $this->getModel('register');
-		$session	= JFactory::getSession();
+		$session	= Factory::getSession();
 
 		// process input data, which will be stored in state
 		$post	= $jinput->getArray(
@@ -149,7 +154,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 
 		if (isset($post['a_firstname']))
 		{
-			if ($post['a_firstname'] == JText::_('COM_BWPOSTMAN_FIRSTNAME'))
+			if ($post['a_firstname'] == Text::_('COM_BWPOSTMAN_FIRSTNAME'))
 			{
 				$post['firstname']	= '';
 			}
@@ -163,7 +168,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 
 		if (isset($post['a_name']))
 		{
-			if ($post['a_name'] == JText::_('COM_BWPOSTMAN_NAME'))
+			if ($post['a_name'] == Text::_('COM_BWPOSTMAN_NAME'))
 			{
 				$post['name']	= '';
 			}
@@ -215,7 +220,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		}
 
 		// process input data, which will *not* be stored in state
-		$date = JFactory::getDate();
+		$date = Factory::getDate();
 		$time = $date->toSql();
 
 		$post['status'] 			= 0;
@@ -285,13 +290,13 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	public function activate()
 	{
 		// Initialize variables
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		// Do we have an activation string?
 		$activation		= $jinput->getAlnum('subscriber', '');
-		$activation		= JFactory::getDbo()->escape($activation);
-		$activation_ip	= JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
-		$params 		= JComponentHelper::getParams('com_bwpostman');
+		$activation		= Factory::getDbo()->escape($activation);
+		$activation_ip	= Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+		$params 		= ComponentHelper::getParams('com_bwpostman');
 		$send_mail		= $params->get('activation_to_webmaster');
 
 		// No activation string
@@ -342,13 +347,13 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	 */
 	public function sendActivation()
 	{
-		$jinput	    = JFactory::getApplication()->input;
+		$jinput	    = Factory::getApplication()->input;
 		$subs_id    = null;
 
 		// Check for request forgeries
-		if (!JSession::checkToken())
+		if (!Session::checkToken())
 		{
-			jexit(JText::_('JINVALID_TOKEN'));
+			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
 		// Get required system objects
@@ -382,10 +387,10 @@ class BwPostmanControllerRegister extends JControllerLegacy
 			$subs_id		= null;
 			$err->err_id    = null;
 			$err->err_code	= 408; // Email address does not exist
-			$err->err_msg	= JText::sprintf(
+			$err->err_msg	= Text::sprintf(
 				'COM_BWPOSTMAN_ERROR_EMAILDOESNTEXIST',
 				$post['email'],
-				JRoute::_('index.php?option=com_bwpostman&view=register')
+				Route::_('index.php?option=com_bwpostman&view=register')
 			);
 		}
 		elseif ($subscriberdata->archive_flag == 1)

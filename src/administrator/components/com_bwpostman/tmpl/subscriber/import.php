@@ -139,7 +139,7 @@ $option	= $jinput->getCmd('option');
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
 	<?php echo HTMLHelper::_('form.token'); ?>
 
-	<input type="hidden" id="importAlertFileFormat" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT', true); ?>" />
+	<input type="hidden" id="importAlertFileFormat" value="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT', true); ?>" />
 </form>
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>

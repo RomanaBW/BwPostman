@@ -27,10 +27,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text	= JText::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+$text	= Text::_('COM_BWPOSTMAN_CAM_UNSENT_NLS');
 if (property_exists($this->item, 'automailing_values')) {
 	if ($this->item->automailing_values !== null) {
-		$text	= JText::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL');
+		$text	= Text::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL');
 	}
 }
 
@@ -46,7 +49,7 @@ if (property_exists($this->item, 'automailing_values')) {
 			//Show no tabs if there is no newsletter assigned
 			if (empty($this->newsletters->unsent))
 			{
-				echo JText::_('COM_BWPOSTMAN_CAM_NO_ASSIGNED_NL');
+				echo Text::_('COM_BWPOSTMAN_CAM_NO_ASSIGNED_NL');
 				//Show tabs
 			}
 			else
@@ -54,10 +57,10 @@ if (property_exists($this->item, 'automailing_values')) {
 				<table class="adminlist" width="100%">
 					<thead>
 						<tr>
-							<th width="30"><?php echo JText::_('NUM'); ?></th>
-							<th align="left"><?php echo JText::_('SUBJECT'); ?></th>
-							<th width="150"><?php echo JText::_('COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE'); ?></th>
-							<th width="150"><?php echo JText::_('AUTHOR'); ?></th>
+							<th width="30"><?php echo Text::_('NUM'); ?></th>
+							<th align="left"><?php echo Text::_('SUBJECT'); ?></th>
+							<th width="150"><?php echo Text::_('COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE'); ?></th>
+							<th width="150"><?php echo Text::_('AUTHOR'); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -76,17 +79,17 @@ if (property_exists($this->item, 'automailing_values')) {
 							<td align="center"><?php echo $i + 1; ?></td>
 							<td><?php echo $item->subject; ?>&nbsp;&nbsp; <span
 								class="cam_preview"> <span class="editlinktip hasTip"
-								title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
+								title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
 								<?php
 								echo '<a class="popup" href="' . $link_html . '"
-								 rel="{handler: \'iframe\', size: {x: 600, y: 450}}">' . JText::_('COM_BWPOSTMAN_HTML_NL') . '</a>'; ?>&nbsp;
+								 rel="{handler: \'iframe\', size: {x: 600, y: 450}}">' . Text::_('COM_BWPOSTMAN_HTML_NL') . '</a>'; ?>&nbsp;
 							</span> <span class="editlinktip hasTip"
-								title="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
+								title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
 								<?php
 								echo '<a class="popup" href="' . $link_text . '"
-								 rel="{handler: \'iframe\', size: {x: 600, y: 450}}">' . JText::_('COM_BWPOSTMAN_TEXT_NL') . '</a>'; ?>
+								 rel="{handler: \'iframe\', size: {x: 600, y: 450}}">' . Text::_('COM_BWPOSTMAN_TEXT_NL') . '</a>'; ?>
 							</span> </span></td>
-							<td align="center"><?php echo JHtml::date($item->modified_time, JText::_('BW_DATE_FORMAT_LC5')); ?></td>
+							<td align="center"><?php echo HtmlHelper::date($item->modified_time, Text::_('BW_DATE_FORMAT_LC5')); ?></td>
 							<td align="center"><?php echo $item->author; ?></td>
 						</tr>
 						<?php

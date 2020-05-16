@@ -26,6 +26,10 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.form.formfield');
 
 /**
@@ -53,11 +57,11 @@ class JFormFieldAsset extends JFormField
 	 */
 	protected function getInput()
 	{
-		JHtml::_('jquery.framework');
+		HtmlHelper::_('jquery.framework');
 
-		$text = JText::_('MOD_BWPOSTMAN_FIELD_OBLIGATION');
+		$text = Text::_('MOD_BWPOSTMAN_FIELD_OBLIGATION');
 
-		$doc 		= JFactory::getDocument();
+		$doc 		= Factory::getDocument();
 		$js = "
 			window.onload=display_yes_no;
 			function display_yes_no()

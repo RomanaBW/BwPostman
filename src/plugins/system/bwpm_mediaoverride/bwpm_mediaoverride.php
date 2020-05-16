@@ -24,6 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Factory;
 /**
  * Class MediaOverride
  *
@@ -52,7 +53,7 @@ class plgSystemBWPM_MediaOverride extends JPlugin {
 	 * @since 2.3.0
 	 */
 	public function onAfterRoute() {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput	= $app->input;
 
 		if($jinput->get('option') == 'com_media' && $jinput->get('asset') == 'com_bwpostman_nl' && $app->isAdmin())

@@ -26,6 +26,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Log\LogEntry;
+
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
@@ -159,7 +165,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	protected function setBwPostmanComponentStatus()
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -176,7 +182,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEBUG,
+				$this->logger->addEntry(new LogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEBUG,
 					$this->log_cat));
 			}
 		}
@@ -185,7 +191,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
 			$message                         = 'Database error while getting component status, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -198,7 +204,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	protected function setBwPostmanComponentVersion()
 	{
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -213,7 +219,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component version is: %s', $manifest['version']),
+				$this->logger->addEntry(new LogEntry(sprintf('Component version is: %s', $manifest['version']),
 					BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
@@ -222,7 +228,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentVersion = '0.0.0';
 			$message                         = 'Database error while getting component version, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -233,7 +239,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	protected function loadLanguageFiles()
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 
 		//Load first english file of component
 		$lang->load('com_bwpostman', JPATH_SITE, 'en_GB', true);
@@ -270,7 +276,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('onContentPrepareForm reached', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('onContentPrepareForm reached', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -282,7 +288,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry(sprintf('Context is: %s', $context), BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry(sprintf('Context is: %s', $context), BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!in_array($context, $this->allowedContext))
@@ -325,7 +331,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		{
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component version not met!'), BwLogger::BW_ERROR,
+				$this->logger->addEntry(new LogEntry(sprintf('Component version not met!'), BwLogger::BW_ERROR,
 					$this->log_cat));
 			}
 
@@ -451,7 +457,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-		$permissions = JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if ($permissions['view']['maintenance'])
 		{
@@ -459,7 +465,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			BwPostmanHTMLHelper::quickiconButton(
 				$link,
 				'icon-48-cron-start.png',
-				JText::_("PLG_BWTIMECONTROL_MAINTENANCE_START_CRON"),
+				Text::_("PLG_BWTIMECONTROL_MAINTENANCE_START_CRON"),
 				0,
 				0
 			);
@@ -468,16 +474,16 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			BwPostmanHTMLHelper::quickiconButton(
 				$link,
 				'icon-48-cron-stop.png',
-				JText::_("PLG_BWTIMECONTROL_MAINTENANCE_STOP_CRON"),
+				Text::_("PLG_BWTIMECONTROL_MAINTENANCE_STOP_CRON"),
 				0,
 				0
 			);
 		}
 
-		$message  = JText::_("PLG_BWTIMECONTROL_MAINTENANCE_STARTING_CRON");
-		$document = JFactory::getDocument();
+		$message  = Text::_("PLG_BWTIMECONTROL_MAINTENANCE_STARTING_CRON");
+		$document = Factory::getDocument();
 		$document->addScriptDeclaration("let message = '$message'");
-		$document->addScript(JUri::root(true) . '/plugins/bwpostman/bwtimecontrol/assets/js/bwtimecontrol.js');
+		$document->addScript(Uri::root(true) . '/plugins/bwpostman/bwtimecontrol/assets/js/bwtimecontrol.js');
 
 		return true;
 	}
@@ -525,7 +531,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		if (count($error))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_PRE_CHECK',
+			Factory::getApplication()->enqueueMessage(Text::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_PRE_CHECK',
 				$data['id']), 'error');
 
 			return false;
@@ -553,7 +559,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		if ($nl_id !== 0)
 		{
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName('scheduled_date'));
@@ -570,7 +576,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			catch (RuntimeException $e)
 			{
 				$message = 'Database error while getting itemId at TC, error message is ' . $e->getMessage();
-				JFactory::getApplication()->enqueueMessage($message, 'error');
+				Factory::getApplication()->enqueueMessage($message, 'error');
 			}
 		}
 
@@ -598,7 +604,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return true;
 		}
 
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		// New scheduled date
@@ -638,7 +644,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		catch (RuntimeException $e)
 		{
 			$message = 'Database error while saving item at TC, error message is ' . $e->getMessage();
-			JFactory::getApplication()->enqueueMessage($message, 'error');
+			Factory::getApplication()->enqueueMessage($message, 'error');
 		}
 
 		return true;
@@ -701,7 +707,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	public function onBwPostmanGetAdditionalQueueWhere(&$query, $fromComponent)
 	{
-		JFactory::getApplication()->getUserState('com_bwpostman.newsletter.idToSend', 0);
+		Factory::getApplication()->getUserState('com_bwpostman.newsletter.idToSend', 0);
 
 		// Get content ids of automated newsletters
 		$allAutomatedContentIds = $this->getAutomatedContentIds();
@@ -734,7 +740,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	public function getAutomatedNlIds()
 	{
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('newsletter_id'));
@@ -753,7 +759,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
 			$message                         = 'Database error while getting all automated nl ids, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		return array();
@@ -775,7 +781,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		if (count($automatedNlIds))
 		{
-			$db	= JFactory::getDbo();
+			$db	= Factory::getDbo();
 			$query	= $db->getQuery(true);
 
 			$query->select('DISTINCT ' . $db->quoteName('id'));
@@ -795,7 +801,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 				$this->_subject->setError($e->getMessage());
 				$this->BwPostmanComponentEnabled = false;
 				$message                         = 'Database error while getting all automated nl ids, error message is ' . $e->getMessage();
-				$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 			}
 		}
 

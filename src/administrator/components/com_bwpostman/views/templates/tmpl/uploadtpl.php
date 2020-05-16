@@ -27,20 +27,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // Load the tooltip behavior for the notes
-JHtml::_('bootstrap.tooltip');
+HtmlHelper::_('bootstrap.tooltip');
 ?>
 
 <?php
-$jinput	= JFactory::getApplication()->input;
+$jinput	= Factory::getApplication()->input;
 $image	= '<i class="icon-info"></i>';
 $option	= $jinput->getCmd('option');
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
+<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_BWPOSTMAN_TPL_SELECT_UPLOAD_FILE'); ?></legend>
-		<div class="well well-small"><?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_USER_MESSAGE')?></div>
+		<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_SELECT_UPLOAD_FILE'); ?></legend>
+		<div class="well well-small"><?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_USER_MESSAGE')?></div>
 		<?php
 		if (BwPostmanHelper::canAdd('template'))
 		{
@@ -50,8 +55,8 @@ $option	= $jinput->getCmd('option');
 					<table class="admintable bwptable uploadtpl">
 						<tr>
 							<td align="right" class="key">
-								<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE'); ?></span>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?>">
+								<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE'); ?></span>
+								<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?>">
 									<?php echo $image; ?>
 								</span>
 							</td>
@@ -63,7 +68,7 @@ $option	= $jinput->getCmd('option');
 							<td width="250" align="center" class="key">
 								<input type="button" class="btn btn-success" name="submitbutton"
 									onclick="Joomla.submitbutton('templates.uploadtpl'); document.getElementById('loading').style.display = 'block';"
-									value="<?php echo JText::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_BUTTON'); ?>">
+									value="<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_BUTTON'); ?>">
 							</td>
 						</tr>
 					</table>
@@ -76,7 +81,7 @@ $option	= $jinput->getCmd('option');
 	<input type="hidden" name="task" value="uploadtpl" />
 	<input type="hidden" name="controller" value="templates" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HtmlHelper::_('form.token'); ?>
 </form>
 <div id="loading" style="display: none;"></div>
 

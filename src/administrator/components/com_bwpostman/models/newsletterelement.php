@@ -30,7 +30,9 @@ defined('_JEXEC') or die('Restricted access');
 // Import MODEL object class
 jimport('joomla.application.component.model');
 
-use Joomla\String\StringHelper as JString;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Pagination\Pagination;
 
 /**
  * BwPostman newsletterelement model
@@ -103,7 +105,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	{
 		parent::__construct();
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		$this->key = $this->getName();
 
@@ -120,7 +122,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 *
 	 * @access	public
 	 *
-	 * @return 	object Mailinglists-data
+	 * @return 	array Mailinglists-data
 	 *
 	 * @throws Exception
 	 *
@@ -177,7 +179,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 		if (empty($this->pagination))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination = new JPagination($this->getTotal(), (int) $this->getState('limitstart'), (int) $this->getState('limit'));
+			$this->pagination = new Pagination($this->getTotal(), (int) $this->getState('limitstart'), (int) $this->getState('limit'));
 		}
 
 		return $this->pagination;
@@ -196,9 +198,9 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 */
 	private function buildQuery()
 	{
-		$app = JFactory::getApplication();
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
+		$app = Factory::getApplication();
+		$db	= Factory::getDbo();
+		$query	= $db->getQuery(true);
 
 		// Build the query
 		$query->select('a.id, a.subject, a.description,  a.mailing_date, a.published, a.archive_flag');
@@ -206,7 +208,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 
 		// Filter by published state
 		$query->where('a.published != ' . (int) 0);
-		$query->where($_db->quoteName('a.mailing_date') . ' != ' . $_db->quote('0000-00-00 00:00:00'));
+		$query->where($db->quoteName('a.mailing_date') . ' != ' . $db->quote('0000-00-00 00:00:00'));
 
 		// Get the search string
 		$search = $this->getSearch();
@@ -220,7 +222,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 
 			foreach ($fields as $field)
 			{
-				$search = $_db->quote('%' . str_replace(' ', '%', $_db->escape(trim($search), true) . '%'));
+				$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
 				$query->where('a.' . $field . " LIKE " . $search);
 			}
 		}
@@ -235,7 +237,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 		}
 		else
 		{
-			$query->order($_db->escape($filter_order . ' ' . $filter_order_Dir));
+			$query->order($db->escape($filter_order . ' ' . $filter_order_Dir));
 		}
 
 		return $query;
@@ -256,10 +258,10 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	{
 		if (!$this->search)
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 
 			$search       = $app->getUserStateFromRequest($this->key . '_search', 'search', '', 'string');
-			$this->search = JString::strtolower($search);
+			$this->search = StringHelper::strtolower($search);
 		}
 
 		return $this->search;

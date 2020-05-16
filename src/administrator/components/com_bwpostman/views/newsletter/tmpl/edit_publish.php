@@ -27,20 +27,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HtmlHelper::_('bootstrap.tooltip');
+HtmlHelper::_('behavior.multiselect');
+HtmlHelper::_('behavior.keepalive');
+HtmlHelper::_('formbehavior.chosen', 'select');
 
 $image = '<i class="icon-info"></i>';
 ?>
 
 <div id="bwp_view_single">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="adminForm">
 		<div class="form-horizontal">
 			<fieldset class="adminform">
 				<legend>
-					<?php echo JText::sprintf('COM_BWPOSTMAN_NL_EDIT_PUBLISHED', $this->item->id); ?>
+					<?php echo Text::sprintf('COM_BWPOSTMAN_NL_EDIT_PUBLISHED', $this->item->id); ?>
 				</legend>
 				<div class="well well-small">
 					<div class="width-50 fltlft span6 control-group">
@@ -69,7 +73,7 @@ $image = '<i class="icon-info"></i>';
 						</ul>
 					</div>
 					<div class="clr clearfix"></div>
-					<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+					<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 				</div>
 			</fieldset>
 		</div>
@@ -119,6 +123,6 @@ $image = '<i class="icon-info"></i>';
 		<input type="hidden" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HtmlHelper::_('form.token'); ?>
 	</form>
 </div>

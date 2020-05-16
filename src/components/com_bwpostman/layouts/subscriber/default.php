@@ -26,8 +26,14 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 $subscriber = $displayData['subscriber'];
-$params     = JComponentHelper::getParams('com_bwpostman', true);
+$params     = ComponentHelper::getParams('com_bwpostman', true);
 $lists      = $displayData['lists'];
 ?>
 
@@ -35,20 +41,20 @@ $lists      = $displayData['lists'];
 	<?php // Show pretext only if set in basic parameters
 	if ($params->get('pretext'))
 	{
-		$preText = JText::_($params->get('pretext'));
+		$preText = Text::_($params->get('pretext'));
 		?>
 		<p class="pre_text"><?php echo $preText; ?></p>
 		<?php
 	} // End: Show pretext only if set in basic parameters ?>
 
 	<?php // Show editlink only if the user is not logged in
-	if (JFactory::getUser()->get('guest'))
+	if (Factory::getUser()->get('guest'))
 	{
-		$link = \Joomla\CMS\Uri\Uri::base() . 'index.php?option=com_bwpostman&view=edit';
+		$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
 		?>
 		<p class="user_edit">
 			<a href="<?php echo $link; ?>">
-				<?php echo JText::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
+				<?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
 			</a>
 		</p><?php
 	}
@@ -59,7 +65,7 @@ $lists      = $displayData['lists'];
 	if ($params->get('show_gender') == 1)
 	{ ?>
 		<p class="edit_gender">
-			<label id="gendermsg"> <?php echo JText::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
+			<label id="gendermsg"> <?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
 			<?php echo $lists['gender']; ?>
 		</p> <?php
 	} // End gender ?>
@@ -74,7 +80,7 @@ $lists      = $displayData['lists'];
 				{
 					echo "class=\"invalid\"";
 				} ?>>
-				<?php echo JText::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label>
+				<?php echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label>
 			<?php // Is filling out the firstname field obligating
 			if ($params->get('firstname_field_obligation'))
 			{ ?>
@@ -127,7 +133,7 @@ $lists      = $displayData['lists'];
 				{
 					echo "class=\"invalid\"";
 				} ?>>
-				<?php echo JText::_('COM_BWPOSTMAN_NAME'); ?>: </label>
+				<?php echo Text::_('COM_BWPOSTMAN_NAME'); ?>: </label>
 			<?php // Is filling out the name field obligating
 			if ($params->get('name_field_obligation'))
 			{
@@ -166,15 +172,15 @@ $lists      = $displayData['lists'];
 	{
 		if ($params->get('special_desc') != '')
 		{
-			$tip = JText::_($params->get('special_desc'));
+			$tip = Text::_($params->get('special_desc'));
 		}
 		else
 		{
-			$tip = JText::_('COM_BWPOSTMAN_SPECIAL');
+			$tip = Text::_('COM_BWPOSTMAN_SPECIAL');
 		} ?>
 
 		<p class="edit_special input<?php echo ($params->get('special_field_obligation')) ? '-append' : '' ?>">
-			<label id="specialmsg" class="hasTooltip" title="<?php echo JHtml::tooltipText($tip); ?>" for="special"
+			<label id="specialmsg" class="hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special"
 				<?php
 				if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
 				{
@@ -183,11 +189,11 @@ $lists      = $displayData['lists'];
 				echo ">";
 				if ($params->get('special_label') != '')
 				{
-					echo JText::_($params->get('special_label'));
+					echo Text::_($params->get('special_label'));
 				}
 				else
 				{
-					echo JText::_('COM_BWPOSTMAN_SPECIAL');
+					echo Text::_('COM_BWPOSTMAN_SPECIAL');
 				}
 				?>:
 			</label>
@@ -234,7 +240,7 @@ $lists      = $displayData['lists'];
 			{
 				echo "class=\"invalid\"";
 			} ?>>
-			<?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?>:
+			<?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:
 		</label>
 		<input type="text" id="email" name="email" size="40" value="<?php echo $subscriber->email; ?>"
 			class="<?php
@@ -253,7 +259,7 @@ $lists      = $displayData['lists'];
 	if ($params->get('show_emailformat') == 1)
 	{ ?>
 		<div class="user_mailformat edit_emailformat">
-			<label id="emailformatmsg"> <?php echo JText::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label>
+			<label id="emailformatmsg"> <?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label>
 			<?php echo $lists['emailformat']; ?>
 		</div>
 	<?php
@@ -291,19 +297,19 @@ $lists      = $displayData['lists'];
 					if ($params->get('show_desc') == 1)
 					{ ?>
 						<p class="mail_available">
-							<?php echo JText::_('COM_BWPOSTMAN_MAILINGLIST'); ?>
+							<?php echo Text::_('COM_BWPOSTMAN_MAILINGLIST'); ?>
 						</p>
 						<p class="mailinglist-description-single">
 							<span class="mail_available_list_title">
 								<?php echo $lists['available_mailinglists'][0]->title . ": "; ?>
 							</span>
 							<?php
-							echo substr(JText::_($lists['available_mailinglists'][0]->description), 0, $descLength);
+							echo substr(Text::_($lists['available_mailinglists'][0]->description), 0, $descLength);
 
-							if (strlen(JText::_($lists['available_mailinglists'][0]->description)) > $descLength)
+							if (strlen(Text::_($lists['available_mailinglists'][0]->description)) > $descLength)
 							{
 								echo '... ';
-								echo JHTML::tooltip(JText::_($lists['available_mailinglists'][0]->description),
+								echo HtmlHelper::tooltip(Text::_($lists['available_mailinglists'][0]->description),
 									$lists['available_mailinglists'][0]->title, 'tooltip.png', '', '');
 							} ?>
 						</p>
@@ -313,7 +319,7 @@ $lists      = $displayData['lists'];
 				else
 				{ ?>
 					<p class="mail_available">
-						<?php echo JText::_('COM_BWPOSTMAN_MAILINGLISTS'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS'); ?>
 					</p>
 					<?php
 					foreach ($lists['available_mailinglists'] as $i => $item)
@@ -335,11 +341,11 @@ $lists      = $displayData['lists'];
 							{ ?>
 							<span>
 								<?php
-								echo substr(JText::_($item->description), 0, $descLength);
-								if (strlen(JText::_($item->description)) > $descLength)
+								echo substr(Text::_($item->description), 0, $descLength);
+								if (strlen(Text::_($item->description)) > $descLength)
 								{
 									echo '... ';
-									echo JHTML::tooltip(JText::_($item->description), $item->title, 'tooltip.png', '', '');
+									echo HtmlHelper::tooltip(Text::_($item->description), $item->title, 'tooltip.png', '', '');
 								} ?>
 							</span>
 							<?php

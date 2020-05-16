@@ -237,7 +237,7 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 			<?php echo HTMLHelper::_('form.token'); ?>
 
 			<input type="hidden" id="currentTab" value="default_unsent" />
-			<input type="hidden" id="archiveText" value="<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
+			<input type="hidden" id="archiveText" value="<?php echo Text::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

@@ -27,10 +27,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // Load the tooltip behavior for the notes
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+HtmlHelper::_('behavior.tooltip');
+HtmlHelper::_('behavior.keepalive');
+HtmlHelper::_('formbehavior.chosen', 'select');
 
 ?>
 
@@ -38,23 +43,23 @@ JHtml::_('formbehavior.chosen', 'select');
 	<?php
 	if ($this->queueEntries)
 	{
-		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=edit.save'); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&task=edit.save'); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-horizontal">
 		<div class="tab-wrapper-bwp">
-			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
-			<?php echo JHtml::_(
+			<?php echo HtmlHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+			<?php echo HtmlHelper::_(
 				'bootstrap.addTab',
 				'myTab',
 				'details',
-				empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_ML') : JText::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id)
+				empty($this->item->id) ? Text::_('COM_BWPOSTMAN_NEW_ML') : Text::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id)
 			); ?>
 			<fieldset class="adminform">
 				<legend>
 					<?php
-					echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_ML') : JText::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id);
+					echo empty($this->item->id) ? Text::_('COM_BWPOSTMAN_NEW_ML') : Text::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id);
 					?>
 				</legend>
 				<div class="well well-small">
@@ -111,24 +116,24 @@ JHtml::_('formbehavior.chosen', 'select');
 						</ul>
 					</div>
 					<div class="clearfix"></div>
-					<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+					<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 				</div>
 			</fieldset>
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
+			<?php echo HtmlHelper::_('bootstrap.endTab'); ?>
 
 			<?php
 			if ($this->permissions['com']['admin'] || $this->permissions['admin']['mailinglist']): ?>
-				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_BWPOSTMAN_ML_FIELDSET_RULES')); ?>
+				<?php echo HtmlHelper::_('bootstrap.addTab', 'myTab', 'permissions', Text::_('COM_BWPOSTMAN_ML_FIELDSET_RULES')); ?>
 				<div class="well well-small">
 						<fieldset class="adminform">
 							<?php echo $this->form->getInput('rules'); ?>
 						</fieldset>
 				</div>
 			<?php endif;
-				echo JHtml::_('bootstrap.endTab');
+				echo HtmlHelper::_('bootstrap.endTab');
 			?>
 			<div class="clearfix"></div>
-			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+			<?php echo HtmlHelper::_('bootstrap.endTabSet'); ?>
 		</div>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 
@@ -140,9 +145,9 @@ JHtml::_('formbehavior.chosen', 'select');
 		<?php echo $this->form->getInput('checked_out'); ?>
 		<?php echo $this->form->getInput('archive_flag'); ?>
 		<?php echo $this->form->getInput('archive_time'); ?>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HtmlHelper::_('form.token'); ?>
 
-		<input type="hidden" id="alertTitle" value="<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_TITLE', true); ?>" />
-		<input type="hidden" id="alertDescription" value="<?php echo JText::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION'); ?>" />
+		<input type="hidden" id="alertTitle" value="<?php echo Text::_('COM_BWPOSTMAN_ML_ERROR_TITLE', true); ?>" />
+		<input type="hidden" id="alertDescription" value="<?php echo Text::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION'); ?>" />
 	</form>
 </div>

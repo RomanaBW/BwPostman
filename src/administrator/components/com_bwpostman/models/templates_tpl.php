@@ -27,9 +27,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die ('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
+
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
-use Joomla\Registry\Registry as JRegistry;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
@@ -64,13 +66,13 @@ class BwPostmanModelTemplates_Tpl extends JModelAdmin
 	 * @param	string	$prefix     A prefix for the table class name. Optional.
 	 * @param	array	$config     Configuration array for model. Optional.
 	 *
-	 * @return	JTable	A database object
+	 * @return	boolean|Table	A database object
 	 *
 	 * @since  1.1.0
 	 */
 	public function getTable($type = 'Templates_Tpl', $prefix = 'BwPostmanTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -89,7 +91,7 @@ class BwPostmanModelTemplates_Tpl extends JModelAdmin
 
 		// convert header_tpl string to array
 		if (is_string($item->header_tpl)){
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($item->header_tpl);
 			$item->header_tpl = $registry->toArray();
 		}

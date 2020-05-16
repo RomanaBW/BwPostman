@@ -27,12 +27,14 @@
 // No direct access.
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 $fieldSets = $this->form->getFieldsets('header');
 
 foreach ($fieldSets as $name => $fieldSet) :
 	?>
 	<fieldset class="panelform">
-		<legend><?php echo $this->escape(JText::_($fieldSet->label)); ?></legend>
+		<legend><?php echo $this->escape(Text::_($fieldSet->label)); ?></legend>
 		<div class="well well-small">
 			<ul class="adminformlist unstyled">
 				<?php foreach ($this->form->getFieldset($name) as $field) : ?>

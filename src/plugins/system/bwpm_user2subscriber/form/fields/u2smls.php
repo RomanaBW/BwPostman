@@ -28,7 +28,12 @@ defined('JPATH_PLATFORM') or die;
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
-JFormHelper::loadFieldClass('checkboxes');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\FormHelper;
+
+FormHelper::loadFieldClass('checkboxes');
 
 /**
  * Form Field class for the Joomla Platform.
@@ -70,7 +75,7 @@ class JFormFieldU2sMls extends JFormFieldCheckboxes
 	protected function getOptions()
 	{
 		// Initialize variables.
-		$session	= JFactory::getSession();
+		$session	= Factory::getSession();
 		$availableMailinglists = array();
 
 		$mailinglists	= $session->get('plg_bwpm_user2subscriber.ml_available', array());
@@ -84,7 +89,7 @@ class JFormFieldU2sMls extends JFormFieldCheckboxes
 		}
 
 		// prepare query
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
 
 		$query->select("a.id AS value, a.title AS title, a.description as description");
@@ -122,12 +127,12 @@ class JFormFieldU2sMls extends JFormFieldCheckboxes
 			{
 				$text .= '<br />';
 				$text .= '<span class="plg-u2s-ml-description">';
-				$text .= substr(JText::_($option->description), 0, $descLength);
+				$text .= substr(Text::_($option->description), 0, $descLength);
 
-				if (strlen(JText::_($option->description)) > $descLength)
+				if (strlen(Text::_($option->description)) > $descLength)
 				{
 					$text .= '... ';
-					$text .= JHTML::tooltip(JText::_($option->description), $option->title, 'tooltip.png', '', '');
+					$text .= HTMLHelper::tooltip(Text::_($option->description), $option->title, 'tooltip.png', '', '');
 				}
 				$text .= '</span>';
 			}

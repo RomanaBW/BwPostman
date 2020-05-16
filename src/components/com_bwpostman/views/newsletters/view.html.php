@@ -27,7 +27,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Registry\Registry as JRegistry;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
+use Joomla\CMS\HTML\HTMLHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -65,6 +69,15 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 * @since       0.9.1
 	 */
 	protected $items;
+
+	/**
+	 * property to hold item id
+	 *
+	 * @var integer   $Itemid
+	 *
+	 * @since       2.4.0
+	 */
+	protected $Itemid;
 
 	/**
 	 * property to hold pagination object
@@ -143,7 +156,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	public function display($tpl = null)
 	{
 
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$menu		= $app->getMenu()->getActive();
 
 		$state		= $this->get('State');
@@ -153,21 +166,21 @@ class BwPostmanViewNewsletters extends JViewLegacy
 
 		// Month Field
 		$months = array(
-			'' => JText::_('COM_BWPOSTMAN_MONTH'),
-			'01' => JText::_('JANUARY_SHORT'),
-			'02' => JText::_('FEBRUARY_SHORT'),
-			'03' => JText::_('MARCH_SHORT'),
-			'04' => JText::_('APRIL_SHORT'),
-			'05' => JText::_('MAY_SHORT'),
-			'06' => JText::_('JUNE_SHORT'),
-			'07' => JText::_('JULY_SHORT'),
-			'08' => JText::_('AUGUST_SHORT'),
-			'09' => JText::_('SEPTEMBER_SHORT'),
-			'10' => JText::_('OCTOBER_SHORT'),
-			'11' => JText::_('NOVEMBER_SHORT'),
-			'12' => JText::_('DECEMBER_SHORT')
+			'' => Text::_('COM_BWPOSTMAN_MONTH'),
+			'01' => Text::_('JANUARY_SHORT'),
+			'02' => Text::_('FEBRUARY_SHORT'),
+			'03' => Text::_('MARCH_SHORT'),
+			'04' => Text::_('APRIL_SHORT'),
+			'05' => Text::_('MAY_SHORT'),
+			'06' => Text::_('JUNE_SHORT'),
+			'07' => Text::_('JULY_SHORT'),
+			'08' => Text::_('AUGUST_SHORT'),
+			'09' => Text::_('SEPTEMBER_SHORT'),
+			'10' => Text::_('OCTOBER_SHORT'),
+			'11' => Text::_('NOVEMBER_SHORT'),
+			'12' => Text::_('DECEMBER_SHORT')
 		);
-		$form->monthField = JHtml::_(
+		$form->monthField = HtmlHelper::_(
 			'select.genericlist',
 			$months,
 			'month',
@@ -180,14 +193,14 @@ class BwPostmanViewNewsletters extends JViewLegacy
 
 		// Year Field
 		$years = array();
-		$years[] = JHtml::_('select.option', null, JText::_('JYEAR'));
+		$years[] = HtmlHelper::_('select.option', null, Text::_('JYEAR'));
 
 		for ($year = date('Y'), $i = $year - 10; $i <= $year; $i++)
 		{
-			$years[] = JHtml::_('select.option', $i, $i);
+			$years[] = HtmlHelper::_('select.option', $i, $i);
 		}
 
-		$form->yearField = JHtml::_(
+		$form->yearField = HtmlHelper::_(
 			'select.genericlist',
 			$years,
 			'year',
@@ -212,45 +225,45 @@ class BwPostmanViewNewsletters extends JViewLegacy
 
 		if (is_array($this->mailinglists))
 		{
-			array_unshift($this->mailinglists, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS')));
+			array_unshift($this->mailinglists, array ('id' => '0', 'title' => Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS')));
 		}
 
 		if (is_array($this->campaigns))
 		{
-			array_unshift($this->campaigns, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_CAMPAIGNS')));
+			array_unshift($this->campaigns, array ('id' => '0', 'title' => Text::_('COM_BWPOSTMAN_SUB_FILTER_CAMPAIGNS')));
 		}
 
 		if (is_array($this->usergroups))
 		{
-			array_unshift($this->usergroups, array ('id' => '0', 'title' => JText::_('COM_BWPOSTMAN_SUB_FILTER_USERGROUPS')));
+			array_unshift($this->usergroups, array ('id' => '0', 'title' => Text::_('COM_BWPOSTMAN_SUB_FILTER_USERGROUPS')));
 		}
 
 		// Because the application sets a default page title, we need to get it
 		// right from the menu item itself
 		if (is_object($menu))
 		{
-			$menu_params = new JRegistry();
-			$menu_params->loadString($menu->getParams(), 'JSON');
+			$menu_params = new Registry();
+			$menu_params->loadString($menu->params, 'JSON');
 			if (!$menu_params->get('page_heading'))
 			{
-				$this->params->set('page_heading',	JText::_('COM_BWPOSTMAN_NLS'));
+				$this->params->set('page_heading',	Text::_('COM_BWPOSTMAN_NLS'));
 			}
 		}
 		else
 		{
-			$this->params->set('page_heading',	JText::_('COM_BWPOSTMAN_NLS'));
+			$this->params->set('page_heading',	Text::_('COM_BWPOSTMAN_NLS'));
 		}
 
 		// Get document object and add css
 		$templateName	= $app->getTemplate();
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 
-		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		$document->addStyleSheet(Uri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename))
 		{
-			$document->addStyleSheet(JUri::root(true) . $css_filename);
+			$document->addStyleSheet(Uri::root(true) . $css_filename);
 		}
 
 		// Set parent display

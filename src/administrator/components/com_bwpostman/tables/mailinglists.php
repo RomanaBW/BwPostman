@@ -24,6 +24,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\Database\DatabaseDriver;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\Filter\InputFilter;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -154,7 +160,7 @@ class BwPostmanTableMailinglists extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -229,16 +235,16 @@ class BwPostmanTableMailinglists extends JTable
 	/**
 	 * Method to get the parent asset id for the record
 	 *
-	 * @param   JTable   $table  A JTable object (optional) for the asset parent
+	 * @param   Table   $table  A Table object (optional) for the asset parent
 	 * @param   integer  $id     The id (optional) of the content.
 	 *
 	 * @return  integer
 	 *
 	 * @since   11.1
 	 */
-	protected function _getAssetParentId(JTable $table = null, $id = null)
+	protected function _getAssetParentId(Table $table = null, $id = null)
 	{
-		$asset = JTable::getInstance('Asset');
+		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_bwpostman.mailinglist');
 		return $asset->id;
 	}
@@ -278,7 +284,7 @@ class BwPostmanTableMailinglists extends JTable
 		}
 		else
 		{
-			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+			throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
 		// Cast properties
@@ -300,28 +306,28 @@ class BwPostmanTableMailinglists extends JTable
 	 */
 	public function check()
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$_db	= $this->_db;
 		$query	= $this->_db->getQuery(true);
 		$fault	= false;
 		$xid    = 0;
 
 		// Remove all HTML tags from the title and description
-		$filter				= new JFilterInput(array(), array(), 0, 0);
+		$filter				= new InputFilter(array(), array(), 0, 0);
 		$this->title		= $filter->clean($this->title);
 		$this->description	= $filter->clean($this->description);
 
 		// Check for valid title
 		if (trim($this->title) == '')
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ML_ERROR_TITLE'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ML_ERROR_TITLE'), 'error');
 			$fault	= true;
 		}
 
 		// Check for valid title
 		if (trim($this->description) == '')
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION'), 'error');
 			$fault	= true;
 		}
 
@@ -342,7 +348,7 @@ class BwPostmanTableMailinglists extends JTable
 		}
 
 		if ($xid && $xid != intval($this->id)) {
-			$app->enqueueMessage((JText::sprintf('COM_BWPOSTMAN_ML_ERROR_TITLE_DOUBLE', $this->title, $xid)), 'error');
+			$app->enqueueMessage((Text::sprintf('COM_BWPOSTMAN_ML_ERROR_TITLE_DOUBLE', $this->title, $xid)), 'error');
 			return false;
 		}
 
@@ -356,7 +362,7 @@ class BwPostmanTableMailinglists extends JTable
 	}
 
 	/**
-	 * Overridden JTable::store to set created/modified and user id.
+	 * Overridden Table::store to set created/modified and user id.
 	 *
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
@@ -368,8 +374,8 @@ class BwPostmanTableMailinglists extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		if ($this->id)
 		{
@@ -385,8 +391,38 @@ class BwPostmanTableMailinglists extends JTable
 		}
 
 		$res	= parent::store($updateNulls);
-		JFactory::getApplication()->setUserState('com_bwpostman.edit.mailinglist.id', $this->id);
+		Factory::getApplication()->setUserState('com_bwpostman.edit.mailinglist.id', $this->id);
 
 		return $res;
+	}
+
+	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 *
+	 * @since  2.4.0
+	 */
+	public function getId()
+	{
+		$key = $this->getKeyName();
+
+		return $this->$key;
+	}
+
+	/**
+	 * Check if the record has a property (applying a column alias if it exists)
+	 *
+	 * @param string $key key to be checked
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.4.0
+	 */
+	public function hasField($key)
+	{
+		$key = $this->getColumnAlias($key);
+
+		return property_exists($this, $key);
 	}
 }

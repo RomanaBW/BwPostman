@@ -27,6 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\User\UserHelper;
+
 /**
  * Class BwPostmanHelper
  *
@@ -50,7 +56,7 @@ abstract class BWPM_User2SubscriberHelper
 			return false;
 		}
 
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
@@ -80,7 +86,7 @@ abstract class BWPM_User2SubscriberHelper
 			return false;
 		}
 
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('status'));
@@ -117,7 +123,7 @@ abstract class BWPM_User2SubscriberHelper
 			return false;
 		}
 
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -155,7 +161,7 @@ abstract class BWPM_User2SubscriberHelper
 			return false;
 		}
 
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -259,7 +265,7 @@ abstract class BWPM_User2SubscriberHelper
 	public static function getSubscribedMailinglists($subscriber_id)
 	{
 		// @Todo: As from version 2.0.0 helper class of component may be used
-		$_db = JFactory::getDbo();
+		$_db = Factory::getDbo();
 		$query  = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('mailinglist_id'));
@@ -289,7 +295,7 @@ abstract class BWPM_User2SubscriberHelper
 			return false;
 		}
 
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('email'));
@@ -325,10 +331,10 @@ abstract class BWPM_User2SubscriberHelper
 	 */
 	public static function createSubscriberData($user_mail, $user_id, $subscriber_data, $mailinglist_ids)
 	{
-		$date   = JFactory::getDate();
+		$date   = Factory::getDate();
 		$time   = $date->toSql();
 
-		$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+		$remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
 		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha(1);
 
@@ -336,12 +342,12 @@ abstract class BWPM_User2SubscriberHelper
 
 		$subscriber->id                = 0;
 		$subscriber->user_id           = $user_id;
-		$subscriber->gender            = \Joomla\Utilities\ArrayHelper::getValue($subscriber_data, 'gender', '', 'string');
-		$subscriber->name              = \Joomla\Utilities\ArrayHelper::getValue($subscriber_data, 'name', '', 'string');
-		$subscriber->firstname         = \Joomla\Utilities\ArrayHelper::getValue($subscriber_data, 'firstname', '', 'string');
-		$subscriber->special           = \Joomla\Utilities\ArrayHelper::getValue($subscriber_data, 'special', '', 'string');
+		$subscriber->gender            = ArrayHelper::getValue($subscriber_data, 'gender', '', 'string');
+		$subscriber->name              = ArrayHelper::getValue($subscriber_data, 'name', '', 'string');
+		$subscriber->firstname         = ArrayHelper::getValue($subscriber_data, 'firstname', '', 'string');
+		$subscriber->special           = ArrayHelper::getValue($subscriber_data, 'special', '', 'string');
 		$subscriber->email             = $user_mail;
-		$subscriber->emailformat       = \Joomla\Utilities\ArrayHelper::getValue($subscriber_data, 'emailformat', 1, 'int');
+		$subscriber->emailformat       = ArrayHelper::getValue($subscriber_data, 'emailformat', 1, 'int');
 		$subscriber->mailinglists      = $mailinglist_ids;
 		$subscriber->activation        = self::createActivation();
 		$subscriber->editlink          = self::createEditlink();
@@ -367,14 +373,14 @@ abstract class BWPM_User2SubscriberHelper
 	public static function createActivation()
 	{
 		// @ToDo: When this method has moved to helper class of component, this one here is redundant
-		$_db                = JFactory::getDbo();
+		$_db                = Factory::getDbo();
 		$query              = $_db->getQuery(true);
 		$current_activation = null;
 		$match_activation   = true;
 
 		while ($match_activation)
 		{
-			$current_activation = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+			$current_activation = ApplicationHelper::getHash(UserHelper::genRandomPassword());
 
 			$query->select($_db->quoteName('activation'));
 			$query->from($_db->quoteName('#__bwpostman_subscribers'));
@@ -407,14 +413,14 @@ abstract class BWPM_User2SubscriberHelper
 	public static function createEditlink()
 	{
 		// @ToDo: When this method has moved to helper class of component, this one here is redundant
-		$_db                = JFactory::getDbo();
+		$_db                = Factory::getDbo();
 		$query              = $_db->getQuery(true);
 		$current_editlink   = null;
 		$match_editlink     = true;
 
 		while ($match_editlink)
 		{
-			$current_editlink = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+			$current_editlink = ApplicationHelper::getHash(UserHelper::genRandomPassword());
 
 			$query->select($_db->quoteName('editlink'));
 			$query->from($_db->quoteName('#__bwpostman_subscribers'));
@@ -451,8 +457,8 @@ abstract class BWPM_User2SubscriberHelper
 	public static function saveSubscriber($data)
 	{
 		// @Todo: As from version 2.0.0 BwPostmanModelRegister->save() may be used, depends on spam check solution
-		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/tables');
-		$table  = JTable::getInstance('Subscribers', 'BwPostmanTable');
+		Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/tables');
+		$table  = Table::getInstance('Subscribers', 'BwPostmanTable');
 
 		// Bind the data.
 		if (!$table->bind($data))
@@ -467,8 +473,8 @@ abstract class BWPM_User2SubscriberHelper
 		 * That would also open the possibility to use other spam check methods/plugins
 		 */
 		/*
-		$check_data = \Joomla\Utilities\ArrayHelper::fromObject($data);
-		JFactory::getApplication()->setUserState('com_bwpostman.subscriber.register.data', $check_data);
+		$check_data = ArrayHelper::fromObject($data);
+		Factory::getApplication()->setUserState('com_bwpostman.subscriber.register.data', $check_data);
 		if (!$table->check())
 		{
 			return false;
@@ -500,7 +506,7 @@ abstract class BWPM_User2SubscriberHelper
 	public static function saveSubscribersMailinglists($subscriber_id, $mailinglist_ids)
 	{
 		// @Todo: As from version 2.0.0 helper class of component may be used
-		$_db   = JFactory::getDbo();
+		$_db   = Factory::getDbo();
 
 		foreach ($mailinglist_ids as $mailinglist_id)
 		{
@@ -536,7 +542,7 @@ abstract class BWPM_User2SubscriberHelper
 	 */
 	public static function getSubscriberIdByEmail($email)
 	{
-		$_db    = JFactory::getDbo();
+		$_db    = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));

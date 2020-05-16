@@ -27,17 +27,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+
 // Required class
 require_once(JPATH_COMPONENT_SITE . '/classes/bwpostman.class.php');
 
 // Set the table directory
-JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
+Table::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
 
 // Require the base controller
 require_once(JPATH_COMPONENT . '/controller.php');
 
 // Require specific controller
-$jinput = JFactory::getApplication()->input;
+$jinput = Factory::getApplication()->input;
 $view   = $jinput->get('view', '');
 
 if ($view)

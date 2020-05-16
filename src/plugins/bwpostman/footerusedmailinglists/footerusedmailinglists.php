@@ -26,11 +26,16 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseDriver;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.plugin.plugin');
 
-if (!JComponentHelper::isEnabled('com_bwpostman')) {
-	JFactory::getApplication()->enqueueMessage(
-		JText::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_ERROR') . ', ' . JText::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_COMPONENT_NOT_INSTALLED'),
+if (!ComponentHelper::isEnabled('com_bwpostman')) {
+	Factory::getApplication()->enqueueMessage(
+		Text::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_ERROR') . ', ' . Text::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_COMPONENT_NOT_INSTALLED'),
 		'error'
 	);
 	return false;
@@ -46,7 +51,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	/**
 	 * Database object
 	 *
-	 * @var    JDatabaseDriver
+	 * @var    DatabaseDriver
 	 *
 	 * @since       2.3.0
 	 */
@@ -97,11 +102,11 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 */
 	public function onBwPostmanBeforeObligatoryFooterHtml(&$text)
 	{
-		$usedUgIds = JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
+		$usedUgIds = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
 
-		$mlAvailable = JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_available', array());
-		$mlUnavailable = JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_unavailable', array());
-		$mlIntern = JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_intern', array());
+		$mlAvailable = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_available', array());
+		$mlUnavailable = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_unavailable', array());
+		$mlIntern = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_intern', array());
 		$usedMlIds = array_merge($mlAvailable, $mlUnavailable, $mlIntern);
 
 		$usedMailinglists = $this->getUsedMailinglists($usedMlIds);
@@ -126,7 +131,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$insertText .= "\t\t\t" . '<table id="show-all" style="border-collapse: collapse;border-spacing: 0;">' . "\n";
 			$insertText .= "\t\t\t\t" . "<tr>" . "\n";
 			$insertText .= "\t\t\t\t\t" . "<td>";
-			$insertText .= JText::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_ALL_RECIPIENTS_TEXT', $nbrAllRecipients) . "\n";
+			$insertText .= Text::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_ALL_RECIPIENTS_TEXT', $nbrAllRecipients) . "\n";
 			$insertText .= "\t\t\t\t\t" . "</td>" . "\n";
 			$insertText .= "\t\t\t\t" . "</tr>" . "\n";
 			$insertText .= "\t\t\t" . "</table>" . "\n";
@@ -161,11 +166,11 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 */
 	public function onBwPostmanBeforeObligatoryFooterText(&$text)
 	{
-		$usedUgIds = JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
+		$usedUgIds = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
 
-		$mlAvailable = JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_available', array());
-		$mlUnavailable = JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_unavailable', array());
-		$mlIntern = JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_intern', array());
+		$mlAvailable = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_available', array());
+		$mlUnavailable = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_unavailable', array());
+		$mlIntern = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_intern', array());
 		$usedMlIds = array_merge($mlAvailable, $mlUnavailable, $mlIntern);
 
 		$usedMailinglists = $this->getUsedMailinglists($usedMlIds);
@@ -187,7 +192,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$nbrAllRecipients = $this->getNbrAllRecipients($usedMailinglists, $usedUsergroups);
 
 			$insertText .= "\n";
-			$insertText .= JText::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_ALL_RECIPIENTS_TEXT', $nbrAllRecipients) . "\n";
+			$insertText .= Text::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_ALL_RECIPIENTS_TEXT', $nbrAllRecipients) . "\n";
 			$insertText .= "\n";
 		}
 
@@ -287,7 +292,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $recipients;
@@ -332,7 +337,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $recipients;
@@ -366,7 +371,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $camId;
@@ -390,7 +395,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$insertText .= "\t\t\t" . '<table id="show-mailinglists" style="border-collapse: collapse;border-spacing: 0;">' . "\n";
 			$insertText .= "\t\t\t\t" . '<tr class="show-mailinglists-head">' . "\n";
 			$insertText .= "\t\t\t\t\t" . "<td>" . "\n";
-			$insertText .= JText::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_TEXT');
+			$insertText .= Text::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_TEXT');
 			$insertText .= "\t\t\t\t\t" . "</td>" . "\n";
 			$insertText .= "\t\t\t\t" . "</tr>" . "\n";
 
@@ -405,7 +410,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 				if ($this->params->get('show_mailinglists_recipients'))
 				{
-					$insertText .= JText::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_RECIPIENTS', $usedMailinglist['nbrRecipients']);
+					$insertText .= Text::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_RECIPIENTS', $usedMailinglist['nbrRecipients']);
 				}
 
 				$insertText .= "\t\t\t\t\t" . "</td>" . "\n";
@@ -434,7 +439,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		if (is_array($usedMailinglists) && count($usedMailinglists))
 		{
 			$insertText .= "\n";
-			$insertText .= JText::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_TEXT');
+			$insertText .= Text::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_TEXT');
 			$insertText .= "\n";
 
 			foreach ($usedMailinglists as $usedMailinglist)
@@ -444,7 +449,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 				if ($this->params->get('show_mailinglists_recipients'))
 				{
-					$insertText .= JText::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_RECIPIENTS', $usedMailinglist['nbrRecipients']);
+					$insertText .= Text::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_RECIPIENTS', $usedMailinglist['nbrRecipients']);
 				}
 
 				$insertText .= "\n";
@@ -472,7 +477,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$insertText .= "\t\t\t" . '<table id="show-usergroups" style="border-collapse: collapse;border-spacing: 0;">' . "\n";
 			$insertText .= "\t\t\t\t" . '<tr class="show-usergroups-head">' . "\n";
 			$insertText .= "\t\t\t\t\t" . "<td>" . "\n";
-			$insertText .= JText::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_TEXT');
+			$insertText .= Text::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_TEXT');
 			$insertText .= "\t\t\t\t\t" . "</td>" . "\n";
 			$insertText .= "\t\t\t\t" . "</tr>" . "\n";
 
@@ -487,7 +492,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 				if ($this->params->get('show_usergroups_recipients'))
 				{
-					$insertText .= JText::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_RECIPIENTS', $usedUsergroup['nbrRecipients']);
+					$insertText .= Text::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_RECIPIENTS', $usedUsergroup['nbrRecipients']);
 				}
 
 				$insertText .= "\t\t\t\t\t" . "</td>" . "\n";
@@ -515,7 +520,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		if (is_array($usedUsergroups) && count($usedUsergroups))
 		{
 			$insertText .= "\n";
-			$insertText .= JText::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_TEXT');
+			$insertText .= Text::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_TEXT');
 			$insertText .= "\n";
 
 			foreach ($usedUsergroups as $usedUsergroup)
@@ -525,7 +530,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 				if ($this->params->get('show_usergroups_recipients'))
 				{
-					$insertText .= JText::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_RECIPIENTS', $usedUsergroup['nbrRecipients']);
+					$insertText .= Text::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_RECIPIENTS', $usedUsergroup['nbrRecipients']);
 				}
 
 				$insertText .= "\n";
@@ -568,7 +573,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -610,7 +615,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -648,7 +653,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -685,7 +690,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $nbrRecipients;
@@ -736,7 +741,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		$activeRecipients = array();
 		$addWhere = '';
 
-		$alsoUnconfirmed	= JFactory::getApplication()->getUserState('bwpostman.send.alsoUnconfirmed', false);
+		$alsoUnconfirmed	= Factory::getApplication()->getUserState('bwpostman.send.alsoUnconfirmed', false);
 
 		$db    = $this->db;
 		$query = $this->db->getQuery(true);
@@ -766,7 +771,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $activeRecipients;

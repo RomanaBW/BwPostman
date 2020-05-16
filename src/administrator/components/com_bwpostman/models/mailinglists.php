@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 
@@ -97,7 +99,7 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
 		$layout = $app->input->get('layout');
@@ -319,9 +321,9 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	private function getFilterByViewLevel()
 	{
-		if (JFactory::getApplication()->isClient('site'))
+		if (Factory::getApplication()->isClient('site'))
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 
 			if (!$user->authorise('core.admin'))
 			{
@@ -338,7 +340,7 @@ class BwPostmanModelMailinglists extends JModelList
 	 *
 	 * @return 	void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */

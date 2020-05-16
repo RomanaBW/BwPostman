@@ -147,7 +147,7 @@ $option	= $jinput->getCmd('option');
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
 	<?php echo HTMLHelper::_('form.token'); ?>
 
-	<input type="hidden" id="exportAlertText" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_NO_EXPORTFIELDS', true); ?>" />
+	<input type="hidden" id="exportAlertText" value="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_NO_EXPORTFIELDS', true); ?>" />
 </form>
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>

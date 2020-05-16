@@ -27,6 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
@@ -81,9 +85,9 @@ class BwPostmanViewEdit extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app		    = JFactory::getApplication();
-		$session 	    = JFactory::getSession();
-		$this->params	= JComponentHelper::getParams('com_bwpostman', true);
+		$app		    = Factory::getApplication();
+		$session 	    = Factory::getSession();
+		$this->params	= ComponentHelper::getParams('com_bwpostman', true);
 
 		// If there occurred an error while storing the data load the data from the session
 		$subscriber_data = $session->get('subscriber_data');
@@ -120,11 +124,11 @@ class BwPostmanViewEdit extends JViewLegacy
 		$templateName	= $app->getTemplate();
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		$document = Factory::getDocument();
+		$document->addStyleSheet(Uri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename))
 		{
-			$document->addStyleSheet(JUri::root(true) . $css_filename);
+			$document->addStyleSheet(Uri::root(true) . $css_filename);
 		}
 
 		// Build the email format select list

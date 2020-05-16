@@ -27,7 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Registry\Registry as JRegistry;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Component\ComponentHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -97,12 +102,12 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$id		= (int) $app->input->get('id', 0);
-		$params	= JComponentHelper::getParams('com_bwpostman');
+		$params	= ComponentHelper::getParams('com_bwpostman');
 
 		// Count how often the newsletter has been viewed
-		$newsletter = JTable::getInstance('newsletters', 'BwPostmanTable');
+		$newsletter = Table::getInstance('newsletters', 'BwPostmanTable');
 		$newsletter->load($id);
 		$newsletter->hit($id);
 
@@ -110,7 +115,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$templateName	= $app->getTemplate();
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		if ($params->get('page_heading') != '')
 		{
 			$document->setTitle($params->get('page_title'));
@@ -120,18 +125,18 @@ class BwPostmanViewNewsletter extends JViewLegacy
 			$document->setTitle($newsletter->subject);
 		}
 
-		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		$document->addStyleSheet(Uri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename))
 		{
-			$document->addStyleSheet(JUri::root(true) . $css_filename);
+			$document->addStyleSheet(Uri::root(true) . $css_filename);
 		}
 
 		// Get the global list params and preset them
-		$globalParams				= JComponentHelper::getParams('com_bwpostman', true);
+		$globalParams				= ComponentHelper::getParams('com_bwpostman', true);
 		$this->attachment_enabled	= $globalParams->get('attachment_single_enable');
 		$this->page_title			= $globalParams->get('subject_as_title');
 
-		$menuParams = new JRegistry;
+		$menuParams = new Registry;
 		$menu = $app->getMenu()->getActive();
 
 		if ($menu)
@@ -171,11 +176,11 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		if ($newsletter->published == 0)
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_NL_NOT_AVAILABLE'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_NL_NOT_AVAILABLE'), 'error');
 		}
 
 		// Setting the backlink
-		$backlink = JFactory::getApplication()->input->server->get('HTTP_REFERER', '', '');
+		$backlink = Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
 
 		// Save a reference into the view
 		$this->backlink = $backlink;

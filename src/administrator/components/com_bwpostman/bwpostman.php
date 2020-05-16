@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 // import joomla controller library
 jimport('joomla.application.component.controller');
 
@@ -37,12 +40,12 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 try
 {
 	// Get the user object
-	$user = JFactory::getUser();
-	$app  = JFactory::getApplication();
+	$user = Factory::getUser();
+	$app  = Factory::getApplication();
 	// Access check.
 	if ((!$user->authorise('core.manage', 'com_bwpostman')))
 	{
-		$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'warning');
+		$app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'warning');
 
 		return false;
 	}
@@ -54,7 +57,7 @@ try
 	$controller = JControllerLegacy::getInstance('BwPostman');
 
 	// Perform the Request task
-	$jinput = JFactory::getApplication()->input;
+	$jinput = Factory::getApplication()->input;
 	$task = $jinput->getCmd('task');
 	$controller->execute($task);
 
@@ -63,5 +66,5 @@ try
 }
 catch (Exception $exception)
 {
-	JText::_('JERROR_AN_ERROR_HAS_OCCURRED');
+	Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
 }

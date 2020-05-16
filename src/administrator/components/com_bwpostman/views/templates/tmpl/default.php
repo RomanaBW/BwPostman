@@ -27,11 +27,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.multiselect');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 
-$user		= JFactory::getUser();
+HtmlHelper::_('bootstrap.tooltip');
+HtmlHelper::_('formbehavior.chosen', 'select');
+HtmlHelper::_('behavior.multiselect');
+
+$user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -39,7 +46,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
 
 <div id="bwp_view_lists">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=templates'); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=templates'); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-inline">
 		<?php if (property_exists($this, 'sidebar')) : ?>
 			<div id="j-sidebar-container" class="span2">
@@ -51,7 +58,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<?php endif; ?>
 		<?php
 			// Search tools bar
-			echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+			echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 		?>
 
 			<div class="row-fluid">
@@ -60,28 +67,28 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<tr>
 							<th width="30" nowrap="nowrap">
 								<input type="checkbox" name="checkall-toggle" value=""
-										title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+										title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 							</th>
 							<th width="250" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 							</th>
 							<th class="center" align="center" width="110" nowrap="nowrap">
-								<?php echo JText::_('COM_BWPOSTMAN_TPL_THUMBNAIL'); ?>
+								<?php echo Text::_('COM_BWPOSTMAN_TPL_THUMBNAIL'); ?>
 							</th>
 							<th class="center" align="center" width="100" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_FORMAT', 'a.tpl_id', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_FORMAT', 'a.tpl_id', $listDirn, $listOrder); ?>
 								</th>
 							<th class="center" align="center" width="60" nowrap="nowrap">
-								<?php echo JText::_('COM_BWPOSTMAN_TPL_SET_DEFAULT'); ?>
+								<?php echo Text::_('COM_BWPOSTMAN_TPL_SET_DEFAULT'); ?>
 							</th>
 							<th class="center" align="center" width="100" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?>
 							</th>
 							<th nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 							</th>
 							<th width="30" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 							</th>
 						</tr>
 					</thead>
@@ -92,12 +99,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							foreach ($this->items as $i => $item) :
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
-									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
+									<td align="center"><?php echo HtmlHelper::_('grid.id', $i, $item->id); ?></td>
 									<td>
 									<?php
 									if ($item->checked_out)
 									{
-										echo JHtml::_(
+										echo HtmlHelper::_(
 											'jgrid.checkedout',
 											$i,
 											$item->editor,
@@ -109,7 +116,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 									if (BwPostmanHelper::canEdit('template', $item))
 									{ ?>
-										<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=template.edit&id=' . $item->id); ?>">
+										<a href="<?php echo Route::_('index.php?option=com_bwpostman&task=template.edit&id=' . $item->id); ?>">
 											<?php echo $this->escape($item->title); ?>
 										</a><?php
 									}
@@ -125,14 +132,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											if (BwPostmanHelper::canEdit('template', $item))
 											{ ?>
 												<a href="<?php
-												echo JRoute::_('index.php?option=com_bwpostman&task=template.edit&id=' . $item->id);
+												echo Route::_('index.php?option=com_bwpostman&task=template.edit&id=' . $item->id);
 												?>">
-												<img src="<?php echo JUri::root(true) . '/' . $item->thumbnail; ?>" style="width: 100px;" />
+												<img src="<?php echo Uri::root(true) . '/' . $item->thumbnail; ?>" style="width: 100px;" />
 												</a><?php
 											}
 											else
 											{ ?>
-												<img src="<?php echo JUri::root(true) . '/' . $item->thumbnail; ?>" style="width: 100px;" /><?php
+												<img src="<?php echo Uri::root(true) . '/' . $item->thumbnail; ?>" style="width: 100px;" /><?php
 											}
 										} ?>
 									</td>
@@ -149,7 +156,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 									</td>
 									<td class="center" align="center">
 										<?php
-										echo JHtml::_(
+										echo HtmlHelper::_(
 											'jgrid.isdefault',
 											($item->standard != '0' && !empty($item->standard)),
 											$i,
@@ -159,7 +166,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 									</td>
 									<td class="center" align="center">
 										<?php
-										echo JHtml::_(
+										echo HtmlHelper::_(
 											'jgrid.published',
 											$item->published,
 											$i,
@@ -177,7 +184,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						}
 						else { ?>
 							<tr class="row1">
-								<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong>
+								<td colspan="8"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?></strong>
 								</td>
 							</tr><?php
 						}
@@ -190,9 +197,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="boxchecked" value="0" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo HtmlHelper::_('form.token'); ?>
 
-			<input type="hidden" id="archiveText" value="<?php echo JText::_('COM_BWPOSTMAN_TPL_CONFIRM_ARCHIVE', true); ?>" />
+			<input type="hidden" id="archiveText" value="<?php echo Text::_('COM_BWPOSTMAN_TPL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

@@ -26,7 +26,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('script', 'jui/treeselectmenu.jquery.min.js', false, true);
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+
+HtmlHelper::_('script', 'jui/treeselectmenu.jquery.min.js', false, true);
 
 $script = "
 	jQuery(document).ready(function()
@@ -50,7 +55,7 @@ $script = "
 	}
 ";
 // Add the script to the document head
-JFactory::getDocument()->addScriptDeclaration($script);
+Factory::getDocument()->addScriptDeclaration($script);
 ?>
 <div id="mod_bwpostman_overview">
 	<?php if (count($list) > 0) { ?>
@@ -65,6 +70,6 @@ JFactory::getDocument()->addScriptDeclaration($script);
 		</ul>
 	<?php }
 	else {
-		echo JText::_('MOD_BWPOSTMAN_OVERVIEW_NO_NEWSLETTERS_FOUND');
+		echo Text::_('MOD_BWPOSTMAN_OVERVIEW_NO_NEWSLETTERS_FOUND');
 	} ?>
 </div>

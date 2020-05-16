@@ -27,11 +27,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$jinput	= JFactory::getApplication()->input;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
+$jinput	= Factory::getApplication()->input;
 
 if ($this->queueEntries)
 {
-	JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+	Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 }
 ?>
 
@@ -62,7 +65,7 @@ if ($this->queueEntries)
 									BwPostmanHTMLHelper::quickiconButton(
 										$link,
 										'icon-48-tablecheck.png',
-										JText::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"),
+										Text::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"),
 										'',
 										''
 									);
@@ -71,7 +74,7 @@ if ($this->queueEntries)
 									BwPostmanHTMLHelper::quickiconButton(
 										$link,
 										'icon-48-tablestore.png',
-										JText::_("COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES"),
+										Text::_("COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES"),
 										0,
 										0
 									);
@@ -80,20 +83,20 @@ if ($this->queueEntries)
 									BwPostmanHTMLHelper::quickiconButton(
 										$link,
 										'icon-48-tablerestore.png',
-										JText::_("COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES"),
+										Text::_("COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES"),
 										0,
 										0
 									);
 
 									$link	= 'index.php?option=com_config&amp;view=component&amp;component=' . $option . '&amp;path=';
-									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', JText::_("COM_BWPOSTMAN_SETTINGS"), '', '');
+									BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', Text::_("COM_BWPOSTMAN_SETTINGS"), '', '');
 								}
 
 								// trigger BwTimeControl event
-								JFactory::getApplication()->triggerEvent('onBwPostmanMaintenanceRenderLayout', array());
+								Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceRenderLayout', array());
 
 								$link = BwPostmanHTMLHelper::getForumLink();
-								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-forum.png', JText::_("COM_BWPOSTMAN_FORUM"), 0, 0, 'new');
+								BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-forum.png', Text::_("COM_BWPOSTMAN_FORUM"), 0, 0, 'new');
 								?>
 							</div>
 						</td>

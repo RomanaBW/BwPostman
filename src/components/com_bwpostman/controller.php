@@ -27,6 +27,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Plugin\PluginHelper;
+
 // Import CONTROLLER object class
 jimport('joomla.application.component.controller');
 
@@ -75,21 +80,21 @@ class BwPostmanController extends JControllerLegacy
 	 *
 	 * @return boolean
 	 *
-	 * @throws  \Exception
+	 * @throws  Exception
 	 *
 	 * @since       2.3.0
 	 */
 	public function doCron()
 	{
-		$plugin = JPluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
-		$pluginParams = new JRegistry();
+		$plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
+		$pluginParams = new Registry();
 		$pluginParams->loadString($plugin->params);
 		$pluginPw   = (int) $pluginParams->get('bwtimecontrol_passwd');
 		$pluginUser = (int) $pluginParams->get('bwtimecontrol_username');
 
 		if ($pluginUser === "" || $pluginPw === "")
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_TC_NO_CREDENTIALS'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_TC_NO_CREDENTIALS'), 'error');
 		}
 
 		require_once(JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php');

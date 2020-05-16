@@ -26,6 +26,14 @@
 
 use Joomla\CMS\Crypt\Cipher\SodiumCipher;
 use \Joomla\CMS\Crypt\Key;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Log\LogEntry;
+use Joomla\Filter\InputFilter;
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
@@ -145,16 +153,16 @@ class BwPostmanPhpCron {
 	public function __construct()
 	{
 		/* Create the Application */
-		$app = JFactory::getApplication('site');
+		$app = Factory::getApplication('site');
 		$app->initialise();
 		$this->app = $app;
 
 		// Load the language file
-		$language = JFactory::getLanguage();
+		$language = Factory::getLanguage();
 		$language->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
 
 		// Load the plugin system
-		JPluginHelper::importPlugin('system');
+		PluginHelper::importPlugin('system');
 
 		// trigger the onAfterInitialise events
 		$app->triggerEvent('onAfterInitialise');
@@ -167,7 +175,7 @@ class BwPostmanPhpCron {
 
 		if ($extensionId === null)
 		{
-			$plugin = JPluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
+			$plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
 			$extensionId = $plugin->id;
 		}
 
@@ -216,7 +224,7 @@ class BwPostmanPhpCron {
 	protected function getStoredParams($extensionId)
 	{
 		$storedParams = array();
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('params'));
@@ -234,7 +242,7 @@ class BwPostmanPhpCron {
 			$this->_subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
 			$message                         = 'Database error while getting stored params, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		return json_decode($storedParams);
@@ -273,7 +281,7 @@ class BwPostmanPhpCron {
 	public function getKeyFromDatabase()
 	{
 		$keyValues = new stdClass();
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('priv'));
@@ -290,7 +298,7 @@ class BwPostmanPhpCron {
 		catch (Exception $e)
 		{
 			$message = 'Database error while getting encryption values, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		$key = new Key('sodium');
@@ -317,7 +325,7 @@ class BwPostmanPhpCron {
 	{
 		$oldPassword = null;
 		$params      = null;
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('params'));
@@ -333,7 +341,7 @@ class BwPostmanPhpCron {
 		catch (Exception $e)
 		{
 			$message = 'Database error while getting previously used password, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		if ($params !== '')
@@ -354,7 +362,7 @@ class BwPostmanPhpCron {
 	public function getNonceFromDatabase()
 	{
 		$nonce = null;
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('nonce'));
@@ -370,7 +378,7 @@ class BwPostmanPhpCron {
 		catch (Exception $e)
 		{
 			$message = 'Database error while getting nonce, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		return $nonce;
@@ -389,34 +397,34 @@ class BwPostmanPhpCron {
 	{
 		if ($this->_variables['username'] === '' || $this->_variables['password'] === '')
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWTIMECONTROL_NO_CREDENTIALS'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::_('PLG_BWTIMECONTROL_NO_CREDENTIALS'), 'error');
 			return false;
 		}
 
 		if (!extension_loaded('curl'))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWTIMECONTROL_CURL_NOT_INSTALLED'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::_('PLG_BWTIMECONTROL_CURL_NOT_INSTALLED'), 'error');
 			return false;
 		}
 
 		// Remove stop file
-		if (JFile::exists(JPATH_PLUGINS . $this->stopFile))
+		if (File::exists(JPATH_PLUGINS . $this->stopFile))
 		{
-			JFile::delete(JPATH_PLUGINS . $this->stopFile);
+			File::delete(JPATH_PLUGINS . $this->stopFile);
 		}
 
 		// Remove stopped file
-		if (JFile::exists(JPATH_PLUGINS . $this->stoppedFile))
+		if (File::exists(JPATH_PLUGINS . $this->stoppedFile))
 		{
-			JFile::delete(JPATH_PLUGINS . $this->stoppedFile);
+			File::delete(JPATH_PLUGINS . $this->stoppedFile);
 		}
 
 		// Create start file
-		if (!JFile::exists(JPATH_PLUGINS . $this->startFile))
+		if (!File::exists(JPATH_PLUGINS . $this->startFile))
 		{
 			file_put_contents(JPATH_PLUGINS . $this->startFile, 'start');
 
-			$jobUrl = JUri::root() . 'index.php?option=com_bwpostman&task=doCron&lang=en';
+			$jobUrl = Uri::root() . 'index.php?option=com_bwpostman&task=doCron&lang=en';
 
 			$curlDefaults = array(
 				CURLOPT_HEADER         => 0,
@@ -434,46 +442,46 @@ class BwPostmanPhpCron {
 
 			preg_match('/error/i', $curlRes, $matches);
 
-			$this->logger->addEntry(new JLogEntry('JobURL: ' . $jobUrl, BwLogger::BW_INFO, 'BwPm_TC'));
-			$this->logger->addEntry(new JLogEntry('cURL err: ' . $err, BwLogger::BW_ERROR, 'BwPm_TC'));
-			$this->logger->addEntry(new JLogEntry('cURL errMsg: ' . $errMsg, BwLogger::BW_ERROR, 'BwPm_TC'));
-			$this->logger->addEntry(new JLogEntry('cURL curlRes: ' . $curlRes, BwLogger::BW_INFO, 'BwPm_TC'));
-			$this->logger->addEntry(new JLogEntry('counted matches for error: ' . count($matches), BwLogger::BW_INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry('JobURL: ' . $jobUrl, BwLogger::BW_INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry('cURL err: ' . $err, BwLogger::BW_ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry('cURL errMsg: ' . $errMsg, BwLogger::BW_ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry('cURL curlRes: ' . $curlRes, BwLogger::BW_INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry('counted matches for error: ' . count($matches), BwLogger::BW_INFO, 'BwPm_TC'));
 
-			if ($err === 28 && JFile::exists(JPATH_PLUGINS . $this->startedFile))
+			if ($err === 28 && File::exists(JPATH_PLUGINS . $this->startedFile))
 			{
 				// Remove start file
-				if (JFile::exists(JPATH_PLUGINS . $this->startFile))
+				if (File::exists(JPATH_PLUGINS . $this->startFile))
 				{
-					JFile::delete(JPATH_PLUGINS . $this->startFile);
+					File::delete(JPATH_PLUGINS . $this->startFile);
 				}
 			}
 
 			if ($err !== 0 || count($matches) > 0)
 			{
-				$this->logger->addEntry(new JLogEntry('cURL errMsg: ' . $errMsg, BwLogger::BW_ERROR, 'BwPm_TC'));
+				$this->logger->addEntry(new LogEntry('cURL errMsg: ' . $errMsg, BwLogger::BW_ERROR, 'BwPm_TC'));
 
 				if (!$err === 28 || count($matches) > 0)
 				{
 					// @Todo: Is this really the only reason for timeout?
-					$errMsg = JText::_('PLG_BWTIMECONTROL_WRONG_CREDENTIALS');
+					$errMsg = Text::_('PLG_BWTIMECONTROL_WRONG_CREDENTIALS');
 				}
 
 				if ($err === 28)
 				{
-					$errMsg = JText::_('PLG_BWTIMECONTROL_CURL_TIMEOUT');
+					$errMsg = Text::_('PLG_BWTIMECONTROL_CURL_TIMEOUT');
 				}
 
 				$this->error = $errMsg;
 
 				// Remove start file
-				if (JFile::exists(JPATH_PLUGINS . $this->startFile))
+				if (File::exists(JPATH_PLUGINS . $this->startFile))
 				{
-					JFile::delete(JPATH_PLUGINS . $this->startFile);
+					File::delete(JPATH_PLUGINS . $this->startFile);
 				}
 
 				// Create stopped file
-				if (!JFile::exists(JPATH_PLUGINS . $this->stoppedFile))
+				if (!File::exists(JPATH_PLUGINS . $this->stoppedFile))
 				{
 					file_put_contents(JPATH_PLUGINS . $this->stoppedFile, 'stopped');
 				}
@@ -482,11 +490,11 @@ class BwPostmanPhpCron {
 			}
 
 			curl_close($ch);
-			$this->logger->addEntry(new JLogEntry('Cron server started', BwLogger::BW_INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry('Cron server started', BwLogger::BW_INFO, 'BwPm_TC'));
 		}
 		else
 		{
-			$this->logger->addEntry(new JLogEntry('Cron server already started', BwLogger::BW_INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry('Cron server already started', BwLogger::BW_INFO, 'BwPm_TC'));
 		}
 
 		return true;
@@ -502,19 +510,19 @@ class BwPostmanPhpCron {
 	public function stopCronServer()
 	{
 		// Remove start file
-		if (JFile::exists(JPATH_PLUGINS . $this->startFile))
+		if (File::exists(JPATH_PLUGINS . $this->startFile))
 		{
-			JFile::delete(JPATH_PLUGINS . $this->startFile);
+			File::delete(JPATH_PLUGINS . $this->startFile);
 		}
 
 		// Remove started file
-		if (JFile::exists(JPATH_PLUGINS . $this->startedFile))
+		if (File::exists(JPATH_PLUGINS . $this->startedFile))
 		{
-			JFile::delete(JPATH_PLUGINS . $this->startedFile);
+			File::delete(JPATH_PLUGINS . $this->startedFile);
 		}
 
 		// Create stop file
-		if (!JFile::exists(JPATH_PLUGINS . $this->stopFile))
+		if (!File::exists(JPATH_PLUGINS . $this->stopFile))
 		{
 			file_put_contents(JPATH_PLUGINS . $this->stopFile, 'stop');
 		}
@@ -544,7 +552,7 @@ class BwPostmanPhpCron {
 			flush();
 
 			// from here the response has been sent. One can now wait as long as one want and do some stuff
-			$this->logger->addEntry(new JLogEntry('Cron job started', BwLogger::BW_INFO, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry('Cron job started', BwLogger::BW_INFO, 'BwPm_TC'));
 			$doRun = true;
 
 			do
@@ -558,10 +566,10 @@ class BwPostmanPhpCron {
 				}
 
 				// Quit loop if desired
-				if (JFile::exists(JPATH_PLUGINS . $this->stopFile))
+				if (File::exists(JPATH_PLUGINS . $this->stopFile))
 				{
 					$doRun = false;
-					$this->logger->addEntry(new JLogEntry('Stopping cron server', BwLogger::BW_INFO, 'BwPm_TC'));
+					$this->logger->addEntry(new LogEntry('Stopping cron server', BwLogger::BW_INFO, 'BwPm_TC'));
 				}
 
 				// Do every X minutes
@@ -578,7 +586,7 @@ class BwPostmanPhpCron {
 					// Send newsletter, if necessary
 					if (is_array($nlsToSend) && count($nlsToSend))
 					{
-						$this->logger->addEntry(new JLogEntry(JText::sprintf('%s newsletter(s) to send', count($nlsToSend)), BwLogger::BW_INFO, 'BwPm_TC'));
+						$this->logger->addEntry(new LogEntry(Text::sprintf('%s newsletter(s) to send', count($nlsToSend)), BwLogger::BW_INFO, 'BwPm_TC'));
 
 						foreach ($nlsToSend as $nlToSend)
 						{
@@ -594,7 +602,7 @@ class BwPostmanPhpCron {
 					}
 //					else
 //					{
-//						$this->logger->addEntry(new JLogEntry('No newsletters to send', BwLogger::BW_DEBUG, 'BwPm_TC'));
+//						$this->logger->addEntry(new LogEntry('No newsletters to send', BwLogger::BW_DEBUG, 'BwPm_TC'));
 //					}
 				}
 
@@ -609,12 +617,12 @@ class BwPostmanPhpCron {
 			}
 			while ($doRun);
 
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 			$this->UserLogout($user->id);
 		}
 		else
 		{
-			$this->logger->addEntry(new JLogEntry(('Credentials error while sending'), BwLogger::BW_ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry(('Credentials error while sending'), BwLogger::BW_ERROR, 'BwPm_TC'));
 			return $loginResult;
 		}
 		return true;
@@ -629,36 +637,36 @@ class BwPostmanPhpCron {
 	 */
 	private function Login() {
 
-		$jfilter = new JFilterInput();
-		$app = JFactory::getApplication();
+		$jfilter = new InputFilter();
+		$app = Factory::getApplication();
 
 		$credentials['username'] = $jfilter->clean($this->_variables['username'], 'username');
 		$credentials['password'] = $jfilter->clean($this->_variables['password']);
 
 		if ($credentials['username'] === '' || $credentials['password'] === '')
 		{
-			$error = JText::_('PLG_BWTIMECONTROL_NO_CREDENTIALS');
+			$error = Text::_('PLG_BWTIMECONTROL_NO_CREDENTIALS');
 			$app->enqueueMessage($error, 'error');
 			return $error;
 		}
 
-		$result = $this->app->login($credentials, array('entry_url' => '\JUri::base() . \'administrator\index.php?option=com_users&task=user.login'));
+		$result = $this->app->login($credentials, array('entry_url' => '\Uri::base() . \'administrator\index.php?option=com_users&task=user.login'));
 
 		if (!$result) {
-			$error = JText::_('PLG_BWTIMECONTROL_WRONG_CREDENTIALS');
+			$error = Text::_('PLG_BWTIMECONTROL_WRONG_CREDENTIALS');
 			$app->enqueueMessage($error, 'error');
 			throw new Exception($result, 500);
 //			return $error;
 		}
 
 		// Remove start file
-		if (JFile::exists(JPATH_PLUGINS . $this->startFile))
+		if (File::exists(JPATH_PLUGINS . $this->startFile))
 		{
-			JFile::delete(JPATH_PLUGINS . $this->startFile);
+			File::delete(JPATH_PLUGINS . $this->startFile);
 		}
 
 		// Create started file
-		if (!JFile::exists(JPATH_PLUGINS . $this->startedFile))
+		if (!File::exists(JPATH_PLUGINS . $this->startedFile))
 		{
 			file_put_contents(JPATH_PLUGINS . $this->startedFile, 'started');
 		}
@@ -679,21 +687,21 @@ class BwPostmanPhpCron {
 
 		if(!$loggedOut) {
 			ob_end_clean();
-			echo JText::_('PLG_BWTIMECONTROL_PROBLEM_LOGOUT_USER');
+			echo Text::_('PLG_BWTIMECONTROL_PROBLEM_LOGOUT_USER');
 		}
 		else
 		{
 			ob_end_clean();
-			echo JText::_('PLG_BWTIMECONTROL_USER_LOGGED_OUT') . "\n";
+			echo Text::_('PLG_BWTIMECONTROL_USER_LOGGED_OUT') . "\n";
 
 			// Remove stop file
-			if (JFile::exists(JPATH_PLUGINS . $this->stopFile))
+			if (File::exists(JPATH_PLUGINS . $this->stopFile))
 			{
-				JFile::delete(JPATH_PLUGINS . $this->stopFile);
+				File::delete(JPATH_PLUGINS . $this->stopFile);
 			}
 
 			// Create stopped file
-			if (!JFile::exists(JPATH_PLUGINS . $this->stoppedFile))
+			if (!File::exists(JPATH_PLUGINS . $this->stoppedFile))
 			{
 				file_put_contents(JPATH_PLUGINS . $this->stoppedFile, 'stopped');
 			}
@@ -713,7 +721,7 @@ class BwPostmanPhpCron {
 	{
 		$pluginStateOld = 0;
 
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('enabled'));
@@ -729,7 +737,7 @@ class BwPostmanPhpCron {
 		catch (Exception $e)
 		{
 			$message = 'Database error while getting plugin state, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
 		return $pluginStateOld;
@@ -746,7 +754,7 @@ class BwPostmanPhpCron {
 	{
 		$currentTime = date('Y-m-d H:i:s', time());
 
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('newsletter_id'));
@@ -765,7 +773,7 @@ class BwPostmanPhpCron {
 		catch (RuntimeException $e)
 		{
 			$message = 'Database error while getting next newsletters to send, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'BwPm_TC'));
 
 			return false;
 		}
@@ -789,7 +797,7 @@ class BwPostmanPhpCron {
 	 */
 	public function checkMailingDate($scheduledNls)
 	{
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 
 		$query	= $db->getQuery(true);
 
@@ -807,7 +815,7 @@ class BwPostmanPhpCron {
 		catch (RuntimeException $e)
 		{
 			$message = 'Database error while check mailing date, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'BwPm_TC'));
 
 			return false;
 		}
@@ -835,7 +843,7 @@ class BwPostmanPhpCron {
 		$error = array();
 		$ret = 1;
 		$ret_msg = '';
-		$params			= JComponentHelper::getParams('com_bwpostman');
+		$params			= ComponentHelper::getParams('com_bwpostman');
 		$mails_per_step	= (int) $params->get('default_mails_per_pageload');
 		// We have to divide by 1000, because sending by component is made by JS and therefore the sleep is stored in ms
 		$delay			= (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit') / 1000;
@@ -895,48 +903,48 @@ class BwPostmanPhpCron {
 	 */
 	public function sendCronMail($messages, $nlToSend, $context)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_PLUGINS . '/bwpostman/bwtimecontrol');
 
-		$config = JFactory::getConfig();
-		$user = JFactory::getUser();
+		$config = Factory::getConfig();
+		$user = Factory::getUser();
 
-		$mailer		= JFactory::getMailer();
+		$mailer		= Factory::getMailer();
 		$sender		= array();
 
 		$sender[0]	= $config->get('mailfrom');
 		$sender[1]	= $config->get('fromname');
 
-		$subject = JText::_('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_SUBJECT');
+		$subject = Text::_('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_SUBJECT');
 		$body = "";
 
 		switch ($context)
 		{
 			case 'checkRecipients':
-				$body .= JText::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_CHECK_RECIPIENTS', $nlToSend, JText::_($messages));
+				$body .= Text::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_CHECK_RECIPIENTS', $nlToSend, Text::_($messages));
 				break;
 			case 'sendNewsletter':
-				$body .= JText::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_SEND_NEWSLETTER', $nlToSend, JText::_($messages));
+				$body .= Text::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_SEND_NEWSLETTER', $nlToSend, Text::_($messages));
 				break;
 			case 'preSendChecks':
-				$body .= JText::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_PRE_CHECK', $nlToSend);
+				$body .= Text::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_PRE_CHECK', $nlToSend);
 				foreach ($messages as $message)
 				{
-					$body .=  "\n" . JText::_($message);
+					$body .=  "\n" . Text::_($message);
 				}
 				break;
 			case 'sendCron';
-				$body .= JText::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_GENERAL', $nlToSend);
+				$body .= Text::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_GENERAL', $nlToSend);
 				break;
 			case 'processQueue';
-				$body .= JText::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_QUEUE', $nlToSend);
+				$body .= Text::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_QUEUE', $nlToSend);
 				break;
 			case 'cronFinished';
-				$subject = JText::_('PLG_BWTIMECONTROL_SCHEDULE_SEND_SUCCESS_SUBJECT');
-				$body .= JText::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_FINISHED', $nlToSend);
+				$subject = Text::_('PLG_BWTIMECONTROL_SCHEDULE_SEND_SUCCESS_SUBJECT');
+				$body .= Text::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_FINISHED', $nlToSend);
 				break;
 			default:
-				$body .= JText::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_OTHERS', $nlToSend);
+				$body .= Text::sprintf('PLG_BWTIMECONTROL_SCHEDULE_SEND_ERROR_OTHERS', $nlToSend);
 				break;
 		}
 
@@ -947,7 +955,7 @@ class BwPostmanPhpCron {
 		$mailer->setBody($body);
 
 		$mailer->Send();
-		$this->logger->addEntry(new JLogEntry(JText::_('Scheduled sending of newsletter with ID %s finished', $nlToSend), BwLogger::BW_ERROR, 'BwPm_TC'));
+		$this->logger->addEntry(new LogEntry(Text::_('Scheduled sending of newsletter with ID %s finished', $nlToSend), BwLogger::BW_ERROR, 'BwPm_TC'));
 
 	}
 
@@ -964,7 +972,7 @@ class BwPostmanPhpCron {
 	 */
 	public function setSentStatus($nlToSend)
 	{
-		$db	= JFactory::getDbo();
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->update($db->quoteName('#__bwpostman_tc_schedule'));
@@ -982,7 +990,7 @@ class BwPostmanPhpCron {
 		catch (RuntimeException $e)
 		{
 			$message = 'Database error while storing sent status, error message is ' . $e->getMessage();
-			$this->logger->addEntry(new JLogEntry($message, BwLogger::BW_ERROR, 'BwPm_TC'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'BwPm_TC'));
 
 			return false;
 		}

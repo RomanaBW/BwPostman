@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 // Import CONTROLLER object class
 jimport('joomla.application.component.controller');
 
@@ -57,10 +59,10 @@ class BwPostmanControllerNewsletters extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		$Itemid = JFactory::getApplication()->input->get('Itemid', null);
-		JFactory::getApplication()->setUserState('com_bwpostman.newsletters.itemid', $Itemid);
+		$Itemid = Factory::getApplication()->input->get('Itemid', null);
+		Factory::getApplication()->setUserState('com_bwpostman.newsletters.itemid', $Itemid);
 
-		JFactory::getApplication()->input->set('view', 'newsletters');
+		Factory::getApplication()->input->set('view', 'newsletters');
 		parent::display();
 	}
 }

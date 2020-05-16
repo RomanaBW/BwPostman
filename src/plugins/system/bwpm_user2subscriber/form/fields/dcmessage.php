@@ -27,6 +27,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * Class JFormFieldBwpSpacer
  * Helper form field to show a message
@@ -56,12 +59,12 @@ class JFormFieldDcMessage extends JFormField
 	protected function getInput()
 	{
 
-		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$com_params = ComponentHelper::getParams('com_bwpostman');
 
 		$html = array();
 		$html[] = '<div class="dc_message">';
-		$html[] = '	<p>' . JText::_('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_MESSAGE') . '</p>';
-		$html[] = '	<p class="invalid">' . $com_params->get('disclaimer') ? '' : JText::_('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_COM_DISABLED') . '</p>';
+		$html[] = '	<p>' . Text::_('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_MESSAGE') . '</p>';
+		$html[] = '	<p class="invalid">' . $com_params->get('disclaimer') ? '' : Text::_('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_COM_DISABLED') . '</p>';
 		$html[] = '</div>';
 
 		return implode('', $html);

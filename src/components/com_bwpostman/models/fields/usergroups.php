@@ -26,7 +26,11 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('checkboxes');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
+
+FormHelper::loadFieldClass('checkboxes');
 
 /**
  * Form Field class for the Joomla Platform.
@@ -95,17 +99,17 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 		$html[] = '					<tr>';
 		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
-			$html[] = '						<th width="30" nowrap="nowrap">' . JText::_('JGRID_HEADING_ID') . '</th>';
+			$html[] = '						<th width="30" nowrap="nowrap">' . Text::_('JGRID_HEADING_ID') . '</th>';
 			$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="'
-				. JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
-			$html[] = '						<th nowrap="nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
+				. Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+			$html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
 		}
 		else
 		{
-			$html[] = '						<th scope="col" style="width: 3%;">' . JText::_('JGRID_HEADING_ID') . '</th>';
+			$html[] = '						<th scope="col" style="width: 3%;">' . Text::_('JGRID_HEADING_ID') . '</th>';
 			$html[] = '						<th scope="col" style="width: 1%;" class="text-center"><input type="checkbox" name="checkall-toggle" value="" title="'
-				. JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
-			$html[] = '						<th class="text-nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
+				. Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+			$html[] = '						<th class="text-nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
 		}
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
@@ -123,17 +127,17 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
-				$html[] = '							 <td style="align:center">' . JText::_($option->value) . '</td>';
+				$html[] = '							 <td style="align:center">' . Text::_($option->value) . '</td>';
 				$html[] = '              <td><input type="checkbox" id="ub' . $i . '" name="' . $this->name . '" value="'
 					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
-				$html[] = '							 <td class="text-nowrap">' . JText::_($option->text) . '</td>';
+				$html[] = '							 <td class="text-nowrap">' . Text::_($option->text) . '</td>';
 				$html[] = '						  </tr>';
 			}
 		}
 		else
 		{
 			$html[] = '							<tr class="row1">';
-			$html[] = '								<td colspan="3"><strong>' . JText::_('COM_BWPOSTMAN_NO_CAM') . '</strong></td>';
+			$html[] = '								<td colspan="3"><strong>' . Text::_('COM_BWPOSTMAN_NO_CAM') . '</strong></td>';
 			$html[] = '							</tr>';
 		}
 
@@ -165,7 +169,7 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 		{
 			static::$options[$hash] = parent::getOptions();
 
-			$_db = JFactory::getDbo();
+			$_db = Factory::getDbo();
 			$query = $_db->getQuery(true)
 				->select('CONCAT("-",a.id) AS value')
 				->select('a.title AS text')
@@ -188,7 +192,7 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 

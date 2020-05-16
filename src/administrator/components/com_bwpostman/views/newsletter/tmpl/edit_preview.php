@@ -27,49 +27,54 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 
-$image = JHtml::_('image', 'administrator/templates/' . $this->template . '/images/menu/icon-16-info.png', JText::_('COM_BWPOSTMAN_NOTES'));
+HtmlHelper::_('bootstrap.tooltip');
+HtmlHelper::_('behavior.keepalive');
+HtmlHelper::_('formbehavior.chosen', 'select');
+
+$image = HtmlHelper::_('image', 'administrator/templates/' . $this->template . '/images/menu/icon-16-info.png', Text::_('COM_BWPOSTMAN_NOTES'));
 $currentTab = 'edit_preview';
 ?>
 
 <div id="bwp_view_single">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="adminForm">
 		<?php
 		if ($this->item->is_template)
 		{
-			JFactory::$application->enqueueMessage(JText::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_INFO"), "Notice");
+			Factory::$application->enqueueMessage(Text::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_INFO"), "Notice");
 		}
 		?>
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="closed">
 					<button onclick="return changeTab('edit_basic', '<?php echo $currentTab; ?>');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP1'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP1'); ?>
 					</button>
 				</li>
 				<li class="closed">
 					<button onclick="return changeTab('edit_html', '<?php echo $currentTab; ?>');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP2'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP2'); ?>
 					</button>
 				</li>
 				<li class="closed">
 					<button onclick="return changeTab('edit_text', '<?php echo $currentTab; ?>');" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP3'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP3'); ?>
 					</button>
 				</li>
 				<li class="open">
 					<button onclick="return changeTab('edit_preview', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
 				<?php if (BwPostmanHelper::canSend((int) $this->item->id) && !$this->item->is_template) { ?>
 					<li class="closed">
 						<button onclick="return changeTab('edit_send', '<?php echo $currentTab; ?>');" class="buttonAsLink">
-							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
+							<?php echo Text::_('COM_BWPOSTMAN_NL_STP5'); ?>
 						</button>
 					</li>
 				<?php } ?>
@@ -79,13 +84,13 @@ $currentTab = 'edit_preview';
 
 		<div class="tab-wrapper-bwp">
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_HEADER'); ?></legend>
+				<legend><?php echo Text::_('COM_BWPOSTMAN_NL_HEADER'); ?></legend>
 				<div class="well well-small">
 					<table class="admintable">
 						<tr>
 							<td align="right">
 								<strong><?php
-									echo JText::_('COM_BWPOSTMAN_NL_FROM_NAME');
+									echo Text::_('COM_BWPOSTMAN_NL_FROM_NAME');
 									echo ':'; ?>
 								</strong>
 							</td>
@@ -93,7 +98,7 @@ $currentTab = 'edit_preview';
 						<tr>
 							<td align="right">
 								<strong><?php
-									echo JText::_('COM_BWPOSTMAN_NL_FROM_EMAIL');
+									echo Text::_('COM_BWPOSTMAN_NL_FROM_EMAIL');
 									echo ':'; ?>
 								</strong>
 							</td>
@@ -102,7 +107,7 @@ $currentTab = 'edit_preview';
 						<tr>
 							<td align="right">
 								<strong><?php
-									echo JText::_('COM_BWPOSTMAN_NL_REPLY_EMAIL');
+									echo Text::_('COM_BWPOSTMAN_NL_REPLY_EMAIL');
 									echo ':'; ?>
 								</strong>
 							</td>
@@ -115,7 +120,7 @@ $currentTab = 'edit_preview';
 						<tr>
 							<td align="right">
 								<strong><?php
-									echo JText::_('COM_BWPOSTMAN_NL_SUBJECT');
+									echo Text::_('COM_BWPOSTMAN_NL_SUBJECT');
 									echo ':'; ?>
 								</strong>
 							</td>
@@ -125,7 +130,7 @@ $currentTab = 'edit_preview';
 				</div>
 			</fieldset>
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_PREVIEW_HTML'); ?></legend>
+				<legend><?php echo Text::_('COM_BWPOSTMAN_NL_PREVIEW_HTML'); ?></legend>
 				<div class="well well-small">
 					<div><iframe name="myIframeHtml"
 							src="index.php?option=com_bwpostman&amp;view=newsletter&amp;
@@ -137,7 +142,7 @@ $currentTab = 'edit_preview';
 			</fieldset>
 
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_PREVIEW_TEXT'); ?></legend>
+				<legend><?php echo Text::_('COM_BWPOSTMAN_NL_PREVIEW_TEXT'); ?></legend>
 				<div class="well well-small">
 					<div><iframe name="myIframeText"
 						src="index.php?option=com_bwpostman&amp;view=newsletter&amp;
@@ -202,6 +207,6 @@ $currentTab = 'edit_preview';
 		<input type="hidden" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HtmlHelper::_('form.token'); ?>
 	</form>
 </div>

@@ -27,27 +27,33 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the tooltip behavior for the notes
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 
-$jinput	= JFactory::getApplication()->input;
+// Load the tooltip behavior for the notes
+HtmlHelper::_('bootstrap.tooltip');
+HtmlHelper::_('behavior.keepalive');
+
+$jinput	= Factory::getApplication()->input;
 $image	= '<i class="icon-info"></i>';
 $option	= $jinput->getCmd('option');
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
+<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_SELECT_RESTORE_FILE'); ?></legend>
-		<div class="well well-small warning"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_USER_MESSAGE')?></div>
+		<legend><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_SELECT_RESTORE_FILE'); ?></legend>
+		<div class="well well-small warning"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_USER_MESSAGE')?></div>
 		<div class="well well-small">
 			<div class="row-fluid">
 				<table class="admintable bwptable restore">
 					<tr>
 						<td align="right" class="key">
-							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE'); ?></span>
+							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE'); ?></span>
 							<span class="editlinktip hasTip hasTooltip"
-									title="<?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE_NOTE'); ?>">
+									title="<?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
 						</td>
@@ -60,7 +66,7 @@ $option	= $jinput->getCmd('option');
 							<input type="button" class="btn btn-success" name="submitbutton"
 									onclick="Joomla.submitbutton('maintenance.doRestore');
 										document.getElementById('loading').style.display = 'block';"
-									value="<?php echo JText::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_BUTTON'); ?>">
+									value="<?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_BUTTON'); ?>">
 						</td>
 					</tr>
 				</table>
@@ -70,11 +76,11 @@ $option	= $jinput->getCmd('option');
 	<input type="hidden" name="task" value="doRestore" />
 	<input type="hidden" name="controller" value="maintenance" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HtmlHelper::_('form.token'); ?>
 </form>
 <div id="loading" style="display: none;"></div>
 
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 
 <?php
-JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_restore_tables.js');
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_restore_tables.js');

@@ -27,11 +27,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Mail\MailHelper;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\User\UserHelper;
+
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
 
 require_once(JPATH_COMPONENT . '/helpers/subscriberhelper.php');
-
 
 /**
  * Class BwPostmanModelRegister
@@ -42,6 +50,8 @@ class BwPostmanModelRegister extends JModelAdmin
 {
 	/**
 	 * Constructor
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -57,13 +67,13 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * @param	string	$prefix     A prefix for the table class name. Optional.
 	 * @param	array	$config     Configuration array for model. Optional.
 	 *
-	 * @return	JTable	A database object
+	 * @return	Table	A database object
 	 *
 	 * @since  1.0.1
 	 */
 	public function getTable($type = 'Subscribers', $prefix = 'BwPostmanTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -77,7 +87,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	protected function populateState()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		// Load state from the request.
 		$pk = $jinput->getInt('id');
@@ -87,14 +97,14 @@ class BwPostmanModelRegister extends JModelAdmin
 		$this->setState('list.offset', $offset);
 
 		// TODO: Tune these values based on other permissions.
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		if ((!$user->authorise('core.edit.state', 'com_bwpostman')) &&  (!$user->authorise('core.edit', 'com_bwpostman')))
 		{
 			$this->setState('filter.published', 1);
 			$this->setState('filter.archived', 2);
 		}
 
-		$this->setState('filter.language', JLanguageMultilang::isEnabled());
+		$this->setState('filter.language', Multilanguage::isEnabled());
 	}
 
 	/**
@@ -138,7 +148,7 @@ class BwPostmanModelRegister extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $itemid;
@@ -172,7 +182,7 @@ class BwPostmanModelRegister extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if ($uid == null)
@@ -212,7 +222,7 @@ class BwPostmanModelRegister extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $id;
@@ -234,7 +244,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	{
 		jimport('joomla.user.helper');
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		// Create the editlink and check if the string doesn't exist twice or more
 		$data['editlink'] = $this->createEditlink();
@@ -280,7 +290,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	{
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
-		$params 	= JComponentHelper::getParams('com_bwpostman');
+		$params 	= ComponentHelper::getParams('com_bwpostman');
 		$send_mail	= $params->get('deactivation_to_webmaster');
 		$subscriber = null;
 
@@ -299,7 +309,7 @@ class BwPostmanModelRegister extends JModelAdmin
 				}
 				catch (RuntimeException $e)
 				{
-					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 				}
 			}
 
@@ -317,7 +327,7 @@ class BwPostmanModelRegister extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ERROR_DELETE_MAILINGLISTS'), 'warning');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_DELETE_MAILINGLISTS'), 'warning');
 				return false;
 			}
 		}
@@ -346,7 +356,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	public function activateSubscriber($activation, &$ret_err_msg, &$ret_editlink, $activation_ip)
 	{
-		$app	    = JFactory::getApplication();
+		$app	    = Factory::getApplication();
 		$subscriber = null;
 		$this->addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/models');
 
@@ -387,7 +397,7 @@ class BwPostmanModelRegister extends JModelAdmin
 		// Is it a valid user to activate?
 		if (!empty($id))
 		{
-			$date = JFactory::getDate();
+			$date = Factory::getDate();
 			$time = $date->toSql();
 
 			$query->clear();
@@ -406,7 +416,7 @@ class BwPostmanModelRegister extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 		else
@@ -435,7 +445,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	public function unsubscribe($editlink, $email, &$ret_err_msg)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$_db	= $this->_db;
 		$id     = null;
 		$query	= $_db->getQuery(true);
@@ -489,19 +499,18 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	public function sendDeactivationNotification($subscriber)
 	{
-		$app	    = JFactory::getApplication();
-		$mail	    = JFactory::getMailer();
-		$params     = JComponentHelper::getParams('com_bwpostman');
+		$mail	    = Factory::getMailer();
+		$params     = ComponentHelper::getParams('com_bwpostman');
 		$from	    = array();
 
 		// set recipient and reply-to
-		$from[0]	= JMailHelper::cleanAddress($params->get('default_from_email'));
+		$from[0]	= MailHelper::cleanAddress($params->get('default_from_email'));
 		$from[1]	= $params->get('default_from_name');
 		$mail->setSender($from);
 		$mail->addReplyTo($from[0], $from[1]);
 
 		// set recipient
-		$recipient_mail	= JMailHelper::cleanAddress($params->get('deactivation_to_webmaster_email'));
+		$recipient_mail	= MailHelper::cleanAddress($params->get('deactivation_to_webmaster_email'));
 		$recipient_name	= $params->get('deactivation_from_name');
 		if (!is_string($recipient_mail))
 		{
@@ -516,16 +525,16 @@ class BwPostmanModelRegister extends JModelAdmin
 		$mail->addRecipient($recipient_mail, $recipient_name);
 
 		// set subject
-		$subject		= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION');
+		$subject		= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION');
 		$mail->setSubject($subject);
 
 		// Set body
-		$body	= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT');
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_NAME') . $subscriber->name . "\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_FIRSTNAME') . $subscriber->firstname . "\n\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_EMAIL') . $subscriber->email . "\n\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_REGISTRATION_DATE') . $subscriber->registration_date . "\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_CONFIRMATION_DATE') . $subscriber->confirmation_date . "\n";
+		$body	= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT');
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_NAME') . $subscriber->name . "\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_FIRSTNAME') . $subscriber->firstname . "\n\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_EMAIL') . $subscriber->email . "\n\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_REGISTRATION_DATE') . $subscriber->registration_date . "\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_CONFIRMATION_DATE') . $subscriber->confirmation_date . "\n";
 
 		$mail->setBody($body);
 
@@ -546,21 +555,21 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	public function sendActivationNotification($subscriber_id)
 	{
-		$app	    = JFactory::getApplication();
-		$mail	    = JFactory::getMailer();
-		$params     = JComponentHelper::getParams('com_bwpostman');
+		$app	    = Factory::getApplication();
+		$mail	    = Factory::getMailer();
+		$params     = ComponentHelper::getParams('com_bwpostman');
 		$from	    = array();
 		$subscriber = null;
 
 		// set recipient and reply-to
-		$from[0]	= JMailHelper::cleanAddress($params->get('default_from_email'));
-		$from[1]	= JText::_($params->get('default_from_name'));
+		$from[0]	= MailHelper::cleanAddress($params->get('default_from_email'));
+		$from[1]	= Text::_($params->get('default_from_name'));
 		$mail->setSender($from);
 		$mail->addReplyTo($from[0], $from[1]);
 
 		// set recipient
-		$recipient_mail	= JMailHelper::cleanAddress($params->get('activation_to_webmaster_email'));
-		$recipient_name	= JText::_($params->get('activation_from_name'));
+		$recipient_mail	= MailHelper::cleanAddress($params->get('activation_to_webmaster_email'));
+		$recipient_name	= Text::_($params->get('activation_from_name'));
 		if (!is_string($recipient_mail))
 		{
 			$recipient_mail = $from[0];
@@ -574,7 +583,7 @@ class BwPostmanModelRegister extends JModelAdmin
 		$mail->addRecipient($recipient_mail, $recipient_name);
 
 		// set subject
-		$subject		= JText::_('COM_BWPOSTMAN_NEW_ACTIVATION');
+		$subject		= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION');
 		$mail->setSubject($subject);
 
 		// get body-data for mail and set body
@@ -664,16 +673,16 @@ class BwPostmanModelRegister extends JModelAdmin
 		}
 
 		// Set body
-		$body	= JText::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT');
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_NAME') . $subscriber->name . "\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_FIRSTNAME') . $subscriber->firstname . "\n\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_EMAIL') . $subscriber->email . "\n\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_REGISTRATION_DATE') . $subscriber->registration_date . "\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_REGISTRATION_IP') . $subscriber->registration_ip . "\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_REGISTRATION_BY') . $subscriber->registered_by . "\n\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_CONFIRMATION_DATE') . $subscriber->confirmation_date . "\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_CONFIRMATION_IP') . $subscriber->confirmation_ip . "\n";
-		$body	.= JText::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_CONFIRMATION_BY') . $subscriber->confirmed_by . "\n";
+		$body	= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT');
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_NAME') . $subscriber->name . "\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_FIRSTNAME') . $subscriber->firstname . "\n\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_EMAIL') . $subscriber->email . "\n\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_REGISTRATION_DATE') . $subscriber->registration_date . "\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_REGISTRATION_IP') . $subscriber->registration_ip . "\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_REGISTRATION_BY') . $subscriber->registered_by . "\n\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_CONFIRMATION_DATE') . $subscriber->confirmation_date . "\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_CONFIRMATION_IP') . $subscriber->confirmation_ip . "\n";
+		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_CONFIRMATION_BY') . $subscriber->confirmed_by . "\n";
 		$mail->setBody($body);
 
 		// Send the email
@@ -700,7 +709,7 @@ class BwPostmanModelRegister extends JModelAdmin
 
 		while ($match_activation)
 		{
-			$current_activation = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+			$current_activation = ApplicationHelper::getHash(UserHelper::genRandomPassword());
 
 			$query->select($_db->quoteName('activation'));
 			$query->from($_db->quoteName('#__bwpostman_subscribers'));
@@ -714,7 +723,7 @@ class BwPostmanModelRegister extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			if ($activation == $current_activation)
@@ -750,7 +759,7 @@ class BwPostmanModelRegister extends JModelAdmin
 
 		while ($match_editlink)
 		{
-			$current_editlink = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+			$current_editlink = ApplicationHelper::getHash(UserHelper::genRandomPassword());
 
 			$query->select($_db->quoteName('editlink'));
 			$query->from($_db->quoteName('#__bwpostman_subscribers'));
@@ -764,7 +773,7 @@ class BwPostmanModelRegister extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			if ($editlink == $current_editlink)

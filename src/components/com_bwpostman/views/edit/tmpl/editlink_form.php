@@ -27,8 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // needed to validate email
-JHtml::_('behavior.formvalidator');
+HtmlHelper::_('behavior.formvalidator');
 
 // Form to order the editlink
 // --> the editlink is needed to modify the subscriber account if the subscriber is not logged into the website
@@ -43,14 +47,14 @@ JHtml::_('behavior.formvalidator');
 			</h1>
 		<?php } ?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post"
+		<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post"
 				id="bwp_com_form" name="bwp_com_form" class="form-validate">
 			<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<p class="getlink_text">
-					<?php echo JText::_('COM_BWPOSTMAN_EDITLINK_MSG'); ?>
+					<?php echo Text::_('COM_BWPOSTMAN_EDITLINK_MSG'); ?>
 				</p>
 				<p class="getlink_email">
-					<span><label id="emailmsg" for="email"> <?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?>:</label></span>
+					<span><label id="emailmsg" for="email"> <?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:</label></span>
 					<span>
 						<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
 								class="inputbox required validate-email" maxlength="100" />
@@ -58,12 +62,12 @@ JHtml::_('behavior.formvalidator');
 				</p>
 			</div>
 
-			<button class="button validate btn" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_SENDEDITLINK'); ?></button>
+			<button class="button validate btn" type="submit"><?php echo Text::_('COM_BWPOSTMAN_BUTTON_SENDEDITLINK'); ?></button>
 
 			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="view" value="edit" />
 			<input type="hidden" name="task" value="sendEditlink" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo HtmlHelper::_('form.token'); ?>
 		</form>
 
 		<?php

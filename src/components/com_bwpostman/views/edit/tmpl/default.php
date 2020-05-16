@@ -27,10 +27,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.formvalidator');
+HtmlHelper::_('formbehavior.chosen', 'select');
+HtmlHelper::_('behavior.formvalidator');
 
 HTMLHelper::_('bootstrap.tooltip');
 
@@ -54,7 +58,7 @@ HTMLHelper::_('bootstrap.tooltip');
 				{
 					if (form.name.value == "")
 					{
-						alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>");
+						alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>");
 						fault = true;
 					}
 				}
@@ -66,7 +70,7 @@ HTMLHelper::_('bootstrap.tooltip');
 				{
 					if (form.firstname.value == "")
 					{
-						alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>");
+						alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>");
 						fault = true;
 					}
 				}
@@ -77,19 +81,19 @@ HTMLHelper::_('bootstrap.tooltip');
 				{
 					if (form.special.value == "")
 					{
-						alert('<?php echo JText::sprintf("COM_BWPOSTMAN_SUB_ERROR_SPECIAL", JText::_($this->params->get("special_label"))); ?>');
+						alert('<?php echo Text::sprintf("COM_BWPOSTMAN_SUB_ERROR_SPECIAL", Text::_($this->params->get("special_label"))); ?>');
 						fault = true;
 					}
 				}
 			}
 			if (form.email.value== "")
 			{
-				alert("<?php echo JText::_('COM_BWPOSTMAN_ERROR_EMAIL', true); ?>");
+				alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_EMAIL', true); ?>");
 				fault	= true;
 			}
 			if (checkNlBoxes()== false)
 			{
-				alert ("<?php echo JText::_('COM_BWPOSTMAN_ERROR_NL_CHECK', true); ?>");
+				alert ("<?php echo Text::_('COM_BWPOSTMAN_ERROR_NL_CHECK', true); ?>");
 				fault	= true;
 			}
 		}
@@ -129,9 +133,9 @@ HTMLHelper::_('bootstrap.tooltip');
 <noscript>
 	<div id="system-message">
 		<div class="alert alert-warning">
-			<h4 class="alert-heading"><?php echo JText::_('WARNING'); ?></h4>
+			<h4 class="alert-heading"><?php echo Text::_('WARNING'); ?></h4>
 			<div>
-				<p><?php echo JText::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
+				<p><?php echo Text::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
 			</div>
 		</div>
 	</div>
@@ -146,10 +150,10 @@ HTMLHelper::_('bootstrap.tooltip');
 		<?php endif; ?>
 
 		<div class="content_inner">
-			<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
+			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
 					name="bwp_com_form" class="form-validate form-inline">
 				<?php
-				echo JLayoutHelper::render(
+				echo LayoutHelper::render(
 					'default',
 					array('subscriber' => $this->subscriber, 'params' => $this->params, 'lists' => $this->lists),
 					$basePath = JPATH_COMPONENT . '/layouts/subscriber'
@@ -159,7 +163,7 @@ HTMLHelper::_('bootstrap.tooltip');
 				<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 					<p class="edit_unsubscribe">
 						<input title="unsubscribe" type="checkbox" id="unsubscribe" name="unsubscribe" value="1" />
-						<span class="edit_unsubscribe_text"><?php echo JText::_('COM_BWPOSTMAN_UNSUBSCRIBE') ?></span>
+						<span class="edit_unsubscribe_text"><?php echo Text::_('COM_BWPOSTMAN_UNSUBSCRIBE') ?></span>
 					</p>
 				</div>
 
@@ -167,16 +171,16 @@ HTMLHelper::_('bootstrap.tooltip');
 
 				<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 					<p class="edit_required">
-						<?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?>
 					</p>
 				</div>
 
 				<button class="button validate save btn" type="button" onclick="return submitbutton('submit');">
-					<?php echo JText::_('COM_BWPOSTMAN_BUTTON_EDIT'); ?>
+					<?php echo Text::_('COM_BWPOSTMAN_BUTTON_EDIT'); ?>
 				</button>
-				<?php if (JFactory::getUser()->get('guest')):   ?>
+				<?php if (Factory::getUser()->get('guest')):   ?>
 					<button class="button validate leave btn" type="button" onclick="return submitbutton('submitleave');">
-						<?php echo JText::_('COM_BWPOSTMAN_BUTTON_LEAVEEDIT'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_BUTTON_LEAVEEDIT'); ?>
 					</button>
 				<?php endif; ?>
 
@@ -191,7 +195,7 @@ HTMLHelper::_('bootstrap.tooltip');
 				<input type="hidden" name="show_name_field" value="<?php echo $this->params->get('show_name_field'); ?>" />
 				<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field'); ?>" />
 				<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special'); ?>" />
-				<?php echo JHtml::_('form.token'); ?>
+				<?php echo HtmlHelper::_('form.token'); ?>
 			</form>
 
 			<?php

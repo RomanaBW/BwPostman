@@ -27,8 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // needed to validate email
-JHtml::_('behavior.formvalidator');
+HtmlHelper::_('behavior.formvalidator');
 
 // Displays a button to send the activation code
 // Will be shown if
@@ -49,32 +53,32 @@ JHtml::_('behavior.formvalidator');
 		<?php
 		}
 
-		echo '<p class="bwp-error">' . JText::_('COM_BWPOSTMAN_ERROR') . '</p>';
+		echo '<p class="bwp-error">' . Text::_('COM_BWPOSTMAN_ERROR') . '</p>';
 		?>
 
-		<form action="<?php echo JRoute::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
+		<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
 				name="bwp_com_form" class="form-validate">
 			<?php
 			if (property_exists($this->error, 'err_code'))
 			{ // Case 1, 2, 3, 4
 				if ($this->error->err_email)
 				{ // Case 4
-					$msg = '<p class="error-message">' . JText::sprintf($this->error->err_msg, $this->error->err_email) . '</p>';
+					$msg = '<p class="error-message">' . Text::sprintf($this->error->err_msg, $this->error->err_email) . '</p>';
 					echo $msg;
 				}
 				else
 				{ // Case 1, 2, 3
-					echo '<p class="error-message">' . JText::_($this->error->err_msg) . '</p>';
+					echo '<p class="error-message">' . Text::_($this->error->err_msg) . '</p>';
 				}
 			}
 			else
 			{  // Case 5
-				echo '<p class="error-message">' . JText::_($this->error->err_msg) . '</p>';
+				echo '<p class="error-message">' . Text::_($this->error->err_msg) . '</p>';
 			?>
 
 			<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<p class="activate">
-						<label id="emailmsg" for="email"> <?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?>:</label>
+						<label id="emailmsg" for="email"> <?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:</label>
 						<input type="text" id="email" name="email" size="40" value="" class="inputbox required validate-email" maxlength="100" />
 				</p>
 			</div>
@@ -82,13 +86,13 @@ JHtml::_('behavior.formvalidator');
 			}
 			?>
 
-			<button class="button validate btn" type="submit"><?php echo JText::_('COM_BWPOSTMAN_BUTTON_SENDACTIVATION'); ?></button>
+			<button class="button validate btn" type="submit"><?php echo Text::_('COM_BWPOSTMAN_BUTTON_SENDACTIVATION'); ?></button>
 			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="view" value="register" />
 			<input type="hidden" name="task" value="sendActivation" />
 			<input type="hidden" name="id" value="<?php echo $this->error->err_id; ?>" />
 			<input type="hidden" name="err_code" value="<?php echo (property_exists($this->error, 'err_code')) ? $this->error->err_code : ''; ?>" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo HtmlHelper::_('form.token'); ?>
 		</form>
 
 		<?php if ($this->params->get('show_boldt_link') === '1')

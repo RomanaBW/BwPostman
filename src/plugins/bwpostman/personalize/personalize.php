@@ -28,9 +28,14 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
 
-if (!JComponentHelper::isEnabled('com_bwpostman')) {
-	JFactory::getApplication()->enqueueMessage(
-		JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_ERROR') . ', ' . JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_COMPONENT_NOT_INSTALLED'),
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseDriver;
+use Joomla\CMS\Component\ComponentHelper;
+
+if (!ComponentHelper::isEnabled('com_bwpostman')) {
+	Factory::getApplication()->enqueueMessage(
+		Text::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_ERROR') . ', ' . Text::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_COMPONENT_NOT_INSTALLED'),
 		'error'
 	);
 	return false;
@@ -46,7 +51,7 @@ class PlgBwPostmanPersonalize extends JPlugin
 	/**
 	 * Database object
 	 *
-	 * @var    JDatabaseDriver
+	 * @var    DatabaseDriver
 	 *
 	 * @since       2.0.0
 	 */

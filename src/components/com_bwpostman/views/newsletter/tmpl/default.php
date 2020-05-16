@@ -27,6 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
 <script type="text/javascript">
 /* <![CDATA[ */
@@ -52,9 +56,9 @@ defined('_JEXEC') or die('Restricted access');
 <noscript>
 	<div id="system-message">
 		<div class="alert alert-warning">
-			<h4 class="alert-heading"><?php echo JText::_('WARNING'); ?></h4>
+			<h4 class="alert-heading"><?php echo Text::_('WARNING'); ?></h4>
 			<div>
-				<p><?php echo JText::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
+				<p><?php echo Text::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
 			</div>
 		</div>
 	</div>
@@ -87,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');
 		} ?>
 
 		<p class="mailingdate<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-			<?php echo JHtml::date($this->newsletter->mailing_date, JText::_('DATE_FORMAT_LC3'));  ?>
+			<?php echo HtmlHelper::date($this->newsletter->mailing_date, Text::_('DATE_FORMAT_LC3'));  ?>
 			<?php
 			if (!empty($this->newsletter->attachment) && $this->attachment_enabled != 'hide')
 			{
@@ -96,8 +100,8 @@ defined('_JEXEC') or die('Restricted access');
 				foreach ($attachments as $attachment)
 				{
 					?>
-					<span class="btn" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
-						<a class="link-attachment" href="<?php echo JUri::base() . '/' . $attachment; ?>" target="_blank">
+					<span class="btn" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
+						<a class="link-attachment" href="<?php echo Uri::base() . '/' . $attachment; ?>" target="_blank">
 							<i class="icon_attachment"></i>
 						</a>
 					</span>
@@ -111,7 +115,7 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 	<?php
 	} ?>
-		<p class="back_link btn"><a href="<?php echo htmlspecialchars($this->backlink); ?>"><?php echo JText::_('JPREV'); ?></a></p>
+		<p class="back_link btn"><a href="<?php echo htmlspecialchars($this->backlink); ?>"><?php echo Text::_('JPREV'); ?></a></p>
 
 		<?php
 		if ($this->params->get('show_boldt_link') === '1')

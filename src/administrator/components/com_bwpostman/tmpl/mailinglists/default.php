@@ -30,12 +30,14 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
 
 HTMLHelper::_('bootstrap.tooltip');
 //HTMLHelper::_('formbehavior.chosen', 'select');
 HTMLHelper::_('behavior.multiselect');
 
-$user		= JFactory::getUser();
+$user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -43,7 +45,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
 
 <div id="bwp_view_lists">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=mailinglists'); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=mailinglists'); ?>"
 			method="post" name="adminForm" id="adminForm">
 		<div class="row">
 			<div class="col-md-12">
@@ -102,7 +104,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 											); ?>
 										<?php endif; ?>
 										<?php if (BwPostmanHelper::canEdit('mailinglist', $item)) : ?>
-											<a href="<?php echo JRoute::_('index.php?option=com_bwpostman&task=mailinglist.edit&id=' . $item->id);?>">
+											<a href="<?php echo Route::_('index.php?option=com_bwpostman&task=mailinglist.edit&id=' . $item->id);?>">
 												<?php echo $this->escape($item->title); ?>
 											</a>
 										<?php else : ?>

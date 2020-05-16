@@ -26,10 +26,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
 ?>
 
 <fieldset class="adminform">
-	<legend><?php echo JText::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'); ?></legend>
+	<legend><?php echo Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'); ?></legend>
 	<div class="well well-small">
 		<div class="fltlft">
 			<fieldset class="panelform">

@@ -27,23 +27,26 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	  <title><?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML'); ?></title>
+	  <title><?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML'); ?></title>
 	</head>
 
 	<body id="preview_html">
 		<?php
-			$url	= JUri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png';
+			$url	= Uri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png';
 		?>
 		<table>
 			<tr>
-				<td><img src="<?php echo $url; ?>" alt="<?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?>" /></td>
-				<td><strong><?php echo JText::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?></strong></td>
+				<td><img src="<?php echo $url; ?>" alt="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?>" /></td>
+				<td><strong><?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML') ?></strong></td>
 			</tr>
 		</table>
 
@@ -52,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 				<tr>
 					<td align="right">
 						<strong><?php
-							echo JText::_('COM_BWPOSTMAN_NL_FROM_NAME');
+							echo Text::_('COM_BWPOSTMAN_NL_FROM_NAME');
 							echo ':'; ?>
 						</strong>
 					</td>
@@ -61,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 				<tr>
 					<td align="right">
 						<strong><?php
-							echo JText::_('COM_BWPOSTMAN_NL_FROM_EMAIL');
+							echo Text::_('COM_BWPOSTMAN_NL_FROM_EMAIL');
 							echo ':'; ?>
 						</strong>
 					</td>
@@ -70,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 				<tr>
 					<td align="right">
 						<strong><?php
-							echo JText::_('COM_BWPOSTMAN_NL_REPLY_EMAIL');
+							echo Text::_('COM_BWPOSTMAN_NL_REPLY_EMAIL');
 							echo ':'; ?>
 						</strong>
 					</td>
@@ -79,7 +82,7 @@ defined('_JEXEC') or die('Restricted access');
 				<tr>
 					<td align="right">
 						<strong><?php
-							echo JText::_('COM_BWPOSTMAN_NL_SUBJECT');
+							echo Text::_('COM_BWPOSTMAN_NL_SUBJECT');
 							echo ':'; ?>
 						</strong>
 					</td>

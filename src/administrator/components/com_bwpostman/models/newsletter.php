@@ -34,8 +34,18 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 jimport('joomla.application.component.modeladmin');
 
 use Joomla\CMS\Form\Form;
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
-use Joomla\Registry\Registry as JRegistry;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Mail\MailHelper;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Log\LogEntry;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filter\InputFilter;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/contentRenderer.php');
@@ -145,11 +155,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function __construct()
 	{
-		$this->permissions		= JFactory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		parent::__construct();
 
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 		$cids	= $jinput->get('cid',  array(0), '');
 		$this->setId((int) $cids[0]);
 
@@ -172,7 +182,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function getTable($type = 'Newsletters', $prefix = 'BwPostmanTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -221,9 +231,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$item   = new stdClass();
-		JPluginHelper::importPlugin('bwpostman');
+		PluginHelper::importPlugin('bwpostman');
 
 		// Initialise variables.
 		$pk		= (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
@@ -262,7 +272,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				if (property_exists($item, 'params'))
 				{
-					$registry = new JRegistry;
+					$registry = new Registry;
 					$registry->loadJSON($item->params);
 					$item->params = $registry->toArray();
 				}
@@ -363,11 +373,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_bwpostman/models/fields');
+		Form::addFieldPath('JPATH_ADMINISTRATOR/components/com_bwpostman/models/fields');
 
-		$params = JComponentHelper::getParams('com_bwpostman');
-		$config = JFactory::getConfig();
-		$user	= JFactory::getUser();
+		$params = ComponentHelper::getParams('com_bwpostman');
+		$config = Factory::getConfig();
+		$user	= Factory::getUser();
 
 		$form = $this->loadForm('com_bwpostman.newsletter', 'newsletter', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form))
@@ -375,7 +385,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return false;
 		}
 
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 		$id		= $jinput->get('id', 0);
 
 		// predefine some values
@@ -471,10 +481,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	protected function loadFormData()
 	{
-		$recordId = JFactory::getApplication()->getUserState('com_bwpostman.newsletter.id');
+		$recordId = Factory::getApplication()->getUserState('com_bwpostman.newsletter.id');
 
 		// Check the session for previously entered form data for this record id.
-		$data	= JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
+		$data	= Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
 
 		if (empty($data) || (is_object($data) && $recordId != $data->id))
 		{
@@ -497,7 +507,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function isTemplate($id)
 	{
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('is_template'));
@@ -515,7 +525,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return false;
@@ -535,7 +545,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	private function getStandardTpl($mode	= 'html')
 	{
 		$tpl    = new stdClass();
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		// Id of the standard template
@@ -564,7 +574,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $tpl;
@@ -583,7 +593,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function getSingleNewsletter()
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$item	= $app->getUserState('com_bwpostman.edit.newsletter.data');
 
 		//convert to object if necessary
@@ -732,18 +742,18 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 				catch (RuntimeException $e)
 				{
-					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 				}
 
 				if(count($items) > 0)
 				{
 					if ($items[0]->category_name == '')
 					{
-						$selected_content_items[] = JHtml::_('select.option', $items[0]->id, "Uncategorized - " . $items[0]->title);
+						$selected_content_items[] = HTMLHelper::_('select.option', $items[0]->id, "Uncategorized - " . $items[0]->title);
 					}
 					else
 					{
-						$selected_content_items[] = JHtml::_('select.option', $items[0]->id, $items[0]->category_name . " - " . $items[0]->title);
+						$selected_content_items[] = HtmlHelper::_('select.option', $items[0]->id, $items[0]->category_name . " - " . $items[0]->title);
 					}
 				}
 			}
@@ -772,7 +782,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	public static function getItemid($view)
 	{
 		$itemid = '';
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
@@ -800,7 +810,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $itemid;
@@ -846,7 +856,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$jinput		= JFactory::getApplication()->input;
+		$jinput		= Factory::getApplication()->input;
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
 
@@ -910,12 +920,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$data['attachment'] = implode(';', $fullAttachments);
 		}
 
-		JPluginHelper::importPlugin('bwpostman');
+		PluginHelper::importPlugin('bwpostman');
 
 		// if saving a new newsletter before changing tab, we have to look, if there is a content selected and set html- and text-version
 		if (empty($data['html_version']) && empty($data['text_version']))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_CONTENT_MISSING'));
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_CONTENT_MISSING'));
 			return false;
 		}
 
@@ -936,7 +946,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 		else
@@ -946,11 +956,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$jinput->set('id', $data['id']);
 
 			// update state
-			$state_data	= JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data');
+			$state_data	= Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data');
 			if (is_object($state_data))
 			{	// check needed because copying newsletters has no state and does not need it
 				$state_data->id	= $data['id'];
-				JFactory::getApplication()->setUserState('com_bwpostman.edit.newsletter.data', $state_data);
+				Factory::getApplication()->setUserState('com_bwpostman.edit.newsletter.data', $state_data);
 			}
 		}
 
@@ -980,13 +990,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					}
 					catch (RuntimeException $e)
 					{
-						JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+						Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 					}
 				}
 			}
 		}
 
-		JFactory::getApplication()->triggerEvent('onBwPostmanAfterNewsletterModelSave', array(&$data));
+		Factory::getApplication()->triggerEvent('onBwPostmanAfterNewsletterModelSave', array(&$data));
 
 		return true;
 	}
@@ -1008,9 +1018,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function archive($cid = array(), $archive = 1)
 	{
-		$app		= JFactory::getApplication();
-		$date		= JFactory::getDate();
-		$uid		= JFactory::getUser()->get('id');
+		$app		= Factory::getApplication();
+		$date		= Factory::getDate();
+		$uid		= Factory::getUser()->get('id');
 		$state_data	= $app->getUserState('com_bwpostman.edit.newsletter.data');
 		$_db		= $this->_db;
 		$query		= $_db->getQuery(true);
@@ -1060,7 +1070,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -1087,7 +1097,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return false;
 		}
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$_db	= $this->_db;
 
 		if (count($cid))
@@ -1109,7 +1119,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 				catch (RuntimeException $e)
 				{
-					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 				}
 
 				if (is_string($newsletters_data_copy->usergroups))
@@ -1126,17 +1136,17 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				if (!is_object($newsletters_data_copy))
 				{
-					$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_COPY_FAILED'), 'error');
+					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_COPY_FAILED'), 'error');
 				}
 
-				$date	= JFactory::getDate();
+				$date	= Factory::getDate();
 				$time	= $date->toSql();
-				$user	= JFactory::getUser();
+				$user	= Factory::getUser();
 				$uid	= $user->get('id');
 
 				$newsletters_data_copy->id 					= null;
 				$newsletters_data_copy->asset_id			= null;
-				$newsletters_data_copy->subject 			= JText::sprintf('COM_BWPOSTMAN_NL_COPY_OF', $newsletters_data_copy->subject);
+				$newsletters_data_copy->subject 			= Text::sprintf('COM_BWPOSTMAN_NL_COPY_OF', $newsletters_data_copy->subject);
 				$newsletters_data_copy->attachment	 		= null;
 				$newsletters_data_copy->created_date 		= $time;
 				$newsletters_data_copy->created_by			= $uid;
@@ -1161,12 +1171,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 			}
 
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_COPIED'), 'message');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_COPIED'), 'message');
 			return true;
 		}
 		else
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_NL_ERROR_COPYING'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_COPYING'), 'error');
 			return false;
 		}
 	}
@@ -1201,7 +1211,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 
 			// Delete newsletter from newsletters-table
-			$nl_table = JTable::getInstance('newsletters', 'BwPostmanTable');
+			$nl_table = Table::getInstance('newsletters', 'BwPostmanTable');
 
 			foreach ($pks as $id)
 			{
@@ -1212,7 +1222,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 
 			// Delete assigned mailinglists from newsletters_mailinglists-table
-			$lists_table = JTable::getInstance('newsletters_mailinglists', 'BwPostmanTable');
+			$lists_table = Table::getInstance('newsletters_mailinglists', 'BwPostmanTable');
 
 			foreach ($pks as $id)
 			{
@@ -1255,7 +1265,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return true;
@@ -1274,7 +1284,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function changeIsTemplate($id)
 	{
-		$user = \JFactory::getUser();
+		$user = Factory::getUser();
 		$table = $this->getTable();
 
 		// Access checks.
@@ -1282,7 +1292,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			if (!BwPostmanHelper::canEdit('newsletter', array('id' => $id)))
 			{
-				\JLog::add(\JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), \JLog::WARNING, 'jerror');
+				$this->logger->addEntry(new LogEntry(Text::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), BwLogger::BW_WARNING, 'newsletter'));
 
 				return false;
 			}
@@ -1290,7 +1300,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			// If the table is checked out by another user, drop it and report to the user trying to change its state.
 			if (property_exists($table, 'checked_out') && $table->checked_out && ($table->checked_out != $user->id))
 			{
-				\JLog::add(\JText::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'), \JLog::WARNING, 'jerror');
+				$this->logger->addEntry(new LogEntry(Text::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'), BwLogger::BW_WARNING, 'newsletter'));
 
 				return false;
 			}
@@ -1331,7 +1341,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// Access check.
 		if (!BwPostmanHelper::canSend($recordId))
 		{
-			$error[] = JText::_('COM_BWPOSTMAN_NL_ERROR_SEND_NOT_PERMITTED');
+			$error[] = Text::_('COM_BWPOSTMAN_NL_ERROR_SEND_NOT_PERMITTED');
 
 			return false;
 		}
@@ -1348,12 +1358,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		//check for content template
 		if ($data['is_template'] === "1")
 		{
-			$error[] = JText::_('COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR');
+			$error[] = Text::_('COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR');
 
 			return false;
 		}
 
-		JFactory::getApplication()->setUserState('com_bwpostman.newsletter.idToSend', $recordId);
+		Factory::getApplication()->setUserState('com_bwpostman.newsletter.idToSend', $recordId);
 
 		return $data;
 	}
@@ -1381,7 +1391,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			// heal form data and get them
 			$this->changeTab();
-			$data	= ArrayHelper::fromObject(JFactory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data'));
+			$data	= ArrayHelper::fromObject(Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data'));
 
 			$data['id']	= $recordId;
 		}
@@ -1391,7 +1401,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		//Remove all HTML tags from name, emails, subject and the text version
-		$filter                 = new JFilterInput(array(), array(), 0, 0);
+		$filter                 = new InputFilter(array(), array(), 0, 0);
 		$data['from_name'] 		= $filter->clean($data['from_name']);
 		$data['from_email'] 	= $filter->clean($data['from_email']);
 		$data['reply_email'] 	= $filter->clean($data['reply_email']);
@@ -1403,50 +1413,50 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// Check for valid from_name
 		if (trim($data['from_name']) == '')
 		{
-			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_FROM_NAME');
+			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_FROM_NAME');
 		}
 
 		// Check for valid from_email address
 		if (trim($data['from_email']) == '')
 		{
-			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_FROM_EMAIL');
+			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_FROM_EMAIL');
 		}
 		else
 		{
 			// If there is a from_email address check if the address is valid
-			if (!JMailHelper::isEmailAddress(trim($data['from_email'])))
+			if (!MailHelper::isEmailAddress(trim($data['from_email'])))
 			{
-				$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_FROM_EMAIL_INVALID');
+				$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_FROM_EMAIL_INVALID');
 			}
 		}
 
 		// Check for valid reply_email address
 		if (trim($data['reply_email']) == '')
 		{
-			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_REPLY_EMAIL');
+			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_REPLY_EMAIL');
 		}
 		else
 		{
 			// If there is a from_email address check if the address is valid
-			if (!JMailHelper::isEmailAddress(trim($data['reply_email'])))
+			if (!MailHelper::isEmailAddress(trim($data['reply_email'])))
 			{
-				$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_REPLY_EMAIL_INVALID');
+				$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_REPLY_EMAIL_INVALID');
 			}
 		}
 
 		// Check for valid subject
 		if (trim($data['subject']) == '')
 		{
-			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_SUBJECT');
+			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_SUBJECT');
 		}
 
 		// Check for valid html or text version
 		if ((trim($data['html_version']) == '') && (trim($data['text_version']) == ''))
 		{
-			$err[] = JText::_('COM_BWPOSTMAN_NL_ERROR_HTML_AND_TEXT');
+			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_HTML_AND_TEXT');
 		}
 
-		$nullDate = $db	= JFactory::getDbo()->getNullDate();
+		$nullDate = $db	= Factory::getDbo()->getNullDate();
 
 		// Check for valid publish_up values
 		if (!$data['publish_up'])
@@ -1491,7 +1501,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			if (!$associatedMailinglists)
 			{
-				$ret_msg = JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_LISTS');
+				$ret_msg = Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_LISTS');
 				return false;
 			}
 
@@ -1539,14 +1549,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			{
 				if (!$count_users)
 				{
-					$ret_msg = JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_USERS');
+					$ret_msg = Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_USERS');
 
 					return false;
 				}
 
 				if (!$count_subscribers)
 				{
-					$ret_msg = JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_SUBSCRIBERS');
+					$ret_msg = Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_SUBSCRIBERS');
 
 					return false;
 				}
@@ -1554,7 +1564,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return true;
@@ -1591,7 +1601,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if ($testrecipients) {
@@ -1614,7 +1624,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function composeNl()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		$nl_content			= $jinput->get('selected_content');
 		$template_id		= $jinput->get('template_id');
@@ -1636,8 +1646,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function changeTab()
 	{
-		$app				= JFactory::getApplication();
-		$jinput				= JFactory::getApplication()->input;
+		$app				= Factory::getApplication();
+		$jinput				= Factory::getApplication()->input;
 		$form_data			= $jinput->get('jform', '', 'array');
 		$layout				= $jinput->get('layout', '', 'string');
 		$add_content		= $jinput->get('add_content', 0);
@@ -2077,7 +2087,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$id	= $this->addSendMailContent($nl_id);
 		if ($id	=== false)
 		{
-			$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_CONTENT_PREPARING');
+			$ret_msg	= Text::_('COM_BWPOSTMAN_NL_ERROR_CONTENT_PREPARING');
 			return false;
 		}
 
@@ -2152,7 +2162,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $content_ids;
@@ -2195,7 +2205,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 		else
@@ -2224,7 +2234,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			// support for plugin substitute links
 			if ($tblSendmailContent->substitute_links == '1')
 			{
-				JFactory::getApplication()->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
+				Factory::getApplication()->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
 			}
 		}
 
@@ -2296,7 +2306,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if (!$nl_id)
 		{
-			$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
+			$ret_msg	= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
 			return false;
 		}
 
@@ -2313,7 +2323,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				if (!$associatedMailinglists)
 				{
-					$ret_msg = JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_LISTS');
+					$ret_msg = Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_LISTS');
 					return false;
 				}
 
@@ -2332,17 +2342,17 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 					if (!$tblSendmailQueue->pushAllSubscribers($content_id, $status))
 					{
-						$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
+						$ret_msg	= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
 						return false;
 					}
 				}
 
 				if (count($usergroups))
 				{
-					$params = JComponentHelper::getParams('com_bwpostman');
+					$params = ComponentHelper::getParams('com_bwpostman');
 					if (!$tblSendmailQueue->pushJoomlaUser($content_id, $usergroups, $params->get('default_emailformat')))
 					{
-						$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
+						$ret_msg	= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
 						return false;
 					}
 				}
@@ -2359,7 +2369,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					}
 
 					if (!$tblSendmailQueue->pushAllFromNlId($nl_id, $content_id, $status, $cam_id)){
-						$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
+						$ret_msg	= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
 						return false;
 					}
 				}
@@ -2387,7 +2397,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				break;
 
 			default:
-				$ret_msg	= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
+				$ret_msg	= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
 		}
 
 		return true;
@@ -2407,16 +2417,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function checkTrials($trial = 2, $count = 0)
 	{
-		$_db	= JFactory::getDbo();
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 		$result = 0;
 
 		$query->select('COUNT(' . $_db->quoteName('id') . ')');
 		$query->from($_db->quoteName('#__bwpostman_sendmailqueue'));
 
-		JPluginHelper::importPlugin('bwpostman');
+		PluginHelper::importPlugin('bwpostman');
 
-		JFactory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
+		Factory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
 
 		$_db->setQuery($query);
 		try
@@ -2425,7 +2435,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// returns only number of entries
@@ -2446,7 +2456,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			if ($result == 0) {
@@ -2471,7 +2481,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function sendMailsFromQueue($mailsPerStep = 100, $fromComponent = true, $mailsPerStepDone = 0, $ajaxCall = false)
 	{
-		$this->logger->addEntry(new JLogEntry('Model sendMailsFromQueue mails per Step: ' . $mailsPerStep, BwLogger::BW_INFO, 'send'));
+		$this->logger->addEntry(new LogEntry('Model sendMailsFromQueue mails per Step: ' . $mailsPerStep, BwLogger::BW_INFO, 'send'));
 		$this->sendmessage = '';
 
 		try
@@ -2479,7 +2489,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			if($ajaxCall === false)
 			{
 				$sendMailCounter = 0;
-				echo '<strong>' . JText::_('COM_BWPOSTMAN_NL_SENDING_PROCESS') . '</strong><br />';
+				echo '<strong>' . Text::_('COM_BWPOSTMAN_NL_SENDING_PROCESS') . '</strong><br />';
 //				ob_flush();
 //				flush();
 			}
@@ -2530,11 +2540,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			return 0;
 		}
-		catch (\Throwable $e) // PHP-Version >= 7
+		catch (Throwable $e) // PHP-Version >= 7
 		{
 			return 2;
 		}
-		catch (\Exception $e) // PHP-Version < 7
+		catch (Exception $e) // PHP-Version < 7
 		{
 			return 2;
 		}
@@ -2558,12 +2568,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// initialize
 		$renderer	        = new contentRenderer();
 
-		$app				= JFactory::getApplication();
-		$uri  				= JUri::getInstance();
+		$app				= Factory::getApplication();
+		$uri  				= Uri::getInstance();
 		$itemid_unsubscribe	= $this->getItemid('register');
 		$itemid_edit		= $this->getItemid('edit');
 
-		JPluginHelper::importPlugin('bwpostman');
+		PluginHelper::importPlugin('bwpostman');
 
 		$res				= false;
 		$_db				= $this->_db;
@@ -2741,12 +2751,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					$body = str_replace(
 						"[UNSUBSCRIBE_HREF]",
-						JText::sprintf('COM_BWPOSTMAN_NL_UNSUBSCRIBE_HREF', $uri->root(), $itemid_unsubscribe),
+						Text::sprintf('COM_BWPOSTMAN_NL_UNSUBSCRIBE_HREF', $uri->root(), $itemid_unsubscribe),
 						$body
 					);
 					$body = str_replace(
 						"[EDIT_HREF]",
-						JText::sprintf('COM_BWPOSTMAN_NL_EDIT_HREF', $uri->root(), $itemid_edit),
+						Text::sprintf('COM_BWPOSTMAN_NL_EDIT_HREF', $uri->root(), $itemid_edit),
 						$body
 					);
 				}
@@ -2758,12 +2768,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// Fire the onBwPostmanPersonalize event.
-		if(JPluginHelper::isEnabled('bwpostman', 'personalize')
+		if(PluginHelper::isEnabled('bwpostman', 'personalize')
 			&& !$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, &$tblSendMailQueue->subscriber_id)))
 		{
-			$error_msg_plugin   = JText::_('COM_BWPOSTMAN_PERSONALIZE_ERROR');
+			$error_msg_plugin   = Text::_('COM_BWPOSTMAN_PERSONALIZE_ERROR');
 			$app->enqueueMessage($error_msg_plugin, 'error');
-			$this->logger->addEntry(new JLogEntry($error_msg_plugin, BwLogger::BW_ERROR, 'personalize'));
+			$this->logger->addEntry(new LogEntry($error_msg_plugin, BwLogger::BW_ERROR, 'personalize'));
 
 			$tblSendMailQueue->push(
 				$tblSendMailQueue->content_id,
@@ -2782,11 +2792,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if ($fromComponent)
 		{
 			$this->sendmessage .= "\n<br>{$tblSendMailQueue->recipient} (" .
-				JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TRIAL') . ($tblSendMailQueue->trial + 1) . ") ... ";
+				Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TRIAL') . ($tblSendMailQueue->trial + 1) . ") ... ";
 		}
 
 		// Get a JMail instance
-		$mailer		= JFactory::getMailer();
+		$mailer		= Factory::getMailer();
 		$mailer->SMTPDebug = true;
 		$sender		= array();
 
@@ -2823,19 +2833,19 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if (!$this->arise_queue)
 		{
-			$this->logger->addEntry(new JLogEntry('Before sending', BwLogger::BW_INFO, 'send'));
+			$this->logger->addEntry(new LogEntry('Before sending', BwLogger::BW_INFO, 'send'));
 //			Use the following with care! Complete mails with body are written to log…
-//			$this->logger->addEntry(new JLogEntry('Mailer data: ' . print_r($mailer, true), BwLogger::BW_DEVELOPMENT, 'send'));
+//			$this->logger->addEntry(new LogEntry('Mailer data: ' . print_r($mailer, true), BwLogger::BW_DEVELOPMENT, 'send'));
 			$res = $mailer->Send();
 			// @ToDo: $res may be boolean of JException object!
-			$this->logger->addEntry(new JLogEntry(sprintf('Sending result: %s', $res), BwLogger::BW_INFO, 'send'));
+			$this->logger->addEntry(new LogEntry(sprintf('Sending result: %s', $res), BwLogger::BW_INFO, 'send'));
 		}
 
 		if ($res === true)
 		{
 			if ($fromComponent)
 			{
-				$this->sendmessage .= JText::_('COM_BWPOSTMAN_NL_SENT_SUCCESSFULLY');
+				$this->sendmessage .= Text::_('COM_BWPOSTMAN_NL_SENT_SUCCESSFULLY');
 			}
 		}
 		else
@@ -2845,7 +2855,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			if ($fromComponent)
 			{
 				// show message only wanted if sending newsletters from component backend directly, not in time controlled sending
-				$this->sendmessage .= JText::_('COM_BWPOSTMAN_NL_ERROR_SENDING');
+				$this->sendmessage .= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING');
 			}
 
 			$tblSendMailQueue->push(
@@ -2871,7 +2881,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	private function processTestMode()
 	{
-		$test_plugin = JPluginHelper::getPlugin('system', 'bwtestmode');
+		$test_plugin = PluginHelper::getPlugin('system', 'bwtestmode');
 
 		if ($test_plugin)
 		{
@@ -2913,7 +2923,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $mailinglists;
@@ -2948,7 +2958,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $mailinglists;
@@ -2989,7 +2999,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			if (is_null($html_tpl))
@@ -3036,7 +3046,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			if (is_null($text_tpl))
@@ -3088,7 +3098,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $count_subscribers;
@@ -3129,7 +3139,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $count_users;

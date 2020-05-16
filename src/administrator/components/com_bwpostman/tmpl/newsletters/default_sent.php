@@ -252,7 +252,7 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 			<?php echo HTMLHelper::_('form.token'); ?>
 
 			<input type="hidden" id="currentTab" value="default_sent" />
-			<input type="hidden" id="archiveText" value="<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
+			<input type="hidden" id="archiveText" value="<?php echo Text::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

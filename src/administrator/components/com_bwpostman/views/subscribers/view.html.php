@@ -35,6 +35,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\FileLayout;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
@@ -466,7 +467,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 					$title = Text::_('JTOOLBAR_BATCH');
 
 					// Instantiate a new JLayoutFile instance and render the batch button
-					$layout = new JLayoutFile('joomla.toolbar.batch');
+					$layout = new FileLayout('joomla.toolbar.batch');
 
 					$dhtml = $layout->render(array('title' => $title));
 					$bar->appendButton('Custom', $dhtml, 'batch');

@@ -27,6 +27,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Database\DatabaseDriver;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 /**
  * #__bwpostman_sendmailcontent table handler
  * Table for storing the prepared data for sending a newsletter
@@ -133,7 +137,7 @@ class BwPostmanTableSendmailcontent extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -177,7 +181,7 @@ class BwPostmanTableSendmailcontent extends JTable
 		}
 		else
 		{
-			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+			throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
 		// Cast properties
@@ -233,7 +237,7 @@ class BwPostmanTableSendmailcontent extends JTable
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			if ($res)
@@ -251,7 +255,7 @@ class BwPostmanTableSendmailcontent extends JTable
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage(get_class($this) . '::store failed - ' . $e->getMessage());
+				Factory::getApplication()->enqueueMessage(get_class($this) . '::store failed - ' . $e->getMessage());
 			}
 		}
 
@@ -280,7 +284,7 @@ class BwPostmanTableSendmailcontent extends JTable
 		}
 
 		// If (empty($mode)) return 0;
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$mode	= $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
@@ -301,9 +305,39 @@ class BwPostmanTableSendmailcontent extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $this->bind($result);
+	}
+
+	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 *
+	 * @since  2.4.0
+	 */
+	public function getId()
+	{
+		$key = $this->getKeyName();
+
+		return $this->$key;
+	}
+
+	/**
+	 * Check if the record has a property (applying a column alias if it exists)
+	 *
+	 * @param string $key key to be checked
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.4.0
+	 */
+	public function hasField($key)
+	{
+		$key = $this->getColumnAlias($key);
+
+		return property_exists($this, $key);
 	}
 }

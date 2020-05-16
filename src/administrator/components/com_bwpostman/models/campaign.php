@@ -30,8 +30,11 @@ defined('_JEXEC') or die('Restricted access');
 // Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
-use Joomla\Utilities\ArrayHelper as ArrayHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
@@ -69,6 +72,51 @@ class BwPostmanModelCampaign extends JModelAdmin
 	private $data = null;
 
 	/**
+	 * All mailinglists
+	 *
+	 * @var array
+	 *
+	 * @since       2.4.0
+	 */
+	private $mailinglists = array();
+
+	/**
+	 * All mailinglists
+	 *
+	 * @var array
+	 *
+	 * @since       2.4.0
+	 */
+	private $ml_available = array();
+
+	/**
+	 * Normally unavailable mailinglists
+	 *
+	 * @var array
+	 *
+	 * @since       2.4.0
+	 */
+	private $ml_unavailable = array();
+
+	/**
+	 * Internal mailinglists
+	 *
+	 * @var array
+	 *
+	 * @since       2.4.0
+	 */
+	private $ml_intern = array();
+
+	/**
+	 * Associated usergroups
+	 *
+	 * @var array
+	 *
+	 * @since       2.4.0
+	 */
+	private $usergroups = array();
+
+	/**
 	 * Constructor
 	 * Determines the campaign ID
 	 *
@@ -78,7 +126,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	public function __construct()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		parent::__construct();
 
@@ -99,7 +147,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	public function getTable($type = 'Campaigns', $prefix = 'BwPostmanTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -148,7 +196,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$data	= $app->getUserState('com_bwpostman.edit.campaign.data', null);
 		$_db	= $this->_db;
 		$id     = 0;
@@ -180,7 +228,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			//extract associated usergroups
@@ -278,10 +326,10 @@ class BwPostmanModelCampaign extends JModelAdmin
 	protected function loadFormData()
 	{
 		// @todo XML-file will not be processed
-		$recordId = JFactory::getApplication()->getUserState('com_bwpostman.edit.campaign.id');
+		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.campaign.id');
 
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_bwpostman.edit.campaign.data', array());
+		$data = Factory::getApplication()->getUserState('com_bwpostman.edit.campaign.data', array());
 
 		if (empty($data) || (is_object($data) && $recordId != $data->id))
 		{
@@ -328,7 +376,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$query = $_db->getQuery(true);
@@ -351,7 +399,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$query = $_db->getQuery(true);
@@ -374,7 +422,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $newsletters;
@@ -398,8 +446,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	public function archive($cid = array(0), $archive = 1, $archive_nl = 1)
 	{
-		$date	= JFactory::getDate();
-		$uid	= JFactory::getUser()->get('id');
+		$date	= Factory::getDate();
+		$uid	= Factory::getUser()->get('id');
 		$_db	= $this->_db;
 		$query	= $_db->getQuery(true);
 
@@ -448,7 +496,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_RESTORE_RIGHTS_MISSING'), 'error');
+				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_RESTORE_RIGHTS_MISSING'), 'error');
 			}
 
 			// Archive_nl = 1 if the user want to (un)archive the assigned newsletters
@@ -468,7 +516,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 				}
 				catch (RuntimeException $e)
 				{
-					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 				}
 			}
 		}
@@ -529,7 +577,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 			if ($res)
 			{
-				$jinput		= JFactory::getApplication()->input;
+				$jinput		= Factory::getApplication()->input;
 				$_db		= $this->_db;
 				$query		= $_db->getQuery(true);
 
@@ -546,7 +594,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 					}
 					catch (RuntimeException $e)
 					{
-						JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+						Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 					}
 				}
 				else
@@ -556,9 +604,9 @@ class BwPostmanModelCampaign extends JModelAdmin
 					$jinput->set('id', $data['id']);
 
 					// update state
-					$state_data	= JFactory::getApplication()->getUserState('com_bwpostman.edit.campaign.data');
+					$state_data	= Factory::getApplication()->getUserState('com_bwpostman.edit.campaign.data');
 					$state_data->id	= $data['id'];
-					JFactory::getApplication()->setUserState('com_bwpostman.edit.campaign.data', $state_data);
+					Factory::getApplication()->setUserState('com_bwpostman.edit.campaign.data', $state_data);
 
 				}
 
@@ -585,18 +633,18 @@ class BwPostmanModelCampaign extends JModelAdmin
 					}
 					catch (RuntimeException $e)
 					{
-						JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+						Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 					}
 				}
 
-				JPluginHelper::importPlugin('bwpostman');
+				PluginHelper::importPlugin('bwpostman');
 
-				JFactory::getApplication()->triggerEvent('onBwPostmanCampaignSave', array ($data));
+				Factory::getApplication()->triggerEvent('onBwPostmanCampaignSave', array ($data));
 			}
 		}
 		else
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'), 'error');
 			$res	= false;
 		}
 
@@ -619,9 +667,9 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-		$jinput	    = JFactory::getApplication()->input;
+		$jinput	    = Factory::getApplication()->input;
 		$remove_nl	= $jinput->get('remove_nl', false);
-		$app	    = JFactory::getApplication();
+		$app	    = Factory::getApplication();
 
 		if (count($pks))
 		{
@@ -637,20 +685,20 @@ class BwPostmanModelCampaign extends JModelAdmin
 			}
 
 			// Delete campaigns from campaigns table
-			$cams_table = JTable::getInstance('campaigns', 'BwPostmanTable');
+			$cams_table = Table::getInstance('campaigns', 'BwPostmanTable');
 
 			foreach ($pks as $id)
 			{
 				if (!$cams_table->delete($id))
 				{
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NO_CAM_DELETED', $id), 'error');
+					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NO_CAM_DELETED', $id), 'error');
 					return false;
 				}
 
 				// Remove campaigns mailinglists entries
 				if (!$this->deleteCampaignsMailinglistsEntry($id))
 				{
-					$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NO_ML_DELETED', $id), 'error');
+					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NO_ML_DELETED', $id), 'error');
 					return false;
 				}
 
@@ -659,7 +707,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 				{
 					if (!$this->deleteCampaignsNewsletters($id))
 					{
-						$app->enqueueMessage(JText::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_NLS_DELETED', $id), 'error');
+						$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_NLS_DELETED', $id), 'error');
 						return false;
 					}
 				}
@@ -693,7 +741,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			return false;
 		}
 
@@ -725,7 +773,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			return false;
 		}
 

@@ -26,7 +26,11 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('checkboxes');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
+
+FormHelper::loadFieldClass('checkboxes');
 
 /**
  * Form Field class for the Joomla Platform.
@@ -84,12 +88,12 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 		$html[] = '			<table class="adminlist table">';
 		$html[] = '				<thead>';
 		$html[] = '					<tr>';
-		$html[] = '						<th width="30" nowrap="nowrap">' . JText::_('JGRID_HEADING_ID') . '</th>';
+		$html[] = '						<th width="30" nowrap="nowrap">' . Text::_('JGRID_HEADING_ID') . '</th>';
 		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value=""
-						 title="' . JText::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this)" /></th>';
-		$html[] = '						<th width="200" nowrap="nowrap">' . JText::_('JGLOBAL_TITLE') . '</th>';
-		$html[] = '						<th nowrap="nowrap">' . JText::_('JGLOBAL_DESCRIPTION') . '</th>';
-		$html[] = '						<th width="80" nowrap="nowrap">' . JText::_('COM_BWPOSTMAN_CAM_NL_NUM') . '</th>';
+						 title="' . Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this)" /></th>';
+		$html[] = '						<th width="200" nowrap="nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
+		$html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_DESCRIPTION') . '</th>';
+		$html[] = '						<th width="80" nowrap="nowrap">' . Text::_('COM_BWPOSTMAN_CAM_NL_NUM') . '</th>';
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
 		$html[] = '				<tbody>';
@@ -105,19 +109,19 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
-				$html[] = '								<td align="center">' . JText::_($option->value) . '</td>';
+				$html[] = '								<td align="center">' . Text::_($option->value) . '</td>';
 				$html[] = '								<td><input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
 					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
-				$html[] = '								<td>' . JText::_($option->text) . '</td>';
-				$html[] = '								<td>' . JText::_($option->description) . '</td>';
-				$html[] = '								<td>' . JText::_($option->newsletters) . '</td>';
+				$html[] = '								<td>' . Text::_($option->text) . '</td>';
+				$html[] = '								<td>' . Text::_($option->description) . '</td>';
+				$html[] = '								<td>' . Text::_($option->newsletters) . '</td>';
 				$html[] = '							</tr>';
 			}
 		}
 		else
 		{
 				$html[] = '							<tr class="row1">';
-				$html[] = '								<td colspan="5"><strong>' . JText::_('COM_BWPOSTMAN_NO_CAM') . '</strong></td>';
+				$html[] = '								<td colspan="5"><strong>' . Text::_('COM_BWPOSTMAN_NO_CAM') . '</strong></td>';
 				$html[] = '							</tr>';
 		}
 
@@ -142,11 +146,11 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 	 */
 	protected function getOptions()
 	{
-		$app	    = JFactory::getApplication();
+		$app	    = Factory::getApplication();
 		$options    = null;
 
 		// prepare query
-		$_db		= JFactory::getDbo();
+		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
 		$sub_query	= $_db->getQuery(true);
 

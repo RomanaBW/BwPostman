@@ -27,23 +27,29 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.multiselect');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
+
+HtmlHelper::_('bootstrap.tooltip');
+HtmlHelper::_('formbehavior.chosen', 'select');
+HtmlHelper::_('behavior.multiselect');
 
 // Load the modal behavior for the newsletter preview
-JHtml::_('behavior.modal', 'a.popup');
+HtmlHelper::_('behavior.modal', 'a.popup');
 
 //Load tabs behavior for the Tabs
 jimport('joomla.html.html.tabs');
 
-$user		= JFactory::getUser();
+$user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
 // Open modalbox if task == startsending --> we will show the sending process in the modalbox
-$jinput	= JFactory::getApplication()->input;
+$jinput	= Factory::getApplication()->input;
 $task	= $jinput->get->get('task');
 
 $currentTab = "default_unsent";
@@ -62,18 +68,18 @@ if ($task == "startsending")
 <div id="bwp_view_lists">
 	<?php
 	// Open modalbox if task == startsending --> we will show the sending process in the modalbox
-	$jinput	= JFactory::getApplication()->input;
+	$jinput	= Factory::getApplication()->input;
 	$task	= $jinput->get->get('task');
 
 	if ($task != 'startsending')
 	{
 		if ($this->queueEntries)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 		}
 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters'); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-inline">
 		<?php if (property_exists($this, 'sidebar')) : ?>
 			<div id="j-sidebar-container" class="span2">
@@ -85,7 +91,7 @@ if ($task == "startsending")
 		<?php endif; ?>
 		<?php
 			// Search tools bar
-			echo JLayoutHelper::render(
+			echo LayoutHelper::render(
 				'default',
 				array('view' => $this, 'tab' => 'unsent'),
 				$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
@@ -96,18 +102,18 @@ if ($task == "startsending")
 				<ul class="bwp_tabs">
 					<li class="open">
 						<button onclick="return changeTab('unsent', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
-							<?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
+							<?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
 						</button>
 					</li>
 					<li class="closed">
 						<button onclick="return changeTab('sent', '<?php echo $currentTab; ?>');" class="buttonAsLink">
-							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
+							<?php echo Text::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
 					<?php if ($this->count_queue && $this->permissions['newsletter']['send']) { ?>
 						<li class="closed">
 							<button onclick="return changeTab('queue', '<?php echo $currentTab; ?>');" class="buttonAsLink">
-								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
+								<?php echo Text::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
 							</button>
 						</li>
 					<?php } ?>
@@ -121,19 +127,19 @@ if ($task == "startsending")
 						<tr>
 							<th width="30" nowrap="nowrap" align="center">
 								<input type="checkbox" name="checkall-toggle" value=""
-										title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+										title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 							</th>
 							<th nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?>
 							</th>
 							<th nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
 							</th>
 							<th nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 							</th>
 							<th width="150" nowrap="nowrap">
-								<?php echo JHtml::_(
+								<?php echo HtmlHelper::_(
 									'searchtools.sort',
 									'COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE',
 									'a.modified_time',
@@ -142,16 +148,16 @@ if ($task == "startsending")
 								); ?>
 							</th>
 							<th width="100" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
 							</th>
 							<th width="100" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?>
 							</th>
 							<th width="130" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'COM_BWPOSTMAN_NL_IS_TEMPLATE', 'is_template', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_IS_TEMPLATE', 'is_template', $listDirn, $listOrder); ?>
 							</th>
 							<th width="30" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 							</th>
 						</tr>
 					</thead>
@@ -162,17 +168,17 @@ if ($task == "startsending")
 							foreach ($this->items as $i => $item) :
 								?>
 								<tr class="row<?php echo $i % 2; ?>">
-									<td align="center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
+									<td align="center"><?php echo HtmlHelper::_('grid.id', $i, $item->id); ?></td>
 									<td>
 										<?php if (!empty($item->attachment)) { ?>
-											<span class="icon_attachment" title="<?php echo JText::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
+											<span class="icon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
 										<?php } ?>
 									</td>
 									<td>
 										<?php
 										if ($item->checked_out)
 										{
-											echo JHtml::_(
+											echo HtmlHelper::_(
 												'jgrid.checkedout',
 												$i,
 												$item->editor,
@@ -184,7 +190,7 @@ if ($task == "startsending")
 										<?php if (BwPostmanHelper::canEdit('newsletter', $item)) : ?>
 											<a href="
 											<?php
-											echo JRoute::_(
+											echo Route::_(
 												'index.php?option=com_bwpostman&view=newsletter&layout=edit_basic&task=newsletter.edit&id='
 												. $item->id . '&referrer=newsletters'
 											);?>">
@@ -199,7 +205,7 @@ if ($task == "startsending")
 										<?php
 										if ($item->modified_time != '0000-00-00 00:00:00')
 										{
-											echo JHtml::date($item->modified_time, JText::_('BW_DATE_FORMAT_LC5'));
+											echo HtmlHelper::date($item->modified_time, Text::_('BW_DATE_FORMAT_LC5'));
 										} ?>
 									</td>
 									<td><?php echo $item->authors; ?></td>
@@ -230,7 +236,7 @@ if ($task == "startsending")
 						{
 							// if no data ?>
 							<tr class="row1">
-								<td colspan="9"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+								<td colspan="9"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
 							</tr><?php
 						}
 						?>
@@ -245,10 +251,10 @@ if ($task == "startsending")
 			<input type="hidden" name="layout" value="default" />
 			<input type="hidden" name="tpl" value="unsent" />
 			<input type="hidden" name="boxchecked" value="0" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo HtmlHelper::_('form.token'); ?>
 
 			<input type="hidden" id="currentTab" value="default_unsent" />
-			<input type="hidden" id="archiveText" value="<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
+			<input type="hidden" id="archiveText" value="<?php echo Text::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

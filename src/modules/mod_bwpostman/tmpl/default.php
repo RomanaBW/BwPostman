@@ -27,22 +27,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.formvalidator');
-JHtml::_('formbehavior.chosen', 'select');
+HtmlHelper::_('behavior.tooltip');
+HtmlHelper::_('behavior.keepalive');
+HtmlHelper::_('behavior.formvalidator');
+HtmlHelper::_('formbehavior.chosen', 'select');
 
 // Depends on jQuery UI
 if(version_compare(JVERSION, '3.999.999', 'le'))
 {
-	JHtml::_('jquery.ui', array('core'));
+	HtmlHelper::_('jquery.ui', array('core'));
 }
 
 $n	= count($mailinglists);
 
-$remote_ip  = JFactory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+$remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 ?>
 
 <?php
@@ -68,7 +74,7 @@ function checkModRegisterForm()
 	{
 		if ((!document.getElementById("a_firstname").value) && (document.getElementById("firstname_field_obligation_mod").value === '1'))
 		{
-			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_FIRSTNAME', true); ?>\n";
+			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_FIRSTNAME', true); ?>\n";
 		}
 	}
 
@@ -77,7 +83,7 @@ function checkModRegisterForm()
 	{
 		if ((!document.getElementById("a_name").value) && (document.getElementById("name_field_obligation_mod").value === '1'))
 		{
-			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_NAME', true); ?>\n";
+			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_NAME', true); ?>\n";
 		}
 	}
 
@@ -86,7 +92,7 @@ function checkModRegisterForm()
 	{
 		if ((!document.getElementById("a_special").value) && (document.getElementById("special_field_obligation_mod").value === '1'))
 		{
-			errStr += "<?php echo JText::sprintf('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL', JText::_($paramsComponent->get('special_label') != '' ? JText::_($paramsComponent->get('special_label')) : JText::_('MOD_BWPOSTMAN_SPECIAL'))); ?>\n";
+			errStr += "<?php echo Text::sprintf('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL', Text::_($paramsComponent->get('special_label') != '' ? Text::_($paramsComponent->get('special_label')) : Text::_('MOD_BWPOSTMAN_SPECIAL'))); ?>\n";
 		}
 	}
 
@@ -95,14 +101,14 @@ function checkModRegisterForm()
 
 	if (email === "")
 	{
-		errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_EMAIL', true); ?>\n";
+		errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_EMAIL', true); ?>\n";
 	}
 	else
 	{
 	var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,14})+$/;
 		if (!filter.test(email))
 		{
-			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_EMAIL_INVALID', true); ?>\n";
+			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_EMAIL_INVALID', true); ?>\n";
 			email.focus;
 		}
 	}
@@ -125,7 +131,7 @@ function checkModRegisterForm()
 
 	if (check === 0)
 	{
-		errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_NL_CHECK'); ?>\n";
+		errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_NL_CHECK'); ?>\n";
 	}
 
 	// disclaimer
@@ -133,7 +139,7 @@ function checkModRegisterForm()
 	{
 		if (document.bwp_mod_form.agreecheck_mod.checked === false)
 		{
-			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_DISCLAIMER_CHECK'); ?>\n";
+			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_DISCLAIMER_CHECK'); ?>\n";
 		}
 	}
 
@@ -142,7 +148,7 @@ function checkModRegisterForm()
 	{
 		if (document.bwp_mod_form.stringCaptcha.value === '')
 		{
-			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_CAPTCHA_CHECK'); ?>\n";
+			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_CAPTCHA_CHECK'); ?>\n";
 		}
 	}
 
@@ -151,7 +157,7 @@ function checkModRegisterForm()
 	{
 		if (document.bwp_mod_form.stringQuestion.value === '')
 		{
-			errStr += "<?php echo JText::_('MOD_BWPOSTMANERROR_CAPTCHA_CHECK'); ?>\n";
+			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_CAPTCHA_CHECK'); ?>\n";
 		}
 	}
 
@@ -171,9 +177,9 @@ function checkModRegisterForm()
 <noscript>
 	<div id="system-message">
 		<div class="alert alert-warning">
-			<h4 class="alert-heading"><?php echo JText::_('WARNING'); ?></h4>
+			<h4 class="alert-heading"><?php echo Text::_('WARNING'); ?></h4>
 			<div>
-				<p><?php echo JText::_('MOD_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
+				<p><?php echo Text::_('MOD_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
 			</div>
 		</div>
 	</div>
@@ -184,26 +190,26 @@ function checkModRegisterForm()
 	if ($n == 0)
 	{
 		// Don't show registration form if no mailinglist is selectable ?>
-		<p class="bwp_mod_error_no_mailinglists"><?php echo addslashes(JText::_('MOD_BWPOSTMANERROR_NO_MAILINGLIST_AVAILABLE')); ?></p> <?php
+		<p class="bwp_mod_error_no_mailinglists"><?php echo addslashes(Text::_('MOD_BWPOSTMANERROR_NO_MAILINGLIST_AVAILABLE')); ?></p> <?php
 	}
 	else
 	{
 		// Show registration form only if a mailinglist is selectable ?>
 
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&task=register'); ?>" method="post" id="bwp_mod_form"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&task=register'); ?>" method="post" id="bwp_mod_form"
 			name="bwp_mod_form" class="form-validate form-inline" onsubmit="return checkModRegisterForm();">
 
 		<?php // Spamcheck 1 - Input-field: class="user_hightlight" style="position: absolute; top: -5000px;"
 		?>
 		<p class="user_hightlight">
-			<label for="a_falle"><strong><?php echo addslashes(JText::_('MOD_BWPOSTMANSPAMCHECK')); ?></strong></label>
+			<label for="a_falle"><strong><?php echo addslashes(Text::_('MOD_BWPOSTMANSPAMCHECK')); ?></strong></label>
 			<input type="text" name="falle" id="a_falle" size="20"
-					title="<?php echo addslashes(JText::_('MOD_BWPOSTMANSPAMCHECK')); ?>" maxlength="50" />
+					title="<?php echo addslashes(Text::_('MOD_BWPOSTMANSPAMCHECK')); ?>" maxlength="50" />
 		</p>
 		<?php // End Spamcheck
 		if ($paramsComponent->get('pretext'))
 		{ // Show pretext only if set in basic parameters
-			$preText = JText::_($paramsComponent->get('pretext'));
+			$preText = Text::_($paramsComponent->get('pretext'));
 			?>
 			<p id="bwp_mod_form_pretext"><?php echo $preText; ?></p>
 			<?php
@@ -215,7 +221,7 @@ function checkModRegisterForm()
 			?>
 			<p id="bwp_mod_form_genderformat">
 				<label id="gendermsg_mod">
-					<?php echo JText::_('MOD_BWPOSTMANGENDER'); ?>:
+					<?php echo Text::_('MOD_BWPOSTMANGENDER'); ?>:
 				</label>
 			</p>
 			<div id="bwp_mod_form_genderfield">
@@ -237,7 +243,7 @@ function checkModRegisterForm()
 					: $required = '';
 				?>
 				<input type="text" name="a_firstname" id="a_firstname"
-						placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANFIRSTNAME')); ?>"
+						placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANFIRSTNAME')); ?>"
 						value="<?php echo $sub_firstname; ?>" class="inputbox input-small" maxlength="50" />
 				<?php echo $required; ?>
 			</p>
@@ -254,7 +260,7 @@ function checkModRegisterForm()
 				($paramsComponent->get('name_field_obligation'))
 					? $required = '<span class="append-area"><i class="icon-star"></i></span>'
 					: $required = ''; ?>
-				<input type="text" name="a_name" id="a_name" placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANNAME')); ?>"
+				<input type="text" name="a_name" id="a_name" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANNAME')); ?>"
 						value="<?php echo $sub_name; ?>" class="inputbox input-small" maxlength="50" />
 				<?php echo $required; ?>
 			</p>
@@ -274,7 +280,7 @@ function checkModRegisterForm()
 					? $required = '<span class="append-area"><i class="icon-star"></i></span>'
 					: $required = ''; ?>
 				<input type="text" name="a_special" id="a_special"
-						placeholder="<?php echo addslashes(JText::_($paramsComponent->get('special_label') != '' ? JText::_($paramsComponent->get('special_label')) : JText::_('MOD_BWPOSTMAN_SPECIAL'))); ?>"
+						placeholder="<?php echo addslashes(Text::_($paramsComponent->get('special_label') != '' ? Text::_($paramsComponent->get('special_label')) : Text::_('MOD_BWPOSTMAN_SPECIAL'))); ?>"
 						value="<?php echo $sub_special; ?>" class="inputbox input-small" maxlength="50" />
 				<?php echo $required; ?>
 			</p>
@@ -284,7 +290,7 @@ function checkModRegisterForm()
 
 		<?php isset($subscriber->email) ? $sub_email = $subscriber->email : $sub_email = ''; ?>
 		<p id="bwp_mod_form_emailfield" class="input-append">
-			<input type="text" id="a_email" name="email" placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANEMAIL')); ?>"
+			<input type="text" id="a_email" name="email" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANEMAIL')); ?>"
 					value="<?php echo $sub_email; ?>" class="inputbox input-small" maxlength="100" />
 			<span class="append-area"><i class="icon-star"></i></span>
 		</p>
@@ -295,7 +301,7 @@ function checkModRegisterForm()
 			?>
 			<p id="bwp_mod_form_emailformat">
 				<label id="emailformatmsg_mod">
-					<?php echo JText::_('MOD_BWPOSTMANEMAILFORMAT'); ?>:
+					<?php echo Text::_('MOD_BWPOSTMANEMAILFORMAT'); ?>:
 				</label>
 			</p>
 			<div id="bwp_mod_form_emailformatfield">
@@ -327,12 +333,12 @@ function checkModRegisterForm()
 				if ($params->get('show_desc') == 1)
 				{ ?>
 					<p class="mailinglist-description-single"><?php
-						echo substr(JText::_($mailinglists[0]->description), 0, $descLength);
+						echo substr(Text::_($mailinglists[0]->description), 0, $descLength);
 
-						if (strlen(JText::_($mailinglists[0]->description)) > $descLength)
+						if (strlen(Text::_($mailinglists[0]->description)) > $descLength)
 						{
 							echo '... ';
-							echo JHTML::tooltip(JText::_($mailinglists[0]->description), $mailinglists[0]->title, 'tooltip.png', '', '');
+							echo HTMLHelper::tooltip(Text::_($mailinglists[0]->description), $mailinglists[0]->title, 'tooltip.png', '', '');
 						} ?>
 					</p>
 					<?php
@@ -341,7 +347,7 @@ function checkModRegisterForm()
 			else
 			{ ?>
 				<p id="bwp_mod_form_lists" class="required">
-					<?php echo JText::_('MOD_BWPOSTMANLISTS') . ' <i class="icon-star"></i>'; ?>
+					<?php echo Text::_('MOD_BWPOSTMANLISTS') . ' <i class="icon-star"></i>'; ?>
 				</p>
 				<div id="bwp_mod_form_listsfield">
 				<?php
@@ -359,11 +365,11 @@ function checkModRegisterForm()
 								</span><br />
 								<span class="mailinglist-description">
 									<?php
-									echo substr(JText::_($mailinglist->description), 0, $descLength);
-									if (strlen(JText::_($mailinglist->description)) > $descLength)
+									echo substr(Text::_($mailinglist->description), 0, $descLength);
+									if (strlen(Text::_($mailinglist->description)) > $descLength)
 									{
 										echo '... ';
-										echo JHTML::tooltip(JText::_($mailinglist->description), $mailinglist->title, 'tooltip.png', '', '');
+										echo HTMLHelper::tooltip(Text::_($mailinglist->description), $mailinglist->title, 'tooltip.png', '', '');
 									} ?>
 								</span>
 						<?php
@@ -392,12 +398,12 @@ function checkModRegisterForm()
 				if ($paramsComponent->get('disclaimer_selection') == 1 && $paramsComponent->get('article_id') > 0)
 				{
 					// Disclaimer article and target_blank or not
-					$disclaimer_link = JRoute::_(ContentHelperRoute::getArticleRoute($paramsComponent->get('article_id'))) . $tpl_com;
+					$disclaimer_link = Route::_(ContentHelperRoute::getArticleRoute($paramsComponent->get('article_id'))) . $tpl_com;
 				}
 				elseif ($paramsComponent->get('disclaimer_selection') == 2 && $paramsComponent->get('disclaimer_menuitem') > 0)
 				{
 					// Disclaimer menu item and target_blank or not
-					$disclaimer_link = JRoute::_('index.php?Itemid=' . $paramsComponent->get('disclaimer_menuitem')) . $tpl_com;
+					$disclaimer_link = Route::_('index.php?Itemid=' . $paramsComponent->get('disclaimer_menuitem')) . $tpl_com;
 				}
 				else
 				{
@@ -420,7 +426,7 @@ function checkModRegisterForm()
 							echo ' target="_blank"';
 						};
 					}
-					echo '>' . JText::_('MOD_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
+					echo '>' . Text::_('MOD_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
 				</span>
 			</p>
 			<?php
@@ -431,11 +437,11 @@ function checkModRegisterForm()
 		if ($paramsComponent->get('use_captcha') == 1)
 		{ ?>
 			<div class="question">
-				<p class="security_question_entry"><?php echo JText::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
-				<p class="security_question_lbl"><?php echo JText::_($paramsComponent->get('security_question')); ?></p>
+				<p class="security_question_entry"><?php echo Text::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
+				<p class="security_question_lbl"><?php echo Text::_($paramsComponent->get('security_question')); ?></p>
 				<p class="question input-append">
 					<input type="text" name="stringQuestion" id="a_stringQuestion"
-							placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="input-small" />
+							placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="input-small" />
 					<span class="append-area"><i class="icon-star"></i></span>
 				</p>
 			</div>
@@ -448,13 +454,13 @@ function checkModRegisterForm()
 		{
 			$codeCaptcha = md5(microtime()); ?>
 			<div class="captcha">
-				<p class="security_question_entry"><?php echo JText::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
+				<p class="security_question_entry"><?php echo Text::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
 				<p class="security_question_lbl">
-					<img src="<?php echo JUri::base(); ?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
+					<img src="<?php echo Uri::base(); ?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
 				</p>
 				<p class="captcha input-append">
 					<input type="text" name="stringCaptcha" id="a_stringCaptcha"
-							placeholder="<?php echo addslashes(JText::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>"
+							placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>"
 							maxlength="50" class="input-small" />
 					<span class="append-area"><i class="icon-star"></i></span>
 				</p>
@@ -466,7 +472,7 @@ function checkModRegisterForm()
 		<?php // End Spamcheck 2 ?>
 
 		<p class="mod-button-register text-right">
-			<button class="button validate btn" type="submit"><?php echo JText::_('MOD_BWPOSTMANBUTTON_REGISTER'); ?>
+			<button class="button validate btn" type="submit"><?php echo Text::_('MOD_BWPOSTMANBUTTON_REGISTER'); ?>
 			</button>
 		</p>
 
@@ -490,15 +496,15 @@ function checkModRegisterForm()
 				value="<?php echo $paramsComponent->get('show_firstname_field'); ?>" />
 		<input type="hidden" name="show_special_mod" id="show_special_mod" value="<?php echo $paramsComponent->get('show_special'); ?>" />
 		<input type="hidden" name="mod_id" id="mod_id" value="<?php echo $module_id; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HtmlHelper::_('form.token'); ?>
 	</form>
 
-		<p id="bwp_mod_form_required">(<i class="icon-star"></i>) <?php echo JText::_('MOD_BWPOSTMANREQUIRED'); ?></p>
+		<p id="bwp_mod_form_required">(<i class="icon-star"></i>) <?php echo Text::_('MOD_BWPOSTMANREQUIRED'); ?></p>
 		<p id="bwp_mod_form_editlink" class="text-right">
 			<button class="button btn" onclick="location.href='<?php
-				echo JRoute::_('index.php?option=com_bwpostman&amp;view=edit&amp;Itemid=' . $itemid);
+				echo Route::_('index.php?option=com_bwpostman&amp;view=edit&amp;Itemid=' . $itemid);
 				?>'">
-				<?php echo JText::_('MOD_BWPOSTMANLINK_TO_EDITLINKFORM'); ?>
+				<?php echo Text::_('MOD_BWPOSTMANLINK_TO_EDITLINKFORM'); ?>
 			</button>
 		</p>
 	<?php

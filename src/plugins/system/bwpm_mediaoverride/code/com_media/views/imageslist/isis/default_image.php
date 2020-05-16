@@ -9,23 +9,26 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $params     = new Registry;
-JFactory::getApplication()->triggerEvent('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+Factory::getApplication()->triggerEvent('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 ?>
 
 <li class="imgOutline thumbnail height-80 width-80 center">
 	<a class="img-preview" href="javascript:ImageManager.populateFields('<?php echo $this->escape($this->_tmp_img->path_relative); ?>')" title="<?php echo $this->escape($this->_tmp_img->name); ?>" >
 		<div class="imgThumb">
 			<div class="imgThumbInside">
-			<?php echo JHtml::_('image', $this->_tmp_img->thumb, JText::sprintf('COM_MEDIA_IMAGE_TITLE', $this->_tmp_img->title, JHtml::_('number.bytes', $this->_tmp_img->size)), array('width' => $this->_tmp_img->width_60, 'height' => $this->_tmp_img->height_60)); ?>
+			<?php echo HTMLHelper::_('image', $this->_tmp_img->thumb, Text::sprintf('COM_MEDIA_IMAGE_TITLE', $this->_tmp_img->title, HTMLHelper::_('number.bytes', $this->_tmp_img->size)), array('width' => $this->_tmp_img->width_60, 'height' => $this->_tmp_img->height_60)); ?>
 			</div>
 		</div>
 		<div class="imgDetails small">
-			<?php echo JHtml::_('string.truncate', $this->escape($this->_tmp_img->name), 10, false); ?>
+			<?php echo HTMLHelper::_('string.truncate', $this->escape($this->_tmp_img->name), 10, false); ?>
 		</div>
 	</a>
 </li>
 <?php
-JFactory::getApplication()->triggerEvent('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+Factory::getApplication()->triggerEvent('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));

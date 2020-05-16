@@ -27,7 +27,11 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('checkbox');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\FormHelper;
+
+FormHelper::loadFieldClass('checkbox');
 
 /**
  * Class JFormFieldDisclaimer
@@ -64,7 +68,7 @@ class JFormFieldDisclaimer extends JFormFieldCheckbox
 	protected function getInput()
 	{
 		// Extends the checkbox with the disclaimer link and modalbox
-		$ext	=	"\n\t" . '<a id="bwp_plg_open">' . JText::_('COM_BWPOSTMAN_DISCLAIMER') . '</a>';
+		$ext	=	"\n\t" . '<a id="bwp_plg_open">' . Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a>';
 		$ext	.=	"\n" . '</label>' . "\n";
 		$ext	.=	'<div id="bwp_plg_Modal" class="bwp_plg_modal">' . "\n";
 		$ext	.=	'	<div id="bwp_plg_modal-content">' . "\n";
@@ -86,8 +90,8 @@ class JFormFieldDisclaimer extends JFormFieldCheckbox
 		$onchange = !empty($this->onchange) ? ' onchange="' . $this->onchange . '"' : '';
 
 		// Including fallback code for HTML5 non supported browsers.
-		JHtml::_('jquery.framework');
-		JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
+		HTMLHelper::_('jquery.framework');
+		HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
 
 		$html = '<label class="disclaimer">';
 		$html .="\n\t" . '<input type="checkbox" name="' . $this->name . '" id="' . $this->id . '" value="'

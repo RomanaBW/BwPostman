@@ -27,6 +27,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\User\UserHelper;
+use Joomla\CMS\Language\Multilanguage;
+
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
 
@@ -72,19 +79,21 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * Constructor
 	 * Builds object, determines the subscriber ID and the viewlevel
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
 	public function __construct()
 	{
 		parent::__construct();
 
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$id			= 0;
 
 		if ($user->guest)
 		{
 			// Subscriber is guest
-			$session				= JFactory::getSession();
+			$session				= Factory::getSession();
 			$session_subscriberid	= $session->get('session_subscriberid');
 
 			if(isset($session_subscriberid) && is_array($session_subscriberid))
@@ -109,13 +118,13 @@ class BwPostmanModelEdit extends JModelAdmin
 	 * @param	string	    $prefix     A prefix for the table class name. Optional.
 	 * @param	array	    $config     Configuration array for model. Optional.
 	 *
-	 * @return	JTable	A database object
+	 * @return	Table	A database object
 	 *
 	 * @since  1.0.1
 	 */
 	public function getTable($type = 'Subscribers', $prefix = 'BwPostmanTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -129,7 +138,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	protected function populateState()
 	{
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 
 		// Load state from the request.
 		$pk = $jinput->getInt('id');
@@ -139,14 +148,14 @@ class BwPostmanModelEdit extends JModelAdmin
 		$this->setState('list.offset', $offset);
 
 		// TODO: Tune these values based on other permissions.
-		$user	= JFactory::getUser();
+		$user	= Factory::getUser();
 		if ((!$user->authorise('bwpm.edit.state', 'com_bwpostman')) &&  (!$user->authorise('bwpm.edit', 'com_bwpostman')))
 		{
 			$this->setState('filter.published', 1);
 			$this->setState('filter.archived', 2);
 		}
 
-		$this->setState('filter.language', JLanguageMultilang::isEnabled());
+		$this->setState('filter.language', Multilanguage::isEnabled());
 	}
 
 	/**
@@ -163,7 +172,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		JForm::addFieldPath('JPATH_COMPONENT/models/fields');
+		Form::addFieldPath('JPATH_COMPONENT/models/fields');
 
 		// Get the form.
 		$form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));
@@ -172,9 +181,9 @@ class BwPostmanModelEdit extends JModelAdmin
 			return false;
 		}
 
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 		$id		= $jinput->get('id', 0);
-		$user	= JFactory::getUser();
+		$user	= Factory::getUser();
 
 		// Check for existing subscriber.
 		// Modify the form based on Edit State access controls.
@@ -262,7 +271,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-		$app	        = JFactory::getApplication();
+		$app	        = Factory::getApplication();
 		$list_id_values = null;
 		$_db	        = $this->_db;
 		$query	        = $_db->getQuery(true);
@@ -326,7 +335,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $emailaddress;
@@ -353,7 +362,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		$match_activation = true;
 		while ($match_activation)
 		{
-			$newActivation = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+			$newActivation = ApplicationHelper::getHash(UserHelper::genRandomPassword());
 
 			$query->clear();
 			$query->select($_db->quoteName('activation'));
@@ -367,7 +376,7 @@ class BwPostmanModelEdit extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			if (!$existingActivation == $newActivation) {
@@ -405,7 +414,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if (empty($itemid))
@@ -424,7 +433,7 @@ class BwPostmanModelEdit extends JModelAdmin
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -464,7 +473,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if (empty($id))
@@ -478,13 +487,15 @@ class BwPostmanModelEdit extends JModelAdmin
 	/**
 	 * Method to save the subscriber data
 	 *
-	 * @access 	public
+	 * @access    public
 	 *
-	 * @param 	array   $data   associative array of data to store
+	 * @param array $data associative array of data to store
 	 *
-	 * @return 	Boolean
+	 * @return    Boolean
 	 *
-	 * @since	1.0.1
+	 * @throws Exception
+	 *
+	 * @since     1.0.1
 	 */
 	public function save($data)
 	{
@@ -536,7 +547,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $list_id_values;

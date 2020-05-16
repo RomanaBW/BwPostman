@@ -27,7 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Registry\Registry as JRegistry;
+use Joomla\Database\DatabaseDriver;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\Filter\InputFilter;
+use Joomla\Registry\Registry;
 
 /**
  * #__bwpostman_templates table handler
@@ -268,7 +273,7 @@ class BwPostmanTableTemplates extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since 1.1.0
 	 */
@@ -345,16 +350,16 @@ class BwPostmanTableTemplates extends JTable
 	/**
 	 * Method to get the parent asset id for the record
 	 *
-	 * @param   JTable   $table  A JTable object (optional) for the asset parent
+	 * @param   Table   $table  A Table object (optional) for the asset parent
 	 * @param   integer  $id     The id (optional) of the content.
 	 *
 	 * @return  integer
 	 *
 	 * @since   11.1
 	 */
-	protected function _getAssetParentId(JTable $table = null, $id = null)
+	protected function _getAssetParentId(Table $table = null, $id = null)
 	{
-		$asset = JTable::getInstance('Asset');
+		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_bwpostman.template');
 		return $asset->id;
 	}
@@ -377,7 +382,7 @@ class BwPostmanTableTemplates extends JTable
 	{
 
 		// Remove all HTML tags from the title and description
-		$filter				= new JFilterInput(array(), array(), 0, 0);
+		$filter				= new InputFilter(array(), array(), 0, 0);
 		$this->title		= $filter->clean($this->title);
 		$this->description	= $filter->clean($this->description);
 
@@ -400,7 +405,7 @@ class BwPostmanTableTemplates extends JTable
 		}
 		else
 		{
-			throw new BwException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+			throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
 		// Cast properties
@@ -422,14 +427,14 @@ class BwPostmanTableTemplates extends JTable
 	 */
 	public function check()
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$_db	= $this->_db;
 		$query	= $this->_db->getQuery(true);
 		$fault	= false;
 		$xid    = 0;
 
 		// unset standard template if task is save2copy
-		$jinput	= JFactory::getApplication()->input;
+		$jinput	= Factory::getApplication()->input;
 		$task = $jinput->get('task', 0);
 		if ($task == 'save2copy')
 		{
@@ -444,7 +449,7 @@ class BwPostmanTableTemplates extends JTable
 		{
 			if (isset($this->article) && is_array($this->article))
 			{
-				$registry = new JRegistry();
+				$registry = new Registry();
 				$registry->loadArray($this->article);
 				$this->article = (string) $registry;
 			}
@@ -454,7 +459,7 @@ class BwPostmanTableTemplates extends JTable
 		{
 			if (isset($this->article) && is_array($this->article))
 			{
-				$registry = new JRegistry();
+				$registry = new Registry();
 				$registry->loadArray($this->article);
 				$this->article = (string) $registry;
 			}
@@ -533,14 +538,14 @@ class BwPostmanTableTemplates extends JTable
 		// Check for valid title
 		if (trim($this->title) == '')
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_TPL_ERROR_TITLE'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_TPL_ERROR_TITLE'), 'error');
 			$fault	= true;
 		}
 
 		// Check for valid title
 		if (trim($this->description) == '')
 		{
-			$app->enqueueMessage(JText::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION'), 'error');
 			$fault	= true;
 		}
 
@@ -562,7 +567,7 @@ class BwPostmanTableTemplates extends JTable
 
 		if ($xid && $xid != intval($this->id))
 		{
-			$app->enqueueMessage((JText::sprintf('COM_BWPOSTMAN_TPL_ERROR_TITLE_DOUBLE', $this->title, $xid)), 'error');
+			$app->enqueueMessage((Text::sprintf('COM_BWPOSTMAN_TPL_ERROR_TITLE_DOUBLE', $this->title, $xid)), 'error');
 			return false;
 		}
 
@@ -575,7 +580,7 @@ class BwPostmanTableTemplates extends JTable
 	}
 
 	/**
-	 * Overridden JTable::store to set created/modified and user id.
+	 * Overridden Table::store to set created/modified and user id.
 	 *
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
@@ -587,8 +592,8 @@ class BwPostmanTableTemplates extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		// trim leading and last <style>-tag
 		$this->tpl_css = trim($this->tpl_css);
@@ -609,7 +614,7 @@ class BwPostmanTableTemplates extends JTable
 		}
 
 		$res	= parent::store($updateNulls);
-		JFactory::getApplication()->setUserState('com_bwpostman.edit.template.id', $this->id);
+		Factory::getApplication()->setUserState('com_bwpostman.edit.template.id', $this->id);
 
 		return $res;
 	}
@@ -630,74 +635,104 @@ class BwPostmanTableTemplates extends JTable
 		// array to string
 		if (isset($data->basics) && is_array($data->basics))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($data->basics);
 			$data->basics = (string) $registry;
 		}
 
 		if (isset($data->header) && is_array($data->header))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($data->header);
 			$data->header = (string) $registry;
 		}
 
 		if (isset($data->intro) && is_array($data->intro))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($data->intro);
 			$data->intro = (string) $registry;
 		}
 
 		if (isset($data->article) && is_array($data->article))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($data->article);
 			$data->article = (string) $registry;
 		}
 
 		if (isset($data->footer) && is_array($data->footer))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($data->footer);
 			$data->footer = (string) $registry;
 		}
 
 		if (isset($data->button1) && is_array($data->button1))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($data->button1);
 			$data->button1 = (string) $registry;
 		}
 
 		if (isset($data->button2) && is_array($data->button2))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($data->button2);
 			$data->button2 = (string) $registry;
 		}
 
 		if (isset($data->button3) && is_array($data->button3))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($data->button3);
 			$data->button3 = (string) $registry;
 		}
 
 		if (isset($data->button4) && is_array($data->button4))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($data->button4);
 			$data->button4 = (string) $registry;
 		}
 
 		if (isset($data->button5) && is_array($data->button5))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($data->button5);
 			$data->button5 = (string) $registry;
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 *
+	 * @since  2.4.0
+	 */
+	public function getId()
+	{
+		$key = $this->getKeyName();
+
+		return $this->$key;
+	}
+
+	/**
+	 * Check if the record has a property (applying a column alias if it exists)
+	 *
+	 * @param string $key key to be checked
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.4.0
+	 */
+	public function hasField($key)
+	{
+		$key = $this->getColumnAlias($key);
+
+		return property_exists($this, $key);
 	}
 }

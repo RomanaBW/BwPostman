@@ -27,9 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+
 // Import VIEW object class
 jimport('joomla.application.component.view');
-jimport('joomla.application.component.helper');
 
 // Require helper classes
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
@@ -109,9 +112,9 @@ class BwPostmanViewRegister extends JViewLegacy
 	 */
 	public function display($tpl=null)
 	{
-		$app		    = JFactory::getApplication();
-		$document       = JFactory::getDocument();
-		$this->params	= JComponentHelper::getParams('com_bwpostman', true);
+		$app		    = Factory::getApplication();
+		$document       = Factory::getDocument();
+		$this->params	= ComponentHelper::getParams('com_bwpostman', true);
 		$layout		    = $this->getLayout();
 
 		$this->captcha	= BwPostmanHelper::getCaptcha(1);
@@ -120,10 +123,10 @@ class BwPostmanViewRegister extends JViewLegacy
 		$templateName	= $app->getTemplate();
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
-		$document->addStyleSheet(JUri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		$document->addStyleSheet(Uri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename))
 		{
-			$document->addStyleSheet(JUri::root(true) . $css_filename);
+			$document->addStyleSheet(Uri::root(true) . $css_filename);
 		}
 
 		switch ($layout)
@@ -157,7 +160,7 @@ class BwPostmanViewRegister extends JViewLegacy
 	 */
 	private function displayError()
 	{
-		$session	    = JFactory::getSession();
+		$session	    = Factory::getSession();
 		$this->error    = new stdClass();
 		$err	    = $session->get('session_error', null);
 
@@ -172,7 +175,7 @@ class BwPostmanViewRegister extends JViewLegacy
 		}
 
 		//reset error state
-		JFactory::getApplication()->setUserState('com_bwpostman.subscriber.register.error', null);
+		Factory::getApplication()->setUserState('com_bwpostman.subscriber.register.error', null);
 	}
 
 	/**
@@ -184,7 +187,7 @@ class BwPostmanViewRegister extends JViewLegacy
 	 */
 	private function displaySuccess()
 	{
-		$session	    = JFactory::getSession();
+		$session	    = Factory::getSession();
 		$this->success  = new stdClass();
 
 		$session_success = $session->get('session_success');
@@ -207,8 +210,8 @@ class BwPostmanViewRegister extends JViewLegacy
 	 */
 	private function displayDefault()
 	{
-		$user		= JFactory::getUser();
-		$session	= JFactory::getSession();
+		$user		= Factory::getUser();
+		$session	= Factory::getSession();
 		$subscriber	= new stdClass();
 		$lists      = array();
 

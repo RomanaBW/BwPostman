@@ -24,9 +24,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 /**
  * Script file of BwPostman module
@@ -59,7 +61,7 @@ class PlgBwPostmanPersonalizeInstallerScript
 	 */
 	public function uninstall()
 	{
-		JFactory::getApplication()->enqueueMessage(JText::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_UNINSTALL_THANKYOU'), 'message');
+		Factory::getApplication()->enqueueMessage(Text::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_UNINSTALL_THANKYOU'), 'message');
 	}
 
 	/**
@@ -89,7 +91,7 @@ class PlgBwPostmanPersonalizeInstallerScript
 		// We only need to perform this if the extension is being installed, not update
 		if ($type == 'install')
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			$fields = array(

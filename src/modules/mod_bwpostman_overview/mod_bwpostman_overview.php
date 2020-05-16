@@ -26,22 +26,26 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Helper\ModuleHelper;
+
 // Include the syndicate functions only once
 require_once __DIR__ . '/helper.php';
 
-$app		= JFactory::getApplication();
-$document	= JFactory::getDocument();
+$app		= Factory::getApplication();
+$document	= Factory::getDocument();
 
 // Get document object, set document title and add css
 $templateName	= $app->getTemplate();
 $css_filename	= '/templates/' . $templateName . '/css/mod_bwpostman_overview.css';
 
-$document->addStyleSheet(JUri::root(true) . '/modules/mod_bwpostman_overview/assets/css/bwpostman_overview.css');
+$document->addStyleSheet(Uri::root(true) . '/modules/mod_bwpostman_overview/assets/css/bwpostman_overview.css');
 if (file_exists(JPATH_BASE . $css_filename)) {
-	$document->addStyleSheet(JUri::root(true) . $css_filename);
+	$document->addStyleSheet(Uri::root(true) . $css_filename);
 }
 
 $moduleclass_sfx	= htmlspecialchars($params->get('moduleclass_sfx'));
 $list				= modBwPostmanOverviewHelper::getList($params, $module->id);
 
-require JModuleHelper::getLayoutPath('mod_bwpostman_overview', $params->get('layout', 'default'));
+require ModuleHelper::getLayoutPath('mod_bwpostman_overview', $params->get('layout', 'default'));

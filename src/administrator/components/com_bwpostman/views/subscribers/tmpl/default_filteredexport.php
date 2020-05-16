@@ -27,18 +27,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 ?>
 
 <form name="popupForm" action="#" method="get">
 	<fieldset>
 		<table width="100%" id="modal-upload">
 			<tr>
-				<th height="30" align="center"><?php echo JText::_("COM_BWPOSTMAN_SUB_CONFIRM_EXPORT_FILTERED"); ?></th>
+				<th height="30" align="center"><?php echo Text::_("COM_BWPOSTMAN_SUB_CONFIRM_EXPORT_FILTERED"); ?></th>
 			</tr>
 			<tr>
 				<td height="30" align="center">
-					<input type="button" name="submitbutton" onClick="window.parent.OnlyFiltered('1')" value="<?php echo JText::_("COM_BWPOSTMAN_YES");?>" />
-					<input type="button" name="submitbutton" onClick="window.parent.OnlyFiltered('0')" value="<?php echo JText::_("COM_BWPOSTMAN_NO");?>" />
+					<input type="button" name="submitbutton" onClick="window.parent.OnlyFiltered('1')" value="<?php echo Text::_("COM_BWPOSTMAN_YES");?>" />
+					<input type="button" name="submitbutton" onClick="window.parent.OnlyFiltered('0')" value="<?php echo Text::_("COM_BWPOSTMAN_NO");?>" />
 				</td>
 			</tr>
 		</table>

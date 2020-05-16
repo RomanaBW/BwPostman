@@ -27,13 +27,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title><?php echo JText::_('COM_BWPOSTMAN_SUB_DATA_TITLE'); ?></title>
+	<title><?php echo Text::_('COM_BWPOSTMAN_SUB_DATA_TITLE'); ?></title>
 	<style>
 		@page {
 			margin-top: 1.5cm;
@@ -97,11 +98,11 @@ defined('_JEXEC') or die('Restricted access');
 </head>
 
 <body id="preview_html">
-<p class="heading"><?php echo JText::_('COM_BWPOSTMAN_SUB_DATA_TITLE'); ?>
-	<a class="btn" href="javascript:window.print()"><?php echo JText::_('JGLOBAL_SHOW_PRINT_ICON_LABEL'); ?></a>
+<p class="heading"><?php echo Text::_('COM_BWPOSTMAN_SUB_DATA_TITLE'); ?>
+	<a class="btn" href="javascript:window.print()"><?php echo Text::_('JGLOBAL_SHOW_PRINT_ICON_LABEL'); ?></a>
 </p>
-<p class="date"><?php echo JText::_('COM_BWPOSTMAN_SUB_DATA_PRINTDATE') . ': ' . date("d.m.Y"); ?></p>
-<p class="sub-heading"><?php echo JText::_('COM_BWPOSTMAN_SUB_DATA_REG'); ?></p>
+<p class="date"><?php echo Text::_('COM_BWPOSTMAN_SUB_DATA_PRINTDATE') . ': ' . date("d.m.Y"); ?></p>
+<p class="sub-heading"><?php echo Text::_('COM_BWPOSTMAN_SUB_DATA_REG'); ?></p>
 <table>
 	<tr>
 		<td class="left">
@@ -111,15 +112,15 @@ defined('_JEXEC') or die('Restricted access');
 			<?php
 			if ($this->sub->gender === '1')
 			{
-				echo JText::_('COM_BWPOSTMAN_FEMALE');
+				echo Text::_('COM_BWPOSTMAN_FEMALE');
 			}
 			elseif ($this->sub->gender === '0')
 			{
-				echo JText::_('COM_BWPOSTMAN_MALE');
+				echo Text::_('COM_BWPOSTMAN_MALE');
 			}
 			else
 			{
-				echo JText::_('COM_BWPOSTMAN_NO_GENDER');
+				echo Text::_('COM_BWPOSTMAN_NO_GENDER');
 			}
 			?>
 		</td>
@@ -158,7 +159,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 		<td class="left">
-			<strong><?php echo JText::_('COM_BWPOSTMAN_SUBS_FIELD_EMAILFORMAT_LABEL'); ?></strong>
+			<strong><?php echo Text::_('COM_BWPOSTMAN_SUBS_FIELD_EMAILFORMAT_LABEL'); ?></strong>
 		</td>
 		<td>
 			<?php echo $this->sub->emailformat; ?>
@@ -166,37 +167,37 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 		<td class="left">
-			<?php echo JText::_('COM_BWPOSTMAN_SUB_EXPORT_STATUS'); ?>
+			<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_STATUS'); ?>
 		</td>
 		<td>
 			<?php
 			if ($this->sub->status === '1' && $this->sub->archive_flag === '0')
 			{
-				echo mb_strtolower(JText::_('COM_BWPOSTMAN_ARC_SUB_CONFIRMED'));
+				echo mb_strtolower(Text::_('COM_BWPOSTMAN_ARC_SUB_CONFIRMED'));
 			}
 			elseif ($this->sub->status === '0' && $this->sub->archive_flag === '0')
 			{
-				echo mb_strtolower(JText::_('COM_BWPOSTMAN_ARC_SUB_UNCONFIRMED'));
+				echo mb_strtolower(Text::_('COM_BWPOSTMAN_ARC_SUB_UNCONFIRMED'));
 			}
 			elseif ($this->sub->archive_flag !== '0')
 			{
-				echo mb_strtolower(JText::_('ARCHIVED'));
+				echo mb_strtolower(Text::_('ARCHIVED'));
 			}
 			else
 			{
-				echo JText::_('COM_BWPOSTMAN_ARC_SUB_TEST');
+				echo Text::_('COM_BWPOSTMAN_ARC_SUB_TEST');
 			}
 			?>
 		</td>
 	</tr>
 </table>
 
-<span><small><?php echo JText::_('COM_BWPOSTMAN_SUB_DATA_REQUIRED'); ?></small></span>
-<p class="sub-heading"><?php echo JText::_('COM_BWPOSTMAN_SUB_DATA_AUTO'); ?></p>
+<span><small><?php echo Text::_('COM_BWPOSTMAN_SUB_DATA_REQUIRED'); ?></small></span>
+<p class="sub-heading"><?php echo Text::_('COM_BWPOSTMAN_SUB_DATA_AUTO'); ?></p>
 <table>
 	<tr>
 		<td class="left">
-			<strong><?php echo JText::_('COM_BWPOSTMAN_SUBS_FIELD_REGISTRATION_DATE_LABEL'); ?></strong>
+			<strong><?php echo Text::_('COM_BWPOSTMAN_SUBS_FIELD_REGISTRATION_DATE_LABEL'); ?></strong>
 		</td>
 		<td>
 			<?php echo $this->sub->registration_date; ?>
@@ -208,7 +209,7 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<tr>
 			<td class="left">
-				<strong><?php echo JText::_('COM_BWPOSTMAN_SUBS_FIELD_REGISTRATION_BY_LABEL'); ?></strong>
+				<strong><?php echo Text::_('COM_BWPOSTMAN_SUBS_FIELD_REGISTRATION_BY_LABEL'); ?></strong>
 			</td>
 			<td>
 				<?php echo $this->sub->registered_by; ?>
@@ -219,7 +220,7 @@ defined('_JEXEC') or die('Restricted access');
 	?>
 	<tr>
 		<td class="left">
-			<strong><?php echo JText::_('COM_BWPOSTMAN_SUBS_FIELD_REGISTRATION_IP_LABEL'); ?></strong>
+			<strong><?php echo Text::_('COM_BWPOSTMAN_SUBS_FIELD_REGISTRATION_IP_LABEL'); ?></strong>
 		</td>
 		<td>
 			<?php echo $this->sub->registration_ip; ?>
@@ -227,7 +228,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 		<td class="left">
-			<strong><?php echo JText::_('COM_BWPOSTMAN_SUBS_FIELD_CONFIRMATION_DATE_LABEL'); ?></strong>
+			<strong><?php echo Text::_('COM_BWPOSTMAN_SUBS_FIELD_CONFIRMATION_DATE_LABEL'); ?></strong>
 		</td>
 		<td>
 			<?php
@@ -237,7 +238,7 @@ defined('_JEXEC') or die('Restricted access');
 			}
 			else
 			{
-				echo JText::_('COM_BWPOSTMAN_ARC_SUB_UNCONFIRMED');
+				echo Text::_('COM_BWPOSTMAN_ARC_SUB_UNCONFIRMED');
 			}
 			?>
 		</td>
@@ -250,7 +251,7 @@ defined('_JEXEC') or die('Restricted access');
 			?>
 			<tr>
 				<td class="left">
-					<strong><?php echo JText::_('COM_BWPOSTMAN_SUBS_FIELD_CONFIRMATION_BY_LABEL'); ?></strong>
+					<strong><?php echo Text::_('COM_BWPOSTMAN_SUBS_FIELD_CONFIRMATION_BY_LABEL'); ?></strong>
 				</td>
 				<td>
 					<?php echo $this->sub->confirmed_by; ?>
@@ -261,7 +262,7 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<tr>
 			<td class="left">
-				<strong><?php echo JText::_('COM_BWPOSTMAN_SUBS_FIELD_CONFIRMATION_IP_LABEL'); ?></strong>
+				<strong><?php echo Text::_('COM_BWPOSTMAN_SUBS_FIELD_CONFIRMATION_IP_LABEL'); ?></strong>
 			</td>
 			<td>
 				<?php echo $this->sub->confirmation_ip; ?>
@@ -274,7 +275,7 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<tr>
 			<td class="left">
-				<strong><?php echo JText::_('COM_BWPOSTMAN_FIELD_MODIFIED_BY_DESC'); ?></strong>
+				<strong><?php echo Text::_('COM_BWPOSTMAN_FIELD_MODIFIED_BY_DESC'); ?></strong>
 			</td>
 			<td>
 				<?php echo $this->sub->modified_by; ?>
@@ -282,7 +283,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td class="left">
-				<strong><?php echo JText::_('COM_BWPOSTMAN_FIELD_MODIFIED_TIME_LABEL'); ?></strong>
+				<strong><?php echo Text::_('COM_BWPOSTMAN_FIELD_MODIFIED_TIME_LABEL'); ?></strong>
 			</td>
 			<td>
 				<?php echo $this->sub->modified_time; ?>
@@ -295,7 +296,7 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<tr>
 			<td class="left">
-				<strong><?php echo JText::_('COM_BWPOSTMAN_SUB_ARCHIVE_DATE'); ?></strong>
+				<strong><?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVE_DATE'); ?></strong>
 			</td>
 			<td>
 				<?php echo $this->sub->archive_date; ?>
@@ -303,7 +304,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td class="left">
-				<strong><?php echo JText::_('COM_BWPOSTMAN_SUB_ARCHIVED_BY'); ?></strong>
+				<strong><?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVED_BY'); ?></strong>
 			</td>
 			<td>
 				<?php echo $this->sub->archived_by; ?>
@@ -313,14 +314,14 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	?>
 </table>
-<p class="sub-heading"><?php echo JText::_('COM_BWPOSTMAN_SUB_ML_SUBSCRIBED'); ?></p>
+<p class="sub-heading"><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_SUBSCRIBED'); ?></p>
 <table>
 	<tr>
 		<td class="left desc">
-			<strong><?php echo JText::_('COM_BWPOSTMAN_ML_TITLE'); ?></strong>
+			<strong><?php echo Text::_('COM_BWPOSTMAN_ML_TITLE'); ?></strong>
 		</td>
 		<td>
-			<strong><?php echo JText::_('COM_BWPOSTMAN_ML_DESCRIPTION'); ?></strong>
+			<strong><?php echo Text::_('COM_BWPOSTMAN_ML_DESCRIPTION'); ?></strong>
 		</td>
 	</tr>
 	<?php
@@ -346,10 +347,10 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<tr>
 			<td class="left-desc">
-				<?php echo JText::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?>
+				<?php echo Text::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?>
 			</td>
 			<td>
-				<?php echo JText::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?>
+				<?php echo Text::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?>
 			</td>
 		</tr>
 		<?php

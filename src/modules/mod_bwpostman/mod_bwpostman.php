@@ -27,14 +27,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\User\UserHelper;
+
 require_once(dirname(__FILE__) . '/helper.php');
 require_once JPATH_BASE . '/components/com_bwpostman/helpers/subscriberhelper.php';
 
 jimport('joomla.application.component.helper');
 
-$app		= JFactory::getApplication();
-$document	= JFactory::getDocument();
-$module     = JModuleHelper::getModule('mod_bwpostman');
+$app		= Factory::getApplication();
+$document	= Factory::getDocument();
+$module     = ModuleHelper::getModule('mod_bwpostman');
 
 // Require component admin helper class
 if (is_file(JPATH_ADMINISTRATOR . '/components/com_bwpostman/bwpostman.php'))
@@ -43,7 +51,7 @@ if (is_file(JPATH_ADMINISTRATOR . '/components/com_bwpostman/bwpostman.php'))
 }
 else
 {
-	$app->enqueueMessage(JText::_('MOD_BWPOSTMANERROR_COMPONENT_NOT_INSTALLED'), 'error');
+	$app->enqueueMessage(Text::_('MOD_BWPOSTMANERROR_COMPONENT_NOT_INSTALLED'), 'error');
 	return false;
 }
 
@@ -52,19 +60,19 @@ else
 $templateName	= $app->getTemplate();
 $css_filename	= '/templates/' . $templateName . '/css/mod_bwpostman.css';
 
-$document->addStyleSheet(JUri::root(true) . '/modules/mod_bwpostman/css/bwpostman.css');
+$document->addStyleSheet(Uri::root(true) . '/modules/mod_bwpostman/css/bwpostman.css');
 if (file_exists(JPATH_BASE . $css_filename))
 {
-	$document->addStyleSheet(JUri::root(true) . $css_filename);
+	$document->addStyleSheet(Uri::root(true) . $css_filename);
 }
 
-if (!JComponentHelper::isEnabled('com_bwpostman'))
+if (!ComponentHelper::isEnabled('com_bwpostman'))
 {
-	$app->enqueueMessage(JText::_('Module requires the com_bwpostman component'), 'error');
+	$app->enqueueMessage(Text::_('Module requires the com_bwpostman component'), 'error');
 }
 else
 {
-	$user		= JFactory::getUser();
+	$user		= Factory::getUser();
 	$userid		= $user->get('id');
 	$usertype	= '';
 
@@ -82,7 +90,7 @@ else
 	{
 		// Get the parameters of the component
 		// --> we need these parameters because we have to ensure that both the component and the module will work with the same settings
-		$paramsComponent = \Joomla\CMS\Component\ComponentHelper::getParams('com_bwpostman');
+		$paramsComponent = ComponentHelper::getParams('com_bwpostman');
 		$module_id   = '';
 	}
 
@@ -111,7 +119,7 @@ else
 		}
 
 		$emailformat     .= '/>';
-		$emailformat		.= '<label for="formatTextMod"><span>' . JText::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
+		$emailformat		.= '<label for="formatTextMod"><span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
 		$emailformat     .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
 
 		if($mailformat_selected)
@@ -120,7 +128,7 @@ else
 		}
 
 		$emailformat     .= '/>';
-		$emailformat     .= '<label for="formatHtmlMod"><span>' . JText::_('COM_BWPOSTMAN_HTML') . '</span></label>';
+		$emailformat     .= '<label for="formatHtmlMod"><span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
 		$emailformat     .= '</fieldset>';
 		$lists['emailformat'] = $emailformat;
 
@@ -132,7 +140,7 @@ else
 
 		// Get the usertype
 		$usertype = '';
-		$usertypeArray	= JUserHelper::getUserGroups($userid);
+		$usertypeArray	= UserHelper::getUserGroups($userid);
 
 		if (!empty($usertypeArray))
 		{
@@ -151,11 +159,11 @@ else
 		{
 			foreach ($mailinglists AS $mailinglist)
 			{
-				$available_mailinglists[] = JHtml::_('select.option', $mailinglist->id, $mailinglist->title . ':<br />' . $mailinglist->description);
+				$available_mailinglists[] = HTMLHelper::_('select.option', $mailinglist->id, $mailinglist->title . ':<br />' . $mailinglist->description);
 			}
 		}
 
-		$lists['list']	= JHtml::_(
+		$lists['list']	= HTMLHelper::_(
 			'select.genericlist',
 			$available_mailinglists,
 			'list[]',
@@ -167,7 +175,7 @@ else
 
 	$itemid = modBwPostmanHelper::getItemID();
 
-	$path = JModuleHelper::getLayoutPath('mod_bwpostman', $layout);
+	$path = ModuleHelper::getLayoutPath('mod_bwpostman', $layout);
 
 	if (file_exists($path))
 	{

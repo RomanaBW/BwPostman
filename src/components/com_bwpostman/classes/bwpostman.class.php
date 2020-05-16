@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+
 /**
  * Class BwPostman
  *
@@ -44,9 +47,9 @@ class BwPostman
 	public static function footer()
 	{
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
-		JPluginHelper::importPlugin('bwpostman', 'copyright');
+		PluginHelper::importPlugin('bwpostman', 'copyright');
 
 		$copyright = '<span>BwPostman by </span><a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
 

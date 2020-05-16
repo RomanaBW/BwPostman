@@ -27,19 +27,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HtmlHelper::_('bootstrap.tooltip');
+HtmlHelper::_('behavior.multiselect');
+HtmlHelper::_('behavior.keepalive');
 
 $image = '<i class="icon-info"></i>';
 
-$checkContentArgs	= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true) . "', ";
-$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_TEMPLATE_ID', true) . "', ";
-$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NL_CONFIRM_TEXT_TEMPLATE_ID', true) . "', ";
-$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NO_HTML_TEMPLATE_SELECTED', true) . "', ";
-$checkContentArgs	.= "'" . JText::_('COM_BWPOSTMAN_NO_TEXT_TEMPLATE_SELECTED', true) . "'";
+$checkContentArgs	= "'" . Text::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true) . "', ";
+$checkContentArgs	.= "'" . Text::_('COM_BWPOSTMAN_NL_CONFIRM_TEMPLATE_ID', true) . "', ";
+$checkContentArgs	.= "'" . Text::_('COM_BWPOSTMAN_NL_CONFIRM_TEXT_TEMPLATE_ID', true) . "', ";
+$checkContentArgs	.= "'" . Text::_('COM_BWPOSTMAN_NO_HTML_TEMPLATE_SELECTED', true) . "', ";
+$checkContentArgs	.= "'" . Text::_('COM_BWPOSTMAN_NO_TEXT_TEMPLATE_SELECTED', true) . "'";
 
-$checkRecipientArgs	= "'" . JText::_('COM_BWPOSTMAN_NL_ERROR_NO_RECIPIENTS_SELECTED', true) . "'";
+$checkRecipientArgs	= "'" . Text::_('COM_BWPOSTMAN_NL_ERROR_NO_RECIPIENTS_SELECTED', true) . "'";
 
 if (isset($this->substitute))
 {
@@ -54,39 +59,39 @@ $currentTab = 'edit_basic';
 ?>
 
 <div id="bwp_view_single">
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletter'); ?>" method="post" name="adminForm" id="adminForm">
 		<?php
 			if ($this->item->is_template)
 			{
-				JFactory::$application->enqueueMessage(JText::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_INFO"), "Notice");
+				Factory::$application->enqueueMessage(Text::_("COM_BWPOSTMAN_NL_IS_TEMPLATE_INFO"), "Notice");
 			}
 		?>
 		<div class="form-horizontal">
 			<ul class="bwp_tabs">
 				<li class="open">
 					<button onclick="return changeTab('edit_basic', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink_open">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP1'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP1'); ?>
 					</button>
 				</li>
 				<li class="closed">
 					<button onclick="return changeTab('edit_html', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP2'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP2'); ?>
 					</button>
 				</li>
 				<li class="closed">
 					<button onclick="return changeTab('edit_text', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP3'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP3'); ?>
 					</button>
 				</li>
 				<li class="closed">
 					<button onclick="return changeTab('edit_preview', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
-						<?php echo JText::_('COM_BWPOSTMAN_NL_STP4'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_NL_STP4'); ?>
 					</button>
 				</li>
 				<?php if (BwPostmanHelper::canSend((int) $this->item->id) && !$this->item->is_template) { ?>
 					<li class="closed">
 						<button onclick="return changeTab('edit_send', '<?php echo $currentTab; ?>', <?php echo $checkContentArgs; ?>, <?php echo $checkRecipientArgs; ?>);" class="buttonAsLink">
-							<?php echo JText::_('COM_BWPOSTMAN_NL_STP5'); ?>
+							<?php echo Text::_('COM_BWPOSTMAN_NL_STP5'); ?>
 						</button>
 					</li>
 				<?php } ?>
@@ -99,11 +104,11 @@ $currentTab = 'edit_basic';
 				<fieldset class="adminform">
 					<legend>
 						<?php
-						$title = JText::_('COM_BWPOSTMAN_NL_GENERAL');
+						$title = Text::_('COM_BWPOSTMAN_NL_GENERAL');
 
 						if ($this->item->id)
 						{
-							$title = JText::sprintf('COM_BWPOSTMAN_NL_GENERAL_EDIT', $this->item->id);
+							$title = Text::sprintf('COM_BWPOSTMAN_NL_GENERAL_EDIT', $this->item->id);
 						}
 
 						echo $title;
@@ -168,16 +173,16 @@ $currentTab = 'edit_basic';
 							</ul>
 						</div>
 						<div class="clr clearfix"></div>
-						<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+						<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 					</div>
 				</fieldset>
 			</div>
 			<fieldset class="adminform">
 				<legend>
-					<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_TEMPLATES_NOTE'); ?>">
+					<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_TEMPLATES_NOTE'); ?>">
 						<?php echo $image; ?>
 					</span>
-					<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_TEMPLATES'); ?></span>
+					<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_TEMPLATES'); ?></span>
 				</legend>
 				<div class="well">
 					<?php foreach($this->form->getFieldset('templates') as $field): ?>
@@ -202,19 +207,19 @@ $currentTab = 'edit_basic';
 			<fieldset class="adminform">
 				<div class="row-fluid">
 					<fieldset class="adminform" id="recipients">
-						<legend class="required"><?php echo JText::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *</legend>
+						<legend class="required"><?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *</legend>
 						<div class="well">
 							<div class="width-75 fltlft span9">
 								<div class="well-white well-small">
 									<fieldset class="adminform">
 										<legend>
 											<span class="editlinktip hasTip hasTooltip"
-													title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+													title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
 												<?php echo $image; ?>
 											</span>
 											<span class="editlinktip hasTip hasTooltip"
-													title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
-												<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
+													title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+												<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
 											</span>
 										</legend>
 										<?php foreach($this->form->getFieldset('mailinglists') as $field): ?>
@@ -226,11 +231,11 @@ $currentTab = 'edit_basic';
 														<fieldset class="adminform">
 															<legend>
 																<span class="editlinktip hasTip hasTooltip"
-																		title="<?php echo JText::_($field->description); ?>">
+																		title="<?php echo Text::_($field->description); ?>">
 																	<?php echo $image; ?>
 																</span>
 																<span class="editlinktip hasTip hasTooltip"
-																		title="<?php echo JText::_($field->description); ?>">
+																		title="<?php echo Text::_($field->description); ?>">
 																	<?php echo $field->label; ?>
 																</span>
 															</legend>
@@ -245,7 +250,7 @@ $currentTab = 'edit_basic';
 																{
 																	echo '<div class="width-50 fltlft span6">
 																				<label class="mailinglist_label noclear checkbox">' .
-																					JText::_('COM_BWPOSTMAN_NO_DATA') .
+																					Text::_('COM_BWPOSTMAN_NO_DATA') .
 																				'</label>
 																			</div>';
 																}
@@ -265,10 +270,10 @@ $currentTab = 'edit_basic';
 									<fieldset class="adminform usergroups">
 										<legend>
 											<span class="editlinktip hasTip hasTooltip"
-													title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
+													title="<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
 												<?php echo $image; ?>
 											</span>
-											<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
+											<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
 										</legend>
 											<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
 												<?php echo $field->input; ?>
@@ -285,10 +290,10 @@ $currentTab = 'edit_basic';
 					<div class="well-small">
 						<fieldset class="adminform">
 							<legend>
-								<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?>">
+								<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?>">
 									<?php echo $image; ?>
 								</span>
-								<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?></span>
+								<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?></span>
 							</legend>
 							<div class="well well-small">
 								<div class="width-40 fltlft span4">
@@ -331,7 +336,7 @@ $currentTab = 'edit_basic';
 				</div>
 			</fieldset>
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('COM_BWPOSTMAN_NL_FIELDSET_RULES'); ?></legend>
+				<legend><?php echo Text::_('COM_BWPOSTMAN_NL_FIELDSET_RULES'); ?></legend>
 				<?php
 				if ($this->permissions['com']['admin'] || $this->permissions['admin']['newsletter']): ?>
 					<div class="fltlft">
@@ -369,7 +374,7 @@ $currentTab = 'edit_basic';
 		<input type="hidden" id="add_content" name="add_content" value="" />
 		<input type="hidden" id="selected_content_old" name="selected_content_old" value="<?php echo $this->selected_content_old; ?>" />
 		<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HtmlHelper::_('form.token'); ?>
 
 		<input type="hidden" id="checkContentArgs" value="<?php echo $checkContentArgs; ?>" />
 		<input type="hidden" id="checkRecipientArgs" value="<?php echo $checkRecipientArgs; ?>" />

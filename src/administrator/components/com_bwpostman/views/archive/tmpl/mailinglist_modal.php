@@ -27,12 +27,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 ?>
 <table>
 	<tr>
-		<td><img src="<?php echo JUri::base() . 'components/com_bwpostman/assets/images/icon-48-mailinglists.png'; ?>" /></td>
-		<td><strong><?php echo JText::_('COM_BWPOSTMAN_ARC_SHOW_ML') ?></strong></td>
+		<td><img src="<?php echo Uri::base() . 'components/com_bwpostman/assets/images/icon-48-mailinglists.png'; ?>" /></td>
+		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_ML') ?></strong></td>
 	</tr>
 </table>
 
@@ -41,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_TITLE');
+					<?php echo Text::_('COM_BWPOSTMAN_TITLE');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -50,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_DESC');
+					<?php echo Text::_('COM_BWPOSTMAN_DESC');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -59,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('COM_BWPOSTMAN_ACCESS');
+					<?php echo Text::_('COM_BWPOSTMAN_ACCESS');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -68,7 +69,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td align="right">
 				<strong>
-					<?php echo JText::_('PUBLISHED');
+					<?php echo Text::_('PUBLISHED');
 					echo ':'; ?>
 				</strong>
 			</td>
@@ -76,10 +77,10 @@ defined('_JEXEC') or die('Restricted access');
 				<?php
 				switch ($this->ml->published) {
 					case "0":
-						echo JText::_('COM_BWPOSTMAN_NO');
+						echo Text::_('COM_BWPOSTMAN_NO');
 						break;
 					case "1":
-						echo JText::_('COM_BWPOSTMAN_YES');
+						echo Text::_('COM_BWPOSTMAN_YES');
 				} ?>
 			</td>
 		</tr>

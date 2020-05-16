@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Pagination\Pagination;
+
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 
@@ -112,7 +115,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
 		$layout = $app->input->get('tab', 'unsent');
@@ -221,7 +224,7 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $count_queue;
@@ -240,7 +243,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$jinput      = JFactory::getApplication()->input;
+		$jinput      = Factory::getApplication()->input;
 		$this->query = $this->_db->getQuery(true);
 
 		//Get the tab in which we are for correct query
@@ -436,7 +439,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	private function getFilterByAccessLevelFilter()
 	{
-		if (JFactory::getApplication()->isClient('site'))
+		if (Factory::getApplication()->isClient('site'))
 		{
 			$access = $this->getState('filter.access');
 			if ($access)
@@ -459,9 +462,9 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	private function getFilterByViewLevel()
 	{
-		if (JFactory::getApplication()->isClient('site'))
+		if (Factory::getApplication()->isClient('site'))
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 
 			if (!$user->authorise('core.admin'))
 			{
@@ -474,11 +477,13 @@ class BwPostmanModelNewsletters extends JModelList
 	/**
 	 * Method to get the filter by BwPostman permissions
 	 *
-	 * @access 	private
+	 * @access    private
 	 *
-	 * @return 	void
+	 * @return    void
 	 *
-	 * @since   2.0.0
+	 * @throws Exception
+	 *
+	 * @since     2.0.0
 	 */
 	private function getFilterByComponentPermissions()
 	{
@@ -668,7 +673,7 @@ class BwPostmanModelNewsletters extends JModelList
 	{
 		// Define null and now dates, get params
 		$nullDate	= $this->_db->quote($this->_db->getNullDate());
-		$nowDate	= $this->_db->quote(JFactory::getDate()->toSql());
+		$nowDate	= $this->_db->quote(Factory::getDate()->toSql());
 
 		$published = $this->getState('filter.published');
 		if (is_numeric($published))
@@ -807,7 +812,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$limit = (int) $this->getState('list.limit') - (int) $this->getState('list.links');
 
 		// Create the pagination object and add the object to the internal cache.
-		$this->cache[$store] = new JPagination($this->getCountQueue(), $this->getStart(), $limit);
+		$this->cache[$store] = new Pagination($this->getCountQueue(), $this->getStart(), $limit);
 
 		return $this->cache[$store];
 	}

@@ -28,6 +28,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\LogEntry;
+
 require_once(JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
@@ -39,9 +46,9 @@ if (!class_exists('vmUserfieldPlugin'))
 if(!include_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php'))
 {
 	// For some reason, J3.3 does not load the language file otherwise
-	$language = JFactory::getLanguage();
+	$language = Factory::getLanguage();
 	$language->load('plg_vmcustom_bwpm_buyer2subscriber');
-	JFactory::getApplication()->enqueueMessage(JText::_('VMCUSTOM_BWPOSTMAN_COMPONENT_NEEDED'), 'error');
+	Factory::getApplication()->enqueueMessage(Text::_('VMCUSTOM_BWPOSTMAN_COMPONENT_NEEDED'), 'error');
 	return;
 }
 
@@ -201,7 +208,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setComponentStatus()
 	{
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -217,14 +224,14 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logger->addEntry(new LogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
 		{
 			$this->subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
-			$this->logger->addEntry(new JLogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -237,7 +244,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setComponentVersion()
 	{
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -252,7 +259,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Component version is: %s', $manifest['version']), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logger->addEntry(new LogEntry(sprintf('Component version is: %s', $manifest['version']), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
@@ -271,7 +278,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setUser2SubscriberPluginStatus()
 	{
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -288,7 +295,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Plugin User2Subscriber is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logger->addEntry(new LogEntry(sprintf('Plugin User2Subscriber is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
@@ -307,7 +314,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setBuyer2SubscriberPluginStatus()
 	{
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -324,7 +331,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('Plugin Buyer2Subscriber is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logger->addEntry(new LogEntry(sprintf('Plugin Buyer2Subscriber is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
@@ -380,9 +387,9 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	public function plgVmOnSelfCallFE($type, $name, &$render)
 	{
 		// Add CSS
-		$doc = JFactory::getDocument();
+		$doc = Factory::getDocument();
 
-		$css_file   = JUri::base(true) . '/plugins/vmuserfield/bwpm_buyer2subscriber/assets/css/bwpm_buyer2subscriber.css';
+		$css_file   = Uri::base(true) . '/plugins/vmuserfield/bwpm_buyer2subscriber/assets/css/bwpm_buyer2subscriber.css';
 		$doc->addStyleSheet($css_file);
 	}
 
@@ -402,7 +409,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('plgVmOnGetUserfields reached', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('plgVmOnGetUserfields reached', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!$this->allowedContext($type))
@@ -416,11 +423,11 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		}
 
 		// Add JS for additional fields
-		$doc = JFactory::getDocument();
+		$doc = Factory::getDocument();
 
 		// makes sure that jQuery is loaded first
-		JHtml::_('jquery.framework');
-		$js_file = JUri::base(true) . '/plugins/vmuserfield/bwpm_buyer2subscriber/assets/js/bwpm_buyer2subscriber.js';
+		Htmlhelper::_('jquery.framework');
+		$js_file = Uri::base(true) . '/plugins/vmuserfield/bwpm_buyer2subscriber/assets/js/bwpm_buyer2subscriber.js';
 
 		$doc->addScript($js_file);
 
@@ -462,7 +469,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function allowedContext($type)
 	{
-		$view = JFactory::getApplication()->input->getCmd('view', '');
+		$view = Factory::getApplication()->input->getCmd('view', '');
 		if (!in_array($view, $this->allowedContext) || ($type != 'BT'))
 		{
 			return false;
@@ -527,8 +534,8 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	{
 		if ($this->params->get('bw_register_message_option') != '')
 		{
-			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->title       = JText::_($this->params->get('bw_register_message_option'));
-			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->description = JText::_($this->params->get('bw_register_message_option'));
+			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->title       = Text::_($this->params->get('bw_register_message_option'));
+			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->description = Text::_($this->params->get('bw_register_message_option'));
 		}
 		else
 		{
@@ -554,10 +561,10 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$new_field->hidden      = 1;
 		$new_field->default     = 0;
 
-		if (JComponentHelper::getParams('com_bwpostman')->get('show_gender'))
+		if (ComponentHelper::getParams('com_bwpostman')->get('show_gender'))
 		{
 			$userFields[$this->BwPostman_field_ids['bw_gender']]->description
-				= JText::_('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_SUBS_FIELD_GENDER_DESC');
+				= Text::_('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_SUBS_FIELD_GENDER_DESC');
 			$new_field->default = 1;
 		}
 		else
@@ -577,7 +584,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function processLastnameField(&$userFields)
 	{
-		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$com_params = ComponentHelper::getParams('com_bwpostman');
 
 		if ($com_params->get('name_field_obligation'))
 		{
@@ -599,7 +606,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function processFirstnameField(&$userFields)
 	{
-		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$com_params = ComponentHelper::getParams('com_bwpostman');
 
 		if ($com_params->get('firstname_field_obligation'))
 		{
@@ -623,7 +630,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	{
 		$new_required   = new stdClass();
 		$new_show       = new stdClass();
-		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$com_params = ComponentHelper::getParams('com_bwpostman');
 
 		$new_required->name        = 'bw_newsletter_additional_required';
 		$new_required->title       = 'bw_newsletter_additional_required';
@@ -659,14 +666,14 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 				$special_label = 'PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_SUBS_FIELD_SPECIAL_LABEL';
 			}
 
-			$userFields[$this->BwPostman_field_ids['bw_newsletter_additional']]->title = JText::_($special_label);
+			$userFields[$this->BwPostman_field_ids['bw_newsletter_additional']]->title = Text::_($special_label);
 
 			if ($special_desc == '')
 			{
 				$special_desc = 'PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_SUBS_FIELD_SPECIAL_DESC';
 			}
 
-			$userFields[$this->BwPostman_field_ids['bw_newsletter_additional']]->description = JText::_($special_desc);
+			$userFields[$this->BwPostman_field_ids['bw_newsletter_additional']]->description = Text::_($special_desc);
 		}
 		else
 		{
@@ -696,11 +703,11 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$new_field->default     = 1;
 		$new_field->data        = 'yes';
 
-		$com_params = JComponentHelper::getParams('com_bwpostman');
+		$com_params = ComponentHelper::getParams('com_bwpostman');
 
 		$userFields[$this->BwPostman_field_ids['bw_newsletter_format']]->value       = $com_params->get('default_emailformat');
 		$userFields[$this->BwPostman_field_ids['bw_newsletter_format']]->description
-			= JText::_('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_MAILFORMAT_DESC');
+			= Text::_('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_MAILFORMAT_DESC');
 		if (!$com_params->get('show_emailformat'))
 		{
 			$userFields[$this->BwPostman_field_ids['bw_newsletter_format']]->type = 'hidden';
@@ -718,7 +725,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	protected function processSubscriptionField(&$userFields)
 	{
 		$userFields[$this->BwPostman_field_ids['bw_newsletter_subscription']]->description
-			= JText::_('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_SUBSCRIPTION_CHECKBOX_DESC');
+			= Text::_('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_SUBSCRIPTION_CHECKBOX_DESC');
 	}
 
 	/**
@@ -733,7 +740,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new JLogEntry('plgVmOnUserOrder reached', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('plgVmOnUserOrder reached', BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -751,14 +758,14 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$subscription_data['mailinglists']          = json_encode($this->params->get('ml_available', array()));
 		$subscription_data['id']                    = $this->getJoomlaUserId($data->email);
 
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$session->set('plg_bwpm_buyer2subscriber.subscription_data', $subscription_data);
 
 		if ($this->debug)
 		{
 			foreach ($subscription_data as $key=>$value)
 			{
-				$this->logger->addEntry(new JLogEntry(sprintf('plgVmOnUserOrder submitted data, key %s value $s ', $key, $value), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logger->addEntry(new LogEntry(sprintf('plgVmOnUserOrder submitted data, key %s value $s ', $key, $value), BwLogger::BW_DEBUG, $this->log_cat));
 			}
 		}
 
@@ -775,7 +782,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	private function getJoomlaUserId($email)
 	{
-		$_db        = JFactory::getDbo();
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));

@@ -27,17 +27,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // Load the tooltip behavior for the notes
-JHtml::_('behavior.tooltip');
+HtmlHelper::_('behavior.tooltip');
 
 // Keep session alive while importing
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('bootstrap.tooltip');
+HtmlHelper::_('behavior.keepalive');
+HtmlHelper::_('formbehavior.chosen', 'select');
+HtmlHelper::_('bootstrap.tooltip');
 
-$document = JFactory::getDocument()->addScript(JUri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber_import.js');
+$document = Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber_import.js');
 
-$jinput	= JFactory::getApplication()->input;
+$jinput	= Factory::getApplication()->input;
 $image	= '<i class="icon-info"></i>';
 $option	= $jinput->getCmd('option');
 
@@ -45,14 +50,14 @@ $option	= $jinput->getCmd('option');
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_STP1'); ?></legend>
+		<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_STP1'); ?></legend>
 		<div class="well well-small">
 			<div class="row-fluid">
 				<table class="admintable bwptable import">
 					<tr class="bwptable">
 						<td width="250" align="right" class="key">
-							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILEFORMAT_NOTE'); ?>">
+							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?></span>
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILEFORMAT_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
 						</td>
@@ -64,8 +69,8 @@ $option	= $jinput->getCmd('option');
 					</tr>
 					<tr class="importfile">
 						<td align="right" class="key">
-							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_NOTE'); ?>">
+							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?></span>
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
 						</td>
@@ -76,8 +81,8 @@ $option	= $jinput->getCmd('option');
 					</tr>
 					<tr class="delimiter">
 						<td align="right" class="key">
-							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_DELIMITER_NOTE'); ?>">
+							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></span>
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DELIMITER_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
 						</td>
@@ -85,8 +90,8 @@ $option	= $jinput->getCmd('option');
 					</tr>
 					<tr class="enclosure">
 						<td align="right" class="key">
-							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE_NOTE'); ?>">
+							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?></span>
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
 						</td>
@@ -94,8 +99,8 @@ $option	= $jinput->getCmd('option');
 					</tr>
 					<tr class="caption">
 						<td align="right" class="key">
-							<span class="bwplabel"><?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?></span>
-							<span class="editlinktip hasTip hasTooltip" title="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>">
+							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?></span>
+							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
 						</td>
@@ -117,7 +122,7 @@ $option	= $jinput->getCmd('option');
 							<input type="button" class="btn btn-success" name="submitbutton" id=""
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?>
 										onclick="Joomla.submitbutton('subscribers.prepareImport');"
-										value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON'); ?>"
+										value="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_BUTTON'); ?>"
 							/>
 						</td>
 					</tr>
@@ -129,9 +134,9 @@ $option	= $jinput->getCmd('option');
 	<input type="hidden" name="task" value="prepareImport" />
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HtmlHelper::_('form.token'); ?>
 
-	<input type="hidden" id="importAlertFileFormat" value="<?php echo JText::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT', true); ?>" />
+	<input type="hidden" id="importAlertFileFormat" value="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_FILEFORMAT', true); ?>" />
 </form>
 
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

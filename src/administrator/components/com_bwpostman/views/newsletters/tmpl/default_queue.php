@@ -27,17 +27,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.multiselect');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
+
+HtmlHelper::_('bootstrap.tooltip');
+HtmlHelper::_('formbehavior.chosen', 'select');
+HtmlHelper::_('behavior.multiselect');
 
 // Load the modal behavior for the newsletter preview
-JHtml::_('behavior.modal', 'a.popup');
+HtmlHelper::_('behavior.modal', 'a.popup');
 
 //Load tabs behavior for the Tabs
 jimport('joomla.html.html.tabs');
 
-$user	= JFactory::getUser();
+$user	= Factory::getUser();
 $userId	= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -49,10 +55,10 @@ $currentTab = "default_queue";
 	<?php
 	if ($this->queueEntries)
 	{
-		JFactory::getApplication()->enqueueMessage(JText::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_bwpostman&view=newsletters'); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters'); ?>"
 			method="post" name="adminForm" id="adminForm" class="form-inline">
 		<?php
 		if (property_exists($this, 'sidebar')) : ?>
@@ -67,7 +73,7 @@ $currentTab = "default_queue";
 		endif; ?>
 			<?php
 				// Search tools bar
-				echo JLayoutHelper::render(
+				echo LayoutHelper::render(
 					'default',
 					array('view' => $this, 'tab' => 'queue'),
 					$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
@@ -78,18 +84,18 @@ $currentTab = "default_queue";
 				<ul class="bwp_tabs">
 					<li class="closed">
 						<button onclick="return changeTab('unsent', '<?php echo $currentTab; ?>');" class="buttonAsLink">
-							<?php echo JText::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
+							<?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
 						</button>
 					</li>
 					<li class="closed">
 						<button onclick="return changeTab('sent', '<?php echo $currentTab; ?>');" class="buttonAsLink">
-							<?php echo JText::_('COM_BWPOSTMAN_NL_SENT'); ?>
+							<?php echo Text::_('COM_BWPOSTMAN_NL_SENT'); ?>
 						</button>
 					</li>
 					<?php if (($this->count_queue> 0) && $this->permissions['newsletter']['send']) { ?>
 						<li class="open">
 							<button onclick="return changeTab('queue', '<?php echo $currentTab; ?>');" class="buttonAsLink_open">
-								<?php echo JText::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
+								<?php echo Text::_('COM_BWPOSTMAN_NL_QUEUE'); ?>
 							</button>
 						</li>
 					<?php } ?>
@@ -102,22 +108,22 @@ $currentTab = "default_queue";
 					<thead>
 						<tr>
 							<th nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'sc.subject', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'sc.subject', $listDirn, $listOrder); ?>
 							</th>
 							<th nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'n.description', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'n.description', $listDirn, $listOrder); ?>
 							</th>
 							<th nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
 							</th>
 							<th width="250" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'q.recipient', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'q.recipient', $listDirn, $listOrder); ?>
 							</th>
 							<th width="30" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'q.trial', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'q.trial', $listDirn, $listOrder); ?>
 							</th>
 							<th width="30" nowrap="nowrap">
-								<?php echo JHtml::_('searchtools.sort', 'NUM', 'q.id', $listDirn, $listOrder); ?>
+								<?php echo HtmlHelper::_('searchtools.sort', 'NUM', 'q.id', $listDirn, $listOrder); ?>
 							</th>
 						</tr>
 					</thead>
@@ -141,7 +147,7 @@ $currentTab = "default_queue";
 					{
 						// if no data ?>
 						<tr class="row1">
-							<td colspan="8"><strong><?php echo JText::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?></strong></td>
+							<td colspan="8"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA_FOUND'); ?></strong></td>
 						</tr><?php
 					}
 					?>
@@ -156,10 +162,10 @@ $currentTab = "default_queue";
 			<input type="hidden" name="layout" value="default" />
 			<input type="hidden" name="tpl" value="queue" />
 			<input type="hidden" name="boxchecked" value="0" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo HtmlHelper::_('form.token'); ?>
 
 			<input type="hidden" id="currentTab" value="default_queue" />
-			<input type="hidden" id="archiveText" value="<?php echo JText::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
+			<input type="hidden" id="archiveText" value="<?php echo Text::_('COM_BWPOSTMAN_NL_CONFIRM_ARCHIVE', true); ?>" />
 		</div>
 	</form>
 </div>

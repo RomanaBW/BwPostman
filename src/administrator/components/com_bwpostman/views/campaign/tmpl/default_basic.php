@@ -27,12 +27,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 $image = '<i class="icon-info"></i>';
 ?>
 
 <fieldset class="adminform">
 	<legend>
-		<?php echo empty($this->item->id) ? JText::_('COM_BWPOSTMAN_NEW_CAM') : JText::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id); ?>
+		<?php echo empty($this->item->id) ? Text::_('COM_BWPOSTMAN_NEW_CAM') : Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id); ?>
 	</legend>
 	<div class="well well-small">
 		<div class="width-60 fltlft span8 control-group">
@@ -101,7 +103,7 @@ $image = '<i class="icon-info"></i>';
 				</li>
 			</ul>
 		</div>
-		<p><span class="required_description"><?php echo JText::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+		<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
 		<div class="clearfix"></div>
 	</div>
 </fieldset>
@@ -109,19 +111,19 @@ $image = '<i class="icon-info"></i>';
 <fieldset class="adminform">
 	<div class="row-fluid">
 		<fieldset class="adminform">
-			<legend class="required"><?php echo JText::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *</legend>
+			<legend class="required"><?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *</legend>
 			<div class="well">
 				<div class="width-75 fltlft span9">
 					<div class="well-white well-small">
 						<fieldset class="adminform">
 							<legend>
 								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
+										title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
 									<?php echo $image; ?>
 								</span>
 								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">&nbsp;
-									<?php echo JText::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
+										title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">&nbsp;
+									<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
 								</span>
 							</legend>
 							<?php foreach($this->form->getFieldset('mailinglists') as $field): ?>
@@ -133,11 +135,11 @@ $image = '<i class="icon-info"></i>';
 											<fieldset class="adminform">
 												<legend>
 													<span class="editlinktip hasTip hasTooltip"
-															title="<?php echo JText::_($field->description); ?>">
+															title="<?php echo Text::_($field->description); ?>">
 														<?php echo $image; ?>
 													</span>
 													<span class="editlinktip hasTip hasTooltip"
-															title="<?php echo JText::_($field->description); ?>">
+															title="<?php echo Text::_($field->description); ?>">
 														<?php echo $field->label; ?>
 													</span>
 												</legend>
@@ -151,7 +153,7 @@ $image = '<i class="icon-info"></i>';
 													else
 													{
 														echo '<div class="width-50 fltlft span6">
-															<label class="mailinglist_label noclear checkbox">' . JText::_('COM_BWPOSTMAN_NO_DATA') . '
+															<label class="mailinglist_label noclear checkbox">' . Text::_('COM_BWPOSTMAN_NO_DATA') . '
 															</label>
 															</div>';
 													}
@@ -171,10 +173,10 @@ $image = '<i class="icon-info"></i>';
 						<fieldset class="adminform usergroups">
 							<legend>
 								<span class="editlinktip hasTip hasTooltip"
-										title="<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
+										title="<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
 									<?php echo $image; ?>
 								</span>
-								<span>&nbsp;<?php echo JText::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
+								<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?></span>
 							</legend>
 							<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
 								<?php echo $field->input; ?>

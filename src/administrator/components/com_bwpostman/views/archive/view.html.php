@@ -182,7 +182,7 @@ class BwPostmanViewArchive extends JViewLegacy
 
 		$this->sidebar = JHtmlSidebar::render();
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_unarchive.js');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_delete_cam_nls.js');
 
@@ -244,7 +244,6 @@ class BwPostmanViewArchive extends JViewLegacy
 				break;
 			case "campaigns":
 				// Special unarchive and delete button because we need a confirm dialog with 3 options
-				$alt_archive = Text::_('COM_BWPOSTMAN_UNARCHIVE');
 				if (BwPostmanHelper::canRestore('campaign', 0))
 				{
 					$options['url'] = "index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive";

@@ -27,6 +27,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+
 // Success message - will be shown if
 // 1. the newsletter account has been successfully activated --> show a link to the edit mode
 // 2. the registration was successful and the confirmation email has been successfully sent
@@ -46,16 +51,16 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="content_inner">
 			<?php
 			if (property_exists($this->success, 'editlink')) { // Case 1
-				if (JFactory::getUser()->get('guest'))
+				if (Factory::getUser()->get('guest'))
 				{
 					if (is_null($this->success->itemid))
 					{
-						$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;editlink={$this->success->editlink}");
+						$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;editlink={$this->success->editlink}");
 					}
 					else
 					{
-						$link = JRoute::_(
-							JUri::root() . "index.php?option=com_bwpostman&amp;
+						$link = Route::_(
+							Uri::root() . "index.php?option=com_bwpostman&amp;
 							Itemid={$this->success->itemid}&amp;view=edit&amp;editlink={$this->success->editlink}"
 						);
 					}
@@ -64,15 +69,15 @@ defined('_JEXEC') or die('Restricted access');
 				{
 					if (is_null($this->success->itemid))
 					{
-						$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;view=edit");
+						$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit");
 					}
 					else
 					{
-						$link = JRoute::_(JUri::root() . "index.php?option=com_bwpostman&amp;Itemid={$this->success->itemid}&amp;view=edit");
+						$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;Itemid={$this->success->itemid}&amp;view=edit");
 					}
 				}
 
-				$msg = '<div class="success-message">' . JText::sprintf($this->success->success_msg, $link) . '</div>';
+				$msg = '<div class="success-message">' . Text::sprintf($this->success->success_msg, $link) . '</div>';
 
 				echo $msg;
 			}
@@ -80,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 			{	// Case 2, 3, 4
 				if (property_exists($this->success, 'success_msg'))
 				{
-					echo '<div class="success-message">' . JText::_($this->success->success_msg) . '</div>';
+					echo '<div class="success-message">' . Text::_($this->success->success_msg) . '</div>';
 				}
 			}
 

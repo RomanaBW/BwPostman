@@ -126,10 +126,8 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
 	<!-- Filters div -->
 	<div class="js-stools-container-filters clearfix<?php echo $filtersActiveClass; ?>">
 		<?php echo $this->sublayout('list', $data, $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools/tabbed'); ?>
-		<?php //echo LayoutHelper::render('tabbed.list', $data, $basePath = JPATH_COMPONENT_ADMINISTRATOR .'/layouts/searchtools'); ?>
 		<?php if ($data['options']['filterButton']) : ?>
 		<?php echo $this->sublayout('filters', $data, $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools/tabbed'); ?>
-		<?php //echo LayoutHelper::render('tabbed.filters', $data, $basePath = JPATH_ADMINISTRATOR .'/components/com_bwpostman/layouts/searchtools'); ?>
 	<?php endif; ?>
 	</div>
 </div>

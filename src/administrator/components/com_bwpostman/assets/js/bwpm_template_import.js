@@ -27,26 +27,26 @@ window.onload = function() {
 	function doAjax(data, successCallback) {
 		var structure =
 			{
-				success: function (data) {
-					// Call the callback function
-					successCallback(data);
-				},
-				error  : function (req) {
-					var message = '<p class="bw_tablecheck_error">AJAX Loading Error: ' + req.statusText + '</p>';
-					jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
-					jQuery('div#result').html(message);
-					jQuery('div.resultSet').css('background-color', '#f2dede');
-					jQuery('div.resultSet').css('border-color', '#eed3d7');
-					jQuery('div#toolbar').find('button').removeAttr('disabled');
-					jQuery('div#toolbar').find('a').removeAttr('disabled');
-				}
+				url: starturl,
+				data: data,
+				type: 'POST',
+				dataType: 'json'
 			};
 
-		structure.url = starturl;
-		structure.data = data;
-		structure.type = 'POST';
-		structure.dataType = 'json';
-		jQuery.ajax(structure);
+		jQuery.ajax(structure)
+			.done(function( data ) {
+					// Call the callback function
+					successCallback(data);
+				})
+			.fail(function (req) {
+				var message = '<p class="bw_tablecheck_error">AJAX Error: ' + req.statusText + '<br />' + req.responseText + '</p>';
+				jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
+				jQuery('div#result').html(message);
+				jQuery('div.resultSet').css('background-color', '#f2dede');
+				jQuery('div.resultSet').css('border-color', '#eed3d7');
+				jQuery('div#toolbar').find('button').removeAttr('disabled');
+				jQuery('div#toolbar').find('a').removeAttr('disabled');
+			});
 	}
 
 	function processUpdateStep(data) {

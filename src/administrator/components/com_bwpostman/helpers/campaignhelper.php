@@ -29,68 +29,25 @@ defined ('_JEXEC') or die ();
 use Joomla\CMS\Factory;
 
 /**
- * Class BwPostmanNewsletterHelper
+ * Class BwPostmanCampaignHelper
  *
- * @since
+ * @since 2.4.0
  */
-abstract class BwPostmanNewsletterHelper {
+abstract class BwPostmanCampaignHelper {
 	/**
-	 * Method to get the campaign id of a specific newsletter
+	 * Method to get the number of campaigns depending on provided archive state
 	 *
-	 * @param int $nlId
-	 *
-	 * @return 	integer
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.0
-	 */
-	static public function getCampaignId($nlId)
-	{
-		$campaignId = -1;
-
-		$db	= Factory::getDbo();
-		$query	= $db->getQuery(true);
-
-		$query->select($db->quoteName('campaign_id'));
-		$query->from($db->quoteName('#__bwpostman_newsletters'));
-		$query->where($db->quoteName('id') . ' = ' . $db->Quote($nlId));
-
-		$db->setQuery($query);
-
-		try
-		{
-			$campaignId = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return (int)$campaignId;
-	}
-
-	/**
-	 * Method to get the number of newsletters depending on provided sending and archive state
-	 *
-	 * @param boolean $sent
 	 * @param boolean $archived
 	 *
-	 * @return 	integer|boolean number of newsletters or false
+	 * @return 	integer|boolean number of campaigns or false
 	 *
 	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
-	static public function getNbrOfNewsletters($sent, $archived)
+	static public function getNbrOfCampaigns($archived)
 	{
 		$archiveFlag = 0;
-		$mailingDateOperator = "=";
-
-		if ($sent)
-		{
-			$mailingDateOperator = "!=";
-		}
 
 		if ($archived)
 		{
@@ -101,13 +58,7 @@ abstract class BwPostmanNewsletterHelper {
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_newsletters'));
-
-		if (!$archived)
-		{
-			$query->where($db->quoteName('mailing_date') . $mailingDateOperator . $db->quote('0000-00-00 00:00:00'));
-		}
-
+		$query->from($db->quoteName('#__bwpostman_campaigns'));
 		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
 
 		$db->setQuery($query);

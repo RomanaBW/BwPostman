@@ -866,4 +866,57 @@ class BwPostmanSubscriberHelper
 
 		return $params;
 	}
+
+	/**
+	 * Method to get the number of subscribers depending on provided sending and archive state
+	 *
+	 * @param boolean $tester
+	 * @param boolean $archived
+	 *
+	 * @return 	integer|boolean number of subscribers or false
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.3.0
+	 */
+	static public function getNbrOfSubscribers($tester, $archived)
+	{
+		$archiveFlag = 0;
+		$statusOperator = "!=";
+
+		if ($tester)
+		{
+			$statusOperator = "=";
+		}
+
+		if ($archived)
+		{
+			$archiveFlag = 1;
+		}
+
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(*)');
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
+
+		if (!$archived)
+		{
+			$query->where($db->quoteName('status') . $statusOperator . (int) 9);
+		}
+
+		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
+
+		$db->setQuery($query);
+
+		try
+		{
+			return $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+		return false;
+	}
 }

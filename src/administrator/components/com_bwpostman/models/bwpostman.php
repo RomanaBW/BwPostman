@@ -37,6 +37,10 @@ use Joomla\CMS\Access\Rules;
 jimport('joomla.application.component.model');
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/campaignhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
+require_once(JPATH_SITE . '/components/com_bwpostman/helpers/subscriberhelper.php');
 
 /**
  * BwPostman cover page model
@@ -63,9 +67,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	/**
 	 * Method to get general statistic data
 	 *
-	 * @access 	public
-	 *
-	 * @return 	array       associative array of General Data
+	 * @return 	array       associative array of general statistics data
 	 *
 	 * @throws Exception
 	 *
@@ -74,92 +76,21 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	public function getGeneraldata()
 	{
 		$general	= array();
-		$app        = Factory::getApplication();
-		$db		    = Factory::getDbo();
-		$query		= $db->getQuery(true);
 
 		// Get # of all unsent newsletters
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_newsletters'));
-		$query->where($db->quoteName('mailing_date') . ' = ' . $db->quote('0000-00-00 00:00:00'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-		$db->setQuery($query);
-		try
-		{
-			$general['nl_unsent'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$general['nl_unsent'] = BwPostmanNewsletterHelper::getNbrOfNewsletters(false, false);
 
 		// Get # of all sent newsletters
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_newsletters'));
-		$query->where($db->quoteName('mailing_date') . ' != ' . $db->quote('0000-00-00 00:00:00'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-		$db->setQuery($query);
-		try
-		{
-			$general['nl_sent'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$general['nl_sent'] = BwPostmanNewsletterHelper::getNbrOfNewsletters(true, false);
 
 		// Get # of all subscribers
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_subscribers'));
-		$query->where($db->quoteName('status') . ' != ' . (int) 9);
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-		$db->setQuery($query);
-		try
-		{
-			$general['sub'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$general['sub'] = BwPostmanSubscriberHelper::getNbrOfSubscribers(false, false);
 
 		// Get # of all test-recipients
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_subscribers'));
-		$query->where($db->quoteName('status') . ' = ' . (int) 9);
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-		$db->setQuery($query);
-		try
-		{
-			$general['test'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$general['test'] = BwPostmanSubscriberHelper::getNbrOfSubscribers(true, false);
 
 		// Get # of all campaigns
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_campaigns'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-		$db->setQuery($query);
-		try
-		{
-			$general['cam'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$general['cam'] = BwPostmanCampaignHelper::getNbrOfCampaigns(false);
 
 		// Get # of all published mailinglists
 		// get available mailinglists to predefine for state
@@ -177,38 +108,10 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$general['ml_unpublished'] = count($ml_intern);
 
 		// Get # of all html templates
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_templates'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-		$query->where($db->quoteName('tpl_id') . ' < ' . $db->quote('998'));
-
-		$db->setQuery($query);
-		try
-		{
-			$general['html_templates'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$general['html_templates'] = BwPostmanTplHelper::getNbrOfTemplates('html', false);
 
 		// Get # of all text templates
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_templates'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-		$query->where($db->quoteName('tpl_id') . ' > ' . $db->quote('997'));
-
-		$db->setQuery($query);
-		try
-		{
-			$general['text_templates'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$general['text_templates'] = BwPostmanTplHelper::getNbrOfTemplates('text', false);
 
 		// Get total # of general statistic
 		$general[] = array_sum($general);
@@ -219,9 +122,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	/**
 	 * Method to get archive statistic data
 	 *
-	 * @access 	public
-	 *
-	 * @return 	array       associative array of Archive data
+	 * @return 	array       associative array of archive statistics data
 	 *
 	 * @throws Exception
 	 *
@@ -230,56 +131,15 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	public function getArchivedata()
 	{
 		$archive	= array();
-		$app        = Factory::getApplication();
-		$db		    = Factory::getDbo();
-		$query		= $db->getQuery(true);
 
 		// Get # of all archived newsletters
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_newsletters'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 1);
-
-		$db->setQuery($query);
-		try
-		{
-			$archive['arc_nl'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$archive['arc_nl'] = BwPostmanNewsletterHelper::getNbrOfNewsletters(false, true);
 
 		// Get # of all archived subscribers
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_subscribers'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 1);
-
-		$db->setQuery($query);
-		try
-		{
-			$archive['arc_sub'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$archive['arc_sub'] = BwPostmanSubscriberHelper::getNbrOfSubscribers(false, true);
 
 		// Get # of all archived campaigns
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_campaigns'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 1);
-
-		$db->setQuery($query);
-		try
-		{
-			$archive['arc_cam'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$archive['arc_cam'] = BwPostmanCampaignHelper::getNbrOfCampaigns(true);
 
 		// Get # of all archived mailinglists
 		// get available mailinglists to predefine for state
@@ -288,38 +148,10 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$archive['arc_ml'] = count($ml_archived);
 
 		// Get # of all html templates
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_templates'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 1);
-		$query->where($db->quoteName('tpl_id') . ' < ' . $db->quote('998'));
-
-		$db->setQuery($query);
-		try
-		{
-			$archive['arc_html_templates'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$archive['arc_html_templates'] = BwPostmanTplHelper::getNbrOfTemplates('html', true);
 
 		// Get # of all text templates
-		$query->clear();
-		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_templates'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 1);
-		$query->where($db->quoteName('tpl_id') . ' > ' . $db->quote('997'));
-
-		$db->setQuery($query);
-		try
-		{
-			$archive['arc_text_templates'] = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$archive['arc_text_templates'] = BwPostmanTplHelper::getNbrOfTemplates('text', true);
 
 		// Get total # of general statistic
 		$archive[] = array_sum($archive);
@@ -356,24 +188,20 @@ class BwPostmanModelBwPostman extends JModelLegacy
 			// Get data from input.
 			if (version_compare(JVERSION, '3.999.999', 'le'))
 			{
-				$permission = array(
-					'component' => $app->input->get('comp'),
-					'action'    => $app->input->get('action'),
-					'rule'      => $app->input->get('rule'),
-					'value'     => $app->input->get('value'),
-					'title'     => $app->input->get('title', '', 'RAW')
-				);
+				$input = $app->input;
 			}
 			else
 			{
-				$permission = array(
-					'component' => $app->input->Json->get('comp'),
-					'action'    => $app->input->Json->get('action'),
-					'rule'      => $app->input->Json->get('rule'),
-					'value'     => $app->input->Json->get('value'),
-					'title'     => $app->input->Json->get('title', '', 'RAW')
-				);
+				$input = $app->input->Json;
 			}
+
+			$permission = array(
+				'component' => $input->get('comp'),
+				'action'    => $input->get('action'),
+				'rule'      => $input->get('rule'),
+				'value'     => $input->get('value'),
+				'title'     => $input->get('title', '', 'RAW')
+			);
 		}
 
 		// We are creating a new item so we don't have an item id so don't allow.

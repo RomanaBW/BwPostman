@@ -183,4 +183,55 @@ abstract class BwPostmanTplHelper
 
 		return $count_std;
 	}
+
+	/**
+	 * Method to get the number of templates depending on provided mode and archive state
+	 *
+	 * @param string  $mode
+	 * @param boolean $archived
+	 *
+	 * @return 	integer|boolean number of templates or false
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.3.0
+	 */
+	static public function getNbrOfTemplates($mode, $archived)
+	{
+		$archiveFlag = 0;
+
+		if ($archived)
+		{
+			$archiveFlag = 1;
+		}
+
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(*)');
+		$query->from($db->quoteName('#__bwpostman_templates'));
+
+		if ($mode == 'html')
+		{
+			$query->where($db->quoteName('tpl_id') . ' < ' . $db->quote('998'));
+		}
+		else
+		{
+			$query->where($db->quoteName('tpl_id') . ' > ' . $db->quote('997'));
+		}
+
+		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
+
+		$db->setQuery($query);
+
+		try
+		{
+			return $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+		return false;
+	}
 }

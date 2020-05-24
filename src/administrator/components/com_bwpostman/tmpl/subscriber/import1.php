@@ -277,7 +277,7 @@ $option	= $jinput->getCmd('option');
 								<?php echo $image; ?>
 							</span>
 						</div>
-						<div class="col-4 col-md-6"><input type="checkbox" id="validate" name="validate" title="validate" value="1"  checked="checked" /></div>
+						<div class="col-4 col-md-6"><input type="checkbox" id="validate" name="validate" title="validate" value="1" /></div>
 					</div>
 				</div>
 			</div>

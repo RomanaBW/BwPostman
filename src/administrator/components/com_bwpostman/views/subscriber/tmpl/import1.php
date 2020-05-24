@@ -299,7 +299,7 @@ $option	= $jinput->getCmd('option');
 									<?php echo $image; ?>
 								</span>
 							</td>
-							<td><input type="checkbox" id="confirm" name="validate" title="validate" value="1" checked="checked" /></td>
+							<td><input type="checkbox" id="confirm" name="validate" title="validate" value="1" /></td>
 						</tr>
 					</table>
 				</div>

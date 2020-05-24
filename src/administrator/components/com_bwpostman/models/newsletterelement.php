@@ -120,8 +120,6 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	/**
 	 * Method to get the mailinglists data
 	 *
-	 * @access	public
-	 *
 	 * @return 	array Mailinglists-data
 	 *
 	 * @throws Exception
@@ -141,8 +139,6 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 
 	/**
 	 * Method to get the total number of mailinglists that shall be displayed
-	 *
-	 * @access 	public
 	 *
 	 * @return 	int Total number
 	 *
@@ -165,8 +161,6 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	/**
 	 * Method to get a pagination object for the mailinglists view
 	 *
-	 * @access 	public
-	 *
 	 * @return 	object Pagination
 	 *
 	 * @throws Exception
@@ -187,8 +181,6 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 
 	/**
 	 * Method to build the MySQL query
-	 *
-	 * @access 	private
 	 *
 	 * @return 	string Query
 	 *
@@ -245,8 +237,6 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 
 	/**
 	 * Method to get the search term
-	 *
-	 * @access 	public
 	 *
 	 * @return 	string
 	 *

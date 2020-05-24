@@ -34,16 +34,15 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Application\ApplicationHelper;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Mail\MailHelper;
 use Joomla\Registry\Registry;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
+require_once(JPATH_SITE . '/components/com_bwpostman/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/mailverification/BwEmailValidation.php');
 
 /**
  * BwPostman subscriber model
@@ -122,8 +121,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	/**
 	 * Method to reset the subscriber/test-recipient ID and subscriber/test-recipient data
 	 *
-	 * @access	public
-	 *
 	 * @param	int     $id     Subscriber ID
 	 *
 	 * @since       0.9.1
@@ -156,8 +153,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	/**
 	 * Method to get the data of a single subscriber for raw view
 	 *
-	 * @access	public
-	 *
 	 * @param 	int $sub_id     Subscriber ID
 	 *
 	 * @return 	object Subscriber
@@ -170,45 +165,48 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	{
 		$subscriber = array();
 		$db		= $this->_db;
+		$pre_tbl_u = $db->quoteName('u');
+		$pre_tbl_s = $db->quoteName('s');
+
 		$query		= $db->getQuery(true);
 		$subQuery1	= $db->getQuery(true);
 		$subQuery2	= $db->getQuery(true);
 		$subQuery3	= $db->getQuery(true);
 		$subQuery4	= $db->getQuery(true);
 
-		$subQuery1->select($db->quoteName('u') . '.' . $db->quoteName('name'));
-		$subQuery1->from($db->quoteName('#__users') . ' AS ' . $db->quoteName('u'));
-		$subQuery1->where($db->quoteName('u') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('s') . '.' . $db->quoteName('confirmed_by'));
+		$subQuery1->select($pre_tbl_u . '.' . $db->quoteName('name'));
+		$subQuery1->from($db->quoteName('#__users') . ' AS ' . $pre_tbl_u);
+		$subQuery1->where($pre_tbl_u . '.' . $db->quoteName('id') . ' = ' . $pre_tbl_s . '.' . $db->quoteName('confirmed_by'));
 
-		$subQuery2->select($db->quoteName('u') . '.' . $db->quoteName('name'));
-		$subQuery2->from($db->quoteName('#__users') . ' AS ' . $db->quoteName('u'));
-		$subQuery2->where($db->quoteName('u') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('s') . '.' . $db->quoteName('registered_by'));
+		$subQuery2->select($pre_tbl_u . '.' . $db->quoteName('name'));
+		$subQuery2->from($db->quoteName('#__users') . ' AS ' . $pre_tbl_u);
+		$subQuery2->where($pre_tbl_u . '.' . $db->quoteName('id') . ' = ' . $pre_tbl_s . '.' . $db->quoteName('registered_by'));
 
-		$subQuery3->select($db->quoteName('u') . '.' . $db->quoteName('name'));
-		$subQuery3->from($db->quoteName('#__users') . ' AS ' . $db->quoteName('u'));
-		$subQuery3->where($db->quoteName('u') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('s') . '.' . $db->quoteName('archived_by'));
+		$subQuery3->select($pre_tbl_u . '.' . $db->quoteName('name'));
+		$subQuery3->from($db->quoteName('#__users') . ' AS ' . $pre_tbl_u);
+		$subQuery3->where($pre_tbl_u . '.' . $db->quoteName('id') . ' = ' . $pre_tbl_s . '.' . $db->quoteName('archived_by'));
 
-		$subQuery4->select($db->quoteName('u') . '.' . $db->quoteName('name'));
-		$subQuery4->from($db->quoteName('#__users') . ' AS ' . $db->quoteName('u'));
-		$subQuery4->where($db->quoteName('u') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('s') . '.' . $db->quoteName('modified_by'));
+		$subQuery4->select($pre_tbl_u . '.' . $db->quoteName('name'));
+		$subQuery4->from($db->quoteName('#__users') . ' AS ' . $pre_tbl_u);
+		$subQuery4->where($pre_tbl_u . '.' . $db->quoteName('id') . ' = ' . $pre_tbl_s . '.' . $db->quoteName('modified_by'));
 
-		$query->select($db->quoteName('s') . '.*');
+		$query->select($pre_tbl_s . '.*');
 		$query->select(
-			' IF(' . $db->quoteName('s') . '.' . $db->quoteName('confirmed_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery1 . ' ))
+			' IF(' . $pre_tbl_s . '.' . $db->quoteName('confirmed_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery1 . ' ))
 			AS ' . $db->quoteName('confirmed_by')
 		);
 		$query->select(
-			' IF(' . $db->quoteName('s') . '.' . $db->quoteName('registered_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery2 . ' ))
+			' IF(' . $pre_tbl_s . '.' . $db->quoteName('registered_by') . ' = ' . (int) 0 . ', "User", (' . $subQuery2 . ' ))
 			AS ' . $db->quoteName('registered_by')
 		);
 		$query->select('(' . $subQuery3 . ') AS ' . $db->quoteName('archived_by'));
 		$query->select('(' . $subQuery4 . ') AS ' . $db->quoteName('modified_by'));
 		$query->select(
-			' IF( ' . $db->quoteName('s') . '.' . $db->quoteName('emailformat') . ' = ' . (int) 0 . ', "Text", "HTML" )
+			' IF( ' . $pre_tbl_s . '.' . $db->quoteName('emailformat') . ' = ' . (int) 0 . ', "Text", "HTML" )
 			AS ' . $db->quoteName('emailformat')
 		);
-		$query->from($db->quoteName('#__bwpostman_subscribers') . ' AS ' . $db->quoteName('s'));
-		$query->where($db->quoteName('s') . '.' . $db->quoteName('id') . ' = ' . (int) $sub_id);
+		$query->from($db->quoteName('#__bwpostman_subscribers') . ' AS ' . $pre_tbl_s);
+		$query->where($pre_tbl_s . '.' . $db->quoteName('id') . ' = ' . (int) $sub_id);
 
 		$db->setQuery($query);
 		try
@@ -220,42 +218,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		$query->clear();
-		$query->select($db->quoteName('mailinglist_id'));
-		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $sub_id);
+		$mailinglist_ids = $this->getMailinglistIdsOfSubscriber($sub_id);
 
-		$db->setQuery($query);
-
-		try
-		{
-			$mailinglist_id_values = $db->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		if (!empty($mailinglist_id_values))
-		{
-			$mailinglist_ids = implode(',', $mailinglist_id_values);
-		}
-		else
-		{
-			$mailinglist_ids = 0;
-		}
-
-		$query->clear();
-		$query->select($db->quoteName('id'));
-		$query->select($db->quoteName('title'));
-		$query->select($db->quoteName('description'));
-		$query->select($db->quoteName('archive_flag'));
-		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('id') . ' IN  (' . $mailinglist_ids . ')');
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-		$db->setQuery($query);
-		$subscriber->lists = $db->loadObjectList();
+		$subscriber->lists = $this->getCompleteMailinglistsOfSubscriber($mailinglist_ids);
 
 		return $subscriber;
 	}
@@ -283,30 +248,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		{
 			$item	= parent::getItem($pk);
 
-			$db	= $this->_db;
-			$query	= $db->getQuery(true);
-
-			$query->select($db->quoteName('mailinglist_id'));
-			$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $item->id);
-
-			$db->setQuery($query);
-			try
-			{
-				$item->list_id_values = $db->loadColumn();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+			$item->list_id_values = $this->getMailinglistIdsOfSubscriber((int) $item->id);
 		}
 		else
 		{
 			$item	= new stdClass();
-			foreach ($data as $key => $value)
-			{
-				$item->$key	= $value;
-			}
+			$item = ArrayHelper::toObject($data, $item);
 
 			if (is_array($mailinglists))
 			{
@@ -320,8 +267,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		if (property_exists($item, 'params'))
 		{
-			$registry = new Registry;
-			$registry->loadJSON($item->params);
+			$registry = new Registry($item->params);
 			$item->params = $registry->toArray();
 		}
 
@@ -369,38 +315,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			// Disable fields while saving.
 			// The controller has already verified this is an subscriber you can edit.
 			$form->setFieldAttribute('state', 'filter', 'unset');
-
 		}
 
-		// Check to show confirmation data or checkbox
-		$c_date	= strtotime($form->getValue('confirmation_date'));
-		if (empty($c_date))
-		{
-			$form->setFieldAttribute('confirmation_date', 'type', 'hidden');
-			$form->setFieldAttribute('confirmed_by', 'type', 'hidden');
-			$form->setFieldAttribute('confirmation_ip', 'type', 'hidden');
-		}
-		else
-		{
-			$form->setFieldAttribute('status', 'type', 'hidden');
-		}
-
-		// Check to show registration data
-		$r_date	= $form->getValue('registration_date');
-		if (empty($r_date))
-		{
-			$form->setFieldAttribute('registration_date', 'type', 'hidden');
-			$form->setFieldAttribute('registered_by', 'type', 'hidden');
-			$form->setFieldAttribute('registration_ip', 'type', 'hidden');
-		}
-
-		// Check to show modified data
-		$m_date	= $form->getValue('modified_time');
-		if ($m_date == '0000-00-00 00:00:00')
-		{
-			$form->setFieldAttribute('modified_time', 'type', 'hidden');
-			$form->setFieldAttribute('modified_by', 'type', 'hidden');
-		}
+		BwPostmanSubscriberHelper::customizeSubscriberDataFields($form);
 
 		// check for new test-recipient
 		if (Factory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', '0') == '9')
@@ -425,7 +342,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 */
 	protected function loadFormData()
 	{
-		// @todo XML-file will not be processed
 		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.subscriber.id');
 
 		// Check the session for previously entered form data.
@@ -441,8 +357,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 	/**
 	 * Method to get the menu item ID which will be needed for the confirmation email links
-	 *
-	 * @access	public
 	 *
 	 * @return 	int menu item ID
 	 *
@@ -476,107 +390,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	}
 
 	/**
-	 * Method to create an editlink and to check whether the link already exists or not
-	 *
-	 * @access	public
-	 *
-	 * @return	string Editlink
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function getEditlink()
-	{
-		jimport('joomla.user.helper');
-		$db		    = $this->_db;
-		$editlink       = '';
-		$new_editlink   = '';
-
-		// Create the editlink and check if the string doesn't in the database
-		$match_editlink = true;
-
-		while ($match_editlink)
-		{
-			$new_editlink	= ApplicationHelper::getHash(UserHelper::genRandomPassword());
-			$query			= $db->getQuery(true);
-
-			$query->select($db->quoteName('editlink'));
-			$query->from($db->quoteName('#__bwpostman_subscribers'));
-			$query->where($db->quoteName('editlink') . ' = ' . $db->quote($new_editlink));
-
-			$db->setQuery($query);
-
-			try
-			{
-				$editlink = $db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			if (!($editlink == $new_editlink)) {
-				$match_editlink = false;
-			}
-		}
-
-		return $new_editlink;
-	}
-
-	/**
-	 * Method to create an activation code and to check whether the code already exists or not
-	 *
-	 * @access	public
-	 *
-	 * @return	string Activation code
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function getActivation()
-	{
-		$db	= $this->_db;
-
-		jimport('joomla.user.helper');
-
-		// Create the activation and check if the string doesn't exist twice or more
-		$match_activation   = true;
-		$activation         = '';
-		$new_activation     = '';
-
-		while ($match_activation)
-		{
-			$new_activation = ApplicationHelper::getHash(UserHelper::genRandomPassword());
-			$query		= $db->getQuery(true);
-
-			$query->select($db->quoteName('activation'));
-			$query->from($db->quoteName('#__bwpostman_subscribers'));
-			$query->where($db->quoteName('activation') . ' = ' . $db->quote($new_activation));
-
-			$db->setQuery($query);
-			try
-			{
-				$activation = $db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			if (!($activation == $new_activation)) {
-				$match_activation = false;
-			}
-		}
-
-		return $new_activation;
-	}
-
-	/**
 	 * Method to store the subscriber data
-	 *
-	 * @access 	public
 	 *
 	 * @param 	array   $data   associative array of data to store
 	 *
@@ -593,55 +407,26 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$date		= Factory::getDate();
 		$user		= Factory::getUser();
 		$result     = true;
-		$db		= $this->_db;
-		$query		= $db->getQuery(true);
 		$subscriber	= new stdClass();
 
 		try
 		{
 			// Get the user_id from the users-table
-			$query->select($db->quoteName('id'));
-			$query->from($db->quoteName('#__users'));
-			$query->where($db->quoteName('email') . ' = ' . $db->quote($data['email']));
-
-			$db->setQuery($query);
-			$data['user_id'] = $db->loadResult();
+			$data['user_id'] = BwPostmanSubscriberHelper::getJoomlaUserIdByEmail($data['email']);
 
 			// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
-			if (isset($data['ml_available']))
-			{
-				foreach ($data['ml_available'] as $key => $value)
-				{
-					$data['mailinglists'][] = $value;
-				}
-			}
-
-			if (isset($data['ml_unavailable']))
-			{
-				foreach ($data['ml_unavailable'] as $key => $value)
-				{
-					$data['mailinglists'][] = $value;
-				}
-			}
-
-			if (isset($data['ml_intern']))
-			{
-				foreach ($data['ml_intern'] as $key => $value)
-				{
-					$data['mailinglists'][] = $value;
-				}
-			}
+			BwPostmanMailinglistHelper::mergeMailinglists($data);
 
 			// Admin creates a new subscriber?
 			if (!$data['id'])
 			{
-				$data['editlink'] = $this->getEditlink();
+				$data['editlink'] = BwPostmanSubscriberHelper::getEditlink();
 			}
 
 			// Admin creates a new subscriber and doesn't confirm the subscriber?
 			if ((!array_key_exists('confirm', $data)) && (!$data['id']))
 			{
-				$data['activation'] = $this->getActivation();
+				$data['activation'] = BwPostmanSubscriberHelper::createActivation();
 			}
 
 			$time      = $date->toSql();
@@ -675,15 +460,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			{
 				$new_subscriber = false;
 
-				if ($data['status'] == '1')
-				{
-					// Existing subscriber is confirmed by administrator
-					//  **** (2015-04-10) not possible, field confirmation is not displayed at existing subscribers
-					//				$data['confirmation_date'] 	= $time;
-					//				$data['confirmed_by']		= $user->get('id');
-					//				$data['activation']			= '';
-				}
-
 				if ($data['status'] == '0')
 				{
 					// Unconfirmed subscribers do not have a confirmed_by value
@@ -697,37 +473,14 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				$subscriber_id = $this->getState('subscriber.id');
 
 				// Delete all entries of the subscriber from subscribers_mailinglists-Table
-				$query = $db->getQuery(true);
-
-				$query->delete($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-				$query->where($db->quoteName('subscriber_id') . ' =  ' . (int) $subscriber_id);
-
-				$db->setQuery($query);
-				$db->execute();
+				BwPostmanSubscriberHelper::deleteMailinglistsOfSubscriber((int) $subscriber_id);
 
 				if (!empty($data['mailinglists']))
 				{
 					$list_id_values = $data['mailinglists'];
 
 					// Store subscribed mailinglists in newsletters_mailinglists-table
-					foreach ($list_id_values AS $list_id)
-					{
-						$query = $db->getQuery(true);
-
-						$query->insert($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-						$query->columns(
-							array(
-								$db->quoteName('subscriber_id'),
-								$db->quoteName('mailinglist_id')
-							)
-						);
-						$query->values(
-							(int) $subscriber_id . ',' .
-							(int) $list_id
-						);
-						$db->setQuery($query);
-						$db->execute();
-					}
+					BwPostmanSubscriberHelper::storeMailinglistsOfSubscriber((int) $subscriber_id, $list_id_values);
 				}
 
 				// New subscriber has to confirm the account by himself
@@ -740,7 +493,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 					// Send registration confirmation mail
 					$itemid = '';//$this->getItemid();
-					$res    = $this->sendMail($subscriber, $itemid);
+					$res    = BwPostmanSubscriberHelper::sendMail($subscriber, 4, $itemid);
 
 					if (!$res)
 					{
@@ -769,87 +522,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 
 	/**
-	 * Method to send an email
-	 *
-	 * @access	private
-	 *
-	 * @param 	object $subscriber      Subscriber
-	 * @param	int $itemid             Menu item ID
-	 *
-	 * @return 	boolean True on success | error object
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	private function sendMail($subscriber, $itemid = null)
-	{
-		$app		= Factory::getApplication();
-		$mailer		= Factory::getMailer();
-		$siteURL	= Uri::root();
-
-		$params 	= ComponentHelper::getParams('com_bwpostman');
-		$sitename	= $app->get('sitename');
-		$sender		= array();
-
-		$sender[0]	= $params->get('default_from_email');
-		$sender[1]	= $params->get('default_from_name');
-
-		$reply		= array();
-		$reply[0]	= $params->get('default_from_email');
-		$reply[1]	= $params->get('default_from_name');
-
-
-		$name 		= $subscriber->name;
-		$firstname 	= $subscriber->firstname;
-		if ($firstname != '')
-		{
-			$name = $firstname . ' ' . $name;
-		} //Cat fo full name
-
-		$subject 	= Text::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_SUBJECT', $sitename);
-
-		// @ToDo: language override dont work!!!!!!
-		if (is_null($itemid))
-		{
-			$body 	= Text::sprintf(
-				'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
-				$name,
-				$siteURL,
-				$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
-			);
-		}
-		else
-		{
-			$body 	= Text::sprintf(
-				'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
-				$name,
-				$siteURL,
-				$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
-			);
-		}
-
-		$subject	= html_entity_decode($subject, ENT_QUOTES);
-		$body 		= html_entity_decode($body, ENT_QUOTES);
-
-		// Fill in mailer data
-		$mailer->setSender($sender);
-		$mailer->addReplyTo($reply[0], $reply[1]);
-		$mailer->addRecipient($subscriber->email);
-		$mailer->setSubject($subject);
-		$mailer->setBody($body);
-		$mailer->isHtml(false);
-
-		$res = $mailer->Send();
-
-		return $res;
-	}
-
-	/**
 	 * Method to (un)archive a subscriber/test-recipient
 	 * --> when unarchiving it is called by the archive-controller
-	 *
-	 * @access	public
 	 *
 	 * @param	array   $cid        Subscriber/Test-recipient IDs
 	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
@@ -945,7 +619,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		if (count($pks))
 		{
 			ArrayHelper::toInteger($pks);
-			$db	= $this->getDbo();
 
 			// Delete subscriber from subscribers-table
 			try
@@ -958,182 +631,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			}
 
 			// Delete subscribed mailinglists from subscribers_mailinglists-table
-			$query = $db->getQuery(true);
-			$query->delete();
-			$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$query->where('subscriber_id IN (' . implode(',', $pks) . ')');
-			$db->setQuery($query);
-
-			try
+			foreach ($pks as $pk)
 			{
-				$db->execute();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage());
+				BwPostmanSubscriberHelper::deleteMailinglistsOfSubscriber((int) $pk);
 			}
 		}
 
 		return true;
-	}
-
-	/**
-	 * Method to validate one ore more email addresses
-	 *
-	 * @param	array   $cid            Subscriber/Test-recipient IDs
-	 * @param   boolean $showProgress
-	 *
-	 * @return	array   $res            associative array of result data
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function validate_mail($cid = array(0), $showProgress = false)
-	{
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
-
-		$config	= Factory::getConfig();
-
-		$validator = new emailValidation();
-
-		$tmp = explode('@', $config->get('mailfrom'));
-		$mailuser = $tmp[0];
-		$mailserver = $tmp[1];
-
-		$validator->timeout = 5;
-		$validator->data_timeout = 0;
-		$validator->localuser = $mailuser;
-		$validator->localhost = $mailserver;
-		$validator->debug = 0;
-		$validator->html_debug = 1;
-		$validator->exclude_address = "";
-
-		$query->select('*');
-		$query->from($db->quoteName('#__bwpostman_subscribers'));
-		$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
-
-		$db->setQuery($query);
-		$subscribers = $db->loadObjectList();
-
-		// After the validation process we want to show the results
-		// --> therefore we store the results into an array
-		$res = array();
-		$i = 0;
-
-		foreach($subscribers as $subscriber)
-		{
-			if ($showProgress)
-			{
-				echo "\n<br>{$subscriber->email} ... ";
-				ob_flush();
-				flush();
-			}
-
-			$res[$i]['id']			= $subscriber->id;
-			$res[$i]['email']		= $subscriber->email;
-			$res[$i]['name']		= $subscriber->name;
-			$res[$i]['firstname']	= $subscriber->firstname;
-
-			// Skip confirmed email address if they still passed the confirmation process and where identified as invalid
-			if (strstr($subscriber->name, 'INVALID_'))
-			{ // Skipped
-				$res[$i]['result'] = 2;
-				$res[$i]['result_txt'] = Text::_('COM_BWPOSTMAN_SUB_ERROR_VALIDATION_SKIPPED');
-				$i++;
-				if ($showProgress)
-				{
-					echo Text::_('COM_BWPOSTMAN_SUB_ERROR_VALIDATION_SKIPPED');
-					ob_flush();
-					flush();
-				}
-
-				continue;
-			}
-
-			$result = $validator->ValidateEmailBox($subscriber->email);
-			if($result === -1)
-			{ // Unable to validate the address with this host
-				$res[$i]['result'] = -1;
-				$res[$i]['result_txt'] = Text::_('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_HOST');
-				$i++;
-				if ($showProgress)
-				{
-					echo Text::_('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_HOST');
-					ob_flush();
-					flush();
-				}
-
-			}
-			elseif($result)
-			{ // The host is able to receive email. The address could be valid.
-				$res[$i]['result'] = 1;
-				$res[$i]['result_txt'] = Text::_('COM_BWPOSTMAN_SUB_VALIDATING_EMAIL');
-				$i++;
-				if ($showProgress)
-				{
-					echo Text::_('COM_BWPOSTMAN_SUB_VALIDATING_EMAIL');
-					ob_flush();
-					flush();
-				}
-
-				// Activate this account
-				$date	= Factory::getDate();
-				$time	= $date->toSql();
-				$user	= Factory::getUser();
-				$query	= $db->getQuery(true);
-
-				$query->update($db->quoteName('#__bwpostman_subscribers'));
-				$query->set($db->quoteName('status') . " = " . (int) 1);
-				$query->set($db->quoteName('confirmation_date') . " = " . $db->quote($time, false));
-				$query->set($db->quoteName('confirmed_by') . " = " . (int) $user->get('id'));
-				$query->where($db->quoteName('id') . ' = ' . (int) $subscriber->id);
-
-				$db->setQuery($query);
-
-				try
-				{
-					$db->execute();
-				}
-				catch (RuntimeException $e)
-				{
-					Factory::getApplication()->enqueueMessage($e->getMessage());
-				}
-			}
-			else
-			{ // The host can't receive email or this mailbox doesn't exist. The address is NOT valid.
-				$res[$i]['result'] = 0;
-				$res[$i]['result_txt'] = Text::_('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL');
-				$i++;
-				if ($showProgress)
-				{
-					echo Text::_('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL');
-					ob_flush();
-					flush();
-				}
-
-				// Prepend an INVALID_ to the subscriber name
-				$query	= $db->getQuery(true);
-
-				$query->update($db->quoteName('#__bwpostman_subscribers'));
-				$query->set($db->quoteName('name') . " = " . $db->quote('INVALID_' . $subscriber->name));
-				$query->where($db->quoteName('id') . ' = ' . (int) $subscriber->id);
-
-				$db->setQuery($query);
-
-				try
-				{
-					$db->execute();
-				}
-				catch (RuntimeException $e)
-				{
-					Factory::getApplication()->enqueueMessage($e->getMessage());
-				}
-			}
-		}
-
-		return $res;
 	}
 
 	/**
@@ -1160,82 +664,43 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		$app			= Factory::getApplication();
 		$session		= Factory::getSession();
-		$date			= Factory::getDate();
-		$time			= $date->toSql();
-		$user			= Factory::getUser();
-		$mailinglists	= array();
 		$ext            = '';
 		$dest           = '';
-		$delimiter      = '';
-		$enclosure      = '"';
-		$caption        = '';
 
 		$import_general_data = $session->get('import_general_data');
 
 		// Load the session data which are needed for import operation
 		if(isset($import_general_data) && is_array($import_general_data))
 		{
-			if (isset($import_general_data['caption']))
-			{
-				$caption	= stripcslashes($import_general_data['caption']);
-			}
-
-			if (isset($import_general_data['delimiter']))
-			{
-				$delimiter 	= stripcslashes($import_general_data['delimiter']);
-			}
-
-			if (!empty($import_general_data['enclosure']))
-			{
-				$enclosure	= stripcslashes($import_general_data['enclosure']);
-			}
-
 			$dest 	= $import_general_data['dest'];
 			$ext	= $import_general_data['ext'];
 		}
+
+		$fh = fopen($dest, 'r');
+
+		if ($fh === false)
+		{
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UNABLE_TO_OPEN_FILE'), 'warning');
+			return false;
+		}
+
+		$date			= Factory::getDate();
+		$time			= $date->toSql();
+		$user			= Factory::getUser();
 
 		// Load the post data
 		$import_fields 	= $data['import_fields'];
 		$db_fields 		= $data['db_fields'];
 
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
-		if (isset($data['jform']['ml_available']))
-		{
-			foreach ($data['jform']['ml_available']		as $key => $value)
-			{
-				$mailinglists[] 	= $value;
-			}
-		}
+		$mailinglists = BwPostmanMailinglistHelper::mergeMailinglistsOnly($data['jform']);
 
-		if (isset($data['jform']['ml_unavailable']))
-		{
-			foreach ($data['jform']['ml_unavailable']	as $key => $value)
-			{
-				$mailinglists[] 	= $value;
-			}
-		}
+		// We need the database columns for subsequent checking of the values
+		$colEmail = array_search('email', $db_fields);
 
-		if (isset($data['jform']['ml_intern']))
+		if ($colEmail ===  false)
 		{
-			foreach ($data['jform']['ml_intern']		as $key => $value)
-			{
-				$mailinglists[] 	= $value;
-			}
-		}
-
-		if (isset($data['confirm']))
-		{
-			$confirm = true;
-		}
-		else
-		{
-			$confirm = false;
-		}
-
-		// We need some database-fields for subsequent checking of the values
-		if (false === ($colEmail = array_search('email', $db_fields)))
-		{
-			// Couldn't find an email column --> return because we need the email for import
+			// Couldn't find an email column --> return because email is mandatory for import
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_ERROR_NO_EMAIL_COLUMN'), 'error');
 			return false;
 		}
@@ -1252,13 +717,14 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		// Create correlation of db fields and csv fields in form of $correlation table[csv_column_number] = db_column_name
 		$colNumToDBName = array();
+
 		for ($i = 0;$i < count($db_fields);$i++)
 		{
 			$colNumToDBName[$import_fields[$i]] = $db_fields[$i];
 			$values[$db_fields[$i]] = 0;
 		}
 
-		$remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+		$remote_ip  = $app->input->server->get('REMOTE_ADDR', '', '');
 
 		// Add and initialize additional fields, depending of confirm-box value
 		$values["id"]					= 0;
@@ -1272,173 +738,190 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$values["editlink"]				= '';
 		$values["activation"]			= '';
 		$values["emailformat"]			= $data['emailformat'];
+
 		if (isset($data['confirm']))
 		{
+			$confirm = true;
 			$values["status"] = $data['confirm'];
 		}
 		else
 		{
+			$confirm = false;
 			$values["status"] = 0;
 		}
 
-		if (false === $fh = fopen($dest, 'r'))
+		$doValidation = true;
+
+		if (!isset($data['validate']) || $data['validate'] === 0)
 		{
-			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UNABLE_TO_OPEN_FILE'), 'warning');
-			return false;
+			$doValidation = false;
 		}
-		else
-		{
-			// Error-Array --> 2dimensions: [err][csv_row], [err][email], [err][msg], [err][id]
-			$err = array();
-			// Warning-Array --> 2dimensions: [warn][csv_row], [warn][email], [warn][msg]
-			$warn = array();
-			// SendEmailActivation-Array --> 2dimensions [sendmail][csv_row], [sendmail][email]
-			$mail = array();
 
-			$row_nbr = 0;
+		// Error-Array --> 2dimensions: [err][csv_row], [err][email], [err][msg], [err][id]
+		$err = array();
+		// Warning-Array --> 2dimensions: [warn][csv_row], [warn][email], [warn][msg]
+		$warn = array();
+		// SendEmailActivation-Array --> 2dimensions [sendmail][csv_row], [sendmail][email]
+		$mail = array();
 
-			if ($ext == 'csv')
-			{ // Format = csv
-				Factory::getApplication()->setUserState('com_bwpostman.subscriber.fileformat', 'csv');
+		$row_nbr = 0;
 
-				// Get data from the file and store them into an array
-				while(($row = fgetcsv($fh, '', $delimiter, $enclosure)) !== false)
+		if ($ext == 'csv')
+		{ // Format = csv
+			$delimiter      = '';
+			$enclosure      = '"';
+			$caption        = '';
+
+			// Load the session data which are needed for csv import operation
+			if(isset($import_general_data) && is_array($import_general_data))
+			{
+				if (isset($import_general_data['caption']))
+				{
+					$caption	= stripcslashes($import_general_data['caption']);
+				}
+
+				if (isset($import_general_data['delimiter']))
+				{
+					$delimiter 	= stripcslashes($import_general_data['delimiter']);
+				}
+
+				if (!empty($import_general_data['enclosure']))
+				{
+					$enclosure	= stripcslashes($import_general_data['enclosure']);
+				}
+			}
+
+			$app->setUserState('com_bwpostman.subscriber.fileformat', 'csv');
+
+			// Get data from the file and store them into an array
+			while(($row = fgetcsv($fh, '', $delimiter, $enclosure)) !== false)
+			{
+				foreach($colNumToDBName as $key => $value)
 				{
 					// Reset the import values. We should do this for every import row preventively.
-					foreach($colNumToDBName as $key => $value)
-					{
-						$values[$key] = 0;
-					}
+					$values[$key] = 0;
 
 					// Get the values from the csv
-					foreach($colNumToDBName as $key => $value)
+					$values[$value] = $row[$key];
+				}
+
+				// Count CSV-file line numbers
+				$row_nbr++;
+
+				// If caption is set, don't read the first line of the csv-file
+				if ($caption)
+				{
+					$caption = 0;
+					continue;
+				}
+
+				// Save the row
+				$this->save_import($values, $confirm, $doValidation, $row_nbr, $mailinglists, $ret_err, $ret_warn, $ret_maildata);
+
+				// Push the error/mailing data into the arrays
+				if ($ret_err)
+				{
+					$err[] = $ret_err;
+				}
+
+				if ($ret_warn)
+				{
+					foreach ($ret_warn AS $row_warn)
 					{
-						$values[$value] = $row[$key];
+						$warn[] = $row_warn;
 					}
+				}
 
-					// Count CSV-file line numbers
-					$row_nbr++;
+				if ($ret_maildata)
+				{
+					$mail[] = $ret_maildata;
+				}
+			} // Endif format == csv
+		}
+		else
+		{ // Format == xml
+			$app->setUserState('com_bwpostman.subscriber.fileformat', 'xml');
 
-					// If caption is set, don't read the first line of the csv-file
-					if ($caption)
-					{
-						$caption = 0;
-						continue;
-					}
+			// Parse the XML
+			$parser	= new SimpleXMLElement($dest, null, true);
 
-					// Save the row
-					$this->save_import($values, $confirm, $row_nbr, $mailinglists, $ret_err, $ret_warn, $ret_maildata);
-
-					// Push the error/mailing data into the arrays
-					if ($ret_err)
-					{
-						$err[] = $ret_err;
-					}
-
-					if ($ret_warn)
-					{
-						foreach ($ret_warn AS $row_warn)
-						{
-							$warn[] = $row_warn;
-						}
-					}
-
-					if ($ret_maildata)
-					{
-						$mail[] = $ret_maildata;
-					}
-
-				} // Endif format == csv
-
+			if ($parser->getName() !== "subscribers")
+			{
+				// TODO: There is no bwpostman xml file! Perhaps one may proceed if there are appropriate fields
+				return false;
 			}
-			else
-			{ // Format == xml
-				Factory::getApplication()->setUserState('com_bwpostman.subscriber.fileformat', 'xml');
 
-				// Parse the XML
-				$parser	= new \SimpleXMLElement($dest, null, true);
+			// Get all fields from the xml file for listing and selecting by the user
+			$addresses = $parser->xpath("subscriber");
 
-				if ($parser->getName() != "subscribers")
+			$subscribers    = array();
+			foreach ($addresses as $subscriber)
+			{
+				$subscribers[]	= $subscriber;
+			}
+
+			foreach ($subscribers as $subscriber)
+			{
+				$xml_fields	= get_object_vars($subscriber);
+
+				foreach($colNumToDBName as $key => $value)
 				{
-					// TODO: There is no bwpostman xml file! Perhaps one may proceed if there are appropriate fields
-				}
-
-				// Get all fields from the xml file for listing and selecting by the user
-				$addresses = $parser->xpath("subscriber");
-
-				$subscribers    = array();
-				foreach ($addresses as $subscriber)
-				{
-					$subscribers[]	= $subscriber;
-				}
-
-				foreach ($subscribers as $subscriber)
-				{
-					$xml_fields	= get_object_vars($subscriber);
-
 					// Reset the import values. We should do this for every import dataset preventively.
-					foreach($colNumToDBName as $key => $value)
-					{
-						$values[$key] = 0;
-					}
+					$values[$key] = 0;
 
 					// Get the values from the xml
-					foreach($colNumToDBName as $key => $value)
+					$values[$value] = $xml_fields[$key];
+				}
+
+				// Count XML-dataset numbers
+				$row_nbr++;
+
+				// Save the data
+				$this->save_import($values, $confirm, $doValidation, $row_nbr, $mailinglists, $ret_err, $ret_warn, $ret_maildata);
+
+				// Push the error/mailing data into the arrays
+				if ($ret_err)
+				{
+					$err[] = $ret_err;
+				}
+
+				if ($ret_warn)
+				{
+					foreach ($ret_warn AS $row_warn)
 					{
-						$values[$value] = $xml_fields[$key];
-					}
-
-					// Count XML-dataset numbers
-					$row_nbr++;
-
-					// Save the data
-					$this->save_import($values, $confirm, $row_nbr, $mailinglists, $ret_err, $ret_warn, $ret_maildata);
-
-					// Push the error/mailing data into the arrays
-					if ($ret_err)
-					{
-						$err[] = $ret_err;
-					}
-
-					if ($ret_warn)
-					{
-						foreach ($ret_warn AS $row_warn)
-						{
-							$warn[] = $row_warn;
-						}
-					}
-
-					if ($ret_maildata)
-					{
-						$mail[] = $ret_maildata;
+						$warn[] = $row_warn;
 					}
 				}
+
+				if ($ret_maildata)
+				{
+					$mail[] = $ret_maildata;
+				}
 			}
-
-			fclose($fh); // Close the file
-			unlink($dest);
-
-			// Return the error/mailing data arrays
-			$ret_err 	= $err;
-			$ret_warn 	= $warn;
-			$ret_maildata = $mail;
-
-			return true;
 		}
+
+		fclose($fh); // Close the file
+		unlink($dest);
+
+		// Return the error/mailing data arrays
+		$ret_err 	= $err;
+		$ret_warn 	= $warn;
+		$ret_maildata = $mail;
+
+		return true;
 	}
 
 	/**
 	 * Method to save single import data set
 	 *
-	 * @access	public
-	 *
-	 * @param 	array   $values         associative array of data to store
-	 * @param 	boolean $confirm        Confirm --> 0 = do not confirm, 1 = confirm
-	 * @param 	int     $row            CSV row --> we will use this only if the format is csv
-	 * @param	array   $mailinglists   array of mailinglist IDs
-	 * @param	array   $ret_err        associative array of import error data
-	 * @param	array   $ret_warn       associative array of import warning data
-	 * @param	array   $ret_maildata   associative object of subscriber email data
+	 * @param 	array   $values       associative array of data to store
+	 * @param 	boolean $confirm      Confirm --> 0 = do not confirm, 1 = confirm
+	 * @param 	boolean $doValidation Validate email address --> 0 = do not validate, 1 = validate
+	 * @param 	int     $row          CSV row --> we will use this only if the format is csv
+	 * @param	array   $mailinglists array of mailinglist IDs
+	 * @param	array   $ret_err      associative array of import error data
+	 * @param	array   $ret_warn     associative array of import warning data
+	 * @param	array   $ret_maildata associative object of subscriber email data
 	 *
 	 * @return	Boolean true on success
 	 *
@@ -1446,7 +929,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 *
 	 * @since       0.9.1
 	 */
-	public function save_import($values, $confirm, $row, $mailinglists, &$ret_err, &$ret_warn, &$ret_maildata)
+	public function save_import($values, $confirm, $doValidation, $row, $mailinglists, &$ret_err, &$ret_warn, &$ret_maildata)
 	{
 		// Access check
 		if (!$this->permissions['subscriber']['create'])
@@ -1454,17 +937,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			return false;
 		}
 
-		jimport('joomla.mail.helper');
-		$db			= $this->_db;
-		$query			= $db->getQuery(true);
-		$date			= Factory::getDate();
-		$time			= $date->toSql();
-		$user			= Factory::getUser();
-		$ret_err		= '';
-		$ret_warn		= '';
-		$ret_maildata	= '';
-
-		// Check if there is a valid email address
+		// First fast check if there is a valid email address
 		if (!MailHelper::isEmailAddress($values['email']))
 		{
 			$err['row'] = $row;
@@ -1473,6 +946,31 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$ret_err = $err;
 			return false;
 		}
+
+		// Second more detailed check if the email address is valid an exists
+		// @ToDo: Convert this to an option at import
+//		$doValidation = false;
+
+		if ($doValidation)
+		{
+			$isValidEmail = $this->validateEmail($values['email']);
+
+			if (!$isValidEmail)
+			{
+				$err['row'] = $row;
+				$err['email'] = $values['email'];
+				$err['msg'] = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL', $values['email']);
+				$ret_err = $err;
+				return false;
+			}
+		}
+
+		$date			= Factory::getDate();
+		$time			= $date->toSql();
+		$user			= Factory::getUser();
+		$ret_err		= '';
+		$ret_warn		= '';
+		$ret_maildata	= '';
 
 		// We may set confirmation data if the confirm-box is checked and the import value does not stand against
 		$remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
@@ -1487,21 +985,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		try
 		{
 			// Check if the email address exists in the database
-			$query->select('*');
-			$query->from($db->quoteName('#__bwpostman_subscribers'));
-			$query->where($db->quoteName('email') . ' = ' . $db->quote($values['email']));
-			if ($values['status'] == '9')
-			{
-				$query->where($db->quoteName('emailformat') . ' = ' . $db->quote($values['emailformat']));
-				$query->where($db->quoteName('status') . ' = ' . (int) 9);
-			}
-			else
-			{
-				$query->where($db->quoteName('status') . ' IN (0, 1)');
-			}
-
-			$db->setQuery($query);
-			$subscriber = $db->loadObject();
+			$subscriber = BwPostmanSubscriberHelper::getSubscriberDataByEmail($values);
 
 			if (isset($subscriber->id))
 			{ // A recipient with this email address already exists
@@ -1515,13 +999,11 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					}
 					else
 					{ // Subscriber already exists
+						$err['msg'] = Text::_('COM_BWPOSTMAN_SUB_ERROR_IMPORT_ACCOUNTEXISTS');
+
 						if ($subscriber->activation)
 						{ // Account is not activated
 							$err['msg'] = Text::_('COM_BWPOSTMAN_SUB_ERROR_IMPORT_ACCOUNTNOTACTIVATED');
-						}
-						else
-						{
-							$err['msg'] = Text::_('COM_BWPOSTMAN_SUB_ERROR_IMPORT_ACCOUNTEXISTS');
 						}
 					}
 
@@ -1537,14 +1019,11 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					{
 						$err['row']   = $row;        // Get CSV row
 						$err['email'] = $values['email'];
+						$err['msg'] = Text::_('COM_BWPOSTMAN_TEST_IMPORT_ERROR_ACCOUNTEXISTS');
 
 						if ($subscriber->archive_flag == 1)
 						{
 							$err['msg'] = Text::_('COM_BWPOSTMAN_TEST_IMPORT_ERROR_ACCOUNTARCHIVED');
-						}
-						else
-						{
-							$err['msg'] = Text::_('COM_BWPOSTMAN_TEST_IMPORT_ERROR_ACCOUNTEXISTS');
 						}
 
 						$err['id'] = $subscriber->id;
@@ -1563,24 +1042,20 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				// Set the columns and values
 				if ($confirm)
 				{ // Status = 1
+					$warn[0]['msg'] = Text::_('COM_BWPOSTMAN_SUB_IMPORT_INVALID_STATUS_CONFIRMED');
+
 					if (empty($values['status']))
 					{
 						$warn[0]['msg'] = Text::_('COM_BWPOSTMAN_SUB_IMPORT_NO_STATUS_CONFIRMED');
 					}
-					else
-					{
-						$warn[0]['msg'] = Text::_('COM_BWPOSTMAN_SUB_IMPORT_INVALID_STATUS_CONFIRMED');
-					}
 				}
 				else
 				{ // Status = 0
+					$warn[0]['msg'] = Text::_('COM_BWPOSTMAN_SUB_IMPORT_INVALID_STATUS_UNCONFIRMED');
+
 					if (empty($values['status']))
 					{
 						$warn[0]['msg'] = Text::_('COM_BWPOSTMAN_SUB_IMPORT_NO_STATUS_UNCONFIRMED');
-					}
-					else
-					{
-						$warn[0]['msg'] = Text::_('COM_BWPOSTMAN_SUB_IMPORT_INVALID_STATUS_UNCONFIRMED');
 					}
 				}
 
@@ -1589,23 +1064,16 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 			if ($values['status'] == '0')
 			{
-				$values["activation"] = $this->getActivation();
+				$values["activation"] = BwPostmanSubscriberHelper::createActivation();
 			}
 
 			// Check if the subscriber email address exists in the users-table
-			$query = $db->getQuery(true);
-
-			$query->select($db->quoteName('id'));
-			$query->from($db->quoteName('#__users'));
-			$query->where($db->quoteName('email') . ' = ' . $db->quote($values['email']));
-
-			$db->setQuery($query);
-			$user_id = $db->loadResult();
+			$user_id = BwPostmanSubscriberHelper::getJoomlaUserIdByEmail($values['email']);
 
 			$values["user_id"] = $user_id;
 			if ($values["status"] != '9')
 			{
-				$values['editlink'] = $this->getEditlink();
+				$values['editlink'] = BwPostmanSubscriberHelper::getEditlink();
 			}
 
 			if (parent::save($values))
@@ -1615,27 +1083,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				//Save Mailinglists if selected
 				if ($mailinglists && ($values['status'] != '9'))
 				{
-					foreach ($mailinglists AS $list_id)
-					{
-						if (is_numeric($list_id))
-						{ // We have to test this because IE doesn't accept the value "disabled"
-							$query = $db->getQuery(true);
-
-							$query->insert($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-							$query->columns(
-								array(
-									$db->quoteName('subscriber_id'),
-									$db->quoteName('mailinglist_id')
-								)
-							);
-							$query->values(
-								(int) $subscriber_id . ',' .
-								(int) $list_id
-							);
-							$db->setQuery($query);
-							$db->execute();
-						}
-					}
+					BwPostmanSubscriberHelper::storeMailinglistsOfSubscriber($subscriber_id, $mailinglists);
 				}
 
 				//Send Email, if confirmed is not set
@@ -1658,25 +1106,21 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		if (isset($warn))
 		{
+			$ret_warn = null;
+
 			if ($warn)
 			{
 				$ret_warn = $warn;
-			}
-			else
-			{
-				$ret_warn = null;
 			}
 		}
 
 		if (isset($subscriber_emaildata))
 		{
+			$ret_maildata = null;
+
 			if ($subscriber_emaildata)
 			{
 				$ret_maildata = $subscriber_emaildata;
-			}
-			else
-			{
-				$ret_maildata = null;
 			}
 		}
 
@@ -1685,8 +1129,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 	/**
 	 * Method to export selected data
-	 *
-	 * @access	public
 	 *
 	 * @param 	array   $data       associative array of export option data
 	 *
@@ -1704,19 +1146,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			return false;
 		}
 
-		$db	= $this->_db;
 		$output = '';
-
-		$export_fields = $data['export_fields'];
-
-		// Build the main subQuery
-		$subQuery = $this->buildExportSubQuery(
-			isset($data['status0']) ? $data['status0'] : '0',
-			isset($data['status1']) ? $data['status1'] : '0',
-			isset($data['status9']) ? $data['status9'] : '0',
-			isset($data['archive0']) ? $data['archive0'] : '0',
-			isset($data['archive1']) ? $data['archive1'] : '0'
-		);
 
 		try
 		{
@@ -1726,6 +1156,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				$enclosure = $data['enclosure'];
 				$newline   = "\n";
 
+				$export_fields = $data['export_fields'];
+
 				$export_fields_tmp = array();
 				foreach ($export_fields AS $export_field)
 				{
@@ -1734,28 +1166,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 				$output = implode($delimiter, $export_fields_tmp) . $newline;
 
-				// Add DB-Quote to each export field
-				foreach ($export_fields as $key => $value)
-				{
-					$export_fields[$key] = $db->quoteName($value);
-				}
-
-				$export_fields_str = implode(",", $export_fields);
-
-				// Build the query
-				$query = $db->getQuery(true);
-
-				$query->select($export_fields_str);
-				$query->from($db->quoteName('#__bwpostman_subscribers'));
-				$query .= $subQuery;
-
-				$db->setQuery($query);
-
-				$query2 = "SELECT {$export_fields_str}
-					FROM {$db->quoteName('#__bwpostman_subscribers')}
-					{$subQuery}";
-				$db->setQuery($query2);
-				$subscribers_export = $db->loadAssocList();
+				$subscribers_export = $this->getSubscribersToExport($data);
 
 				foreach ($subscribers_export AS $subscriber)
 				{
@@ -1772,55 +1183,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			}
 			else
 			{ // Fileformat == xml
-				$export_fields_str_xml = implode(", ", $export_fields);
+				$subscribers_export = $this->getSubscribersToExport($data);
 
-				$output = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-							<!-- BwPostman export file -->
-							<!DOCTYPE subscribers [
-							<!ELEMENT subscribers (subscriber+)>
-							<!ELEMENT subscriber (' . $export_fields_str_xml . ')>
-							';
-
-				foreach ($export_fields as $key => $value)
-				{
-					$output .= "<!ELEMENT {$value} (#PCDATA)>
-								";
-				}
-
-				$output .= "]>\n<subscribers>\n";
-
-				// Add DB-Quote to each export field
-				$export_fields_tmp = array();
-				foreach ($export_fields as $key => $value)
-				{
-					$export_fields_tmp[$key] = $db->quoteName($value);
-				}
-
-				$export_fields_str = implode(",", $export_fields_tmp);
-
-				// Build query
-				$query = $db->getQuery(true);
-
-				$query->select($export_fields_str);
-				$query->from($db->quoteName('#__bwpostman_subscribers'));
-				$query .= $subQuery;
-
-				$db->setQuery($query);
-
-				$subscribers_export = $db->loadAssocList();
-
-				foreach ($subscribers_export AS $subscriber)
-				{
-					$output .= "	<subscriber>\n";
-					foreach ($subscriber AS $key => $value)
-					{
-						$output .= "		<{$key}>{$value}</{$key}>\n";
-					}
-
-					$output .= "	</subscriber>\n";
-				}
-
-				$output .= "</subscribers>";
+				$output = $this->processXmlExport($subscribers_export);
 			}
 		}
 		catch (RuntimeException $e)
@@ -1833,8 +1198,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 	/**
 	 * Method to build the WHERE-clause for the export function
-	 *
-	 * @access	private
 	 *
 	 * @param 	integer     $status0    Status = 0 --> account is not confirmed
 	 * @param 	integer     $status1    Status = 1 --> account is confirmed
@@ -1920,7 +1283,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		if ($mlToExport !== '')
 		{
-			$filteredSubscribers = $this->getSubscribersOfMailinglist((int)$mlToExport);
+			$filteredSubscribers = BwPostmanMailinglistHelper::getSubscribersOfMailinglist((int)$mlToExport);
 
 			if ($where)
 			{
@@ -1936,32 +1299,38 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the subscribers of a specific mailinglist
+	 * Method to create the XML file content
 	 *
-	 * @access	private
+	 * @param array $subscribers   the subscribers to export
 	 *
-	 * @param 	integer $id id of mailinglist
+	 * @return string
 	 *
-	 * @return 	array       $subscribersOfMailinglist
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.2.0
+	 * @since       2.4.0
 	 */
-	private function getSubscribersOfMailinglist($id)
+	private function processXmlExport($subscribers)
 	{
-		$db	= Factory::getDbo();
-		$query	= $db->getQuery(true);
+		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"  standalone="yes"?><subscribers></subscribers>');
 
-		$query->select($db->quoteName('subscriber_id'));
-		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-		$query->where($db->quoteName('mailinglist_id') . ' = ' . $db->Quote($id));
+		$xml->addAttribute('version', '1.0');
+		$xml->addAttribute('datetime', date('Y-m-d H:i:s'));
 
-		$db->setQuery($query);
+		foreach ($subscribers as $subscriber)
+		{
+			$singleSubscriber = $xml->addChild('subscriber');
 
-		$subscribersOfMailinglist = $db->loadColumn();
+			foreach ($subscriber as $key => $value)
+			{
+				$singleSubscriber->addChild($key, $value);
+			}
+		}
 
-		return $subscribersOfMailinglist;
+		// Reformat XML string with new lines for each entry
+		$dom = new DOMDocument('1.0');
+		$dom->preserveWhiteSpace = false;
+		$dom->formatOutput = true;
+		$dom->loadXML($xml->asXML());
+
+		return $dom->saveXML();
 	}
 
 	/**
@@ -2097,51 +1466,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		{
 			// Pop the first id off the stack
 			$pk     = array_shift($pks);
-			$result = 0;
-
-			// Check if subscriber has already subscribed to the desired mailinglist
-			$query = $db->getQuery(true);
-			$query->select($db->quoteName('subscriber_id'));
-			$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $pk);
-			$query->where($db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglist);
-			$db->setQuery($query);
-
-			try
-			{
-				$result = $db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+			$hasSubscription = BwPostmanSubscriberHelper::hasSubscriptionForMailinglist($pk, $mailinglist);
 
 			// If no subscription to this mailinglist then subscribe, else only count
-			if (!$result)
+			if (!$hasSubscription)
 			{
-				$query  = $db->getQuery(true);
-				$query->insert($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-				$query->columns(
-					array(
-						$db->quoteName('subscriber_id'),
-						$db->quoteName('mailinglist_id')
-					)
-				);
-					$query->values(
-						(int) $pk . ',' .
-						(int) $mailinglist
-					);
-				$db->setQuery($query);
-
-				try
-				{
-					$db->execute();
-					$subscribed++;
-				}
-				catch (RuntimeException $e)
-				{
-					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-				}
+				BwPostmanSubscriberHelper::storeMailinglistsOfSubscriber($pk, array((int) $mailinglist));
+				$subscribed++;
 			}
 			else
 			{
@@ -2186,43 +1517,15 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		{
 			// Pop the first id off the stack
 			$pk     = array_shift($pks);
-			$result = 0;
 
 			// Check if subscriber has already subscribed to the desired mailinglist
-			$query = $db->getQuery(true);
-			$query->select($db->quoteName('subscriber_id'));
-			$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $pk);
-			$query->where($db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglist);
-			$db->setQuery($query);
-
-			try
-			{
-				$result = $db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+			$hasSubscription = BwPostmanSubscriberHelper::hasSubscriptionForMailinglist($pk, $mailinglist);
 
 			// If subscription to this mailinglist, then unsubscribe, else only count
-			if ($result)
+			if ($hasSubscription)
 			{
-				$query = $db->getQuery(true);
-				$query->delete($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-				$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $pk);
-				$query->where($db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglist);
-				$db->setQuery($query);
-
-				try
-				{
-					$db->execute();
-					$unsubscribed++;
-				}
-				catch (RuntimeException $e)
-				{
-					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-				}
+				BwPostmanSubscriberHelper::deleteMailinglistsOfSubscriber($pk, array((int)$mailinglist));
+				$unsubscribed++;
 			}
 			else
 			{
@@ -2236,491 +1539,159 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		return $result_set;
 	}
-}
 
 /**
- * Email Validation
- * Provides methods to validate the e-mail-addresses of subscriber
- * --> Carried over from the previous BwPostman version without any changes
-
- * @package		BwPostman-Admin
+ * Method to get the mailinglist ids which a subscriber is subscribed to
  *
- * @subpackage	Subscribers
+ * @param $sub_id
  *
- * @since       0.9.1
+ * @return array
+ *
+ * @throws Exception
+ *
+ * @since 2.4.0
  */
-class emailValidation
-{
-	/**
-	 * property to hold regular expressions for email check
-	 *
-	 * @var string $email_regular_expression
-	 *
-	 * @since       0.9.1
-	 */
-	private $email_regular_expression = "^([-!#\$%&'*+./0-9=?A-Z^_`a-z{|}~])+@([-!#\$%&'*+/0-9=?A-Z^_`a-z{|}~]+\\.)+[a-zA-Z]{2,6}\$";
-
-	/**
-	 * property to hold timeout
-	 *
-	 * @var int $timeout
-	 *
-	 * @since       0.9.1
-	 */
-	private $timeout = 0;
-
-	/**
-	 * property to hold data timeout
-	 *
-	 * @var int $data_timeout
-	 *
-	 * @since       0.9.1
-	 */
-	private $data_timeout = 0;
-
-	/**
-	 * property to hold localhost
-	 *
-	 * @var string  $localhost
-	 *
-	 * @since       0.9.1
-	 */
-	private $localhost = "";
-
-	/**
-	 * property to hold local user
-	 *
-	 * @var string $localuser
-	 *
-	 * @since       0.9.1
-	 */
-	private $localuser = "";
-
-	/**
-	 * property to hold debug mode
-	 *
-	 * @var int $debug
-	 *
-	 * @since       0.9.1
-	 */
-	private $debug = 0;
-
-	/**
-	 * property to hold html debug mode
-	 *
-	 * @var int $html_debug
-	 *
-	 * @since       0.9.1
-	 */
-	private $html_debug = 0;
-
-	/**
-	 * property to hold exclude mail address
-	 *
-	 * @var string
-	 *
-	 * @since       0.9.1
-	 */
-	private $exclude_address = "";
-
-	/**
-	 * property to hold MXRR
-	 *
-	 * @var string  $getmxrr
-	 *
-	 * @since       0.9.1
-	 */
-	private $getmxrr = "GetMXRR";
-
-	/**
-	 * property to hold next token
-	 *
-	 * @var string  $next_token
-	 *
-	 * @since       0.9.1
-	 */
-	private $next_token = "";
-
-	/**
-	 * property to hold preg
-	 *
-	 * @var string  $preg
-	 *
-	 * @since       0.9.1
-	 */
-	private $preg;
-
-	/**
-	 * property to hold last code
-	 *
-	 * @var string  $last_code
-	 *
-	 * @since       0.9.1
-	 */
-	private $last_code = "";
-
-	/**
-	 * Method to tokenize
-	 *
-	 * @param string    $string
-	 * @param string    $separator
-	 *
-	 * @return string
-	 *
-	 * @since       0.9.1
-	 */
-	public function Tokenize($string, $separator="")
+	private function getMailinglistIdsOfSubscriber($sub_id)
 	{
-		if(!strcmp($separator, ""))
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('mailinglist_id'));
+		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $sub_id);
+
+		$db->setQuery($query);
+
+		try
 		{
-			$separator = $string;
-			$string = $this->next_token;
+			$mailinglist_ids = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		for($character = 0; $character < strlen($separator); $character++)
-		{
-			if(gettype($position = strpos($string, $separator[$character])) == "integer")
-			{
-				$found = (IsSet($found) ? min($found, $position) : $position);
-			}
-		}
+		return $mailinglist_ids;
+	}
 
-		if(IsSet($found))
+	/**
+	 * Method to get the data of the mailinglists a user is subscribed to from their mailinglist ids
+	 *
+	 * @param array $mailinglist_ids
+	 *
+	 * @return array|mixed
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	private function getCompleteMailinglistsOfSubscriber($mailinglist_ids)
+	{
+		$lists = array();
+
+		if (!empty($mailinglist_ids))
 		{
-			$this->next_token = substr($string, $found + 1);
-			return(substr($string, 0, $found));
+			$mailinglists = implode(',', $mailinglist_ids);
 		}
 		else
 		{
-			$this->next_token = "";
-			return($string);
+			$mailinglists = 0;
 		}
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->select($db->quoteName('title'));
+		$query->select($db->quoteName('description'));
+		$query->select($db->quoteName('archive_flag'));
+		$query->from($db->quoteName('#__bwpostman_mailinglists'));
+		$query->where($db->quoteName('id') . ' IN  (' . $mailinglists . ')');
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$lists = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $lists;
 	}
 
 	/**
-	 * Method to debug output
+	 * Method to get the subscribers to export
 	 *
-	 * @param string    $message
+	 * @param array $data
 	 *
-	 * @since       0.9.1
+	 * @return mixed
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
 	 */
-	public function OutputDebug($message)
+	private function getSubscribersToExport($data)
 	{
-		$message .= "\n";
-		if($this->html_debug)
+		$db	= $this->_db;
+		$export_fields = $data['export_fields'];
+
+
+		// Build the main subQuery
+		$subQuery = $this->buildExportSubQuery(
+			isset($data['status0']) ? $data['status0'] : '0',
+			isset($data['status1']) ? $data['status1'] : '0',
+			isset($data['status9']) ? $data['status9'] : '0',
+			isset($data['archive0']) ? $data['archive0'] : '0',
+			isset($data['archive1']) ? $data['archive1'] : '0'
+		);
+
+		foreach ($export_fields as $key => $value)
 		{
-			$message = str_replace("\n", "<br />\n", htmlentities($message));
+			$export_fields[$key] = $db->quoteName($value);
 		}
 
-		echo $message;
-		flush();
+		$export_fields_str = implode(",", $export_fields);
+
+		// Build the query
+		$query = $db->getQuery(true);
+
+		$query->select($export_fields_str);
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query .= $subQuery;
+
+		$db->setQuery($query);
+
+		return $db->loadAssocList();
 	}
 
 	/**
-	 * Method to get line
+	 * Method to validate one email address
 	 *
-	 * @param resource  $connection
+	 * @param	string   $email            Subscriber/Test-recipient email address
 	 *
-	 * @return int|string
+	 * @return	boolean  true if email address is valid
 	 *
-	 * @since       0.9.1
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
 	 */
-	public function GetLine($connection)
+	public function validateEmail($email)
 	{
-		for($line = "";;)
-		{
-			if(feof($connection))
-			{
-				return(0);
-			}
+		$config	= Factory::getConfig();
+		$logOptions   = array();
 
-			$line .= fgets($connection, 100);
-			$length = strlen($line);
-			if($length >= 2
-				&& substr($line, $length - 2, 2) == "\r\n")
-			{
-				$line = substr($line, 0, $length - 2);
-				if($this->debug)
-				{
-					$this->OutputDebug("S $line");
-				}
+		$validator = new BwEmailValidation($logOptions);
 
-				return($line);
-			}
-		}
+		$validator->setEmailFrom($config->get('mailfrom'));
+		$validator->setConnectionTimeout(30);
+		$validator->setStreamTimeout(5);
+		$validator->setStreamTimeoutWait(0);
 
-		return(0);
-	}
+		$isValidEmail = $validator->check($email);
 
-	/**
-	 * Method to put line
-	 *
-	 * @param resource  $connection
-	 * @param string    $line
-	 *
-	 * @return int
-	 *
-	 * @since       0.9.1
-	 */
-	public function PutLine($connection,$line)
-	{
-		if($this->debug)
-		{
-			$this->OutputDebug("C $line");
-		}
-
-		return(fputs($connection, "$line\r\n"));
-	}
-
-	/**
-	 * Method to validate email address
-	 *
-	 * @param string    $email
-	 *
-	 * @return bool|int
-	 *
-	 * @since       0.9.1
-	 */
-	public function ValidateEmailAddress($email)
-	{
-		if(IsSet($this->preg))
-		{
-			if(strlen($this->preg))
-			{
-				return(preg_match($this->preg, $email));
-			}
-		}
-		else
-		{
-			$this->preg = (function_exists("preg_match") ? "/" . str_replace("/", "\\/", $this->email_regular_expression) . "/" : "");
-			return($this->ValidateEmailAddress($email));
-		}
-
-		return(preg_match("/$this->email_regular_expression/i", $email) != 0);
-	}
-
-	/**
-	 * Method to validate email host
-	 *
-	 * @param string    $email
-	 * @param string    $hosts
-	 *
-	 * @return bool|int
-	 *
-	 * @since       0.9.1
-	 */
-	public function ValidateEmailHost($email,&$hosts)
-	{
-		if(!$this->ValidateEmailAddress($email))
-		{
-			return(0);
-		}
-
-		$domain = $this->Tokenize("");
-		$hosts = $weights = array();
-		$getmxrr = $this->getmxrr;
-		if(function_exists($getmxrr)
-			&& $getmxrr($domain, $hosts, $weights))
-		{
-			$mxhosts = array();
-			for($host = 0; $host < count($hosts); $host++)
-			{
-				$mxhosts[$weights[$host]] = $hosts[$host];
-			}
-
-			ksort($mxhosts);
-			for(reset($mxhosts), $host = 0; $host < count($mxhosts); next($mxhosts), $host++)
-			{
-				$hosts[$host] = $mxhosts[key($mxhosts)];
-			}
-		}
-		else
-		{
-			if(strcmp($ip = @gethostbyname($domain), $domain)
-				&& (strlen($this->exclude_address) == 0
-				|| strcmp(@gethostbyname($this->exclude_address), $ip)))
-			{
-				$hosts[] = $domain;
-			}
-		}
-
-		return(count($hosts) != 0);
-	}
-
-	/**
-	 * Method to verify result
-	 *
-	 * @param resource  $connection
-	 * @param string    $code
-	 *
-	 * @return int
-	 *
-	 * @since       0.9.1
-	 */
-	public function VerifyResultLines($connection,$code)
-	{
-		while(($line = $this->GetLine($connection)))
-		{
-			$this->last_code = $this->Tokenize($line, " -");
-			if(strcmp($this->last_code, $code))
-			{
-				return(0);
-			}
-
-			if(!strcmp(substr($line, strlen($this->last_code), 1), " "))
-			{
-				return(1);
-			}
-		}
-
-		return(-1);
-	}
-
-	/**
-	 * Method to validate email box
-	 *
-	 * @param string    $email
-	 *
-	 * @return bool|int
-	 *
-	 * @since       0.9.1
-	 */
-	public function ValidateEmailBox($email)
-	{
-		if(!$this->ValidateEmailHost($email, $hosts))
-		{
-			return(0);
-		}
-
-		if(!strcmp($localhost = $this->localhost, "")
-			&& !strcmp($localhost = getenv("SERVER_NAME"), "")
-			&& !strcmp($localhost = getenv("HOST"), ""))
-		{
-			$localhost = "localhost";
-		}
-
-		if(!strcmp($localuser = $this->localuser, "")
-			&& !strcmp($localuser = getenv("USERNAME"), "")
-			&& !strcmp($localuser = getenv("USER"), ""))
-		{
-			$localuser = "root";
-		}
-
-		for($host = 0; $host < count($hosts); $host++)
-		{
-			$domain = $hosts[$host];
-			if(preg_match('/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/i', $domain))
-			{
-				$ip = $domain;
-			}
-			else
-			{
-				if($this->debug)
-				{
-					$this->OutputDebug("Resolving host name \"" . $hosts[$host] . "\"...");
-				}
-
-				if(!strcmp($ip = @gethostbyname($domain), $domain))
-				{
-					if($this->debug)
-					{
-						$this->OutputDebug("Could not resolve host name \"" . $hosts[$host] . "\".");
-					}
-
-					continue;
-				}
-			}
-
-			if(strlen($this->exclude_address)
-				&& !strcmp(@gethostbyname($this->exclude_address), $ip))
-			{
-				if($this->debug)
-				{
-					$this->OutputDebug("Host address of \"" . $hosts[$host] . "\" is the exclude address");
-				}
-
-				continue;
-			}
-
-			if($this->debug)
-			{
-				$this->OutputDebug("Connecting to host address \"" . $ip . "\"...");
-			}
-
-			if(($connection = ($this->timeout ? @fsockopen($ip, 25, $errno, $error, $this->timeout) : @fsockopen($ip, 25))))
-			{
-				$timeout = ($this->data_timeout ? $this->data_timeout : $this->timeout);
-				if($timeout
-					&& function_exists("socket_set_timeout"))
-				{
-					socket_set_timeout($connection, $timeout, 0);
-				}
-
-				if($this->debug)
-				{
-					$this->OutputDebug("Connected.");
-				}
-
-				if($this->VerifyResultLines($connection, "220") > 0
-					&& $this->PutLine($connection, "HELO $localhost")
-					&& $this->VerifyResultLines($connection, "250") > 0
-					&& $this->PutLine($connection, "MAIL FROM: <$localuser@$localhost>")
-					&& $this->VerifyResultLines($connection, "250") > 0
-					&& $this->PutLine($connection, "RCPT TO: <$email>")
-					&& ($result = $this->VerifyResultLines($connection, "250")) >= 0)
-				{
-					if($result)
-					{
-						if($this->PutLine($connection, "DATA"))
-						{
-							$result = ($this->VerifyResultLines($connection, "354") != 0);
-						}
-					}
-					else
-					{
-						if(strlen($this->last_code)
-							&& !strcmp($this->last_code[0], "4"))
-						{
-							$result = -1;
-						}
-					}
-
-					if($this->debug)
-					{
-						$this->OutputDebug(
-							"This host states that the address is " . ($result ? ($result > 0 ? "valid" : "undetermined") : "not valid") . "."
-						);
-					}
-
-					fclose($connection);
-					if($this->debug)
-					{
-						$this->OutputDebug("Disconnected.");
-					}
-
-					return($result);
-				}
-
-				if($this->debug)
-				{
-					$this->OutputDebug("Unable to validate the address with this host.");
-				}
-
-				fclose($connection);
-				if($this->debug)
-				{
-					$this->OutputDebug("Disconnected.");
-				}
-			}
-			else
-			{
-				if($this->debug)
-				{
-					$this->OutputDebug("Failed.");
-				}
-			}
-		}
-
-		return(-1);
+		return $isValidEmail;
 	}
 }

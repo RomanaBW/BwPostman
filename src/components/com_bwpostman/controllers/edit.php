@@ -110,7 +110,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		// if user is logged in fetch subscriber id
 		if ($userid)
 		{
-			$subscriberid	= (int) BwPostmanSubscriberHelper::getSubscriberID($userid); // = 0 if the user has no newsletter subscription
+			$subscriberid	= (int) BwPostmanSubscriberHelper::getSubscriberIdByUserId($userid); // = 0 if the user has no newsletter subscription
 		}
 
 		// Check if the variable editlink exists in the uri
@@ -329,7 +329,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 				$post['status'] 			= 0;
 				$post['confirmation_date'] 	= "0000-00-00 00:00:00";
 				$post['confirmed_by'] 		= '-1';
-				$post['activation']			= $model->getActivation();
+				$post['activation']			= BwPostmanSubscriberHelper::createActivation();;
 			}
 
 			// Store the data if possible
@@ -414,7 +414,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 					else
 					{
-						$uid	= BwPostmanSubscriberHelper::getUserId($post['id']);
+						$uid	= BwPostmanSubscriberHelper::getUserIdOfSubscriber($post['id']);
 						$this->setData($post['id'], $uid);
 
 						$app->setUserState('subscriber.id', $post['id']);

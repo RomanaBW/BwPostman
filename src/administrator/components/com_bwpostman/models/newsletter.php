@@ -872,38 +872,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
-		if (isset($data['ml_available']))
-		{
-			foreach ($data['ml_available'] as $key => $value)
-			{
-				$data['mailinglists'][] 	= $value;
-			}
-		}
-
-		if (isset($data['ml_unavailable']))
-		{
-			foreach ($data['ml_unavailable'] as $key => $value)
-			{
-				$data['mailinglists'][] 	= $value;
-			}
-		}
-
-		if (isset($data['ml_intern']))
-		{
-			foreach ($data['ml_intern'] as $key => $value)
-			{
-				$data['mailinglists'][] 	= $value;
-			}
-		}
-
-		// merge usergroups into mailinglists, single array may not exist, therefore array_merge would not give a result
-		if (isset($data['usergroups']) && !empty($data['usergroups']))
-		{
-			foreach ($data['usergroups'] as $key => $value)
-			{
-				$data['mailinglists'][] = '-' . $value;
-			}
-		}
+		BwPostmanMailinglistHelper::mergeMailinglists($data);
 
 		// convert attachment array to string, to be able to save
 		if (isset($data['attachment']) && $data['attachment'] != '' && is_array($data['attachment']))

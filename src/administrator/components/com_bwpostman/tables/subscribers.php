@@ -56,7 +56,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	public $id = null;
+	public $id = 0;
 
 	/**
 	 * @var int asset_id
@@ -120,7 +120,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @since       0.9.1
 	 */
-	public $status = null;
+	public $status = 0;
 
 	/**
 	 * @var string Activation code for the subscription

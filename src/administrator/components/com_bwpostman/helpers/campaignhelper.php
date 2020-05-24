@@ -73,4 +73,53 @@ abstract class BwPostmanCampaignHelper {
 		}
 		return false;
 	}
+
+	/**
+	 * Method to get the data of a single campaign for raw view
+	 *
+	 * @access    public
+	 *
+	 * @param int $cam_id Campaign ID
+	 *
+	 * @return    object Campaign
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	public static function getSingleCampaign($cam_id = null)
+	{
+		$db   = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+		$query->from($db->quoteName('#__bwpostman_campaigns'));
+		$query->where($db->quoteName('id') . ' = ' . (int) $cam_id);
+		$db->setQuery($query);
+
+		$campaign = $db->loadObject();
+
+		// Get all assigned newsletters
+		// --> we offer to unarchive not only the campaign but also the assigned newsletters,
+		// that's why we have to show also the archived newsletters
+		$query->clear();
+		$query->select($db->quoteName('id'));
+		$query->select($db->quoteName('subject'));
+		$query->select($db->quoteName('campaign_id'));
+		$query->select($db->quoteName('archive_flag'));
+		$query->from($db->quoteName('#__bwpostman_newsletters'));
+		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
+
+		$db->setQuery($query);
+		try
+		{
+			$campaign->newsletters = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $campaign;
+	}
 }

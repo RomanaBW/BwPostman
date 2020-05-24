@@ -105,7 +105,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		else
 		{
 			// Subscriber is user
-			$id	= BwPostmanSubscriberHelper::getSubscriberId($user->get('id')); // Get the subscriber ID from the subscribers-table
+			$id	= BwPostmanSubscriberHelper::getSubscriberIdByUserId($user->get('id')); // Get the subscriber ID from the subscribers-table
 		}
 
 		$this->setData($id);
@@ -210,35 +210,7 @@ class BwPostmanModelEdit extends JModelAdmin
 			$form->setFieldAttribute('firstname', 'required', true);
 		}
 
-		// Check to show confirmation data or checkbox
-		$c_date	= strtotime($form->getValue('confirmation_date'));
-		if (empty($c_date))
-		{
-			$form->setFieldAttribute('confirmation_date', 'type', 'hidden');
-			$form->setFieldAttribute('confirmed_by', 'type', 'hidden');
-			$form->setFieldAttribute('confirmation_ip', 'type', 'hidden');
-		}
-		else
-		{
-			$form->setFieldAttribute('status', 'type', 'hidden');
-		}
-
-		// Check to show registration data
-		$r_date	= $form->getValue('registration_date');
-		if (empty($r_date))
-		{
-			$form->setFieldAttribute('registration_date', 'type', 'hidden');
-			$form->setFieldAttribute('registered_by', 'type', 'hidden');
-			$form->setFieldAttribute('registration_ip', 'type', 'hidden');
-		}
-
-		// Check to show modified data
-		$m_date	= $form->getValue('modified_time');
-		if ($m_date == '0000-00-00 00:00:00')
-		{
-			$form->setFieldAttribute('modified_time', 'type', 'hidden');
-			$form->setFieldAttribute('modified_by', 'type', 'hidden');
-		}
+		BwPostmanSubscriberHelper::customizeSubscriberDataFields($form);
 
 		return $form;
 	}
@@ -339,52 +311,6 @@ class BwPostmanModelEdit extends JModelAdmin
 		}
 
 		return $emailaddress;
-	}
-
-	/**
-	 * Method to get a unique activation string
-	 *
-	 * @return 	string	$newActivation
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function getActivation()
-	{
-		jimport('joomla.user.helper');
-		$newActivation      = true;
-		$existingActivation = true;
-		$_db	            = $this->_db;
-		$query	            = $_db->getQuery(true);
-
-		// Create the activation and check if the sting doesn't exist twice or more
-		$match_activation = true;
-		while ($match_activation)
-		{
-			$newActivation = ApplicationHelper::getHash(UserHelper::genRandomPassword());
-
-			$query->clear();
-			$query->select($_db->quoteName('activation'));
-			$query->from($_db->quoteName('#__bwpostman_subscribers'));
-			$query->where($_db->quoteName('activation') . ' = ' . $_db->quote($newActivation));
-
-			try
-			{
-				$_db->setQuery($query);
-				$existingActivation = $_db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			if (!$existingActivation == $newActivation) {
-				$match_activation = false;
-			}
-		}
-
-		return $newActivation;
 	}
 
 	/**

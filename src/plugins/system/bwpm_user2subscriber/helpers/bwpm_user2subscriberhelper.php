@@ -33,6 +33,8 @@ use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\User\UserHelper;
 
+require_once(JPATH_SITE . '/components/com_bwpostman/helpers/subscriberhelper.php');
+
 /**
  * Class BwPostmanHelper
  *
@@ -349,8 +351,8 @@ abstract class BWPM_User2SubscriberHelper
 		$subscriber->email             = $user_mail;
 		$subscriber->emailformat       = ArrayHelper::getValue($subscriber_data, 'emailformat', 1, 'int');
 		$subscriber->mailinglists      = $mailinglist_ids;
-		$subscriber->activation        = self::createActivation();
-		$subscriber->editlink          = self::createEditlink();
+		$subscriber->activation        = BwPostmanSubscriberHelper::createActivation();
+		$subscriber->editlink          = BwPostmanSubscriberHelper::getEditlink();
 		$subscriber->status            = 0;
 		$subscriber->registration_date = $time;
 		$subscriber->registered_by     = 0;
@@ -361,86 +363,6 @@ abstract class BWPM_User2SubscriberHelper
 		$subscriber->agreecheck        = '1';
 
 		return $subscriber;
-	}
-
-	/**
-	 * Method to create the activation and check if the sting does not exist twice or more
-	 *
-	 * @return string   $activation
-	 *
-	 * @since       2.0.0
-	 */
-	public static function createActivation()
-	{
-		// @ToDo: When this method has moved to helper class of component, this one here is redundant
-		$_db                = Factory::getDbo();
-		$query              = $_db->getQuery(true);
-		$current_activation = null;
-		$match_activation   = true;
-
-		while ($match_activation)
-		{
-			$current_activation = ApplicationHelper::getHash(UserHelper::genRandomPassword());
-
-			$query->select($_db->quoteName('activation'));
-			$query->from($_db->quoteName('#__bwpostman_subscribers'));
-			$query->where($_db->quoteName('activation') . ' = ' . $_db->quote($current_activation));
-
-			$_db->setQuery($query);
-
-			$activation = $_db->loadResult();
-
-			if ($activation == $current_activation)
-			{
-				$match_activation = true;
-			}
-			else
-			{
-				$match_activation = false;
-			}
-		}
-
-		return $current_activation;
-	}
-
-	/**
-	 * Method to create the editlink and check if the sting does not exist twice or more
-	 *
-	 * @return string   $editlink
-	 *
-	 * @since       0.9.1
-	 */
-	public static function createEditlink()
-	{
-		// @ToDo: When this method has moved to helper class of component, this one here is redundant
-		$_db                = Factory::getDbo();
-		$query              = $_db->getQuery(true);
-		$current_editlink   = null;
-		$match_editlink     = true;
-
-		while ($match_editlink)
-		{
-			$current_editlink = ApplicationHelper::getHash(UserHelper::genRandomPassword());
-
-			$query->select($_db->quoteName('editlink'));
-			$query->from($_db->quoteName('#__bwpostman_subscribers'));
-			$query->where($_db->quoteName('editlink') . ' = ' . $_db->quote($current_editlink));
-
-			$_db->setQuery($query);
-
-			$editlink = $_db->loadResult();
-
-			if ($editlink == $current_editlink)
-			{
-				$match_editlink = true;
-			}
-			else
-			{
-				$match_editlink = false;
-			}
-		}
-
-		return $current_editlink;
 	}
 
 	/**

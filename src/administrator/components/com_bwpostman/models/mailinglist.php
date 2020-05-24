@@ -285,8 +285,6 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * Method to (un)archive a mailinglist
 	 * --> when unarchiving it is called by the archive-controller
 	 *
-	 * @access	public
-	 *
 	 * @param	array   $cid        Mailinglist IDs
 	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
 	 *
@@ -298,7 +296,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 */
 	public function archive($cid = array(0), $archive = 1)
 	{
-		$_db	= $this->_db;
+		$db	= $this->_db;
 		$date	= Factory::getDate();
 		$uid	= Factory::getUser()->get('id');
 
@@ -333,18 +331,18 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		if (count($cid))
 		{
 			ArrayHelper::toInteger($cid);
-			$query	= $_db->getQuery(true);
+			$query	= $db->getQuery(true);
 
-			$query->update($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->set($_db->quoteName('archive_flag') . " = " . $_db->quote((int) $archive));
-			$query->set($_db->quoteName('archive_date') . " = " . $_db->quote($time, false));
-			$query->set($_db->quoteName('archived_by') . " = " . (int) $uid);
-			$query->where($_db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
+			$query->update($db->quoteName('#__bwpostman_mailinglists'));
+			$query->set($db->quoteName('archive_flag') . " = " . $db->quote((int) $archive));
+			$query->set($db->quoteName('archive_date') . " = " . $db->quote($time, false));
+			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
+			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 
-			$_db->setQuery($query);
+			$db->setQuery($query);
 			try
 			{
-				$_db->execute();
+				$db->execute();
 			}
 			catch (RuntimeException $e)
 			{
@@ -358,8 +356,6 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	/**
 	 * Method to remove one or more mailinglists
 	 * --> is called by the archive-controller
-	 *
-	 * @access	public
 	 *
 	 * @param	array &$pks     Mailinglist IDs
 	 *
@@ -423,8 +419,6 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	/**
 	 * Method to (un)publish a mailinglist
 	 *
-	 * @access	public
-	 *
 	 * @param	array   &$pks   Mailinglist IDs
 	 * @param	int     $value  Task --> 1 = publish, 0 = unpublish
 	 *
@@ -443,6 +437,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	}
 
 	/**
+	 * Method to remove the mailinglist from the cross table #__bwpostman_campaigns_mailinglists
+	 *
 	 * @param $id
 	 *
 	 * @return bool
@@ -453,17 +449,17 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 */
 	private function deleteMailinglistsCampaignsEntry($id)
 	{
-		$_db            = $this->getDbo();
-		$query          = $_db->getQuery(true);
+		$db            = $this->getDbo();
+		$query          = $db->getQuery(true);
 
-		$query->delete($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
-		$query->where($_db->quoteName('mailinglist_id') . ' =  ' . $_db->quote($id));
+		$query->delete($db->quoteName('#__bwpostman_campaigns_mailinglists'));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$_db->execute();
+			$db->execute();
 		}
 		catch (RuntimeException $e)
 		{
@@ -475,6 +471,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	}
 
 	/**
+	 * Method to remove the mailinglist from the cross table #__bwpostman_subscribers_mailinglists
+	 *
 	 * @param $id
 	 *
 	 * @return bool
@@ -485,17 +483,17 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 */
 	private function deleteMailinglistSubscribers($id)
 	{
-		$_db            = $this->getDbo();
-		$query          = $_db->getQuery(true);
+		$db            = $this->getDbo();
+		$query          = $db->getQuery(true);
 
-		$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-		$query->where($_db->quoteName('mailinglist_id') . ' =  ' . $_db->quote($id));
+		$query->delete($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$_db->execute();
+			$db->execute();
 		}
 		catch (RuntimeException $e)
 		{
@@ -507,6 +505,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	}
 
 	/**
+	 * Method to remove the mailinglist from the cross table #__bwpostman_newsletters_mailinglists
+	 *
 	 * @param $id
 	 *
 	 * @return bool
@@ -517,17 +517,17 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 */
 	private function deleteMailinglistNewsletters($id)
 	{
-		$_db            = $this->getDbo();
-		$query          = $_db->getQuery(true);
+		$db            = $this->getDbo();
+		$query          = $db->getQuery(true);
 
-		$query->delete($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
-		$query->where($_db->quoteName('mailinglist_id') . ' =  ' . $_db->quote($id));
+		$query->delete($db->quoteName('#__bwpostman_newsletters_mailinglists'));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$_db->execute();
+			$db->execute();
 		}
 		catch (RuntimeException $e)
 		{

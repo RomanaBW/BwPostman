@@ -32,7 +32,9 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\User\UserHelper;
 
 /**
  * Class BwPostmanSubscriberHelper
@@ -84,7 +86,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function getSubscriberID($uid)
+	public static function getSubscriberIdByUserId($uid)
 	{
 		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
@@ -366,24 +368,23 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function sendMail(&$subscriber, $type, $itemid = null)
 	{
-		$params    = ComponentHelper::getParams('com_bwpostman');
-		$email     = $subscriber->email;
+		$app    = Factory::getApplication();
+		$params = ComponentHelper::getParams('com_bwpostman');
+
 		$name      = $subscriber->name;
 		$firstname = $subscriber->firstname;
 		if ($firstname != '')
 		{
 			$name = $firstname . ' ' . $name;
-		}
+		} //Cat fo full name
 
-		$sitename          = Factory::getConfig()->get('sitename');
-		$mailfrom          = $params->get('default_from_email');
-		$fromname          = Text::_($params->get('default_from_name'));
+		$sitename = Factory::getConfig()->get('sitename');
+		$siteURL  = Uri::root();
+
 		$active_title      = Text::_($params->get('activation_salutation_text'));
 		$active_intro      = Text::_($params->get('activation_text'));
 		$permission_text   = Text::_($params->get('permission_text'));
-		$legal_information = Text::_($params->get('legal_information_text'));
 
-		$app = Factory::getApplication();
 		$subscriber_id = $app->getUserState("com_bwpostman.subscriber.id");
 
 		if(isset($subscriber_id))
@@ -405,10 +406,9 @@ class BwPostmanSubscriberHelper
 
 		$active_msg        .= "\n\n" . $active_intro . "\n";
 
-		$message           = '';
-		$subject           = '';
+		$body    = '';
+		$subject = '';
 
-		$siteURL = Uri::root();
 
 		switch ($type)
 		{
@@ -425,14 +425,15 @@ class BwPostmanSubscriberHelper
 						. "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}";
 				}
 
-				$message = $active_msg . Text::_('COM_BWPOSTMAN_ACTIVATION_CODE_MSG') . " " . $link . "\n\n" . $permission_text;
+				$body = $active_msg . Text::_('COM_BWPOSTMAN_ACTIVATION_CODE_MSG') . " " . $link . "\n\n" . $permission_text;
+				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
 				break;
 			case 1: // Send Editlink
 				$editlink = $subscriber->editlink;
 				$subject  = Text::sprintf('COM_BWPOSTMAN_SEND_EDITLINK_SUBJECT', $sitename);
 				if (is_null($itemid))
 				{
-					$message = Text::sprintf(
+					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_EDITLINK_MSG',
 						$name,
 						$sitename,
@@ -441,19 +442,20 @@ class BwPostmanSubscriberHelper
 				}
 				else
 				{
-					$message = Text::sprintf(
+					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_EDITLINK_MSG',
 						$name,
 						$sitename,
 						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=edit&editlink={$editlink}"
 					);
 				}
+				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
 				break;
 			case 2: // Send Activation reminder
 				$subject = Text::sprintf('COM_BWPOSTMAN_SEND_ACTVIATIONCODE_SUBJECT', $sitename);
 				if (is_null($itemid))
 				{
-					$message = Text::sprintf(
+					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG',
 						$name,
 						$sitename,
@@ -462,19 +464,20 @@ class BwPostmanSubscriberHelper
 				}
 				else
 				{
-					$message = Text::sprintf(
+					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG',
 						$name,
 						$sitename,
 						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
 					);
 				}
+				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
 				break;
 			case 3: // Send confirmation mail because the email address has been changed
 				$subject = Text::sprintf('COM_BWPOSTMAN_SEND_CONFIRMEMAIL_SUBJECT', $sitename);
 				if (is_null($itemid))
 				{
-					$message = Text::sprintf(
+					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG',
 						$name,
 						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
@@ -482,36 +485,57 @@ class BwPostmanSubscriberHelper
 				}
 				else
 				{
-					$message = Text::sprintf(
+					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG',
 						$name,
 						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
 					);
 				}
+				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
 				Factory::getApplication()->enqueueMessage(Text::_("COM_BWPOSTMAN_SEND_CONFIRM_SCREEN_MSG"));
 				break;
+			case 4: // Send registration mail because of import or new account
+				$subject 	= Text::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_SUBJECT', $sitename);
+				if (is_null($itemid))
+				{
+					$body 	= Text::sprintf(
+						'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
+						$name,
+						$siteURL,
+						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
+					);
+				}
+				else
+				{
+					$body 	= Text::sprintf(
+						'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
+						$name,
+						$siteURL,
+						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
+					);
+				}
 		}
 
 		$subject = html_entity_decode($subject, ENT_QUOTES);
-		$message .= "\n\n" . $legal_information;
-		$message = html_entity_decode($message, ENT_QUOTES);
+		$body = html_entity_decode($body, ENT_QUOTES);
 
-		// Get a JMail instance
+		// Get a JMail instance and fill in mailer data
 		$mailer = Factory::getMailer();
 		$sender = array();
 		$reply  = array();
 
-		$sender[0] = $mailfrom;
-		$sender[1] = $fromname;
+		$sender[0] = $params->get('default_from_email');
+		$sender[1] = Text::_($params->get('default_from_name'));
 
-		$reply[0] = $mailfrom;
-		$reply[1] = $fromname;
+		$reply[0] = $params->get('default_from_email');
+		$reply[1] = Text::_($params->get('default_from_name'));
 
 		$mailer->setSender($sender);
 		$mailer->addReplyTo($reply[0], $reply[1]);
-		$mailer->addRecipient($email);
+		$mailer->addRecipient($subscriber->email);
 		$mailer->setSubject($subject);
-		$mailer->setBody($message);
+		$mailer->setBody($body);
+		$mailer->isHtml(false);
 
 		$res = $mailer->Send();
 
@@ -596,9 +620,10 @@ class BwPostmanSubscriberHelper
 	}
 
 	/**
-	 * Method to delete all mailinglist entries for the subscriber_id from newsletters_mailinglists-table
+	 * Method to delete all or selected mailinglist entries for the subscriber_id from newsletters_mailinglists-table
 	 *
-	 * @param $subscriber_id
+	 * @param integer    $subscriber_id
+	 * @param array|null
 	 *
 	 * @return boolean
 	 *
@@ -606,12 +631,16 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since   2.0.0
 	 */
-	public static function deleteMailinglistsOfSubscriber($subscriber_id)
+	public static function deleteMailinglistsOfSubscriber($subscriber_id, $mailinglists = null)
 	{
 		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 		$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 		$query->where($_db->quoteName('subscriber_id') . ' =  ' . (int) $subscriber_id);
+		if (!is_null($mailinglists))
+		{
+			$query->where($_db->quoteName('mailinglist_id') . ' IN  ' . (explode('.', $mailinglists)));
+		}
 
 		try
 		{
@@ -629,10 +658,10 @@ class BwPostmanSubscriberHelper
 	}
 
 	/**
-	 * Method to store subscribed mailinglists in newsletters_mailinglists-table
+	 * Method to store subscribed mailinglists in newsletters_mailinglists table
 	 *
-	 * @param $subscriber_id
-	 * @param $mailinglist_ids
+	 * @param integer $subscriber_id
+	 * @param array $mailinglist_ids
 	 *
 	 * @return boolean
 	 *
@@ -654,8 +683,6 @@ class BwPostmanSubscriberHelper
 
 		foreach ($mailinglist_ids AS $list_id)
 		{
-//			$query = $_db->getQuery(true);
-
 			$query->insert($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 			$query->values(
 				(int) $subscriber_id . ',' .
@@ -708,7 +735,7 @@ class BwPostmanSubscriberHelper
 	public static function getAuthorizedMailinglists($id)
 	{
 		$app		    = Factory::getApplication();
-		$user_id	    = self::getUserId($id);
+		$user_id	    = self::getUserIdOfSubscriber($id);
 		$mailinglists   = null;
 		$_db		    = Factory::getDbo();
 		$query		    = $_db->getQuery(true);
@@ -804,7 +831,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function getUserId($id)
+	public static function getUserIdOfSubscriber($id)
 	{
 		$user_id    = null;
 		$_db	    = Factory::getDbo();
@@ -918,5 +945,235 @@ class BwPostmanSubscriberHelper
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 		return false;
+	}
+
+	/**
+	 * Method to create the editlink and check if the string does not exist twice or more
+	 *
+	 * @return string   $editlink
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	static public function getEditlink()
+	{
+		$db              = Factory::getDbo();
+		$newEditlink     = "";
+		$editlinkMatches = true;
+
+		while ($editlinkMatches)
+		{
+			$newEditlink = ApplicationHelper::getHash(UserHelper::genRandomPassword());
+
+			$query = $db->getQuery(true);
+
+			$query->select($db->quoteName('editlink'));
+			$query->from($db->quoteName('#__bwpostman_subscribers'));
+			$query->where($db->quoteName('editlink') . ' = ' . $db->quote($newEditlink));
+
+			$db->setQuery($query);
+
+			try
+			{
+				$editlink = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				return false;
+			}
+			if ($editlink !== $newEditlink)
+			{
+				$editlinkMatches = false;
+			}
+		}
+
+		return $newEditlink;
+	}
+
+	/**
+	 * Method to create the activation and check if the string does not exist twice or more
+	 *
+	 * @return string   $activation
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	static public function createActivation()
+	{
+		$db    = Factory::getDbo();
+		$query             = $db->getQuery(true);
+		$newActivation     = "";
+		$activationMatches = true;
+
+		while ($activationMatches)
+		{
+			$newActivation = ApplicationHelper::getHash(UserHelper::genRandomPassword());
+
+			$query->select($db->quoteName('activation'));
+			$query->from($db->quoteName('#__bwpostman_subscribers'));
+			$query->where($db->quoteName('activation') . ' = ' . $db->quote($newActivation));
+
+			$db->setQuery($query);
+
+			try
+			{
+				$activation = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				return false;
+			}
+
+			if ($activation !== $newActivation)
+			{
+				$activationMatches = false;
+			}
+		}
+
+		return $newActivation;
+	}
+
+	/**
+	 * Method to check if a subscriber has a subscription to a specific mailinglist
+	 *
+	 * @param integer $subscriberId   ID of subscriber to check
+	 * @param integer $mailinglistId  ID of mailinglist to check
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	static public function hasSubscriptionForMailinglist($subscriberId, $mailinglistId)
+	{
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('subscriber_id'));
+		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $subscriberId);
+		$query->where($db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglistId);
+		$db->setQuery($query);
+
+		try
+		{
+			$subsIdExists = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return -1;
+		}
+
+		if ($subsIdExists === null)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	/**
+	 * Method to check if a subscriber has a subscription to a specific mailinglist
+	 *
+	 * @param JForm $form   subscriber form
+	 *
+	 * @since 2.4.0 here
+	 */
+	static public function customizeSubscriberDataFields(&$form)
+	{
+		// Check to show confirmation data or checkbox
+		$c_date	= strtotime($form->getValue('confirmation_date'));
+		if (empty($c_date))
+		{
+			$form->setFieldAttribute('confirmation_date', 'type', 'hidden');
+			$form->setFieldAttribute('confirmed_by', 'type', 'hidden');
+			$form->setFieldAttribute('confirmation_ip', 'type', 'hidden');
+		}
+		else
+		{
+			$form->setFieldAttribute('status', 'type', 'hidden');
+		}
+
+		// Check to show registration data
+		$r_date	= $form->getValue('registration_date');
+		if (empty($r_date))
+		{
+			$form->setFieldAttribute('registration_date', 'type', 'hidden');
+			$form->setFieldAttribute('registered_by', 'type', 'hidden');
+			$form->setFieldAttribute('registration_ip', 'type', 'hidden');
+		}
+
+		// Check to show modified data
+		$m_date	= $form->getValue('modified_time');
+		if ($m_date == '0000-00-00 00:00:00')
+		{
+			$form->setFieldAttribute('modified_time', 'type', 'hidden');
+			$form->setFieldAttribute('modified_by', 'type', 'hidden');
+		}
+	}
+
+	/**
+	 * Method to get the Joomla UID by email
+	 *
+	 * @param   string      $email
+	 *
+	 * @return  integer     $user_id
+	 *
+	 * @since   2.4.0 (here)
+	 */
+	public static function getJoomlaUserIdByEmail($email)
+	{
+		$_db   = Factory::getDbo();
+		$query = $_db->getQuery(true);
+
+		$query->select($_db->quoteName('id'));
+		$query->from($_db->quoteName('#__users'));
+		$query->where($_db->quoteName('email') . ' = ' . $_db->Quote($email));
+
+		$_db->setQuery($query);
+
+		$user_id = $_db->loadResult();
+
+		return $user_id;
+	}
+
+	/**
+	 * Method to get the subscriber id by email
+	 *
+	 * @param   array      $values
+	 *
+	 * @return  object
+	 *
+	 * @since   2.4.0 (here)
+	 */
+	public static function getSubscriberDataByEmail($values)
+	{
+		$db   = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query->where($db->quoteName('email') . ' = ' . $db->quote($values['email']));
+		if ($values['status'] == '9')
+		{
+			$query->where($db->quoteName('emailformat') . ' = ' . $db->quote($values['emailformat']));
+			$query->where($db->quoteName('status') . ' = ' . (int) 9);
+		}
+		else
+		{
+			$query->where($db->quoteName('status') . ' IN (0, 1)');
+		}
+
+		$db->setQuery($query);
+
+		return $db->loadObject();
 	}
 }

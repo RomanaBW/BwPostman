@@ -144,7 +144,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$this->state	= $this->get('State');
 
 		// Get the assigned newsletters
-		$this->newsletters = $this->get('Newsletters');
+		$this->newsletters = $this->get('NewslettersOfCampaign');
 
 		// trigger Plugin BwTimeControl event and get results
 //		$dispatcher->trigger('onBwPostmanCampaignPrepare', array (&$this->item, &$this->newsletters, &$document));

@@ -525,6 +525,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 				'task' => 'string',
 				'controller' => 'string',
 				'confirm' => 'string',
+				'validate' => 'string',
 				'option' => 'string'
 			)
 		);
@@ -551,7 +552,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 				$subscriber->activation	= $maildata[$i]->activation;
 
 				// Send registration confirmation mail
-				$res = $this->_sendMail($subscriber, $itemid);
+				$res = BwPostmanSubscriberHelper::sendMail($subscriber, 4, $itemid);
 
 				if ($res === false)
 				{ // Store the mailing errors into the result array
@@ -735,78 +736,6 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$this->setRedirect($link);
 
 		parent::display();
-	}
-
-	/**
-	 * Method to send an email
-	 *
-	 * @param 	object $subscriber  Subscriber
-	 * @param	int     $itemid     Menu item ID
-	 *
-	 * @return 	object|boolean true on success, object on error
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	protected function _sendMail($subscriber, $itemid = null)
-	{
-		$app	= Factory::getApplication();
-		$params = ComponentHelper::getParams('com_bwpostman');
-
-		$name 		= $subscriber->name;
-		$firstname 	= $subscriber->firstname;
-		if ($firstname != '')
-		{
-			$name = $firstname . ' ' . $name;
-		}
-
-		$sitename	= $app->get('sitename');
-		$siteURL	= Uri::root();
-
-		$subject 	= Text::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_SUBJECT', $sitename);
-		if (is_null($itemid))
-		{
-			$message = Text::sprintf(
-				'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
-				$name,
-				$siteURL,
-				$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
-			);
-		}
-		else
-		{
-			$message = Text::sprintf(
-				'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
-				$name,
-				$siteURL,
-				$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
-			);
-		}
-
-		$subject = html_entity_decode($subject, ENT_QUOTES);
-		$message = html_entity_decode($message, ENT_QUOTES);
-
-		// Get a JMail instance
-		$mailer		= Factory::getMailer();
-		$sender		= array();
-		$reply		= array();
-
-		$sender[0]	= $params->get('default_from_email');
-		$sender[1]	= $params->get('default_from_name');
-
-		$reply[0]	= $params->get('default_from_email');
-		$reply[1]	= $params->get('default_from_name');
-
-		$mailer->setSender($sender);
-		$mailer->addReplyTo($reply[0], $reply[1]);
-		$mailer->addRecipient($subscriber->email);
-		$mailer->setSubject($subject);
-		$mailer->setBody($message);
-
-		$res = $mailer->Send();
-
-		return $res;
 	}
 
 	/**

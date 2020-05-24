@@ -33,6 +33,9 @@ use Joomla\CMS\Language\Text;
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/campaignhelper.php');
+
 /**
  * BwPostman Archive RAW View
  *
@@ -94,17 +97,16 @@ class BwPostmanViewArchive extends JViewLegacy
 		}
 
 		$layout	= $jinput->get('layout');
-		$model	= $this->getModel('archive');
 
 		switch ($layout)
 		{ // Which tab are we in?
 			case "campaign_modal":
 				$cam_id		= $jinput->get('cam_id');
-				$this->cam	= $model->getSingleCampaign((int) $cam_id);
+				$this->cam	= BwPostmanCampaignHelper::getSingleCampaign((int) $cam_id);
 				break;
 			case "mailinglist_modal":
 				$ml_id		= $jinput->get('ml_id');
-				$this->ml	= $model->getSingleMailinglist((int) $ml_id);
+				$this->ml	= BwPostmanMailinglistHelper::getSingleMailinglist((int) $ml_id);
 				break;
 		}
 

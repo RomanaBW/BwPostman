@@ -37,6 +37,7 @@ use Joomla\CMS\Log\LogEntry;
 
 require_once(JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+require_once(JPATH_ROOT . '/components/com_bwpostman/helpers/subscriberhelper.php');
 
 if (!class_exists('vmUserfieldPlugin'))
 {
@@ -756,7 +757,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$subscription_data['email']                 = $data->email;
 		$subscription_data['emailformat']           = $data->bw_newsletter_format;
 		$subscription_data['mailinglists']          = json_encode($this->params->get('ml_available', array()));
-		$subscription_data['id']                    = $this->getJoomlaUserId($data->email);
+		$subscription_data['id']                    = BwPostmanSubscriberHelper::getJoomlaUserIdByEmail($data->email);
 
 		$session = Factory::getSession();
 		$session->set('plg_bwpm_buyer2subscriber.subscription_data', $subscription_data);
@@ -770,29 +771,5 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		}
 
 		return true;
-	}
-
-	/**
-	 *
-	 * @param   string      $email
-	 *
-	 * @return  integer     $user_id
-	 *
-	 * @since   2.0.0
-	 */
-	private function getJoomlaUserId($email)
-	{
-		$_db        = Factory::getDbo();
-		$query      = $_db->getQuery(true);
-
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__users'));
-		$query->where($_db->quoteName('email') . ' = ' . $_db->Quote($email));
-
-		$_db->setQuery($query);
-
-		$user_id   = $_db->loadResult();
-
-		return $user_id;
 	}
 }

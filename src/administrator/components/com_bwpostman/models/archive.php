@@ -56,73 +56,121 @@ class BwPostmanModelArchive extends JModelList
 	 */
 	public function __construct()
 	{
-		$app	= Factory::getApplication();
-		$layout	= $app->input->get('layout', 'newsletters');
+		$app    = Factory::getApplication();
+		$layout = $app->input->get('layout', 'newsletters');
 
-		if (empty($config['filter_fields'])) {
-			switch ($layout) {
+		if (empty($config['filter_fields']))
+		{
+			switch ($layout)
+			{
 				case 'newsletters':
 				default:
-						$config['filter_fields'] = array(
-							'id', 'a.id',
-							'subject', 'a.subject',
-							'mailinglists', 'a.mailinglists',
-							'description', 'a.description',
-							'mailing_date', 'a.mailing_date',
-							'author', 'a.author',
-							'campaigns', 'a.campaigns',
-							'published', 'a.published',
-							'publish_up', 'a.publish_up',
-							'publish_down', 'a.publish_down',
-							'archive_date', 'a.archive_date',
-							'access', 'a.access', 'access_level'
-						);
+					$config['filter_fields'] = array(
+						'id',
+						'a.id',
+						'subject',
+						'a.subject',
+						'mailinglists',
+						'a.mailinglists',
+						'description',
+						'a.description',
+						'mailing_date',
+						'a.mailing_date',
+						'author',
+						'a.author',
+						'campaigns',
+						'a.campaigns',
+						'published',
+						'a.published',
+						'publish_up',
+						'a.publish_up',
+						'publish_down',
+						'a.publish_down',
+						'archive_date',
+						'a.archive_date',
+						'access',
+						'a.access',
+						'access_level'
+					);
 					break;
 				case 'subscribers':
-						$config['filter_fields'] = array(
-							'id', 'a.id',
-							'name', 'a.name',
-							'firstname', 'a.firstname',
-							'email', 'a.email',
-							'status', 'a.status',
-							'emailformat', 'a.emailformat',
-							'mailinglists', 'a.mailinglists',
-							'archive_date', 'a.archive_date',
-							'access', 'a.access', 'access_level'
-						);
+					$config['filter_fields'] = array(
+						'id',
+						'a.id',
+						'name',
+						'a.name',
+						'firstname',
+						'a.firstname',
+						'email',
+						'a.email',
+						'status',
+						'a.status',
+						'emailformat',
+						'a.emailformat',
+						'mailinglists',
+						'a.mailinglists',
+						'archive_date',
+						'a.archive_date',
+						'access',
+						'a.access',
+						'access_level'
+					);
 					break;
 				case 'campaigns':
-						$config['filter_fields'] = array(
-							'id', 'a.id',
-							'newsletters', 'a.newsletters',
-							'title', 'a.title',
-							'description', 'a.description',
-							'archive_date', 'a.archive_date',
-							'access', 'a.access', 'access_level'
-						);
+					$config['filter_fields'] = array(
+						'id',
+						'a.id',
+						'newsletters',
+						'a.newsletters',
+						'title',
+						'a.title',
+						'description',
+						'a.description',
+						'archive_date',
+						'a.archive_date',
+						'access',
+						'a.access',
+						'access_level'
+					);
 					break;
 				case 'mailinglists':
-						$config['filter_fields'] = array(
-							'id', 'a.id',
-							'mailinglists', 'a.mailinglists',
-							'subscribers', 'a.subscribers',
-							'title', 'a.title',
-							'description', 'a.description',
-							'published', 'a.published',
-							'archive_date', 'a.archive_date',
-							'access', 'a.access', 'access_level'
-						);
+					$config['filter_fields'] = array(
+						'id',
+						'a.id',
+						'mailinglists',
+						'a.mailinglists',
+						'subscribers',
+						'a.subscribers',
+						'title',
+						'a.title',
+						'description',
+						'a.description',
+						'published',
+						'a.published',
+						'archive_date',
+						'a.archive_date',
+						'access',
+						'a.access',
+						'access_level'
+					);
 					break;
 				case 'templates':
-						$config['filter_fields'] = array(
-							'id', 'a.id',
-							'title', 'a.title',
-							'thumbnail', 'a.thumbnail',
-							'description', 'a.description',
-							'archive_date', 'a.archive_date',
-							'published', 'a.published',
-							'tpl_id', 'a.tpl_id'
-						);
+					$config['filter_fields'] = array(
+						'id',
+						'a.id',
+						'title',
+						'a.title',
+						'thumbnail',
+						'a.thumbnail',
+						'description',
+						'a.description',
+						'archive_date',
+						'a.archive_date',
+						'published',
+						'a.published',
+						'tpl_id',
+						'a.tpl_id'
+					);
 					break;
 			}
 		}
@@ -135,8 +183,8 @@ class BwPostmanModelArchive extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @param   string  $ordering   An optional ordering field.
-	 * @param   string  $direction  An optional direction (asc|desc).
+	 * @param string $ordering  An optional ordering field.
+	 * @param string $direction An optional direction (asc|desc).
 	 *
 	 * @return  void
 	 *
@@ -146,8 +194,8 @@ class BwPostmanModelArchive extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app			= Factory::getApplication();
-		$jinput			= $app->input;
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
 
 		// Adjust the context to support modal and tabbed layouts.
 		$layout = $app->input->get('layout', 'newsletters');
@@ -159,7 +207,8 @@ class BwPostmanModelArchive extends JModelList
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search_nl', $search);
 
-		$filtersearch = $this->getUserStateFromRequest($this->context . '.filter.search_filter', 'filter_search_filter');
+		$filtersearch = $this->getUserStateFromRequest($this->context . '.filter.search_filter',
+			'filter_search_filter');
 		$this->setState('filter.search_filter', $filtersearch);
 
 		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
@@ -171,7 +220,8 @@ class BwPostmanModelArchive extends JModelList
 		$status = $this->getUserStateFromRequest($this->context . '.filter.status', 'filter_status');
 		$this->setState('filter.status', $status);
 
-		$filter_mailinglist = $this->getUserStateFromRequest($this->context . '.filter.mailinglist', 'filter_mailinglist');
+		$filter_mailinglist = $this->getUserStateFromRequest($this->context . '.filter.mailinglist',
+			'filter_mailinglist');
 		$this->setState('filter.mailinglist', $filter_mailinglist);
 
 		$emailformat = $this->getUserStateFromRequest($this->context . '.filter.emailformat', 'filter_emailformat');
@@ -184,29 +234,30 @@ class BwPostmanModelArchive extends JModelList
 		{ // Which tab are we in?
 			default:
 			case "newsletters":
-					$orderMainCol	= 'a.subject';
+				$orderMainCol = 'a.subject';
 
-					$usergroup = $this->getUserStateFromRequest($this->context . '.filter.usergroups', 'filter_usergroups');
-					$this->setState('filter.usergroups', $usergroup);
+				$usergroup = $this->getUserStateFromRequest($this->context . '.filter.usergroups', 'filter_usergroups');
+				$this->setState('filter.usergroups', $usergroup);
 
-					$campaign = $this->getUserStateFromRequest($this->context . '.filter.campaigns', 'filter_campaigns');
-					$this->setState('filter.campaigns', $campaign);
+				$campaign = $this->getUserStateFromRequest($this->context . '.filter.campaigns', 'filter_campaigns');
+				$this->setState('filter.campaigns', $campaign);
 
-					$author = $this->getUserStateFromRequest($this->context . '.filter.authors', 'filter_authors', '');
-					$this->setState('filter.authors', $author);
+				$author = $this->getUserStateFromRequest($this->context . '.filter.authors', 'filter_authors', '');
+				$this->setState('filter.authors', $author);
 
-					$mailing_date = $this->getUserStateFromRequest($this->context . '.filter.mailing_date', 'filter_mailing_date', '');
-					$this->setState('filter.mailing_date', $mailing_date);
+				$mailing_date = $this->getUserStateFromRequest($this->context . '.filter.mailing_date',
+					'filter_mailing_date', '');
+				$this->setState('filter.mailing_date', $mailing_date);
 				break;
 
 			case "subscribers":
-					$orderMainCol	= 'a.name';
+				$orderMainCol = 'a.name';
 				break;
 
 			case "campaigns":
 			case "mailinglists":
 			case "templates":
-					$orderMainCol	= 'a.title';
+				$orderMainCol = 'a.title';
 				break;
 		}
 
@@ -224,30 +275,30 @@ class BwPostmanModelArchive extends JModelList
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param	string		$id	A prefix for the store id.
+	 * @param string $id A prefix for the store id.
 	 *
-	 * @return	string		A store id.
+	 * @return    string        A store id.
 	 *
-	 * @since	1.0.1
+	 * @since    1.0.1
 	 */
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id	.= ':' . $this->getState('filter.search');
-		$id	.= ':' . $this->getState('filter.search_filter');
-		$id	.= ':' . $this->getState('filter.access');
-		$id	.= ':' . $this->getState('filter.published');
-		$id	.= ':' . $this->getState('filter.publish_up');
-		$id	.= ':' . $this->getState('filter.publish_down');
-		$id	.= ':' . $this->getState('filter.status');
-		$id	.= ':' . $this->getState('filter.author');
-		$id	.= ':' . $this->getState('filter.mailinglists');
-		$id	.= ':' . $this->getState('filter.usergroups');
-		$id	.= ':' . $this->getState('filter.campaigns');
-		$id	.= ':' . $this->getState('filter.mailing_date');
-		$id	.= ':' . $this->getState('filter.emailformat');
-		$id	.= ':' . $this->getState('filter.mailinglist');
-		$id	.= ':' . $this->getState('filter.tpl_id');
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.search_filter');
+		$id .= ':' . $this->getState('filter.access');
+		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.publish_up');
+		$id .= ':' . $this->getState('filter.publish_down');
+		$id .= ':' . $this->getState('filter.status');
+		$id .= ':' . $this->getState('filter.author');
+		$id .= ':' . $this->getState('filter.mailinglists');
+		$id .= ':' . $this->getState('filter.usergroups');
+		$id .= ':' . $this->getState('filter.campaigns');
+		$id .= ':' . $this->getState('filter.mailing_date');
+		$id .= ':' . $this->getState('filter.emailformat');
+		$id .= ':' . $this->getState('filter.mailinglist');
+		$id .= ':' . $this->getState('filter.tpl_id');
 
 		return parent::getStoreId($id);
 	}
@@ -255,9 +306,9 @@ class BwPostmanModelArchive extends JModelList
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @access 	protected
+	 * @access      protected
 	 *
-	 * @return 	string Query
+	 * @return    string Query
 	 *
 	 * @throws Exception
 	 *
@@ -265,153 +316,164 @@ class BwPostmanModelArchive extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
-		$sub_query	= $_db->getQuery(true);
-		$sub_query2	= $_db->getQuery(true);
-		$jinput		= Factory::getApplication()->input;
-		$layout		= $jinput->get('layout', 'newsletters');
+		// Set some shortcuts
+		$db         = $this->_db;
+		$pef_tbl_a  = $db->quoteName('a');
+		$pef_tbl_b  = $db->quoteName('b');
+		$pef_tbl_c  = $db->quoteName('c');
+		$pef_tbl_d  = $db->quoteName('d');
+		$pef_tbl_u  = $db->quoteName('u');
+
+		$query      = $db->getQuery(true);
+		$sub_query  = $db->getQuery(true);
+		$sub_query2 = $db->getQuery(true);
+		$jinput     = Factory::getApplication()->input;
+		$layout     = $jinput->get('layout', 'newsletters');
 
 		switch ($layout)
 		{ // We are in the newsletters_tab
 			default:
 			case "newsletters":
-					$orderMainCol	= 'subject';
+				$orderMainCol = 'subject';
 
-					$query->select($_db->quoteName('a') . '.*');
-					$query->select($_db->quoteName('u') . '.' . $_db->quoteName('name') . ' AS ' . $_db->quoteName('author'));
-					$query->select($_db->quoteName('c') . '.' . $_db->quoteName('title') . ' AS ' . $_db->quoteName('campaigns'));
-					$query->select($_db->quoteName('c') . '.' . $_db->quoteName('archive_flag') . ' AS ' . $_db->quoteName('campaign_archive_flag'));
-					$query->from($_db->quoteName('#__bwpostman_newsletters') . ' AS ' . $_db->quoteName('a'));
-					$query->leftJoin(
-						$_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u') . ' ON ' .
-						$_db->quoteName('u') . '.' . $_db->quoteName('id') . ' =  ' . $_db->quoteName('a') . '.' . $_db->quoteName('created_by')
-					);
-					$query->leftJoin(
-						$_db->quoteName('#__bwpostman_campaigns') . ' AS ' . $_db->quoteName('c') . ' ON ' .
-						$_db->quoteName('c') . '.' . $_db->quoteName('id') . ' =  ' . $_db->quoteName('a') . '.' . $_db->quoteName('campaign_id')
-					);
+				$query->select($pef_tbl_a . '.*');
+				$query->select($pef_tbl_u . '.' . $db->quoteName('name') . ' AS ' . $db->quoteName('author'));
+				$query->select($pef_tbl_c . '.' . $db->quoteName('title') . ' AS ' . $db->quoteName('campaigns'));
+				$query->select($pef_tbl_c . '.' . $db->quoteName('archive_flag') . ' AS ' . $db->quoteName('campaign_archive_flag'));
+				$query->from($db->quoteName('#__bwpostman_newsletters') . ' AS ' . $pef_tbl_a);
+				$query->leftJoin(
+					$db->quoteName('#__users') . ' AS ' . $pef_tbl_u . ' ON ' .
+					$pef_tbl_u . '.' . $db->quoteName('id') . ' =  ' . $pef_tbl_a . '.' . $db->quoteName('created_by')
+				);
+				$query->leftJoin(
+					$db->quoteName('#__bwpostman_campaigns') . ' AS ' . $pef_tbl_c . ' ON ' .
+					$pef_tbl_c . '.' . $db->quoteName('id') . ' =  ' . $pef_tbl_a . '.' . $db->quoteName('campaign_id')
+				);
 				break;
 
 			// We are in the subscribers_tab
 			case "subscribers":
-					$orderMainCol	= 'name';
+				$orderMainCol = 'name';
 
-					// Build sub query which counts all subscribed mailinglists of each subscriber
-					$sub_query2->select($_db->quoteName('d') . '.' . $_db->quoteName('id'));
-					$sub_query2->from($_db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $_db->quoteName('d'));
-					$sub_query2->where($_db->quoteName('d') . '.' . $_db->quoteName('archive_flag') . " = " . (int) 0);
+				// Build sub query which counts all subscribed mailinglists of each subscriber
+				$sub_query2->select($pef_tbl_d . '.' . $db->quoteName('id'));
+				$sub_query2->from($db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $pef_tbl_d);
+				$sub_query2->where($pef_tbl_d . '.' . $db->quoteName('archive_flag') . " = " . (int) 0);
 
-					$sub_query->select(
-						'COUNT(' . $_db->quoteName('b') . '.' . $_db->quoteName('mailinglist_id') . ') AS ' . $_db->quoteName('mailinglists')
-					);
-					$sub_query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS ' . $_db->quoteName('b'));
-					$sub_query->where(
-						$_db->quoteName('b') . '.' . $_db->quoteName('subscriber_id') . " = " . $_db->quoteName('a') . '.' . $_db->quoteName('id')
-					);
-					$sub_query->where($_db->quoteName('b') . '.' . $_db->quoteName('mailinglist_id') . " IN (" . $sub_query2 . ')');
+				$sub_query->select(
+					'COUNT(' . $pef_tbl_b . '.' . $db->quoteName('mailinglist_id') . ') AS ' . $db->quoteName('mailinglists')
+				);
+				$sub_query->from($db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS ' . $pef_tbl_b);
+				$sub_query->where(
+					$pef_tbl_b . '.' . $db->quoteName('subscriber_id') . " = " . $pef_tbl_a . '.' . $db->quoteName('id')
+				);
+				$sub_query->where($pef_tbl_b . '.' . $db->quoteName('mailinglist_id') . " IN (" . $sub_query2 . ')');
 
-					$query->select($_db->quoteName('a') . '.' . "*, IF (emailformat = '1','HTML','TEXT')" . ' AS ' . $_db->quoteName('emailformat'));
-					$query->select('(' . $sub_query . ') AS ' . $_db->quoteName('mailinglists'));
-					$query->from($_db->quoteName('#__bwpostman_subscribers') . ' AS ' . $_db->quoteName('a'));
+				$query->select($pef_tbl_a . '.' . "*, IF (emailformat = '1','HTML','TEXT')" . ' AS ' . $db->quoteName('emailformat'));
+				$query->select('(' . $sub_query . ') AS ' . $db->quoteName('mailinglists'));
+				$query->from($db->quoteName('#__bwpostman_subscribers') . ' AS ' . $pef_tbl_a);
 				break;
 
 			// We are in the campaigns_tab and we want to show all assigned newsletters
 			// because we offer the option to unarchive not only the campaign but also the
 			// assigned newsletters
 			case "campaigns":
-					$orderMainCol	= 'title';
+				$orderMainCol = 'title';
 
-					// Build sub query which counts all newsletters of each campaign
-					$sub_query->select('COUNT(' . $_db->quoteName('n') . '.' . $_db->quoteName('id') . ') AS ' . $_db->quoteName('newsletters'));
-					$sub_query->from($_db->quoteName('#__bwpostman_newsletters') . ' AS ' . $_db->quoteName('n'));
-					$sub_query->where(
-						$_db->quoteName('n') . '.' . $_db->quoteName('campaign_id') . " = " . $_db->quoteName('a') . '.' . $_db->quoteName('id')
-					);
+				// Build sub query which counts all newsletters of each campaign
+				$sub_query->select('COUNT(' . $db->quoteName('n') . '.' . $db->quoteName('id') . ') AS ' . $db->quoteName('newsletters'));
+				$sub_query->from($db->quoteName('#__bwpostman_newsletters') . ' AS ' . $db->quoteName('n'));
+				$sub_query->where(
+					$db->quoteName('n') . '.' . $db->quoteName('campaign_id') . " = " . $pef_tbl_a . '.' . $db->quoteName('id')
+				);
 
-					$query->select($_db->quoteName('a') . '.*');
-					$query->select('(' . $sub_query . ') AS ' . $_db->quoteName('newsletters'));
-					$query->from($_db->quoteName('#__bwpostman_campaigns') . ' AS ' . $_db->quoteName('a'));
+				$query->select($pef_tbl_a . '.*');
+				$query->select('(' . $sub_query . ') AS ' . $db->quoteName('newsletters'));
+				$query->from($db->quoteName('#__bwpostman_campaigns') . ' AS ' . $pef_tbl_a);
 				break;
 
 			// We are in the mailinglists_tab
 			case "mailinglists":
-					$orderMainCol	= 'title';
+				$orderMainCol = 'title';
 
-					// Build sub query which counts all subscribers of each mailinglist
-					$sub_query2->select($_db->quoteName('d') . '.' . $_db->quoteName('id'));
-					$sub_query2->from($_db->quoteName('#__bwpostman_subscribers') . ' AS ' . $_db->quoteName('d'));
-					$sub_query2->where($_db->quoteName('d') . '.' . $_db->quoteName('archive_flag') . " = " . (int) 0);
+				// Build sub query which counts all subscribers of each mailinglist
+				$sub_query2->select($pef_tbl_d . '.' . $db->quoteName('id'));
+				$sub_query2->from($db->quoteName('#__bwpostman_subscribers') . ' AS ' . $pef_tbl_d);
+				$sub_query2->where($pef_tbl_d . '.' . $db->quoteName('archive_flag') . " = " . (int) 0);
 
-					$sub_query->select(
-						'COUNT(' . $_db->quoteName('b') . '.' . $_db->quoteName('subscriber_id') . ') AS ' . $_db->quoteName('subscribers')
-					);
-					$sub_query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS ' . $_db->quoteName('b'));
-					$sub_query->where(
-						$_db->quoteName('b') . '.' . $_db->quoteName('mailinglist_id') . " = " . $_db->quoteName('a') . '.' . $_db->quoteName('id')
-					);
-					$sub_query->where($_db->quoteName('b') . '.' . $_db->quoteName('subscriber_id') . " IN (" . $sub_query2 . ')');
+				$sub_query->select(
+					'COUNT(' . $pef_tbl_b . '.' . $db->quoteName('subscriber_id') . ') AS ' . $db->quoteName('subscribers')
+				);
+				$sub_query->from($db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS ' . $pef_tbl_b);
+				$sub_query->where(
+					$pef_tbl_b . '.' . $db->quoteName('mailinglist_id') . " = " . $pef_tbl_a . '.' . $db->quoteName('id')
+				);
+				$sub_query->where($pef_tbl_b . '.' . $db->quoteName('subscriber_id') . " IN (" . $sub_query2 . ')');
 
-					$query->select($_db->quoteName('a') . '.*');
-					$query->select('(' . $sub_query . ') AS ' . $_db->quoteName('subscribers'));
-					$query->from($_db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $_db->quoteName('a'));
+				$query->select($pef_tbl_a . '.*');
+				$query->select('(' . $sub_query . ') AS ' . $db->quoteName('subscribers'));
+				$query->from($db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $pef_tbl_a);
 
-					// Join over the asset groups.
-					$query->select('ag.title AS access_level');
-					$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+				// Join over the asset groups.
+				$query->select($db->quoteName('ag') . '.' . $db->quoteName('title AS access_level'));
+				$query->join(
+					'LEFT', $db->quoteName('#__viewlevels') . ' AS '  . $db->quoteName('ag') . ' ON '
+					. $db->quoteName('ag') . '.'  . $db->quoteName('id')  . '=' . $db->quoteName('a') . '.' . $db->quoteName('access')
+				);
 				break;
 
 			// We are in the templates_tab
 			case "templates":
-					$orderMainCol	= 'title';
+				$orderMainCol = 'title';
 
-					$query->select($_db->quoteName('a') . '.' . $_db->quoteName('id'));
-					$query->select($_db->quoteName('a') . '.' . $_db->quoteName('title'));
-					$query->select($_db->quoteName('a') . '.' . $_db->quoteName('description'));
-					$query->select($_db->quoteName('a') . '.' . $_db->quoteName('thumbnail'));
-					$query->select($_db->quoteName('a') . '.' . $_db->quoteName('published'));
-					$query->select($_db->quoteName('a') . '.' . $_db->quoteName('checked_out'));
-					$query->select($_db->quoteName('a') . '.' . $_db->quoteName('archive_date'));
-					$query->select(
-						$_db->quoteName('a') . '.' . "tpl_id, IF (tpl_id = '998' OR tpl_id > '999','TEXT','HTML')"
-						. ' AS ' . $_db->quoteName('tpl_id')
-					);
-					$query->select($_db->quoteName('a') . '.' . $_db->quoteName('created_by'));
-					$query->from($_db->quoteName('#__bwpostman_templates') . ' AS ' . $_db->quoteName('a'));
+				$query->select($pef_tbl_a . '.' . $db->quoteName('id'));
+				$query->select($pef_tbl_a . '.' . $db->quoteName('title'));
+				$query->select($pef_tbl_a . '.' . $db->quoteName('description'));
+				$query->select($pef_tbl_a . '.' . $db->quoteName('thumbnail'));
+				$query->select($pef_tbl_a . '.' . $db->quoteName('published'));
+				$query->select($pef_tbl_a . '.' . $db->quoteName('checked_out'));
+				$query->select($pef_tbl_a . '.' . $db->quoteName('archive_date'));
+				$query->select(
+					$pef_tbl_a . '.' . "tpl_id, IF (tpl_id = '998' OR tpl_id > '999','TEXT','HTML')"
+					. ' AS ' . $db->quoteName('tpl_id')
+				);
+				$query->select($pef_tbl_a . '.' . $db->quoteName('created_by'));
+				$query->from($db->quoteName('#__bwpostman_templates') . ' AS ' . $pef_tbl_a);
 				break;
 		}
 
 		// Filter by access level.
 		$access = $this->getState('filter.access');
-		if ($access) {
-			$query->where($_db->quoteName('a') . '.' . $_db->quoteName('access') . ' = ' . (int) $access);
+		if ($access)
+		{
+			$query->where($pef_tbl_a . '.' . $db->quoteName('access') . ' = ' . (int) $access);
 		}
 
-		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('archive_flag') . ' = ' . (int) 1);
+		$query->where($pef_tbl_a . '.' . $db->quoteName('archive_flag') . ' = ' . (int) 1);
 
 		// Get the WHERE clause and ORDER-BY clause for the query
 		$this->buildQueryWhere($layout, $query);
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction', 'asc');
+		$orderCol  = $this->state->get('list.ordering');
+		$orderDirn = $this->state->get('list.direction', 'asc');
 
 		//sqlsrv change
-		if($orderCol == 'access_level')
+		if ($orderCol == 'access_level')
 		{
 			$orderCol = 'ag.title';
 		}
 
 		if (($orderCol == '') || ($orderCol == 'a.' . $orderMainCol))
 		{
-			$query->order($_db->quoteName('a') . '.' . $_db->quoteName($orderMainCol) . ' ' . $orderDirn);
+			$query->order($pef_tbl_a . '.' . $db->quoteName($orderMainCol) . ' ' . $orderDirn);
 		}
 		else
 		{
-			$query->order($_db->escape($orderCol . ' ' . $orderDirn) . ', ' . $_db->quoteName('a') . '.' . $_db->quoteName($orderMainCol));
+			$query->order($db->escape($orderCol . ' ' . $orderDirn) . ', ' . $pef_tbl_a . '.' . $db->quoteName($orderMainCol));
 		}
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		return $query;
 	}
@@ -419,22 +481,24 @@ class BwPostmanModelArchive extends JModelList
 	/**
 	 * Method to build the WHERE clause
 	 *
-	 * @access 	protected
+	 * @access      protected
 	 *
-	 * @param string    $layout     selected layout
-	 * @param object    &$query     query to inject the where clause
+	 * @param string     $layout selected layout
+	 * @param object    &$query  query to inject the where clause
 	 *
-	 * @return 	string Query
+	 * @return    string Query
 	 *
 	 * @since       0.9.1
 	 */
 	protected function buildQueryWhere($layout, &$query)
 	{
-		$_db	= $this->_db;
+		$db = $this->_db;
+		$pef_tbl_a  = $db->quoteName('a');
+		$pef_tbl_c  = $db->quoteName('c');
 
 		// Get the search string
-		$filtersearch	= $this->getState('filter.search_filter');
-		$search			= $_db->escape($this->getState('filter.search'));
+		$filtersearch = $this->getState('filter.search_filter');
+		$search       = $db->escape($this->getState('filter.search'));
 
 		// get select list filters
 		switch ($layout)
@@ -445,10 +509,10 @@ class BwPostmanModelArchive extends JModelList
 
 				if ($filter_mailinglist != '')
 				{
-					$query->where($_db->quoteName('nm') . '.' . $_db->quoteName('mailinglist_id') . " = " . (int) $filter_mailinglist);
+					$query->where($db->quoteName('nm') . '.' . $db->quoteName('mailinglist_id') . " = " . (int) $filter_mailinglist);
 					$query->leftJoin(
-						$_db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS ' . $_db->quoteName('nm') . ' ON '
-						. $_db->quoteName('nm') . '.' . $_db->quoteName('newsletter_id') . ' =  ' . $_db->quoteName('a') . '.' . $_db->quoteName('id')
+						$db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS ' . $db->quoteName('nm') . ' ON '
+						. $db->quoteName('nm') . '.' . $db->quoteName('newsletter_id') . ' =  ' . $pef_tbl_a . '.' . $db->quoteName('id')
 					);
 				}
 
@@ -457,10 +521,10 @@ class BwPostmanModelArchive extends JModelList
 
 				if ($filter_usergroup != '')
 				{
-					$query->where($_db->quoteName('nm') . '.' . $_db->quoteName('mailinglist_id') . " = " . (int) $filter_usergroup);
+					$query->where($db->quoteName('nm') . '.' . $db->quoteName('mailinglist_id') . " = " . (int) $filter_usergroup);
 					$query->leftJoin(
-						$_db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS ' . $_db->quoteName('nm') . ' ON '
-						. $_db->quoteName('nm') . '.' . $_db->quoteName('newsletter_id') . ' =  ' . $_db->quoteName('a') . '.' . $_db->quoteName('id')
+						$db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS ' . $db->quoteName('nm') . ' ON '
+						. $db->quoteName('nm') . '.' . $db->quoteName('newsletter_id') . ' =  ' . $pef_tbl_a . '.' . $db->quoteName('id')
 					);
 				}
 
@@ -469,14 +533,14 @@ class BwPostmanModelArchive extends JModelList
 
 				if ($filter_campaign != '')
 				{
-					$query->where($_db->quoteName('a') . '.' . $_db->quoteName('campaign_id') . " = " . (int) $filter_campaign);
+					$query->where($pef_tbl_a . '.' . $db->quoteName('campaign_id') . " = " . (int) $filter_campaign);
 				}
 
 				// Get the author
 				$filter_author = $this->getState('filter.authors');
 				if ($filter_author != '')
 				{
-					$query->where($_db->quoteName('a') . '.' . $_db->quoteName('created_by') . " = " . (int) $filter_author);
+					$query->where($pef_tbl_a . '.' . $db->quoteName('created_by') . " = " . (int) $filter_author);
 				}
 
 				// Filter by published state
@@ -497,11 +561,11 @@ class BwPostmanModelArchive extends JModelList
 
 				if ($mailinglist)
 				{
-					$sub_query2	= $_db->getQuery(true);
+					$sub_query2 = $db->getQuery(true);
 
-					$sub_query2->select($_db->quoteName('c') . '.' . $_db->quoteName('subscriber_id'));
-					$sub_query2->from($_db->quoteName('#__bwpostman_subscribers_mailinglists') . 'AS ' . $_db->quoteName('c'));
-					$sub_query2->where($_db->quoteName('c') . '.' . $_db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglist);
+					$sub_query2->select($pef_tbl_c . '.' . $db->quoteName('subscriber_id'));
+					$sub_query2->from($db->quoteName('#__bwpostman_subscribers_mailinglists') . 'AS ' . $pef_tbl_c);
+					$sub_query2->where($pef_tbl_c . '.' . $db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglist);
 
 					$query->where('a.id IN (' . $sub_query2 . ')');
 				}
@@ -527,7 +591,7 @@ class BwPostmanModelArchive extends JModelList
 
 				if ($filter_published != '')
 				{
-					$query->where($_db->quoteName('a') . '.' . $_db->quoteName('published') . " = " . (int) $filter_published);
+					$query->where($pef_tbl_a . '.' . $db->quoteName('published') . " = " . (int) $filter_published);
 				}
 
 				// Get the access level
@@ -535,7 +599,7 @@ class BwPostmanModelArchive extends JModelList
 
 				if ($filter_access != '')
 				{
-					$query->where($_db->quoteName('a') . '.' . $_db->quoteName('access') . " = " . (int) $filter_access);
+					$query->where($pef_tbl_a . '.' . $db->quoteName('access') . " = " . (int) $filter_access);
 				}
 				break;
 
@@ -545,12 +609,13 @@ class BwPostmanModelArchive extends JModelList
 
 				if ($filter_published != '')
 				{
-					$query->where($_db->quoteName('a') . '.' . $_db->quoteName('published') . " = " . (int) $filter_published);
+					$query->where($pef_tbl_a . '.' . $db->quoteName('published') . " = " . (int) $filter_published);
 				}
 
 				// Filter by format.
 				$format = $this->getState('filter.tpl_id');
-				if ($format) {
+				if ($format)
+				{
 					if ($format == '1')
 					{
 						$query->where('a.tpl_id < 998');
@@ -570,7 +635,7 @@ class BwPostmanModelArchive extends JModelList
 
 		if (!empty($search))
 		{
-			$search	= '%' . $search . '%';
+			$search = '%' . $search . '%';
 
 			// get select list filters
 			switch ($layout)
@@ -579,27 +644,28 @@ class BwPostmanModelArchive extends JModelList
 					switch ($filtersearch)
 					{
 						case 'subject':
-								$query->where('a.subject LIKE ' . $_db->quote($search));
+							$query->where('a.subject LIKE ' . $db->quote($search));
 							break;
 						case 'description':
-								$query->where('a.description LIKE ' . $_db->quote($search));
+							$query->where('a.description LIKE ' . $db->quote($search));
 							break;
 						case 'subject_description':
-								$query->where(
-									'(a.subject LIKE ' . $_db->quote($search) . 'OR a.description LIKE ' . $_db->quote($search, false) . ')'
-								);
+							$query->where(
+								'(a.subject LIKE ' . $db->quote($search) . 'OR a.description LIKE ' . $db->quote($search,
+									false) . ')'
+							);
 							break;
 						case 'html_text_version':
-								$query->where(
-									'(a.html_version LIKE ' . $_db->quote($search, false) . 'OR a.text_version LIKE '
-									. $_db->quote($search, false) . ')'
-								);
+							$query->where(
+								'(a.html_version LIKE ' . $db->quote($search, false) . 'OR a.text_version LIKE '
+								. $db->quote($search, false) . ')'
+							);
 							break;
 						case 'text_version':
-								$query->where('a.text_version LIKE ' . $_db->quote($search, false));
+							$query->where('a.text_version LIKE ' . $db->quote($search, false));
 							break;
 						case 'html_version':
-								$query->where('a.html_version LIKE ' . $_db->quote($search, false));
+							$query->where('a.html_version LIKE ' . $db->quote($search, false));
 							break;
 						default:
 					}
@@ -608,23 +674,25 @@ class BwPostmanModelArchive extends JModelList
 					switch ($filtersearch)
 					{
 						case 'email':
-							$query->where('a.email LIKE ' . $_db->quote($search, false));
+							$query->where('a.email LIKE ' . $db->quote($search, false));
 							break;
 						case 'name_email':
-								$query->where(
-									'(a.email LIKE ' . $_db->quote($search, false) . 'OR a.name LIKE ' . $_db->quote($search, false) . ')'
-								);
+							$query->where(
+								'(a.email LIKE ' . $db->quote($search,
+									false) . 'OR a.name LIKE ' . $db->quote($search, false) . ')'
+							);
 							break;
 						case 'fullname':
-								$query->where(
-									'(a.firstname LIKE ' . $_db->quote($search, false) . 'OR a.name LIKE ' . $_db->quote($search, false) . ')'
-								);
+							$query->where(
+								'(a.firstname LIKE ' . $db->quote($search,
+									false) . 'OR a.name LIKE ' . $db->quote($search, false) . ')'
+							);
 							break;
 						case 'firstname':
-								$query->where('a.firstname LIKE ' . $_db->quote($search, false));
+							$query->where('a.firstname LIKE ' . $db->quote($search, false));
 							break;
 						case 'name':
-								$query->where('a.name LIKE ' . $_db->quote($search, false));
+							$query->where('a.name LIKE ' . $db->quote($search, false));
 							break;
 						default:
 					}
@@ -634,15 +702,16 @@ class BwPostmanModelArchive extends JModelList
 					switch ($filtersearch)
 					{
 						case 'description':
-								$query->where('a.description LIKE ' . $_db->quote($search, false));
+							$query->where('a.description LIKE ' . $db->quote($search, false));
 							break;
 						case 'title_description':
-								$query->where(
-									'(a.description LIKE ' . $_db->quote($search, false) . 'OR a.title LIKE ' . $_db->quote($search, false) . ')'
-								);
+							$query->where(
+								'(a.description LIKE ' . $db->quote($search,
+									false) . 'OR a.title LIKE ' . $db->quote($search, false) . ')'
+							);
 							break;
 						case 'title':
-								$query->where('a.title LIKE ' . $_db->quote($search, false));
+							$query->where('a.title LIKE ' . $db->quote($search, false));
 							break;
 						default:
 					}
@@ -651,13 +720,13 @@ class BwPostmanModelArchive extends JModelList
 					switch ($filtersearch)
 					{
 						case 'description':
-								$query->where('a.description LIKE ' . $_db->quote($search));
+							$query->where('a.description LIKE ' . $db->quote($search));
 							break;
 						case 'title_description':
-								$query->where('(a.description LIKE ' . $_db->quote($search) . 'OR a.title LIKE ' . $_db->quote($search) . ')');
+							$query->where('(a.description LIKE ' . $db->quote($search) . 'OR a.title LIKE ' . $db->quote($search) . ')');
 							break;
 						case 'title':
-								$query->where('a.title LIKE ' . $_db->quote($search));
+							$query->where('a.title LIKE ' . $db->quote($search));
 							break;
 						default:
 					}
@@ -666,97 +735,5 @@ class BwPostmanModelArchive extends JModelList
 		}
 
 		return;
-	}
-
-	/**
-	 * Method to get the data of a single campaign for raw view
-	 *
-	 * @access	public
-	 *
-	 * @param 	int $cam_id     Campaign ID
-	 *
-	 * @return 	object Campaign
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	public function getSingleCampaign($cam_id = null)
-	{
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
-
-		$query->select('*');
-		$query->from($_db->quoteName('#__bwpostman_campaigns'));
-		$query->where($_db->quoteName('id') . ' = ' . (int) $cam_id);
-		$_db->setQuery($query);
-
-		$campaign = $_db->loadObject();
-
-		// Get all assigned newsletters
-		// --> we offer to unarchive not only the campaign but also the assigned newsletters,
-		// that's why we have to show also the archived newsletters
-		$query->clear();
-		$query->select($_db->quoteName('id'));
-		$query->select($_db->quoteName('subject'));
-		$query->select($_db->quoteName('campaign_id'));
-		$query->select($_db->quoteName('archive_flag'));
-		$query->from($_db->quoteName('#__bwpostman_newsletters'));
-		$query->where($_db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
-
-		$_db->setQuery($query);
-		try
-		{
-			$campaign->newsletters = $_db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $campaign;
-	}
-
-	/**
-	 * Method to get the data of a single Mailinglist for raw view
-	 *
-	 * @access	public
-	 *
-	 * @param 	int $ml_id      Mailinglist ID
-	 *
-	 * @return 	object Mailinglist
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	public function getSingleMailinglist($ml_id = null)
-	{
-		$mailinglist    = new stdClass();
-		$_db	        = $this->_db;
-		$query	        = $_db->getQuery(true);
-
-		$query->select($_db->quoteName('a') . '.*');
-		$query->from($_db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $_db->quoteName('a'));
-		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('id') . ' = ' . (int) $ml_id);
-		// Join over the asset groups.
-		$query->select($_db->quoteName('ag') . '.' . $_db->quoteName('title') . ' AS ' . $_db->quoteName('access_level'));
-		$query->join(
-			'LEFT',
-			$_db->quoteName('#__viewlevels') . ' AS ' . $_db->quoteName('ag') . ' ON ' .
-			$_db->quoteName('ag') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('access')
-		);
-
-		$_db->setQuery($query);
-		try
-		{
-			$mailinglist = $_db->loadObject();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $mailinglist;
 	}
 }

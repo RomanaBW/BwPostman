@@ -270,6 +270,15 @@ $option	= $jinput->getCmd('option');
 						</div>
 						<div class="col-4 col-md-6"><input type="checkbox" id="confirm" name="confirm" title="confirm" value="1" /></div>
 					</div>
+					<div class="row">
+						<div class="key col-8 col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_VALIDATE_EMAIL'); ?>
+							<span class="hasTooltip"
+									title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_VALIDATE_EMAIL_NOTE');?>">
+								<?php echo $image; ?>
+							</span>
+						</div>
+						<div class="col-4 col-md-6"><input type="checkbox" id="validate" name="validate" title="validate" value="1"  checked="checked" /></div>
+					</div>
 				</div>
 			</div>
 		</div>

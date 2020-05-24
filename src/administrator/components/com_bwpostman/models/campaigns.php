@@ -158,8 +158,6 @@ class BwPostmanModelCampaigns extends JModelList
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @access 	private
-	 *
 	 * @return 	string      query
 	 *
 	 * @throws Exception
@@ -179,7 +177,7 @@ class BwPostmanModelCampaigns extends JModelList
 				', a.published, a.access, a.created_date, a.created_by'
 			) . ', (' . $sub_query . ') AS newsletters'
 		);
-		$this->query->from($this->_db->quoteName('#__bwpostman_campaigns', 'a'));
+		$this->query->from($this->_db->quoteName('#__bwpostman_campaigns', $this->_db->quoteName('a')));
 
 		$this->getQueryJoins();
 		$this->getQueryWhere();
@@ -213,8 +211,6 @@ class BwPostmanModelCampaigns extends JModelList
 	/**
 	 * Method to get the joins this query needs
 	 *
-	 * @access 	private
-	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
@@ -246,8 +242,6 @@ class BwPostmanModelCampaigns extends JModelList
 	/**
 	 * Method to build the MySQL query 'where' part
 	 *
-	 * @access 	private
-	 *
 	 * @return 	void
 	 *
 	 * @throws Exception
@@ -266,8 +260,6 @@ class BwPostmanModelCampaigns extends JModelList
 
 	/**
 	 * Method to build the MySQL query 'order' part
-	 *
-	 * @access 	private
 	 *
 	 * @return 	void
 	 *
@@ -290,8 +282,6 @@ class BwPostmanModelCampaigns extends JModelList
 	/**
 	 * Method to get the filter by access level
 	 *
-	 * @access 	private
-	 *
 	 * @return 	void
 	 *
 	 * @throws Exception
@@ -312,8 +302,6 @@ class BwPostmanModelCampaigns extends JModelList
 
 	/**
 	 * Method to get the filter by Joomla view level
-	 *
-	 * @access 	private
 	 *
 	 * @return 	void
 	 *
@@ -338,8 +326,6 @@ class BwPostmanModelCampaigns extends JModelList
 	/**
 	 * Method to get the filter by BwPostman permissions
 	 *
-	 * @access    private
-	 *
 	 * @return    void
 	 *
 	 * @throws Exception
@@ -359,8 +345,6 @@ class BwPostmanModelCampaigns extends JModelList
 
 	/**
 	 * Method to get the filter by published state
-	 *
-	 * @access 	private
 	 *
 	 * @return 	void
 	 *
@@ -382,8 +366,6 @@ class BwPostmanModelCampaigns extends JModelList
 	/**
 	 * Method to get the filter by archived state
 	 *
-	 * @access 	private
-	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
@@ -395,8 +377,6 @@ class BwPostmanModelCampaigns extends JModelList
 
 	/**
 	 * Method to get the filter by search word
-	 *
-	 * @access 	private
 	 *
 	 * @return 	void
 	 *

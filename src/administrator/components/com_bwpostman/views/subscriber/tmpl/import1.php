@@ -292,6 +292,15 @@ $option	= $jinput->getCmd('option');
 							</td>
 							<td><input type="checkbox" id="confirm" name="confirm" title="confirm" value="1" /></td>
 						</tr>
+						<tr>
+							<td width="250" align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_VALIDATE_EMAIL'); ?>
+								<span class="editlinktip hasTip hasTooltip"
+										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_VALIDATE_EMAIL_NOTE');?>">
+									<?php echo $image; ?>
+								</span>
+							</td>
+							<td><input type="checkbox" id="confirm" name="validate" title="validate" value="1" checked="checked" /></td>
+						</tr>
 					</table>
 				</div>
 

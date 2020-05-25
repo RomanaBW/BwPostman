@@ -14,28 +14,28 @@
 	<subscriber>
 		<name>Muster</name>
 		<firstname>Maximilian</firstname>
-		<email>test7@test-domain.nul</email>
+		<email>tester7@boldt-services.de</email>
 		<emailformat>1</emailformat>
 		<status>1</status>
 	</subscriber>
 	<subscriber>
 		<name>Muster</name>
 		<firstname>Emil</firstname>
-		<email>test8@test-domain.nul</email>
+		<email>tester8@boldt-services.nul</email>
 		<emailformat>1</emailformat>
 		<status>1</status>
 	</subscriber>
 	<subscriber>
 		<name>Muster</name>
 		<firstname>Hanni</firstname>
-		<email>test9@test-domain.nul</email>
+		<email>tester9@boldt-services.nul</email>
 		<emailformat>1</emailformat>
 		<status>1</status>
 	</subscriber>
 	<subscriber>
 		<name>Muster</name>
 		<firstname>Nanni</firstname>
-		<email>test10@test-domain.nul</email>
+		<email>tester10@boldt-services.nul</email>
 		<emailformat>1</emailformat>
 		<status>1</status>
 	</subscriber>

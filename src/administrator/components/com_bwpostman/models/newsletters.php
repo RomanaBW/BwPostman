@@ -270,7 +270,7 @@ class BwPostmanModelNewsletters extends JModelList
 				break;
 
 			case ("queue"):
-					$this->query->select('DISTINCT(' . $db->quoteName('sc') . $db->quoteName('nl_id') . ')');
+					$this->query->select('DISTINCT(' . $db->quoteName('sc') . '.' . $db->quoteName('nl_id') . ')');
 					$this->query->select($db->quoteName('sc') . '.' . $db->quoteName('subject') . ' AS subject');
 					$this->query->select($db->quoteName('q') . '.' . $db->quoteName('id'));
 					$this->query->select($db->quoteName('q') . '.' . $db->quoteName('recipient'));
@@ -279,7 +279,7 @@ class BwPostmanModelNewsletters extends JModelList
 					$this->query->select($db->quoteName('ua') . '.' . $db->quoteName('name') . ' AS ' . $db->quoteName('authors'));
 					$this->query->select($db->quoteName('c') . '.' . $db->quoteName('title') . ' AS ' . $db->quoteName('campaign_id'));
 
-					$this->query->from($db->quoteName('#__bwpostman_sendmailcontent', $db->quoteName('sc')));
+					$this->query->from($db->quoteName('#__bwpostman_sendmailcontent','sc'));
 				break;
 		}
 

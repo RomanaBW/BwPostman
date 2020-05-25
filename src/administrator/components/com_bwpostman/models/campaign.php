@@ -39,6 +39,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
 jimport('joomla.application.component.helper');
 
 /**

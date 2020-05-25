@@ -177,7 +177,7 @@ class BwPostmanModelCampaigns extends JModelList
 				', a.published, a.access, a.created_date, a.created_by'
 			) . ', (' . $sub_query . ') AS newsletters'
 		);
-		$this->query->from($this->_db->quoteName('#__bwpostman_campaigns', $this->_db->quoteName('a')));
+		$this->query->from($this->_db->quoteName('#__bwpostman_campaigns', 'a'));
 
 		$this->getQueryJoins();
 		$this->getQueryWhere();

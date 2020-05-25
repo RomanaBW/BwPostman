@@ -204,7 +204,7 @@ class BwPostmanModelMailinglists extends JModelList
 		$sub_query2	= $db->getQuery(true);
 
 		$sub_query2->select($db->quoteName('d') . '.' . $db->quoteName('id'));
-		$sub_query2->from($db->quoteName('#__bwpostman_subscribers', $db->quoteName('d')));
+		$sub_query2->from($db->quoteName('#__bwpostman_subscribers', 'd'));
 		$sub_query2->where($db->quoteName('d.archive_flag') . ' = 0');
 
 		$sub_query->select('COUNT(' . $db->quoteName('b.subscriber_id') . ') AS ' . $db->quoteName('subscribers'));

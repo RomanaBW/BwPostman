@@ -262,22 +262,22 @@ class BwPostmanModelNewsletters extends JModelList
 							', a.is_template'
 						)
 					);
-					$this->query->select($db->quoteName('a') . $db->quoteName('mailing_date'));
-					$this->query->select($db->quoteName('a') . $db->quoteName('description'));
-					$this->query->select($db->quoteName('c') . $db->quoteName('title') . ' AS ' . $db->quoteName('campaign_id'));
+					$this->query->select($db->quoteName('a') . '.' . $db->quoteName('mailing_date'));
+					$this->query->select($db->quoteName('a') . '.' . $db->quoteName('description'));
+					$this->query->select($db->quoteName('c') . '.' . $db->quoteName('title') . ' AS ' . $db->quoteName('campaign_id'));
 
 					$this->query->from($db->quoteName('#__bwpostman_newsletters') . 'AS a');
 				break;
 
 			case ("queue"):
 					$this->query->select('DISTINCT(' . $db->quoteName('sc') . $db->quoteName('nl_id') . ')');
-					$this->query->select($db->quoteName('sc') . $db->quoteName('subject') . ' AS subject');
-					$this->query->select($db->quoteName('q') . $db->quoteName('id'));
-					$this->query->select($db->quoteName('q') . $db->quoteName('recipient'));
-					$this->query->select($db->quoteName('q') . $db->quoteName('trial'));
-					$this->query->select($db->quoteName('n') . $db->quoteName('description'));
-					$this->query->select($db->quoteName('ua') . $db->quoteName('name') . ' AS ' . $db->quoteName('authors'));
-					$this->query->select($db->quoteName('c') . $db->quoteName('title') . ' AS ' . $db->quoteName('campaign_id'));
+					$this->query->select($db->quoteName('sc') . '.' . $db->quoteName('subject') . ' AS subject');
+					$this->query->select($db->quoteName('q') . '.' . $db->quoteName('id'));
+					$this->query->select($db->quoteName('q') . '.' . $db->quoteName('recipient'));
+					$this->query->select($db->quoteName('q') . '.' . $db->quoteName('trial'));
+					$this->query->select($db->quoteName('n') . '.' . $db->quoteName('description'));
+					$this->query->select($db->quoteName('ua') . '.' . $db->quoteName('name') . ' AS ' . $db->quoteName('authors'));
+					$this->query->select($db->quoteName('c') . '.' . $db->quoteName('title') . ' AS ' . $db->quoteName('campaign_id'));
 
 					$this->query->from($db->quoteName('#__bwpostman_sendmailcontent', $db->quoteName('sc')));
 				break;

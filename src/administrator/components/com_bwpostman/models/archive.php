@@ -415,7 +415,7 @@ class BwPostmanModelArchive extends JModelList
 				$query->from($db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $pef_tbl_a);
 
 				// Join over the asset groups.
-				$query->select($db->quoteName('ag') . '.' . $db->quoteName('title AS access_level'));
+				$query->select($db->quoteName('ag') . '.' . $db->quoteName('title') . ' AS ' . $db->quoteName('access_level'));
 				$query->join(
 					'LEFT', $db->quoteName('#__viewlevels') . ' AS '  . $db->quoteName('ag') . ' ON '
 					. $db->quoteName('ag') . '.'  . $db->quoteName('id')  . '=' . $db->quoteName('a') . '.' . $db->quoteName('access')

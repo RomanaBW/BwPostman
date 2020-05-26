@@ -531,13 +531,11 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		);
 
 		$model			= $this->getModel('subscriber');
-		$import_result	= array();
 		$subscriber		= new stdClass();
-		$import_err     = '';
-		$import_warn    = '';
 		$maildata       = '';
 
-		$model->import($post, $import_err, $import_warn, $maildata);
+		$model->import($post, $maildata);
+		$import_result = Factory::getSession()->set('com_bwpostman.subscriber.import.messages', array());
 
 		// Send emails to subscribers if they weren't confirmed
 		if ($maildata)
@@ -565,84 +563,12 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 			}
 		}
 
-		// Store the import errors into the result array
-		if ($import_err)
-		{
-			$import_result['import_err'] = $import_err;
-		}
-
-		// Store the import warnings into the result array
-		if ($import_warn)
-		{
-			$import_result['import_warn'] = $import_warn;
-		}
-
 		//Get session object and store the result-array into the session
 		$session = Factory::getSession();
-		$session->set('import_result', $import_result);
+		$session->set('com_bwpostman.subscriber.import.messages', $import_result);
 
 		$link = Route::_('index.php?option=com_bwpostman&view=subscriber&layout=import2', false);
 		$this->setRedirect($link);
-	}
-
-	/**
-	 * Method to finish or cancel the import process
-	 * --> all session data which we needed for the import will be cleared
-	 *
-	 * @return 	void
-	 *
-	 * @since       0.9.1
-	 */
-	public function finishImport()
-	{
-		// Check for request forgeries
-		if (!Session::checkToken())
-		{
-			jexit(Text::_('JINVALID_TOKEN'));
-		}
-
-		$session	= Factory::getSession();
-		$finished	= false;
-
-		$import_general_data = $session->get('import_general_data');
-
-		if(isset($import_general_data) && is_array($import_general_data))
-		{
-			$dest = $import_general_data['dest'];
-			jimport('joomla.filesystem.file');
-			if (File::exists($dest))
-			{
-				File::delete($dest);
-			}
-
-			$session->clear('import_general_data');
-		}
-
-		$import_fields = $session->get('import_fields');
-		if(isset($import_fields) && is_array($import_fields))
-		{
-			$session->clear('import_fields');
-		}
-
-		$import_result = $session->get('import_result');
-		if(isset($import_result) && is_array($import_result))
-		{
-			$session->clear('import_result');
-			$finished = true;
-		}
-
-		if (!$finished)
-		{
-			$msg = Text::_('COM_BWPOSTMAN_OPERATION_CANCELLED');
-		}
-		else
-		{
-			$msg = Text::_('COM_BWPOSTMAN_SUB_IMPORT_FINISHED');
-		}
-
-		$link = Route::_('index.php?option=com_bwpostman&controller=subscribers', false);
-
-		$this->setRedirect($link, $msg);
 	}
 
 	/**

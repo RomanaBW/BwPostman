@@ -37,7 +37,7 @@ HtmlHelper::_('formbehavior.chosen', 'select');
 
 $jinput	= Factory::getApplication()->input;
 
-// Split the result array into three arrays which contains errors and warnings which occurred during the import process
+// Split the result array into four arrays which contains errors, warnings and success which occurred during the import process
 if (isset($this->result['mail_err']))
 {
 	$mail_err = $this->result['mail_err'];
@@ -51,6 +51,11 @@ if (isset($this->result['import_err']))
 if (isset($this->result['import_warn']))
 {
 	$import_warn = $this->result['import_warn'];
+}
+
+if (isset($this->result['import_success']))
+{
+	$import_success = $this->result['import_success'];
 }
 
 $option			= $jinput->getCmd('option');
@@ -73,13 +78,14 @@ else
 		echo '<div class="alert alert-success">' . Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_SUCCESS') . '</div>';
 	}
 
+	// Email error
 	if (!empty($mail_err))
 	{ // The subscribers were imported but the confirmation email couldn't be sent ?>
 		<fieldset class="adminform">
 			<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_ERROR_CONFIRMEMAIL'); ?></legend>
 			<table class="adminlist table table-bordered">
 				<thead>
-					<tr>
+					<tr class="error">
 						<th width="40"><?php echo $row_text; ?></th>
 						<th width="200"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
 						<th><?php echo Text::_('COM_BWPOSTMAN_ERROR_MSG'); ?></th>
@@ -101,7 +107,7 @@ else
 	<?php
 	}
 
-	// Email error
+	// Import error
 	if (!empty($import_err))
 	{
 		// Subscriber couldn't be imported ?>
@@ -118,7 +124,7 @@ else
 				<tbody>
 				<?php
 				foreach ($import_err AS $error){ ?>
-					<tr>
+					<tr class="error">
 						<td align="center"><?php echo $error['row']; ?></td>
 						<td><?php echo $error['email']; ?></td>
 						<td>
@@ -137,14 +143,15 @@ else
 		</fieldset>
 	<?php
 	}
-	// Import error
+
+	// Import warning
 	if (!empty($import_warn))
 	{
 		// The subscriber was imported but some data were changed ?>
 		<fieldset class="adminform"><legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_WARNING'); ?></legend>
-			<table class="adminlist">
+			<table class="adminlist table table-bordered">
 				<thead>
-					<tr>
+					<tr class="warning">
 						<th width="40"><?php echo $row_text; ?></th>
 						<th width="200"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
 						<th><?php echo Text::_('COM_BWPOSTMAN_NOTES'); ?></th>
@@ -165,8 +172,35 @@ else
 		</fieldset>
 	<?php
 	}
-
-	// Import warning ?>
+	// Import success
+	if (!empty($import_success))
+	{
+		// The subscriber was imported but some data were changed ?>
+		<fieldset class="adminform"><legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT_SUCCESS_SUBSCRIBERS'); ?></legend>
+			<table class="adminlist table table-bordered">
+				<thead>
+				<tr>
+					<th width="40"><?php echo $row_text; ?></th>
+					<th width="200"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
+					<th><?php echo Text::_('COM_BWPOSTMAN_NOTES'); ?></th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php
+				foreach ($import_success AS $success){ ?>
+					<tr class="success">
+						<td align="center"><?php echo $success['row']; ?></td>
+						<td><?php echo $success['email']; ?></td>
+						<td><?php echo $success['msg'];  ?></td>
+					</tr>
+					<?php
+				} ?>
+				</tbody>
+			</table>
+		</fieldset>
+		<?php
+	}
+	?>
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="controller" value="subscribers" />

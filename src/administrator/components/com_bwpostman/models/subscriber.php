@@ -644,8 +644,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * Method to get the import data from the import file
 	 *
 	 * @param 	array   $data           associative array of data which we need to prepare the storing to store
-	 * @param	array   $ret_err        associative array of import error data
-	 * @param	array   $ret_warn       associative array of import warning data
 	 * @param 	array   $ret_maildata   associative array of subscriber email data --> we need this if the admin didn't confirm the accounts
 	 *
 	 * @return 	boolean true on success
@@ -654,7 +652,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 *
 	 * @since       0.9.1
 	 */
-	public function import($data, &$ret_err, &$ret_warn, &$ret_maildata)
+	public function import($data, &$ret_maildata)
 	{
 		// Access check
 		if (!$this->permissions['subscriber']['create'])
@@ -761,8 +759,11 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$err = array();
 		// Warning-Array --> 2dimensions: [warn][csv_row], [warn][email], [warn][msg]
 		$warn = array();
+		// Success-Array --> 2dimensions: [success][csv_row], [success][email], [success][msg]
+		$success = array();
 		// SendEmailActivation-Array --> 2dimensions [sendmail][csv_row], [sendmail][email]
 		$mail = array();
+		$session->set('com_bwpostman.subscriber.import.messages', array());
 
 		$row_nbr = 0;
 
@@ -816,21 +817,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				}
 
 				// Save the row
-				$this->save_import($values, $confirm, $doValidation, $row_nbr, $mailinglists, $ret_err, $ret_warn, $ret_maildata);
-
-				// Push the error/mailing data into the arrays
-				if ($ret_err)
-				{
-					$err[] = $ret_err;
-				}
-
-				if ($ret_warn)
-				{
-					foreach ($ret_warn AS $row_warn)
-					{
-						$warn[] = $row_warn;
-					}
-				}
+				$this->save_import($values, $confirm, $doValidation, $row_nbr, $mailinglists, $ret_maildata);
 
 				if ($ret_maildata)
 				{
@@ -877,21 +864,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				$row_nbr++;
 
 				// Save the data
-				$this->save_import($values, $confirm, $doValidation, $row_nbr, $mailinglists, $ret_err, $ret_warn, $ret_maildata);
-
-				// Push the error/mailing data into the arrays
-				if ($ret_err)
-				{
-					$err[] = $ret_err;
-				}
-
-				if ($ret_warn)
-				{
-					foreach ($ret_warn AS $row_warn)
-					{
-						$warn[] = $row_warn;
-					}
-				}
+				$this->save_import($values, $confirm, $doValidation, $row_nbr, $mailinglists, $ret_maildata);
 
 				if ($ret_maildata)
 				{
@@ -904,8 +877,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		unlink($dest);
 
 		// Return the error/mailing data arrays
-		$ret_err 	= $err;
-		$ret_warn 	= $warn;
 		$ret_maildata = $mail;
 
 		return true;
@@ -919,8 +890,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 * @param 	boolean $doValidation Validate email address --> 0 = do not validate, 1 = validate
 	 * @param 	int     $row          CSV row --> we will use this only if the format is csv
 	 * @param	array   $mailinglists array of mailinglist IDs
-	 * @param	array   $ret_err      associative array of import error data
-	 * @param	array   $ret_warn     associative array of import warning data
 	 * @param	array   $ret_maildata associative object of subscriber email data
 	 *
 	 * @return	Boolean true on success
@@ -929,13 +898,17 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 *
 	 * @since       0.9.1
 	 */
-	public function save_import($values, $confirm, $doValidation, $row, $mailinglists, &$ret_err, &$ret_warn, &$ret_maildata)
+	public function save_import($values, $confirm, $doValidation, $row, $mailinglists, &$ret_maildata)
 	{
 		// Access check
 		if (!$this->permissions['subscriber']['create'])
 		{
 			return false;
 		}
+		$app = Factory::getApplication();
+		$session = Factory::getSession();
+
+		$importMessages = $session->get('com_bwpostman.subscriber.import.messages', array());
 
 		// First fast check if there is a valid email address
 		if (!MailHelper::isEmailAddress($values['email']))
@@ -943,13 +916,14 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$err['row'] = $row;
 			$err['email'] = $values['email'];
 			$err['msg'] = Text::_('COM_BWPOSTMAN_SUB_ERROR_IMPORT_INVALID_EMAIL');
-			$ret_err = $err;
+			$err['type'] = 'error';
+			$importMessages['import_err'][] = $err;
+			$session->set('com_bwpostman.subscriber.import.messages', $importMessages);
+
 			return false;
 		}
 
-		// Second more detailed check if the email address is valid an exists
-		// @ToDo: Convert this to an option at import
-//		$doValidation = false;
+		// Second more detailed check if the email address is valid and exists
 
 		if ($doValidation)
 		{
@@ -960,7 +934,10 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				$err['row'] = $row;
 				$err['email'] = $values['email'];
 				$err['msg'] = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL', $values['email']);
-				$ret_err = $err;
+				$err['type']  = 'error';
+				$importMessages['import_err'][] = $err;
+				$session->set('com_bwpostman.subscriber.import.messages', $importMessages);
+
 				return false;
 			}
 		}
@@ -968,8 +945,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$date			= Factory::getDate();
 		$time			= $date->toSql();
 		$user			= Factory::getUser();
-		$ret_err		= '';
-		$ret_warn		= '';
 		$ret_maildata	= '';
 
 		// We may set confirmation data if the confirm-box is checked and the import value does not stand against
@@ -1008,7 +983,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					}
 
 					$err['id'] = $subscriber->id;
-					$ret_err   = $err;
+					$err['type']  = 'error';
+					$importMessages['import_err'][] = $err;
+					$session->set('com_bwpostman.subscriber.import.messages', $importMessages);
 
 					return false;
 				}
@@ -1027,7 +1004,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 						}
 
 						$err['id'] = $subscriber->id;
-						$ret_err   = $err;
+						$err['type']  = 'error';
+						$importMessages['import_err'][] = $err;
+						$session->set('com_bwpostman.subscriber.import.messages', $importMessages);
 
 						return false;
 					}
@@ -1097,21 +1076,19 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					$subscriber_emaildata->email      = $values["email"];
 					$subscriber_emaildata->activation = $values["activation"];
 				}
+
+				$success['row']   = $row;
+				$success['email'] = $values['email'];
+				$success['msg']   = Text::sprintf('COM_BWPOSTMAN_SUB_IMPORT_EMAIL', $values['email']);
+				$success['type']  = 'success';
+
+				$importMessages['import_success'][] = $success;
+				$session->set('com_bwpostman.subscriber.import.messages', $importMessages);
 			}
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		if (isset($warn))
-		{
-			$ret_warn = null;
-
-			if ($warn)
-			{
-				$ret_warn = $warn;
-			}
 		}
 
 		if (isset($subscriber_emaildata))

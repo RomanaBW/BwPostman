@@ -380,7 +380,8 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$lists['emailformat']	= BwPostmanHTMLHelper::getMailFormatList($params->get('default_emailformat'));
 
 		// Get import result data from the session for the layout import2
-		$import_result = $session->get('import_result');
+		$import_result = $session->get('com_bwpostman.subscriber.import.messages', null);
+
 		if(isset($import_result) && is_array($import_result)){
 			$result = $import_result;
 		}
@@ -391,6 +392,13 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		$this->request_url  = $uri_string;
 		$this->result       = $result;
 		$this->template     = $template;
+
+		if ($this->getLayout() === 'import2')
+		{
+			$session->clear('com_bwpostman.subscriber.import.messages');
+			$session->clear('import_fields');
+			$session->clear('import_general_data');
+		}
 
 		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{

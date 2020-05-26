@@ -326,7 +326,15 @@ class Com_BwPostmanInstallerScript
 		{
 			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 			$log_options  = array();
-			$this->logger = BwLogger::getInstance($log_options);
+
+			try
+			{
+				$this->logger = BwLogger::getInstance($log_options);
+			}
+			catch (Exception $e)
+			{
+				$this->logger = new BwLogger($log_options);
+			}
 
 			if(version_compare(JVERSION, '3.999.999', 'ge'))
 			{

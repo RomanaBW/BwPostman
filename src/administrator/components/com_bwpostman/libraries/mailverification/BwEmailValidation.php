@@ -392,8 +392,8 @@ class BwEmailValidation
 		$code = $this->streamCode($this->streamResponse());
 		$this->streamResponse();
 
-		$message = Text::sprintf('Current return code after RCPT TO : $s', $code);
-		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
+		$message = Text::sprintf('Current return code after RCPT TO : %s', $code);
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
 
 		$this->streamQuery("RSET");
 		$this->streamResponse();
@@ -401,8 +401,8 @@ class BwEmailValidation
 		$code2 = $this->streamCode($this->streamResponse());
 		$this->streamQuery("QUIT");
 
-		$message = Text::sprintf('Current return code after RSET : $s', $code);
-		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
+		$message = Text::sprintf('Current return code after RSET : %s', $code);
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
 
 		fclose($this->stream);
 

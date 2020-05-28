@@ -211,7 +211,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logger->addEntry(new LogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEVELOPMENT, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
@@ -246,7 +246,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('Component version is: %s', $manifest['version']), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logger->addEntry(new LogEntry(sprintf('Component version is: %s', $manifest['version']), BwLogger::BW_DEVELOPMENT, $this->log_cat));
 			}
 		}
 		catch (Exception $e)
@@ -291,7 +291,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	public function onContentPrepareForm($form, $data)
 	{
-		$this->logger->addEntry(new LogEntry('onContentPrepareForm reached', BwLogger::BW_DEBUG, $this->log_cat));
+		$this->logger->addEntry(new LogEntry('onContentPrepareForm reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 
 		if (!$this->prerequisitesFulfilled())
 		{
@@ -302,7 +302,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry(sprintf('Context is: %s', $context), BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry(sprintf('Context is: %s', $context), BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		if (!in_array($context, $this->allowedContext))
@@ -337,7 +337,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry(sprintf('Array data_helper is empty: %s', !empty($data_helper)), BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry(sprintf('Array data_helper is empty: %s', !empty($data_helper)), BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		if (version_compare(JVERSION, '3.999.999', 'le') && !empty($data_helper))
@@ -365,7 +365,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry('Form is not an instance of JForm', BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logger->addEntry(new LogEntry('Form is not an instance of JForm', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 			}
 
 			return false;
@@ -648,7 +648,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('onUserBeforeSave reached', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('onUserBeforeSave reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -699,7 +699,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('onUserAfterSave reached', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('onUserAfterSave reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -818,7 +818,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('process new user', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('process new user', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		$subscription_wanted    = ArrayHelper::getValue($subscriber_data, 'bwpm_user2subscriber', 0, 'int');
@@ -876,7 +876,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('subscribe to BwPostman', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('subscribe to BwPostman', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		try
@@ -932,7 +932,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('activate subscription reached', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('activate subscription reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		if ($user_mail == '')
@@ -994,7 +994,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('update mail address', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('update mail address', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		$update_email_result    = false;
@@ -1055,7 +1055,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('onUserAfterDelete reached', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('onUserAfterDelete reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		if (!$this->BwPostmanComponentEnabled)
@@ -1095,7 +1095,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('delete subscription', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('delete subscription', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		try
@@ -1140,7 +1140,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('delete subscriber', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('delete subscriber', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		try
@@ -1175,7 +1175,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('delete mailinglists', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('delete mailinglists', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		try
@@ -1212,7 +1212,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('remove UserID from subscription', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry('remove UserID from subscription', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
 		try

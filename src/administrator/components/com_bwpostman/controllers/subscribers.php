@@ -532,25 +532,20 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 
 		$model			= $this->getModel('subscriber');
 		$subscriber		= new stdClass();
-		$maildata       = '';
+		$maildata       = array();
 
 		$model->import($post, $maildata);
 		$import_result = Factory::getSession()->set('com_bwpostman.subscriber.import.messages', array());
 
 		// Send emails to subscribers if they weren't confirmed
-		if ($maildata)
+		if (count($maildata))
 		{
 			$itemid = $model->getItemid();
 
-			for ($i = 0;$i < strlen($maildata);$i++)
+			for ($i = 0;$i < count($maildata);$i++)
 			{
-				$subscriber->name		= $maildata[$i]->name;
-				$subscriber->firstname	= $maildata[$i]->firstname;
-				$subscriber->email		= $maildata[$i]->email;
-				$subscriber->activation	= $maildata[$i]->activation;
-
 				// Send registration confirmation mail
-				$res = BwPostmanSubscriberHelper::sendMail($subscriber, 4, $itemid);
+				$res = BwPostmanSubscriberHelper::sendMail($maildata[$i], 4, $itemid);
 
 				if ($res === false)
 				{ // Store the mailing errors into the result array

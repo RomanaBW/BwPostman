@@ -29,11 +29,9 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
-use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\User\UserHelper;
 
-require_once(JPATH_SITE . '/components/com_bwpostman/helpers/subscriberhelper.php');
+require_once(JPATH_ROOT . '/administrator/components/com_bwpostman/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanHelper

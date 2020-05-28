@@ -27,30 +27,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
+	// Keep session alive while editing
+	JHtml::_('behavior.keepalive');
+?>
 
-// Keep session alive while editing
-HTMLHelper::_('behavior.keepalive');
-
-$jinput	= Factory::getApplication()->input;
-$image_pos = HTMLHelper::_('image', 'administrator/images/tick.png', Text::_('COM_BWPOSTMAN_NOTES'));
-$image_neg = HTMLHelper::_('image', 'administrator/images/publish_x.png', Text::_('COM_BWPOSTMAN_NOTES'));
+<?php
+$jinput	= JFactory::getApplication()->input;
+$image_pos = JHtml::_('image', 'administrator/images/tick.png', JText::_('COM_BWPOSTMAN_NOTES'));
+$image_neg = JHtml::_('image', 'administrator/images/publish_x.png', JText::_('COM_BWPOSTMAN_NOTES'));
 $option = $jinput->getCmd('option');
 
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset class="adminform">
-		<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'); ?></legend>
+		<legend><?php echo JText::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'); ?></legend>
 		<table class="adminlist">
 			<tr>
-				<th width="30" align="center"><?php echo Text::_('ID'); ?></th>
-				<th align="center"><?php echo Text::_('COM_BWPOSTMAN_SUB_NAME'); ?></th>
-				<th align="center"><?php echo Text::_('COM_BWPOSTMAN_SUB_FIRSTNAME'); ?></th>
-				<th align="center"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
-				<th align="center"><?php echo Text::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT_TEXT'); ?></th>
+				<th width="30" align="center"><?php echo JText::_('ID'); ?></th>
+				<th align="center"><?php echo JText::_('COM_BWPOSTMAN_SUB_NAME'); ?></th>
+				<th align="center"><?php echo JText::_('COM_BWPOSTMAN_SUB_FIRSTNAME'); ?></th>
+				<th align="center"><?php echo JText::_('COM_BWPOSTMAN_EMAIL'); ?></th>
+				<th align="center"><?php echo JText::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT_TEXT'); ?></th>
 			</tr>
 			<?php foreach ($this->item AS $res_row) {?>
 			<tr>
@@ -79,7 +77,8 @@ $option = $jinput->getCmd('option');
 	<input type="hidden" name="controller" value="subscribers" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
 	<input type="hidden" name="task" value="finishValidation" />
-	<?php echo HTMLHelper::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 
 <p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
+

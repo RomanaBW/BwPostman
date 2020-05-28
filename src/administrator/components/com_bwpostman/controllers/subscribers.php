@@ -30,14 +30,12 @@ defined('_JEXEC') or die('Restricted access');
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controlleradmin');
 
-use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\File;
 
 // Require helper class
@@ -133,85 +131,6 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		$model = parent::getModel($name, $prefix, $config);
 
 		return $model;
-	}
-
-	/**
-	 * Method to validate one or more email addresses
-	 * --> If the validation failed, add INVALID_ to the name
-	 * --> If the validation was successful, set status = 1 and set confirmation_date and confirmed_by
-	 *
-	 * @return	mixed   load Validation Result layout
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function validateEmailAddresses()
-	{
-		$jinput	= Factory::getApplication()->input;
-
-		// Check for request forgeries
-		if (!Session::checkToken())
-		{
-			jexit(Text::_('JINVALID_TOKEN'));
-		}
-
-		$cid = $jinput->get('cid', array(), 'post');
-		ArrayHelper::toInteger($cid);
-
-		$model = $this->getModel('subscriber');
-
-		// Leider bietet Joomla keine Möglichkeit die anzuzeigende Seite Stück für Stück
-		// auszugeben. Stattdessen wird ein Buffer verwendet, welcher erst ganz zum Schluss
-		// ausgegeben wird. -> Quick and Dirty Selbst sofort den Inhalt ausgeben, durch
-		// umgehen des PHP Buffers und sofortiges Flushen nach echos.
-		// Anschließend wird per javascript ein redirect ausgelöst.
-		echo Text::_('COM_BWPOSTMAN_SUB_VALIDATION_PROCESS');
-		ob_flush();
-		flush();
-		$validation_res = $model->validate_mail($cid, true);
-
-		//Get session object
-		$session = Factory::getSession();
-		$session->set('validation_res', $validation_res);
-
-		$url = Uri::base() . 'index.php?option=com_bwpostman&view=subscriber&layout=validation';
-		echo '<script type="text/javascript">' . "\n"
-		. '<!--' . "\n"
-		. 'window.location = "' . $url . '"' . "\n"
-		. '//-->' . "\n"
-		. '</script>' . "\n";
-		exit();
-	}
-
-	/**
-	 * Method to finish the validation
-	 * --> all data which we store into the session will be cleared
-	 *
-	 * @return 	void
-	 *
-	 * @since       0.9.1
-	 */
-	public function finishValidation()
-	{
-		// Check for request forgeries
-		if (!Session::checkToken())
-		{
-			jexit(Text::_('JINVALID_TOKEN'));
-		}
-
-		$session		= Factory::getSession();
-		$validation_res	= $session->get('validation_res');
-
-		if(isset($validation_res) && is_array($validation_res))
-		{
-			$session->clear('validation_res');
-		}
-
-		$msg = Text::_('COM_BWPOSTMAN_SUB_VALIDATION_FINISHED');
-		$link = Route::_('index.php?option=com_bwpostman&controller=subscribers&layout=unconfirmed', false);
-
-		$this->setRedirect($link, $msg);
 	}
 
 	/**

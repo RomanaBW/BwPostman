@@ -36,7 +36,7 @@ jimport('joomla.application.component.view');
 
 // Require helper classes
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
-require_once(JPATH_COMPONENT . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanViewRegister

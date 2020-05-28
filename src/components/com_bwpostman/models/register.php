@@ -33,13 +33,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Mail\MailHelper;
-use Joomla\CMS\Application\ApplicationHelper;
-use Joomla\CMS\User\UserHelper;
 
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
 
-require_once(JPATH_COMPONENT . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanModelRegister

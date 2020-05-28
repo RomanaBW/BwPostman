@@ -37,7 +37,7 @@ use Joomla\CMS\Log\LogEntry;
 
 require_once(JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
-require_once(JPATH_ROOT . '/components/com_bwpostman/helpers/subscriberhelper.php');
+require_once(JPATH_ROOT . '/administrator/components/com_bwpostman/helpers/subscriberhelper.php');
 
 if (!class_exists('vmUserfieldPlugin'))
 {

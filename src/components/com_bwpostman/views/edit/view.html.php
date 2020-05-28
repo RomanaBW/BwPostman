@@ -35,7 +35,7 @@ use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.application.component.view');
 
 //get helper class
-require_once(JPATH_COMPONENT . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 
 
 /**

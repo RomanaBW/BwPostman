@@ -41,7 +41,7 @@ use Joomla\Registry\Registry;
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
-require_once(JPATH_SITE . '/components/com_bwpostman/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/mailverification/BwEmailValidation.php');
 
 /**
@@ -421,12 +421,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			if (!$data['id'])
 			{
 				$data['editlink'] = BwPostmanSubscriberHelper::getEditlink();
-			}
 
-			// Admin creates a new subscriber and doesn't confirm the subscriber?
-			if ((!array_key_exists('confirm', $data)) && (!$data['id']))
-			{
-				$data['activation'] = BwPostmanSubscriberHelper::createActivation();
+				// Admin doesn't confirm the subscriber?
+				if (!array_key_exists('confirm', $data))
+				{
+					$data['activation'] = BwPostmanSubscriberHelper::createActivation();
+				}
 			}
 
 			$time      = $date->toSql();

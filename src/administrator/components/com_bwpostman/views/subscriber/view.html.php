@@ -450,49 +450,6 @@ class BwPostmanViewSubscriber extends JViewLegacy
 	}
 
 	/**
-	 * View Validation Form
-	 *
-	 * @param 	string $tpl Template
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	private function displayValidationForm($tpl)
-	{
-		$session 	= Factory::getSession();
-		$uri		= Uri::getInstance();
-		$uri_string	= $uri->toString();
-
-		// Get the result data from the session
-		$validation_res = $session->get('validation_res');
-		$row            = new stdClass();
-		if (isset($validation_res) && (is_array($validation_res)))
-		{
-			foreach ($validation_res AS $key => $value)
-			{
-				$row->$key = $value;
-			}
-		}
-
-		// Save a reference into view
-		$this->request_url	= str_replace('&', '&amp;', $uri_string);
-		$this->row          = $row;
-
-		// Get document object, set document title and add css
-		$document = Factory::getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-
-		// Set toolbar items
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_VALIDATION_RESULT'), 'subscribers');
-		ToolbarHelper::cancel('subscriber.finishValidation', 'COM_BWPOSTMAN_SUB_VALIDATION_FINISH');
-
-		// Set parent display
-		parent::display($tpl);
-	}
-
-	/**
 	 * Add the page title, styles and toolbar for Joomla 4.
 	 *
 	 * @throws Exception

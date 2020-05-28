@@ -36,7 +36,7 @@ use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\User\UserHelper;
 
 require_once(dirname(__FILE__) . '/helper.php');
-require_once JPATH_BASE . '/components/com_bwpostman/helpers/subscriberhelper.php';
+require_once JPATH_ROOT . '/administrator/components/com_bwpostman/helpers/subscriberhelper.php';
 
 jimport('joomla.application.component.helper');
 

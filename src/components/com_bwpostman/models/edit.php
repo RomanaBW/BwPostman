@@ -30,14 +30,12 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Application\ApplicationHelper;
-use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Language\Multilanguage;
 
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
 
-require_once(JPATH_COMPONENT . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 
 
 /**

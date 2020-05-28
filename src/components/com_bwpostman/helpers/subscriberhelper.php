@@ -360,7 +360,7 @@ class BwPostmanSubscriberHelper
 	 * @param    int    $type   emailtype    --> 0 = send registration email, 1 = send editlink, 2 = send activation reminder
 	 * @param    int    $itemid menu item ID
 	 *
-	 * @return    boolean True on success | error object
+	 * @return    boolean|\JException True on success | error object
 	 *
 	 * @throws Exception
 	 *

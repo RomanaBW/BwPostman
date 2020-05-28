@@ -187,7 +187,7 @@ function check() // Method to check if the user tries to delete the email item a
 	var count_import_fields = document.getElementById('import_fields').length;
 
 	if (count_db_fields !== count_import_fields) {
-		alert (document.getElementById('importAlertFields'));
+		alert (document.getElementById('importAlertFields').value);
 		return 0;
 	}
 	return 1;

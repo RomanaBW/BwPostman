@@ -876,7 +876,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		fclose($fh); // Close the file
 		unlink($dest);
 
-		// Return the error/mailing data arrays
+		// Return the mailing data array
 		$ret_maildata = $mail;
 
 		return true;
@@ -927,13 +927,14 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		if ($doValidation)
 		{
-			$isValidEmail = $this->validateEmail($values['email']);
+			$emailValidationResult = $this->validateEmail($values['email']);
 
-			if (!$isValidEmail)
+			if ($emailValidationResult !== true)
 			{
 				$err['row'] = $row;
 				$err['email'] = $values['email'];
 				$err['msg'] = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL', $values['email']);
+				$err['msg'] .= $emailValidationResult;
 				$err['type']  = 'error';
 				$importMessages['import_err'][] = $err;
 				$session->set('com_bwpostman.subscriber.import.messages', $importMessages);
@@ -948,6 +949,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$ret_maildata	= '';
 
 		// We may set confirmation data if the confirm-box is checked and the import value does not stand against
+		// @ToDo: What if a migration is done and all fields BwPostman uses, are exported? Values like confirmation or
+		// registration are present at the export,but are not processed!
 		$remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
 		if ($confirm && $values['status'] != '0')
@@ -959,7 +962,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		try
 		{
-			// Check if the email address exists in the database
+			// Check if the email address exists in the subscribers table
 			$subscriber = BwPostmanSubscriberHelper::getSubscriberDataByEmail($values);
 
 			if (isset($subscriber->id))
@@ -1066,7 +1069,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				}
 
 				//Send Email, if confirmed is not set
-				if ($values["status"] == 0)
+				if (!$confirm && $values["status"] == 0)
 				{
 					$subscriber_emaildata = new stdClass();
 

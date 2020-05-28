@@ -100,7 +100,7 @@ class BwEmailValidation
 	 *
 	 * @since 2.4.0
 	 */
-	protected $streamTimeoutWait = 1;
+	protected $streamTimeoutWait = 0;
 
 	/**
 	 * The number of errors encountered
@@ -312,7 +312,7 @@ class BwEmailValidation
 	 *
 	 * @param string $email Email address
 	 *
-	 * @return boolean True if the valid email also exist
+	 * @return boolean|string   True if the valid email also exist, else error message
 	 *
 	 * @since 2.4.0
 	 */
@@ -323,7 +323,7 @@ class BwEmailValidation
 			$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_WRONG_FORMAT', $email);
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
 
-			return false;
+			return $message;
 		}
 
 		$this->errorCounter = 0; // Reset errors
@@ -345,7 +345,7 @@ class BwEmailValidation
 					$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_SOCKET_PROBLEM', $email);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
 
-					return false;
+					return $message;
 				}
 				else
 				{
@@ -379,30 +379,38 @@ class BwEmailValidation
 			$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_SOCKET_PROBLEM_GENERAL', $email);
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
 
-			return false;
+			return $message;
 		}
 
 		$this->streamQuery("HELO " . self::parseEmail($this->from));
-		$this->streamResponse();
+		$response = $this->streamResponse();
+		$response .= "\n";
 
-		$this->streamQuery("MAIL FROM: <{$this->from}>");
-		$this->streamResponse();
+		$this->streamQuery("MAIL FROM:<{$this->from}>");
+		$response .= $this->streamResponse();
+		$response .= "\n";
 
-		$this->streamQuery("RCPT TO: <{$email}>");
+		$message = Text::sprintf('Current return code after MAIL FROM: %s', $response);
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
+
+		$this->streamQuery("RCPT TO:<{$email}>");
 		$code = $this->streamCode($this->streamResponse());
-		$this->streamResponse();
+		$response .= $code;
+		$response .= "\n";
 
 		$message = Text::sprintf('Current return code after RCPT TO : %s', $code);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
 
 		$this->streamQuery("RSET");
-		$this->streamResponse();
 
 		$code2 = $this->streamCode($this->streamResponse());
-		$this->streamQuery("QUIT");
+		$response .= $code2;
+		$response .= "\n";
 
-		$message = Text::sprintf('Current return code after RSET : %s', $code);
+		$message = Text::sprintf('Current return code after RSET : %s', $code2);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
+
+		$this->streamQuery("QUIT");
 
 		fclose($this->stream);
 
@@ -432,7 +440,7 @@ class BwEmailValidation
 				return true;
 			case '550':
 			default :
-				return false;
+				return $response;
 		}
 	}
 
@@ -479,15 +487,9 @@ class BwEmailValidation
 		}
 
 
-		if ($status['unread_bytes'] > 0)
+		if ($reply !== false && $status['unread_bytes'] > 0)
 		{
-			$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_STREAM_UNREAD_DATA', $reply);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
-
-			if ($reply !== false)
-			{
-				$reply .= stream_get_line($this->stream, $status['unread_bytes'], self::CRLF);
-			}
+			$reply .= stream_get_line($this->stream, $status['unread_bytes'], self::CRLF);
 		}
 
 		return $reply;

@@ -214,8 +214,6 @@ class BwPostmanModelTemplates extends JModelList
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @access 	protected
-	 *
 	 * @return 	string Query
 	 *
 	 * @throws Exception
@@ -248,33 +246,32 @@ class BwPostmanModelTemplates extends JModelList
 	/**
 	 * Method to get the joins this query needs
 	 *
-	 * @access 	private
-	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
 	 */
 	private function getQueryJoins()
 	{
+		$db = $this->_db;
 		// Join over the users for the checked out user.
-		$this->query->select($this->_db->quoteName('uc.name') . ' AS editor');
+		$this->query->select($db->quoteName('uc.name') . ' AS editor');
 		$this->query->join(
 			'LEFT',
-			$this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out')
+			$db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out')
 		);
 
 		// Join over the asset groups.
-		$this->query->select($this->_db->quoteName('ag.title') . ' AS access_level');
+		$this->query->select($db->quoteName('ag.title') . ' AS access_level');
 		$this->query->join(
 			'LEFT',
-			$this->_db->quoteName('#__viewlevels', 'ag') . ' ON ' . $this->_db->quoteName('ag.id') . ' = ' . $this->_db->quoteName('a.access')
+			$db->quoteName('#__viewlevels', 'ag') . ' ON ' . $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access')
 		);
 
 		// Join over the users for the author.
-		$this->query->select($this->_db->quoteName('ua.name'), ' AS author_name');
+		$this->query->select($db->quoteName('ua.name'), ' AS author_name');
 		$this->query->join(
 			'LEFT',
-			$this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by')
+			$db->quoteName('#__users', 'ua') . ' ON ' . $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by')
 		);
 	}
 
@@ -303,8 +300,6 @@ class BwPostmanModelTemplates extends JModelList
 
 	/**
 	 * Method to build the MySQL query 'order' part
-	 *
-	 * @access 	private
 	 *
 	 * @return 	void
 	 *
@@ -349,8 +344,6 @@ class BwPostmanModelTemplates extends JModelList
 
 	/**
 	 * Method to get the filter by Joomla view level
-	 *
-	 * @access 	private
 	 *
 	 * @return 	void
 	 *
@@ -413,8 +406,6 @@ class BwPostmanModelTemplates extends JModelList
 	/**
 	 * Method to get the filter by selected template format
 	 *
-	 * @access 	private
-	 *
 	 * @return 	void
 	 *
 	 * @throws Exception
@@ -467,8 +458,6 @@ class BwPostmanModelTemplates extends JModelList
 	/**
 	 * Method to get the filter by archived state
 	 *
-	 * @access 	private
-	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
@@ -480,8 +469,6 @@ class BwPostmanModelTemplates extends JModelList
 
 	/**
 	 * Method to get the filter by search word
-	 *
-	 * @access 	private
 	 *
 	 * @return 	void
 	 *
@@ -517,8 +504,6 @@ class BwPostmanModelTemplates extends JModelList
 
 	/**
 	 * Method to call the layout for the template upload and install process
-	 *
-	 * @access	public
 	 *
 	 * @param   string
 	 *
@@ -596,8 +581,6 @@ class BwPostmanModelTemplates extends JModelList
 
 	/**
 	 * Method to extract template zip
-	 *
-	 * @access	public
 	 *
 	 * @param   string
 	 *
@@ -706,8 +689,6 @@ class BwPostmanModelTemplates extends JModelList
 	/**
 	 * Method to copy template thumbnail
 	 *
-	 * @access	public
-	 *
 	 * @throws Exception
 	 *
 	 * @since 1.1.0
@@ -815,8 +796,6 @@ class BwPostmanModelTemplates extends JModelList
 	/**
 	 * Method to delete temp folder
 	 *
-	 * @access	public
-	 *
 	 * @param   array  $file
 	 *
 	 * @return boolean
@@ -886,8 +865,6 @@ class BwPostmanModelTemplates extends JModelList
 	/**
 	 * Method to delete enqueue messages
 	 *
-	 * @access	private
-	 *
 	 * @throws Exception
 	 *
 	 * @since 1.1.0
@@ -942,8 +919,6 @@ class BwPostmanModelTemplates extends JModelList
 
 	/**
 	 * Method to call the template export process
-	 *
-	 * @access	public
 	 *
 	 * @param integer  $id      ID to export
 	 * @param integer  $tpl_id  template ID
@@ -1026,7 +1001,6 @@ class BwPostmanModelTemplates extends JModelList
 				$_db->setQuery($query);
 				try
 				{
-//					$res = $_db->execute();
 					$res = $_db->loadAssoc();
 				}
 				catch (RuntimeException $e)
@@ -1035,17 +1009,12 @@ class BwPostmanModelTemplates extends JModelList
 					$this->errRedirect($e->getMessage());
 				}
 
-				// Load values
-//				$row = $res->fetch_row();
-
 				if (!empty($res))
 				{
 					// Count fields in row
-//					$num_fields = $res->field_count;
 					$num_fields = count($res);
 
 					// Field names
-//					$fields_meta = $res->fetch_fields();
 
 					$quote = "`";
 					$fields_quoted = array();
@@ -1113,8 +1082,6 @@ class BwPostmanModelTemplates extends JModelList
 
 	/**
 	 * Method to create zip archive
-	 *
-	 * @access	protected
 	 *
 	 * @return  string
 	 *
@@ -1221,8 +1188,6 @@ class BwPostmanModelTemplates extends JModelList
 
 	/**
 	 * Method to redirect the raw view on errors
-	 *
-	 * @access	protected
 	 *
 	 * @param string    $errormsg
 	 * @param string    $type

@@ -755,12 +755,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$doValidation = false;
 		}
 
-		// Error-Array --> 2dimensions: [err][csv_row], [err][email], [err][msg], [err][id]
-		$err = array();
-		// Warning-Array --> 2dimensions: [warn][csv_row], [warn][email], [warn][msg]
-		$warn = array();
-		// Success-Array --> 2dimensions: [success][csv_row], [success][email], [success][msg]
-		$success = array();
 		// SendEmailActivation-Array --> 2dimensions [sendmail][csv_row], [sendmail][email]
 		$mail = array();
 		$session->set('com_bwpostman.subscriber.import.messages', array());
@@ -905,7 +899,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		{
 			return false;
 		}
-		$app = Factory::getApplication();
+
 		$session = Factory::getSession();
 
 		$importMessages = $session->get('com_bwpostman.subscriber.import.messages', array());
@@ -1436,7 +1430,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			return false;
 		}
 
-		$db		= $this->getDbo();
 		$result_set	= array();
 		$subscribed	= 0;
 		$skipped	= 0;
@@ -1487,7 +1480,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			return false;
 		}
 
-		$db			= $this->getDbo();
 		$result_set		= array();
 		$unsubscribed	= 0;
 		$skipped		= 0;
@@ -1533,6 +1525,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
  */
 	private function getMailinglistIdsOfSubscriber($sub_id)
 	{
+		$mailinglist_ids = array();
+
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('mailinglist_id'));

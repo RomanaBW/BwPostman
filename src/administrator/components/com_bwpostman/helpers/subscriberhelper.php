@@ -1140,7 +1140,7 @@ class BwPostmanSubscriberHelper
 
 		$_db->setQuery($query);
 
-		$user_id = $_db->loadResult();
+		$user_id = (int)$_db->loadResult();
 
 		return $user_id;
 	}

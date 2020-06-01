@@ -428,12 +428,13 @@ class BwPostmanTableSubscribers extends JTable
 			$tester	= true;
 		}
 
-		// Remove all HTML tags from the name, firstname, email and special
+		// Cleanup all vulnerable values
 		$filter				= new InputFilter(array(), array(), 0, 0);
 		$this->name 		= $filter->clean($this->name);
 		$this->firstname	= $filter->clean($this->firstname);
 		$this->email		= $filter->clean($this->email);
 		$this->special		= $filter->clean($this->special);
+		$this->emailformat  = $filter->clean($this->emailformat, 'UINT');
 
 		if (!$import)
 		{

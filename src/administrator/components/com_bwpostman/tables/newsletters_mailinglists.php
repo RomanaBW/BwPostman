@@ -70,7 +70,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	}
 
 	/**
-	 * Method to copy the entries of this table for one or more newsletters
+	 * Method to duplicate the mailinglist entries of a newsletter to a new one
 	 *
 	 * @access	public
 	 *
@@ -162,5 +162,77 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 		$key = $this->getColumnAlias($key);
 
 		return property_exists($this, $key);
+	}
+
+	/**
+	 * Method to delete the entries of a newsletter
+	 *
+	 * @access	public
+	 *
+	 * @param 	integer $nlId      ID of the newsletter
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0
+	 */
+	public function deleteNewsletter($nlId)
+	{
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->delete($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('newsletter_id') . ' =  ' . (int) $nlId);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+	}
+
+	/**
+	 * Method to insert a newsletter
+	 *
+	 * @access	public
+	 *
+	 * @param 	integer $nlId      ID of the newsletter
+	 * @param 	integer $mlId      ID of the mailinglist
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0
+	 */
+	public function insertNewsletter($nlId, $mlId)
+	{
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->insert($db->quoteName($this->_tbl));
+		$query->columns(
+			array(
+				$db->quoteName('newsletter_id'),
+				$db->quoteName('mailinglist_id')
+			)
+		);
+		$query->values(
+			(int) $nlId . ',' .
+			(int) $mlId
+		);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 	}
 }

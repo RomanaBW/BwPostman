@@ -27,7 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//require_once(JPATH_SITE . '/components/com_content/helpers/route.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 
 // Import MODEL and Helper object class
@@ -188,8 +187,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Method to reset the newsletter ID and data
 	 *
-	 * @access	public
-	 *
 	 * @param	int $id     Newsletter ID
 	 *
 	 * @since       0.9.1
@@ -207,7 +204,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return	boolean	True if allowed to change the state of the record.
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
@@ -272,8 +269,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				if (property_exists($item, 'params'))
 				{
-					$registry = new Registry;
-					$registry->loadJSON($item->params);
+					$registry = new Registry($item->params);
 					$item->params = $registry->toArray();
 				}
 
@@ -501,23 +497,23 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return	boolean           state of is_template
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since	2.2.0
 	 */
 	public function isTemplate($id)
 	{
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db	= Factory::getDbo();
+		$query	= $db->getQuery(true);
 
-		$query->select($_db->quoteName('is_template'));
-		$query->from($_db->quoteName('#__bwpostman_newsletters'));
-		$query->where($_db->quoteName('id') . ' = ' . $_db->quote($id));
+		$query->select($db->quoteName('is_template'));
+		$query->from($db->quoteName('#__bwpostman_newsletters'));
+		$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 		try
 		{
-			$isTemplate = (integer)$_db->loadResult();
+			$isTemplate = (integer)$db->loadResult();
 			if ($isTemplate === 1)
 			{
 				return true;
@@ -532,7 +528,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the standard template.
+	 * Method to get the ID of the standard template for HTML or text mode
 	 *
 	 * @param   string  $mode       HTML or text
 	 *
@@ -545,32 +541,32 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	private function getStandardTpl($mode	= 'html')
 	{
 		$tpl    = new stdClass();
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db	= Factory::getDbo();
+		$query	= $db->getQuery(true);
 
 		// Id of the standard template
 		switch ($mode)
 		{
 			case 'html':
 			default:
-					$query->select($_db->quoteName('id'));
-					$query->from($_db->quoteName('#__bwpostman_templates'));
-					$query->where($_db->quoteName('standard') . ' = ' . $_db->quote('1'));
-					$query->where($_db->quoteName('tpl_id') . ' < ' . $_db->quote('998'));
+					$query->select($db->quoteName('id'));
+					$query->from($db->quoteName('#__bwpostman_templates'));
+					$query->where($db->quoteName('standard') . ' = ' . $db->quote('1'));
+					$query->where($db->quoteName('tpl_id') . ' < ' . $db->quote('998'));
 				break;
 
 			case 'text':
-					$query->select($_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
-					$query->from($_db->quoteName('#__bwpostman_templates'));
-					$query->where($_db->quoteName('standard') . ' = ' . $_db->quote('1'));
-					$query->where($_db->quoteName('tpl_id') . ' > ' . $_db->quote('997'));
+					$query->select($db->quoteName('id') . ' AS ' . $db->quoteName('value'));
+					$query->from($db->quoteName('#__bwpostman_templates'));
+					$query->where($db->quoteName('standard') . ' = ' . $db->quote('1'));
+					$query->where($db->quoteName('tpl_id') . ' > ' . $db->quote('997'));
 				break;
 		}
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 		try
 		{
-			$tpl    = $_db->loadResult();
+			$tpl    = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -582,8 +578,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 	/**
 	 * Method to get the data of a single newsletter for the preview/modal box
-	 *
-	 * @access	public
 	 *
 	 * @return 	object Newsletter with formatted pieces
 	 *
@@ -599,13 +593,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		//convert to object if necessary
 		if ($item && !is_object($item))
 		{
-			$data_tmp	= new stdClass();
-			foreach ($item as $key => $value)
-			{
-				$data_tmp->$key	= $value;
-			}
-
-			$item = $data_tmp;
+			$item = ArrayHelper::toObject($item);
 		}
 
 		// if old newsletter, there are no template IDs, so lets set them to the old template
@@ -633,7 +621,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$item->text_version	= $content['text_version'];
 		}
 
-		// force two linebreak at the end of text
+		// force two linebreaks at the end of text
 		$item->text_version = rtrim($item->text_version) . "\n\n";
 
 		// Replace the links to provide the correct preview
@@ -694,8 +682,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Method to get the selected content items which are used to compose a newsletter
 	 *
-	 * @access	public
-	 *
 	 * @return	array
 	 *
 	 * @throws Exception
@@ -704,72 +690,67 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function getSelectedContentItems()
 	{
-		$_db	= $this->_db;
+		$db	= $this->_db;
 
 		$selected_content = $this->getSelectedContentFromNewsletterTable();
-		$selected_content_void = array ();
 
-		if ($selected_content)
+		if (!$selected_content)
 		{
-			if (!is_array($selected_content))
+			return array();
+		}
+
+		if (!is_array($selected_content))
+		{
+			$selected_content = explode(',', $selected_content);
+		}
+
+		$selected_content_items = array();
+
+		// We do a foreach to protect our ordering
+		foreach($selected_content as $content_id)
+		{
+			$items  = array();
+
+			$subquery	= $db->getQuery(true);
+			$subquery->select($db->quoteName('cc') . '.' . $db->quoteName('title'));
+			$subquery->from($db->quoteName('#__categories') . ' AS ' . $db->quoteName('cc'));
+			$subquery->where($db->quoteName('cc') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('c') . '.' . $db->quoteName('catid'));
+
+			$query	= $db->getQuery(true);
+			$query->select($db->quoteName('c') . '.' . $db->quoteName('id'));
+			$query->select($db->quoteName('c') . '.' . $db->quoteName('title') . ', (' . $subquery) . ') AS ' . $db->quoteName('category_name');
+			$query->from($db->quoteName('#__content') . ' AS ' . $db->quoteName('c'));
+			$query->where($db->quoteName('c') . '.' . $db->quoteName('id') . ' = ' . $db->quote($content_id));
+
+			$db->setQuery($query);
+
+			try
 			{
-				$selected_content = explode(',', $selected_content);
+				$items = $db->loadObjectList();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
-			$selected_content_items = array();
-
-			// We do a foreach to protect our ordering
-			foreach($selected_content as $content_id)
+			if(count($items) > 0)
 			{
-				$items  = array();
+				$categoryName = "Uncategorized - ";
 
-				$subquery	= $_db->getQuery(true);
-				$subquery->select($_db->quoteName('cc') . '.' . $_db->quoteName('title'));
-				$subquery->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('cc'));
-				$subquery->where($_db->quoteName('cc') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('c') . '.' . $_db->quoteName('catid'));
-
-				$query	= $_db->getQuery(true);
-				$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id'));
-				$query->select($_db->quoteName('c') . '.' . $_db->quoteName('title') . ', (' . $subquery) . ') AS ' . $_db->quoteName('category_name');
-				$query->from($_db->quoteName('#__content') . ' AS ' . $_db->quoteName('c'));
-				$query->where($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' = ' . $_db->quote($content_id));
-
-				$_db->setQuery($query);
-
-				try
+				if ($items[0]->category_name !== '')
 				{
-					$items = $_db->loadObjectList();
-				}
-				catch (RuntimeException $e)
-				{
-					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					$categoryName = $items[0]->category_name . " - ";
 				}
 
-				if(count($items) > 0)
-				{
-					if ($items[0]->category_name == '')
-					{
-						$selected_content_items[] = HTMLHelper::_('select.option', $items[0]->id, "Uncategorized - " . $items[0]->title);
-					}
-					else
-					{
-						$selected_content_items[] = HtmlHelper::_('select.option', $items[0]->id, $items[0]->category_name . " - " . $items[0]->title);
-					}
-				}
+				$selected_content_items[] = HtmlHelper::_('select.option', $items[0]->id, $categoryName . $items[0]->title);
 			}
+		}
 
-			return $selected_content_items;
-		}
-		else
-		{
-			return $selected_content_void;
-		}
+		return $selected_content_items;
 	}
 
 	/**
 	 * Method to get the menu item ID which will be needed for the unsubscribe link in the footer
-	 *
-	 * @access	public
 	 *
 	 * @param   string  $view
 	 *
@@ -782,30 +763,30 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	public static function getItemid($view)
 	{
 		$itemid = '';
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db	= Factory::getDbo();
+		$query	= $db->getQuery(true);
 
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__menu'));
-		$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=' . $view));
-		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__menu'));
+		$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=' . $view));
+		$query->where($db->quoteName('published') . ' = ' . (int) 1);
 
 		try
 		{
-			$_db->setQuery($query);
-			$itemid = $_db->loadResult();
+			$db->setQuery($query);
+			$itemid = $db->loadResult();
 
 			if (empty($itemid))
 			{
-				$query = $_db->getQuery(true);
+				$query = $db->getQuery(true);
 
-				$query->select($_db->quoteName('id'));
-				$query->from($_db->quoteName('#__menu'));
-				$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=register'));
-				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
+				$query->select($db->quoteName('id'));
+				$query->from($db->quoteName('#__menu'));
+				$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=register'));
+				$query->where($db->quoteName('published') . ' = ' . (int) 1);
 
-				$_db->setQuery($query);
-				$itemid = $_db->loadResult();
+				$db->setQuery($query);
+				$itemid = $db->loadResult();
 			}
 		}
 		catch (RuntimeException $e)
@@ -827,6 +808,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @see     FormRule
 	 * @see     InputFilter
+	 *
 	 * @since   2.4.0
 	 */
 	public function validate($form, $data, $group = null)
@@ -844,8 +826,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Method to store the newsletter data from the newsletters_tmp-table into the newsletters-table
 	 *
-	 * @access	public
-	 *
 	 * @param   array   $data       data to save
 	 *
 	 * @return 	boolean
@@ -856,9 +836,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$jinput		= Factory::getApplication()->input;
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
+		$db     = $this->_db;
+		$query  = $db->getQuery(true);
 
 		// Correct empty publishing dates
 		if (isset($data['publish_up']) &&  $data['publish_up'] === "")
@@ -875,13 +856,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		BwPostmanMailinglistHelper::mergeMailinglists($data);
 
 		// convert attachment array to string, to be able to save
-		if (isset($data['attachment']) && $data['attachment'] != '' && is_array($data['attachment']))
+		if (isset($data['attachment']) && $data['attachment'] !== '' && is_array($data['attachment']))
 		{
 			$fullAttachments = array();
 
 			foreach ($data['attachment'] as $k => $v)
 			{
-				if ($data['attachment'][$k]['single_attachment'] != '')
+				if ($data['attachment'][$k]['single_attachment'] !== '')
 				{
 					$fullAttachments[] = $data['attachment'][$k]['single_attachment'];
 				}
@@ -894,29 +875,21 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// if saving a new newsletter before changing tab, we have to look, if there is a content selected and set html- and text-version
 		if (empty($data['html_version']) && empty($data['text_version']))
 		{
-			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_CONTENT_MISSING'));
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_CONTENT_MISSING'));
 			return false;
 		}
 
-		if (!parent::save($data)) {
+		if (!parent::save($data))
+		{
 			return false;
 		}
+
+		$crossTableNlMl = $this->getTable('Newsletters_Mailinglists');
 
 		// Delete all entries of the newsletter from newsletters_mailinglists table
 		if ($data['id'])
 		{
-			$query->delete($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
-			$query->where($_db->quoteName('newsletter_id') . ' =  ' . (int) $data['id']);
-
-			$_db->setQuery($query);
-			try
-			{
-				$_db->execute();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+			$crossTableNlMl->deleteNewsletter((int) $data['id']);
 		}
 		else
 		{
@@ -925,47 +898,28 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$jinput->set('id', $data['id']);
 
 			// update state
-			$state_data	= Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data');
+			$state_data	= $app->getUserState('com_bwpostman.edit.newsletter.data');
+
 			if (is_object($state_data))
 			{	// check needed because copying newsletters has no state and does not need it
 				$state_data->id	= $data['id'];
-				Factory::getApplication()->setUserState('com_bwpostman.edit.newsletter.data', $state_data);
+				$app->setUserState('com_bwpostman.edit.newsletter.data', $state_data);
 			}
 		}
 
-		if ($data['campaign_id'] == '-1') {
+		if ((integer)$data['campaign_id'] === -1)
+		{
 			// Store the selected BwPostman mailinglists into newsletters_mailinglists-table
-			if (isset($data['mailinglists']) && $data['campaign_id'] == '-1')
+			if (isset($data['mailinglists']))
 			{
 				foreach ($data['mailinglists'] AS $mailinglists_value)
 				{
-					$query	= $_db->getQuery(true);
-
-					$query->insert($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
-					$query->columns(
-						array(
-							$_db->quoteName('newsletter_id'),
-							$_db->quoteName('mailinglist_id')
-						)
-					);
-						$query->values(
-							(int) $data['id'] . ',' .
-							(int) $mailinglists_value
-						);
-					$_db->setQuery($query);
-					try
-					{
-						$_db->execute();
-					}
-					catch (RuntimeException $e)
-					{
-						Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-					}
+					$crossTableNlMl->insertNewsletter((int) $data['id'], (int) $mailinglists_value);
 				}
 			}
 		}
 
-		Factory::getApplication()->triggerEvent('onBwPostmanAfterNewsletterModelSave', array(&$data));
+		$app->triggerEvent('onBwPostmanAfterNewsletterModelSave', array(&$data));
 
 		return true;
 	}
@@ -973,8 +927,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Method to (un)archive a newsletter from the newsletters-table
 	 * --> when unarchiving it is called by the archive-controller
-	 *
-	 * @access	public
 	 *
 	 * @param	array $cid          Newsletter IDs
 	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
@@ -991,8 +943,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$date		= Factory::getDate();
 		$uid		= Factory::getUser()->get('id');
 		$state_data	= $app->getUserState('com_bwpostman.edit.newsletter.data');
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
+		$db		= $this->_db;
+		$query		= $db->getQuery(true);
 
 		if ($archive == 1)
 		{
@@ -1026,16 +978,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		{
 			ArrayHelper::toInteger($cid);
 
-			$query->update($_db->quoteName('#__bwpostman_newsletters'));
-			$query->set($_db->quoteName('archive_flag') . " = " . (int) $archive);
-			$query->set($_db->quoteName('archive_date') . " = " . $_db->quote($time, false));
-			$query->set($_db->quoteName('archived_by') . " = " . (int) $uid);
-			$query->where($_db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
+			$query->update($db->quoteName('#__bwpostman_newsletters'));
+			$query->set($db->quoteName('archive_flag') . " = " . (int) $archive);
+			$query->set($db->quoteName('archive_date') . " = " . $db->quote($time, false));
+			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
+			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 
-			$_db->setQuery($query);
+			$db->setQuery($query);
 			try
 			{
-				$_db->execute();
+				$db->execute();
 			}
 			catch (RuntimeException $e)
 			{
@@ -1067,24 +1019,24 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		$app	= Factory::getApplication();
-		$_db	= $this->_db;
+		$db	= $this->_db;
 
 		if (count($cid))
 		{
 			foreach ($cid as $id)
 			{
 				$newsletters_data_copy  = new stdClass();
-				$query	                = $_db->getQuery(true);
+				$query	                = $db->getQuery(true);
 
 				$query->select('*');
-				$query->from($_db->quoteName('#__bwpostman_newsletters'));
-				$query->where($_db->quoteName('id') . ' = ' . (int) $id);
+				$query->from($db->quoteName('#__bwpostman_newsletters'));
+				$query->where($db->quoteName('id') . ' = ' . (int) $id);
 
-				$_db->setQuery($query);
+				$db->setQuery($query);
 
 				try
 				{
-					$newsletters_data_copy = $_db->loadObject();
+					$newsletters_data_copy = $db->loadObject();
 				}
 				catch (RuntimeException $e)
 				{
@@ -1135,7 +1087,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				if (!$this->save(ArrayHelper::fromObject($newsletters_data_copy, false)))
 				{
-					$app->enqueueMessage($_db->getErrorMsg(), 'error');
+					$app->enqueueMessage($db->getErrorMsg(), 'error');
 					return false;
 				}
 			}
@@ -1154,13 +1106,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * Method to remove one or more newsletters from the newsletters-table
 	 * --> is called by the archive-controller
 	 *
-	 * @access	public
-	 *
 	 * @param	array   $pks        Newsletter IDs
 	 *
 	 * @return	boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -1208,8 +1158,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Method to clear the queue
 	 *
-	 * @access	public
-	 *
 	 * @return 	boolean
 	 *
 	 * @throws Exception
@@ -1224,13 +1172,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return false;
 		}
 
-		$_db	= $this->_db;
+		$db	= $this->_db;
 
-		$query = "TRUNCATE TABLE {$_db->quoteName('#__bwpostman_sendmailqueue')} ";
-		$_db->setQuery($query);
+		$query = "TRUNCATE TABLE {$db->quoteName('#__bwpostman_sendmailqueue')} ";
+		$db->setQuery($query);
 		try
 		{
-			$_db->execute();
+			$db->execute();
 		}
 		catch (RuntimeException $e)
 		{
@@ -1247,7 +1195,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   1.6
 	 */
@@ -1293,8 +1241,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Method to check and clean the input fields
 	 *
-	 * @access	public
-	 *
 	 * @param	array	$error          errors
 	 * @param 	int		$recordId       Newsletter ID
 	 * @param   boolean $automation     do we come from plugin?
@@ -1339,8 +1285,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 	/**
 	 * Method to check and clean the input fields
-	 *
-	 * @access	public
 	 *
 	 * @param	array	$err            errors
 	 * @param 	int		$recordId       Newsletter ID
@@ -1445,8 +1389,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Method to check if there are selected mailinglists and if they contain recipients
 	 *
-	 * @access	public
-	 *
 	 * @param	string	$ret_msg                Error message
 	 * @param	int		$nl_id                  newsletter id
 	 * @param	boolean	$send_to_unconfirmed    Status --> 0 = do not send to unconfirmed, 1 = sent also to unconfirmed
@@ -1542,8 +1484,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Method to check if there are test-recipients to whom the newsletter shall be send
 	 *
-	 * @access	public
-	 *
 	 * @return 	boolean
 	 *
 	 * @throws Exception
@@ -1554,19 +1494,19 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	{
 		$result         = false;
 		$testrecipients = 0;
-		$_db	        = $this->_db;
-		$query	= $_db->getQuery(true);
+		$db	        = $this->_db;
+		$query	= $db->getQuery(true);
 
-		$query->select('COUNT(' . $_db->quoteName('id') . ')');
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('status') . ' = ' . (int) 9);
-		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->select('COUNT(' . $db->quoteName('id') . ')');
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query->where($db->quoteName('status') . ' = ' . (int) 9);
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$testrecipients = $_db->loadResult();
+			$testrecipients = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -1582,8 +1522,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 	/**
 	 * Method to compose a newsletter out of the selected content items
-	 *
-	 * @access	public
 	 *
 	 * @return 	array $content  associative array of content data
 	 *
@@ -1606,8 +1544,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 	/**
 	 * Method to fetch the content out of the selected content items
-	 *
-	 * @access	public
 	 *
 	 * @throws Exception
 	 *
@@ -2030,8 +1966,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Method to prepare the sending of a newsletter
 	 *
-	 * @access	public
-	 *
 	 * @param	string	$ret_msg        Error message
 	 * @param 	string	$recipients     Recipient --> either recipients or test-recipients
 	 * @param 	int		$nl_id          Newsletter ID
@@ -2084,7 +2018,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return bool
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since
 	 */
@@ -2104,8 +2038,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Method to get the selected content
 	 *
-	 * @access	public
-	 *
 	 * @return	string
 	 *
 	 * @throws Exception
@@ -2115,19 +2047,19 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	public function getSelectedContentFromNewsletterTable()
 	{
 		$content_ids    = '';
-		$_db	        = $this->_db;
+		$db	        = $this->_db;
 
 		// Get selected content from the newsletters-Table
-		$query	= $_db->getQuery(true);
+		$query	= $db->getQuery(true);
 
-		$query->select($_db->quoteName('selected_content'));
-		$query->from($_db->quoteName('#__bwpostman_newsletters'));
-		$query->where($_db->quoteName('id') . ' = ' . (int) $this->getState($this->getName() . '.id'));
+		$query->select($db->quoteName('selected_content'));
+		$query->from($db->quoteName('#__bwpostman_newsletters'));
+		$query->where($db->quoteName('id') . ' = ' . (int) $this->getState($this->getName() . '.id'));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 		try
 		{
-			$content_ids = $_db->loadResult();
+			$content_ids = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -2142,8 +2074,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * as a manner of archive and process method completely with content,
 	 * subject & Co. in
 	 *
-	 * @access	private
-	 *
 	 * @param 	int		        $nl_id          Newsletter ID
 	 *
 	 * @return 	int|boolean 	                int content ID, if everything went fine, else boolean false
@@ -2155,22 +2085,22 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	private function addSendMailContent($nl_id)
 	{
 		$renderer	= new contentRenderer();
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
 
 		$newsletters_data   = new stdClass();
 
 		if ($nl_id)
 		{
 			$query->select('*');
-			$query->from($_db->quoteName('#__bwpostman_newsletters'));
-			$query->where($_db->quoteName('id') . ' = ' . (int) $nl_id);
+			$query->from($db->quoteName('#__bwpostman_newsletters'));
+			$query->where($db->quoteName('id') . ' = ' . (int) $nl_id);
 
-			$_db->setQuery($query);
+			$db->setQuery($query);
 
 			try
 			{
-				$newsletters_data = $_db->loadObject();
+				$newsletters_data = $db->loadObject();
 			}
 			catch (RuntimeException $e)
 			{
@@ -2250,8 +2180,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 	/**
 	 * Method to push the recipients into a queue
-	 *
-	 * @access	private
 	 *
 	 * @param	string	$ret_msg                Error message
 	 * @param 	int		$content_id             Content ID -->  --> from the sendmailcontent-Table
@@ -2386,21 +2314,21 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function checkTrials($trial = 2, $count = 0)
 	{
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db	= Factory::getDbo();
+		$query	= $db->getQuery(true);
 		$result = 0;
 
-		$query->select('COUNT(' . $_db->quoteName('id') . ')');
-		$query->from($_db->quoteName('#__bwpostman_sendmailqueue'));
+		$query->select('COUNT(' . $db->quoteName('id') . ')');
+		$query->from($db->quoteName('#__bwpostman_sendmailqueue'));
 
 		PluginHelper::importPlugin('bwpostman');
 
 		Factory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 		try
 		{
-			$result = $_db->loadResult();
+			$result = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -2416,12 +2344,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// queue not empty
 		if ($result != 0)
 		{
-			$query->where($_db->quoteName('trial') . ' < ' . (int) $trial);
-			$_db->setQuery($query);
+			$query->where($db->quoteName('trial') . ' < ' . (int) $trial);
+			$db->setQuery($query);
 			// all queue entries have trial number 2
 			try
 			{
-				$result = $_db->loadResult();
+				$result = $db->loadResult();
 			}
 			catch (RuntimeException $e)
 			{
@@ -2524,8 +2452,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		PluginHelper::importPlugin('bwpostman');
 
 		$res				= false;
-		$_db				= $this->_db;
-		$query				= $_db->getQuery(true);
+		$db				= $this->_db;
+		$query				= $db->getQuery(true);
 		$table_name			= '#__bwpostman_sendmailqueue';
 		$recipients_data	= new stdClass();
 
@@ -2597,30 +2525,30 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$query->select('archive_flag');
 			$query->select('status');
 			$query->where('id = ' . (int) $tblSendMailQueue->subscriber_id);
-			$_db->setQuery($query);
+			$db->setQuery($query);
 			try
 			{
-				$_db->execute();
+				$db->execute();
 			}
 			catch (RuntimeException $e)
 			{
 				$app->enqueueMessage($e->getMessage(), 'error');
 			}
 
-			$recipients_data = $_db->loadObject();
+			$recipients_data = $db->loadObject();
 
 			// if subscriber is archived, delete entry from queue
 			if ($recipients_data->archive_flag)
 			{
 				$query->clear();
-				$query->from($_db->quoteName($table_name));
+				$query->from($db->quoteName($table_name));
 				$query->delete();
-				$query->where($_db->quoteName('subscriber_id') . ' = ' . (int) $recipients_data->id);
-				$_db->setQuery((string) $query);
+				$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $recipients_data->id);
+				$db->setQuery((string) $query);
 
 				try
 				{
-					$_db->execute();
+					$db->execute();
 				}
 				catch (RuntimeException $e)
 				{
@@ -2822,6 +2750,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
+	 * Method to process test mode with one or more of the following settings
+	 * - dummy sender
+	 * - dummy recipients
+	 * - arise queue (to check behavior of queue tab)
+	 * - demo mode
 	 *
 	 * @return void
 	 *
@@ -2849,25 +2782,25 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
 	private function getAssociatedMailinglistsByCampaign($id)
 	{
-		$_db	= $this->_db;
+		$db	= $this->_db;
 		$mailinglists = array();
 
-		$query = $_db->getQuery(true);
-		$query->select($_db->quoteName('mailinglist_id'));
-		$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
-		$query->where($_db->quoteName('campaign_id') . ' = ' . (int) $id);
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('mailinglist_id'));
+		$query->from($db->quoteName('#__bwpostman_campaigns_mailinglists'));
+		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $id);
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$mailinglists = $_db->loadColumn();
+			$mailinglists = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
@@ -2884,25 +2817,25 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
 	private function getAssociatedMailinglistsByNewsletter($id)
 	{
-		$_db	= $this->_db;
+		$db	= $this->_db;
 		$mailinglists = array();
 
-		$query = $_db->getQuery(true);
-		$query->select($_db->quoteName('mailinglist_id'));
-		$query->from($_db->quoteName('#__bwpostman_newsletters_mailinglists'));
-		$query->where($_db->quoteName('newsletter_id') . ' = ' . (int) $id);
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('mailinglist_id'));
+		$query->from($db->quoteName('#__bwpostman_newsletters_mailinglists'));
+		$query->where($db->quoteName('newsletter_id') . ' = ' . (int) $id);
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$mailinglists = $_db->loadColumn();
+			$mailinglists = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
@@ -2919,14 +2852,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return void
 	 *
-	 * @since 2.3.0
-	 *
 	 * @throws Exception
+	 *
+	 * @since 2.3.0
 	 */
 	private function presetOldHTMLTemplate(&$item)
 	{
 		$html_tpl = null;
-		$_db   = $this->_db;
+		$db   = $this->_db;
 
 		if ($item->id == 0)
 		{
@@ -2934,16 +2867,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		elseif ($item->template_id == 0)
 		{
-			$query = $_db->getQuery(true);
+			$query = $db->getQuery(true);
 			$query->select('id');
-			$query->from($_db->quoteName('#__bwpostman_templates'));
-			$query->where($_db->quoteName('id') . ' = ' . (int) -1);
+			$query->from($db->quoteName('#__bwpostman_templates'));
+			$query->where($db->quoteName('id') . ' = ' . (int) -1);
 
-			$_db->setQuery($query);
+			$db->setQuery($query);
 
 			try
 			{
-				$html_tpl = $_db->loadResult();
+				$html_tpl = $db->loadResult();
 			}
 			catch (RuntimeException $e)
 			{
@@ -2966,14 +2899,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return void
 	 *
-	 * @since 2.3.0
-	 *
 	 * @throws Exception
+	 *
+	 * @since 2.3.0
 	 */
 	private function presetOldTextTemplate(&$item)
 	{
 		$text_tpl = null;
-		$_db   = $this->_db;
+		$db   = $this->_db;
 
 		if ($item->id == 0)
 		{
@@ -2981,16 +2914,16 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 		elseif ($item->text_template_id == 0)
 		{
-			$query = $_db->getQuery(true);
+			$query = $db->getQuery(true);
 			$query->select('id');
-			$query->from($_db->quoteName('#__bwpostman_templates'));
-			$query->where($_db->quoteName('id') . ' = ' . (int) -2);
+			$query->from($db->quoteName('#__bwpostman_templates'));
+			$query->where($db->quoteName('id') . ' = ' . (int) -2);
 
-			$_db->setQuery($query);
+			$db->setQuery($query);
 
 			try
 			{
-				$text_tpl = $_db->loadResult();
+				$text_tpl = $db->loadResult();
 			}
 			catch (RuntimeException $e)
 			{
@@ -3013,36 +2946,36 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return integer
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
 	private function countSubscribersOfNewsletter(array $associatedMailinglists, $status, $allSubscribers)
 	{
 		$count_subscribers = 0;
-		$_db       = $this->_db;
-		$query     = $_db->getQuery(true);
+		$db       = $this->_db;
+		$query     = $db->getQuery(true);
 
-		$query->select('COUNT(' . $_db->quoteName('id') . ')');
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
+		$query->select('COUNT(' . $db->quoteName('id') . ')');
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
 
 		if (!$allSubscribers)
 		{
-			$subQuery1 = $_db->getQuery(true);
-			$subQuery1->select('DISTINCT' . $_db->quoteName('subscriber_id'));
-			$subQuery1->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$subQuery1->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $associatedMailinglists) . ')');
-			$query->where($_db->quoteName('id') . ' IN (' . $subQuery1 . ')');
+			$subQuery1 = $db->getQuery(true);
+			$subQuery1->select('DISTINCT' . $db->quoteName('subscriber_id'));
+			$subQuery1->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+			$subQuery1->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $associatedMailinglists) . ')');
+			$query->where($db->quoteName('id') . ' IN (' . $subQuery1 . ')');
 		}
 
-		$query->where($_db->quoteName('status') . ' IN (' . $status . ')');
-		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->where($db->quoteName('status') . ' IN (' . $status . ')');
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$count_subscribers = $_db->loadResult();
+			$count_subscribers = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -3057,33 +2990,33 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return mixed
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
 	private function countUsersOfNewsletter(array $usergroup)
 	{
 		$count_users = 0;
-		$_db       = $this->_db;
-		$query     = $_db->getQuery(true);
-		$sub_query = $_db->getQuery(true);
+		$db       = $this->_db;
+		$query     = $db->getQuery(true);
+		$sub_query = $db->getQuery(true);
 
-		$sub_query->select($_db->quoteName('g') . '.' . $_db->quoteName('user_id'));
-		$sub_query->from($_db->quoteName('#__user_usergroup_map') . ' AS ' . $_db->quoteName('g'));
-		$sub_query->where($_db->quoteName('g') . '.' . $_db->quoteName('group_id') . ' IN (' . implode(',',
+		$sub_query->select($db->quoteName('g') . '.' . $db->quoteName('user_id'));
+		$sub_query->from($db->quoteName('#__user_usergroup_map') . ' AS ' . $db->quoteName('g'));
+		$sub_query->where($db->quoteName('g') . '.' . $db->quoteName('group_id') . ' IN (' . implode(',',
 				$usergroup) . ')');
 
-		$query->select('COUNT(' . $_db->quoteName('u') . '.' . $_db->quoteName('id') . ')');
-		$query->from($_db->quoteName('#__users') . ' AS ' . $_db->quoteName('u'));
-		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('block') . ' = ' . (int) 0);
-		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('activation') . ' = ' . $_db->quote(''));
-		$query->where($_db->quoteName('u') . '.' . $_db->quoteName('id') . ' IN (' . $sub_query . ')');
+		$query->select('COUNT(' . $db->quoteName('u') . '.' . $db->quoteName('id') . ')');
+		$query->from($db->quoteName('#__users') . ' AS ' . $db->quoteName('u'));
+		$query->where($db->quoteName('u') . '.' . $db->quoteName('block') . ' = ' . (int) 0);
+		$query->where($db->quoteName('u') . '.' . $db->quoteName('activation') . ' = ' . $db->quote(''));
+		$query->where($db->quoteName('u') . '.' . $db->quoteName('id') . ' IN (' . $sub_query . ')');
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$count_users = $_db->loadResult();
+			$count_users = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -3100,7 +3033,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return mixed
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
@@ -3169,7 +3102,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return mixed
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
@@ -3233,9 +3166,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return array
 	 *
-	 * @since 2.3.0
-	 *
 	 * @throws Exception
+	 *
+	 * @since 2.3.0
 	 */
 	private function getAssociatedMailinglists($nl_id, $cam_id)
 	{

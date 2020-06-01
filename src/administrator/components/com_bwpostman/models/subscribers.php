@@ -201,11 +201,12 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	private function getSubQuery()
 	{
-		$sub_query  = $this->_db->getQuery(true);
+		$db = $this->_db;
+		$sub_query  = $db->getQuery(true);
 
-		$sub_query->select('COUNT(' . $this->_db->quoteName('b.mailinglist_id') . ') AS ' . $this->_db->quoteName('mailinglists'));
-		$sub_query->from($this->_db->quoteName('#__bwpostman_subscribers_mailinglists', 'b'));
-		$sub_query->where($this->_db->quoteName('b.subscriber_id') . ' = ' . $this->_db->quoteName('a.id'));
+		$sub_query->select('COUNT(' . $db->quoteName('b.mailinglist_id') . ') AS ' . $db->quoteName('mailinglists'));
+		$sub_query->from($db->quoteName('#__bwpostman_subscribers_mailinglists', 'b'));
+		$sub_query->where($db->quoteName('b.subscriber_id') . ' = ' . $db->quoteName('a.id'));
 
 		return $sub_query;
 	}
@@ -221,11 +222,13 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	private function getQueryJoins()
 	{
+		$db = $this->_db;
+
 		// Join over the users for the checked out user.
-		$this->query->select($this->_db->quoteName('uc.name') . ' AS editor');
+		$this->query->select($db->quoteName('uc.name') . ' AS editor');
 		$this->query->join(
 			'LEFT',
-			$this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out')
+			$db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out')
 		);
 	}
 

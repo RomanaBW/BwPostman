@@ -88,9 +88,9 @@ WHERE `core_created_user_id`!='0'
   AND `core_modified_user_id` IS NOT NULL
 ;
 
-UPDATE `jos_ucm_history`
-SET `editor_user_id`='200'
-WHERE `editor_user_id`!='0'
-  AND `editor_user_id` IS NOT NULL
-;
+# UPDATE `jos_ucm_history`
+# SET `editor_user_id`='200'
+# WHERE `editor_user_id`!='0'
+#   AND `editor_user_id` IS NOT NULL
+# ;
 

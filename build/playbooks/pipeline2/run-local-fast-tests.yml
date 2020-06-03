@@ -100,7 +100,7 @@
 
     - name: Pause after rebase
       pause:
-        seconds: 15
+        seconds: 25
       when: failure_file.stat.exists or rebase|bool
 
     - name: Prepare manifest for codeception tests

@@ -81,8 +81,8 @@
 - name: change owner of diverse table entries to UID of admin
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/update-uids-at-diverse-tables.sql"
 
-- name: set UTF8 conversion to 2
-  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/set-utf8-conversion.sql"
+#- name: set UTF8 conversion to 2
+#  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/set-utf8-conversion.sql"
 
 - name: switch off post installation messages
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/reset-post-installation-messages.sql"

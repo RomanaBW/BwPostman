@@ -876,7 +876,7 @@ class Acceptance extends Codeception\Module
 		$I->wait(1);
 		if (!$allowed)
 		{
-			$I->scrollTo(Generals::$first_list_entry, 0, -200);
+			$I->scrollTo(Generals::$first_list_entry, 0, -250);
 			$I->click(Generals::$first_list_entry);
 			$I->clickAndWait(Generals::$toolbarActions, 1);
 			$I->dontSeeElement(Generals::$toolbar4['Publish']);
@@ -884,7 +884,7 @@ class Acceptance extends Codeception\Module
 			return;
 		}
 
-		$I->scrollTo($publish_by_toolbar['publish_button'], 0, -200);
+		$I->scrollTo($publish_by_toolbar['publish_button'], 0, -250);
 		$I->click($publish_by_toolbar['publish_button']);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Publish'], 1);
@@ -904,7 +904,7 @@ class Acceptance extends Codeception\Module
 //		$I->waitForElementVisible($publish_by_toolbar['unpublish_button'], 10);
 		$I->seeElement($publish_by_toolbar['publish_result']);
 
-		$I->scrollTo($publish_by_toolbar['unpublish_button'], 0, -200);
+		$I->scrollTo($publish_by_toolbar['unpublish_button'], 0, -250);
 		$I->waitForElementVisible($publish_by_toolbar['unpublish_button'], 3);
 		$I->wait(1);
 		$I->clickAndWait($publish_by_toolbar['unpublish_button'], 1);

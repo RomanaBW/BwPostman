@@ -262,6 +262,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				$this->obligation['firstname']  	= $params->get('firstname_field_obligation');
 				$this->obligation['special']	    = $params->get('special_field_obligation');
 				$this->obligation['special_label']	= Text::_($params->get('special_label'));
+
 				if ($params->get('name_field_obligation'))
 				{
 					$this->form->setFieldAttribute('name', 'required', 'true');

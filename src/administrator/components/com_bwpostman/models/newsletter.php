@@ -838,8 +838,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	{
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
-		$db     = $this->_db;
-		$query  = $db->getQuery(true);
 
 		// Correct empty publishing dates
 		if (isset($data['publish_up']) &&  $data['publish_up'] === "")
@@ -894,7 +892,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		else
 		{
 			//get id of new inserted data to write cross table newsletters-mailinglists and inject into form
-			$data['id']	= $this->getState('newsletter.id');
+			$data['id']	= $app->getUserState('com_bwpostman.newsletter.id');
 			$jinput->set('id', $data['id']);
 
 			// update state
@@ -1513,7 +1511,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if ($testrecipients) {
+		if ($testrecipients)
+		{
 			$result = true;
 		}
 
@@ -1629,6 +1628,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['is_template']		= $state_data->is_template;
 				$form_data['template_id']		= $state_data->template_id;
 				$form_data['text_template_id']	= $state_data->text_template_id;
+
 				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
 				{
 					$form_data['ml_available']		= $state_data->ml_available;
@@ -1668,6 +1668,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['is_template']		= $state_data->is_template;
 				$form_data['template_id']		= $state_data->template_id;
 				$form_data['text_template_id']	= $state_data->text_template_id;
+
 				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
 				{
 					$form_data['ml_available']		= $state_data->ml_available;
@@ -2356,7 +2357,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 
-			if ($result == 0) {
+			if ($result == 0)
+			{
 				return false;
 			}
 		}
@@ -2454,7 +2456,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$res				= false;
 		$db				= $this->_db;
 		$query				= $db->getQuery(true);
-		$table_name			= '#__bwpostman_sendmailqueue';
+		$queueTableName 	= '#__bwpostman_sendmailqueue';
 		$recipients_data	= new stdClass();
 
 		// getting object for queue and content
@@ -2465,7 +2467,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// needed for changing table objects for queue and content, show/hide messages, ...
 		if (!$fromComponent)
 		{
-			$app->triggerEvent('onBwPostmanBeforeNewsletterSend', array(&$table_name, &$tblSendMailQueue, &$tblSendMailContent));
+			$app->triggerEvent('onBwPostmanBeforeNewsletterSend', array(&$queueTableName, &$tblSendMailQueue, &$tblSendMailContent));
 		}
 
 		// Get first entry from sendmailqueue
@@ -2519,42 +2521,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// check if subscriber is archived
 		if ($tblSendMailQueue->subscriber_id)
 		{
-			$query->from('#__bwpostman_subscribers');
-			$query->select('id');
-			$query->select('editlink');
-			$query->select('archive_flag');
-			$query->select('status');
-			$query->where('id = ' . (int) $tblSendMailQueue->subscriber_id);
-			$db->setQuery($query);
-			try
-			{
-				$db->execute();
-			}
-			catch (RuntimeException $e)
-			{
-				$app->enqueueMessage($e->getMessage(), 'error');
-			}
+			$subsTable = $this->getTable('Subscribers', 'BwPostmanTable');
+			$recipients_data = $subsTable->getSubscriberNewsletterData($tblSendMailQueue->subscriber_id);
 
-			$recipients_data = $db->loadObject();
-
-			// if subscriber is archived, delete entry from queue
+			// if subscriber is archived, do nothing
 			if ($recipients_data->archive_flag)
 			{
-				$query->clear();
-				$query->from($db->quoteName($table_name));
-				$query->delete();
-				$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $recipients_data->id);
-				$db->setQuery((string) $query);
-
-				try
-				{
-					$db->execute();
-				}
-				catch (RuntimeException $e)
-				{
-					$app->enqueueMessage($e->getMessage(), 'error');
-				}
-
 				return 1;
 			}
 		} // end archived-check

@@ -445,6 +445,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	public function save($data)
 	{
+		$app     = Factory::getApplication();
+
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
 		BwPostmanMailinglistHelper::mergeMailinglists($data);
 
@@ -461,15 +463,15 @@ class BwPostmanModelCampaign extends JModelAdmin
 				}
 				else
 				{
-					$jinput		= Factory::getApplication()->input;
+					$jinput		= $app->input;
 					//get id of new inserted data to write cross table newsletters-mailinglists and inject into form
-					$data['id']	= $this->getState('campaign.id');
+					$data['id']	= $app->getUserState('com_bwpostman.edit.campaign.id');
 					$jinput->set('id', $data['id']);
 
 					// update state
-					$state_data	= Factory::getApplication()->getUserState('com_bwpostman.edit.campaign.data');
+					$state_data	= $app->getUserState('com_bwpostman.edit.campaign.data');
 					$state_data->id	= $data['id'];
-					Factory::getApplication()->setUserState('com_bwpostman.edit.campaign.data', $state_data);
+					$app->setUserState('com_bwpostman.edit.campaign.data', $state_data);
 
 				}
 
@@ -478,12 +480,12 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 				PluginHelper::importPlugin('bwpostman');
 
-				Factory::getApplication()->triggerEvent('onBwPostmanCampaignSave', array ($data));
+				$app->triggerEvent('onBwPostmanCampaignSave', array ($data));
 			}
 		}
 		else
 		{
-			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'), 'error');
 			$res	= false;
 		}
 

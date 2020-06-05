@@ -178,7 +178,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	}
 
 	/**
-	 * Method to get the first entry of this table
+	 * Method to get the first entry of this table and remove it
 	 *
 	 * @param   integer     $trial           Only pop entries with < trial
 	 * @param   boolean     $fromComponent   do we come from component or from plugin

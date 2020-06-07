@@ -2204,7 +2204,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if (!$nl_id)
 		{
-			$ret_msg	= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
+			$ret_msg	= Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '1');
 			return false;
 		}
 
@@ -2240,7 +2240,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 					if (!$tblSendmailQueue->pushAllSubscribers($content_id, $status))
 					{
-						$ret_msg	= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
+						$ret_msg	= Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '2');
 						return false;
 					}
 				}
@@ -2250,7 +2250,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$params = ComponentHelper::getParams('com_bwpostman');
 					if (!$tblSendmailQueue->pushJoomlaUser($content_id, $usergroups, $params->get('default_emailformat')))
 					{
-						$ret_msg	= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
+						$ret_msg	= Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '3');
 						return false;
 					}
 				}
@@ -2267,7 +2267,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					}
 
 					if (!$tblSendmailQueue->pushAllFromNlId($nl_id, $content_id, $status, $cam_id)){
-						$ret_msg	= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
+						$ret_msg	= Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '4');
 						return false;
 					}
 				}
@@ -2295,7 +2295,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				break;
 
 			default:
-				$ret_msg	= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON');
+				$ret_msg	= Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '5');
 		}
 
 		return true;

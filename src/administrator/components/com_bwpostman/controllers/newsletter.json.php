@@ -164,7 +164,7 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 
 				if ($ret == 2)
 				{   // There are fatal errors.
-					echo "<br /><span id='nl_modal_to_send_message_error' style='color: #ff0000;'>" . Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON') . "</span>";
+					echo "<br /><span id='nl_modal_to_send_message_error' style='color: #ff0000;'>" . Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '10') . "</span>";
 					$sending = "secondary";
 					$error = 'error';
 					$ready = "1";
@@ -208,7 +208,7 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 		}
 		catch (RuntimeException $e)
 		{
-			echo Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON') . '<br />';
+			echo Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '11') . '<br />';
 			echo $e->getMessage();
 			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
 			exit;
@@ -216,7 +216,7 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 
 		catch (Exception $e)
 		{
-			echo Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON') . '<br />';
+			echo Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '12') . '<br />';
 			echo $e->getMessage();
 			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
 			exit;

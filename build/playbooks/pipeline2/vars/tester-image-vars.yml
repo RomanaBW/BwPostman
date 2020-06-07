@@ -13,7 +13,7 @@ j_version_short: "j4b"
 
 bwpm_version: "2.4.0"
 #j_alpha_version: "alpha12"
-j_beta_dev_version: "beta2-dev"
+j_beta_dev_version: "beta1-dev"
 
 vm_version: "3.4.2.9966"
 tcpdf_version: "1.0.5"

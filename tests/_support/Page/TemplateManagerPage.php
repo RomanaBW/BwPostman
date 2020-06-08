@@ -138,14 +138,14 @@ class TemplateManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $default_result1      = "//*[@id='main-table']/tbody/tr[3]/td[5]/*/span[contains(@class, 'icon-color-featured')]";
+	public static $default_result1      = "//*[@id='main-table']/tbody/tr[3]/td[5]/*/span[contains(@class, '-featured')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $no_default_result1   = "//*[@id='main-table']/tbody/tr[4]/td[5]/*/span[contains(@class, 'icon-color-featured')]";
+	public static $no_default_result1   = "//*[@id='main-table']/tbody/tr[4]/td[5]/*/span[contains(@class, '-featured')]";
 
 
 	/**
@@ -160,14 +160,14 @@ class TemplateManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $default_result2      = "//*[@id='main-table']/tbody/tr[4]/td[5]/*/span[contains(@class, 'icon-color-featured')]";
+	public static $default_result2      = "//*[@id='main-table']/tbody/tr[4]/td[5]/*/span[contains(@class, '-featured')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $no_default_result2   = "//*[@id='main-table']/tbody/tr[3]/td[5]/*/span[contains(@class, 'icon-color-featured')]";
+	public static $no_default_result2   = "//*[@id='main-table']/tbody/tr[3]/td[5]/*/span[contains(@class, '-featured')]";
 
 	// Filter mail format
 

@@ -105,10 +105,10 @@ class TemplateManagerPage
 	 * @since 2.0.0
 	 */
 	public static $publish_by_icon   = array(
-		'publish_button'    => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
-		'publish_result'    => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a",
-		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    => ".//*[@id='main-table']/tbody/tr[1]/td[6]/a",
+		'publish_result'    => ".//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  => ".//*[@id='main-table']/tbody/tr[1]/td[6]/a",
+		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 	// publish by toolbar
@@ -119,10 +119,10 @@ class TemplateManagerPage
 	 * @since 2.0.0
 	 */
 	public static $publish_by_toolbar   = array(
-		'publish_button'    => ".//*[@id='cb3']",
-		'publish_result'    => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-publish')]",
-		'unpublish_button'  => ".//*[@id='cb3']",
-		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[4]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+		'publish_button'    => ".//*[@id='cb0']",
+		'publish_result'    => ".//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'unpublish_button'  => ".//*[@id='cb0']",
+		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 
@@ -145,7 +145,7 @@ class TemplateManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $no_default_result1   = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $no_default_result1   = ".//*[@id='main-table']/tbody/tr[4]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
 
 	/**
@@ -153,14 +153,14 @@ class TemplateManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $default_button2      = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a";
+	public static $default_button2      = ".//*[@id='main-table']/tbody/tr[4]/td[5]/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $default_result2      = ".//*[@id='main-table']/tbody/tr[1]/td[5]/a/span[contains(@class, 'icon-featured')]";
+	public static $default_result2      = ".//*[@id='main-table']/tbody/tr[4]/td[5]/a/span[contains(@class, 'icon-featured')]";
 
 	/**
 	 * @var string

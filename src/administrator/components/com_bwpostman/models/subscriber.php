@@ -242,7 +242,17 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$data			= $app->getUserState('com_bwpostman.edit.subscriber.data', null);
 		$mailinglists	= $app->getUserState('com_bwpostman.edit.subscriber.mailinglists', null);
 
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
+		//@SpecialNote: Workaround:$this->getState() doesn't appear reliable at new item, which is only saved (no save and close)
+		//@SpecialNote: This misbehaviour leads to empty item, also it is stored
+		if (empty($pk))
+		{
+			$pk = (int) $app->getUserState('subscriber.id');
+
+			if (empty($pk))
+			{
+				$pk = (int) $this->getState($this->getName() . '.id');
+			}
+		}
 
 		if (!$data)
 		{
@@ -423,7 +433,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				$data['editlink'] = BwPostmanSubscriberHelper::getEditlink();
 
 				// Admin doesn't confirm the subscriber?
-				if (!array_key_exists('confirm', $data))
+				if (!array_key_exists('status', $data) || $data['status'] !== 1)
 				{
 					$data['activation'] = BwPostmanSubscriberHelper::createActivation();
 				}
@@ -470,7 +480,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			if (parent::save($data))
 			{
 				// Get the subscriber ID
-				$subscriber_id = $this->getState('subscriber.id');
+				$subscriber_id = $app->getUserState('com_bwpostman.subscriber.id');
 
 				// Delete all entries of the subscriber from subscribers_mailinglists-Table
 				BwPostmanSubscriberHelper::deleteMailinglistsOfSubscriber((int) $subscriber_id);

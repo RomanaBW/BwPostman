@@ -752,6 +752,7 @@ class BwPostmanTableSubscribers extends JTable
 					$err['err_email']	= $this->email;
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
 					$session->set('session_error', $err);
+					$this->setError(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $this->email,  $xid));
 					return false;
 				}
 			}
@@ -839,6 +840,7 @@ class BwPostmanTableSubscribers extends JTable
 		}
 
 		$app->setUserState('com_bwpostman.subscriber.id', $this->id);
+		$app->setUserState('subscriber.id', $this->id);
 
 		return $res;
 	}
@@ -886,5 +888,44 @@ class BwPostmanTableSubscribers extends JTable
 		$key = $this->getColumnAlias($key);
 
 		return property_exists($this, $key);
+	}
+
+	/**
+	 * Method to check if a subscriber is archived
+	 *
+	 * @param integer $subsId   ID of the subscriber to check
+	 *
+	 * @return 	object|false
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	public function getSubscriberNewsletterData($subsId)
+	{
+		$result = false;
+		$this->reset();
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->select($db->quoteName('editlink'));
+		$query->select($db->quoteName('archive_flag'));
+		$query->select($db->quoteName('status'));
+		$query->from($this->_tbl);
+		$query->where($db->quoteName('id') . ' = ' . $db->quote((int) $subsId));
+
+		$db->setQuery($query);
+
+		try
+		{
+			$result = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $result;
 	}
 }

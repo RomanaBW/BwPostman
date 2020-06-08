@@ -323,6 +323,37 @@ class BwPostmanControllerSubscriber extends JControllerForm
 
 		PluginHelper::importPlugin('bwpostman');
 		Factory::getApplication()->triggerEvent('onBwPostmanAfterSubscriberControllerSave', array());
+
+		$task		= $this->getTask();
+
+		switch ($task)
+		{
+			case 'save':
+			case 'save2new':
+			case 'save2copy':
+				Factory::getApplication()->setUserState('subscriber.id', null);
+				break;
+		}
+	}
+
+	/**
+	 * Override method to cancel edit of a subscriber
+	 *
+	 * @param   string  $key     The name of the primary key of the URL variable.
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.4.0
+	 *
+	 */
+	public function cancel($key = null)
+	{
+
+		parent::cancel();
+
+		Factory::getApplication()->setUserState('subscriber.id', null);
 	}
 
 	/**

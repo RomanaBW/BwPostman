@@ -2311,7 +2311,14 @@ class Com_BwPostmanInstallerScript
 				}
 				var modalcontent = document.getElementById('bwp_modal-content');
 				modalcontent.style.height = viewportheight-(viewportheight*{$percent})+'px';
-				modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
+				";
+				if(!$this->isJ4)
+				{
+					$js .= "
+							modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
+					";
+				}
+				$js .= "
 
 				// Get the modal
 				var modal = document.getElementById('bwp_Modal');

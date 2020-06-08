@@ -169,7 +169,7 @@ HTMLHelper::_('bootstrap.tooltip');
 
 				<div class="maindivider<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"></div>
 
-				<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+				<div class="w-100 contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 					<p class="edit_required">
 						<?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?>
 					</p>
@@ -178,11 +178,9 @@ HTMLHelper::_('bootstrap.tooltip');
 				<button class="button validate save btn" type="button" onclick="return submitbutton('submit');">
 					<?php echo Text::_('COM_BWPOSTMAN_BUTTON_EDIT'); ?>
 				</button>
-				<?php if (Factory::getUser()->get('guest')):   ?>
-					<button class="button validate leave btn" type="button" onclick="return submitbutton('submitleave');">
-						<?php echo Text::_('COM_BWPOSTMAN_BUTTON_LEAVEEDIT'); ?>
-					</button>
-				<?php endif; ?>
+				<button class="button validate leave btn ml-2" type="button" onclick="return submitbutton('submitleave');">
+					<?php echo Text::_('COM_BWPOSTMAN_BUTTON_LEAVEEDIT'); ?>
+				</button>
 
 				<input type="hidden" name="option" value="com_bwpostman" />
 				<input type="hidden" name="task" value="save" />

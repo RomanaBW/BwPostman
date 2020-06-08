@@ -111,7 +111,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
 				<?php endif; // End captcha ?>
 
-				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="w-100 contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php // Show Disclaimer only if enabled in basic parameters
 					if ($this->params->get('disclaimer')) :
 						?>

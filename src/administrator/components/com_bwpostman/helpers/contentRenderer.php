@@ -933,20 +933,20 @@ class contentRenderer
 			$newtext .= '<body ';
 			if (empty($tpl->basics['paper_bg']))
 			{
-				$newtext .= ' <bgcolor="#ffffff" emb-default-color="#ffffff';
+				$newtext .= 'bgcolor="#ffffff" emb-default-color="#ffffff"';
 
 				if (!empty($tpl->basics['legal_color']))
 				{
-					$newtext .= 'style="color:' . $tpl->basics['legal_color'] . '";';
+					$newtext .= ' style="color:' . $tpl->basics['legal_color'] . ';"';
 				}
 			}
 			else
 			{
-				$newtext .= ' <bgcolor="' . $tpl->basics['paper_bg'] .
+				$newtext .= 'bgcolor="' . $tpl->basics['paper_bg'] .
 					'" emb-default-bgcolor="' . $tpl->basics['paper_bg'] . '" style="background-color:' . $tpl->basics['paper_bg'] . ';';
 				if (!empty($tpl->basics['legal_color']))
 				{
-					$newtext .= 'color:' . $tpl->basics['legal_color'] . '";';
+					$newtext .= 'color:' . $tpl->basics['legal_color'] . ';';
 				}
 
 				$newtext .= '"';

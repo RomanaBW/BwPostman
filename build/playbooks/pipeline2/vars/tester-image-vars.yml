@@ -1,7 +1,7 @@
 ---
 # Fast changing variables
 #joomla_version_4a: "4.0.0a12"
-joomla_version_4b: "4.0.0b1-4"
+joomla_version_4b: "4.0.0b1-3"
 joomla_version_3: "3.9.19"
 
 # this one has to be adjusted to the desired Joomla version

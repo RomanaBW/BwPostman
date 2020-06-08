@@ -48,7 +48,7 @@ $lists      = $displayData['lists'];
 	} // End: Show pretext only if set in basic parameters ?>
 
 	<?php // Show editlink only if the user is not logged in
-	if (Factory::getUser()->get('guest'))
+	if (Factory::getApplication()->input->get('view') !== 'edit')
 	{
 		$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
 		?>

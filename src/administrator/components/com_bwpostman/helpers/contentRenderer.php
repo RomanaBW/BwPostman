@@ -942,7 +942,7 @@ class contentRenderer
 			}
 			else
 			{
-				BwPostmanTplHelper::getBodyTag();
+				$newtext .= BwPostmanTplHelper::getBodyTag();
 			}
 		}
 

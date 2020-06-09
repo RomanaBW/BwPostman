@@ -928,35 +928,22 @@ class contentRenderer
 		$newtext .= '   </style>' . "\n";
 		$newtext .= ' </head>' . "\n";
 
-		if (($tpl->tpl_id !== '0'))
+		if (isset($tpl->basics['paper_bg']))
 		{
-			$newtext .= '<body ';
-			if (empty($tpl->basics['paper_bg']))
-			{
-				$newtext .= 'bgcolor="#ffffff" emb-default-color="#ffffff"';
-
-				if (!empty($tpl->basics['legal_color']))
-				{
-					$newtext .= ' style="color:' . $tpl->basics['legal_color'] . ';"';
-				}
-			}
-			else
-			{
-				$newtext .= 'bgcolor="' . $tpl->basics['paper_bg'] .
-					'" emb-default-bgcolor="' . $tpl->basics['paper_bg'] . '" style="background-color:' . $tpl->basics['paper_bg'] . ';';
-				if (!empty($tpl->basics['legal_color']))
-				{
-					$newtext .= 'color:' . $tpl->basics['legal_color'] . ';';
-				}
-
-				$newtext .= '"';
-			}
-
-			$newtext .= '>' . "\n";
+			$newtext .= ' <body bgcolor="' . $tpl->basics['paper_bg'] .
+						'" emb-default-bgcolor="' . $tpl->basics['paper_bg'] . '" style="background-color:' . $tpl->basics['paper_bg'] .
+						';color:' . $tpl->basics['legal_color'] . ';">' . "\n";
 		}
 		else
 		{
-			$newtext .= isset($tpl->tpl_tags_body) && $tpl->tpl_tags_body == 0 ? $tpl->tpl_tags_body_advanced : BwPostmanTplHelper::getBodyTag();
+			if (isset($tpl->tpl_tags_body) && $tpl->tpl_tags_body == 0 && trim($tpl->tpl_tags_body_advanced !== ''))
+			{
+				$newtext .= $tpl->tpl_tags_body_advanced;
+			}
+			else
+			{
+				BwPostmanTplHelper::getBodyTag();
+			}
 		}
 
 		$newtext .= $text . "\n";

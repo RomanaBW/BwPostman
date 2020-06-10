@@ -385,18 +385,6 @@ class BwPostmanSubscriberHelper
 		$active_intro      = Text::_($params->get('activation_text'));
 		$permission_text   = Text::_($params->get('permission_text'));
 
-		$subscriber_id = $app->getUserState("com_bwpostman.subscriber.id");
-
-		if(isset($subscriber_id))
-		{
-			PluginHelper::importPlugin('bwpostman');
-
-			if (PluginHelper::isEnabled('bwpostman', 'personalize'))
-			{
-				$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$active_title, $subscriber_id));
-			}
-		}
-
 		$active_msg        = $active_title;
 
 		if ($name !== '')
@@ -404,6 +392,7 @@ class BwPostmanSubscriberHelper
 			$active_msg        .= ' ' . $name;
 		}
 
+		$activationSalutation = $active_msg;
 		$active_msg        .= "\n\n" . $active_intro . "\n";
 
 		$body    = '';
@@ -412,7 +401,7 @@ class BwPostmanSubscriberHelper
 
 		switch ($type)
 		{
-			case 0: // Send Registration email
+			case 0: // Send registration email, registration by frontend
 				$subject = Text::sprintf('COM_BWPOSTMAN_SEND_REGISTRATION_SUBJECT', $sitename);
 
 				if (is_null($itemid))
@@ -457,7 +446,7 @@ class BwPostmanSubscriberHelper
 				{
 					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG',
-						$name,
+						$activationSalutation,
 						$sitename,
 						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
 					);
@@ -466,7 +455,7 @@ class BwPostmanSubscriberHelper
 				{
 					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG',
-						$name,
+						$activationSalutation,
 						$sitename,
 						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
 					);
@@ -479,7 +468,7 @@ class BwPostmanSubscriberHelper
 				{
 					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG',
-						$name,
+						$activationSalutation,
 						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
 					);
 				}
@@ -487,7 +476,7 @@ class BwPostmanSubscriberHelper
 				{
 					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG',
-						$name,
+						$activationSalutation,
 						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
 					);
 				}
@@ -507,13 +496,25 @@ class BwPostmanSubscriberHelper
 				}
 				else
 				{
-					$body 	= Text::sprintf(
+					$body 	= $activationSalutation;
+					$body 	.= Text::sprintf(
 						'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
-						$name,
 						$siteURL,
 						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
 					);
 				}
+		}
+
+		$subscriber_id = $app->getUserState("com_bwpostman.subscriber.id");
+
+		if(isset($subscriber_id))
+		{
+			PluginHelper::importPlugin('bwpostman');
+
+			if (PluginHelper::isEnabled('bwpostman', 'personalize'))
+			{
+				$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, $subscriber_id));
+			}
 		}
 
 		$subject = html_entity_decode($subject, ENT_QUOTES);

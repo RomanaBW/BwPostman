@@ -27,6 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 
 // Import MODEL and Helper object class
@@ -265,7 +267,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$properties = $table->getProperties(1);
 
 				$app->triggerEvent('onBwPostmanAfterNewsletterModelGetProperties', array(&$properties));
-				$item       = ArrayHelper::toObject($properties, 'JObject');
+				$item = ArrayHelper::toObject($properties, 'JObject');
 
 				if (property_exists($item, 'params'))
 				{
@@ -274,10 +276,12 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 
 				// Get associated mailinglists
-				$item->mailinglists = $this->getAssociatedMailinglistsByNewsletter($item->id);
+				$crossTable = $this->getTable('Newsletters_Mailinglists');
+				$item->mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter($item->id);
 
 				//extract associated usergroups
 				$usergroups = array();
+
 				foreach ($item->mailinglists as $mailinglist)
 				{
 					if ((int) $mailinglist < 0)
@@ -493,7 +497,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	/**
 	 * Method check if newsletter is content template
 	 *
-	 * @param   array  $id        ID of newsletter
+	 * @param   integer  $id        ID of newsletter
 	 *
 	 * @return	boolean           state of is_template
 	 *
@@ -503,77 +507,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function isTemplate($id)
 	{
-		$db	= Factory::getDbo();
-		$query	= $db->getQuery(true);
+		$table = $this->getTable();
 
-		$query->select($db->quoteName('is_template'));
-		$query->from($db->quoteName('#__bwpostman_newsletters'));
-		$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
+		$isTemplate = $table->isTemplate($id);
 
-		$db->setQuery($query);
-		try
-		{
-			$isTemplate = (integer)$db->loadResult();
-			if ($isTemplate === 1)
-			{
-				return true;
-			}
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return false;
-	}
-
-	/**
-	 * Method to get the ID of the standard template for HTML or text mode
-	 *
-	 * @param   string  $mode       HTML or text
-	 *
-	 * @return	string	            ID of standard template
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.2.0
-	 */
-	private function getStandardTpl($mode	= 'html')
-	{
-		$tpl    = new stdClass();
-		$db	= Factory::getDbo();
-		$query	= $db->getQuery(true);
-
-		// Id of the standard template
-		switch ($mode)
-		{
-			case 'html':
-			default:
-					$query->select($db->quoteName('id'));
-					$query->from($db->quoteName('#__bwpostman_templates'));
-					$query->where($db->quoteName('standard') . ' = ' . $db->quote('1'));
-					$query->where($db->quoteName('tpl_id') . ' < ' . $db->quote('998'));
-				break;
-
-			case 'text':
-					$query->select($db->quoteName('id') . ' AS ' . $db->quoteName('value'));
-					$query->from($db->quoteName('#__bwpostman_templates'));
-					$query->where($db->quoteName('standard') . ' = ' . $db->quote('1'));
-					$query->where($db->quoteName('tpl_id') . ' > ' . $db->quote('997'));
-				break;
-		}
-
-		$db->setQuery($query);
-		try
-		{
-			$tpl    = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $tpl;
+		return $isTemplate;
 	}
 
 	/**
@@ -690,9 +628,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function getSelectedContentItems()
 	{
+		$nlId = (int) $this->getState($this->getName() . '.id');
 		$db	= $this->_db;
 
-		$selected_content = $this->getSelectedContentFromNewsletterTable();
+		$selected_content = $this->getTable()->getSelectedContentOfNewsletter($nlId);
 
 		if (!$selected_content)
 		{
@@ -750,54 +689,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the menu item ID which will be needed for the unsubscribe link in the footer
-	 *
-	 * @param   string  $view
-	 *
-	 * @return 	int     $itemid     menu item ID
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public static function getItemid($view)
-	{
-		$itemid = '';
-		$db	= Factory::getDbo();
-		$query	= $db->getQuery(true);
-
-		$query->select($db->quoteName('id'));
-		$query->from($db->quoteName('#__menu'));
-		$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=' . $view));
-		$query->where($db->quoteName('published') . ' = ' . (int) 1);
-
-		try
-		{
-			$db->setQuery($query);
-			$itemid = $db->loadResult();
-
-			if (empty($itemid))
-			{
-				$query = $db->getQuery(true);
-
-				$query->select($db->quoteName('id'));
-				$query->from($db->quoteName('#__menu'));
-				$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=register'));
-				$query->where($db->quoteName('published') . ' = ' . (int) 1);
-
-				$db->setQuery($query);
-				$itemid = $db->loadResult();
-			}
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $itemid;
-	}
-
-	/**
 	 * Method to validate the form data.
 	 *
 	 * @param   Form    $form   The form to validate against.
@@ -824,7 +715,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
-	 * Method to store the newsletter data from the newsletters_tmp-table into the newsletters-table
+	 * Method to store the newsletter data into the newsletters-table
 	 *
 	 * @param   array   $data       data to save
 	 *
@@ -884,7 +775,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		$crossTableNlMl = $this->getTable('Newsletters_Mailinglists');
 
-		// Delete all entries of the newsletter from newsletters_mailinglists table
+		// On existing newsletter delete all entries of the newsletter from newsletters_mailinglists table
 		if ($data['id'])
 		{
 			$crossTableNlMl->deleteNewsletter((int) $data['id']);
@@ -905,6 +796,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 		}
 
+		// Rewrite newsletters_mailinglists table )only if newsletter is not part of campaign, else this is managed at campaigns)
 		if ((integer)$data['campaign_id'] === -1)
 		{
 			// Store the selected BwPostman mailinglists into newsletters_mailinglists-table
@@ -938,59 +830,32 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	public function archive($cid = array(), $archive = 1)
 	{
 		$app		= Factory::getApplication();
-		$date		= Factory::getDate();
-		$uid		= Factory::getUser()->get('id');
 		$state_data	= $app->getUserState('com_bwpostman.edit.newsletter.data');
-		$db		= $this->_db;
-		$query		= $db->getQuery(true);
 
-		if ($archive == 1)
+		// Access check.
+		foreach ($cid as $id)
 		{
-			$time = $date->toSql();
-
-			// Access check.
-			foreach ($cid as $id)
+			if ($archive === 1)
 			{
 				if (!BwPostmanHelper::canArchive('newsletter', 0, (int) $id))
 				{
 					return false;
 				}
 			}
-		}
-		else
-		{
-			// Access check.
-			foreach ($cid as $id)
+			else
 			{
 				if (!BwPostmanHelper::canRestore('newsletter', (int) $id))
 				{
 					return false;
 				}
 			}
-
-			$time	= '0000-00-00 00:00:00';
-			$uid	= 0;
 		}
 
 		if (count($cid))
 		{
 			ArrayHelper::toInteger($cid);
 
-			$query->update($db->quoteName('#__bwpostman_newsletters'));
-			$query->set($db->quoteName('archive_flag') . " = " . (int) $archive);
-			$query->set($db->quoteName('archive_date') . " = " . $db->quote($time, false));
-			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
-			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
-
-			$db->setQuery($query);
-			try
-			{
-				$db->execute();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+			$this->getTable()->archive($cid, $archive);
 		}
 
 		$app->setUserState('com_bwpostman.edit.newsletter.data', $state_data);
@@ -1017,87 +882,77 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		$app	= Factory::getApplication();
+
+		if (!count($cid))
+		{
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_COPYING'), 'error');
+
+			return false;
+		}
+
 		$db	= $this->_db;
 
-		if (count($cid))
+		foreach ($cid as $id)
 		{
-			foreach ($cid as $id)
+			// Get newsletter data to copy
+			$newsletters_data_copy = $this->getTable()->getNewsletterData($id);
+
+			if (!$newsletters_data_copy || !is_object($newsletters_data_copy))
 			{
-				$newsletters_data_copy  = new stdClass();
-				$query	                = $db->getQuery(true);
+				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_COPY_FAILED'), 'error');
 
-				$query->select('*');
-				$query->from($db->quoteName('#__bwpostman_newsletters'));
-				$query->where($db->quoteName('id') . ' = ' . (int) $id);
+				return false;
+			}
 
-				$db->setQuery($query);
-
-				try
+			// Adjust usergroups data
+			if (is_string($newsletters_data_copy->usergroups))
+			{
+				if ($newsletters_data_copy->usergroups == '')
 				{
-					$newsletters_data_copy = $db->loadObject();
+					$newsletters_data_copy->usergroups = array();
 				}
-				catch (RuntimeException $e)
+				else
 				{
-					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-				}
-
-				if (is_string($newsletters_data_copy->usergroups))
-				{
-					if ($newsletters_data_copy->usergroups == '')
-					{
-						$newsletters_data_copy->usergroups = array();
-					}
-					else
-					{
-						$newsletters_data_copy->usergroups	= explode(',', $newsletters_data_copy->usergroups);
-					}
-				}
-
-				if (!is_object($newsletters_data_copy))
-				{
-					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_COPY_FAILED'), 'error');
-				}
-
-				$date	= Factory::getDate();
-				$time	= $date->toSql();
-				$user	= Factory::getUser();
-				$uid	= $user->get('id');
-
-				$newsletters_data_copy->id 					= null;
-				$newsletters_data_copy->asset_id			= null;
-				$newsletters_data_copy->subject 			= Text::sprintf('COM_BWPOSTMAN_NL_COPY_OF', $newsletters_data_copy->subject);
-				$newsletters_data_copy->attachment	 		= null;
-				$newsletters_data_copy->created_date 		= $time;
-				$newsletters_data_copy->created_by			= $uid;
-				$newsletters_data_copy->modified_time	 	= null;
-				$newsletters_data_copy->modified_by	 		= null;
-				$newsletters_data_copy->mailing_date 		= 0;
-				$newsletters_data_copy->published 			= null;
-				$newsletters_data_copy->checked_out 		= null;
-				$newsletters_data_copy->checked_out_time 	= null;
-				$newsletters_data_copy->archive_flag 		= 0;
-				$newsletters_data_copy->archive_date 		= 0;
-				$newsletters_data_copy->hits 				= null;
-				$newsletters_data_copy->substitute_links	= null;
-				$newsletters_data_copy->is_template			= 0;
-
-				$newsletters_data_copy->mailinglists = $this->getAssociatedMailinglistsByNewsletter((int) $id);
-
-				if (!$this->save(ArrayHelper::fromObject($newsletters_data_copy, false)))
-				{
-					$app->enqueueMessage($db->getErrorMsg(), 'error');
-					return false;
+					$newsletters_data_copy->usergroups	= explode(',', $newsletters_data_copy->usergroups);
 				}
 			}
 
-			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_COPIED'), 'message');
-			return true;
+			$date	= Factory::getDate();
+			$time	= $date->toSql();
+			$user	= Factory::getUser();
+			$uid	= $user->get('id');
+
+			// Reset some item specific values
+			$newsletters_data_copy->id 					= null;
+			$newsletters_data_copy->asset_id			= null;
+			$newsletters_data_copy->subject 			= Text::sprintf('COM_BWPOSTMAN_NL_COPY_OF', $newsletters_data_copy->subject);
+			$newsletters_data_copy->attachment	 		= null;
+			$newsletters_data_copy->created_date 		= $time;
+			$newsletters_data_copy->created_by			= $uid;
+			$newsletters_data_copy->modified_time	 	= null;
+			$newsletters_data_copy->modified_by	 		= null;
+			$newsletters_data_copy->mailing_date 		= 0;
+			$newsletters_data_copy->published 			= null;
+			$newsletters_data_copy->checked_out 		= null;
+			$newsletters_data_copy->checked_out_time 	= null;
+			$newsletters_data_copy->archive_flag 		= 0;
+			$newsletters_data_copy->archive_date 		= 0;
+			$newsletters_data_copy->hits 				= null;
+			$newsletters_data_copy->substitute_links	= null;
+			$newsletters_data_copy->is_template			= 0;
+
+			$crossTable = $this->getTable('Newsletters_Mailinglists');
+			$newsletters_data_copy->mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter((int) $id);
+
+			if (!$this->save(ArrayHelper::fromObject($newsletters_data_copy, false)))
+			{
+				$app->enqueueMessage($db->getErrorMsg(), 'error');
+				return false;
+			}
 		}
-		else
-		{
-			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_COPYING'), 'error');
-			return false;
-		}
+
+		$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_COPIED'), 'message');
+		return true;
 	}
 
 	/**
@@ -1117,6 +972,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if (count($pks))
 		{
 			ArrayHelper::toInteger($pks);
+			$nl_table = $this->getTable();
+			$lists_table = $this->getTable('newsletters_mailinglists', 'BwPostmanTable');
 
 			// Access check.
 			foreach ($pks as $id)
@@ -1125,24 +982,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					return false;
 				}
-			}
 
-			// Delete newsletter from newsletters-table
-			$nl_table = Table::getInstance('newsletters', 'BwPostmanTable');
-
-			foreach ($pks as $id)
-			{
+				// Delete newsletter from newsletters-table
 				if (!$nl_table->delete($id))
 				{
 					return false;
 				}
-			}
 
-			// Delete assigned mailinglists from newsletters_mailinglists-table
-			$lists_table = Table::getInstance('newsletters_mailinglists', 'BwPostmanTable');
-
-			foreach ($pks as $id)
-			{
+				// Delete assigned mailinglists from newsletters_mailinglists-table
 				if (!$lists_table->delete($id))
 				{
 					return false;
@@ -1170,13 +1017,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return false;
 		}
 
-		$db	= $this->_db;
+		$queueTable = $this->getTable('Sendmailqueue', 'BwPostmanTable');
 
-		$query = "TRUNCATE TABLE {$db->quoteName('#__bwpostman_sendmailqueue')} ";
-		$db->setQuery($query);
 		try
 		{
-			$db->execute();
+			$queueTable->clearQueue();
 		}
 		catch (RuntimeException $e)
 		{
@@ -1223,6 +1068,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// Attempt to change the state of the record.
 		$changeResult = $table->changeIsTemplate($id);
+
 		if ($changeResult === false)
 		{
 			$this->setError($table->getError());
@@ -1237,7 +1083,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
-	 * Method to check and clean the input fields
+	 * Method to do checks before sending
 	 *
 	 * @param	array	$error          errors
 	 * @param 	int		$recordId       Newsletter ID
@@ -1367,7 +1213,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_HTML_AND_TEXT');
 		}
 
-		$nullDate = $db	= Factory::getDbo()->getNullDate();
+		$nullDate = Factory::getDbo()->getNullDate();
 
 		// Check for valid publish_up values
 		if (!$data['publish_up'])
@@ -1385,7 +1231,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
-	 * Method to check if there are selected mailinglists and if they contain recipients
+	 * Method to check if there are selected mailinglists and/or usergroups and if they contain recipients
 	 *
 	 * @param	string	$ret_msg                Error message
 	 * @param	int		$nl_id                  newsletter id
@@ -1398,7 +1244,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	public function checkRecipients(&$ret_msg, $nl_id, $send_to_unconfirmed, $cam_id)
+	public function checkForRecipients(&$ret_msg, $nl_id, $send_to_unconfirmed, $cam_id)
 	{
 		try
 		{
@@ -1418,6 +1264,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			// Check if the subscribers are confirmed and not archived
 			$count_subscribers  = 0;
+
 			if ($check_subscribers)
 			{ // Check subscribers from selected mailinglists
 				if ($send_to_unconfirmed)
@@ -1429,7 +1276,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$status = '1';
 				}
 
-				$count_subscribers = $this->countSubscribersOfNewsletter($associatedMailinglists, $status, false);
+				$count_subscribers = BwPostmanNewsletterHelper::countSubscribersOfNewsletter($associatedMailinglists, $status, false);
 			}
 			elseif ($check_allsubscribers)
 			{ // Check all subscribers (select option "All subscribers")
@@ -1442,7 +1289,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					$status = '1,9';
 				}
 
-				$count_subscribers = $this->countSubscribersOfNewsletter(array(), $status, true);
+				$count_subscribers = BwPostmanNewsletterHelper::countSubscribersOfNewsletter(array(), $status, true);
 			}
 
 			// Checks if the selected usergroups contain users
@@ -1450,7 +1297,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			if (is_array($usergroups) && count($usergroups))
 			{
-				$count_users = $this->countUsersOfNewsletter($usergroups);
+				$count_users = BwPostmanNewsletterHelper::countUsersOfNewsletter($usergroups);
 			}
 
 			// We return only false, if no subscribers AND no joomla users are selected.
@@ -1488,35 +1335,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @since
 	 */
-	public function checkTestrecipients()
+	public function checkForTestrecipients()
 	{
-		$result         = false;
-		$testrecipients = 0;
-		$db	        = $this->_db;
-		$query	= $db->getQuery(true);
+		$subsTable      = $this->getTable('subscribers');
 
-		$query->select('COUNT(' . $db->quoteName('id') . ')');
-		$query->from($db->quoteName('#__bwpostman_subscribers'));
-		$query->where($db->quoteName('status') . ' = ' . (int) 9);
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$testrecipients = $subsTable->checkForTestrecipients();
 
-		$db->setQuery($query);
-
-		try
-		{
-			$testrecipients = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		if ($testrecipients)
-		{
-			$result = true;
-		}
-
-		return $result;
+		return $testrecipients;
 	}
 
 	/**
@@ -1555,9 +1380,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$form_data			= $jinput->get('jform', '', 'array');
 		$layout				= $jinput->get('layout', '', 'string');
 		$add_content		= $jinput->get('add_content', 0);
-		$sel_content		= $jinput->get('selected_content_old', '', 'string');
-		$old_template		= $jinput->get('template_id_old', '', 'string');
-		$old_text_template	= $jinput->get('text_template_id_old', '', 'string');
 
 		// support for plugin substitute links
 		if(isset($form_data['substitute_links']) && $form_data['substitute_links'] == '1')
@@ -1565,248 +1387,254 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$app->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
 		}
 
-		$state_data			= $app->getUserState('com_bwpostman.edit.newsletter.data');
+		$state_data = $app->getUserState('com_bwpostman.edit.newsletter.data');
+
+		if (!is_object($state_data))
+		{
+			$state_data = ArrayHelper::toObject($state_data);
+		}
 
 		// heal form fields
 		switch ($layout)
 		{
 			case 'edit_basic':
-				if(is_object($state_data) && property_exists($state_data, 'html_version'))
+				if (property_exists($state_data, 'html_version'))
 				{
-					$form_data['html_version']	= $state_data->html_version;
+					$form_data['html_version'] = $state_data->html_version;
 				}
 
-				if(is_object($state_data) && property_exists($state_data, 'text_version'))
+				if (property_exists($state_data, 'text_version'))
 				{
-					$form_data['text_version']	= $state_data->text_version;
+					$form_data['text_version'] = $state_data->text_version;
 				}
 				break;
 			case 'edit_html':
-				$form_data['attachment']		= $state_data->attachment;
-				$form_data['text_version']		= $state_data->text_version;
-				$form_data['campaign_id']		= $state_data->campaign_id;
-				$form_data['usergroups']		= $state_data->usergroups;
-				$form_data['is_template']		= $state_data->is_template;
-				$form_data['template_id']		= $state_data->template_id;
-				$form_data['text_template_id']	= $state_data->text_template_id;
+				$form_data['attachment']       = $state_data->attachment;
+				$form_data['text_version']     = $state_data->text_version;
+				$form_data['campaign_id']      = $state_data->campaign_id;
+				$form_data['usergroups']       = $state_data->usergroups;
+				$form_data['is_template']      = $state_data->is_template;
+				$form_data['template_id']      = $state_data->template_id;
+				$form_data['text_template_id'] = $state_data->text_template_id;
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+				if (property_exists($state_data, 'ml_available'))
 				{
-					$form_data['ml_available']	    = $state_data->ml_available;
+					$form_data['ml_available'] = $state_data->ml_available;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				if (property_exists($state_data, 'ml_unavailable'))
 				{
-					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				if (property_exists($state_data, 'ml_intern'))
 				{
-					$form_data['ml_intern']			= $state_data->ml_intern;
+					$form_data['ml_intern'] = $state_data->ml_intern;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'substitute_links'))
+				if (property_exists($state_data, 'substitute_links'))
 				{
-					$form_data['substitute_links']	= $state_data->substitute_links;
+					$form_data['substitute_links'] = $state_data->substitute_links;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				if (property_exists($state_data, 'scheduled_date'))
 				{
-					$form_data['scheduled_date']	= $state_data->scheduled_date;
+					$form_data['scheduled_date'] = $state_data->scheduled_date;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				if (property_exists($state_data, 'ready_to_send'))
 				{
-					$form_data['ready_to_send']	= $state_data->ready_to_send;
+					$form_data['ready_to_send'] = $state_data->ready_to_send;
 				}
 				break;
 			case 'edit_text':
-				$form_data['attachment']		= $state_data->attachment;
-				$form_data['html_version']		= $state_data->html_version;
-				$form_data['campaign_id']		= $state_data->campaign_id;
-				$form_data['usergroups']		= $state_data->usergroups;
-				$form_data['is_template']		= $state_data->is_template;
-				$form_data['template_id']		= $state_data->template_id;
-				$form_data['text_template_id']	= $state_data->text_template_id;
+				$form_data['attachment']       = $state_data->attachment;
+				$form_data['html_version']     = $state_data->html_version;
+				$form_data['campaign_id']      = $state_data->campaign_id;
+				$form_data['usergroups']       = $state_data->usergroups;
+				$form_data['is_template']      = $state_data->is_template;
+				$form_data['template_id']      = $state_data->template_id;
+				$form_data['text_template_id'] = $state_data->text_template_id;
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+				if (property_exists($state_data, 'ml_available'))
 				{
-					$form_data['ml_available']		= $state_data->ml_available;
+					$form_data['ml_available'] = $state_data->ml_available;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				if (property_exists($state_data, 'ml_unavailable'))
 				{
-					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				if (property_exists($state_data, 'ml_intern'))
 				{
-					$form_data['ml_intern']			= $state_data->ml_intern;
+					$form_data['ml_intern'] = $state_data->ml_intern;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'substitute_links'))
+				if (property_exists($state_data, 'substitute_links'))
 				{
-					$form_data['substitute_links']	= $state_data->substitute_links;
+					$form_data['substitute_links'] = $state_data->substitute_links;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				if (property_exists($state_data, 'scheduled_date'))
 				{
-					$form_data['scheduled_date']	= $state_data->scheduled_date;
+					$form_data['scheduled_date'] = $state_data->scheduled_date;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				if (property_exists($state_data, 'ready_to_send'))
 				{
-					$form_data['ready_to_send']	= $state_data->ready_to_send;
+					$form_data['ready_to_send'] = $state_data->ready_to_send;
 				}
 				break;
 			case 'edit_preview':
-				$form_data['attachment']		= $state_data->attachment;
-				$form_data['html_version']		= $state_data->html_version;
-				$form_data['text_version']		= $state_data->text_version;
-				$form_data['campaign_id']		= $state_data->campaign_id;
-				$form_data['usergroups']		= $state_data->usergroups;
-				$form_data['is_template']		= $state_data->is_template;
-				$form_data['template_id']		= $state_data->template_id;
-				$form_data['text_template_id']	= $state_data->text_template_id;
+				$form_data['attachment']       = $state_data->attachment;
+				$form_data['html_version']     = $state_data->html_version;
+				$form_data['text_version']     = $state_data->text_version;
+				$form_data['campaign_id']      = $state_data->campaign_id;
+				$form_data['usergroups']       = $state_data->usergroups;
+				$form_data['is_template']      = $state_data->is_template;
+				$form_data['template_id']      = $state_data->template_id;
+				$form_data['text_template_id'] = $state_data->text_template_id;
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+				if (property_exists($state_data, 'ml_available'))
 				{
-					$form_data['ml_available']		= $state_data->ml_available;
+					$form_data['ml_available'] = $state_data->ml_available;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				if (property_exists($state_data, 'ml_unavailable'))
 				{
-					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				if (property_exists($state_data, 'ml_intern'))
 				{
-					$form_data['ml_intern']			= $state_data->ml_intern;
+					$form_data['ml_intern'] = $state_data->ml_intern;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'substitute_links'))
+				if (property_exists($state_data, 'substitute_links'))
 				{
-					$form_data['substitute_links']	= $state_data->substitute_links;
+					$form_data['substitute_links'] = $state_data->substitute_links;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				if (property_exists($state_data, 'scheduled_date'))
 				{
-					$form_data['scheduled_date']	= $state_data->scheduled_date;
+					$form_data['scheduled_date'] = $state_data->scheduled_date;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				if (property_exists($state_data, 'ready_to_send'))
 				{
-					$form_data['ready_to_send']	= $state_data->ready_to_send;
+					$form_data['ready_to_send'] = $state_data->ready_to_send;
 				}
 				break;
 			case 'edit_send':
-				$form_data['id']                    = $state_data->id;
-				$form_data['subject']               = $state_data->subject;
-				$form_data['description']           = $state_data->description;
-				$form_data['asset_id']              = $state_data->asset_id;
-				$form_data['from_name']             = $state_data->from_name;
-				$form_data['from_email']            = $state_data->from_email;
-				$form_data['reply_email']           = $state_data->reply_email;
-				$form_data['intro_headline']        = $state_data->intro_headline;
-				$form_data['intro_text_headline']   = $state_data->intro_text_headline;
-				$form_data['intro_text']            = $state_data->intro_text;
-				$form_data['intro_text_text']       = $state_data->intro_text_text;
-				$form_data['hits']                  = $state_data->hits;
-				$form_data['access']                = property_exists($state_data, 'access') ? $state_data->access : 1;
-				$form_data['publish_up']            = $state_data->publish_up;
-				$form_data['publish_down']          = $state_data->publish_down;
-				$form_data['archived_by']           = $state_data->archived_by;
-				$form_data['created_date']          = $state_data->created_date;
-				$form_data['modified_time']         = $state_data->modified_time;
-				$form_data['archive_date']          = $state_data->archive_date;
-				$form_data['archive_flag']          = $state_data->archive_flag;
-				$form_data['attachment']            = $state_data->attachment;
-				$form_data['html_version']          = $state_data->html_version;
-				$form_data['text_version']          = $state_data->text_version;
-				$form_data['campaign_id']           = $state_data->campaign_id;
-				$form_data['usergroups']            = $state_data->usergroups;
-				$form_data['is_template']		    = $state_data->is_template;
-				$form_data['template_id']           = $state_data->template_id;
-				$form_data['text_template_id']      = $state_data->text_template_id;
+				$form_data['id']                  = $state_data->id;
+				$form_data['subject']             = $state_data->subject;
+				$form_data['description']         = $state_data->description;
+				$form_data['asset_id']            = $state_data->asset_id;
+				$form_data['from_name']           = $state_data->from_name;
+				$form_data['from_email']          = $state_data->from_email;
+				$form_data['reply_email']         = $state_data->reply_email;
+				$form_data['intro_headline']      = $state_data->intro_headline;
+				$form_data['intro_text_headline'] = $state_data->intro_text_headline;
+				$form_data['intro_text']          = $state_data->intro_text;
+				$form_data['intro_text_text']     = $state_data->intro_text_text;
+				$form_data['hits']                = $state_data->hits;
+				$form_data['access']              = 1;
+				$form_data['publish_up']          = $state_data->publish_up;
+				$form_data['publish_down']        = $state_data->publish_down;
+				$form_data['archived_by']         = $state_data->archived_by;
+				$form_data['created_date']        = $state_data->created_date;
+				$form_data['modified_time']       = $state_data->modified_time;
+				$form_data['archive_date']        = $state_data->archive_date;
+				$form_data['archive_flag']        = $state_data->archive_flag;
+				$form_data['attachment']          = $state_data->attachment;
+				$form_data['html_version']        = $state_data->html_version;
+				$form_data['text_version']        = $state_data->text_version;
+				$form_data['campaign_id']         = $state_data->campaign_id;
+				$form_data['usergroups']          = $state_data->usergroups;
+				$form_data['is_template']         = $state_data->is_template;
+				$form_data['template_id']         = $state_data->template_id;
+				$form_data['text_template_id']    = $state_data->text_template_id;
 
-				if (is_object($state_data) && property_exists($state_data, 'template_old_id'))
+				if (property_exists($state_data, 'template_old_id'))
 				{
 					$form_data['template_old_id'] = $state_data->template_old_id;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'text_template_old_id'))
+				if (property_exists($state_data, 'text_template_old_id'))
 				{
 					$form_data['text_template_old_id'] = $state_data->text_template_old_id;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'access'))
+				if (property_exists($state_data, 'access'))
 				{
 					$form_data['access'] = $state_data->access;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+				if (property_exists($state_data, 'ml_available'))
 				{
-					$form_data['ml_available']		= $state_data->ml_available;
+					$form_data['ml_available'] = $state_data->ml_available;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				if (property_exists($state_data, 'ml_unavailable'))
 				{
-					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				if (property_exists($state_data, 'ml_intern'))
 				{
-					$form_data['ml_intern']			= $state_data->ml_intern;
+					$form_data['ml_intern'] = $state_data->ml_intern;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'substitute_links'))
+				if (property_exists($state_data, 'substitute_links'))
 				{
-					$form_data['substitute_links']	= $state_data->substitute_links;
+					$form_data['substitute_links'] = $state_data->substitute_links;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				if (property_exists($state_data, 'scheduled_date'))
 				{
-					$form_data['scheduled_date']	= $state_data->scheduled_date;
+					$form_data['scheduled_date'] = $state_data->scheduled_date;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				if (property_exists($state_data, 'ready_to_send'))
 				{
-					$form_data['ready_to_send']	= $state_data->ready_to_send;
+					$form_data['ready_to_send'] = $state_data->ready_to_send;
 				}
 				break;
 			case 'edit_publish':
-				$state_data->publish_up		= $form_data['publish_up'];
-				$state_data->publish_down	= $form_data['publish_down'];
-				$form_data['html_version']		= $state_data->html_version;
-				$form_data['text_version']		= $state_data->text_version;
-				$form_data['campaign_id']		= $state_data->campaign_id;
-				$form_data['usergroups']		= $state_data->usergroups;
-				$form_data['is_template']		= $state_data->is_template;
-				$form_data['template_id']		= $state_data->template_id;
-				$form_data['text_template_id']	= $state_data->text_template_id;
-				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+				$state_data->publish_up        = $form_data['publish_up'];
+				$state_data->publish_down      = $form_data['publish_down'];
+				$form_data['html_version']     = $state_data->html_version;
+				$form_data['text_version']     = $state_data->text_version;
+				$form_data['campaign_id']      = $state_data->campaign_id;
+				$form_data['usergroups']       = $state_data->usergroups;
+				$form_data['is_template']      = $state_data->is_template;
+				$form_data['template_id']      = $state_data->template_id;
+				$form_data['text_template_id'] = $state_data->text_template_id;
+
+				if (property_exists($state_data, 'ml_available'))
 				{
-					$form_data['ml_available']		= $state_data->ml_available;
+					$form_data['ml_available'] = $state_data->ml_available;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				if (property_exists($state_data, 'ml_unavailable'))
 				{
-					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				if (property_exists($state_data, 'ml_intern'))
 				{
-					$form_data['ml_intern']			= $state_data->ml_intern;
+					$form_data['ml_intern'] = $state_data->ml_intern;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				if (property_exists($state_data, 'scheduled_date'))
 				{
-					$form_data['scheduled_date']	= $state_data->scheduled_date;
+					$form_data['scheduled_date'] = $state_data->scheduled_date;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				if (property_exists($state_data, 'ready_to_send'))
 				{
-					$form_data['ready_to_send']	= $state_data->ready_to_send;
+					$form_data['ready_to_send'] = $state_data->ready_to_send;
 				}
 				break;
 			default:
@@ -1817,61 +1645,62 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$form_data['is_template']		= $state_data->is_template;
 				$form_data['template_id']		= $state_data->template_id;
 				$form_data['text_template_id']	= $state_data->text_template_id;
-				if (is_object($state_data) && property_exists($state_data, 'ml_available'))
+
+				if (property_exists($state_data, 'ml_available'))
 				{
-					$form_data['ml_available']		= $state_data->ml_available;
+					$form_data['ml_available'] = $state_data->ml_available;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_unavailable'))
+				if (property_exists($state_data, 'ml_unavailable'))
 				{
-					$form_data['ml_unavailable']	= $state_data->ml_unavailable;
+					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ml_intern'))
+				if (property_exists($state_data, 'ml_intern'))
 				{
-					$form_data['ml_intern']			= $state_data->ml_intern;
+					$form_data['ml_intern'] = $state_data->ml_intern;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'scheduled_date'))
+				if (property_exists($state_data, 'scheduled_date'))
 				{
-					$form_data['scheduled_date']	= $state_data->scheduled_date;
+					$form_data['scheduled_date'] = $state_data->scheduled_date;
 				}
 
-				if (is_object($state_data) && property_exists($state_data, 'ready_to_send'))
+				if (property_exists($state_data, 'ready_to_send'))
 				{
-					$form_data['ready_to_send']	= $state_data->ready_to_send;
+					$form_data['ready_to_send'] = $state_data->ready_to_send;
 				}
 				break;
 		}
 
 		// created_by an modified_by needed on every tab
-		if (is_object($state_data) && property_exists($state_data, 'created_by'))
+		if (property_exists($state_data, 'created_by'))
 		{
 			$form_data['created_by'] = $state_data->created_by;
 		}
 
-		if (is_object($state_data) && property_exists($state_data, 'modified_by'))
+		if (property_exists($state_data, 'modified_by'))
 		{
 			$form_data['modified_by'] = $state_data->modified_by;
 		}
 
 		// Publish up and down, checked out need correct null date
-		if (is_object($state_data) && property_exists($state_data, 'publish_up'))
+		if (property_exists($state_data, 'publish_up'))
 		{
 			$form_data['publish_up'] = $state_data->publish_up;
 		}
 
-		if (is_object($state_data) && property_exists($state_data, 'publish_down'))
+		if (property_exists($state_data, 'publish_down'))
 		{
 			$form_data['publish_down'] = $state_data->publish_down;
 		}
 
-		if (is_object($state_data) && property_exists($state_data, 'checked_out_time'))
+		if (property_exists($state_data, 'checked_out_time'))
 		{
 			$form_data['checked_out_time'] = $state_data->checked_out_time;
 		}
 
-		if (is_object($state_data) && property_exists($state_data, 'checked_out'))
+		if (property_exists($state_data, 'checked_out'))
 		{
 			$form_data['checked_out'] = $state_data->checked_out;
 		}
@@ -1893,57 +1722,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$form_data['selected_content']	= implode(',', $form_data['selected_content']);
 		}
 
-		// some content or template has changed?
+		// only render new content, if selection from article list or template has changed
 		if ($add_content)
 		{
-			if (($sel_content != $form_data['selected_content'])
-				|| ($old_template != $form_data['template_id'])
-				|| ($old_text_template != $form_data['text_template_id']))
-			{
-				if ($add_content == '-1'  && (count($nl_content) == 0))
-				{
-					$nl_content = (array) "-1";
-				}
-
-				// only render new content, if selection from article list or template has changed
-				$renderer	= new contentRenderer();
-				$content	= $renderer->getContent($nl_content, $form_data['template_id'], $form_data['text_template_id']);
-
-				$form_data['html_version']	= $content['html_version'];
-				$form_data['text_version']	= $content['text_version'];
-
-				// add intro to form data
-				if ($sel_content != $form_data['selected_content'] || $old_template != $form_data['template_id'])
-				{
-					$tpl = $renderer->getTemplate($form_data['template_id']);
-					if (is_object($tpl) && key_exists('intro_headline', $tpl->intro))
-					{
-						$form_data['intro_headline']	= $tpl->intro['intro_headline'];
-					}
-
-					if (is_object($tpl) && key_exists('intro_text', $tpl->intro))
-					{
-						$form_data['intro_text']		= $tpl->intro['intro_text'];
-					}
-				}
-
-				if ($sel_content != $form_data['selected_content'] || $old_text_template != $form_data['text_template_id'])
-				{
-					$tpl = $renderer->getTemplate($form_data['text_template_id']);
-					if (is_object($tpl) && key_exists('intro_headline', $tpl->intro))
-					{
-						$form_data['intro_text_headline'] = $tpl->intro['intro_headline'];
-					}
-
-					if (is_object($tpl) && key_exists('intro_text', $tpl->intro))
-					{
-						$form_data['intro_text_text'] = $tpl->intro['intro_text'];
-					}
-				}
-
-				$form_data['template_id_old']		= $form_data['template_id'];
-				$form_data['text_template_id_old']	= $form_data['text_template_id'];
-			}
+			$form_data = $this->processChangedContent($form_data, $add_content, $nl_content);
 		}
 		else
 		{
@@ -1954,11 +1736,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// convert form data to object to update state
-		$data = new stdClass();
-		foreach ($form_data as $k => $v)
-		{
-			$data->$k = $v;
-		}
+		$data = ArrayHelper::toObject($form_data, 'stdClass', false);
 
 		$app->setUserState('com_bwpostman.edit.newsletter.data', $data);
 		$app->setUserState('com_bwpostman.edit.newsletter.changeTab', true);
@@ -2037,40 +1815,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the selected content
-	 *
-	 * @return	string
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	public function getSelectedContentFromNewsletterTable()
-	{
-		$content_ids    = '';
-		$db	        = $this->_db;
-
-		// Get selected content from the newsletters-Table
-		$query	= $db->getQuery(true);
-
-		$query->select($db->quoteName('selected_content'));
-		$query->from($db->quoteName('#__bwpostman_newsletters'));
-		$query->where($db->quoteName('id') . ' = ' . (int) $this->getState($this->getName() . '.id'));
-
-		$db->setQuery($query);
-		try
-		{
-			$content_ids = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $content_ids;
-	}
-
-	/**
 	 * If a newsletter shall be sent, then it will be inserted at table sendMailContent
 	 * as a manner of archive and process method completely with content,
 	 * subject & Co. in
@@ -2085,54 +1829,38 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	private function addSendMailContent($nl_id)
 	{
-		$renderer	= new contentRenderer();
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
-
-		$newsletters_data   = new stdClass();
-
-		if ($nl_id)
+		if (!$nl_id)
 		{
-			$query->select('*');
-			$query->from($db->quoteName('#__bwpostman_newsletters'));
-			$query->where($db->quoteName('id') . ' = ' . (int) $nl_id);
-
-			$db->setQuery($query);
-
-			try
-			{
-				$newsletters_data = $db->loadObject();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+			return false;
 		}
-		else
+
+		$newsletters_data = $this->getTable()->getNewsletterData((int)$nl_id);
+
+		if (!$newsletters_data)
 		{
 			return false;
 		}
 
 		// Initialize the sendmailContent
-		$tblSendmailContent = $this->getTable('sendmailcontent', 'BwPostmanTable');
+		$sendMailContent = $this->getTable('sendmailcontent', 'BwPostmanTable');
 
-		// Copy the data from newsletters to sendmailContent
-		$tblSendmailContent->nl_id 			= $newsletters_data->id;
-		$tblSendmailContent->from_name 		= $newsletters_data->from_name;
-		$tblSendmailContent->from_email 	= $newsletters_data->from_email;
-		$tblSendmailContent->subject 		= $newsletters_data->subject;
-		$tblSendmailContent->attachment		= $newsletters_data->attachment;
-		$tblSendmailContent->cc_email 		= null;
-		$tblSendmailContent->bcc_email 		= null;
-		$tblSendmailContent->reply_email 	= $newsletters_data->reply_email;
-		$tblSendmailContent->reply_name	 	= $newsletters_data->from_name;
+		// Copy needed data from newsletters to sendmailContent
+		$sendMailContent->nl_id 		= $newsletters_data->id;
+		$sendMailContent->from_name 	= $newsletters_data->from_name;
+		$sendMailContent->from_email 	= $newsletters_data->from_email;
+		$sendMailContent->subject 		= $newsletters_data->subject;
+		$sendMailContent->attachment	= $newsletters_data->attachment;
+		$sendMailContent->cc_email 		= null;
+		$sendMailContent->bcc_email 	= null;
+		$sendMailContent->reply_email 	= $newsletters_data->reply_email;
+		$sendMailContent->reply_name	= $newsletters_data->from_name;
 
 		if (property_exists($newsletters_data, 'substitute_links'))
 		{
-			$tblSendmailContent->substitute_links 	= $newsletters_data->substitute_links;
+			$sendMailContent->substitute_links 	= $newsletters_data->substitute_links;
 
 			// support for plugin substitute links
-			if ($tblSendmailContent->substitute_links == '1')
+			if ($sendMailContent->substitute_links == '1')
 			{
 				Factory::getApplication()->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
 			}
@@ -2156,25 +1884,25 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			// Set the body and the id, if exists
 			if ($mode == 0)
 			{
-				$tblSendmailContent->body = $newsletters_data->text_version;
+				$sendMailContent->body = $newsletters_data->text_version;
 			}
 			else
 			{
-				$tblSendmailContent->body = $newsletters_data->html_version;
+				$sendMailContent->body = $newsletters_data->html_version;
 			}
 
 			// Set the mode (0=text,1=html)
-			$tblSendmailContent->mode = $mode;
+			$sendMailContent->mode = $mode;
 
 			// Store the data into the sendmailcontent-table
 			// First run generates a new id, which will be used also for the second run.
-			if (!$tblSendmailContent->store())
+			if (!$sendMailContent->store())
 			{
 				return false;
 			}
 		}
 
-		$id = $tblSendmailContent->id;
+		$id = $sendMailContent->id;
 
 		return $id;
 	}
@@ -2208,10 +1936,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return false;
 		}
 
+		$tblSendmailQueue = $this->getTable('sendmailqueue', 'BwPostmanTable');
+
 		switch ($recipients)
 		{
 			case "recipients": // Contain subscribers and joomla users
-				$tblSendmailQueue = $this->getTable('sendmailqueue', 'BwPostmanTable');
 
 				$check_subscribers = 0;
 				$check_allsubscribers = 0;
@@ -2227,6 +1956,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 				$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $check_allsubscribers, $usergroups);
 
+				// Push all subscribers including archived to sendmailqueue if desired
 				if ($check_allsubscribers)
 				{
 					if ($send_to_unconfirmed)
@@ -2245,6 +1975,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					}
 				}
 
+				// Push all users of selected usergroups  to sendmailqueue if desired
 				if (count($usergroups))
 				{
 					$params = ComponentHelper::getParams('com_bwpostman');
@@ -2255,6 +1986,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					}
 				}
 
+				// Push all subscribers excluding archived to sendmailqueue if desired
 				if ($check_subscribers)
 				{
 					if ($send_to_unconfirmed)
@@ -2276,7 +2008,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			case "testrecipients":
 				$tblSubscribers		= $this->getTable('subscribers', 'BwPostmanTable');
 				$testrecipients		= $tblSubscribers->loadTestrecipients();
-				$tblSendmailQueue	= $this->getTable('sendmailqueue', 'BwPostmanTable');
 
 				if(count($testrecipients) > 0)
 				{
@@ -2315,55 +2046,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 */
 	public function checkTrials($trial = 2, $count = 0)
 	{
-		$db	= Factory::getDbo();
-		$query	= $db->getQuery(true);
-		$result = 0;
-
-		$query->select('COUNT(' . $db->quoteName('id') . ')');
-		$query->from($db->quoteName('#__bwpostman_sendmailqueue'));
-
 		PluginHelper::importPlugin('bwpostman');
-
 		Factory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
 
-		$db->setQuery($query);
-		try
-		{
-			$result = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$tblSendmailQueue = $this->getTable('sendmailqueue', 'BwPostmanTable');
 
-		// returns only number of entries
-		if ($count != 0)
-		{
-			return $result;
-		}
+		$result = $tblSendmailQueue->checkTrials($trial, $count);
 
-		// queue not empty
-		if ($result != 0)
-		{
-			$query->where($db->quoteName('trial') . ' < ' . (int) $trial);
-			$db->setQuery($query);
-			// all queue entries have trial number 2
-			try
-			{
-				$result = $db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			if ($result == 0)
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return $result;
 	}
 
 	/**
@@ -2445,23 +2135,17 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	{
 		// initialize
 		$renderer	        = new contentRenderer();
-
 		$app				= Factory::getApplication();
-		$uri  				= Uri::getInstance();
-		$itemid_unsubscribe	= $this->getItemid('register');
-		$itemid_edit		= $this->getItemid('edit');
-
-		PluginHelper::importPlugin('bwpostman');
-
+		$itemid_unsubscribe	= BwPostmanSubscriberHelper::getMenuItemid('register');
+		$itemid_edit		= BwPostmanSubscriberHelper::getMenuItemid('edit');
 		$res				= false;
-		$db				= $this->_db;
-		$query				= $db->getQuery(true);
 		$queueTableName 	= '#__bwpostman_sendmailqueue';
-		$recipients_data	= new stdClass();
 
 		// getting object for queue and content
 		$tblSendMailQueue	= $this->getTable('sendmailqueue', 'BwPostmanTable');
 		$tblSendMailContent	= $this->getTable('sendmailcontent', 'BwPostmanTable');
+
+		PluginHelper::importPlugin('bwpostman');
 
 		// trigger BwTimeControl event, if we come not from component
 		// needed for changing table objects for queue and content, show/hide messages, ...
@@ -2477,7 +2161,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return 0;
 		}
 
-		// rewrite some property names
+		// rewrite some property names od sendMailQueue if needed
 		if (property_exists($tblSendMailQueue, 'tc_content_id'))
 		{
 			$tblSendMailQueue->content_id	= $tblSendMailQueue->tc_content_id;
@@ -2494,10 +2178,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		$app->setUserState('com_bwpostman.newsletter.send.mode', $tblSendMailQueue->mode);
+		$app->setUserState('bwtimecontrol.mode', $tblSendMailQueue->mode);
 
 		// Get Data from sendmailcontent, set attachment path
 		// @ToDo, store data in this class to prevent from loading every time a mail will be sent
-		$app->setUserState('bwtimecontrol.mode', $tblSendMailQueue->mode);
 		$tblSendMailContent->load($tblSendMailQueue->content_id);
 
 		if ($tblSendMailContent->attachment)
@@ -2518,7 +2202,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$tblSendMailContent->content_id	= $tblSendMailContent->id;
 		}
 
-		// check if subscriber is archived
+		// check if subscriber is archived, check if testrecipient
+		$editlink = '';
+
 		if ($tblSendMailQueue->subscriber_id)
 		{
 			$subsTable = $this->getTable('Subscribers', 'BwPostmanTable');
@@ -2529,91 +2215,29 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			{
 				return 1;
 			}
-		} // end archived-check
 
-		$body = $tblSendMailContent->body;
+			$isTestrecipient    = false;
+
+			if ((integer)$recipients_data->status === 9)
+			{
+				$isTestrecipient = true;
+			}
+
+			if (property_exists($recipients_data, 'editlink') && !$isTestrecipient)
+			{ // testrecipient has no edit link
+				$editlink = $recipients_data->editlink;
+			}
+		}
+
+		$this->logger->addEntry(new LogEntry('Model sendMail ItemId edit: ' . $itemid_edit, BwLogger::BW_DEBUG, 'send'));
+		$this->logger->addEntry(new LogEntry('Model sendMail ItemId unsubscribe: ' . $itemid_unsubscribe, BwLogger::BW_DEBUG, 'send'));
+		$this->logger->addEntry(new LogEntry('Model sendMail ItemId editlink: ' . $editlink, BwLogger::BW_DEBUG, 'send'));
+
 		// Replace the links to provide the correct preview
-		$footerid = 0;
-		if ($tblSendMailQueue->mode == 1)
-		{ // HTML newsletter
-			if ($tblSendMailQueue->subscriber_id)
-			{ // Add footer only if it is a subscriber
-				$renderer->replaceTplLinks($body);
-				$renderer->addHTMLFooter($body, $footerid);
-			}
-			else
-			{
-				$body = str_replace("[%edit_link%]", "", $body);
-				$body = str_replace("[%unsubscribe_link%]", "", $body);
-				$body = str_replace("[%impressum%]", "", $body);
-				$body = str_replace("[dummy]", "", $body);
-			}
-		}
-		else
-		{ // Text newsletter
-			if ($tblSendMailQueue->subscriber_id)
-			{	// Add footer only if it is a subscriber
-				$renderer->replaceTextTplLinks($body);
-				$renderer->addTextFooter($body, $footerid);
-			}
-			else
-			{
-				$body = str_replace("[%edit_link%]", "", $body);
-				$body = str_replace("[%unsubscribe_link%]", "", $body);
-				$body = str_replace("[%impressum%]", "", $body);
-				$body = str_replace("[dummy]", "", $body);
-			}
-		}
-
+		$body = $tblSendMailContent->body;
+		$renderer->replaceAllFooterLinks($body, (integer)$tblSendMailQueue->subscriber_id, (integer)$tblSendMailQueue->mode);
 		BwPostmanHelper::replaceLinks($body);
-
-		$fullname = '';
-		if ($tblSendMailQueue->firstname != '')
-		{
-			$fullname = $tblSendMailQueue->firstname . ' ';
-		}
-
-		if ($tblSendMailQueue->name != '')
-		{
-			$fullname .= $tblSendMailQueue->name;
-		}
-
-		$fullname = trim($fullname);
-
-		// Replace the dummies
-		$body = str_replace("[NAME]", $tblSendMailQueue->name, $body);
-		$body = str_replace("[LASTNAME]", $tblSendMailQueue->name, $body);
-		$body = str_replace("[FIRSTNAME]", $tblSendMailQueue->firstname, $body);
-		$body = str_replace("[FULLNAME]", $fullname, $body);
-		// do not replace CODE by testrecipients
-		if (isset($recipients_data->status) && $recipients_data->status != 9)
-		{
-			if (property_exists($recipients_data, 'editlink'))
-			{
-				// Trigger Plugin "substitutelinks"
-				if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1' || $tblSendMailContent->substitute_links == '1')
-				{
-					$app->triggerEvent('onBwPostmanSubstituteBody', array(&$body, &$itemid_edit, &$itemid_unsubscribe));
-				}
-				else
-				{
-					$body = str_replace(
-						"[UNSUBSCRIBE_HREF]",
-						Text::sprintf('COM_BWPOSTMAN_NL_UNSUBSCRIBE_HREF', $uri->root(), $itemid_unsubscribe),
-						$body
-					);
-					$body = str_replace(
-						"[EDIT_HREF]",
-						Text::sprintf('COM_BWPOSTMAN_NL_EDIT_HREF', $uri->root(), $itemid_edit),
-						$body
-					);
-				}
-
-				$body = str_replace("[UNSUBSCRIBE_EMAIL]", $tblSendMailQueue->recipient, $body);
-				$body = str_replace("[UNSUBSCRIBE_CODE]", $recipients_data->editlink, $body);
-				$body = str_replace("[EDITLINK]", $recipients_data->editlink, $body);
-			}
-		}
+		$renderer->replaceContentPlaceholders($body, $tblSendMailQueue, $itemid_edit, $itemid_unsubscribe, $editlink, (integer)$tblSendMailContent->substitute_links);
 
 		// Fire the onBwPostmanPersonalize event.
 		if(PluginHelper::isEnabled('bwpostman', 'personalize')
@@ -2748,76 +2372,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	}
 
 	/**
-	 * Method to get associated mailing lists by campaign
-	 *
-	 * @param  integer   $id   newsletter id
-	 *
-	 * @return array
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.0
-	 */
-	private function getAssociatedMailinglistsByCampaign($id)
-	{
-		$db	= $this->_db;
-		$mailinglists = array();
-
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('mailinglist_id'));
-		$query->from($db->quoteName('#__bwpostman_campaigns_mailinglists'));
-		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $id);
-
-		$db->setQuery($query);
-
-		try
-		{
-			$mailinglists = $db->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $mailinglists;
-	}
-
-	/**
-	 * Method to get associated mailing lists by newsletter
-	 *
-	 * @param  integer   $id   newsletter id
-	 *
-	 * @return array
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.0
-	 */
-	private function getAssociatedMailinglistsByNewsletter($id)
-	{
-		$db	= $this->_db;
-		$mailinglists = array();
-
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('mailinglist_id'));
-		$query->from($db->quoteName('#__bwpostman_newsletters_mailinglists'));
-		$query->where($db->quoteName('newsletter_id') . ' = ' . (int) $id);
-
-		$db->setQuery($query);
-
-		try
-		{
-			$mailinglists = $db->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $mailinglists;
-	}
-
-	/**
 	 * Method to preset HTML-Template for old newsletters
 
 	 * @param                 $item
@@ -2835,7 +2389,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if ($item->id == 0)
 		{
-			$item->template_id = $this->getStandardTpl('html');
+			$item->template_id = $this->getTable()->getStandardTpl('html');
 		}
 		elseif ($item->template_id == 0)
 		{
@@ -2857,7 +2411,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			if (is_null($html_tpl))
 			{
-				$html_tpl = $this->getStandardTpl('html');
+				$html_tpl = $this->getTable()->getStandardTpl('html');
 			}
 
 			$item->template_id = $html_tpl;
@@ -2882,7 +2436,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if ($item->id == 0)
 		{
-			$item->text_template_id = $this->getStandardTpl('text');
+			$item->text_template_id = $this->getTable()->getStandardTpl('text');
 		}
 		elseif ($item->text_template_id == 0)
 		{
@@ -2904,98 +2458,11 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			if (is_null($text_tpl))
 			{
-				$text_tpl = $this->getStandardTpl('text');
+				$text_tpl = $this->getTable()->getStandardTpl('text');
 			}
 
 			$item->text_template_id = $text_tpl;
 		}
-	}
-
-	/**
-	 * @param array    $associatedMailinglists
-	 * @param string   $status
-	 * @param boolean  $allSubscribers
-	 *
-	 * @return integer
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.0
-	 */
-	private function countSubscribersOfNewsletter(array $associatedMailinglists, $status, $allSubscribers)
-	{
-		$count_subscribers = 0;
-		$db       = $this->_db;
-		$query     = $db->getQuery(true);
-
-		$query->select('COUNT(' . $db->quoteName('id') . ')');
-		$query->from($db->quoteName('#__bwpostman_subscribers'));
-
-		if (!$allSubscribers)
-		{
-			$subQuery1 = $db->getQuery(true);
-			$subQuery1->select('DISTINCT' . $db->quoteName('subscriber_id'));
-			$subQuery1->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$subQuery1->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $associatedMailinglists) . ')');
-			$query->where($db->quoteName('id') . ' IN (' . $subQuery1 . ')');
-		}
-
-		$query->where($db->quoteName('status') . ' IN (' . $status . ')');
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-		$db->setQuery($query);
-
-		try
-		{
-			$count_subscribers = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $count_subscribers;
-	}
-
-	/**
-	 * @param array $usergroup
-	 *
-	 * @return mixed
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.0
-	 */
-	private function countUsersOfNewsletter(array $usergroup)
-	{
-		$count_users = 0;
-		$db       = $this->_db;
-		$query     = $db->getQuery(true);
-		$sub_query = $db->getQuery(true);
-
-		$sub_query->select($db->quoteName('g') . '.' . $db->quoteName('user_id'));
-		$sub_query->from($db->quoteName('#__user_usergroup_map') . ' AS ' . $db->quoteName('g'));
-		$sub_query->where($db->quoteName('g') . '.' . $db->quoteName('group_id') . ' IN (' . implode(',',
-				$usergroup) . ')');
-
-		$query->select('COUNT(' . $db->quoteName('u') . '.' . $db->quoteName('id') . ')');
-		$query->from($db->quoteName('#__users') . ' AS ' . $db->quoteName('u'));
-		$query->where($db->quoteName('u') . '.' . $db->quoteName('block') . ' = ' . (int) 0);
-		$query->where($db->quoteName('u') . '.' . $db->quoteName('activation') . ' = ' . $db->quote(''));
-		$query->where($db->quoteName('u') . '.' . $db->quoteName('id') . ' IN (' . $sub_query . ')');
-
-		$db->setQuery($query);
-
-		try
-		{
-			$count_users = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $count_users;
 	}
 
 	/**
@@ -3147,12 +2614,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if ($cam_id != '-1')
 		{
 			// Check if there are assigned mailinglists or usergroups
-			$mailinglists = $this->getAssociatedMailinglistsByCampaign((int) $cam_id);
+			$crossTable = $this->getTable('Campaigns_Mailinglists');
+			$mailinglists = $crossTable->getAssociatedMailinglistsByCampaign((int) $cam_id);
 		}
 		else
 		{
 			// Check if there are assigned mailinglists or usergroups of the campaign
-			$mailinglists = $this->getAssociatedMailinglistsByNewsletter((int) $nl_id);
+			$crossTable = $this->getTable('Newsletters_Mailinglists');
+			$mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter((int) $nl_id);
 		}
 
 		return $mailinglists;
@@ -3197,5 +2666,77 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		return true;
+	}
+
+	/**
+	 * Method to adjust newsletter content if content or template has changed
+	 *
+	 * @param       $form_data
+	 * @param       $add_content
+	 * @param array $nl_content
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	private function processChangedContent($form_data, $add_content, array $nl_content)
+	{
+		$jinput				= Factory::getApplication()->input;
+		$sel_content		= $jinput->get('selected_content_old', '', 'string');
+		$old_template		= $jinput->get('template_id_old', '', 'string');
+		$old_text_template	= $jinput->get('text_template_id_old', '', 'string');
+
+		if (($sel_content != $form_data['selected_content'])
+			|| ($old_template != $form_data['template_id'])
+			|| ($old_text_template != $form_data['text_template_id']))
+		{
+			if ($add_content == '-1' && (count($nl_content) == 0))
+			{
+				$nl_content = (array) "-1";
+			}
+
+			// only render new content, if selection from article list or template has changed
+			$renderer = new contentRenderer();
+			$content  = $renderer->getContent($nl_content, $form_data['template_id'], $form_data['text_template_id']);
+
+			$form_data['html_version'] = $content['html_version'];
+			$form_data['text_version'] = $content['text_version'];
+
+			// add intro to form data
+			if ($sel_content != $form_data['selected_content'] || $old_template != $form_data['template_id'])
+			{
+				$tpl = $renderer->getTemplate($form_data['template_id']);
+				if (is_object($tpl) && key_exists('intro_headline', $tpl->intro))
+				{
+					$form_data['intro_headline'] = $tpl->intro['intro_headline'];
+				}
+
+				if (is_object($tpl) && key_exists('intro_text', $tpl->intro))
+				{
+					$form_data['intro_text'] = $tpl->intro['intro_text'];
+				}
+			}
+
+			if ($sel_content != $form_data['selected_content'] || $old_text_template != $form_data['text_template_id'])
+			{
+				$tpl = $renderer->getTemplate($form_data['text_template_id']);
+				if (is_object($tpl) && key_exists('intro_headline', $tpl->intro))
+				{
+					$form_data['intro_text_headline'] = $tpl->intro['intro_headline'];
+				}
+
+				if (is_object($tpl) && key_exists('intro_text', $tpl->intro))
+				{
+					$form_data['intro_text_text'] = $tpl->intro['intro_text'];
+				}
+			}
+
+			$form_data['template_id_old'] = $form_data['template_id'];
+			$form_data['text_template_id_old'] = $form_data['text_template_id'];
+		}
+
+		return $form_data;
 	}
 }

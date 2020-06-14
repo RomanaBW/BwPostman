@@ -635,7 +635,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since       2.4.0
 	 */
-	public function getItemid()
+	public function getMenuItemid()
 	{
 		$itemid = Factory::getApplication()->getUserState('com_bwpostman.newsletters.itemid', null);
 

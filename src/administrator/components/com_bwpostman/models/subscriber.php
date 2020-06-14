@@ -366,40 +366,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the menu item ID which will be needed for the confirmation email links
-	 *
-	 * @return 	int menu item ID
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function getItemid()
-	{
-		$itemid = '';
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
-
-		$query->select($db->quoteName('id') . ' AS ' . $db->quote(''));
-		$query->from($db->quoteName('#__menu'));
-		$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=register'));
-		$query->where($db->quoteName('published') . ' = ' . (int) 1);
-
-		$db->setQuery($query);
-
-		try
-		{
-			$itemid = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $itemid;
-	}
-
-	/**
 	 * Method to store the subscriber data
 	 *
 	 * @param 	array   $data   associative array of data to store
@@ -502,7 +468,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 					$subscriber->activation = $data['activation'];
 
 					// Send registration confirmation mail
-					$itemid = '';//$this->getItemid();
+					$itemid = '';//BwPostmanSubscriberHelper::getMenuItemid();
 					$res    = BwPostmanSubscriberHelper::sendMail($subscriber, 4, $itemid);
 
 					if (!$res)

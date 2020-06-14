@@ -260,7 +260,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 			$subscriber->activation = $app->getUserState('com_bwpostman.subscriber.activation', '');
 
 			$type	= 0; // Send Registration email
-			$itemid = $model->getItemid();
+			$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
 
 			// Send registration confirmation mail
 			$res = BwPostmanSubscriberHelper::sendMail($subscriber, $type, $itemid);
@@ -323,7 +323,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 				// Show a forwarding link to edit the subscriber account
 				// --> a guest needs the editlink, a user not
 				// --> we also need the menu item ID if we want to get right menu item when calling the forward link
-				$itemid = $model->getItemid();
+				$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
 				$success_msg = 'COM_BWPOSTMAN_SUCCESS_ACCOUNTACTIVATION';
 				BwPostmanSubscriberHelper::success($success_msg, $editlink, $itemid);
 				if ($send_mail)
@@ -414,7 +414,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 			$subscriber->activation = $subscriberdata->activation;
 
 			$type	= 2; // Send Activation reminder
-			$itemid	= $model->getItemid();
+			$itemid	= BwPostmanSubscriberHelper::getMenuItemid('register');
 			$res	= BwPostmanSubscriberHelper::sendMail($subscriber, $type, $itemid);
 
 			if ($res === true)

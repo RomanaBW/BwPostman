@@ -459,7 +459,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 		// Send emails to subscribers if they weren't confirmed
 		if (count($maildata))
 		{
-			$itemid = $model->getItemid();
+			$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
 
 			for ($i = 0;$i < count($maildata);$i++)
 			{

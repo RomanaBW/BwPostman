@@ -199,7 +199,7 @@ class BwPostmanSubscriberHelper
 			case 407: // Subscriber account already exists
 				require_once(JPATH_SITE . '/components/com_bwpostman/models/edit.php');
 				$model = new BwPostmanModelEdit();
-				$itemid        = $model->getItemid(); // Itemid from edit-view
+				$itemid        = BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
 				$session_error = array(
 					'err_msg'     => $err->err_msg,
 					'err_id'      => $err->err_id,
@@ -214,7 +214,7 @@ class BwPostmanSubscriberHelper
 			case 408: // Email doesn't exist
 				require_once(JPATH_SITE . '/components/com_bwpostman/models/register.php');
 				$model = new BwPostmanModelRegister();
-				$itemid        = $model->getItemid(); // Itemid from register-view
+				$itemid        = BwPostmanSubscriberHelper::getMenuItemid('register'); // Itemid from register-view
 				$session_error = array(
 					'err_msg'     => $err->err_msg,
 					'err_id'      => 0,
@@ -288,7 +288,7 @@ class BwPostmanSubscriberHelper
 		$jinput  = Factory::getApplication()->input;
 		require_once(JPATH_SITE . '/components/com_bwpostman/models/edit.php');
 		$model = new BwPostmanModelEdit();
-		$itemid  = $model->getItemid(); // Itemid from edit-view
+		$itemid  = BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
 		$session = Factory::getSession();
 
 		$session_error = array(
@@ -1176,5 +1176,42 @@ class BwPostmanSubscriberHelper
 		$db->setQuery($query);
 
 		return $db->loadObject();
+	}
+
+	/**
+	 * Method to get the menu item ID which will be needed for some links
+	 *
+	 * @param   string  $view
+	 *
+	 * @return 	int     $itemid     menu item ID
+	 *
+	 * @since       0.9.1
+	 */
+	public static function getMenuItemid($view)
+	{
+		$_db = Factory::getDbo();
+		$query	= $_db->getQuery(true);
+
+		$query->select($_db->quoteName('id'));
+		$query->from($_db->quoteName('#__menu'));
+		$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=' . $view));
+		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
+
+		$_db->setQuery($query);
+		$itemid = $_db->loadResult();
+
+		if (empty($itemid))
+		{
+			$query	= $_db->getQuery(true);
+
+			$query->select($_db->quoteName('id'));
+			$query->from($_db->quoteName('#__menu'));
+			$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=register'));
+			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
+			$_db->setQuery($query);
+			$itemid = $_db->loadResult();
+		}
+
+		return $itemid;
 	}
 }

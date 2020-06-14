@@ -120,39 +120,6 @@ class BwPostmanModelRegister extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the menu item ID which will be needed for some links
-	 *
-	 * @return 	int menu item ID
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function getItemid()
-	{
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
-		$itemid = 0;
-
-		$query->select($db->quoteName('id'));
-		$query->from($db->quoteName('#__menu'));
-		$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=register'));
-		$query->where($db->quoteName('published') . ' = ' . (int) 1);
-		$db->setQuery((string) $query);
-
-		try
-		{
-			$itemid = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $itemid;
-	}
-
-	/**
 	 * Method to check by an input email address if a user has a newsletter account (user = no guest)
 	 *
 	 * @param 	string $email   user email

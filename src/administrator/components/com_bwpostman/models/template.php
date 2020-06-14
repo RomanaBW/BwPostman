@@ -42,6 +42,7 @@ use Joomla\Registry\Registry;
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 
 /**
  * BwPostman mailinglist model
@@ -1152,9 +1153,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 	private function makePreviewText($item)
 	{
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
-		$model = new BwPostmanModelNewsletter();
-		$itemid_unsubscribe	= $model->getItemid('register');
-		$itemid_edit		= $model->getItemid('edit');
+		$itemid_unsubscribe	= BwPostmanSubscriberHelper::getMenuItemid('register');
+		$itemid_edit		= BwPostmanSubscriberHelper::getMenuItemid('edit');
 
 		// make preview
 
@@ -1222,9 +1222,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 	private function makePreviewTextStd($item)
 	{
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
-		$model = new BwPostmanModelNewsletter();
-		$itemid_unsubscribe	= $model->getItemid('register');
-		$itemid_edit		= $model->getItemid('edit');
+		$itemid_unsubscribe	= BwPostmanSubscriberHelper::getMenuItemid('register');
+		$itemid_edit		= BwPostmanSubscriberHelper::getMenuItemid('edit');
 
 		// make preview
 		// first get templates tpls

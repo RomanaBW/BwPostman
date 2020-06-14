@@ -198,7 +198,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 					else
 					{
-						$itemid	= (int) $model->getItemid(); // Itemid from edit-view
+						$itemid	= (int) BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
 
 						$link   = BwPostmanSubscriberHelper::loginGuest((int) $subscriberid, (int) $itemid);
 						$this->setRedirect($link, false);
@@ -319,7 +319,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		else
 		{
 			$model  = $this->getModel('edit');
-			$itemid = $model->getItemid();
+			$itemid = BwPostmanSubscriberHelper::getMenuItemid('edit');
 			$link   = Uri::base() . 'index.php?option=com_bwpostman&view=edit&Itemid=' . $itemid;
 
 			// Email address has changed
@@ -444,7 +444,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		// Initialize some variables
 		$jinput	= Factory::getApplication()->input;
 		$model	= $this->getModel('register');
-		$itemid	= $model->getItemid();
+		$itemid	= BwPostmanSubscriberHelper::getMenuItemid('register');
 
 		// Check if the variable editlink exists in the uri
 		$uri		= Uri::getInstance();
@@ -577,8 +577,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			$subscriber->email 		= $subscriberdata->email;
 
 			$type	= 1; // Send Editlink
-			$model	= $this->getModel('edit');
-			$itemid	= $model->getItemid();
+			$itemid	= BwPostmanSubscriberHelper::getMenuItemid('edit');
 			$res	= BwPostmanSubscriberHelper::sendMail($subscriber, $type, $itemid);
 
 			if ($res === true)

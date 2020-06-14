@@ -71,43 +71,6 @@ class ModBwPostmanHelper
 	}
 
 	/**
-	 * Method to get the menu item ID which will be needed for some links
-	 *
-	 * @access	public
-	 *
-	 * @return 	int     $itemid     menu item ID
-	 *
-	 * @since       0.9.1
-	 */
-	public static function getItemid()
-	{
-		$_db = Factory::getDbo();
-		$query	= $_db->getQuery(true);
-
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__menu'));
-		$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=edit'));
-		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-
-		$_db->setQuery($query);
-		$itemid = $_db->loadResult();
-
-		if (empty($itemid))
-		{
-			$query	= $_db->getQuery(true);
-
-			$query->select($_db->quoteName('id'));
-			$query->from($_db->quoteName('#__menu'));
-			$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=register'));
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-			$_db->setQuery($query);
-			$itemid = $_db->loadResult();
-		}
-
-		return $itemid;
-	}
-
-	/**
 	 * Method to get all mailing lists which the user is authorized to see
 	 *
 	 * @access 	public

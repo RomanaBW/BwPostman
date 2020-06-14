@@ -173,7 +173,7 @@ else
 		);
 	}
 
-	$itemid = modBwPostmanHelper::getItemID();
+	$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
 
 	$path = ModuleHelper::getLayoutPath('mod_bwpostman', $layout);
 

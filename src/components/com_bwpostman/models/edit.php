@@ -312,59 +312,6 @@ class BwPostmanModelEdit extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the menu item ID which will be needed for some links
-	 *
-	 * @return 	int menu item ID
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function getItemid()
-	{
-		$itemid = null;
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
-
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__menu'));
-		$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=edit'));
-		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-
-		try
-		{
-			$_db->setQuery($query);
-			$itemid = $_db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		if (empty($itemid))
-		{
-			$query->clear();
-
-			$query->select($_db->quoteName('id'));
-			$query->from($_db->quoteName('#__menu'));
-			$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=register'));
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-
-			try
-			{
-				$_db->setQuery($query);
-				$itemid = $_db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-		}
-
-		return $itemid;
-	}
-
-	/**
 	 * Checks if an editlink exists in the subscribers-table
 	 *
 	 * @param 	string  $editlink   to edit the subscriber data

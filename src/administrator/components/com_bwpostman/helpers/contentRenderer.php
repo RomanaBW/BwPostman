@@ -38,6 +38,7 @@ use Joomla\CMS\Language\Multilanguage;
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlContent.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 
 // Needed for Joomla 3!!
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
@@ -54,58 +55,6 @@ JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/he
 */
 class contentRenderer
 {
-	/**
-	 * Method to get the menu item ID for the content item
-	 *
-	 * @access      public
-	 *
-	 * @param   string $row
-	 *
-	 * @return    int     $itemid     menu item ID
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function getItemid($row)
-	{
-		$itemid = 0;
-		try
-		{
-			$_db   = Factory::getDbo();
-			$query = $_db->getQuery(true);
-
-			$query->select($_db->quoteName('id'));
-			$query->from($_db->quoteName('#__menu'));
-			$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=' . $row));
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-
-			$_db->setQuery($query);
-
-			$itemid = $_db->loadResult();
-
-			if (empty($itemid))
-			{
-				$query = $_db->getQuery(true);
-
-				$query->select($_db->quoteName('id'));
-				$query->from($_db->quoteName('#__menu'));
-				$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=register'));
-				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-
-				$_db->setQuery($query);
-
-				$itemid = $_db->loadResult();
-			}
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $itemid;
-	}
-
 	/**
 	 * This is the main function to render the content from an ID to HTML
 	 *
@@ -841,8 +790,6 @@ class contentRenderer
 	/**
 	 * Method to replace edit and unsubscribe link
 	 *
-	 * @access	private
-	 *
 	 * @param   string  $text
 	 *
 	 * @return 	boolean
@@ -872,6 +819,40 @@ class contentRenderer
 		$text		= str_replace('[%edit_link%]', $replace2, $text);
 
 		return true;
+	}
+
+	/**
+	 * Method to replace all footer links
+	 *
+	 * @param string  $body
+	 * @param integer $subscriberId
+	 * @param integer $mode
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.4.0 here (moved from newsletter model)
+	 */
+	public function replaceAllFooterLinks(&$body, $subscriberId, $mode)
+	{
+		$footerid = 0;
+
+		if ($subscriberId)
+		{ // Replace footer links only if it is a real subscriber
+			if ($mode == 1)
+			{ // HTML newsletter
+				$this->replaceTplLinks($body);
+				$this->addHTMLFooter($body, $footerid);
+			}
+			else
+			{ // text newsletter
+				$this->replaceTextTplLinks($body);
+				$this->addTextFooter($body, $footerid);
+			}
+		}
+		else
+		{ // If testrecipients remove footer links
+			$this->addTestrecipientsFooter($body);
+		}
 	}
 
 	/**
@@ -1060,8 +1041,8 @@ class contentRenderer
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
 		$uri  				= Uri::getInstance();
-		$itemid_edit		= $this->getItemid('edit');
-		$itemid_unsubscribe	= $this->getItemid('register');
+		$itemid_edit		= BwPostmanSubscriberHelper::getMenuItemid('edit');
+		$itemid_unsubscribe	= BwPostmanSubscriberHelper::getMenuItemid('register');
 		$params 			= ComponentHelper::getParams('com_bwpostman');
 		$del_sub_1_click	= $params->get('del_sub_1_click');
 
@@ -1116,8 +1097,8 @@ class contentRenderer
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
 		$uri  				= Uri::getInstance();
-		$itemid_unsubscribe	= $this->getItemid('register');
-		$itemid_edit		= $this->getItemid('edit');
+		$itemid_unsubscribe	= BwPostmanSubscriberHelper::getMenuItemid('register');
+		$itemid_edit		= BwPostmanSubscriberHelper::getMenuItemid('edit');
 		$params 			= ComponentHelper::getParams('com_bwpostman');
 		$del_sub_1_click	= $params->get('del_sub_1_click');
 		$impressum			= "\n\n" . Text::_($params->get('legal_information_text')) . "\n\n";
@@ -1171,6 +1152,87 @@ class contentRenderer
 	}
 
 	/**
+	 * Method to add the HTML-footer to the HTML-Newsletter
+	 *
+	 * @param string $body        the newsletter content
+	 *
+	 * @since 2.4.0 here (moved from newsletter model)
+	 */
+	public function addTestrecipientsFooter(&$body)
+	{
+		$body = str_replace("[%edit_link%]", "", $body);
+		$body = str_replace("[%unsubscribe_link%]", "", $body);
+		$body = str_replace("[%impressum%]", "", $body);
+		$body = str_replace("[dummy]", "", $body);
+	}
+
+	/**
+	 * Method to add the HTML-footer to the HTML-Newsletter
+	 *
+	 * @param string  $body             the newsletter content
+	 * @param object  $tblSendMailQueue
+	 * @param string  $itemid_edit
+	 * @param string  $itemid_unsubscribe
+	 * @param string  $editlink
+	 * @param integer $substituteLinks
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here (moved from newsletter model)
+	 */
+	public function replaceContentPlaceholders(&$body, $tblSendMailQueue, $itemid_edit, $itemid_unsubscribe, $editlink, $substituteLinks)
+	{
+		$app				= Factory::getApplication();
+		$uri  				= Uri::getInstance();
+
+		$fullname = '';
+		if ($tblSendMailQueue->firstname != '')
+		{
+			$fullname = $tblSendMailQueue->firstname . ' ';
+		}
+
+		if ($tblSendMailQueue->name != '')
+		{
+			$fullname .= $tblSendMailQueue->name;
+		}
+
+		$fullname = trim($fullname);
+
+		// Replace the dummies
+		$body = str_replace("[NAME]", $tblSendMailQueue->name, $body);
+		$body = str_replace("[LASTNAME]", $tblSendMailQueue->name, $body);
+		$body = str_replace("[FIRSTNAME]", $tblSendMailQueue->firstname, $body);
+		$body = str_replace("[FULLNAME]", $fullname, $body);
+
+		// do not replace empty edit link (i.e. for testrecipients)
+		if ($editlink !== '')
+		{
+			// Trigger Plugin "substitutelinks"
+			if ((integer)$app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') === 1 || (integer)$substituteLinks === 1)
+			{
+				$app->triggerEvent('onBwPostmanSubstituteBody', array(&$body, &$itemid_edit, &$itemid_unsubscribe));
+			}
+			else
+			{
+				$body = str_replace(
+					"[UNSUBSCRIBE_HREF]",
+					Text::sprintf('COM_BWPOSTMAN_NL_UNSUBSCRIBE_HREF', $uri->root(), $itemid_unsubscribe),
+					$body
+				);
+				$body = str_replace(
+					"[EDIT_HREF]",
+					Text::sprintf('COM_BWPOSTMAN_NL_EDIT_HREF', $uri->root(), $itemid_edit),
+					$body
+				);
+			}
+
+			$body = str_replace("[UNSUBSCRIBE_EMAIL]", $tblSendMailQueue->recipient, $body);
+			$body = str_replace("[UNSUBSCRIBE_CODE]", $editlink, $body);
+			$body = str_replace("[EDITLINK]", $editlink, $body);
+		}
+	}
+
+		/**
 	 * Method to add the Template-Tags to the content
 	 * Template tags are:
 	 * - HTML doctype/header

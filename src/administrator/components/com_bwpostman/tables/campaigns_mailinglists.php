@@ -135,6 +135,41 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	}
 
 	/**
+	 * Method to get associated mailing lists by campaign
+	 *
+	 * @param  integer   $id   newsletter id
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.3.0 (since 2.4.0 here, before at BE newsletter model)
+	 */
+	public function getAssociatedMailinglistsByCampaign($id)
+	{
+		$db	= $this->_db;
+		$mailinglists = array();
+
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('mailinglist_id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $id);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$mailinglists = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $mailinglists;
+	}
+
+	/**
 	 * Returns the identity (primary key) value of this record
 	 *
 	 * @return  mixed

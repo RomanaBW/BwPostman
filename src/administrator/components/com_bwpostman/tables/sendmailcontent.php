@@ -256,6 +256,8 @@ class BwPostmanTableSendmailcontent extends JTable
 			catch (RuntimeException $e)
 			{
 				Factory::getApplication()->enqueueMessage(get_class($this) . '::store failed - ' . $e->getMessage());
+
+				return false;
 			}
 		}
 

@@ -235,4 +235,40 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 	}
+
+	/**
+	 * Method to get associated mailing lists by newsletter
+	 *
+	 * @param  integer   $id   newsletter id
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.3.0 (since 2.4.0 here, before at BE newsletter model)
+	 */
+	public function getAssociatedMailinglistsByNewsletter($id)
+	{
+		$db	= $this->_db;
+		$mailinglists = array();
+
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('mailinglist_id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('newsletter_id') . ' = ' . (int) $id);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$mailinglists = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $mailinglists;
+	}
 }
+

@@ -40,6 +40,7 @@ use Joomla\CMS\Log\LogEntry;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
@@ -709,6 +710,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 
 		// check for is_template
 		$model	= $this->getModel('newsletter');
+
 		foreach ($cids as $cid)
 		{
 			if ($model->isTemplate($cid))
@@ -808,7 +810,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				case "sendmail":
 				case "sendmailandpublish":
 					// Check if there are assigned mailinglists or joomla user groups and if they contain subscribers/users
-					if (!$model->checkRecipients($ret_msg, $recordId, $unconfirmed, $data['campaign_id']))
+					if (!$model->checkForRecipients($ret_msg, $recordId, $unconfirmed, $data['campaign_id']))
 					{
 						$app->enqueueMessage($ret_msg, 'error');
 						$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
@@ -832,7 +834,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 					break;
 				case "sendtestmail":
 					// Check if there are test-recipients
-					if (!$model->checkTestrecipients())
+					if (!$model->checkForTestrecipients())
 					{
 						$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_TESTRECIPIENTS'), 'error');
 						$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');

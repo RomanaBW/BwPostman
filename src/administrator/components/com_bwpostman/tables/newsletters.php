@@ -630,6 +630,219 @@ class BwPostmanTableNewsletters extends JTable
 		return $newIsTemplate;
 	}
 
+	/**
+	 * Method check if newsletter is content template
+	 *
+	 * @param   integer  $id        ID of newsletter
+	 *
+	 * @return	boolean           state of is_template
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.4.0 (here, originally since 2.2.0 at model newsletter)
+	 */
+	public function isTemplate($id)
+	{
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('is_template'));
+		$query->from($db->quoteName('#__bwpostman_newsletters'));
+		$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
+
+		$db->setQuery($query);
+		try
+		{
+			$isTemplate = (integer)$db->loadResult();
+
+			if ($isTemplate === 1)
+			{
+				return true;
+			}
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return false;
+	}
+
+
+	/**
+	 * Method to get the ID of the standard template for HTML or text mode
+	 *
+	 * @param   string  $mode       HTML or text
+	 *
+	 * @return	string	            ID of standard template
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.4.0 (here, originally since 1.2.0 at model newsletter)
+	 */
+	public function getStandardTpl($mode	= 'html')
+	{
+		$tpl    = new stdClass();
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+
+		// Id of the standard template
+		switch ($mode)
+		{
+			case 'html':
+			default:
+				$query->select($db->quoteName('id'));
+				$query->from($db->quoteName('#__bwpostman_templates'));
+				$query->where($db->quoteName('standard') . ' = ' . $db->quote('1'));
+				$query->where($db->quoteName('tpl_id') . ' < ' . $db->quote('998'));
+				break;
+
+			case 'text':
+				$query->select($db->quoteName('id') . ' AS ' . $db->quoteName('value'));
+				$query->from($db->quoteName('#__bwpostman_templates'));
+				$query->where($db->quoteName('standard') . ' = ' . $db->quote('1'));
+				$query->where($db->quoteName('tpl_id') . ' > ' . $db->quote('997'));
+				break;
+		}
+
+		$db->setQuery($query);
+
+		try
+		{
+			$tpl    = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $tpl;
+	}
+
+	/**
+	 * Method to set archive/unarchive a newsletter
+	 *
+	 * @param array   $cid      array of items to archive/unarchive
+	 * @param integer $archive  archive/unarchive flag
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.4.0
+	 */
+	public function archive($cid, $archive)
+	{
+		$uid		= Factory::getUser()->get('id');
+
+		if ($archive == 1)
+		{
+			$time = Factory::getDate()->toSql();
+		}
+		else
+		{
+			$time = $this->_db->getNullDate();
+			$uid	= 0;
+		}
+
+		$db		= $this->_db;
+		$query		= $db->getQuery(true);
+
+		$query->update($db->quoteName($this->_tbl));
+		$query->set($db->quoteName('archive_flag') . " = " . (int) $archive);
+		$query->set($db->quoteName('archive_date') . " = " . $db->quote($time, false));
+		$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
+		$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
+
+		$db->setQuery($query);
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to get the complete data of a specific newsletter
+	 *
+	 * @param integer $nlId id of the newsletter
+	 *
+	 * @return	object|boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	public function getNewsletterData($nlId)
+	{
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->select('*');
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' = ' . (int) $nlId);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$newslettersData = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
+
+		return $newslettersData;
+	}
+
+	/**
+	 * Method to get the selected content of a specific newsletter
+	 *
+	 * @param integer $nlId id of the newsletter
+	 *
+	 * @return	string
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	public function getSelectedContentOfNewsletter($nlId)
+	{
+		$content_ids    = '';
+		$db	        = $this->_db;
+
+		// Get selected content from the newsletters-Table
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('selected_content'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' = ' . $nlId);
+
+		$db->setQuery($query);
+		try
+		{
+			$content_ids = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $content_ids;
+	}
+
+
+
 
 	/**
 	 * Overridden Table::store to set created/modified and user id.

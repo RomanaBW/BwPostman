@@ -762,6 +762,44 @@ class BwPostmanTableSubscribers extends JTable
 	}
 
 	/**
+	 * Method to check if test-recipients exists
+	 *
+	 * @return 	boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since
+	 */
+	public function checkForTestrecipients()
+	{
+		$db	        = $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->select('COUNT(' . $db->quoteName('id') . ')');
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query->where($db->quoteName('status') . ' = ' . (int) 9);
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$testrecipients = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		if (!count($testrecipients))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Overloaded load method to get all test-recipients when a newsletter shall be sent to them
 	 *
 	 * @access	public

@@ -467,13 +467,13 @@ class BwPostmanTableSendmailqueue extends JTable
 		$_db		= $this->_db;
 		$sub_res    = array();
 
-		$subQuery	= $_db->getQuery(true);
 		$subQuery1	= $_db->getQuery(true);
 
 		$subQuery1->select($_db->quoteName('g') . '.' . $_db->quoteName('user_id'));
 		$subQuery1->from($_db->quoteName('#__user_usergroup_map') . ' AS ' . $_db->quoteName('g'));
 		$subQuery1->where($_db->quoteName('g') . '.' . $_db->quoteName('group_id') . ' IN (' . implode(',', $usergroups) . ')');
 
+		$subQuery	= $_db->getQuery(true);
 		$subQuery->select($_db->quote($content_id) . ' AS content_id');
 		$subQuery->select($_db->quoteName('email', 'recipient'));
 		$subQuery->select($_db->quote($format) . ' AS mode');
@@ -557,6 +557,99 @@ class BwPostmanTableSendmailqueue extends JTable
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to clear the queue
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0
+	 */
+	public function clearQueue()
+	{
+		$_db	= $this->_db;
+
+		$query = "TRUNCATE TABLE {$this->_tbl} ";
+
+		$_db->setQuery($query);
+
+		try
+		{
+			$_db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to check if there are entries depending on $count
+	 *
+	 * @param integer $trial  number of sending trials
+	 * @param integer $count  1: only count, 0: check for number of trials
+	 *
+	 * @return	bool|int	true if no entries or there are entries with number trials less than 2, otherwise false
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0
+	 */
+	public function checkTrials($trial = 2, $count = 0)
+	{
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->select('COUNT(' . $db->quoteName('id') . ')');
+		$query->from($db->quoteName($this->_tbl));
+
+		$db->setQuery($query);
+		try
+		{
+			$result = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
+
+		// returns only number of entries
+		if ($count !== 0)
+		{
+			return $result;
+		}
+
+		// queue not empty
+		if ($result != 0)
+		{
+			$query->where($db->quoteName('trial') . ' < ' . (int) $trial);
+			$db->setQuery($query);
+			// all queue entries have trial number 2
+			try
+			{
+				$result = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+
+			if ($result === 0)
+			{
+				return false;
+			}
 		}
 
 		return true;

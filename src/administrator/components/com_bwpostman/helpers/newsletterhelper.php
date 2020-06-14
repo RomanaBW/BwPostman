@@ -183,4 +183,91 @@ abstract class BwPostmanNewsletterHelper {
 
 		return $newsletters;
 	}
+
+	/**
+	 * @param array $usergroup
+	 *
+	 * @return mixed
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.3.0 (since 2.4.0 here, before at BE newsletter model)
+	 */
+	public static function countUsersOfNewsletter(array $usergroup)
+	{
+		$count_users = 0;
+		$db       = Factory::getDbo();
+		$sub_query = $db->getQuery(true);
+
+		$sub_query->select($db->quoteName('g') . '.' . $db->quoteName('user_id'));
+		$sub_query->from($db->quoteName('#__user_usergroup_map') . ' AS ' . $db->quoteName('g'));
+		$sub_query->where($db->quoteName('g') . '.' . $db->quoteName('group_id') . ' IN (' . implode(',',
+				$usergroup) . ')');
+
+		$query     = $db->getQuery(true);
+		$query->select('COUNT(' . $db->quoteName('u') . '.' . $db->quoteName('id') . ')');
+		$query->from($db->quoteName('#__users') . ' AS ' . $db->quoteName('u'));
+		$query->where($db->quoteName('u') . '.' . $db->quoteName('block') . ' = ' . (int) 0);
+		$query->where($db->quoteName('u') . '.' . $db->quoteName('activation') . ' = ' . $db->quote(''));
+		$query->where($db->quoteName('u') . '.' . $db->quoteName('id') . ' IN (' . $sub_query . ')');
+
+		$db->setQuery($query);
+
+		try
+		{
+			$count_users = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $count_users;
+	}
+
+	/**
+	 * @param array    $associatedMailinglists
+	 * @param string   $status
+	 * @param boolean  $allSubscribers
+	 *
+	 * @return integer
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.3.0 (since 2.4.0 here, before at BE newsletter model)
+	 */
+	public static function countSubscribersOfNewsletter(array $associatedMailinglists, $status, $allSubscribers)
+	{
+		$count_subscribers = 0;
+		$db       = Factory::getDbo();
+		$query     = $db->getQuery(true);
+
+		$query->select('COUNT(' . $db->quoteName('id') . ')');
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
+
+		if (!$allSubscribers)
+		{
+			$subQuery1 = $db->getQuery(true);
+			$subQuery1->select('DISTINCT' . $db->quoteName('subscriber_id'));
+			$subQuery1->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+			$subQuery1->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $associatedMailinglists) . ')');
+			$query->where($db->quoteName('id') . ' IN (' . $subQuery1 . ')');
+		}
+
+		$query->where($db->quoteName('status') . ' IN (' . $status . ')');
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$count_subscribers = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $count_subscribers;
+	}
 }

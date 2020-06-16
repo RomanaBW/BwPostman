@@ -31,7 +31,15 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HTMLHelper::_('behavior.tooltip');
+// Depends on jQuery UI
+if(version_compare(JVERSION, '3.999.999', 'le'))
+{
+	HtmlHelper::_('behavior.tooltip');
+}
+else
+{
+	HTMLHelper::_('bootstrap.tooltip');
+}
 
 ?>
 

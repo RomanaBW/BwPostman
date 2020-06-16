@@ -38,6 +38,7 @@ use Joomla\CMS\Router\Route;
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
 /**
  * BwPostman templates model
@@ -691,7 +692,7 @@ class BwPostmanModelTemplates extends JModelList
 							Factory::getApplication()->enqueueMessage($error, 'error');
 						}
 
-						if (!$TplTitle || !$CountTitle || $error !== '')
+						if ($TplTitle === false || $CountTitle === false || $error !== '')
 						{
 							echo '<p class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
 							echo '<p class="bw_tablecheck_error">' . $error . '</p>';

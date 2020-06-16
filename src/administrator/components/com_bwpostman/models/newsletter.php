@@ -1717,6 +1717,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// serialize selected_content
 		$nl_content	= (array) $form_data['selected_content'];
+
 		if (is_array($form_data['selected_content']))
 		{
 			$form_data['selected_content']	= implode(',', $form_data['selected_content']);

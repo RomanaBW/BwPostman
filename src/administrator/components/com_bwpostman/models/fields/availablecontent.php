@@ -169,7 +169,8 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$exc_cats = $params->get('excluded_categories');
 
-		if ($app->getUserState('com_bwpostman.edit.newsletter.data')) {
+		if ($app->getUserState('com_bwpostman.edit.newsletter.data'))
+		{
 			$selected_content	= $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
 		}
 

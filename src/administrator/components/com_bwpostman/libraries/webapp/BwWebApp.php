@@ -32,8 +32,15 @@
  */
 class BwWebApp extends JApplicationWeb
 {
+	/**
+	 * Execute the application.
+	 *
+	 * @return  void
+	 *
+	 * @since   2.4.0
+	 */
 	public function doExecute()
 	{
-		return parent::doExecute();
+		parent::execute();
 	}
 }

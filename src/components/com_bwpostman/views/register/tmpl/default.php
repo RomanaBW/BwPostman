@@ -111,22 +111,24 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
 				<?php endif; // End captcha ?>
 
-				<div class="w-100 contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php // Show Disclaimer only if enabled in basic parameters
 					if ($this->params->get('disclaimer')) :
 						?>
 						<p class="agree_check">
 							<input title="agreecheck" type="checkbox" id="agreecheck" name="agreecheck" />
 							<?php
+							// Extends the disclaimer link with '&tmpl=component' to see only the content
+							$tpl_com = $this->params->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
 							// Disclaimer article and target_blank or not
 							if ($this->params->get('disclaimer_selection') == 1 && $this->params->get('article_id') > 0)
 							{
-								$disclaimer_link = Route::_(ContentHelperRoute::getArticleRoute($this->params->get('article_id')));
+								$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($this->params->get('article_id')));
 							}
 							// Disclaimer menu item and target_blank or not
 							elseif ($this->params->get('disclaimer_selection') == 2 && $this->params->get('disclaimer_menuitem') > 0)
 							{
-								$disclaimer_link = Route::_('index.php?Itemid=' . $this->params->get('disclaimer_menuitem'));
+								$disclaimer_link = Route::_('index.php?Itemid=' . $this->params->get('disclaimer_menuitem') . $tpl_com);
 							}
 							// Disclaimer url and target_blank or not
 							else
@@ -139,17 +141,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								// Show inside modalbox
 								if ($this->params->get('showinmodal') == 1)
 								{
-									$modalParams = array();
-									$modalParams['modalWidth'] = 80;
-									$modalParams['bodyHeight'] = 70;
-									$modalParams['url'] = $disclaimer_link;
-									$modalParams['title'] = Text::_('COM_BWPOSTMAN_DISCLAIMER_TITLE');
-
-									echo '<a id="bwp_open" data-target="#DisclaimerModal" data-toggle="modal">';
-									echo Text::_('COM_BWPOSTMAN_DISCLAIMER');
-									echo '</a> <i class="icon-star"></i>';
-									echo HTMLHelper::_('bootstrap.renderModal', 'DisclaimerModal', $modalParams);
-
+									echo '<a id="bwp_open" data-target="#DisclaimerModal" data-toggle="modal"';
 								}
 								// Show not in modalbox
 								else
@@ -159,9 +151,8 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 									{
 										echo ' target="_blank"';
 									};
-								echo '>';
-								echo Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>';
-								}?>
+								}
+								echo '>' . Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
 							</span>
 						</p>
 					<?php endif; // Show disclaimer ?>
@@ -191,15 +182,19 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 			<input type="hidden" name="registration_ip" value="<?php echo $remote_ip; ?>" />
 			<?php echo HtmlHelper::_('form.token'); ?>
 			</form>
-			<!-- The Modal -->
-			<div id="bwp_Modal" class="bwp_modal">
-				<div id="bwp_modal-content">
-					<span class="bwp_close">&times;</span>
-					<div id="bwp_wrapper"></div>
-				</div>
-			</div>
 
 			<?php
+
+			// The Modal
+			if ($this->params->get('showinmodal') == 1)
+			{
+				$modalParams               = array();
+				$modalParams['modalWidth'] = 80;
+				$modalParams['bodyHeight'] = 70;
+				$modalParams['url']        = $disclaimer_link;
+				$modalParams['title']      = Text::_('COM_BWPOSTMAN_DISCLAIMER_TITLE');
+				echo HTMLHelper::_('bootstrap.renderModal', 'DisclaimerModal', $modalParams);
+			}
 		}
 		else
 		{
@@ -258,67 +253,5 @@ jQuery(document).ready(function()
 			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
 		}
 	});
-	<?php
-	if ($this->params->get('disclaimer') == 1 && $this->params->get('showinmodal') == 1)
-	{
-	?>
-	//function setModal() {
-	//	// Set the modal height and width 90%
-	//	if (typeof window.innerWidth != 'undefined')
-	//	{
-	//		viewportwidth = window.innerWidth;
-	//		viewportheight = window.innerHeight
-	//	}
-	//	else if (typeof document.documentElement != 'undefined'
-	//		&& typeof document.documentElement.clientWidth !=
-	//		'undefined' && document.documentElement.clientWidth !== 0)
-	//	{
-	//		viewportwidth = document.documentElement.clientWidth;
-	//		viewportheight = document.documentElement.clientHeight
-	//	}
-	//	else
-	//	{
-	//		viewportwidth = document.getElementsByTagName('body')[0].clientWidth;
-	//		viewportheight = document.getElementsByTagName('body')[0].clientHeight
-	//	}
-	//	var modalcontent = document.getElementById('bwp_modal-content');
-	//	modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
-	//	modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
-	//
-	//	// Get the modal
-	//	var modal = document.getElementById('bwp_Modal');
-	//
-	//	// Get the Iframe-Wrapper and set Iframe
-	//	var wrapper = document.getElementById('bwp_wrapper');
-	//	var html = '<iframe id="iFrame" name="iFrame" src="<?php //echo isset($disclaimer_link) ? $disclaimer_link : ''; ?>//" frameborder="0" style="width:100%; height:100%;"></iframe>';
-	//
-	//	// Get the button that opens the modal
-	//	var btnopen = document.getElementById("bwp_open");
-	//
-	//	// Get the <span> element that closes the modal
-	//	var btnclose = document.getElementsByClassName("bwp_close")[0];
-	//
-	//	// When the user clicks the button, open the modal
-	//	btnopen.onclick = function() {
-	//		wrapper.innerHTML = html;
-	//		modal.style.display = "block";
-	//	};
-	//
-	//	// When the user clicks on <span> (x), close the modal
-	//	btnclose.onclick = function() {
-	//		modal.style.display = "none";
-	//	};
-	//
-	//	// When the user clicks anywhere outside of the modal, close it
-	//	window.onclick = function(event) {
-	//		if (event.target === modal) {
-	//			modal.style.display = "none";
-	//		}
-	//	}
-	//}
-	//setModal();
-	<?php
-	}
-	?>
 })
 </script>

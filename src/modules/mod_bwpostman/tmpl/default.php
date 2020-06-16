@@ -35,7 +35,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
-HtmlHelper::_('behavior.tooltip');
 HtmlHelper::_('behavior.keepalive');
 HtmlHelper::_('behavior.formvalidator');
 HtmlHelper::_('formbehavior.chosen', 'select');
@@ -43,7 +42,12 @@ HtmlHelper::_('formbehavior.chosen', 'select');
 // Depends on jQuery UI
 if(version_compare(JVERSION, '3.999.999', 'le'))
 {
+	HtmlHelper::_('behavior.tooltip');
 	HtmlHelper::_('jquery.ui', array('core'));
+}
+else
+{
+	HTMLHelper::_('bootstrap.tooltip');
 }
 
 $n	= count($mailinglists);
@@ -187,6 +191,7 @@ function checkModRegisterForm()
 
 <div id="mod_bwpostman">
 	<?php
+	$disclaimer_link = '';
 	if ($n == 0)
 	{
 		// Don't show registration form if no mailinglist is selectable ?>
@@ -197,7 +202,7 @@ function checkModRegisterForm()
 		// Show registration form only if a mailinglist is selectable ?>
 
 	<form action="<?php echo Route::_('index.php?option=com_bwpostman&task=register'); ?>" method="post" id="bwp_mod_form"
-			name="bwp_mod_form" class="form-validate form-inline" onsubmit="return checkModRegisterForm();">
+			name="bwp_mod_form" class="form-validate" onsubmit="return checkModRegisterForm();">
 
 		<?php // Spamcheck 1 - Input-field: class="user_hightlight" style="position: absolute; top: -5000px;"
 		?>
@@ -327,12 +332,13 @@ function checkModRegisterForm()
 		{
 			if ($n == 1)
 			{ ?>
+				<p class="mailinglist-title"><?php echo $mailinglist->title; ?>
 				<input type="checkbox" style="display: none;" id="a_<?php echo "mailinglists0"; ?>" name="<?php echo "mailinglists[]"; ?>"
 				title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglists[0]->id; ?>" checked="checked" />
 				<?php
 				if ($params->get('show_desc') == 1)
 				{ ?>
-					<p class="mailinglist-description-single"><?php
+					<br /><span class="mailinglist-description-single hasTooltip" title="<?php echo HTMLHelper::tooltipText(Text::_($mailinglists[0]->description), 0); ?>"><?php
 						echo substr(Text::_($mailinglists[0]->description), 0, $descLength);
 
 						if (strlen(Text::_($mailinglists[0]->description)) > $descLength)
@@ -340,9 +346,10 @@ function checkModRegisterForm()
 							echo '... ';
 							echo HTMLHelper::tooltip(Text::_($mailinglists[0]->description), $mailinglists[0]->title, 'tooltip.png', '', '');
 						} ?>
-					</p>
+					</span>
 					<?php
 				}
+				echo '</p>';
 			}
 			else
 			{ ?>
@@ -363,7 +370,7 @@ function checkModRegisterForm()
 							{
 							?>:
 								</span><br />
-								<span class="mailinglist-description">
+						<span class="mailinglist-description hasTooltip" title="<?php echo HTMLHelper::tooltipText(Text::_($mailinglists[0]->description), 0); ?>">
 									<?php
 									echo substr(Text::_($mailinglist->description), 0, $descLength);
 									if (strlen(Text::_($mailinglist->description)) > $descLength)
@@ -398,12 +405,12 @@ function checkModRegisterForm()
 				if ($paramsComponent->get('disclaimer_selection') == 1 && $paramsComponent->get('article_id') > 0)
 				{
 					// Disclaimer article and target_blank or not
-					$disclaimer_link = Route::_(ContentHelperRoute::getArticleRoute($paramsComponent->get('article_id'))) . $tpl_com;
+					$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($paramsComponent->get('article_id')) . $tpl_com);
 				}
 				elseif ($paramsComponent->get('disclaimer_selection') == 2 && $paramsComponent->get('disclaimer_menuitem') > 0)
 				{
 					// Disclaimer menu item and target_blank or not
-					$disclaimer_link = Route::_('index.php?Itemid=' . $paramsComponent->get('disclaimer_menuitem')) . $tpl_com;
+					$disclaimer_link = Route::_('index.php?Itemid=' . $paramsComponent->get('disclaimer_menuitem') . $tpl_com);
 				}
 				else
 				{
@@ -415,7 +422,7 @@ function checkModRegisterForm()
 					// Show inside modalbox
 					if ($paramsComponent->get('showinmodal') == 1)
 					{
-						echo '<a id="bwp_mod_open"';
+						echo '<a id="bwp_mod_open" data-target="#DisclaimerModModal" data-toggle="modal"';
 					}
 					// Show not in modalbox
 					else
@@ -508,14 +515,18 @@ function checkModRegisterForm()
 			</button>
 		</p>
 	<?php
-	}; // End: Show registration form ?>
-	<!-- The Modal -->
-	<div id="bwp_mod_Modal" class="bwp_mod_modal">
-		<div id="bwp_mod_modal-content">
-			<span class="bwp_mod_close">&times;</span>
-			<div id="bwp_mod_wrapper"></div>
-		</div>
-	</div>
+	}; // End: Show registration form
+	// The Modal
+	if ($paramsComponent->get('showinmodal') == 1)
+	{
+		$modalParams = array();
+		$modalParams['modalWidth'] = 80;
+		$modalParams['bodyHeight'] = 70;
+		$modalParams['url'] = $disclaimer_link;
+		$modalParams['title'] = 'Information';
+		echo HTMLHelper::_('bootstrap.renderModal', 'DisclaimerModModal', $modalParams);
+	}
+	?>
 </div>
 
 <script type="text/javascript">
@@ -561,67 +572,5 @@ function checkModRegisterForm()
 				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
 			}
 		});
-		<?php
-		if ($paramsComponent->get('disclaimer') == 1 && $paramsComponent->get('showinmodal') == 1)
-		{
-		?>
-		function setModModal() {
-			// Set the modal height and width 90%
-			if (typeof window.innerWidth != 'undefined')
-			{
-				viewportwidth = window.innerWidth,
-					viewportheight = window.innerHeight
-			}
-			else if (typeof document.documentElement != 'undefined'
-				&& typeof document.documentElement.clientWidth !=
-				'undefined' && document.documentElement.clientWidth != 0)
-			{
-				viewportwidth = document.documentElement.clientWidth,
-					viewportheight = document.documentElement.clientHeight
-			}
-			else
-			{
-				viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
-					viewportheight = document.getElementsByTagName('body')[0].clientHeight
-			}
-			var modalcontent = document.getElementById('bwp_mod_modal-content');
-			modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
-			modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
-
-			// Get the modal
-			var modal = document.getElementById('bwp_mod_Modal');
-
-			// Get the Iframe-Wrapper and set Iframe
-			var wrapper = document.getElementById('bwp_mod_wrapper');
-			var html = '<iframe id="iFrame" name="iFrame" src="<?php echo $disclaimer_link ?>" frameborder="0" style="width:100%; height:100%;"></iframe>';
-
-			// Get the button that opens the modal
-			var btnopen = document.getElementById("bwp_mod_open");
-
-			// Get the <span> element that closes the modal
-			var btnclose = document.getElementsByClassName("bwp_mod_close")[0];
-
-			// When the user clicks the button, open the modal
-			btnopen.onclick = function() {
-				wrapper.innerHTML = html;
-				modal.style.display = "block";
-			}
-
-			// When the user clicks on <span> (x), close the modal
-			btnclose.onclick = function() {
-				modal.style.display = "none";
-			}
-
-			// When the user clicks anywhere outside of the modal, close it
-			window.onclick = function(event) {
-				if (event.target == modal) {
-					modal.style.display = "none";
-				}
-			}
-		}
-		setModModal();
-		<?php
-		}
-		?>
 	})
 </script>

@@ -185,10 +185,12 @@ abstract class BwPostmanTplHelper
 	}
 
 	/**
-	 * Method to get the number of templates depending on provided mode and archive state
+	 * Method to get the number of templates depending on provided mode. archive state and title
+	 * If title is provided, then archive state is not used
 	 *
 	 * @param string  $mode
 	 * @param boolean $archived
+	 * @param string  $title
 	 *
 	 * @return 	integer|boolean number of templates or false
 	 *
@@ -196,7 +198,7 @@ abstract class BwPostmanTplHelper
 	 *
 	 * @since 2.3.0
 	 */
-	static public function getNbrOfTemplates($mode, $archived)
+	static public function getNbrOfTemplates($mode, $archived, $title = '')
 	{
 		$archiveFlag = 0;
 
@@ -211,16 +213,23 @@ abstract class BwPostmanTplHelper
 		$query->select('COUNT(*)');
 		$query->from($db->quoteName('#__bwpostman_templates'));
 
-		if ($mode == 'html')
+		if (strtolower($mode) === 'html')
 		{
 			$query->where($db->quoteName('tpl_id') . ' < ' . $db->quote('998'));
 		}
-		else
+		elseif (strtolower($mode) === 'text')
 		{
 			$query->where($db->quoteName('tpl_id') . ' > ' . $db->quote('997'));
 		}
 
-		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
+		if ($title !== '')
+		{
+			$query->where($db->quoteName('title') . ' LIKE ' . $db->quote('%' . $title . '%'));
+		}
+		else
+		{
+			$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
+		}
 
 		$db->setQuery($query);
 
@@ -233,5 +242,76 @@ abstract class BwPostmanTplHelper
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 		return false;
+	}
+
+	/**
+	 * Method to get the title of a template
+	 *
+	 * @param integer  $id
+	 *
+	 * @return 	string|boolean title of template or false
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	static public function getTemplateTitle($id)
+	{
+		$db    = Factory::getDbo();
+
+		// get template title
+		$q = $db->getQuery(true)
+			->select($db->quoteName('title'))
+			->from($db->quoteName('#__bwpostman_templates'))
+			->where($db->quoteName('id') . ' = ' .$id);
+		$db->setQuery($q);
+
+		try
+		{
+			$TplTitle = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
+
+		return $TplTitle;
+	}
+
+	/**
+	 * Method to set the title of a template
+	 *
+	 * @param integer  $id
+	 * @param string   $title
+	 *
+	 * @return 	boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	static public function setTemplateTitle($id, $title)
+	{
+		$db    = Factory::getDbo();
+
+		// get template title
+		$q = $db->getQuery(true)
+			->update($db->quoteName('#__bwpostman_templates'))
+			->set($db->quoteName('title') . ' = ' . $db->quote($title))
+			->where($db->quoteName('id') . ' = ' .$id);
+		$db->setQuery($q);
+
+		try
+		{
+			return $db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
 	}
 }

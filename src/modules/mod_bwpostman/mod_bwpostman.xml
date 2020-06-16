@@ -56,14 +56,14 @@
 				<field name="desc_length" type="text" default="50" label="MOD_BWPOSTMAN_DESC_LENGTH" description="MOD_BWPOSTMAN_DESC_LENGTH_NOTE" />
 			</fieldset>
 
-			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL">
-<!--			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_content/models/fields">-->
+<!--			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL">-->
+			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL" addfieldprefix="Joomla\Component\Content\Administrator\Field" addfieldpath="/administrator/components/com_content/models/fields">
 				<field name="spacer1_1" type="spacer" label="MOD_BWPOSTMAN_REG_SETTINGS_LABEL" />
 				<field name="com_params" type="radio" class="btn-group btn-group-yesno" default="1" label="MOD_BWPOSTMAN_USE_COM_PARAMS" description="MOD_BWPOSTMAN_USE_COM_PARAMS_NOTE">
 					<option value="0" onclick="display_yes_no();">JNO</option>
 					<option value="1" onclick="display_yes_no();">JYES</option>
 				</field>
-				<field name="spacer1_2" type="spacer" class="mod_set" hr="true" />
+				<field name="spacer1_2" type="modparamspacer" />
 				<field name="pretext" type="textarea" class="mod_set" labelclass="mod_set" cols="50" rows="10" default="" label="MOD_BWPOSTMAN_PRETEXT" description="MOD_BWPOSTMAN_PRETEXT_NOTE" />
 				<field name="spacer1_3" type="spacer" class="mod_set" hr="true" />
 				<field name="show_gender"
@@ -173,6 +173,15 @@
 				</field>
 				<field name="security_question" size="50" type="text" class="mod_set" labelclass="mod_set" default="Wieviele Beine hat ein Pferd? (1, 2, ...)" label="MOD_BWPOSTMAN_SECURITY_QUESTION" description="MOD_BWPOSTMAN_SECURITY_QUESTION_NOTE" />
 				<field name="security_answer" size="50" type="text" class="mod_set" labelclass="mod_set" default="4" label="MOD_BWPOSTMAN_SECURITY_ANSWER" description="MOD_BWPOSTMAN_SECURITY_ANSWER_NOTE" />
+			</fieldset>
+			<fieldset name="advanced">
+				<field
+						name="layout"
+						type="modulelayout"
+						label="JFIELD_ALT_LAYOUT_LABEL"
+						class="custom-select"
+						default="_:default"
+				/>
 			</fieldset>
 		</fields>
 	</config>

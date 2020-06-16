@@ -650,27 +650,52 @@ class BwPostmanModelTemplates extends JModelList
 			jimport('joomla.installer.helper');
 			$queries = JDatabaseDriver::splitSql($buffer);
 
-			// No queries to process
-			if (count($queries) != 0)
+			// Are there queries to process?
+			if (count($queries) !== 0)
 			{
 				// Process each query in the $queries array (split out of sql file).
-				// @ToDo: Check for existing title! If so, append suffix, also check this enhanced title! Title must be unique!
 				foreach ($queries as $this->query)
 				{
 					$this->query = trim($this->query);
-//					if ($this->query != '' && $this->query{0} != '#') // curly braces are deprecated
 					if ($this->query != '' && $this->query[0] != '#')
 					{
+						$error = '';
+						$TplTitle = '';
+						$CountTitle = '';
+
 						$this->query = str_replace("`DUMMY`", "'DUMMY'", $this->query);
 						$db->setQuery($this->query);
 
 						try
 						{
 							$db->execute();
+
+							// get last id
+							$lastID = $db->insertid();
+
+							// get template title
+							$TplTitle = BwPostmanTplHelper::getTemplateTitle($lastID);
+
+							// count template titles
+							$CountTitle = BwPostmanTplHelper::getNbrOfTemplates('', '', $TplTitle);
+
+							// set new template title
+							if ($CountTitle > 1) {
+								$newTitle = $TplTitle . ' (' . $CountTitle++ . ')';
+								BwPostmanTplHelper::setTemplateTitle($lastID, $newTitle);
+							}
 						}
 						catch (RuntimeException $e)
 						{
-							Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+							$error = $e->getMessage();
+							Factory::getApplication()->enqueueMessage($error, 'error');
+						}
+
+						if (!$TplTitle || !$CountTitle || $error !== '')
+						{
+							echo '<p class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
+							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
+							return false;
 						}
 					}
 				}//end foreach

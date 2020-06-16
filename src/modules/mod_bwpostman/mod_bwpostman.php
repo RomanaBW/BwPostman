@@ -100,7 +100,7 @@ else
 	}
 	else
 	{
-		$layout = "default";
+		$layout = $params->get('layout', 'default');
 
 		if ($userid > 0)
 		{

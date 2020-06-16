@@ -90,9 +90,9 @@
 	border-color:			#e6e6e6 #e6e6e6 #bfbfbf;
 	border-color:			rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 	border-bottom-color:	#b3b3b3;
-	-webkit-border-radius:	0 4px 4px 0;
-	-moz-border-radius:		0 4px 4px 0;
-	border-radius:			0 4px 4px 0;
+	-webkit-border-radius:	4px;
+	-moz-border-radius:		4px;
+	border-radius:			4px;
 	filter:					progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0, enabled=false);
 	*zoom:					1;
 	-webkit-box-shadow:		inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -173,53 +173,12 @@
 	margin-bottom:		0;
 }
 
-#mod_bwpostman .bwp_mod_modal {
-	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
-	z-index: 99999; /* Sit on top */
-	padding-top: 10px; /* Location of the box */
-	left: 0;
-	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgb(0,0,0); /* Fallback color */
-	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+#mod_bwpostman .joomla-modal .modal-body {
+	padding: 1rem;
 }
 
-#mod_bwpostman #bwp_mod_modal-content {
-	position: relative;
-	background-color: #fefefe;
-	margin: auto;
-	padding: 15px;
-	border: 1px solid #888;
-	border-radius: 6px;
-	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-	height: 100%;
-}
-
-#mod_bwpostman #bwp_mod_modal-header {
-	height: 30px;
-}
-
-#mod_bwpostman #bwp_mod_wrapper {
-	padding-top: 35px;
-	height: 100%;
-}
-
-#mod_bwpostman .bwp_mod_close {
-	color: #aaaaaa;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
-	line-height: 28px;
-}
-
-#mod_bwpostman .bwp__modclose:hover,
-#mod_bwpostman .bwp__modclose:focus {
-	color: #000;
-	text-decoration: none;
-	cursor: pointer;
+#mod_bwpostman .joomla-modal .modal-header .close {
+	padding: 0;
 }
 
 

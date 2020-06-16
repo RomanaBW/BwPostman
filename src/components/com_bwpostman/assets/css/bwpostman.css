@@ -161,6 +161,10 @@
 	cursor: pointer;
 }
 
+#bwpostman .joomla-modal .modal-body {
+	padding: 1rem;
+}
+
 #bwpostman p.input-append {
 	display: block;
 }

@@ -77,29 +77,13 @@ class JFormFieldAsset extends JFormField
 				}
 				if (value == 1) 
 				{
-					css_Style = 'none';
+					css_Style = 'hidden';
 				} 
 				else 
 				{
-					css_Style = 'block';
+					css_Style = 'visible';
 				}
-				document.getElementById('jform_params_disclaimer_menuitem').style.display=css_Style;
-				document.getElementById('jform_params_article_id_name').parentNode.parentNode.style.display=css_Style;
-				var mod_set = document.getElementsByClassName('mod_set');
-				var length1 = mod_set.length;
-				for (var i = 0; i < length1; i++) 
-				{
-					mod_set[i].style.display=css_Style;
-				}
-				if (document.getElementById('jform_params_disclaimer_menuitem_chzn'))
-				{
-					document.getElementById('jform_params_disclaimer_menuitem_chzn').style.display=css_Style;
-				}
-				else 
-				{
-					document.getElementById('jform_params_disclaimer_menuitem').style.display=css_Style;
-					document.getElementById('jform_params_disclaimer_menuitem_chzn').style.display=css_Style;
-				}
+				jQuery( '.bwpmod.field-spacer' ).nextAll().css( 'visibility', css_Style );
 			}
 			jQuery(document).ready(function()
 			{
@@ -142,6 +126,16 @@ class JFormFieldAsset extends JFormField
       			{
 					bwpcheck(a);
       			}
+
+				// set view to one column
+				jQuery('#fieldset-ml_available .column-count-md-2').attr('class', 'column-count-1');
+
+				// trigger click on checkbox
+				jQuery('#jform_params_mod_ml_available tr').click(function(event) {
+					if (event.target.type !== 'checkbox') {
+						jQuery(':checkbox', this).trigger('click');
+					}
+				});
 			});
 		";
 		$doc->addScriptDeclaration($js);

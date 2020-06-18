@@ -459,6 +459,21 @@
 		/>
 	</fieldset>
 
+	<fieldset name="substitute_links">
+		<field
+				name="substitute_links"
+				type="radio"
+				class="btn-group btn-group-yesno inputbox"
+				default="0"
+				label="COM_BWPOSTMAN_FIELD_SUBSTITUTE_LINKS_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_FIELD_SUBSTITUTE_LINKS_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
+
 	<fieldset name="basic_1_hidden">
 		<field
 			name="from_name"
@@ -480,6 +495,9 @@
 			type="hidden"
 		/>
 
+		<field name="attachment"
+		       type="hidden"
+		/>
 		<field
 				name="title"
 				type="hidden"
@@ -490,10 +508,6 @@
 		<field
 			name="description"
 			type="hidden"
-			label="COM_BWPOSTMAN_NL_FIELD_DESCRIPTION_LABEL"
-			labelclass="control-label"
-			description="COM_BWPOSTMAN_NL_FIELD_DESCRIPTION_DESC"
-			class="inputbox"
 		/>
 
 		<field
@@ -507,9 +521,19 @@
 		/>
 
 		<field
+			name="created_by"
+			type="hidden"
+		/>
+
+		<field
 			name="created_date"
 			type="hidden"
 			filter="user_utc"
+		/>
+
+		<field
+			name="modified_by"
+			type="hidden"
 		/>
 
 		<field
@@ -525,9 +549,9 @@
 		/>
 
 		<field
-				name="is_template"
-				type="hidden"
-				filter="intval"
+			name="is_template"
+			type="hidden"
+			filter="intval"
 		>
 		</field>
 
@@ -567,13 +591,44 @@
 
 	<fieldset name="templates_hidden">
 		<field
+				name="template_id"
+				type="hidden"
+		/>
+
+		<field
 			name="template_id_old"
 			type="hidden"
 		/>
 
 		<field
+				name="text_template_id"
+				type="hidden"
+		/>
+
+		<field
 			name="text_template_id_old"
 			type="hidden"
+		/>
+	</fieldset>
+
+	<fieldset name="campaigns_hidden">
+		<field
+				name="campaign_id"
+				type="hidden"
+		/>
+	</fieldset>
+
+	<fieldset name="selected_content_hidden">
+		<field
+				name="selected_content"
+				type="hidden"
+		/>
+	</fieldset>
+
+	<fieldset name="available_content_hidden">
+		<field
+				name="available_content"
+				type="hidden"
 		/>
 	</fieldset>
 
@@ -587,6 +642,12 @@
 			name="intro_text"
 			type="hidden"
 		/>
+
+		<field
+				name="html_version"
+				type="hidden"
+				filter="raw"
+		/>
 	</fieldset>
 
 	<fieldset name="text_version_hidden">
@@ -599,19 +660,11 @@
 			name="intro_text_text"
 			type="hidden"
 		/>
-	</fieldset>
 
-	<fieldset name="selected_content_hidden">
 		<field
-			name="selected_content"
+			name="text_version"
 			type="hidden"
-		/>
-	</fieldset>
-
-	<fieldset name="available_content_hidden">
-		<field
-			name="available_content"
-			type="hidden"
+			filter="raw"
 		/>
 	</fieldset>
 
@@ -632,20 +685,5 @@
 			type="hidden"
 			filter="user_utc"
 		/>
-	</fieldset>
-
-	<fieldset>
-		<field
-				name="substitute_links"
-				type="radio"
-				class="btn-group btn-group-yesno inputbox"
-				default="0"
-				label="COM_BWPOSTMAN_FIELD_SUBSTITUTE_LINKS_LABEL"
-				labelclass="control-label"
-				description="COM_BWPOSTMAN_FIELD_SUBSTITUTE_LINKS_DESC"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
 	</fieldset>
 </form>

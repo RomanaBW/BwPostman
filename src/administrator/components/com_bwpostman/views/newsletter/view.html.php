@@ -178,6 +178,13 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	protected $delay;
 
 	/**
+	 * @var object   $logger
+	 *
+	 * @since       2.4.0
+	 */
+	protected $logger;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -193,6 +200,9 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		// Initialize variables
 		$app		= Factory::getApplication();
 		$app->setUserState('bwpostman.send.alsoUnconfirmed', false);
+
+		$log_options    = array();
+		$this->logger   = BwLogger::getInstance($log_options);
 
 		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
@@ -216,52 +226,9 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$referrer = $jinput->get->get('referrer', '', 'string');
 		$task	= $jinput->get('task', 'edit');
 
-		// only if task is startsending
 		if ($task == 'startsending')
 		{
-			$log_options    = array();
-			$logger   = BwLogger::getInstance($log_options);
-
-			// Get the params
-			$params			= ComponentHelper::getParams('com_bwpostman');
-			$this->delay			= (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit');
-			$logger->addEntry(new LogEntry('View raw delay: ' . $this->delay, BwLogger::BW_DEBUG, 'send'));
-
-			// Build delay message
-			if ((int) $params->get('mails_per_pageload_delay_unit') == 1000)
-			{
-				if ((int) $params->get('mails_per_pageload_delay') == 1)
-				{
-					$this->delay_message	= Text::sprintf(
-						'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-						Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_SECONDS', $this->delay / 1000)
-					);
-				}
-				else
-				{
-					$this->delay_message	= Text::sprintf(
-						'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-						Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_SECONDS', $this->delay / 1000)
-					);
-				}
-			}
-			else
-			{
-				if ((int) $params->get('mails_per_pageload_delay') == 1)
-				{
-					$this->delay_message	= Text::sprintf(
-						'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-						Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_MINUTES', $this->delay / 1000)
-					);
-				}
-				else
-				{
-					$this->delay_message	= Text::sprintf(
-						'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-						Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_MINUTES', $this->delay / 1000)
-					);
-				}
-			}
+			$this->buildDelayMessage();
 		}
 
 		$this->form     = $this->get('Form');
@@ -272,34 +239,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		$app->triggerEvent('onBwPostmanBeforeNewsletterEdit', array(&$this->item, $referrer));
 
-		// set some needed flags
-		// flag, if rendered content exists or not
-		if ($this->item->html_version || $this->item->text_version)
-		{
-			$this->content_exists = true;
-		}
-		else
-		{
-			$this->content_exists = false;
-		}
-
-		// flag for selected content before editing
-		if (is_array($this->item->selected_content))
-		{
-			$this->selected_content_old = implode(',', $this->item->selected_content);
-		}
-		elseif (isset($this->item->selected_content))
-		{
-			$this->selected_content_old = $this->item->selected_content;
-		}
-		else
-		{
-			$this->selected_content_old = '';
-		}
-
-		// flags for template ids before editing
-		$this->template_id_old      = $this->item->template_id_old;
-		$this->text_template_id_old = $this->item->text_template_id_old;
+		$this->setContentFlags();
 
 		if(version_compare(JVERSION, '3.999.999', 'le'))
 		{
@@ -543,5 +483,93 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
 		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+	}
+
+	/**
+	 * Build the delay message needed at task startsending
+	 *
+	 * @return  void
+	 *
+	 * @since       2.4.0
+	 */
+	private function buildDelayMessage()
+	{
+		// Get the params
+		$params      = ComponentHelper::getParams('com_bwpostman');
+		$this->delay = (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit');
+		$this->logger->addEntry(new LogEntry('View raw delay: ' . $this->delay, BwLogger::BW_DEBUG, 'send'));
+
+		if ((int) $params->get('mails_per_pageload_delay_unit') == 1000)
+		{
+			if ((int) $params->get('mails_per_pageload_delay') == 1)
+			{
+				$this->delay_message = Text::sprintf(
+					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_SECONDS', $this->delay / 1000)
+				);
+			}
+			else
+			{
+				$this->delay_message = Text::sprintf(
+					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_SECONDS', $this->delay / 1000)
+				);
+			}
+		}
+		else
+		{
+			if ((int) $params->get('mails_per_pageload_delay') == 1)
+			{
+				$this->delay_message = Text::sprintf(
+					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_MINUTES', $this->delay / 1000)
+				);
+			}
+			else
+			{
+				$this->delay_message = Text::sprintf(
+					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_MINUTES', $this->delay / 1000)
+				);
+			}
+		}
+	}
+
+	/**
+	 * Set some flags for the content
+	 *
+	 * @return  void
+	 *
+	 * @since       2.4.0
+	 */
+	private function setContentFlags()
+	{
+		// flag, if rendered content exists or not
+		if ($this->item->html_version || $this->item->text_version)
+		{
+			$this->content_exists = true;
+		}
+		else
+		{
+			$this->content_exists = false;
+		}
+
+		// flag for selected content before editing
+		if (is_array($this->item->selected_content))
+		{
+			$this->selected_content_old = implode(',', $this->item->selected_content);
+		}
+		elseif (isset($this->item->selected_content))
+		{
+			$this->selected_content_old = $this->item->selected_content;
+		}
+		else
+		{
+			$this->selected_content_old = '';
+		}
+
+		// flags for template ids before editing
+		$this->template_id_old      = $this->item->template_id_old;
+		$this->text_template_id_old = $this->item->text_template_id_old;
 	}
 }

@@ -156,8 +156,9 @@ $currentTab = 'edit_html';
 							'basic_2_hidden',
 							'text_version_hidden',
 							'templates_hidden',
+							'campaigns_hidden',
 							'selected_content_hidden',
-							'selected_content_hidden',
+							'available_content_hidden',
 							'publish_hidden',
 							);
 						foreach ($hiddenFieldsets as $hiddenFieldset)

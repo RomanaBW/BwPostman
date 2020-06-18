@@ -1389,6 +1389,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		$state_data = $app->getUserState('com_bwpostman.edit.newsletter.data');
 
+		// Check for differences between form and state, only for development purpose
+		$diffDataKeys = $this->getDiffDataKeys($state_data, $form_data);
+		$diffDataValues = $this->getDiffDataValues($state_data, $form_data);
+
 		if (!is_object($state_data))
 		{
 			$state_data = ArrayHelper::toObject($state_data);
@@ -1397,165 +1401,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// heal form fields
 		switch ($layout)
 		{
-			case 'edit_basic':
-				if (property_exists($state_data, 'html_version'))
-				{
-					$form_data['html_version'] = $state_data->html_version;
-				}
-
-				if (property_exists($state_data, 'text_version'))
-				{
-					$form_data['text_version'] = $state_data->text_version;
-				}
-				break;
-			case 'edit_html':
-				$form_data['attachment']       = $state_data->attachment;
-				$form_data['text_version']     = $state_data->text_version;
-				$form_data['campaign_id']      = $state_data->campaign_id;
-				$form_data['usergroups']       = $state_data->usergroups;
-				$form_data['is_template']      = $state_data->is_template;
-				$form_data['template_id']      = $state_data->template_id;
-				$form_data['text_template_id'] = $state_data->text_template_id;
-
-				if (property_exists($state_data, 'ml_available'))
-				{
-					$form_data['ml_available'] = $state_data->ml_available;
-				}
-
-				if (property_exists($state_data, 'ml_unavailable'))
-				{
-					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
-				}
-
-				if (property_exists($state_data, 'ml_intern'))
-				{
-					$form_data['ml_intern'] = $state_data->ml_intern;
-				}
-
-				if (property_exists($state_data, 'substitute_links'))
-				{
-					$form_data['substitute_links'] = $state_data->substitute_links;
-				}
-
-				if (property_exists($state_data, 'scheduled_date'))
-				{
-					$form_data['scheduled_date'] = $state_data->scheduled_date;
-				}
-
-				if (property_exists($state_data, 'ready_to_send'))
-				{
-					$form_data['ready_to_send'] = $state_data->ready_to_send;
-				}
-				break;
-			case 'edit_text':
-				$form_data['attachment']       = $state_data->attachment;
-				$form_data['html_version']     = $state_data->html_version;
-				$form_data['campaign_id']      = $state_data->campaign_id;
-				$form_data['usergroups']       = $state_data->usergroups;
-				$form_data['is_template']      = $state_data->is_template;
-				$form_data['template_id']      = $state_data->template_id;
-				$form_data['text_template_id'] = $state_data->text_template_id;
-
-				if (property_exists($state_data, 'ml_available'))
-				{
-					$form_data['ml_available'] = $state_data->ml_available;
-				}
-
-				if (property_exists($state_data, 'ml_unavailable'))
-				{
-					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
-				}
-
-				if (property_exists($state_data, 'ml_intern'))
-				{
-					$form_data['ml_intern'] = $state_data->ml_intern;
-				}
-
-				if (property_exists($state_data, 'substitute_links'))
-				{
-					$form_data['substitute_links'] = $state_data->substitute_links;
-				}
-
-				if (property_exists($state_data, 'scheduled_date'))
-				{
-					$form_data['scheduled_date'] = $state_data->scheduled_date;
-				}
-
-				if (property_exists($state_data, 'ready_to_send'))
-				{
-					$form_data['ready_to_send'] = $state_data->ready_to_send;
-				}
-				break;
-			case 'edit_preview':
-				$form_data['attachment']       = $state_data->attachment;
-				$form_data['html_version']     = $state_data->html_version;
-				$form_data['text_version']     = $state_data->text_version;
-				$form_data['campaign_id']      = $state_data->campaign_id;
-				$form_data['usergroups']       = $state_data->usergroups;
-				$form_data['is_template']      = $state_data->is_template;
-				$form_data['template_id']      = $state_data->template_id;
-				$form_data['text_template_id'] = $state_data->text_template_id;
-
-				if (property_exists($state_data, 'ml_available'))
-				{
-					$form_data['ml_available'] = $state_data->ml_available;
-				}
-
-				if (property_exists($state_data, 'ml_unavailable'))
-				{
-					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
-				}
-
-				if (property_exists($state_data, 'ml_intern'))
-				{
-					$form_data['ml_intern'] = $state_data->ml_intern;
-				}
-
-				if (property_exists($state_data, 'substitute_links'))
-				{
-					$form_data['substitute_links'] = $state_data->substitute_links;
-				}
-
-				if (property_exists($state_data, 'scheduled_date'))
-				{
-					$form_data['scheduled_date'] = $state_data->scheduled_date;
-				}
-
-				if (property_exists($state_data, 'ready_to_send'))
-				{
-					$form_data['ready_to_send'] = $state_data->ready_to_send;
-				}
-				break;
 			case 'edit_send':
-				$form_data['id']                  = $state_data->id;
-				$form_data['subject']             = $state_data->subject;
-				$form_data['description']         = $state_data->description;
-				$form_data['asset_id']            = $state_data->asset_id;
-				$form_data['from_name']           = $state_data->from_name;
-				$form_data['from_email']          = $state_data->from_email;
-				$form_data['reply_email']         = $state_data->reply_email;
-				$form_data['intro_headline']      = $state_data->intro_headline;
-				$form_data['intro_text_headline'] = $state_data->intro_text_headline;
-				$form_data['intro_text']          = $state_data->intro_text;
-				$form_data['intro_text_text']     = $state_data->intro_text_text;
-				$form_data['hits']                = $state_data->hits;
-				$form_data['access']              = 1;
-				$form_data['publish_up']          = $state_data->publish_up;
-				$form_data['publish_down']        = $state_data->publish_down;
-				$form_data['archived_by']         = $state_data->archived_by;
-				$form_data['created_date']        = $state_data->created_date;
-				$form_data['modified_time']       = $state_data->modified_time;
-				$form_data['archive_date']        = $state_data->archive_date;
-				$form_data['archive_flag']        = $state_data->archive_flag;
-				$form_data['attachment']          = $state_data->attachment;
-				$form_data['html_version']        = $state_data->html_version;
-				$form_data['text_version']        = $state_data->text_version;
-				$form_data['campaign_id']         = $state_data->campaign_id;
-				$form_data['usergroups']          = $state_data->usergroups;
-				$form_data['is_template']         = $state_data->is_template;
-				$form_data['template_id']         = $state_data->template_id;
-				$form_data['text_template_id']    = $state_data->text_template_id;
-
 				if (property_exists($state_data, 'template_old_id'))
 				{
 					$form_data['template_old_id'] = $state_data->template_old_id;
@@ -1570,149 +1416,67 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				{
 					$form_data['access'] = $state_data->access;
 				}
-
-				if (property_exists($state_data, 'ml_available'))
-				{
-					$form_data['ml_available'] = $state_data->ml_available;
-				}
-
-				if (property_exists($state_data, 'ml_unavailable'))
-				{
-					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
-				}
-
-				if (property_exists($state_data, 'ml_intern'))
-				{
-					$form_data['ml_intern'] = $state_data->ml_intern;
-				}
-
-				if (property_exists($state_data, 'substitute_links'))
-				{
-					$form_data['substitute_links'] = $state_data->substitute_links;
-				}
-
-				if (property_exists($state_data, 'scheduled_date'))
-				{
-					$form_data['scheduled_date'] = $state_data->scheduled_date;
-				}
-
-				if (property_exists($state_data, 'ready_to_send'))
-				{
-					$form_data['ready_to_send'] = $state_data->ready_to_send;
-				}
 				break;
 			case 'edit_publish':
 				$state_data->publish_up        = $form_data['publish_up'];
 				$state_data->publish_down      = $form_data['publish_down'];
-				$form_data['html_version']     = $state_data->html_version;
-				$form_data['text_version']     = $state_data->text_version;
-				$form_data['campaign_id']      = $state_data->campaign_id;
-				$form_data['usergroups']       = $state_data->usergroups;
 				$form_data['is_template']      = $state_data->is_template;
-				$form_data['template_id']      = $state_data->template_id;
-				$form_data['text_template_id'] = $state_data->text_template_id;
-
-				if (property_exists($state_data, 'ml_available'))
-				{
-					$form_data['ml_available'] = $state_data->ml_available;
-				}
-
-				if (property_exists($state_data, 'ml_unavailable'))
-				{
-					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
-				}
-
-				if (property_exists($state_data, 'ml_intern'))
-				{
-					$form_data['ml_intern'] = $state_data->ml_intern;
-				}
-
-				if (property_exists($state_data, 'scheduled_date'))
-				{
-					$form_data['scheduled_date'] = $state_data->scheduled_date;
-				}
-
-				if (property_exists($state_data, 'ready_to_send'))
-				{
-					$form_data['ready_to_send'] = $state_data->ready_to_send;
-				}
 				break;
+			case 'edit_basic':
+			case 'edit_html':
+			case 'edit_text':
+			case 'edit_preview':
 			default:
-				$form_data['html_version']		= $state_data->html_version;
-				$form_data['text_version']		= $state_data->text_version;
-				$form_data['campaign_id']		= $state_data->campaign_id;
-				$form_data['usergroups']		= $state_data->usergroups;
-				$form_data['is_template']		= $state_data->is_template;
-				$form_data['template_id']		= $state_data->template_id;
-				$form_data['text_template_id']	= $state_data->text_template_id;
-
-				if (property_exists($state_data, 'ml_available'))
-				{
-					$form_data['ml_available'] = $state_data->ml_available;
-				}
-
-				if (property_exists($state_data, 'ml_unavailable'))
-				{
-					$form_data['ml_unavailable'] = $state_data->ml_unavailable;
-				}
-
-				if (property_exists($state_data, 'ml_intern'))
-				{
-					$form_data['ml_intern'] = $state_data->ml_intern;
-				}
-
-				if (property_exists($state_data, 'scheduled_date'))
-				{
-					$form_data['scheduled_date'] = $state_data->scheduled_date;
-				}
-
-				if (property_exists($state_data, 'ready_to_send'))
-				{
-					$form_data['ready_to_send'] = $state_data->ready_to_send;
-				}
 				break;
 		}
 
-		// created_by an modified_by needed on every tab
-		if (property_exists($state_data, 'created_by'))
+		if ($layout !== 'edit_basic')
 		{
-			$form_data['created_by'] = $state_data->created_by;
+			$elementsToCheck1 = array(
+				'usergroups',
+				'ml_available',
+				'ml_unavailable',
+				'ml_intern',
+				'substitute_links',
+				'scheduled_date',
+				'ready_to_send',
+			);
+
+			foreach ($elementsToCheck1 as $element)
+			{
+				if (property_exists($state_data, $element))
+				{
+					$form_data[$element] = $state_data->$element;
+				}
+			}
 		}
 
-		if (property_exists($state_data, 'modified_by'))
-		{
-			$form_data['modified_by'] = $state_data->modified_by;
-		}
+		// created_…, modified_…, publish_…, checkout_… needed on every tab
+		$elementsToCheckAlwavs = array(
+			'created_by',
+			'modified_by',
+			'publish_up',
+			'publish_down',
+			'checked_out_time',
+			'checked_out',
+		);
 
-		// Publish up and down, checked out need correct null date
-		if (property_exists($state_data, 'publish_up'))
+		foreach ($elementsToCheckAlwavs as $element)
 		{
-			$form_data['publish_up'] = $state_data->publish_up;
-		}
-
-		if (property_exists($state_data, 'publish_down'))
-		{
-			$form_data['publish_down'] = $state_data->publish_down;
-		}
-
-		if (property_exists($state_data, 'checked_out_time'))
-		{
-			$form_data['checked_out_time'] = $state_data->checked_out_time;
-		}
-
-		if (property_exists($state_data, 'checked_out'))
-		{
-			$form_data['checked_out'] = $state_data->checked_out;
-		}
-
-		if (array_key_exists('selected_content', $form_data) !== true)
-		{
-			$form_data['selected_content'] = array();
+			if (property_exists($state_data, $element))
+			{
+				$form_data[$element] = $state_data->$element;
+			}
 		}
 
 		if (array_key_exists('usergroups', $form_data) !== true)
 		{
 			$form_data['usergroups'] = array();
+		}
+
+		if (array_key_exists('selected_content', $form_data) !== true)
+		{
+			$form_data['selected_content'] = array();
 		}
 
 		// serialize selected_content
@@ -1731,7 +1495,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		else
 		{
 			$form_data['selected_content']	= $state_data->selected_content;
-			// if change of content not confirmed don't change template_id
+			// if change of content is not confirmed don't change template_id
 			$form_data['template_id']		= $state_data->template_id;
 			$form_data['text_template_id']	= $state_data->text_template_id;
 		}
@@ -2739,5 +2503,43 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		return $form_data;
+	}
+
+	/**
+	 * Method to get the differences between form keys and state properties
+	 * Primary for development purpose
+	 *
+	 * @param $state_data
+	 * @param $form_data
+	 *
+	 * @return array
+	 *
+	 * @since 2.4.0
+	 */
+	private function getDiffDataKeys($state_data, $form_data)
+	{
+		$diffKeys = array_diff_key((array) $state_data, $form_data);
+
+		unset($diffKeys["\u0000*\u0000_errors"]);
+
+		return $diffKeys;
+	}
+
+	/**
+	 * Method to get the differences between form data and state data
+	 * Primary for development purpose
+	 *
+	 * @param $state_data
+	 * @param $form_data
+	 *
+	 * @return array
+	 *
+	 * @since 2.4.0
+	 */
+	private function getDiffDataValues($state_data, $form_data)
+	{
+		$diffData = array_diff((array) $state_data, $form_data);
+
+		return $diffData;
 	}
 }

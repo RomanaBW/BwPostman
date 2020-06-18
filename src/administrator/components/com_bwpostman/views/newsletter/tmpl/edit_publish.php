@@ -108,6 +108,11 @@ $image = '<i class="icon-info"></i>';
 		{
 			echo $field->input;
 		}
+
+		foreach($this->form->getFieldset('campaigns_hidden') as $field)
+		{
+			echo $field->input;
+		}
 		?>
 
 		<div class="clr clearfix"></div>

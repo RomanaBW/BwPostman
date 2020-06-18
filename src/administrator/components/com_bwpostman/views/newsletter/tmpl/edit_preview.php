@@ -180,6 +180,11 @@ $currentTab = 'edit_preview';
 			echo $field->input;
 		}
 
+		foreach($this->form->getFieldset('campaigns_hidden') as $field)
+		{
+			echo $field->input;
+		}
+
 		foreach($this->form->getFieldset('selected_content_hidden') as $field)
 		{
 			echo $field->input;

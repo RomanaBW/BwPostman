@@ -180,6 +180,11 @@ $currentTab = 'edit_text';
 					echo $field->input;
 				}
 
+				foreach($this->form->getFieldset('campaigns_hidden') as $field)
+				{
+					echo $field->input;
+				}
+
 				foreach($this->form->getFieldset('selected_content_hidden') as $field)
 				{
 					echo $field->input;
@@ -195,7 +200,6 @@ $currentTab = 'edit_text';
 					echo $field->input;
 				}
 				?>
-
 			</fieldset>
 		</div>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>

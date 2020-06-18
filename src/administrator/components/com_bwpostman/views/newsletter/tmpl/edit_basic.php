@@ -362,7 +362,7 @@ $currentTab = 'edit_basic';
 		{
 			echo $field->input;
 		}
-			?>
+		?>
 		<p class="bwpm_copyright"><?php echo BwPostmanAdmin::footer(); ?></p>
 
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />

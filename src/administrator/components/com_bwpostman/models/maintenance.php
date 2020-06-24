@@ -128,6 +128,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	protected $db;
 
 	/**
+	 * SimpleXML object
+	 *
+	 * @var object
+	 *
+	 * @since 2.4.0
+	 */
+	protected $xml;
+
+	/**
 	 * Are we at Joomla 4?
 	 *
 	 * @var boolean
@@ -159,7 +168,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to save tables
+	 * Method to backup tables
 	 *
 	 * Cannot use File::write() because we want to append data
 	 *
@@ -176,7 +185,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	public function saveTables($fileName, $update = false)
 	{
-		// @ToDo: Use simpleXml correctly
 		// Access check.
 		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
@@ -256,26 +264,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 			}
 
-			// write file header
-			$file_data   = array();
-			$file_data[] = $this->buildXmlHeader();
+			// Build file header XML
+			$xmlHeader = $this->buildXmlHeader();
 
-			if ($file_data === false)
+			if ($xmlHeader === false)
 			{
 				return false;
-			}
-
-			if (fwrite($handle, implode("\n", $file_data)) === false)
-			{
-				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITING_HEADER', $path);
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-				if ($update)
-				{
-					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
-
-					return false;
-				}
 			}
 
 			foreach ($this->tableNames as $table)
@@ -283,19 +277,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				// do not save the table "bwpostman_templates_tpl"
 				if (strpos($table['tableNameRaw'], 'templates_tpl') === false)
 				{
-					$file_data = array();
+					$databaseXml = $this->xml->children();
+					$tablesXml = $databaseXml->addChild('tables');
+
 					$tableName = $table['tableNameGeneric'];
 
-					$file_data[] = "\t\t<tables>";                                // set XML tables section
-					$tableStructure = $this->buildXmlStructure($tableName);       // get table description
+					// Build table description XML
+					$tableStructure = $this->buildXmlStructure($tableName, $tablesXml);
 
 					if ($tableStructure === false)
-					{
-						return false;
-					}
-
-					$file_data[] = $tableStructure;
-					if (fwrite($handle, implode("\n", $file_data)) === false)
 					{
 						$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
 						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -318,8 +308,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						}
 					}
 
-					// write table data
-					if (!$this->buildXmlData($tableName, $handle))
+					// Build table data XML
+					if (!$this->buildXmlData($tableName, $tablesXml))
 					{
 						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
 						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -332,17 +322,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						return false;
 					}
 
-					$file_data   = array();
-					$xmlAssets = $this->buildXmlAssets($tableName);                // write data assets
+					$xmlAssets = $this->buildXmlAssets($tableName, $tablesXml);                // write data assets
 
 					if ($xmlAssets === false)
-					{
-						return  false;
-					}
-
-					$file_data[] = $xmlAssets;
-					$file_data[] = "\t\t</tables>\n";                                // set XML tables section
-					if (fwrite($handle, implode("\n", $file_data)) === false)
 					{
 						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $fileName);
 						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -354,13 +336,17 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 						return false;
 					}
-
-					$file_data = array();
 				}
 			}
 
-			$file_data[] = $this->buildXmlFooter();                            // get XML footer
-			$file_data   = implode("\n", $file_data);
+			// Reformat XML string with new lines and indents for each entry
+			$dom = new DOMDocument('1.0');
+			$dom->preserveWhiteSpace = false;
+			$dom->formatOutput = true;
+			$dom->loadXML($this->xml->asXML());
+
+			$file_data = $dom->saveXML();
+
 
 			if (fwrite($handle, $file_data) !== false)
 			{
@@ -466,13 +452,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Builds the XML data header for the tables to export. Based on Joomla JDatabaseExporter
 	 *
-	 * @return    string|boolean    An XML string, false on failure
+	 * @return    boolean    true on success, false on failure
 	 *
 	 * @since    1.0.1
 	 */
 	protected function buildXmlHeader()
 	{
-		// @ToDo: Use simpleXml correctly
 		// Get version of BwPostman
 		$version = $this->getBwPostmanVersion();
 
@@ -484,34 +469,20 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// Get database name
 		$dbname = self::getDBName();
 
-		$buffer = array();
-
 		// build generals
-		$buffer[] = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
-		$buffer[] = '<mysqldump xmlns:xsi="http://www.w3.org/TR/xmlschema-1">';
-		$buffer[] = "\t<database name=\"$dbname\">";
-		$buffer[] = "\t\t<Generals>";
-		$buffer[] = "\t\t\t<BwPostmanVersion>" . $version . "</BwPostmanVersion>";
-		$buffer[] = "\t\t\t<SaveDate>" . Factory::getDate()->format("Y-m-d_H:i") . "</SaveDate>";
+		$this->xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"  standalone="yes"?><mysqldump xmlns:xsi="http://www.w3.org/TR/xmlschema-1"></mysqldump>');
 
-		$query = $this->db->getQuery(true);
+		$databaseXml = $this->xml->addChild('database');
+		$databaseXml->addAttribute('name', $dbname);
 
-		// Get the assets for component from database
-		$query->select('*');
-		$query->from($this->db->quoteName('#__assets'));
-		$query->where($this->db->quoteName('name') . ' = ' . $this->db->quote('com_bwpostman'));
+		$generalsXml = $databaseXml->addChild('Generals');
+		$generalsXml->addChild('BwPostmanVersion', $version);
+		$generalsXml->addChild('SaveDate', Factory::getDate()->format("Y-m-d_H:i"));
 
-		$this->db->setQuery($query);
+		$assetsToSave = $this->getAssetsToSave();
 
-		try
+		if ($assetsToSave === false)
 		{
-			$data = $this->db->loadAssocList();
-		}
-		catch (RuntimeException $exception)
-		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
 			return false;
 		}
 
@@ -534,29 +505,26 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					return false;
 				}
 
-				$data[] = $assetData[0];
+				$assetsToSave[] = $assetData[0];
 			}
 		}
 
 		// write component asset
-		$buffer[] = "\t\t\t" . '<component_assets>';
+		$assetXml = $generalsXml->addChild('component_assets');
 
-		foreach ($data as $datum)
+		foreach ($assetsToSave as $assetToSave)
 		{
-			$buffer[] = "\t\t\t\t" . '<dataset>';
-			if (is_array($datum))
+			$datasetXml = $assetXml->addChild('dataset');
+
+			if (is_array($assetToSave))
 			{
-				foreach ($datum as $key => $value)
+				foreach ($assetToSave as $key => $value)
 				{
 					$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
-					$buffer[]      = "\t\t\t\t\t<" . $key . ">" . $insert_string . "</" . $key . ">";
+					$datasetXml->addChild($key, $insert_string);
 				}
 			}
-
-			$buffer[] = "\t\t\t\t" . '</dataset>';
 		}
-
-		$buffer[] = "\t\t\t</component_assets>";
 
 		// process user groups
 		$groups = $this->getUsergroupsUsedInAssets();
@@ -566,28 +534,23 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			return false;
 		}
 
-		$buffer[] = "\t\t\t" . '<component_usergroups>';
+		$userGroupsXml = $generalsXml->addChild('component_usergroups');
+
 		if (is_array($groups))
 		{
 			foreach ($groups as $item)
 			{
-				$buffer[] = "\t\t\t\t" . '<usergroup>';
+				$userGroupXml = $userGroupsXml->addChild('usergroup');
+
 				foreach ($item as $key => $value)
 				{
 					$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
-					$buffer[]      = "\t\t\t\t\t<" . $key . ">" . $insert_string . "</" . $key . ">";
+					$userGroupXml->addChild($key, $insert_string);
 				}
-
-				$buffer[] = "\t\t\t\t" . '</usergroup>';
 			}
 		}
 
-		$buffer[] = "\t\t\t</component_usergroups>";
-
-		$buffer[] = "\t\t</Generals>";
-		$buffer[] = "";
-
-		return implode("\n", $buffer);
+		return true;
 	}
 
 	/**
@@ -646,7 +609,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$res_tree = array();
 		foreach ($groups as $group)
 		{
-			$tree  = array();
 			$query = $this->db->getQuery(true);
 			$query->select('p.id');
 			$query->from($this->db->quoteName('#__usergroups') . ' AS n, ' . $this->db->quoteName('#__usergroups') . ' AS p');
@@ -2193,25 +2155,25 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->where($this->db->quoteName('user_id') . ' > ' . (int) 0);
 
 			$this->db->setQuery($query);
-			$users = $this->db->loadObjectList();
+			$subscribers = $this->db->loadObjectList();
 
 			// update user_id in subscribers table
-			foreach ($users as $user)
+			foreach ($subscribers as $subscriber)
 			{
 				// get ids from users table if mail address exists in user table
 				$query->clear();
 				$query->select($this->db->quoteName('id'));
 				$query->from($this->db->quoteName('#__users'));
-				$query->where($this->db->quoteName('email') . ' = ' . $this->db->quote($user->email));
+				$query->where($this->db->quoteName('email') . ' = ' . $this->db->quote($subscriber->email));
 
 				$this->db->setQuery($query);
-				$user->user_id = $this->db->loadResult();
+				$subscriber->user_id = $this->db->loadResult();
 
 				// update subscribers table
 				$query->clear();
 				$query->update($this->db->quoteName('#__bwpostman_subscribers'));
-				$query->set($this->db->quoteName('user_id') . " = " . (int) $user->user_id);
-				$query->where($this->db->quoteName('id') . ' = ' . (int) $user->id);
+				$query->set($this->db->quoteName('user_id') . " = " . (int) $subscriber->user_id);
+				$query->where($this->db->quoteName('id') . ' = ' . (int) $subscriber->id);
 
 				$this->db->setQuery($query);
 				$this->db->execute();
@@ -2231,23 +2193,22 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Builds the XML structure to export. Based on Joomla JDatabaseExporter
 	 *
-	 * @param string $tableName name of table to build structure for
+	 * @param string           $tableName name of table to build structure for
+	 * @param SimpleXMLElement $tablesXml
 	 *
-	 * @return    string|boolean    An couple of XML lines (strings), false on database exception.
+	 * @return    boolean    true on success, false on database exception.
 	 *
 	 * @since    1.0.1
 	 */
-	private function buildXmlStructure($tableName)
+	private function buildXmlStructure($tableName, $tablesXml)
 	{
-		// @ToDo: Use simpleXml correctly
-		$buffer = array();
-
 		// Get the details columns information and install query.
 		try
 		{
 			$keys   = $this->db->getTableKeys($tableName);
 			$fields = $this->db->getTableColumns($tableName, false);
 			$query  = implode('', $this->db->getTableCreate($tableName));
+
 		}
 		catch (RuntimeException $exception)
 		{
@@ -2257,117 +2218,83 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			return false;
 		}
 
-		$buffer[] = "\t\t\t<table_structure table=\"$tableName\">";
-		$buffer[] = "\t\t\t\t<table_name>";
-		$buffer[] = "\t\t\t\t\t<name>$tableName</name>";
-		$buffer[] = "\t\t\t\t</table_name>";
-		$buffer[] = "\t\t\t\t<install_query>";
-		$buffer[] = "\t\t\t\t\t<query>$query</query>";
-		$buffer[] = "\t\t\t\t</install_query>";
+		$tableStructureXML = $tablesXml->addChild('table_structure');
+		$tableStructureXML->addAttribute('table', $tableName);
+		$tableNameXml = $tableStructureXML->addChild('table_name');
+		$tableNameXml->addChild('name', $tableName);
+		$installQueryXml = $tableStructureXML->addChild('install_query');
+		$installQueryXml->addChild('query', $query);
+
 
 		if (is_array($fields))
 		{
-			$buffer[] = "\t\t\t\t<fields>";
+			$fieldsXml = $tableStructureXML->addChild('fields');
+
 			foreach ($fields as $field)
 			{
-				$buffer[] = "\t\t\t\t\t<field>";
-				$buffer[] = "\t\t\t\t\t\t<Column>$field->Field</Column>";
-				$buffer[] = "\t\t\t\t\t\t<Type>$field->Type</Type>";
-				$buffer[] = "\t\t\t\t\t\t<Null>$field->Null</Null>";
-				$buffer[] = "\t\t\t\t\t\t<Key>$field->Key</Key>";
+				$fieldXml = $fieldsXml->addChild('field');
+				$fieldXml->addChild('Column', $field->Field);
+				$fieldXml->addChild('Type', $field->Type);
+				$fieldXml->addChild('Null', $field->Null);
+				$fieldXml->addChild('Key', $field->Key);
+
 				if (isset($field->Default))
 				{
-					$buffer[] = "\t\t\t\t\t\t<Default>$field->Default</Default>";
+					$fieldXml->addChild('Default', $field->Default);
 				}
 
-				$buffer[] = "\t\t\t\t\t\t<Extra>$field->Extra</Extra>";
-				$buffer[] = "\t\t\t\t\t</field>";
+				$fieldXml->addChild('Extra', $field->Extra);
 			}
-
-			$buffer[] = "\t\t\t\t</fields>";
 		}
 
 		if (is_array($keys))
 		{
-			$buffer[] = "\t\t\t\t<keys>";
+			$keysXml = $tableStructureXML->addChild('keys');
+
 			foreach ($keys as $key)
 			{
-				$buffer[] = "\t\t\t\t\t<key>";
-				$buffer[] = "\t\t\t\t\t\t<Non_unique>$key->Non_unique</Non_unique>";
-				$buffer[] = "\t\t\t\t\t\t<Key_name>$key->Key_name</Key_name>";
-				$buffer[] = "\t\t\t\t\t\t<Seq_in_index>$key->Seq_in_index</Seq_in_index>";
-				$buffer[] = "\t\t\t\t\t\t<Column_name>$key->Column_name</Column_name>";
-				$buffer[] = "\t\t\t\t\t\t<Collation>$key->Collation</Collation>";
-				$buffer[] = "\t\t\t\t\t\t<Null>$key->Null</Null>";
-				$buffer[] = "\t\t\t\t\t\t<Index_type>$key->Index_type</Index_type>";
-				$buffer[] = "\t\t\t\t\t\t<Comment>htmlspecialchars($key->Comment)</Comment>";
-				$buffer[] = "\t\t\t\t\t</key>";
+				$keyXml = $keysXml->addChild('key');
+				$keyXml->addChild('Non_unique', $key->Non_unique);
+				$keyXml->addChild('Key_name', $key->Key_name);
+				$keyXml->addChild('Seq_in_index', $key->Seq_in_index);
+				$keyXml->addChild('Column_name', $key->Column_name);
+				$keyXml->addChild('Collation', $key->Collation);
+				$keyXml->addChild('Null', $key->Null);
+				$keyXml->addChild('Index_type', $key->Index_type);
+				$keyXml->addChild('Comment', $key->Comment);
 			}
-
-			$buffer[] = "\t\t\t\t</keys>";
 		}
 
-		$buffer[] = "\t\t\t</table_structure>\n";
-
-		return implode("\n", $buffer);
+		return true;
 	}
 
 	/**
 	 * Builds the XML data to export
 	 *
-	 * @param string   $tableName name of table
-	 * @param resource $handle    handle of backup file
+	 * @param string           $tableName name of table
+	 * @param SimpleXMLElement $tablesXml    XML element tables
 	 *
 	 * @return   bool        True on success
 	 *
 	 * @since    1.0.1
 	 */
-	private function buildXmlData($tableName, $handle)
+	private function buildXmlData($tableName, $tablesXml)
 	{
-		// @ToDo: Use simpleXml correctly
-		$query = $this->db->getQuery(true);
+		$data = $this->getTableDataToSave($tableName);
 
-		// Get the data from table
-		$query->select('*');
-		$query->from($this->db->quoteName($tableName));
-
-		$this->db->setQuery($query);
-
-		try
-		{
-			$data = $this->db->loadAssocList();
-		}
-		catch (RuntimeException $exception)
-		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-			return false;
-		}
-
-		if (fwrite($handle, "\t\t\t<table_data table=\"$tableName\">\n") === false)
-		{
-			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-			return false;
-		}
+		$tableXml = $tablesXml->addChild('table_data');
+		$tableXml->addAttribute('table', $tableName);
 
 		if (is_array($data))
 		{
 			foreach ($data as $item)
 			{
-				if (fwrite($handle, "\t\t\t\t<dataset>\n") === false)
-				{
-					$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-					return false;
-				}
+				$datasetXml = $tableXml->addChild('dataset');
 
 				foreach ($item as $key => $value)
 				{
 					$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
+
 					if (((($tableName == '#__bwpostman_sendmailcontent') || ($tableName == '#__bwpostman_tc_sendmailcontent')) && ($key == 'body'))
 						|| (($tableName == '#__bwpostman_newsletters') && ($key == 'html_version'))
 						|| (($tableName == '#__bwpostman_templates')
@@ -2380,31 +2307,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						$insert_string = '<![CDATA[' . $insert_string . ']]>';
 					}
 
-					if (fwrite($handle, "\t\t\t\t\t<$key>" . $insert_string . "</$key>\n") === false)
-					{
-						$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
-						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-						return false;
-					}
-				}
-
-				if (fwrite($handle, "\t\t\t\t</dataset>\n") === false)
-				{
-					$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-					return false;
+					$datasetXml->addChild($key, $insert_string);
 				}
 			}
-		}
-
-		if (fwrite($handle, "\t\t\t</table_data>\n") === false)
-		{
-			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_GENERAL');
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-			return false;
 		}
 
 		return true;
@@ -2413,22 +2318,20 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Builds the XML assets to export
 	 *
-	 * @param string $tableName name of table
+	 * @param string           $tableName name of table
+	 * @param SimpleXMLElement $tablesXml
 	 *
-	 * @return    string    XML lines
+	 * @return boolean true on success, false on failure
 	 *
 	 * @since    1.0.1
 	 */
-	private function buildXmlAssets($tableName)
+	private function buildXmlAssets($tableName, $tablesXml)
 	{
-		// @ToDo: Use simpleXml correctly
 		$table_name_raw = $this->getRawTableName($tableName);
 
 		// @ToDo: use checkForAsset($table)
 		if (in_array($table_name_raw, $this->assetTargetTables))
 		{
-			$buffer = array();
-
 			$data = $this->getTableAssetData($table_name_raw);
 
 			if ($data === false)
@@ -2436,31 +2339,25 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				return  false;
 			}
 
-			$buffer[] = "\t\t\t" . '<table_assets table="' . $tableName . '">';
+			$tableAssetsXml = $tablesXml->addChild('table_assets');
+			$tableAssetsXml->addAttribute('table', $tableName);
+
 			if (is_array($data))
 			{
 				foreach ($data as $item)
 				{
-					$buffer[] = "\t\t\t\t<dataset>";
+					$datasetXml = $tableAssetsXml->addChild('dataset');
+
 					foreach ($item as $key => $value)
 					{
 						$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
-						$buffer[]      = "\t\t\t\t\t<" . $key . ">" . $insert_string . "</" . $key . ">";
+						$datasetXml->addChild($key, $insert_string);
 					}
-
-					$buffer[] = "\t\t\t\t</dataset>";
 				}
 			}
-
-			$buffer[] = "\t\t\t</table_assets>";
-		}
-		else
-		{
-			$buffer[] = "\t\t\t" . '<table_assets table="' . $tableName . '">';
-			$buffer[] = "\t\t\t</table_assets>";
 		}
 
-		return implode("\n", $buffer);
+		return true;
 	}
 
 	/**
@@ -2469,10 +2366,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * @return    string    An XML string
 	 *
 	 * @since    1.0.1
+	 *
+	 * @deprecated since 2.4.0
 	 */
 	private function buildXmlFooter()
 	{
-		// @ToDo: Use simpleXml correctly
 		$buffer = array();
 
 		$buffer[] = "\t</database>";
@@ -2757,7 +2655,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				} // end asset inserting
 
 				/*
-				Import data (can't use table bind/store, because we have IDs and Joomla sets mode to update, if ID is set,
+				 * Import data (can't use table bind/store, because we have IDs and Joomla sets mode to update, if ID is set,
 				 * but in empty tables there is nothing to update)
 				 */
 				$s     = 0;
@@ -2984,7 +2882,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 
 		// get XML data
-		$xml = simplexml_load_file($file);
+//		$xml = simplexml_load_file($file);
+		$xml = new SimpleXMLElement($file, null, true);
 		fclose($fh);
 
 		// check if xml file is ok (most error case: non-xml-conform characters in xml file)
@@ -5868,6 +5767,39 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
+	 * Method to get all assets of BwPostman to save
+	 *
+	 * @return array|mixed
+	 *
+	 * @since 2.4.0
+	 */
+	protected function getAssetsToSave()
+	{
+		$query = $this->db->getQuery(true);
+
+		// Get the assets for component from database
+		$query->select('*');
+		$query->from($this->db->quoteName('#__assets'));
+		$query->where($this->db->quoteName('name') . ' = ' . $this->db->quote('com_bwpostman'));
+
+		$this->db->setQuery($query);
+
+		try
+		{
+			$assets = $this->db->loadAssocList();
+		}
+		catch (RuntimeException $exception)
+		{
+			$message = $exception->getMessage();
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+			return false;
+		}
+
+		return $assets;
+	}
+
+	/**
 	 * Method to get all Items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
 	 * but not present at asset table.
 	 *
@@ -6477,5 +6409,39 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 
 		return '(' . implode(',', $values) . ')';
+	}
+
+	/**
+	 * Method to get the table data for saving
+	 *
+	 * @param string  $tableName     the name of the table to save
+	 *
+	 * @return array|boolean false on failure
+	 *
+	 * @since 2.4.0
+	 */
+	private function getTableDataToSave($tableName)
+	{
+		$query = $this->db->getQuery(true);
+
+		// Get the data from table
+		$query->select('*');
+		$query->from($this->db->quoteName($tableName));
+
+		$this->db->setQuery($query);
+
+		try
+		{
+			$data = $this->db->loadAssocList();
+		}
+		catch (RuntimeException $exception)
+		{
+			$message = $exception->getMessage();
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+			return false;
+		}
+
+		return $data;
 	}
 }

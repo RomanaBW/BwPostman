@@ -469,6 +469,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						// get stored $base_asset and $curr_asset_id from session
 						$table_names = $session->get('trestore_tablenames', '');
 						$i           = $session->get('trestore_i', 0);
+						$error       = '';
 
 						if ($i == 0)
 						{
@@ -477,55 +478,60 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 							if ($tablesRenewed === false)
 							{
-								$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR');
-								echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+								$error = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', '', 'unknown');
+								$this->errorMessage = $error;
+								echo '<p class="bw_tablecheck_error">' . $error . '</p>';
 								$this->alertClass = 'error';
 								$this->ready      = "1";
 							}
 						}
 
-						$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
-
-						// loop over all tables
-						echo '<h5>' . Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TABLE', $table_names[$i]) . '</h5>';
-
-						$lastTable = false;
-						if ($i + 1 == count($table_names))
+						if ($error === '')
 						{
-							$lastTable = true;
+							$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
+
+							// loop over all tables
+							echo '<h5>' . Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TABLE',
+									$table_names[$i]) . '</h5>';
+
+							$lastTable = false;
+							if ($i + 1 == count($table_names))
+							{
+								$lastTable = true;
+							}
+
+							$tablesRewritten = $model->reWriteTables($table_names[$i], $lastTable);
+
+							if ($tablesRewritten === false)
+							{
+								$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_TABLE_ERROR');
+								echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+								$this->alertClass = 'error';
+								$this->ready      = "1";
+							}
+
+							$i++;
+							$session->set('trestore_i', $i);
+							$step = "6";
+
+							if ($lastTable)
+							{
+								// clear session variables
+								$session->clear('trestore_tablenames');
+								$session->clear('trestore_i');
+								$step = "7";
+							}
+
+							$logger->addEntry(
+								new LogEntry(
+									sprintf(
+										'Speicherverbrauch in Schritt 7, Tabelle %s: %01.3f MB',
+										$table_names[$i - 1],
+										(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
+									),
+									BwLogger::BW_DEBUG, 'maintenance')
+							);
 						}
-
-						$tablesRewritten = $model->reWriteTables($table_names[$i], $lastTable);
-
-						if ($tablesRewritten === false)
-						{
-							$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_TABLE_ERROR');
-							echo '<p class="bw_tablecheck_error">' . $message . '</p>';
-							$this->alertClass = 'error';
-							$this->ready      = "1";
-						}
-
-						$i++;
-						$session->set('trestore_i', $i);
-						$step = "6";
-
-						if ($lastTable)
-						{
-							// clear session variables
-							$session->clear('trestore_tablenames');
-							$session->clear('trestore_i');
-							$step  = "7";
-						}
-
-						$logger->addEntry(
-							new LogEntry(
-								sprintf(
-									'Speicherverbrauch in Schritt 7, Tabelle %s: %01.3f MB',
-									$table_names[$i - 1],
-									(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
-								),
-								BwLogger::BW_DEBUG, 'maintenance')
-						);
 					}
 					catch (Exception $e)
 					{

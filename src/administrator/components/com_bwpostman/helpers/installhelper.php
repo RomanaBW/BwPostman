@@ -28,6 +28,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\LogEntry;
 
 /**
  * Component helper class
@@ -197,5 +198,42 @@ class BwPostmanInstallHelper
 		}
 
 		return $ret;
+	}
+
+	/**
+	 * Method to adjust field access in table mailinglists
+	 *
+	 * in prior versions of BwPostman access holds the values like viewlevels, but beginning with 0.
+	 * But 0 is in Joomla the value for new dataset, so in version 1.0.1 of BwPostman this will be adjusted (incremented)
+	 *
+	 * @return    boolean
+	 *
+	 * @since    2.4.0 here, before at install script since 1.0.1
+	 *
+	 */
+	public static function adjustMLAccess()
+	{
+		$logOptions   = array();
+		$logger = BwLogger::getInstance($logOptions);
+
+		$db = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->update($db->quoteName('#__bwpostman_mailinglists'));
+		$query->set($db->quoteName('access') . " = " . $db->quoteName('access') . '+1');
+		$db->setQuery($query);
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $exception)
+		{
+			$message =  $exception->getMessage();
+			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+			return  false;
+		}
+
+		return true;
 	}
 }

@@ -37,146 +37,45 @@ JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/he
 
 HtmlHelper::_('behavior.keepalive');
 HtmlHelper::_('behavior.formvalidator');
-HtmlHelper::_('formbehavior.chosen', 'select');
-
-// Depends on jQuery UI
-if(version_compare(JVERSION, '3.999.999', 'le'))
-{
-	HtmlHelper::_('behavior.tooltip');
-	HtmlHelper::_('jquery.ui', array('core'));
-}
-else
-{
-	HTMLHelper::_('bootstrap.tooltip');
-}
+HTMLHelper::_('bootstrap.tooltip');
 
 $n	= count($mailinglists);
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
-?>
 
-<?php
+if(version_compare(JVERSION, '3.999.999', 'le'))
+{
+	JHtml::_('stylesheet', 'mod_bwpostman/bwpm_register.css', array('version' => 'auto', 'relative' => true));
+	JHtml::_('script', 'mod_bwpostman/bwpm_register.js', array('version' => 'auto', 'relative' => true));
+	$inputClass = 'input';
+}
+else
+{
+	$app->getDocument()->getWebAssetManager()
+		->registerAndUseStyle('mod_bwpostman', 'mod_bwpostman/bwpm_register.css')
+		->registerAndUseScript('mod_bwpostman', 'mod_bwpostman/bwpm_register.js', [], ['defer' => true]);
+	$inputClass = 'in';
+}
+
+if (file_exists(JPATH_BASE . $css_filename))
+{
+	$document->addStyleSheet(Uri::root(true) . $css_filename);
+}
+
+Text::script('MOD_BWPOSTMANERROR_FIRSTNAME');
+Text::script('MOD_BWPOSTMANERROR_NAME');
+Text::script('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL');
+Text::script('MOD_BWPOSTMAN_SPECIAL');
+Text::script('MOD_BWPOSTMANERROR_EMAIL');
+Text::script('MOD_BWPOSTMANERROR_EMAIL_INVALID');
+Text::script('MOD_BWPOSTMANERROR_NL_CHECK');
+Text::script('MOD_BWPOSTMANERROR_DISCLAIMER_CHECK');
+Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
+
 // We cannot use the same form name and name for the disclaimer checkbox
 // because this will not work if the module and the component will be displayed
 // on the same page
-
 ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-function checkModRegisterForm()
-{
-	var form = document.bwp_mod_form;
-	var errStr = "";
-	var arrCB = document.getElementsByName("mailinglists[]");
-	var n =	arrCB.length;
-	var check = 0;
-
-	// Validate input fields
-	// firstname
-	if (document.bwp_mod_form.a_firstname)
-	{
-		if ((!document.getElementById("a_firstname").value) && (document.getElementById("firstname_field_obligation_mod").value === '1'))
-		{
-			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_FIRSTNAME', true); ?>\n";
-		}
-	}
-
-	// name
-	if (document.bwp_mod_form.a_name)
-	{
-		if ((!document.getElementById("a_name").value) && (document.getElementById("name_field_obligation_mod").value === '1'))
-		{
-			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_NAME', true); ?>\n";
-		}
-	}
-
-	// additional field
-	if (document.bwp_mod_form.a_special)
-	{
-		if ((!document.getElementById("a_special").value) && (document.getElementById("special_field_obligation_mod").value === '1'))
-		{
-			errStr += "<?php echo Text::sprintf('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL', Text::_($paramsComponent->get('special_label') != '' ? Text::_($paramsComponent->get('special_label')) : Text::_('MOD_BWPOSTMAN_SPECIAL'))); ?>\n";
-		}
-	}
-
-	// email
-	var email = document.getElementById("a_email").value;
-
-	if (email === "")
-	{
-		errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_EMAIL', true); ?>\n";
-	}
-	else
-	{
-	var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,14})+$/;
-		if (!filter.test(email))
-		{
-			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_EMAIL_INVALID', true); ?>\n";
-			email.focus;
-		}
-	}
-	// mailinglist
-
-	if (n > 1)
-	{
-		for (i = 0; i < n; i++)
-		{
-			if (arrCB[i].checked === true)
-			{
-				check++;
-			}
-		}
-	}
-	else
-	{
-		check++;
-	}
-
-	if (check === 0)
-	{
-		errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_NL_CHECK'); ?>\n";
-	}
-
-	// disclaimer
-	if (document.bwp_mod_form.agreecheck_mod)
-	{
-		if (document.bwp_mod_form.agreecheck_mod.checked === false)
-		{
-			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_DISCLAIMER_CHECK'); ?>\n";
-		}
-	}
-
-	// captcha
-	if (document.bwp_mod_form.stringCaptcha)
-	{
-		if (document.bwp_mod_form.stringCaptcha.value === '')
-		{
-			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_CAPTCHA_CHECK'); ?>\n";
-		}
-	}
-
-	// question
-	if (document.bwp_mod_form.stringQuestion)
-	{
-		if (document.bwp_mod_form.stringQuestion.value === '')
-		{
-			errStr += "<?php echo Text::_('MOD_BWPOSTMANERROR_CAPTCHA_CHECK'); ?>\n";
-		}
-	}
-
-	if ( errStr !== "" )
-	{
-		alert( errStr );
-		return false;
-	}
-	else
-	{
-		form.submit();
-	}
-}
-/* ]]> */
-</script>
 
 <noscript>
 	<div id="system-message">
@@ -244,7 +143,7 @@ function checkModRegisterForm()
 				// Is filling out the firstname field obligating
 				isset($subscriber->firstname) ? $sub_firstname = $subscriber->firstname : $sub_firstname = '';
 				($paramsComponent->get('firstname_field_obligation'))
-					? $required = '<span class="append-area"><i class="icon-star"></i></span>'
+					? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
 					: $required = '';
 				?>
 				<input type="text" name="a_firstname" id="a_firstname"
@@ -263,7 +162,7 @@ function checkModRegisterForm()
 				<?php // Is filling out the name field obligating
 				isset($subscriber->name) ? $sub_name = $subscriber->name : $sub_name = '';
 				($paramsComponent->get('name_field_obligation'))
-					? $required = '<span class="append-area"><i class="icon-star"></i></span>'
+					? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
 					: $required = ''; ?>
 				<input type="text" name="a_name" id="a_name" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANNAME')); ?>"
 						value="<?php echo $sub_name; ?>" class="inputbox input-small" maxlength="50" />
@@ -282,7 +181,7 @@ function checkModRegisterForm()
 				<?php // Is filling out the additional field obligating
 				isset($subscriber->special) ? $sub_special = $subscriber->special : $sub_special = '';
 				($paramsComponent->get('special_field_obligation'))
-					? $required = '<span class="append-area"><i class="icon-star"></i></span>'
+					? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
 					: $required = ''; ?>
 				<input type="text" name="a_special" id="a_special"
 						placeholder="<?php echo addslashes(Text::_($paramsComponent->get('special_label') != '' ? Text::_($paramsComponent->get('special_label')) : Text::_('MOD_BWPOSTMAN_SPECIAL'))); ?>"
@@ -297,18 +196,18 @@ function checkModRegisterForm()
 		<p id="bwp_mod_form_emailfield" class="input-append">
 			<input type="text" id="a_email" name="email" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANEMAIL')); ?>"
 					value="<?php echo $sub_email; ?>" class="inputbox input-small" maxlength="100" />
-			<span class="append-area"><i class="icon-star"></i></span>
+			<span class="append-area"><i class="bwp_icon-star"></i></span>
 		</p>
 		<?php
 		if ($paramsComponent->get('show_emailformat') == 1)
 		{
 			// Show formfield emailformat only if enabled in basic parameters
 			?>
-			<p id="bwp_mod_form_emailformat">
+			<div id="bwp_mod_form_emailformat">
 				<label id="emailformatmsg_mod">
 					<?php echo Text::_('MOD_BWPOSTMANEMAILFORMAT'); ?>:
 				</label>
-			</p>
+			</div>
 			<div id="bwp_mod_form_emailformatfield">
 				<?php echo $lists['emailformat']; ?>
 			</div>
@@ -332,60 +231,64 @@ function checkModRegisterForm()
 		{
 			if ($n == 1)
 			{ ?>
-				<p class="mailinglist-title"><?php echo $mailinglist->title; ?>
+		<p id="bwp_mod_form_lists" class="mt">
+			<?php echo Text::_('MOD_BWPOSTMANLIST'); ?>
+		</p>
+		<div class="mailinglist-title hasTooltip" title="<?php echo HTMLHelper::tooltipText($mailinglists[0]->title, Text::_($mailinglists[0]->description)); ?>"><?php echo $mailinglist->title; ?>
 				<input type="checkbox" style="display: none;" id="a_<?php echo "mailinglists0"; ?>" name="<?php echo "mailinglists[]"; ?>"
 				title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglists[0]->id; ?>" checked="checked" />
 				<?php
 				if ($params->get('show_desc') == 1)
 				{ ?>
-					<br /><span class="mailinglist-description-single hasTooltip" title="<?php echo HTMLHelper::tooltipText(Text::_($mailinglists[0]->description), 0); ?>"><?php
+					<br /><span class="mailinglist-description-single"><?php
 						echo substr(Text::_($mailinglists[0]->description), 0, $descLength);
 
 						if (strlen(Text::_($mailinglists[0]->description)) > $descLength)
 						{
 							echo '... ';
-							echo HTMLHelper::tooltip(Text::_($mailinglists[0]->description), $mailinglists[0]->title, 'tooltip.png', '', '');
+							echo '<i class="bwp_icon-info"></i>';
 						} ?>
 					</span>
 					<?php
 				}
-				echo '</p>';
+				echo '</div>';
 			}
 			else
 			{ ?>
 				<p id="bwp_mod_form_lists" class="required">
-					<?php echo Text::_('MOD_BWPOSTMANLISTS') . ' <i class="icon-star"></i>'; ?>
+					<?php echo Text::_('MOD_BWPOSTMANLISTS') . ' <sup><i class="bwp_icon-star"></i></sup>'; ?>
 				</p>
 				<div id="bwp_mod_form_listsfield">
 				<?php
 				foreach ($mailinglists AS $i => $mailinglist)
 				{ ?>
-					<p class="a_mailinglist_item_<?php echo $i; ?>">
+					<div class="a_mailinglist_item_<?php echo $i; ?>">
+						<label class="mailinglist-title hasTooltip" title="<?php echo HTMLHelper::tooltipText($mailinglists[$i]->title, Text::_($mailinglists[$i]->description)); ?>">
 						<input type="checkbox" id="a_<?php echo "mailinglists$i"; ?>" name="<?php echo "mailinglists[]"; ?>"
 								title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglist->id; ?>" />
-						<span class="mailinglist-title">
 							<?php
 							echo $mailinglist->title;
 							if ($params->get('show_desc') == 1)
 							{
 							?>:
-								</span><br />
-						<span class="mailinglist-description hasTooltip" title="<?php echo HTMLHelper::tooltipText(Text::_($mailinglists[0]->description), 0); ?>">
+								<br />
+								<span class="mailinglist-description">
 									<?php
 									echo substr(Text::_($mailinglist->description), 0, $descLength);
 									if (strlen(Text::_($mailinglist->description)) > $descLength)
 									{
 										echo '... ';
-										echo HTMLHelper::tooltip(Text::_($mailinglist->description), $mailinglist->title, 'tooltip.png', '', '');
+										echo '<i class="bwp_icon-info"></i>';
 									} ?>
 								</span>
+						</label>
 						<?php
 							}
 							else
 							{
-								echo '</span>';
+								echo '</label>';
 							} ?>
-					</p>
+					</div>
 					<?php
 				}
 				?>
@@ -422,7 +325,7 @@ function checkModRegisterForm()
 					// Show inside modalbox
 					if ($paramsComponent->get('showinmodal') == 1)
 					{
-						echo '<a id="bwp_mod_open" data-target="#DisclaimerModModal" data-toggle="modal"';
+						echo '<a id="bwp_mod_open" href="javascript:void(0);" data-target="#DisclaimerModModal" data-toggle="modal"';
 					}
 					// Show not in modalbox
 					else
@@ -433,7 +336,7 @@ function checkModRegisterForm()
 							echo ' target="_blank"';
 						};
 					}
-					echo '>' . Text::_('MOD_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
+					echo '>' . Text::_('MOD_BWPOSTMAN_DISCLAIMER') . '</a> <sup><i class="bwp_icon-star"></i></sup>'; ?>
 				</span>
 			</p>
 			<?php
@@ -449,7 +352,7 @@ function checkModRegisterForm()
 				<p class="question input-append">
 					<input type="text" name="stringQuestion" id="a_stringQuestion"
 							placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="input-small" />
-					<span class="append-area"><i class="icon-star"></i></span>
+					<span class="append-area"><i class="bwp_icon-star"></i></span>
 				</p>
 			</div>
 			<?php
@@ -469,7 +372,7 @@ function checkModRegisterForm()
 					<input type="text" name="stringCaptcha" id="a_stringCaptcha"
 							placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>"
 							maxlength="50" class="input-small" />
-					<span class="append-area"><i class="icon-star"></i></span>
+					<span class="append-area"><i class="bwp_icon-star"></i></span>
 				</p>
 			</div>
 			<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
@@ -478,10 +381,10 @@ function checkModRegisterForm()
 		?>
 		<?php // End Spamcheck 2 ?>
 
-		<p class="mod-button-register text-right">
+		<div class="mod-button-register text-right">
 			<button class="button validate btn" type="submit"><?php echo Text::_('MOD_BWPOSTMANBUTTON_REGISTER'); ?>
 			</button>
-		</p>
+		</div>
 
 		<input type="hidden" name="option" value="com_bwpostman" />
 		<input type="hidden" name="task" value="save" />
@@ -502,18 +405,19 @@ function checkModRegisterForm()
 		<input type="hidden" name="show_firstname_field_mod" id="show_firstname_field_mod"
 				value="<?php echo $paramsComponent->get('show_firstname_field'); ?>" />
 		<input type="hidden" name="show_special_mod" id="show_special_mod" value="<?php echo $paramsComponent->get('show_special'); ?>" />
+		<input type="hidden" name="special_label" id="special_label" value="<?php echo $paramsComponent->get('special_label'); ?>" />
 		<input type="hidden" name="mod_id" id="mod_id" value="<?php echo $module_id; ?>" />
 		<?php echo HtmlHelper::_('form.token'); ?>
 	</form>
 
-		<p id="bwp_mod_form_required">(<i class="icon-star"></i>) <?php echo Text::_('MOD_BWPOSTMANREQUIRED'); ?></p>
-		<p id="bwp_mod_form_editlink" class="text-right">
+		<p id="bwp_mod_form_required">(<i class="bwp_icon-star"></i>) <?php echo Text::_('MOD_BWPOSTMANREQUIRED'); ?></p>
+		<div id="bwp_mod_form_editlink" class="text-right">
 			<button class="button btn" onclick="location.href='<?php
 				echo Route::_('index.php?option=com_bwpostman&amp;view=edit&amp;Itemid=' . $itemid);
 				?>'">
 				<?php echo Text::_('MOD_BWPOSTMANLINK_TO_EDITLINKFORM'); ?>
 			</button>
-		</p>
+		</div>
 	<?php
 	}; // End: Show registration form
 	// The Modal
@@ -526,51 +430,10 @@ function checkModRegisterForm()
 		$modalParams['title'] = 'Information';
 		echo HTMLHelper::_('bootstrap.renderModal', 'DisclaimerModModal', $modalParams);
 	}
+	$modalParams = array();
+	$modalParams['title'] = Text::_('ERROR');
+	$modalParams['footer'] = '<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">'
+		. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>';
+	echo HTMLHelper::_('bootstrap.renderModal', 'registerErrors', $modalParams);
 	?>
 </div>
-
-<script type="text/javascript">
-	jQuery(document).ready(function()
-	{
-		// Turn radios into btn-group
-		jQuery('.radio.btn-group label').addClass('btn');
-		jQuery(".btn-group label:not(.active)").click(function()
-		{
-			var label = jQuery(this);
-			var input = jQuery('#' + label.attr('for'));
-
-			if (!input.prop('checked'))
-			{
-				label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-				if (input.val() === '')
-				{
-					label.addClass('active btn-primary');
-				}
-				else if (input.val() === 0)
-				{
-					label.addClass('active btn-danger');
-				}
-				else
-				{
-					label.addClass('active btn-success');
-				}
-				input.prop('checked', true);
-			}
-		});
-		jQuery(".btn-group input[checked=checked]").each(function()
-		{
-			if (jQuery(this).val() === '')
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
-			}
-			else if (jQuery(this).val() === 0)
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-danger');
-			}
-			else
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
-			}
-		});
-	})
-</script>

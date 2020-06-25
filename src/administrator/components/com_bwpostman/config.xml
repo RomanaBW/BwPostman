@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-	<fieldset name="com_bwpostman_main_settings" label="COM_BWPOSTMAN_SETTINGS" description="COM_BWPOSTMAN_SETTINGS_DESCRIPTION" addfieldprefix="Joomla/Component/Content/Administrator/Field" addfieldpath="/administrator/components/com_content/models/fields">
+	<fieldset name="com_bwpostman_main_settings" label="COM_BWPOSTMAN_SETTINGS" description="COM_BWPOSTMAN_SETTINGS_DESCRIPTION" addfieldprefix="Joomla\Component\Content\Administrator\Field" addfieldpath="/administrator/components/com_content/models/fields">
 		<field name="default_from_name"
 			type="text" size="50" default=""
 			label="COM_BWPOSTMAN_DEFAULT_FROM_NAME"

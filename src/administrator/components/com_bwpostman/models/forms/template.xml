@@ -844,7 +844,7 @@
 			label="COM_BWPOSTMAN_TPL_HTML_LABEL"
 			labelclass="control-label"
 			description ="COM_BWPOSTMAN_TPL_HTML_DESC"
-			filter="JComponentHelper::filterText"
+			filter="raw"
 		/>
 		<field
 			name="tpl_css"

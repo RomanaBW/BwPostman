@@ -548,15 +548,20 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @param string   $gender_selected
 	 * @param string   $name
+	 * @param string   $class
 	 *
 	 * @return string
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function buildGenderList($gender_selected = '2', $name = 'gender')
+	public static function buildGenderList($gender_selected = '2', $name = 'gender', $class = '')
 	{
 
-		$gender = '<select id="gender" name="'  . $name . '" >';
+		if ($class != '')
+		{
+			$class = ' class="' . $class . '"';
+		}
+		$gender = '<select id="gender"' . $class . ' name="'  . $name . '">';
 
 		$gender .= '<option value="2"';
 		if ($gender_selected == '2')

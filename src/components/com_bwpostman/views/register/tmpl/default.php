@@ -123,7 +123,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							// Disclaimer article and target_blank or not
 							if ($this->params->get('disclaimer_selection') == 1 && $this->params->get('article_id') > 0)
 							{
-								$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($this->params->get('article_id')));
+								$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($this->params->get('article_id') . $tpl_com, 0));
 							}
 							// Disclaimer menu item and target_blank or not
 							elseif ($this->params->get('disclaimer_selection') == 2 && $this->params->get('disclaimer_menuitem') > 0)

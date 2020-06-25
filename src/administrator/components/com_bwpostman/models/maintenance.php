@@ -456,7 +456,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since    1.0.1
 	 */
-	protected function buildXmlHeader()
+	private function buildXmlHeader()
 	{
 		// Get version of BwPostman
 		$version = $this->getBwPostmanVersion();
@@ -479,7 +479,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$generalsXml->addChild('BwPostmanVersion', $version);
 		$generalsXml->addChild('SaveDate', Factory::getDate()->format("Y-m-d_H:i"));
 
-		$assetsToSave = $this->getAssetsToSave();
+		$assetsToSave = $this->getAllBwPostmanAssetsToSave();
 
 		if ($assetsToSave === false)
 		{
@@ -1909,12 +1909,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	public function checkAssetId()
 	{
-		// Set tables that has column asset_id
 		if($this->getTableNamesFromDB() === false)
 		{
 			return false;
 		}
 
+		// Set tables that have column asset_id
 		foreach ($this->tableNames as $table)
 		{
 			// Shortcut
@@ -2000,7 +2000,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						$item      = $itemIdsWithoutAssets[$i];
 						$assetName = 'com_bwpostman.' . $section . '.' . $item;
 
-						$assetId = $this->getAssetIdFromName($assetName);
+						$assetId = $this->getAssetIdByAssetName($assetName);
 
 						if ($assetId ===  -1)
 						{
@@ -2528,7 +2528,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to the rewrite tables
+	 * Method to the rewrite tables content one by one from backup file
 	 *
 	 * @param string  $table     generic name of table to rewrite
 	 * @param boolean $lastTable is this the last table?
@@ -2767,7 +2767,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Method to get the version of BwPostman
 	 *
-	 * @return    string    version
+	 * @return    string    version of BwPostman
 	 *
 	 * @since    1.0.8
 	 */
@@ -2813,39 +2813,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to adjust field access in table mailinglists
-	 *
-	 * in prior versions of BwPostman access holds the values like viewlevels, but beginning with 0.
-	 * But 0 is in Joomla the value for new dataset, so in version 1.0.1 of BwPostman this will be adjusted (incremented)
-	 *
-	 * @return    boolean
-	 *
-	 * @since    1.3.0 here, before in install script since 1.0.1
-	 *
-	 */
-	public function adjustMLAccess()
-	{
-		$query = $this->db->getQuery(true);
-
-		$query->update($this->db->quoteName('#__bwpostman_mailinglists'));
-		$query->set($this->db->quoteName('access') . " = " . $this->db->quoteName('access') . '+1');
-		$this->db->setQuery($query);
-		try
-		{
-			$this->db->execute();
-		}
-		catch (RuntimeException $exception)
-		{
-			$message =  $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-			return  false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Method parse XML data
 	 *
 	 * stores the result array in state
@@ -2882,7 +2849,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 
 		// get XML data
-//		$xml = simplexml_load_file($file);
 		$xml = new SimpleXMLElement($file, null, true);
 		fclose($fh);
 
@@ -2976,7 +2942,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		unset($xml);
 		unset($table);
 
-		if (count($x_tables) == 0)
+		if (count($x_tables) === 0)
 		{
 			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_NO_TABLES_ERROR');
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -3410,7 +3376,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 
 		// Get Base Asset
-		$base_asset = $this->getAssetFromTableByName($asset['name']);
+		$base_asset = $this->getAssetFromAssetsTableByName($asset['name']);
 
 		if ($base_asset === false)
 		{
@@ -4254,7 +4220,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method
+	 * Method to get an array of name, title and rules as asset for a specific section (table or component)
 	 *
 	 * @param array $table
 	 *
@@ -4266,6 +4232,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function getBaseAssetItem($table)
 	{
+		// If state is set, use this
 		$stateAssetsRaw = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
 
 		if (is_array($stateAssetsRaw) && count($stateAssetsRaw) > 0)
@@ -4331,6 +4298,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
+	 * Method to check if column asset_id exists for a specific table
+	 *
 	 * @param string $table as generic table name
 	 *
 	 * @return boolean|integer
@@ -4392,6 +4361,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			);
 		}
 
+		// Set rules for edit/edit_own
 		$tmpRule = array();
 		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
 		{
@@ -4417,6 +4387,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			);
 		}
 
+		// Set rules for edit_state
 		$tmpRule = array();
 		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
 		{
@@ -4435,6 +4406,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$rules['bwpm.' . $tableName . 'edit.state'] = $tmpRule;
 
+		// Set rules for archive
 		$tmpRule = array();
 		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
 		{
@@ -4453,6 +4425,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$rules['bwpm.' . $tableName . 'archive'] = $tmpRule;
 
+		// Set rules for restore
 		$tmpRule = array();
 		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
 		{
@@ -4471,6 +4444,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$rules['bwpm.' . $tableName . 'restore'] = $tmpRule;
 
+		// Set rules for delete
 		$tmpRule = array();
 		if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
 		{
@@ -4489,6 +4463,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$rules['bwpm.' . $tableName . 'delete'] = $tmpRule;
 
+		// Set rules for send
 		if ($tableNameUC == 'Newsletter')
 		{
 			$tmpRule = array();
@@ -4522,7 +4497,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to initialize assets for component and sections with predefined basic rules at installation
+	 * Method to initialize assets for component and sections with predefined basic rules at installation and update of component
 	 *
 	 * @param boolean $updateComponent
 	 *
@@ -4593,7 +4568,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				$sectionName = substr($table['tableNameRaw'], 0, -1);
 
-				$sectionAssetExists = $this->getAssetFromTableByName('com_bwpostman.' . $sectionName);
+				$sectionAssetExists = $this->getAssetFromAssetsTableByName('com_bwpostman.' . $sectionName);
 
 				if ($sectionAssetExists === false)
 				{
@@ -4656,6 +4631,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 	/**
 	 * Method to initialize asset for component
+	 * All possible actions for all usergroups BwPostman delivers are set.
 	 *
 	 * @return boolean
 	 *
@@ -5555,7 +5531,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Get complete asset from asset table by asset name
+	 * Get complete asset from assets table by asset name
 	 *
 	 * @param $assetName
 	 *
@@ -5563,7 +5539,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since 2.0.0
 	 */
-	private function getAssetFromTableByName($assetName)
+	private function getAssetFromAssetsTableByName($assetName)
 	{
 		$query = $this->db->getQuery(true);
 
@@ -5773,7 +5749,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since 2.4.0
 	 */
-	protected function getAssetsToSave()
+	protected function getAllBwPostmanAssetsToSave()
 	{
 		$query = $this->db->getQuery(true);
 
@@ -5797,42 +5773,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 
 		return $assets;
-	}
-
-	/**
-	 * Method to get all Items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
-	 * but not present at asset table.
-	 *
-	 * @param $tableNameGeneric
-	 *
-	 * @return array|boolean
-	 *
-	 * @throws Exception
-	 * @since 2.0.0
-	 *
-	 */
-	private function getItemsWithoutAssetId($tableNameGeneric)
-	{
-		$query = $this->db->getQuery(true);
-		$query->select('*');
-		$query->from($this->db->quoteName($tableNameGeneric));
-		$query->where($this->db->quoteName('asset_id') . ' = ' . (int) 0);
-
-		$this->db->setQuery($query);
-
-		try
-		{
-			$items = $this->db->loadAssocList();
-		}
-		catch (RuntimeException $exception)
-		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-			return false;
-		}
-
-		return $items;
 	}
 
 	/**
@@ -5960,7 +5900,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * @since 2.4.0
 	 *
 	 */
-	private function getAssetIdFromName($assetName)
+	private function getAssetIdByAssetName($assetName)
 	{
 		$assetId = null;
 
@@ -5991,7 +5931,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get an asset id by an asset name. If the name exists returns the asset id, else false
+	 * Method to update the asset ids at a specific table of BwPostman
 	 *
 	 * @param string $tableNameGeneric
 	 * @param array  $assetIdsByName itemId|assetId
@@ -6030,8 +5970,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get all Items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
-	 * but not present at asset table.
+	 * Method to get all items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
+	 * but not present at asset table. The ids of items with asset_id = 0 are known
 	 *
 	 * @param string $tableNameGeneric
 	 * @param array  $itemIds
@@ -6049,6 +5989,42 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->where($this->db->quoteName('id') . ' IN (' . implode(',', $itemIds) . ')');
 
 		$this->db->setQuery($query);
+		try
+		{
+			$items = $this->db->loadAssocList();
+		}
+		catch (RuntimeException $exception)
+		{
+			$message = $exception->getMessage();
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+			return false;
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Method to detect all items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
+	 * but not present at asset table.
+	 *
+	 * @param $tableNameGeneric
+	 *
+	 * @return array|boolean
+	 *
+	 * @throws Exception
+	 * @since 2.0.0
+	 *
+	 */
+	private function getItemsWithoutAssetId($tableNameGeneric)
+	{
+		$query = $this->db->getQuery(true);
+		$query->select('*');
+		$query->from($this->db->quoteName($tableNameGeneric));
+		$query->where($this->db->quoteName('asset_id') . ' = ' . (int) 0);
+
+		$this->db->setQuery($query);
+
 		try
 		{
 			$items = $this->db->loadAssocList();
@@ -6412,7 +6388,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get the table data for saving
+	 * Method to get the table data of a BwPostman table for saving
 	 *
 	 * @param string  $tableName     the name of the table to save
 	 *

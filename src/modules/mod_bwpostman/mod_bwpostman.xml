@@ -32,6 +32,13 @@
 		<language tag="de-DE">de-DE/de-DE.mod_bwpostman.sys.ini</language>
 	</languages>
 
+	<media destination="mod_bwpostman" folder="media">
+		<filename>index.html</filename>
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+	</media>
+
 	<config>
 		<fields name="params">
 			<fieldset name="ml_available" label="MOD_BWPOSTMAN_ML_AVAILABLE_FIELDSET_LABEL" addfieldpath="/modules/mod_bwpostman/elements">

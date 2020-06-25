@@ -24,7 +24,7 @@
  */
 
 
-#mod_bwpostman [class^="icon-"],
-#mod_bwpostman [class*=" icon-"] {
+#mod_bwpostman [class^="bwp_icon-"],
+#mod_bwpostman [class*=" bwp_icon-"] {
 	background-image:		url("../images/glyphicons-halflings.png");
 }

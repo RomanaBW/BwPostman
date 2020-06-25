@@ -40,6 +40,7 @@
         bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
         bw_languages: "{{ languages }}"
         bw_module_name: "mod_bwpostman"
+        bw_media_folder: "mod_bwpostman"
 
 #   build overview module package
     - include_role:
@@ -50,6 +51,7 @@
         bw_languages: "{{ languages }}"
         bw_module_name: "mod_bwpostman_overview"
         bw_external_lang: true
+        bw_media_folder: "mod_bwpostman_overview"
 
 #    - name: build personalize plugin package
     - include_role:

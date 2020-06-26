@@ -21,6 +21,8 @@
 		<filename>mod_bwpostman.xml</filename>
 		<folder>elements</folder>
 		<folder>tmpl</folder>
+		<folder>css</folder>
+		<folder>images</folder>
 	</files>
 
 	<languages folder="language">
@@ -32,9 +34,9 @@
 
 	<media destination="mod_bwpostman" folder="media">
 		<filename>index.html</filename>
+		<folder>css</folder>
 		<folder>images</folder>
 		<folder>js</folder>
-		<folder>css</folder>
 	</media>
 
 	<config>

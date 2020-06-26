@@ -30,7 +30,7 @@
         bw_target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
         bw_languages: "{{ languages }}"
         bw_mb4_support: "{{ mb4_support }}"
-        bw_media_folder: "bw_postman"
+        bw_media_folder: "com_bwpostman"
 
 #   build registration module package
     - include_role:

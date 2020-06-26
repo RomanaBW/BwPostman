@@ -24,7 +24,7 @@
       become: yes
       copy:
         src: "files/misc/boldt-webservice.png"
-        dest: "{{ joomla_base_folders[sub_path] }}/images/bw_postman/boldt-webservice.png"
+        dest: "{{ joomla_base_folders[sub_path] }}/images/com_bwpostman/boldt-webservice.png"
         owner: "{{ tester_www_user }}"
         group: "{{ tester_www_group }}"
         mode: 0755

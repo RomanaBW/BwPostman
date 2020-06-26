@@ -40,7 +40,7 @@
 		<property name="source_site_plg_dir" value="${source_base_dir}/plugins" override="true" />
 		<property name="source_site_lang_dir" value="${source_base_dir}/language" override="true" />
 
-		<property name="source_media_dir" value="${source_base_dir}/media/bw_postman" override="true" />
+		<property name="source_media_dir" value="${source_base_dir}/media/com_bwpostman" override="true" />
 
 		<echo msg="target dirs…" />
 		<property name="target_base_dir" value="${BwPostman_repo_dir}/packages/workingOn" override="true" />

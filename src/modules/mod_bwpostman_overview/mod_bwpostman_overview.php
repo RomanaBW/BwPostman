@@ -40,7 +40,7 @@ $document	= Factory::getDocument();
 $templateName	= $app->getTemplate();
 $css_filename	= '/templates/' . $templateName . '/css/mod_bwpostman_overview.css';
 
-$document->addStyleSheet(Uri::root(true) . '/modules/mod_bwpostman_overview/assets/css/bwpostman_overview.css');
+$document->addStyleSheet(Uri::root(true) . '/media/mod_bwpostman_overview/css/bwpostman_overview.css');
 if (file_exists(JPATH_BASE . $css_filename)) {
 	$document->addStyleSheet(Uri::root(true) . $css_filename);
 }

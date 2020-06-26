@@ -250,10 +250,10 @@ class Mod_BwPostman_OverviewInstallerScript
 			$show_right	= true;
 		}
 
-		$asset_path = 'modules/mod_bwpostman_overview';
+		$asset_path = 'media/mod_bwpostman_overview';
 		?>
 
-<link rel="stylesheet" href="<?php echo Route::_($asset_path . '/assets/css/install.css'); ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo Route::_($asset_path . '/css/install.css'); ?>" type="text/css" />
 
 <div id="mod_bwp_install_header">
 	<a href="https://www.boldt-webservice.de" target="_blank">

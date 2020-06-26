@@ -378,10 +378,10 @@ class Com_BwPostmanInstallerScript
 			$app 		= Factory::getApplication();
 			$oldRelease	= $app->getUserState('com_bwpostman.update.oldRelease', '');
 
-			if (version_compare($oldRelease, '1.0.1', 'lt'))
-			{
-				BwPostmanInstallHelper::adjustMLAccess();
-			}
+//			if (version_compare($oldRelease, '1.0.1', 'lt'))
+//			{
+//				BwPostmanInstallHelper::adjustMLAccess();
+//			}
 
 			if (version_compare($oldRelease, '1.2.0', 'lt'))
 			{

@@ -31,7 +31,15 @@
 		<language tag="de-DE">de-DE/de-DE.mod_bwpostman_overview.sys.ini</language>
 	</languages>
 
+	<media destination="mod_bwpostman_overview" folder="media">
+		<filename>index.html</filename>
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+	</media>
+
 	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_BWPOSTMAN_OVERVIEW" />
+
 	<config>
 		<fields name="params">
 			<fieldset name="basic">

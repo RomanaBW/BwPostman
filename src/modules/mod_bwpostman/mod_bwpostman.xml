@@ -21,8 +21,6 @@
 		<filename>mod_bwpostman.xml</filename>
 		<folder>elements</folder>
 		<folder>tmpl</folder>
-		<folder>css</folder>
-		<folder>images</folder>
 	</files>
 
 	<languages folder="language">

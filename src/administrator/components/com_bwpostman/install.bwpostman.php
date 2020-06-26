@@ -324,8 +324,11 @@ class Com_BwPostmanInstallerScript
 
 		if ($type == 'install' || $type == 'update')
 		{
-			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
-			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/installhelper.php');
+			jimport('joomla.filesystem.file');
+			$tmp_path   = $this->parentInstaller->getPath('source');
+			require_once($tmp_path . '/site/libraries/BwLogger.php');
+			require_once($tmp_path . '/admin/helpers/installhelper.php');
+
 			$log_options  = array();
 
 			try
@@ -361,10 +364,6 @@ class Com_BwPostmanInstallerScript
 
 		if ($type == 'update')
 		{
-			jimport('joomla.filesystem.file');
-			$tmp_path   = $this->parentInstaller->getPath('source');
-			require_once($tmp_path . '/admin/helpers/installhelper.php');
-
 			// check if sample templates exists
 			$this->checkSampleTemplates();
 
@@ -378,10 +377,10 @@ class Com_BwPostmanInstallerScript
 			$app 		= Factory::getApplication();
 			$oldRelease	= $app->getUserState('com_bwpostman.update.oldRelease', '');
 
-//			if (version_compare($oldRelease, '1.0.1', 'lt'))
-//			{
-//				BwPostmanInstallHelper::adjustMLAccess();
-//			}
+			if (version_compare($oldRelease, '1.0.1', 'lt'))
+			{
+				BwPostmanInstallHelper::adjustMLAccess();
+			}
 
 			if (version_compare($oldRelease, '1.2.0', 'lt'))
 			{

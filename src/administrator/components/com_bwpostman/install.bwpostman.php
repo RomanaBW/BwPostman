@@ -361,6 +361,10 @@ class Com_BwPostmanInstallerScript
 
 		if ($type == 'update')
 		{
+			jimport('joomla.filesystem.file');
+			$tmp_path   = $this->parentInstaller->getPath('source');
+			require_once($tmp_path . '/admin/helpers/installhelper.php');
+
 			// check if sample templates exists
 			$this->checkSampleTemplates();
 
@@ -403,9 +407,6 @@ class Com_BwPostmanInstallerScript
 			$this->logger->addEntry(new LogEntry("Postflight repairRootAsset passed", BwLogger::BW_DEBUG, $this->log_cat));
 
 			// convert tables to UTF8MB4
-			jimport('joomla.filesystem.file');
-			$tmp_path   = $this->parentInstaller->getPath('source');
-			require_once($tmp_path . '/admin/helpers/installhelper.php');
 			BwPostmanInstallHelper::convertToUtf8mb4($this->reference_table, JPATH_ADMINISTRATOR . $this->conversion_file);
 
 			// remove double entries in table extensions

@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-HTMLHelper::_('script', 'bw_postman/admin-subscribers-default-batch-footer.es6.js', ['version' => 'auto', 'relative' => true]);
+HTMLHelper::_('script', 'com_bwpostman/admin-subscribers-default-batch-footer.es6.js', ['version' => 'auto', 'relative' => true]);
 ?>
 <button type="button" class="btn btn-secondary" data-dismiss="modal">
 	<?php echo Text::_('JCANCEL'); ?>

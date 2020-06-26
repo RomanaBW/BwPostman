@@ -47,7 +47,7 @@
 		<language tag="de-DE">de-DE/de-DE.com_bwpostman.ini</language>
 	</languages>
 
-	<media destination="bw_postman" folder="media">
+	<media destination="com_bwpostman" folder="media">
 		<filename>index.html</filename>
 		<folder>images</folder>
 		<folder>js</folder>

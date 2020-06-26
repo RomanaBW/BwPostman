@@ -159,7 +159,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 		}
 		if (isset($zip_created))
 		{
-			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_TPL_EXPORTTPL_OK', Route::_(Uri::root() . 'images/bw_postman/templates/' . $basename) , Text::_('COM_BWPOSTMAN_TPL_DOWNLOAD'), Text::_('JCANCEL')), 'message');
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_TPL_EXPORTTPL_OK', Route::_(Uri::root() . 'images/com_bwpostman/templates/' . $basename) , Text::_('COM_BWPOSTMAN_TPL_DOWNLOAD'), Text::_('JCANCEL')), 'message');
 			$app->redirect('index.php?option=com_bwpostman&view=templates', false);
 		}
 

@@ -32,7 +32,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormHelper;
 
 HTMLHelper::_('jquery.framework');
-HTMLHelper::_('script', 'bw_postman/bwpm_menuhelper.js', array('version' => 'auto', 'relative' => true));
+HTMLHelper::_('script', 'com_bwpostman/bwpm_menuhelper.js', array('version' => 'auto', 'relative' => true));
 
 FormHelper::loadFieldClass('checkboxes');
 

@@ -209,7 +209,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 
 		// create (empty) backup file
-		$path = JPATH_ROOT . "/images/bw_postman/backup_tables";
+		$path = JPATH_ROOT . "/images/com_bwpostman/backup_tables";
 
 		if (!Folder::exists($path))
 		{

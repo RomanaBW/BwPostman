@@ -730,9 +730,9 @@ class BwPostmanModelTemplates extends JModelList
 
 		// make new folder and copy template thumbnails
 		$m_params   = JComponentHelper::getParams('com_media');
-		$dest       = JPATH_ROOT . '/' . $m_params->get('file_path', 'images') . '/bw_postman';
-		$dest2		= JPATH_ROOT . '/images/bw_postman';
-		$media_path = JPATH_ROOT . '/media/bw_postman/images/';
+		$dest       = JPATH_ROOT . '/' . $m_params->get('file_path', 'images') . '/com_bwpostman';
+		$dest2		= JPATH_ROOT . '/images/com_bwpostman';
+		$media_path = JPATH_ROOT . '/media/com_bwpostman/images/';
 
 		if (!Folder::exists($dest))
 		{
@@ -746,12 +746,12 @@ class BwPostmanModelTemplates extends JModelList
 
 		if (!Folder::exists($dest2))
 		{
-			Folder::create(JPATH_ROOT . '/images/bw_postman');
+			Folder::create(JPATH_ROOT . '/images/com_bwpostman');
 		}
 
-		if (!File::exists(JPATH_ROOT . '/images/bw_postman/index.html'))
+		if (!File::exists(JPATH_ROOT . '/images/com_bwpostman/index.html'))
 		{
-			File::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/bw_postman/index.html');
+			File::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/com_bwpostman/index.html');
 		}
 
 		$warn = false;
@@ -1189,19 +1189,19 @@ class BwPostmanModelTemplates extends JModelList
 			return false;
 		}
 
-		$path = JPATH_ROOT . "/images/bw_postman/templates";
+		$path = JPATH_ROOT . "/images/com_bwpostman/templates";
 
 		if (!Folder::exists($path))
 		{
 			Folder::create($path);
 		}
-		File::copy($zipRoot, JPATH_ROOT . '/images/bw_postman/templates/' . $this->basename);
+		File::copy($zipRoot, JPATH_ROOT . '/images/com_bwpostman/templates/' . $this->basename);
 
 		// Delete thumbnail in tmp folder
 		Folder::delete($this->tmp_path . 'images');
 		File::delete($zipRoot);
 
-		if (!File::exists(JPATH_ROOT . '/images/bw_postman/templates/' . $this->basename))
+		if (!File::exists(JPATH_ROOT . '/images/com_bwpostman/templates/' . $this->basename))
 		{
 			$errormsg = Text::_('COM_BWPOSTMAN_TPL_ERROR_COPY_ZIP');
 			$this->errRedirect($errormsg);

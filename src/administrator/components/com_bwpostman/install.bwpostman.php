@@ -325,7 +325,7 @@ class Com_BwPostmanInstallerScript
 		if ($type == 'install' || $type == 'update')
 		{
 			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
-//			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/installhelper.php');
+
 			$log_options  = array();
 
 			try
@@ -489,7 +489,7 @@ class Com_BwPostmanInstallerScript
 		$this->deleteSampleUsergroups();
 
 		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
-		//  notice that folder image/bw_postman is not removed
+		//  notice that folder image/com_bwpostman is not removed
 		$m_params   = ComponentHelper::getParams('com_media');
 		$image_path = $m_params->get('image_path', 'images');
 
@@ -670,8 +670,8 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function copyTemplateImagesToMedia($m_params)
 	{
-		$image_path = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/bw_postman/';
-		$media_path = JPATH_ROOT . '/media/bw_postman/images/';
+		$image_path = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/com_bwpostman/';
+		$media_path = JPATH_ROOT . '/media/com_bwpostman/images/';
 
 		// make new folder and copy template thumbnails
 		if (!Folder::exists($image_path))
@@ -716,15 +716,15 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function copyTemplateImagesToImages()
 	{
-		$dest = JPATH_ROOT . '/images/bw_postman';
+		$dest = JPATH_ROOT . '/images/com_bwpostman';
 		if (!Folder::exists($dest))
 		{
-			Folder::create(JPATH_ROOT . '/images/bw_postman');
+			Folder::create(JPATH_ROOT . '/images/com_bwpostman');
 		}
 
-		if (!File::exists(JPATH_ROOT . '/images/bw_postman/index.html'))
+		if (!File::exists(JPATH_ROOT . '/images/com_bwpostman/index.html'))
 		{
-			File::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/bw_postman/index.html');
+			File::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/com_bwpostman/index.html');
 		}
 
 		$tpl_images = array(
@@ -743,9 +743,9 @@ class Com_BwPostmanInstallerScript
 
 		foreach ($tpl_images as $tpl_image)
 		{
-			if (!File::exists(JPATH_ROOT . "/images/bw_postman/$tpl_image"))
+			if (!File::exists(JPATH_ROOT . "/images/com_bwpostman/$tpl_image"))
 			{
-				File::copy(JPATH_ROOT . "/media/bw_postman/images/$tpl_image", JPATH_ROOT . "/images/bw_postman/$tpl_image");
+				File::copy(JPATH_ROOT . "/media/com_bwpostman/images/$tpl_image", JPATH_ROOT . "/images/com_bwpostman/$tpl_image");
 			}
 		}
 	}
@@ -832,7 +832,8 @@ class Com_BwPostmanInstallerScript
 //			$this->logger->addEntry(new LogEntry('GroupModel 2: ' . print_r($groupModel, true), BwLogger::BW_DEBUG, $this->log_cat));
 
 			// get group ID of public
-			$public_id = $this->getGroupId('Public');
+//			$public_id = $this->getGroupId('Public');
+			$public_id = 1;
 
 			// Ensure user group BwPostmanAdmin exists
 			$groupExists = $this->getGroupId('BwPostmanAdmin');
@@ -1240,7 +1241,7 @@ class Com_BwPostmanInstallerScript
 	private function removeOwnManagerFiles()
 	{
 		$removeFolders = array(
-			JPATH_ROOT . '/media/bw_postman/js',
+			JPATH_ROOT . '/media/com_bwpostman/js',
 			JPATH_ROOT . '/administrator/components/com_bwpostman/views/media',
 			JPATH_ROOT . '/administrator/components/com_bwpostman/views/medialist');
 		// Remove views and js

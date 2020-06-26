@@ -325,7 +325,7 @@ class Com_BwPostmanInstallerScript
 		if ($type == 'install' || $type == 'update')
 		{
 			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
-			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/installhelper.php');
+//			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/installhelper.php');
 			$log_options  = array();
 
 			try

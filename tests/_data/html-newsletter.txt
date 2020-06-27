@@ -73,7 +73,7 @@
 				</tr>
 				<tr>
 					<td id="header" class="w640" align="center" bgcolor="#043948" width="640">
-						<div style="text-align: center; margin-top: 20px; margin-bottom: 20px;" align="center"><a href="http://joomla.org"> <img src="images/bw_postman/joomla_black.gif" alt="" width="225" height="50" class="w640" style="display: inline; vertical-align: top;" border="0" /> </a></div>
+						<div style="text-align: center; margin-top: 20px; margin-bottom: 20px;" align="center"><a href="http://joomla.org"> <img src="images/com_bwpostman/joomla_black.gif" alt="" width="225" height="50" class="w640" style="display: inline; vertical-align: top;" border="0" /> </a></div>
 					</td>
 				</tr>
 				<tr>

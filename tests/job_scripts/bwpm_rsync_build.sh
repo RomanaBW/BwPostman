@@ -4,7 +4,7 @@
 # To reach this I have to use sudo, otherwise target permissions have to be set to 0777, which breaks Joomla
 
 #
-# @ToDo: synchronize plugin B2S (dirs[14]), but only if VirtueMart is installed
+# @ToDo: synchronize plugin B2S (dirs[16]), but only if VirtueMart is installed
 
 src_dir="${1}"
 target_dir="${2}"
@@ -13,18 +13,20 @@ options="-rlqc"
 
 dirs[1]='administrator/components/com_bwpostman'
 dirs[2]='components/com_bwpostman'
-dirs[3]='images/bw_postman'
-dirs[4]='media/bw_postman'
+dirs[3]='images/com_bwpostman'
+dirs[4]='media/com_bwpostman'
 dirs[5]='modules/mod_bwpostman'
-dirs[6]='modules/mod_bwpostman_overview'
-dirs[7]='plugins/bwpostman'
-dirs[8]='plugins/quickicon/bwpostman'
-dirs[9]='plugins/system/bw_libregister'
-dirs[10]='plugins/system/bwpm_mediaoverride'
-dirs[11]='plugins/system/bwpm_user2subscriber'
-dirs[12]='plugins/system/bwtestmode'
-dirs[13]='plugins/system/bwtests'
-#dirs[14]='plugins/vmfields'
+dirs[6]='media/mod_bwpostman'
+dirs[7]='modules/mod_bwpostman_overview'
+dirs[8]='media/mod_bwpostman_overview'
+dirs[9]='plugins/bwpostman'
+dirs[10]='plugins/quickicon/bwpostman'
+dirs[11]='plugins/system/bw_libregister'
+dirs[12]='plugins/system/bwpm_mediaoverride'
+dirs[13]='plugins/system/bwpm_user2subscriber'
+dirs[14]='plugins/system/bwtestmode'
+dirs[15]='plugins/system/bwtests'
+#dirs[16]='plugins/vmfields'
 
 item[1]='administrator/language/de-DE/de-DE.com_bwpostman.ini'
 item[2]='administrator/language/de-DE/de-DE.com_bwpostman.sys.ini'

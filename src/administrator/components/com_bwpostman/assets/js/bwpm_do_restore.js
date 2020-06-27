@@ -67,6 +67,7 @@ jQuery(document).ready(function() {
 				if (data.error !== '') {
 					jQuery('div.resultSet').css('background-color', '#f2dede');
 					jQuery('div.resultSet').css('border-color', '#eed3d7');
+					jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
 				} else {
 					jQuery('div.resultSet').css('background-color', '#dff0d8');
 					jQuery('div.resultSet').css('border-color', '#d6e9c6');

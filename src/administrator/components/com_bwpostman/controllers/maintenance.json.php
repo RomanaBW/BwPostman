@@ -311,6 +311,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (Exception $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
+						$this->errorMessage = $error;
 						$this->alertClass = 'error';
 						$this->ready      = "1";
 					}
@@ -338,6 +339,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (Exception $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
+						$this->errorMessage = $error;
 						$this->alertClass = 'error';
 						$this->ready      = "1";
 					}
@@ -374,6 +376,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (Exception $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
+						$this->errorMessage = $error;
 						$this->alertClass = 'error';
 						$this->ready      = "1";
 					}
@@ -410,6 +413,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (Exception $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
+						$this->errorMessage = $error;
 						$this->alertClass = 'error';
 						$this->ready      = "1";
 					}
@@ -464,6 +468,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						$model->restoreRestorePoint();
 						$error  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
 						$error  .= Factory::getApplication()->getUserState('com_bwpostman.maintenance.restorePoint_text', '');
+						$this->errorMessage = $error;
 						$this->alertClass = 'error';
 						$this->ready      = "1";
 					}
@@ -545,6 +550,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						$model->restoreRestorePoint();
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
 						$error  .= Factory::getApplication()->getUserState('com_bwpostman.maintenance.restorePoint_text', '');
+						$this->errorMessage = $error;
 						$this->alertClass = 'error';
 						$this->ready      = "1";
 					}

@@ -289,7 +289,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 						if (!is_array($table_names))
 						{
-							echo '<p class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_NO_TABLES_ERROR') . '</p>';
+							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_NO_TABLES_ERROR');
+							$this->errorMessage = $error;
+							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
 							$this->alertClass = 'error';
 							$this->ready      = "1";
 						}
@@ -351,8 +353,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 						if ($assetGroupsProcessed === false)
 						{
-							$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_GENERAL_ERROR');
-							echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_GENERAL_ERROR');
+							$this->errorMessage = $error;
+							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
 							$this->alertClass = 'error';
 							$this->ready      = "1";
 						}
@@ -386,8 +389,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 						if ($restorePointCreated === false)
 						{
-							$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
-							echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
+							$this->errorMessage = $error;
+							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
 							$this->alertClass = 'error';
 							$this->ready      = "1";
 						}
@@ -422,8 +426,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 						if ($subAssetsDeleted === false)
 						{
-							$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_ERROR');
-							echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_ERROR');
+							$this->errorMessage = $error;
+							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
 							$this->alertClass = 'error';
 							$this->ready      = "1";
 						}
@@ -436,8 +441,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 						if ($assetTableHealed === false)
 						{
-							$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR');
-							echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR');
+							$this->errorMessage = $error;
+							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
 							$this->alertClass = 'error';
 							$this->ready      = "1";
 						}
@@ -504,8 +510,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 							if ($tablesRewritten === false)
 							{
-								$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_TABLE_ERROR');
-								echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+								$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_TABLE_ERROR');
+								$this->errorMessage = $error;
+								echo '<p class="bw_tablecheck_error">' . $error . '</p>';
 								$this->alertClass = 'error';
 								$this->ready      = "1";
 							}

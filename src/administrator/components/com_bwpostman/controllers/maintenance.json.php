@@ -270,7 +270,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				$session->set('trestore_tablenames', '');
 				$session->set('tcheck_needTa', '');
 				$session->set('tcheck_inTaNa', '');
-				Factory::getApplication()->setUserState('com_bwpostman.maintenance.tables', array());
+				Factory::getApplication()->setUserState('com_bwpostman.maintenance.modifiedAssets', array());
 			}
 
 			// start output buffer

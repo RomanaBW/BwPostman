@@ -2429,8 +2429,21 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$tmp_file   = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
 		$fp         = fopen($tmp_file, 'r');
 		$tables     = unserialize(fread($fp, filesize($tmp_file)));
-		Factory::getApplication()->setUserState('com_bwpostman.maintenance.tables', $tables);
+		$modifiedAssets = array();
 		fclose($fp);
+
+		foreach ($table_names as $table_name)
+		{
+			// table with assets?
+			if (key_exists('table_assets', $tables[$table_name]))
+			{
+				// get table assets
+				$modifiedAssets[$table_name] = $tables[$table_name]['table_assets'];
+
+			}
+		}
+
+		Factory::getApplication()->setUserState('com_bwpostman.maintenance.modifiedAssets', $modifiedAssets);
 
 		if (count($usergroups))
 		{
@@ -2544,7 +2557,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$tmp_file        = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
 		$tmpFileExists   = file_exists($tmp_file);
 		$dest            = Factory::getApplication()->getUserState('com_bwpostman.maintenance.dest', '');
-		$tablesFromState = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tables', array());
+		$assetsFromState = Factory::getApplication()->getUserState('com_bwpostman.maintenance.modifiedAssets', array());
 
 		if ($tmpFileExists)
 		{
@@ -2592,7 +2605,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$asset_max      = 0;
 				if (isset($tables[$table]['table_assets']))
 				{
-					$tables[$table]['table_assets'] = $tablesFromState[$table]['table_assets'];
+					$tables[$table]['table_assets'] = $assetsFromState[$table];
 					$asset_max = count($tables[$table]['table_assets']);
 				}
 
@@ -3802,7 +3815,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function rewriteAssetUserGroups($table, &$assets, $groupsToReplace)
 	{
-		$tables  = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tables', array());
+		$modifiedAssets  = Factory::getApplication()->getUserState('com_bwpostman.maintenance.modifiedAssets', array());
 		$old_ids = array();
 		foreach ($groupsToReplace as $groupToReplace)
 		{
@@ -3849,8 +3862,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 							else
 							{
 								// update table assets
-								$tables[$table]['table_assets'][$i]['rules'] = json_encode($rules);
-								Factory::getApplication()->setUserState('com_bwpostman.maintenance.tables', $tables);
+								$modifiedAssets[$table][$i]['rules'] = json_encode($rules);
+								Factory::getApplication()->setUserState('com_bwpostman.maintenance.tables', $modifiedAssets);
 							}
 						}
 					}

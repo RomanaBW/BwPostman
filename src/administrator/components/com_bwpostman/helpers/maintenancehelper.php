@@ -150,7 +150,15 @@ abstract class BwPostmanMaintenanceHelper
 		jimport('joomla.archive.archive');
 
 		$destPath	= Factory::getConfig()->get('tmp_path') . "/bwpm_unzipped";
-		Folder::delete($destPath);
+
+		try
+		{
+			Folder::delete($destPath);
+		}
+		catch (Exception $exception)
+		{
+			// do nothing except catching exception
+		}
 
 		// Run the packager
 		$archive = new Archive;
@@ -171,18 +179,10 @@ abstract class BwPostmanMaintenanceHelper
 		}
 		else
 		{
-			$zipPos = strpos($packName, '.zip');
-			$destFileName = substr($packName, 0, $zipPos);
-
-			$xmlPos = strpos($packName, '.xml');
-			if ($xmlPos === false)
-			{
-				$destFileName .= '.xml';
-			}
-
+			$destFileName = Folder::files($destPath);
 			File::delete($srcFileName);
 		}
 
-		return $destPath . "/" . $destFileName;
+		return $destPath . "/" . $destFileName[0];
 	}
 }

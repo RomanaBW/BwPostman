@@ -3686,6 +3686,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	private function getCurrentUserGroups($usergroups)
 	{
 		$groups = array();
+		$defaultJoomlaGroups = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
 		// first compare current user groups with backed up ones
 		foreach ($usergroups as $item)
@@ -3712,46 +3713,55 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			// user group not found
 			if (!$result)
 			{
-				// insert new user group
-				if ($this->isJ4)
+				// If id of group to restore matches a Joomla default group id we assume these are used
+				if (in_array((int)$item['id'], $defaultJoomlaGroups))
 				{
-					$userModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
+					$result = $item['id'];
 				}
 				else
 				{
-					JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-					$userModel = JModelLegacy::getInstance('Group', 'UsersModel');
-				}
+					// insert new user group
+					if ($this->isJ4)
+					{
+						$userModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
+					}
+					else
+					{
+						JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+						$userModel = JModelLegacy::getInstance('Group', 'UsersModel');
+					}
 
-				$data['id']        = 0;
-				$data['title']     = $item['title'];
-				$data['parent_id'] = $item['parent_id'];
-				$success           = $userModel->save($data);
+					$data['id']        = 0;
+					$data['title']     = $item['title'];
+					$data['parent_id'] = $item['parent_id'];
+					$success           = $userModel->save($data);
 
-				if (!$success)
-				{
-					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ADD_USERGROUP_ERROR', 	$item['title']);
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					if (!$success)
+					{
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ADD_USERGROUP_ERROR',
+							$item['title']);
+						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-					return -1;
-				}
+						return -1;
+					}
 
-				$query = $this->db->getQuery(true);
-				$query->select($this->db->quoteName('id'));
-				$query->from($this->db->quoteName('#__usergroups'));
-				$query->where($this->db->quoteName('title') . ' = ' . $this->db->quote($item['title']));
+					$query = $this->db->getQuery(true);
+					$query->select($this->db->quoteName('id'));
+					$query->from($this->db->quoteName('#__usergroups'));
+					$query->where($this->db->quoteName('title') . ' = ' . $this->db->quote($item['title']));
 
-				$this->db->setQuery($query);
-				try
-				{
-					$result = $this->db->loadResult();
-				}
-				catch (RuntimeException $exception)
-				{
-					$message = $exception->getMessage();
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+					$this->db->setQuery($query);
+					try
+					{
+						$result = $this->db->loadResult();
+					}
+					catch (RuntimeException $exception)
+					{
+						$message = $exception->getMessage();
+						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-					return -1;
+						return -1;
+					}
 				}
 
 				$groups[] = array('old_id' => $item['id'], 'new_id' => $result, 'title' => $item['title']);

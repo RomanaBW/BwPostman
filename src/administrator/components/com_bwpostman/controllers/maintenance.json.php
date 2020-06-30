@@ -302,7 +302,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						$logger->addEntry(
 							new LogEntry(
 								sprintf(
-									'Speicherverbrauch in Schritt 3: %01.3f MB',
+									'Speicherverbrauch in Schritt 1: %01.3f MB',
 									(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
 								),
 								BwLogger::BW_DEBUG, 'maintenance')
@@ -367,7 +367,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						$logger->addEntry(
 							new LogEntry(
 								sprintf(
-									'Speicherverbrauch in Schritt 4: %01.3f MB',
+									'Speicherverbrauch in Schritt 3: %01.3f MB',
 									(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
 								),
 								BwLogger::BW_DEBUG, 'maintenance')

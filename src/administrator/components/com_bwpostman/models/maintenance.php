@@ -3863,7 +3863,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 							{
 								// update table assets
 								$modifiedAssets[$table][$i]['rules'] = json_encode($rules);
-								Factory::getApplication()->setUserState('com_bwpostman.maintenance.tables', $modifiedAssets);
+								Factory::getApplication()->setUserState('com_bwpostman.maintenance.modifiedAssets', $modifiedAssets);
 							}
 						}
 					}

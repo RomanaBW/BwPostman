@@ -2504,7 +2504,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @param array $tables array of generic table names read from backup file
 	 *
-	 * @return    boolean
+	 * @return    boolean|string boolean on success, string with error message on failure
 	 *
 	 * @throws Exception
 	 *
@@ -2522,19 +2522,24 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			if (!$this->deleteBwPostmanTable($table))
 			{
-				return false;
+				if (empty($table))
+				{
+					$table = 'unknown';
+				}
+
+				return Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_ERROR', $table, '');
 			}
 
 			if (!$this->createBwPostmanTableAnew($table, $tablesQueries))
 			{
-				return  false;
+				return Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', $table);
 			}
 		}
 
 		// Update component asset and initialize section assets
 		if (!$this->createBaseAssets(true))
 		{
-			return false;
+			return Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_ASSETS_COMPONENT_ERROR');
 		}
 
 		return  true;

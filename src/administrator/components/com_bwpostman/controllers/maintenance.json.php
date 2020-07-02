@@ -68,7 +68,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	protected $alertClass = 'success';
 
 	/**
-	 * String to hold current message css class
+	 * String to hold current error message
 	 *
 	 * @var string
 	 *
@@ -177,18 +177,11 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			{
 				$result = $content;
 
-				if ($this->errorMessage !== '')
-				{
-					$result = $this->errorMessage . $result;
-				}
-				else
-				{
-					$successMessage = '<p class="alert alert-success bw_tablecheck_finished mb-2">';
-					$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
-					$successMessage .= '</p>';
+				$successMessage = '<p class="alert alert-success bw_tablecheck_finished mb-2">';
+				$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
+				$successMessage .= '</p>';
 
-					$result = $successMessage . $result;
-				}
+				$result = $successMessage . $result;
 
 				$session->clear('tcheck_content');
 			}
@@ -210,6 +203,38 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			echo json_encode($res);
 			$app->close();
 		}
+		catch (BwException $e)
+		{
+			$this->alertClass = 'error';
+			$this->ready      = "1";
+			$error            = $e->getMessage();
+			$errorCode        = (integer)$e->getCode();
+			$result           = $error . $session->get('tcheck_content', '');
+
+			if ((1050 <= $errorCode) && ($errorCode <= 1100))
+			{
+				$model->restoreRestorePoint();
+			}
+
+			// clean the output buffer and turn off output buffering
+			ob_end_clean();
+
+			// set json response
+			$res = array(
+				"aClass"  => $this->alertClass,
+				"ready"   => $this->ready,
+				"result"  => $result,
+				"error"   => $error,
+				"step"    => $step
+			);
+
+			// ajax response
+			$appWeb = new BwWebApp();
+			$appWeb->setHeader('Content-Type', 'application/json', true);
+			echo json_encode($res);
+			$app->close();
+		}
+
 		catch (RuntimeException $e)
 		{
 			echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
@@ -234,6 +259,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	public function tRestore()
 	{
+		$model   = $this->getModel('maintenance');
+
 		try
 		{
 			// Check for request forgeries
@@ -257,7 +284,6 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 			$session = Factory::getSession();
 			$file    = $app->getUserState('com_bwpostman.maintenance.dest', '');
-			$model   = $this->getModel('maintenance');
 
 			$step       = $jinput->get('step', 'step1');
 			$this->alertClass = 'success';
@@ -290,10 +316,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						if (!is_array($table_names))
 						{
 							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_NO_TABLES_ERROR');
-							$this->errorMessage = $error;
-							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
-							$this->alertClass = 'error';
-							$this->ready      = "1";
+							throw new BwException($error, 1010);
 						}
 
 						$session->set('trestore_tablenames', $table_names);
@@ -311,9 +334,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (Exception $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						$this->errorMessage = $error;
-						$this->alertClass = 'error';
-						$this->ready      = "1";
+						throw new BwException($error, 1011);
 					}
 					break;
 
@@ -339,9 +360,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (Exception $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						$this->errorMessage = $error;
-						$this->alertClass = 'error';
-						$this->ready      = "1";
+						throw new BwException($error, 1020);
 					}
 					break;
 
@@ -356,10 +375,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						if ($assetGroupsProcessed === false)
 						{
 							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_GENERAL_ERROR');
-							$this->errorMessage = $error;
-							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
-							$this->alertClass = 'error';
-							$this->ready      = "1";
+							throw new BwException($error, 1030);
 						}
 
 						$step = "4";
@@ -376,9 +392,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (Exception $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						$this->errorMessage = $error;
-						$this->alertClass = 'error';
-						$this->ready      = "1";
+						throw new BwException($error, 1031);
 					}
 					break;
 
@@ -393,10 +407,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						if ($restorePointCreated === false)
 						{
 							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
-							$this->errorMessage = $error;
-							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
-							$this->alertClass = 'error';
-							$this->ready      = "1";
+							throw new BwException($error, 1040);
 						}
 
 						$step = "5";
@@ -413,9 +424,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					catch (Exception $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						$this->errorMessage = $error;
-						$this->alertClass = 'error';
-						$this->ready      = "1";
+						throw new BwException($error, 1041);
 					}
 					break;
 
@@ -431,14 +440,11 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						if ($subAssetsDeleted === false)
 						{
 							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_ERROR');
-							$this->errorMessage = $error;
-							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
-							$this->alertClass = 'error';
-							$this->ready      = "1";
+							throw new BwException($error, 1050);
 						}
 
 						// uncomment next line to test rollback (only makes sense, if deleted tables contained data)
-//						throw new BwException(Text::_('Test-Exception DeleteAssets Controller'));
+//						throw new BwException(Text::_('Test-Exception DeleteAssets Controller'), 1051);
 
 						// repair holes in lft and rgt values, update component asset at #__assets
 						$assetTableHealed = $model->healAssetsTable();
@@ -446,10 +452,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						if ($assetTableHealed === false)
 						{
 							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR');
-							$this->errorMessage = $error;
-							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
-							$this->alertClass = 'error';
-							$this->ready      = "1";
+							throw new BwException($error, 1052);
 						}
 
 						$step = "6";
@@ -465,12 +468,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					}
 					catch (Exception $e)
 					{
-						$model->restoreRestorePoint();
 						$error  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
 						$error  .= Factory::getApplication()->getUserState('com_bwpostman.maintenance.restorePoint_text', '');
-						$this->errorMessage = $error;
-						$this->alertClass = 'error';
-						$this->ready      = "1";
+						throw new BwException($error, 1053);
 					}
 					break;
 
@@ -487,13 +487,10 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 							echo '<h4>' . Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_CREATE_ANEW_TABLE', $table_names[$i]) . '</h4>';
 							$tablesRenewed = $model->anewBwPostmanTables($table_names);
 
-							if ($tablesRenewed === false)
+							if ($tablesRenewed !== true)
 							{
-								$error = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', '', 'unknown');
-								$this->errorMessage = $error;
-								echo '<p class="bw_tablecheck_error">' . $error . '</p>';
-								$this->alertClass = 'error';
-								$this->ready      = "1";
+								$error = Text::_($tablesRenewed);
+								throw new BwException($error, 1060);
 							}
 						}
 
@@ -516,10 +513,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 							if ($tablesRewritten === false)
 							{
 								$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_TABLE_ERROR');
-								$this->errorMessage = $error;
-								echo '<p class="bw_tablecheck_error">' . $error . '</p>';
-								$this->alertClass = 'error';
-								$this->ready      = "1";
+								throw new BwException($error, 1061);
 							}
 
 							$i++;
@@ -547,12 +541,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					}
 					catch (Exception $e)
 					{
-						$model->restoreRestorePoint();
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
 						$error  .= Factory::getApplication()->getUserState('com_bwpostman.maintenance.restorePoint_text', '');
-						$this->errorMessage = $error;
-						$this->alertClass = 'error';
-						$this->ready      = "1";
+						throw new BwException($error, 1062);
 					}
 					break;
 
@@ -597,8 +588,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
 						$error  .= Factory::getApplication()->getUserState('com_bwpostman.maintenance.restorePoint_text', '');
-						$this->alertClass = 'error';
-						$this->ready      = "1";
+						throw new BwException($error, 1110);
 					}
 					break;
 			}
@@ -618,18 +608,11 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			{
 				$result = $content;
 
-				if ($this->errorMessage !== '')
-				{
-					$result = $this->errorMessage . $result;
-				}
-				else
-				{
-					$successMessage = '<p class="alert alert-success bw_tablecheck_finished mb-2">';
-					$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
-					$successMessage .= '</p>';
+				$successMessage = '<p class="alert alert-success bw_tablecheck_finished mb-2">';
+				$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
+				$successMessage .= '</p>';
 
-					$result = $successMessage . $result;
-				}
+				$result = $successMessage . $result;
 
 				$session->clear('trestore_content');
 				if($error != '')
@@ -660,11 +643,19 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		}
 		catch (BwException $e)
 		{
-			$error  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
 			$this->alertClass = 'error';
 			$this->ready      = "1";
-			$step       = "12";
-			$result     = "";
+			$error            = $e->getMessage();
+			$errorCode        = (integer)$e->getCode();
+			$result           = $error . $session->get('trestore_content', '');
+
+			if ((1050 <= $errorCode) && ($errorCode <= 1100))
+			{
+				$model->restoreRestorePoint();
+			}
+
+			// clean the output buffer and turn off output buffering
+			ob_end_clean();
 
 			// set json response
 			$res = array(
@@ -704,6 +695,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 *
 	 * @return void
 	 *
+	 * @throws BwException
+	 *
 	 * @since   1.3.0
 	 */
 
@@ -721,9 +714,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
 			$errorMessage .= '</p>';
 
-			$this->errorMessage = $errorMessage;
-			$this->alertClass = 'error';
-			$this->ready      = "1";
+			throw new BwException($errorMessage, 1070);
 		}
 
 		// store $neededTables in session
@@ -736,6 +727,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @param   $session    $session    The session of this task
 	 *
 	 * @return void
+	 *
+	 * @throws BwException
 	 *
 	 * @since   1.3.0
 	 */
@@ -753,11 +746,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
 			$errorMessage .= '</p>';
 
-			$this->errorMessage = $errorMessage;
-			$this->alertClass = 'error';
-			$this->ready = "1";
-
-			return;
+			throw new BwException($errorMessage, 1080);
 		}
 
 		$installedTableNames = array();
@@ -777,6 +766,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @param   $session    $session    The session of this task
 	 *
 	 * @return void
+	 *
+	 * @throws BwException
 	 *
 	 * @since   1.3.0
 	 */
@@ -798,10 +789,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
 			$errorMessage .= '</p>';
 
-			$this->errorMessage = $errorMessage;
-			$this->errorMessage = $errorMessage;
-			$this->alertClass = 'error';
-			$this->ready = "1";
+			throw new BwException($errorMessage, 1090);
 		}
 	}
 
@@ -811,6 +799,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @param   $session    $session    The session of this task
 	 *
 	 * @return void
+	 *
+	 * @throws BwException
 	 *
 	 * @since   1.3.0
 	 */
@@ -840,11 +830,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 				$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
 				$errorMessage .= '</p>';
 
-				$this->errorMessage = $errorMessage;
-				$this->alertClass = 'error';
-				$this->ready      = "1";
-
-				break;
+				throw new BwException($errorMessage, 1100);
 			}
 		}
 	}

@@ -3415,14 +3415,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			echo '<p class="bw_tablecheck_ok">' . $message . '</p><br />';
 		}
 
-		$tableName = $table;
-		if (is_array($table))
-		{
-			$tableName = $table['tableNameUC'];
-		}
-
-		$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_DATABASE_ERROR', $tableName);
-		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+//		$tableName = $table;
+//		if (is_array($table))
+//		{
+//			$tableName = $table['tableNameUC'];
+//		}
+//
+//		$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_DATABASE_ERROR', $tableName);
+//		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 		return $base_asset;
 	}
@@ -3563,7 +3563,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->values($insert_data);
 		$this->db->setQuery($query);
 
-		$this->logger->addEntry(new LogEntry('Write Loop Assets Query 1: ' . (string) $query, BwLogger::BW_DEBUG,
+		$this->logger->addEntry(new LogEntry('Write Loop Assets Query 1: ' . (string) $query, BwLogger::BW_DEVELOPMENT,
 			'maintenance'));
 
 		try

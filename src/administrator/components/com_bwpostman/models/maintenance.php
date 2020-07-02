@@ -3401,28 +3401,20 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			return false;
 		}
 
-		if ($showMessage)
+		$writeTableName = $table;
+
+		if (is_array($table))
 		{
-			$writeTableName = $table;
-			if (is_array($table))
-			{
-				$writeTableName = $table['tableNameUC'];
-			}
-
-			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_SUCCESS', $writeTableName);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-			echo '<p class="bw_tablecheck_ok">' . $message . '</p><br />';
+			$writeTableName = $table['tableNameUC'];
 		}
 
-//		$tableName = $table;
-//		if (is_array($table))
-//		{
-//			$tableName = $table['tableNameUC'];
-//		}
-//
-//		$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_DATABASE_ERROR', $tableName);
-//		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+		$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_SUCCESS', $writeTableName);
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+		if ($showMessage)
+		{
+			echo '<p class="bw_tablecheck_ok">' . $message . '</p><br />';
+		}
 
 		return $base_asset;
 	}

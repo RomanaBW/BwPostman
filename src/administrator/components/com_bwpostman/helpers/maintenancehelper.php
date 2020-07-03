@@ -151,13 +151,9 @@ abstract class BwPostmanMaintenanceHelper
 
 		$destPath	= Factory::getConfig()->get('tmp_path') . "/bwpm_unzipped";
 
-		try
+		if (Folder::exists($destPath))
 		{
 			Folder::delete($destPath);
-		}
-		catch (Exception $exception)
-		{
-			// do nothing except catching exception
 		}
 
 		// Run the packager

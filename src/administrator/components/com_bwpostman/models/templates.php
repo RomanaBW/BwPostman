@@ -33,7 +33,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
-
+use Joomla\CMS\Table\Table;
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
@@ -139,6 +139,22 @@ class BwPostmanModelTemplates extends JModelList
 		$this->logger = BwLogger::getInstance($log_options);
 
 		parent::__construct($config);
+	}
+
+	/**
+	 * Returns a Table object, always creating it.
+	 *
+	 * @param	string  $type	    The table type to instantiate
+	 * @param	string	$prefix     A prefix for the table class name. Optional.
+	 * @param	array	$config     Configuration array for model. Optional.
+	 *
+	 * @return	bool|JTable	A database object
+	 *
+	 * @since  1.1.0
+	 */
+	public function getTable($type = 'Templates', $prefix = 'BwPostmanTable', $config = array())
+	{
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**

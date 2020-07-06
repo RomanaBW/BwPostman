@@ -39,10 +39,10 @@ use Joomla\CMS\Mail\MailHelper;
 use Joomla\Registry\Registry;
 
 // Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/mailverification/BwEmailValidation.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/mailinglisthelper.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/subscriberhelper.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/mailverification/BwEmailValidation.php');
 
 /**
  * BwPostman subscriber model

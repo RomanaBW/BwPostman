@@ -340,6 +340,7 @@ abstract class BWPM_User2SubscriberHelper
 
 		$subscriber = new stdClass();
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/subscriber.php');
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/tables/subscribers.php');
 		$subsModel = JModelLegacy::getInstance('Subscriber', 'BwPostmanModel');
 		$subsTable = $subsModel->getTable('Subscribers');
 

@@ -673,17 +673,18 @@ class BwPostmanModelTemplates extends JModelList
 
 							// get last id
 							$lastID = $db->insertid();
+							$tplTable = $this->getTable('Templates');
 
 							// get template title
-							$TplTitle = BwPostmanTplHelper::getTemplateTitle($lastID);
+							$TplTitle = $tplTable->getTemplateTitle($lastID);
 
 							// count template titles
-							$CountTitle = BwPostmanTplHelper::getNbrOfTemplates('', '', $TplTitle);
+							$CountTitle = $tplTable->getNbrOfTemplates('', '', $TplTitle);
 
 							// set new template title
 							if ($CountTitle > 1) {
 								$newTitle = $TplTitle . ' (' . $CountTitle++ . ')';
-								BwPostmanTplHelper::setTemplateTitle($lastID, $newTitle);
+								$tplTable->setTemplateTitle($lastID, $newTitle);
 							}
 						}
 						catch (RuntimeException $e)

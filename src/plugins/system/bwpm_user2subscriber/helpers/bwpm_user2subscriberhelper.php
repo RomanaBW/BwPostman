@@ -339,6 +339,9 @@ abstract class BWPM_User2SubscriberHelper
 		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha(1);
 
 		$subscriber = new stdClass();
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/subscriber.php');
+		$subsModel = JModelLegacy::getInstance('Subscriber', 'BwPostmanModel');
+		$subsTable = $subsModel->getTable('Subscribers');
 
 		$subscriber->id                = 0;
 		$subscriber->user_id           = $user_id;
@@ -349,8 +352,8 @@ abstract class BWPM_User2SubscriberHelper
 		$subscriber->email             = $user_mail;
 		$subscriber->emailformat       = ArrayHelper::getValue($subscriber_data, 'emailformat', 1, 'int');
 		$subscriber->mailinglists      = $mailinglist_ids;
-		$subscriber->activation        = BwPostmanSubscriberHelper::createActivation();
-		$subscriber->editlink          = BwPostmanSubscriberHelper::getEditlink();
+		$subscriber->activation        = $subsTable->createActivation();
+		$subscriber->editlink          = $subsTable->getEditlink();
 		$subscriber->status            = 0;
 		$subscriber->registration_date = $time;
 		$subscriber->registered_by     = 0;

@@ -29,6 +29,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Filter\InputFilter;
+use Joomla\CMS\Access\Access;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -160,7 +161,7 @@ class BwPostmanTableMailinglists extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	DatabaseDriver  $db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -246,7 +247,7 @@ class BwPostmanTableMailinglists extends JTable
 	{
 		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_bwpostman.mailinglist');
-		return $asset->id;
+		return (int)$asset->id;
 	}
 
 	/**
@@ -307,18 +308,18 @@ class BwPostmanTableMailinglists extends JTable
 	public function check()
 	{
 		$app	= Factory::getApplication();
-		$_db	= $this->_db;
-		$query	= $this->_db->getQuery(true);
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
 		$fault	= false;
 		$xid    = 0;
 
 		// Remove all HTML tags from the title and description
 		$filter				= new InputFilter(array(), array(), 0, 0);
-		$this->title		= $filter->clean($this->title);
+		$this->title		= trim($filter->clean($this->title));
 		$this->description	= $filter->clean($this->description);
 
 		// Check for valid title
-		if (trim($this->title) == '')
+		if ($this->title === '')
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ML_ERROR_TITLE'), 'error');
 			$fault	= true;
@@ -332,11 +333,11 @@ class BwPostmanTableMailinglists extends JTable
 		}
 
 		// Check for existing title
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($_db->quoteName('title') . ' = ' . $_db->quote($this->title));
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('title') . ' = ' . $db->quote($this->title));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
@@ -394,6 +395,209 @@ class BwPostmanTableMailinglists extends JTable
 		Factory::getApplication()->setUserState('com_bwpostman.edit.mailinglist.id', $this->id);
 
 		return $res;
+	}
+
+	/**
+	 * Method to get the mailinglists by restriction of archive, published and access
+	 *
+	 * @param array     $mailinglists
+	 * @param string    $condition
+	 * @param integer   $archived
+	 * @param boolean   $restricted
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 (here, before since 2.3.0 at mailinglist helper)
+	 */
+	public function getMailinglistsByRestriction($mailinglists, $condition = 'available', $archived = 0, $restricted = true)
+	{
+		$mls   = null;
+		$restrictedMls = array();
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('id');
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) $archived);
+
+		if ((int)$archived === 0)
+		{
+			switch ($condition)
+			{
+				case 'available':
+					$query->where($db->quoteName('published') . ' = ' . 1);
+					$query->where($db->quoteName('access') . ' = ' . 1);
+					break;
+				case 'unavailable':
+					$query->where($db->quoteName('published') . ' = ' . 1);
+					$query->where($db->quoteName('access') . ' > ' . 1);
+					break;
+				case 'internal':
+					$query->where($db->quoteName('published') . ' = ' . 0);
+					break;
+			}
+		}
+
+		$db->setQuery($query);
+
+		try
+		{
+			$mls = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		if ($restricted === true)
+		{
+			$resultingMls = array_intersect($mailinglists, $mls);
+		}
+		else
+		{
+			$resultingMls = $mls;
+		}
+
+		if (count($resultingMls) > 0)
+		{
+			$restrictedMls = $resultingMls;
+		}
+
+		return $restrictedMls;
+	}
+
+	/**
+	 * Method to get the data of a single Mailinglist for raw view
+	 *
+	 * @param 	int $ml_id      Mailinglist ID
+	 *
+	 * @return 	object Mailinglist
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	public function getSingleMailinglist($ml_id = null)
+	{
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('a') . '.*');
+		$query->from($db->quoteName($this->_tbl) . ' AS ' . $db->quoteName('a'));
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('id') . ' = ' . (int) $ml_id);
+		// Join over the asset groups.
+		$query->select($db->quoteName('ag') . '.' . $db->quoteName('title') . ' AS ' . $db->quoteName('access_level'));
+		$query->join(
+			'LEFT',
+			$db->quoteName('#__viewlevels') . ' AS ' . $db->quoteName('ag') . ' ON ' .
+			$db->quoteName('ag') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('access')
+		);
+
+		$db->setQuery($query);
+		try
+		{
+			$mailinglist = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $mailinglist;
+	}
+
+	/**
+	 * Method to get all mailinglists which the user is authorized to see
+	 *
+	 * @param   integer     $id
+	 * @param   integer     $userId the user ID f this subscriber
+	 *
+	 * @return 	object Mailinglists
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 */
+	public function getAuthorizedMailinglists($id, $userId)
+	{
+		$app		    = Factory::getApplication();
+		$mailinglists   = null;
+		$db		    = $this->_db;
+		$query		    = $db->getQuery(true);
+
+		// get authorized viewlevels
+		$accesslevels	= Access::getAuthorisedViewLevels($userId);
+
+		$query->select('*');
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('published') . ' = ' . 1);
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+
+		if (!in_array('3', $accesslevels))
+		{
+			// A user shall only see mailinglists which are public or - if registered - accessible for his view level and published
+			$query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
+		}
+
+		$query->order($db->quoteName('title') . 'ASC');
+
+		try
+		{
+			$db->setQuery($query);
+			$mailinglists = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			$app->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		// Does the subscriber has internal mailinglists?
+		$selected	= $app->getUserState('com_bwpostman.subscriber.selected_lists', '');
+
+		if (is_array($selected))
+		{
+			$ml_ids		= array();
+			$add_mls	= array();
+
+			// compare available mailinglists with selected mailinglists, get difference
+			foreach ($mailinglists as $value)
+			{
+				$ml_ids[]	= $value->id;
+			}
+
+			$get_mls	= array_diff($selected, $ml_ids);
+
+			// if there are internal mailinglists selected, get them ...
+			if (is_array($get_mls) && !empty($get_mls))
+			{
+				$query->clear();
+				$query->select('*');
+				$query->from($db->quoteName($this->_tbl));
+				$query->where($db->quoteName('id') . ' IN (' . implode(',', $get_mls) . ')');
+				$query->order($db->quoteName('title') . 'ASC');
+
+				try
+				{
+					$db->setQuery($query);
+					$add_mls = $db->loadObjectList();
+				}
+				catch (RuntimeException $e)
+				{
+					$app->enqueueMessage($e->getMessage(), 'error');
+				}
+			}
+		}
+
+		// ...and add them to the mailinglists array
+		if (!empty($add_mls))
+		{
+			$mailinglists	= array_merge($mailinglists, $add_mls);
+		}
+
+		return $mailinglists;
 	}
 
 	/**

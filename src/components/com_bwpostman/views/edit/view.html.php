@@ -36,6 +36,7 @@ jimport('joomla.application.component.view');
 
 //get helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/models/mailinglist.php');
 
 
 /**
@@ -118,7 +119,11 @@ class BwPostmanViewEdit extends JViewLegacy
 		}
 
 		// Get the mailinglists which the subscriber is authorized to see
-		$lists['available_mailinglists'] = BwPostmanSubscriberHelper::getAuthorizedMailinglists($subscriber->id);
+		$model = $this->getModel();
+		$mlTable = $model->getTable('Mailinglists');
+		$subsTable = $model->getTable('Subscribers');
+		$userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
+		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists($subscriber->id, $userId);
 
 		// Get document object, set document title and add css
 		$templateName	= $app->getTemplate();

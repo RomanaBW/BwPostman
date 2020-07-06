@@ -32,6 +32,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailHelper;
+use Joomla\Filter\InputFilter;
 
 /**
  * #__bwpostman_newsletters table handler
@@ -300,13 +301,13 @@ class BwPostmanTableNewsletters extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	DatabaseDriver  $db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
 	public function __construct(& $db)
 	{
-		parent::__construct('#__bwpostman_newsletters', 'id', $db);
+		parent::__construct($this->_tbl, 'id', $db);
 	}
 
 	/**
@@ -388,7 +389,7 @@ class BwPostmanTableNewsletters extends JTable
 	{
 		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_bwpostman.newsletter');
-		return $asset->id;
+		return (int)$asset->id;
 	}
 
 	/**
@@ -451,12 +452,13 @@ class BwPostmanTableNewsletters extends JTable
 		jimport('joomla.mail.helper');
 
 		$app	= Factory::getApplication();
-		$query	= $this->_db->getQuery(true);
+		$db     = $this->_db;
+		$query	= $db->getQuery(true);
 		$fault	= false;
 		$xid    = 0;
 
 		// Check the publish down date is not earlier than publish up.
-		if ($this->publish_down > $this->_db->getNullDate() && $this->publish_down < $this->publish_up)
+		if ($this->publish_down > $db->getNullDate() && $this->publish_down < $this->publish_up)
 		{
 			// Swap the dates.
 			$temp = $this->publish_up;
@@ -464,23 +466,30 @@ class BwPostmanTableNewsletters extends JTable
 			$this->publish_down = $temp;
 		}
 
+		// Sanitize values
+		$filter				= new InputFilter(array(), array(), 0, 0);
+		$this->subject		= trim($filter->clean($this->subject));
+		$this->from_name	= trim($filter->clean($this->from_name));
+		$this->from_email	= trim($filter->clean($this->from_email));
+		$this->reply_email	= trim($filter->clean($this->reply_email));
+
 		// no subject is unkind
-		if ($this->subject == '')
+		if ($this->subject === '')
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_SUBJECT'), 'error');
 			$fault	= true;
 		}
 
 		// Check for existing subject
-		$query->select($this->_db->quoteName('id'));
+		$query->select($db->quoteName('id'));
 		$query->from($this->_tbl);
-		$query->where($this->_db->quoteName('subject') . ' = ' . $this->_db->quote($this->subject));
+		$query->where($db->quoteName('subject') . ' = ' . $db->quote($this->subject));
 
-		$this->_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$xid = intval($this->_db->loadResult());
+			$xid = intval($db->loadResult());
 		}
 		catch (RuntimeException $e)
 		{
@@ -643,11 +652,11 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function isTemplate($id)
 	{
-		$db	= $this->_db;
+		$db	= $db;
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('is_template'));
-		$query->from($db->quoteName('#__bwpostman_newsletters'));
+		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
 
 		$db->setQuery($query);
@@ -683,7 +692,7 @@ class BwPostmanTableNewsletters extends JTable
 	public function getStandardTpl($mode	= 'html')
 	{
 		$tpl    = new stdClass();
-		$db	= $this->_db;
+		$db	= $db;
 		$query	= $db->getQuery(true);
 
 		// Id of the standard template
@@ -741,11 +750,11 @@ class BwPostmanTableNewsletters extends JTable
 		}
 		else
 		{
-			$time = $this->_db->getNullDate();
+			$time = $db->getNullDate();
 			$uid	= 0;
 		}
 
-		$db		= $this->_db;
+		$db		= $db;
 		$query		= $db->getQuery(true);
 
 		$query->update($db->quoteName($this->_tbl));
@@ -782,7 +791,7 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function getNewsletterData($nlId)
 	{
-		$db	= $this->_db;
+		$db	= $db;
 		$query	= $db->getQuery(true);
 
 		$query->select('*');
@@ -819,7 +828,7 @@ class BwPostmanTableNewsletters extends JTable
 	public function getSelectedContentOfNewsletter($nlId)
 	{
 		$content_ids    = '';
-		$db	        = $this->_db;
+		$db	        = $db;
 
 		// Get selected content from the newsletters-Table
 		$query	= $db->getQuery(true);
@@ -841,7 +850,155 @@ class BwPostmanTableNewsletters extends JTable
 		return $content_ids;
 	}
 
+	/**
+	 * Method to get the campaign id of a specific newsletter
+	 *
+	 * @param int $nlId
+	 *
+	 * @return 	integer
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 (here, before since 2.3.0 at newsletter helper)
+	 */
+	public function getCampaignId($nlId)
+	{
+		$campaignId = -1;
 
+		$db	= Factory::getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('campaign_id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' = ' . $db->Quote($nlId));
+
+		$db->setQuery($query);
+
+		try
+		{
+			$campaignId = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return (int)$campaignId;
+	}
+
+	/**
+	 * Method to get the number of newsletters depending on provided sending and archive state
+	 *
+	 * @param boolean $sent
+	 * @param boolean $archived
+	 *
+	 * @return 	integer|boolean number of newsletters or false
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 (here, before since 2.3.0 at newsletter helper)
+	 */
+	public function getNbrOfNewsletters($sent, $archived)
+	{
+		$archiveFlag = 0;
+		$mailingDateOperator = "=";
+
+		if ($sent)
+		{
+			$mailingDateOperator = "!=";
+		}
+
+		if ($archived)
+		{
+			$archiveFlag = 1;
+		}
+
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(*)');
+		$query->from($db->quoteName($this->_tbl));
+
+		if (!$archived)
+		{
+			$query->where($db->quoteName('mailing_date') . $mailingDateOperator . $db->quote('0000-00-00 00:00:00'));
+		}
+
+		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
+
+		$db->setQuery($query);
+
+		try
+		{
+			return $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+		return false;
+	}
+
+	/**
+	 * Method to get the newsletters of a specific campaign depending on provided campaign id, sending and archive state
+	 *
+	 * @param integer $camId
+	 * @param boolean $sent
+	 * @param boolean $all
+	 *
+	 * @return 	array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	public function getSelectedNewslettersOfCampaign($camId, $sent, $all)
+	{
+		$newsletters = array();
+		$archiveFlag = 0;
+		$mailingDateOperator = "=";
+
+		if ($sent)
+		{
+			$mailingDateOperator = "!=";
+		}
+
+		if ($all)
+		{
+			$archiveFlag = 1;
+		}
+
+		$db    = $db;
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('a') . '.*');
+		$query->select($db->quoteName('v') . '.' . $db->quoteName('name') . ' AS author');
+		$query->from($db->quoteName($this->_tbl) . ' AS a');
+		$query->leftJoin(
+			$db->quoteName('#__users') . ' AS ' . $db->quoteName('v')
+			. ' ON ' . $db->quoteName('v') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('created_by')
+		);
+		$query->where($db->quoteName('campaign_id') . ' = ' . $db->quote((int) $camId));
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int)0);
+
+		if (!$archiveFlag)
+		{
+			$query->where($db->quoteName('mailing_date') . $mailingDateOperator . $db->quote('0000-00-00 00:00:00'));
+		}
+
+		$db->setQuery($query);
+
+		try
+		{
+			$newsletters = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $newsletters;
+	}
 
 
 	/**

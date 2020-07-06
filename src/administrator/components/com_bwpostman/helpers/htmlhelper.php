@@ -38,30 +38,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 abstract class BwPostmanHTMLHelper {
 
 	/**
-	 * Method to create a checkbox for a grid row. Expanded version of Joomla grid.
-	 *
-	 * @param	integer		$rowNum			The row index
-	 * @param	integer		$recId			The record id
-	 * @param	boolean		$checkedOut		True if item is checked out
-	 * @param	string		$name			The name of the form element
-	 * @param	string		$id_name		The id-name of the form element
-	 *
-	 * @return	mixed		string of html with a checkbox if item is not checked out, null if checked out.
-	 */
-/*	public static function id($rowNum, $recId, $checkedOut = false, $name = 'cid', $id_name = 'cb')
-	{
-		if ($checkedOut)
-		{
-			return '';
-		}
-		else
-		{
-			return '<input type="checkbox" id="' . $id_name . $rowNum . '" name="' . $name . '[]" value="' . $recId
-				. '" onclick="Joomla.isChecked(this.checked);" />';
-		}
-	}
-*/
-	/**
 	 * Creates the buttons view at the start page
 	 * --> from administrator/mod_quickicon/mod_quickicon.php
 	 *

@@ -29,6 +29,8 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Access\Access;
 
 /**
  * #__bwpostman_subscribers_mailinglists table handler
@@ -107,6 +109,160 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 		}
 
 		return parent::bind($data, $ignore);
+	}
+
+	/**
+	 * Method to get the subscribers of a specific mailinglist
+	 *
+	 * @param 	integer $id id of mailinglist
+	 *
+	 * @return 	array       $subscribers of this mailinglist
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0 (here, before since 2.2.0 at mailinglist helper)
+	 */
+	public function getSubscribersOfMailinglist($id)
+	{
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('subscriber_id'));
+		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->where($db->quoteName('mailinglist_id') . ' = ' . $db->Quote($id));
+
+		$db->setQuery($query);
+
+		$subscribersOfMailinglist = $db->loadColumn();
+
+		return $subscribersOfMailinglist;
+	}
+
+	/**
+	 * Method to delete all or selected mailinglist entries for the subscriber_id from subscribers_mailinglists-table
+	 *
+	 * @param integer    $subscriber_id
+	 * @param array|null
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 */
+	public function deleteMailinglistsOfSubscriber($subscriber_id, $mailinglists = null)
+	{
+		$db   = $this->_db;
+		$query = $db->getQuery(true);
+		$query->delete($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->where($db->quoteName('subscriber_id') . ' =  ' . (int) $subscriber_id);
+		if (!is_null($mailinglists))
+		{
+			$query->where($db->quoteName('mailinglist_id') . ' IN  ' . (explode('.', $mailinglists)));
+		}
+
+		try
+		{
+			$db->setQuery($query);
+			$db->execute();
+
+			return true;
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
+	}
+
+	/**
+	 * Method to store subscribed mailinglists in newsletters_mailinglists table
+	 *
+	 * @param integer $subscriber_id
+	 * @param array $mailinglist_ids
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 */
+	public function storeMailinglistsOfSubscriber($subscriber_id, $mailinglist_ids)
+	{
+		$db   = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->columns(
+			array(
+				$db->quoteName('subscriber_id'),
+				$db->quoteName('mailinglist_id')
+			)
+		);
+
+		foreach ($mailinglist_ids AS $list_id)
+		{
+			$query->insert($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+			$query->values(
+				(int) $subscriber_id . ',' .
+				(int) $list_id
+			);
+		}
+
+		try
+		{
+			$db->setQuery($query);
+			$db->execute();
+			return  true;
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
+		}
+	}
+
+	/**
+	 * Method to check if a subscriber has a subscription to a specific mailinglist
+	 *
+	 * @param integer $subscriberId   ID of subscriber to check
+	 * @param integer $mailinglistId  ID of mailinglist to check
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	public function hasSubscriptionForMailinglist($subscriberId, $mailinglistId)
+	{
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('subscriber_id'));
+		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $subscriberId);
+		$query->where($db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglistId);
+		$db->setQuery($query);
+
+		try
+		{
+			$subsIdExists = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return -1;
+		}
+
+		if ($subsIdExists === null)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 	/**

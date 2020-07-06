@@ -194,10 +194,12 @@ class BwPostmanModelRegister extends JModelAdmin
 		$app	= Factory::getApplication();
 
 		// Create the editlink and check if the string doesn't exist twice or more
-		$data['editlink'] = BwPostmanSubscriberHelper::getEditlink();
+		$subsTable = $this->getTable('Subscribers');
+
+		$data['editlink'] = $subsTable->getEditlink();
 
 		// Create the activation and check if the string doesn't exist twice or more
-		$data['activation'] = BwPostmanSubscriberHelper::createActivation();
+		$data['activation'] = $subsTable->createActivation();
 		$app->setUserState('com_bwpostman.subscriber.activation', $data['activation']);
 
 		if (parent::save($data))
@@ -209,7 +211,8 @@ class BwPostmanModelRegister extends JModelAdmin
 			{
 				if ($data['mailinglists'] != '')
 				{
-					BwPostmanSubscriberHelper::storeMailinglistsOfSubscriber($subscriber_id, $data['mailinglists']);
+					$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+					$subsMlTable->storeMailinglistsOfSubscriber($subscriber_id, $data['mailinglists']);
 				}
 			}
 
@@ -270,7 +273,8 @@ class BwPostmanModelRegister extends JModelAdmin
 			{
 				$db->execute();
 				// delete subscriber entries from subscribers-lists table
-				BwPostmanSubscriberHelper::deleteMailinglistsOfSubscriber($pks);
+				$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+				$subsMlTable->deleteMailinglistsOfSubscriber($pks);
 			}
 			catch (RuntimeException $e)
 			{

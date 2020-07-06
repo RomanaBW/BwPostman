@@ -298,13 +298,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 
 				// get available mailinglists to predefine for state
-				$item->ml_available = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'available');
+				$mlTable = $this->getTable('Mailinglists');
+				$item->ml_available = $mlTable->getMailinglistsByRestriction($item->mailinglists, 'available');
 
 				// get unavailable mailinglists to predefine for state
-				$item->ml_unavailable = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'unavailable');
+				$item->ml_unavailable = $mlTable->getMailinglistsByRestriction($item->mailinglists, 'unavailable');
 
 				// get internal mailinglists to predefine for state
-				$item->ml_intern = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'internal');
+				$item->ml_intern = $mlTable->getMailinglistsByRestriction($item->mailinglists, 'internal');
 
 				// Preset template ids
 				// Old template for existing newsletters not set during update to 1.1.x, so we have to manage this here also

@@ -837,7 +837,7 @@ class BwPostmanPhpCron {
 	private function sendCronNewsletter($nlToSend)
 	{
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
-		require_once(JPATH_ADMINISTRATOR . '/components//com_bwpostman/helpers/newsletterhelper.php');
+
 		$nlModel = JModelLegacy::getInstance('Newsletter', 'BwPostmanModel');
 
 		$error = array();
@@ -854,7 +854,8 @@ class BwPostmanPhpCron {
 			return false;
 		}
 
-		$campaignId = BwPostmanNewsletterHelper::getCampaignId($nlToSend);
+		$nlTable = $nlModel->getTable('Newsletters');
+		$campaignId = $nlTable->getCampaignId($nlToSend);
 
 		if (!$nlModel->checkRecipients($ret_msg, $nlToSend, 0, $campaignId))
 		{

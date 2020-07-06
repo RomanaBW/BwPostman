@@ -65,6 +65,22 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	}
 
 	/**
+	 * Returns a Table object, always creating it.
+	 *
+	 * @param	string  $type	    The table type to instantiate
+	 * @param	string	$prefix     A prefix for the table class name. Optional.
+	 * @param	array	$config     Configuration array for model. Optional.
+	 *
+	 * @return	boolean|Table	A database object
+	 *
+	 * @since  2.4.0
+	 */
+	public function getTable($type = 'Newsletters', $prefix = 'BwPostmanTable', $config = array())
+	{
+		return Table::getInstance($type, $prefix, $config);
+	}
+
+	/**
 	 * Method to get general statistic data
 	 *
 	 * @return 	array       associative array of general statistics data
@@ -78,40 +94,45 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$general	= array();
 
 		// Get # of all unsent newsletters
-		$general['nl_unsent'] = BwPostmanNewsletterHelper::getNbrOfNewsletters(false, false);
+		$nlTable = $this->getTable('Newsletters');
+		$general['nl_unsent'] = $nlTable->getNbrOfNewsletters(false, false);
 
 		// Get # of all sent newsletters
-		$general['nl_sent'] = BwPostmanNewsletterHelper::getNbrOfNewsletters(true, false);
+		$general['nl_sent'] = $nlTable->getNbrOfNewsletters(true, false);
 
 		// Get # of all subscribers
-		$general['sub'] = BwPostmanSubscriberHelper::getNbrOfSubscribers(false, false);
+		$subsTable = $this->getTable('Subscribers');
+		$general['sub'] = $subsTable->getNbrOfSubscribers(false, false);
 
 		// Get # of all test-recipients
-		$general['test'] = BwPostmanSubscriberHelper::getNbrOfSubscribers(true, false);
+		$general['test'] = $subsTable->getNbrOfSubscribers(true, false);
 
 		// Get # of all campaigns
-		$general['cam'] = BwPostmanCampaignHelper::getNbrOfCampaigns(false);
+		$camTable = $this->getTable('Campaigns');
+		$general['cam'] = $camTable->getNbrOfCampaigns(false);
 
 		// Get # of all published mailinglists
 		// get available mailinglists to predefine for state
-		$ml_available = BwPostmanMailinglistHelper::getMailinglistsByRestriction(array(), 'available', 0, false);
+		$mlTable = $this->getTable('Mailinglists');
+		$ml_available = $mlTable->getMailinglistsByRestriction(array(), 'available', 0, false);
 
 		// get unavailable mailinglists to predefine for state
-		$ml_unavailable = BwPostmanMailinglistHelper::getMailinglistsByRestriction(array(), 'unavailable', 0, false);
+		$ml_unavailable = $mlTable->getMailinglistsByRestriction(array(), 'unavailable', 0, false);
 
 		$general['ml_published'] = count($ml_available) + count($ml_unavailable);
 
 		// Get # of all unpublished mailinglists
 		// get internal mailinglists to predefine for state
-		$ml_intern = BwPostmanMailinglistHelper::getMailinglistsByRestriction(array(), 'internal', 0, false);
+		$ml_intern = $mlTable->getMailinglistsByRestriction(array(), 'internal', 0, false);
 
 		$general['ml_unpublished'] = count($ml_intern);
 
 		// Get # of all html templates
-		$general['html_templates'] = BwPostmanTplHelper::getNbrOfTemplates('html', false);
+		$tplTable = $this->getTable('Templates');
+		$general['html_templates'] = $tplTable->getNbrOfTemplates('html', false);
 
 		// Get # of all text templates
-		$general['text_templates'] = BwPostmanTplHelper::getNbrOfTemplates('text', false);
+		$general['text_templates'] = $tplTable->getNbrOfTemplates('text', false);
 
 		// Get total # of general statistic
 		$general[] = array_sum($general);
@@ -133,25 +154,30 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$archive	= array();
 
 		// Get # of all archived newsletters
-		$archive['arc_nl'] = BwPostmanNewsletterHelper::getNbrOfNewsletters(false, true);
+		$nlTable = $this->getTable('Newsletters');
+		$archive['arc_nl'] = $nlTable->getNbrOfNewsletters(false, true);
 
 		// Get # of all archived subscribers
-		$archive['arc_sub'] = BwPostmanSubscriberHelper::getNbrOfSubscribers(false, true);
+		$subsTable = $this->getTable('Subscribers');
+		$archive['arc_sub'] = $subsTable->getNbrOfSubscribers(false, true);
 
 		// Get # of all archived campaigns
-		$archive['arc_cam'] = BwPostmanCampaignHelper::getNbrOfCampaigns(true);
+		$camTable = $this->getTable('Campaigns');
+		$archive['arc_cam'] = $camTable->getNbrOfCampaigns(true);
 
 		// Get # of all archived mailinglists
 		// get available mailinglists to predefine for state
-		$ml_archived = BwPostmanMailinglistHelper::getMailinglistsByRestriction(array(), 'available', 1, false);
+		$mlTable = $this->getTable('Mailinglists');
+		$ml_archived = $mlTable->getMailinglistsByRestriction(array(), 'available', 1, false);
 
 		$archive['arc_ml'] = count($ml_archived);
 
 		// Get # of all html templates
-		$archive['arc_html_templates'] = BwPostmanTplHelper::getNbrOfTemplates('html', true);
+		$tplTable = $this->getTable('Templates');
+		$archive['arc_html_templates'] = $tplTable->getNbrOfTemplates('html', true);
 
 		// Get # of all text templates
-		$archive['arc_text_templates'] = BwPostmanTplHelper::getNbrOfTemplates('text', true);
+		$archive['arc_text_templates'] = $tplTable->getNbrOfTemplates('text', true);
 
 		// Get total # of general statistic
 		$archive[] = array_sum($archive);

@@ -380,7 +380,9 @@ class BwPostmanControllerRegister extends JControllerLegacy
 			}
 		}
 
-		$subscriberdata = BwPostmanSubscriberHelper::getSubscriberData($id);
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/subscriber.php');
+		$subsTable    = $this->getModel('subscriber')->getTable('Subscribers');
+		$subscriberdata = $subsTable->getSubscriberState($id);
 
 		if (!is_object($subscriberdata))
 		{

@@ -40,6 +40,7 @@ jimport('joomla.application.component.controller');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/subscriber.php');
 
 
 /**
@@ -110,7 +111,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		// if user is logged in fetch subscriber id
 		if ($userid)
 		{
-			$subscriberid	= (int) BwPostmanSubscriberHelper::getSubscriberIdByUserId($userid); // = 0 if the user has no newsletter subscription
+			$subsTable    = $this->getModel('subscriber')->getTable('Subscribers');
+			$subscriberid = (int) $subsTable->getSubscriberIdByUserId($userid); // = 0 if the user has no newsletter subscription
 		}
 
 		// Check if the variable editlink exists in the uri
@@ -146,10 +148,12 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		}
 
 		// get subscriber data
+		$subsTable    = $this->getModel('subscriber')->getTable('Subscribers');
+
 		if ($subscriberid)
 		{
 			// Guest with known subscriber id (stored in the session) or logged in user
-			$subscriberdata	= BwPostmanSubscriberHelper::getSubscriberData((int) $subscriberid);
+			$subscriberdata	= $subsTable->getSubscriberState((int) $subscriberid);
 			if (is_object($subscriberdata))
 			{
 				if ($user_is_guest)
@@ -187,7 +191,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 				}
 				else
 				{
-					$subscriberdata	= BwPostmanSubscriberHelper::getSubscriberData((int) $subscriberid);
+					$subscriberdata	= $subsTable->getSubscriberState((int) $subscriberid);
 
 					$active_subscription    = $this->checkActiveSubscription($subscriberdata, $err);
 
@@ -310,6 +314,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		);
 
 		$newEmail	= false;
+		$subsTable  = $this->getModel('subscriber')->getTable('Subscribers');
 
 		if (isset($post['unsubscribe']))
 		{
@@ -329,7 +334,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 				$post['status'] 			= 0;
 				$post['confirmation_date'] 	= "0000-00-00 00:00:00";
 				$post['confirmed_by'] 		= '-1';
-				$post['activation']			= BwPostmanSubscriberHelper::createActivation();;
+				$post['activation']			= $subsTable->createActivation();;
 			}
 
 			// Store the data if possible
@@ -414,7 +419,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 					else
 					{
-						$uid	= BwPostmanSubscriberHelper::getUserIdOfSubscriber($post['id']);
+						$uid	= $subsTable->getUserIdOfSubscriber($post['id']);
 						$this->setData($post['id'], $uid);
 
 						$app->setUserState('subscriber.id', $post['id']);
@@ -454,7 +459,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		// We come from the edit view
 		if ($id)
 		{
-			$unsubscribedata	= BwPostmanSubscriberHelper::getSubscriberData($id);
+			$subsTable    = $this->getModel('subscriber')->getTable('Subscribers');
+			$unsubscribedata	= $subsTable->getSubscriberState($id);
 			$email				= $unsubscribedata->email;
 			$editlink			= $unsubscribedata->editlink;
 
@@ -535,7 +541,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$editlink		= '';
 		$subs_id        = null;
 		$subscriber		= new stdClass();
-		$subscriberdata = BwPostmanSubscriberHelper::getSubscriberData($id);
+		$subsTable    = $this->getModel('subscriber')->getTable('Subscribers');
+		$subscriberdata = $subsTable->getSubscriberState($id);
 
 		if (!is_object($subscriberdata))
 		{

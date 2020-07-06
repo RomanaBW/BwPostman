@@ -386,7 +386,9 @@ class BwPostmanControllerTemplate extends JControllerForm
 			return false;
 		}
 
-		$count_std = BwPostmanTplHelper::getNumberOfStdTemplates($cid);
+		$model = $this->getModel('template');
+		$tplTable = $model->getTable();
+		$count_std = $tplTable->getNumberOfStdTemplates($cid);
 
 		// archive only, if no standard template is selected
 		if ($count_std > 0)
@@ -399,7 +401,6 @@ class BwPostmanControllerTemplate extends JControllerForm
 		{
 			$n = count($cid);
 
-			$model = $this->getModel('template');
 			if(!$model->archive($cid, 1))
 			{
 				if ($n > 1)

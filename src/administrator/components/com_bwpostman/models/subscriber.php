@@ -396,12 +396,13 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			// Admin creates a new subscriber?
 			if (!$data['id'])
 			{
-				$data['editlink'] = BwPostmanSubscriberHelper::getEditlink();
+				$subsTable = $this->getTable('Subscribers');
+				$data['editlink'] = $subsTable->getEditlink();
 
 				// Admin doesn't confirm the subscriber?
 				if (!array_key_exists('status', $data) || $data['status'] !== 1)
 				{
-					$data['activation'] = BwPostmanSubscriberHelper::createActivation();
+					$data['activation'] = $subsTable->createActivation();
 				}
 			}
 
@@ -447,16 +448,17 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			{
 				// Get the subscriber ID
 				$subscriber_id = $app->getUserState('com_bwpostman.subscriber.id');
+				$subsMlTable     = $this->getTable('Subscribers_Mailinglists');
 
 				// Delete all entries of the subscriber from subscribers_mailinglists-Table
-				BwPostmanSubscriberHelper::deleteMailinglistsOfSubscriber((int) $subscriber_id);
+				$subsMlTable->deleteMailinglistsOfSubscriber((int) $subscriber_id);
 
 				if (!empty($data['mailinglists']))
 				{
 					$list_id_values = $data['mailinglists'];
 
 					// Store subscribed mailinglists in newsletters_mailinglists-table
-					BwPostmanSubscriberHelper::storeMailinglistsOfSubscriber((int) $subscriber_id, $list_id_values);
+					$subsMlTable->storeMailinglistsOfSubscriber((int) $subscriber_id, $list_id_values);
 				}
 
 				// New subscriber has to confirm the account by himself
@@ -609,7 +611,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			// Delete subscribed mailinglists from subscribers_mailinglists-table
 			foreach ($pks as $pk)
 			{
-				BwPostmanSubscriberHelper::deleteMailinglistsOfSubscriber((int) $pk);
+				$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+				$subsMlTable->deleteMailinglistsOfSubscriber((int) $pk);
 			}
 		}
 
@@ -930,10 +933,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$values["confirmation_ip"]		= $remote_ip;
 		}
 
+		$subsTable = $this->getTable('Subscribers');
+
 		try
 		{
 			// Check if the email address exists in the subscribers table
-			$subscriber = BwPostmanSubscriberHelper::getSubscriberDataByEmail($values);
+			$subscriber = $subsTable->getSubscriberDataByEmail($values);
 
 			if (isset($subscriber->id))
 			{ // A recipient with this email address already exists
@@ -1016,7 +1021,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 			if ($values['status'] == '0')
 			{
-				$values["activation"] = BwPostmanSubscriberHelper::createActivation();
+				$values["activation"] = $subsTable->createActivation();
 			}
 
 			// Check if the subscriber email address exists in the users-table
@@ -1025,7 +1030,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$values["user_id"] = $user_id;
 			if ($values["status"] != '9')
 			{
-				$values['editlink'] = BwPostmanSubscriberHelper::getEditlink();
+				$values['editlink'] = $subsTable->getEditlink();
 			}
 
 			if (parent::save($values))
@@ -1035,7 +1040,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 				//Save Mailinglists if selected
 				if ($mailinglists && ($values['status'] != '9'))
 				{
-					BwPostmanSubscriberHelper::storeMailinglistsOfSubscriber($subscriber_id, $mailinglists);
+					$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+					$subsMlTable->storeMailinglistsOfSubscriber($subscriber_id, $mailinglists);
 				}
 
 				//Send Email, if confirmed is not set
@@ -1233,7 +1239,8 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		if ($mlToExport !== '')
 		{
-			$filteredSubscribers = BwPostmanMailinglistHelper::getSubscribersOfMailinglist((int)$mlToExport);
+			$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+			$filteredSubscribers = $subsMlTable->getSubscribersOfMailinglist((int)$mlToExport);
 
 			if ($where)
 			{
@@ -1409,18 +1416,19 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$result_set	= array();
 		$subscribed	= 0;
 		$skipped	= 0;
+		$subsMlTable = $this->getTable('Subscribers_Mailinglists');
 
 		// Subscribers exists so let's proceed
 		while (!empty($pks))
 		{
 			// Pop the first id off the stack
 			$pk     = array_shift($pks);
-			$hasSubscription = BwPostmanSubscriberHelper::hasSubscriptionForMailinglist($pk, $mailinglist);
+			$hasSubscription = $subsMlTable->hasSubscriptionForMailinglist($pk, $mailinglist);
 
 			// If no subscription to this mailinglist then subscribe, else only count
 			if (!$hasSubscription)
 			{
-				BwPostmanSubscriberHelper::storeMailinglistsOfSubscriber($pk, array((int) $mailinglist));
+				$subsMlTable->storeMailinglistsOfSubscriber($pk, array((int) $mailinglist));
 				$subscribed++;
 			}
 			else
@@ -1459,6 +1467,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$result_set		= array();
 		$unsubscribed	= 0;
 		$skipped		= 0;
+		$subsMlTable = $this->getTable('Subscribers_Mailinglists');
 
 		// Subscribers exists so let's proceed
 		while (!empty($pks))
@@ -1467,12 +1476,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$pk     = array_shift($pks);
 
 			// Check if subscriber has already subscribed to the desired mailinglist
-			$hasSubscription = BwPostmanSubscriberHelper::hasSubscriptionForMailinglist($pk, $mailinglist);
+			$hasSubscription = $subsMlTable->hasSubscriptionForMailinglist($pk, $mailinglist);
 
 			// If subscription to this mailinglist, then unsubscribe, else only count
 			if ($hasSubscription)
 			{
-				BwPostmanSubscriberHelper::deleteMailinglistsOfSubscriber($pk, array((int)$mailinglist));
+				$subsMlTable->deleteMailinglistsOfSubscriber($pk, array((int)$mailinglist));
 				$unsubscribed++;
 			}
 			else

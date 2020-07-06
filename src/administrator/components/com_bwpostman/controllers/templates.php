@@ -212,7 +212,9 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 			return false;
 		}
 
-		$count_std = BwPostmanTplHelper::getNumberOfStdTemplates($cid);
+		$model = $this->getModel('template');
+		$tplTable = $model->getTable();
+		$count_std = $tplTable->getNumberOfStdTemplates($cid);
 
 		// unpublish only, if no standard template is selected
 		if ($count_std > 0 && $this->getTask() == 'unpublish')

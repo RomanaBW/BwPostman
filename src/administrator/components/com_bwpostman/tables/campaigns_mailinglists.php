@@ -60,7 +60,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	DatabaseDriver  $db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since
 	 */
@@ -90,7 +90,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 		$query		= $_db->getQuery(true);
 		$subQuery	= $_db->getQuery(true);
 
-		$subQuery->select($_db->quote($newid) . ' AS ' . $_db->quoteName('campaign_id'));
+		$subQuery->select($_db->quote((integer)$newid) . ' AS ' . $_db->quoteName('campaign_id'));
 		$subQuery->select($_db->quoteName('mailinglist_id'));
 		$subQuery->from($_db->quoteName($this->_tbl));
 		$subQuery->where($_db->quoteName('campaign_id') . ' = ' . (int) $oldid);
@@ -143,7 +143,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.3.0 (since 2.4.0 here, before at BE newsletter model)
+	 * @since 2.4.0 (here, before since 2.3.0 at BE newsletter model)
 	 */
 	public function getAssociatedMailinglistsByCampaign($id)
 	{
@@ -157,6 +157,39 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 
 		$db->setQuery($query);
 
+		try
+		{
+			$mailinglists = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $mailinglists;
+	}
+
+	/**
+	 * Method to get the mailinglist ids for a single campaign
+	 *
+	 * @param int $cam_id Campaign ID
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	public function getCampaignMailinglists($cam_id = null)
+	{
+		$mailinglists = array();
+		$db	= $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('mailinglist_id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
+		$db->setQuery($query);
 		try
 		{
 			$mailinglists = $db->loadColumn();

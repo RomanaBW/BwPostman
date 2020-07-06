@@ -370,7 +370,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
 						echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_PROCESS') . '</h4>';
-						$assetGroupsProcessed = $model->processAssetUserGroups($session->get('trestore_tablenames', ''));
+						$assetGroupsProcessed = $model->healAssetUserGroups($session->get('trestore_tablenames', ''));
 
 						if ($assetGroupsProcessed === false)
 						{

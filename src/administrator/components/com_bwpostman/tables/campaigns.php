@@ -146,7 +146,7 @@ class BwPostmanTableCampaigns extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	DatabaseDriver  $db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -234,7 +234,7 @@ class BwPostmanTableCampaigns extends JTable
 	{
 		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_bwpostman.campaign');
-		return $asset->id;
+		return (integer)$asset->id;
 	}
 
 	/**
@@ -295,32 +295,33 @@ class BwPostmanTableCampaigns extends JTable
 	public function check()
 	{
 		$app	= Factory::getApplication();
-		$query	= $this->_db->getQuery(true);
+		$db     = $this->_db;
+		$query	= $db->getQuery(true);
 		$fault	= false;
 		$xid    = 0;
 
 		// Remove all HTML tags from the title and description
 		$filter				= new InputFilter(array(), array(), 0, 0);
-		$this->title		= $filter->clean($this->title);
+		$this->title		= trim($filter->clean($this->title));
 		$this->description	= $filter->clean($this->description);
 
 		// Check for valid title
-		if (trim($this->title) == '')
+		if ($this->title === '')
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_ERROR_TITLE'), 'error');
 			$fault	= true;
 		}
 
 		// Check for existing title
-		$query->select($this->_db->quoteName('id'));
-		$query->from($this->_db->quoteName('#__bwpostman_campaigns'));
-		$query->where($this->_db->quoteName('title') . ' = ' . $this->_db->quote($this->title));
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('title') . ' = ' . $db->quote($this->title));
 
-		$this->_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$xid = intval($this->_db->loadResult());
+			$xid = intval($db->loadResult());
 		}
 		catch (RuntimeException $e)
 		{
@@ -375,6 +376,94 @@ class BwPostmanTableCampaigns extends JTable
 		Factory::getApplication()->setUserState('com_bwpostman.edit.campaign.id', $this->id);
 
 		return $res;
+	}
+	/**
+	 * Method to get the number of campaigns depending on provided archive state
+	 *
+	 * @param boolean $archived
+	 *
+	 * @return 	integer|boolean number of campaigns or false
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 (here. before since 2.3.0 at campaign helper)
+	 */
+	public function getNbrOfCampaigns($archived)
+	{
+		$archiveFlag = 0;
+
+		if ($archived)
+		{
+			$archiveFlag = 1;
+		}
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(*)');
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
+
+		$db->setQuery($query);
+
+		try
+		{
+			return $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+		return false;
+	}
+
+	/**
+	 * Method to get the data of a single campaign for raw view
+	 *
+	 * @access    public
+	 *
+	 * @param int $cam_id Campaign ID
+	 *
+	 * @return    object Campaign
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	public function getSingleCampaign($cam_id = null)
+	{
+		$db   = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' = ' . (int) $cam_id);
+		$db->setQuery($query);
+
+		$campaign = $db->loadObject();
+
+		// Get all assigned newsletters
+		// --> we offer to unarchive not only the campaign but also the assigned newsletters,
+		// that's why we have to show also the archived newsletters
+		$query->clear();
+		$query->select($db->quoteName('id'));
+		$query->select($db->quoteName('subject'));
+		$query->select($db->quoteName('campaign_id'));
+		$query->select($db->quoteName('archive_flag'));
+		$query->from($db->quoteName('#__bwpostman_newsletters'));
+		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
+
+		$db->setQuery($query);
+		try
+		{
+			$campaign->newsletters = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $campaign;
 	}
 
 	/**

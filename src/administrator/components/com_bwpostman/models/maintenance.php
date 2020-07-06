@@ -322,7 +322,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						return false;
 					}
 
-					$xmlAssets = $this->buildXmlAssets($tableName, $tablesXml);                // write data assets
+					// Build table assets XML
+					$xmlAssets = $this->buildXmlAssets($tableName, $tablesXml);
 
 					if ($xmlAssets === false)
 					{
@@ -2421,7 +2422,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since    1.3.0
 	 */
-	public function processAssetUserGroups($table_names)
+	public function healAssetUserGroups($table_names)
 	{
 		// process user groups, if they exists in backup
 		$com_assets = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
@@ -2597,7 +2598,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				$asset_name = $base_asset['name'];
 
-				// set some loop values (block size, …)
+				// Set some loop values (block size, …)
+				// To accelerate writing data and assets are pooled to blocks. Block size depends on table.
 				$data_loop_max = $this->getDataLoopMax($table);
 				$max_count     = ini_get('max_execution_time');
 				$data_max      = 0;
@@ -2970,7 +2972,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$adjust_prefix = false;
 
-		// get db prefix
+		// get current and backed up db prefix
 		$new_prefix = $this->db->getPrefix();
 
 		$sample_table = $x_tables[0];
@@ -3296,6 +3298,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 	/**
 	 * Method to get the base asset of BwPostman. If state exists, catch values from state, else use asset table
+	 * Base asset is the asset of the component or a specific section.
 	 *
 	 * @param string  $table
 	 * @param boolean $onlyHeal
@@ -6009,42 +6012,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->where($this->db->quoteName('id') . ' IN (' . implode(',', $itemIds) . ')');
 
 		$this->db->setQuery($query);
-		try
-		{
-			$items = $this->db->loadAssocList();
-		}
-		catch (RuntimeException $exception)
-		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-			return false;
-		}
-
-		return $items;
-	}
-
-	/**
-	 * Method to detect all items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
-	 * but not present at asset table.
-	 *
-	 * @param $tableNameGeneric
-	 *
-	 * @return array|boolean
-	 *
-	 * @throws Exception
-	 * @since 2.0.0
-	 *
-	 */
-	private function getItemsWithoutAssetId($tableNameGeneric)
-	{
-		$query = $this->db->getQuery(true);
-		$query->select('*');
-		$query->from($this->db->quoteName($tableNameGeneric));
-		$query->where($this->db->quoteName('asset_id') . ' = ' . (int) 0);
-
-		$this->db->setQuery($query);
-
 		try
 		{
 			$items = $this->db->loadAssocList();

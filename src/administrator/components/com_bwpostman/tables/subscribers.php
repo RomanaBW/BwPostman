@@ -36,6 +36,8 @@ use Joomla\CMS\Mail\MailHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use Joomla\Filter\InputFilter;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\User\UserHelper;
 
 // needed for plugin support!!!!
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
@@ -965,5 +967,300 @@ class BwPostmanTableSubscribers extends JTable
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Method to check by user ID if a user has a newsletter account (user = no guest)
+	 *
+	 * Returns 0 if user has no newsletter subscription
+	 *
+	 * @param    int $uid user ID
+	 *
+	 * @return    int $id     subscriber ID
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 */
+	public function getSubscriberIdByUserId($uid)
+	{
+		$_db   = Factory::getDbo();
+		$query = $_db->getQuery(true);
+
+		$query->select($_db->quoteName('id'));
+		$query->from($_db->quoteName('#__bwpostman_subscribers'));
+		$query->where($_db->quoteName('user_id') . ' = ' . (int) $uid);
+		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
+
+		try
+		{
+			$_db->setQuery($query);
+			$id = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		if (empty($id))
+		{
+			$id = 0;
+		}
+
+		return $id;
+	}
+
+	/**
+	 * Method to get the data of a subscriber who has a newsletter account from the subscribers-table
+	 * because we need to know if his account is okay or archived or not activated (user = no guest)
+	 *
+	 * @access    public
+	 *
+	 * @param    int $id subscriber ID
+	 *
+	 * @return    object  $subscriber subscriber object
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 */
+	public function getSubscriberState($id)
+	{
+		$subscriber = null;
+		$_db        = $this->_db;
+		$query      = $_db->getQuery(true);
+
+		$query->select('*');
+		$query->from($_db->quoteName('#__bwpostman_subscribers'));
+		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
+		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
+
+		try
+		{
+			$_db->setQuery($query);
+			$subscriber = $_db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $subscriber;
+	}
+
+	/**
+	 * Method to get the user ID of a subscriber from the subscribers-table depending on the subscriber ID
+	 * --> is needed for the constructor
+	 *
+	 * @param 	int     $id     subscriber ID
+	 *
+	 * @return 	int user ID
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 */
+	public static function getUserIdOfSubscriber($id)
+	{
+		$user_id    = null;
+		$_db	    = Factory::getDbo();
+		$query	    = $_db->getQuery(true);
+
+		$query->select($_db->quoteName('user_id'));
+		$query->from($_db->quoteName('#__bwpostman_subscribers'));
+		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
+		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
+
+		try
+		{
+			$_db->setQuery($query);
+			$user_id = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		if (is_null($user_id))
+		{
+			$user_id = 0;
+		}
+
+		return $user_id;
+	}
+
+	/**
+	 * Method to get the number of subscribers depending on provided sending and archive state
+	 *
+	 * @param boolean $tester
+	 * @param boolean $archived
+	 *
+	 * @return 	integer|boolean number of subscribers or false
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.4.0 (here, before since 2.3.0 at subscriber helper)
+	 */
+	public function getNbrOfSubscribers($tester, $archived)
+	{
+		$archiveFlag = 0;
+		$statusOperator = "!=";
+
+		if ($tester)
+		{
+			$statusOperator = "=";
+		}
+
+		if ($archived)
+		{
+			$archiveFlag = 1;
+		}
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(*)');
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
+
+		if (!$archived)
+		{
+			$query->where($db->quoteName('status') . $statusOperator . (int) 9);
+		}
+
+		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
+
+		$db->setQuery($query);
+
+		try
+		{
+			return $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+		return false;
+	}
+
+	/**
+	 * Method to create the editlink and check if the string does not exist twice or more
+	 *
+	 * @return string   $editlink
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	public function getEditlink()
+	{
+		$db              = $this->_db;
+		$newEditlink     = "";
+		$editlinkMatches = true;
+
+		while ($editlinkMatches)
+		{
+			$newEditlink = ApplicationHelper::getHash(UserHelper::genRandomPassword());
+
+			$query = $db->getQuery(true);
+
+			$query->select($db->quoteName('editlink'));
+			$query->from($db->quoteName('#__bwpostman_subscribers'));
+			$query->where($db->quoteName('editlink') . ' = ' . $db->quote($newEditlink));
+
+			$db->setQuery($query);
+
+			try
+			{
+				$editlink = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				return false;
+			}
+			if ($editlink !== $newEditlink)
+			{
+				$editlinkMatches = false;
+			}
+		}
+
+		return $newEditlink;
+	}
+
+	/**
+	 * Method to create the activation and check if the string does not exist twice or more
+	 *
+	 * @return string   $activation
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	public function createActivation()
+	{
+		$db    = $this->_db;
+		$query             = $db->getQuery(true);
+		$newActivation     = "";
+		$activationMatches = true;
+
+		while ($activationMatches)
+		{
+			$newActivation = ApplicationHelper::getHash(UserHelper::genRandomPassword());
+
+			$query->select($db->quoteName('activation'));
+			$query->from($db->quoteName('#__bwpostman_subscribers'));
+			$query->where($db->quoteName('activation') . ' = ' . $db->quote($newActivation));
+
+			$db->setQuery($query);
+
+			try
+			{
+				$activation = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				return false;
+			}
+
+			if ($activation !== $newActivation)
+			{
+				$activationMatches = false;
+			}
+		}
+
+		return $newActivation;
+	}
+
+	/**
+	 * Method to get the subscriber id by email
+	 *
+	 * @param   array      $values
+	 *
+	 * @return  object
+	 *
+	 * @since   2.4.0 (here)
+	 */
+	public function getSubscriberDataByEmail($values)
+	{
+		$db   = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query->where($db->quoteName('email') . ' = ' . $db->quote($values['email']));
+		if ($values['status'] == '9')
+		{
+			$query->where($db->quoteName('emailformat') . ' = ' . $db->quote($values['emailformat']));
+			$query->where($db->quoteName('status') . ' = ' . (int) 9);
+		}
+		else
+		{
+			$query->where($db->quoteName('status') . ' IN (0, 1)');
+		}
+
+		$db->setQuery($query);
+
+		return $db->loadObject();
 	}
 }

@@ -220,19 +220,21 @@ class BwPostmanModelCampaign extends JModelAdmin
 			}
 
 			//get associated mailinglists
-			$item->mailinglists = BwPostmanMailinglistHelper::getCampaignMailinglists((int)$item->id);
+			$camMlTable = $this->getTable('Campaigns_Mailinglists');
+			$item->mailinglists = $camMlTable->getCampaignMailinglists((int)$item->id);
 
 			//extract associated usergroups
 			$item->usergroups	= BwPostmanMailinglistHelper::extractAssociatedUsergroups($item->mailinglists);
 
 			// get available mailinglists to predefine for state
-			$item->ml_available = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'available');
+			$mlTable = $this->getTable('Mailinglists');
+			$item->ml_available = $mlTable->getMailinglistsByRestriction($item->mailinglists, 'available');
 
 			// get unavailable mailinglists to predefine for state
-			$item->ml_unavailable = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'unavailable');
+			$item->ml_unavailable = $mlTable->getMailinglistsByRestriction($item->mailinglists, 'unavailable');
 
 			// get internal mailinglists to predefine for state
-			$item->ml_intern = BwPostmanMailinglistHelper::getMailinglistsByRestriction($item->mailinglists, 'internal');
+			$item->ml_intern = $mlTable->getMailinglistsByRestriction($item->mailinglists, 'internal');
 
 		}
 		else
@@ -325,13 +327,14 @@ class BwPostmanModelCampaign extends JModelAdmin
 	public function getNewslettersOfCampaign()
 	{
 		$newsletters = new stdClass();
+		$nlTable     = $this->getTable('Newsletters');
 		$camId       = $this->getState('campaign.id');
 
-		$newsletters->sent = BwPostmanNewsletterHelper::getSelectedNewslettersOfCampaign($camId, true, false);
+		$newsletters->sent = $nlTable->getSelectedNewslettersOfCampaign($camId, true, false);
 
-		$newsletters->unsent = BwPostmanNewsletterHelper::getSelectedNewslettersOfCampaign($camId, false, false);
+		$newsletters->unsent = $nlTable->getSelectedNewslettersOfCampaign($camId, false, false);
 
-		$newsletters->all = BwPostmanNewsletterHelper::getSelectedNewslettersOfCampaign($camId, false, true);
+		$newsletters->all = $nlTable->getSelectedNewslettersOfCampaign($camId, false, true);
 
 		return $newsletters;
 	}

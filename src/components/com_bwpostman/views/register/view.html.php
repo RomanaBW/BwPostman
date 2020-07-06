@@ -37,6 +37,7 @@ jimport('joomla.application.component.view');
 // Require helper classes
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/models/mailinglist.php');
 
 /**
  * Class BwPostmanViewRegister
@@ -240,7 +241,11 @@ class BwPostmanViewRegister extends JViewLegacy
 		}
 
 		// Get the mailinglists which the subscriber is authorized to see
-		$lists['available_mailinglists'] = BwPostmanSubscriberHelper::getAuthorizedMailinglists($subscriber->id);
+		$model = $this->getModel();
+		$mlTable = $model->getTable('Mailinglists');
+		$subsTable = $model->getTable('Subscribers');
+		$userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
+		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists($subscriber->id, $userId);
 
 		// Build the email format select list
 		if (!isset($subscriber->emailformat))

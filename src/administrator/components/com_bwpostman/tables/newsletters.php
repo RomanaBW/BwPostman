@@ -307,7 +307,7 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function __construct(& $db)
 	{
-		parent::__construct($this->_tbl, 'id', $db);
+		parent::__construct('#__bwpostman_newsletters', 'id', $db);
 	}
 
 	/**
@@ -566,18 +566,18 @@ class BwPostmanTableNewsletters extends JTable
 			$nl_id = $this->id;
 		}
 
-		$_db	= $this->getDbo();
-		$query	= $_db->getQuery(true);
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
 
-		$query->update($_db->quoteName($this->_tbl));
-		$query->set($_db->quoteName('mailing_date') . " = NOW()");
-		$query->where($_db->quoteName('id') . ' = ' . (int) $nl_id);
+		$query->update($db->quoteName($this->_tbl));
+		$query->set($db->quoteName('mailing_date') . " = NOW()");
+		$query->where($db->quoteName('id') . ' = ' . (int) $nl_id);
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$_db->execute();
+			$db->execute();
 		}
 		catch (RuntimeException $e)
 		{
@@ -618,18 +618,18 @@ class BwPostmanTableNewsletters extends JTable
 
 		$newIsTemplate = ($this->is_template + 1) % 2;
 
-		$_db	= $this->getDbo();
-		$query	= $_db->getQuery(true);
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
 
-		$query->update($_db->quoteName($this->_tbl));
-		$query->set($_db->quoteName('is_template') . " = " . $newIsTemplate);
-		$query->where($_db->quoteName('id') . ' = ' . (int) $nl_id);
+		$query->update($db->quoteName($this->_tbl));
+		$query->set($db->quoteName('is_template') . " = " . $newIsTemplate);
+		$query->where($db->quoteName('id') . ' = ' . (int) $nl_id);
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$_db->execute();
+			$db->execute();
 		}
 		catch (RuntimeException $e)
 		{
@@ -652,7 +652,7 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function isTemplate($id)
 	{
-		$db	= $db;
+		$db	= $this->_db;
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('is_template'));
@@ -692,7 +692,7 @@ class BwPostmanTableNewsletters extends JTable
 	public function getStandardTpl($mode	= 'html')
 	{
 		$tpl    = new stdClass();
-		$db	= $db;
+		$db	= $this->_db;
 		$query	= $db->getQuery(true);
 
 		// Id of the standard template
@@ -742,7 +742,8 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function archive($cid, $archive)
 	{
-		$uid		= Factory::getUser()->get('id');
+		$uid = Factory::getUser()->get('id');
+		$db = $this->_db;
 
 		if ($archive == 1)
 		{
@@ -754,8 +755,7 @@ class BwPostmanTableNewsletters extends JTable
 			$uid	= 0;
 		}
 
-		$db		= $db;
-		$query		= $db->getQuery(true);
+		$query = $db->getQuery(true);
 
 		$query->update($db->quoteName($this->_tbl));
 		$query->set($db->quoteName('archive_flag') . " = " . (int) $archive);
@@ -791,7 +791,7 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function getNewsletterData($nlId)
 	{
-		$db	= $db;
+		$db	= $this->_db;
 		$query	= $db->getQuery(true);
 
 		$query->select('*');
@@ -828,14 +828,14 @@ class BwPostmanTableNewsletters extends JTable
 	public function getSelectedContentOfNewsletter($nlId)
 	{
 		$content_ids    = '';
-		$db	        = $db;
+		$db	= $this->_db;
 
 		// Get selected content from the newsletters-Table
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('selected_content'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . $nlId);
+		$query->where($db->quoteName('id') . ' = ' . (int)$nlId);
 
 		$db->setQuery($query);
 		try
@@ -865,7 +865,7 @@ class BwPostmanTableNewsletters extends JTable
 	{
 		$campaignId = -1;
 
-		$db	= Factory::getDbo();
+		$db	= $this->_db;
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('campaign_id'));
@@ -913,7 +913,7 @@ class BwPostmanTableNewsletters extends JTable
 			$archiveFlag = 1;
 		}
 
-		$db    = Factory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');
@@ -968,7 +968,7 @@ class BwPostmanTableNewsletters extends JTable
 			$archiveFlag = 1;
 		}
 
-		$db    = $db;
+		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('a') . '.*');

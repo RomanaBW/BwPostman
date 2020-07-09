@@ -199,39 +199,6 @@ class BwPostmanModelNewsletters extends JModelList
 	}
 
 	/**
-	/**
-	 * Method to count the number of queued records
-	 *
-	 * @return 	int count Queue-data
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function getCountQueue()
-	{
-		$count_queue = 0;
-		$db          = $this->_db;
-
-		$this->query = $db->getQuery(true);
-
-		$this->query->select('COUNT(*)');
-		$this->query->from($db->quoteName('#__bwpostman_sendmailqueue'));
-
-		$db->setQuery($this->query);
-		try
-		{
-			$count_queue = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $count_queue;
-	}
-
-	/**
 	 * Method to build the MySQL query
 	 *
 	 * @return 	string Query
@@ -674,15 +641,15 @@ class BwPostmanModelNewsletters extends JModelList
 					$this->query->where($db->quoteName('a.published') . ' = ' . (int) $published);
 					break;
 				case 2:
-					$this->query->where($db->quoteName('a.publish_down') . ' <> ' . $nullDate);
+					$this->query->where($db->quoteName('a.publish_down') . ' <> ' . $db->quote($nullDate));
 					$this->query->where($db->quoteName('a.publish_down') . ' <= ' . $nowDate);
 					break;
 				case 3:
-					$this->query->where($db->quoteName('publish_down') . ' >= ' . $nowDate . ' OR publish_down = ' . $nullDate . ')');
+					$this->query->where($db->quoteName('publish_down') . ' >= ' . $nowDate . ' OR publish_down = ' . $db->quote($nullDate) . ')');
 					break;
 				case 4:
 					$this->query->where($db->quoteName('a.publish_up') . ' <= ' . $nowDate);
-					$this->query->where($db->quoteName('a.publish_down') . ' <> ' . $nullDate);
+					$this->query->where($db->quoteName('a.publish_down') . ' <> ' . $db->quote($nullDate));
 					$this->query->where($db->quoteName('a.publish_down') . ' > ' . $nowDate);
 					break;
 				case 5:
@@ -768,7 +735,7 @@ class BwPostmanModelNewsletters extends JModelList
 				break;
 		}
 
-		$this->query->where('a.mailing_date' . $tab_int . "'0000-00-00 00:00:00'");
+		$this->query->where('a.mailing_date' . $tab_int . $this->_db->quote(Factory::getDbo()->getNullDate()));
 	}
 
 	/**
@@ -798,4 +765,37 @@ class BwPostmanModelNewsletters extends JModelList
 
 		return $this->cache[$store];
 	}
+
+	/**
+	/**
+	 * Method to count the number of queued records
+	 *
+	 * @return 	int count Queue-data
+	 *
+	 * @throws Exception
+	 *
+	 * @since  0.9.1
+	 */
+	public function getCountQueue()
+	{
+		$count_queue = 0;
+		$db          = $this->_db;
+		$query       = $db->getQuery(true);
+
+		$query->select('COUNT(*)');
+		$query->from($db->quoteName('#__bwpostman_sendmailqueue'));
+
+		$db->setQuery($query);
+		try
+		{
+			$count_queue = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $count_queue;
+	}
+
 }

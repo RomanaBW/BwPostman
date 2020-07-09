@@ -200,7 +200,7 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 
 		// Filter by published state
 		$query->where('a.published != ' . (int) 0);
-		$query->where($db->quoteName('a.mailing_date') . ' != ' . $db->quote('0000-00-00 00:00:00'));
+		$query->where($db->quoteName('a.mailing_date') . ' != ' . $db->quote($db->getNullDate()));
 
 		// Get the search string
 		$search = $this->getSearch();

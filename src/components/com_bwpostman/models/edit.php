@@ -103,8 +103,8 @@ class BwPostmanModelEdit extends JModelAdmin
 		else
 		{
 			// Subscriber is user
-			$subsTable = $this->getTable('Subscribers');
-			$id	= $subsTable->getSubscriberIdByUserId($user->get('id')); // Get the subscriber ID from the subscribers-table
+			// Get the subscriber ID from the subscribers-table
+			$id	= $this->getTable()->getSubscriberIdByUserId($user->get('id'));
 		}
 
 		$this->setData($id);
@@ -273,7 +273,7 @@ class BwPostmanModelEdit extends JModelAdmin
 
 		// set id and mailinglists property
 		$this->id                 = $pk;
-		$this->data->mailinglists = $this->getMailinglistsOfSubscriber($pk);
+		$this->data->mailinglists = $this->getTable('Subscribers_Mailinglists')->getMailinglistIdsOfSubscriber($pk);
 
 		return $this->data;
 	}
@@ -291,23 +291,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	public function getEmailaddress($id)
 	{
-		$emailaddress   = null;
-		$_db	        = $this->_db;
-		$query	        = $_db->getQuery(true);
-
-		$query->select($_db->quoteName('email'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
-
-		try
-		{
-			$_db->setQuery($query);
-			$emailaddress = $_db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$emailaddress = $this->getTable()->getEmailaddress($id);
 
 		return $emailaddress;
 	}
@@ -330,23 +314,7 @@ class BwPostmanModelEdit extends JModelAdmin
 			return 0;
 		}
 
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
-
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('editlink') . ' = ' . $_db->quote($editlink));
-		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
-
-		try
-		{
-			$_db->setQuery($query);
-			$id = $_db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$id = $this->getTable()->checkEditlink($editlink);
 
 		if (empty($id))
 		{
@@ -390,40 +358,5 @@ class BwPostmanModelEdit extends JModelAdmin
 		}
 
 		return true;
-	}
-
-	/**
-	 * Method to get associated mailing lists
-	 *
-	 * @param $pk
-	 *
-	 * @return mixed
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	private function getMailinglistsOfSubscriber($pk)
-	{
-		$list_id_values = null;
-		$_db    = $this->_db;
-		$query  = $_db->getQuery(true);
-
-		$query->select($_db->quoteName('mailinglist_id'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
-		$query->where($_db->quoteName('subscriber_id') . ' = ' . (int) $pk);
-
-		try
-		{
-			$_db->setQuery($query);
-
-			$list_id_values = $_db->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $list_id_values;
 	}
 }

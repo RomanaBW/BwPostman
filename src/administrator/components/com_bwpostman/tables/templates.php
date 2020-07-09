@@ -27,7 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -273,7 +272,7 @@ class BwPostmanTableTemplates extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	DatabaseDriver  $db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since 1.1.0
 	 */
@@ -428,8 +427,8 @@ class BwPostmanTableTemplates extends JTable
 	public function check()
 	{
 		$app	= Factory::getApplication();
-		$_db	= $this->_db;
-		$query	= $this->_db->getQuery(true);
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
 		$fault	= false;
 		$xid    = 0;
 
@@ -550,11 +549,11 @@ class BwPostmanTableTemplates extends JTable
 		}
 
 		// Check for existing title
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__bwpostman_templates'));
-		$query->where($_db->quoteName('title') . ' = ' . $_db->quote($this->title));
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('title') . ' = ' . $db->quote($this->title));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
@@ -722,7 +721,7 @@ class BwPostmanTableTemplates extends JTable
 
 		// count selected standard templates
 		$query->select($db->quoteName('standard'));
-		$query->from($db->quoteName('#__bwpostman_templates'));
+		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . " IN (" . implode(",", $cid) . ")");
 		$query->where($db->quoteName('standard') . " = " . $db->quote(1));
 
@@ -760,7 +759,7 @@ class BwPostmanTableTemplates extends JTable
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_templates'));
+		$query->from($db->quoteName($this->_tbl));
 
 		if (strtolower($mode) === 'html')
 		{
@@ -806,12 +805,12 @@ class BwPostmanTableTemplates extends JTable
 	 */
 	public function getTemplateTitle($id)
 	{
-		$db    = Factory::getDbo();
+		$db    = $this->_db;
 
 		// get template title
 		$q = $db->getQuery(true)
 			->select($db->quoteName('title'))
-			->from($db->quoteName('#__bwpostman_templates'))
+			->from($db->quoteName($this->_tbl))
 			->where($db->quoteName('id') . ' = ' .$id);
 		$db->setQuery($q);
 
@@ -843,11 +842,11 @@ class BwPostmanTableTemplates extends JTable
 	 */
 	public function setTemplateTitle($id, $title)
 	{
-		$db    = Factory::getDbo();
+		$db    = $this->_db;
 
 		// get template title
 		$q = $db->getQuery(true)
-			->update($db->quoteName('#__bwpostman_templates'))
+			->update($db->quoteName($this->_tbl))
 			->set($db->quoteName('title') . ' = ' . $db->quote($title))
 			->where($db->quoteName('id') . ' = ' .$id);
 		$db->setQuery($q);
@@ -862,6 +861,165 @@ class BwPostmanTableTemplates extends JTable
 
 			return false;
 		}
+	}
+
+	/**
+	 * Method to get the template settings which are used to compose a newsletter
+	 *
+	 * @access	public
+	 *
+	 * @param   int    $template_id     template id
+	 *
+	 * @return	object
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.4.0 (here, since 2.3.0 at ContentRenderer, since 1.1.0 at newsletter model)
+	 */
+	public function getTemplate($template_id)
+	{
+		$tpl    = new stdClass();
+		$db   = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->select($db->quoteName('tpl_html'));
+		$query->select($db->quoteName('tpl_css'));
+		$query->select($db->quoteName('tpl_article'));
+		$query->select($db->quoteName('tpl_divider'));
+		$query->select($db->quoteName('tpl_id'));
+		$query->select($db->quoteName('basics'));
+		$query->select($db->quoteName('article'));
+		$query->select($db->quoteName('intro'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' = ' . (int) $template_id);
+
+		$db->setQuery($query);
+		try
+		{
+			$tpl = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+		return $tpl;
+	}
+
+	/**
+	 * Method to get the ID of the standard template for HTML or text mode
+	 *
+	 * @param   string  $mode       HTML or text
+	 *
+	 * @return	string	            ID of standard template
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.4.0 (here, since 1.2.0 at model newsletter)
+	 */
+	public function getStandardTpl($mode	= 'html')
+	{
+		$tpl   = new stdClass();
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		// Id of the standard template
+		switch ($mode)
+		{
+			case 'html':
+			default:
+				$query->select($db->quoteName('id'));
+				$query->from($db->quoteName($this->_tbl));
+				$query->where($db->quoteName('standard') . ' = ' . $db->quote('1'));
+				$query->where($db->quoteName('tpl_id') . ' < ' . $db->quote('998'));
+				break;
+
+			case 'text':
+				$query->select($db->quoteName('id') . ' AS ' . $db->quoteName('value'));
+				$query->from($db->quoteName($this->_tbl));
+				$query->where($db->quoteName('standard') . ' = ' . $db->quote('1'));
+				$query->where($db->quoteName('tpl_id') . ' > ' . $db->quote('997'));
+				break;
+		}
+
+		$db->setQuery($query);
+
+		try
+		{
+			$tpl = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $tpl;
+	}
+
+	/**
+	 * Method to set a template as default.
+	 *
+	 * @param   integer  $id  The primary key ID for the style.
+	 *
+	 * @return  boolean  True if successful.
+	 *
+	 * @throws	Exception
+	 *
+	 * @since 1.1.0
+	 */
+	public function setDefaultTpl($id = 0)
+	{
+		if (!$this->load((int) $id))
+		{
+			throw new Exception(Text::_('COM_BWPOSTMAN_ERROR_TEMPLATE_NOT_FOUND'));
+		}
+
+		// Reset the standard fields for the templates.
+		$db   = $this->_db;
+		$query = $db->getQuery(true);
+		$query->update($db->quoteName($this->_tbl));
+		$query->set($db->quoteName('standard') . " = " . $db->Quote(0));
+		$query->where($db->quoteName('standard') . ' = ' . $db->Quote(1));
+
+		if ($this->tpl_id < 988)
+		{
+			$query->where($db->quoteName('tpl_id') . ' < ' . $db->Quote(988));
+		}
+		else
+		{
+			$query->where($db->quoteName('tpl_id') . ' > ' . $db->Quote(987));
+		}
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		// Set the new standard template.
+		$query = $db->getQuery(true);
+		$query->update($db->quoteName($this->_tbl));
+		$query->set($db->quoteName('standard') . " = " . $db->Quote(1));
+		$query->set($db->quoteName('published') . " = " . $db->Quote(1));
+		$query->where($db->quoteName('id') . ' = ' . $db->Quote((int)$id));
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return true;
 	}
 
 	/**

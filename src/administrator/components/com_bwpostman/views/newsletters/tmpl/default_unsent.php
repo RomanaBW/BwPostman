@@ -193,7 +193,7 @@ $currentTab = "default_unsent";
 									<td><?php echo $this->escape($item->description); ?></td>
 									<td>
 										<?php
-										if ($item->modified_time != '0000-00-00 00:00:00')
+										if ($item->modified_time !== Factory::getDbo()->getNullDate())
 										{
 											echo HtmlHelper::date($item->modified_time, Text::_('BW_DATE_FORMAT_LC5'));
 										} ?>

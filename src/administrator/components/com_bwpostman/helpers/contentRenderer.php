@@ -35,6 +35,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\Table\Table;
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlContent.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
@@ -76,13 +77,13 @@ class contentRenderer
 		$param = ComponentHelper::getParams('com_bwpostman');
 		$content = array();
 
-		$tpl      = self::getTemplate($template_id);
-		$text_tpl = self::getTemplate($text_template_id);
+		$tpl      = $this->getTemplate($template_id);
+		$text_tpl = $this->getTemplate($text_template_id);
 
 		// add template assets only for user-made templates
 		if ($tpl->tpl_id == '0')
 		{
-			$tpl_assets = self::getTemplateAssets($template_id);
+			$tpl_assets = $this->getTemplateAssets($template_id);
 			if (!empty($tpl_assets))
 			{
 				foreach ($tpl_assets as $key => $value)
@@ -690,35 +691,14 @@ class contentRenderer
 	{
 		$tpl    = new stdClass();
 		$params = ComponentHelper::getParams('com_bwpostman');
+		$tplTable = Table::getInstance('Templates', 'BwPostmanTable');
 
 		if (is_null($template_id))
 		{
-			$template_id = '1';
+			$template_id = 1;
 		}
 
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
-		$query->select($_db->quoteName('id'));
-		$query->select($_db->quoteName('tpl_html'));
-		$query->select($_db->quoteName('tpl_css'));
-		$query->select($_db->quoteName('tpl_article'));
-		$query->select($_db->quoteName('tpl_divider'));
-		$query->select($_db->quoteName('tpl_id'));
-		$query->select($_db->quoteName('basics'));
-		$query->select($_db->quoteName('article'));
-		$query->select($_db->quoteName('intro'));
-		$query->from($_db->quoteName('#__bwpostman_templates'));
-		$query->where($_db->quoteName('id') . ' = ' . $template_id);
-
-		$_db->setQuery($query);
-		try
-		{
-			$tpl = $_db->loadObject();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$tpl = $tplTable->getTemplate($template_id);
 
 		if (is_string($tpl->basics))
 		{
@@ -767,22 +747,9 @@ class contentRenderer
 	 */
 	public function getTemplateAssets($template_id)
 	{
-		$tpl_assets = array();
+		$tplTagsTable = Table::getInstance('Templates_Tags', 'BwPostmanTable');
 
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
-		$query->select('*');
-		$query->from($_db->quoteName('#__bwpostman_templates_tags'));
-		$query->where($_db->quoteName('templates_table_id') . ' = ' . (int) $template_id);
-		$_db->setQuery($query);
-		try
-		{
-			$tpl_assets = $_db->loadAssoc();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$tpl_assets = $tplTagsTable->getTemplateAssets($template_id);
 
 		return $tpl_assets;
 	}
@@ -872,12 +839,12 @@ class contentRenderer
 	public function addHtmlTags(&$text, &$id)
 	{
 		$params = ComponentHelper::getParams('com_bwpostman');
-		$tpl    = self::getTemplate($id);
+		$tpl    = $this->getTemplate($id);
 
 		// add template assets only for user-made templates
 		if ($tpl->tpl_id == '0')
 		{
-			$tpl_assets	= self::getTemplateAssets($id);
+			$tpl_assets	= $this->getTemplateAssets($id);
 			if (!empty($tpl_assets))
 			{
 				foreach ($tpl_assets as $key => $value)
@@ -968,7 +935,7 @@ class contentRenderer
 		$app->triggerEvent('onBwPostmanBeforeObligatoryFooterHtml', array(&$text));
 
 		// get template assets if exists
-		$tpl_assets	= self::getTemplateAssets($templateId);
+		$tpl_assets	= $this->getTemplateAssets($templateId);
 
 		if (strpos($text, '[%impressum%]') !== false)
 		{
@@ -1254,7 +1221,7 @@ class contentRenderer
 	 */
 	public function addTplTags(&$text, &$id)
 	{
-		$tpl = self::getTemplate($id);
+		$tpl = $this->getTemplate($id);
 
 		$newtext	= $tpl->tpl_html . "\n";
 
@@ -1280,7 +1247,7 @@ class contentRenderer
 	 */
 	public function addTextTpl(&$text, &$id)
 	{
-		$tpl	= self::getTemplate($id);
+		$tpl	= $this->getTemplate($id);
 
 		$text	= str_replace('[%content%]', "\n" . $text, $tpl->tpl_html);
 

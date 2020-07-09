@@ -140,4 +140,44 @@ abstract class BwPostmanMailinglistHelper {
 
 		return $mailinglists;
 	}
+
+	/**
+	 * Method to get the data of a single Mailinglist for raw view
+	 *
+	 * @param 	int $ml_id      Mailinglist ID
+	 *
+	 * @return 	object Mailinglist
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0 here
+	 */
+	public static function getSingleMailinglist($ml_id = null)
+	{
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('a') . '.*');
+		$query->from($db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $db->quoteName('a'));
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('id') . ' = ' . (int) $ml_id);
+		// Join over the asset groups.
+		$query->select($db->quoteName('ag') . '.' . $db->quoteName('title') . ' AS ' . $db->quoteName('access_level'));
+		$query->join(
+			'LEFT',
+			$db->quoteName('#__viewlevels') . ' AS ' . $db->quoteName('ag') . ' ON ' .
+			$db->quoteName('ag') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('access')
+		);
+
+		$db->setQuery($query);
+		try
+		{
+			$mailinglist = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $mailinglist;
+	}
 }

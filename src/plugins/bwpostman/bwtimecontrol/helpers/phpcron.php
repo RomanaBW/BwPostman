@@ -804,7 +804,7 @@ class BwPostmanPhpCron {
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__bwpostman_newsletters'));
 		$query->where($db->quoteName('id') . ' IN (' . implode (',', $scheduledNls) . ')');
-		$query->where($db->quoteName('mailing_date') . ' = ' . $db->quote('0000-00-00 00:00:00'));
+		$query->where($db->quoteName('mailing_date') . ' = ' . $db->quote($db->getNullDate()));
 
 		$db->setQuery($query);
 

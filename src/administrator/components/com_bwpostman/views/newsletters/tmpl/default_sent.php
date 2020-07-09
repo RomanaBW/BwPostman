@@ -51,6 +51,7 @@ $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
+$nullDate = Factory::getDbo()->getNullDate();
 Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 
 $currentTab = "default_sent";
@@ -225,12 +226,12 @@ $currentTab = "default_sent";
 								</td>
 								<td align="center">
 									<p>
-										<?php echo ($item->publish_up != '0000-00-00 00:00:00')
+										<?php echo ($item->publish_up !== $nullDate)
 											? HtmlHelper::date($item->publish_up, Text::_('BW_DATE_FORMAT_LC5'))
 											: '-'; ?><br />
 									</p>
 									<p>
-										<?php echo ($item->publish_down != '0000-00-00 00:00:00')
+										<?php echo ($item->publish_down !== $nullDate)
 											? HtmlHelper::date($item->publish_down, Text::_('BW_DATE_FORMAT_LC5'))
 											: '-'; ?>
 									</p>

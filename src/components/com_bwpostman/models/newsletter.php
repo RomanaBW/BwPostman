@@ -53,25 +53,9 @@ class BwPostmanModelNewsletter extends JModelItem
 	{
 		$id		    = (int) Factory::getApplication()->input->get('id', 0);
 		$newsletter = null;
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
 		$user	= Factory::getUser();
 
-		// build query
-		$query->select($_db->quoteName('body'));
-		$query->from($_db->quoteName('#__bwpostman_sendmailcontent') . ' AS ' . $_db->quoteName('a'));
-		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('nl_id') . ' = ' . $id);
-		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('mode') . ' = ' . (int) 1);
-
-		try
-		{
-			$_db->setQuery($query);
-			$newsletter = $_db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$newsletter = $this->getTable('Sendmailcontent', 'BwPostmanTable')->getContent($id);
 
 		// Get the dispatcher and include bwpostman plugins
 		PluginHelper::importPlugin('bwpostman');

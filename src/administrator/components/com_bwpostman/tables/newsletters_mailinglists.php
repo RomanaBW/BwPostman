@@ -27,7 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -60,7 +59,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	DatabaseDriver  $db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -269,6 +268,40 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 		}
 
 		return $mailinglists;
+	}
+
+	/**
+	 * Method to remove the mailinglist from the cross table #__bwpostman_newsletters_mailinglists
+	 *
+	 * @param $id
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0 (here, before since 2.0.0 at mailinglist model)
+	 */
+	public function deleteMailinglistNewsletters($id)
+	{
+		$db            = $this->_db;
+		$query          = $db->getQuery(true);
+
+		$query->delete($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
+		}
+
+		return true;
 	}
 }
 

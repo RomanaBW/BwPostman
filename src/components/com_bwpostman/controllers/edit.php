@@ -107,11 +107,11 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$user 	        = Factory::getUser();
 		$user_is_guest  = $user->get('guest');
 		$userid 		= (int) $user->get('id');
+		$subsTable      = $this->getModel('subscriber')->getTable('Subscribers');
 
 		// if user is logged in fetch subscriber id
 		if ($userid)
 		{
-			$subsTable    = $this->getModel('subscriber')->getTable('Subscribers');
 			$subscriberid = (int) $subsTable->getSubscriberIdByUserId($userid); // = 0 if the user has no newsletter subscription
 		}
 
@@ -148,8 +148,6 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		}
 
 		// get subscriber data
-		$subsTable    = $this->getModel('subscriber')->getTable('Subscribers');
-
 		if ($subscriberid)
 		{
 			// Guest with known subscriber id (stored in the session) or logged in user

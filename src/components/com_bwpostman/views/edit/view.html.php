@@ -123,7 +123,7 @@ class BwPostmanViewEdit extends JViewLegacy
 		$mlTable = $model->getTable('Mailinglists');
 		$subsTable = $model->getTable('Subscribers');
 		$userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
-		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists($subscriber->id, $userId);
+		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists($userId);
 
 		// Get document object, set document title and add css
 		$templateName	= $app->getTemplate();

@@ -27,10 +27,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Access\Access;
 
 /**
  * #__bwpostman_subscribers_mailinglists table handler
@@ -61,7 +59,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	DatabaseDriver  $db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -128,7 +126,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('subscriber_id'));
-		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('mailinglist_id') . ' = ' . $db->Quote($id));
 
 		$db->setQuery($query);
@@ -154,7 +152,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	{
 		$db   = $this->_db;
 		$query = $db->getQuery(true);
-		$query->delete($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->delete($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('subscriber_id') . ' =  ' . (int) $subscriber_id);
 		if (!is_null($mailinglists))
 		{
@@ -202,7 +200,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 
 		foreach ($mailinglist_ids AS $list_id)
 		{
-			$query->insert($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+			$query->insert($db->quoteName($this->_tbl));
 			$query->values(
 				(int) $subscriber_id . ',' .
 				(int) $list_id
@@ -236,11 +234,11 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 */
 	public function hasSubscriptionForMailinglist($subscriberId, $mailinglistId)
 	{
-		$db    = Factory::getDbo();
+		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('subscriber_id'));
-		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $subscriberId);
 		$query->where($db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglistId);
 		$db->setQuery($query);
@@ -263,6 +261,76 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 		{
 			return true;
 		}
+	}
+
+	/**
+	 * Method to remove the mailinglist from the cross table #__bwpostman_subscribers_mailinglists
+	 *
+	 * @param $id
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0 (here, before since 2.0.0 at mailinglist model)
+	 */
+	public function deleteMailinglistSubscribers($id)
+	{
+		$db            = $this->_db;
+		$query          = $db->getQuery(true);
+
+		$query->delete($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to get the mailinglist ids which a subscriber is subscribed to
+	 *
+	 * @param $sub_id
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	public function getMailinglistIdsOfSubscriber($sub_id)
+	{
+		$mailinglist_ids = array();
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('mailinglist_id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $sub_id);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$mailinglist_ids = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $mailinglist_ids;
 	}
 
 	/**

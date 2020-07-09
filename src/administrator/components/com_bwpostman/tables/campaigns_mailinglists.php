@@ -24,7 +24,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -135,9 +134,9 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	}
 
 	/**
-	 * Method to get associated mailing lists by campaign
+	 * Method to get the mailinglist ids for a single campaign
 	 *
-	 * @param  integer   $id   newsletter id
+	 * @param  integer   $cam_id   campaign id
 	 *
 	 * @return array
 	 *
@@ -145,15 +144,15 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 *
 	 * @since 2.4.0 (here, before since 2.3.0 at BE newsletter model)
 	 */
-	public function getAssociatedMailinglistsByCampaign($id)
+	public function getAssociatedMailinglistsByCampaign($cam_id)
 	{
-		$db	= $this->_db;
 		$mailinglists = array();
+		$db	= $this->_db;
 
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('mailinglist_id'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $id);
+		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
 
 		$db->setQuery($query);
 
@@ -170,36 +169,151 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	}
 
 	/**
-	 * Method to get the mailinglist ids for a single campaign
+	 * Method to get all campaign ids by specified mailinglists and campaigns
 	 *
-	 * @param int $cam_id Campaign ID
+	 * @param array    $mls    mailinglist ids
+	 * @param array    $cams   campaign ids
 	 *
-	 * @return array
+	 * @return 	array
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since	2.4.0
 	 */
-	public function getCampaignMailinglists($cam_id = null)
+	public function getAllCampaignIdsByMlCam($mls, $cams)
 	{
-		$mailinglists = array();
-		$db	= $this->_db;
-		$query = $db->getQuery(true);
+		$db         = $this->_db;
+		$query      = $db->getQuery(true);
 
-		$query->select($db->quoteName('mailinglist_id'));
+		$query->select('DISTINCT (' . $db->quoteName('campaign_id') . ')');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
-		$db->setQuery($query);
+		$query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $mls) . ')');
+		$query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
+
+		$this->_db->setQuery($query);
+
 		try
 		{
-			$mailinglists = $db->loadColumn();
+			$cams = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return $mailinglists;
+		return $cams;
+	}
+
+	/**
+	 * Method to remove the campaign from the cross table #__bwpostman_campaigns_mailinglists
+	 *
+	 * @param $id
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.4.0 (here, before since 2.0.0 at campaign model)
+	 */
+	public function deleteCampaignsMailinglistsEntry($id)
+	{
+		$db   = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->delete($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote((int)$id));
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to remove the mailinglist from the cross table #__bwpostman_campaigns_mailinglists
+	 *
+	 * @param $id
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0 (here, before since 2.0.0 at mailinglist model)
+	 */
+	public function deleteMailinglistsCampaignsEntry($id)
+	{
+		$db            = $this->_db;
+		$query          = $db->getQuery(true);
+
+		$query->delete($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to add the campaign to the cross table #__bwpostman_campaigns_mailinglists
+	 *
+	 * @param array $data
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	public function addCampaignsMailinglistsEntry(array $data)
+	{
+		foreach ($data['mailinglists'] as $mailinglists_value)
+		{
+			$db    = $this->_db;
+			$query = $db->getQuery(true);
+
+			$query->insert($db->quoteName($this->_tbl));
+			$query->columns(
+				array(
+					$db->quoteName('campaign_id'),
+					$db->quoteName('mailinglist_id')
+				)
+			);
+			$query->values(
+				(int) $data['id'] . ',' .
+				(int) $mailinglists_value
+			);
+			$db->setQuery($query);
+			try
+			{
+				$db->execute();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**

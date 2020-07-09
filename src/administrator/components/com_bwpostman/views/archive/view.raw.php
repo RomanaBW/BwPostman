@@ -34,6 +34,9 @@ use Joomla\CMS\Table\Table;
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/campaignhelper.php');
+
 /**
  * BwPostman Archive RAW View
  *
@@ -100,13 +103,12 @@ class BwPostmanViewArchive extends JViewLegacy
 		{ // Which tab are we in?
 			case "campaign_modal":
 				$cam_id		= $jinput->get('cam_id');
-				$camTable = Table::getInstance('Campaigns', $prefix = 'BwPostmanTable', $config = array());
-				$this->cam	= $camTable->getSingleCampaign((int) $cam_id);
+				$this->cam	= BwPostmanCampaignHelper::getSingleCampaign((int) $cam_id);
 				break;
 			case "mailinglist_modal":
 				$ml_id		= $jinput->get('ml_id');
 				$mlTable = Table::getInstance('Mailinglists', $prefix = 'BwPostmanTable', $config = array());
-				$this->ml	= $mlTable->getSingleMailinglist((int) $ml_id);
+				$this->ml	= BwPostmanMailinglistHelper::getSingleMailinglist((int) $ml_id);
 				break;
 		}
 

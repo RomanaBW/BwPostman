@@ -45,6 +45,7 @@ $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
+$nullDate = Factory::getDbo()->getNullDate();
 //Set context and layout state for filters
 $this->context	= 'archive.newsletters';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsletters');
@@ -237,7 +238,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 														<td>
 															<?php
 															echo $item->subject;
-															if ($item->mailing_date != '0000-00-00 00:00:00')
+															if ($item->mailing_date !== $nullDate)
 															{ ?>&nbsp;&nbsp;
 																<span class="cam_preview">
 																	<span class="editlinktip hasTip"
@@ -269,7 +270,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 														<td align="center"><?php echo $item->description; ?></td>
 														<td align="center">
 															<?php
-															if ($item->mailing_date != '0000-00-00 00:00:00')
+															if ($item->mailing_date !== $nullDate)
 															{
 																echo HTMLHelper::date($item->mailing_date, Text::_('BW_DATE_FORMAT_LC5'));
 															}
@@ -296,12 +297,12 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 														</td>
 														<td align="center">
 															<p style="text-align: center;">
-																<?php echo ($item->publish_up != '0000-00-00 00:00:00')
+																<?php echo ($item->publish_up !== $nullDate)
 																	? HTMLHelper::date($item->publish_up, Text::_('BW_DATE_FORMAT_LC5'))
 																	: '-'; ?>
 																<br /></p>
 															<p style="text-align: center;">
-																<?php echo ($item->publish_down != '0000-00-00 00:00:00')
+																<?php echo ($item->publish_down !== $nullDate)
 																	? HTMLHelper::date($item->publish_down, Text::_('BW_DATE_FORMAT_LC5'))
 																	: '-'; ?>
 															</p>

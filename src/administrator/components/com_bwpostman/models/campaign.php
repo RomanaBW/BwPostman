@@ -38,6 +38,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/campaignhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
 jimport('joomla.application.component.helper');
@@ -221,7 +222,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 			//get associated mailinglists
 			$camMlTable = $this->getTable('Campaigns_Mailinglists');
-			$item->mailinglists = $camMlTable->getCampaignMailinglists((int)$item->id);
+			$item->mailinglists = $camMlTable->getAssociatedMailinglistsByCampaign((int)$item->id);
 
 			//extract associated usergroups
 			$item->usergroups	= BwPostmanMailinglistHelper::extractAssociatedUsergroups($item->mailinglists);
@@ -266,6 +267,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_bwpostman.campaign', 'Campaign', array('control' => 'jform', 'load_data' => $loadData));
+		$nullDate	= Factory::getDbo()->getNullDate();
 
 		if (empty($form))
 		{
@@ -274,7 +276,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		// Check to show created data
 		$c_date	= $form->getValue('created_date');
-		if ($c_date == '0000-00-00 00:00:00' || $c_date == null)
+		if ($c_date === $nullDate || $c_date == null)
 		{
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
 			$form->setFieldAttribute('created_by', 'type', 'hidden');
@@ -282,7 +284,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
-		if ($m_date == '0000-00-00 00:00:00' || $m_date == null)
+		if ($m_date === $nullDate || $m_date == null)
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
@@ -327,14 +329,13 @@ class BwPostmanModelCampaign extends JModelAdmin
 	public function getNewslettersOfCampaign()
 	{
 		$newsletters = new stdClass();
-		$nlTable     = $this->getTable('Newsletters');
 		$camId       = $this->getState('campaign.id');
 
-		$newsletters->sent = $nlTable->getSelectedNewslettersOfCampaign($camId, true, false);
+		$newsletters->sent = BwPostmanCampaignHelper::getSelectedNewslettersOfCampaign($camId, true, false);
 
-		$newsletters->unsent = $nlTable->getSelectedNewslettersOfCampaign($camId, false, false);
+		$newsletters->unsent = BwPostmanCampaignHelper::getSelectedNewslettersOfCampaign($camId, false, false);
 
-		$newsletters->all = $nlTable->getSelectedNewslettersOfCampaign($camId, false, true);
+		$newsletters->all = BwPostmanCampaignHelper::getSelectedNewslettersOfCampaign($camId, false, true);
 
 		return $newsletters;
 	}
@@ -359,6 +360,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 		$uid	= Factory::getUser()->get('id');
 		$db	= $this->_db;
 		$query	= $db->getQuery(true);
+		$nullDate = $db->getNullDate();
 
 		ArrayHelper::toInteger($cid);
 
@@ -386,7 +388,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 				}
 			}
 
-			$time	= '0000-00-00 00:00:00';
+			$time	= $nullDate;
 			$uid	= 0;
 		}
 
@@ -395,6 +397,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 			$query->update($db->quoteName('#__bwpostman_campaigns'));
 			$query->set($db->quoteName('archive_flag') . ' = ' . (int) $archive);
 			$query->set($db->quoteName('archive_date') . ' = ' . $db->quote($time, false));
+			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 
 			$db->setQuery($query);
@@ -462,7 +465,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 				// Delete all entries of the newsletter from newsletters_mailinglists table
 				if ($data['id'])
 				{
-					$this->deleteCampaignsMailinglistsEntry($data['id']);
+					$this->getTable('Campaigns_Mailinglists')->deleteCampaignsMailinglistsEntry($data['id']);
 				}
 				else
 				{
@@ -479,7 +482,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 				}
 
 				// Store the selected BwPostman mailinglists into campaigns_mailinglists-table
-				$this->addCampaignsMailinglistsEntry($data);
+				$this->getTable('Campaigns_Mailinglists')->addCampaignsMailinglistsEntry($data);
 
 				PluginHelper::importPlugin('bwpostman');
 
@@ -527,18 +530,18 @@ class BwPostmanModelCampaign extends JModelAdmin
 			}
 
 			// Delete campaigns from campaigns table
-			$cams_table = Table::getInstance('campaigns', 'BwPostmanTable');
+			$camsTable = $this->getTable('Campaigns');
 
 			foreach ($pks as $id)
 			{
-				if (!$cams_table->delete($id))
+				if (!$camsTable->delete($id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NO_CAM_DELETED', $id), 'error');
 					return false;
 				}
 
 				// Remove campaigns mailinglists entries
-				if (!$this->deleteCampaignsMailinglistsEntry($id))
+				if (!$this->getTable('Campaigns_Mailinglists')->deleteCampaignsMailinglistsEntry($id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NO_ML_DELETED', $id), 'error');
 					return false;
@@ -547,7 +550,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 				// Remove_nl = 1 if the user want to delete the assigned newsletters
 				if ($remove_nl)
 				{
-					if (!$this->deleteCampaignsNewsletters($id))
+					if (!$this->getTable('Newsletters')->deleteCampaignsNewsletters($id))
 					{
 						$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_NLS_DELETED', $id), 'error');
 						return false;
@@ -555,118 +558,6 @@ class BwPostmanModelCampaign extends JModelAdmin
 				}
 			}
 		}
-		return true;
-	}
-
-	/**
-	 * Method to remove the campaign from the cross table #__bwpostman_campaigns_mailinglists
-	 *
-	 * @param $id
-	 *
-	 * @return bool
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function deleteCampaignsMailinglistsEntry($id)
-	{
-		$db   = $this->getDbo();
-		$query = $db->getQuery(true);
-
-		$query->delete($db->quoteName('#__bwpostman_campaigns_mailinglists'));
-		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote($id));
-
-		$db->setQuery($query);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to remove the campaign newsletters from the newsletters table
-	 *
-	 * @param $id
-	 *
-	 * @return bool
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function deleteCampaignsNewsletters($id)
-	{
-		$db            = $this->getDbo();
-		$query          = $db->getQuery(true);
-
-		$query->delete($db->quoteName('#__bwpostman_newsletters'));
-		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote($id));
-
-		$db->setQuery($query);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			return false;
-		}
-
-		return true;
-	}
-
-/**
- * Method to add the campaign to the cross table #__bwpostman_campaigns_mailinglists
- *
- * @param array $data
- *
- * @return boolean
- *
- * @throws Exception
- *
- * @since 2.4.0
- */
-	private function addCampaignsMailinglistsEntry(array $data)
-	{
-		foreach ($data['mailinglists'] as $mailinglists_value)
-		{
-			$db    = $this->_db;
-			$query = $db->getQuery(true);
-
-			$query->insert($db->quoteName('#__bwpostman_campaigns_mailinglists'));
-			$query->columns(
-				array(
-					$db->quoteName('campaign_id'),
-					$db->quoteName('mailinglist_id')
-				)
-			);
-			$query->values(
-				(int) $data['id'] . ',' .
-				(int) $mailinglists_value
-			);
-			$db->setQuery($query);
-			try
-			{
-				$db->execute();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-				return false;
-			}
-		}
-
 		return true;
 	}
 }

@@ -240,7 +240,8 @@ class BwPostmanModelMailinglist extends JModelAdmin
 
 		// Check to show created data
 		$c_date	= $form->getValue('created_date');
-		if ($c_date == '0000-00-00 00:00:00')
+		$nullDate = Factory::getDbo()->getNullDate();
+		if ($c_date === $nullDate)
 		{
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
 			$form->setFieldAttribute('created_by', 'type', 'hidden');
@@ -248,7 +249,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
-		if ($m_date == '0000-00-00 00:00:00')
+		if ($m_date === $nullDate)
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
@@ -324,7 +325,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 				}
 			}
 
-			$time	= '0000-00-00 00:00:00';
+			$time	= Factory::getDbo()->getNullDate();
 			$uid	= 0;
 		}
 
@@ -381,7 +382,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 				}
 			}
 
-			$lists_table	= Table::getInstance('mailinglists', 'BwPostmanTable');
+			$lists_table	= $this->getTable('Mailinglists');
 
 			// Delete all entries from the mailinglists-table
 			foreach ($pks as $id)
@@ -392,20 +393,20 @@ class BwPostmanModelMailinglist extends JModelAdmin
 					return false;
 				}
 
-				if (!$this->deleteMailinglistsCampaignsEntry($id))
+				if (!$this->getTable('Campaigns_Mailinglists')->deleteMailinglistsCampaignsEntry($id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_ML_CAM_DELETED', $id), 'error');
 					return false;
 				}
 
-				if (!$this->deleteMailinglistSubscribers($id))
+				if (!$this->getTable('Subscribers_Mailinglists')->deleteMailinglistSubscribers($id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_SUBS_DELETED', $id), 'error');
 					return false;
 				}
 
 				// Delete all entries from the newsletters_mailinglists-table
-				if (!$this->deleteMailinglistNewsletters($id))
+				if (!$this->getTable('Newsletters_Mailinglists')->deleteMailinglistNewsletters($id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_NLS_DELETED', $id), 'error');
 					return false;
@@ -434,107 +435,5 @@ class BwPostmanModelMailinglist extends JModelAdmin
 		}
 
 		return false;
-	}
-
-	/**
-	 * Method to remove the mailinglist from the cross table #__bwpostman_campaigns_mailinglists
-	 *
-	 * @param $id
-	 *
-	 * @return bool
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function deleteMailinglistsCampaignsEntry($id)
-	{
-		$db            = $this->getDbo();
-		$query          = $db->getQuery(true);
-
-		$query->delete($db->quoteName('#__bwpostman_campaigns_mailinglists'));
-		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
-
-		$db->setQuery($query);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to remove the mailinglist from the cross table #__bwpostman_subscribers_mailinglists
-	 *
-	 * @param $id
-	 *
-	 * @return bool
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function deleteMailinglistSubscribers($id)
-	{
-		$db            = $this->getDbo();
-		$query          = $db->getQuery(true);
-
-		$query->delete($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
-
-		$db->setQuery($query);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to remove the mailinglist from the cross table #__bwpostman_newsletters_mailinglists
-	 *
-	 * @param $id
-	 *
-	 * @return bool
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function deleteMailinglistNewsletters($id)
-	{
-		$db            = $this->getDbo();
-		$query          = $db->getQuery(true);
-
-		$query->delete($db->quoteName('#__bwpostman_newsletters_mailinglists'));
-		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
-
-		$db->setQuery($query);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			return false;
-		}
-
-		return true;
 	}
 }

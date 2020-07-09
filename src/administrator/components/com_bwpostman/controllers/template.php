@@ -481,7 +481,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 			// Pop off the first element.
 			$id		= array_shift($pks);
 			$model	= $this->getModel();
-			$model->setHome($id);
+			$model->setDefaultTemplate($id);
 			$this->setMessage(Text::_('COM_BWPOSTMAN_TPL_SUCCESS_HOME_SET'));
 		}
 		catch (RuntimeException $e)

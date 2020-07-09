@@ -349,6 +349,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$this->freeOrderingPosition();
 
 		$_db   = Factory::getDbo();
+		$nullDate = $_db->getNullDate();
 
 		$userfield_values = array(
 			$_db->quote(0) . ',' .
@@ -378,9 +379,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(1) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote('0') . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote('0')
 		);
 
@@ -395,9 +396,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(++$this->userfield_value_ordering) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0)
 		);
 
@@ -421,6 +422,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$this->freeOrderingPosition();
 
 		$_db   = Factory::getDbo();
+		$nullDate = $_db->getNullDate();
 
 		$userfield_values = array(
 			$_db->quote(0) . ',' .
@@ -450,9 +452,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(1) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote('0') . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote('0')
 		);
 
@@ -468,9 +470,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(++$this->userfield_value_ordering) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0)
 		);
 
@@ -486,9 +488,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(++$this->userfield_value_ordering) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0)
 		);
 
@@ -512,6 +514,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$this->freeOrderingPosition();
 
 		$_db   = Factory::getDbo();
+		$nullDate = $_db->getNullDate();
 
 		$userfield_values = array(
 			$_db->quote(0) . ',' .
@@ -541,9 +544,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(1) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote('0') . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote('0')
 		);
 
@@ -559,9 +562,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(++$this->userfield_value_ordering) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0)
 		);
 
@@ -577,9 +580,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(++$this->userfield_value_ordering) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0)
 		);
 
@@ -603,6 +606,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$this->freeOrderingPosition();
 
 		$_db   = Factory::getDbo();
+		$nullDate = $_db->getNullDate();
 
 		$userfield_values = array(
 			$_db->quote(0) . ',' .
@@ -632,9 +636,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(1) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote('0') . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote('0')
 		);
 
@@ -650,9 +654,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(++$this->userfield_value_ordering) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0)
 		);
 
@@ -668,9 +672,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(++$this->userfield_value_ordering) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0)
 		);
 
@@ -686,9 +690,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(++$this->userfield_value_ordering) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0)
 		);
 
@@ -712,6 +716,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$this->freeOrderingPosition();
 
 		$_db   = Factory::getDbo();
+		$nullDate = $_db->getNullDate();
 
 		$userfield_values = array(
 			$_db->quote(0) . ',' .
@@ -741,9 +746,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(1) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote('0') . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote('0')
 		);
 
@@ -759,9 +764,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 			$_db->quote(++$this->userfield_value_ordering) . ',' .
 			$_db->quote($this->now_date) . ',' .
 			$_db->quote($this->user_id) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0) . ',' .
-			$_db->quote('0000-00-00 00:00:00') . ',' .
+			$_db->quote($nullDate) . ',' .
 			$_db->quote(0)
 		);
 

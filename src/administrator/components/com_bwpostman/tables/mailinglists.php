@@ -24,7 +24,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -341,7 +340,7 @@ class BwPostmanTableMailinglists extends JTable
 
 		try
 		{
-			$xid = intval($this->_db->loadResult());
+			$xid = intval($db->loadResult());
 		}
 		catch (RuntimeException $e)
 		{
@@ -470,49 +469,8 @@ class BwPostmanTableMailinglists extends JTable
 	}
 
 	/**
-	 * Method to get the data of a single Mailinglist for raw view
-	 *
-	 * @param 	int $ml_id      Mailinglist ID
-	 *
-	 * @return 	object Mailinglist
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.4.0 here
-	 */
-	public function getSingleMailinglist($ml_id = null)
-	{
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select($db->quoteName('a') . '.*');
-		$query->from($db->quoteName($this->_tbl) . ' AS ' . $db->quoteName('a'));
-		$query->where($db->quoteName('a') . '.' . $db->quoteName('id') . ' = ' . (int) $ml_id);
-		// Join over the asset groups.
-		$query->select($db->quoteName('ag') . '.' . $db->quoteName('title') . ' AS ' . $db->quoteName('access_level'));
-		$query->join(
-			'LEFT',
-			$db->quoteName('#__viewlevels') . ' AS ' . $db->quoteName('ag') . ' ON ' .
-			$db->quoteName('ag') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('access')
-		);
-
-		$db->setQuery($query);
-		try
-		{
-			$mailinglist = $db->loadObject();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $mailinglist;
-	}
-
-	/**
 	 * Method to get all mailinglists which the user is authorized to see
 	 *
-	 * @param   integer     $id
 	 * @param   integer     $userId the user ID f this subscriber
 	 *
 	 * @return 	object Mailinglists
@@ -521,12 +479,12 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
 	 */
-	public function getAuthorizedMailinglists($id, $userId)
+	public function getAuthorizedMailinglists($userId)
 	{
-		$app		    = Factory::getApplication();
-		$mailinglists   = null;
-		$db		    = $this->_db;
-		$query		    = $db->getQuery(true);
+		$app          = Factory::getApplication();
+		$mailinglists = null;
+		$db           = $this->_db;
+		$query        = $db->getQuery(true);
 
 		// get authorized viewlevels
 		$accesslevels	= Access::getAuthorisedViewLevels($userId);
@@ -598,6 +556,201 @@ class BwPostmanTableMailinglists extends JTable
 		}
 
 		return $mailinglists;
+	}
+
+	/**
+	 * Method to get the data of the mailinglists a user is subscribed to from their mailinglist ids
+	 *
+	 * @param array $mailinglist_ids
+	 *
+	 * @return array|mixed
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	public function getCompleteMailinglistsOfSubscriber($mailinglist_ids)
+	{
+		$lists = array();
+
+		if (!empty($mailinglist_ids))
+		{
+			$mailinglists = implode(',', $mailinglist_ids);
+		}
+		else
+		{
+			$mailinglists = 0;
+		}
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->select($db->quoteName('title'));
+		$query->select($db->quoteName('description'));
+		$query->select($db->quoteName('archive_flag'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' IN  (' . $mailinglists . ')');
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$lists = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $lists;
+	}
+
+	/**
+	 * Method to get id and title of all provided mailinglist ids
+	 *
+	 * @param array  $mls  ids of mailinglists to get the title for
+	 *
+	 * @return 	array mailinglists
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0
+	 */
+	public function getMailinglistsIdTitle($mls)
+	{
+		$mailinglists = array();
+		$db     = $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->select($db->quoteName('title'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' IN (' . implode(',', $mls) . ')');
+
+		$db->setQuery($query);
+
+		try
+		{
+			$mailinglists = $db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $mailinglists;
+	}
+
+	/**
+	 * Method to get id as value and title as text of all mailinglists
+	 *
+	 * @return 	array mailinglists
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
+	 */
+	public function getMailinglistsValueText()
+	{
+		$mailinglists = array();
+		$db     = $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('id') . ' AS value');
+		$query->select($db->quoteName('title') . ' AS text');
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->order('title ASC');
+		$db->setQuery($query);
+
+		try
+		{
+			$mailinglists = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $mailinglists;
+	}
+
+	/**
+	 * Method to get id and title of all mailinglists
+	 *
+	 * @access 	public
+	 *
+	 * @return 	array mailinglists
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
+	 */
+	public function getPublishedMailinglistsIds()
+	{
+		$mailinglists = array();
+		$db     = $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->select('id');
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('published') . ' = ' . 1);
+		$this->_db->setQuery($query);
+
+		try
+		{
+			$mailinglists	= $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $mailinglists;
+	}
+
+	/**
+	 * Method to get all published mailing lists which the user is authorized to see
+	 *
+	 * @param array $viewLevels the access levels to search for
+	 *
+	 * @return 	array	ID and title of allowed mailinglists
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0 (here, before since 1.0.1 at FE newsletters model)
+	 */
+	public function getAllowedMailinglists($viewLevels)
+	{
+		$mailinglists   = null;
+		$db		    = $this->_db;
+		$query		    = $db->getQuery(true);
+
+		$query->select('id');
+		$query->from($db->quoteName('#__bwpostman_mailinglists'));
+		$query->where($db->quoteName('access') . ' IN (' . implode(',', $viewLevels) . ')');
+		$query->where($db->quoteName('published') . ' = ' . (int) 1);
+
+		try
+		{
+			$db->setQuery($query);
+			$mailinglists = $db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		$allowed	= array();
+
+		foreach ($mailinglists as $item)
+		{
+			$allowed[]	= $item['id'];
+		}
+
+		return $allowed;
 	}
 
 	/**

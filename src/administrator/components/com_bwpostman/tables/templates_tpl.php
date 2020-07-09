@@ -27,8 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Database\DatabaseDriver;
-
 /**
  * #__bwpostman_templates table handler
  * Table for storing the templates data
@@ -114,7 +112,7 @@ class BwPostmanTableTemplates_Tpl extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	DatabaseDriver  $db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since 1.1.0
 	 */

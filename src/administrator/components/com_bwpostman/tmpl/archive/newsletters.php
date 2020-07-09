@@ -42,6 +42,7 @@ $user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+$nullDate   = Factory::getDbo()->getNullDate();
 
 //Set context and layout state for filters
 $this->context	= 'archive.newsletters';
@@ -234,7 +235,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 											<td>
 												<?php
 												echo $item->subject;
-												if ($item->mailing_date != '0000-00-00 00:00:00')
+												if ($item->mailing_date != Factory::getDbo()->getNullDate())
 												{ ?>&nbsp;&nbsp;
 													<div class="bw-btn">
 														<span class="iframe btn btn-info btn-sm hasTooltip mt-1"
@@ -255,7 +256,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 											<td class="d-none d-lg-table-cell text-center"><?php echo $item->description; ?></td>
 											<td class="d-none d-xl-table-cell text-center">
 												<?php
-												if ($item->mailing_date != '0000-00-00 00:00:00')
+												if ($item->mailing_date !== $nullDate)
 												{
 													echo HTMLHelper::date($item->mailing_date, Text::_('BW_DATE_FORMAT_LC5'));
 												}
@@ -282,12 +283,12 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 											</td>
 											<td class="d-none d-lg-table-cell text-center">
 												<p style="text-align: center;">
-													<?php echo ($item->publish_up != '0000-00-00 00:00:00')
+													<?php echo ($item->publish_up !== $nullDate)
 														? HTMLHelper::date($item->publish_up, Text::_('BW_DATE_FORMAT_LC5'))
 														: '-'; ?>
 													<br /></p>
 												<p style="text-align: center;">
-													<?php echo ($item->publish_down != '0000-00-00 00:00:00')
+													<?php echo ($item->publish_down !== $nullDate)
 														? HTMLHelper::date($item->publish_down, Text::_('BW_DATE_FORMAT_LC5'))
 														: '-'; ?>
 												</p>

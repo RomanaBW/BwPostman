@@ -436,12 +436,12 @@ class BwPostmanModelNewsletters extends JModelList
 	protected function getListQuery()
 	{
 		// define variables
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
+		$db		= $this->_db;
+		$query		= $db->getQuery(true);
 
 		// Define null and now dates, get params
-		$nullDate	= $_db->quote($_db->getNullDate());
-		$nowDate	= $_db->quote(Factory::getDate()->toSql());
+		$nullDate	= $db->quote($db->getNullDate());
+		$nowDate	= $db->quote(Factory::getDate()->toSql());
 		$params      = $this->getAppropriateParams();
 
 		// get accessible mailing lists
@@ -512,10 +512,10 @@ class BwPostmanModelNewsletters extends JModelList
 			)
 		);
 
-		$query->from($_db->quoteName('#__bwpostman_newsletters') . ' AS ' . $_db->quoteName('a'));
+		$query->from($db->quoteName('#__bwpostman_newsletters') . ' AS ' . $db->quoteName('a'));
 		// in front end only sent and published newsletters are shown!
-		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('published') . ' = ' . (int) 1);
-		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('mailing_date') . ' != ' . $_db->quote('0000-00-00 00:00:00'));
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('published') . ' = ' . (int) 1);
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('mailing_date') . ' != ' . $db->quote($db->getNullDate()));
 
 		// Filter by mailing lists, user groups and campaigns
 		$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
@@ -573,8 +573,8 @@ class BwPostmanModelNewsletters extends JModelList
 		$searchword	= $this->getState('filter.search');
 		if (is_object($params) && ($params->get('filter_field') != 'hide') && !empty($searchword))
 		{
-			$search	= '%' . $_db->escape($this->getState('filter.search'), true) . '%';
-			$query->where('subject LIKE ' . $_db->quote($search, false));
+			$search	= '%' . $db->escape($this->getState('filter.search'), true) . '%';
+			$query->where('subject LIKE ' . $db->quote($search, false));
 		}
 
 		// Filter on month
@@ -599,10 +599,10 @@ class BwPostmanModelNewsletters extends JModelList
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering', 'a.mailing_date');
 		$orderDirn	= $this->state->get('list.direction', 'DESC');
-		$query->order($_db->escape($orderCol . ' ' . $orderDirn));
-		$query->group($_db->quoteName('a.mailing_date'));
+		$query->order($db->escape($orderCol . ' ' . $orderDirn));
+		$query->group($db->quoteName('a.mailing_date'));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		return $query;
 	}
@@ -641,18 +641,18 @@ class BwPostmanModelNewsletters extends JModelList
 
 		if ($itemid === null)
 		{
-			$_db   = $this->_db;
-			$query = $_db->getQuery(true);
+			$db   = $this->_db;
+			$query = $db->getQuery(true);
 
-			$query->select($_db->quoteName('id'));
-			$query->from($_db->quoteName('#__menu'));
-			$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=newsletters'));
-			$query->where($_db->quoteName('client_id') . ' = ' . (int) 0);
-			$_db->setQuery((string) $query);
+			$query->select($db->quoteName('id'));
+			$query->from($db->quoteName('#__menu'));
+			$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=newsletters'));
+			$query->where($db->quoteName('client_id') . ' = ' . (int) 0);
+			$db->setQuery((string) $query);
 
 			try
 			{
-				$itemid = $_db->loadResult();
+				$itemid = $db->loadResult();
 			}
 			catch (RuntimeException $e)
 			{
@@ -675,34 +675,13 @@ class BwPostmanModelNewsletters extends JModelList
 	public function getAllowedMailinglists()
 	{
 		$user 		    = Factory::getUser();
-		$mailinglists   = null;
-		$_db		    = $this->_db;
-		$query		    = $_db->getQuery(true);
 
 		// get authorized viewlevels
-		$accesslevels	= Access::getAuthorisedViewLevels($user->id);
+		$viewLevels	= Access::getAuthorisedViewLevels($user->id);
 
-		$query->select('id');
-		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($_db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
-		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
+		$allowedMailinglists = $this->getTable('_Mailinglists')->getAllowedMailinglists($viewLevels);
 
-		try
-		{
-			$this->_db->setQuery($query);
-			$mailinglists = $_db->loadAssocList();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		$allowed	= array();
-		foreach ($mailinglists as $item) {
-			$allowed[]	= $item['id'];
-		}
-
-		return $allowed;
+		return $allowedMailinglists;
 	}
 
 	/**
@@ -718,48 +697,21 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	public function getAccessibleMailinglists($title = true)
 	{
-		$_db		    = $this->_db;
-		$query		    = $_db->getQuery(true);
-		$res_mls        = null;
-		$acc_levels     = null;
-		$mailinglists   = null;
-		$params      = $this->getAppropriateParams();
-
-		$check		= $params->get('access-check');
+		$params        = $this->getAppropriateParams();
+		$check         = $params->get('access-check');
+		$mlTable       = $this->getTable('Mailinglists');
 
 		// fetch only from mailing lists, which are selected, if so
-		$all_mls	= $params->get('ml_selected_all');
-		$sel_mls	= $params->get('ml_available');
+		$all_mls = $params->get('ml_selected_all');
+		$sel_mls = $params->get('ml_available');
+		$mls     = $sel_mls;
 
 		if ($all_mls)
 		{
-			$query->select('id');
-			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-
-			try
-			{
-				$this->_db->setQuery($query);
-				$res_mls	= $_db->loadAssocList();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			$mls		= array();
-			if (count($res_mls) > 0) {
-				foreach ($res_mls as $item) {
-					$mls[]	= $item['id'];
-				}
-			}
-		}
-		else
-		{
-			$mls	= $sel_mls;
+			$mls = $mlTable->getPublishedMailinglistsIds();
 		}
 
-		// if no mls is left, make array
+		// if no mailinglist is left, make array
 		if (!is_array($mls))
 		{
 			$mls[]	= 0;
@@ -768,66 +720,22 @@ class BwPostmanModelNewsletters extends JModelList
 		// Check permission, if desired
 		if ($all_mls || $check != 'no')
 		{
-			// get authorized viewlevels
-			$accesslevels	= Access::getAuthorisedViewLevels(Factory::getUser()->id);
-			if (is_array($accesslevels) && count($accesslevels) > 0)
-			{
-				foreach ($accesslevels as $key => $value) {
-					$acc_levels[]	= $key;
-				}
-			}
-			else
-			{
-				$acc_levels[]	= 0;
-			}
-
-			$query	= $_db->getQuery(true);
-
-			$query->select('id');
-			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->where($_db->quoteName('access') . ' IN (' . implode(',', $acc_levels) . ')');
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-
-			try
-			{
-				$this->_db->setQuery($query);
-				$res_mls	= $_db->loadAssocList();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			$acc_mls	= array(0);
-			foreach ($res_mls as $item)
-			{
-				$acc_mls[]	= $item['id'];
-			}
+			$acc_mls = $this->getMailinglistsByViewlevel();
 
 			$mls	= array_intersect($mls, $acc_mls);
 		}
 
+		// if no mailinglist is left, make array
+		if (!is_array($mls))
+		{
+			$mls[]	= 0;
+		}
+
+		$mailinglists	= $mls;
+
 		if ($title === true && count($mls))
 		{
-			$query	= $_db->getQuery(true);
-			$query->select('id');
-			$query->select('title');
-			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->where($_db->quoteName('id') . ' IN (' . implode(',', $mls) . ')');
-
-			try
-			{
-				$this->_db->setQuery($query);
-				$mailinglists	= $_db->loadAssocList();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-		}
-		else
-		{
-			$mailinglists	= $mls;
+			$mailinglists	= $mlTable->getMailinglistsIdTitle($mls);
 		}
 
 		return $mailinglists;
@@ -836,9 +744,9 @@ class BwPostmanModelNewsletters extends JModelList
 	/**
 	 * Method to get all campaigns which the user is authorized to see
 	 *
-	 * @param	boolean	$title      with title
+	 * @param boolean	$title      with title
 	 *
-	 * @return 	array	$campaigns  ID of allowed campaigns
+	 * @return array
 	 *
 	 * @throws Exception
 	 *
@@ -846,45 +754,19 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	public function getAccessibleCampaigns($title = true)
 	{
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
-		$res_cams   = null;
-		$res_mls    = null;
-		$acc_levels = null;
-		$acc_cams   = null;
-		$campaigns  = null;
-		$params      = $this->getAppropriateParams();
-
-		$check		= $params->get('access-check');
+		$mailinglists = null;
+		$campaigns    = null;
+		$params       = $this->getAppropriateParams();
+		$check        = $params->get('access-check');
 
 		// fetch only from campaigns, which are selected, if so
-		$all_cams	= $params->get('cam_selected_all');
-		$sel_cams	= $params->get('cam_available');
+		$all_cams = $params->get('cam_selected_all');
+		$sel_cams = $params->get('cam_available');
+		$cams     = $sel_cams;
 
 		if ($all_cams)
 		{
-			$query->select('c.id');
-			$query->from('#__bwpostman_campaigns AS c');
-			try
-			{
-				$this->_db->setQuery($query);
-				$res_cams	= $_db->loadAssocList();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			$cams		= array();
-			if (count($res_cams) > 0) {
-				foreach ($res_cams as $item) {
-					$cams[]	= $item['id'];
-				}
-			}
-		}
-		else
-		{
-			$cams	= $sel_cams;
+			$cams	= $this->getTable('Campaigns')->getAllCampaignIds();
 		}
 
 		// if no cam is left, make array
@@ -896,96 +778,21 @@ class BwPostmanModelNewsletters extends JModelList
 		// Check permission, if desired
 		if ($all_cams || $check != 'no')
 		{
-			// get authorized viewlevels
-			$accesslevels	= Access::getAuthorisedViewLevels(Factory::getUser()->id);
-			if (is_array($accesslevels) && count($accesslevels) > 0)
-			{
-				foreach ($accesslevels as $key => $value)
-				{
-					$acc_levels[]	= $key;
-				}
-			}
-			else
-			{
-				$acc_levels[]	= 0;
-			}
-
-			$query	= $_db->getQuery(true);
-			$query->select('id');
-			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->where($_db->quoteName('access') . ' IN (' . implode(',', $acc_levels) . ')');
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-
-			try
-			{
-				$this->_db->setQuery($query);
-				$res_mls	= $_db->loadAssocList();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			$acc_mls	= array(0);
-			foreach ($res_mls as $item)
-			{
-				$acc_mls[]	= $item['id'];
-			}
-
-			$query		= $_db->getQuery(true);
-
-			$query->select('DISTINCT (' . $_db->quoteName('campaign_id') . ')');
-			$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
-			$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $acc_mls) . ')');
-			$query->where($_db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
-
-			try
-			{
-				$this->_db->setQuery($query);
-				$acc_cams	= $_db->loadAssocList();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			if (is_array($acc_cams) && count($acc_cams) > 0)
-			{
-				$cams		= array();
-				foreach ($acc_cams as $item)
-				{
-					$cams[]	= $item['campaign_id'];
-				}
-			}
+			$mailinglists = $this->getMailinglistsByViewlevel();
+			$cams    = $this->getTable('Campaigns_Mailinglists')->getAllCampaignIdsByMlCam($mailinglists, $cams);
 		}
 
 		// if no cam is left, make array to return
-		if (count($cams) == 0)
+		if (count($cams) === 0)
 		{
 			$cams[]	= 0;
 		}
 
+		$campaigns	= $cams;
+
 		if ($title === true)
 		{
-			$query	= $_db->getQuery(true);
-			$query->select('id');
-			$query->select('title');
-			$query->from($_db->quoteName('#__bwpostman_campaigns'));
-			$query->where($_db->quoteName('id') . ' IN (' . implode(',', $cams) . ')');
-
-			try
-			{
-				$this->_db->setQuery($query);
-				$campaigns	= $_db->loadAssocList();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-		}
-		else
-		{
-			$campaigns	= $cams;
+			$campaigns	= $this->getTable('Campaigns')->getCampaignsIdTitle($cams);
 		}
 
 		return $campaigns;
@@ -1004,8 +811,8 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	public function getAccessibleUsergroups($title = true)
 	{
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
+		$db		= $this->_db;
+		$query		= $db->getQuery(true);
 		$res_groups = null;
 		$groups     = null;
 		$params      = $this->getAppropriateParams();
@@ -1015,31 +822,22 @@ class BwPostmanModelNewsletters extends JModelList
 		// fetch only from usergroups, which are selected, if so
 		$all_groups	= $params->get('groups_selected_all');
 		$sel_groups	= $params->get('groups_available');
+		$c_groups	= $sel_groups;
 
 		if ($all_groups)
 		{
-			$query->select('u.id');
-			$query->from('#__usergroups AS u');
+			$query->select('id');
+			$query->from('#__usergroups');
+
+			$this->_db->setQuery($query);
+
 			try
 			{
-				$this->_db->setQuery($query);
-				$res_groups	= $_db->loadAssocList();
+				$groups	= $db->loadColumn();
 			}
 			catch (RuntimeException $e)
 			{
 				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			$groups		= array();
-			if (is_array($res_groups) && count($res_groups) > 0)
-			{
-				foreach ($res_groups as $item) {
-					$groups[]	= $item['id'];
-				}
-			}
-			else
-			{
-				$groups[]	= 0;
 			}
 
 			//convert usergroups to match bwPostman's needs
@@ -1054,10 +852,6 @@ class BwPostmanModelNewsletters extends JModelList
 			{
 				$c_groups[]	= 0;
 			}
-		}
-		else
-		{
-			$c_groups	= $sel_groups;
 		}
 
 		if (!is_array($c_groups))
@@ -1095,16 +889,16 @@ class BwPostmanModelNewsletters extends JModelList
 
 		if ($title === true)
 		{
-			$query	= $_db->getQuery(true);
+			$query	= $db->getQuery(true);
 			$query->select('id');
 			$query->select('title');
-			$query->from($_db->quoteName('#__usergroups'));
-			$query->where($_db->quoteName('id') . ' IN (' . implode(',', $sel_groups) . ')');
+			$query->from($db->quoteName('#__usergroups'));
+			$query->where($db->quoteName('id') . ' IN (' . implode(',', $sel_groups) . ')');
 
 			try
 			{
 				$this->_db->setQuery($query);
-				$groups	= $_db->loadAssocList();
+				$groups	= $db->loadAssocList();
 			}
 			catch (RuntimeException $e)
 			{
@@ -1133,8 +927,8 @@ class BwPostmanModelNewsletters extends JModelList
 	private function getModuleById($id = 0)
 	{
 		$module = null;
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db	= Factory::getDbo();
+		$query	= $db->getQuery(true);
 
 		$query->select('m.id, m.title, m.module, m.position, m.content, m.showtitle, m.params');
 		$query->from('#__modules AS m');
@@ -1143,7 +937,7 @@ class BwPostmanModelNewsletters extends JModelList
 		try
 		{
 			$this->_db->setQuery($query);
-			$module	= $_db->loadObject();
+			$module	= $db->loadObject();
 		}
 		catch (RuntimeException $e)
 		{
@@ -1164,7 +958,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @since 2.4.0
 	 */
-	protected function getAppropriateParams(): Registry
+	protected function getAppropriateParams()
 	{
 		$params = $this->state->params;
 		$mod_id = $this->getState('module.id', null);
@@ -1183,5 +977,38 @@ class BwPostmanModelNewsletters extends JModelList
 		}
 
 		return $params;
+	}
+
+	/**
+	 * Method to get the mailinglists for a specific user by its view level
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+ */
+	private function getMailinglistsByViewlevel()
+	{
+		$viewLevelKeys = null;
+
+		// get authorized viewlevels
+		$viewLevels = Access::getAuthorisedViewLevels(Factory::getUser()->id);
+
+		if (is_array($viewLevels) && count($viewLevels) > 0)
+		{
+			foreach ($viewLevels as $key => $value)
+			{
+				$viewLevelKeys[] = $key;
+			}
+		}
+		else
+		{
+			$viewLevelKeys[] = 0;
+		}
+
+		$mailinglists = $this->getTable('Mailinglists')->getAllowedMailinglists($viewLevels);
+
+		return $mailinglists;
 	}
 }

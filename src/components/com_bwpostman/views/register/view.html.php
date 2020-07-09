@@ -245,7 +245,7 @@ class BwPostmanViewRegister extends JViewLegacy
 		$mlTable = $model->getTable('Mailinglists');
 		$subsTable = $model->getTable('Subscribers');
 		$userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
-		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists($subscriber->id, $userId);
+		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists($userId);
 
 		// Build the email format select list
 		if (!isset($subscriber->emailformat))

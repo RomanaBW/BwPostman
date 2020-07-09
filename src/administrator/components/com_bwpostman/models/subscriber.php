@@ -218,9 +218,9 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		$mailinglist_ids = $this->getMailinglistIdsOfSubscriber($sub_id);
+		$mailinglist_ids = $this->getTable('Subscribers_Mailinglists')->getMailinglistIdsOfSubscriber($sub_id);
 
-		$subscriber->lists = $this->getCompleteMailinglistsOfSubscriber($mailinglist_ids);
+		$subscriber->lists = $this->getTable('Mailinglists')->getCompleteMailinglistsOfSubscriber($mailinglist_ids);
 
 		return $subscriber;
 	}
@@ -242,7 +242,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$data			= $app->getUserState('com_bwpostman.edit.subscriber.data', null);
 		$mailinglists	= $app->getUserState('com_bwpostman.edit.subscriber.mailinglists', null);
 
-		//@SpecialNote: Workaround:$this->getState() doesn't appear reliable at new item, which is only saved (no save and close)
+		//@SpecialNote: Workaround:$this->getState() doesn't appear reliable at new item at J4, which is only saved (no save and close)
 		//@SpecialNote: This misbehaviour leads to empty item, also it is stored
 		if (empty($pk))
 		{
@@ -258,7 +258,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		{
 			$item	= parent::getItem($pk);
 
-			$item->list_id_values = $this->getMailinglistIdsOfSubscriber((int) $item->id);
+			$item->list_id_values = $this->getTable('Subscribers_Mailinglists')->getMailinglistIdsOfSubscriber((int) $item->id);
 		}
 		else
 		{
@@ -1495,90 +1495,6 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$result_set['skipped']	= $skipped;
 
 		return $result_set;
-	}
-
-/**
- * Method to get the mailinglist ids which a subscriber is subscribed to
- *
- * @param $sub_id
- *
- * @return array
- *
- * @throws Exception
- *
- * @since 2.4.0
- */
-	private function getMailinglistIdsOfSubscriber($sub_id)
-	{
-		$mailinglist_ids = array();
-
-		$db    = $this->_db;
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('mailinglist_id'));
-		$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $sub_id);
-
-		$db->setQuery($query);
-
-		try
-		{
-			$mailinglist_ids = $db->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $mailinglist_ids;
-	}
-
-	/**
-	 * Method to get the data of the mailinglists a user is subscribed to from their mailinglist ids
-	 *
-	 * @param array $mailinglist_ids
-	 *
-	 * @return array|mixed
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.4.0
-	 */
-	private function getCompleteMailinglistsOfSubscriber($mailinglist_ids)
-	{
-		$lists = array();
-
-		if (!empty($mailinglist_ids))
-		{
-			$mailinglists = implode(',', $mailinglist_ids);
-		}
-		else
-		{
-			$mailinglists = 0;
-		}
-
-		$db    = $this->_db;
-		$query = $db->getQuery(true);
-
-		$query->select($db->quoteName('id'));
-		$query->select($db->quoteName('title'));
-		$query->select($db->quoteName('description'));
-		$query->select($db->quoteName('archive_flag'));
-		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('id') . ' IN  (' . $mailinglists . ')');
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-
-		$db->setQuery($query);
-
-		try
-		{
-			$lists = $db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		return $lists;
 	}
 
 	/**

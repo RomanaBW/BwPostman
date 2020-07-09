@@ -27,7 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -418,52 +417,70 @@ class BwPostmanTableCampaigns extends JTable
 	}
 
 	/**
-	 * Method to get the data of a single campaign for raw view
+	 * Method to get all campaign ids
 	 *
-	 * @access    public
-	 *
-	 * @param int $cam_id Campaign ID
-	 *
-	 * @return    object Campaign
+	 * @return 	array	$campaigns  ID of allowed campaigns
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since	2.4.0
 	 */
-	public function getSingleCampaign($cam_id = null)
+	public function getAllCampaignIds()
 	{
-		$db   = $this->_db;
-		$query = $db->getQuery(true);
+		$db         = $this->_db;
+		$query      = $db->getQuery(true);
 
-		$query->select('*');
-		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . (int) $cam_id);
-		$db->setQuery($query);
+		$query->select('id');
+		$query->from($this->_tbl);
 
-		$campaign = $db->loadObject();
+		$this->_db->setQuery($query);
 
-		// Get all assigned newsletters
-		// --> we offer to unarchive not only the campaign but also the assigned newsletters,
-		// that's why we have to show also the archived newsletters
-		$query->clear();
-		$query->select($db->quoteName('id'));
-		$query->select($db->quoteName('subject'));
-		$query->select($db->quoteName('campaign_id'));
-		$query->select($db->quoteName('archive_flag'));
-		$query->from($db->quoteName('#__bwpostman_newsletters'));
-		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
-
-		$db->setQuery($query);
 		try
 		{
-			$campaign->newsletters = $db->loadObjectList();
+			$cams = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return $campaign;
+		return $cams;
+	}
+
+	/**
+	 * Method to get id and title of all provided campaign ids
+	 *
+	 * @param array  $cams  ids of campaigns to get the title for
+	 *
+	 * @return 	array
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0
+	 */
+	public function getCampaignsIdTitle($cams)
+	{
+		$campaigns = array();
+		$db     = $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->select($db->quoteName('title'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' IN (' . implode(',', $cams) . ')');
+
+		$db->setQuery($query);
+
+		try
+		{
+			$campaigns = $db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $campaigns;
 	}
 
 	/**

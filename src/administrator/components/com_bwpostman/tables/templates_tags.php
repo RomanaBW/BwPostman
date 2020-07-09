@@ -27,7 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Factory;
 
 /**
@@ -136,7 +135,7 @@ class BwPostmanTableTemplates_Tags extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	DatabaseDriver  $db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since       2.0.0
 	 */
@@ -169,6 +168,130 @@ class BwPostmanTableTemplates_Tags extends JTable
 
 		// *** prepare the template data ***
 		$item = $this;
+
+		return true;
+	}
+
+	/**
+	 * Method to get the template assets which are used to compose a newsletter
+	 *
+	 * @access	public
+	 *
+	 * @param   int    $template_id     template id
+	 *
+	 * @return	array
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.3.0 here (moved from newsletter model there since 2.0.0)
+	 */
+	public function getTemplateAssets($template_id)
+	{
+		$tpl_assets = array();
+
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+		$query->select('*');
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('templates_table_id') . ' = ' . (int) $template_id);
+		$db->setQuery($query);
+
+		try
+		{
+			$tpl_assets = $db->loadAssoc();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $tpl_assets;
+	}
+
+	/**
+	 * Method to save template tags for user-made html templates
+	 *
+	 *
+	 * @param   array   $data  The form data.
+	 * @param   integer $tplId The id of the template the tags belongs to
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.4.0
+	 */
+	public function saveTags($data, $tplId)
+	{
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+
+		if (empty($data['templates_table_id']))
+		{
+			$query->insert($db->quoteName($this->_tbl));
+			$query->columns(
+				array(
+					$db->quoteName('templates_table_id'),
+					$db->quoteName('tpl_tags_head'),
+					$db->quoteName('tpl_tags_head_advanced'),
+					$db->quoteName('tpl_tags_body'),
+					$db->quoteName('tpl_tags_body_advanced'),
+					$db->quoteName('tpl_tags_article'),
+					$db->quoteName('tpl_tags_article_advanced_b'),
+					$db->quoteName('tpl_tags_article_advanced_e'),
+					$db->quoteName('tpl_tags_readon'),
+					$db->quoteName('tpl_tags_readon_advanced'),
+					$db->quoteName('tpl_tags_legal'),
+					$db->quoteName('tpl_tags_legal_advanced_b'),
+					$db->quoteName('tpl_tags_legal_advanced_e'),
+				)
+			);
+			$query->values(
+				(int) $tplId . ',' .
+				(int) $data['tpl_tags_head'] . ',' .
+				$db->quote($data['tpl_tags_head_advanced']) . ',' .
+				(int) $data['tpl_tags_body'] . ',' .
+				$db->quote($data['tpl_tags_body_advanced']) . ',' .
+				(int) $data['tpl_tags_article'] . ',' .
+				$db->quote($data['tpl_tags_article_advanced_b']) . ',' .
+				$db->quote($data['tpl_tags_article_advanced_e']) . ',' .
+				(int) $data['tpl_tags_readon'] . ',' .
+				$db->quote($data['tpl_tags_readon_advanced']) . ',' .
+				(int) $data['tpl_tags_legal'] . ',' .
+				$db->quote($data['tpl_tags_legal_advanced_b']) . ',' .
+				$db->quote($data['tpl_tags_legal_advanced_e'])
+			);
+		}
+		else
+		{
+			$query->update($db->quoteName($this->_tbl));
+
+			$query->set($db->quoteName('tpl_tags_head') . ' = ' . (int) $data['tpl_tags_head']);
+			$query->set($db->quoteName('tpl_tags_head_advanced') . ' = ' . $db->quote($data['tpl_tags_head_advanced']));
+			$query->set($db->quoteName('tpl_tags_body') . ' = ' . (int) $data['tpl_tags_body']);
+			$query->set($db->quoteName('tpl_tags_body_advanced') . ' = ' . $db->quote($data['tpl_tags_body_advanced']));
+			$query->set($db->quoteName('tpl_tags_article') . ' = ' . (int) $data['tpl_tags_article']);
+			$query->set($db->quoteName('tpl_tags_article_advanced_b') . ' = ' . $db->quote($data['tpl_tags_article_advanced_b']));
+			$query->set($db->quoteName('tpl_tags_article_advanced_e') . ' = ' . $db->quote($data['tpl_tags_article_advanced_e']));
+			$query->set($db->quoteName('tpl_tags_readon') . ' = ' . (int) $data['tpl_tags_readon']);
+			$query->set($db->quoteName('tpl_tags_readon_advanced') . ' = ' . $db->quote($data['tpl_tags_readon_advanced']));
+			$query->set($db->quoteName('tpl_tags_legal') . ' = ' . (int) $data['tpl_tags_legal']);
+			$query->set($db->quoteName('tpl_tags_legal_advanced_b') . ' = ' . $db->quote($data['tpl_tags_legal_advanced_b']));
+			$query->set($db->quoteName('tpl_tags_legal_advanced_e') . ' = ' . $db->quote($data['tpl_tags_legal_advanced_e']));
+
+			$query->where($db->quoteName('templates_table_id') . ' = ' . $data['id']);
+		}
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return true;
 	}

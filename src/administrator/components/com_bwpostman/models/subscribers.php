@@ -488,6 +488,7 @@ class BwPostmanModelSubscribers extends JModelList
 			}
 		}
 	}
+
 	/**
 	 * Method to get all mailinglists
 	 *
@@ -501,29 +502,12 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	public function getMailinglists()
 	{
-		$result = array();
-		$query	= $this->_db->getQuery(true);
+		$mailinglistsFromTable = $this->getTable('Mailinglists', 'BwPostmanTable')->getMailinglistsValueText();
 
-		$query->select($this->_db->quoteName('id') . ' AS value');
-		$query->select($this->_db->quoteName('title') . ' AS text');
-		$query->from($this->_db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($this->_db->quoteName('archive_flag') . ' = ' . (int) 0);
-		$query->order('title ASC');
-		$this->_db->setQuery($query);
+		$mlSelectList 	= array ();
+		$mlSelectList[]	= HtmlHelper::_('select.option',  '', '- ' . Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') . ' -');
+		$mlSelectList 	= array_merge($mlSelectList, $mailinglistsFromTable);
 
-		try
-		{
-			$result = $this->_db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		$mailinglists 	= array ();
-		$mailinglists[]	= HtmlHelper::_('select.option',  '', '- ' . Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') . ' -');
-		$mailinglists 	= array_merge($mailinglists, $result);
-
-		return $mailinglists;
+		return $mlSelectList;
 	}
 }

@@ -27,7 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -241,7 +240,7 @@ class BwPostmanTableSubscribers extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	DatabaseDriver  $db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -414,8 +413,8 @@ class BwPostmanTableSubscribers extends JTable
 		$err		= $session->get('session_error');
 		$fault		= false;
 
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
+		$db		= $this->_db;
+		$query		= $db->getQuery(true);
 
 		$tester		= false;
 		$format_txt	= array(0 => 'Text', 1 => 'HTML');
@@ -504,7 +503,7 @@ class BwPostmanTableSubscribers extends JTable
 			}
 
 			// Spamcheck 1
-			// Set error message if a not visible (top: -5000px) input field is empty
+			// Set error message if a not visible (top: -5000px) input field is not empty
 			if($data['falle'] != '')
 			{
 				// input wrong - set error
@@ -562,15 +561,15 @@ class BwPostmanTableSubscribers extends JTable
 		// Check for existing email
 		$xid    = 0;
 		$xids   = array();
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('email') . ' = ' . $_db->quote($this->email));
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('email') . ' = ' . $db->quote($this->email));
 		if (!$tester)
 		{
-			$query->where($_db->quoteName('status') . ' != ' . (int) 9);
+			$query->where($db->quoteName('status') . ' != ' . (int) 9);
 		}
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
@@ -598,13 +597,13 @@ class BwPostmanTableSubscribers extends JTable
 				if ($xid && $xid != intval($this->id))
 				{
 					$testrecipient  = new stdClass();
-					$query	= $_db->getQuery(true);
+					$query	= $db->getQuery(true);
 
-					$query->select($_db->quoteName('id'));
-					$query->select($_db->quoteName('emailformat'));
-					$query->select($_db->quoteName('archive_flag'));
-					$query->from($_db->quoteName('#__bwpostman_subscribers'));
-					$query->where($_db->quoteName('id') . ' = ' . (int) $xid);
+					$query->select($db->quoteName('id'));
+					$query->select($db->quoteName('emailformat'));
+					$query->select($db->quoteName('archive_flag'));
+					$query->from($db->quoteName($this->_tbl));
+					$query->where($db->quoteName('id') . ' = ' . (int) $xid);
 
 					$this->_db->setQuery($query);
 					try
@@ -692,16 +691,16 @@ class BwPostmanTableSubscribers extends JTable
 			if ($xid && $xid != intval($this->id))
 			{
 				$subscriber = new stdClass();
-				$query	= $_db->getQuery(true);
+				$query	= $db->getQuery(true);
 
-				$query->select($_db->quoteName('id'));
-				$query->select($_db->quoteName('status'));
-				$query->select($_db->quoteName('archive_flag'));
-				$query->select($_db->quoteName('archived_by'));
-				$query->from($_db->quoteName('#__bwpostman_subscribers'));
-				$query->where($_db->quoteName('id') . ' = ' . (int) $xid);
+				$query->select($db->quoteName('id'));
+				$query->select($db->quoteName('status'));
+				$query->select($db->quoteName('archive_flag'));
+				$query->select($db->quoteName('archived_by'));
+				$query->from($db->quoteName($this->_tbl));
+				$query->where($db->quoteName('id') . ' = ' . (int) $xid);
 
-				$_db->setQuery($query);
+				$db->setQuery($query);
 				try
 				{
 					$subscriber = $this->_db->loadObject();
@@ -778,7 +777,7 @@ class BwPostmanTableSubscribers extends JTable
 		$query	= $db->getQuery(true);
 
 		$query->select('COUNT(' . $db->quoteName('id') . ')');
-		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('status') . ' = ' . (int) 9);
 		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
 
@@ -816,19 +815,19 @@ class BwPostmanTableSubscribers extends JTable
 	{
 		$result = array();
 		$this->reset();
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
 
 		$query->select('*');
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('status') . ' = ' . (int) 9);
-		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('status') . ' = ' . (int) 9);
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$result = $_db->loadObjectList();
+			$result = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{
@@ -984,18 +983,18 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function getSubscriberIdByUserId($uid)
 	{
-		$_db   = Factory::getDbo();
-		$query = $_db->getQuery(true);
+		$db   = $this->_db;
+		$query = $db->getQuery(true);
 
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('user_id') . ' = ' . (int) $uid);
-		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('user_id') . ' = ' . (int) $uid);
+		$query->where($db->quoteName('status') . ' != ' . (int) 9);
 
 		try
 		{
-			$_db->setQuery($query);
-			$id = $_db->loadResult();
+			$db->setQuery($query);
+			$id = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -1005,6 +1004,41 @@ class BwPostmanTableSubscribers extends JTable
 		if (empty($id))
 		{
 			$id = 0;
+		}
+
+		return $id;
+	}
+
+	/**
+	 * Method to check if an email address exists in the subscribers-table
+	 *
+	 * @param 	string  $email  subscriber email
+	 *
+	 * @return 	int     $id     subscriber ID
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	public function getSubscriberIdByEmail($email)
+	{
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+		$id     = 0;
+
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('email') . ' = ' . $db->quote($email));
+		$query->where($db->quoteName('status') . ' != ' . (int) 9);
+		$db->setQuery($query);
+
+		try
+		{
+			$id = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $id;
@@ -1027,18 +1061,18 @@ class BwPostmanTableSubscribers extends JTable
 	public function getSubscriberState($id)
 	{
 		$subscriber = null;
-		$_db        = $this->_db;
-		$query      = $_db->getQuery(true);
+		$db        = $this->_db;
+		$query      = $db->getQuery(true);
 
 		$query->select('*');
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
-		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' = ' . (int) $id);
+		$query->where($db->quoteName('status') . ' != ' . (int) 9);
 
 		try
 		{
-			$_db->setQuery($query);
-			$subscriber = $_db->loadObject();
+			$db->setQuery($query);
+			$subscriber = $db->loadObject();
 		}
 		catch (RuntimeException $e)
 		{
@@ -1060,21 +1094,21 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
 	 */
-	public static function getUserIdOfSubscriber($id)
+	public function getUserIdOfSubscriber($id)
 	{
 		$user_id    = null;
-		$_db	    = Factory::getDbo();
-		$query	    = $_db->getQuery(true);
+		$db	    = $this->_db;
+		$query	    = $db->getQuery(true);
 
-		$query->select($_db->quoteName('user_id'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
-		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
+		$query->select($db->quoteName('user_id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' = ' . (int) $id);
+		$query->where($db->quoteName('status') . ' != ' . (int) 9);
 
 		try
 		{
-			$_db->setQuery($query);
-			$user_id = $_db->loadResult();
+			$db->setQuery($query);
+			$user_id = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -1120,7 +1154,7 @@ class BwPostmanTableSubscribers extends JTable
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');
-		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query->from($db->quoteName($this->_tbl));
 
 		if (!$archived)
 		{
@@ -1164,7 +1198,7 @@ class BwPostmanTableSubscribers extends JTable
 			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName('editlink'));
-			$query->from($db->quoteName('#__bwpostman_subscribers'));
+			$query->from($db->quoteName($this->_tbl));
 			$query->where($db->quoteName('editlink') . ' = ' . $db->quote($newEditlink));
 
 			$db->setQuery($query);
@@ -1208,7 +1242,7 @@ class BwPostmanTableSubscribers extends JTable
 			$newActivation = ApplicationHelper::getHash(UserHelper::genRandomPassword());
 
 			$query->select($db->quoteName('activation'));
-			$query->from($db->quoteName('#__bwpostman_subscribers'));
+			$query->from($db->quoteName($this->_tbl));
 			$query->where($db->quoteName('activation') . ' = ' . $db->quote($newActivation));
 
 			$db->setQuery($query);
@@ -1233,7 +1267,40 @@ class BwPostmanTableSubscribers extends JTable
 	}
 
 	/**
-	 * Method to get the subscriber id by email
+	 * Method to get the complete subscriber data by email
+	 *
+	 * @param   integer      $id
+	 *
+	 * @return  object
+	 *
+	 * @since   2.4.0
+	 */
+	public function getSingleSubscriberData($id)
+	{
+		$db   = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query->where($db->quoteName('id') . ' = ' . (int) $id);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->setQuery($query);
+			$subscriber = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $subscriber;
+	}
+
+	/**
+	 * Method to get the complete subscriber data by email
 	 *
 	 * @param   array      $values
 	 *
@@ -1243,11 +1310,11 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function getSubscriberDataByEmail($values)
 	{
-		$db   = Factory::getDbo();
+		$db   = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('*');
-		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('email') . ' = ' . $db->quote($values['email']));
 		if ($values['status'] == '9')
 		{
@@ -1262,5 +1329,192 @@ class BwPostmanTableSubscribers extends JTable
 		$db->setQuery($query);
 
 		return $db->loadObject();
+	}
+
+	/**
+	 * Method to get the subscriber activation data
+	 *
+	 * @param 	string  $activation     activation code for the newsletter account
+	 *
+	 * @return  object
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.4.0
+	 */
+	public function getSubscriberActivationData($activation)
+	{
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->select($db->quoteName('email'));
+		$query->select($db->quoteName('editlink'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('activation') . ' = ' . $db->quote($activation));
+		$query->where($db->quoteName('status') . ' = ' . (int) 0);
+		$query->where($db->quoteName('confirmation_date') . ' = ' . $db->quote($db->getNullDate()));
+		$query->where($db->quoteName('confirmed_by') . ' = ' . (int) -1);
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->where($db->quoteName('archived_by') . ' = ' . (int) -1);
+		$db->setQuery($query);
+
+		try
+		{
+			$subscriber = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $subscriber;
+	}
+
+	/**
+	 * Method to store the subscriber activation
+	 *
+	 * @param integer  $id              id of the subscriber to store activation
+	 * @param string   $activation_ip   IP used for activation
+	 *
+	 * @return  boolean true on success
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.4.0
+	 */
+	public function storeSubscriberActivation($id, $activation_ip)
+	{
+		$date = Factory::getDate();
+		$time = $date->toSql();
+
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+
+		$query->update($db->quoteName($this->_tbl));
+		$query->set($db->quoteName('status') . ' = ' . 1);
+		$query->set($db->quoteName('activation') . ' = ' . $db->quote(''));
+		$query->set($db->quoteName('confirmation_date') . ' = ' . $db->quote($time, false));
+		$query->set($db->quoteName('confirmed_by') . ' = ' . (int) 0);
+		$query->set($db->quoteName('confirmation_ip') . ' = ' . $db->quote($activation_ip));
+		$query->where($db->quoteName('id') . ' = ' . (int) $id);
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to validate edit link, if exists return subcriber id
+	 *
+	 * @param integer  $email      email of the demanded unsubscription
+	 * @param string   $editlink   editlink provided by the unsubscription
+	 *
+	 * @return  integer|boolean false on failure
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.4.0
+	 */
+	public function validateSubscriberEditlink($email, $editlink)
+	{
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('email') . ' = ' . $db->quote($email));
+		$query->where($db->quoteName('editlink') . ' = ' . $db->quote($editlink));
+		$query->where($db->quoteName('status') . ' != ' . (int) 9);
+		$db->setQuery($query);
+
+		try
+		{
+			$id = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return false;
+		}
+
+		return $id;
+	}
+
+	/**
+	 * Method to get the mail address of a subscriber from the subscribers-table depending on the subscriber ID
+	 *
+	 * @param 	int		$id     subscriber ID
+	 *
+	 * @return 	string	user ID
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0
+	 */
+	public function getEmailaddress($id)
+	{
+		$emailaddress   = null;
+		$_db	        = $this->_db;
+		$query	        = $_db->getQuery(true);
+
+		$query->select($_db->quoteName('email'));
+		$query->from($_db->quoteName($this->_tbl));
+		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
+
+		try
+		{
+			$_db->setQuery($query);
+			$emailaddress = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $emailaddress;
+	}
+
+	/**
+	 * Checks if an editlink exists in the subscribers-table
+	 *
+	 * @param 	string  $editlink   to edit the subscriber data
+	 *
+	 * @return 	int subscriber ID
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0
+	 */
+	public function checkEditlink($editlink)
+	{
+		$_db	= $this->_db;
+		$query	= $_db->getQuery(true);
+
+		$query->select($_db->quoteName('id'));
+		$query->from($_db->quoteName($this->_tbl));
+		$query->where($_db->quoteName('editlink') . ' = ' . $_db->quote($editlink));
+		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
+
+		try
+		{
+			$_db->setQuery($query);
+			$id = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $id;
 	}
 }

@@ -438,8 +438,9 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// Check to show created data
+		$nulldate = Factory::getDbo()->getNullDate();
 		$c_date	= $form->getValue('created_date');
-		if ($c_date == '0000-00-00 00:00:00')
+		if ($c_date === $nulldate)
 		{
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
 			$form->setFieldAttribute('created_by', 'type', 'hidden');
@@ -447,7 +448,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
-		if ($m_date == '0000-00-00 00:00:00')
+		if ($m_date === $nulldate)
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
@@ -455,7 +456,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		// Check to show mailing data
 		$s_date	= $form->getValue('mailing_date');
-		if ($s_date == '0000-00-00 00:00:00')
+		if ($s_date === $nulldate)
 		{
 			$form->setFieldAttribute('mailing_date', 'type', 'hidden');
 		}
@@ -797,7 +798,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			}
 		}
 
-		// Rewrite newsletters_mailinglists table )only if newsletter is not part of campaign, else this is managed at campaigns)
+		// Rewrite newsletters_mailinglists table (only if newsletter is not part of campaign, else this is managed at campaigns)
 		if ((integer)$data['campaign_id'] === -1)
 		{
 			// Store the selected BwPostman mailinglists into newsletters_mailinglists-table
@@ -950,6 +951,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				$app->enqueueMessage($db->getErrorMsg(), 'error');
 				return false;
 			}
+
+			$app->setUserState('com_bwpostman.edit.newsletter.data', $newsletters_data_copy);
 		}
 
 		$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_COPIED'), 'message');
@@ -973,8 +976,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		if (count($pks))
 		{
 			ArrayHelper::toInteger($pks);
-			$nl_table = $this->getTable();
-			$lists_table = $this->getTable('newsletters_mailinglists', 'BwPostmanTable');
 
 			// Access check.
 			foreach ($pks as $id)
@@ -985,13 +986,13 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 
 				// Delete newsletter from newsletters-table
-				if (!$nl_table->delete($id))
+				if (!$this->getTable()->delete($id))
 				{
 					return false;
 				}
 
 				// Delete assigned mailinglists from newsletters_mailinglists-table
-				if (!$lists_table->delete($id))
+				if (!$this->getTable('newsletters_mailinglists')->delete($id))
 				{
 					return false;
 				}
@@ -1018,7 +1019,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			return false;
 		}
 
-		$queueTable = $this->getTable('Sendmailqueue', 'BwPostmanTable');
+		$queueTable = $this->getTable('Sendmailqueue');
 
 		try
 		{
@@ -1169,7 +1170,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		$err = array();
 
 		// Check for valid from_name
-		if (trim($data['from_name']) == '')
+		if (trim($data['from_name']) === '')
 		{
 			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_FROM_NAME');
 		}
@@ -2155,7 +2156,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if ($item->id == 0)
 		{
-			$item->template_id = $this->getTable()->getStandardTpl('html');
+			$item->template_id = $this->getTable('Templates')->getStandardTpl('html');
 		}
 		elseif ($item->template_id == 0)
 		{
@@ -2177,7 +2178,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			if (is_null($html_tpl))
 			{
-				$html_tpl = $this->getTable()->getStandardTpl('html');
+				$html_tpl = $this->getTable('Templates')->getStandardTpl('html');
 			}
 
 			$item->template_id = $html_tpl;
@@ -2202,7 +2203,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 		if ($item->id == 0)
 		{
-			$item->text_template_id = $this->getTable()->getStandardTpl('text');
+			$item->text_template_id = $this->getTable('Templates')->getStandardTpl('text');
 		}
 		elseif ($item->text_template_id == 0)
 		{
@@ -2224,7 +2225,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			if (is_null($text_tpl))
 			{
-				$text_tpl = $this->getTable()->getStandardTpl('text');
+				$text_tpl = $this->getTable('Templates')->getStandardTpl('text');
 			}
 
 			$item->text_template_id = $text_tpl;
@@ -2395,7 +2396,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 
 	/**
-	 * Method to get the associated mailinglists of a newsletter
+	 * Method to get the needed subscriber checks
 	 *
 	 * @param array    $mailinglists
 	 * @param boolean  $check_subscribers

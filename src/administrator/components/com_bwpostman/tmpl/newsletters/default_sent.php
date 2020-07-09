@@ -47,6 +47,7 @@ $user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+$nullDate   = Factory::getDbo()->getNullDate();
 
 $iconImage = Uri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png';
 
@@ -213,12 +214,12 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 											</td>
 											<td class="text-center">
 												<p>
-													<?php echo ($item->publish_up != '0000-00-00 00:00:00')
+													<?php echo ($item->publish_up !== $nullDate)
 														? HTMLHelper::date($item->publish_up, Text::_('BW_DATE_FORMAT_LC5'))
 														: '-'; ?><br />
 												</p>
 												<p>
-													<?php echo ($item->publish_down != '0000-00-00 00:00:00')
+													<?php echo ($item->publish_down !== $nullDate)
 														? HTMLHelper::date($item->publish_down, Text::_('BW_DATE_FORMAT_LC5'))
 														: '-'; ?>
 												</p>

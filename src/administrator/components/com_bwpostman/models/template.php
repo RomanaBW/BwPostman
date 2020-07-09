@@ -416,8 +416,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 		}
 
 		// Check to show created data
+		$nullDate = Factory::getDbo()->getNullDate();
 		$c_date	= $form->getValue('created_date');
-		if ($c_date == '0000-00-00 00:00:00')
+		if ($c_date === $nullDate)
 		{
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
 			$form->setFieldAttribute('created_by', 'type', 'hidden');
@@ -425,7 +426,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
-		if ($m_date == '0000-00-00 00:00:00')
+		if ($m_date === $nullDate)
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
@@ -502,7 +503,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 				}
 			}
 
-			$time	= '0000-00-00 00:00:00';
+			$time	= $db->getNullDate();
 			$uid	= 0;
 		}
 
@@ -595,10 +596,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @since 1.1.0
 	 */
-	public function setHome($id = 0)
+	public function setDefaultTemplate($id = 0)
 	{
 		$user = Factory::getUser();
-		$db   = $this->getDbo();
 
 		// Access checks.
 		if (!$user->authorise('bwpm.edit.state', 'com_bwpostman'))
@@ -606,56 +606,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 		}
 
-		$template = Table::getInstance('Templates', 'BwPostmanTable');
-
-		if (!$template->load((int) $id))
-		{
-			throw new Exception(Text::_('COM_BWPOSTMAN_ERROR_TEMPLATE_NOT_FOUND'));
-		}
-
-		// Reset the standard fields for the templates.
-		$query = $db->getQuery(true);
-		$query->update($db->quoteName('#__bwpostman_templates'));
-		$query->set($db->quoteName('standard') . " = " . $db->Quote(0));
-		$query->where($db->quoteName('standard') . ' = ' . $db->Quote(1));
-
-		if ($template->tpl_id < 988)
-		{
-			$query->where($db->quoteName('tpl_id') . ' < ' . $db->Quote(988));
-		}
-		else
-		{
-			$query->where($db->quoteName('tpl_id') . ' > ' . $db->Quote(987));
-		}
-
-		$db->setQuery($query);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		// Set the new home style.
-		$query = $db->getQuery(true);
-		$query->update($db->quoteName('#__bwpostman_templates'));
-		$query->set($db->quoteName('standard') . " = " . $db->Quote(1));
-		$query->set($db->quoteName('published') . " = " . $db->Quote(1));
-		$query->where($db->quoteName('id') . ' = ' . $db->Quote((int)$id));
-
-		$db->setQuery($query);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$this->getTable('Templates')->setDefaultTpl((int)$id);
 
 		return true;
 	}
@@ -1355,78 +1306,10 @@ class BwPostmanModelTemplate extends JModelAdmin
 			$data['templates_table_id'] = '';
 		}
 
-		// get id from templates table
-		$rec_id = $this->getState('template.id');
+		// get id from template state
+		$tplId = $this->getState('template.id');
 
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
-
-		if (empty($data['templates_table_id']))
-		{
-			$query->insert($db->quoteName('#__bwpostman_templates_tags'));
-			$query->columns(
-				array(
-					$db->quoteName('templates_table_id'),
-					$db->quoteName('tpl_tags_head'),
-					$db->quoteName('tpl_tags_head_advanced'),
-					$db->quoteName('tpl_tags_body'),
-					$db->quoteName('tpl_tags_body_advanced'),
-					$db->quoteName('tpl_tags_article'),
-					$db->quoteName('tpl_tags_article_advanced_b'),
-					$db->quoteName('tpl_tags_article_advanced_e'),
-					$db->quoteName('tpl_tags_readon'),
-					$db->quoteName('tpl_tags_readon_advanced'),
-					$db->quoteName('tpl_tags_legal'),
-					$db->quoteName('tpl_tags_legal_advanced_b'),
-					$db->quoteName('tpl_tags_legal_advanced_e'),
-				)
-			);
-			$query->values(
-				(int) $rec_id . ',' .
-				(int) $data['tpl_tags_head'] . ',' .
-				$db->quote($data['tpl_tags_head_advanced']) . ',' .
-				(int) $data['tpl_tags_body'] . ',' .
-				$db->quote($data['tpl_tags_body_advanced']) . ',' .
-				(int) $data['tpl_tags_article'] . ',' .
-				$db->quote($data['tpl_tags_article_advanced_b']) . ',' .
-				$db->quote($data['tpl_tags_article_advanced_e']) . ',' .
-				(int) $data['tpl_tags_readon'] . ',' .
-				$db->quote($data['tpl_tags_readon_advanced']) . ',' .
-				(int) $data['tpl_tags_legal'] . ',' .
-				$db->quote($data['tpl_tags_legal_advanced_b']) . ',' .
-				$db->quote($data['tpl_tags_legal_advanced_e'])
-			);
-		}
-		else
-		{
-			$query->update($db->quoteName('#__bwpostman_templates_tags'));
-
-			$query->set($db->quoteName('tpl_tags_head') . ' = ' . (int) $data['tpl_tags_head']);
-			$query->set($db->quoteName('tpl_tags_head_advanced') . ' = ' . $db->quote($data['tpl_tags_head_advanced']));
-			$query->set($db->quoteName('tpl_tags_body') . ' = ' . (int) $data['tpl_tags_body']);
-			$query->set($db->quoteName('tpl_tags_body_advanced') . ' = ' . $db->quote($data['tpl_tags_body_advanced']));
-			$query->set($db->quoteName('tpl_tags_article') . ' = ' . (int) $data['tpl_tags_article']);
-			$query->set($db->quoteName('tpl_tags_article_advanced_b') . ' = ' . $db->quote($data['tpl_tags_article_advanced_b']));
-			$query->set($db->quoteName('tpl_tags_article_advanced_e') . ' = ' . $db->quote($data['tpl_tags_article_advanced_e']));
-			$query->set($db->quoteName('tpl_tags_readon') . ' = ' . (int) $data['tpl_tags_readon']);
-			$query->set($db->quoteName('tpl_tags_readon_advanced') . ' = ' . $db->quote($data['tpl_tags_readon_advanced']));
-			$query->set($db->quoteName('tpl_tags_legal') . ' = ' . (int) $data['tpl_tags_legal']);
-			$query->set($db->quoteName('tpl_tags_legal_advanced_b') . ' = ' . $db->quote($data['tpl_tags_legal_advanced_b']));
-			$query->set($db->quoteName('tpl_tags_legal_advanced_e') . ' = ' . $db->quote($data['tpl_tags_legal_advanced_e']));
-
-			$query->where($db->quoteName('templates_table_id') . ' = ' . $data['id']);
-		}
-
-		$db->setQuery($query);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$this->getTable('Templates_Tags', 'BwPostmanTable')->saveTags($data, $tplId);
 
 		return true;
 	}

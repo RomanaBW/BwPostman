@@ -630,7 +630,7 @@ class BwPostmanSubscriberHelper
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
-		if ($m_date == '0000-00-00 00:00:00')
+		if ($m_date == Factory::getDbo()->getNullDate())
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');

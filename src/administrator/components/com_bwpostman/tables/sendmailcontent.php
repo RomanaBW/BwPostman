@@ -27,7 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -137,7 +136,7 @@ class BwPostmanTableSendmailcontent extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	DatabaseDriver  $db Database object
+	 * @param 	JDatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -288,22 +287,22 @@ class BwPostmanTableSendmailcontent extends JTable
 		// If (empty($mode)) return 0;
 		$app	= Factory::getApplication();
 		$mode	= $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
 		$result = array();
 
 		$this->reset();
 
 		$query->select('*');
-		$query->from($_db->quoteName($this->_tbl));
-		$query->where($_db->quoteName('id') . ' = ' . (int) $keys);
-		$query->where($_db->quoteName('mode') . ' = ' . (int) $mode);
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' = ' . (int) $keys);
+		$query->where($db->quoteName('mode') . ' = ' . (int) $mode);
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$result = $_db->loadAssoc();
+			$result = $db->loadAssoc();
 		}
 		catch (RuntimeException $e)
 		{
@@ -311,6 +310,42 @@ class BwPostmanTableSendmailcontent extends JTable
 		}
 
 		return $this->bind($result);
+	}
+
+	/**
+	 * Method to get  newsletter content
+	 *
+	 * @param int $id       id of the content
+	 *
+	 * @return	mixed	string on success, null on failure.
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.4.0
+	 */
+	public function getContent($id)
+	{
+		$newsletter = null;
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
+
+		// build query
+		$query->select($db->quoteName('body'));
+		$query->from($db->quoteName('#__bwpostman_sendmailcontent') . ' AS ' . $db->quoteName('a'));
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('nl_id') . ' = ' . (int)$id);
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('mode') . ' = ' . 1);
+
+		try
+		{
+			$db->setQuery($query);
+			$newsletter = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $newsletter;
 	}
 
 	/**

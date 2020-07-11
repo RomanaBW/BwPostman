@@ -32,6 +32,8 @@ use Joomla\CMS\Form\FormHelper;
 
 FormHelper::loadFieldClass('checkboxes');
 
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/campaignhelper.php');
+
 /**
  * Form Field class for the Joomla Platform.
  * Displays options as a list of check boxes.
@@ -146,40 +148,9 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 	 */
 	protected function getOptions()
 	{
-		$app	    = Factory::getApplication();
-		$options    = null;
+		$options  = null;
 
-		// prepare query
-		$_db		= Factory::getDbo();
-		$query		= $_db->getQuery(true);
-		$sub_query	= $_db->getQuery(true);
-
-		// Build sub query which counts the newsletters of each campaign and query
-		$sub_query->select('COUNT(' . $_db->quoteName('b') . '.' . $_db->quoteName('id') . ') AS ' . $_db->quoteName('newsletters'));
-		$sub_query->from($_db->quoteName('#__bwpostman_newsletters') . 'AS ' . $_db->quoteName('b'));
-		$sub_query->where($_db->quoteName('b') . '.' . $_db->quoteName('archive_flag') . ' = ' . (int) 0);
-		$sub_query->where($_db->quoteName('b') . '.' . $_db->quoteName('campaign_id') . ' = ' . $_db->quoteName('a') . '.' . $_db->quoteName('id'));
-
-		$query->select(
-			"a.id AS value, a.title AS text, a.description as description, a.archive_flag AS archived" . ', (' . $sub_query . ') AS newsletters'
-		);
-		$query->from('#__bwpostman_campaigns AS a');
-		$query->where($_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
-
-		// Join over the asset groups.
-		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-		$query->order($_db->quoteName('text') . 'ASC');
-
-		try
-		{
-			$_db->setQuery($query);
-			$options = $_db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$options = BwPostmanCampaignHelper::getCampaignsFieldlistOptions(false, true);
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

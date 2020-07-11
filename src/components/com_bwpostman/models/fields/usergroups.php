@@ -169,19 +169,28 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 		{
 			static::$options[$hash] = parent::getOptions();
 
-			$_db = Factory::getDbo();
-			$query = $_db->getQuery(true)
-				->select('CONCAT("-",a.id) AS value')
-				->select('a.title AS text')
-				->select('COUNT(DISTINCT b.id) AS level')
-				->from('#__usergroups as a')
-				->join('LEFT', '#__usergroups  AS b ON a.lft > b.lft AND a.rgt < b.rgt')
-				->group('a.id, a.title, a.lft, a.rgt')
-				->order('a.lft ASC');
+			$db = Factory::getDbo();
+			$query = $db->getQuery(true);
+			$query->select('CONCAT("-",' . $db->quoteName('a') . '.' . $db->quoteName('id') . ' AS  value');
+			$query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');
+			$query->select('COUNT(DISTINCT ' . $db->quoteName('b') . '.' . $db->quoteName('id')  . ' AS level');
+			$query->from('#__usergroups as a');
+			$query->join(
+				'LEFT',
+				$db->quoteName('#__usergroups') .
+				' AS ' . $db->quoteName('b') .
+				' ON ' . $db->quoteName('a') . '.' . $db->quoteName('lft') . ' > ' . $db->quoteName('b') . '.' . $db->quoteName('lft') .
+				' AND ' . $db->quoteName('a') . '.' . $db->quoteName('rgt') . ' > ' . $db->quoteName('b') . '.' . $db->quoteName('rgt')
+			);
+			$query->group($db->quoteName('a') . '.' . $db->quoteName('id'));
+			$query->group($db->quoteName('a') . '.' . $db->quoteName('title'));
+			$query->group($db->quoteName('a') . '.' . $db->quoteName('lft'));
+			$query->group($db->quoteName('a') . '.' . $db->quoteName('rgt'));
+			$query->order('a.lft ASC');
 			try
 			{
-				$_db->setQuery($query);
-				$options = $_db->loadObjectList();
+				$db->setQuery($query);
+				$options = $db->loadObjectList();
 
 				foreach ($options as &$option)
 				{

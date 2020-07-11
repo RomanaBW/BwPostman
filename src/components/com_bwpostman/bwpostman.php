@@ -41,7 +41,7 @@ require_once(JPATH_COMPONENT . '/controller.php');
 
 // Require specific controller
 $jinput = Factory::getApplication()->input;
-$view   = $jinput->get('view', '');
+$view   = $jinput->getCmd('view', '');
 
 if ($view)
 {

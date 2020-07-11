@@ -89,8 +89,8 @@ class BwPostmanController extends JControllerLegacy
 		$plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
 		$pluginParams = new Registry();
 		$pluginParams->loadString($plugin->params);
-		$pluginPw   = (int) $pluginParams->get('bwtimecontrol_passwd');
-		$pluginUser = (int) $pluginParams->get('bwtimecontrol_username');
+		$pluginPw   = (string) $pluginParams->get('bwtimecontrol_passwd');
+		$pluginUser = (string) $pluginParams->get('bwtimecontrol_username');
 
 		if ($pluginUser === "" || $pluginPw === "")
 		{

@@ -248,7 +248,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$checkin	= property_exists($table, 'checked_out');
 
 		// Access check.
-		if ($recordId == 0)
+		if ($recordId === 0)
 		{
 			$allowed    = $this->allowAdd();
 		}
@@ -408,7 +408,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$recordId = $this->input->getInt($urlVar);
 
 		// Access check.
-		if ($recordId == 0)
+		if ($recordId === 0)
 		{
 			$allowed    = $this->allowAdd();
 		}
@@ -434,9 +434,9 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$lang		= Factory::getLanguage();
 		$checkin	= property_exists($table, 'checked_out');
 		$context	= "$this->option.edit.$this->context";
-		$task		= $this->getTask();
+		$task		= (string)$this->getTask();
 
-		if (($task == 'save') || ($task == 'apply') || ($task == 'save2new')  || ($task == 'save2copy') || ($task == 'publish_save') || ($task == 'publish_apply'))
+		if (($task === 'save') || ($task === 'apply') || ($task === 'save2new')  || ($task === 'save2copy') || ($task === 'publish_save') || ($task === 'publish_apply'))
 		{
 			$this->changeTab();
 		}
@@ -445,7 +445,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 
 		// Reset is_template on copy
-		if ($task == 'save2copy')
+		if ($task === 'save2copy')
 		{
 			$data['is_template'] = 0;
 		}
@@ -454,7 +454,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$data[$key] = $recordId;
 
 		// The save2copy task needs to be handled slightly differently.
-		if ($task == 'save2copy')
+		if ($task === 'save2copy')
 		{
 			// Check-in the original row.
 			if ($checkin && $model->checkin($data[$key]) === false)
@@ -663,13 +663,13 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	{
 		$app		= Factory::getApplication();
 		$recordId	= $this->input->getInt('id', 0);
-		$tab		= $this->input->get('tab', 'edit_basic');
+		$tab		= (string)$this->input->get('tab', 'edit_basic');
 
 		$app->setUserState($this->context . '.tab' . $recordId, $tab);
 
 		$this->getModel('newsletter')->changeTab();
 
-		if ($this->getTask() == 'changeTab')
+		if ((string)$this->getTask() === 'changeTab')
 		{
 			$this->setRedirect(
 				Route::_(
@@ -679,7 +679,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 				)
 			);
 		}
-		elseif($this->getTask() == 'publish_save')
+		elseif($this->getTask() === 'publish_save')
 		{
 			$app->setUserState('bwpostman.newsletters.tab', 'sent');
 			$this->input->set('tab', 'sent');
@@ -713,7 +713,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 
 		foreach ($cids as $cid)
 		{
-			if ($model->isTemplate($cid))
+			if ($model->isTemplate((int)$cid))
 			{
 				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR'), 'error');
 				$this->setRedirect(
@@ -760,13 +760,13 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$this->logger->addEntry(new LogEntry('NL controller sendmail reached', BwLogger::BW_DEBUG, 'send'));
 
 		// Get record ID from list view
-		$ids    	= (int) $this->input->get('cid', 0, '');
+		$ids    	= $this->input->get('cid', 0, '');
 		$recordId   = $ids[0];
 
 		// If we come from single view, record ID is 0 at new newsletter
-		if ($recordId == 0)
+		if ($recordId === 0 || $recordId === null)
 		{
-			$recordId	= $this->input->getInt('id', 0);
+			$recordId	= (int)$this->input->get('id', 0);
 		}
 
 		$data = $model->preSendChecks($error, $recordId);
@@ -792,7 +792,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		// Sending is allowed, form data are valid, newsletter is no content template and saving was successful
-		$task			= $this->input->get('task', 0);
+		$task			= $this->input->getCmd('task', 0);
 		$unconfirmed	= $this->input->get('send_to_unconfirmed', 0);
 		$app->setUserState('bwpostman.send.alsoUnconfirmed', $unconfirmed);
 		$startsending	= 0;
@@ -922,7 +922,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 
 		foreach ($cid as $id)
 		{
-			if (!$this->allowEdit(array('id' => $id)))
+			if (!$this->allowEdit(array('id' => (int)$id)))
 			{
 				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_COPY_CREATE_RIGHTS_MISSING'), 'error');
 			}
@@ -966,7 +966,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		$msg		= '';
 
 		// Which tab are we in?
-		$layout	= $this->input->get('tab', 'unsent');
+		$layout	= $this->input->getWord('tab', 'unsent');
 
 		// Get the selected newsletter(s)
 		$cid	= $this->input->get('cid', array(0), 'post');
@@ -1108,14 +1108,14 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 */
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
-		$layout	= $this->input->get('layout', 'edit_basic', 'string');
+		$layout	= $this->input->getWord('layout', 'edit_basic', 'string');
 
 		$append	= '';
 
 		// Setup redirect info.
 		if ($layout)
 		{
-			if ($layout == 'default')
+			if ($layout === 'default')
 			{
 				$layout	= 'edit_basic';
 			}

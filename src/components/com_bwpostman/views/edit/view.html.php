@@ -96,6 +96,7 @@ class BwPostmanViewEdit extends JViewLegacy
 		if(isset($subscriber_data) && is_array($subscriber_data))
 		{
 			$subscriber	= new stdClass();
+
 			foreach ($subscriber_data AS $key => $value)
 			{
 				$subscriber->$key = $value;
@@ -107,6 +108,7 @@ class BwPostmanViewEdit extends JViewLegacy
 		else
 		{
 			$subscriber	= $this->get('Item');
+
 			if(!is_object($subscriber))
 			{
 				$subscriber = BwPostmanSubscriberHelper::fillVoidSubscriber();
@@ -122,8 +124,8 @@ class BwPostmanViewEdit extends JViewLegacy
 		$model = $this->getModel();
 		$mlTable = $model->getTable('Mailinglists');
 		$subsTable = $model->getTable('Subscribers');
-		$userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
-		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists($userId);
+		$userId  = $subsTable->getUserIdOfSubscriber((int)$subscriber->id);
+		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists((int)$userId);
 
 		// Get document object, set document title and add css
 		$templateName	= $app->getTemplate();

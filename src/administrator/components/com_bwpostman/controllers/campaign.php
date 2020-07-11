@@ -208,7 +208,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 		$checkin = property_exists($table, 'checked_out');
 
 		// Access check.
-		if ($recordId == 0)
+		if ($recordId === 0 || $recordId === null)
 		{
 			$allowed    = $this->allowAdd();
 		}

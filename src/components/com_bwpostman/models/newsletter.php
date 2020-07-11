@@ -51,7 +51,7 @@ class BwPostmanModelNewsletter extends JModelItem
 	 */
 	public function getContent()
 	{
-		$id		    = (int) Factory::getApplication()->input->get('id', 0);
+		$id		    = (int) Factory::getApplication()->input->getInt('id', 0);
 		$newsletter = null;
 		$user	= Factory::getUser();
 
@@ -73,15 +73,16 @@ class BwPostmanModelNewsletter extends JModelItem
 	 *
 	 * @return  object
 	 *
-	 * @since 4.0.0
 	 * @throws Exception
+	 *
+	 * @since 4.0.0
 	 */
 	public function getItem($pk = null)
 	{
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
 		$model = new BwPostmanModelNewsletter();
 
-		$item = $model->getItem($pk);
+		$item = $model->getItem((int)$pk);
 
 		return $item;
 	}

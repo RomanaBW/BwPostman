@@ -62,23 +62,23 @@ class JFormFieldMenuItems extends JFormFieldList
 	protected function getOptions()
 	{
 		$options    = null;
-		$_db	    = Factory::getDbo();
-		$query	    = $_db->getQuery(true);
+		$db	    = Factory::getDbo();
+		$query	    = $db->getQuery(true);
 
-		$query->select($_db->quoteName('id') . ' AS value');
-		$query->select($_db->quoteName('title') . ' AS text');
-		$query->from($_db->quoteName('#__menu'));
+		$query->select($db->quoteName('id') . ' AS value');
+		$query->select($db->quoteName('title') . ' AS text');
+		$query->from($db->quoteName('#__menu'));
 		$query->where(
-			$_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=archive')
-			. ' OR ' . $_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=newsletters')
+			$db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=archive')
+			. ' OR ' . $db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=newsletters')
 		);
-		$query->where($_db->quoteName('client_id') . ' = ' . (int) 0);
-		$query->order($_db->quoteName('title') . ' ASC');
+		$query->where($db->quoteName('client_id') . ' = ' . 0);
+		$query->order($db->quoteName('title') . ' ASC');
 
 		try
 		{
-			$_db->setQuery($query);
-			$options = $_db->loadObjectList();
+			$db->setQuery($query);
+			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

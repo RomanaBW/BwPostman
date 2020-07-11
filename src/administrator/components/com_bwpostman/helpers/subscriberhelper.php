@@ -166,8 +166,8 @@ class BwPostmanSubscriberHelper
 		$session_error = array('err_msg' => 'COM_BWPOSTMAN_ERROR_WRONGEDITLINK');
 		$session->set('session_error', $session_error);
 
-		$jinput->set('layout', 'error_geteditlink');
-		$jinput->set('view', 'register');
+//		$jinput->set('layout', 'error_geteditlink');
+//		$jinput->set('view', 'register');
 	}
 
 	/**
@@ -698,4 +698,104 @@ class BwPostmanSubscriberHelper
 
 		return $itemid;
 	}
+
+	/**
+	 * Method to create the registered_by value
+	 *
+	 * @param   object $subscriber
+	 *
+	 * @return 	void
+	 *
+	 * @throws Exception
+	 *
+	 * @since    2.4.0
+	 */
+	public static function createSubscriberRegisteredBy(&$subscriber)
+	{
+		if ($subscriber->registered_by == 0)
+		{
+			if ($subscriber->name != '')
+			{
+				$subscriber->registered_by	= $subscriber->name;
+				if ($subscriber->firstname != '')
+				{
+					$subscriber->registered_by	.= ", " . $subscriber->firstname;
+				}
+			}
+			else
+			{
+				$subscriber->registered_by = "User";
+			}
+		}
+		else
+		{
+			$db   = Factory::getDbo();
+
+			$query_reg	= $db->getQuery(true);
+			$query_reg->select('name');
+			$query_reg->from($db->quoteName('#__users'));
+			$query_reg->where($db->quoteName('id') . ' = ' . (int) $subscriber->registered_by);
+			$db->setQuery((string) $query_reg);
+
+			try
+			{
+				$subscriber->registered_by = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+		}
+
+	}
+
+	/**
+	 * Method to create the confirmed_by value
+	 *
+	 * @param   object $subscriber
+	 *
+	 * @return 	void
+	 *
+	 * @throws Exception
+	 *
+	 * @since    2.4.0
+	 */
+	public static function createSubscriberConfirmedBy(&$subscriber)
+	{
+		if ($subscriber->confirmed_by == 0)
+		{
+			if ($subscriber->name != '')
+			{
+				$subscriber->confirmed_by	= $subscriber->name;
+				if ($subscriber->firstname != '')
+				{
+					$subscriber->confirmed_by	.= ", " . $subscriber->firstname;
+				}
+			}
+			else
+			{
+				$subscriber->confirmed_by = "User";
+			}
+		}
+		else
+		{
+			$db   = Factory::getDbo();
+
+			$query_conf	= $db->getQuery(true);
+			$query_conf->select('name');
+			$query_conf->from($db->quoteName('#__users'));
+			$query_conf->where($db->quoteName('id') . ' = ' . (int) $subscriber->confirmed_by);
+			$db->setQuery((string) $query_conf);
+
+			try
+			{
+				$subscriber->confirmed_by = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+		}
+	}
 }
+

@@ -413,36 +413,54 @@ class BwPostmanTableSubscribers extends JTable
 		$err		= $session->get('session_error');
 		$fault		= false;
 
-		$db		= $this->_db;
-		$query		= $db->getQuery(true);
-
-		$tester		= false;
+		$isTester = false;
 		$format_txt	= array(0 => 'Text', 1 => 'HTML');
 
 		if ($xtest == '9')
 		{
-			$tester	= true;
+			$isTester = true;
 		}
 
 		if ($import && $this->status == '9')
 		{
-			$tester	= true;
+			$isTester = true;
 		}
 
 		// Cleanup all vulnerable values
-		$filter				= new InputFilter(array(), array(), 0, 0);
-		$this->name 		= $filter->clean($this->name);
-		$this->firstname	= $filter->clean($this->firstname);
-		$this->email		= $filter->clean($this->email);
-		$this->special		= $filter->clean($this->special);
-		$this->emailformat  = $filter->clean($this->emailformat, 'UINT');
+		$filter = new InputFilter(array(), array(), 0, 0);
+
+		$this->id                = $filter->clean($this->id, 'UINT');
+		$this->asset_id          = $filter->clean($this->asset_id, 'UINT');
+		$this->name              = $filter->clean($this->name);
+		$this->firstname         = $filter->clean($this->firstname);
+		$this->email             = $filter->clean($this->email);
+		$this->emailformat       = $filter->clean($this->emailformat, 'BOOLEAN');
+		$this->gender            = $filter->clean($this->gender, 'UINT');
+		$this->special           = $filter->clean($this->special);
+		$this->status            = $filter->clean($this->status, 'UINT');
+		$this->activation        = $filter->clean($this->activation);
+		$this->editlink          = $filter->clean($this->editlink);
+		$this->access            = $filter->clean($this->access, 'UINT');
+		$this->registration_date = $filter->clean($this->registration_date);
+		$this->registered_by     = $filter->clean($this->registered_by, 'INT');
+		$this->registration_ip   = $filter->clean($this->registration_ip);
+		$this->confirmation_date = $filter->clean($this->confirmation_date);
+		$this->confirmed_by      = $filter->clean($this->confirmed_by, 'INT');
+		$this->modified_by       = $filter->clean($this->modified_by, 'INT');
+		$this->confirmation_ip   = $filter->clean($this->confirmation_ip);
+		$this->modified_time     = $filter->clean($this->modified_time);
+		$this->checked_out       = $filter->clean($this->checked_out, 'INT');
+		$this->checked_out_time  = $filter->clean($this->checked_out_time);
+		$this->archive_flag      = $filter->clean($this->archive_flag, 'UINT');
+		$this->archive_date      = $filter->clean($this->archive_date);
+		$this->archived_by       = $filter->clean($this->archived_by, 'INT');
 
 		if (!$import)
 		{
 			// Check for valid first name
 			if ($params->get('firstname_field_obligation'))
 			{
-				if (trim($this->firstname) == '')
+				if (trim($this->firstname) === '')
 				{
 					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_ERROR_FIRSTNAME'), 'error');
 					$fault	= true;
@@ -452,7 +470,7 @@ class BwPostmanTableSubscribers extends JTable
 			// Check for valid name
 			if ($params->get('name_field_obligation'))
 			{
-				if (trim($this->name) == '')
+				if (trim($this->name) === '')
 				{
 					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_ERROR_NAME'), 'error');
 					$fault	= true;
@@ -462,7 +480,7 @@ class BwPostmanTableSubscribers extends JTable
 			// Check for valid additional field
 			if ($params->get('special_field_obligation'))
 			{
-				if (trim($this->special) == '')
+				if (trim($this->special) === '')
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', $params->get('special_label') != '' ? Text::_($params->get('special_label')) : Text::_('COM_BWPOSTMAN_SPECIAL')), 'error');
 					$fault	= true;
@@ -471,7 +489,7 @@ class BwPostmanTableSubscribers extends JTable
 		}
 
 		// Check for valid email address
-		if (trim($this->email) == '')
+		if (trim($this->email) === '')
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_ERROR_EMAIL'), 'error');
 			$fault	= true;
@@ -504,7 +522,7 @@ class BwPostmanTableSubscribers extends JTable
 
 			// Spamcheck 1
 			// Set error message if a not visible (top: -5000px) input field is not empty
-			if($data['falle'] != '')
+			if($data['falle'] !== '')
 			{
 				// input wrong - set error
 				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_SPAMCHECK'), 'error');
@@ -525,7 +543,7 @@ class BwPostmanTableSubscribers extends JTable
 			if ($params->get('use_captcha') == 1)
 			{
 				// start check
-				if(trim($data['stringQuestion']) != trim($params->get('security_answer')) || (isset($data['mod_id']) && $fault))
+				if(trim($data['stringQuestion']) !== trim($params->get('security_answer')) || (isset($data['mod_id']) && $fault))
 				{
 					// input wrong - set error
 					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');
@@ -559,64 +577,21 @@ class BwPostmanTableSubscribers extends JTable
 		}
 
 		// Check for existing email
-		$xid    = 0;
-		$xids   = array();
-		$query->select($db->quoteName('id'));
-		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('email') . ' = ' . $db->quote($this->email));
-		if (!$tester)
-		{
-			$query->where($db->quoteName('status') . ' != ' . (int) 9);
-		}
-
-		$db->setQuery($query);
-
-		try
-		{
-			if (!$tester)
-			{
-				$xid = intval($this->_db->loadResult());
-			}
-			else
-			{
-				$xids = $this->_db->loadColumn();
-			}
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$xids = $this->getSubscriberIdByEmail($this->email, $isTester);
 
 		//Test-recipient may have multiple entries, but may not be archived
-		if ($tester)
+		if ($isTester)
 		{
 			foreach ($xids AS $xid)
 			{
 				$xid = intval($xid);
 
-				if ($xid && $xid != intval($this->id))
+				if ($xid && $xid !== intval($this->id))
 				{
-					$testrecipient  = new stdClass();
-					$query	= $db->getQuery(true);
-
-					$query->select($db->quoteName('id'));
-					$query->select($db->quoteName('emailformat'));
-					$query->select($db->quoteName('archive_flag'));
-					$query->from($db->quoteName($this->_tbl));
-					$query->where($db->quoteName('id') . ' = ' . (int) $xid);
-
-					$this->_db->setQuery($query);
-					try
-					{
-						$testrecipient = $this->_db->loadObject();
-					}
-					catch (RuntimeException $e)
-					{
-						$app->enqueueMessage($e->getMessage(), 'error');
-					}
+					$testrecipient = $this->getSubscriberNewsletterData($xid);
 
 					// Account with this emailformat already exists
-					if (($testrecipient->archive_flag == 0) && ($testrecipient->emailformat == $this->emailformat))
+					if (($testrecipient->archive_flag === 0) && ($testrecipient->emailformat === $this->emailformat))
 					{
 						$app->enqueueMessage(
 							Text::sprintf(
@@ -650,7 +625,7 @@ class BwPostmanTableSubscribers extends JTable
 					}
 
 					// Account is archived
-					if (($testrecipient->archive_flag == 1) && ($testrecipient->emailformat == $this->emailformat))
+					if (($testrecipient->archive_flag === 1) && ($testrecipient->emailformat === $this->emailformat))
 					{
 						$app->enqueueMessage(
 							Text::sprintf(
@@ -688,37 +663,18 @@ class BwPostmanTableSubscribers extends JTable
 		//Subscriber may only have one subscription, that ist not archived of blocked
 		else
 		{
-			if ($xid && $xid != intval($this->id))
+			if ($xids && $xids !== intval($this->id))
 			{
-				$subscriber = new stdClass();
-				$query	= $db->getQuery(true);
-
-				$query->select($db->quoteName('id'));
-				$query->select($db->quoteName('status'));
-				$query->select($db->quoteName('archive_flag'));
-				$query->select($db->quoteName('archived_by'));
-				$query->from($db->quoteName($this->_tbl));
-				$query->where($db->quoteName('id') . ' = ' . (int) $xid);
-
-				$db->setQuery($query);
-				try
-				{
-					$subscriber = $this->_db->loadObject();
-				}
-				catch (RuntimeException $e)
-				{
-					$app->enqueueMessage($e->getMessage(), 'error');
-				}
+				$subscriber = $this->getSubscriberNewsletterData($xids);
 
 				// Account is blocked by system/administrator
-				if (($subscriber->archive_flag == 1) && ($subscriber->archived_by > 0))
+				if (($subscriber->archive_flag === 1) && ($subscriber->archived_by > 0))
 				{
 					$err['err_code']	= 405;
-					$err['err_msg']		= Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xid);
-					$err['err_id']		= $xid;
+					$err['err_msg']		= Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xids);
+					$err['err_id']		= $xids;
 					$err['err_email']	= $this->email;
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-//					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xid), 'error');
 					$session->set('session_error', $err);
 					return false;
 				}
@@ -727,12 +683,11 @@ class BwPostmanTableSubscribers extends JTable
 				if ($subscriber->status == 0)
 				{
 					$err['err_code'] = 406;
-					$err['err_msg']	= Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xid);
-					$err['err_id'] = $xid;
+					$err['err_msg']	= Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xids);
+					$err['err_id'] = $xids;
 					$err['err_email']	= $this->email;
 
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-//					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xid), 'error');
 					$session->set('session_error', $err);
 
 					return false;
@@ -749,11 +704,11 @@ class BwPostmanTableSubscribers extends JTable
 						$this->email,
 						$link
 					);
-					$err['err_id'] = $xid;
+					$err['err_id'] = $xids;
 					$err['err_email']	= $this->email;
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
 					$session->set('session_error', $err);
-					$this->setError(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $this->email,  $xid));
+					$this->setError(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $this->email,  $xids));
 					return false;
 				}
 			}
@@ -950,7 +905,9 @@ class BwPostmanTableSubscribers extends JTable
 		$query->select($db->quoteName('id'));
 		$query->select($db->quoteName('editlink'));
 		$query->select($db->quoteName('archive_flag'));
+		$query->select($db->quoteName('archived_by'));
 		$query->select($db->quoteName('status'));
+		$query->select($db->quoteName('emailformat'));
 		$query->from($this->_tbl);
 		$query->where($db->quoteName('id') . ' = ' . $db->quote((int) $subsId));
 
@@ -1006,42 +963,56 @@ class BwPostmanTableSubscribers extends JTable
 			$id = 0;
 		}
 
-		return $id;
+		return (int)$id;
 	}
 
 	/**
 	 * Method to check if an email address exists in the subscribers-table
 	 *
-	 * @param 	string  $email  subscriber email
+	 * @param string  $email    subscriber email
+	 * @param boolean $isTester is tester?
 	 *
-	 * @return 	int     $id     subscriber ID
+	 * @return 	int|array     $id     subscriber ID
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function getSubscriberIdByEmail($email)
+	public function getSubscriberIdByEmail($email, $isTester = false)
 	{
 		$db	= $this->_db;
 		$query	= $db->getQuery(true);
 		$id     = 0;
 
+		// Sanitize values
+		$email = $db->escape($email);
+
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('email') . ' = ' . $db->quote($email));
-		$query->where($db->quoteName('status') . ' != ' . (int) 9);
+		if (!$isTester)
+		{
+			$query->where($db->quoteName('status') . ' != ' . 9);
+		}
 		$db->setQuery($query);
 
 		try
 		{
-			$id = $db->loadResult();
+			if (!$isTester)
+			{
+				$id = intval($this->_db->loadResult());
+			}
+			else
+			{
+				$id = $this->_db->loadColumn();
+			}
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return $id;
+		return (int)$id;
 	}
 
 	/**
@@ -1067,7 +1038,7 @@ class BwPostmanTableSubscribers extends JTable
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' = ' . (int) $id);
-		$query->where($db->quoteName('status') . ' != ' . (int) 9);
+		$query->where($db->quoteName('status') . ' != ' . 9);
 
 		try
 		{
@@ -1103,7 +1074,7 @@ class BwPostmanTableSubscribers extends JTable
 		$query->select($db->quoteName('user_id'));
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' = ' . (int) $id);
-		$query->where($db->quoteName('status') . ' != ' . (int) 9);
+		$query->where($db->quoteName('status') . ' != ' . 9);
 
 		try
 		{
@@ -1313,13 +1284,16 @@ class BwPostmanTableSubscribers extends JTable
 		$db   = $this->_db;
 		$query = $db->getQuery(true);
 
+		// Sanitize values
+		$email = $db->escape($values['email']);
+
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('email') . ' = ' . $db->quote($values['email']));
+		$query->where($db->quoteName('email') . ' = ' . $db->quote($email));
 		if ($values['status'] == '9')
 		{
-			$query->where($db->quoteName('emailformat') . ' = ' . $db->quote($values['emailformat']));
-			$query->where($db->quoteName('status') . ' = ' . (int) 9);
+			$query->where($db->quoteName('emailformat') . ' = ' . $db->quote((int)$values['emailformat']));
+			$query->where($db->quoteName('status') . ' = ' . 9);
 		}
 		else
 		{
@@ -1414,7 +1388,7 @@ class BwPostmanTableSubscribers extends JTable
 	}
 
 	/**
-	 * Method to validate edit link, if exists return subcriber id
+	 * Method to validate edit link, if exists return subscriber id
 	 *
 	 * @param integer  $email      email of the demanded unsubscription
 	 * @param string   $editlink   editlink provided by the unsubscription
@@ -1429,6 +1403,10 @@ class BwPostmanTableSubscribers extends JTable
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
+
+		// Sanitize values
+		$email = $db->escape($email);
+		$editlink = $db->escape($editlink);
 
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName($this->_tbl));
@@ -1464,17 +1442,17 @@ class BwPostmanTableSubscribers extends JTable
 	public function getEmailaddress($id)
 	{
 		$emailaddress   = null;
-		$_db	        = $this->_db;
-		$query	        = $_db->getQuery(true);
+		$db	        = $this->_db;
+		$query	        = $db->getQuery(true);
 
-		$query->select($_db->quoteName('email'));
-		$query->from($_db->quoteName($this->_tbl));
-		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
+		$query->select($db->quoteName('email'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' = ' . (int) $id);
 
 		try
 		{
-			$_db->setQuery($query);
-			$emailaddress = $_db->loadResult();
+			$db->setQuery($query);
+			$emailaddress = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -1497,18 +1475,18 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function checkEditlink($editlink)
 	{
-		$_db	= $this->_db;
-		$query	= $_db->getQuery(true);
+		$db	= $this->_db;
+		$query	= $db->getQuery(true);
 
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName($this->_tbl));
-		$query->where($_db->quoteName('editlink') . ' = ' . $_db->quote($editlink));
-		$query->where($_db->quoteName('status') . ' != ' . (int) 9);
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('editlink') . ' = ' . $db->quote($editlink));
+		$query->where($db->quoteName('status') . ' != ' . (int) 9);
 
 		try
 		{
-			$_db->setQuery($query);
-			$id = $_db->loadResult();
+			$db->setQuery($query);
+			$id = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{

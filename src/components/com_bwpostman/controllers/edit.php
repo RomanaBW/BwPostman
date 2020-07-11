@@ -32,6 +32,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Mail\MailHelper;
 
 // Import CONTROLLER object class
 jimport('joomla.application.component.controller');
@@ -109,10 +110,10 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$userid 		= (int) $user->get('id');
 		$subsTable      = $this->getModel('subscriber')->getTable('Subscribers');
 
-		// if user is logged in fetch subscriber id
+		// if user is logged in fetch subscriber id (subscriber id = 0 means the user has no newsletter subscription)
 		if ($userid)
 		{
-			$subscriberid = (int) $subsTable->getSubscriberIdByUserId($userid); // = 0 if the user has no newsletter subscription
+			$subscriberid = $subsTable->getSubscriberIdByUserId($userid);
 		}
 
 		// Check if the variable editlink exists in the uri
@@ -121,15 +122,16 @@ class BwPostmanControllerEdit extends JControllerLegacy
 
 		// Get subscriber id from session, clear session if necessary
 		$session_subscriberid = $session->get('session_subscriberid');
+
 		if(isset($session_subscriberid) && is_array($session_subscriberid))
 		{
 			if ($user_is_guest)
 			{
 				if (!empty($editlink))
 				{
-					if ($model->checkEditlink($editlink) == $session_subscriberid['id'])
+					if ($model->checkEditlink($editlink) === (int)$session_subscriberid['id'])
 					{
-						$subscriberid = $session_subscriberid['id'];
+						$subscriberid = (int)$session_subscriberid['id'];
 					}
 					else
 					{
@@ -138,7 +140,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 				}
 				elseif (is_null($editlink))
 				{
-					$subscriberid = $session_subscriberid['id'];
+					$subscriberid = (int)$session_subscriberid['id'];
 				}
 			}
 			else
@@ -152,6 +154,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		{
 			// Guest with known subscriber id (stored in the session) or logged in user
 			$subscriberdata	= $subsTable->getSubscriberState((int) $subscriberid);
+
 			if (is_object($subscriberdata))
 			{
 				if ($user_is_guest)
@@ -159,9 +162,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					$userid = (int) $subscriberdata->user_id;
 				}
 
-				$active_subscription    = $this->checkActiveSubscription($subscriberdata, $err);
-
-				if (!$active_subscription)
+				if (!$this->checkActiveSubscription($subscriberdata, $err))
 				{
 					BwPostmanSubscriberHelper::errorSubscriberData($err, $subscriberid, $subscriberdata->email);
 				}
@@ -170,6 +171,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		else
 		{ // Guest with unknown subscriber id (not stored in the session)
 			$link = Uri::base() . 'index.php?option=com_bwpostman&view=register&layout=error_geteditlink';
+
 			if (is_null($editlink))
 			{
 			}
@@ -191,9 +193,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 				{
 					$subscriberdata	= $subsTable->getSubscriberState((int) $subscriberid);
 
-					$active_subscription    = $this->checkActiveSubscription($subscriberdata, $err);
-
-					if (!$active_subscription)
+					if (!$this->checkActiveSubscription($subscriberdata, $err))
 					{
 						BwPostmanSubscriberHelper::errorSubscriberData($err, $subscriberid, $subscriberdata->email);
 						parent::display();
@@ -227,8 +227,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$app	= Factory::getApplication();
 		$app->setUserState('subscriber.id', $subscriberid);
 
-		$this->subscriberid = $subscriberid;
-		$this->userid       = $userid;
+		$this->subscriberid = (int)$subscriberid;
+		$this->userid       = (int)$userid;
 	}
 
 	/**
@@ -250,12 +250,11 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$session		= Factory::getSession();
 		$session_error	= $session->get('session_error');
 
-		$jinput->set('view', 'edit');
-
 		if(!(isset($session_error) && is_array($session_error)))
 		{
 			if (($this->userid) && ($this->subscriberid))
 			{
+				$jinput->set('view', 'edit');
 			}
 			elseif (($this->userid) && (!$this->subscriberid))
 			{
@@ -263,6 +262,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			}
 			elseif ((!$this->userid) && ($this->subscriberid))
 			{
+				$jinput->set('view', 'edit');
 			}
 			else
 			{
@@ -295,21 +295,29 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			array(
 				'edit' => 'string',
 				'email' => 'string',
-				'emailformat' => 'string',
+				'emailformat' => 'uint',
 				'firstname' => 'string',
-				'firstname_field_obligation' => 'string',
-				'gender' => 'string',
+				'firstname_field_obligation' => 'uint',
+				'gender' => 'uint',
 				'special' => 'string',
-				'id' => 'string',
+				'id' => 'uint',
 				'language' => 'string',
 				'mailinglists' => 'array',
 				'name' => 'string',
-				'name_field_obligation' => 'string',
+				'name_field_obligation' => 'uint',
 				'task' => 'string',
 				'option' => 'string',
-				'unsubscribe' => 'int'
+				'unsubscribe' => 'uint'
 			)
 		);
+
+		// @ToDo: Consider about correct action. Shouldn't we cancel? As a placeholder until then we only show a warning.
+		// Correct action is necessary because we send the confirmation mail to this mail address, if it has changed.
+		// Probably a full check (see import subscribers) is the better way…
+		if (!MailHelper::isEmailAddress($post['email']))
+		{
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_WARNING_FAULTY_MAIL_ADDRESS', $post['email']), 'warning');
+		}
 
 		$newEmail	= false;
 		$subsTable  = $this->getModel('subscriber')->getTable('Subscribers');
@@ -326,12 +334,12 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			$link   = Uri::base() . 'index.php?option=com_bwpostman&view=edit&Itemid=' . $itemid;
 
 			// Email address has changed
-			if (($post['email'] != "") && ($post['email'] != $model->getEmailaddress($post['id'])))
+			if (($post['email'] !== "") && ($post['email'] !== $model->getEmailaddress($post['id'])))
 			{
 				$newEmail					= true;
 				$post['status'] 			= 0;
-				$post['confirmation_date'] 	= "0000-00-00 00:00:00";
-				$post['confirmed_by'] 		= '-1';
+				$post['confirmation_date'] 	= Factory::getDbo()->getNullDate();
+				$post['confirmed_by'] 		= -1;
 				$post['activation']			= $subsTable->createActivation();;
 			}
 
@@ -417,7 +425,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 					else
 					{
-						$uid	= $subsTable->getUserIdOfSubscriber($post['id']);
+						$uid	= (int)$subsTable->getUserIdOfSubscriber($post['id']);
 						$this->setData($post['id'], $uid);
 
 						$app->setUserState('subscriber.id', $post['id']);
@@ -457,10 +465,10 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		// We come from the edit view
 		if ($id)
 		{
-			$subsTable    = $this->getModel('subscriber')->getTable('Subscribers');
-			$unsubscribedata	= $subsTable->getSubscriberState($id);
-			$email				= $unsubscribedata->email;
-			$editlink			= $unsubscribedata->editlink;
+			$subsTable       = $this->getModel('subscriber')->getTable('Subscribers');
+			$unsubscribedata = $subsTable->getSubscriberState((int)$id);
+			$email           = $unsubscribedata->email;
+			$editlink        = $unsubscribedata->editlink;
 
 			// We come from an unsubscribe-link
 		}
@@ -516,6 +524,12 @@ class BwPostmanControllerEdit extends JControllerLegacy
 	 */
 	public function sendEditlink()
 	{
+		// Check for request forgeries
+		if (!Session::checkToken())
+		{
+			jexit(Text::_('JINVALID_TOKEN'));
+		}
+
 		$jinput	= Factory::getApplication()->input;
 		$model	= $this->getModel('register');
 		$post	= $jinput->getArray(
@@ -527,40 +541,41 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			)
 		);
 
-		// Check for request forgeries
-		if (!Session::checkToken())
+		// @ToDo: Consider about correct action. Shouldn't we cancel? As a placeholder until then we only show a warning.
+		// Correct action is necessary because we send the confirmation mail to this mail address, if it has changed.
+		// Probably a full check (see import subscribers) is the better way…
+		if (!MailHelper::isEmailAddress($post['email']))
 		{
-			jexit(Text::_('JINVALID_TOKEN'));
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_WARNING_FAULTY_MAIL_ADDRESS', $post['email']), 'warning');
 		}
 
-		$id				= $model->isRegSubscriber($post['email']);
-		$err			= new stdClass();
-		$err->err_code	= 0;
-		$editlink		= '';
+		$id	            = (int)$model->isRegSubscriber($post['email']);
+		$err            = new stdClass();
+		$err->err_code  = 0;
 		$subs_id        = null;
-		$subscriber		= new stdClass();
-		$subsTable    = $this->getModel('subscriber')->getTable('Subscribers');
+		$subscriber     = new stdClass();
+		$subsTable      = $this->getModel('subscriber')->getTable('Subscribers');
 		$subscriberdata = $subsTable->getSubscriberState($id);
 
 		if (!is_object($subscriberdata))
 		{
-			$subs_id		= null;
-			$err->err_id    = $id;
-			$err->err_code	= 408; // Email address doesn't exist
-			$err->err_msg	= Text::sprintf(
+			$subs_id       = null;
+			$err->err_id   = $id;
+			$err->err_code = 408; // Email address doesn't exist
+			$err->err_msg  = Text::sprintf(
 				'COM_BWPOSTMAN_ERROR_EMAILDOESNTEXIST',
 				$post['email'],
 				Route::_('index.php?option=com_bwpostman&view=register')
 			);
 		}
-		elseif ($subscriberdata->archive_flag == 1)
+		elseif ((int)$subscriberdata->archive_flag === 1)
 		{
 			$subs_id		= $subscriberdata->id;
 			$err->err_id    = $id;
 			$err->err_code	= 405; // Email address exists but is blocked
 			$err->err_msg	= 'COM_BWPOSTMAN_ERROR_ACCOUNTBLOCKED';
 		}
-		elseif ($subscriberdata->status == 0)
+		elseif ((int)$subscriberdata->status === 0)
 		{
 			$subs_id		= $subscriberdata->id;
 			$err->err_id    = $id;
@@ -568,7 +583,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			$err->err_msg	= 'COM_BWPOSTMAN_ERROR_ACCOUNTNOTACTIVATED';
 		}
 
-		if ($err->err_code != 0)
+		if ($err->err_code !== 0)
 		{
 			// we use not $subscriberdata->id - if $ID==NULL Notice: Trying to get property of non-object
 			BwPostmanSubscriberHelper::errorSubscriberData($err, $subs_id, $post['email']);
@@ -588,7 +603,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 			if ($res === true)
 			{ // Email has been sent
 				$success_msg 	= 'COM_BWPOSTMAN_SUCCESS_EMAILEDITLINK';
-				BwPostmanSubscriberHelper::success($success_msg, $editlink, $itemid);	// We need no editlink or itemid for the output in this layout
+				BwPostmanSubscriberHelper::success($success_msg, '', $itemid);	// We need no editlink or itemid for the output in this layout
 			}
 			else
 			{ // Email has not been sent
@@ -617,14 +632,14 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$result = true;
 
 		// The error code numbers are the same like in the subscribers-table check function
-		if ($subscriberdata->archive_flag == 1)
+		if ((int)$subscriberdata->archive_flag === 1)
 		{
 			$err->id       = $subscriberdata->id;
 			$err->err_code = 405;
 			$err->err_msg  = 'COM_BWPOSTMAN_ERROR_ACCOUNTBLOCKED';
 			$result = false;
 		}
-		elseif ($subscriberdata->status == 0)
+		elseif ((int)$subscriberdata->status === 0)
 		{
 			$err->id       = $subscriberdata->id;
 			$err->err_code = 406;

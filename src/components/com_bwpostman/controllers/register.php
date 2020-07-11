@@ -127,8 +127,8 @@ class BwPostmanControllerRegister extends JControllerLegacy
 			array(
 				'agreecheck_mod' => 'string',
 				'agreecheck' => 'string',
-				'a_emailformat' => 'string',
-				'emailformat' => 'string',
+				'a_emailformat' => 'uint',
+				'emailformat' => 'uint',
 				'a_firstname' => 'string',
 				'firstname' => 'string',
 				'a_name' => 'string',
@@ -154,7 +154,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 
 		if (isset($post['a_firstname']))
 		{
-			if ($post['a_firstname'] == Text::_('COM_BWPOSTMAN_FIRSTNAME'))
+			if ($post['a_firstname'] === Text::_('COM_BWPOSTMAN_FIRSTNAME'))
 			{
 				$post['firstname']	= '';
 			}
@@ -168,7 +168,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 
 		if (isset($post['a_name']))
 		{
-			if ($post['a_name'] == Text::_('COM_BWPOSTMAN_NAME'))
+			if ($post['a_name'] === Text::_('COM_BWPOSTMAN_NAME'))
 			{
 				$post['name']	= '';
 			}
@@ -216,7 +216,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		}
 		else
 		{
-			$post['user_id'] = $this->userid;
+			$post['user_id'] = (int)$this->userid;
 		}
 
 		// process input data, which will *not* be stored in state
@@ -313,7 +313,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 			$err_msg    = '';
 			$editlink   = '';
 			$subscriber_id = $model->activateSubscriber($activation, $err_msg, $editlink, $activation_ip);
-			if ($subscriber_id == false)
+			if ($subscriber_id === false)
 			{
 				BwPostmanSubscriberHelper::errorActivationCode($err_msg);
 				// Everything is okay, account has been activated
@@ -363,7 +363,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		$post			= $jinput->getArray(
 			array(
 				'email' => 'string',
-				'id' => 'string',
+				'id' => 'uint',
 				'task' => 'string',
 				'language' => 'string',
 				'option' => 'string'
@@ -395,10 +395,10 @@ class BwPostmanControllerRegister extends JControllerLegacy
 				Route::_('index.php?option=com_bwpostman&view=register')
 			);
 		}
-		elseif ($subscriberdata->archive_flag == 1)
+		elseif ((int)$subscriberdata->archive_flag === 1)
 		{
-			$subs_id		= $subscriberdata->id;
-			$err->err_id    = $subscriberdata->id;
+			$subs_id		= (int)$subscriberdata->id;
+			$err->err_id    = (int)$subscriberdata->id;
 			$err->err_code	= 405; // Email address exists but is blocked
 			$err->err_msg	= 'COM_BWPOSTMAN_ERROR_ACCOUNTBLOCKED';
 		}

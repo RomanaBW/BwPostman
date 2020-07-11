@@ -175,6 +175,7 @@ class BwPostmanModelEdit extends JModelAdmin
 
 		// Get the form.
 		$form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));
+
 		if (empty($form))
 		{
 			return false;
@@ -291,9 +292,7 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	public function getEmailaddress($id)
 	{
-		$emailaddress = $this->getTable()->getEmailaddress($id);
-
-		return $emailaddress;
+		return $this->getTable()->getEmailaddress($id);
 	}
 
 	/**
@@ -321,7 +320,7 @@ class BwPostmanModelEdit extends JModelAdmin
 			$id = 0;
 		}
 
-		return $id;
+		return (int)$id;
 	}
 
 	/**

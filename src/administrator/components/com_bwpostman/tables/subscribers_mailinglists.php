@@ -154,14 +154,16 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 		$query = $db->getQuery(true);
 		$query->delete($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('subscriber_id') . ' =  ' . (int) $subscriber_id);
+
 		if (!is_null($mailinglists))
 		{
 			$query->where($db->quoteName('mailinglist_id') . ' IN  ' . (explode('.', $mailinglists)));
 		}
 
+		$db->setQuery($query);
+
 		try
 		{
-			$db->setQuery($query);
 			$db->execute();
 
 			return true;

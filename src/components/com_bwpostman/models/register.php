@@ -117,6 +117,14 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
+		$form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));
+
+		if (empty($form))
+		{
+			return false;
+		}
+
+		return $form;
 	}
 
 	/**
@@ -153,9 +161,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	public function isRegSubscriber($email)
 	{
-		$id = $this->getTable()->getSubscriberIdByEmail($email);
-
-		return $id;
+		return $this->getTable()->getSubscriberIdByEmail($email);
 	}
 
 	/**
@@ -221,40 +227,23 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	public function delete(&$pks = null)
 	{
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
 		$params 	= ComponentHelper::getParams('com_bwpostman');
 		$send_mail	= $params->get('deactivation_to_webmaster');
 		$subscriber = null;
+		$subsTable = $this->getTable();
 
 		if ($pks)
 		{
 			if ($send_mail)
 			{
-				$query->select('*');
-				$query->from($db->quoteName('#__bwpostman_subscribers'));
-				$query->where($db->quoteName('id') . ' = ' . (int) $pks);
-
-				try
-				{
-					$db->setQuery($query);
-					$subscriber = $db->loadObject();
-				}
-				catch (RuntimeException $e)
-				{
-					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-				}
+				$subscriber = $subsTable->getSingleSubscriberData($pks);
 			}
 
 			// delete subscriber from subscribers table
-			$query	= $db->getQuery(true);
-			$query->delete($db->quoteName('#__bwpostman_subscribers'));
-			$query->where($db->quoteName('id') . ' = ' . (int) $pks);
-			$db->setQuery((string) $query);
-
 			try
 			{
-				$db->execute();
+				$subsTable->delete($pks);
+
 				// delete subscriber entries from subscribers-lists table
 				$subsMlTable = $this->getTable('Subscribers_Mailinglists');
 				$subsMlTable->deleteMailinglistsOfSubscriber($pks);
@@ -282,7 +271,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	 * @param 	string $ret_editlink    editlink for editing the subscriber data
 	 * @param 	string $activation_ip   IP used for activation
 	 *
-	 * @return 	Boolean
+	 * @return 	integer|Boolean
 	 *
 	 * @throws Exception
 	 *
@@ -302,7 +291,7 @@ class BwPostmanModelRegister extends JModelAdmin
 
 		if (isset($subscriber->id))
 		{
-			$id = $subscriber->id;
+			$id = (int)$subscriber->id;
 		}
 
 		// Is it a valid user to activate?
@@ -317,7 +306,7 @@ class BwPostmanModelRegister extends JModelAdmin
 			return false;
 		}
 
-		return $subscriber->id;
+		return $id;
 	}
 
 	/**
@@ -370,34 +359,11 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	public function sendDeactivationNotification($subscriber)
 	{
-		$mail	    = Factory::getMailer();
-		$params     = ComponentHelper::getParams('com_bwpostman');
-		$from	    = array();
-
-		// set recipient and reply-to
-		$from[0]	= MailHelper::cleanAddress($params->get('default_from_email'));
-		$from[1]	= $params->get('default_from_name');
-		$mail->setSender($from);
-		$mail->addReplyTo($from[0], $from[1]);
-
-		// set recipient
-		$recipient_mail	= MailHelper::cleanAddress($params->get('deactivation_to_webmaster_email'));
-		$recipient_name	= $params->get('deactivation_from_name');
-		if (!is_string($recipient_mail))
-		{
-			$recipient_mail = $from[0];
-		}
-
-		if (!is_string($recipient_name))
-		{
-			$recipient_name = $from[1];
-		}
-
-		$mail->addRecipient($recipient_mail, $recipient_name);
+		$mailer = $this->setNotificationAddresses('deactivation');
 
 		// set subject
-		$subject		= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION');
-		$mail->setSubject($subject);
+		$subject = Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION');
+		$mailer->setSubject($subject);
 
 		// Set body
 		$body	= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT');
@@ -407,10 +373,10 @@ class BwPostmanModelRegister extends JModelAdmin
 		$body	.= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_REGISTRATION_DATE') . $subscriber->registration_date . "\n";
 		$body	.= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_CONFIRMATION_DATE') . $subscriber->confirmation_date . "\n";
 
-		$mail->setBody($body);
+		$mailer->setBody($body);
 
 		// Send the email
-		$mail->Send();
+		$mailer->Send();
 	}
 
 	/**
@@ -426,109 +392,22 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	public function sendActivationNotification($subscriber_id)
 	{
-		$app	    = Factory::getApplication();
-		$mail	    = Factory::getMailer();
-		$params     = ComponentHelper::getParams('com_bwpostman');
-		$from	    = array();
 		$subscriber = null;
 
-		// set recipient and reply-to
-		$from[0]	= MailHelper::cleanAddress($params->get('default_from_email'));
-		$from[1]	= Text::_($params->get('default_from_name'));
-		$mail->setSender($from);
-		$mail->addReplyTo($from[0], $from[1]);
-
-		// set recipient
-		$recipient_mail	= MailHelper::cleanAddress($params->get('activation_to_webmaster_email'));
-		$recipient_name	= Text::_($params->get('activation_from_name'));
-		if (!is_string($recipient_mail))
-		{
-			$recipient_mail = $from[0];
-		}
-
-		if (!is_string($recipient_name))
-		{
-			$recipient_name = $from[1];
-		}
-
-		$mail->addRecipient($recipient_mail, $recipient_name);
+		$mailer = $this->setNotificationAddresses('activation');
 
 		// set subject
-		$subject		= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION');
-		$mail->setSubject($subject);
-
-		$db   = $this->_db;
+		$subject = Text::_('COM_BWPOSTMAN_NEW_ACTIVATION');
+		$mailer->setSubject($subject);
 
 		// get body-data for mail and set body
 		$subscriber = $this->getTable()->getSingleSubscriberData((int) $subscriber_id);
 
 		// Set registered by name
-		if ($subscriber->registered_by == 0)
-		{
-			if ($subscriber->name != '')
-			{
-				$subscriber->registered_by	= $subscriber->name;
-				if ($subscriber->firstname != '')
-				{
-					$subscriber->registered_by	.= ", " . $subscriber->firstname;
-				}
-			}
-			else
-			{
-				$subscriber->registered_by = "User";
-			}
-		}
-		else
-		{
-			$query_reg	= $db->getQuery(true);
-			$query_reg->select('name');
-			$query_reg->from($db->quoteName('#__users'));
-			$query_reg->where($db->quoteName('id') . ' = ' . (int) $subscriber->registered_by);
-			$db->setQuery((string) $query_reg);
-
-			try
-			{
-				$subscriber->registered_by = $db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				$app->enqueueMessage($e->getMessage(), 'error');
-			}
-		}
+		BwPostmanSubscriberHelper::createSubscriberRegisteredBy($subscriber);
 
 		// Set confirmed by name
-		if ($subscriber->confirmed_by == 0)
-		{
-			if ($subscriber->name != '')
-			{
-				$subscriber->confirmed_by	= $subscriber->name;
-				if ($subscriber->firstname != '')
-				{
-					$subscriber->confirmed_by	.= ", " . $subscriber->firstname;
-				}
-			}
-			else
-			{
-				$subscriber->confirmed_by = "User";
-			}
-		}
-		else
-		{
-			$query_conf	= $db->getQuery(true);
-			$query_conf->select('name');
-			$query_conf->from($db->quoteName('#__users'));
-			$query_conf->where($db->quoteName('id') . ' = ' . (int) $subscriber->confirmed_by);
-			$db->setQuery((string) $query_conf);
-
-			try
-			{
-				$subscriber->confirmed_by = $db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				$app->enqueueMessage($e->getMessage(), 'error');
-			}
-		}
+		BwPostmanSubscriberHelper::createSubscriberConfirmedBy($subscriber);
 
 		// Set body
 		$body	= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT');
@@ -541,9 +420,59 @@ class BwPostmanModelRegister extends JModelAdmin
 		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_CONFIRMATION_DATE') . $subscriber->confirmation_date . "\n";
 		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_CONFIRMATION_IP') . $subscriber->confirmation_ip . "\n";
 		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_CONFIRMATION_BY') . $subscriber->confirmed_by . "\n";
-		$mail->setBody($body);
+
+		$mailer->setBody($body);
 
 		// Send the email
-		$mail->Send();
+		$mailer->Send();
+	}
+
+	/**
+	 * Method to set the sender, the reply to and the recipient for activation notification mail
+	 *
+	 * @param string   $mode    activation or deactivation of subscription
+	 *
+	 * @return object   $mailer  The mailer object
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	private function setNotificationAddresses($mode = 'activation')
+	{
+		$mailer	    = Factory::getMailer();
+		$params     = ComponentHelper::getParams('com_bwpostman');
+
+		// set sender and reply-to
+		$from    = array();
+		$from[0] = MailHelper::cleanAddress($params->get('default_from_email'));
+		$from[1] = Text::_($params->get('default_from_name'));
+
+		$mailer->setSender($from);
+		$mailer->addReplyTo($from[0], $from[1]);
+
+		// set recipient
+		$recipient_mail = MailHelper::cleanAddress($params->get('activation_to_webmaster_email'));
+		$recipient_name	= Text::_($params->get('activation_from_name'));
+
+		if ($mode === 'deactivation')
+		{
+			$recipient_mail = MailHelper::cleanAddress($params->get('deactivation_to_webmaster_email'));
+			$recipient_name	= Text::_($params->get('deactivation_from_name'));
+		}
+
+		if (!is_string($recipient_mail))
+		{
+			$recipient_mail = $from[0];
+		}
+
+		if (!is_string($recipient_name))
+		{
+			$recipient_name = $from[1];
+		}
+
+		$mailer->addRecipient($recipient_mail, $recipient_name);
+
+		return $mailer;
 	}
 }

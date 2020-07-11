@@ -144,4 +144,74 @@ abstract class BwPostmanCampaignHelper
 
 		return $newsletters;
 	}
+
+	/**
+	 * Method to get the options for the form fields comcam and comcam_noarc
+	 *
+	 * @param boolean $hasMailingdate
+	 * @param boolean $archiveMatters
+	 *
+	 * @return 	object
+	 *
+	 * @throws Exception
+	 *
+	 * @since 2.4.0
+	 */
+	public static function getCampaignsFieldlistOptions($hasMailingdate = false, $archiveMatters = false)
+	{
+		$options   = null;
+		$db        = Factory::getDbo();
+		$nullDate  = $db->getNullDate();
+		$query     = $db->getQuery(true);
+		$sub_query = $db->getQuery(true);
+
+		// Build sub query which counts the newsletters of each campaign and query
+		$sub_query->select('COUNT(' . $db->quoteName('b') . '.' . $db->quoteName('id') . ') AS ' . $db->quoteName('newsletters'));
+		$sub_query->from($db->quoteName('#__bwpostman_newsletters') . 'AS ' . $db->quoteName('b'));
+
+		if ($hasMailingdate)
+		{
+			$sub_query->where($db->quoteName('b') . '.' . $db->quoteName('mailing_date') . ' != "' . $nullDate . '"');
+		}
+
+		if ($archiveMatters)
+		{
+			$sub_query->where($db->quoteName('b') . '.' . $db->quoteName('archive_flag') . ' = ' . 0);
+		}
+		$sub_query->where($db->quoteName('b') . '.' . $db->quoteName('campaign_id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('id'));
+
+		$query->select($db->quoteName('a') . '.' . $db->quoteName('id')  . ' AS value');
+		$query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');
+		$query->select($db->quoteName('a') . '.' . $db->quoteName('description'));
+		$query->select($db->quoteName('a') . '.' . $db->quoteName('archive_flag')  . ' AS archived');
+		$query->select('(' . $sub_query . ') AS ' . $db->quoteName('newsletters'));
+		$query->from($db->quoteName('#__bwpostman_campaigns') . ' AS ' . $db->quoteName('a'));
+
+		if ($archiveMatters)
+		{
+			$query->where($db->quoteName('a') . '.' . $db->quoteName('archive_flag') . ' = ' . 0);
+		}
+
+		// Join over the asset groups.
+		$query->select($db->quoteName('ag') . '.' . $db->quoteName('title')  . ' AS access_level');
+		$query->join(
+			'LEFT',
+			$db->quoteName('#__viewlevels') .
+			' AS ' . $db->quoteName('ag') .
+			' ON ' . $db->quoteName('ag') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('access')
+		);
+		$query->order($db->quoteName('text') . 'ASC');
+
+		try
+		{
+			$db->setQuery($query);
+			$options = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $options;
+	}
 }

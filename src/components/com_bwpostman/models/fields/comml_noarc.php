@@ -32,6 +32,8 @@ use Joomla\CMS\Form\FormHelper;
 
 FormHelper::loadFieldClass('checkboxes');
 
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/mailinglisthelper.php');
+
 /**
  * Form Field class for the Joomla Platform.
  * Displays options as a list of check boxes.
@@ -152,33 +154,9 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 	 */
 	protected function getOptions()
 	{
-		$app	    = Factory::getApplication();
 		$options    = null;
 
-		// prepare query
-		$_db		= Factory::getDbo();
-		$query		= $_db->getQuery(true);
-
-		$query->select(
-			"a.id AS value, a.title AS text, a.description as description, a.access AS access, a.published AS published, a.archive_flag AS archived"
-		);
-		$query->from('#__bwpostman_mailinglists AS a');
-		$query->where($_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
-
-		// Join over the asset groups.
-		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-		$query->order($_db->quoteName('text') . 'ASC');
-
-		try
-		{
-			$_db->setQuery($query);
-			$options = $_db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'error');
-		}
+		$options = BwPostmanMailinglistHelper::getMailinglistsFieldlistOptions(true);
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

@@ -103,7 +103,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$app	= Factory::getApplication();
-		$id		= (int) $app->input->get('id', 0);
+		$id		= $app->input->getInt('id', 0);
 		$params	= ComponentHelper::getParams('com_bwpostman');
 
 		// Count how often the newsletter has been viewed
@@ -147,7 +147,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		// if we came from list view to show single newsletter, then params of list view shall take effect
 		if (is_object($menu))
 		{
-			if (stristr($menu->link, 'view=newsletter&') == false)
+			if (stristr($menu->link, 'view=newsletter&') === false)
 			{
 				// Get the menu item state
 				$nls_state	= $app->getUserState('com_bwpostman.newsletters.params');
@@ -174,7 +174,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 			}
 		}
 
-		if ($newsletter->published == 0)
+		if ((int)$newsletter->published === 0)
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_NL_NOT_AVAILABLE'), 'error');
 		}

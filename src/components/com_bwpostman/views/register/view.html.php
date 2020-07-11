@@ -113,7 +113,6 @@ class BwPostmanViewRegister extends JViewLegacy
 	 */
 	public function display($tpl=null)
 	{
-		$app		    = Factory::getApplication();
 		$document       = Factory::getDocument();
 		$this->params	= ComponentHelper::getParams('com_bwpostman', true);
 		$layout		    = $this->getLayout();
@@ -121,7 +120,7 @@ class BwPostmanViewRegister extends JViewLegacy
 		$this->captcha	= BwPostmanHelper::getCaptcha(1);
 
 		// Add document css
-		$templateName	= $app->getTemplate();
+		$templateName	= Factory::getApplication()->getTemplate();
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
 		$document->addStyleSheet(Uri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
@@ -244,8 +243,8 @@ class BwPostmanViewRegister extends JViewLegacy
 		$model = $this->getModel();
 		$mlTable = $model->getTable('Mailinglists');
 		$subsTable = $model->getTable('Subscribers');
-		$userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
-		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists($userId);
+		$userId  = $subsTable->getUserIdOfSubscriber((int)$subscriber->id);
+		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists((int)$userId);
 
 		// Build the email format select list
 		if (!isset($subscriber->emailformat))

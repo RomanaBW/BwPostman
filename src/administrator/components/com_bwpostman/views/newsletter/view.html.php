@@ -241,14 +241,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		$this->setContentFlags();
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			$this->addToolbarLegacy();
-		}
-		else
-		{
-			$this->addToolbar();
-		}
+		$this->addToolbar();
 
 		// reset temporary state
 		$app->setUserState('com_bwpostman.edit.newsletter.changeTab', false);
@@ -259,137 +252,13 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title, styles and toolbar for Joomla 4.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.4.0
-	 */
-	protected function addToolbar()
-	{
-		Factory::getApplication()->input->set('hidemainmenu', true);
-		$userId		= Factory::getUser()->get('id');
-		$layout		= Factory::getApplication()->input->get('layout', '');
-
-		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
-
-		// Get document object, set document title and add css
-		$document	= Factory::getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		HTMLHelper::_('jquery.framework');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_nl.js');
-
-		// Set toolbar title and items
-		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-
-		$isNew = ($this->item->id == 0);
-
-		if ($layout == 'nl_send')
-		{
-			$options['text'] = "COM_BWPOSTMAN_BACK";
-			$options['name'] = 'back';
-			$options['url'] = "index.php?option=com_bwpostman&view=newsletters";
-			$options['icon'] = "icon-arrow-left";
-
-			$button = new LinkButton('back');
-			$document->setTitle(Text::_('COM_BWPOSTMAN_ACTION_SEND'));
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ACTION_SEND'), 'envelope');
-
-			$button->setOptions($options);
-
-			$toolbar->appendButton($button);
-		}
-		// If we come from sent newsletters, we have to do other stuff than normal
-		elseif ($layout == 'edit_publish')
-		{
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
-
-			$toolbar->apply('newsletter.publish_apply');
-			$toolbar->save('newsletter.publish_save');
-
-			$toolbar->cancel('newsletter.cancel');
-		}
-		else
-		{
-			// For new records, check the create permission.
-			if ($isNew && $this->permissions['newsletter']['create'])
-			{
-				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
-
-				$toolbar->apply('newsletter.apply');
-
-				$saveGroup = $toolbar->dropdownButton('save-group');
-
-				$saveGroup->configure(
-					function (Toolbar $childBar)
-					{
-						$childBar->save('newsletter.save');
-						$childBar->save2new('newsletter.save2new');
-					}
-				);
-
-				$task		= Factory::getApplication()->input->get('task', '', 'string');
-				// If we came from the main page we will show a back button
-				if ($task == 'add')
-				{
-					$toolbar->back();
-				}
-				else
-				{
-					$toolbar->cancel('newsletter.cancel', 'JTOOLBAR_CANCEL');
-				}
-			}
-			else
-			{
-				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
-				// Can't save the record if it's checked out.
-				if (!$checkedOut)
-				{
-					// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-					if (BwPostmanHelper::canEdit('newsletter', $this->item->id))
-					{
-						$toolbar->apply('newsletter.apply');
-
-						if ($this->permissions['newsletter']['create'])
-						{
-							$saveGroup = $toolbar->dropdownButton('save-group');
-
-							$saveGroup->configure(
-								function (Toolbar $childBar)
-								{
-									$childBar->save('newsletter.save');
-									$childBar->save2new('newsletter.save2new');
-									$childBar->save2copy('newsletter.save2copy');
-								}
-							);
-						}
-					}
-				}
-
-				// Rename the cancel button for existing items
-				$toolbar->cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
-			}
-		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
-		$manualButton = BwPostmanHTMLHelper::getManualButton('newsletter');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
-
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
-
-	/**
 	 * Add the page title, styles and toolbar.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbarLegacy()
+	protected function addToolbar()
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 		$userId		= Factory::getUser()->get('id');

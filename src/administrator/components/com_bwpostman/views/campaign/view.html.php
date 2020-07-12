@@ -149,134 +149,11 @@ class BwPostmanViewCampaign extends JViewLegacy
 		// trigger Plugin BwTimeControl event and get results
 //		$dispatcher->trigger('onBwPostmanCampaignPrepare', array (&$this->item, &$this->newsletters, &$document));
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			$this->addToolbarLegacy();
-		}
-		else
-		{
-			$this->addToolbar();
-		}
+		$this->addToolbar();
 
 		// Call parent display
 		parent::display($tpl);
 		return $this;
-	}
-
-	/**
-	 * Add the page title, styles and toolbar for Joomla 4.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.4.0
-	 */
-	protected function addToolbar()
-	{
-		Factory::getApplication()->input->set('hidemainmenu', true);
-		$uri		= Uri::getInstance('SERVER');
-		$userId		= Factory::getUser()->get('id');
-
-		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
-
-		// Get document object, set document title and add css
-		$document = Factory::getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_CAM_DETAILS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_campaign.js');
-
-		// Get the user browser --> if the user has MS IE load the ie-css to show the tabs in the correct way
-		jimport('joomla.environment.browser');
-		$browser		= Browser::getInstance();
-		$user_browser	= $browser->getBrowser();
-
-		if ($user_browser == 'msie')
-		{
-			$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
-		}
-
-		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
-		$isNew = ($this->item->id < 1);
-
-		// Set toolbar title and items
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-
-		// For new records, check the create permission.
-		if ($isNew && BwPostmanHelper::canAdd('campaign'))
-		{
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_CAM_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
-
-			$toolbar->apply('campaign.apply');
-
-			$saveGroup = $toolbar->dropdownButton('save-group');
-
-			$saveGroup->configure(
-				function (Toolbar $childBar)
-				{
-					$childBar->save('campaign.save');
-					$childBar->save2new('campaign.save2new');
-				}
-			);
-
-			$toolbar->cancel('campaign.cancel', 'JTOOLBAR_CANCEL');
-		}
-		else
-		{
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_CAM_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>',
-				'edit');
-
-			// Can't save the record if it's checked out.
-			if (!$checkedOut)
-			{
-				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-				if (BwPostmanHelper::canEdit('campaign', $this->item))
-				{
-					$toolbar->apply('campaign.apply');
-
-					$saveGroup = $toolbar->dropdownButton('save-group');
-
-					$saveGroup->configure(
-						function (Toolbar $childBar) {
-							$childBar->save('campaign.save');
-
-							if ($this->permissions['campaign']['create'])
-							{
-								$childBar->save2new('campaign.save2new');
-								$childBar->save2copy('campaign.save2copy');
-							}
-						}
-					);
-				}
-
-				// Rename the cancel button for existing items
-				if (Factory::getApplication()->getUserState('bwtimecontrol.cam_data.nl_referrer', null) == 'remove')
-				{
-					$toolbar->cancel('campaign.save', 'JTOOLBAR_CLOSE');
-				}
-				else
-				{
-					$toolbar->cancel('campaign.cancel', 'JTOOLBAR_CLOSE');
-				}
-			}
-		}
-
-		Factory::getApplication()->setUserState('bwtimecontrol.cam_data.nl_referrer', null);
-		$backlink 	= Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
-		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
-
-		// If we came from the cover page we will show a back-button
-		if ($backlink == $siteURL)
-		{
-			$toolbar->back();
-		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
-		$manualButton = BwPostmanHTMLHelper::getManualButton('campaign');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
-
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
 	}
 
 	/**
@@ -286,7 +163,7 @@ class BwPostmanViewCampaign extends JViewLegacy
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbarLegacy()
+	protected function addToolbar()
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 		$uri		= Uri::getInstance('SERVER');

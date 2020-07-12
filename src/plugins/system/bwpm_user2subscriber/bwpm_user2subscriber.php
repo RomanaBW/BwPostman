@@ -340,7 +340,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$this->logger->addEntry(new LogEntry(sprintf('Array data_helper is empty: %s', !empty($data_helper)), BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
-		if (version_compare(JVERSION, '3.999.999', 'le') && !empty($data_helper))
+		if (!empty($data_helper))
 		{
 			$this->logger->addEntry(new LogEntry('Array is not okay'));
 			return true;
@@ -350,16 +350,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		Form::addFormPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form');
 
-		if (version_compare(JVERSION, '3.99', 'le'))
-		{
-			$this->form->loadFile('form3', false);
-			$this->group = 'bwpm_user2subscriber';
-		}
-		else
-		{
-			$this->form->loadFile('form', false);
-			$this->group = null;
-		}
+		$this->form->loadFile('form3', false);
+		$this->group = 'bwpm_user2subscriber';
 
 		if (!($this->form instanceof Form))
 		{

@@ -206,14 +206,7 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$this->request_url	= $uri_string;
 		$this->template		= $template;
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			$this->addToolbarLegacy();
-		}
-		else
-		{
-			$this->addToolbar();
-		}
+		$this->addToolbar();
 
 		// call user-made html template
 		if ($this->item->tpl_id == '0')
@@ -249,122 +242,13 @@ class BwPostmanViewTemplate extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title, styles and toolbar for Joomla 4.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.4.0
-	 */
-	protected function addToolbar()
-	{
-		Factory::getApplication()->input->set('hidemainmenu', true);
-		$uri		= Uri::getInstance();
-		$userId		= Factory::getUser()->get('id');
-
-		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
-
-		// Get document object, set document title and add css
-		$document = Factory::getDocument();
-		$document->setTitle(Text::_('BWP_TPL_DETAILS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-
-		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
-		jimport('joomla.environment.browser');
-		$browser = Browser::getInstance();
-		$user_browser = $browser->getBrowser();
-
-		if ($user_browser == 'msie')
-		{
-			$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
-		}
-
-		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
-		$isNew          = ($this->item->id < 1);
-		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-
-		// Set toolbar title and items
-
-		// For new records, check the create permission.
-		if ($isNew && $this->permissions['template']['create'])
-		{
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPL_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
-
-			$toolbar->apply('template.apply');
-
-			$saveGroup = $toolbar->dropdownButton('save-group');
-
-			$saveGroup->configure(
-				function (Toolbar $childBar)
-				{
-					$childBar->save('template.save');
-					$childBar->save2new('template.save2new');
-				}
-			);
-
-			$toolbar->cancel('template.cancel', 'JTOOLBAR_CANCEL');
-		}
-		else
-		{
-			// Can't save the record if it's checked out.
-			if (!$checkedOut)
-			{
-				ToolbarHelper::title(
-					Text::_('COM_BWPOSTMAN_TPL_DETAILS') . ':  <strong>' . $this->item->title .
-					'  </strong><small>[ ' . Text::_('EDIT') . ' ]</small> ',
-					'edit'
-				);
-
-				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-				if (BwPostmanHelper::canEdit('template', $this->item))
-				{
-					$toolbar->apply('template.apply');
-
-					$saveGroup = $toolbar->dropdownButton('save-group');
-
-					$saveGroup->configure(
-						function (Toolbar $childBar)
-						{
-							$childBar->save('template.save');
-							if ($this->permissions['template']['create'])
-							{
-								$childBar->save2new('template.save2new');
-								$childBar->save2copy('template.save2copy');
-							}
-						}
-					);
-
-					$toolbar->cancel('template.cancel', 'JTOOLBAR_CLOSE');
-				}
-			}
-		}
-
-		$backlink 	= Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
-		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
-
-		// If we came from the cover page we will show a back-button
-		if ($backlink == $siteURL)
-		{
-			$toolbar->back();
-		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
-		$manualButton = BwPostmanHTMLHelper::getManualButton('template');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
-
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
-
-	/**
 	 * Add the page title, styles and toolbar.
 	 *
 	 * @throws Exception
 	 *
 	 * @since	1.1.0
 	 */
-	protected function addToolbarLegacy()
+	protected function addToolbar()
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 		$uri		= Uri::getInstance();

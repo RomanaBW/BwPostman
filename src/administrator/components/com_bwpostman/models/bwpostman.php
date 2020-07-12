@@ -212,14 +212,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		if (is_null($permission))
 		{
 			// Get data from input.
-			if (version_compare(JVERSION, '3.999.999', 'le'))
-			{
-				$input = $app->input;
-			}
-			else
-			{
-				$input = $app->input->Json;
-			}
+			$input = $app->input;
 
 			$permission = array(
 				'component' => $input->get('comp'),

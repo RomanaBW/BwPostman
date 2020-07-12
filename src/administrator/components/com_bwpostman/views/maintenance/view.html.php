@@ -211,16 +211,8 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 		$this->template	= $app->getTemplate();
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			BwPostmanHelper::addSubmenu('bwpostman');
-			$this->addToolbarLegacy();
-		}
-		else
-		{
-			$this->addToolbar();
-		}
-
+		BwPostmanHelper::addSubmenu('bwpostman');
+		$this->addToolbar();
 
 		switch ($layout)
 		{
@@ -246,106 +238,13 @@ class BwPostmanViewMaintenance extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title and toolbar for Joomla 4.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.4.0
-	 */
-	protected function addToolbar()
-	{
-		$layout		= Factory::getApplication()->input->getCmd('layout', '');
-
-		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
-
-		// Get document object, set document title and add css
-		$document = Factory::getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
-
-		$options['text'] = "COM_BWPOSTMAN_BACK";
-		$options['name'] = 'back';
-		$options['url'] = "index.php?option=com_bwpostman&view=maintenance";
-		$options['icon'] = "icon-arrow-left";
-
-		$button = new LinkButton('back');
-
-		// Set toolbar items for the page
-		if ($layout == 'restoreTables')
-		{
-			Factory::getApplication()->input->set('hidemainmenu', true);
-			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
-
-			$button->setOptions($options);
-
-			$toolbar->appendButton($button);
-		}
-
-		if ($layout == 'doRestore')
-		{
-			Factory::getApplication()->input->set('hidemainmenu', true);
-			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
-
-			$button->setOptions($options);
-
-			$toolbar->appendButton($button);
-		}
-
-		if ($layout == 'checkTables')
-		{
-			Factory::getApplication()->input->set('hidemainmenu', true);
-			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
-
-			$button->setOptions($options);
-
-			$toolbar->appendButton($button);
-		}
-
-		if ($layout == 'updateCheckSave')
-		{
-			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'));
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');
-
-			$options['text'] = "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
-			$options['name'] = 'back';
-			$options['url'] = "javascript:window.close()";
-			$options['icon'] = "icon-arrow-left";
-
-			$button->setOptions($options);
-
-			$toolbar->appendButton($button);
-
-			$style = '.layout-updateCheckSave .navbar {display:none;}'
-				. '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
-				. 'body {padding-top:0;}';
-			$document->addStyleDeclaration($style);
-			$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
-		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
-		$manualButton = BwPostmanHTMLHelper::getManualButton('maintenance');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
-
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
-
-	/**
 	 * Add the page title and toolbar for Joomla 3.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       2.4.0
 	 */
-	protected function addToolbarLegacy()
+	protected function addToolbar()
 	{
 		$layout		= Factory::getApplication()->input->getCmd('layout', '');
 

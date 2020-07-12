@@ -154,15 +154,8 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		$this->pagination		= $this->get('Pagination');
 		$this->total			= $this->get('total');
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			BwPostmanHelper::addSubmenu('bwpostman');
-			$this->addToolbarLegacy();
-		}
-		else
-		{
-			$this->addToolbar();
-		}
+		BwPostmanHelper::addSubmenu('bwpostman');
+		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();
 
@@ -173,80 +166,13 @@ class BwPostmanViewMailinglists extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title and toolbar for Joomla 4.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.4.0
-	 */
-	protected function addToolbar()
-	{
-		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
-
-		// Get document object, set document title and add css
-		$document = Factory::getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_MLS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_archive.js');
-
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MLS'), 'list');
-
-		// Set toolbar items for the page
-		if ($this->permissions['mailinglist']['create'])
-		{
-			$toolbar->addNew('mailinglist.add');
-		}
-
-		if (BwPostmanHelper::canEdit('mailinglist') || BwPostmanHelper::canEditState('mailinglist', 0) || BwPostmanHelper::canArchive('mailinglist'))
-		{
-			$dropdown = $toolbar->dropdownButton('status-group')
-				->text('JTOOLBAR_CHANGE_STATUS')
-				->toggleSplit(false)
-				->icon('fa fa-ellipsis-h')
-				->buttonClass('btn btn-action')
-				->listCheck(true);
-
-			$childBar = $dropdown->getChildToolbar();
-
-			if (BwPostmanHelper::canEdit('mailinglist'))
-			{
-				$childBar->edit('mailinglist.edit')->listCheck(true);
-			}
-
-
-			$childBar->publish('mailinglists.publish')->listCheck(true);
-			$childBar->unpublish('mailinglists.unpublish')->listCheck(true);
-
-			if (BwPostmanHelper::canArchive('mailinglist'))
-			{
-				$childBar->archive('mailinglist.archive')->listCheck(true);
-			}
-
-			if (BwPostmanHelper::canEdit('mailinglist', 0) || BwPostmanHelper::canEditState('mailinglist', 0))
-			{
-				$childBar->checkin('mailinglists.checkin')->listCheck(true);
-			}
-		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
-		$manualButton = BwPostmanHTMLHelper::getManualButton('mailinglists');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
-
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
-
-	/**
 	 * Add the page title and toolbar for Joomla 3.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbarLegacy()
+	protected function addToolbar()
 	{
 		// Get document object, set document title and add css
 		$document = Factory::getDocument();

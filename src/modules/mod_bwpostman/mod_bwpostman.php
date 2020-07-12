@@ -103,79 +103,31 @@ else
 		// Build the email format select list
 		$mailformat_selected = $paramsComponent->get('default_emailformat');
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
+		$emailformat = '<fieldset id="edit_mailformat" class="radio btn-group">';
+		$emailformat .= '<input type="radio" name="a_emailformat" id="formatTextMod" value="0"';
+
+		if (!$mailformat_selected)
 		{
-			$emailformat = '<fieldset id="edit_mailformat" class="radio btn-group">';
-			$emailformat .= '<input type="radio" name="a_emailformat" id="formatTextMod" value="0"';
-
-			if (!$mailformat_selected)
-			{
-				$emailformat .= ' checked="checked"';
-			}
-
-			$emailformat .= '/>';
-			$emailformat .= '<label for="formatTextMod"><span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
-			$emailformat .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
-
-			if ($mailformat_selected)
-			{
-				$emailformat .= ' checked="checked"';
-			}
-
-			$emailformat          .= '/>';
-			$emailformat          .= '<label for="formatHtmlMod"><span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
-			$emailformat          .= '</fieldset>';
+			$emailformat .= ' checked="checked"';
 		}
-		else
+
+		$emailformat .= '/>';
+		$emailformat .= '<label for="formatTextMod"><span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
+		$emailformat .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
+
+		if ($mailformat_selected)
 		{
-			$emailformat 	= '<div id="edit_mailformat" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">';
-			$emailformat		.= '<label for="formatTextMod" class="btn btn-outline-secondary';
-
-			if(!$mailformat_selected)
-			{
-				$emailformat .= '  active';
-			}
-
-			$emailformat		.= '">';
-			$emailformat		.= '<input type="radio" name="a_emailformat" id="formatTextMod" value="0"';
-
-			if(!$mailformat_selected)
-			{
-				$emailformat .= ' checked="checked"';
-			}
-
-			$emailformat     .= '/>';
-			$emailformat		.= '<span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
-			$emailformat     .= '<label for="formatHtmlMod" class="btn btn-outline-secondary';
-
-			if($mailformat_selected)
-			{
-				$emailformat .= '  active';
-			}
-
-			$emailformat		.= '">';
-			$emailformat     .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
-
-			if($mailformat_selected)
-			{
-				$emailformat .= ' checked="checked"';
-			}
-
-			$emailformat     .= '/>';
-			$emailformat     .= '<span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
-			$emailformat     .= '</div>';
+			$emailformat .= ' checked="checked"';
 		}
+
+		$emailformat          .= '/>';
+		$emailformat          .= '<label for="formatHtmlMod"><span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
+		$emailformat          .= '</fieldset>';
+
 		$lists['emailformat'] = $emailformat;
 
 		// Build the gender select list
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender');
-		}
-		else
-		{
-			$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender', 'form-control form-control-sm');
-		}
+		$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender');
 
 		// Get the checked mailinglists from module parameters
 		$mod_mls = $params->get('mod_ml_available');

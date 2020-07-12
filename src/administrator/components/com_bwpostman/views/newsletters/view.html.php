@@ -205,15 +205,8 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$this->count_queue		= $this->get('CountQueue');
 		$this->context			= 'com_bwpostman.newsletters';
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			BwPostmanHelper::addSubmenu('bwpostman');
-			$this->addToolbarLegacy();
-		}
-		else
-		{
-			$this->addToolbar();
-		}
+		BwPostmanHelper::addSubmenu('bwpostman');
+		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();
 
@@ -233,175 +226,13 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title and toolbar for Joomla 4.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.4.0
-	 */
-	protected function addToolbar()
-	{
-		$tab	= $this->state->get('tab', 'unsent');
-
-		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
-
-		// Get document object, set document title and add css
-		$document = Factory::getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_NLS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_nls.js');
-
-		// Add Javascript to make squeezebox close-button invisible
-		$document->addScriptDeclaration('
-			window.dispButton = function() {
-				document.getElementById("sbox-btn-close").style.display = "none";
-			}
-		');
-
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NLS'), 'envelope');
-
-		// Set toolbar items for the page
-
-		switch ($tab)
-		{ // The layout-variable tells us which tab we are in
-			case "sent":
-				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter', 0))
-				{
-					$dropdown = $toolbar->dropdownButton('status-group')
-						->text('JTOOLBAR_CHANGE_STATUS')
-						->toggleSplit(false)
-						->icon('fa fa-ellipsis-h')
-						->buttonClass('btn btn-action')
-						->listCheck(true);
-
-					$childBar = $dropdown->getChildToolbar();
-
-					if (BwPostmanHelper::canEdit('newsletter'))
-					{
-						$childBar->edit('newsletter.edit')->listCheck(true);
-					}
-
-					if (BwPostmanHelper::canEditState('newsletter', 0))
-					{
-						$childBar->publish('newsletters.publish')->listCheck(true);
-						$childBar->unpublish('newsletters.unpublish')->listCheck(true);
-					}
-
-					if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter', 0))
-					{
-						$childBar->checkin('newsletters.checkin')->listCheck(true);
-					}
-
-					if (BwPostmanHelper::canArchive('newsletter'))
-					{
-						$childBar->archive('newsletter.archive')->listCheck(true);
-					}
-				}
-
-				if ($this->permissions['newsletter']['create'])
-				{
-					ToolbarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
-				}
-
-				break;
-			case "queue":
-				$alt = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
-				if ($this->permissions['newsletter']['send'])
-				{
-					ToolbarHelper::custom(
-						'newsletters.resetSendAttempts',
-						'checkin.png',
-						'unpublish_f2.png',
-						'COM_BWPOSTMAN_NL_RESET_TRIAL',
-						false
-					);
-					$url = "index.php?option=com_bwpostman&view=newsletter&task=startsending&layout=nl_send";
-					$icon = "envelope";
-					$text = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
-					$toolbar->AppendButton('Link', $icon, $text, $url);
-
-					ToolbarHelper::custom('newsletters.clear_queue', 'trash.png', 'delete_f2.png', 'COM_BWPOSTMAN_NL_CLEAR_QUEUE', false);
-				}
-				break;
-			case "unsent":
-			default:
-				if ($this->permissions['newsletter']['create'])
-				{
-					ToolbarHelper::addNew('newsletter.add');
-				}
-
-				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter', 0))
-				{
-					$dropdown = $toolbar->dropdownButton('status-group')
-						->text('JTOOLBAR_CHANGE_STATUS')
-						->toggleSplit(false)
-						->icon('fa fa-ellipsis-h')
-						->buttonClass('btn btn-action')
-						->listCheck(true);
-
-					$childBar = $dropdown->getChildToolbar();
-
-					if (BwPostmanHelper::canEdit('newsletter'))
-					{
-						$childBar->edit('newsletter.edit')->listCheck(true);
-					}
-
-					if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter', 0))
-					{
-						$childBar->checkin('newsletters.checkin')->listCheck(true);
-					}
-
-					if (BwPostmanHelper::canArchive('newsletter'))
-					{
-						$childBar->archive('newsletter.archive')->listCheck(true);
-					}
-
-					if ($this->permissions['newsletter']['create'])
-					{
-						$html = '<joomla-toolbar-button id="status-group-children-duplicate" task="newsletter.copy" list-selection="">';
-						$html .= '<button class="button-duplicate dropdown-item" type="button">';
-						$html .= '<span class="icon-copy" aria-hidden="true"></span>';
-						$html .= Text::_('JTOOLBAR_DUPLICATE');
-						$html .= '</button>';
-						$html .= '</joomla-toolbar-button>';
-
-						$childBar->appendButton('Custom', $html);
-					}
-
-					if ($this->permissions['newsletter']['send'])
-					{
-						$html = '<joomla-toolbar-button id="status-group-children-send" task="newsletter.sendOut" list-selection="">';
-						$html .= '<button class="button-send dropdown-item" type="button">';
-						$html .= '<span class="icon-envelope" aria-hidden="true"></span>';
-						$html .= Text::_('COM_BWPOSTMAN_NL_SEND');
-						$html .= '</button>';
-						$html .= '</joomla-toolbar-button>';
-
-						$childBar->appendButton('Custom', $html);
-					}
-				}
-				break;
-		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
-		$manualButton = BwPostmanHTMLHelper::getManualButton('newsletters');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
-
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
-
-	/**
 	 * Add the page title, submenu and toolbar.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbarLegacy()
+	protected function addToolbar()
 	{
 		$tab	= $this->state->get('tab', 'unsent');
 

@@ -227,17 +227,10 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$this->context			= 'com_bwpostman.subscribers';
 		$this->filterMl         = $this->state->get('filter.mailinglist');
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			$this->addToolbarLegacy();
-			BwPostmanHelper::addSubmenu('bwpostman');
+		$this->addToolbar();
+		BwPostmanHelper::addSubmenu('bwpostman');
 
-			$this->sidebar = JHtmlSidebar::render();
-		}
-		else
-		{
-			$this->addToolbar();
-		}
+		$this->sidebar = JHtmlSidebar::render();
 
 		// Show the layout depending on the tab
 		$tpl = Factory::getApplication()->input->get('tab', '');
@@ -255,147 +248,13 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title and toolbar for Joomla 4.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.4.0
-	 */
-	protected function addToolbar()
-	{
-		$tab	= Factory::getApplication()->input->get('tab', 'confirmed');
-
-		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
-
-		// Get document object, set document title and add css
-		$document = Factory::getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_SUBS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscribers.js');
-
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB'), 'users');
-
-		// Set toolbar items for the page
-		switch ($tab)
-		{ // The layout-variable tells us which tab we are in
-			default:
-			case "confirmed":
-			case "unconfirmed":
-				if ($this->permissions['subscriber']['create'])
-				{
-					$toolbar->addNew('subscriber.add');
-				}
-
-				if (BwPostmanHelper::canArchive('subscriber') || $this->permissions['subscriber']['create'] || BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber', 0))
-				{
-					$dropdown = $toolbar->dropdownButton('status-group')
-						->text('JTOOLBAR_CHANGE_STATUS')
-						->toggleSplit(false)
-						->icon('fa fa-ellipsis-h')
-						->buttonClass('btn btn-action')
-						->listCheck(true);
-
-					$childBar = $dropdown->getChildToolbar();
-
-					if (BwPostmanHelper::canEdit('subscriber'))
-					{
-						$childBar->edit('subscriber.edit')->listCheck(true);
-					}
-
-					if (BwPostmanHelper::canArchive('subscriber'))
-					{
-						$childBar->archive('subscriber.archive')->listCheck(true);
-					}
-
-					if (BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber', 0))
-					{
-						$childBar->checkin('subscribers.checkin')->listCheck(true);
-					}
-
-					// Add a batch button
-					if (BwPostmanHelper::canEdit('subscriber'))
-					{
-						$childBar->popupButton('batch')
-							->text('JTOOLBAR_BATCH')
-							->selector('collapseModal')
-							->listCheck(true);
-					}
-				}
-
-				if ($this->permissions['subscriber']['create'])
-				{
-					ToolbarHelper::custom('subscribers.importSubscribers', 'download', 'import_f2', 'COM_BWPOSTMAN_SUB_IMPORT', false);
-				}
-
-				if ($this->permissions['subscriber']['edit'])
-				{
-					if ($this->filterMl !== '')
-					{
-						// Get popup with yes/no buttons
-						$options['url'] = "index.php?option=com_bwpostman&view=subscribers&format=raw&layout=default_filteredexport";
-						$options['icon'] = "icon-upload";
-						$options['text'] = "COM_BWPOSTMAN_SUB_EXPORT";
-						$options['bodyHeight'] = 50;
-						$options['name'] = 'upload';
-
-						$button = new PopupButton('upload');
-						$button->setOptions($options);
-
-						$toolbar->AppendButton($button);
-					}
-					else
-					{
-						ToolbarHelper::custom('subscribers.exportSubscribers', 'upload', 'export_f2', 'COM_BWPOSTMAN_SUB_EXPORT', false);
-					}
-				}
-				break;
-
-			case "testrecipients":
-				if ($this->permissions['subscriber']['create'])
-				{
-					$toolbar->addNew('subscriber.add_test');
-				}
-
-				$dropdown = $toolbar->dropdownButton('status-group')
-					->text('JTOOLBAR_CHANGE_STATUS')
-					->toggleSplit(false)
-					->icon('fa fa-ellipsis-h')
-					->buttonClass('btn btn-action')
-					->listCheck(true);
-
-				$childBar = $dropdown->getChildToolbar();
-
-				if (BwPostmanHelper::canEdit('subscriber'))
-				{
-					$childBar->edit('subscriber.edit')->listCheck(true);
-				}
-
-				if (BwPostmanHelper::canArchive('subscriber'))
-				{
-					$childBar->archive('subscriber.archive')->listCheck(true);
-				}
-				break;
-		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
-		$manualButton = BwPostmanHTMLHelper::getManualButton('subscribers');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
-
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
-
-	/**
 	 * Add the page title, submenu and toolbar.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbarLegacy()
+	protected function addToolbar()
 	{
 		$app	= Factory::getApplication();
 		$tab	= $app->getUserState($this->context . '.tab', 'confirmed');

@@ -915,20 +915,17 @@ class BwPostmanModelTemplates extends JModelList
 	private function delMessage()
 	{
 		// @ToDo: What is this method good for?
-		if(version_compare(JVERSION, '3.999.999', 'le'))
+		$app = Factory::getApplication();
+		$appReflection = new ReflectionClass(get_class($app));
+		$_messageQueue = $appReflection->getProperty('_messageQueue');
+		$_messageQueue->setAccessible(true);
+		$messages = $_messageQueue->getValue($app);
+		foreach ($messages as $key => $message)
 		{
-			$app = Factory::getApplication();
-			$appReflection = new ReflectionClass(get_class($app));
-			$_messageQueue = $appReflection->getProperty('_messageQueue');
-			$_messageQueue->setAccessible(true);
-			$messages = $_messageQueue->getValue($app);
-			foreach ($messages as $key => $message)
-			{
-				unset($messages[$key]);
-			}
-
-			$_messageQueue->setValue($app, $messages);
+			unset($messages[$key]);
 		}
+
+		$_messageQueue->setValue($app, $messages);
 	}
 
 	/**

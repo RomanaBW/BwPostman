@@ -130,15 +130,8 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		$this->request_url	= $uri_string;
 		$this->permissions	= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			BwPostmanHelper::addSubmenu('bwpostman');
-			$this->addToolbarLegacy();
-		}
-		else
-		{
-			$this->addToolbar();
-		}
+		BwPostmanHelper::addSubmenu('bwpostman');
+		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();
 
@@ -148,49 +141,13 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title and toolbar for Joomla 4.
+	 * Add the page title, submenu and toolbar.
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0
+	 * @since       0.9.1
 	 */
 	protected function addToolbar()
-	{
-		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
-
-		// Get document object, set document title and add css
-		$document = Factory::getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN'), 'envelope');
-
-		// Set toolbar items for the page
-		if ($this->permissions['com']['admin'])
-		{
-			$toolbar->preferences('com_bwpostman');
-		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
-		$manualButton = BwPostmanHTMLHelper::getManualButton('bwpostman');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
-
-
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
-
-	/**
-	 * Add the page title and toolbar for Joomla 4.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.4.0
-	 */
-	protected function addToolbarLegacy()
 	{
 		// Get document object, set document title and add css
 		$document = Factory::getDocument();

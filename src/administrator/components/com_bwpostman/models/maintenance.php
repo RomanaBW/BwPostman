@@ -137,15 +137,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	protected $xml;
 
 	/**
-	 * Are we at Joomla 4?
-	 *
-	 * @var boolean
-	 *
-	 * @since 2.4.0
-	 */
-	protected $isJ4;
-
-	/**
 	 * Constructor.
 	 *
 	 * @throws Exception
@@ -158,11 +149,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$this->logger = BwLogger::getInstance($logOptions);
 
 		$this->db = Factory::getDbo();
-
-		if(version_compare(JVERSION, '3.999.999', 'ge'))
-		{
-			$this->isJ4 = true;
-		}
 
 		parent::__construct();
 	}

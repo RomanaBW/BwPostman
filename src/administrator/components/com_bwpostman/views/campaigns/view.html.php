@@ -161,15 +161,8 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		// trigger Plugin BwTimeControl event and get results
 //		$this->auto_nbr	= Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepare', array (&$this->items));
 
-		if(version_compare(JVERSION, '3.999.999', 'le'))
-		{
-			BwPostmanHelper::addSubmenu('bwpostman');
-			$this->addToolbarLegacy();
-		}
-		else
-		{
-			$this->addToolbar();
-		}
+		BwPostmanHelper::addSubmenu('bwpostman');
+		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();
 
@@ -180,92 +173,13 @@ class BwPostmanViewCampaigns extends JViewLegacy
 
 
 	/**
-	 * Add the page title, styles and toolbar for Joomla 4.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.4.0
-	 */
-	protected function addToolbar()
-	{
-
-		PluginHelper::importPlugin('bwpostman');
-
-		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
-
-		// Get document object, set document title and add css
-		$document	= Factory::getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_CAMS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_archive_cam_nls.js');
-
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_CAMS'), 'list');
-
-		// Set toolbar items for the page
-		if ($this->permissions['campaign']['create'])
-		{
-			ToolbarHelper::addNew('campaign.add');
-		}
-
-		if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign', 0) || BwPostmanHelper::canArchive('campaign'))
-		{
-			$dropdown = $toolbar->dropdownButton('status-group')
-				->text('JTOOLBAR_CHANGE_STATUS')
-				->toggleSplit(false)
-				->icon('fa fa-ellipsis-h')
-				->buttonClass('btn btn-action')
-				->listCheck(true);
-
-			$childBar = $dropdown->getChildToolbar();
-
-			if (BwPostmanHelper::canEdit('campaign'))
-			{
-				$childBar->edit('campaign.edit')->listCheck(true);
-			}
-
-			if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign', 0))
-			{
-				$childBar->checkin('campaigns.checkin')->listCheck(true);
-			}
-
-				// Special archive button because we need a confirm dialog
-			if (BwPostmanHelper::canArchive('campaign'))
-			{
-				$options['url'] = "index.php?option=com_bwpostman&amp;controller=campaigns&amp;tmpl=component&amp;view=campaigns&amp;layout=default_confirmarchive";
-				$options['icon'] = "icon-archive";
-				$options['text'] = "COM_BWPOSTMAN_ARC";
-				$options['bodyHeight'] = 50;
-				$options['name'] = 'archive';
-
-				$button = new PopupButton('archive');
-				$button->setOptions($options);
-
-				$childBar->AppendButton($button);
-			}
-		}
-
-		// trigger BwTimeControl event
-		Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepareToolbar', array());
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
-		$manualButton = BwPostmanHTMLHelper::getManualButton('campaigns');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
-
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
-
-	/**
 	 * Add the page title, submenu and toolbar.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbarLegacy()
+	protected function addToolbar()
 	{
 
 		PluginHelper::importPlugin('bwpostman');

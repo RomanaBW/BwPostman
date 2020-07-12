@@ -105,13 +105,6 @@
 			<folder>views</folder>
 <!--	J4 stuff-->
 <!--			<filename>dispatcher.php</filename>-->
-			<folder>Controller</folder>
-			<folder>Field</folder>
-			<folder>Helper</folder>
-			<folder>Model</folder>
-			<folder>Table</folder>
-			<folder>tmpl</folder>
-			<folder>View</folder>
 		</files>
 
 		<languages folder="admin/language">

@@ -132,6 +132,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		parent::display();
+
 		return $this;
 	}
 
@@ -225,11 +226,13 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	public function edit($key = null, $urlVar = null)
 	{
 		// Initialise variables.
-		$app		= Factory::getApplication();
-		$model		= $this->getModel();
-		$table		= $model->getTable();
-		$cid		= $this->input->post->get('cid', array(), 'array');
-		$context	= "$this->option.edit.$this->context";
+		$app     = Factory::getApplication();
+		$model   = $this->getModel();
+		$table   = $model->getTable();
+		$cid     = $this->input->post->get('cid', array(), 'array');
+		$context = "$this->option.edit.$this->context";
+
+		$cid = ArrayHelper::toInteger($cid);
 
 		// Determine the name of the primary key for the data.
 		if (empty($key))
@@ -244,17 +247,17 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		// Get the previous record id (if any) and the current record id.
-		$recordId	= (int) (count($cid) ? $cid[0] : $this->input->getInt($urlVar));
-		$checkin	= property_exists($table, 'checked_out');
+		$recordId = (int) (count($cid) ? $cid[0] : $this->input->getInt($urlVar));
+		$checkin  = property_exists($table, 'checked_out');
 
 		// Access check.
 		if ($recordId === 0)
 		{
-			$allowed    = $this->allowAdd();
+			$allowed = $this->allowAdd();
 		}
 		else
 		{
-			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
+			$allowed = $this->allowEdit(array('id' => $recordId), 'id');
 		}
 
 		if (!$allowed)
@@ -319,11 +322,11 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	{
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$app		= Factory::getApplication();
-		$model		= $this->getModel();
-		$table		= $model->getTable();
-		$checkin	= property_exists($table, 'checked_out');
-		$context	= "$this->option.edit.$this->context";
+		$app     = Factory::getApplication();
+		$model   = $this->getModel();
+		$table   = $model->getTable();
+		$checkin = property_exists($table, 'checked_out');
+		$context = "$this->option.edit.$this->context";
 
 
 		if (empty($key))
@@ -390,8 +393,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		// Check for request forgeries.
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$model		= $this->getModel();
-		$table		= $model->getTable();
+		$model = $this->getModel();
+		$table = $model->getTable();
 
 		// Determine the name of the primary key for the data.
 		if (empty($key))
@@ -410,11 +413,11 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		// Access check.
 		if ($recordId === 0)
 		{
-			$allowed    = $this->allowAdd();
+			$allowed = $this->allowAdd();
 		}
 		else
 		{
-			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
+			$allowed = $this->allowEdit(array('id' => $recordId), 'id');
 		}
 
 		$app = Factory::getApplication();
@@ -431,24 +434,18 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			return false;
 		}
 
-		$lang		= Factory::getLanguage();
-		$checkin	= property_exists($table, 'checked_out');
-		$context	= "$this->option.edit.$this->context";
-		$task		= (string)$this->getTask();
+		$lang    = Factory::getLanguage();
+		$checkin = property_exists($table, 'checked_out');
+		$context = "$this->option.edit.$this->context";
+		$task    = (string)$this->getTask();
 
 		if (($task === 'save') || ($task === 'apply') || ($task === 'save2new')  || ($task === 'save2copy') || ($task === 'publish_save') || ($task === 'publish_apply'))
 		{
 			$this->changeTab();
 		}
 
-		$data	= ArrayHelper::fromObject($app->getUserState('com_bwpostman.edit.newsletter.data'));
+		$data = ArrayHelper::fromObject($app->getUserState('com_bwpostman.edit.newsletter.data'));
 		$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
-
-		// Reset is_template on copy
-		if ($task === 'save2copy')
-		{
-			$data['is_template'] = 0;
-		}
 
 		// Populate the row id from the session.
 		$data[$key] = $recordId;
@@ -456,6 +453,9 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		// The save2copy task needs to be handled slightly differently.
 		if ($task === 'save2copy')
 		{
+			// Reset is_template on copy
+			$data['is_template'] = 0;
+
 			// Check-in the original row.
 			if ($checkin && $model->checkin($data[$key]) === false)
 			{
@@ -577,7 +577,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			case 'apply':
 			case 'publish_apply':
 				// Set the record data in the session.
-					$recordId = $model->getState($this->context . '.id');
+					$recordId = (int)$model->getState($this->context . '.id');
 					$this->holdEditId($context, $recordId);
 					$app->setUserState($context . '.data', null);
 					$model->checkout($recordId);
@@ -661,9 +661,9 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 */
 	public function changeTab()
 	{
-		$app		= Factory::getApplication();
-		$recordId	= $this->input->getInt('id', 0);
-		$tab		= (string)$this->input->get('tab', 'edit_basic');
+		$app      = Factory::getApplication();
+		$recordId = $this->input->getInt('id', 0);
+		$tab      = (string)$this->input->get('tab', 'edit_basic');
 
 		$app->setUserState($this->context . '.tab' . $recordId, $tab);
 
@@ -698,10 +698,12 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	public function sendOut()
 	{
 		// get newsletter ID to send
-		$app		= Factory::getApplication();
-		$cids		= $this->input->get('cid', array(), 'array');
-		$recordId	= (int)$cids[0];
-		$tab		= 'send';
+		$app      = Factory::getApplication();
+		$cids     = $this->input->get('cid', array(), 'array');
+		$recordId = (int)$cids[0];
+		$tab      = 'send';
+
+		$cids = ArrayHelper::toInteger($cids);
 
 		if (count($cids) > 1)
 		{
@@ -713,7 +715,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 
 		foreach ($cids as $cid)
 		{
-			if ($model->isTemplate((int)$cid))
+			if ($model->isTemplate($cid))
 			{
 				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_IS_TEMPLATE_ERROR'), 'error');
 				$this->setRedirect(
@@ -753,15 +755,17 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
-		$app	= Factory::getApplication();
-		$model	= $this->getModel('newsletter');
-		$error	= array();
-		$link   = '';
+		$app   = Factory::getApplication();
+		$model = $this->getModel('newsletter');
+		$error = array();
+		$link  = '';
 		$this->logger->addEntry(new LogEntry('NL controller sendmail reached', BwLogger::BW_DEBUG, 'send'));
 
 		// Get record ID from list view
-		$ids    	= $this->input->get('cid', 0, '');
-		$recordId   = $ids[0];
+		$ids      = $this->input->get('cid', 0, '');
+		$recordId = $ids[0];
+
+		$ids = ArrayHelper::toInteger($ids);
 
 		// If we come from single view, record ID is 0 at new newsletter
 		if ($recordId === 0 || $recordId === null)
@@ -792,16 +796,16 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		// Sending is allowed, form data are valid, newsletter is no content template and saving was successful
-		$task			= $this->input->getCmd('task', 0);
-		$unconfirmed	= $this->input->get('send_to_unconfirmed', 0);
+		$startsending = 0;
+		$task         = $this->input->getCmd('task', 0);
+		$unconfirmed  = $this->input->get('send_to_unconfirmed', 0);
 		$app->setUserState('bwpostman.send.alsoUnconfirmed', $unconfirmed);
-		$startsending	= 0;
 
 		// Store the newsletter into the newsletters-table
 		if ($model->save($data))
 		{ // save newsletter is ok
 			// make sure, recordID matches data id (because we may come from list view or from a new newsletter)
-			$recordId = $model->getState('newsletter.id');
+			$recordId = (int)$model->getState('newsletter.id');
 			$ret_msg  = '';
 			$this->logger->addEntry(new LogEntry('NL controller model save finished', BwLogger::BW_DEBUG, 'send'));
 
@@ -908,7 +912,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
-		$app	= Factory::getApplication();
+		$app = Factory::getApplication();
 
 		// Access check.
 		if (!$this->allowAdd())
@@ -917,8 +921,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		// Get the newsletter IDs to copy
-		$cid	= $this->input->get('cid', array(), 'array');
-		$model	= $this->getModel('newsletter');
+		$cid   = ArrayHelper::toInteger($this->input->get('cid', array(), 'array'));
+		$model = $this->getModel('newsletter');
 
 		foreach ($cid as $id)
 		{
@@ -928,7 +932,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			}
 			else
 			{
-				$res	= $model->copy($cid);
+				$res = $model->copy($id);
 
 				if ($res === true)
 				{
@@ -962,16 +966,16 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		// Get the selected newsletter(s)
-		$res		= true;
-		$msg		= '';
+		$res = true;
+		$msg = '';
 
 		// Which tab are we in?
 		$layout	= $this->input->getWord('tab', 'unsent');
 
 		// Get the selected newsletter(s)
-		$cid	= $this->input->get('cid', array(0), 'post');
+		$cid = $this->input->get('cid', array(0), 'post');
 
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
 		// Access check.
 		if (!$this->allowArchive($cid))
@@ -997,8 +1001,8 @@ class BwPostmanControllerNewsletter extends JControllerForm
 			$this->setRedirect($link, $msg, 'error');
 		}
 
-		$n		= count($cid);
-		$model	= $this->getModel('newsletter');
+		$n     = count($cid);
+		$model = $this->getModel('newsletter');
 
 		if(!$model->archive($cid, 1))
 		{ // Couldn't archive
@@ -1051,6 +1055,9 @@ class BwPostmanControllerNewsletter extends JControllerForm
 
 		$cid = $this->input->get('cid', array(), 'array');
 
+		// Make sure the item ids are integers
+		$cid = ArrayHelper::toInteger($cid);
+
 		if (empty($cid))
 		{
 			$this->logger->addEntry(new LogEntry(Text::_($this->text_prefix . '_NO_ITEM_SELECTED'), BwLogger::BW_WARNING, 'newsletter'));
@@ -1059,9 +1066,6 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		{
 			// Get the model.
 			$model = $this->getModel();
-
-			// Make sure the item ids are integers
-			$cid = ArrayHelper::toInteger($cid);
 
 			// Publish the items.
 			try

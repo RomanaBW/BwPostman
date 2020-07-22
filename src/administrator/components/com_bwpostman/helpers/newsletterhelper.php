@@ -27,6 +27,7 @@
 defined ('_JEXEC') or die ();
 
 use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Class BwPostmanNewsletterHelper
@@ -46,6 +47,8 @@ abstract class BwPostmanNewsletterHelper {
 	public static function countUsersOfNewsletter(array $usergroup)
 	{
 		$count_users = 0;
+		$usergroup   = ArrayHelper::toInteger($usergroup);
+
 		$db       = Factory::getDbo();
 		$sub_query = $db->getQuery(true);
 
@@ -88,9 +91,11 @@ abstract class BwPostmanNewsletterHelper {
 	 */
 	public static function countSubscribersOfNewsletter(array $associatedMailinglists, $status, $allSubscribers)
 	{
-		$count_subscribers = 0;
-		$db       = Factory::getDbo();
-		$query     = $db->getQuery(true);
+		$count_subscribers      = 0;
+		$associatedMailinglists = ArrayHelper::toInteger($associatedMailinglists);
+
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select('COUNT(' . $db->quoteName('id') . ')');
 		$query->from($db->quoteName('#__bwpostman_subscribers'));

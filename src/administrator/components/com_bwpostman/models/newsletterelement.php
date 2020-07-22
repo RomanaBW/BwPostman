@@ -110,8 +110,8 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 		$this->key = $this->getName();
 
 		// Get the pagination request variables
-		$limit		= $app->getUserStateFromRequest($this->key . '_limit', 'limit', $app->get('list_limit'), 0);
-		$limitstart	= $app->getUserStateFromRequest($this->key . '_limitstart', 'limitstart', 0);
+		$limit      = $app->getUserStateFromRequest($this->key . '_limit', 'limit', $app->get('list_limit'), 0);
+		$limitstart = $app->getUserStateFromRequest($this->key . '_limitstart', 'limitstart', 0);
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
@@ -190,16 +190,16 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 	 */
 	private function buildQuery()
 	{
-		$app = Factory::getApplication();
-		$db	= Factory::getDbo();
-		$query	= $db->getQuery(true);
+		$app   = Factory::getApplication();
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
 		// Build the query
 		$query->select('a.id, a.subject, a.description,  a.mailing_date, a.published, a.archive_flag');
 		$query->from('#__bwpostman_newsletters AS a');
 
 		// Filter by published state
-		$query->where('a.published != ' . (int) 0);
+		$query->where('a.published != ' . 0);
 		$query->where($db->quoteName('a.mailing_date') . ' != ' . $db->quote($db->getNullDate()));
 
 		// Get the search string
@@ -220,8 +220,8 @@ class BwPostmanModelNewsletterelement extends JModelLegacy
 		}
 
 		// Get the filter order
-		$filter_order		= $app->getUserStateFromRequest($this->key . '_filter_order', '.filter_order', 'a.subject', 'word');
-		$filter_order_Dir	= $app->getUserStateFromRequest($this->key . '_filter_order_Dir', 'filter_order_Dir', '', 'word');
+		$filter_order     = $app->getUserStateFromRequest($this->key . '_filter_order', '.filter_order', 'a.subject', 'word');
+		$filter_order_Dir = $app->getUserStateFromRequest($this->key . '_filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 		if ($filter_order == 'a.subject')
 		{

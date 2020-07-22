@@ -30,6 +30,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
+use Joomla\Utilities\ArrayHelper;
 
 JFormHelper::loadFieldClass('radio');
 
@@ -61,6 +62,7 @@ class JFormFieldCamMlUnavailable extends JFormFieldRadio
 	public function getLabel()
 	{
 		  $return = Text::_($this->element['label']);
+
 		  return $return;
 	}
 
@@ -75,19 +77,30 @@ class JFormFieldCamMlUnavailable extends JFormFieldRadio
 	 */
 	public function getInput()
 	{
-		$app		= Factory::getApplication();
-		$_db		= Factory::getDbo();
-		$query		= $_db->getQuery(true);
-		$ml_select	= array();
-		$selected	= '';
+		$app       = Factory::getApplication();
 
-		$disabled	= $this->element['disabled'] == 'true' ? true : false;
-		$readonly	= $this->element['readonly'] == 'true' ? true : false;
-		$attributes	= ' ';
-		$return		= '';
+		// Get item and selected mailinglists
+		$item		= $app->getUserState('com_bwpostman.edit.campaign.data');
+		$cam_id		= $app->getUserState('com_bwpostman.edit.campaign.id', null);
+
+		if (is_object($item))
+		{
+			(property_exists($item, 'ml_unavailable')) ? $ml_select	= $item->ml_unavailable : $ml_select = '';
+		}
+
+		$db        = Factory::getDbo();
+		$query     = $db->getQuery(true);
+		$ml_select = array();
+		$selected  = '';
+
+		$disabled   = $this->element['disabled'] == 'true' ? true : false;
+		$readonly   = $this->element['readonly'] == 'true' ? true : false;
+		$attributes = ' ';
+		$return     = '';
 
 		$type = 'checkbox';
 		$v = $this->element['class'];
+
 		if ($v)
 		{
 			$attributes .= 'class="' . $v . '" ';
@@ -98,12 +111,14 @@ class JFormFieldCamMlUnavailable extends JFormFieldRadio
 		}
 
 		$m = $this->element['multiple'];
+
 		if ($m)
 		{
 			$type = 'checkbox';
 		}
 
 		$value = $this->value;
+
 		if (!is_array($value))
 		{
 			// Convert the selections field to an array.
@@ -118,30 +133,18 @@ class JFormFieldCamMlUnavailable extends JFormFieldRadio
 
 		$options = (array) $this->getOptions();
 
-		// Get item and selected mailinglists
-		$item		= $app->getUserState('com_bwpostman.edit.campaign.data');
-		$cam_id		= $app->getUserState('com_bwpostman.edit.campaign.id', null);
+		$query->select("m.mailinglist_id AS selected");
+		$query->from($db->quoteName('#__bwpostman_campaigns_mailinglists') . ' AS m');
+		$query->where($db->quoteName('m.campaign_id') . ' = ' . $db->quote((int)$cam_id));
+		$db->setQuery($query);
 
-		if (is_object($item))
+		try
 		{
-			(property_exists($item, 'ml_unavailable')) ? $ml_select	= $item->ml_unavailable : $ml_select = '';
+			$ml_select = $db->loadColumn();
 		}
-
-		if (is_array($cam_id) && !empty($cam_id))
+		catch (RuntimeException $e)
 		{
-			$query->select("m.mailinglist_id AS selected");
-			$query->from($_db->quoteName('#__bwpostman_campaigns_mailinglists') . ' AS m');
-			$query->where($_db->quoteName('m.newsletter_id') . ' IN (' . implode(',', $cam_id) . ')');
-			$_db->setQuery($query);
-
-			try
-			{
-				$ml_select = $_db->loadColumn();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$i = 0;
@@ -183,22 +186,22 @@ class JFormFieldCamMlUnavailable extends JFormFieldRadio
 		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
-		$_db		= Factory::getDbo();
-		$query		= $_db->getQuery(true);
-		$query_user	= $_db->getQuery(true);
+		$db		= Factory::getDbo();
+		$query		= $db->getQuery(true);
+		$query_user	= $db->getQuery(true);
 
 		// get user_ids if exists
 		if (is_array($subs_id) && !empty($subs_id))
 		{
-			$query_user->select($_db->quoteName('user_id'));
-			$query_user->from($_db->quoteName('#__bwpostman_subscribers'));
-			$query_user->where($_db->quoteName('id') . ' = ' . (int) $subs_id[0]);
+			$query_user->select($db->quoteName('user_id'));
+			$query_user->from($db->quoteName('#__bwpostman_subscribers'));
+			$query_user->where($db->quoteName('id') . ' = ' . (int) $subs_id[0]);
 
-			$_db->setQuery($query_user);
+			$db->setQuery($query_user);
 
 			try
 			{
-				$user_id = $_db->loadResult();
+				$user_id = $db->loadResult();
 			}
 			catch (RuntimeException $e)
 			{
@@ -213,25 +216,25 @@ class JFormFieldCamMlUnavailable extends JFormFieldRadio
 		}
 
 		$query->select("id AS value, title, description AS text");
-		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->from($db->quoteName('#__bwpostman_mailinglists'));
+		$query->where($db->quoteName('published') . ' = ' . (int) 1);
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
 		if (is_array($accesslevels) && !empty($accesslevels))
 		{
-			$query->where($_db->quoteName('access') . ' NOT IN (' . implode(',', $accesslevels) . ')');
+			$query->where($db->quoteName('access') . ' NOT IN (' . implode(',', $accesslevels) . ')');
 		}
 		else
 		{
-			$query->where($_db->quoteName('access') . ' > ' . (int) 1);
+			$query->where($db->quoteName('access') . ' > ' . (int) 1);
 		}
 
 		$query->order('title ASC');
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$options = $_db->loadObjectList();
+			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

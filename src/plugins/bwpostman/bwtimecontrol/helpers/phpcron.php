@@ -590,7 +590,7 @@ class BwPostmanPhpCron {
 
 						foreach ($nlsToSend as $nlToSend)
 						{
-							if ($this->sendCronNewsletter($nlToSend['id']))
+							if ($this->sendCronNewsletter((int)$nlToSend['id']))
 							{
 								$this->sendCronMail('', $nlToSend['id'], 'cronFinished');
 							}

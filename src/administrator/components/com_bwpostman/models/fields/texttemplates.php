@@ -63,29 +63,26 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 	 */
 	protected function getInput()
 	{
-		$item	    = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
-		$html	    = array();
-		$selected   = '';
+		$item     = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
+		$html     = array();
+		$selected = '';
 
 		// Initialize some field attributes.
-		$readonly	= $this->readonly;
+		$readonly = $this->readonly;
 
 		// Get the field options.
-		$options	= $this->getOptions();
+		$options = $this->getOptions();
 
 		// Get selected template.
 		if (is_object($item))
 		{
-			$selected	= $item->text_template_id;
+			$selected = $item->text_template_id;
 		}
-
-		// Start the radio field output.
-//		$html[]		= '<div class="controls">';
 
 		// note for old templates
 		if ($selected < 1)
 		{
-			$html[]	= Text::_('COM_BWPOSTMAN_NOTE_OLD_TEMPLATE');
+			$html[] = Text::_('COM_BWPOSTMAN_NOTE_OLD_TEMPLATE');
 		}
 
 		if (count($options) > 0)
@@ -94,36 +91,36 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 			foreach ($options as $i => $option)
 			{
 				// Initialize some option attributes.
-				$checked	= ((string) $option->value == (string) $selected) ? ' checked="checked"' : '';
-				$lblclass	= ' class="inputbox mailinglists radio"';
-				$inputclass	= ' class="inputbox mailinglists radio"';
+				$checked    = ((string) $option->value == (string) $selected) ? ' checked="checked"' : '';
+				$lblclass   = ' class="inputbox mailinglists radio"';
+				$inputclass = ' class="inputbox mailinglists radio"';
 
-				$disabled	= !empty($option->disable) || ($readonly && !$checked);
+				$disabled   = !empty($option->disable) || ($readonly && !$checked);
 
-				$disabled	= $disabled ? ' disabled' : '';
+				$disabled   = $disabled ? ' disabled' : '';
 
 				// Initialize some JavaScript option attributes.
-				$onclick	= !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
-				$onchange	= !empty($option->onchange) ? ' onchange="' . $option->onchange . '"' : '';
+				$onclick    = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
+				$onchange   = !empty($option->onchange) ? ' onchange="' . $option->onchange . '"' : '';
 
-				$html[]	= '<label for="' . $this->id . $i . '"' . $lblclass . ' >';
-				$html[]	= '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="'
+				$html[] = '<label for="' . $this->id . $i . '"' . $lblclass . ' >';
+				$html[] = '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="'
 							. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $inputclass . $onclick
 							. $onchange . $disabled . ' />';
 
-				$html[]	= '<span class="media-preview add-on fltlft">';
-				$html[]	= '<span class="hasTooltip hasTipPreview" title="&lt;strong&gt;' . $option->description . '&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;'
+				$html[] = '<span class="media-preview add-on fltlft">';
+				$html[] = '<span class="hasTooltip hasTipPreview" title="&lt;strong&gt;' . $option->description . '&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;'
 					. '&lt;div id=&quot;jform_[template_id]' . $option->value . '_preview_img&quot;&gt;&lt;img id=&quot;jform_[template_id]'
 					. $option->value . '_preview_img&quot; src=&quot;' . Uri::root() . $option->thumbnail . '&quot; alt=&quot;' . $option->title
 					. '&quot; class=&quot;media-preview&quot; style=&quot;max-width:160px; max-height:100px;&quot; /&gt;&lt;/div&gt;">'
 					. $option->title . '</span>';
-				$html[]	= '</span>';
-				$html[]	= '</label>';
+				$html[] = '</span>';
+				$html[] = '</label>';
 			}
 		}
 		else
 		{
-			$html[]	= Text::_('COM_BWPOSTMAN_NO_DATA');
+			$html[] = Text::_('COM_BWPOSTMAN_NO_DATA');
 		}
 
 		// End the radio field output.
@@ -143,45 +140,46 @@ class JFormFieldTextTemplates extends JFormFieldRadio
 	 */
 	public function getOptions()
 	{
-		$app	= Factory::getApplication();
+		$app = Factory::getApplication();
 
 		// Initialize variables.
-		$item		= $app->getUserState('com_bwpostman.edit.newsletter.data', null);
-		$options    = array();
+		$item    = $app->getUserState('com_bwpostman.edit.newsletter.data', null);
+		$options = array();
 
 		// prepare query
-		$_db		= Factory::getDbo();
+		$db = Factory::getDbo();
 
 		// Build the select list for the templates
-		$query	= $_db->getQuery(true);
-		$query->select($_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
-		$query->select($_db->quoteName('title') . ' AS ' . $_db->quoteName('title'));
-		$query->select($_db->quoteName('description') . ' AS ' . $_db->quoteName('description'));
-		$query->select($_db->quoteName('thumbnail') . ' AS ' . $_db->quoteName('thumbnail'));
-		$query->from($_db->quoteName('#__bwpostman_templates'));
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('id') . ' AS ' . $db->quoteName('value'));
+		$query->select($db->quoteName('title') . ' AS ' . $db->quoteName('title'));
+		$query->select($db->quoteName('description') . ' AS ' . $db->quoteName('description'));
+		$query->select($db->quoteName('thumbnail') . ' AS ' . $db->quoteName('thumbnail'));
+		$query->from($db->quoteName('#__bwpostman_templates'));
+
 		// special for old newsletters with template_id < 1
 		if (is_object($item))
 		{
 			if ($item->text_template_id < 1 && !is_null($item->text_template_id))
 			{
-				$query->where($_db->quoteName('id') . ' >= ' . $_db->quote('-2'));
+				$query->where($db->quoteName('id') . ' >= ' . $db->quote('-2'));
 			}
 			else
 			{
-				$query->where($_db->quoteName('id') . ' > ' . $_db->quote('0'));
+				$query->where($db->quoteName('id') . ' > ' . $db->quote('0'));
 			}
 		}
 
-		$query->where($_db->quoteName('archive_flag') . ' = ' . $_db->quote('0'));
-		$query->where($_db->quoteName('published') . ' = ' . $_db->quote('1'));
-		$query->where($_db->quoteName('tpl_id') . ' > ' . $_db->quote('997'));
-		$query->order($_db->quoteName('title') . ' ASC');
+		$query->where($db->quoteName('archive_flag') . ' = ' . $db->quote('0'));
+		$query->where($db->quoteName('published') . ' = ' . $db->quote('1'));
+		$query->where($db->quoteName('tpl_id') . ' > ' . $db->quote('997'));
+		$query->order($db->quoteName('title') . ' ASC');
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$options = $_db->loadObjectList();
+			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

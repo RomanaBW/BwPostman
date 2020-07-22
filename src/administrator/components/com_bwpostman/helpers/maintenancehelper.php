@@ -62,9 +62,9 @@ abstract class BwPostmanMaintenanceHelper
 		$compressMethod = $params->get('compress_method', 'zip');
 		$compressedFile = $fileName . '.' . $compressMethod;
 		$returnFile     = $compressedFile;
-		$onlyFileName  = basename($fileName);
+		$onlyFileName   = basename($fileName);
 
-		$fh = fopen($fileName, 'r');
+		$fh       = fopen($fileName, 'r');
 		$fileData = fread($fh, filesize($fileName));
 
 		switch ($compressMethod)
@@ -101,7 +101,7 @@ abstract class BwPostmanMaintenanceHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function compressByZip($compressedFile, $fileName, $fileData)
+	private static function compressByZip($compressedFile, $fileName, $fileData)
 	{
 		$files = array(
 			'track' => array(

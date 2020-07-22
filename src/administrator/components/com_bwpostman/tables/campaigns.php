@@ -300,9 +300,22 @@ class BwPostmanTableCampaigns extends JTable
 		$xid    = 0;
 
 		// Remove all HTML tags from the title and description
-		$filter				= new InputFilter(array(), array(), 0, 0);
-		$this->title		= trim($filter->clean($this->title));
-		$this->description	= $filter->clean($this->description);
+		$filter = new InputFilter(array(), array(), 0, 0);
+
+		$this->id               = $filter->clean($this->id, 'UINT');
+		$this->asset_id         = $filter->clean($this->asset_id, 'UINT');
+		$this->title            = trim($filter->clean($this->title));
+		$this->description      = $filter->clean($this->description);
+		$this->access           = $filter->clean($this->access, 'UINT');
+		$this->created_date     = $filter->clean($this->created_date);
+		$this->created_by       = $filter->clean($this->created_by, 'INT');
+		$this->modified_time    = $filter->clean($this->modified_time);
+		$this->modified_by      = $filter->clean($this->modified_by, 'INT');
+		$this->checked_out      = $filter->clean($this->checked_out, 'INT');
+		$this->checked_out_time = $filter->clean($this->checked_out_time);
+		$this->archive_flag     = $filter->clean($this->archive_flag, 'UINT');
+		$this->archive_date     = $filter->clean($this->archive_date);
+		$this->archived_by      = $filter->clean($this->archived_by, 'INT');
 
 		// Check for valid title
 		if ($this->title === '')
@@ -327,7 +340,7 @@ class BwPostmanTableCampaigns extends JTable
 			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if ($xid && $xid != intval($this->id))
+		if ($xid && $xid !== intval($this->id))
 		{
 			$app->enqueueMessage((Text::sprintf('COM_BWPOSTMAN_CAM_ERROR_TITLE_DOUBLE', $this->title, $xid)), 'error');
 			$fault	= true;
@@ -427,8 +440,9 @@ class BwPostmanTableCampaigns extends JTable
 	 */
 	public function getAllCampaignIds()
 	{
-		$db         = $this->_db;
-		$query      = $db->getQuery(true);
+		$cams  = array();
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->select('id');
 		$query->from($this->_tbl);

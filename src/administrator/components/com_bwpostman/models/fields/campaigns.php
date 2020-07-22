@@ -60,21 +60,21 @@ class JFormFieldCampaigns extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
 		// Get all published campaigns
-		$query->select($_db->quoteName('id') . ' AS value');
-		$query->select($_db->quoteName('title') . 'AS text');
-		$query->select($_db->quoteName('description') . ' AS description');
-		$query->from($_db->quoteName('#__bwpostman_campaigns'));
-		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->select($db->quoteName('id') . ' AS value');
+		$query->select($db->quoteName('title') . 'AS text');
+		$query->select($db->quoteName('description') . ' AS description');
+		$query->from($db->quoteName('#__bwpostman_campaigns'));
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$options = $_db->loadObjectList();
+			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

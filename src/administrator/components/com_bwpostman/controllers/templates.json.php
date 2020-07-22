@@ -31,6 +31,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Filesystem\File;
 
 // Import CONTROLLER object class
 jimport('joomla.application.component.controlleradmin');
@@ -69,22 +70,18 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 				throw new Exception((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
 			}
 
-			$app	= Factory::getApplication();
+			$app    = Factory::getApplication();
 			$appWeb = new BwWebApp();
 			$jinput	= $app->input;
 
 			$step       = $jinput->get('step', 1);
 			$alertClass = 'success';
 			$ready      = "0";
-			$result     = '';
 
 			// Get file details from uploaded file
 			$file = $app->getUserState('com_bwpostman.templates.uploadfile', '');
 
-			$model	= $this->getModel('templates');
-
-			$log_options  = array();
-			$logger      = BwLogger::getInstance($log_options);
+			$model = $this->getModel('templates');
 
 			// start output buffer
 			ob_start();
@@ -163,8 +160,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 			}
 
 			// return the contents of the output buffer
-			$content    = ob_get_contents();
-			$result     = $content;
+			$content = ob_get_contents();
+			$result  = $content;
 
 			// clean the output buffer and turn off output buffering
 			ob_end_clean();

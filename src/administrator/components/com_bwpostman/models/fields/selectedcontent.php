@@ -60,6 +60,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 	public function getLabel()
 	{
 		$return = '<label for="' . $this->id . '" class="selected_content_label">' . Text::_($this->element['label']) . '</label>';
+
 		return $return;
 	}
 
@@ -75,8 +76,8 @@ class JFormFieldSelectedContent extends JFormFieldList
 	public function getInput()
 	{
 		// Initialize variables.
-		$html	= array();
-		$attr	= '';
+		$html = array();
+		$attr = '';
 
 		// Initialize some field attributes.
 		$attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
@@ -95,7 +96,7 @@ class JFormFieldSelectedContent extends JFormFieldList
 		$attr .= $this->element['ondblclick'] ? ' ondblclick="' . (string) $this->element['ondblclick'] . '"' : '';
 
 		// Get the field options.
-		$options	= (array) $this->getOptions();
+		$options = (array) $this->getOptions();
 
 		// Create a regular list.
 		$html[] = HTMLHelper::_('select.genericlist', $options, $this->name, trim($attr), 'value', 'text', '', $this->id);
@@ -115,21 +116,22 @@ class JFormFieldSelectedContent extends JFormFieldList
 	public function getOptions()
 	{
 		// Initialize variables.
-		$user_id		= null;
+		$user_id = null;
 
 		// prepare query
-		$_db		= Factory::getDbo();
-		$query_user	= $_db->getQuery(true);
+		$db         = Factory::getDbo();
+		$query_user = $db->getQuery(true);
 
 		// get user_ids if exists
-		$query_user->select($_db->quoteName('user_id'));
-		$query_user->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query_user->where($_db->quoteName('id') . ' = ' . (int) $this->_id);
+		// @Todo: Why this query?
+		$query_user->select($db->quoteName('user_id'));
+		$query_user->from($db->quoteName('#__bwpostman_subscribers'));
+		$query_user->where($db->quoteName('id') . ' = ' . (int) $this->_id);
 
-		$_db->setQuery($query_user);
+		$db->setQuery($query_user);
 		try
 		{
-			$user_id = $_db->loadResult();
+			$user_id = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -155,14 +157,14 @@ class JFormFieldSelectedContent extends JFormFieldList
 	 */
 	private function getSelectedContent()
 	{
-		$app				= Factory::getApplication();
-		$_db				= Factory::getDbo();
-		$options			= array();
-		$selected_content	= '';
+		$app              = Factory::getApplication();
+		$db               = Factory::getDbo();
+		$options          = array();
+		$selected_content = '';
 
 		if (is_object($app->getUserState('com_bwpostman.edit.newsletter.data')))
 		{
-			$selected_content	= $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
+			$selected_content = $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
 		}
 
 		if ($selected_content)
@@ -175,25 +177,25 @@ class JFormFieldSelectedContent extends JFormFieldList
 			// We do a foreach to protect our ordering
 			foreach ($selected_content as $value)
 			{
-				$subquery	= $_db->getQuery(true);
-				$subquery->select($_db->quoteName('cc') . '.' . $_db->quoteName('path'));
-				$subquery->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('cc'));
-				$subquery->where($_db->quoteName('cc') . '.' . $_db->quoteName('id') . ' = ' . $_db->quoteName('c') . '.' . $_db->quoteName('catid'));
+				$subquery = $db->getQuery(true);
+				$subquery->select($db->quoteName('cc') . '.' . $db->quoteName('path'));
+				$subquery->from($db->quoteName('#__categories') . ' AS ' . $db->quoteName('cc'));
+				$subquery->where($db->quoteName('cc') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('c') . '.' . $db->quoteName('catid'));
 
-				$query	= $_db->getQuery(true);
-				$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id') . 'AS value');
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName('c') . '.' . $db->quoteName('id') . 'AS value');
 				$query->select(
-					'CONCAT((' . $subquery . '), " = ",' . $_db->quoteName('c') . '.' . $_db->quoteName('title') . ') AS '
-					. $_db->quoteName('text')
+					'CONCAT((' . $subquery . '), " = ",' . $db->quoteName('c') . '.' . $db->quoteName('title') . ') AS '
+					. $db->quoteName('text')
 				);
-				$query->from($_db->quoteName('#__content') . ' AS ' . $_db->quoteName('c'));
-				$query->where($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' = ' . (int) $value);
+				$query->from($db->quoteName('#__content') . ' AS ' . $db->quoteName('c'));
+				$query->where($db->quoteName('c') . '.' . $db->quoteName('id') . ' = ' . (int) $value);
 
-				$_db->setQuery($query);
+				$db->setQuery($query);
 
 				try
 				{
-					$options[] = $_db->loadAssoc();
+					$options[] = $db->loadAssoc();
 				}
 				catch (RuntimeException $e)
 				{

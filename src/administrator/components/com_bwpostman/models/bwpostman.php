@@ -91,7 +91,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	 */
 	public function getGeneraldata()
 	{
-		$general	= array();
+		$general = array();
 
 		// Get # of all unsent newsletters
 		$nlTable = $this->getTable('Newsletters');
@@ -207,7 +207,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$db   = Factory::getDbo();
 		$user = Factory::getUser();
 
-		$statePermissions	= $app->getUserState('com_bwpm.permissions');
+		$statePermissions = $app->getUserState('com_bwpm.permissions');
 
 		if (is_null($permission))
 		{
@@ -215,8 +215,8 @@ class BwPostmanModelBwPostman extends JModelLegacy
 			$input = $app->input;
 
 			$permission = array(
-				'component' => $input->get('comp'),
-				'action'    => $input->get('action'),
+				'component' => $input->getWord('comp'),
+				'action'    => $input->getCmd('action'),
 				'rule'      => $input->get('rule'),
 				'value'     => $input->get('value'),
 				'title'     => $input->get('title', '', 'RAW')
@@ -234,6 +234,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		$section = $this->getSectionNameFromPermissions($permission);
 
 		$sectionPermission = false;
+
 		if ($section !== '')
 		{
 			$sectionPermission = $statePermissions['admin'][$section];
@@ -396,9 +397,9 @@ class BwPostmanModelBwPostman extends JModelLegacy
 
 		// All checks done.
 		$result = array(
-			'text'    => '',
-			'class'   => '',
-			'result'  => true,
+			'text'   => '',
+			'class'  => '',
+			'result' => true,
 		);
 
 		// Show the current effective calculated permission considering current group, path and cascade.

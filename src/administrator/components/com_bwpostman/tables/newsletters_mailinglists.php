@@ -29,6 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Filter\InputFilter;
 
 /**
  * #__bwpostman_newsletters_mailinglists table handler
@@ -69,6 +70,28 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	}
 
 	/**
+	 * Overloaded check method to ensure data integrity
+	 *
+	 * @access public
+	 *
+	 * @return boolean True
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0
+	 */
+	public function check()
+	{
+		// Remove all HTML tags from the title and description
+		$filter = new InputFilter(array(), array(), 0, 0);
+
+		$this->newsletter_id  = $filter->clean($this->newsletter_id, 'UINT');
+		$this->mailinglist_id = $filter->clean($this->mailinglist_id, 'UINT');
+
+		return true;
+	}
+
+	/**
 	 * Method to duplicate the mailinglist entries of a newsletter to a new one
 	 *
 	 * @access	public
@@ -84,20 +107,20 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 */
 	public function copyLists($oldid, $newid)
 	{
-		$lists      = array();
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
-		$subQuery	= $_db->getQuery(true);
+		$lists    = array();
+		$db       = $this->_db;
+		$query    = $db->getQuery(true);
+		$subQuery = $db->getQuery(true);
 
-		$subQuery->select($_db->quote($newid) . ' AS ' . $_db->quoteName('newsletter_id'));
-		$subQuery->select($_db->quoteName('mailinglist_id'));
-		$subQuery->from($_db->quoteName($this->_tbl));
-		$subQuery->where($_db->quoteName('newsletter_id') . ' = ' . (int) $oldid);
-		$_db->setQuery($subQuery);
+		$subQuery->select($db->quote((int)$newid) . ' AS ' . $db->quoteName('newsletter_id'));
+		$subQuery->select($db->quoteName('mailinglist_id'));
+		$subQuery->from($db->quoteName($this->_tbl));
+		$subQuery->where($db->quoteName('newsletter_id') . ' = ' . (int) $oldid);
+		$db->setQuery($subQuery);
 
 		try
 		{
-			$lists		= $_db->loadAssocList();
+			$lists = $db->loadAssocList();
 		}
 		catch (RuntimeException $e)
 		{
@@ -107,22 +130,22 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 		foreach ($lists as $list)
 		{
 			$query->clear();
-			$query->insert($_db->quoteName($this->_tbl));
+			$query->insert($db->quoteName($this->_tbl));
 			$query->columns(
 				array(
-				$_db->quoteName('newsletter_id'),
-				$_db->quoteName('mailinglist_id')
+				$db->quoteName('newsletter_id'),
+				$db->quoteName('mailinglist_id')
 				)
 			);
 			$query->values(
 				(int) $list['newsletter_id'] . ',' .
 					(int) $list['mailinglist_id']
 			);
-			$_db->setQuery($query);
+			$db->setQuery($query);
 
 			try
 			{
-				$_db->execute();
+				$db->execute();
 			}
 			catch (RuntimeException $e)
 			{
@@ -244,14 +267,15 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.3.0 (since 2.4.0 here, before at BE newsletter model)
+	 * @since 2.4.0 (here, before since 2.3.0 at BE newsletter model)
 	 */
 	public function getAssociatedMailinglistsByNewsletter($id)
 	{
-		$db	= $this->_db;
 		$mailinglists = array();
 
+		$db    = $this->_db;
 		$query = $db->getQuery(true);
+
 		$query->select($db->quoteName('mailinglist_id'));
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('newsletter_id') . ' = ' . (int) $id);
@@ -283,11 +307,11 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 */
 	public function deleteMailinglistNewsletters($id)
 	{
-		$db            = $this->_db;
-		$query          = $db->getQuery(true);
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote((int)$id));
 
 		$db->setQuery($query);
 

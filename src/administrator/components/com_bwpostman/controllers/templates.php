@@ -89,7 +89,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 */
 	public function __construct($config = array())
 	{
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		parent::__construct($config);
 
@@ -138,7 +138,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 			return $this;
 		}
 
-		$jinput		= Factory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 
 		// Show the layout depending on the task
 		switch($this->getTask())
@@ -150,6 +150,7 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 		}
 
 		parent::display();
+
 		return $this;
 	}
 
@@ -193,18 +194,18 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 */
 	public function publish()
 	{
-		$app	= Factory::getApplication();
-		$jinput	= Factory::getApplication()->input;
-
 		// Check for request forgeries
 		if (!Session::checkToken())
 		{
 			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
+		$app    = Factory::getApplication();
+		$jinput = Factory::getApplication()->input;
+
 		// Get the selected template(s)
 		$cid = $jinput->get('cid', array(0), 'post');
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
 		// Access check
 		if (!$this->allowPublish($cid))
@@ -212,8 +213,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 			return false;
 		}
 
-		$model = $this->getModel('template');
-		$tplTable = $model->getTable();
+		$model     = $this->getModel('template');
+		$tplTable  = $model->getTable();
 		$count_std = $tplTable->getNumberOfStdTemplates($cid);
 
 		// unpublish only, if no standard template is selected
@@ -254,8 +255,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 			return false;
 		}
 
-		$app	= Factory::getApplication();
-		$jinput	= $app->input;
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
 
 		// Get file details from uploaded file
 		$file = $jinput->files->get('uploadfile', null, 'raw');
@@ -266,12 +267,12 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 
 		if ($msg)
 		{
-			$link	= Route::_('index.php?option=com_bwpostman&view=templates', false);
+			$link = Route::_('index.php?option=com_bwpostman&view=templates', false);
 			$this->setRedirect($link, $msg, 'error');
 		}
 		else
 		{
-			$link	= Route::_('index.php?option=com_bwpostman&view=templates&layout=installtpl', false);
+			$link = Route::_('index.php?option=com_bwpostman&view=templates&layout=installtpl', false);
 			$this->setRedirect($link);
 		}
 
@@ -290,8 +291,8 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	public function exportTpl()
 	{
 		// get newsletter ID to send
-		$cids		= $this->input->get('cid', array(), 'array');
-		$this->id	= (int)$cids[0];
+		$cids     = $this->input->get('cid', array(), 'array');
+		$this->id = (int)$cids[0];
 
 		// redirect to raw view
 		$this->setRedirect(

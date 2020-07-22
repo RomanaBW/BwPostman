@@ -153,8 +153,8 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 */
 	public function unarchive()
 	{
-		$app	= Factory::getApplication();
-		$jinput	= Factory::getApplication()->input;
+		$app    = Factory::getApplication();
+		$jinput = Factory::getApplication()->input;
 
 		// Check for request forgeries
 		if (!Session::checkToken()) {
@@ -168,6 +168,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 
 		// Access check.
 		$view   = substr($tab, 0, -1);
+
 		if (!$this->allowRestore($view, $cid))
 		{
 			$this->setRedirect(
@@ -187,6 +188,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			default:
 			case "newsletters":
 				$model = $this->getModel('newsletter');
+
 				if(!$model->archive($cid, 0))
 				{
 					if ($n > 1)
@@ -219,6 +221,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			// We are in the subscribers_tab
 			case "subscribers":
 				$model = $this->getModel('subscriber');
+
 				if(!$model->archive($cid, 0))
 				{
 					if ($n > 1)
@@ -254,6 +257,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 				$unarchive_nl = $jinput->get('unarchive_nl');
 
 				$model = $this->getModel('campaign');
+
 				if(!$model->archive($cid, 0, $unarchive_nl))
 				{
 					if ($n > 1)
@@ -315,6 +319,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			// We are in the mailinglists_tab
 			case "mailinglists":
 				$model = $this->getModel('mailinglist');
+
 				if(!$model->archive($cid, 0))
 				{
 					if ($n > 1)
@@ -347,6 +352,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			// We are in the templates_tab
 			case "templates":
 				$model = $this->getModel('template');
+
 				if(!$model->archive($cid, 0))
 				{
 					if ($n > 1)
@@ -378,6 +384,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 		}
 
 		$jinput->set('view', 'archive');
+
 		return parent::display();
 	}
 
@@ -401,15 +408,16 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
-		$app	= Factory::getApplication();
-		$tab	= $jinput->get('layout', 'newsletters');
-		$cid	= $jinput->get('cid', array(0), 'post');
-		$type	= 'message';
+		$app  = Factory::getApplication();
+		$tab  = $jinput->get('layout', 'newsletters');
+		$cid  = $jinput->get('cid', array(0), 'post');
+		$type = 'message';
 
 		ArrayHelper::toInteger($cid);
 
 		// Access check.
 		$view   = substr($tab, 0, -1);
+
 		if (!$this->allowDelete($view, $cid))
 		{
 			$this->setRedirect(
@@ -426,6 +434,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			default:
 			case "newsletters":
 				$model = $this->getModel('newsletter');
+
 				if(!$model->delete($cid))
 				{
 					$type	= 'error';
@@ -454,6 +463,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			// We are in the subscribers_tab
 			case "subscribers":
 				$model = $this->getModel('subscriber');
+
 				if(!$model->delete($cid))
 				{
 					$type	= 'error';
@@ -483,7 +493,8 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			case "campaigns":
 				// If archive_nl = 1 the assigned newsletters shall be archived, too
 				$remove_nl = $jinput->get('remove_nl');
-				$model = $this->getModel('campaign');
+				$model     = $this->getModel('campaign');
+
 				if(!$model->delete($cid, $remove_nl))
 				{
 					$type	= 'error';
@@ -536,6 +547,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			// We are in the mailinglists_tab
 			case "mailinglists":
 				$model = $this->getModel('mailinglist');
+
 				if(!$model->delete($cid))
 				{
 					$type	= 'error';
@@ -564,6 +576,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 			// We are in the templates_tab
 			case "templates":
 				$model = $this->getModel('template');
+
 				if(!$model->delete($cid))
 				{
 					$type	= 'error';
@@ -590,6 +603,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 		}
 
 		$app->enqueueMessage($msg, $type);
+
 		return parent::display();
 	}
 }

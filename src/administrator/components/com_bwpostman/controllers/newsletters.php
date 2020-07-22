@@ -111,6 +111,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		}
 
 		parent::display();
+
 		return $this;
 	}
 
@@ -155,16 +156,16 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 			return false;
 		}
 
-		$jinput	= Factory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 
 		// Which tab are we in?
 		$layout = $jinput->get('tab', 'unsent');
 
 		// Get the selected newsletter(s)
 		$cid = $jinput->get('cid', array(0), 'post', 'array');
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
-		$n = count($cid);
+		$n     = count($cid);
 		$model = $this->getModel('newsletter');
 
 		if(!$model->copy($cid))
@@ -246,7 +247,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 
 		// Get the selected newsletters(s)
 		$cid = $jinput->get('cid', array(0), 'post');
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
 		// Access check
 		if (!$this->allowPublish($cid))
@@ -290,6 +291,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$ids = Factory::getApplication()->input->post->get('cid', array(), 'array');
+		$ids = ArrayHelper::toInteger($ids);
 		$res = true;
 
 		foreach ($ids as $item)

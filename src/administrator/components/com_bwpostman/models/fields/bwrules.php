@@ -157,17 +157,17 @@ class JFormFieldBwRules extends JFormFieldRules
 				$parentAssetName .= '.' . $section;
 			}
 
-			$_db = Factory::getDbo();
-			$query = $_db->getQuery(true);
+			$db    = Factory::getDbo();
+			$query = $db->getQuery(true);
 			$query->clear();
 
-			$query->select($_db->quoteName('id'));
-			$query->from($_db->quoteName('#__assets'));
-			$query->where($_db->quoteName('name') . ' = ' . $_db->quote($parentAssetName));
+			$query->select($db->quoteName('id'));
+			$query->from($db->quoteName('#__assets'));
+			$query->where($db->quoteName('name') . ' = ' . $db->quote($parentAssetName));
 
-			$_db->setQuery($query);
+			$db->setQuery($query);
 
-			$assetId = (int) $_db->loadResult();
+			$assetId = (int) $db->loadResult();
 		}
 
 		// If not in global config we need the parent_id asset to calculate permissions.
@@ -455,8 +455,8 @@ class JFormFieldBwRules extends JFormFieldRules
 	 */
 	private function checkAssetId($assetId)
 	{
-		$db	= Factory::getDbo();
-		$query	= $db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__assets'));
@@ -468,7 +468,7 @@ class JFormFieldBwRules extends JFormFieldRules
 
 		if (is_array($res))
 		{
-			return $res['id'];
+			return (int)$res['id'];
 		}
 
 		return null;

@@ -32,6 +32,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailHelper;
 use Joomla\Filter\InputFilter;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * #__bwpostman_newsletters table handler
@@ -460,23 +461,57 @@ class BwPostmanTableNewsletters extends JTable
 		if ($this->publish_down > $db->getNullDate() && $this->publish_down < $this->publish_up)
 		{
 			// Swap the dates.
-			$temp = $this->publish_up;
-			$this->publish_up = $this->publish_down;
+			$temp               = $this->publish_up;
+			$this->publish_up   = $this->publish_down;
 			$this->publish_down = $temp;
 		}
 
 		// Sanitize values
-		$filter				= new InputFilter(array(), array(), 0, 0);
-		$this->subject		= trim($filter->clean($this->subject));
-		$this->from_name	= trim($filter->clean($this->from_name));
-		$this->from_email	= trim($filter->clean($this->from_email));
-		$this->reply_email	= trim($filter->clean($this->reply_email));
+		$filter = new InputFilter(array(), array(), 0, 0);
+
+		$this->id                  = $filter->clean($this->id, 'UINT');
+		$this->asset_id            = $filter->clean($this->asset_id, 'UINT');
+		$this->from_name           = trim($filter->clean($this->from_name));
+		$this->from_email          = trim($filter->clean($this->from_email));
+		$this->reply_email         = trim($filter->clean($this->reply_email));
+		$this->template_id         = $filter->clean($this->template_id, 'UINT');
+		$this->text_template_id    = $filter->clean($this->text_template_id, 'UINT');
+		$this->campaign_id         = $filter->clean($this->campaign_id, 'INT');
+		$this->usergroups          = $filter->clean($this->usergroups);
+		$this->selected_content    = trim($filter->clean($this->selected_content));
+		$this->subject             = trim($filter->clean($this->subject));
+		$this->description         = $filter->clean($this->description);
+		$this->access              = $filter->clean($this->access, 'UINT');
+		$this->attachment          = trim($filter->clean($this->attachment));
+		$this->intro_headline      = trim($filter->clean($this->intro_headline));
+		$this->intro_text          = trim($filter->clean($this->intro_text));
+		$this->intro_text_headline = trim($filter->clean($this->intro_text_headline));
+		$this->intro_text_text     = trim($filter->clean($this->intro_text_text));
+		$this->html_version	       = trim($filter->clean($this->html_version, 'RAW'));
+		$this->text_version	       = trim($filter->clean($this->text_version));
+		$this->is_template         = trim($filter->clean($this->is_template, 'UINT'));
+		$this->created_date        = $filter->clean($this->created_date);
+		$this->created_by          = $filter->clean($this->created_by, 'INT');
+		$this->modified_time       = $filter->clean($this->modified_time);
+		$this->modified_by         = $filter->clean($this->modified_by, 'INT');
+		$this->mailing_date        = $filter->clean($this->mailing_date);
+		$this->published           = $filter->clean($this->published, 'UINT');
+		$this->publish_up          = $filter->clean($this->publish_up);
+		$this->publish_down        = $filter->clean($this->publish_down);
+		$this->checked_out         = $filter->clean($this->checked_out, 'INT');
+		$this->checked_out_time    = $filter->clean($this->checked_out_time);
+		$this->archive_flag        = $filter->clean($this->archive_flag, 'UINT');
+		$this->archive_date        = $filter->clean($this->archive_date);
+		$this->archived_by         = $filter->clean($this->archived_by, 'INT');
+		$this->hits                = $filter->clean($this->hits, 'UINT');
+		$this->substitute_links    = $filter->clean($this->substitute_links, 'UINT');
+
 
 		// no subject is unkind
 		if ($this->subject === '')
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_SUBJECT'), 'error');
-			$fault	= true;
+			$fault = true;
 		}
 
 		// Check for existing subject
@@ -495,13 +530,13 @@ class BwPostmanTableNewsletters extends JTable
 			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if ($xid && $xid != intval($this->id))
+		if ($xid && $xid !== intval($this->id))
 		{
 			$app->enqueueMessage((Text::sprintf('COM_BWPOSTMAN_NL_WARNING_SUBJECT_DOUBLE', $this->subject)), 'warning');
 		}
 
 		// some text should be, too
-		if (($this->html_version == '') && ($this->text_version == ''))
+		if (($this->html_version === '') && ($this->text_version === ''))
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_CONTENT'), 'error');
 			$fault	= true;
@@ -515,14 +550,14 @@ class BwPostmanTableNewsletters extends JTable
 		}
 
 		// from email is mandatory
-		if ((empty($this->from_email))  || (!MailHelper::isEmailAddress(trim($this->from_email))))
+		if ((empty($this->from_email)) || (!MailHelper::isEmailAddress($this->from_email)))
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_FROMEMAIL'), 'error');
 			$fault	= true;
 		}
 
 		// reply email is mandatory
-		if ((empty($this->reply_email))  || (!MailHelper::isEmailAddress(trim($this->reply_email))))
+		if ((empty($this->reply_email)) || (!MailHelper::isEmailAddress($this->reply_email)))
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SAVE_NO_REPLYEMAIL'), 'error');
 			$fault	= true;
@@ -617,7 +652,7 @@ class BwPostmanTableNewsletters extends JTable
 
 		$newIsTemplate = ($this->is_template + 1) % 2;
 
-		$db	= $this->_db;
+		$db	    = $this->_db;
 		$query	= $db->getQuery(true);
 
 		$query->update($db->quoteName($this->_tbl));
@@ -651,12 +686,12 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function isTemplate($id)
 	{
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('is_template'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
+		$query->where($db->quoteName('id') . ' = ' . $db->quote((int)$id));
 
 		$db->setQuery($query);
 		try
@@ -691,16 +726,17 @@ class BwPostmanTableNewsletters extends JTable
 	public function archive($cid, $archive)
 	{
 		$uid = Factory::getUser()->get('id');
-		$db = $this->_db;
+		$db  = $this->_db;
+		$cid = ArrayHelper::toInteger($cid);
 
-		if ($archive == 1)
+		if ((int)$archive === 1)
 		{
 			$time = Factory::getDate()->toSql();
 		}
 		else
 		{
 			$time = $db->getNullDate();
-			$uid	= 0;
+			$uid  = 0;
 		}
 
 		$query = $db->getQuery(true);
@@ -739,8 +775,8 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function getNewsletterData($nlId)
 	{
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
+		$db	   = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
@@ -775,11 +811,10 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function getSelectedContentOfNewsletter($nlId)
 	{
-		$content_ids    = '';
-		$db	= $this->_db;
+		$content_ids = '';
 
-		// Get selected content from the newsletters-Table
-		$query	= $db->getQuery(true);
+		$db	   = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('selected_content'));
 		$query->from($db->quoteName($this->_tbl));
@@ -813,12 +848,12 @@ class BwPostmanTableNewsletters extends JTable
 	{
 		$campaignId = -1;
 
-		$db	= $this->_db;
+		$db	    = $this->_db;
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('campaign_id'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . $db->Quote($nlId));
+		$query->where($db->quoteName('id') . ' = ' . $db->Quote((int)$nlId));
 
 		$db->setQuery($query);
 
@@ -848,7 +883,7 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function getNbrOfNewsletters($sent, $archived)
 	{
-		$archiveFlag = 0;
+		$archiveFlag         = 0;
 		$mailingDateOperator = "=";
 
 		if ($sent)
@@ -861,7 +896,7 @@ class BwPostmanTableNewsletters extends JTable
 			$archiveFlag = 1;
 		}
 
-		$db = $this->_db;
+		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');
@@ -900,10 +935,10 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$date	= Factory::getDate();
-		$user	= Factory::getUser();
-		$app	= Factory::getApplication();
-		$id		= $this->id;
+		$date = Factory::getDate();
+		$user = Factory::getUser();
+		$app  = Factory::getApplication();
+		$id   = $this->id;
 
 		if ($id)
 		{
@@ -937,11 +972,11 @@ class BwPostmanTableNewsletters extends JTable
 	 */
 	public function deleteCampaignsNewsletters($id)
 	{
-		$db            = $this->_db;
-		$query          = $db->getQuery(true);
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote($id));
+		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote((int)$id));
 
 		$db->setQuery($query);
 

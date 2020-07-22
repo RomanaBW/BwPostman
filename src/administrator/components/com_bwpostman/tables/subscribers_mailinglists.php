@@ -29,6 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * #__bwpostman_subscribers_mailinglists table handler
@@ -112,7 +113,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	/**
 	 * Method to get the subscribers of a specific mailinglist
 	 *
-	 * @param 	integer $id id of mailinglist
+	 * @param 	array|integer $ids id of mailinglist
 	 *
 	 * @return 	array       $subscribers of this mailinglist
 	 *
@@ -120,14 +121,21 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 *
 	 * @since       2.4.0 (here, before since 2.2.0 at mailinglist helper)
 	 */
-	public function getSubscribersOfMailinglist($id)
+	public function getSubscribersOfMailinglist($ids)
 	{
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
+		if (!is_array($ids))
+		{
+			$ids = array((int)$ids);
+		}
+
+		$ids = ArrayHelper::toInteger($ids);
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('subscriber_id'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('mailinglist_id') . ' = ' . $db->Quote($id));
+		$query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $ids) . ')');
 
 		$db->setQuery($query);
 
@@ -150,8 +158,9 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 */
 	public function deleteMailinglistsOfSubscriber($subscriber_id, $mailinglists = null)
 	{
-		$db   = $this->_db;
+		$db    = $this->_db;
 		$query = $db->getQuery(true);
+
 		$query->delete($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('subscriber_id') . ' =  ' . (int) $subscriber_id);
 
@@ -190,7 +199,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 */
 	public function storeMailinglistsOfSubscriber($subscriber_id, $mailinglist_ids)
 	{
-		$db   = $this->_db;
+		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->columns(
@@ -278,11 +287,11 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 */
 	public function deleteMailinglistSubscribers($id)
 	{
-		$db            = $this->_db;
-		$query          = $db->getQuery(true);
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote((int)$id));
 
 		$db->setQuery($query);
 
@@ -332,7 +341,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return $mailinglist_ids;
+		return ArrayHelper::toInteger($mailinglist_ids);
 	}
 
 	/**

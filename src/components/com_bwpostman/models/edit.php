@@ -341,7 +341,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		parent::save($data);
 
 		// Get the subscriber id
-		$subscriber_id = $data['id'];
+		$subscriber_id = (int)$data['id'];
 
 		// Delete all mailinglist entries for the subscriber_id from newsletters_mailinglists-table
 		$subsMlTable = $this->getTable('Subscribers_Mailinglists');

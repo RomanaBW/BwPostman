@@ -41,7 +41,6 @@ abstract class BwPostmanHTMLHelper {
 	 * Creates the buttons view at the start page
 	 * --> from administrator/mod_quickicon/mod_quickicon.php
 	 *
-	 * @access	public
 	 * @param	string	$link       URL target
 	 * @param	string	$image      Image path
 	 * @param	string	$text       Image description
@@ -70,10 +69,9 @@ abstract class BwPostmanHTMLHelper {
 
 		<?php
 	}
+
 	/**
-	 * Method to get the export fields list
-	 *
-	 * @access	public
+	 * Method to get the fields list for subscriber export
 	 *
 	 * @return 	string	export fields list, html select list multiple
 	 *
@@ -83,28 +81,10 @@ abstract class BwPostmanHTMLHelper {
 	 */
 	static public function getExportFieldsList()
 	{
-		$_db			= Factory::getDbo();
+		require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 		$export_fields	= array();
 
-		$query = "SHOW COLUMNS FROM {$_db->quoteName('#__bwpostman_subscribers')}
-			WHERE {$_db->quoteName('Field')} NOT IN (
-				{$_db->quote('activation')},
-				{$_db->quote('editlink')},
-				{$_db->quote('checked_out')},
-				{$_db->quote('checked_out_time')})"
-			;
-
-		$_db->setQuery($query);
-		$columns = array();
-
-		try
-		{
-			$columns = $_db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$columns = BwPostmanSubscriberHelper::getExportFieldsList();
 
 		foreach ($columns AS $column)
 		{
@@ -118,8 +98,6 @@ abstract class BwPostmanHTMLHelper {
 
 	/**
 	 * Method to get the file format list
-	 *
-	 * @access	public
 	 *
 	 * @param	string	$selected
 	 *
@@ -140,8 +118,6 @@ abstract class BwPostmanHTMLHelper {
 
 	/**
 	 * Method to get the delimiter list
-	 *
-	 * @access	public
 	 *
 	 * @param	string	$selected
 	 *
@@ -166,8 +142,6 @@ abstract class BwPostmanHTMLHelper {
 	/**
 	 * Method to get the enclosure list
 	 *
-	 * @access	public
-	 *
 	 * @param	string	$selected
 	 *
 	 * @return 	string	enclosure list, html select list
@@ -190,8 +164,6 @@ abstract class BwPostmanHTMLHelper {
 	/**
 	 * Method to get the mail format list
 	 *
-	 * @access	public
-	 *
 	 * @param	string	$selected
 	 *
 	 * @return 	string	mail format list, html select list
@@ -211,8 +183,6 @@ abstract class BwPostmanHTMLHelper {
 
 	/**
 	 * Method to get the database fields list
-	 *
-	 * @access	public
 	 *
 	 * @return 	string	database fields list, html select list
 	 *
@@ -240,8 +210,6 @@ abstract class BwPostmanHTMLHelper {
 
 	/**
 	 * Method to get the mailinglists select list
-	 *
-	 * @access	public
 	 *
 	 * @param	array	$mailinglists
 	 *

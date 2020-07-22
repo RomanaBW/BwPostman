@@ -555,11 +555,11 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	private function getItem($nl_id)
 	{
-		$scheduled_date = '0000-00-00 00:00:00';
+		$db             = Factory::getDbo();
+		$scheduled_date = $db->getNullDate();
 
 		if ($nl_id !== 0)
 		{
-			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName('scheduled_date'));

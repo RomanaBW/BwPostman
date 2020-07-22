@@ -80,7 +80,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		parent::__construct($config);
 
@@ -110,6 +110,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		}
 
 		parent::display();
+
 		return $this;
 	}
 
@@ -189,12 +190,13 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	public function edit($key = null, $urlVar = null)
 	{
 		// Initialise variables.
-		$app		= Factory::getApplication();
-		$jinput		= $app->input;
-		$model		= $this->getModel();
-		$table		= $model->getTable();
-		$cid		= $jinput->post->get('cid', array(), 'array');
-		$context	= "$this->option.edit.$this->context";
+		$app     = Factory::getApplication();
+		$jinput  = $app->input;
+		$model   = $this->getModel();
+		$table   = $model->getTable();
+		$cid     = $jinput->post->get('cid', array(), 'array');
+		$cid     = ArrayHelper::toInteger($cid);
+		$context = "$this->option.edit.$this->context";
 
 		// Determine the name of the primary key for the data.
 		if (empty($key))
@@ -213,7 +215,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		$checkin = property_exists($table, 'checked_out');
 
 		// Access check.
-		if ($recordId == 0)
+		if ($recordId === 0)
 		{
 			$allowed    = $this->allowAdd();
 		}
@@ -324,7 +326,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		PluginHelper::importPlugin('bwpostman');
 		Factory::getApplication()->triggerEvent('onBwPostmanAfterSubscriberControllerSave', array());
 
-		$task		= $this->getTask();
+		$task = $this->getTask();
 
 		switch ($task)
 		{
@@ -381,7 +383,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 
 		// Get the selected campaign(s)
 		$cid = $jinput->get('cid', array(0), 'post');
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
 		// Access check.
 		if (!$this->allowArchive($cid))
@@ -401,7 +403,9 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		$n = count($cid);
 
 		$model = $this->getModel('subscriber');
-		if(!$model->archive($cid, 1)) { // Couldn't archive
+
+		if(!$model->archive($cid, 1))
+		{ // Couldn't archive
 			if ($layout == 'testrecipients')
 			{
 				if ($n > 1)
@@ -477,15 +481,17 @@ class BwPostmanControllerSubscriber extends JControllerForm
 			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
-		$app		= Factory::getApplication();
-		$jinput		= $app->input;
-		$vars		= $jinput->post->get('batch', array(), 'array');
-		$cid		= $jinput->post->get('cid', array(), 'array');
-		$old_list	= Factory::getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
-		$message	= '';
+		$app      = Factory::getApplication();
+		$jinput   = $app->input;
+		$vars     = $jinput->post->get('batch', array(), 'array');
+		$cid      = $jinput->post->get('cid', array(), 'array');
+		$cid      = ArrayHelper::toInteger($cid);
+		$old_list = Factory::getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
+		$message  = '';
 
 		// Build an array of item contexts to check
 		$contexts = array();
+
 		foreach ($cid as $id)
 		{
 			// If we're coming from com_categories, we need to use extension vs. option
@@ -502,10 +508,10 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		}
 
 		// Set the model and some variables
-		$model	= $this->getModel('Subscriber', '', array());
+		$model = $this->getModel('Subscriber', '', array());
 
 		// run the batch operation.
-		$results	= $model->batch($vars, $cid, $contexts);
+		$results = $model->batch($vars, $cid, $contexts);
 
 		// Check results.
 		if (is_array($results))
@@ -514,26 +520,26 @@ class BwPostmanControllerSubscriber extends JControllerForm
 			{
 				if ($result['task']	== 'subscribe')
 				{
-					$sub_text	= Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE', $vars['mailinglist_id']);
-					$message	= Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_FINISHED', $sub_text);
-					$message	.= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE_N_ITEMS', $result['done']);
-					$message	.= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE_SKIPPED_N_ITEMS', $result['skipped']);
+					$sub_text = Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE', $vars['mailinglist_id']);
+					$message  = Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_FINISHED', $sub_text);
+					$message .= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE_N_ITEMS', $result['done']);
+					$message .= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE_SKIPPED_N_ITEMS', $result['skipped']);
 				}
 
 				if ($result['task']	== 'unsubscribe')
 				{
 					if ($message == '') {
-						$sub_text	= Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE', $vars['mailinglist_id']);
-						$message	= Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_FINISHED', $sub_text);
+						$sub_text = Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE', $vars['mailinglist_id']);
+						$message  = Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_FINISHED', $sub_text);
 					}
 					else
 					{
-						$sub_text	= Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE', $old_list);
-						$message	.= '<br />' . Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_FINISHED', $sub_text);
+						$sub_text = Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE', $old_list);
+						$message  .= '<br />' . Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_FINISHED', $sub_text);
 					}
 
-					$message	.= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE_N_ITEMS', $result['done']);
-					$message	.= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE_SKIPPED_N_ITEMS', $result['skipped']);
+					$message .= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE_N_ITEMS', $result['done']);
+					$message .= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE_SKIPPED_N_ITEMS', $result['skipped']);
 				}
 
 				$this->setMessage($message);

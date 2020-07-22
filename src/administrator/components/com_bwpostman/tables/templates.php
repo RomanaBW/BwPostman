@@ -426,21 +426,58 @@ class BwPostmanTableTemplates extends JTable
 	 */
 	public function check()
 	{
-		$app	= Factory::getApplication();
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
-		$fault	= false;
-		$xid    = 0;
+		$app   = Factory::getApplication();
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+		$fault = false;
+		$xid   = 0;
+
+		// Sanitize values
+		$filter = new InputFilter(array(), array(), 0, 0);
+
+		$this->id                  = $filter->clean($this->id, 'UINT');
+		$this->asset_id            = $filter->clean($this->asset_id, 'UINT');
+		$this->standard            = trim($filter->clean($this->standard, 'UINT'));
+		$this->title               = trim($filter->clean($this->title));
+		$this->description         = $filter->clean($this->description);
+		$this->thumbnail           = trim($filter->clean($this->thumbnail, 'PATH'));
+		$this->tpl_html            = $filter->clean($this->tpl_html, 'HTML');
+		$this->tpl_css             = $filter->clean($this->tpl_css, 'RAW');
+		$this->tpl_article         = $filter->clean($this->tpl_article, 'HTML');
+		$this->tpl_divider         = $filter->clean($this->tpl_divider, 'HTML');
+		$this->tpl_id              = $filter->clean($this->tpl_id, 'UINT');
+		$this->basics              = $filter->clean($this->basics);
+		$this->header              = $filter->clean($this->header);
+		$this->intro               = $filter->clean($this->intro);
+		$this->article             = $filter->clean($this->article);
+		$this->footer              = $filter->clean($this->footer);
+		$this->button1             = $filter->clean($this->button1);
+		$this->button2             = $filter->clean($this->button2);
+		$this->button3             = $filter->clean($this->button3);
+		$this->button4             = $filter->clean($this->button4);
+		$this->button5             = $filter->clean($this->button5);
+		$this->access              = $filter->clean($this->access, 'UINT');
+		$this->published           = $filter->clean($this->access, 'UINT');
+		$this->created_date        = $filter->clean($this->created_date);
+		$this->created_by          = $filter->clean($this->created_by, 'INT');
+		$this->modified_time       = $filter->clean($this->modified_time);
+		$this->modified_by         = $filter->clean($this->modified_by, 'INT');
+		$this->checked_out         = $filter->clean($this->checked_out, 'INT');
+		$this->checked_out_time    = $filter->clean($this->checked_out_time);
+		$this->archive_flag        = $filter->clean($this->archive_flag, 'UINT');
+		$this->archive_date        = $filter->clean($this->archive_date);
+		$this->archived_by         = $filter->clean($this->archived_by, 'INT');
 
 		// unset standard template if task is save2copy
-		$jinput	= Factory::getApplication()->input;
-		$task = $jinput->get('task', 0);
+		$task   = Factory::getApplication()->input->get('task', 0);
+
 		if ($task == 'save2copy')
 		{
 			$this->standard = 0;
 		}
 
 		// *** prepare the template data ***
+		// @Karl: Muss man das hier wirklich auf $item umschreiben?
 		$item = $this;
 
 		// user-made html template
@@ -499,10 +536,10 @@ class BwPostmanTableTemplates extends JTable
 		else
 		{
 			// first get templates tpls
-			$tpl_id		= $item->tpl_id;
 			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates_tpl.php');
+			$tpl_id    = $item->tpl_id;
 			$tpl_model = new BwPostmanModelTemplates_Tpl();
-			$tpl		= $tpl_model->getItem($tpl_id);
+			$tpl       = $tpl_model->getItem($tpl_id);
 
 			// get template model
 			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/template.php');
@@ -518,15 +555,15 @@ class BwPostmanTableTemplates extends JTable
 			$this->tpl_css = $model->replaceZooms($tpl->css, $item);
 
 			// make article template data
-			$article			= $model->replaceZooms($tpl->article_tpl, $item);
-			$readon				= $model->makeButton($tpl->readon_tpl, $item);
-			$this->tpl_article	= $this->article['show_readon'] != 1 ?
+			$article           = $model->replaceZooms($tpl->article_tpl, $item);
+			$readon            = $model->makeButton($tpl->readon_tpl, $item);
+			$this->tpl_article = $this->article['show_readon'] != 1 ?
 				str_replace('[%readon_button%]', '', $article) :
 				str_replace('[%readon_button%]', $readon, $article);
 
 			//  set divider template and replace placeholder
-			$tpl->divider_tpl	= $model->replaceZooms($tpl->divider_tpl, $item);
-			$this->tpl_divider	= str_replace('[%divider_color%]', $item->article['divider_color'], $tpl->divider_tpl);
+			$tpl->divider_tpl  = $model->replaceZooms($tpl->divider_tpl, $item);
+			$this->tpl_divider = str_replace('[%divider_color%]', $item->article['divider_color'], $tpl->divider_tpl);
 
 			// convert object array to string
 			self::converttostr($this);
@@ -538,14 +575,14 @@ class BwPostmanTableTemplates extends JTable
 		if (trim($this->title) == '')
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_TPL_ERROR_TITLE'), 'error');
-			$fault	= true;
+			$fault = true;
 		}
 
 		// Check for valid title
 		if (trim($this->description) == '')
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION'), 'error');
-			$fault	= true;
+			$fault = true;
 		}
 
 		// Check for existing title
@@ -570,7 +607,8 @@ class BwPostmanTableTemplates extends JTable
 			return false;
 		}
 
-		if ($fault) {
+		if ($fault)
+		{
 			$app->setUserState('com_bwpostman.edit.template.data', $this);
 			return false;
 		}
@@ -603,16 +641,16 @@ class BwPostmanTableTemplates extends JTable
 		{
 			// Existing mailing list
 			$this->modified_time = $date->toSql();
-			$this->modified_by = $user->get('id');
+			$this->modified_by   = $user->get('id');
 		}
 		else
 		{
 			// New template
 			$this->created_date = $date->toSql();
-			$this->created_by = $user->get('id');
+			$this->created_by   = $user->get('id');
 		}
 
-		$res	= parent::store($updateNulls);
+		$res = parent::store($updateNulls);
 		Factory::getApplication()->setUserState('com_bwpostman.edit.template.id', $this->id);
 
 		return $res;
@@ -712,10 +750,14 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @return int
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.4.0
 	 */
 	public function getNumberOfStdTemplates($cid)
 	{
+		$count_std = 0;
+
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
@@ -726,8 +768,16 @@ class BwPostmanTableTemplates extends JTable
 		$query->where($db->quoteName('standard') . " = " . $db->quote(1));
 
 		$db->setQuery($query);
-		$db->execute();
-		$count_std = $db->getNumRows();
+
+		try
+		{
+			$count_std = $db->getNumRows();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
 
 		return $count_std;
 	}
@@ -806,13 +856,14 @@ class BwPostmanTableTemplates extends JTable
 	public function getTemplateTitle($id)
 	{
 		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		// get template title
-		$q = $db->getQuery(true)
-			->select($db->quoteName('title'))
-			->from($db->quoteName($this->_tbl))
-			->where($db->quoteName('id') . ' = ' .$id);
-		$db->setQuery($q);
+		$query->select($db->quoteName('title'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' = ' . (int)$id);
+
+		$db->setQuery($query);
 
 		try
 		{
@@ -843,13 +894,13 @@ class BwPostmanTableTemplates extends JTable
 	public function setTemplateTitle($id, $title)
 	{
 		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		// get template title
-		$q = $db->getQuery(true)
-			->update($db->quoteName($this->_tbl))
-			->set($db->quoteName('title') . ' = ' . $db->quote($title))
-			->where($db->quoteName('id') . ' = ' .$id);
-		$db->setQuery($q);
+		$query->update($db->quoteName($this->_tbl));
+		$query->set($db->quoteName('title') . ' = ' . $db->quote($title));
+		$query->where($db->quoteName('id') . ' = ' . (int)$id);
+		$db->setQuery($query);
 
 		try
 		{
@@ -917,7 +968,7 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @since	2.4.0 (here, since 1.2.0 at model newsletter)
 	 */
-	public function getStandardTpl($mode	= 'html')
+	public function getStandardTpl($mode = 'html')
 	{
 		$tpl   = new stdClass();
 		$db    = $this->_db;
@@ -975,8 +1026,9 @@ class BwPostmanTableTemplates extends JTable
 		}
 
 		// Reset the standard fields for the templates.
-		$db   = $this->_db;
+		$db    = $this->_db;
 		$query = $db->getQuery(true);
+
 		$query->update($db->quoteName($this->_tbl));
 		$query->set($db->quoteName('standard') . " = " . $db->Quote(0));
 		$query->where($db->quoteName('standard') . ' = ' . $db->Quote(1));
@@ -1003,6 +1055,7 @@ class BwPostmanTableTemplates extends JTable
 
 		// Set the new standard template.
 		$query = $db->getQuery(true);
+
 		$query->update($db->quoteName($this->_tbl));
 		$query->set($db->quoteName('standard') . " = " . $db->Quote(1));
 		$query->set($db->quoteName('published') . " = " . $db->Quote(1));

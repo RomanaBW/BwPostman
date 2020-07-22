@@ -98,11 +98,12 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app	= Factory::getApplication();
-		$jinput	= $app->input;
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
 
 		// Adjust the context to support modal layouts.
 		$layout = $jinput->get('layout');
+
 		if ($layout)
 		{
 			$this->context .= '.' . $layout;
@@ -170,7 +171,7 @@ class BwPostmanModelSubscribers extends JModelList
 	{
 		$this->query = $this->_db->getQuery(true);
 
-		$sub_query  = $this->getSubQuery();
+		$sub_query = $this->getSubQuery();
 
 		// Select the required fields from the table.
 		$this->query->select(
@@ -343,7 +344,7 @@ class BwPostmanModelSubscribers extends JModelList
 
 		if ($allowed_items != 'all')
 		{
-			$allowed_ids    = implode(',', $allowed_items);
+			$allowed_ids = implode(',', $allowed_items);
 			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 		}
 	}
@@ -362,7 +363,7 @@ class BwPostmanModelSubscribers extends JModelList
 	private function getFilterBySubscriberState()
 	{
 		//Get the tab in which we are for correct query
-		$tab	= Factory::getApplication()->input->get('tab', '');
+		$tab = Factory::getApplication()->input->get('tab', '');
 
 		if ($tab === '')
 		{
@@ -373,13 +374,13 @@ class BwPostmanModelSubscribers extends JModelList
 		{
 			case ("confirmed"):
 			default:
-				$tab_int	= 1;
+				$tab_int = 1;
 				break;
 			case ("unconfirmed"):
-				$tab_int	= 0;
+				$tab_int = 0;
 				break;
 			case ("testrecipients"):
-				$tab_int	= 9;
+				$tab_int = 9;
 				break;
 		}
 
@@ -423,6 +424,7 @@ class BwPostmanModelSubscribers extends JModelList
 	private function getFilterByMailformat()
 	{
 		$emailformat = $this->getState('filter.emailformat');
+
 		if ($emailformat != '')
 		{
 			$this->query->where($this->_db->quoteName('a.emailformat') . ' = ' . (int) $emailformat);
@@ -440,7 +442,7 @@ class BwPostmanModelSubscribers extends JModelList
 	 */
 	private function getFilterByArchiveState()
 	{
-		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
 	/**
@@ -455,7 +457,7 @@ class BwPostmanModelSubscribers extends JModelList
 	private function getFilterBySearchword()
 	{
 		$filtersearch = $this->getState('filter.search_filter');
-		$search			= $this->_db->escape($this->getState('filter.search'), true);
+		$search       = $this->_db->escape($this->getState('filter.search'), true);
 
 		if (!empty($search))
 		{
@@ -504,9 +506,9 @@ class BwPostmanModelSubscribers extends JModelList
 	{
 		$mailinglistsFromTable = $this->getTable('Mailinglists', 'BwPostmanTable')->getMailinglistsValueText();
 
-		$mlSelectList 	= array ();
-		$mlSelectList[]	= HtmlHelper::_('select.option',  '', '- ' . Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') . ' -');
-		$mlSelectList 	= array_merge($mlSelectList, $mailinglistsFromTable);
+		$mlSelectList   = array ();
+		$mlSelectList[] = HtmlHelper::_('select.option',  '', '- ' . Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') . ' -');
+		$mlSelectList   = array_merge($mlSelectList, $mailinglistsFromTable);
 
 		return $mlSelectList;
 	}

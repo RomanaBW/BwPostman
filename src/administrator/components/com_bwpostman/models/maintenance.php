@@ -101,7 +101,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	protected $usedGroups = array();
 
 	/**
-	 * Deprecated
+	 * Array of tables of sections with assets
 	 *
 	 * @var array
 	 *
@@ -181,6 +181,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/maintenancehelper.php');
 
+		$fileName = File::makeSafe($fileName);
+
 		if (is_null($fileName))
 		{
 			$dottedVersion = BwPostmanHelper::getInstalledBwPostmanVersion();
@@ -190,8 +192,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				return false;
 			}
 
-			$version       = str_replace('.', '_', $dottedVersion);
-			$fileName      = "BwPostman_" . $version . "_Tables_" . Factory::getDate()->format("Y-m-d_H_i") . '.xml';
+			$version  = str_replace('.', '_', $dottedVersion);
+			$fileName = "BwPostman_" . $version . "_Tables_" . Factory::getDate()->format("Y-m-d_H_i") . '.xml';
 		}
 
 		// create (empty) backup file
@@ -264,7 +266,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				if (strpos($table['tableNameRaw'], 'templates_tpl') === false)
 				{
 					$databaseXml = $this->xml->children();
-					$tablesXml = $databaseXml->addChild('tables');
+					$tablesXml   = $databaseXml->addChild('tables');
 
 					$tableName = $table['tableNameGeneric'];
 
@@ -388,7 +390,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 	/**
 	 * Method to get a list of names of all installed tables of BwPostman form database in the form
-	 * <prefix>tablename. Also sets a list as property of all BwPostman tables with different variations of name
+	 * <prefix>tablename. Tables of BwPostman have to contain bwpostman in their name.
+	 *
+	 * Also sets a list as property of all BwPostman tables with different variations of names
 	 *
 	 * @return   array|boolean
 	 *
@@ -551,7 +555,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		$query     = $this->db->getQuery(true);
 		$allgroups = array();
-		$rules     = array();
 
 		// Get all asset rules of BwPostman
 		$query->select('rules');
@@ -594,6 +597,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		// Get the tree paths from the group(node) to the root
 		$res_tree = array();
+
 		foreach ($groups as $group)
 		{
 			$query = $this->db->getQuery(true);
@@ -628,6 +632,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$allgroups     = array_merge($groups, $res_tree);
 		$groups_unique = array();
+
 		foreach ($allgroups as $row)
 		{
 			$groups_unique[$row] = $row;
@@ -637,6 +642,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		// Get all used user groups and their parents sorted by level
 		$res_groups = array();
+
 		foreach ($groups_unique as $group)
 		{
 			$query     = $this->db->getQuery(true);
@@ -675,9 +681,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get the needed tables and its properties from sql install file
+	 * Method to get the needed tables and its properties from sql install file(s)
 	 *
-	 * @return    mixed array/bool        true if all is ok
+	 * @return    mixed array|bool   array of tables with its properties, false on failure
 	 *
 	 * @since    1.0.1
 	 */
@@ -687,10 +693,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 
-		// get paths to sql install files
+		// get path to sql install file of component
 		$paths   = array();
 		$paths[] = JPATH_ADMINISTRATOR . '/components/com_bwpostman/sql/';
 
+		// get paths to sql installation files of plugins at plugin group BwPostman
+		// @ToDo: In future perhaps there could be sql installation files for plugins to BwPostman at other plugin groups
 		if (Folder::exists(JPATH_PLUGINS . '/bwpostman/'))
 		{
 			$path2     = JPATH_PLUGINS . '/bwpostman/';
@@ -705,14 +713,16 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 		}
 
+		$db     = $this->db;
 		$tables = array();
 
 		foreach ($paths as $path)
 		{
 			// get sql install file
 			$filename = $path . 'install.sql';
+			$fh       = fopen($filename, 'r');
 
-			if (false === $fh = fopen($filename, 'r'))
+			if ($fh === false)
 			{ // File cannot be opened
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OPEN_INSTALL_FILE_ERROR', $filename);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -747,12 +757,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$queries = array();
 				$string  = '';
 				$i       = 0;
+
 				foreach ($txt_array as $key => $value)
 				{
 					$pos = strpos($value, 'CREATE');
+
 					if ($pos !== false)
 					{
-						if ($i != 0)
+						if ($i !== 0)
 						{ // fill array only with complete query
 							$queries[] = $string;
 						}
@@ -777,10 +789,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						$query = implode(array_map('trim', preg_split('/(\n|\r\r)/i', $query)));
 						$query = preg_replace('/\s+/', ' ', trim($query));
 
+						$query = $db->escape($query);
 						$table->install_query = $query;
 
 						// get table name
 						$start = strpos($query, '#');
+
 						if ($start !== false)
 						{
 							$stop        = strpos($query, '`', $start);
@@ -790,6 +804,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 						// get engine
 						$start = stripos($query, 'ENGINE');
+
 						if ($start !== false)
 						{
 							$stop          = strpos($query, ' ', $start);
@@ -799,6 +814,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 						// get default character set
 						$start = stripos($query, 'DEFAULT CHARSET');
+
 						if ($start !== false)
 						{
 							$stop           = stripos($query, ' COLLATE');
@@ -808,6 +824,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 						// get default collation
 						$start = stripos($query, 'COLLATE');
+
 						if ($start !== false)
 						{
 							$stop             = stripos($query, ';', $start);
@@ -817,6 +834,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 						// get primary key
 						$start = strripos($query, '(`') + 2;
+
 						if ($start !== false)
 						{
 							$stop               = strripos($query, '`)');
@@ -826,6 +844,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 						// eliminate primary key
 						$start = stripos($query, ',PRIMARY');
+
 						if ($start !== false)
 						{
 							$stop    = strpos($query, '`)') + 2;
@@ -837,6 +856,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 						// get columns definitions
 						$start = strpos($query, '(');
+
 						if ($start !== false)
 						{
 							$stop          = strripos($query, ')');
@@ -851,6 +871,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 								// get column name
 								$column = trim($column);
 								$length = strpos($column, ' ');
+
 								if ($length > 0)
 								{
 									$col_arr->Column = substr($column, 1, $length - 2);
@@ -860,6 +881,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 								// get column type
 								$length = strpos($column, ' ');
+
 								if ($length > 0)
 								{
 									$col_arr->Type = substr($column, 0, $length);
@@ -869,6 +891,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 								// get NOT NULL
 								$start = stripos($column, 'NOT NULL');
+
 								if ($start !== false)
 								{
 									$col_arr->Null = 'NO';
@@ -878,6 +901,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 								// get NULL
 								$start = stripos($column, 'NULL');
+
 								if ($start !== false)
 								{
 									$col_arr->Null = 'YES';
@@ -887,6 +911,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 								// get autoincrement
 								$start = stripos($column, 'auto_increment');
+
 								if ($start !== false)
 								{
 									$col_arr->Extra = substr($column, $start, 15);
@@ -897,6 +922,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 								// get default
 								$start = stripos($column, 'default');
+
 								if ($start !== false)
 								{
 									$start            = $start + 9;
@@ -909,6 +935,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 								// get unsigned
 								$start = stripos($column, 'unsigned');
+
 								if ($start !== false)
 								{
 									$col_arr->Type .= ' unsigned';
@@ -950,9 +977,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Method to compare needed tables names with installed ones, check engine, default charset and primary key
 	 *
-	 * @param array  $neededTables      object list of tables, that must be installed
+	 * @param array  $neededTables      object list of table objects from sql install files, that must be installed
 	 * @param array  $genericTableNames names of tables, that are installed
-	 * @param string $mode              mode to check, "check and repair" or "restore"
+	 * @param string $mode              mode to check, "check( and repair)" or "restore"
 	 *
 	 * @return    boolean        true if all is ok
 	 *
@@ -973,13 +1000,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$neededTableNames[] = $table->name;
 		}
 
+		// Ensure needed tables are installed
 		if (!$this->handleNeededTables($neededTableNames, $genericTableNames, $neededTables))
 		{
 			return false;
 		}
 
 		// Process obsolete tables only if in check mode
-		if ($mode == 'check')
+		if ($mode === 'check')
 		{
 			if (!$this->handleObsoleteTables($genericTableNames, $neededTableNames))
 			{
@@ -1169,6 +1197,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		foreach ($neededTables as $table)
 		{
+			// Get properties of  installed table
 			try
 			{
 				$createTableQuery = $this->db->getTableCreate($table->name)[$table->name];
@@ -1180,12 +1209,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				return false;
 			}
-			$engine          = '';
-			$c_set           = '';
-			$collation       = '';
 
-			// get engine of installed table
+			$engine    = '';
+			$c_set     = '';
+			$collation = '';
+
+			// Extract engine of installed table
 			$start = strpos($createTableQuery, 'ENGINE=');
+
 			if ($start !== false)
 			{
 				$stop   = strpos($createTableQuery, ' ', $start);
@@ -1193,9 +1224,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$engine = substr($createTableQuery, $start + 7, $length);
 			}
 
-			// get default charset of installed table
+			// Extract default charset of installed table
 			$start = strpos($createTableQuery, 'DEFAULT CHARSET=');
 			$stop  = 0;
+
 			if ($start !== false)
 			{
 				$stop   = strpos($createTableQuery, ' ', $start);
@@ -1203,13 +1235,17 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$c_set  = substr($createTableQuery, $start + 16, $length);
 			}
 
-			// get collation of installed table
+			// Extract collation of installed table
 			$start = strpos($createTableQuery, 'COLLATE=', $stop);
+
 			if ($start !== false)
 			{
 				$collation = substr($createTableQuery, $start + 8);
 			}
 
+			// @ToDo: Use Joomla methods from libraries/joomla/database/driver.php
+			// @ToDo: Check if values used for altering are the correct ones (not interchanged)
+			// Compare installed values with needed values and alter table if necessary
 			if ((strcasecmp($engine, $table->engine) != 0)
 				|| (strcasecmp($c_set, $table->charset) != 0)
 				|| (strcasecmp($collation, $table->collation) != 0))
@@ -1217,6 +1253,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$engine_text    = '';
 				$c_set_text     = '';
 				$collation_text = '';
+
 				if ($engine != '')
 				{
 					$engine_text = ' ENGINE=' . $engine;
@@ -1353,7 +1390,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			return true;
 		}
 
-		$installed_key     = '';
+		$installed_key = '';
 
 		if (count($installed_key_tmp) > 1)
 		{
@@ -1936,7 +1973,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				{
 					$assetName = 'com_bwpostman.' . $section . '.' . $item->id;
 					// Check if asset_id is 0 or null
-					if ($item->asset_id === 0 || $item->asset_id === null)
+					if ((int)$item->asset_id === 0 || $item->asset_id === null)
 					{
 						// If so, we need a new asset (add to array $itemIdsWithoutAssets)
 						$itemIdsWithoutAssets[] = $item->id;
@@ -1994,7 +2031,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 							return false;
 						}
 
-						if (is_integer($assetId))
+						if (is_integer($assetId) && $assetId > 0)
 						{
 							unset($itemIdsWithoutAssets[$i]);
 							$assetIdsByName[$item] = $assetId;
@@ -2139,7 +2176,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		{
 			$query->select('*');
 			$query->from($this->db->quoteName('#__bwpostman_subscribers'));
-			$query->where($this->db->quoteName('user_id') . ' > ' . (int) 0);
+			$query->where($this->db->quoteName('user_id') . ' > ' . 0);
 
 			$this->db->setQuery($query);
 			$subscribers = $this->db->loadObjectList();
@@ -2504,6 +2541,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$fp            = fopen($tmp_file, 'r');
 		$tablesQueries = unserialize(fread($fp, filesize($tmp_file)));
 
+		// @Todo: Ensure, only tables of BwPostman and its plugins are processed!
 		// delete tables and create it anew
 		foreach ($tables as $table)
 		{
@@ -2734,7 +2772,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				if ($table == '#__bwpostman_subscribers')
 				{
-					if (!self::checkUserIds())
+					if (!$this->checkUserIds())
 					{
 						return false;
 					}
@@ -2846,7 +2884,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 
 		// get import file
-		if (false === $fh = fopen($file, 'rb'))
+		$fh = fopen($file, 'rb');
+		if ($fh === false)
 		{ // File cannot be opened
 			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_FILE_ERROR', $file);
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -2983,7 +3022,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		// get buffer file
 		$tmp_file = Factory::getConfig()->get('tmp_path') . '/bwpostman_restore.tmp';
-		if (false === $fp = fopen($tmp_file, 'w+'))
+		$fp       = fopen($tmp_file, 'w+');
+
+		if ($fp === false)
 		{ // File cannot be opened
 			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_TMPFILE_ERROR', $tmp_file);
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -2992,7 +3033,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 
 		// empty buffer file
-		if (false === ftruncate($fp, 0))
+		if (ftruncate($fp, 0) === false)
 		{ // File cannot be truncated
 			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TRUNCATE_TMPFILE_ERROR', $tmp_file);
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -3006,6 +3047,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		// paraphrase tables array per table for better handling and convert simple xml objects to strings
 		$i = 0;
+
 		while (null !== $tmp_table = array_shift($x_tables))
 		{
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
@@ -3079,6 +3121,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						{
 							$ds    = array();
 							$props = get_object_vars($item);
+
 							foreach ($props as $k => $v)
 							{
 								$xy     = (string) $v;
@@ -3105,7 +3148,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			// write table data to buffer file
 			$write_data = '';
-			if ($i == 0)
+
+			if ($i === 0)
 			{
 				$write_data .= 'a:' . count($table_names) . ':{';
 			}
@@ -3113,7 +3157,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$write_data .= 's:' . strlen($table_names[$i]) . ':"' . $table_names[$i] . '";';
 			$write_data .= serialize($w_table);
 			unset($w_table);
-			if ($i == (count($table_names) - 1))
+
+			if ($i === (count($table_names) - 1))
 			{
 				$write_data .= '}';
 			}
@@ -3720,15 +3765,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				else
 				{
 					// insert new user group
-					if ($this->isJ4)
-					{
-						$userModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
-					}
-					else
-					{
-						JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-						$userModel = JModelLegacy::getInstance('Group', 'UsersModel');
-					}
+					JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+					$userModel = JModelLegacy::getInstance('Group', 'UsersModel');
 
 					$data['id']        = 0;
 					$data['title']     = $item['title'];
@@ -3802,7 +3840,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	private function rewriteAssetUserGroups($table, &$assets, $groupsToReplace)
 	{
 		$modifiedAssets  = Factory::getApplication()->getUserState('com_bwpostman.maintenance.modifiedAssets', array());
-		$old_ids = array();
+		$old_ids         = array();
+
 		foreach ($groupsToReplace as $groupToReplace)
 		{
 			$old_ids[] = $groupToReplace['old_id'];
@@ -3810,11 +3849,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		// check assets
 		$i = 0;
+
 		foreach ($assets as $asset)
 		{
 			if (key_exists('rules', $asset))
 			{
 				$rules = json_decode($asset['rules'], true);
+
 				if ($rules !== null)
 				{
 					// rewrite user groups in rule
@@ -3826,6 +3867,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						foreach ($rule as $key => $value)
 						{
 							$found = array_search($key, $old_ids);
+
 							if ($found !== false)
 							{
 								$rewrite          = true;
@@ -4115,7 +4157,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$endString .= '%';
 		}
 
-		// raw table name are plural, assets are singular
+		// raw table names are plural, assets are singular
 		$asset_name = '%com_bwpostman.' . substr($table_name_raw, 0, strlen($table_name_raw) - 1) . $endString;
 
 		$query = $this->db->getQuery(true);
@@ -4150,6 +4192,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * @return  string  $bwpmTableName
 	 *
 	 * @since    1.3.0
+	 *
+	 * @deprecated since 2.4.0
 	 */
 	protected function getBwpmTableName($table)
 	{
@@ -4658,14 +4702,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			return false;
 		}
 
-		$joomlaGroups   = $this->getJoomlaGroups();
+		$joomlaGroups = $this->getJoomlaGroups();
 
 		if ($joomlaGroups === false)
 		{
 			return false;
 		}
 
-		$usedGroups     = array_merge($bwpmUserGroups, $joomlaGroups);
+		$usedGroups = array_merge($bwpmUserGroups, $joomlaGroups);
 
 		$rules['core.admin'] = array(
 			$usedGroups['Administrator']['id']    => true,
@@ -4789,20 +4833,20 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
 			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
 		);
-		/*
-				$rules['bwpm.view.manage'] = array(
-					$usedGroups['Administrator']['id']             => true,
-					$usedGroups['Manager']['id']                   => true,
-					$usedGroups['BwPostmanPublisher']['id']        => false,
-					$usedGroups['BwPostmanAdmin']['id']            => true,
-					$usedGroups['BwPostmanPublisher']['id']        => false,
-					$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
-					$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
-					$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
-					$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
-					$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
-				);
-		*/
+
+		$rules['bwpm.view.manage'] = array(
+			$usedGroups['Administrator']['id']             => true,
+			$usedGroups['Manager']['id']                   => true,
+			$usedGroups['BwPostmanPublisher']['id']        => false,
+			$usedGroups['BwPostmanAdmin']['id']            => true,
+			$usedGroups['BwPostmanPublisher']['id']        => false,
+			$usedGroups['BwPostmanCampaignAdmin']['id']    => false,
+			$usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
+			$usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
+			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
+			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
+		);
+
 		$rules['bwpm.view.campaign'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
@@ -5430,7 +5474,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$query->update($this->db->quoteName('#__assets'));
 		$query->set($this->db->quoteName('rgt') . " = (" . $this->db->quoteName('rgt') . " + 2 ) ");
-		$query->where($this->db->quoteName('rgt') . ' >= ' . $com_asset['rgt']);
+		$query->where($this->db->quoteName('rgt') . ' >= ' . (int)$com_asset['rgt']);
 
 		$this->db->setQuery($query);
 
@@ -5465,7 +5509,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$query->update($this->db->quoteName('#__assets'));
 		$query->set($this->db->quoteName('lft') . " = (" . $this->db->quoteName('lft') . " + 2 ) ");
-		$query->where($this->db->quoteName('lft') . ' > ' . $com_asset['rgt']);
+		$query->where($this->db->quoteName('lft') . ' > ' . (int)$com_asset['rgt']);
 
 		$this->db->setQuery($query);
 
@@ -5725,14 +5769,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function getJoomlaGroups()
 	{
-		$searchValues = array("'Administrator'", "'Manager'", "'Publisher'", "'Editor'");
+		$searchValues = array(7, 6, 5, 4);
 
 		$query = $this->db->getQuery(true);
 
 		$query->select($this->db->quoteName('title'));
 		$query->select($this->db->quoteName('id'));
 		$query->from($this->db->quoteName('#__usergroups'));
-		$query->where($this->db->quoteName('title') . ' IN (' . implode(',', $searchValues) . ')');
+		$query->where($this->db->quoteName('id') . ' IN (' . implode(',', $searchValues) . ')');
 
 		$this->db->setQuery($query);
 
@@ -5979,13 +6023,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	}
 
 	/**
-	 * Method to get all items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
+	 * Method to get all items (complete as assoc arrays) of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
 	 * but not present at asset table. The ids of items with asset_id = 0 are known
 	 *
 	 * @param string $tableNameGeneric
 	 * @param array  $itemIds
 	 *
-	 * @return array|boolean
+	 * @return array|boolean   list of assoc arrays of complete item data
 	 *
 	 * @since 2.4.0
 	 *

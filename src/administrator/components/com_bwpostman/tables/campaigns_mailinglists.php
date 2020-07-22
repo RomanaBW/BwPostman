@@ -26,6 +26,7 @@
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Filter\InputFilter;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -69,6 +70,28 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	}
 
 	/**
+	 * Overloaded check method to ensure data integrity
+	 *
+	 * @access public
+	 *
+	 * @return boolean True
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0
+	 */
+	public function check()
+	{
+		// Remove all HTML tags from the title and description
+		$filter = new InputFilter(array(), array(), 0, 0);
+
+		$this->campaign_id    = $filter->clean($this->campaign_id, 'UINT');
+		$this->mailinglist_id = $filter->clean($this->mailinglist_id, 'UINT');
+
+		return true;
+	}
+
+	/**
 	 * Method to copy the entries of this table for one or more campaigns
 	 *
 	 * @access	public
@@ -84,10 +107,10 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 */
 	public function copyLists($oldid, $newid)
 	{
-		$lists      = array();
-		$_db		= $this->_db;
-		$query		= $_db->getQuery(true);
-		$subQuery	= $_db->getQuery(true);
+		$lists    = array();
+		$_db      = $this->_db;
+		$query    = $_db->getQuery(true);
+		$subQuery = $_db->getQuery(true);
 
 		$subQuery->select($_db->quote((integer)$newid) . ' AS ' . $_db->quoteName('campaign_id'));
 		$subQuery->select($_db->quoteName('mailinglist_id'));
@@ -97,7 +120,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 
 		try
 		{
-			$lists		= $_db->loadAssocList();
+			$lists = $_db->loadAssocList();
 		}
 		catch (RuntimeException $e)
 		{
@@ -255,7 +278,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 		$query          = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote((int)$id));
 
 		$db->setQuery($query);
 

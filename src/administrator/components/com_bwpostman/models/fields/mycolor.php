@@ -62,9 +62,9 @@ class JFormFieldMyColor extends JFormFieldColor
 	protected function getInput()
 	{
 		// Initialize some field attributes.
-		$size       = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-		$classes    = (string) $this->element['class'];
-		$disabled   = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+		$size     = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+		$classes  = (string) $this->element['class'];
+		$disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
 
 		if (!$disabled)
 		{
@@ -80,7 +80,7 @@ class JFormFieldMyColor extends JFormFieldColor
 
 		// Initialize JavaScript field attributes.
 		$onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
-		$onblur = $this->element['onblur'] ? ' onblur="' . (string) $this->element['onblur'] . '"' : '';
+		$onblur   = $this->element['onblur'] ? ' onblur="' . (string) $this->element['onblur'] . '"' : '';
 
 		$class = $classes ? ' class="' . trim($classes) . '"' : '';
 

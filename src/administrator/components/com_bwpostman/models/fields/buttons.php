@@ -60,10 +60,11 @@ class JFormFieldbuttons extends JFormField
 	 */
 	protected function getinput()
 	{
-		$doc 		= Factory::getDocument();
-		$fieldName	= $this->name;
+		$doc       = Factory::getDocument();
+		$fieldName = $this->name;
 
 		$newsletter = Table::getInstance('newsletters', 'BwPostmanTable');
+
 		if ($this->value)
 		{
 			$newsletter->load($this->value);
@@ -96,6 +97,7 @@ class JFormFieldbuttons extends JFormField
 
 		// class='required' for client side validation
 		$class = '';
+
 		if ($this->required)
 		{
 			$class = ' class="required modal-value"';

@@ -65,24 +65,24 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 				throw new Exception((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
 			}
 
-			$app 	= Factory::getApplication();
-			$jinput	= Factory::getApplication()->input;
+			$app    = Factory::getApplication();
+			$jinput = $app->input;
 
 			// Get the params
-			$params			= ComponentHelper::getParams('com_bwpostman');
-			$mails_per_step	= (int) $app->getUserState('com_bwpostman.newsletters.mails_per_pageload', $params->get('default_mails_per_pageload'));
-			$sendandpublish	= $app->getUserState('com_bwpostman.newsletters.sendmailandpublish', 0);
-			$id				= $app->getUserState('com_bwpostman.newsletters.publish_id', 0);
+			$params         = ComponentHelper::getParams('com_bwpostman');
+			$mails_per_step = (int)$app->getUserState('com_bwpostman.newsletters.mails_per_pageload', $params->get('default_mails_per_pageload'));
+			$sendandpublish = (int)$app->getUserState('com_bwpostman.newsletters.sendmailandpublish', 0);
+			$id             = (int)$app->getUserState('com_bwpostman.newsletters.publish_id', 0);
 
-			$defaultPublish	= (int) $app->getUserState('com_bwpostman.newsletters.publish_nl_by_default', $params->get('publish_nl_by_default'));
+			$defaultPublish	= (int)$app->getUserState('com_bwpostman.newsletters.publish_nl_by_default', $params->get('publish_nl_by_default'));
 
 			if ($defaultPublish)
 			{
 				$sendandpublish = 1;
 			}
 
-			$model	= $this->getModel('newsletter');
-			$nl_id	= $jinput->get('nl_id');
+			$model = $this->getModel('newsletter');
+			$nl_id = $jinput->getInt('nl_id');
 			$app->setUserState('com_bwpostman.viewraw.newsletter.id', $nl_id);
 
 			// Access check
@@ -94,16 +94,17 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 			}
 
 			// set defaults
-			$mailsThisStepDone = $jinput->get('mailsDone', 0);
+			$mailsThisStepDone  = $jinput->getInt('mailsDone', 0);
 			$nl_to_send_message = "";
-			$percent = 0;
-			$sending = "secondary";
-			$delay_msg = "secondary";
-			$complete = "secondary";
-			$published = "secondary";
+
+			$percent     = 0;
+			$sending     = "secondary";
+			$delay_msg   = "secondary";
+			$complete    = "secondary";
+			$published   = "secondary";
 			$nopublished = "secondary";
-			$ready = "0";
-			$error = "secondary";
+			$ready       = "0";
+			$error       = "secondary";
 
 			// start output buffer
 			ob_start();
@@ -116,7 +117,7 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 			if ($model->checkTrials(2))
 			{
 				// start sending process
-				$ret	= $model->sendMailsFromQueue($mails_per_step, true, $mailsThisStepDone);
+				$ret = $model->sendMailsFromQueue($mails_per_step, true, $mailsThisStepDone);
 				// number of queue entries during sending
 				$entries = $model->checkTrials(2, 1);
 				// progressbar
@@ -129,21 +130,21 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 					$mailsThisStepDone = $ret;
 				}
 
-				if ($ret == 1)
+				if ($ret === 1)
 				{   // There are more mails in the queue.
 					$mailsThisStepDone = 0;
-					$sending = 'secondary';
-					$delay_msg = 'success';
+					$sending           = 'secondary';
+					$delay_msg         = 'success';
 				}
 
-				if ($ret == 0)
+				if ($ret === 0)
 				{   // No more mails to send.
 					// reset number of queue entries before start sending
 					$app->setUserState('com_bwpostman.newsletters.entries', null);
-					$sending = 'secondary';
+					$sending  = 'secondary';
 					$complete = 'success';
 
-					if ($sendandpublish == 1)
+					if ($sendandpublish === 1)
 					{
 						if ($model->publish($id, 1) === true)
 						{
@@ -162,12 +163,12 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 					$ready = "1";
 				}
 
-				if ($ret == 2)
+				if ($ret === 2)
 				{   // There are fatal errors.
 					echo "<br /><span id='nl_modal_to_send_message_error' style='color: #ff0000;'>" . Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '10') . "</span>";
 					$sending = "secondary";
-					$error = 'error';
-					$ready = "1";
+					$error   = 'error';
+					$ready   = "1";
 				}
 			}
 			else

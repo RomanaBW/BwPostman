@@ -286,7 +286,7 @@ class BwAccess
 	 */
 	protected static function isRoot($identities)
 	{
-		$isRoot    = array_keys($identities, 8);
+		$isRoot = array_keys($identities, 8);
 
 		if (count($isRoot))
 		{
@@ -349,6 +349,7 @@ class BwAccess
 		{
 			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
+
 			$query->select('p.parent_id');
 			$query->from($db->quoteName('#__usergroups') . ' AS n, ' . $db->quoteName('#__usergroups') . ' AS p');
 			$query->where('n.lft BETWEEN p.lft AND p.rgt');
@@ -516,33 +517,33 @@ class BwAccess
 	 * @since   1.6
 	 * @deprecated  3.7.0  No replacement. Will be removed in 4.0.
 	 */
-	protected static function &preloadPermissionsParentIdMapping($assetType)
-	{
-		// Get the extension name from the $assetType provided
-		$extensionName = self::getExtensionNameFromAsset($assetType);
-
-		if (!isset(self::$assetPermissionsParentIdMapping[$extensionName]))
-		{
-			// Get the database connection object.
-			$db = Factory::getDbo();
-
-			// Get a fresh query object:
-			$query    = $db->getQuery(true);
-
-			// Build the database query:
-			$query->select('a.id, a.parent_id');
-			$query->from('#__assets AS a');
-			$query->where('(a.name LIKE ' . $db->quote($extensionName . '.%') . ' OR a.name = ' . $db->quote($extensionName) . ' OR a.id = 1)');
-
-			// Get the Name Permission Map List
-			$db->setQuery($query);
-			$parentIdMapping = $db->loadObjectList('id');
-
-			self::$assetPermissionsParentIdMapping[$extensionName] = &$parentIdMapping;
-		}
-
-		return self::$assetPermissionsParentIdMapping[$extensionName];
-	}
+//	protected static function &preloadPermissionsParentIdMapping($assetType)
+//	{
+//		// Get the extension name from the $assetType provided
+//		$extensionName = self::getExtensionNameFromAsset($assetType);
+//
+//		if (!isset(self::$assetPermissionsParentIdMapping[$extensionName]))
+//		{
+//			// Get the database connection object.
+//			$db = Factory::getDbo();
+//
+//			// Get a fresh query object:
+//			$query    = $db->getQuery(true);
+//
+//			// Build the database query:
+//			$query->select('a.id, a.parent_id');
+//			$query->from('#__assets AS a');
+//			$query->where('(a.name LIKE ' . $db->quote($extensionName . '.%') . ' OR a.name = ' . $db->quote($extensionName) . ' OR a.id = 1)');
+//
+//			// Get the Name Permission Map List
+//			$db->setQuery($query);
+//			$parentIdMapping = $db->loadObjectList('id');
+//
+//			self::$assetPermissionsParentIdMapping[$extensionName] = &$parentIdMapping;
+//		}
+//
+//		return self::$assetPermissionsParentIdMapping[$extensionName];
+//	}
 
 	/**
 	 * Method to retrieve the Asset Rule strings for this particular
@@ -752,8 +753,8 @@ class BwAccess
 	 */
 	public static function getAssetRules($assetKey, $recursive = false, $recursiveParentAsset = false, $preload = true)
 	{
-		$logOptions   = array();
-		$logger = BwLogger::getInstance($logOptions);
+		$logOptions = array();
+		$logger     = BwLogger::getInstance($logOptions);
 
 		// Auto preload the components assets and root asset (if chosen).
 		if ($preload)
@@ -826,7 +827,7 @@ class BwAccess
 
 				$extensionName = $assetNameParts[0];
 
-				if ($numberOfDots === 2 || count($assetNameParts) ===2)
+				if ($numberOfDots === 2 || count($assetNameParts) === 2)
 				{
 					$sectionName   = $assetNameParts[0] . '.' . $assetNameParts[1];
 				}
@@ -1155,18 +1156,18 @@ class BwAccess
 	 *
 	 * @since   3.5
 	 */
-	public static function getGroupTitle($groupId)
-	{
-		// Fetch the group title from the database
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select('title')
-			->from('#__usergroups')
-			->where('id = ' . $db->quote($groupId));
-		$db->setQuery($query);
-
-		return $db->loadResult();
-	}
+//	public static function getGroupTitle($groupId)
+//	{
+//		// Fetch the group title from the database
+//		$db    = Factory::getDbo();
+//		$query = $db->getQuery(true);
+//		$query->select('title')
+//			->from('#__usergroups')
+//			->where('id = ' . $db->quote($groupId));
+//		$db->setQuery($query);
+//
+//		return $db->loadResult();
+//	}
 
 	/**
 	 * Method to return a list of user groups mapped to a user. The returned list can optionally hold
@@ -1276,7 +1277,7 @@ class BwAccess
 			->from('#__usergroups as ug1')
 			->join('INNER', '#__usergroups AS ug2 ON ug2.lft' . $test . 'ug1.lft AND ug1.rgt' . $test . 'ug2.rgt')
 			->join('INNER', '#__user_usergroup_map AS m ON ug2.id=m.group_id')
-			->where('ug1.id=' . $db->quote($groupId));
+			->where('ug1.id=' . $db->quote((int)$groupId));
 
 		$db->setQuery($query);
 

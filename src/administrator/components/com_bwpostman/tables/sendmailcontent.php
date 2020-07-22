@@ -29,6 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Filter\InputFilter;
 
 /**
  * #__bwpostman_sendmailcontent table handler
@@ -184,7 +185,7 @@ class BwPostmanTableSendmailcontent extends JTable
 		}
 
 		// Cast properties
-		$this->id	= (int) $this->id;
+		$this->id = (int) $this->id;
 
 		return parent::bind($data, $ignore);
 	}
@@ -200,6 +201,22 @@ class BwPostmanTableSendmailcontent extends JTable
 	 */
 	public function check()
 	{
+		$filter = new InputFilter(array(), array(), 0, 0);
+
+		$this->id               = $filter->clean($this->id, 'UINT');
+		$this->mode             = $filter->clean($this->mode, 'UINT');
+		$this->nl_id            = $filter->clean($this->nl_id, 'UINT');
+		$this->from_name        = trim($filter->clean($this->from_name));
+		$this->from_email       = trim($filter->clean($this->from_email));
+		$this->subject          = trim($filter->clean($this->subject));
+		$this->body             = $filter->clean($this->body, 'RAW');
+		$this->cc_email         = trim($filter->clean($this->cc_email));
+		$this->bcc_email        = trim($filter->clean($this->bcc_email));
+		$this->attachment       = trim($filter->clean($this->attachment));
+		$this->reply_name       = trim($filter->clean($this->reply_name));
+		$this->reply_email      = trim($filter->clean($this->reply_email));
+		$this->substitute_links = $filter->clean($this->substitute_links, 'UINT');
+
 		return true;
 	}
 
@@ -219,9 +236,9 @@ class BwPostmanTableSendmailcontent extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$k		= $this->_tbl_key;
-		$res    = 0;
-		$query	= $this->_db->getQuery(true);
+		$k     = $this->_tbl_key;
+		$res   = 0;
+		$query = $this->_db->getQuery(true);
 
 		if (!$this->$k)
 		{
@@ -285,10 +302,10 @@ class BwPostmanTableSendmailcontent extends JTable
 		}
 
 		// If (empty($mode)) return 0;
-		$app	= Factory::getApplication();
-		$mode	= $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
+		$app    = Factory::getApplication();
+		$mode   = $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
+		$db     = $this->_db;
+		$query  = $db->getQuery(true);
 		$result = array();
 
 		$this->reset();
@@ -306,7 +323,7 @@ class BwPostmanTableSendmailcontent extends JTable
 		}
 		catch (RuntimeException $e)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $this->bind($result);
@@ -326,18 +343,19 @@ class BwPostmanTableSendmailcontent extends JTable
 	public function getContent($id)
 	{
 		$newsletter = null;
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		// build query
 		$query->select($db->quoteName('body'));
-		$query->from($db->quoteName('#__bwpostman_sendmailcontent') . ' AS ' . $db->quoteName('a'));
+		$query->from($db->quoteName($this->_tbl) . ' AS ' . $db->quoteName('a'));
 		$query->where($db->quoteName('a') . '.' . $db->quoteName('nl_id') . ' = ' . (int)$id);
 		$query->where($db->quoteName('a') . '.' . $db->quoteName('mode') . ' = ' . 1);
+		$db->setQuery($query);
 
 		try
 		{
-			$db->setQuery($query);
 			$newsletter = $db->loadResult();
 		}
 		catch (RuntimeException $e)

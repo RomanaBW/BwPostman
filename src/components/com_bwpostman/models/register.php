@@ -33,6 +33,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Mail\MailHelper;
+use Joomla\Utilities\ArrayHelper;
 
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
@@ -236,17 +237,17 @@ class BwPostmanModelRegister extends JModelAdmin
 		{
 			if ($send_mail)
 			{
-				$subscriber = $subsTable->getSingleSubscriberData($pks);
+				$subscriber = $subsTable->getSingleSubscriberData((int)$pks);
 			}
 
 			// delete subscriber from subscribers table
 			try
 			{
-				$subsTable->delete($pks);
+				$subsTable->delete((int)$pks);
 
 				// delete subscriber entries from subscribers-lists table
 				$subsMlTable = $this->getTable('Subscribers_Mailinglists');
-				$subsMlTable->deleteMailinglistsOfSubscriber($pks);
+				$subsMlTable->deleteMailinglistsOfSubscriber((int)$pks);
 			}
 			catch (RuntimeException $e)
 			{

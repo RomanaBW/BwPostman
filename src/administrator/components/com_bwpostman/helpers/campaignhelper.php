@@ -50,7 +50,7 @@ abstract class BwPostmanCampaignHelper
 	 */
 	public static function getSingleCampaign($cam_id = null)
 	{
-		$db   = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('*');
@@ -124,7 +124,7 @@ abstract class BwPostmanCampaignHelper
 			. ' ON ' . $db->quoteName('v') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('created_by')
 		);
 		$query->where($db->quoteName('campaign_id') . ' = ' . $db->quote((int) $camId));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int)0);
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
 		if (!$archiveFlag)
 		{

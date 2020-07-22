@@ -60,8 +60,8 @@ class JFormFieldArcMailinglists extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
 		// Get # of all published mailinglists
 		$query->select('DISTINCT (nm.mailinglist_id) AS value');
@@ -73,11 +73,11 @@ class JFormFieldArcMailinglists extends JFormFieldList
 		$query->leftJoin('#__bwpostman_mailinglists AS m ON m.id = nm.mailinglist_id');
 		$query->order('m.title');
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$options = $_db->loadObjectList();
+			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

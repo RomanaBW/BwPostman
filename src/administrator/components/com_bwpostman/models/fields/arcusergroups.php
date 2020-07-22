@@ -60,8 +60,8 @@ class JFormFieldArcUsergroups extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
 		// Get # of all published mailinglists
 		$query->select('DISTINCT (nm.mailinglist_id) AS value');
@@ -73,11 +73,11 @@ class JFormFieldArcUsergroups extends JFormFieldList
 		$query->leftJoin('#__usergroups AS u ON CONCAT("-", u.id) = nm.mailinglist_id');
 		$query->order('u.title');
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$options = $_db->loadObjectList();
+			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

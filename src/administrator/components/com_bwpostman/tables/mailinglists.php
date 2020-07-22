@@ -29,6 +29,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Filter\InputFilter;
 use Joomla\CMS\Access\Access;
+use Joomla\Utilities\ArrayHelper;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -306,29 +307,44 @@ class BwPostmanTableMailinglists extends JTable
 	 */
 	public function check()
 	{
-		$app	= Factory::getApplication();
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
-		$fault	= false;
-		$xid    = 0;
+		$app   = Factory::getApplication();
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+		$fault = false;
+		$xid   = 0;
 
 		// Remove all HTML tags from the title and description
-		$filter				= new InputFilter(array(), array(), 0, 0);
-		$this->title		= trim($filter->clean($this->title));
-		$this->description	= $filter->clean($this->description);
+		$filter = new InputFilter(array(), array(), 0, 0);
+
+		$this->id               = $filter->clean($this->id, 'UINT');
+		$this->asset_id         = $filter->clean($this->asset_id, 'UINT');
+		$this->title            = trim($filter->clean($this->title));
+		$this->description      = $filter->clean($this->description);
+		$this->campaign_id      = $filter->clean($this->campaign_id, 'UINT');
+		$this->access           = $filter->clean($this->access, 'UINT');
+		$this->published        = $filter->clean($this->published, 'UINT');
+		$this->created_date     = $filter->clean($this->created_date);
+		$this->created_by       = $filter->clean($this->created_by, 'INT');
+		$this->modified_time    = $filter->clean($this->modified_time);
+		$this->modified_by      = $filter->clean($this->modified_by, 'INT');
+		$this->checked_out      = $filter->clean($this->checked_out, 'INT');
+		$this->checked_out_time = $filter->clean($this->checked_out_time);
+		$this->archive_flag     = $filter->clean($this->archive_flag, 'UINT');
+		$this->archive_date     = $filter->clean($this->archive_date);
+		$this->archived_by      = $filter->clean($this->archived_by, 'INT');
 
 		// Check for valid title
 		if ($this->title === '')
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ML_ERROR_TITLE'), 'error');
-			$fault	= true;
+			$fault = true;
 		}
 
 		// Check for valid title
 		if (trim($this->description) == '')
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION'), 'error');
-			$fault	= true;
+			$fault = true;
 		}
 
 		// Check for existing title
@@ -347,7 +363,7 @@ class BwPostmanTableMailinglists extends JTable
 			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if ($xid && $xid != intval($this->id)) {
+		if ($xid && $xid !== intval($this->id)) {
 			$app->enqueueMessage((Text::sprintf('COM_BWPOSTMAN_ML_ERROR_TITLE_DOUBLE', $this->title, $xid)), 'error');
 			return false;
 		}
@@ -381,16 +397,16 @@ class BwPostmanTableMailinglists extends JTable
 		{
 			// Existing mailing list
 			$this->modified_time = $date->toSql();
-			$this->modified_by = $user->get('id');
+			$this->modified_by   = $user->get('id');
 		}
 		else
 		{
 			// New mailing list
 			$this->created_date = $date->toSql();
-			$this->created_by = $user->get('id');
+			$this->created_by   = $user->get('id');
 		}
 
-		$res	= parent::store($updateNulls);
+		$res = parent::store($updateNulls);
 		Factory::getApplication()->setUserState('com_bwpostman.edit.mailinglist.id', $this->id);
 
 		return $res;
@@ -412,7 +428,7 @@ class BwPostmanTableMailinglists extends JTable
 	 */
 	public function getMailinglistsByRestriction($mailinglists, $condition = 'available', $archived = 0, $restricted = true)
 	{
-		$mls   = null;
+		$mls = null;
 		$restrictedMls = array();
 
 		$db    = $this->_db;
@@ -424,7 +440,7 @@ class BwPostmanTableMailinglists extends JTable
 
 		if ((int)$archived === 0)
 		{
-			switch ($condition)
+			switch ((string)$condition)
 			{
 				case 'available':
 					$query->where($db->quoteName('published') . ' = ' . 1);
@@ -453,7 +469,7 @@ class BwPostmanTableMailinglists extends JTable
 
 		if ($restricted === true)
 		{
-			$resultingMls = array_intersect($mailinglists, $mls);
+			$resultingMls = array_intersect(ArrayHelper::toInteger($mailinglists), $mls);
 		}
 		else
 		{
@@ -487,7 +503,7 @@ class BwPostmanTableMailinglists extends JTable
 		$query        = $db->getQuery(true);
 
 		// get authorized viewlevels
-		$accesslevels	= Access::getAuthorisedViewLevels($userId);
+		$accesslevels = Access::getAuthorisedViewLevels((int)$userId);
 
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
@@ -513,20 +529,20 @@ class BwPostmanTableMailinglists extends JTable
 		}
 
 		// Does the subscriber has internal mailinglists?
-		$selected	= $app->getUserState('com_bwpostman.subscriber.selected_lists', '');
+		$selected = $app->getUserState('com_bwpostman.subscriber.selected_lists', '');
 
 		if (is_array($selected))
 		{
-			$ml_ids		= array();
-			$add_mls	= array();
+			$ml_ids  = array();
+			$add_mls = array();
 
 			// compare available mailinglists with selected mailinglists, get difference
 			foreach ($mailinglists as $value)
 			{
-				$ml_ids[]	= $value->id;
+				$ml_ids[] = $value->id;
 			}
 
-			$get_mls	= array_diff($selected, $ml_ids);
+			$get_mls = array_diff(ArrayHelper::toInteger($selected), $ml_ids);
 
 			// if there are internal mailinglists selected, get them ...
 			if (is_array($get_mls) && !empty($get_mls))
@@ -552,7 +568,7 @@ class BwPostmanTableMailinglists extends JTable
 		// ...and add them to the mailinglists array
 		if (!empty($add_mls))
 		{
-			$mailinglists	= array_merge($mailinglists, $add_mls);
+			$mailinglists = array_merge($mailinglists, $add_mls);
 		}
 
 		return $mailinglists;
@@ -591,7 +607,7 @@ class BwPostmanTableMailinglists extends JTable
 		$query->select($db->quoteName('archive_flag'));
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' IN  (' . $mailinglists . ')');
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
 		$db->setQuery($query);
 
@@ -661,7 +677,7 @@ class BwPostmanTableMailinglists extends JTable
 		$query->select($db->quoteName('id') . ' AS value');
 		$query->select($db->quoteName('title') . ' AS text');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 		$query->order('title ASC');
 		$db->setQuery($query);
 
@@ -701,7 +717,7 @@ class BwPostmanTableMailinglists extends JTable
 
 		try
 		{
-			$mailinglists	= $db->loadColumn();
+			$mailinglists = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
@@ -725,8 +741,8 @@ class BwPostmanTableMailinglists extends JTable
 	public function getAllowedMailinglists($viewLevels)
 	{
 		$mailinglists   = null;
-		$db		    = $this->_db;
-		$query		    = $db->getQuery(true);
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->select('id');
 		$query->from($db->quoteName('#__bwpostman_mailinglists'));
@@ -743,11 +759,11 @@ class BwPostmanTableMailinglists extends JTable
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		$allowed	= array();
+		$allowed = array();
 
 		foreach ($mailinglists as $item)
 		{
-			$allowed[]	= $item['id'];
+			$allowed[] = $item['id'];
 		}
 
 		return $allowed;

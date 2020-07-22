@@ -200,7 +200,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 		$data	= $app->getUserState('com_bwpostman.edit.campaign.data', null);
 		$id     = 0;
 
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
+		$pk = (int)(!empty($pk)) ? $pk : $this->getState($this->getName() . '.id');
 
 		if (is_object($data) && property_exists($data, 'id'))
 		{
@@ -211,13 +211,14 @@ class BwPostmanModelCampaign extends JModelAdmin
 			$id = $data['id'];
 		}
 
-		if (!$data || ($id != $pk)) {
+		if (!$data || ($id != $pk))
+		{
 			// Initialise variables.
 			$item	= parent::getItem($pk);
 
-			if ($pk == 0)
+			if ($pk === 0)
 			{
-				$item->id	= 0;
+				$item->id = 0;
 			}
 
 			//get associated mailinglists
@@ -240,7 +241,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 		}
 		else
 		{
-			$item	= new stdClass();
+			$item = new stdClass();
+
 			foreach ($data as $key => $value)
 			{
 				$item->$key	= $value;
@@ -248,6 +250,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 		}
 
 		$app->setUserState('com_bwpostman.edit.campaign.data', $item);
+
 		return $item;
 	}
 
@@ -266,8 +269,8 @@ class BwPostmanModelCampaign extends JModelAdmin
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_bwpostman.campaign', 'Campaign', array('control' => 'jform', 'load_data' => $loadData));
-		$nullDate	= Factory::getDbo()->getNullDate();
+		$form     = $this->loadForm('com_bwpostman.campaign', 'Campaign', array('control' => 'jform', 'load_data' => $loadData));
+		$nullDate = Factory::getDbo()->getNullDate();
 
 		if (empty($form))
 		{
@@ -276,6 +279,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		// Check to show created data
 		$c_date	= $form->getValue('created_date');
+
 		if ($c_date === $nullDate || $c_date == null)
 		{
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
@@ -284,6 +288,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
+
 		if ($m_date === $nullDate || $m_date == null)
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
@@ -329,13 +334,11 @@ class BwPostmanModelCampaign extends JModelAdmin
 	public function getNewslettersOfCampaign()
 	{
 		$newsletters = new stdClass();
-		$camId       = $this->getState('campaign.id');
+		$camId       = (int)$this->getState('campaign.id');
 
-		$newsletters->sent = BwPostmanCampaignHelper::getSelectedNewslettersOfCampaign($camId, true, false);
-
+		$newsletters->sent   = BwPostmanCampaignHelper::getSelectedNewslettersOfCampaign($camId, true, false);
 		$newsletters->unsent = BwPostmanCampaignHelper::getSelectedNewslettersOfCampaign($camId, false, false);
-
-		$newsletters->all = BwPostmanCampaignHelper::getSelectedNewslettersOfCampaign($camId, false, true);
+		$newsletters->all    = BwPostmanCampaignHelper::getSelectedNewslettersOfCampaign($camId, false, true);
 
 		return $newsletters;
 	}
@@ -356,13 +359,13 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	public function archive($cid = array(0), $archive = 1, $archive_nl = 1)
 	{
-		$date	= Factory::getDate();
-		$uid	= Factory::getUser()->get('id');
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
+		$date     = Factory::getDate();
+		$uid      = Factory::getUser()->get('id');
+		$db       = $this->_db;
+		$query    = $db->getQuery(true);
 		$nullDate = $db->getNullDate();
 
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
 		if ($archive == 1)
 		{
@@ -371,7 +374,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 			// Access check.
 			foreach ($cid as $id)
 			{
-				if (!BwPostmanHelper::canArchive('campaign', 0, (int) $id))
+				if (!BwPostmanHelper::canArchive('campaign', 0, $id))
 				{
 					return false;
 				}
@@ -382,14 +385,14 @@ class BwPostmanModelCampaign extends JModelAdmin
 			// Access check.
 			foreach ($cid as $id)
 			{
-				if (!BwPostmanHelper::canRestore('campaign', (int) $id))
+				if (!BwPostmanHelper::canRestore('campaign', $id))
 				{
 					return false;
 				}
 			}
 
-			$time	= $nullDate;
-			$uid	= 0;
+			$time = $nullDate;
+			$uid  = 0;
 		}
 
 		if (count($cid))
@@ -451,14 +454,14 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$app     = Factory::getApplication();
+		$app = Factory::getApplication();
 
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
 		BwPostmanMailinglistHelper::mergeMailinglists($data);
 
 		if (isset($data['mailinglists']))
 		{
-			$res	= parent::save($data);
+			$res = parent::save($data);
 
 			if ($res)
 			{
@@ -469,7 +472,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 				}
 				else
 				{
-					$jinput		= $app->input;
+					$jinput = $app->input;
 					//get id of new inserted data to write cross table newsletters-mailinglists and inject into form
 					$data['id']	= $app->getUserState('com_bwpostman.edit.campaign.id');
 					$jinput->set('id', $data['id']);
@@ -492,7 +495,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 		else
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'), 'error');
-			$res	= false;
+			$res = false;
 		}
 
 		return $res;
@@ -512,18 +515,18 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-		$jinput	    = Factory::getApplication()->input;
-		$remove_nl	= $jinput->get('remove_nl', false);
-		$app	    = Factory::getApplication();
+		$jinput	   = Factory::getApplication()->input;
+		$remove_nl = $jinput->get('remove_nl', false);
+		$app       = Factory::getApplication();
 
 		if (count($pks))
 		{
-			ArrayHelper::toInteger($pks);
+			$pks = ArrayHelper::toInteger($pks);
 
 			// Access check.
 			foreach ($pks as $id)
 			{
-				if (!BwPostmanHelper::canDelete('campaign', (int) $id))
+				if (!BwPostmanHelper::canDelete('campaign', $id))
 				{
 					return false;
 				}

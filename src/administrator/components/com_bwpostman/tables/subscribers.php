@@ -370,7 +370,7 @@ class BwPostmanTableSubscribers extends JTable
 		}
 
 		// Cast properties
-		$this->id	= (int) $this->id;
+		$this->id = (int) $this->id;
 
 		return parent::bind($data, $ignore);
 	}
@@ -391,29 +391,30 @@ class BwPostmanTableSubscribers extends JTable
 		//Initialize
 		jimport('joomla.mail.helper');
 
-		$params	= ComponentHelper::getParams('com_bwpostman');
-		$app	= Factory::getApplication();
-		$import	= $app->getUserState('com_bwpostman.subscriber.import', false);
-		$xtest	= $app->getUserState('com_bwpostman.subscriber.new_test', $this->status);
-		$data	= $app->getUserState('com_bwpostman.subscriber.register.data', array());
+		$params = ComponentHelper::getParams('com_bwpostman');
+		$app    = Factory::getApplication();
+		$import = $app->getUserState('com_bwpostman.subscriber.import', false);
+		$xtest  = $app->getUserState('com_bwpostman.subscriber.new_test', $this->status);
+		$data   = $app->getUserState('com_bwpostman.subscriber.register.data', array());
 
 		if ($app->isClient('site') && !empty($data['mod_id']))
 		{
 			// if data from module, we need module params
 			// we can't use JoomlaModuleHelper, because module isn't shown on frontend
-			$params = BwPostmanSubscriberHelper::getModParams($data['mod_id']);
+			$params = BwPostmanSubscriberHelper::getModParams((int)$data['mod_id']);
 			$module_params  = new Registry($params->params);
+
 			if ($module_params->get('com_params') == 0)
 			{
 				$params = $module_params;
 			}
 		}
 
-		$session	= Factory::getSession();
-		$err		= $session->get('session_error');
-		$fault		= false;
+		$session = Factory::getSession();
+		$err     = $session->get('session_error');
+		$fault   = false;
 
-		$isTester = false;
+		$isTester   = false;
 		$format_txt	= array(0 => 'Text', 1 => 'HTML');
 
 		if ($xtest == '9')
@@ -728,13 +729,15 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function checkForTestrecipients()
 	{
-		$db	        = $this->_db;
-		$query	= $db->getQuery(true);
+		$testrecipients = null;
+
+		$db	   = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->select('COUNT(' . $db->quoteName('id') . ')');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('status') . ' = ' . (int) 9);
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->where($db->quoteName('status') . ' = ' . 9);
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
 		$db->setQuery($query);
 
@@ -775,8 +778,8 @@ class BwPostmanTableSubscribers extends JTable
 
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('status') . ' = ' . (int) 9);
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->where($db->quoteName('status') . ' = ' . 9);
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
 		$db->setQuery($query);
 
@@ -805,28 +808,26 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$app	= Factory::getApplication();
-		$date	= Factory::getDate();
-		$user	= Factory::getUser();
+		$app  = Factory::getApplication();
 
 		if ($this->gender == '')
 		{
-			$this->gender   = 2;
+			$this->gender = 2;
 		}
 
 		if ($this->id)
 		{
 			// Existing subscriber
-			$this->modified_time = $date->toSql();
-			$this->modified_by = $user->get('id');
+			$this->modified_time = Factory::getDate()->toSql();
+			$this->modified_by   = Factory::getUser()->get('id');
 		}
 
-		if ($this->confirmation_date == (int)0)
+		if ($this->confirmation_date == 0)
 		{
-			$this->confirmation_date = "0000-00-00 00:00:00";
+			$this->confirmation_date = $this->_db->getNullDate();
 		}
 
-		$res	= parent::store($updateNulls);
+		$res = parent::store($updateNulls);
 
 		if ($res !== true)
 		{
@@ -899,8 +900,9 @@ class BwPostmanTableSubscribers extends JTable
 	{
 		$result = false;
 		$this->reset();
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
 		$query->select($db->quoteName('editlink'));
@@ -940,13 +942,13 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function getSubscriberIdByUserId($uid)
 	{
-		$db   = $this->_db;
+		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('user_id') . ' = ' . (int) $uid);
-		$query->where($db->quoteName('status') . ' != ' . (int) 9);
+		$query->where($db->quoteName('status') . ' != ' . 9);
 
 		try
 		{
@@ -980,9 +982,9 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function getSubscriberIdByEmail($email, $isTester = false)
 	{
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
-		$id     = 0;
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+		$id    = 0;
 
 		// Sanitize values
 		$email = $db->escape($email);
@@ -1032,7 +1034,7 @@ class BwPostmanTableSubscribers extends JTable
 	public function getSubscriberState($id)
 	{
 		$subscriber = null;
-		$db        = $this->_db;
+		$db         = $this->_db;
 		$query      = $db->getQuery(true);
 
 		$query->select('*');
@@ -1108,7 +1110,7 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function getNbrOfSubscribers($tester, $archived)
 	{
-		$archiveFlag = 0;
+		$archiveFlag    = 0;
 		$statusOperator = "!=";
 
 		if ($tester)
@@ -1129,7 +1131,7 @@ class BwPostmanTableSubscribers extends JTable
 
 		if (!$archived)
 		{
-			$query->where($db->quoteName('status') . $statusOperator . (int) 9);
+			$query->where($db->quoteName('status') . $statusOperator . 9);
 		}
 
 		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
@@ -1204,7 +1206,8 @@ class BwPostmanTableSubscribers extends JTable
 	public function createActivation()
 	{
 		$db    = $this->_db;
-		$query             = $db->getQuery(true);
+		$query = $db->getQuery(true);
+
 		$newActivation     = "";
 		$activationMatches = true;
 
@@ -1244,15 +1247,19 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @return  object
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.4.0
 	 */
 	public function getSingleSubscriberData($id)
 	{
-		$db   = $this->_db;
+		$subscriber = null;
+
+		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('*');
-		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' = ' . (int) $id);
 
 		$db->setQuery($query);
@@ -1281,7 +1288,7 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function getSubscriberDataByEmail($values)
 	{
-		$db   = $this->_db;
+		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		// Sanitize values
@@ -1290,7 +1297,8 @@ class BwPostmanTableSubscribers extends JTable
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('email') . ' = ' . $db->quote($email));
-		if ($values['status'] == '9')
+
+		if ((int)$values['status'] === 9)
 		{
 			$query->where($db->quoteName('emailformat') . ' = ' . $db->quote((int)$values['emailformat']));
 			$query->where($db->quoteName('status') . ' = ' . 9);
@@ -1318,8 +1326,10 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function getSubscriberActivationData($activation)
 	{
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
+		$subscriber = null;
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
 		$query->select($db->quoteName('email'));
@@ -1362,14 +1372,14 @@ class BwPostmanTableSubscribers extends JTable
 		$date = Factory::getDate();
 		$time = $date->toSql();
 
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->update($db->quoteName($this->_tbl));
 		$query->set($db->quoteName('status') . ' = ' . 1);
 		$query->set($db->quoteName('activation') . ' = ' . $db->quote(''));
 		$query->set($db->quoteName('confirmation_date') . ' = ' . $db->quote($time, false));
-		$query->set($db->quoteName('confirmed_by') . ' = ' . (int) 0);
+		$query->set($db->quoteName('confirmed_by') . ' = ' . 0);
 		$query->set($db->quoteName('confirmation_ip') . ' = ' . $db->quote($activation_ip));
 		$query->where($db->quoteName('id') . ' = ' . (int) $id);
 		$db->setQuery($query);
@@ -1405,14 +1415,14 @@ class BwPostmanTableSubscribers extends JTable
 		$query = $db->getQuery(true);
 
 		// Sanitize values
-		$email = $db->escape($email);
+		$email    = $db->escape($email);
 		$editlink = $db->escape($editlink);
 
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('email') . ' = ' . $db->quote($email));
 		$query->where($db->quoteName('editlink') . ' = ' . $db->quote($editlink));
-		$query->where($db->quoteName('status') . ' != ' . (int) 9);
+		$query->where($db->quoteName('status') . ' != ' . 9);
 		$db->setQuery($query);
 
 		try
@@ -1441,9 +1451,10 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function getEmailaddress($id)
 	{
-		$emailaddress   = null;
-		$db	        = $this->_db;
-		$query	        = $db->getQuery(true);
+		$emailaddress = null;
+
+		$db	   = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('email'));
 		$query->from($db->quoteName($this->_tbl));
@@ -1475,13 +1486,15 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function checkEditlink($editlink)
 	{
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$editlink = $db->escape($editlink);
 
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('editlink') . ' = ' . $db->quote($editlink));
-		$query->where($db->quoteName('status') . ' != ' . (int) 9);
+		$query->where($db->quoteName('status') . ' != ' . 9);
 
 		try
 		{
@@ -1494,5 +1507,53 @@ class BwPostmanTableSubscribers extends JTable
 		}
 
 		return $id;
+	}
+
+	/**
+	 * Method to get the subscribers data for push to sendmailqueue
+	 *
+	 * @param int    $content_id     Content ID --> from the sendmailcontent-Table
+	 * @param string $status         Status --> 0 = unconfirmed, 1 = confirmed
+	 * @param array  $subscribers    array of subscriber ids to get the data for
+	 *
+	 * @return 	array
+	 *
+	 * @throws Exception
+	 *
+	 * @since  2.4.0
+	 */
+	public function getSubscriberDataForSendmailqueue($content_id, $status, $subscribers)
+	{
+		$data  = array();
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select($db->quote($content_id) . ' AS content_id');
+		$query->select($db->quoteName('email') . ' AS ' . $db->quoteName('recipient'));
+		$query->select($db->quoteName('emailformat') . ' AS ' . $db->quoteName('mode'));
+		$query->select($db->quoteName('name') . ' AS ' . $db->quoteName('name'));
+		$query->select($db->quoteName('firstname') . ' AS ' . $db->quoteName('firstname'));
+		$query->select($db->quoteName('id') . ' AS ' . $db->quoteName('subscriber_id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('status') . ' IN (' . $status . ')');
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+
+		if (count($subscribers))
+		{
+			$query->where($db->quoteName('id') . ' IN (' . implode(',', $subscribers) . ')');
+		}
+
+		$db->setQuery($query);
+
+		try
+		{
+			$data = $db->loadRowList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $data;
 	}
 }

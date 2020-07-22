@@ -60,20 +60,20 @@ class JFormFieldAllMailinglists extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
 		// Get # of all published mailinglists
-		$query->select($_db->quoteName('id') . ' AS value');
-		$query->select($_db->quoteName('title') . ' AS text');
-		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->select($db->quoteName('id') . ' AS value');
+		$query->select($db->quoteName('title') . ' AS text');
+		$query->from($db->quoteName('#__bwpostman_mailinglists'));
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$options = $_db->loadObjectList();
+			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

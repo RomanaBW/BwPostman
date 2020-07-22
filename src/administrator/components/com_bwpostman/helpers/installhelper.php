@@ -103,8 +103,8 @@ class BwPostmanInstallHelper
 	 */
 	public static function convertToUtf8Mb4($reference_table = '', $conversion_file = '')
 	{
-		$_db        = Factory::getDbo();
-		$converted  = false;
+		$_db       = Factory::getDbo();
+		$converted = false;
 
 		// This is only required for MySQL databases
 		$name = $_db->getName();

@@ -157,8 +157,8 @@ class Com_BwPostmanInstallerScript
 	private function bwpostman_install()
 	{
 		/*
-		$_db = Factory::getDbo();
-		$query = 'INSERT INTO '. $_db->quoteName('#__postinstall_messages') .
+		$db = Factory::getDbo();
+		$query = 'INSERT INTO '. $db->quoteName('#__postinstall_messages') .
 		' ( `extension_id`,
 				  `title_key`,
 				  `description_key`,
@@ -186,8 +186,8 @@ class Com_BwPostmanInstallerScript
 			   "1.2.3",
 			   1)';
 
-		$_db->setQuery($query);
-		$_db->execute();
+		$db->setQuery($query);
+		$db->execute();
 		*/
 	}
 
@@ -206,16 +206,16 @@ class Com_BwPostmanInstallerScript
 
 	public function preflight($type, InstallerAdapter $parent)
 	{
-		$app 		= Factory::getApplication();
-		$session	= Factory::getSession();
+		$app     = Factory::getApplication();
+		$session = Factory::getSession();
 
 		if (function_exists('set_time_limit'))
 		{
 			set_time_limit(0);
 		}
 
-		$this->parentInstaller	= $parent->getParent();
-		$manifest = $parent->getManifest();
+		$this->parentInstaller = $parent->getParent();
+		$manifest              = $parent->getManifest();
 
 		// Get component manifest file version
 		$this->release	= $manifest->version;
@@ -253,17 +253,17 @@ class Com_BwPostmanInstallerScript
 			jimport('joomla.filesystem.folder');
 		}
 
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
-		$query->select($_db->quoteName('params'));
-		$query->from($_db->quoteName('#__extensions'));
-		$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
+		$query->select($db->quoteName('params'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 		try
 		{
-			$params_default = $_db->loadResult();
+			$params_default = $db->loadResult();
 			$app->setUserState('com_bwpostman.install.params', $params_default);
 		}
 		catch (RuntimeException $e)
@@ -279,7 +279,8 @@ class Com_BwPostmanInstallerScript
 
 			require_once($tmp_path . '/helpers/installhelper.php');
 
-			$name = $_db->getName();
+			$name = $db->getName();
+
 			if (BwPostmanInstallHelper::serverClaimsUtf8mb4Support($name))
 			{
 				copy($tmp_path . '/sql/utf8mb4conversion/utf8mb4-install.sql', $tmp_path . '/sql/install.sql');
@@ -304,7 +305,7 @@ class Com_BwPostmanInstallerScript
 
 	public function postflight($type)
 	{
-		$m_params   = ComponentHelper::getParams('com_media');
+		$m_params = ComponentHelper::getParams('com_media');
 		$this->copyTemplateImagesToMedia($m_params);
 
 		// Make new folder and copy template thumbnails to folder "images" if image_path is not "images"
@@ -356,8 +357,8 @@ class Com_BwPostmanInstallerScript
 
 			$this->logger->addEntry(new LogEntry("Postflight updateRules passed", BwLogger::BW_DEBUG, $this->log_cat));
 
-			$app 		= Factory::getApplication();
-			$oldRelease	= $app->getUserState('com_bwpostman.update.oldRelease', '');
+			$app        = Factory::getApplication();
+			$oldRelease = $app->getUserState('com_bwpostman.update.oldRelease', '');
 
 			if (version_compare($oldRelease, '1.0.1', 'lt'))
 			{
@@ -406,14 +407,8 @@ class Com_BwPostmanInstallerScript
 			// check all tables of BwPostman
 			// Let Ajax client redirect
 			$modal = $this->getModal();
-			if($this->isJ4)
-			{
-				$app->enqueueMessage($modal);
-			}
-			else
-			{
-				$app->enqueueMessage(Text::_('Installing BwPostman ... ') . $modal);
-			}
+
+			$app->enqueueMessage(Text::_('Installing BwPostman ... ') . $modal);
 		}
 
 		return true;
@@ -429,7 +424,7 @@ class Com_BwPostmanInstallerScript
 
 	public function install()
 	{
-		$session	= Factory::getSession();
+		$session = Factory::getSession();
 		$session->set('update', false, 'bwpostman');
 		$this->bwpostman_install();
 		$this->showFinished(false);
@@ -445,7 +440,7 @@ class Com_BwPostmanInstallerScript
 
 	public function update()
 	{
-		$session	= Factory::getSession();
+		$session = Factory::getSession();
 		$session->set('update', true, 'bwpostman');
 		$this->bwpostman_install();
 		$this->showFinished(true);
@@ -475,15 +470,15 @@ class Com_BwPostmanInstallerScript
 
 		Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_UNINSTALL_FOLDER_BWPOSTMAN', $image_path), 'notice');
 
-		$_db		= Factory::getDbo();
-		$query  = $_db->getQuery(true);
-		$query->delete($_db->quoteName('#__postinstall_messages'));
-		$query->where($_db->quoteName('language_extension') . ' = ' . $_db->quote('com_bwpostman'));
-		$_db->setQuery($query);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+		$query->delete($db->quoteName('#__postinstall_messages'));
+		$query->where($db->quoteName('language_extension') . ' = ' . $db->quote('com_bwpostman'));
+		$db->setQuery($query);
 
 		try
 		{
-			$_db->execute();
+			$db->execute();
 		}
 		catch (RuntimeException $e)
 		{
@@ -504,18 +499,18 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function getManifestVar($name)
 	{
-		$manifest   = array();
-		$_db		= Factory::getDbo();
-		$query	    = $_db->getQuery(true);
+		$manifest = array();
+		$db       = Factory::getDbo();
+		$query    = $db->getQuery(true);
 
-		$query->select($_db->quoteName('manifest_cache'));
-		$query->from($_db->quoteName('#__extensions'));
-		$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
-		$_db->setQuery($query);
+		$query->select($db->quoteName('manifest_cache'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
+		$db->setQuery($query);
 
 		try
 		{
-			$manifest = json_decode($_db->loadResult(), true);
+			$manifest = json_decode($db->loadResult(), true);
 		}
 		catch (RuntimeException $e)
 		{
@@ -537,17 +532,17 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function correctCamId()
 	{
-		$_db		= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
-		$query->update($_db->quoteName('#__bwpostman_newsletters'));
-		$query->set($_db->quoteName('campaign_id') . " = " . (int) -1);
-		$query->where($_db->quoteName('campaign_id') . " = " . (int) 0);
-		$_db->setQuery($query);
+		$query->update($db->quoteName('#__bwpostman_newsletters'));
+		$query->set($db->quoteName('campaign_id') . " = " .   -1);
+		$query->where($db->quoteName('campaign_id') . " = " . 0);
+		$db->setQuery($query);
 
 		try
 		{
-			$_db->execute();
+			$db->execute();
 		}
 		catch (RuntimeException $e)
 		{
@@ -568,64 +563,68 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function fillCamCrossTable()
 	{
-		$all_cams   = array();
-		$_db	    = Factory::getDbo();
-		$query	    = $_db->getQuery(true);
+		$all_cams = array();
+		$db       = Factory::getDbo();
+		$query    = $db->getQuery(true);
 
 		// First get all campaigns
-		$query->select($_db->quoteName('id') . ' AS ' . $_db->quoteName('campaign_id'));
-		$query->from($_db->quoteName('#__bwpostman_campaigns'));
-		$_db->setQuery($query);
+		$query->select($db->quoteName('id') . ' AS ' . $db->quoteName('campaign_id'));
+		$query->from($db->quoteName('#__bwpostman_campaigns'));
+		$db->setQuery($query);
 
 		try
 		{
-			$all_cams	= $_db->loadAssocList();
+			$all_cams = $db->loadAssocList();
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if (count($all_cams) > 0) {
-			foreach ($all_cams as $cam) {
-				$cross_values   = array();
-				$query			= $_db->getQuery(true);
+		if (count($all_cams) > 0)
+		{
+			foreach ($all_cams as $cam)
+			{
+				$cross_values = array();
+				$query        = $db->getQuery(true);
 
-				$query->select('DISTINCT(' . $_db->quoteName('cross1') . '.' . $_db->quoteName('mailinglist_id') . ')');
-				$query->from($_db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS ' . $_db->quoteName('cross1'));
+				$query->select('DISTINCT(' . $db->quoteName('cross1') . '.' . $db->quoteName('mailinglist_id') . ')');
+				$query->from($db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS ' . $db->quoteName('cross1'));
 				$query->leftJoin('#__bwpostman_newsletters AS n ON cross1.newsletter_id = n.id');
-				$query->where($_db->quoteName('n') . '.' . $_db->quoteName('campaign_id') . ' = ' . $cam['campaign_id']);
-				$_db->setQuery($query);
+				$query->where($db->quoteName('n') . '.' . $db->quoteName('campaign_id') . ' = ' . $cam['campaign_id']);
+				$db->setQuery($query);
 
 				try
 				{
-					$cross_values	= $_db->loadAssocList();
+					$cross_values = $db->loadAssocList();
 				}
 				catch (RuntimeException $e)
 				{
 					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 				}
 
-				if (count($cross_values) > 0) {
-					foreach ($cross_values as $item) {
-						$query	= $_db->getQuery(true);
+				if (count($cross_values) > 0)
+				{
+					foreach ($cross_values as $item)
+					{
+						$query = $db->getQuery(true);
 
-						$query->insert($_db->quoteName('#__bwpostman_campaigns_mailinglists'));
+						$query->insert($db->quoteName('#__bwpostman_campaigns_mailinglists'));
 						$query->columns(
 							array(
-								$_db->quoteName('campaign_id'),
-								$_db->quoteName('mailinglist_id')
+								$db->quoteName('campaign_id'),
+								$db->quoteName('mailinglist_id')
 							)
 						);
 							$query->values(
-								$_db->quote($cam['campaign_id']) . ',' .
-								$_db->quote($item['mailinglist_id'])
+								$db->quote((int)$cam['campaign_id']) . ',' .
+								$db->quote((int)$item['mailinglist_id'])
 							);
-						$_db->setQuery($query);
+						$db->setQuery($query);
 
 						try
 						{
-							$_db->execute();
+							$db->execute();
 						}
 						catch (RuntimeException $e)
 						{
@@ -697,6 +696,7 @@ class Com_BwPostmanInstallerScript
 	private function copyTemplateImagesToImages()
 	{
 		$dest = JPATH_ROOT . '/images/com_bwpostman';
+
 		if (!Folder::exists($dest))
 		{
 			Folder::create(JPATH_ROOT . '/images/com_bwpostman');
@@ -741,31 +741,31 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function checkSampleTemplates()
 	{
-		$_db	= Factory::getDbo();
-		$query  = $_db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__bwpostman_templates'));
-		$_db->setQuery($query);
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__bwpostman_templates'));
+		$db->setQuery($query);
 
 		try
 		{
-			$templateFields = $_db->loadResult();
+			$templateFields = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		$query  = $_db->getQuery(true);
+		$query  = $db->getQuery(true);
 
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__bwpostman_templates_tpl'));
-		$_db->setQuery($query);
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__bwpostman_templates_tpl'));
+		$db->setQuery($query);
 
 		try
 		{
-			$templatetplFields = $_db->loadResult();
+			$templatetplFields = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -774,6 +774,7 @@ class Com_BwPostmanInstallerScript
 
 		// if not install sample data
 		$templatessql = 'bwp_templates.sql';
+
 		if (!isset($templateFields))
 		{
 			$this->installdata($templatessql);
@@ -800,19 +801,9 @@ class Com_BwPostmanInstallerScript
 		try
 		{
 			// get the model for user groups
-			if($this->isJ4)
-			{
-				$groupModel = new GroupModel();
-			}
-			else
-			{
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
-			}
-//			$this->logger->addEntry(new LogEntry('GroupModel 2: ' . print_r($groupModel, true), BwLogger::BW_DEBUG, $this->log_cat));
+			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
 
-			// get group ID of public
-//			$public_id = $this->getGroupId('Public');
 			$public_id = 1;
 
 			// Ensure user group BwPostmanAdmin exists
@@ -856,6 +847,7 @@ class Com_BwPostmanInstallerScript
 			foreach ($this->all_bwpm_groups as $groups)
 			{
 				$parent_id  = $manager_groupId;
+
 				foreach ($groups as $item)
 				{
 					$groupId = $this->getGroupId($item);
@@ -904,15 +896,8 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// get the model for viewlevels
-			if($this->isJ4)
-			{
-				$viewlevelModel = new LevelModel();
-			}
-			else
-			{
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-				$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
-			}
+			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+			$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
 
 			// Get viewlevel special
 			$specialLevel = $viewlevelModel->getItem(3);
@@ -929,6 +914,7 @@ class Com_BwPostmanInstallerScript
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
 			return false;
 		}
 	}
@@ -963,7 +949,7 @@ class Com_BwPostmanInstallerScript
 			$rootRules = $this->getRootAsset();
 
 			// Insert BwPostmanAdmin to root asset
-			$tmpRules   = json_decode($rootRules, true);
+			$tmpRules = json_decode($rootRules, true);
 
 			// @ToDo: J4 only grants access to component options with core.manage, but with this permission is a lot possible.
 			// Better would be to only grant core.options, but this needs core change as suggested at issue #26606.
@@ -1011,20 +997,20 @@ class Com_BwPostmanInstallerScript
 	{
 		try
 		{
-			$_db	            = Factory::getDbo();
-			$user_id            = Factory::getUser()->get('id');
-			$bwpostman_groups   = array(0);
-			$query              = $_db->getQuery(true);
+			$db               = Factory::getDbo();
+			$user_id          = Factory::getUser()->get('id');
+			$bwpostman_groups = array(0);
+			$query            = $db->getQuery(true);
 
 			// get group ids of BwPostman user groups
-			$query->select($_db->quoteName('id'));
-			$query->from($_db->quoteName('#__usergroups'));
-			$query->where($_db->quoteName('title') . ' LIKE ' . $_db->quote('%BwPostman%'));
-			$_db->setQuery($query);
+			$query->select($db->quoteName('id'));
+			$query->from($db->quoteName('#__usergroups'));
+			$query->where($db->quoteName('title') . ' LIKE ' . $db->quote('%BwPostman%'));
+			$db->setQuery($query);
 
 			try
 			{
-				$bwpostman_groups  = $_db->loadColumn();
+				$bwpostman_groups = $db->loadColumn();
 			}
 			catch (RuntimeException $e)
 			{
@@ -1032,18 +1018,18 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// get group id of BwPostman main user group
-			$bwpostman_main_group   = '';
-			$query	                = $_db->getQuery(true);
+			$bwpostman_main_group = '';
+			$query                = $db->getQuery(true);
 
-			$query->select($_db->quoteName('id'));
-			$query->from($_db->quoteName('#__usergroups'));
-			$query->where($_db->quoteName('title') . ' = ' . $_db->quote('BwPostmanAdmin'));
-			$_db->setQuery($query);
+			$query->select($db->quoteName('id'));
+			$query->from($db->quoteName('#__usergroups'));
+			$query->where($db->quoteName('title') . ' = ' . $db->quote('BwPostmanAdmin'));
+			$db->setQuery($query);
 
 			try
 			{
-				$bwpostman_main_group  = $_db->loadResult();
-				$bwpostman_main_group  = array((int) $bwpostman_main_group);
+				$bwpostman_main_group = $db->loadResult();
+				$bwpostman_main_group = array((int) $bwpostman_main_group);
 			}
 			catch (RuntimeException $e)
 			{
@@ -1052,19 +1038,21 @@ class Com_BwPostmanInstallerScript
 
 			// get group ids of BwPostman user groups, where actual user is member
 			$member_ids = '';
+
 			if (is_array($bwpostman_groups) && !empty($bwpostman_groups))
 			{
-				$query	    = $_db->getQuery(true);
-				$query->select($_db->quoteName('group_id'));
-				$query->from($_db->quoteName('#__user_usergroup_map'));
-				$query->where($_db->quoteName('user_id') . ' = ' . (int) $user_id);
-				$query->where($_db->quoteName('group_id') . ' IN (' . implode(',', $bwpostman_groups) . ')');
+				$bwpostman_groups = ArrayHelper::toInteger($bwpostman_groups);
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName('group_id'));
+				$query->from($db->quoteName('#__user_usergroup_map'));
+				$query->where($db->quoteName('user_id') . ' = ' . (int) $user_id);
+				$query->where($db->quoteName('group_id') . ' IN (' . implode(',', $bwpostman_groups) . ')');
 
-				$_db->setQuery($query);
+				$db->setQuery($query);
 
 				try
 				{
-					$member_ids  = $_db->loadColumn();
+					$member_ids = $db->loadColumn();
 				}
 				catch (RuntimeException $e)
 				{
@@ -1077,20 +1065,13 @@ class Com_BwPostmanInstallerScript
 			{
 				foreach ($member_ids as $item)
 				{
-					UserHelper::removeUserFromGroup($user_id, $item);
+					UserHelper::removeUserFromGroup($user_id, (int)$item);
 				}
 			}
 
 			// get the model for user groups
-			if($this->isJ4)
-			{
-				$groupModel = new GroupModel();
-			}
-			else
-			{
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models', 'UsersModel');
-				$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
-			}
+			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models', 'UsersModel');
+			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
 
 			Access::clearStatics();
 
@@ -1134,15 +1115,8 @@ class Com_BwPostmanInstallerScript
 			try
 			{
 				// get the model for viewlevels
-				if($this->isJ4)
-				{
-					$viewlevelModel = new LevelModel();
-				}
-				else
-				{
-					JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-					$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
-				}
+				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
+				$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
 
 				// Get viewlevel special
 				$specialLevel = $viewlevelModel->getItem(3);
@@ -1187,7 +1161,7 @@ class Com_BwPostmanInstallerScript
 			$rootRules = $this->getRootAsset();
 
 			// Insert BwPostmanAdmin to root asset
-			$tmpRules   = json_decode($rootRules, true);
+			$tmpRules = json_decode($rootRules, true);
 
 			unset($tmpRules['core.login.site'][$adminGroup]);
 			unset($tmpRules['core.login.admin'][$adminGroup]);
@@ -1237,10 +1211,6 @@ class Com_BwPostmanInstallerScript
 		{
 			File::delete(JPATH_ROOT . "/administrator/components/com_bwpostman/models/fields/allmedia.php");
 		}
-
-
-
-		// Remove field
 	}
 
 	/**
@@ -1258,25 +1228,25 @@ class Com_BwPostmanInstallerScript
 	private function getGroupId($name)
 	{
 		$result = false;
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__usergroups'));
-		$query->where("`title` LIKE '" . $_db->escape($name) . "'");
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__usergroups'));
+		$query->where("`title` LIKE '" . $db->escape($name) . "'");
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$result = $_db->loadResult();
+			$result = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage('Error GroupId: ' . $e->getMessage() . '<br />', 'error');
 		}
 
-		return $result;
+		return (int)$result;
 	}
 
 
@@ -1291,20 +1261,20 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function removeDoubleExtensionsEntries()
 	{
-		$_db    = Factory::getDbo();
+		$db          = Factory::getDbo();
 		$extensionId = $this->getExtensionId(0);
 
 		if ($extensionId)
 		{
-			$query = $_db->getQuery(true);
-			$query->delete($_db->quoteName('#__extensions'));
-			$query->where($_db->quoteName('extension_id') . ' =  ' . $_db->quote($extensionId));
+			$query = $db->getQuery(true);
+			$query->delete($db->quoteName('#__extensions'));
+			$query->where($db->quoteName('extension_id') . ' =  ' . $db->quote($extensionId));
 
-			$_db->setQuery($query);
+			$db->setQuery($query);
 
 			try
 			{
-				$_db->execute();
+				$db->execute();
 			}
 			catch (RuntimeException $e)
 			{
@@ -1369,9 +1339,9 @@ class Com_BwPostmanInstallerScript
 	protected function processSqlUpdate($oldVersion)
 	{
 		$update_count = 0;
-		$db	= Factory::getDbo();
-		$schemapath = JPATH_ROOT . '/administrator/components/com_bwpostman/sql/updates/mysql';
-		$extensionId = $this->getExtensionId(1);
+		$db           = Factory::getDbo();
+		$schemapath   = JPATH_ROOT . '/administrator/components/com_bwpostman/sql/updates/mysql';
+		$extensionId  = $this->getExtensionId(1);
 
 		$files = Folder::files($schemapath, '\.sql$');
 
@@ -1491,54 +1461,54 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @since
 	 */
-	private function setParams($param_array)
-	{
-		if (count($param_array) > 0)
-		{
-			// read the existing component value(s)
-			$_db	= Factory::getDbo();
-			$query	= $_db->getQuery(true);
-			$params = '';
-
-			$query->select($_db->quoteName('params'));
-			$query->from($_db->quoteName('#__extensions'));
-			$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
-			$_db->setQuery($query);
-
-			try
-			{
-				$params = json_decode($_db->loadResult(), true);
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-
-			// add the new variable(s) to the existing one(s)
-			foreach ($param_array as $name => $value)
-			{
-				$params[(string) $name] = (string) $value;
-			}
-
-			// store the combined new and existing values back as a JSON string
-			$paramsString = json_encode($params);
-			$query	= $_db->getQuery(true);
-
-			$query->update($_db->quoteName('#__extensions'));
-			$query->set($_db->quoteName('params') . " = " . $_db->quote($paramsString));
-			$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
-			$_db->setQuery($query);
-
-			try
-			{
-				$_db->execute();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
-		}
-	}
+//	private function setParams($param_array)
+//	{
+//		if (count($param_array) > 0)
+//		{
+//			// read the existing component value(s)
+//			$db	= Factory::getDbo();
+//			$query	= $db->getQuery(true);
+//			$params = '';
+//
+//			$query->select($db->quoteName('params'));
+//			$query->from($db->quoteName('#__extensions'));
+//			$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
+//			$db->setQuery($query);
+//
+//			try
+//			{
+//				$params = json_decode($db->loadResult(), true);
+//			}
+//			catch (RuntimeException $e)
+//			{
+//				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+//			}
+//
+//			// add the new variable(s) to the existing one(s)
+//			foreach ($param_array as $name => $value)
+//			{
+//				$params[(string) $name] = (string) $value;
+//			}
+//
+//			// store the combined new and existing values back as a JSON string
+//			$paramsString = json_encode($params);
+//			$query	= $db->getQuery(true);
+//
+//			$query->update($db->quoteName('#__extensions'));
+//			$query->set($db->quoteName('params') . " = " . $db->quote($paramsString));
+//			$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
+//			$db->setQuery($query);
+//
+//			try
+//			{
+//				$db->execute();
+//			}
+//			catch (RuntimeException $e)
+//			{
+//				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+//			}
+//		}
+//	}
 
 	/**
 	 * shows the HTML after installation/update
@@ -1775,8 +1745,8 @@ class Com_BwPostmanInstallerScript
 
 	private function installdata(&$sql)
 	{
-		$app	= Factory::getApplication();
-		$_db	= Factory::getDbo();
+		$app = Factory::getApplication();
+		$db  = Factory::getDbo();
 
 		//we call sql file for the templates data
 		$buffer = file_get_contents(JPATH_ADMINISTRATOR . '/components/com_bwpostman/sql/' . $sql);
@@ -1785,7 +1755,6 @@ class Com_BwPostmanInstallerScript
 		if ($buffer)
 		{
 			// Create an array of queries from the sql file
-			//			jimport('joomla.installer.helper');
 			$queries = JDatabaseDriver::splitSql($buffer);
 
 			// No queries to process
@@ -1798,11 +1767,11 @@ class Com_BwPostmanInstallerScript
 					if ($query != '' && $query[0] != '#')
 					{
 						$query = str_replace("`DUMMY`", "'DUMMY'", $query);
-						$_db->setQuery($query);
+						$db->setQuery($query);
 
 						try
 						{
-							$_db->execute();
+							$db->execute();
 						}
 						catch (RuntimeException $e)
 						{
@@ -1829,76 +1798,76 @@ class Com_BwPostmanInstallerScript
 		$params_default = array();
 		$config	= Factory::getConfig();
 
-		$params_default['default_from_name']			    = $config->get('fromname');
-		$params_default['default_from_email']			    = $config->get('mailfrom');
-		$params_default['default_reply_email']		    	= $config->get('mailfrom');
-		$params_default['legal_information_text']	        = "";
-		$params_default['default_mails_per_pageload']   	= "100";
-		$params_default['mails_per_pageload_delay']	        = 10;
-		$params_default['mails_per_pageload_delay_unit']	= "1000";
-		$params_default['publish_nl_by_default']	        = "0";
-		$params_default['compress_backup']	                = "0";
-		$params_default['show_boldt_link']	                = "1";
-		$params_default['loglevel']                         = "BW_ERROR";
-		$params_default['pretext']						    = "BWPM_MAILINGLIST_GDPR";
-		$params_default['show_gender']	                    = "1";
-		$params_default['show_firstname_field']			    = "1";
-		$params_default['firstname_field_obligation']	    = "1";
-		$params_default['show_name_field'] 				    = "1";
-		$params_default['name_field_obligation']		    = "1";
-		$params_default['show_special']	                    = "1";
-		$params_default['special_field_obligation']	        = "0";
-		$params_default['special_label']	                = "Mitgliedsnummer";
-		$params_default['special_desc']	                    = "Bitte geben Sie ihre Mitgliedsnummer ein.";
-		$params_default['show_emailformat']				    = "1";
-		$params_default['default_emailformat']			    = "0";
-		$params_default['show_desc']	                    = "1";
-		$params_default['desc_length']	                    = "150";
-		$params_default['disclaimer']					    = "0";
-		$params_default['disclaimer_selection']	            = "1";
-		$params_default['disclaimer_link']				    = "http:\/\/www.disclaimer.de\/disclaimer.htm";
-		$params_default['article_id']	                    = "70";
-		$params_default['disclaimer_menuitem']	            = "457";
-		$params_default['disclaimer_target']			    = "0";
-		$params_default['showinmodal']	                    = "1";
-		$params_default['use_captcha']					    = "0";
-		$params_default['security_question']	            = "Wieviele Beine hat ein Pferd? (1, 2, ...)";
-		$params_default['security_answer']	                = "4";
-		$params_default['activation_salutation_text']	    = "Hello";
-		$params_default['activation_text']	                = "text for activation";
-		$params_default['permission_text']	                = "text for agreement";
-		$params_default['activation_to_webmaster']	        = "0";
-		$params_default['activation_from_name']	            = "";
-		$params_default['activation_to_webmaster_email']	= "";
-		$params_default['del_sub_1_click']	                = "0";
-		$params_default['deactivation_to_webmaster']	    = "0";
-		$params_default['deactivation_from_name']	        = "";
-		$params_default['deactivation_to_webmaster_email']	= "";
-		$params_default['filter_field']	                    = "1";
-		$params_default['date_filter_enable']	            = "1";
-		$params_default['ml_filter_enable']	                = "1";
-		$params_default['cam_filter_enable']	            = "1";
-		$params_default['group_filter_enable']	            = "1";
-		$params_default['attachment_enable']	            = "1";
-		$params_default['access-check']	                    = "1";
-		$params_default['display_num']	                    = "10";
-		$params_default['attachment_single_enable']	        = "1";
-		$params_default['subject_as_title']	                = "1";
+		$params_default['default_from_name']               = $config->get('fromname');
+		$params_default['default_from_email']              = $config->get('mailfrom');
+		$params_default['default_reply_email']             = $config->get('mailfrom');
+		$params_default['legal_information_text']          = "";
+		$params_default['default_mails_per_pageload']      = "100";
+		$params_default['mails_per_pageload_delay']        = 10;
+		$params_default['mails_per_pageload_delay_unit']   = "1000";
+		$params_default['publish_nl_by_default']           = "0";
+		$params_default['compress_backup']                 = "0";
+		$params_default['show_boldt_link']                 = "1";
+		$params_default['loglevel']                        = "BW_ERROR";
+		$params_default['pretext']                         = "BWPM_MAILINGLIST_GDPR";
+		$params_default['show_gender']                     = "1";
+		$params_default['show_firstname_field']            = "1";
+		$params_default['firstname_field_obligation']      = "1";
+		$params_default['show_name_field']                 = "1";
+		$params_default['name_field_obligation']           = "1";
+		$params_default['show_special']                    = "1";
+		$params_default['special_field_obligation']        = "0";
+		$params_default['special_label']                   = "Mitgliedsnummer";
+		$params_default['special_desc']                    = "Bitte geben Sie ihre Mitgliedsnummer ein.";
+		$params_default['show_emailformat']                = "1";
+		$params_default['default_emailformat']             = "0";
+		$params_default['show_desc']                       = "1";
+		$params_default['desc_length']                     = "150";
+		$params_default['disclaimer']                      = "0";
+		$params_default['disclaimer_selection']            = "1";
+		$params_default['disclaimer_link']                 = "http:\/\/www.disclaimer.de\/disclaimer.htm";
+		$params_default['article_id']                      = "70";
+		$params_default['disclaimer_menuitem']             = "457";
+		$params_default['disclaimer_target']               = "0";
+		$params_default['showinmodal']	                   = "1";
+		$params_default['use_captcha']                     = "0";
+		$params_default['security_question']               = "Wieviele Beine hat ein Pferd? (1, 2, ...)";
+		$params_default['security_answer']                 = "4";
+		$params_default['activation_salutation_text']      = "Hello";
+		$params_default['activation_text']                 = "text for activation";
+		$params_default['permission_text']                 = "text for agreement";
+		$params_default['activation_to_webmaster']         = "0";
+		$params_default['activation_from_name']            = "";
+		$params_default['activation_to_webmaster_email']   = "";
+		$params_default['del_sub_1_click']                 = "0";
+		$params_default['deactivation_to_webmaster']       = "0";
+		$params_default['deactivation_from_name']          = "";
+		$params_default['deactivation_to_webmaster_email'] = "";
+		$params_default['filter_field']	                   = "1";
+		$params_default['date_filter_enable']              = "1";
+		$params_default['ml_filter_enable']                = "1";
+		$params_default['cam_filter_enable']               = "1";
+		$params_default['group_filter_enable']             = "1";
+		$params_default['attachment_enable']               = "1";
+		$params_default['access-check']                    = "1";
+		$params_default['display_num']                     = "10";
+		$params_default['attachment_single_enable']        = "1";
+		$params_default['subject_as_title']                = "1";
 
 		$params	= json_encode($params_default);
 
-		$_db		= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
-		$query->update($_db->quoteName('#__extensions'));
-		$query->set($_db->quoteName('params') . " = " . $_db->quote($params));
-		$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
+		$query->update($db->quoteName('#__extensions'));
+		$query->set($db->quoteName('params') . " = " . $db->quote($params));
+		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$_db->execute();
+			$db->execute();
 		}
 		catch (RuntimeException $e)
 		{
@@ -1937,18 +1906,18 @@ class Com_BwPostmanInstallerScript
 								"bwpm.view.maintenance" => array('7' => 1, '6' => 1),
 							);
 		// get stored component rules
-		$current_rules  = array();
-		$_db		    = Factory::getDbo();
-		$query	        = $_db->getQuery(true);
+		$current_rules = array();
+		$db            = Factory::getDbo();
+		$query         = $db->getQuery(true);
 
-		$query->select($_db->quoteName('rules'));
-		$query->from($_db->quoteName('#__assets'));
-		$query->where($_db->quoteName('name') . " = " . $_db->quote('com_bwpostman'));
-		$_db->setQuery($query);
+		$query->select($db->quoteName('rules'));
+		$query->from($db->quoteName('#__assets'));
+		$query->where($db->quoteName('name') . " = " . $db->quote('com_bwpostman'));
+		$db->setQuery($query);
 
 		try
 		{
-			$current_rules = json_decode($_db->loadResult(), true);
+			$current_rules = json_decode($db->loadResult(), true);
 		}
 		catch (RuntimeException $e)
 		{
@@ -1964,19 +1933,19 @@ class Com_BwPostmanInstallerScript
 			}
 		}
 
-		$rules	= json_encode($current_rules);
+		$rules = json_encode($current_rules);
 
 		// update component rules in asset table
-		$query	= $_db->getQuery(true);
+		$query = $db->getQuery(true);
 
-		$query->update($_db->quoteName('#__assets'));
-		$query->set($_db->quoteName('rules') . " = " . $_db->quote($rules));
-		$query->where($_db->quoteName('name') . " = " . $_db->quote('com_bwpostman'));
-		$_db->setQuery($query);
+		$query->update($db->quoteName('#__assets'));
+		$query->set($db->quoteName('rules') . " = " . $db->quote($rules));
+		$query->where($db->quoteName('name') . " = " . $db->quote('com_bwpostman'));
+		$db->setQuery($query);
 
 		try
 		{
-			$_db->execute();
+			$db->execute();
 		}
 		catch (RuntimeException $e)
 		{
@@ -2037,31 +2006,16 @@ class Com_BwPostmanInstallerScript
 	{
 		$url = Uri::root() . 'administrator/index.php?option=com_bwpostman&view=maintenance&tmpl=component&layout=updateCheckSave';
 
-		if($this->isJ4)
-		{
-			$html =	'
-				<div id="bwp_Modal" class="bwp_modal">
-					<div id="bwp_modal-content">
-						<div id="bwp_wrapper"></div>
-					</div>
-				</div>
-			';
-			$css = "#bwpostman{padding:0!important}#bwpostman .bwp_modal{display:none;z-index:99999;padding:0;width:100%;height:100%;overflow:auto}#bwpostman #bwp_modal-content{position:relative;background-color:#fefefe;margin:auto;border:1px solid #888;border-radius:6px;box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);height:100%;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;pointer-events:auto;outline:0;padding:15px}#bwpostman #bwp_modal-header{height:35px}#bwpostman #bwp_wrapper{padding:0;position:relative;-ms-flex:1 1 auto;flex:1 1 auto}";
-			$percent = 0.15;
-		}
-		else
-		{
-			$html    = '
-			<div id="bwp_Modal" class="bwp_modal">
-				<div id="bwp_modal-content">
-					<div id="bwp_modal-header"><span class="bwp_close" style="display:none;">&times;</span></div>
-					<div id="bwp_wrapper"></div>
-				</div>
+		$html    = '
+		<div id="bwp_Modal" class="bwp_modal">
+			<div id="bwp_modal-content">
+				<div id="bwp_modal-header"><span class="bwp_close" style="display:none;">&times;</span></div>
+				<div id="bwp_wrapper"></div>
 			</div>
-		';
-			$css     = "#bwpostman .bwp_modal{display:none;position:fixed;z-index:99999;padding-top:10px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,0.4)}#bwpostman #bwp_modal-content{position:relative;background-color:#fefefe;margin:auto;border:1px solid #888;border-radius:6px;box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);height:100%;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;pointer-events:auto;outline:0;padding:15px}#bwpostman #bwp_modal-header{height:35px}#bwpostman #bwp_wrapper{position:relative;-ms-flex:1 1 auto;flex:1 1 auto}#bwpostman .bwp_close{color:#aaa;float:right;font-size:28px;font-weight:700;line-height:28px;-webkit-appearance:non}#bwpostman .bwp_close:hover,#bwpostman .bwp_close:focus{color:#000;text-decoration:none;cursor:pointer}";
-			$percent = 0.10;
-		}
+		</div>
+	';
+		$css     = "#bwpostman .bwp_modal{display:none;position:fixed;z-index:99999;padding-top:10px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,0.4)}#bwpostman #bwp_modal-content{position:relative;background-color:#fefefe;margin:auto;border:1px solid #888;border-radius:6px;box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);height:100%;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;pointer-events:auto;outline:0;padding:15px}#bwpostman #bwp_modal-header{height:35px}#bwpostman #bwp_wrapper{position:relative;-ms-flex:1 1 auto;flex:1 1 auto}#bwpostman .bwp_close{color:#aaa;float:right;font-size:28px;font-weight:700;line-height:28px;-webkit-appearance:non}#bwpostman .bwp_close:hover,#bwpostman .bwp_close:focus{color:#000;text-decoration:none;cursor:pointer}";
+		$percent = 0.10;
 
 		$js = "
 			var css = '{$css}',
@@ -2099,12 +2053,6 @@ class Com_BwPostmanInstallerScript
 				var modalcontent = document.getElementById('bwp_modal-content');
 				modalcontent.style.height = viewportheight-(viewportheight*{$percent})+'px';
 				";
-				if(!$this->isJ4)
-				{
-					$js .= "
-							modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
-					";
-				}
 				$js .= "
 
 				// Get the modal
@@ -2138,20 +2086,20 @@ EOS;
  */
 	private function getExtensionId($clientId)
 	{
-		$_db    = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$result = 0;
 
-		$query = $_db->getQuery(true);
-		$query->select($_db->quoteName('extension_id'));
-		$query->from($_db->quoteName('#__extensions'));
-		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('com_bwpostman'));
-		$query->where($_db->quoteName('client_id') . ' = ' . $_db->quote($clientId));
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('extension_id'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_bwpostman'));
+		$query->where($db->quoteName('client_id') . ' = ' . $db->quote((int)$clientId));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$result = $_db->loadResult();
+			$result = $db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{

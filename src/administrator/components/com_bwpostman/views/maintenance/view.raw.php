@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\Filesystem\File;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 

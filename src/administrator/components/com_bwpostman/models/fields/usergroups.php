@@ -58,7 +58,7 @@ class JFormFieldUsergroups extends JFormField
 	protected function getInput()
 	{
 		$options = array();
-		$attr = '';
+		$attr    = '';
 
 		// Initialize some field attributes.
 		$attr .= !empty($this->class) ? ' class="' . $this->class . '"' : '';

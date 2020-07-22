@@ -63,13 +63,15 @@ class JFormFieldsinglenews extends JFormField
 	 */
 	protected function getinput()
 	{
-		$doc 		= Factory::getDocument();
-		$fieldName	= $this->name;
+		$doc       = Factory::getDocument();
+		$fieldName = $this->name;
 
 		Table::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_bwpostman/tables');
 
 		$newsletter = Table::getInstance('newsletters', 'BwPostmanTable');
-		if ($this->value) {
+
+		if ($this->value)
+		{
 			$newsletter->load($this->value);
 		}
 		else {
@@ -97,7 +99,6 @@ class JFormFieldsinglenews extends JFormField
 				btn.fireEvent('click');
 			};";
 
-
 		// class='required' for client side validation
 		$class = '';
 		if ($this->required) {
@@ -110,6 +111,7 @@ class JFormFieldsinglenews extends JFormField
 		$html .= "\n<input type=\"hidden\" id=\"a_id\" $class name=\"$fieldName\" value=\"$value\" />";
 
 		$doc->addScriptDeclaration($js);
+
 		return $html;
 	}
 }

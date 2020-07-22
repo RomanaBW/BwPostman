@@ -86,8 +86,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 	{
 		parent::__construct();
 
-		$jinput	= Factory::getApplication()->input;
-		$cids	= $jinput->get('cid',  array(0), '');
+		$jinput = Factory::getApplication()->input;
+		$cids   = $jinput->get('cid',  array(0), '');
 		$this->setId((int) $cids[0]);
 	}
 
@@ -152,11 +152,11 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-		$app		= Factory::getApplication();
-		$cid		= $app->getUserState('com_bwpostman.edit.template.id', 0);
-		$data		= $app->getUserState('com_bwpostman.edit.template.data', null);
-		$jinput		= Factory::getApplication()->input;
-		$form_data	= $jinput->get('jform', '', 'array');
+		$app       = Factory::getApplication();
+		$cid       = $app->getUserState('com_bwpostman.edit.template.id', 0);
+		$data      = $app->getUserState('com_bwpostman.edit.template.data', null);
+		$jinput    = Factory::getApplication()->input;
+		$form_data = $jinput->get('jform', '', 'array');
 
 		// no $data and no $form_data - standard
 		if (!$data && !$form_data)
@@ -166,7 +166,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 			{
 				if (!empty($cid))
 				{
-					$cid = $cid[0];
+					$cid = (int)$cid[0];
 				}
 				else
 				{
@@ -179,17 +179,19 @@ class BwPostmanModelTemplate extends JModelAdmin
 				$pk	= (int) $cid;
 			}
 
-			$item	= parent::getItem($pk);
+			$item = parent::getItem($pk);
 
 			//get data from #__bwpostman_templates_tags
 			if ($item->tpl_id === 0 || $item->tpl_id === '0')
 			{
-				$db	= $this->_db;
-				$query	= $db->getQuery(true);
+				$db    = $this->_db;
+				$query = $db->getQuery(true);
+
 				$query->select('*');
 				$query->from($db->quoteName('#__bwpostman_templates_tags'));
 				$query->where($db->quoteName('templates_table_id') . ' = ' . (int) $item->id);
 				$db->setQuery($query);
+
 				try
 				{
 					$newitems = $db->loadAssoc();
@@ -203,7 +205,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 				{
 					foreach ($newitems as $key => $value)
 					{
-						$item->$key	= $value;
+						$item->$key = $value;
 					}
 				}
 			}
@@ -212,7 +214,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 		// if $data from table templates check()
 		elseif ($data)
 		{
-			$item	= new stdClass();
+			$item = new stdClass();
+
 			foreach ($data as $key => $value)
 			{
 				$item->$key	= $value;
@@ -221,10 +224,11 @@ class BwPostmanModelTemplate extends JModelAdmin
 		else
 		{
 			// if $form_data - only when click to button preview
-			$item	= new stdClass();
+			$item = new stdClass();
+
 			foreach ($form_data as $key => $value)
 			{
-				$item->$key	= $value;
+				$item->$key = $value;
 			}
 		}
 
@@ -367,6 +371,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_bwpostman.template', 'template', array('control' => 'jform', 'load_data' => $loadData));
+
 		if (empty($form))
 		{
 			return false;
@@ -377,18 +382,18 @@ class BwPostmanModelTemplate extends JModelAdmin
 		// The front end calls this model and uses a_id to avoid id clashes so we need to check for that first.
 		if ($jinput->get('a_id'))
 		{
-			$id = $jinput->get('a_id', 0);
+			$id = $jinput->getInt('a_id', 0);
 		}
 		// The back end uses id so we use that the rest of the time and set it to 0 by default.
 		else
 		{
-			$id = $jinput->get('id', 0);
+			$id = $jinput->getInt('id', 0);
 		}
 
 		// Determine correct permissions to check.
 		if ($this->getState('template.id'))
 		{
-			$id = $this->getState('template.id');
+			$id = (int)$this->getState('template.id');
 			// Existing record. Can only edit in selected parent.
 			$form->setFieldAttribute('parent_id', 'action', 'bwpm.edit');
 			// Existing record. Can only edit own mailinglists in selected parent.
@@ -404,8 +409,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 
 		// Check for existing mailinglist.
 		// Modify the form based on Edit State access controls.
-		if ($id != 0 && (!$user->authorise('bwpm.template.edit.state', 'com_bwpostman.template.' . (int) $id))
-			|| ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman'))
+		if ($id !== 0 && (!$user->authorise('bwpm.template.edit.state', 'com_bwpostman.template.' . $id))
+			|| ($id === 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman'))
 		)
 		{
 			// Disable fields for display.
@@ -417,7 +422,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 
 		// Check to show created data
 		$nullDate = Factory::getDbo()->getNullDate();
-		$c_date	= $form->getValue('created_date');
+		$c_date   = $form->getValue('created_date');
+
 		if ($c_date === $nullDate)
 		{
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
@@ -425,7 +431,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 		}
 
 		// Check to show modified data
-		$m_date	= $form->getValue('modified_time');
+		$m_date = $form->getValue('modified_time');
+
 		if ($m_date === $nullDate)
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
@@ -474,10 +481,11 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 */
 	public function archive($cid = array(), $archive = 1)
 	{
-		$db	= $this->_db;
-		$app	= Factory::getApplication();
-		$date	= Factory::getDate();
-		$uid	= Factory::getUser()->get('id');
+		$db   = $this->_db;
+		$app  = Factory::getApplication();
+		$date = Factory::getDate();
+		$uid  = Factory::getUser()->get('id');
+		$cid  = ArrayHelper::toInteger($cid);
 
 		if ($archive == 1)
 		{
@@ -486,7 +494,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 			// Access check.
 			foreach ($cid as $id)
 			{
-				if (!BwPostmanHelper::canArchive('template', 0, (int) $id))
+				if (!BwPostmanHelper::canArchive('template', 0, $id))
 				{
 					return false;
 				}
@@ -497,20 +505,19 @@ class BwPostmanModelTemplate extends JModelAdmin
 			// Access check.
 			foreach ($cid as $id)
 			{
-				if (!BwPostmanHelper::canRestore('template', (int) $id))
+				if (!BwPostmanHelper::canRestore('template', $id))
 				{
 					return false;
 				}
 			}
 
-			$time	= $db->getNullDate();
-			$uid	= 0;
+			$time = $db->getNullDate();
+			$uid  = 0;
 		}
 
 		if (count($cid))
 		{
-			ArrayHelper::toInteger($cid);
-			$query	= $db->getQuery(true);
+			$query = $db->getQuery(true);
 
 			$query->update($db->quoteName('#__bwpostman_templates'));
 			$query->set($db->quoteName('archive_flag') . " = " . $db->quote((int) $archive));
@@ -547,12 +554,13 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-		$app	= Factory::getApplication();
+		$app = Factory::getApplication();
+		$pks  = ArrayHelper::toInteger($pks);
 
 		// Access check.
 		foreach ($pks as $id)
 		{
-			if (!BwPostmanHelper::canDelete('template', (int) $id))
+			if (!BwPostmanHelper::canDelete('template', $id))
 			{
 				return false;
 			}
@@ -560,10 +568,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 
 		if (count($pks))
 		{
-			ArrayHelper::toInteger($pks);
 
-			$lists_table	= Table::getInstance('templates', 'BwPostmanTable');
-			$tags_table		= Table::getInstance('templates_tags', 'BwPostmanTable');
+			$lists_table = Table::getInstance('templates', 'BwPostmanTable');
+			$tags_table  = Table::getInstance('templates_tags', 'BwPostmanTable');
 
 			// Delete all entries from the templates-table
 			foreach ($pks as $id)
@@ -707,6 +714,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 		// buttons
 		$i = 1;
 		$button = '';
+
 		while ($i <= 5)
 		{
 			$obj = 'button' . $i;
@@ -733,8 +741,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 			str_replace('[%button_headline%]', $item->footer['button_headline'], $footer) :
 			str_replace('[%button_headline%]', '', $footer);
 
-		$content	= $header . $intro . '[%content%]' . $footer;
-
+		$content = $header . $intro . '[%content%]' . $footer;
 		$content = $this->replaceZoomPaddingBasics($item, $content);
 
 		return $content;
@@ -773,6 +780,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 		// buttons
 		$i = 1;
 		$button = '';
+
 		while ($i <= 5)
 		{
 			$obj = 'button' . $i;
@@ -862,16 +870,16 @@ class BwPostmanModelTemplate extends JModelAdmin
 		}
 
 		// replace edit and unsubscribe link
-		$replace1	= '<a href="[UNSUBSCRIBE_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
-		$text		= str_replace('[%unsubscribe_link%]', $replace1, $text);
+		$replace1 = '<a href="[UNSUBSCRIBE_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
+		$text     = str_replace('[%unsubscribe_link%]', $replace1, $text);
 
-		$replace2	= '<a href="[EDIT_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . '</a>';
-		$text		= str_replace('[%edit_link%]', $replace2, $text);
+		$replace2 = '<a href="[EDIT_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . '</a>';
+		$text     = str_replace('[%edit_link%]', $replace2, $text);
 
 		// get legal info an ItemId's
-		$params 			= ComponentHelper::getParams('com_bwpostman');
-		$impressum			= "<br /><br />" . Text::_($params->get('legal_information_text'));
-		$impressum			= nl2br($impressum, true);
+		$params    = ComponentHelper::getParams('com_bwpostman');
+		$impressum = "<br /><br />" . Text::_($params->get('legal_information_text'));
+		$impressum = nl2br($impressum, true);
 
 		if (strpos($text, '[%impressum%]') !== false)
 		{
@@ -956,9 +964,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 	{
 		$text = $this->replaceZoomPaddingBasics($item, $text);
 
-		$text	= str_replace('[%readon_bg%]', $item->article['readon_bg'], $text);
-		$text	= str_replace('[%readon_shadow%]', $item->article['readon_shadow'], $text);
-		$text	= str_replace('[%readon_color%]', $item->article['readon_color'], $text);
+		$text = str_replace('[%readon_bg%]', $item->article['readon_bg'], $text);
+		$text = str_replace('[%readon_shadow%]', $item->article['readon_shadow'], $text);
+		$text = str_replace('[%readon_color%]', $item->article['readon_color'], $text);
 
 		return $text;
 	}
@@ -977,11 +985,11 @@ class BwPostmanModelTemplate extends JModelAdmin
 	private function makePreview($item)
 	{
 		// make preview
-		// first get templates tpls
-		$tpl_id		= $item->tpl_id;
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates_tpl.php');
+		// first get templates tpls
+		$tpl_id    = $item->tpl_id;
 		$tpl_model = new BwPostmanModelTemplates_Tpl();
-		$tpl		= $tpl_model->getItem($tpl_id);
+		$tpl       = $tpl_model->getItem($tpl_id);
 
 		// make html preview data
 		$preview_html = $this->makeTemplate($item, $tpl);
@@ -1002,8 +1010,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 		$article = $this->replaceZooms($tpl->article_tpl, $item);
 		if ($item->article['show_readon'] == 1)
 		{
-			$readon				= $this->makeButton($tpl->readon_tpl, $item);
-			$preview_article	= str_replace('[%readon_button%]', $readon, $article);
+			$readon          = $this->makeButton($tpl->readon_tpl, $item);
+			$preview_article = str_replace('[%readon_button%]', $readon, $article);
 		}
 		else
 		{
@@ -1044,7 +1052,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 
 		// make html preview data
 		$preview_html = $item->tpl_html;
-		$this->replaceLinks($preview_html);
+		BwPostmanHelper::replaceLinks($preview_html);
 
 		// make css data
 		$preview_css = $item->tpl_css;
@@ -1054,12 +1062,12 @@ class BwPostmanModelTemplate extends JModelAdmin
 		$preview_css = ltrim($preview_css, '<style type="text/css">');
 		$preview_css = rtrim($preview_css, '</style>');
 
-		$text		= $preview_html;
-		$head_tag		= isset($item->tpl_tags_head) && $item->tpl_tags_head == 0 ? $item->tpl_tags_head_advanced : '';
-		$body_tag		= isset($item->tpl_tags_body) && $item->tpl_tags_body == 0 ? $item->tpl_tags_body_advanced : '';
-		$legal_tag_b	= isset($item->tpl_tags_legal) && $item->tpl_tags_legal == 0 ? $item->tpl_tags_legal_advanced_b : '';
-		$legal_tag_e	= isset($item->tpl_tags_legal) && $item->tpl_tags_legal == 0 ? $item->tpl_tags_legal_advanced_e : '';
-		$preview		= $this->addHtmlTags($text, $preview_css, $item->basics, $head_tag, $body_tag, $legal_tag_b, $legal_tag_e);
+		$text        = $preview_html;
+		$head_tag    = isset($item->tpl_tags_head) && $item->tpl_tags_head == 0 ? $item->tpl_tags_head_advanced : '';
+		$body_tag    = isset($item->tpl_tags_body) && $item->tpl_tags_body == 0 ? $item->tpl_tags_body_advanced : '';
+		$legal_tag_b = isset($item->tpl_tags_legal) && $item->tpl_tags_legal == 0 ? $item->tpl_tags_legal_advanced_b : '';
+		$legal_tag_e = isset($item->tpl_tags_legal) && $item->tpl_tags_legal == 0 ? $item->tpl_tags_legal_advanced_e : '';
+		$preview     = $this->addHtmlTags($text, $preview_css, $item->basics, $head_tag, $body_tag, $legal_tag_b, $legal_tag_e);
 
 		// make article preview data
 		$preview_article = isset($item->article['show_title']) && $item->article['show_title'] == 0 ?
@@ -1104,8 +1112,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 	private function makePreviewText($item)
 	{
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
-		$itemid_unsubscribe	= BwPostmanSubscriberHelper::getMenuItemid('register');
-		$itemid_edit		= BwPostmanSubscriberHelper::getMenuItemid('edit');
+		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
+		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
 
 		// make preview
 
@@ -1115,8 +1123,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 		// impressum
 		if (strpos($preview_text, '[%impressum%]') !== false)
 		{
-			$params 		= ComponentHelper::getParams('com_bwpostman');
-			$impressum		= "<br /><br />" . Text::sprintf(
+			$params    = ComponentHelper::getParams('com_bwpostman');
+			$impressum = "<br /><br />" . Text::sprintf(
 				'COM_BWPOSTMAN_NL_FOOTER_TEXT',
 				Uri::root(true),
 				Uri::root(true),
@@ -1125,7 +1133,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 				$itemid_edit
 			) .
 			"<br /><br />" . Text::_($params->get('legal_information_text')) . "<br /><br />";
-			$preview_text	= str_replace('[%impressum%]', nl2br($impressum, true), $preview_text);
+			$preview_text = str_replace('[%impressum%]', nl2br($impressum, true), $preview_text);
 		}
 
 		// replace edit and unsubscribe link
@@ -1137,9 +1145,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 			"\n" . '[%content_title%]' . "\n" . '[%content_text%]' . "\n" . '[%readon_button%]' . "\n";
 		if ($item->article['show_readon'] == 1)
 		{
-			$readon				= '[%readon_text%]' . "\n" . '[%readon_href%]' . "\n";
-			$preview_article	= str_replace('[%readon_button%]', $readon, $article);
-			$preview_article	= str_replace('[%readon_href%]', 'http://www.mysite/sample_article.html', $preview_article);
+			$readon          = '[%readon_text%]' . "\n" . '[%readon_href%]' . "\n";
+			$preview_article = str_replace('[%readon_button%]', $readon, $article);
+			$preview_article = str_replace('[%readon_href%]', 'http://www.mysite/sample_article.html', $preview_article);
 		}
 		else
 		{
@@ -1153,7 +1161,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 		$sample_article	= nl2br(strip_tags($this->sampleArticle($preview_article, $item->article)));
 		$sample_article	= $sample_article . $sample_article;
 
-		$preview		= str_replace('[%content%]', $sample_article, $preview);
+		$preview = str_replace('[%content%]', $sample_article, $preview);
 		Factory::getApplication()->setUserState('com_bwpostman.edit.template.tpldata', $preview);
 		// end make preview
 		return;
@@ -1173,15 +1181,15 @@ class BwPostmanModelTemplate extends JModelAdmin
 	private function makePreviewTextStd($item)
 	{
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
-		$itemid_unsubscribe	= BwPostmanSubscriberHelper::getMenuItemid('register');
-		$itemid_edit		= BwPostmanSubscriberHelper::getMenuItemid('edit');
+		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
+		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
 
 		// make preview
-		// first get templates tpls
-		$tpl_id		= $item->tpl_id;
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates_tpl.php');
+		// first get templates tpls
+		$tpl_id    = $item->tpl_id;
 		$tpl_model = new BwPostmanModelTemplates_Tpl();
-		$tpl		= $tpl_model->getItem($tpl_id);
+		$tpl       = $tpl_model->getItem($tpl_id);
 
 		// make text preview data
 		$preview_text = nl2br($this->makeTexttemplate($item, $tpl), true);
@@ -1193,8 +1201,8 @@ class BwPostmanModelTemplate extends JModelAdmin
 		// impressum
 		if ($item->footer['show_impressum'] == 1)
 		{
-			$params 		= ComponentHelper::getParams('com_bwpostman');
-			$impressum		= "<br /><br />" .
+			$params    = ComponentHelper::getParams('com_bwpostman');
+			$impressum = "<br /><br />" .
 				Text::sprintf(
 					'COM_BWPOSTMAN_NL_FOOTER_TEXT',
 					Uri::root(true),
@@ -1204,7 +1212,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 					$itemid_edit
 				) .
 				"<br /><br />" . Text::_($params->get('legal_information_text')) . "<br /><br />";
-			$preview_text	= $preview_text . nl2br($impressum, true);
+			$preview_text = $preview_text . nl2br($impressum, true);
 		}
 
 		// replace edit and unsubscribe link
@@ -1233,7 +1241,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 		$sample_article	= nl2br(strip_tags($this->sampleArticle($preview_article, $item->article)));
 		$sample_article	= $item->article['divider'] == 1 ? $sample_article . $preview_divider . $sample_article : $sample_article . $sample_article;
 
-		$preview		= str_replace('[%content%]', $sample_article, $preview);
+		$preview = str_replace('[%content%]', $sample_article, $preview);
 		Factory::getApplication()->setUserState('com_bwpostman.edit.template.tpldata', $preview);
 		// end make preview
 		return;
@@ -1248,12 +1256,12 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @since 1.1.0
 	 */
-	private function replaceLinks(&$text)
-	{
-		$search_str	= '/\s+(href|src)\s*=\s*["\']?\s*(?!http|mailto)([\w\s&%=?#\/\.;:_-]+)\s*["\']?/i';
-		$text		= preg_replace($search_str, ' ${1}="' . Uri::root() . '${2}"', $text);
-		return true;
-	}
+//	private function replaceLinks(&$text)
+//	{
+//		$search_str	= '/\s+(href|src)\s*=\s*["\']?\s*(?!http|mailto)([\w\s&%=?#\/\.;:_-]+)\s*["\']?/i';
+//		$text		= preg_replace($search_str, ' ${1}="' . Uri::root() . '${2}"', $text);
+//		return true;
+//	}
 
 	/**
 	 * Method to save the form data.
@@ -1269,7 +1277,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	public function save($data)
 	{
 		// save to #__bwpostman_templates
-		$res	= parent::save($data);
+		$res = parent::save($data);
 
 		// only for user-made html templates
 		if ($res && $data['tpl_id'] == '0')
@@ -1299,8 +1307,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 	private function saveTemplateTags($data)
 	{
 		// unset templates_table_id if task is save2copy
-		$jinput	= Factory::getApplication()->input;
-		$task = $jinput->get('task', 0);
+		$jinput = Factory::getApplication()->input;
+		$task   = $jinput->get('task', 0);
+
 		if ($task == 'save2copy')
 		{
 			$data['templates_table_id'] = '';
@@ -1351,27 +1360,27 @@ class BwPostmanModelTemplate extends JModelAdmin
 		);
 
 		// replace basics
-		$content	= str_replace('[%width620%]', intval($item->basics['nl_width']) + 20, $content);
-		$content	= str_replace('[%width600%]', intval($item->basics['nl_width']), $content);
-		$content	= str_replace('[%width310%]', intval($item->basics['nl_width'] / 2 + 10), $content);
-		$content	= str_replace('[%width300%]', intval($item->basics['nl_width'] / 2), $content);
-		$content	= str_replace('[%width270%]', intval($item->basics['nl_width'] / 2 - 30), $content);
-		$content	= str_replace('[%width200%]', intval($item->basics['nl_width'] / 3), $content);
-		$content	= str_replace('[%paper_bg%]', $item->basics['paper_bg'], $content);
-		$content	= str_replace('[%article_bg%]', $item->basics['article_bg'], $content);
-		$content	= str_replace('[%headline_color%]', $item->basics['headline_color'], $content);
-		$content	= str_replace('[%content_color%]', $item->basics['content_color'], $content);
-		$content	= str_replace('[%legal_color%]', $item->basics['legal_color'], $content);
+		$content = str_replace('[%width620%]', intval($item->basics['nl_width']) + 20, $content);
+		$content = str_replace('[%width600%]', intval($item->basics['nl_width']), $content);
+		$content = str_replace('[%width310%]', intval($item->basics['nl_width'] / 2 + 10), $content);
+		$content = str_replace('[%width300%]', intval($item->basics['nl_width'] / 2), $content);
+		$content = str_replace('[%width270%]', intval($item->basics['nl_width'] / 2 - 30), $content);
+		$content = str_replace('[%width200%]', intval($item->basics['nl_width'] / 3), $content);
+		$content = str_replace('[%paper_bg%]', $item->basics['paper_bg'], $content);
+		$content = str_replace('[%article_bg%]', $item->basics['article_bg'], $content);
+		$content = str_replace('[%headline_color%]', $item->basics['headline_color'], $content);
+		$content = str_replace('[%content_color%]', $item->basics['content_color'], $content);
+		$content = str_replace('[%legal_color%]', $item->basics['legal_color'], $content);
 
-		$content	= str_replace('[%header_bg%]', $item->header['header_bg'], $content);
-		$content	= str_replace('[%header_shadow%]', $item->header['header_shadow'], $content);
-		$content	= str_replace('[%header_color%]', $item->header['header_color'], $content);
+		$content = str_replace('[%header_bg%]', $item->header['header_bg'], $content);
+		$content = str_replace('[%header_shadow%]', $item->header['header_shadow'], $content);
+		$content = str_replace('[%header_color%]', $item->header['header_color'], $content);
 
-		$content	= str_replace('[%divider_color%]', $item->article['divider_color'], $content);
+		$content = str_replace('[%divider_color%]', $item->article['divider_color'], $content);
 
-		$content	= str_replace('[%footer_bg%]', $item->footer['footer_bg'], $content);
-		$content	= str_replace('[%footer_shadow%]', $item->footer['footer_shadow'], $content);
-		$content	= str_replace('[%footer_color%]', $item->footer['footer_color'], $content);
+		$content = str_replace('[%footer_bg%]', $item->footer['footer_bg'], $content);
+		$content = str_replace('[%footer_shadow%]', $item->footer['footer_shadow'], $content);
+		$content = str_replace('[%footer_color%]', $item->footer['footer_color'], $content);
 
 		return $content;
 	}
@@ -1388,11 +1397,14 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 */
 	private function replaceEditAndUnsubscribeLink($itemid_edit, $preview_text)
 	{
-		$replace1     = '+ ' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . ' +<br />&nbsp;&nbsp;' .
+		$replace1 = '+ ' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . ' +<br />&nbsp;&nbsp;' .
 			Uri::root(true) . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;task=unsub&amp;editlink=[EDITLINK]';
+
 		$preview_text = str_replace('[%unsubscribe_link%]', $replace1, $preview_text);
+
 		$replace2     = '+ ' . Text::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . ' +<br />&nbsp;&nbsp;' .
 			Uri::root(true) . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
+
 		$preview_text = str_replace('[%edit_link%]', $replace2, $preview_text);
 
 		return $preview_text;

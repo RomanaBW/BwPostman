@@ -80,7 +80,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		parent::__construct($config);
 	}
@@ -107,6 +107,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 		}
 
 		parent::display();
+
 		return $this;
 	}
 
@@ -224,12 +225,13 @@ class BwPostmanControllerTemplate extends JControllerForm
 	public function edit($key = null, $urlVar = null)
 	{
 		// Initialise variables.
-		$jinput		= Factory::getApplication()->input;
-		$model		= $this->getModel();
-		$table		= $model->getTable();
-		$cid		= $jinput->post->get('cid', array(), 'array');
-		$createdBy  = $jinput->post->get('created_by', 0, 'integer');
-		$context	= "$this->option.edit.$this->context";
+		$jinput    = Factory::getApplication()->input;
+		$model     = $this->getModel();
+		$table     = $model->getTable();
+		$cid       = $jinput->post->get('cid', array(), 'array');
+		$cid       = ArrayHelper::toInteger($cid);
+		$createdBy = $jinput->post->getInt('created_by', 0);
+		$context   = "$this->option.edit.$this->context";
 
 		// Determine the name of the primary key for the data.
 		if (empty($key))
@@ -245,16 +247,16 @@ class BwPostmanControllerTemplate extends JControllerForm
 
 		// Get the previous record id (if any) and the current record id.
 		$recordId = (int) (count($cid) ? $cid[0] : $jinput->getInt($urlVar));
-		$checkin = property_exists($table, 'checked_out');
+		$checkin  = property_exists($table, 'checked_out');
 
 		// Access check.
-		if ($recordId == 0)
+		if ($recordId === 0)
 		{
-			$allowed    = $this->allowAdd();
+			$allowed = $this->allowAdd();
 		}
 		else
 		{
-			$allowed    = $this->allowEdit(array('id' => $recordId, 'created_by' => $createdBy), 'id');
+			$allowed = $this->allowEdit(array('id' => $recordId, 'created_by' => $createdBy), 'id');
 		}
 
 		if (!$allowed)
@@ -304,8 +306,6 @@ class BwPostmanControllerTemplate extends JControllerForm
 	/**
 	 * Override method to save a template
 	 *
-	 * @access	public
-	 *
 	 * @param   string  $key     The name of the primary key of the URL variable.
 	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
 	 *
@@ -318,18 +318,17 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 */
 	public function save($key = null, $urlVar = 'id')
 	{
-
 		parent::save();
 
 		PluginHelper::importPlugin('bwpostman');
 		Factory::getApplication()->triggerEvent('onBwPostmanAfterTemplateControllerSave', array());
 
-		$task	= $this->getTask();
+		$task = $this->getTask();
 
 		switch ($task)
 		{
 			case 'save2new':
-				$nl_method	= $this->input->get('nl_method', 'edit', 'string');
+				$nl_method = $this->input->get('nl_method', 'edit', 'string');
 
 				// If origin template is predefined template, redirect back to the edit screen of HTML template with new item.
 				if ($nl_method === 'edit')
@@ -349,8 +348,6 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 * Method to archive one or more templates
 	 * --> templates-table: archive_flag = 1, set archive_date
 	 *
-	 * @access	public
-	 *
 	 * @return	bool    true on success
 	 *
 	 * @throws Exception
@@ -359,8 +356,6 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 */
 	public function archive()
 	{
-		$jinput	= Factory::getApplication()->input;
-
 		// Check for request forgeries
 		if (!Session::checkToken())
 		{
@@ -368,8 +363,9 @@ class BwPostmanControllerTemplate extends JControllerForm
 		}
 
 		// Get the selected template(s)
-		$cid = $jinput->get('cid', array(0), 'post');
-		ArrayHelper::toInteger($cid);
+		$jinput	= Factory::getApplication()->input;
+		$cid    = $jinput->get('cid', array(0), 'post');
+		$cid    = ArrayHelper::toInteger($cid);
 
 		// Access check.
 		if (!$this->allowArchive($cid))
@@ -386,8 +382,8 @@ class BwPostmanControllerTemplate extends JControllerForm
 			return false;
 		}
 
-		$model = $this->getModel('template');
-		$tplTable = $model->getTable();
+		$model     = $this->getModel('template');
+		$tplTable  = $model->getTable();
 		$count_std = $tplTable->getNumberOfStdTemplates($cid);
 
 		// archive only, if no standard template is selected
@@ -452,8 +448,6 @@ class BwPostmanControllerTemplate extends JControllerForm
 	/**
 	 * Method to set the standard template
 	 *
-	 * @access	public
-	 *
 	 * @return	void
 	 *
 	 * @throws  Exception
@@ -476,11 +470,11 @@ class BwPostmanControllerTemplate extends JControllerForm
 				throw new Exception(Text::_('COM_BWPOSTMAN_NO_TEMPLATE_SELECTED'));
 			}
 
-			ArrayHelper::toInteger($pks);
+			$pks = ArrayHelper::toInteger($pks);
 
 			// Pop off the first element.
-			$id		= array_shift($pks);
-			$model	= $this->getModel();
+			$id    = array_shift($pks);
+			$model = $this->getModel();
 			$model->setDefaultTemplate($id);
 			$this->setMessage(Text::_('COM_BWPOSTMAN_TPL_SUCCESS_HOME_SET'));
 		}

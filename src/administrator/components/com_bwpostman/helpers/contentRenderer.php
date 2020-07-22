@@ -36,6 +36,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Table\Table;
+use Joomla\Utilities\ArrayHelper;
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlContent.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
@@ -52,16 +53,16 @@ JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/he
 * @package		BwPostman-Admin
 * @subpackage	Newsletters
 *
-* @since       2.3.0 here (moved from newsletter model)
+* @since       2.3.0 (here, moved from newsletter model)
 */
 class contentRenderer
 {
 	/**
 	 * This is the main function to render the content from an ID to HTML
 	 *
-	 * @param array  $nl_content
-	 * @param int    $template_id
-	 * @param string $text_template_id
+	 * @param array  $nl_content          List of IDs of the selected content
+	 * @param int    $template_id         ID of the template used
+	 * @param int    $text_template_id    ID of the text template used
 	 *
 	 * @return array    content
 	 *
@@ -77,13 +78,14 @@ class contentRenderer
 		$param = ComponentHelper::getParams('com_bwpostman');
 		$content = array();
 
-		$tpl      = $this->getTemplate($template_id);
-		$text_tpl = $this->getTemplate($text_template_id);
+		$tpl      = $this->getTemplate((int)$template_id);
+		$text_tpl = $this->getTemplate((int)$text_template_id);
 
 		// add template assets only for user-made templates
 		if ($tpl->tpl_id == '0')
 		{
-			$tpl_assets = $this->getTemplateAssets($template_id);
+			$tpl_assets = $this->getTemplateAssets((int)$template_id);
+
 			if (!empty($tpl_assets))
 			{
 				foreach ($tpl_assets as $key => $value)
@@ -107,6 +109,8 @@ class contentRenderer
 
 		$content['text_version'] = '';
 
+		$nl_content = ArrayHelper::toInteger($nl_content);
+
 		$app->triggerEvent('onBwpmBeforeRenderNewsletter', array(&$nl_content, &$tpl, &$text_tpl, &$content));
 
 		if ($nl_content == null)
@@ -123,6 +127,7 @@ class contentRenderer
 				if ($tpl->tpl_id && $template_id > 0)
 				{
 					$content['html_version'] .= $this->replaceContentHtmlNew($content_id, $tpl);
+
 					if (($tpl->article['divider'] == 1) && ($content_id != end($nl_content)))
 					{
 						$content['html_version'] = $content['html_version'] . $tpl->tpl_divider;
@@ -136,6 +141,7 @@ class contentRenderer
 				if ($text_tpl->tpl_id && $text_tpl->tpl_id > '999')
 				{
 					$content['text_version'] .= $this->replaceContentTextNew($content_id, $text_tpl);
+
 					if (($text_tpl->article['divider'] == 1) && ($content_id != end($nl_content)))
 					{
 						$content['text_version'] = $content['text_version'] . $text_tpl->tpl_divider . "\n\n";
@@ -282,14 +288,14 @@ class contentRenderer
 
 		$content = '';
 
-		if ($id != 0)
+		if ($id !== 0)
 		{
 			// Editor user type check
 			$access          = new stdClass();
 			$access->canEdit = $access->canEditOwn = $access->canPublish = 0;
 
-			// $id = "-1" if no content is selected
-			if ($id == '-1')
+			// $id = -1 if no content is selected
+			if ($id === -1)
 			{
 				$tag_article_begin = BwPostmanTplHelper::getArticleTagBegin();
 				$tag_article_end   = BwPostmanTplHelper::getArticleTagEnd();
@@ -367,7 +373,7 @@ class contentRenderer
 					$tag_readon = isset($tpl->tpl_tags_readon) && $tpl->tpl_tags_readon == 0 ?
 						$tpl->tpl_tags_readon_advanced :
 						BwPostmanTplHelper::getReadonTag();
-					$link       = str_replace('administrator/', '', $link);
+					$link = str_replace('administrator/', '', $link);
 
 					// Trigger Plugin "substitutelinks"
 					if (Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
@@ -417,14 +423,14 @@ class contentRenderer
 		$content     = '';
 		$create_date = '';
 
-		if ($id != 0)
+		if ($id !== 0)
 		{
 			// Editor user type check
 			$access          = new stdClass();
 			$access->canEdit = $access->canEditOwn = $access->canPublish = 0;
 
-			// $id = "-1" if no content is selected
-			if ($id == '-1')
+			// $id = -1 if no content is selected
+			if ($id === -1)
 			{
 				$content .= $tpl->tpl_article;
 				$content = preg_replace("/<table id=\"readon\".*?<\/table>/is", "", $content);
@@ -443,6 +449,7 @@ class contentRenderer
 				$lang    = self::getArticleLanguage($row->id);
 				$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
 				$link    = Route::_(Uri::base());
+
 				if ($_Itemid)
 				{
 					$link .= $_Itemid;
@@ -457,14 +464,16 @@ class contentRenderer
 
 				$link = str_replace('administrator/', '', $link);
 
-				$content      .= $tpl->tpl_article;
-				$content      = isset($tpl->article['show_title']) && $tpl->article['show_title'] == 0 ?
+				$content .= $tpl->tpl_article;
+				$content = isset($tpl->article['show_title']) && $tpl->article['show_title'] == 0 ?
 					str_replace('[%content_title%]', '', $content) :
 					str_replace('[%content_title%]', $row->title, $content);
 				$content_text = '';
+
 				if (($tpl->article['show_createdate'] == 1) || ($tpl->article['show_author'] == 1))
 				{
 					$content_text .= '<p class="article-data">';
+
 					if ($tpl->article['show_createdate'] == 1)
 					{
 						$content_text .= '<span class="createdate"><small>';
@@ -521,7 +530,7 @@ class contentRenderer
 	{
 		$create_date = '';
 
-		if ($id != 0)
+		if ($id !== 0)
 		{
 			$row = $this->retrieveContent($id);
 
@@ -587,7 +596,7 @@ class contentRenderer
 
 		$create_date = '';
 
-		if ($id != 0)
+		if ($id !== 0)
 		{
 			$row = $this->retrieveContent($id);
 
@@ -610,8 +619,8 @@ class contentRenderer
 				}
 
 				$intro_text = $content_text . $intro_text;
+				$content    .= "\n\n" . $intro_text . "\n\n";
 
-				$content .= "\n\n" . $intro_text . "\n\n";
 				if ($text_tpl->article['show_readon'] == 1)
 				{
 					// Trigger Plugin "substitutelinks"
@@ -634,29 +643,28 @@ class contentRenderer
 	/**
 	 * Method to get the language of an article
 	 *
-	 * @access	public
-	 *
 	 * @param	int		$id     article ID
 	 *
 	 * @return 	mixed	language string or 0
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.3.0 here (moved from newsletter model, there since 1.0.7)
+	 * @since	2.3.0 (here, since 1.0.7 at newsletter model)
 	 */
 	private function getArticleLanguage($id)
 	{
 		if (Multilanguage::isEnabled())
 		{
 			$result = '';
-			$_db	= Factory::getDbo();
-			$query	= $_db->getQuery(true);
+			$_db    = Factory::getDbo();
+			$query  = $_db->getQuery(true);
 
 			$query->select($_db->quoteName('language'));
 			$query->from($_db->quoteName('#__content'));
 			$query->where($_db->quoteName('id') . ' = ' . (int) $id);
 
 			$_db->setQuery($query);
+
 			try
 			{
 				$result = $_db->loadResult();
@@ -677,20 +685,17 @@ class contentRenderer
 	/**
 	 * Method to get the template settings which are used to compose a newsletter
 	 *
-	 * @access	public
-	 *
 	 * @param   int    $template_id     template id
 	 *
 	 * @return	object
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.3.0 here (moved from newsletter model, there since 1.1.0)
+	 * @since	2.3.0 (here, since 1.1.0 at newsletter model)
 	 */
 	public function getTemplate($template_id)
 	{
-		$tpl    = new stdClass();
-		$params = ComponentHelper::getParams('com_bwpostman');
+		$params   = ComponentHelper::getParams('com_bwpostman');
 		$tplTable = Table::getInstance('Templates', 'BwPostmanTable');
 
 		if (is_null($template_id))
@@ -698,7 +703,7 @@ class contentRenderer
 			$template_id = 1;
 		}
 
-		$tpl = $tplTable->getTemplate($template_id);
+		$tpl = $tplTable->getTemplate((int)$template_id);
 
 		if (is_string($tpl->basics))
 		{
@@ -735,21 +740,19 @@ class contentRenderer
 	/**
 	 * Method to get the template assets which are used to compose a newsletter
 	 *
-	 * @access	public
-	 *
 	 * @param   int    $template_id     template id
 	 *
 	 * @return	array
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.3.0 here (moved from newsletter model there since 2.0.0)
+	 * @since	2.3.0 (here, since 2.0.0 at newsletter model)
 	 */
 	public function getTemplateAssets($template_id)
 	{
 		$tplTagsTable = Table::getInstance('Templates_Tags', 'BwPostmanTable');
 
-		$tpl_assets = $tplTagsTable->getTemplateAssets($template_id);
+		$tpl_assets = $tplTagsTable->getTemplateAssets((int)$template_id);
 
 		return $tpl_assets;
 	}
@@ -761,7 +764,7 @@ class contentRenderer
 	 *
 	 * @return 	boolean
 	 *
-	 * @since	2.3.0 here (moved from newsletter model)
+	 * @since	2.3.0 (here, moved from newsletter model)
 	 */
 	public function replaceTplLinks(&$text)
 	{
@@ -769,21 +772,21 @@ class contentRenderer
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
-		$params 			= ComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click	= $params->get('del_sub_1_click');
+		$params          = ComponentHelper::getParams('com_bwpostman');
+		$del_sub_1_click = $params->get('del_sub_1_click');
 
 		// replace edit and unsubscribe link
 		if ($del_sub_1_click === '0')
 		{
-			$replace1	= '<a href="[EDIT_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
+			$replace1 = '<a href="[EDIT_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
 		}
 		else
 		{
-			$replace1	= '<a href="[UNSUBSCRIBE_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
+			$replace1 = '<a href="[UNSUBSCRIBE_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . '</a>';
 		}
-		$text		= str_replace('[%unsubscribe_link%]', $replace1, $text);
-		$replace2	= '<a href="[EDIT_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . '</a>';
-		$text		= str_replace('[%edit_link%]', $replace2, $text);
+		$text     = str_replace('[%unsubscribe_link%]', $replace1, $text);
+		$replace2 = '<a href="[EDIT_HREF]">' . Text::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . '</a>';
+		$text     = str_replace('[%edit_link%]', $replace2, $text);
 
 		return true;
 	}
@@ -797,7 +800,7 @@ class contentRenderer
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.4.0 here (moved from newsletter model)
+	 * @since	2.4.0 (here, moved from newsletter model)
 	 */
 	public function replaceAllFooterLinks(&$body, $subscriberId, $mode)
 	{
@@ -805,7 +808,7 @@ class contentRenderer
 
 		if ($subscriberId)
 		{ // Replace footer links only if it is a real subscriber
-			if ($mode == 1)
+			if ($mode === 1)
 			{ // HTML newsletter
 				$this->replaceTplLinks($body);
 				$this->addHTMLFooter($body, $footerid);
@@ -825,8 +828,6 @@ class contentRenderer
 	/**
 	 * Method to add the HTML-Tags and the css to the HTML-Newsletter
 	 *
-	 * @access	private
-	 *
 	 * @param 	string  $text      HTML newsletter
 	 * @param   int     $id
 	 *
@@ -834,9 +835,9 @@ class contentRenderer
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.3.0 here (moved from newsletter model)
+	 * @since 2.3.0 (here, moved from newsletter model)
 	 */
-	public function addHtmlTags(&$text, &$id)
+	public function addHtmlTags(&$text, $id)
 	{
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$tpl    = $this->getTemplate($id);
@@ -845,6 +846,7 @@ class contentRenderer
 		if ($tpl->tpl_id == '0')
 		{
 			$tpl_assets	= $this->getTemplateAssets($id);
+
 			if (!empty($tpl_assets))
 			{
 				foreach ($tpl_assets as $key => $value)
@@ -906,8 +908,6 @@ class contentRenderer
 	/**
 	 * Method to add the HTML-footer to the HTML-Newsletter
 	 *
-	 * @access	private
-	 *
 	 * @param 	string $text        HTML newsletter
 	 * @param   integer $templateId template id
 	 *
@@ -915,21 +915,21 @@ class contentRenderer
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.3.0 here (moved from newsletter model)
+	 * @since 2.3.0 (here, moved from newsletter model)
 	 */
-	public function addHTMLFooter(&$text, &$templateId)
+	public function addHTMLFooter(&$text, $templateId)
 	{
-		$app = Factory::getApplication();
+		$app  = Factory::getApplication();
 		$lang = Factory::getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
-		$uri  				= Uri::getInstance();
-		$params 			= ComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click	= $params->get('del_sub_1_click');
-		$impressum			= Text::_($params->get('legal_information_text'));
-		$impressum			= nl2br($impressum, true);
-		$sitelink           = $uri->root();
+		$uri             = Uri::getInstance();
+		$params          = ComponentHelper::getParams('com_bwpostman');
+		$del_sub_1_click = $params->get('del_sub_1_click');
+		$impressum       = Text::_($params->get('legal_information_text'));
+		$impressum       = nl2br($impressum, true);
+		$sitelink        = $uri->root();
 
 		PluginHelper::importPlugin('bwpostman');
 		$app->triggerEvent('onBwPostmanBeforeObligatoryFooterHtml', array(&$text));
@@ -939,8 +939,8 @@ class contentRenderer
 
 		if (strpos($text, '[%impressum%]') !== false)
 		{
-			$unsubscribelink	= '';
-			$editlink			= '';
+			$unsubscribelink = '';
+			$editlink        = '';
 
 			// Trigger Plugin "substitutelinks"
 			if($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
@@ -983,7 +983,7 @@ class contentRenderer
 			$text = str_replace("[dummy]", "<div class=\"footer-outer\"><p class=\"footer-inner\">{$replace}</p></div>", $text);
 		}
 
-		$app->triggerEvent('onBwPostmanAfterObligatoryFooter', array(&$text, &$templateId));
+		$app->triggerEvent('onBwPostmanAfterObligatoryFooter', array(&$text, $templateId));
 
 		return true;
 	}
@@ -991,15 +991,13 @@ class contentRenderer
 	/**
 	 * Method to replace edit and unsubscribe link
 	 *
-	 * @access	private
-	 *
 	 * @param   string  $text
 	 *
 	 * @return 	boolean
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.3.0 here (moved from newsletter model, there since 1.1.0)
+	 * @since	2.3.0 (here, since 1.1.0 at newsletter model)
 	 */
 	public function replaceTextTplLinks(&$text)
 	{
@@ -1007,25 +1005,25 @@ class contentRenderer
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
-		$uri  				= Uri::getInstance();
-		$itemid_edit		= BwPostmanSubscriberHelper::getMenuItemid('edit');
-		$itemid_unsubscribe	= BwPostmanSubscriberHelper::getMenuItemid('register');
-		$params 			= ComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click	= $params->get('del_sub_1_click');
+		$uri                = Uri::getInstance();
+		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
+		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
+		$params             = ComponentHelper::getParams('com_bwpostman');
+		$del_sub_1_click    = $params->get('del_sub_1_click');
 
 		if ($del_sub_1_click === '0')
 		{
-			$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit .
+			$unsubscribelink = $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit .
 				'&amp;view=edit&amp;task=unsub&amp;editlink=[EDITLINK]';
 		}
 		else
 		{
-			$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_unsubscribe .
+			$unsubscribelink = $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_unsubscribe .
 				'&amp;view=edit&amp;task=unsubscribe&amp;email=[UNSUBSCRIBE_EMAIL]&amp;code=[UNSUBSCRIBE_CODE]';
 		}
 
-		$editlink			= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
-		$sitelink			= '';
+		$editlink = $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
+		$sitelink = '';
 
 		// Trigger Plugin "substitutelinks"
 		if(Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
@@ -1035,10 +1033,10 @@ class contentRenderer
 		}
 
 		// replace edit and unsubscribe link
-		$replace1	= '+ ' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . " +\n  " . $unsubscribelink;
-		$text		= str_replace('[%unsubscribe_link%]', $replace1, $text);
-		$replace2	= '+ ' . Text::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . " +\n  " . $editlink;
-		$text		= str_replace('[%edit_link%]', $replace2, $text);
+		$replace1 = '+ ' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . " +\n  " . $unsubscribelink;
+		$text     = str_replace('[%unsubscribe_link%]', $replace1, $text);
+		$replace2 = '+ ' . Text::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . " +\n  " . $editlink;
+		$text     = str_replace('[%edit_link%]', $replace2, $text);
 
 		return true;
 	}
@@ -1046,34 +1044,32 @@ class contentRenderer
 	/**
 	 * Method to add the footer Text-Newsletter
 	 *
-	 * @access	private
-	 *
 	 * @param 	string  $text   Text newsletter
-	 * @param   int     $id
+	 * @param   int     $id     template id
 	 *
 	 * @return 	boolean
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.3.0 here (moved from newsletter model)
+	 * @since 2.3.0 (here, moved from newsletter model)
 	 */
-	public function addTextFooter(&$text, &$id)
+	public function addTextFooter(&$text, $id)
 	{
 		$lang = Factory::getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
-		$uri  				= Uri::getInstance();
-		$itemid_unsubscribe	= BwPostmanSubscriberHelper::getMenuItemid('register');
-		$itemid_edit		= BwPostmanSubscriberHelper::getMenuItemid('edit');
-		$params 			= ComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click	= $params->get('del_sub_1_click');
-		$impressum			= "\n\n" . Text::_($params->get('legal_information_text')) . "\n\n";
+		$uri                = Uri::getInstance();
+		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
+		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
+		$params             = ComponentHelper::getParams('com_bwpostman');
+		$del_sub_1_click    = $params->get('del_sub_1_click');
+		$impressum          = "\n\n" . Text::_($params->get('legal_information_text')) . "\n\n";
 
-		$unsubscribelink	= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_unsubscribe .
+		$unsubscribelink = $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_unsubscribe .
 			'&amp;view=edit&amp;task=unsubscribe&amp;email=[UNSUBSCRIBE_EMAIL]&amp;code=[UNSUBSCRIBE_CODE]';
-		$editlink			= $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
-		$sitelink			= $uri->root();
+		$editlink = $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
+		$sitelink = $uri->root();
 
 		PluginHelper::importPlugin('bwpostman');
 		Factory::getApplication()->triggerEvent('onBwPostmanBeforeObligatoryFooterText', array(&$text));
@@ -1090,13 +1086,13 @@ class contentRenderer
 			// replace [%impressum%]
 			if ($del_sub_1_click === '0')
 			{
-				$replace	= "\n\n" . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
+				$replace = "\n\n" . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
 			}
 			else
 			{
-				$replace	= "\n\n" . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT_ONE_CLICK', $sitelink, $unsubscribelink, $editlink) . $impressum;
+				$replace = "\n\n" . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT_ONE_CLICK', $sitelink, $unsubscribelink, $editlink) . $impressum;
 			}
-			$text		= str_replace('[%impressum%]', $replace, $text);
+			$text = str_replace('[%impressum%]', $replace, $text);
 		}
 
 		// only for old newsletters with template_id < 1
@@ -1104,15 +1100,15 @@ class contentRenderer
 		{
 			if ($del_sub_1_click === '0')
 			{
-				$replace	= Text::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
+				$replace = Text::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
 					Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT', $sitelink, $editlink) . $impressum;
 			}
 			else
 			{
-				$replace	= Text::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
+				$replace = Text::_('COM_BWPOSTMAN_NL_FOOTER_TEXT_LINE') .
 					Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_TEXT_ONE_CLICK', $sitelink, $unsubscribelink, $editlink) . $impressum;
 			}
-			$text		= str_replace("[dummy]", $replace, $text);
+			$text = str_replace("[dummy]", $replace, $text);
 		}
 
 		return true;
@@ -1123,7 +1119,7 @@ class contentRenderer
 	 *
 	 * @param string $body        the newsletter content
 	 *
-	 * @since 2.4.0 here (moved from newsletter model)
+	 * @since 2.4.0 (here, moved from newsletter model)
 	 */
 	public function addTestrecipientsFooter(&$body)
 	{
@@ -1145,12 +1141,12 @@ class contentRenderer
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here (moved from newsletter model)
+	 * @since 2.4.0 (here, moved from newsletter model)
 	 */
 	public function replaceContentPlaceholders(&$body, $tblSendMailQueue, $itemid_edit, $itemid_unsubscribe, $editlink, $substituteLinks)
 	{
-		$app				= Factory::getApplication();
-		$uri  				= Uri::getInstance();
+		$app = Factory::getApplication();
+		$uri = Uri::getInstance();
 
 		$fullname = '';
 		if ($tblSendMailQueue->firstname != '')
@@ -1208,8 +1204,6 @@ class contentRenderer
 	 * - newsletter read more div (concerns every single read mor button)
 	 * - newsletter legal info (implemented as table by default)
 	 *
-	 * @access	private
-	 *
 	 * @param   string  $text
 	 * @param   int     $id
 	 *
@@ -1217,24 +1211,22 @@ class contentRenderer
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.3.0 here (moved from newsletter model, there since 1.1.0)
+	 * @since	2.3.0 (here, since 1.1.0 at newsletter model)
 	 */
-	public function addTplTags(&$text, &$id)
+	public function addTplTags(&$text, $id)
 	{
 		$tpl = $this->getTemplate($id);
 
-		$newtext	= $tpl->tpl_html . "\n";
+		$newtext = $tpl->tpl_html . "\n";
 
 		// make sure that conditions be usable - some editors add space to conditions
-		$text		= str_replace('[%content%]', str_replace('<!-- [if', '<!--[if', $text), $newtext);
+		$text = str_replace('[%content%]', str_replace('<!-- [if', '<!--[if', $text), $newtext);
 
 		return true;
 	}
 
 	/**
 	 * Method to add the TEXT to the TEXT-Newsletter
-	 *
-	 * @access	private
 	 *
 	 * @param 	string  $text   Text newsletter
 	 * @param   int     $id     template id
@@ -1243,13 +1235,13 @@ class contentRenderer
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.3.0 here (moved from newsletter model, there since 1.1.0)
+	 * @since	2.3.0 (here, since 1.1.0 at newsletter model)
 	 */
-	public function addTextTpl(&$text, &$id)
+	public function addTextTpl(&$text, $id)
 	{
-		$tpl	= $this->getTemplate($id);
+		$tpl = $this->getTemplate($id);
 
-		$text	= str_replace('[%content%]', "\n" . $text, $tpl->tpl_html);
+		$text = str_replace('[%content%]', "\n" . $text, $tpl->tpl_html);
 
 		return true;
 	}
@@ -1503,6 +1495,7 @@ class contentRenderer
 		$lang    = self::getArticleLanguage($row->id);
 		$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
 		$link    = Route::_(Uri::base());
+
 		if ($_Itemid)
 		{
 			$link .= $_Itemid;

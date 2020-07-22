@@ -27,6 +27,7 @@
 defined ('_JEXEC') or die ();
 
 use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Class BwPostmanMailinglistHelper
@@ -102,7 +103,7 @@ abstract class BwPostmanMailinglistHelper {
 	}
 
 	/**
-	 * Method to merge the parts of the mailinglists (available, unavailable, internal)
+	 * Method to merge the parts of the mailinglists (available, unavailable, internal) to one single array
 	 *
 	 * @param array $data      list of mailinglists
 	 *
@@ -138,7 +139,7 @@ abstract class BwPostmanMailinglistHelper {
 			}
 		}
 
-		return $mailinglists;
+		return ArrayHelper::toInteger($mailinglists);
 	}
 
 	/**
@@ -196,9 +197,7 @@ abstract class BwPostmanMailinglistHelper {
 	{
 		$options   = null;
 		$db        = Factory::getDbo();
-		$nullDate  = $db->getNullDate();
 		$query     = $db->getQuery(true);
-		$sub_query = $db->getQuery(true);
 
 		$query->select($db->quoteName('a') . '.' . $db->quoteName('id')  . ' AS value');
 		$query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');

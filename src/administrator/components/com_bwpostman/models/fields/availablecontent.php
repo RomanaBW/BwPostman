@@ -30,6 +30,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use \Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\Utilities\ArrayHelper;
 
 JFormHelper::loadFieldClass('list');
 
@@ -61,6 +62,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 	public function getLabel()
 	{
 		$return = '<label for="' . $this->id . '" class="available_content_label">' . Text::_($this->element['label']) . '</label>';
+
 		return $return;
 	}
 
@@ -126,19 +128,19 @@ class JFormFieldAvailableContent extends JFormFieldList
 	public function getOptions()
 	{
 		// Initialize variables.
-		$user_id		= null;
+		$user_id = null;
 
 		// prepare query
-		$_db		= Factory::getDbo();
-		$query_user	= $_db->getQuery(true);
+		$db         = Factory::getDbo();
+		$query_user = $db->getQuery(true);
 
 		// get user_ids if exists
 		// @Todo: Why this query?
-		$query_user->select($_db->quoteName('user_id'));
-		$query_user->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query_user->where($_db->quoteName('id') . ' = ' . (int) $this->_id);
+		$query_user->select($db->quoteName('user_id'));
+		$query_user->from($db->quoteName('#__bwpostman_subscribers'));
+		$query_user->where($db->quoteName('id') . ' = ' . (int) $this->_id);
 
-		$_db->setQuery($query_user);
+		$db->setQuery($query_user);
 
 		// get authorized viewlevels
 		$options = $this->getAvailableContent();
@@ -159,49 +161,53 @@ class JFormFieldAvailableContent extends JFormFieldList
 	 */
 	private function getAvailableContent()
 	{
-		$app				= Factory::getApplication();
-		$_db				= Factory::getDbo();
-		$query				= $_db->getQuery(true);
-		$options			= array();
-		$selected_content	= '';
-		$categories         = array();
-		$rows_list_uncat    = array();
-		$params = ComponentHelper::getParams('com_bwpostman');
-		$exc_cats = $params->get('excluded_categories');
+		$app        = Factory::getApplication();
+		$db         = Factory::getDbo();
+		$query      = $db->getQuery(true);
+		$options    = array();
+		$categories = array();
+		$params     = ComponentHelper::getParams('com_bwpostman');
+		$exc_cats   = $params->get('excluded_categories');
+
+		$rows_list_uncat  = array();
+		$selected_content = '';
+
 
 		if ($app->getUserState('com_bwpostman.edit.newsletter.data'))
 		{
-			$selected_content	= $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
+			$selected_content = $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
 		}
 
 		if (is_array($selected_content))
 		{
-			$selected_content	= implode(',', $selected_content);
+			$selected_content = implode(',', $selected_content);
 		}
 
 		// Get available content which is categorized
-		$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id'));
-		$query->select($_db->quoteName('c') . '.' . $_db->quoteName('title') . ' AS ' . $_db->quoteName('category_name'));
-		$query->select($_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' AS ' . $_db->quoteName('parent'));
-		$query->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('c'));
-		$query->where($_db->quoteName('c') . '.' . $_db->quoteName('parent_id') . ' > ' . $_db->quote('0'));
+		$query->select($db->quoteName('c') . '.' . $db->quoteName('id'));
+		$query->select($db->quoteName('c') . '.' . $db->quoteName('title') . ' AS ' . $db->quoteName('category_name'));
+		$query->select($db->quoteName('c') . '.' . $db->quoteName('parent_id') . ' AS ' . $db->quoteName('parent'));
+		$query->from($db->quoteName('#__categories') . ' AS ' . $db->quoteName('c'));
+		$query->where($db->quoteName('c') . '.' . $db->quoteName('parent_id') . ' > ' . $db->quote('0'));
+
 		// params - get only not excluded categories
 		if (is_array($exc_cats) && !empty($exc_cats))
 		{
+			$exc_cats = ArrayHelper::toInteger($exc_cats);
 			$query->where(
-				'(' . $_db->quoteName('c') . '.' . $_db->quoteName('id')
-				. ' NOT IN (' . implode(',', $exc_cats) . ') AND ' . $_db->quoteName('c') . '.' . $_db->quoteName('parent_id')
+				'(' . $db->quoteName('c') . '.' . $db->quoteName('id')
+				. ' NOT IN (' . implode(',', $exc_cats) . ') AND ' . $db->quoteName('c') . '.' . $db->quoteName('parent_id')
 				. ' NOT IN (' . implode(',', $exc_cats) . '))'
 			);
 		}
 
-		$query->order($_db->quoteName('c') . '.' . $_db->quoteName('title') . ' ASC');
+		$query->order($db->quoteName('c') . '.' . $db->quoteName('title') . ' ASC');
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$categories = $_db->loadObjectList();
+			$categories = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{
@@ -214,33 +220,33 @@ class JFormFieldAvailableContent extends JFormFieldList
 		{
 			$rows_list = array();
 
-			$query	= $_db->getQuery(true);
-			$query->select($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('c') . '.' . $db->quoteName('id') . ' AS ' . $db->quoteName('value'));
 			$query->select(
-				'CONCAT(' . $_db->quoteName('cc') . '.' . $_db->quoteName('path') . ', " = ",'
-				. $_db->quoteName('c') . '.' . $_db->quoteName('title') . ') AS ' . $_db->quoteName('text')
+				'CONCAT(' . $db->quoteName('cc') . '.' . $db->quoteName('path') . ', " = ",'
+				. $db->quoteName('c') . '.' . $db->quoteName('title') . ') AS ' . $db->quoteName('text')
 			);
-			$query->from($_db->quoteName('#__content') . ' AS ' . $_db->quoteName('c'));
-			$query->from($_db->quoteName('#__categories') . ' AS ' . $_db->quoteName('cc'));
+			$query->from($db->quoteName('#__content') . ' AS ' . $db->quoteName('c'));
+			$query->from($db->quoteName('#__categories') . ' AS ' . $db->quoteName('cc'));
 
-			$query->where($_db->quoteName('c') . '.' . $_db->quoteName('state') . ' > ' . (int) 0);
-			$query->where($_db->quoteName('c') . '.' . $_db->quoteName('catid') . ' = ' . $_db->quoteName('cc') . '.' . $_db->quoteName('id'));
-			$query->where($_db->quoteName('c') . '.' . $_db->quoteName('catid') . ' = ' . (int) $category->id);
-			$query->where($_db->quoteName('cc') . '.' . $_db->quoteName('parent_id') . ' = ' . (int) $category->parent);
+			$query->where($db->quoteName('c') . '.' . $db->quoteName('state') . ' > ' . 0);
+			$query->where($db->quoteName('c') . '.' . $db->quoteName('catid') . ' = ' . $db->quoteName('cc') . '.' . $db->quoteName('id'));
+			$query->where($db->quoteName('c') . '.' . $db->quoteName('catid') . ' = ' . (int) $category->id);
+			$query->where($db->quoteName('cc') . '.' . $db->quoteName('parent_id') . ' = ' . (int) $category->parent);
 
 			if ($selected_content)
 			{
-				$query->where($_db->quoteName('c') . '.' . $_db->quoteName('id') . ' NOT IN (' . $selected_content . ')');
+				$query->where($db->quoteName('c') . '.' . $db->quoteName('id') . ' NOT IN (' . $selected_content . ')');
 			}
 
-			$query->order($_db->quoteName('cc') . '.' . $_db->quoteName('path') . ' ASC');
-			$query->order($_db->quoteName('c') . '.' . $_db->quoteName('created') . ' DESC');
-			$query->order($_db->quoteName('c') . '.' . $_db->quoteName('title') . ' ASC');
+			$query->order($db->quoteName('cc') . '.' . $db->quoteName('path') . ' ASC');
+			$query->order($db->quoteName('c') . '.' . $db->quoteName('created') . ' DESC');
+			$query->order($db->quoteName('c') . '.' . $db->quoteName('title') . ' ASC');
 
-			$_db->setQuery($query);
+			$db->setQuery($query);
 			try
 			{
-				$rows_list = $_db->loadObjectList();
+				$rows_list = $db->loadObjectList();
 			}
 			catch (RuntimeException $e)
 			{
@@ -249,34 +255,34 @@ class JFormFieldAvailableContent extends JFormFieldList
 
 			if(count($rows_list) > 0)
 			{
-				$options	= array_merge($options, $rows_list);
+				$options = array_merge($options, $rows_list);
 			}
 		}
 
 		// Get available content which is uncategorized
-		$query	= $_db->getQuery(true);
-		$query->select($_db->quoteName('id') . ' AS ' . $_db->quoteName('value'));
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('id') . ' AS ' . $db->quoteName('value'));
 		$query->select(
 			'CONCAT("' . Text::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT_UNCATEGORIZED') . ' = ",'
-			. $_db->quoteName('title') . ') AS ' . $_db->quoteName('text')
+			. $db->quoteName('title') . ') AS ' . $db->quoteName('text')
 		);
-		$query->from($_db->quoteName('#__content'));
+		$query->from($db->quoteName('#__content'));
 
-		$query->where($_db->quoteName('state') . ' > ' . (int) 0);
-		$query->where($_db->quoteName('catid') . ' = ' . (int) 0);
+		$query->where($db->quoteName('state') . ' > ' . 0);
+		$query->where($db->quoteName('catid') . ' = ' . 0);
 
 		if ($selected_content)
 		{
-			$query->where($_db->quoteName('id') . ' NOT IN (' . $selected_content . ')');
+			$query->where($db->quoteName('id') . ' NOT IN (' . $selected_content . ')');
 		}
 
-		$query->order($_db->quoteName('created') . ' DESC');
-		$query->order($_db->quoteName('title') . ' ASC');
+		$query->order($db->quoteName('created') . ' DESC');
+		$query->order($db->quoteName('title') . ' ASC');
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 		try
 		{
-			$rows_list_uncat = $_db->loadObjectList();
+			$rows_list_uncat = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{
@@ -285,7 +291,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 
 		if(count($rows_list_uncat) > 0)
 		{
-			$options	= array_merge($rows_list, $rows_list_uncat);
+			$options = array_merge($rows_list, $rows_list_uncat);
 		}
 
 		return $options;

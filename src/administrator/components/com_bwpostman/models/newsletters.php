@@ -406,6 +406,7 @@ class BwPostmanModelNewsletters extends JModelList
 		if (Factory::getApplication()->isClient('site'))
 		{
 			$access = $this->getState('filter.access');
+
 			if ($access)
 			{
 				$this->query->where($db->quoteName('a.access') . ' = ' . (int) $access);
@@ -449,12 +450,12 @@ class BwPostmanModelNewsletters extends JModelList
 	 */
 	private function getFilterByComponentPermissions()
 	{
-		$db             = $this->_db;
-		$allowed_items  = BwPostmanHelper::getAllowedRecords('newsletter');
+		$db            = $this->_db;
+		$allowed_items = BwPostmanHelper::getAllowedRecords('newsletter');
 
 		if ($allowed_items != 'all')
 		{
-			$allowed_ids    = implode(',', $allowed_items);
+			$allowed_ids = implode(',', $allowed_items);
 			$this->query->where($db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 		}
 	}
@@ -519,6 +520,7 @@ class BwPostmanModelNewsletters extends JModelList
 	private function getFilterByAuthor($tab)
 	{
 		$authors = $this->getState('filter.authors');
+
 		if ($authors)
 		{
 			if ($tab == 'queue')
@@ -631,6 +633,7 @@ class BwPostmanModelNewsletters extends JModelList
 		$nowDate  = $db->quote(Factory::getDate()->toSql());
 
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			switch ($published)
@@ -641,15 +644,15 @@ class BwPostmanModelNewsletters extends JModelList
 					$this->query->where($db->quoteName('a.published') . ' = ' . (int) $published);
 					break;
 				case 2:
-					$this->query->where($db->quoteName('a.publish_down') . ' <> ' . $db->quote($nullDate));
+					$this->query->where($db->quoteName('a.publish_down') . ' <> ' . $nullDate);
 					$this->query->where($db->quoteName('a.publish_down') . ' <= ' . $nowDate);
 					break;
 				case 3:
-					$this->query->where($db->quoteName('publish_down') . ' >= ' . $nowDate . ' OR publish_down = ' . $db->quote($nullDate) . ')');
+					$this->query->where($db->quoteName('publish_down') . ' >= ' . $nowDate . ' OR publish_down = ' . $nullDate . ')');
 					break;
 				case 4:
 					$this->query->where($db->quoteName('a.publish_up') . ' <= ' . $nowDate);
-					$this->query->where($db->quoteName('a.publish_down') . ' <> ' . $db->quote($nullDate));
+					$this->query->where($db->quoteName('a.publish_down') . ' <> ' . $nullDate);
 					$this->query->where($db->quoteName('a.publish_down') . ' > ' . $nowDate);
 					break;
 				case 5:
@@ -675,7 +678,7 @@ class BwPostmanModelNewsletters extends JModelList
 	{
 		$db = $this->_db;
 
-		$this->query->where($db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+		$this->query->where($db->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
 	/**
@@ -688,6 +691,7 @@ class BwPostmanModelNewsletters extends JModelList
 	private function getFilterByMailinglist()
 	{
 		$mailinglist = $this->getState('filter.mailinglists');
+
 		if ($mailinglist)
 		{
 			$this->query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
@@ -705,6 +709,7 @@ class BwPostmanModelNewsletters extends JModelList
 	private function getFilterByUsergroup()
 	{
 		$usergroup = $this->getState('filter.usergroups');
+
 		if ($usergroup)
 		{
 			$this->query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
@@ -728,10 +733,10 @@ class BwPostmanModelNewsletters extends JModelList
 			case ("unsent"):
 			case ("queue"):
 			default:
-				$tab_int	= ' = ';
+				$tab_int = ' = ';
 				break;
 			case ("sent"):
-				$tab_int	= ' <> ';
+				$tab_int = ' <> ';
 				break;
 		}
 
@@ -797,5 +802,4 @@ class BwPostmanModelNewsletters extends JModelList
 
 		return $count_queue;
 	}
-
 }

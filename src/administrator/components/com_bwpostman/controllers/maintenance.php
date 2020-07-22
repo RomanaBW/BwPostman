@@ -120,6 +120,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		}
 
 		parent::display();
+
 		return $this;
 	}
 
@@ -133,7 +134,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	public function updateCheckSave()
 	{
-		$model	= $this->getModel();
+		$model = $this->getModel();
 
 		ob_start();
 
@@ -176,8 +177,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			return false;
 		}
 
-		$jinput		= Factory::getApplication()->input;
-		$document	= Factory::getDocument();
+		$jinput   = Factory::getApplication()->input;
+		$document = Factory::getDocument();
 
 		$jinput->set('view', 'subscriber');
 
@@ -263,9 +264,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			return false;
 		}
 
-		$jinput	= Factory::getApplication()->input;
-
-		$app	= Factory::getApplication();
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
 
 		// Retrieve file details from uploaded file, sent from upload form
 		$file = $jinput->files->get('restorefile');
@@ -276,7 +276,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$filename = File::makeSafe($file['name']);
 
 		// Set up the source and destination of the file
-		$src	= $file['tmp_name'];
+		$src = $file['tmp_name'];
 
 		// If the file isn't okay, redirect to restoretables.php
 		if ($file['error'] > 0)
@@ -306,9 +306,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		{ // The file is okay
 			// Check if the file has the right extension, we need xml
 			// --> if the extension is wrong, redirect to restoretables.php
-			$fileExt = substr($filename, strrpos($filename, '.') + 1);
-
-			$dest	= Factory::getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $fileExt;
+			$fileExt = File::getExt($filename);
+			$dest    = Factory::getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $fileExt;
 
 			if ($fileExt !== 'xml' && $fileExt !== 'zip')
 			{
@@ -360,8 +359,10 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_PLUGINS . '/bwpostman/bwtimecontrol');
 
 		$plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
+
 		$pluginParams = new JRegistry();
 		$pluginParams->loadString($plugin->params);
+
 		$pluginUser = $pluginParams->get('bwtimecontrol_username',null);
 		$pluginPw   = $pluginParams->get('bwtimecontrol_passwd', null);
 
@@ -376,12 +377,13 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		}
 		else
 		{
-			PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+//			PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 			$results = Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceStartCron', array());
 
 			if ($results[0] !== true)
 			{
 				$error = '';
+
 				foreach ($results as $result)
 				{
 					$error .= $result . '<br />';

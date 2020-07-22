@@ -87,10 +87,11 @@ class BwPostmanModelTemplates_Tpl extends JModelAdmin
 
 	public function getItem($pk = null)
 	{
-		$item	= parent::getItem($pk);
+		$item = parent::getItem($pk);
 
 		// convert header_tpl string to array
-		if (is_string($item->header_tpl)){
+		if (is_string($item->header_tpl))
+		{
 			$registry = new Registry;
 			$registry->loadString($item->header_tpl);
 			$item->header_tpl = $registry->toArray();
@@ -115,5 +116,4 @@ class BwPostmanModelTemplates_Tpl extends JModelAdmin
 
 		return $form;
 	}
-
 }

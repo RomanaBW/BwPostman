@@ -46,8 +46,6 @@ class BwPostmanSubscriberHelper
 	 * Method to store the subscriber ID into a session object
 	 * --> only if a guest comes from an editlink-uri
 	 *
-	 * @access      public
-	 *
 	 * @param       int $subscriberid subscriber ID
 	 * @param       int $itemid       menu item ID
 	 *
@@ -74,8 +72,6 @@ class BwPostmanSubscriberHelper
 
 	/**
 	 * Method to process invalid subscriber data
-	 *
-	 * @access    public
 	 *
 	 * @param    object $err          associative array of error data
 	 * @param    int    $subscriberid subscriber ID
@@ -160,14 +156,10 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function errorEditlink()
 	{
-		$jinput  = Factory::getApplication()->input;
 		$session = Factory::getSession();
 
 		$session_error = array('err_msg' => 'COM_BWPOSTMAN_ERROR_WRONGEDITLINK');
 		$session->set('session_error', $session_error);
-
-//		$jinput->set('layout', 'error_geteditlink');
-//		$jinput->set('view', 'register');
 	}
 
 	/**
@@ -206,8 +198,6 @@ class BwPostmanSubscriberHelper
 	public static function errorUnsubscribe($err_msg)
 	{
 		$jinput  = Factory::getApplication()->input;
-		require_once(JPATH_SITE . '/components/com_bwpostman/models/edit.php');
-		$model = new BwPostmanModelEdit();
 		$itemid  = BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
 		$session = Factory::getSession();
 
@@ -293,6 +283,7 @@ class BwPostmanSubscriberHelper
 
 		$name      = $subscriber->name;
 		$firstname = $subscriber->firstname;
+
 		if ($firstname != '')
 		{
 			$name = $firstname . ' ' . $name;
@@ -305,15 +296,15 @@ class BwPostmanSubscriberHelper
 		$active_intro      = Text::_($params->get('activation_text'));
 		$permission_text   = Text::_($params->get('permission_text'));
 
-		$active_msg        = $active_title;
+		$active_msg = $active_title;
 
 		if ($name !== '')
 		{
-			$active_msg        .= ' ' . $name;
+			$active_msg .= ' ' . $name;
 		}
 
 		$activationSalutation = $active_msg;
-		$active_msg        .= "\n\n" . $active_intro . "\n";
+		$active_msg          .= "\n\n" . $active_intro . "\n";
 
 		$body    = '';
 		$subject = '';
@@ -407,7 +398,7 @@ class BwPostmanSubscriberHelper
 				$subject 	= Text::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_SUBJECT', $sitename);
 				if (is_null($itemid))
 				{
-					$body 	= Text::sprintf(
+					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
 						$name,
 						$siteURL,
@@ -416,8 +407,8 @@ class BwPostmanSubscriberHelper
 				}
 				else
 				{
-					$body 	= $activationSalutation;
-					$body 	.= Text::sprintf(
+					$body = $activationSalutation;
+					$body .= Text::sprintf(
 						'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
 						$siteURL,
 						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
@@ -438,7 +429,7 @@ class BwPostmanSubscriberHelper
 		}
 
 		$subject = html_entity_decode($subject, ENT_QUOTES);
-		$body = html_entity_decode($body, ENT_QUOTES);
+		$body    = html_entity_decode($body, ENT_QUOTES);
 
 		// Get a JMail instance and fill in mailer data
 		$mailer = Factory::getMailer();
@@ -577,17 +568,17 @@ class BwPostmanSubscriberHelper
 	public static function getModParams($id = 0)
 	{
 		$params = null;
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
-		$query->select('m.params');
-		$query->from('#__modules AS m');
-		$query->where('m.id = ' . $id);
+		$query->select('params');
+		$query->from('#__modules');
+		$query->where('id = ' . $db->quote((int)$id));
 
 		try
 		{
-			$_db->setQuery($query);
-			$params	= $_db->loadObject();
+			$db->setQuery($query);
+			$params	= $db->loadObject();
 		}
 		catch (RuntimeException $e)
 		{
@@ -608,6 +599,7 @@ class BwPostmanSubscriberHelper
 	{
 		// Check to show confirmation data or checkbox
 		$c_date	= strtotime($form->getValue('confirmation_date'));
+
 		if (empty($c_date))
 		{
 			$form->setFieldAttribute('confirmation_date', 'type', 'hidden');
@@ -621,6 +613,7 @@ class BwPostmanSubscriberHelper
 
 		// Check to show registration data
 		$r_date	= $form->getValue('registration_date');
+
 		if (empty($r_date))
 		{
 			$form->setFieldAttribute('registration_date', 'type', 'hidden');
@@ -648,16 +641,16 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function getJoomlaUserIdByEmail($email)
 	{
-		$_db   = Factory::getDbo();
-		$query = $_db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__users'));
-		$query->where($_db->quoteName('email') . ' = ' . $_db->Quote($email));
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__users'));
+		$query->where($db->quoteName('email') . ' = ' . $db->Quote($email));
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
-		$user_id = (int)$_db->loadResult();
+		$user_id = (int)$db->loadResult();
 
 		return $user_id;
 	}
@@ -673,27 +666,27 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function getMenuItemid($view)
 	{
-		$_db = Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__menu'));
-		$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=' . $view));
-		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__menu'));
+		$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=' . $view));
+		$query->where($db->quoteName('published') . ' = ' . 1);
 
-		$_db->setQuery($query);
-		$itemid = $_db->loadResult();
+		$db->setQuery($query);
+		$itemid = $db->loadResult();
 
 		if (empty($itemid))
 		{
-			$query	= $_db->getQuery(true);
+			$query	= $db->getQuery(true);
 
-			$query->select($_db->quoteName('id'));
-			$query->from($_db->quoteName('#__menu'));
-			$query->where($_db->quoteName('link') . ' = ' . $_db->quote('index.php?option=com_bwpostman&view=register'));
-			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-			$_db->setQuery($query);
-			$itemid = $_db->loadResult();
+			$query->select($db->quoteName('id'));
+			$query->from($db->quoteName('#__menu'));
+			$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=register'));
+			$query->where($db->quoteName('published') . ' = ' . 1);
+			$db->setQuery($query);
+			$itemid = $db->loadResult();
 		}
 
 		return $itemid;
@@ -729,13 +722,13 @@ class BwPostmanSubscriberHelper
 		}
 		else
 		{
-			$db   = Factory::getDbo();
+			$db = Factory::getDbo();
 
 			$query_reg	= $db->getQuery(true);
 			$query_reg->select('name');
 			$query_reg->from($db->quoteName('#__users'));
 			$query_reg->where($db->quoteName('id') . ' = ' . (int) $subscriber->registered_by);
-			$db->setQuery((string) $query_reg);
+			$db->setQuery($query_reg);
 
 			try
 			{
@@ -779,13 +772,13 @@ class BwPostmanSubscriberHelper
 		}
 		else
 		{
-			$db   = Factory::getDbo();
+			$db = Factory::getDbo();
 
 			$query_conf	= $db->getQuery(true);
 			$query_conf->select('name');
 			$query_conf->from($db->quoteName('#__users'));
 			$query_conf->where($db->quoteName('id') . ' = ' . (int) $subscriber->confirmed_by);
-			$db->setQuery((string) $query_conf);
+			$db->setQuery($query_conf);
 
 			try
 			{
@@ -796,6 +789,42 @@ class BwPostmanSubscriberHelper
 				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
+	}
+
+	/**
+	 * Method to get the fields list for subscriber export
+	 *
+	 * @return array|boolean	export fields list
+	 *
+	 * @throws Exception
+	 *
+	 * @since
+	 */
+	static public function getExportFieldsList()
+	{
+		$db = Factory::getDbo();
+
+		$query = "SHOW COLUMNS FROM {$db->quoteName('#__bwpostman_subscribers')}
+			WHERE {$db->quoteName('Field')} NOT IN (
+				{$db->quote('activation')},
+				{$db->quote('editlink')},
+				{$db->quote('checked_out')},
+				{$db->quote('checked_out_time')})";
+
+		$db->setQuery($query);
+
+		try
+		{
+			$columns = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
+
+		return $columns;
 	}
 }
 

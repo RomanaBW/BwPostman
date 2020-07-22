@@ -32,6 +32,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\Utilities\ArrayHelper;
 
 // Import CONTROLLER object class
 jimport('joomla.application.component.controlleradmin');
@@ -78,7 +79,7 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 	 */
 	public function __construct($config = array())
 	{
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		parent::__construct($config);
 
@@ -161,6 +162,7 @@ class BwPostmanControllerCampaigns extends JControllerAdmin
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$ids = Factory::getApplication()->input->post->get('cid', array(), 'array');
+		$ids = ArrayHelper::toInteger($ids);
 		$res = true;
 
 		foreach ($ids as $item)

@@ -27,6 +27,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Filter\InputFilter;
+
+
 /**
  * #__bwpostman_templates table handler
  * Table for storing the templates data
@@ -119,6 +122,36 @@ class BwPostmanTableTemplates_Tpl extends JTable
 	public function __construct(& $db)
 	{
 		parent::__construct('#__bwpostman_templates_tpl', 'id', $db);
+	}
+
+	/**
+	 * Overloaded check method to ensure data integrity
+	 *
+	 * @access public
+	 *
+	 * @return boolean True
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.1.0
+	 */
+	public function check()
+	{
+		// Sanitize values
+		$filter = new InputFilter(array(), array(), 0, 0);
+
+		$this->id          = $filter->clean($this->id, 'UINT');
+		$this->title       = trim($filter->clean($this->title));
+		$this->css         = $filter->clean($this->css, 'RAW');
+		$this->header_tpl  = $filter->clean($this->header_tpl, 'HTML');
+		$this->intro_tpl   = $filter->clean($this->intro_tpl, 'HTML');
+		$this->divider_tpl = $filter->clean($this->divider_tpl, 'HTML');
+		$this->article_tpl = $filter->clean($this->article_tpl, 'HTML');
+		$this->readon_tpl  = $filter->clean($this->readon_tpl, 'HTML');
+		$this->footer_tpl  = $filter->clean($this->footer_tpl, 'HTML');
+		$this->button_tpl  = $filter->clean($this->button_tpl, 'HTML');
+
+		return true;
 	}
 
 	/**

@@ -66,7 +66,7 @@ class JFormFieldCustomscript extends JFormField
 	{
 		HTMLHelper::_('jquery.framework');
 
-		$doc 		= Factory::getDocument();
+		$doc  = Factory::getDocument();
 		$text = Text::_('COM_BWPOSTMAN_FIELD_OBLIGATION');
 		// Hide spacers on joomla 4
 		$hide_spacer = "";

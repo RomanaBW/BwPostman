@@ -675,8 +675,8 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	{
 		$nbrRecipients = 0;
 
-		$db       = $this->db;
-		$query    = $this->db->getQuery(true);
+		$db    = $this->db;
+		$query = $db->getQuery(true);
 
 		$query->select('COUNT(' . $db->quoteName('user_id') . ')');
 		$query->from($db->quoteName('#__user_usergroup_map'));

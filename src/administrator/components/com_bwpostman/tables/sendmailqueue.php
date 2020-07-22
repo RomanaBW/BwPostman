@@ -27,6 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -191,9 +192,10 @@ class BwPostmanTableSendmailqueue extends JTable
 	public function pop($trial = 2, $fromComponent = true)
 	{
 		$this->reset();
-		$db	= $this->_db;
-		$query	= $db->getQuery(true);
 		$result = array();
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
@@ -293,9 +295,9 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @access	public
 	 *
-	 * @param 	int     $nl_id          Newsletter-ID
 	 * @param 	int     $content_id     Content ID --> from the sendmailcontent-Table
-	 * @param 	int     $status         Status --> 0 = unconfirmed, 1 = confirmed
+	 * @param 	string  $status         Status --> 0 = unconfirmed, 1 = confirmed
+	 * @param 	int     $nl_id          Newsletter-ID
 	 * @param	int		$cam_id         campaign id
 	 *
 	 * @return 	boolean
@@ -305,57 +307,66 @@ class BwPostmanTableSendmailqueue extends JTable
 	 * @since       0.9.1
 	 */
 
-	public function pushAllFromNlId($nl_id, $content_id, $status, $cam_id)
+	public function pushSubscribers($content_id, $status, $nl_id, $cam_id)
 	{
 		if (!$content_id)
 		{
 			return false;
 		}
 
-		$db		= $this->_db;
-		$subQuery1	= $db->getQuery(true);
-		$subQuery2	= $db->getQuery(true);
-		$subQuery3	= $db->getQuery(true);
-		$query		= $db->getQuery(true);
+		$subscribers = array();
 
-		if ($cam_id != '-1')
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		if ($nl_id)
 		{
-			$subQuery3->select($db->quoteName('c') . '.' . $db->quoteName('mailinglist_id'));
-			$subQuery3->from($db->quoteName('#__bwpostman_campaigns_mailinglists', 'c'));
-			$subQuery3->where($db->quoteName('c') . '.' . $db->quoteName('campaign_id') . ' = ' . $cam_id);
+			if ($cam_id != '-1')
+			{
+				// Select mailinglist IDs from campaigns_mailinglists, if campaign ID is provided
+				$camMlsTable = Table::getInstance('Campaigns_Mailinglists', 'BwPostmanTable');
+				$mailinglists = $camMlsTable->getAssociatedMailinglistsByCampaign($cam_id);
+			}
+			else
+			{
+				// Select mailinglist IDs from newsletters_mailinglists, if no campaign ID is provided
+				$nlsMlsTable = Table::getInstance('Newsletters_Mailinglists', 'BwPostmanTable');
+				$mailinglists = $nlsMlsTable->getAssociatedMailinglistsByNewsletter($nl_id);
+			}
+
+			// Select unique subscriber IDs from subscribers_mailinglists of the calculated mailinglists
+			$subsMlsTable = Table::getInstance('Subscribers_Mailinglists', 'BwPostmanTable');
+			$subscribers = $subsMlsTable->getSubscribersOfMailinglist($mailinglists);
+
 		}
-		else
+		// Select subscribers data of the calculated subscriber IDs
+		$subsTable = Table::getInstance('Subscribers', 'BwPostmanTable');
+		$subscribersData = $subsTable->getSubscriberDataForSendmailqueue($content_id, $status, $subscribers);
+
+		$data = array();
+
+		foreach ($subscribersData as $subscribersDatum)
 		{
-			$subQuery3->select($db->quoteName('c') . '.' . $db->quoteName('mailinglist_id'));
-			$subQuery3->from($db->quoteName('#__bwpostman_newsletters_mailinglists', 'c'));
-			$subQuery3->where($db->quoteName('c') . '.' . $db->quoteName('newsletter_id') . ' IN (' . $nl_id . ')');
+			$quotedDatum = array();
+
+			foreach ($subscribersDatum as $datum)
+			{
+				$quotedDatum[] = $db->quote($datum);
+			}
+			$data[] = implode(',', $quotedDatum);
 		}
 
-		$subQuery2->select('DISTINCT' . $db->quoteName('b') . '.' . $db->quoteName('subscriber_id'));
-		$subQuery2->from($db->quoteName('#__bwpostman_subscribers_mailinglists', 'b'));
-		$subQuery2->where($db->quoteName('b') . '.' . $db->quoteName('mailinglist_id') . ' IN (' . $subQuery3 . ')');
-
-		$subQuery1->select($db->quote($content_id) . ' AS content_id');
-		$subQuery1->select($db->quoteName('a') . '.' . $db->quoteName('email') . ' AS ' . $db->quoteName('recipient'));
-		$subQuery1->select($db->quoteName('a') . '.' . $db->quoteName('emailformat') . ' AS ' . $db->quoteName('mode'));
-		$subQuery1->select($db->quoteName('a') . '.' . $db->quoteName('name') . ' AS ' . $db->quoteName('name'));
-		$subQuery1->select($db->quoteName('a') . '.' . $db->quoteName('firstname') . ' AS ' . $db->quoteName('firstname'));
-		$subQuery1->select($db->quoteName('a') . '.' . $db->quoteName('id') . ' AS ' . $db->quoteName('subscriber_id'));
-		$subQuery1->from($db->quoteName('#__bwpostman_subscribers', 'a'));
-		$subQuery1->where($db->quoteName('a') . '.' . $db->quoteName('id') . ' IN (' . $subQuery2 . ')');
-		$subQuery1->where($db->quoteName('a') . '.' . $db->quoteName('status') . ' IN (' . $status . ')');
-		$subQuery1->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-
+		// Insert queue data
 		$query->insert($this->_tbl);
-		$query .= ' (' .
+		$query->columns(
 				$db->quoteName('content_id') . ',' .
 				$db->quoteName('recipient') . ',' .
 				$db->quoteName('mode') . ',' .
 				$db->quoteName('name') . ',' .
 				$db->quoteName('firstname') . ',' .
-				$db->quoteName('subscriber_id') .
-		')';
-		$query .= $subQuery1;
+				$db->quoteName('subscriber_id')
+		);
+		$query->values($data);
 
 		$db->setQuery($query);
 
@@ -366,66 +377,8 @@ class BwPostmanTableSendmailqueue extends JTable
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
 
-		return true;
-	}
-
-	/**
-	 * Method to store all subscribers when clicking the 'send' button
-	 *
-	 * @access	public
-	 *
-	 * @param 	int     $content_id     Content ID --> --> from the sendmailcontent-Table
-	 * @param 	int     $status         Status -->  0 = unconfirmed, 1 = confirmed, 9 = test-recipient
-	 *
-	 * @return 	boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function pushAllSubscribers($content_id, $status)
-	{
-		if (!$content_id)
-		{
 			return false;
-		}
-
-		$db		= $this->_db;
-		$subQuery	= $db->getQuery(true);
-		$query		= $db->getQuery(true);
-
-		$subQuery->select($db->quote($content_id) . ' AS content_id');
-		$subQuery->select($db->quoteName('email', 'recipient'));
-		$subQuery->select($db->quoteName('emailformat', 'mode'));
-		$subQuery->select($db->quoteName('name', 'name'));
-		$subQuery->select($db->quoteName('firstname', 'firstname'));
-		$subQuery->select($db->quoteName('id', 'subscriber_id'));
-		$subQuery->from($db->quoteName('#__bwpostman_subscribers'));
-		$subQuery->where($db->quoteName('status') . ' IN (' . $status . ')');
-		$subQuery->where($db->quoteName('archive_flag') . ' = ' . $db->quote('0'));
-
-		$query->insert($this->_tbl);
-		$query->columns(
-			array(
-				$db->quoteName('content_id'),
-				$db->quoteName('recipient'),
-				$db->quoteName('mode'),
-				$db->quoteName('name'),
-				$db->quoteName('firstname'),
-				$db->quoteName('subscriber_id')
-			)
-		);
-		$query->values($subQuery);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return true;
@@ -463,67 +416,72 @@ class BwPostmanTableSendmailqueue extends JTable
 			return false;
 		}
 
-		$db		= $this->_db;
-		$sub_res    = array();
+		$db      = $this->_db;
+		$sub_res = array();
 
-		$subQuery1	= $db->getQuery(true);
+		$subQuery1 = $db->getQuery(true);
 
 		$subQuery1->select($db->quoteName('g') . '.' . $db->quoteName('user_id'));
 		$subQuery1->from($db->quoteName('#__user_usergroup_map') . ' AS ' . $db->quoteName('g'));
 		$subQuery1->where($db->quoteName('g') . '.' . $db->quoteName('group_id') . ' IN (' . implode(',', $usergroups) . ')');
 
-		$subQuery	= $db->getQuery(true);
+		$subQuery = $db->getQuery(true);
 		$subQuery->select($db->quote($content_id) . ' AS content_id');
 		$subQuery->select($db->quoteName('email', 'recipient'));
 		$subQuery->select($db->quote($format) . ' AS mode');
 		$subQuery->select($db->quoteName('name', 'name'));
 		$subQuery->select((int) 0 . ' AS subscriber_id');
 		$subQuery->from($db->quoteName('#__users'));
-		$subQuery->where($db->quoteName('block') . ' = ' . (int) 0);
+		$subQuery->where($db->quoteName('block') . ' = ' . 0);
 		$subQuery->where($db->quoteName('activation') . " IN ('', '0')");
 		$subQuery->where($db->quoteName('id') . ' IN (' . $subQuery1 . ')');
 
 		$db->setQuery($subQuery);
 		try
 		{
-			$sub_res	= $db->loadObjectList();
+			$sub_res	= $db->loadRowList();
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		foreach ($sub_res as $result)
+		$data = array();
+
+		foreach ($sub_res as $subscribersDatum)
 		{
-			$query		= $db->getQuery(true);
+			$quotedDatum = array();
 
-			$query->insert($db->quoteName($this->_tbl));
-			$query->columns(
-				array(
-					$db->quoteName('content_id'),
-					$db->quoteName('recipient'),
-					$db->quoteName('mode'),
-					$db->quoteName('name'),
-					$db->quoteName('subscriber_id'),
-				)
-			);
-			$query->values(
-				$db->quote($result->content_id) . ', ' .
-					$db->quote($result->recipient) . ', ' .
-					$db->quote($result->mode) . ', ' .
-					$db->quote($result->name) . ', ' .
-					$db->quote($result->subscriber_id)
-			);
+			foreach ($subscribersDatum as $datum)
+			{
+				$quotedDatum[] = $db->quote($datum);
+			}
+			$data[] = implode(',', $quotedDatum);
+		}
 
-			$db->setQuery($query);
-			try
-			{
-				$db->execute();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+		$query = $db->getQuery(true);
+
+		$query->insert($db->quoteName($this->_tbl));
+		$query->columns(
+			array(
+				$db->quoteName('content_id'),
+				$db->quoteName('recipient'),
+				$db->quoteName('mode'),
+				$db->quoteName('name'),
+				$db->quoteName('subscriber_id'),
+			)
+		);
+		$query->values($data);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return true;
@@ -593,7 +551,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	}
 
 	/**
-	 * Method to check if there are entries depending on $count
+	 * Method to check if there are entries. Depending on $count the result is true or a number of entries
 	 *
 	 * @param integer $trial  number of sending trials
 	 * @param integer $count  1: only count, 0: check for number of trials

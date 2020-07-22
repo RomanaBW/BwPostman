@@ -436,6 +436,7 @@ class BwPostmanModelTemplates extends JModelList
 
 		// Filter by format.
 		$format = $this->getState('filter.tpl_id');
+
 		if ($format)
 		{
 			if ($format == '1')
@@ -462,6 +463,7 @@ class BwPostmanModelTemplates extends JModelList
 	private function getFilterByPublishedState()
 	{
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			$this->query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
@@ -494,11 +496,11 @@ class BwPostmanModelTemplates extends JModelList
 	private function getFilterBySearchword()
 	{
 		$filtersearch = $this->getState('filter.search_filter');
-		$search			= $this->_db->escape($this->getState('filter.search'), true);
+		$search       = $this->_db->escape($this->getState('filter.search'), true);
 
 		if (!empty($search))
 		{
-			$search			= '%' . $search . '%';
+			$search = '%' . $search . '%';
 
 			switch ($filtersearch)
 			{
@@ -534,6 +536,7 @@ class BwPostmanModelTemplates extends JModelList
 	{
 		// Access check.
 		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+
 		if (!$permissions['template']['create'])
 		{
 			return false;
@@ -548,9 +551,9 @@ class BwPostmanModelTemplates extends JModelList
 		$filename = File::makeSafe($file['name']);
 
 		// Set up the source and destination of the file
-		$src = $file['tmp_name'];
-		$ext = File::getExt($filename);
-		$tempPath = Factory::getConfig()->get('tmp_path');
+		$src         = $file['tmp_name'];
+		$ext         = File::getExt($filename);
+		$tempPath    = Factory::getConfig()->get('tmp_path');
 		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
 
 		// If the file isn't okay, redirect to templates
@@ -614,16 +617,16 @@ class BwPostmanModelTemplates extends JModelList
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
 
-		$filename = File::makeSafe($file['name']);
-		$ext = File::getExt($filename);
-		$tempPath = Factory::getConfig()->get('tmp_path');
+		$filename    = File::makeSafe($file['name']);
+		$ext         = File::getExt($filename);
+		$tempPath    = Factory::getConfig()->get('tmp_path');
 		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
-		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
+		$extractdir  = $tempPath . '/tmp_bwpostman_installtpl/';
 
 		$archiveclass = new Archive;
 
 		$adapter = $archiveclass->getAdapter('zip');
-		$result = $adapter->extract($archivename, $extractdir);
+		$result  = $adapter->extract($archivename, $extractdir);
 
 		if (!$result || $result instanceof Exception) // extract failed
 		{
@@ -652,9 +655,9 @@ class BwPostmanModelTemplates extends JModelList
 	public function installTplFiles(&$sql, $step)
 	{
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step) . '</h4>';
-		$db		= Factory::getDbo();
+		$db = Factory::getDbo();
 
-		$tempPath = Factory::getConfig()->get('tmp_path');
+		$tempPath   = Factory::getConfig()->get('tmp_path');
 		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
 
 		//we call sql file for the templates data
@@ -674,10 +677,11 @@ class BwPostmanModelTemplates extends JModelList
 				foreach ($queries as $this->query)
 				{
 					$this->query = trim($this->query);
+
 					if ($this->query != '' && $this->query[0] != '#')
 					{
-						$error = '';
-						$TplTitle = '';
+						$error      = '';
+						$TplTitle   = '';
 						$CountTitle = '';
 
 						$this->query = str_replace("`DUMMY`", "'DUMMY'", $this->query);
@@ -688,7 +692,7 @@ class BwPostmanModelTemplates extends JModelList
 							$db->execute();
 
 							// get last id
-							$lastID = $db->insertid();
+							$lastID   = $db->insertid();
 							$tplTable = $this->getTable('Templates');
 
 							// get template title
@@ -748,7 +752,7 @@ class BwPostmanModelTemplates extends JModelList
 		// make new folder and copy template thumbnails
 		$m_params   = JComponentHelper::getParams('com_media');
 		$dest       = JPATH_ROOT . '/' . $m_params->get('file_path', 'images') . '/com_bwpostman';
-		$dest2		= JPATH_ROOT . '/images/com_bwpostman';
+		$dest2      = JPATH_ROOT . '/images/com_bwpostman';
 		$media_path = JPATH_ROOT . '/media/com_bwpostman/images/';
 
 		if (!Folder::exists($dest))
@@ -771,8 +775,9 @@ class BwPostmanModelTemplates extends JModelList
 			File::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/com_bwpostman/index.html');
 		}
 
-		$warn = false;
+		$warn  = false;
 		$files = Folder::files($imagedir);
+
 		foreach ($files as $file)
 		{
 			if (!File::exists($dest . '/' . $file))
@@ -792,6 +797,7 @@ class BwPostmanModelTemplates extends JModelList
 
 			$this->delMessage();
 			$path_now = $dest . '/';
+
 			if (!File::exists($dest . '/' . $file))
 			{
 				echo '<p class="bw_tablecheck_warn">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
@@ -804,6 +810,7 @@ class BwPostmanModelTemplates extends JModelList
 			}
 
 			$path_now = $dest2 . '/';
+
 			if (!File::exists($dest2 . '/' . $file))
 			{
 				echo '<p class="bw_tablecheck_warn">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
@@ -816,6 +823,7 @@ class BwPostmanModelTemplates extends JModelList
 			}
 
 			$path_now = $media_path;
+
 			if (!File::exists($media_path . $file))
 			{
 				echo '<p class="bw_tablecheck_warn">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
@@ -853,13 +861,14 @@ class BwPostmanModelTemplates extends JModelList
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 
-		$filename = File::makeSafe($file['name']);
-		$ext = File::getExt($filename);
-		$tempPath = Factory::getConfig()->get('tmp_path');
-		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
+		$filename    = File::makeSafe($file['name']);
+		$ext         = File::getExt($filename);
+		$tempPath    = Factory::getConfig()->get('tmp_path');
+		$extractdir  = $tempPath . '/tmp_bwpostman_installtpl/';
 		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
 
 		$warn = false;
+
 		if (File::exists($archivename))
 		{
 			File::delete($archivename);
@@ -871,6 +880,7 @@ class BwPostmanModelTemplates extends JModelList
 		}
 
 		$this->delMessage();
+
 		if (File::exists($archivename))
 		{
 			echo '<p class="bw_tablecheck_warn">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_WARNING', $archivename, $tempPath) . '</p>';
@@ -914,12 +924,13 @@ class BwPostmanModelTemplates extends JModelList
 	 */
 	private function delMessage()
 	{
-		// @ToDo: What is this method good for?
-		$app = Factory::getApplication();
+		$app           = Factory::getApplication();
 		$appReflection = new ReflectionClass(get_class($app));
 		$_messageQueue = $appReflection->getProperty('_messageQueue');
 		$_messageQueue->setAccessible(true);
+
 		$messages = $_messageQueue->getValue($app);
+
 		foreach ($messages as $key => $message)
 		{
 			unset($messages[$key]);
@@ -939,6 +950,7 @@ class BwPostmanModelTemplates extends JModelList
 	 */
 	public function getBaseName()
 	{
+		// @Karl: This method is never called? Perhaps to do at constructor?
 		if (!isset($this->basename))
 		{
 			$jinput         = Factory::getApplication()->input;
@@ -946,7 +958,7 @@ class BwPostmanModelTemplates extends JModelList
 
 			jimport('joomla.filesystem.file');
 
-			$app = Factory::getApplication('administrator');
+			$app            = Factory::getApplication('administrator');
 			$this->tmp_path = $app->get('tmp_path') . '/';
 
 			$basename = 'bwpostman_template_export_id_' . $this->exportId . '.zip';
@@ -971,7 +983,7 @@ class BwPostmanModelTemplates extends JModelList
 	 */
 	public function getExportTpl($id = NULL, $tpl_id = NULL)
 	{
-		$id = $this->exportId;
+		$id          = $this->exportId;
 		$zip_created = '';
 
 		if (!isset($this->content))
@@ -997,24 +1009,24 @@ class BwPostmanModelTemplates extends JModelList
 						'archive_flag',
 						'archived_by',
 					),
-					'j'         =>  1
+					'j'      =>  1
 				),
 				array
 				(
-					'table' =>  'bwpostman_templates_tpl',
+					'table'  =>  'bwpostman_templates_tpl',
 					'where1' =>  'id',
-					'where2'    =>  'tpl_id',
-					'insert'    =>  'REPLACE',
-					'nums'      =>  array('id'),
-					'j'         =>  0
+					'where2' =>  'tpl_id',
+					'insert' =>  'REPLACE',
+					'nums'   =>  array('id'),
+					'j'      =>  0
 				),
 				array
 				(
-					'table' =>  'bwpostman_templates_tags',
+					'table'  =>  'bwpostman_templates_tags',
 					'where1' =>  'templates_table_id',
-					'where2'    =>  'id',
-					'insert'    =>  'INSERT IGNORE',
-					'nums'      =>  array(
+					'where2' =>  'id',
+					'insert' =>  'INSERT IGNORE',
+					'nums'   =>  array(
 						'templates_table_id',
 						'tpl_tags_head',
 						'tpl_tags_body',
@@ -1022,7 +1034,7 @@ class BwPostmanModelTemplates extends JModelList
 						'tpl_tags_readon',
 						'tpl_tags_legal',
 					),
-					'j'         =>  0
+					'j'      =>  0
 				)
 			);
 
@@ -1031,8 +1043,8 @@ class BwPostmanModelTemplates extends JModelList
 			// prepare sql string
 			foreach($settings as $setting)
 			{
-				$_db	= $this->_db;
-				$query	= $_db->getQuery(true);
+				$_db   = $this->_db;
+				$query = $_db->getQuery(true);
 
 				$query->select('*');
 				$query->from($_db->quoteName('#__' . $setting['table'] . ''));
@@ -1052,13 +1064,14 @@ class BwPostmanModelTemplates extends JModelList
 				if (!empty($res))
 				{
 					// Count fields in row
-					$num_fields = count($res);
+//					$num_fields = count($res);
 
 					// Field names
 
-					$quote = "`";
+					$quote         = "`";
 					$fields_quoted = array();
-					$field_set = array_keys($res);
+					$field_set     = array_keys($res);
+
 					foreach ($field_set as $field)
 					{
 						$fields_quoted[] = $quote . $field . $quote;
@@ -1076,6 +1089,7 @@ class BwPostmanModelTemplates extends JModelList
 
 					// Values
 					$values = array();
+
 					foreach ($res as $key => $value) {
 
 						if (!isset($value) || is_null($value))	// NULL
@@ -1147,22 +1161,25 @@ class BwPostmanModelTemplates extends JModelList
 			)
 		);
 
-
 		// We need thumbnail in tmp_path
 		$thumbnail = JPATH_ROOT . '/' . $this->imgPath;
+
 		if (File::exists($thumbnail))
 		{
 			$lastSlash = strrpos($thumbnail, '/');
-			$img = substr($thumbnail, $lastSlash + 1);
+			$img       = substr($thumbnail, $lastSlash + 1);
 //			$img = File::getName($thumbnail);
+
 			if (!Folder::exists($this->tmp_path . 'images'))
 			{
 				Folder::create($this->tmp_path . 'images');
 			}
+
 			if (File::exists($this->tmp_path . 'images/' . $img))
 			{
 				File::delete($this->tmp_path . 'images/' . $img);
 			}
+
 			File::copy($thumbnail, $this->tmp_path . 'images/' . $img);
 
 			$files[] =	array(

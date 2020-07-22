@@ -81,7 +81,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		parent::__construct($config);
 	}
@@ -108,6 +108,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 		}
 
 		parent::display();
+
 		return $this;
 	}
 
@@ -185,11 +186,11 @@ class BwPostmanControllerCampaign extends JControllerForm
 	public function edit($key = null, $urlVar = null)
 	{
 		// Initialise variables.
-		$jinput		= Factory::getApplication()->input;
-		$model		= $this->getModel();
-		$table		= $model->getTable();
-		$cid		= $jinput->post->get('cid', array(), 'array');
-		$context	= "$this->option.edit.$this->context";
+		$jinput  = Factory::getApplication()->input;
+		$model   = $this->getModel();
+		$table   = $model->getTable();
+		$cid     = $jinput->post->get('cid', array(), 'array');
+		$context = "$this->option.edit.$this->context";
 
 		// Determine the name of the primary key for the data.
 		if (empty($key))
@@ -205,16 +206,16 @@ class BwPostmanControllerCampaign extends JControllerForm
 
 		// Get the previous record id (if any) and the current record id.
 		$recordId = (int) (count($cid) ? $cid[0] : $jinput->getInt($urlVar));
-		$checkin = property_exists($table, 'checked_out');
+		$checkin  = property_exists($table, 'checked_out');
 
 		// Access check.
 		if ($recordId === 0 || $recordId === null)
 		{
-			$allowed    = $this->allowAdd();
+			$allowed = $this->allowAdd();
 		}
 		else
 		{
-			$allowed    = $this->allowEdit(array('id' => $recordId), 'id');
+			$allowed = $this->allowEdit(array('id' => $recordId), 'id');
 		}
 
 		if (!$allowed)
@@ -317,7 +318,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 
 		// Get the selected campaign(s)
 		$cid = $jinput->get('cid', array(0), 'post');
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
 		// Access check.
 		if (!$this->allowArchive($cid))
@@ -337,6 +338,7 @@ class BwPostmanControllerCampaign extends JControllerForm
 		$n = count($cid);
 
 		$model = $this->getModel('campaign');
+
 		if(!$model->archive($cid, 1, $archive_nl))
 		{
 			if ($n > 1) {

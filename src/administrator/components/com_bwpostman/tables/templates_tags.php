@@ -28,6 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\Filter\InputFilter;
 
 /**
  * #__bwpostman_templates_tags table handler
@@ -88,14 +89,14 @@ class BwPostmanTableTemplates_Tags extends JTable
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_body_advanced_b = null;
+	public $tpl_tags_article_advanced_b = null;
 
 	/**
 	 * @var string template tag article advanced end
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_body_advanced_e = null;
+	public $tpl_tags_article_advanced_e = null;
 
 	/**
 	 * @var integer template tag readon
@@ -110,6 +111,13 @@ class BwPostmanTableTemplates_Tags extends JTable
 	 * @since       2.0.0
 	 */
 	public $tpl_tags_readon_advanced = null;
+
+	/**
+	 * @var integer template tag legal
+	 *
+	 * @since       2.0.0
+	 */
+	public $tpl_tags_legal = null;
 
 	/**
 	 * @var string template tag legal advanced begin
@@ -157,17 +165,31 @@ class BwPostmanTableTemplates_Tags extends JTable
 	 */
 	public function check()
 	{
-
 		// unset standard template if task is save2copy
-		$jinput	= Factory::getApplication()->input;
-		$task = $jinput->get('task', 0);
+		$jinput = Factory::getApplication()->input;
+		$task   = $jinput->get('task', 0);
+
+		// Sanitize values
+		$filter = new InputFilter(array(), array(), 0, 0);
+
+		$this->templates_table_id          = $filter->clean($this->templates_table_id, 'UINT');
+		$this->tpl_tags_head               = $filter->clean($this->tpl_tags_head, 'UINT');
+		$this->tpl_tags_head_advanced      = $filter->clean($this->tpl_tags_head_advanced, 'HTML');
+		$this->tpl_tags_body               = $filter->clean($this->tpl_tags_body, 'UINT');
+		$this->tpl_tags_body_advanced      = $filter->clean($this->tpl_tags_body_advanced, 'HTML');
+		$this->tpl_tags_article            = $filter->clean($this->tpl_tags_article, 'UINT');
+		$this->tpl_tags_article_advanced_b = $filter->clean($this->tpl_tags_article_advanced_b, 'HTML');
+		$this->tpl_tags_article_advanced_e = $filter->clean($this->tpl_tags_article_advanced_e, 'HTML');
+		$this->tpl_tags_readon             = $filter->clean($this->tpl_tags_readon, 'UINT');
+		$this->tpl_tags_readon_advanced    = $filter->clean($this->tpl_tags_readon_advanced, 'HTML');
+		$this->tpl_tags_legal              = $filter->clean($this->tpl_tags_legal, 'UINT');
+		$this->tpl_tags_legal_advanced_b   = $filter->clean($this->tpl_tags_legal_advanced_b, 'HTML');
+		$this->tpl_tags_legal_advanced_e   = $filter->clean($this->tpl_tags_legal_advanced_e, 'HTML');
+
 		if ($task == 'save2copy')
 		{
 			$this->standard = 0;
 		}
-
-		// *** prepare the template data ***
-		$item = $this;
 
 		return true;
 	}

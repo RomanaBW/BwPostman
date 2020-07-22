@@ -33,6 +33,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Database\DatabaseQuery;
+use Joomla\Utilities\ArrayHelper;
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
@@ -731,6 +732,8 @@ class BwPostmanModelNewsletters extends JModelList
 			$mls[]	= 0;
 		}
 
+		$mls = ArrayHelper::toInteger($mls);
+
 		$mailinglists	= $mls;
 
 		if ($title === true && count($mls))
@@ -774,6 +777,8 @@ class BwPostmanModelNewsletters extends JModelList
 		{
 			$cams[]	= 0;
 		}
+
+		$cams = ArrayHelper::toInteger($cams);
 
 		// Check permission, if desired
 		if ($all_cams || $check != 'no')

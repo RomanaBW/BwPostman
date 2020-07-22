@@ -202,8 +202,8 @@ abstract class BwPostmanHelper
 	 */
 	static public function getInstalledBwPostmanVersion()
 	{
-		$db       = Factory::getDbo();
-		$query    = $db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
@@ -250,6 +250,9 @@ abstract class BwPostmanHelper
 		{
 			return true;
 		}
+
+		// Cast recordId
+		$recordId = (int) $recordId;
 
 		/*
 		 * Real permission checks
@@ -426,6 +429,7 @@ abstract class BwPostmanHelper
 		foreach ($allowedItems as $allowedItem)
 		{
 			$editItem = self::checkActionPermission($view, $action, $allowedItem);
+
 			if ($editItem === true)
 			{
 				return true;
@@ -576,7 +580,7 @@ abstract class BwPostmanHelper
 		$app = Factory::getApplication();
 
 		// Debugging variable, normally set to false
-		$reload = true;
+		$reload = false;
 
 		if (is_array(self::$permissions) && !$reload)
 		{
@@ -590,8 +594,8 @@ abstract class BwPostmanHelper
 			return;
 		}
 
-		$user 			= Factory::getUser();
-		$permissions	= array();
+		$user        = Factory::getUser();
+		$permissions = array();
 
 		// Set permissions for component
 		$permissions['com']['admin']      = $user->authorise('core.admin', 'com_bwpostman');
@@ -657,8 +661,8 @@ abstract class BwPostmanHelper
 		}
 
 		// Next check section permission.
-		$authAction	= 'bwpm.admin.' . $section;
-		$assetName	= 'com_bwpostman.' . $section;
+		$authAction = 'bwpm.admin.' . $section;
+		$assetName  = 'com_bwpostman.' . $section;
 
 		if ($section != 'archive' && $section != 'manage' & $section != 'maintenance')
 		{
@@ -710,12 +714,12 @@ abstract class BwPostmanHelper
 		}
 
 		// Next check view permission.
-		$authAction	= 'bwpm.view.' . $view;
-		$assetName	= 'com_bwpostman.' . $view;
+		$authAction = 'bwpm.view.' . $view;
+		$assetName  = 'com_bwpostman.' . $view;
 
 		if ($view == 'archive')
 		{
-			$assetName	= 'com_bwpostman';
+			$assetName = 'com_bwpostman';
 		}
 
 		if (self::authorise($authAction, $assetName, 0))
@@ -769,11 +773,11 @@ abstract class BwPostmanHelper
 			return true;
 		}
 
-		$user    = Factory::getUser();
-		$userId  = $user->get('id');
+		$user   = Factory::getUser();
+		$userId = (int)$user->get('id');
 
 		// If current user checked out, he may check in.
-		if ($checkedOut == $userId)
+		if ((int)$checkedOut === $userId)
 		{
 			return true;
 		}
@@ -823,7 +827,7 @@ abstract class BwPostmanHelper
 
 		// Initialise variables.
 		$user      = Factory::getUser();
-		$userId    = $user->get('id');
+		$userId    = (int)$user->get('id');
 		$recordId  = 0;
 		$createdBy = 0;
 		$action    = 'edit';
@@ -872,6 +876,7 @@ abstract class BwPostmanHelper
 
 		// First check for item specific edit.own permission
 		$editOwnItem = self::checkActionPermission($view, 'edit.own', $recordId);
+
 		if ($editOwnItem !== false)
 		{
 			if ($editOwnItem)
@@ -888,6 +893,7 @@ abstract class BwPostmanHelper
 
 		// Second check for item specific edit permission
 		$editItem = self::checkActionPermission($view, $action, $recordId);
+
 		if ($editItem !== false)
 		{
 			return $editItem;
@@ -902,7 +908,7 @@ abstract class BwPostmanHelper
 				$ownerId = self::getCreatorId($view, $recordId, $createdBy);
 
 				// Now test the owner is the user. If the owner matches 'me' then allow access.
-				if ($ownerId == $userId)
+				if ($ownerId === $userId)
 				{
 					return true;
 				}
@@ -953,6 +959,7 @@ abstract class BwPostmanHelper
 
 		// Check permission for submitted record
 		$allowed = self::checkActionPermission($view, $action, $recordId);
+
 		if ($allowed !== false)
 		{
 			return $allowed;
@@ -1002,12 +1009,12 @@ abstract class BwPostmanHelper
 
 		if (is_array($recordId))
 		{
-			$id			= $recordId[0];
-			$recordId	= $id;
+			$id       = $recordId[0];
+			$recordId = $id;
 		}
 
 		// Check permission
-		$res      = self::checkActionPermission('newsletter', $action, $recordId);
+		$res = self::checkActionPermission('newsletter', $action, $recordId);
 
 		return $res;
 	}
@@ -1026,7 +1033,7 @@ abstract class BwPostmanHelper
 		$action = 'send';
 
 		// Check permission
-		$res      = self::checkActionPermission('newsletter', $action);
+		$res = self::checkActionPermission('newsletter', $action);
 
 		return $res;
 	}
@@ -1045,7 +1052,7 @@ abstract class BwPostmanHelper
 		$action = 'send';
 
 		// Check permission
-		$res      = self::checkActionPermission('newsletter', $action);
+		$res = self::checkActionPermission('newsletter', $action);
 
 		return $res;
 	}
@@ -1064,7 +1071,7 @@ abstract class BwPostmanHelper
 		$action = 'send';
 
 		// Check permission
-		$res      = self::checkActionPermission('newsletter', $action);
+		$res = self::checkActionPermission('newsletter', $action);
 
 		return $res;
 	}
@@ -1085,7 +1092,7 @@ abstract class BwPostmanHelper
 	public static function canArchive($view = '', $itemsFromArchive = 0, $recordId = 0)
 	{
 		// Initialise variables.
-		$action	= 'archive';
+		$action = 'archive';
 
 		// This part is needed for displaying the button
 		if ($recordId === 0)
@@ -1133,7 +1140,7 @@ abstract class BwPostmanHelper
 	public static function canDelete($view = '', $recordId = 0)
 	{
 		// Initialise variables.
-		$action   = 'delete';
+		$action           = 'delete';
 		$itemsFromArchive = 1;
 
 		// This part is needed for displaying the button
@@ -1146,6 +1153,7 @@ abstract class BwPostmanHelper
 
 		// Check permission for submitted record
 		$allowed = self::checkActionPermission($view, $action, $recordId);
+
 		if ($allowed !== false)
 		{
 			return $allowed;
@@ -1183,7 +1191,7 @@ abstract class BwPostmanHelper
 	public static function canRestore($view = '', $recordId = 0)
 	{
 		// Initialise variables.
-		$action   = 'restore';
+		$action           = 'restore';
 		$itemsFromArchive = 1;
 
 		// This part is needed for displaying the button
@@ -1196,6 +1204,7 @@ abstract class BwPostmanHelper
 
 		// Check permission for submitted record
 		$allowed = self::checkActionPermission($view, $action, $recordId);
+
 		if ($allowed !== false)
 		{
 			return $allowed;
@@ -1236,8 +1245,8 @@ abstract class BwPostmanHelper
 		// Get # of all published mailinglists
 		$query->select('COUNT(*)');
 		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->where($_db->quoteName('published') . ' = ' . 1);
+		$query->where($_db->quoteName('archive_flag') . ' = ' . 0);
 
 		$_db->setQuery($query);
 
@@ -1270,10 +1279,9 @@ abstract class BwPostmanHelper
 	public static function checkQueueEntries()
 	{
 		$db   = Factory::getDbo();
-
-		// Get queue entries, which cannot be sent because sending trials have reached limit
 		$query = $db->getQuery(true);
 
+		// Get queue entries, which cannot be sent because sending trials have reached limit
 		$query->select('DISTINCT ' . $db->quoteName('content_id'));
 		$query->from($db->quoteName('#__bwpostman_sendmailqueue'));
 		$query->where($db->quoteName('trial') . ' >= 2');
@@ -1306,6 +1314,7 @@ abstract class BwPostmanHelper
 	{
 		$zahl    = 1960;
 		$no_spam = '';
+
 		if ($mode == 1)
 		{
 			$no_spam = (date("dmy", time())) * $zahl;
@@ -1408,18 +1417,20 @@ abstract class BwPostmanHelper
 		imagefill($im, 0, $imgWidth, $color);
 		$fileName = mathCaptcha($im, $sizeMath, $fileTTF, $imgHeight);
 
-		// Uebermittelter Hash-Wert ueberpruefen
-		if (!preg_match('/^[a-f0-9]{32}$/', $_GET['codeCaptcha']))
+		$codeCaptcha = Factory::getApplication()->input->get('codeCaptcha');
+
+		// Uebermittelten Hash-Wert ueberpruefen
+		if (!preg_match('/^[a-f0-9]{32}$/', $codeCaptcha))
 		{
-			$_GET['codeCaptcha'] = md5(microtime());
+			$codeCaptcha = md5(microtime());
 		}
 
 		// Image speichern
-		imagepng($im, $captchaDir . '/' . $_GET['codeCaptcha'] . '_' . $fileName . '.png');
+		imagepng($im, $captchaDir . '/' . $codeCaptcha . '_' . $fileName . '.png');
 		imagedestroy($im);
 		// Bild ausgeben
-//		readfile(Uri::base() . 'components/com_bwpostman/assets/capimgdir/' . $_GET['codeCaptcha'] . '_' . $fileName . '.png');
-		readfile($captchaDir . '/' . $_GET['codeCaptcha'] . '_' . $fileName . '.png');
+//		readfile(Uri::base() . 'components/com_bwpostman/assets/capimgdir/' .$codeCaptcha . '_' . $fileName . '.png');
+		readfile($captchaDir . '/' . $codeCaptcha . '_' . $fileName . '.png');
 	}
 
 	/**
@@ -1471,6 +1482,7 @@ abstract class BwPostmanHelper
 		}
 
 		$handle = @opendir($dir);
+
 		while (false !== ($file = readdir($handle)))
 		{
 			if (preg_match("=^\.{1,2}$=", $file))
@@ -1485,6 +1497,7 @@ abstract class BwPostmanHelper
 			else
 			{
 				$lastTime = ceil((time() - filemtime($dir . $file)) / 60);
+
 				if ($lastTime > $delFile)
 				{
 					if ($file != 'index.html')
@@ -1516,10 +1529,8 @@ abstract class BwPostmanHelper
 		{
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
@@ -1534,40 +1545,40 @@ abstract class BwPostmanHelper
 	 *
 	 * @since
 	 */
-	public static function loadLanguage($file = 'com_bwpostman', $client = 'site')
-	{
-		static $loaded = array();
-
-		if ($client == 'site')
-		{
-			$lookup1 = JPATH_SITE;
-			$lookup2 = JPATH_SITE . 'component/com_bwpostman';
-		}
-		else
-		{
-			$client  = 'admin';
-			$lookup1 = JPATH_ADMINISTRATOR;
-			$lookup2 = JPATH_ADMINISTRATOR . 'component/com_bwpostman';
-		}
-
-		if (empty($loaded["{$client}/{$file}"]))
-		{
-			$lang    = Factory::getLanguage();
-			$english = false;
-			if ($lang->getTag() != 'en-GB' && !JDEBUG && !$lang->getDebug())
-			{
-				$lang->load($file, $lookup2, 'en-GB', true, false);
-				$english = true;
-			}
-
-			$loaded[$file] = $lang->load($file, $lookup1, null, $english, false)
-				|| $lang->load($file, $lookup2, null, $english, false)
-				|| $lang->load($file, $lookup1, $lang->getDefault(), $english, false)
-				|| $lang->load($file, $lookup2, $lang->getDefault(), $english, false);
-		}
-
-		return $loaded[$file];
-	}
+//	public static function loadLanguage($file = 'com_bwpostman', $client = 'site')
+//	{
+//		static $loaded = array();
+//
+//		if ($client == 'site')
+//		{
+//			$lookup1 = JPATH_SITE;
+//			$lookup2 = JPATH_SITE . 'component/com_bwpostman';
+//		}
+//		else
+//		{
+//			$client  = 'admin';
+//			$lookup1 = JPATH_ADMINISTRATOR;
+//			$lookup2 = JPATH_ADMINISTRATOR . 'component/com_bwpostman';
+//		}
+//
+//		if (empty($loaded["{$client}/{$file}"]))
+//		{
+//			$lang    = Factory::getLanguage();
+//			$english = false;
+//			if ($lang->getTag() != 'en-GB' && !JDEBUG && !$lang->getDebug())
+//			{
+//				$lang->load($file, $lookup2, 'en-GB', true, false);
+//				$english = true;
+//			}
+//
+//			$loaded[$file] = $lang->load($file, $lookup1, null, $english, false)
+//				|| $lang->load($file, $lookup2, null, $english, false)
+//				|| $lang->load($file, $lookup1, $lang->getDefault(), $english, false)
+//				|| $lang->load($file, $lookup2, $lang->getDefault(), $english, false);
+//		}
+//
+//		return $loaded[$file];
+//	}
 
 	/**
 	 * Method to parse language file
@@ -1579,52 +1590,52 @@ abstract class BwPostmanHelper
 	 *
 	 * @since
 	 */
-	protected static function parseLanguage($lang, $filename)
-	{
-		if (!file_exists($filename))
-		{
-			return false;
-		}
-
-		$version = phpversion();
-
-		// Capture hidden PHP errors from the parsing.
-		$php_errormsg = null;
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
-
-		if ($version >= '5.3.1')
-		{
-			$contents = file_get_contents($filename);
-			$contents = str_replace('_QQ_', '"\""', $contents);
-			$strings  = @parse_ini_string($contents);
-		}
-		else
-		{
-			$strings = @parse_ini_file($filename);
-
-			if ($version == '5.3.0' && is_array($strings))
-			{
-				foreach ($strings as $key => $string)
-				{
-					$strings[$key] = str_replace('_QQ_', '"', $string);
-				}
-			}
-		}
-
-		// Restore error tracking to what it was before.
-		ini_set('track_errors', $track_errors);
-
-		if (!is_array($strings))
-		{
-			$strings = array();
-		}
-
-		$lang->_strings = array_merge($lang->_strings, $strings);
-
-		return !empty($strings);
-	}
-
+//	protected static function parseLanguage($lang, $filename)
+//	{
+//		if (!file_exists($filename))
+//		{
+//			return false;
+//		}
+//
+//		$version = phpversion();
+//
+//		// Capture hidden PHP errors from the parsing.
+//		$php_errormsg = null;
+//		$track_errors = ini_get('track_errors');
+//		ini_set('track_errors', true);
+//
+//		if ($version >= '5.3.1')
+//		{
+//			$contents = file_get_contents($filename);
+//			$contents = str_replace('_QQ_', '"\""', $contents);
+//			$strings  = @parse_ini_string($contents);
+//		}
+//		else
+//		{
+//			$strings = @parse_ini_file($filename);
+//
+//			if ($version == '5.3.0' && is_array($strings))
+//			{
+//				foreach ($strings as $key => $string)
+//				{
+//					$strings[$key] = str_replace('_QQ_', '"', $string);
+//				}
+//			}
+//		}
+//
+//		// Restore error tracking to what it was before.
+//		ini_set('track_errors', $track_errors);
+//
+//		if (!is_array($strings))
+//		{
+//			$strings = array();
+//		}
+//
+//		$lang->_strings = array_merge($lang->_strings, $strings);
+//
+//		return !empty($strings);
+//	}
+//
 	/**
 	 * Method to get creator id
 	 *
@@ -1640,13 +1651,13 @@ abstract class BwPostmanHelper
 	 */
 	private static function getCreatorId($view, $recordId, $createdBy)
 	{
-		$creatorId = $createdBy;
+		$creatorId = (int)$createdBy;
 
-		$createdPropertyName    = 'created_by';
+		$createdPropertyName = 'created_by';
 
 		if ($view == 'subscriber')
 		{
-			$createdPropertyName    = 'registered_by';
+			$createdPropertyName = 'registered_by';
 		}
 
 		if (!$creatorId)
@@ -1655,15 +1666,15 @@ abstract class BwPostmanHelper
 			$query	= $db->getQuery(true);
 
 			$query->select($db->quoteName($createdPropertyName));
-			$query->from($db->quoteName('#__bwpostman_' . $view . 's'));
-			$query->where($db->quoteName('id') . ' = ' . $recordId);
+			$query->from($db->quoteName('#__bwpostman_' . $db->escape($view) . 's'));
+			$query->where($db->quoteName('id') . ' = ' . (int)$recordId);
 
 			$db->setQuery($query);
 
 			$creatorId = $db->loadResult();
 		}
 
-		return $creatorId;
+		return (int)$creatorId;
 	}
 
 	/**

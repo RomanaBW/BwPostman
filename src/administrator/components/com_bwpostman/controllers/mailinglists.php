@@ -85,7 +85,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
 
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 	}
 
 	/**
@@ -127,7 +127,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 			return $this;
 		}
 
-		$jinput		= Factory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 
 		// Show the layout depending on the task
 		switch($this->getTask())
@@ -145,6 +145,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 		}
 
 		parent::display();
+
 		return $this;
 	}
 

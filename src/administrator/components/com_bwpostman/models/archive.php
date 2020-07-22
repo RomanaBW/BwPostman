@@ -199,6 +199,7 @@ class BwPostmanModelArchive extends JModelList
 
 		// Adjust the context to support modal and tabbed layouts.
 		$layout = $app->input->get('layout', 'newsletters');
+
 		if ($layout)
 		{
 			$this->context .= '.' . $layout;
@@ -306,8 +307,6 @@ class BwPostmanModelArchive extends JModelList
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @access      protected
-	 *
 	 * @return    string Query
 	 *
 	 * @throws Exception
@@ -317,12 +316,12 @@ class BwPostmanModelArchive extends JModelList
 	protected function getListQuery()
 	{
 		// Set some shortcuts
-		$db         = $this->_db;
-		$pef_tbl_a  = $db->quoteName('a');
-		$pef_tbl_b  = $db->quoteName('b');
-		$pef_tbl_c  = $db->quoteName('c');
-		$pef_tbl_d  = $db->quoteName('d');
-		$pef_tbl_u  = $db->quoteName('u');
+		$db        = $this->_db;
+		$pef_tbl_a = $db->quoteName('a');
+		$pef_tbl_b = $db->quoteName('b');
+		$pef_tbl_c = $db->quoteName('c');
+		$pef_tbl_d = $db->quoteName('d');
+		$pef_tbl_u = $db->quoteName('u');
 
 		$query      = $db->getQuery(true);
 		$sub_query  = $db->getQuery(true);
@@ -444,12 +443,13 @@ class BwPostmanModelArchive extends JModelList
 
 		// Filter by access level.
 		$access = $this->getState('filter.access');
+
 		if ($access)
 		{
 			$query->where($pef_tbl_a . '.' . $db->quoteName('access') . ' = ' . (int) $access);
 		}
 
-		$query->where($pef_tbl_a . '.' . $db->quoteName('archive_flag') . ' = ' . (int) 1);
+		$query->where($pef_tbl_a . '.' . $db->quoteName('archive_flag') . ' = ' . 1);
 
 		// Get the WHERE clause and ORDER-BY clause for the query
 		$this->buildQueryWhere($layout, $query);
@@ -493,8 +493,8 @@ class BwPostmanModelArchive extends JModelList
 	protected function buildQueryWhere($layout, &$query)
 	{
 		$db = $this->_db;
-		$pef_tbl_a  = $db->quoteName('a');
-		$pef_tbl_c  = $db->quoteName('c');
+		$pef_tbl_a = $db->quoteName('a');
+		$pef_tbl_c = $db->quoteName('c');
 
 		// Get the search string
 		$filtersearch = $this->getState('filter.search_filter');
@@ -545,6 +545,7 @@ class BwPostmanModelArchive extends JModelList
 
 				// Filter by published state
 				$published = $this->getState('filter.published');
+
 				if (is_numeric($published))
 				{
 					$query->where('a.published = ' . (int) $published);
@@ -572,6 +573,7 @@ class BwPostmanModelArchive extends JModelList
 
 				// Filter by emailformat.
 				$emailformat = $this->getState('filter.emailformat');
+
 				if ($emailformat != '')
 				{
 					$query->where('a.emailformat = ' . (int) $emailformat);
@@ -579,6 +581,7 @@ class BwPostmanModelArchive extends JModelList
 
 				// Get the status
 				$filter_status = $this->getState('filter.status');
+
 				if ($filter_status != '')
 				{
 					$query->where('a.status = ' . (int) $filter_status);
@@ -614,6 +617,7 @@ class BwPostmanModelArchive extends JModelList
 
 				// Filter by format.
 				$format = $this->getState('filter.tpl_id');
+
 				if ($format)
 				{
 					if ($format == '1')

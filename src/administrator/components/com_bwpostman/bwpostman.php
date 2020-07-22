@@ -58,7 +58,7 @@ try
 
 	// Perform the Request task
 	$jinput = Factory::getApplication()->input;
-	$task = $jinput->getCmd('task');
+	$task   = $jinput->getCmd('task');
 	$controller->execute($task);
 
 	// Redirect if set by the controller

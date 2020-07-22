@@ -60,9 +60,9 @@ class JFormFieldAuthors extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
-		$sub_query	= $_db->getQuery(true);
+		$db        = Factory::getDbo();
+		$query     = $db->getQuery(true);
+		$sub_query = $db->getQuery(true);
 
 		// Build the sub query
 		$sub_query->select('nl.created_by');
@@ -75,11 +75,11 @@ class JFormFieldAuthors extends JFormFieldList
 		$query->from('#__users AS u');
 		$query->where('u.id IN (' . $sub_query . ')');
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$options = $_db->loadObjectList();
+			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

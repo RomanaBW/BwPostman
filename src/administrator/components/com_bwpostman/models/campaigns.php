@@ -28,6 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
@@ -104,6 +105,7 @@ class BwPostmanModelCampaigns extends JModelList
 
 		// Adjust the context to support modal layouts.
 		$layout = $app->input->get('layout');
+
 		if ($layout)
 		{
 			$this->context .= '.' . $layout;
@@ -202,7 +204,7 @@ class BwPostmanModelCampaigns extends JModelList
 
 		$sub_query->select('COUNT(' . $this->_db->quoteName('b.id') . ') AS ' . $this->_db->quoteName('newsletters'));
 		$sub_query->from($this->_db->quoteName('#__bwpostman_newsletters') . 'AS ' . $this->_db->quoteName('b'));
-		$sub_query->where($this->_db->quoteName('b.archive_flag') . ' = ' . (int) 0);
+		$sub_query->where($this->_db->quoteName('b.archive_flag') . ' = ' . 0);
 		$sub_query->where($this->_db->quoteName('b.campaign_id') . ' = ' . $this->_db->quoteName('a.id'));
 
 		return $sub_query;
@@ -293,6 +295,7 @@ class BwPostmanModelCampaigns extends JModelList
 		if (Factory::getApplication()->isClient('site'))
 		{
 			$access = $this->getState('filter.access');
+
 			if ($access)
 			{
 				$this->query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
@@ -317,7 +320,8 @@ class BwPostmanModelCampaigns extends JModelList
 
 			if (!$user->authorise('core.admin'))
 			{
-				$groups = implode(',', $user->getAuthorisedViewLevels());
+				$groups = $user->getAuthorisedViewLevels();
+				$groups = implode(',', ArrayHelper::toInteger($groups));
 				$this->query->where($this->_db->quoteName('a.access') . ' IN (' . $groups . ')');
 			}
 		}
@@ -338,7 +342,7 @@ class BwPostmanModelCampaigns extends JModelList
 
 		if ($allowed_items != 'all')
 		{
-			$allowed_ids    = implode(',', $allowed_items);
+			$allowed_ids = implode(',', ArrayHelper::toInteger($allowed_items));
 			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 		}
 	}
@@ -353,6 +357,7 @@ class BwPostmanModelCampaigns extends JModelList
 	private function getFilterByPublishedState()
 	{
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			$this->query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
@@ -372,7 +377,7 @@ class BwPostmanModelCampaigns extends JModelList
 	 */
 	private function getFilterByArchiveState()
 	{
-		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
 	/**

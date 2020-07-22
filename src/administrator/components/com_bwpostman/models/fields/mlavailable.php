@@ -30,6 +30,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
+use Joomla\Utilities\ArrayHelper;
 
 JFormHelper::loadFieldClass('radio');
 
@@ -75,24 +76,25 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 	 */
 	public function getInput()
 	{
-		$app		= Factory::getApplication();
-		$_db		= Factory::getDbo();
-		$query		= $_db->getQuery(true);
-		$ml_select	= array();
-		$selected	= '';
+		$app       = Factory::getApplication();
+		$db        = Factory::getDbo();
+		$query     = $db->getQuery(true);
+		$ml_select = array();
+		$selected  = '';
 
 		// Get item and selected mailinglists
-		$item		= $app->getUserState('com_bwpostman.edit.newsletter.data');
-		$nl_id		= $app->getUserState('com_bwpostman.edit.newsletter.id', null);
-		$subs_id	= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
+		$item    = $app->getUserState('com_bwpostman.edit.newsletter.data');
+		$nl_id   = $app->getUserState('com_bwpostman.edit.newsletter.id', null);
+		$subs_id = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
-		$disabled	= $this->element['disabled'] == 'true' ? true : false;
-		$readonly	= $this->element['readonly'] == 'true' ? true : false;
-		$attributes	= ' ';
-		$return		= '';
+		$disabled   = $this->element['disabled'] == 'true' ? true : false;
+		$readonly   = $this->element['readonly'] == 'true' ? true : false;
+		$attributes = ' ';
+		$return     = '';
 
 		$type = 'checkbox';
-		$v = $this->element['class'];
+		$v    = $this->element['class'];
+
 		if ($v)
 		{
 			$attributes .= 'class="' . $v . '" ';
@@ -103,12 +105,14 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		}
 
 		$m = $this->element['multiple'];
+
 		if ($m)
 		{
 			$type = 'checkbox';
 		}
 
 		$value = $this->value;
+
 		if (!is_array($value))
 		{
 			// Convert the selections field to an array.
@@ -125,17 +129,18 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 
 		if (is_object($item))
 		{
-			(property_exists($item, 'ml_available')) ? $ml_select	= $item->ml_available : $ml_select = '';
+			(property_exists($item, 'ml_available')) ? $ml_select = $item->ml_available : $ml_select = '';
 		}
 		elseif (is_array($nl_id) && !empty($nl_id))
 		{
+			$nl_id = ArrayHelper::toInteger($nl_id);
 			$query->select("m.mailinglist_id AS selected");
-			$query->from($_db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS m');
-			$query->where($_db->quoteName('m.newsletter_id') . ' IN (' . implode(',', $nl_id) . ')');
-			$_db->setQuery($query);
+			$query->from($db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS m');
+			$query->where($db->quoteName('m.newsletter_id') . ' IN (' . implode(',', $nl_id) . ')');
+			$db->setQuery($query);
 			try
 			{
-				$ml_select = $_db->loadColumn();
+				$ml_select = $db->loadColumn();
 			}
 			catch (RuntimeException $e)
 			{
@@ -145,13 +150,14 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 
 		if (is_array($subs_id) && !empty($subs_id))
 		{
+			$subs_id = ArrayHelper::toInteger($subs_id);
 			$query->select("s.mailinglist_id AS selected");
-			$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS s');
-			$query->where($_db->quoteName('s.subscriber_id') . ' IN (' . implode(',', $subs_id) . ')');
-			$_db->setQuery($query);
+			$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS s');
+			$query->where($db->quoteName('s.subscriber_id') . ' IN (' . implode(',', $subs_id) . ')');
+			$db->setQuery($query);
 			try
 			{
-				$ml_select = $_db->loadColumn();
+				$ml_select = $db->loadColumn();
 			}
 			catch (RuntimeException $e)
 			{
@@ -169,10 +175,10 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 			}
 
 			$i++;
-			$return	.= '<p class="mllabel"><label for="' . $this->id . '_' . $i . '" class="mailinglist_label noclear checkbox">';
-			$return	.= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]" ';
-			$return	.= 'value="' . $option->value . '"' . $attributes . $selected . ' />';
-			$return	.= '<span class="editlinktip hasTip hasTooltip" title="' . $option->text . '">' . $option->title . '</span></label></p>';
+			$return .= '<p class="mllabel"><label for="' . $this->id . '_' . $i . '" class="mailinglist_label noclear checkbox">';
+			$return .= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]" ';
+			$return .= 'value="' . $option->value . '"' . $attributes . $selected . ' />';
+			$return .= '<span class="editlinktip hasTip hasTooltip" title="' . $option->text . '">' . $option->title . '</span></label></p>';
 		}
 
 		return $return;
@@ -193,28 +199,28 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		$app	= Factory::getApplication();
 
 		// Initialize variables.
-		$user_id		= null;
-		$accesslevels	= array();
-		$options        = array();
-		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
+		$user_id      = null;
+		$accesslevels = array();
+		$options      = array();
+		$subs_id      = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
-		$_db		= Factory::getDbo();
-		$query		= $_db->getQuery(true);
-		$query_user	= $_db->getQuery(true);
+		$db         = Factory::getDbo();
+		$query      = $db->getQuery(true);
+		$query_user = $db->getQuery(true);
 
 		// get user_ids if exists
 		if (is_array($subs_id) && !empty($subs_id))
 		{
-			$query_user->select($_db->quoteName('user_id'));
-			$query_user->from($_db->quoteName('#__bwpostman_subscribers'));
-			$query_user->where($_db->quoteName('id') . ' = ' . (int) $subs_id[0]);
+			$query_user->select($db->quoteName('user_id'));
+			$query_user->from($db->quoteName('#__bwpostman_subscribers'));
+			$query_user->where($db->quoteName('id') . ' = ' . (int) $subs_id[0]);
 
-			$_db->setQuery($query_user);
+			$db->setQuery($query_user);
 
 			try
 			{
-				$user_id = $_db->loadResult();
+				$user_id = $db->loadResult();
 			}
 			catch (RuntimeException $e)
 			{
@@ -225,29 +231,30 @@ class JFormFieldMlAvailable extends JFormFieldRadio
 		// get authorized viewlevels
 		if ($user_id)
 		{
-			$accesslevels	= Access::getAuthorisedViewLevels($user_id);
+			$accesslevels = Access::getAuthorisedViewLevels($user_id);
 		}
 
 		$query->select("id AS value, title, description AS text");
-		$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-		$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->from($db->quoteName('#__bwpostman_mailinglists'));
+		$query->where($db->quoteName('published') . ' = ' . 1);
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+
 		if (is_array($accesslevels) && !empty($accesslevels))
 		{
-			$query->where($_db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
+			$query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
 		}
 		else
 		{
-			$query->where($_db->quoteName('access') . ' = ' . (int) 1);
+			$query->where($db->quoteName('access') . ' = ' . 1);
 		}
 
 		$query->order('title ASC');
 
-		$_db->setQuery($query);
+		$db->setQuery($query);
 
 		try
 		{
-			$options = $_db->loadObjectList();
+			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

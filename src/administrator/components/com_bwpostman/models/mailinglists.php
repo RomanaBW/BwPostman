@@ -28,6 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
@@ -105,6 +106,7 @@ class BwPostmanModelMailinglists extends JModelList
 
 		// Adjust the context to support modal layouts.
 		$layout = $app->input->get('layout');
+
 		if ($layout)
 		{
 			$this->context .= '.' . $layout;
@@ -166,7 +168,7 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$db = $this->_db;
+		$db          = $this->_db;
 		$this->query = $db->getQuery(true);
 		$sub_query   = $this->getSubQuery();
 
@@ -199,7 +201,7 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	private function getSubQuery()
 	{
-		$db = $this->_db;
+		$db         = $this->_db;
 		$sub_query  = $db->getQuery(true);
 		$sub_query2	= $db->getQuery(true);
 
@@ -276,7 +278,7 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	private function getQueryOrder()
 	{
-		$db = $this->_db;
+		$db        = $this->_db;
 		$orderCol  = $this->state->get('list.ordering');
 		$orderDirn = $this->state->get('list.direction', 'asc');
 
@@ -300,8 +302,9 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	private function getFilterByAccessLevelFilter()
 	{
-		$db = $this->_db;
+		$db     = $this->_db;
 		$access = $this->getState('filter.access');
+
 		if ($access)
 		{
 			$this->query->where($db->quoteName('a.access') . ' = ' . (int) $access);
@@ -320,13 +323,14 @@ class BwPostmanModelMailinglists extends JModelList
 	private function getFilterByViewLevel()
 	{
 		$db = $this->_db;
+
 		if (Factory::getApplication()->isClient('site'))
 		{
 			$user = Factory::getUser();
 
 			if (!$user->authorise('core.admin'))
 			{
-				$groups = implode(',', $user->getAuthorisedViewLevels());
+				$groups = implode(',', ArrayHelper::toInteger($user->getAuthorisedViewLevels()));
 				$this->query->where($db->quoteName('a.access') . ' IN (' . $groups . ')');
 			}
 		}
@@ -343,12 +347,12 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	private function getFilterByComponentPermissions()
 	{
-		$db = $this->_db;
-		$allowed_items  = BwPostmanHelper::getAllowedRecords('mailinglist', 'edit');
+		$db            = $this->_db;
+		$allowed_items = BwPostmanHelper::getAllowedRecords('mailinglist', 'edit');
 
 		if ($allowed_items != 'all')
 		{
-			$allowed_ids    = implode(',', $allowed_items);
+			$allowed_ids = implode(',', ArrayHelper::toInteger($allowed_items));
 			$this->query->where($db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 		}
 	}
@@ -362,8 +366,9 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	private function getFilterByPublishedState()
 	{
-		$db = $this->_db;
+		$db        = $this->_db;
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			$this->query->where($db->quoteName('a.published') . ' = ' . (int) $published);
@@ -398,7 +403,7 @@ class BwPostmanModelMailinglists extends JModelList
 	 */
 	private function getFilterBySearchword()
 	{
-		$db = $this->_db;
+		$db           = $this->_db;
 		$filtersearch = $this->getState('filter.search_filter');
 		$search       = '%' . $db->escape($this->getState('filter.search'), true) . '%';
 

@@ -6,6 +6,32 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
+Version 2.4.0 released (2020-07-31)----
+
+New
++ Enhanced mail verification at import of subscribers
++ Import of Joomla classes by php use
++ Sending of newsletters switched to ajax handling, improved look and feel
++ Log level of BwPostman selectable at options of component
+
+Bugfix
+# Avoid error message at deinstallation by not loading logger at deinstallation
+# Add own sql update method to ensure these updates are handled correctly
+# Error message at sending of newsletters resolved, if gzip compression is set at Joomla settings
+# Use of group ids in place of english group names at restoring tables
+
+Improvement
+~ Memory usage, time consumption and error handling at restoring tables improved
+~ Input data at front end and back end made more secure
+~ Import of subscribes secured, information texts improved
+~ Check of imported user groups at restoring tables enhances by default user groups
+~ Adjust name of media folder of BwPostman to Joomla default
+~ Personalization of managing mails introduced (i.e. confirmation mail)
+~ Use of SimpleXML for creating and restoring tables and creating subscriber export
+~ Inline javascript moved to files to improve security and loading time
+~ Lot of code optimization (smaller methods, less code duplication, helper classes extended, …) as preparation for Joomla 4
+
+
 Version 2.3.1 released (2019-06-08)----
 
 Bugfix

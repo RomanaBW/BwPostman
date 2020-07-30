@@ -583,26 +583,4 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 
 		parent::display();
 	}
-
-	/**
-	 * Method to set the tab state while changing tabs, used for building the appropriate toolbar
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function changeTab()
-	{
-		$app    = Factory::getApplication();
-		$jinput = Factory::getApplication()->input;
-		$tab    = $jinput->get('tab', 'confirmed');
-
-		$app->setUserState('com_bwpostman.subscribers.tab', $tab);
-
-		$link = Route::_('index.php?option=com_bwpostman&view=subscribers', false);
-
-		$this->setRedirect($link);
-	}
 }

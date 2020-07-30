@@ -103,7 +103,9 @@ $colNum = 7;
 								<th class="d-none d-md-table-cell" style="min-width: 80px;" scope="col">
 									<?php echo HtmlHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_FIRSTNAME', 'a.firstname', $listDirn, $listOrder); ?>
 								</th>
-								<?php if($this->params->get('show_gender')) { ?>
+								<?php if($this->params->get('show_gender')) {
+									$colNum = 8;
+									?>
 									<th class="d-none d-md-table-cell" style="width: 7%;" scope="col">
 										<?php echo HtmlHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_GENDER', 'a.gender', $listDirn, $listOrder); ?>
 									</th>
@@ -160,7 +162,7 @@ $colNum = 7;
 									<?php
 									if($this->params->get('show_gender'))
 									{
-										$colNum = 8; ?>
+										?>
 										<td>
 											<?php
 											if ($item->gender === '1')

@@ -204,9 +204,9 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app	= Factory::getApplication();
+		$app = Factory::getApplication();
 
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['subscriber'])
 		{
@@ -256,8 +256,8 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$app	= Factory::getApplication();
-		$tab	= $app->getUserState($this->context . '.tab', 'confirmed');
+		$app = Factory::getApplication();
+		$tab = $app->input->get('tab', 'confirmed');
 
 		// Get the toolbar object instance
 		$bar = Toolbar::getInstance('toolbar');

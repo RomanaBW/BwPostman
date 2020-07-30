@@ -1451,66 +1451,6 @@ class Com_BwPostmanInstallerScript
 	}
 
 	/**
-	 * sets parameter values in the component's row of the extension table
-	 *
-	 * @param array     $param_array
-	 *
-	 * @return  void
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-//	private function setParams($param_array)
-//	{
-//		if (count($param_array) > 0)
-//		{
-//			// read the existing component value(s)
-//			$db	= Factory::getDbo();
-//			$query	= $db->getQuery(true);
-//			$params = '';
-//
-//			$query->select($db->quoteName('params'));
-//			$query->from($db->quoteName('#__extensions'));
-//			$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-//			$db->setQuery($query);
-//
-//			try
-//			{
-//				$params = json_decode($db->loadResult(), true);
-//			}
-//			catch (RuntimeException $e)
-//			{
-//				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-//			}
-//
-//			// add the new variable(s) to the existing one(s)
-//			foreach ($param_array as $name => $value)
-//			{
-//				$params[(string) $name] = (string) $value;
-//			}
-//
-//			// store the combined new and existing values back as a JSON string
-//			$paramsString = json_encode($params);
-//			$query	= $db->getQuery(true);
-//
-//			$query->update($db->quoteName('#__extensions'));
-//			$query->set($db->quoteName('params') . " = " . $db->quote($paramsString));
-//			$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-//			$db->setQuery($query);
-//
-//			try
-//			{
-//				$db->execute();
-//			}
-//			catch (RuntimeException $e)
-//			{
-//				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-//			}
-//		}
-//	}
-
-	/**
 	 * shows the HTML after installation/update
 	 *
 	 * @param   boolean $update
@@ -1573,24 +1513,22 @@ class Com_BwPostmanInstallerScript
 		$asset_path = 'components/com_bwpostman/assets';
 		?>
 
-		<link rel="stylesheet" href="<?php echo Route::_($asset_path . '/css/install_j4.css'); ?>" type="text/css" />
+		<link rel="stylesheet" href="<?php echo Route::_($asset_path . '/css/install.css'); ?>" type="text/css" />
 
-		<div id="com_bwp_install_header" class="text-center">
+		<div id="com_bwp_install_header">
 			<a href="https://www.boldt-webservice.de" target="_blank">
-				<img class="img-fluid mx-auto d-block border-0" src="<?php echo Route::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
+				<img border="0" align="center" src="<?php echo Route::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
 			</a>
 		</div>
 		<div class="top_line"></div>
 
-		<div id="com_bwp_install_outer" class="row">
-			<div class="col-lg-12 text-center p-2 mt-2">
-				<h1><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_WELCOME') ?></h1>
-			</div>
-			<div id="com_bwp_install_left" class="col-lg-6 mb-2">
+		<div id="com_bwp_install_outer">
+			<h1><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_WELCOME') ?></h1>
+			<div id="com_bwp_install_left">
 				<div class="com_bwp_install_welcome">
 					<p><?php echo Text::_('COM_BWPOSTMAN_DESCRIPTION') ?></p>
 				</div>
-				<div class="com_bwp_install_finished text-center">
+				<div class="com_bwp_install_finished">
 					<h2>
 						<?php
 						if ($update)
@@ -1608,8 +1546,8 @@ class Com_BwPostmanInstallerScript
 				<?php
 				if ($show_right)
 				{ ?>
-					<div class="cpanel text-center mb-3">
-						<div class="icon btn">
+					<div class="cpanel">
+						<div class="icon">
 							<a href="<?php echo Route::_('index.php?option=com_bwpostman'); ?>">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1619,7 +1557,7 @@ class Com_BwPostmanInstallerScript
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
 							</a>
 						</div>
-						<div class="icon btn">
+						<div class="icon">
 							<a href="<?php echo $manual; ?>" target="_blank">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1629,7 +1567,7 @@ class Com_BwPostmanInstallerScript
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
 							</a>
 						</div>
-						<div class="icon btn">
+						<div class="icon">
 							<a href="<?php echo $forum; ?>" target="_blank">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1644,13 +1582,13 @@ class Com_BwPostmanInstallerScript
 				} ?>
 			</div>
 
-			<div id="com_bwp_install_right" class="col-lg-6">
+			<div id="com_bwp_install_right">
 				<?php
 				if ($show_right)
 				{
 					if ($string_special != '')
 					{ ?>
-						<div class="com_bwp_install_specialnote p-3">
+						<div class="com_bwp_install_specialnote">
 							<h2><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_SPECIAL_NOTE_LBL') ?></h2>
 							<p class="urgent"><?php echo $string_special; ?></p>
 						</div>
@@ -1660,19 +1598,19 @@ class Com_BwPostmanInstallerScript
 					<?php
 					if ($show_update)
 					{ ?>
-						<div class="com_bwp_install_updateinfo mb-3 p-3">
-							<h2 class="mb-3"><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
+						<div class="com_bwp_install_updateinfo">
+							<h2><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
 							<?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_CHANGELOG_INFO'); ?>
 							<?php if ($string_new != '') { ?>
-								<h3 class="mb-2"><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
+								<h3><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
 								<p><?php echo $string_new; ?></p>
 							<?php } ?>
 							<?php if ($string_improvement != '') { ?>
-								<h3 class="mb-2"><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
+								<h3><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
 								<p><?php echo $string_improvement; ?></p>
 							<?php } ?>
 							<?php if ($string_bugfix != '') { ?>
-								<h3 class="mb-2"><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
+								<h3><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
 								<p><?php echo $string_bugfix; ?></p>
 							<?php } ?>
 						</div>
@@ -1681,8 +1619,8 @@ class Com_BwPostmanInstallerScript
 				}
 				else
 				{ ?>
-					<div class="cpanel text-center mb-3">
-						<div class="icon btn">
+					<div class="cpanel">
+						<div class="icon">
 							<a href="<?php echo Route::_('index.php?option=com_bwpostman&token=' . Session::getFormToken()); ?>">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1692,7 +1630,7 @@ class Com_BwPostmanInstallerScript
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
 							</a>
 						</div>
-						<div class="icon btn">
+						<div class="icon">
 							<a href="<?php echo $manual; ?>" target="_blank">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1702,7 +1640,7 @@ class Com_BwPostmanInstallerScript
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
 							</a>
 						</div>
-						<div class="icon btn">
+						<div class="icon">
 							<a href="<?php echo $forum; ?>" target="_blank">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1716,9 +1654,9 @@ class Com_BwPostmanInstallerScript
 					<?php
 				} ?>
 			</div>
-			<div class="clr clearfix"></div>
+			<div class="clr"></div>
 
-			<div class="com_bwp_install_footer col-12 text-center my-3">
+			<div class="com_bwp_install_footer">
 				<p class="small">
 					<?php echo Text::_('&copy; 2012-');
 					echo date(" Y") ?> by
@@ -2053,6 +1991,11 @@ class Com_BwPostmanInstallerScript
 				var modalcontent = document.getElementById('bwp_modal-content');
 				modalcontent.style.height = viewportheight-(viewportheight*{$percent})+'px';
 				";
+
+				$js .= "
+								modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
+						";
+
 				$js .= "
 
 				// Get the modal

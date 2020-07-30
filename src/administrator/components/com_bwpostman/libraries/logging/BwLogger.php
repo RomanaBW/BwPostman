@@ -151,12 +151,13 @@ class BwLogger extends JLogLoggerW3c
 	 * @return  void
 	 *
 	 * @since   2.4.0
-	 * @throws  RuntimeException
+	 *
+	 * @throws  \RuntimeException
 	 */
 	public function addEntry(LogEntry $entry)
 	{
 		// Get component option loglevel
-		$param = ComponentHelper::getParams('com_bwpostman');
+		$param    = ComponentHelper::getParams('com_bwpostman');
 		$loglevel = $param->get('loglevel');
 
 		// Rewrite Joomla default loglevel (Info) to the one of BwPostman (Info)

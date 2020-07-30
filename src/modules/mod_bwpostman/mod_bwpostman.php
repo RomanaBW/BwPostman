@@ -29,7 +29,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -40,20 +39,18 @@ require_once JPATH_ROOT . '/administrator/components/com_bwpostman/helpers/subsc
 
 jimport('joomla.application.component.helper');
 
-$app		= Factory::getApplication();
-$document	= Factory::getDocument();
-$module     = ModuleHelper::getModule('mod_bwpostman');
+$app      = Factory::getApplication();
+$document = Factory::getDocument();
+$module   = ModuleHelper::getModule('mod_bwpostman');
 
 // Require component admin helper class
-if (is_file(JPATH_ADMINISTRATOR . '/components/com_bwpostman/bwpostman.php'))
-{
-	require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
-}
-else
+if (!is_file(JPATH_ADMINISTRATOR . '/components/com_bwpostman/bwpostman.php'))
 {
 	$app->enqueueMessage(Text::_('MOD_BWPOSTMANERROR_COMPONENT_NOT_INSTALLED'), 'error');
 	return false;
 }
+
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 
 // Get document object, set document title and add css
 $templateName	= $app->getTemplate();
@@ -65,19 +62,19 @@ if (!ComponentHelper::isEnabled('com_bwpostman'))
 }
 else
 {
-	$user		= Factory::getUser();
-	$userid		= $user->get('id');
-	$usertype	= '';
+	$user     = Factory::getUser();
+	$userid   = $user->get('id');
+	$usertype = '';
 
-	$subscriberid	= modBwPostmanHelper::getSubscriberID();
-	$captcha		= BwPostmanHelper::getCaptcha(1);
+	$subscriberid = modBwPostmanHelper::getSubscriberID();
+	$captcha      = BwPostmanHelper::getCaptcha(1);
 
 	// use module or component parameters
 	if ($params->get('com_params') == 0)
 	{
 		// Module params
 		$paramsComponent = $params;
-		$module_id   = $module->id;
+		$module_id       = $module->id;
 	}
 	else
 	{
@@ -120,9 +117,9 @@ else
 			$emailformat .= ' checked="checked"';
 		}
 
-		$emailformat          .= '/>';
-		$emailformat          .= '<label for="formatHtmlMod"><span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
-		$emailformat          .= '</fieldset>';
+		$emailformat .= '/>';
+		$emailformat .= '<label for="formatHtmlMod"><span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
+		$emailformat .= '</fieldset>';
 
 		$lists['emailformat'] = $emailformat;
 
@@ -133,8 +130,8 @@ else
 		$mod_mls = $params->get('mod_ml_available');
 
 		// Get the usertype
-		$usertype = '';
-		$usertypeArray	= UserHelper::getUserGroups($userid);
+		$usertype      = '';
+		$usertypeArray = UserHelper::getUserGroups($userid);
 
 		if (!empty($usertypeArray))
 		{

@@ -35,7 +35,7 @@ use Joomla\CMS\HTML\HTMLHelper;
  *
  * @since
  */
-abstract class BwPostmanHTMLHelper {
+class BwPostmanHTMLHelper {
 
 	/**
 	 * Creates the buttons view at the start page
@@ -293,9 +293,9 @@ abstract class BwPostmanHTMLHelper {
 	 */
 	static function getManualButton($section)
 	{
-		$manualLink = self::getManualLink($section);
+		$manualLink    = self::getManualLink($section);
 		$manualOptions = array('url' => $manualLink, 'icon-class' => 'book', 'idName' => 'manual', 'toolbar-class' => 'ml-auto');
-		$manualButton = new JButtonExtlink('Extlink', Text::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
+		$manualButton  = new JButtonExtlink('Extlink', Text::_('COM_BWPOSTMAN_MANUAL'), $manualOptions);
 
 		return $manualButton;
 	}
@@ -308,8 +308,8 @@ abstract class BwPostmanHTMLHelper {
 	 */
 	static function getForumButton()
 	{
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
-		$forumOptions  = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
+		$forumLink    = self::getForumLink();
+		$forumOptions = array('url' => $forumLink, 'icon-class' => 'users', 'idName' => 'forum');
 		$forumButton  = new JButtonExtlink('Extlink', Text::_('COM_BWPOSTMAN_FORUM'), $forumOptions);
 
 		return $forumButton;
@@ -327,7 +327,8 @@ abstract class BwPostmanHTMLHelper {
 		$lang = Factory::getLanguage();
 		$sectionPart = "handbuch-zu-bwpostman.html";
 
-		$lang_ver		= substr($lang->getTag(), 0, 2);
+		$lang_ver = substr($lang->getTag(), 0, 2);
+
 		if ($lang_ver != 'de')
 		{
 			$baseLink = "https://www.boldt-webservice.de/index.php/en/forum-en/manuals/";

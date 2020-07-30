@@ -31,9 +31,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\User\UserHelper;
 
 /**
  * Class BwPostmanSubscriberHelper

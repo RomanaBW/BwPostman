@@ -42,7 +42,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/B
  *
  * @since
  */
-abstract class BwPostmanHelper
+class BwPostmanHelper
 {
 	/**
 	 * property to hold permissions array
@@ -1989,7 +1989,6 @@ abstract class BwPostmanHelper
 
 		return BwAccess::check($userId, $action, $assetName, false, $recordId);
 	}
-
 
 	/**
 	 * Method to get query where part for mailinglists

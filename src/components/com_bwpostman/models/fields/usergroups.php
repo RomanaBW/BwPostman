@@ -161,9 +161,9 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 
 			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
-			$query->select('CONCAT("-",' . $db->quoteName('a') . '.' . $db->quoteName('id') . ' AS  value');
+			$query->select('CONCAT("-",' . $db->quoteName('a') . '.' . $db->quoteName('id') . ') AS  value');
 			$query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');
-			$query->select('COUNT(DISTINCT ' . $db->quoteName('b') . '.' . $db->quoteName('id')  . ' AS level');
+			$query->select('COUNT(DISTINCT ' . $db->quoteName('b') . '.' . $db->quoteName('id')  . ') AS level');
 			$query->from('#__usergroups as a');
 			$query->join(
 				'LEFT',

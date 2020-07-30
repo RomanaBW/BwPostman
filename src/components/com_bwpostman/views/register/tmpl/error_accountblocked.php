@@ -43,9 +43,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 <div id="bwpostman">
 	<div id="bwp_com_error_account_blocked">
 		<?php
-		if ($this->params->def('show_page_title', 1)) { ?>
+		if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != ''))
+		{
+			?>
 			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
-				<?php echo $this->escape($this->params->get('page_title')); ?>
+				<?php echo $this->escape($this->params->get('page_heading')); ?>
 			</h1>
 		<?php
 		}

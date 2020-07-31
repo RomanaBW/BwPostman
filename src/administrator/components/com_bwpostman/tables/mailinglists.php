@@ -424,7 +424,7 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 (here, before since 2.3.0 at mailinglist helper)
+	 * @since 3.0.0 (here, before since 2.3.0 at mailinglist helper)
 	 */
 	public function getMailinglistsByRestriction($mailinglists, $condition = 'available', $archived = 0, $restricted = true)
 	{
@@ -493,7 +493,7 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 * @since       3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
 	public function getAuthorizedMailinglists($userId)
 	{
@@ -583,7 +583,7 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function getCompleteMailinglistsOfSubscriber($mailinglist_ids)
 	{
@@ -632,7 +632,7 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getMailinglistsIdTitle($mls)
 	{
@@ -666,7 +666,7 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
+	 * @since  3.0.0 (here, before since 1.0.8 at subscribers model)
 	 */
 	public function getMailinglistsValueText()
 	{
@@ -702,7 +702,7 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
+	 * @since  3.0.0 (here, before since 1.0.8 at subscribers model)
 	 */
 	public function getPublishedMailinglistsIds()
 	{
@@ -736,7 +736,7 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0 (here, before since 1.0.1 at FE newsletters model)
+	 * @since  3.0.0 (here, before since 1.0.1 at FE newsletters model)
 	 */
 	public function getAllowedMailinglists($viewLevels)
 	{
@@ -774,7 +774,7 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -790,7 +790,7 @@ class BwPostmanTableMailinglists extends JTable
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

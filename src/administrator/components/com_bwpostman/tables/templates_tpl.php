@@ -159,7 +159,7 @@ class BwPostmanTableTemplates_Tpl extends JTable
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -175,7 +175,7 @@ class BwPostmanTableTemplates_Tpl extends JTable
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

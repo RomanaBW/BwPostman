@@ -591,7 +591,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @param JForm $form   subscriber form
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	static public function customizeSubscriberDataFields(&$form)
 	{
@@ -635,7 +635,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @return  integer     $user_id
 	 *
-	 * @since   2.4.0 (here)
+	 * @since   3.0.0 (here)
 	 */
 	public static function getJoomlaUserIdByEmail($email)
 	{
@@ -699,7 +699,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @throws Exception
 	 *
-	 * @since    2.4.0
+	 * @since    3.0.0
 	 */
 	public static function createSubscriberRegisteredBy(&$subscriber)
 	{
@@ -749,7 +749,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @throws Exception
 	 *
-	 * @since    2.4.0
+	 * @since    3.0.0
 	 */
 	public static function createSubscriberConfirmedBy(&$subscriber)
 	{

@@ -31,7 +31,7 @@ use Joomla\CMS\Factory;
 /**
  * Class BwPostmanCampaignHelper
  *
- * @since 2.4.0
+ * @since 3.0.0
  */
 abstract class BwPostmanCampaignHelper
 {
@@ -46,7 +46,7 @@ abstract class BwPostmanCampaignHelper
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	public static function getSingleCampaign($cam_id = null)
 	{
@@ -95,7 +95,7 @@ abstract class BwPostmanCampaignHelper
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	public static function getSelectedNewslettersOfCampaign($camId, $sent, $all)
 	{
@@ -155,7 +155,7 @@ abstract class BwPostmanCampaignHelper
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public static function getCampaignsFieldlistOptions($hasMailingdate = false, $archiveMatters = false)
 	{

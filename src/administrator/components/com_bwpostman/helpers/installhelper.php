@@ -208,7 +208,7 @@ class BwPostmanInstallHelper
 	 *
 	 * @return    boolean
 	 *
-	 * @since    2.4.0 here, before at install script since 1.0.1
+	 * @since    3.0.0 here, before at install script since 1.0.1
 	 *
 	 */
 	public static function adjustMLAccess()

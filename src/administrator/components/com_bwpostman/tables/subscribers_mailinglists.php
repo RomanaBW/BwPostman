@@ -119,7 +119,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0 (here, before since 2.2.0 at mailinglist helper)
+	 * @since       3.0.0 (here, before since 2.2.0 at mailinglist helper)
 	 */
 	public function getSubscribersOfMailinglist($ids)
 	{
@@ -154,7 +154,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 * @since   3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
 	public function deleteMailinglistsOfSubscriber($subscriber_id, $mailinglists = null)
 	{
@@ -195,7 +195,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 * @since   3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
 	public function storeMailinglistsOfSubscriber($subscriber_id, $mailinglist_ids)
 	{
@@ -241,7 +241,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	public function hasSubscriptionForMailinglist($subscriberId, $mailinglistId)
 	{
@@ -283,7 +283,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0 (here, before since 2.0.0 at mailinglist model)
+	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
 	 */
 	public function deleteMailinglistSubscribers($id)
 	{
@@ -317,7 +317,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function getMailinglistIdsOfSubscriber($sub_id)
 	{
@@ -349,7 +349,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -365,7 +365,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

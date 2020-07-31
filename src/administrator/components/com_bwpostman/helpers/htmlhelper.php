@@ -289,7 +289,7 @@ class BwPostmanHTMLHelper {
 	 *
 	 * @return JButtonExtlink
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	static function getManualButton($section)
 	{
@@ -304,7 +304,7 @@ class BwPostmanHTMLHelper {
 	 *
 	 * @return JButtonExtlink
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	static function getForumButton()
 	{

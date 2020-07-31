@@ -55,7 +55,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 *
 	 * @var integer
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $ready = 0;
 
@@ -64,7 +64,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 *
 	 * @var string
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $alertClass = 'success';
 
@@ -73,7 +73,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 *
 	 * @var string
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $errorMessage = '';
 
@@ -892,7 +892,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function handleBwException($errorCode, $result, $error, $step)
 	{

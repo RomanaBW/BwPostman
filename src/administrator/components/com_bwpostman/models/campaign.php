@@ -78,7 +78,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 *
 	 * @var array
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	private $mailinglists = array();
 
@@ -87,7 +87,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 *
 	 * @var array
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	private $ml_available = array();
 
@@ -96,7 +96,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 *
 	 * @var array
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	private $ml_unavailable = array();
 
@@ -105,7 +105,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 *
 	 * @var array
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	private $ml_intern = array();
 
@@ -114,7 +114,7 @@ class BwPostmanModelCampaign extends JModelAdmin
 	 *
 	 * @var array
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	private $usergroups = array();
 

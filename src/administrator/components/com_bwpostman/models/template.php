@@ -1331,7 +1331,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @return string|string[]|null
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function replaceZoomPaddingBasics($item, $content)
 	{
@@ -1393,7 +1393,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @return string|string[]
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function replaceEditAndUnsubscribeLink($itemid_edit, $preview_text)
 	{
@@ -1417,7 +1417,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 *
 	 * @return string
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function buildHtmlSkeleton($preview_text)
 	{

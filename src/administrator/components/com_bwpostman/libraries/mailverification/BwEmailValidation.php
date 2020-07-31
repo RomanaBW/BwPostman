@@ -43,7 +43,7 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/
  *
  * @link http://www.faqs.org/rfcs/rfc2821.html RFC 2821 - Simple Mail Transfer Protocol
  *
- * @since 2.4.0
+ * @since 3.0.0
  */
 class BwEmailValidation
 {
@@ -52,7 +52,7 @@ class BwEmailValidation
 	 *
 	 * @var resource
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $stream = false;
 
@@ -61,7 +61,7 @@ class BwEmailValidation
 	 *
 	 * @var int
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $port = 25;
 
@@ -70,7 +70,7 @@ class BwEmailValidation
 	 *
 	 * @var string
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $from = 'root@localhost';
 
@@ -79,7 +79,7 @@ class BwEmailValidation
 	 *
 	 * @var int
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $maxConnectionTimeout = 30;
 
@@ -88,7 +88,7 @@ class BwEmailValidation
 	 *
 	 * @var int
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $streamTimeout = 5;
 
@@ -98,7 +98,7 @@ class BwEmailValidation
 	 *
 	 * @var int
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $streamTimeoutWait = 0;
 
@@ -107,7 +107,7 @@ class BwEmailValidation
 	 *
 	 * @type integer
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $errorCounter = 0;
 
@@ -116,7 +116,7 @@ class BwEmailValidation
 	 *
 	 * @var BwLogger
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $logger;
 
@@ -125,14 +125,14 @@ class BwEmailValidation
 	 *
 	 * @type boolean
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public $doDebug = false;
 
 	/**
 	 * SMTP RFC standard line ending
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	const CRLF = "\r\n";
 
@@ -141,7 +141,7 @@ class BwEmailValidation
 	 *
 	 * @type string
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public $recentError = '';
 
@@ -150,7 +150,7 @@ class BwEmailValidation
 	 *
 	 * @param $logOptions
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function __construct($logOptions)
 	{
@@ -162,7 +162,7 @@ class BwEmailValidation
 	 *
 	 * @param string $email Email address
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function setEmailFrom($email)
 	{
@@ -179,7 +179,7 @@ class BwEmailValidation
 	 *
 	 * @param int $seconds
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function setConnectionTimeout($seconds)
 	{
@@ -194,7 +194,7 @@ class BwEmailValidation
 	 *
 	 * @param int $seconds
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function setStreamTimeout($seconds)
 	{
@@ -209,7 +209,7 @@ class BwEmailValidation
 	 *
 	 * @param int $seconds
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function setStreamTimeoutWait($seconds)
 	{
@@ -226,7 +226,7 @@ class BwEmailValidation
 	 *
 	 * @return boolean True if valid
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public static function validate($email)
 	{
@@ -240,7 +240,7 @@ class BwEmailValidation
 	 *
 	 * @return array Array of the found MX records
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function getMxRecords($hostname)
 	{
@@ -278,7 +278,7 @@ class BwEmailValidation
 	 *
 	 * @return string|array
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public static function parseEmail($email, $domainOnly = true)
 	{
@@ -299,7 +299,7 @@ class BwEmailValidation
 	 *
 	 * @return void
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected function setError($msg)
 	{
@@ -314,7 +314,7 @@ class BwEmailValidation
 	 *
 	 * @return boolean|string   True if the valid email also exist, else error message
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function check($email)
 	{
@@ -451,7 +451,7 @@ class BwEmailValidation
 	 *
 	 * @return string|boolean Returns a result code as an integer, false on failure
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected function streamQuery($query)
 	{
@@ -468,7 +468,7 @@ class BwEmailValidation
 	 *
 	 * @return string|boolean Response, false on failure
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected function streamResponse($timed = 0)
 	{
@@ -502,7 +502,7 @@ class BwEmailValidation
 	 *
 	 * @return string
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected function streamCode($str)
 	{

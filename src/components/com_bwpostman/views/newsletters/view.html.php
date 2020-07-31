@@ -75,7 +75,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	 *
 	 * @var integer   $Itemid
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	protected $Itemid;
 

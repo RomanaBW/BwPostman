@@ -241,7 +241,7 @@ class BwPostmanTableTemplates_Tags extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function saveTags($data, $tplId)
 	{
@@ -323,7 +323,7 @@ class BwPostmanTableTemplates_Tags extends JTable
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -339,7 +339,7 @@ class BwPostmanTableTemplates_Tags extends JTable
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

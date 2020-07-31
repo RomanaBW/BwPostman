@@ -237,7 +237,7 @@ class JFormFieldBwRules extends JFormFieldRules
 	 *
 	 * @return array
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected function getTabs(
 		$ajaxUri,
@@ -451,7 +451,7 @@ class JFormFieldBwRules extends JFormFieldRules
 	 *
 	 * @return integer|null
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function checkAssetId($assetId)
 	{

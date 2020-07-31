@@ -142,7 +142,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @var string
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public $sendmessage;
 	/**
@@ -712,7 +712,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * @see     FormRule
 	 * @see     InputFilter
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function validate($form, $data, $group = null)
 	{
@@ -2464,7 +2464,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function processChangedContent($form_data, $add_content, $nl_content)
 	{
@@ -2537,7 +2537,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return array
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function getDiffDataKeys($state_data, $form_data)
 	{
@@ -2557,7 +2557,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @return array
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function getDiffDataValues($state_data, $form_data)
 	{

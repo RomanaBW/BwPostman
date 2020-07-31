@@ -860,7 +860,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -876,7 +876,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{
@@ -894,7 +894,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function getSubscriberNewsletterData($subsId)
 	{
@@ -938,7 +938,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 * @since       3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
 	public function getSubscriberIdByUserId($uid)
 	{
@@ -1029,7 +1029,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 * @since       3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
 	public function getSubscriberState($id)
 	{
@@ -1065,7 +1065,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 * @since       3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
 	public function getUserIdOfSubscriber($id)
 	{
@@ -1106,7 +1106,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0 (here, before since 2.3.0 at subscriber helper)
+	 * @since       3.0.0 (here, before since 2.3.0 at subscriber helper)
 	 */
 	public function getNbrOfSubscribers($tester, $archived)
 	{
@@ -1156,7 +1156,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	public function getEditlink()
 	{
@@ -1201,7 +1201,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	public function createActivation()
 	{
@@ -1249,7 +1249,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function getSingleSubscriberData($id)
 	{
@@ -1284,7 +1284,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @return  object
 	 *
-	 * @since   2.4.0 (here)
+	 * @since   3.0.0 (here)
 	 */
 	public function getSubscriberDataByEmail($values)
 	{
@@ -1322,7 +1322,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function getSubscriberActivationData($activation)
 	{
@@ -1365,7 +1365,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function storeSubscriberActivation($id, $activation_ip)
 	{
@@ -1407,7 +1407,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function validateSubscriberEditlink($email, $editlink)
 	{
@@ -1447,7 +1447,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getEmailaddress($id)
 	{
@@ -1482,7 +1482,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function checkEditlink($editlink)
 	{
@@ -1520,7 +1520,7 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getSubscriberDataForSendmailqueue($content_id, $status, $subscribers)
 	{

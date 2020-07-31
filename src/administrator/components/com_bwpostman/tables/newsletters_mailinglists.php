@@ -78,7 +78,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function check()
 	{
@@ -161,7 +161,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -177,7 +177,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{
@@ -195,7 +195,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public function deleteNewsletter($nlId)
 	{
@@ -227,7 +227,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public function insertNewsletter($nlId, $mlId)
 	{
@@ -267,7 +267,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 (here, before since 2.3.0 at BE newsletter model)
+	 * @since 3.0.0 (here, before since 2.3.0 at BE newsletter model)
 	 */
 	public function getAssociatedMailinglistsByNewsletter($id)
 	{
@@ -303,7 +303,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0 (here, before since 2.0.0 at mailinglist model)
+	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
 	 */
 	public function deleteMailinglistNewsletters($id)
 	{

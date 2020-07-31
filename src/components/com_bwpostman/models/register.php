@@ -437,7 +437,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function setNotificationAddresses($mode = 'activation')
 	{

@@ -114,7 +114,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @var BwLogger
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $logger;
 
@@ -123,7 +123,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @var object
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $db;
 
@@ -132,7 +132,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @var object
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $xml;
 
@@ -140,7 +140,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * Constructor.
 	 *
 	 * @throws Exception
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 *
 	 */
 	public function __construct()
@@ -1035,7 +1035,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return boolean
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function handleNeededTables(array $neededTableNames, array $genericTableNames, array $neededTables)
 	{
@@ -1105,7 +1105,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return boolean
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function handleObsoleteTables(array $genericTableNames, array $neededTableNames)
 	{
@@ -1162,7 +1162,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return boolean
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function handleTableProperties(array $neededTables)
 	{
@@ -1191,7 +1191,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return bool
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function checkEngineAndCharset(array $neededTables)
 	{
@@ -1309,7 +1309,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return bool
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function checkPrimaryAndIncrement(array $neededTables)
 	{
@@ -1374,7 +1374,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return string|boolean
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function getInstalledPrimaryKey($table)
 	{
@@ -1419,7 +1419,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return bool
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function dropWrongPrimaryKey($table, $installed_key)
 	{
@@ -1459,7 +1459,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return bool
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function writeCorrectPrimaryKey($table)
 	{
@@ -1505,7 +1505,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return string|bool
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function getAutoIncrement($table)
 	{
@@ -1534,7 +1534,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return bool
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function setCorrectAutoIncrement($table)
 	{
@@ -1689,7 +1689,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return boolean|integer
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function handleNeededColumns(array $neededColumns, $i, array $search_cols_1, $checkTable)
 	{
@@ -1760,7 +1760,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return boolean|integer
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function handleObsoleteColumns($installedColumns, array $search_cols_2, $checkTable)
 	{
@@ -1829,7 +1829,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return bool
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function handleColumnAttributes(array $neededColumns, array $installedColumns, $checkTable)
 	{
@@ -2391,7 +2391,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since    1.0.1
 	 *
-	 * @deprecated since 2.4.0
+	 * @deprecated since 3.0.0
 	 */
 	private function buildXmlFooter()
 	{
@@ -4193,7 +4193,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @since    1.3.0
 	 *
-	 * @deprecated since 2.4.0
+	 * @deprecated since 3.0.0
 	 */
 	protected function getBwpmTableName($table)
 	{
@@ -5800,7 +5800,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return array|mixed
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected function getAllBwPostmanAssetsToSave()
 	{
@@ -5835,7 +5835,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return array|boolean
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 */
 	private function getItemAssetList($tableNameGeneric)
@@ -5868,7 +5868,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return boolean|integer
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 */
 	private function checkAssetIdExists($assetId)
@@ -5910,7 +5910,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return boolean
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 */
 	private function checkAssetNameFits($assetId, $assetName)
@@ -5950,7 +5950,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return integer|boolean
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 */
 	private function getAssetIdByAssetName($assetName)
@@ -5991,7 +5991,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return boolean
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 */
 	private function healAssetsAtItemsTable($tableNameGeneric, $assetIdsByName)
@@ -6031,7 +6031,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return array|boolean   list of assoc arrays of complete item data
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 */
 	private function getCompleteItemsWithoutAssetId($tableNameGeneric, $itemIds)
@@ -6411,7 +6411,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 *
 	 * @return array|boolean false on failure
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function getTableDataToSave($tableName)
 	{

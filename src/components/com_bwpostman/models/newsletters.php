@@ -617,7 +617,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public function getParamsFromSelectedMenuEntry($menuItem)
 	{
@@ -634,7 +634,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public function getMenuItemid()
 	{
@@ -961,7 +961,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected function getAppropriateParams()
 	{
@@ -991,7 +991,7 @@ class BwPostmanModelNewsletters extends JModelList
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
  */
 	private function getMailinglistsByViewlevel()
 	{

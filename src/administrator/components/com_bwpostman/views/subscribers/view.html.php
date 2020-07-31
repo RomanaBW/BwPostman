@@ -169,7 +169,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	 *
 	 * @var    array
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public $confirmed;
 
@@ -178,7 +178,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	 *
 	 * @var    array
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public $unconfirmed;
 
@@ -187,7 +187,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 	 *
 	 * @var    array
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public $testers;
 

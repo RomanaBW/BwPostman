@@ -73,7 +73,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	 *
 	 * @return	boolean|Table	A database object
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getTable($type = 'Newsletters', $prefix = 'BwPostmanTable', $config = array())
 	{

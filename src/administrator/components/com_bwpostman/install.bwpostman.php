@@ -136,7 +136,7 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @var    object
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	private $logger;
 
@@ -145,7 +145,7 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @var    string
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	private $log_cat = 'Installer';
 
@@ -1334,7 +1334,7 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected function processSqlUpdate($oldVersion)
 	{

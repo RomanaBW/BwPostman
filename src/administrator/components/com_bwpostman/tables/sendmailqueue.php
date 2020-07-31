@@ -526,7 +526,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public function clearQueue()
 	{
@@ -560,7 +560,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public function checkTrials($trial = 2, $count = 0)
 	{
@@ -617,7 +617,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -633,7 +633,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

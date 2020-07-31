@@ -128,7 +128,7 @@ class JFormFieldCustomscript extends JFormField
 	 *
 	 * @return  string  A string containing the html for the control group
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function renderField($options = array())
 	{

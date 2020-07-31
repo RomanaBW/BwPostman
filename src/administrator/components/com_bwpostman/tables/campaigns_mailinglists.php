@@ -78,7 +78,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function check()
 	{
@@ -165,7 +165,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 (here, before since 2.3.0 at BE newsletter model)
+	 * @since 3.0.0 (here, before since 2.3.0 at BE newsletter model)
 	 */
 	public function getAssociatedMailinglistsByCampaign($cam_id)
 	{
@@ -201,7 +201,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.4.0
+	 * @since	3.0.0
 	 */
 	public function getAllCampaignIdsByMlCam($mls, $cams)
 	{
@@ -236,7 +236,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0 (here, before since 2.0.0 at campaign model)
+	 * @since   3.0.0 (here, before since 2.0.0 at campaign model)
 	 */
 	public function deleteCampaignsMailinglistsEntry($id)
 	{
@@ -270,7 +270,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0 (here, before since 2.0.0 at mailinglist model)
+	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
 	 */
 	public function deleteMailinglistsCampaignsEntry($id)
 	{
@@ -304,7 +304,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function addCampaignsMailinglistsEntry(array $data)
 	{
@@ -344,7 +344,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -360,7 +360,7 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

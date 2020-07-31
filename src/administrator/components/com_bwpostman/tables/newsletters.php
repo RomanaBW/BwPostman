@@ -682,7 +682,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.4.0 (here, originally since 2.2.0 at model newsletter)
+	 * @since	3.0.0 (here, originally since 2.2.0 at model newsletter)
 	 */
 	public function isTemplate($id)
 	{
@@ -721,7 +721,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function archive($cid, $archive)
 	{
@@ -771,7 +771,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function getNewsletterData($nlId)
 	{
@@ -807,7 +807,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	public function getSelectedContentOfNewsletter($nlId)
 	{
@@ -842,7 +842,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 (here, before since 2.3.0 at newsletter helper)
+	 * @since 3.0.0 (here, before since 2.3.0 at newsletter helper)
 	 */
 	public function getCampaignId($nlId)
 	{
@@ -879,7 +879,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 (here, before since 2.3.0 at newsletter helper)
+	 * @since 3.0.0 (here, before since 2.3.0 at newsletter helper)
 	 */
 	public function getNbrOfNewsletters($sent, $archived)
 	{
@@ -968,7 +968,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0 (here, before since 2.0.0 at campaign model)
+	 * @since  3.0.0 (here, before since 2.0.0 at campaign model)
 	 */
 	public function deleteCampaignsNewsletters($id)
 	{
@@ -998,7 +998,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -1014,7 +1014,7 @@ class BwPostmanTableNewsletters extends JTable
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

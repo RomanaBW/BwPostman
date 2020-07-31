@@ -6151,7 +6151,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$assetLoopCounter = 0;
 		$asset_loop       = 0;
-		$asset_loop_max   = 1000;
+		$asset_loop_max   = 200;
 		$asset_max        = count($itemsWithoutAsset);
 
 		$mapOldAssetIdsToNew = array();

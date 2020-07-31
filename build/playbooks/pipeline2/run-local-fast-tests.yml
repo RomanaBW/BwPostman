@@ -9,7 +9,7 @@
       set_fact:
         joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('400b1-3', true) }}"
 #        joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('3916', true) }}"
-        bwpm_version: "{{ lookup('env','BW_TEST_BWPM_VERSION') | d('240', true) }}"
+        bwpm_version: "{{ lookup('env','BW_TEST_BWPM_VERSION') | d('300', true) }}"
         test_cat: "{{ lookup('env','BW_TEST_CAT') | d('details_nl', true) }}"
         test_debug: "{{ lookup('env','BW_TEST_DEBUG') | d('--debug', true) }}"
         vm_version: "{{ lookup('env','BW_TEST_VM_VERSION') | d('', true) }}"

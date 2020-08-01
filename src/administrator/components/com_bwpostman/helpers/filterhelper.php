@@ -27,6 +27,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * Component helper class
@@ -47,7 +48,7 @@ class BwPostmanFilterHelper
 	public static function filterContent($text)
 	{
 		// Filter settings
-		$config     = static::getParams('com_config');
+		$config     = ComponentHelper::getParams('com_config', true);
 		$user       = JFactory::getUser();
 		$userGroups = JAccess::getGroupsByUser($user->get('id'));
 

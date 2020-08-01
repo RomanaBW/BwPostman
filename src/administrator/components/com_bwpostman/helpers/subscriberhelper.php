@@ -887,20 +887,25 @@ class BwPostmanSubscriberHelper
 			}
 		}
 
-		// Simple check for valid mail address
-		if (!MailHelper::isEmailAddress($data['email']))
+		if (isset($data['email']) && $data['email'] != '')
 		{
-			return false;
-		}
-
-		// Enhanced check, if mail address is reachable
-		if ((int)$params->get('verify_mailaddress') === 1)
-		{
-			if(!self::validateEmail($data['email']))
+			// Simple check for valid mail address
+			if (!MailHelper::isEmailAddress($data['email']))
 			{
 				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', Text::_('COM_BWPOSTMAN_EMAIL')), 'error');
 
 				return false;
+			}
+
+			// Enhanced check, if mail address is reachable
+			if ((int)$params->get('verify_mailaddress') === 1)
+			{
+				if(!self::validateEmail($data['email']))
+				{
+					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', Text::_('COM_BWPOSTMAN_EMAIL')), 'error');
+
+					return false;
+				}
 			}
 		}
 

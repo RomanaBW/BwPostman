@@ -34,7 +34,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Mail\MailHelper;
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/filterhelper.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/filterhelper.php');
 
 /**
  * Class BwPostmanSubscriberHelper

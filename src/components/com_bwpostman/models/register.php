@@ -183,6 +183,12 @@ class BwPostmanModelRegister extends JModelAdmin
 
 		$app	= Factory::getApplication();
 
+		// Check input values
+		if (!BwPostmanSubscriberHelper::checkSubscriberInputFields($data))
+		{
+			return false;
+		}
+
 		// Create the editlink and check if the string doesn't exist twice or more
 		$subsTable = $this->getTable();
 

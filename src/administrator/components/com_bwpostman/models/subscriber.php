@@ -43,7 +43,6 @@ use Joomla\CMS\Filter\InputFilter;
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/mailinglisthelper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/subscriberhelper.php');
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/mailverification/BwEmailValidation.php');
 
 /**
  * BwPostman subscriber model
@@ -905,7 +904,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		if ($doValidation)
 		{
-			$emailValidationResult = $this->validateEmail($values['email']);
+			$emailValidationResult = BwPostmanSubscriberHelper::validateEmail($values['email']);
 
 			if ($emailValidationResult !== true)
 			{
@@ -1559,33 +1558,5 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$db->setQuery($query);
 
 		return $db->loadAssocList();
-	}
-
-	/**
-	 * Method to validate one email address
-	 *
-	 * @param	string   $email            Subscriber/Test-recipient email address
-	 *
-	 * @return	boolean  true if email address is valid
-	 *
-	 * @throws Exception
-	 *
-	 * @since 3.0.0
-	 */
-	public function validateEmail($email)
-	{
-		$config     = Factory::getConfig();
-		$logOptions = array();
-
-		$validator = new BwEmailValidation($logOptions);
-
-		$validator->setEmailFrom($config->get('mailfrom'));
-		$validator->setConnectionTimeout(30);
-		$validator->setStreamTimeout(5);
-		$validator->setStreamTimeoutWait(0);
-
-		$isValidEmail = $validator->check($email);
-
-		return $isValidEmail;
 	}
 }

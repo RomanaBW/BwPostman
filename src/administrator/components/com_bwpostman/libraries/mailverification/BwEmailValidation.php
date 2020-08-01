@@ -439,6 +439,7 @@ class BwEmailValidation
 				 */
 				return true;
 			case '550':
+				return false;
 			default :
 				return $response;
 		}

@@ -216,4 +216,32 @@ class BwPostmanFilterHelper
 		return $text;
 	}
 
+	/**
+	 * Method to check, if value contains a link
+	 *
+	 * @param   string $value The string to check
+	 *
+	 * @return  boolean  true if value contains link
+	 *
+	 * @since   3.0.0
+	 */
+	public static function containsLink($value)
+	{
+		$patterns = array(
+			"/(http|https|ftp):\/\//i",
+			 "/www\./i",
+		);
+
+		foreach ($patterns as $pattern)
+		{
+			preg_match($pattern, $value, $matches);
+
+			if (count($matches))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

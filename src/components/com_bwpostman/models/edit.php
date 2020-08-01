@@ -37,7 +37,6 @@ jimport('joomla.application.component.modeladmin');
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 
-
 /**
  * Class BwPostmanModelEdit
  *
@@ -338,6 +337,13 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	public function save($data)
 	{
+		// Check input values
+		if (!BwPostmanSubscriberHelper::checkSubscriberInputFields($data))
+		{
+			return false;
+		}
+
+
 		parent::save($data);
 
 		// Get the subscriber id

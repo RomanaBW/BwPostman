@@ -32,6 +32,9 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Mail\MailHelper;
+
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/filterhelper.php');
 
 /**
  * Class BwPostmanSubscriberHelper
@@ -823,6 +826,115 @@ class BwPostmanSubscriberHelper
 		}
 
 		return $columns;
+	}
+
+	/**
+	 * Method check, if entered values contains links and mail address is valid
+	 * Checking mail address is done with two steps:
+	 * - First only syntax of entered value is checked. This is done always
+	 * - Second mail address is checked, if it is reachable. This is only done, if parameter at options of BwPostman is set
+	 *
+	 * @return boolean	false, if link is present or mail address could not be verified
+	 *
+	 * @throws Exception
+	 *
+	 * @since 3.0.0
+	 */
+	static public function checkSubscriberInputFields($data)
+	{
+		$app    = Factory::getApplication();
+		$params = ComponentHelper::getParams('com_bwpostman', true);
+
+		// Check first name
+		if (isset($data['firstname']))
+		{
+			if (BwPostmanFilterHelper::containsLink($data['firstname']))
+			{
+				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', Text::_('COM_BWPOSTMAN_FIRSTNAME')), 'error');
+
+				return false;
+			}
+		}
+
+		// Check last name
+		if (isset($data['name']))
+		{
+			if (BwPostmanFilterHelper::containsLink($data['name']))
+			{
+				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', Text::_('COM_BWPOSTMAN_NAME')), 'error');
+
+				return false;
+			}
+		}
+
+		// Check special field
+		if (isset($data['special']))
+		{
+			if (BwPostmanFilterHelper::containsLink($data['special']))
+			{
+				if ($params->get('special_label') != '')
+				{
+					$fieldName = Text::_($params->get('special_label'));
+				}
+				else
+				{
+					$fieldName = Text::_('COM_BWPOSTMAN_SPECIAL');
+				}
+
+				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', $fieldName), 'error');
+
+				return false;
+			}
+		}
+
+		// Simple check for valid mail address
+		if (!MailHelper::isEmailAddress($data['email']))
+		{
+			return false;
+		}
+
+		// Enhanced check, if mail address is reachable
+		if ((int)$params->get('verify_mailaddress') === 1)
+		{
+			if(!self::validateEmail($data['email']))
+			{
+				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', Text::_('COM_BWPOSTMAN_EMAIL')), 'error');
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to validate one email address
+	 *
+	 * @param	string   $email            Subscriber/Test-recipient email address
+	 *
+	 * @return	boolean  true if email address is valid and reachable
+	 *
+	 * @throws Exception
+	 *
+	 * @since 3.0.0
+	 */
+	public static function validateEmail($email)
+	{
+		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/mailverification/BwEmailValidation.php');
+
+		$config     = Factory::getConfig();
+		$logOptions = array();
+
+		$validator = new BwEmailValidation($logOptions);
+
+		$validator->setEmailFrom($config->get('mailfrom'));
+		$validator->setConnectionTimeout(30);
+		$validator->setStreamTimeout(5);
+		$validator->setStreamTimeoutWait(0);
+
+		$isValidEmail = $validator->check($email);
+
+		return $isValidEmail;
 	}
 }
 

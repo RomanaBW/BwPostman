@@ -95,7 +95,7 @@ $colNum = 8;
 					<thead>
 					<tr>
 						<th style="width: 1%;" class="text-center">
-							<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>"
+							<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>"
 									onclick="Joomla.checkAll(this)" />
 						</th>
 						<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">

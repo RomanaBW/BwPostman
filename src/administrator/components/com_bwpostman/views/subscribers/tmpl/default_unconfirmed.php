@@ -131,7 +131,7 @@ $colNum = 8;
 							$name		= ($item->name) ? $item->name : Text::_('COM_BWPOSTMAN_SUB_NONAME');
 							?>
 						<tr class="row<?php echo $i % 2; ?>">
-							<td align="center"><?php echo HtmlHelper::_('grid.id', $i, $item->id, 0, 'cid', 'ub'); ?></td>
+							<td align="center"><?php echo HtmlHelper::_('grid.id', $i, $item->id, 0, 'cid', 'cb'); ?></td>
 							<td>
 								<?php
 								if ($item->checked_out)

@@ -237,7 +237,7 @@ class BwPostmanFilterHelper
 		{
 			preg_match($pattern, $value, $matches);
 
-			if (count($matches))
+			if (count($matches) > 0)
 			{
 				return true;
 			}

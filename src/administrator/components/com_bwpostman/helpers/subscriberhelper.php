@@ -850,7 +850,14 @@ class BwPostmanSubscriberHelper
 		{
 			if (BwPostmanFilterHelper::containsLink($data['firstname']))
 			{
-				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', Text::_('COM_BWPOSTMAN_FIRSTNAME')), 'error');
+				$fieldName = Text::_('COM_BWPOSTMAN_FIRSTNAME');
+
+				if ($app->isClient('administrator'))
+				{
+					$fieldName = Text::_('COM_BWPOSTMAN_SUB_FIRSTNAME');
+				}
+
+				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', $fieldName), 'error');
 
 				return false;
 			}
@@ -861,7 +868,14 @@ class BwPostmanSubscriberHelper
 		{
 			if (BwPostmanFilterHelper::containsLink($data['name']))
 			{
-				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', Text::_('COM_BWPOSTMAN_NAME')), 'error');
+				$fieldName = Text::_('COM_BWPOSTMAN_NAME');
+
+				if ($app->isClient('administrator'))
+				{
+					$fieldName = Text::_('COM_BWPOSTMAN_SUB_NAME');
+				}
+
+				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', $fieldName), 'error');
 
 				return false;
 			}
@@ -938,6 +952,12 @@ class BwPostmanSubscriberHelper
 		$validator->setStreamTimeoutWait(0);
 
 		$isValidEmail = $validator->check($email);
+
+		PluginHelper::importPlugin('system');
+		$dispatcher = \JEventDispatcher::getInstance();
+
+//		$isValidEmail = $dispatcher->trigger('onSubscriberBeforeSave', $email);
+
 
 		return $isValidEmail;
 	}

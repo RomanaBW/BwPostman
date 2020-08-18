@@ -388,6 +388,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		try
 		{
+			// Check input values for links
+			if (!BwPostmanSubscriberHelper::checkSubscriberInputFields($data))
+			{
+				return false;
+			}
+
 			// Get the user_id from the users-table
 			$data['user_id'] = BwPostmanSubscriberHelper::getJoomlaUserIdByEmail($data['email']);
 

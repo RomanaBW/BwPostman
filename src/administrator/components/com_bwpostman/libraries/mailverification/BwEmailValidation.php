@@ -323,7 +323,7 @@ class BwEmailValidation
 			$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_WRONG_FORMAT', $email);
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
 
-			return $message;
+			return false;
 		}
 
 		$this->errorCounter = 0; // Reset errors
@@ -345,7 +345,7 @@ class BwEmailValidation
 					$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_SOCKET_PROBLEM', $email);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
 
-					return $message;
+					return false;
 				}
 				else
 				{
@@ -379,7 +379,7 @@ class BwEmailValidation
 			$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_SOCKET_PROBLEM_GENERAL', $email);
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
 
-			return $message;
+			return false;
 		}
 
 		$this->streamQuery("HELO " . self::parseEmail($this->from));
@@ -414,7 +414,7 @@ class BwEmailValidation
 
 		fclose($this->stream);
 
-		$code = !empty($code2)?$code2:$code;
+//		$code = !empty($code2)?$code2:$code;
 
 		switch ($code)
 		{
@@ -439,9 +439,8 @@ class BwEmailValidation
 				 */
 				return true;
 			case '550':
-				return false;
 			default :
-				return $response;
+				return false;
 		}
 	}
 

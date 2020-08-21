@@ -37,6 +37,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Log\LogEntry;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 HTMLHelper::_('jquery.framework');
 
@@ -44,7 +45,6 @@ HTMLHelper::_('jquery.framework');
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 
@@ -264,6 +264,9 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$userId		= Factory::getUser()->get('id');
 		$layout		= Factory::getApplication()->input->get('layout', '');
 
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
+
 		// Get document object, set document title and add css
 		$document	= Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
@@ -278,21 +281,28 @@ class BwPostmanViewNewsletter extends JViewLegacy
 
 		if ($layout == 'nl_send')
 		{
-			$bar = Toolbar::getInstance('toolbar');
-			$alt = "COM_BWPOSTMAN_BACK";
+			$options['text'] = "COM_BWPOSTMAN_BACK";
+			$options['name'] = 'back';
+			$options['url'] = "index.php?option=com_bwpostman&view=newsletters";
+			$options['icon'] = "icon-arrow-left";
+
+			$button = new LinkButton('back');
 			$document->setTitle(Text::_('COM_BWPOSTMAN_ACTION_SEND'));
-			$backlink = 'index.php?option=com_bwpostman&view=newsletters';
 			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ACTION_SEND'), 'envelope');
-			$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+
+			$button->setOptions($options);
+
+			$toolbar->appendButton($button);
 		}
 		// If we come from sent newsletters, we have to do other stuff than normal
 		elseif ($layout == 'edit_publish')
 		{
-			ToolbarHelper::save('newsletter.publish_save');
-			ToolbarHelper::apply('newsletter.publish_apply');
-
-			ToolbarHelper::cancel('newsletter.cancel');
 			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
+
+			$toolbar->apply('newsletter.publish_apply');
+			$toolbar->save('newsletter.publish_save');
+
+			$toolbar->cancel('newsletter.cancel');
 		}
 		else
 		{
@@ -300,58 +310,69 @@ class BwPostmanViewNewsletter extends JViewLegacy
 			if ($isNew && $this->permissions['newsletter']['create'])
 			{
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
-				ToolbarHelper::save('newsletter.save');
-				ToolbarHelper::apply('newsletter.apply');
-				ToolbarHelper::save2new('newsletter.save2new');
-				ToolbarHelper::save2copy('newsletter.save2copy');
+
+				$toolbar->apply('newsletter.apply');
+
+				$saveGroup = $toolbar->dropdownButton('save-group');
+
+				$saveGroup->configure(
+					function (Toolbar $childBar)
+					{
+						$childBar->save('newsletter.save');
+						$childBar->save2new('newsletter.save2new');
+					}
+				);
 
 				$task		= Factory::getApplication()->input->get('task', '', 'string');
 				// If we came from the main page we will show a back button
 				if ($task == 'add')
 				{
-					ToolbarHelper::back();
+					$toolbar->back();
 				}
 				else
 				{
-					ToolbarHelper::cancel('newsletter.cancel');
+					$toolbar->cancel('newsletter.cancel', 'JTOOLBAR_CANCEL');
 				}
 			}
 			else
 			{
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
 				// Can't save the record if it's checked out.
 				if (!$checkedOut)
 				{
 					// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
 					if (BwPostmanHelper::canEdit('newsletter', $this->item->id))
 					{
-						ToolbarHelper::save('newsletter.save');
-						ToolbarHelper::apply('newsletter.apply');
+						$toolbar->apply('newsletter.apply');
 
 						if ($this->permissions['newsletter']['create'])
 						{
-							ToolbarHelper::save2new('newsletter.save2new');
-							ToolbarHelper::save2copy('newsletter.save2copy');
+							$saveGroup = $toolbar->dropdownButton('save-group');
+
+							$saveGroup->configure(
+								function (Toolbar $childBar)
+								{
+									$childBar->save('newsletter.save');
+									$childBar->save2new('newsletter.save2new');
+									$childBar->save2copy('newsletter.save2copy');
+								}
+							);
 						}
 					}
 				}
 
 				// Rename the cancel button for existing items
-				ToolbarHelper::cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
-				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
+				$toolbar->cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
 			}
 		}
 
-		ToolbarHelper::divider();
-		ToolbarHelper::spacer();
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
-		$bar = Toolbar::getInstance('toolbar');
-		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+		$manualButton = BwPostmanHTMLHelper::getManualButton('newsletter');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$manualLink = BwPostmanHTMLHelper::getManualLink('newsletter');
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
-
-		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
 	}
 
 	/**

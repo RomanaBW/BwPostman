@@ -31,12 +31,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
-
-// Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 /**
  * BwPostman mailinglist model

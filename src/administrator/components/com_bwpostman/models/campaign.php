@@ -35,9 +35,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/campaignhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');

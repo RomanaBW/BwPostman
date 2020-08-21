@@ -39,11 +39,10 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Log\LogEntry;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 jimport('joomla.plugin.plugin');
 
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
-require_once(JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers/bwpm_user2subscriberhelper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
@@ -340,18 +339,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$this->logger->addEntry(new LogEntry(sprintf('Array data_helper is empty: %s', !empty($data_helper)), BwLogger::BW_DEVELOPMENT, $this->log_cat));
 		}
 
-		if (!empty($data_helper))
-		{
-			$this->logger->addEntry(new LogEntry('Array is not okay'));
-			return true;
-		}
-
 		$this->form = $form;
 
 		Form::addFormPath(JPATH_PLUGINS . '/system/bwpm_user2subscriber/form');
 
-		$this->form->loadFile('form3', false);
-		$this->group = 'bwpm_user2subscriber';
+		$this->form->loadFile('form', false);
+		$this->group = null;
 
 		if (!($this->form instanceof Form))
 		{

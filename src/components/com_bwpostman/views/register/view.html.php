@@ -30,13 +30,13 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
-// Require helper classes
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/models/mailinglist.php');
 
 /**
@@ -113,11 +113,24 @@ class BwPostmanViewRegister extends JViewLegacy
 	 */
 	public function display($tpl=null)
 	{
-		$document       = Factory::getDocument();
-		$this->params	= ComponentHelper::getParams('com_bwpostman', true);
-		$layout		    = $this->getLayout();
+		$app      = Factory::getApplication();
+		$document = Factory::getDocument();
+		$layout   = $this->getLayout();
+		$params   = ComponentHelper::getParams('com_bwpostman', true);
 
-		$this->captcha	= BwPostmanHelper::getCaptcha(1);
+		$menuParams = new Registry;
+		$menu       = $app->getMenu()->getActive();
+
+		if ($menu)
+		{
+			$menuParams->loadString($menu->getParams());
+		}
+
+		$mergedParams = clone $menuParams;
+		$params->merge($mergedParams);
+
+		$this->params  = $params;
+		$this->captcha = BwPostmanHelper::getCaptcha(1);
 
 		// Add document css
 		$templateName	= Factory::getApplication()->getTemplate();

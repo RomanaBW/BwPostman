@@ -36,10 +36,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-
-// Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
-
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 /**
  * BwPostman Campaign Controller

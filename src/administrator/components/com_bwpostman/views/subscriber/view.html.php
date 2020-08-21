@@ -35,12 +35,12 @@ use Joomla\CMS\Toolbar\Button\LinkButton;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
@@ -453,45 +453,69 @@ class BwPostmanViewSubscriber extends JViewLegacy
 			$tester	= true;
 		}
 
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
+
 		// Get document object, set document title and add css
 		$document	= Factory::getDocument();
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber.js');
 
 		$alt 	= "COM_BWPOSTMAN_BACK";
-		$bar	= Toolbar::getInstance('toolbar');
 
-		switch ($layout) {
+		switch ($layout)
+		{
 			case 'export':
 				// Get document object, set document title and add css
 				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'));
 
 				// Set toolbar items
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'), 'upload');
-				ToolbarHelper::cancel('subscriber.cancel');
+
+				$toolbar->cancel('subscriber.cancel');
 				break;
 
 			case 'import':
 				// Set toolbar items
 				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
+
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
-				ToolbarHelper::cancel('subscriber.cancel');
+
+				$toolbar->cancel('subscriber.cancel');
 				break;
 
 			case 'import1':
 				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
-				$backlink 	= 'index.php?option=com_bwpostman&view=subscriber&layout=import';
+
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
-				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				ToolbarHelper::cancel('subscriber.cancel');
+
+				$options['text'] = "COM_BWPOSTMAN_BACK";
+				$options['name'] = 'back';
+				$options['url'] = "index.php?option=com_bwpostman&view=subscriber&layout=import";
+				$options['icon'] = "icon-arrow-left";
+
+				$button = new LinkButton('back');
+				$button->setOptions($options);
+
+				$toolbar->appendButton($button);
+				$toolbar->cancel('subscriber.cancel');
 				break;
 
 			case 'import2':
 				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'));
-				$backlink = 'index.php?option=com_bwpostman&view=subscriber&layout=import1';
+
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'), 'info');
-				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
-				ToolbarHelper::cancel('subscriber.cancel');
+
+				$options['text'] = "COM_BWPOSTMAN_BACK";
+				$options['name'] = 'back';
+				$options['url'] = "index.php?option=com_bwpostman&view=subscriber&layout=import1";
+				$options['icon'] = "icon-arrow-left";
+
+				$button = new LinkButton('back');
+				$button->setOptions($options);
+
+				$toolbar->appendButton($button);
+				$toolbar->cancel('subscriber.cancel');
 				break;
 
 			case 'edit':
@@ -514,59 +538,71 @@ class BwPostmanViewSubscriber extends JViewLegacy
 
 				// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
 				// For new records, check the create permission.
-				if ($this->item->id < 1 && $this->permissions['subscriber']['create']) {
-					ToolbarHelper::save('subscriber.save');
-					ToolbarHelper::apply('subscriber.apply');
-					ToolbarHelper::save2new('subscriber.save2new');
-					ToolbarHelper::save2copy('subscriber.save2copy');
-					ToolbarHelper::cancel('subscriber.cancel');
+				if ($this->item->id < 1 && $this->permissions['subscriber']['create'])
+				{
 					ToolbarHelper::title($title . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
+
+					$toolbar->apply('subscriber.apply');
+
+					$saveGroup = $toolbar->dropdownButton('save-group');
+
+					$saveGroup->configure(
+						function (Toolbar $childBar)
+						{
+							$childBar->save('subscriber.save');
+							$childBar->save2new('subscriber.save2new');
+							$childBar->save2copy('subscriber.save2copy');
+						}
+					);
+
+					$toolbar->cancel('subscriber.cancel');
 				}
 				else {
 					// Can't save the record if it's checked out.
 					if (!$checkedOut) {
+						ToolbarHelper::title($title . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
+
 						// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-						if (BwPostmanHelper::canEdit('subscriber', $this->item)) {
-							ToolbarHelper::save('subscriber.save');
-							ToolbarHelper::apply('subscriber.apply');
+						if (BwPostmanHelper::canEdit('subscriber', $this->item))
+						{
+							$toolbar->apply('subscriber.apply');
 
 							if ($this->permissions['subscriber']['create'])
 							{
-								ToolbarHelper::save2new('subscriber.save2new');
-								ToolbarHelper::save2copy('subscriber.save2copy');
+								$saveGroup = $toolbar->dropdownButton('save-group');
+
+								$saveGroup->configure(
+									function (Toolbar $childBar)
+									{
+										$childBar->save('subscriber.save');
+										$childBar->save2new('subscriber.save2new');
+										$childBar->save2copy('subscriber.save2copy');
+									}
+								);
 							}
 						}
 					}
 
 					// Rename the cancel button for existing items
-					ToolbarHelper::cancel('subscriber.cancel', 'JTOOLBAR_CLOSE');
-					ToolbarHelper::title($title . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
+					$toolbar->cancel('subscriber.cancel', 'JTOOLBAR_CLOSE');
 				}
 
 				$backlink 	= Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
-				$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman';
+				$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
 
 				// If we came from the cover page we will show a back-button
 				if ($backlink == $siteURL)
 				{
-					ToolbarHelper::spacer();
-					ToolbarHelper::divider();
-					ToolbarHelper::spacer();
-					ToolbarHelper::back();
+					$toolbar->back();
 				}
 		}
 
-		ToolbarHelper::spacer();
-		ToolbarHelper::divider();
-		ToolbarHelper::spacer();
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
-		$bar = Toolbar::getInstance('toolbar');
-		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+		$manualButton = BwPostmanHTMLHelper::getManualButton('subscriber');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$manualLink = BwPostmanHTMLHelper::getManualLink('subscriber');
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
-
-		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
 	}
 }

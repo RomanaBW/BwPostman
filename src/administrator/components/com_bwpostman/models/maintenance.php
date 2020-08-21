@@ -37,9 +37,9 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\LogEntry;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Require some classes
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/exceptions/BwException.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
@@ -135,6 +135,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * @since 2.4.0
 	 */
 	protected $xml;
+
+	/**
+	 * DomDocument object, database part
+	 *
+	 * @var object
+	 *
+	 * @since 3.0.0
+	 */
+	protected $databaseXml;
 
 	/**
 	 * Constructor.
@@ -265,13 +274,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				// do not save the table "bwpostman_templates_tpl"
 				if (strpos($table['tableNameRaw'], 'templates_tpl') === false)
 				{
-					$databaseXml = $this->xml->children();
-					$tablesXml   = $databaseXml->addChild('tables');
+					$databaseXml = $this->databaseXml;
+
+					$tablesXml = $this->xml->createElement('tables');
 
 					$tableName = $table['tableNameGeneric'];
 
 					// Build table description XML
 					$tableStructure = $this->buildXmlStructure($tableName, $tablesXml);
+					$databaseXml->appendChild($tablesXml);
 
 					if ($tableStructure === false)
 					{
@@ -329,12 +340,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 
 			// Reformat XML string with new lines and indents for each entry
-			$dom = new DOMDocument('1.0');
-			$dom->preserveWhiteSpace = false;
-			$dom->formatOutput = true;
-			$dom->loadXML($this->xml->asXML());
+			$this->xml->preserveWhiteSpace = false;
+			$this->xml->formatOutput = true;
 
-			$file_data = $dom->saveXML();
+			$file_data = $this->xml->saveXML();
 
 
 			if (fwrite($handle, $file_data) !== false)
@@ -461,14 +470,31 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$dbname = self::getDBName();
 
 		// build generals
-		$this->xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"  standalone="yes"?><mysqldump xmlns:xsi="http://www.w3.org/TR/xmlschema-1"></mysqldump>');
+		$this->xml = new DOMDocument('1.0', 'UTF-8');
 
-		$databaseXml = $this->xml->addChild('database');
-		$databaseXml->addAttribute('name', $dbname);
+		$dumpXml            = $this->xml->createElement('mysqldump');
+		$dumpXmlAttr        = $this->xml->createAttribute('xmlns:xsi');
+		$dumpXmlAttr->value = "http://www.w3.org/TR/xmlschema-1";
 
-		$generalsXml = $databaseXml->addChild('Generals');
-		$generalsXml->addChild('BwPostmanVersion', $version);
-		$generalsXml->addChild('SaveDate', Factory::getDate()->format("Y-m-d_H:i"));
+		$dumpXml->appendChild($dumpXmlAttr);
+		$this->xml->appendChild($dumpXml);
+
+		$databaseXml            = $this->xml->createElement('database');
+		$databaseXmlAttr        = $this->xml->createAttribute('name');
+		$databaseXmlAttr->value = $dbname;
+
+		$databaseXml->appendChild($databaseXmlAttr);
+		$dumpXml->appendChild($databaseXml);
+
+
+		$generalsXml = $this->xml->createElement('Generals');
+		$databaseXml->appendChild($generalsXml);
+
+		$bwpmVersionXml = $this->xml->createElement('BwPostmanVersion', $version);
+		$generalsXml->appendChild($bwpmVersionXml);
+
+		$saveDateXml = $this->xml->createElement('SaveDate', Factory::getDate()->format("Y-m-d_H:i"));
+		$generalsXml->appendChild($saveDateXml);
 
 		$assetsToSave = $this->getAllBwPostmanAssetsToSave();
 
@@ -501,18 +527,22 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 
 		// write component asset
-		$assetXml = $generalsXml->addChild('component_assets');
+		$assetXml = $this->xml->createElement('component_assets');
+		$generalsXml->appendChild($assetXml);
 
 		foreach ($assetsToSave as $assetToSave)
 		{
-			$datasetXml = $assetXml->addChild('dataset');
+			$datasetXml = $this->xml->createElement('dataset');
+			$assetXml->appendChild($datasetXml);
 
 			if (is_array($assetToSave))
 			{
 				foreach ($assetToSave as $key => $value)
 				{
 					$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
-					$datasetXml->addChild($key, $insert_string);
+
+					$dataXml = $this->xml->createElement($key, $insert_string);
+					$datasetXml->appendChild($dataXml);
 				}
 			}
 		}
@@ -525,21 +555,27 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			return false;
 		}
 
-		$userGroupsXml = $generalsXml->addChild('component_usergroups');
+		$userGroupsXml = $this->xml->createElement('component_usergroups');
+		$generalsXml->appendChild($userGroupsXml);
 
 		if (is_array($groups))
 		{
 			foreach ($groups as $item)
 			{
-				$userGroupXml = $userGroupsXml->addChild('usergroup');
+				$userGroupXml = $this->xml->createElement('usergroup');
+				$userGroupsXml->appendChild($userGroupXml);
 
 				foreach ($item as $key => $value)
 				{
 					$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
-					$userGroupXml->addChild($key, $insert_string);
+
+					$dataXml = $this->xml->createElement($key, $insert_string);
+					$userGroupXml->appendChild($dataXml);
 				}
 			}
 		}
+
+		$this->databaseXml = $databaseXml;
 
 		return true;
 	}
@@ -2217,8 +2253,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Builds the XML structure to export. Based on Joomla JDatabaseExporter
 	 *
-	 * @param string           $tableName name of table to build structure for
-	 * @param SimpleXMLElement $tablesXml
+	 * @param string        $tableName name of table to build structure for
+	 * @param DOMDocument   $tablesXml
 	 *
 	 * @return    boolean    true on success, false on database exception.
 	 *
@@ -2242,50 +2278,93 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			return false;
 		}
 
-		$tableStructureXML = $tablesXml->addChild('table_structure');
-		$tableStructureXML->addAttribute('table', $tableName);
-		$tableNameXml = $tableStructureXML->addChild('table_name');
-		$tableNameXml->addChild('name', $tableName);
-		$installQueryXml = $tableStructureXML->addChild('install_query');
-		$installQueryXml->addChild('query', $query);
+		$tableStructureXML     = $this->xml->createElement('table_structure');
+		$tableStructureXMLAttr = $this->xml->createAttribute('table');
+		$tableStructureXMLAttr->value = $tableName;
 
+		$tableStructureXML->appendChild($tableStructureXMLAttr);
+		$tablesXml->appendChild($tableStructureXML);
+
+		$tableNameXml = $this->xml->createElement('table_name');
+		$tableStructureXML->appendChild($tableNameXml);
+
+		$nameXml      = $this->xml->createElement('name', $tableName);
+		$tableNameXml->appendChild($nameXml);
+
+
+
+		$installQueryXml = $this->xml->createElement('install_query');
+		$tableStructureXML->appendChild($installQueryXml);
+
+		$queryXml = $this->xml->createElement('query', $query);
+		$installQueryXml->appendChild($queryXml);
 
 		if (is_array($fields))
 		{
-			$fieldsXml = $tableStructureXML->addChild('fields');
+			$fieldsXml = $this->xml->createElement('fields');
+			$tableStructureXML->appendChild($fieldsXml);
 
 			foreach ($fields as $field)
 			{
-				$fieldXml = $fieldsXml->addChild('field');
-				$fieldXml->addChild('Column', $field->Field);
-				$fieldXml->addChild('Type', $field->Type);
-				$fieldXml->addChild('Null', $field->Null);
-				$fieldXml->addChild('Key', $field->Key);
+				$fieldXml = $this->xml->createElement('field');
+				$fieldsXml->appendChild($fieldXml);
+
+				$columnXml = $this->xml->createElement('Column', $field->Field);
+				$fieldXml->appendChild($columnXml);
+
+				$typeXml = $this->xml->createElement('Type', $field->Type);
+				$fieldXml->appendChild($typeXml);
+
+				$nullXml = $this->xml->createElement('Null', $field->Null);
+				$fieldXml->appendChild($nullXml);
+
+				$keyXml = $this->xml->createElement('Key', $field->Key);
+				$fieldXml->appendChild($keyXml);
 
 				if (isset($field->Default))
 				{
-					$fieldXml->addChild('Default', $field->Default);
+					$keyXml = $this->xml->createElement('Default', $field->Default);
+					$fieldXml->appendChild($keyXml);
 				}
 
-				$fieldXml->addChild('Extra', $field->Extra);
+				$keyXml = $this->xml->createElement('Extra', $field->Extra);
+				$fieldXml->appendChild($keyXml);
 			}
 		}
 
 		if (is_array($keys))
 		{
-			$keysXml = $tableStructureXML->addChild('keys');
+			$keysXml = $this->xml->createElement('keys');
+			$tableStructureXML->appendChild($keysXml);
 
 			foreach ($keys as $key)
 			{
-				$keyXml = $keysXml->addChild('key');
-				$keyXml->addChild('Non_unique', $key->Non_unique);
-				$keyXml->addChild('Key_name', $key->Key_name);
-				$keyXml->addChild('Seq_in_index', $key->Seq_in_index);
-				$keyXml->addChild('Column_name', $key->Column_name);
-				$keyXml->addChild('Collation', $key->Collation);
-				$keyXml->addChild('Null', $key->Null);
-				$keyXml->addChild('Index_type', $key->Index_type);
-				$keyXml->addChild('Comment', $key->Comment);
+				$keyXml = $this->xml->createElement('key');
+				$keysXml->appendChild($keyXml);
+
+				$nonUniqueXml = $this->xml->createElement('Non_unique', $key->Non_unique);
+				$keyXml->appendChild($nonUniqueXml);
+
+				$keyNameXml = $this->xml->createElement('Key_name', $key->Key_name);
+				$keyXml->appendChild($keyNameXml);
+
+				$indexXml = $this->xml->createElement('Seq_in_index', $key->Seq_in_index);
+				$keyXml->appendChild($indexXml);
+
+				$colNameXml = $this->xml->createElement('Column_name', $key->Column_name);
+				$keyXml->appendChild($colNameXml);
+
+				$collationXml = $this->xml->createElement('Collation', $key->Collation);
+				$keyXml->appendChild($collationXml);
+
+				$nullXml = $this->xml->createElement('Null', $key->Null);
+				$keyXml->appendChild($nullXml);
+
+				$indexTypeXml = $this->xml->createElement('Index_type', $key->Index_type);
+				$keyXml->appendChild($indexTypeXml);
+
+				$commentXml = $this->xml->createElement('Comment', $key->Comment);
+				$keyXml->appendChild($commentXml);
 			}
 		}
 
@@ -2296,7 +2375,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 * Builds the XML data to export
 	 *
 	 * @param string           $tableName name of table
-	 * @param SimpleXMLElement $tablesXml    XML element tables
+	 * @param DOMDocument      $tablesXml    XML element tables
 	 *
 	 * @return   bool        True on success
 	 *
@@ -2306,14 +2385,19 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		$data = $this->getTableDataToSave($tableName);
 
-		$tableXml = $tablesXml->addChild('table_data');
-		$tableXml->addAttribute('table', $tableName);
+		$tableXml     = $this->xml->createElement('table_data');
+		$tableXmlLAttr = $this->xml->createAttribute('table');
+		$tableXmlLAttr->value = $tableName;
+
+		$tableXml->appendChild($tableXmlLAttr);
+		$tablesXml->appendChild($tableXml);
 
 		if (is_array($data))
 		{
 			foreach ($data as $item)
 			{
-				$datasetXml = $tableXml->addChild('dataset');
+				$datasetXml = $this->xml->createElement('dataset');
+				$tableXml->appendChild($datasetXml);
 
 				foreach ($item as $key => $value)
 				{
@@ -2328,10 +2412,31 @@ class BwPostmanModelMaintenance extends JModelLegacy
 								|| ($key == 'tpl_divider')))
 					)
 					{
-						$insert_string = '<![CDATA[' . $insert_string . ']]>';
+						// Remove most outer CDATA tags. These are inserted for valid XML, but never removed, although they are not needed except for writing valid backup file!
+						$pos = strpos($insert_string, '<![CDATA[');
+
+						if ($pos !== false)
+						{
+							$insert_string = substr_replace($insert_string, '', $pos, strlen('<![CDATA['));
+						}
+
+						$pos = strpos($insert_string, ']]>');
+
+						if ($pos !== false)
+						{
+							$insert_string = substr_replace($insert_string, '', $pos, strlen(']]>'));
+						}
+
+						$dataXml = $this->xml->createElement($key);
+						$cdata   = $this->xml->createCDATASection($insert_string);
+						$dataXml->appendChild($cdata);
+					}
+					else
+					{
+						$dataXml = $this->xml->createElement($key, $insert_string);
 					}
 
-					$datasetXml->addChild($key, $insert_string);
+					$datasetXml->appendChild($dataXml);
 				}
 			}
 		}
@@ -2342,8 +2447,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Builds the XML assets to export
 	 *
-	 * @param string           $tableName name of table
-	 * @param SimpleXMLElement $tablesXml
+	 * @param string         $tableName name of table
+	 * @param DOMDocument    $tablesXml
 	 *
 	 * @return boolean true on success, false on failure
 	 *
@@ -2363,19 +2468,25 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				return  false;
 			}
 
-			$tableAssetsXml = $tablesXml->addChild('table_assets');
-			$tableAssetsXml->addAttribute('table', $tableName);
+			$tableAssetsXml     = $this->xml->createElement('table_assets');
+			$tableAssetsXmlAttr = $this->xml->createAttribute('table');
+			$tableAssetsXmlAttr->value = $tableName;
+			$tableAssetsXml->appendChild($tableAssetsXmlAttr);
+			$tablesXml->appendChild($tableAssetsXml);
 
 			if (is_array($data))
 			{
 				foreach ($data as $item)
 				{
-					$datasetXml = $tableAssetsXml->addChild('dataset');
+					$datasetXml     = $this->xml->createElement('dataset');
+					$tableAssetsXml->appendChild($datasetXml);
 
 					foreach ($item as $key => $value)
 					{
 						$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
-						$datasetXml->addChild($key, $insert_string);
+
+						$dataXml = $this->xml->createElement($key, $insert_string);
+						$datasetXml->appendChild($dataXml);
 					}
 				}
 			}
@@ -2885,6 +2996,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		// get import file
 		$fh = fopen($file, 'rb');
+
 		if ($fh === false)
 		{ // File cannot be opened
 			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_FILE_ERROR', $file);
@@ -3765,8 +3877,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				else
 				{
 					// insert new user group
-					JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-					$userModel = JModelLegacy::getInstance('Group', 'UsersModel');
+					$userModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
 
 					$data['id']        = 0;
 					$data['title']     = $item['title'];
@@ -4833,7 +4944,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
 			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
 		);
-
+/*
 		$rules['bwpm.view.manage'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
@@ -4846,7 +4957,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
 			$usedGroups['BwPostmanTemplateAdmin']['id']    => false,
 		);
-
+*/
 		$rules['bwpm.view.campaign'] = array(
 			$usedGroups['Administrator']['id']             => true,
 			$usedGroups['Manager']['id']                   => true,
@@ -6151,7 +6262,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$assetLoopCounter = 0;
 		$asset_loop       = 0;
-		$asset_loop_max   = 1000;
+		$asset_loop_max   = 200;
 		$asset_max        = count($itemsWithoutAsset);
 
 		$mapOldAssetIdsToNew = array();

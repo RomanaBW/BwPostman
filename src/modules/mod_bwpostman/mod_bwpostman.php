@@ -34,9 +34,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\User\UserHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 require_once(dirname(__FILE__) . '/helper.php');
-require_once JPATH_ROOT . '/administrator/components/com_bwpostman/helpers/subscriberhelper.php';
 
 jimport('joomla.application.component.helper');
 
@@ -45,11 +46,7 @@ $document	= Factory::getDocument();
 $module     = ModuleHelper::getModule('mod_bwpostman');
 
 // Require component admin helper class
-if (is_file(JPATH_ADMINISTRATOR . '/components/com_bwpostman/bwpostman.php'))
-{
-	require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
-}
-else
+if (!is_file(JPATH_ADMINISTRATOR . '/components/com_bwpostman/bwpostman.php'))
 {
 	$app->enqueueMessage(Text::_('MOD_BWPOSTMANERROR_COMPONENT_NOT_INSTALLED'), 'error');
 	return false;
@@ -103,31 +100,47 @@ else
 		// Build the email format select list
 		$mailformat_selected = $paramsComponent->get('default_emailformat');
 
-		$emailformat = '<fieldset id="edit_mailformat" class="radio btn-group">';
-		$emailformat .= '<input type="radio" name="a_emailformat" id="formatTextMod" value="0"';
+		$emailformat 	= '<div id="edit_mailformat" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">';
+		$emailformat		.= '<label for="formatTextMod" class="btn btn-outline-secondary';
 
-		if (!$mailformat_selected)
+		if(!$mailformat_selected)
+		{
+			$emailformat .= '  active';
+		}
+
+		$emailformat		.= '">';
+		$emailformat		.= '<input type="radio" name="a_emailformat" id="formatTextMod" value="0"';
+
+		if(!$mailformat_selected)
 		{
 			$emailformat .= ' checked="checked"';
 		}
 
-		$emailformat .= '/>';
-		$emailformat .= '<label for="formatTextMod"><span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
-		$emailformat .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
+		$emailformat     .= '/>';
+		$emailformat		.= '<span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
+		$emailformat     .= '<label for="formatHtmlMod" class="btn btn-outline-secondary';
 
-		if ($mailformat_selected)
+		if($mailformat_selected)
+		{
+			$emailformat .= '  active';
+		}
+
+		$emailformat		.= '">';
+		$emailformat     .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
+
+		if($mailformat_selected)
 		{
 			$emailformat .= ' checked="checked"';
 		}
 
-		$emailformat          .= '/>';
-		$emailformat          .= '<label for="formatHtmlMod"><span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
-		$emailformat          .= '</fieldset>';
+		$emailformat     .= '/>';
+		$emailformat     .= '<span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
+		$emailformat     .= '</div>';
 
 		$lists['emailformat'] = $emailformat;
 
 		// Build the gender select list
-		$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender');
+		$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender', 'form-control form-control-sm');
 
 		// Get the checked mailinglists from module parameters
 		$mod_mls = $params->get('mod_ml_available');

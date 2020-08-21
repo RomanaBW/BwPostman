@@ -38,12 +38,11 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Mail\MailHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filter\InputFilter;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 // Require helper class
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/mailinglisthelper.php');
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/subscriberhelper.php');
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/mailverification/BwEmailValidation.php');
 
 /**
  * BwPostman subscriber model
@@ -389,6 +388,12 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		try
 		{
+			// Check input values for links
+			if (!BwPostmanSubscriberHelper::checkSubscriberInputFields($data))
+			{
+				return false;
+			}
+
 			// Get the user_id from the users-table
 			$data['user_id'] = BwPostmanSubscriberHelper::getJoomlaUserIdByEmail($data['email']);
 
@@ -905,7 +910,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 
 		if ($doValidation)
 		{
-			$emailValidationResult = $this->validateEmail($values['email']);
+			$emailValidationResult = BwPostmanSubscriberHelper::validateEmail($values['email']);
 
 			if ($emailValidationResult !== true)
 			{
@@ -1275,7 +1280,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 *
 	 * @return string
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	private function processXmlExport($subscribers)
 	{
@@ -1525,7 +1530,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function getSubscribersToExport($data)
 	{
@@ -1559,33 +1564,5 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$db->setQuery($query);
 
 		return $db->loadAssocList();
-	}
-
-	/**
-	 * Method to validate one email address
-	 *
-	 * @param	string   $email            Subscriber/Test-recipient email address
-	 *
-	 * @return	boolean  true if email address is valid
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.4.0
-	 */
-	public function validateEmail($email)
-	{
-		$config     = Factory::getConfig();
-		$logOptions = array();
-
-		$validator = new BwEmailValidation($logOptions);
-
-		$validator->setEmailFrom($config->get('mailfrom'));
-		$validator->setConnectionTimeout(30);
-		$validator->setStreamTimeout(5);
-		$validator->setStreamTimeoutWait(0);
-
-		$isValidEmail = $validator->check($email);
-
-		return $isValidEmail;
 	}
 }

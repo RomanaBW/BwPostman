@@ -28,8 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 $version = BwPostmanHelper::getInstalledBwPostmanVersion();
 ?>

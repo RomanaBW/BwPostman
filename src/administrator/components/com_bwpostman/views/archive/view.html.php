@@ -33,12 +33,12 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 
@@ -170,7 +170,6 @@ class BwPostmanViewArchive extends JViewLegacy
 			$app->redirect($this->request_url);
 		}
 
-		BwPostmanHelper::addSubmenu('bwpostman');
 		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();
@@ -184,7 +183,7 @@ class BwPostmanViewArchive extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title, submenu and toolbar.
+	 * Add the page title and toolbar.
 	 *
 	 * @throws Exception
 	 *
@@ -193,6 +192,9 @@ class BwPostmanViewArchive extends JViewLegacy
 	protected function addToolbar()
 	{
 		$jinput	= Factory::getApplication()->input;
+
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
 		$document = Factory::getDocument();
@@ -209,78 +211,95 @@ class BwPostmanViewArchive extends JViewLegacy
 			case "newsletters":
 				if (BwPostmanHelper::canRestore('newsletter', 0))
 				{
-					ToolbarHelper::unarchiveList('archive.unarchive', Text::_('COM_BWPOSTMAN_UNARCHIVE'));
+					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
 				}
 
 				if (BwPostmanHelper::canDelete('newsletter', 0))
 				{
 					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
+					//@ToDo: This one does not create a confirmation popup
+//					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL')->listCheck(true);
 				}
 				break;
 			case "subscribers":
 				if (BwPostmanHelper::canRestore('subscriber', 0))
 				{
-					ToolbarHelper::unarchiveList('archive.unarchive', Text::_('COM_BWPOSTMAN_UNARCHIVE'));
+					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
 				}
 
 				if (BwPostmanHelper::canDelete('subscriber', 0))
 				{
 					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
+					//@ToDo: This one does not create a confirmation popup
+//					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB')->listCheck(true);
 				}
 				break;
 			case "campaigns":
 				// Special unarchive and delete button because we need a confirm dialog with 3 options
-				$bar = Toolbar::getInstance('toolbar');
-				$alt_archive = Text::_('COM_BWPOSTMAN_UNARCHIVE');
 				if (BwPostmanHelper::canRestore('campaign', 0))
 				{
-					$link = 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive';
-					$bar->appendButton('Popup', 'unarchive', $alt_archive, $link, 500, 130);
+					$options['url'] = "index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive";
+					$options['icon'] = "icon-unarchive";
+					$options['text'] = "COM_BWPOSTMAN_UNARCHIVE";
+					$options['bodyHeight'] = 50;
+					$options['name'] = 'unarchive';
+
+					$button = new PopupButton('unarchive');
+					$button->setOptions($options);
+					$button->listCheck(true);
+
+					$toolbar->AppendButton($button);
 				}
 
-				$alt_delete = "delete";
 				if (BwPostmanHelper::canDelete('campaign', 0))
 				{
-					$link = 'index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmdelete';
-					$bar->appendButton('Popup', 'delete', $alt_delete, $link, 500, 150);
+					$options['url'] = "index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmdelete";
+					$options['icon'] = "icon-delete";
+					$options['text'] = "delete";
+					$options['bodyHeight'] = 50;
+					$options['name'] = 'delete';
+
+					$button = new PopupButton('delete');
+					$button->setOptions($options);
+					$button->listCheck(true);
+
+					$toolbar->AppendButton($button);
 				}
 				break;
 			case "mailinglists":
 				if (BwPostmanHelper::canRestore('mailinglist', 0))
 				{
-					ToolbarHelper::unarchiveList('archive.unarchive', Text::_('COM_BWPOSTMAN_UNARCHIVE'));
+					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
 				}
 
 				if (BwPostmanHelper::canDelete('mailinglist', 0))
 				{
 					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
+					//@ToDo: This one does not create a confirmation popup
+//					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML')->listCheck(true);
 				}
 				break;
 			case "templates":
 				if (BwPostmanHelper::canRestore('template', 0))
 				{
-					ToolbarHelper::unarchiveList('archive.unarchive', Text::_('COM_BWPOSTMAN_UNARCHIVE'));
+					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
 				}
 
 				if (BwPostmanHelper::canDelete('template', 0))
 				{
 					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
+					//@ToDo: This one does not create a confirmation popup
+//					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL')->listCheck(true);
 				}
 				break;
 		}
 
-		ToolbarHelper::spacer();
-		ToolbarHelper::divider();
-		ToolbarHelper::spacer();
 
-		$bar = Toolbar::getInstance('toolbar');
-		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+		$manualButton = BwPostmanHTMLHelper::getManualButton('archive');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$manualLink = BwPostmanHTMLHelper::getManualLink('archive');
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
-
-		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
 	}
 
 	/**

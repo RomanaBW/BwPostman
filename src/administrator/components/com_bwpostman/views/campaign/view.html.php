@@ -33,12 +33,12 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/helper.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.'/helpers/htmlhelper.php');
 
 
@@ -169,6 +169,9 @@ class BwPostmanViewCampaign extends JViewLegacy
 		$uri		= Uri::getInstance('SERVER');
 		$userId		= Factory::getUser()->get('id');
 
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
+
 		// Get document object, set document title and add css
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_CAM_DETAILS'));
@@ -194,69 +197,78 @@ class BwPostmanViewCampaign extends JViewLegacy
 		// For new records, check the create permission.
 		if ($isNew && BwPostmanHelper::canAdd('campaign'))
 		{
-			ToolbarHelper::save('campaign.save');
-			ToolbarHelper::apply('campaign.apply');
-			ToolbarHelper::save2new('campaign.save2new');
-			ToolbarHelper::save2copy('campaign.save2copy');
-			ToolbarHelper::cancel('campaign.cancel');
 			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_CAM_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
+
+			$toolbar->apply('campaign.apply');
+
+			$saveGroup = $toolbar->dropdownButton('save-group');
+
+			$saveGroup->configure(
+				function (Toolbar $childBar)
+				{
+					$childBar->save('campaign.save');
+					$childBar->save2new('campaign.save2new');
+				}
+			);
+
+			$toolbar->cancel('campaign.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_CAM_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>',
+				'edit');
+
 			// Can't save the record if it's checked out.
 			if (!$checkedOut)
 			{
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
 				if (BwPostmanHelper::canEdit('campaign', $this->item))
 				{
-					ToolbarHelper::save('campaign.save');
-					ToolbarHelper::apply('campaign.apply');
+					$toolbar->apply('campaign.apply');
 
-					if ($this->permissions['campaign']['create'])
-					{
-						ToolbarHelper::save2new('campaign.save2new');
-						ToolbarHelper::save2copy('campaign.save2copy');
-					}
+					$saveGroup = $toolbar->dropdownButton('save-group');
+
+					$saveGroup->configure(
+						function (Toolbar $childBar) {
+							$childBar->save('campaign.save');
+
+							if ($this->permissions['campaign']['create'])
+							{
+								$childBar->save2new('campaign.save2new');
+								$childBar->save2copy('campaign.save2copy');
+							}
+						}
+					);
+				}
+
+				// Rename the cancel button for existing items
+				if (Factory::getApplication()->getUserState('bwtimecontrol.cam_data.nl_referrer', null) == 'remove')
+				{
+					$toolbar->cancel('campaign.save', 'JTOOLBAR_CLOSE');
+				}
+				else
+				{
+					$toolbar->cancel('campaign.cancel', 'JTOOLBAR_CLOSE');
 				}
 			}
-
-			// Rename the cancel button for existing items
-			if (Factory::getApplication()->getUserState('bwtimecontrol.cam_data.nl_referrer', null) == 'remove')
-			{
-				ToolbarHelper::cancel('campaign.save', 'JTOOLBAR_CLOSE');
-			}
-			else
-			{
-				ToolbarHelper::cancel('campaign.cancel', 'JTOOLBAR_CLOSE');
-			}
-
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_CAM_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
 		}
 
 		Factory::getApplication()->setUserState('bwtimecontrol.cam_data.nl_referrer', null);
 		$backlink 	= Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
-		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman';
+		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
 
 		// If we came from the cover page we will show a back-button
 		if ($backlink == $siteURL)
 		{
-			ToolbarHelper::spacer();
-			ToolbarHelper::divider();
-			ToolbarHelper::spacer();
-			ToolbarHelper::back();
+			$toolbar->back();
 		}
 
-		ToolbarHelper::spacer();
-		ToolbarHelper::divider();
-		ToolbarHelper::spacer();
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
-		$bar = Toolbar::getInstance('toolbar');
-		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+		$manualButton = BwPostmanHTMLHelper::getManualButton('campaign');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$manualLink = BwPostmanHTMLHelper::getManualLink('campaign');
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
-
-		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
 	}
 }

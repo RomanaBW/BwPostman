@@ -32,12 +32,12 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper classes
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
@@ -130,7 +130,6 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		$this->request_url	= $uri_string;
 		$this->permissions	= Factory::getApplication()->getUserState('com_bwpm.permissions');
 
-		BwPostmanHelper::addSubmenu('bwpostman');
 		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();
@@ -141,7 +140,7 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title, submenu and toolbar.
+	 * Add the page title and toolbar.
 	 *
 	 * @throws Exception
 	 *
@@ -149,6 +148,9 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
+
 		// Get document object, set document title and add css
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN'));
@@ -157,22 +159,19 @@ class BwPostmanViewBwPostman extends JViewLegacy
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN'), 'envelope');
 
-		$bar = Toolbar::getInstance('toolbar');
-		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
 		// Set toolbar items for the page
 		if ($this->permissions['com']['admin'])
 		{
-			ToolbarHelper::preferences('com_bwpostman', '500', '900');
-			ToolbarHelper::spacer();
-			ToolbarHelper::divider();
-			ToolbarHelper::spacer();
+			$toolbar->preferences('com_bwpostman');
 		}
 
-		$manualLink = BwPostmanHTMLHelper::getManualLink('bwpostman');
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
-		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		$manualButton = BwPostmanHTMLHelper::getManualButton('bwpostman');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+
+
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
 	}
 }

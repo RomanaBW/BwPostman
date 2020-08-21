@@ -34,9 +34,9 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
@@ -254,6 +254,9 @@ class BwPostmanViewTemplate extends JViewLegacy
 		$uri		= Uri::getInstance();
 		$userId		= Factory::getUser()->get('id');
 
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
+
 		// Get document object, set document title and add css
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('BWP_TPL_DETAILS'));
@@ -278,68 +281,72 @@ class BwPostmanViewTemplate extends JViewLegacy
 		// For new records, check the create permission.
 		if ($isNew && $this->permissions['template']['create'])
 		{
-			ToolbarHelper::save('template.save');
-			ToolbarHelper::apply('template.apply');
-			ToolbarHelper::save2new('template.save2new');
-			ToolbarHelper::cancel('template.cancel');
-
 			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPL_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
+
+			$toolbar->apply('template.apply');
+
+			$saveGroup = $toolbar->dropdownButton('save-group');
+
+			$saveGroup->configure(
+				function (Toolbar $childBar)
+				{
+					$childBar->save('template.save');
+					$childBar->save2new('template.save2new');
+				}
+			);
+
+			$toolbar->cancel('template.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
 			// Can't save the record if it's checked out.
 			if (!$checkedOut)
 			{
+				ToolbarHelper::title(
+					Text::_('COM_BWPOSTMAN_TPL_DETAILS') . ':  <strong>' . $this->item->title .
+					'  </strong><small>[ ' . Text::_('EDIT') . ' ]</small> ',
+					'edit'
+				);
+
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
 				if (BwPostmanHelper::canEdit('template', $this->item))
 				{
-					ToolbarHelper::save('template.save');
-					ToolbarHelper::apply('template.apply');
+					$toolbar->apply('template.apply');
 
-					if ($this->permissions['template']['create'])
-					{
-						ToolbarHelper::save2new('template.save2new');
-					}
+					$saveGroup = $toolbar->dropdownButton('save-group');
+
+					$saveGroup->configure(
+						function (Toolbar $childBar)
+						{
+							$childBar->save('template.save');
+							if ($this->permissions['template']['create'])
+							{
+								$childBar->save2new('template.save2new');
+								$childBar->save2copy('template.save2copy');
+							}
+						}
+					);
+
+					$toolbar->cancel('template.cancel', 'JTOOLBAR_CLOSE');
 				}
 			}
-
-			// If checked out, we can still copy
-			if ($this->permissions['template']['create'])
-			{
-				ToolbarHelper::save2copy('template.save2copy');
-			}
-
-			// Rename the cancel button for existing items
-			ToolbarHelper::cancel('template.cancel', 'JTOOLBAR_CLOSE');
-			ToolbarHelper::title(
-				Text::_('COM_BWPOSTMAN_TPL_DETAILS') . ':  <strong>' . $this->item->title .
-				'  </strong><small>[ ' . Text::_('EDIT') . ' ]</small> ',
-				'edit'
-			);
 		}
 
 		$backlink 	= Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
-		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman';
+		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
 
 		// If we came from the cover page we will show a back-button
 		if ($backlink == $siteURL)
 		{
-			ToolbarHelper::spacer();
-			ToolbarHelper::divider();
-			ToolbarHelper::spacer();
-			ToolbarHelper::back();
+			$toolbar->back();
 		}
 
-		ToolbarHelper::divider();
-		ToolbarHelper::spacer();
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
-		$bar = Toolbar::getInstance('toolbar');
-		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+		$manualButton = BwPostmanHTMLHelper::getManualButton('template');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$manualLink = BwPostmanHTMLHelper::getManualLink('template');
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
-
-		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
 	}
 }

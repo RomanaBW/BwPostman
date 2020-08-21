@@ -32,12 +32,12 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper class
-JLoader::register('BwPostmanHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 JLoader::register('BwPostmanHTMLHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
@@ -154,7 +154,6 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		$this->pagination		= $this->get('Pagination');
 		$this->total			= $this->get('total');
 
-		BwPostmanHelper::addSubmenu('bwpostman');
 		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();
@@ -166,7 +165,7 @@ class BwPostmanViewMailinglists extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title and toolbar for Joomla 3.
+	 * Add the page title and toolbar.
 	 *
 	 * @throws Exception
 	 *
@@ -174,6 +173,9 @@ class BwPostmanViewMailinglists extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
+
 		// Get document object, set document title and add css
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_MLS'));
@@ -186,42 +188,46 @@ class BwPostmanViewMailinglists extends JViewLegacy
 		// Set toolbar items for the page
 		if ($this->permissions['mailinglist']['create'])
 		{
-			ToolbarHelper::addNew('mailinglist.add');
+			$toolbar->addNew('mailinglist.add');
 		}
 
-		if (BwPostmanHelper::canEdit('mailinglist'))
+		if (BwPostmanHelper::canEdit('mailinglist') || BwPostmanHelper::canEditState('mailinglist', 0) || BwPostmanHelper::canArchive('mailinglist'))
 		{
-			ToolbarHelper::editList('mailinglist.edit');
+			$dropdown = $toolbar->dropdownButton('status-group')
+				->text('JTOOLBAR_CHANGE_STATUS')
+				->toggleSplit(false)
+				->icon('fa fa-ellipsis-h')
+				->buttonClass('btn btn-action')
+				->listCheck(true);
+
+			$childBar = $dropdown->getChildToolbar();
+
+			if (BwPostmanHelper::canEdit('mailinglist'))
+			{
+				$childBar->edit('mailinglist.edit')->listCheck(true);
+			}
+
+
+			$childBar->publish('mailinglists.publish')->listCheck(true);
+			$childBar->unpublish('mailinglists.unpublish')->listCheck(true);
+
+			if (BwPostmanHelper::canArchive('mailinglist'))
+			{
+				$childBar->archive('mailinglist.archive')->listCheck(true);
+			}
+
+			if (BwPostmanHelper::canEdit('mailinglist', 0) || BwPostmanHelper::canEditState('mailinglist', 0))
+			{
+				$childBar->checkin('mailinglists.checkin')->listCheck(true);
+			}
 		}
 
-		ToolbarHelper::divider();
-		if (BwPostmanHelper::canEditState('mailinglist', 0))
-		{
-			ToolbarHelper::publishList('mailinglists.publish');
-			ToolbarHelper::unpublishList('mailinglists.unpublish');
-			ToolbarHelper::divider();
-		}
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
-		if (BwPostmanHelper::canArchive('mailinglist'))
-		{
-			ToolbarHelper::archiveList('mailinglist.archive');
-			ToolbarHelper::divider();
-			ToolbarHelper::spacer();
-		}
+		$manualButton = BwPostmanHTMLHelper::getManualButton('mailinglists');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		if (BwPostmanHelper::canEdit('mailinglist', 0) || BwPostmanHelper::canEditState('mailinglist', 0))
-		{
-			ToolbarHelper::checkin('mailinglists.checkin');
-			ToolbarHelper::divider();
-		}
-
-		$bar = Toolbar::getInstance('toolbar');
-		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
-
-		$manualLink = BwPostmanHTMLHelper::getManualLink('mailinglists');
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
-
-		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
 	}
 }

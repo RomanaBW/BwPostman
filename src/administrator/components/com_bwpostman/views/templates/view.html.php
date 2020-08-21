@@ -35,12 +35,12 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\Button\LinkButton;
 use Joomla\CMS\Toolbar\Button\CustomButton;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
@@ -171,7 +171,6 @@ class BwPostmanViewTemplates extends JViewLegacy
 		$this->pagination		= $this->get('Pagination');
 		$this->total			= $this->get('total');
 
-		BwPostmanHelper::addSubmenu('bwpostman');
 		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();
@@ -183,7 +182,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title, submenu and toolbar.
+	 * Add the page title and toolbar.
 	 *
 	 * @throws Exception
 	 *
@@ -193,33 +192,39 @@ class BwPostmanViewTemplates extends JViewLegacy
 	{
 		$jinput	= Factory::getApplication()->input;
 		$layout	= $jinput->getCmd('layout', '');
+
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
+
 		// Get document object, set document title and add css
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_TPLS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_templates.js');
 
+		$options['name'] = 'back';
+		$options['url'] = 'index.php?option=com_bwpostman&view=templates';
+		$options['text'] = "COM_BWPOSTMAN_BACK";
+		$options['icon'] = "icon-arrow-left";
+
 		switch ($layout)
 		{
 			case 'uploadtpl':
-				$alt 	= "COM_BWPOSTMAN_BACK";
-				$bar	= Toolbar::getInstance('toolbar');
-				$backlink 	= 'index.php?option=com_bwpostman&view=templates';
-				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPL_UPLOADTPL'), 'upload');
-				ToolbarHelper::spacer();
-				ToolbarHelper::divider();
-				ToolbarHelper::spacer();
+
+				$button = new LinkButton('back');
+				$button->setOptions($options);
+
+				$toolbar->AppendButton($button);
 				break;
 			case 'installtpl':
-				$alt 	= "COM_BWPOSTMAN_BACK";
-				$bar	= Toolbar::getInstance('toolbar');
-				$backlink 	= 'index.php?option=com_bwpostman&view=templates';
-				$bar->appendButton('Link', 'arrow-left', $alt, $backlink);
+				$jinput->set('hidemainmenu', true);
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPL_INSTALLTPL'), 'plus');
-				ToolbarHelper::spacer();
-				ToolbarHelper::divider();
-				ToolbarHelper::spacer();
+
+				$button = new LinkButton('back');
+				$button->setOptions($options);
+
+				$toolbar->AppendButton($button);
 				break;
 			default:
 				// Set toolbar title
@@ -236,59 +241,86 @@ class BwPostmanViewTemplates extends JViewLegacy
 					ToolbarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
 				}
 
-				if (BwPostmanHelper::canEdit('template'))
+				if (BwPostmanHelper::canEdit('template', 0) || BwPostmanHelper::canEditState('template', 0) || BwPostmanHelper::canArchive('template'))
 				{
-					ToolbarHelper::editList('template.edit');
-				}
+					$dropdown = $toolbar->dropdownButton('status-group')
+						->text('JTOOLBAR_CHANGE_STATUS')
+						->toggleSplit(false)
+						->icon('fa fa-ellipsis-h')
+						->buttonClass('btn btn-action')
+						->listCheck(true);
 
-				if (BwPostmanHelper::canEditState('template', 0))
-				{
-					ToolbarHelper::makeDefault('template.setDefault', 'COM_BWPOSTMAN_TPL_SET_DEFAULT');
-					ToolbarHelper::publishList('templates.publish');
-					ToolbarHelper::unpublishList('templates.unpublish');
-				}
+					$childBar = $dropdown->getChildToolbar();
 
-				ToolbarHelper::divider();
-				ToolbarHelper::spacer();
+					if (BwPostmanHelper::canEdit('template'))
+					{
+						$childBar->edit('template.edit')->listCheck(true);
+					}
 
-				if (BwPostmanHelper::canArchive('template'))
-				{
-					ToolbarHelper::archiveList('template.archive');
-					ToolbarHelper::divider();
-					ToolbarHelper::spacer();
-				}
+					if (BwPostmanHelper::canEditState('template', 0))
+					{
+						$childBar->publish('templates.publish')->listCheck(true);
+						$childBar->unpublish('templates.unpublish')->listCheck(true);
+						$childBar->makeDefault('template.setDefault', 'COM_BWPOSTMAN_TPL_SET_DEFAULT')->listCheck(true);
+					}
 
-				if (BwPostmanHelper::canEdit('template', 0) || BwPostmanHelper::canEditState('template', 0))
-				{
-					ToolbarHelper::checkin('templates.checkin');
-					ToolbarHelper::divider();
+					if (BwPostmanHelper::canArchive('template'))
+					{
+						$childBar->archive('template.archive')->listCheck(true);
+					}
+
+					if (BwPostmanHelper::canEdit('template', 0) || BwPostmanHelper::canEditState('template', 0))
+					{
+						$childBar->checkin('templates.checkin')->listCheck(true);
+					}
+
+					// template upload and export
+					if (BwPostmanHelper::canAdd('template'))
+					{
+						$html = '<joomla-toolbar-button id="status-group-children-export" task="templates.exportTpl" list-selection="">';
+						$html .= '<button class="button-download dropdown-item" type="button">';
+						$html .= '<span class="icon-download" aria-hidden="true"></span>';
+						$html .= Text::_('COM_BWPOSTMAN_TPL_EXPORTTPL');
+						$html .= '</button>';
+						$html .= '</joomla-toolbar-button>';
+
+						$options['text'] = "COM_BWPOSTMAN_TPL_INSTALLTPL";
+						$options['html'] = $html;
+
+						$button = new CustomButton('upload');
+						$button->setOptions($options);
+
+						$childBar->AppendButton($button);
+					}
 				}
 
 				// template upload
 				if (BwPostmanHelper::canAdd('template'))
 				{
-					$bar = Toolbar::getInstance('toolbar');
-					$html = '<a id="toolbar-install-template" class="btn btn-small" href="' . Uri::root(true) .
-						'/administrator/index.php?option=com_bwpostman&view=templates&layout=uploadtpl"
-								rel="{handler: \'iframe\', size: {x: 850, y: 500}, iframeOptions: {id: \'uploadFrame\'}}" >
-							<span class="icon-download"></span>' . Text::_('COM_BWPOSTMAN_TPL_INSTALLTPL') .
-						'</a>';
+					$installLink = Route::_('index.php?option=com_bwpostman&view=templates&layout=uploadtpl');
+					$html = '<joomla-toolbar-button id="toolbar-upload">';
+					$html .= '<a id="toolbar-install-template" class="button-upload btn btn-sm btn-primary" href="' . $installLink . '" rel="{handler: \'iframe\', size: {x: 850, y: 500}, iframeOptions: {id: \'uploadFrame\'}}">';
+					$html .= '<span class="icon-upload"></span>';
+					$html .= Text::_('COM_BWPOSTMAN_TPL_INSTALLTPL');
+					$html .= '</a>';
+					$html .= '</joomla-toolbar-button>';
 
-					$bar->appendButton('Custom', $html);
+					$options['text'] = "COM_BWPOSTMAN_TPL_INSTALLTPL";
+					$options['html'] = $html;
 
-					ToolbarHelper::custom('templates.exportTpl', 'download', '', 'COM_BWPOSTMAN_TPL_EXPORTTPL', true);
-					ToolbarHelper::divider();
-					ToolbarHelper::spacer();
+					$button = new CustomButton('upload');
+					$button->setOptions($options);
+
+					$toolbar->AppendButton($button);
 				}
 		}
 
-		$bar = Toolbar::getInstance('toolbar');
-		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
-		$manualLink = BwPostmanHTMLHelper::getManualLink('templates');
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('templates');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
 	}
 }

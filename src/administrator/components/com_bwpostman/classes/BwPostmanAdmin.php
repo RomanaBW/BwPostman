@@ -24,11 +24,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Classes;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
-
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 /**
  * BwPostman Footer

@@ -29,12 +29,10 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Pagination\Pagination;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
-
-// Import helper class
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 
 /**
  * BwPostman newsletters model

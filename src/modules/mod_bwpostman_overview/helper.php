@@ -31,8 +31,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
 use Joomla\Registry\Registry;
 use Joomla\CMS\HTML\HTMLHelper;
-
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 /**
  * Class modBwPostmanOverviewHelper

@@ -32,6 +32,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 HTMLHelper::_('bootstrap.tooltip');
 //HTMLHelper::_('formbehavior.chosen', 'select');

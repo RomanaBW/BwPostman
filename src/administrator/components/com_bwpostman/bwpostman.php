@@ -27,15 +27,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// constants and autoload
+require_once __DIR__ . '/includes/includes.php';
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // import joomla controller library
 jimport('joomla.application.component.controller');
-
-// Require class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/classes/admin.class.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 
 try
 {

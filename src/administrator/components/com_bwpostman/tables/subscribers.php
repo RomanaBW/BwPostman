@@ -37,9 +37,7 @@ use Joomla\Registry\Registry;
 use Joomla\Filter\InputFilter;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\User\UserHelper;
-
-// needed for plugin support!!!!
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 /**
  * #__bwpostman_subscribers table handler

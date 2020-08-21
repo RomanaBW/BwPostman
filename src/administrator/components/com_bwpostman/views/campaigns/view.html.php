@@ -34,12 +34,12 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\CMS\Plugin\PluginHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
@@ -161,7 +161,6 @@ class BwPostmanViewCampaigns extends JViewLegacy
 		// trigger Plugin BwTimeControl event and get results
 //		$this->auto_nbr	= Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepare', array (&$this->items));
 
-		BwPostmanHelper::addSubmenu('bwpostman');
 		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();
@@ -173,7 +172,7 @@ class BwPostmanViewCampaigns extends JViewLegacy
 
 
 	/**
-	 * Add the page title, submenu and toolbar.
+	 * Add the page title, styles and toolbar.
 	 *
 	 * @throws Exception
 	 *
@@ -181,8 +180,10 @@ class BwPostmanViewCampaigns extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-
 		PluginHelper::importPlugin('bwpostman');
+
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
 		$document	= Factory::getDocument();
@@ -199,48 +200,52 @@ class BwPostmanViewCampaigns extends JViewLegacy
 			ToolbarHelper::addNew('campaign.add');
 		}
 
-		if (BwPostmanHelper::canEdit('campaign'))
+		if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign', 0) || BwPostmanHelper::canArchive('campaign'))
 		{
-			ToolbarHelper::editList('campaign.edit');
-		}
+			$dropdown = $toolbar->dropdownButton('status-group')
+				->text('JTOOLBAR_CHANGE_STATUS')
+				->toggleSplit(false)
+				->icon('fa fa-ellipsis-h')
+				->buttonClass('btn btn-action')
+				->listCheck(true);
 
-		ToolbarHelper::divider();
-		ToolbarHelper::spacer();
+			$childBar = $dropdown->getChildToolbar();
 
-		// Special archive button because we need a confirm dialog with 3 options
-		if (BwPostmanHelper::canArchive('campaign'))
-		{
-			$bar = Toolbar::getInstance('toolbar');
-			$alt = "COM_BWPOSTMAN_ARC";
-			$bar->appendButton(
-				'Popup',
-				'archive',
-				$alt,
-				'index.php?option=com_bwpostman&amp;controller=campaigns&amp;tmpl=component&amp;view=campaigns&amp;layout=default_confirmarchive',
-				500,
-				110
-			);
-			ToolbarHelper::spacer();
-			ToolbarHelper::divider();
-			ToolbarHelper::spacer();
-		}
+			if (BwPostmanHelper::canEdit('campaign'))
+			{
+				$childBar->edit('campaign.edit')->listCheck(true);
+			}
 
-		if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign', 0))
-		{
-			ToolbarHelper::checkin('campaigns.checkin');
-			ToolbarHelper::divider();
+			if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign', 0))
+			{
+				$childBar->checkin('campaigns.checkin')->listCheck(true);
+			}
+
+			// Special archive button because we need a confirm dialog
+			if (BwPostmanHelper::canArchive('campaign'))
+			{
+				$options['url'] = "index.php?option=com_bwpostman&amp;controller=campaigns&amp;tmpl=component&amp;view=campaigns&amp;layout=default_confirmarchive";
+				$options['icon'] = "icon-archive";
+				$options['text'] = "COM_BWPOSTMAN_ARC";
+				$options['bodyHeight'] = 50;
+				$options['name'] = 'archive';
+
+				$button = new PopupButton('archive');
+				$button->setOptions($options);
+
+				$childBar->AppendButton($button);
+			}
 		}
 
 		// trigger BwTimeControl event
 		Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepareToolbar', array());
 
-		$bar = Toolbar::getInstance('toolbar');
-		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
-		$manualLink = BwPostmanHTMLHelper::getManualLink('campaigns');
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('campaigns');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
 	}
 }

@@ -32,9 +32,6 @@ use Joomla\Registry\Registry;
 
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
-
-// Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 jimport('joomla.application.component.helper');
 
 /**

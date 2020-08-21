@@ -27,17 +27,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// constants and autoload
+//require_once __DIR__ . '/includes/includes.php';
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
 // Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
@@ -205,7 +208,6 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$this->count_queue		= $this->get('CountQueue');
 		$this->context			= 'com_bwpostman.newsletters';
 
-		BwPostmanHelper::addSubmenu('bwpostman');
 		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();
@@ -226,7 +228,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	}
 
 	/**
-	 * Add the page title, submenu and toolbar.
+	 * Add the page title and toolbar.
 	 *
 	 * @throws Exception
 	 *
@@ -235,6 +237,9 @@ class BwPostmanViewNewsletters extends JViewLegacy
 	protected function addToolbar()
 	{
 		$tab	= $this->state->get('tab', 'unsent');
+
+		// Get the toolbar object instance
+		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
 		$document = Factory::getDocument();
@@ -257,42 +262,46 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		switch ($tab)
 		{ // The layout-variable tells us which tab we are in
 			case "sent":
-				if (BwPostmanHelper::canEdit('newsletter'))
+				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter', 0))
 				{
-					ToolbarHelper::editList('newsletter.edit');
-				}
+					$dropdown = $toolbar->dropdownButton('status-group')
+						->text('JTOOLBAR_CHANGE_STATUS')
+						->toggleSplit(false)
+						->icon('fa fa-ellipsis-h')
+						->buttonClass('btn btn-action')
+						->listCheck(true);
 
-				if (BwPostmanHelper::canEditState('newsletter', 0))
-				{
-					ToolbarHelper::publishList('newsletters.publish');
-					ToolbarHelper::unpublishList('newsletters.unpublish');
-					ToolbarHelper::divider();
-					ToolbarHelper::spacer();
+					$childBar = $dropdown->getChildToolbar();
+
+					if (BwPostmanHelper::canEdit('newsletter'))
+					{
+						$childBar->edit('newsletter.edit')->listCheck(true);
+					}
+
+					if (BwPostmanHelper::canEditState('newsletter', 0))
+					{
+						$childBar->publish('newsletters.publish')->listCheck(true);
+						$childBar->unpublish('newsletters.unpublish')->listCheck(true);
+					}
+
+					if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter', 0))
+					{
+						$childBar->checkin('newsletters.checkin')->listCheck(true);
+					}
+
+					if (BwPostmanHelper::canArchive('newsletter'))
+					{
+						$childBar->archive('newsletter.archive')->listCheck(true);
+					}
 				}
 
 				if ($this->permissions['newsletter']['create'])
 				{
 					ToolbarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
-					ToolbarHelper::divider();
-					ToolbarHelper::spacer();
 				}
 
-				if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter', 0))
-				{
-					ToolbarHelper::checkin('newsletters.checkin');
-					ToolbarHelper::divider();
-					ToolbarHelper::spacer();
-				}
-
-				if (BwPostmanHelper::canArchive('newsletter'))
-				{
-					ToolbarHelper::archiveList('newsletter.archive');
-					ToolbarHelper::divider();
-					ToolbarHelper::spacer();
-				}
 				break;
 			case "queue":
-				$bar = Toolbar::getInstance('toolbar');
 				$alt = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
 				if ($this->permissions['newsletter']['send'])
 				{
@@ -303,8 +312,11 @@ class BwPostmanViewNewsletters extends JViewLegacy
 						'COM_BWPOSTMAN_NL_RESET_TRIAL',
 						false
 					);
-					$link = 'index.php?option=com_bwpostman&view=newsletter&task=startsending&layout=nl_send';
-					$bar->appendButton('Link', 'envelope', $alt, $link);
+					$url = "index.php?option=com_bwpostman&view=newsletter&task=startsending&layout=nl_send";
+					$icon = "envelope";
+					$text = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
+					$toolbar->AppendButton('Link', $icon, $text, $url);
+
 					ToolbarHelper::custom('newsletters.clear_queue', 'trash.png', 'delete_f2.png', 'COM_BWPOSTMAN_NL_CLEAR_QUEUE', false);
 				}
 				break;
@@ -315,48 +327,65 @@ class BwPostmanViewNewsletters extends JViewLegacy
 					ToolbarHelper::addNew('newsletter.add');
 				}
 
-				if (BwPostmanHelper::canEdit('newsletter'))
+				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter', 0))
 				{
-					ToolbarHelper::editList('newsletter.edit');
-				}
+					$dropdown = $toolbar->dropdownButton('status-group')
+						->text('JTOOLBAR_CHANGE_STATUS')
+						->toggleSplit(false)
+						->icon('fa fa-ellipsis-h')
+						->buttonClass('btn btn-action')
+						->listCheck(true);
 
-				if ($this->permissions['newsletter']['create'])
-				{
-					ToolbarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
-				}
+					$childBar = $dropdown->getChildToolbar();
 
-				ToolbarHelper::divider();
-				ToolbarHelper::spacer();
+					if (BwPostmanHelper::canEdit('newsletter'))
+					{
+						$childBar->edit('newsletter.edit')->listCheck(true);
+					}
 
-				if ($this->permissions['newsletter']['send'])
-				{
-					ToolbarHelper::custom('newsletter.sendOut', 'envelope', 'send_f2.png', 'COM_BWPOSTMAN_NL_SEND', true);
-					ToolbarHelper::divider();
-					ToolbarHelper::spacer();
-				}
+					if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter', 0))
+					{
+						$childBar->checkin('newsletters.checkin')->listCheck(true);
+					}
 
-				if (BwPostmanHelper::canArchive('newsletter'))
-				{
-					ToolbarHelper::archiveList('newsletter.archive');
-					ToolbarHelper::divider();
-					ToolbarHelper::spacer();
-				}
+					if (BwPostmanHelper::canArchive('newsletter'))
+					{
+						$childBar->archive('newsletter.archive')->listCheck(true);
+					}
 
-				if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter', 0))
-				{
-					ToolbarHelper::checkin('newsletters.checkin');
-					ToolbarHelper::divider();
+					if ($this->permissions['newsletter']['create'])
+					{
+						$html = '<joomla-toolbar-button id="status-group-children-duplicate" task="newsletter.copy" list-selection="">';
+						$html .= '<button class="button-duplicate dropdown-item" type="button">';
+						$html .= '<span class="icon-copy" aria-hidden="true"></span>';
+						$html .= Text::_('JTOOLBAR_DUPLICATE');
+						$html .= '</button>';
+						$html .= '</joomla-toolbar-button>';
+
+						$childBar->appendButton('Custom', $html);
+					}
+
+					if ($this->permissions['newsletter']['send'])
+					{
+						$html = '<joomla-toolbar-button id="status-group-children-send" task="newsletter.sendOut" list-selection="">';
+						$html .= '<button class="button-send dropdown-item" type="button">';
+						$html .= '<span class="icon-envelope" aria-hidden="true"></span>';
+						$html .= Text::_('COM_BWPOSTMAN_NL_SEND');
+						$html .= '</button>';
+						$html .= '</joomla-toolbar-button>';
+
+						$childBar->appendButton('Custom', $html);
+					}
 				}
 				break;
 		}
 
-		$bar = Toolbar::getInstance('toolbar');
-		$bar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
-		$manualLink = BwPostmanHTMLHelper::getManualLink('newsletters');
-		$forumLink  = BwPostmanHTMLHelper::getForumLink();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('newsletters');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$bar->appendButton('Extlink', 'users', Text::_('COM_BWPOSTMAN_FORUM'), $forumLink);
-		$bar->appendButton('Extlink', 'book', Text::_('COM_BWPOSTMAN_MANUAL'), $manualLink);
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
 	}
 }

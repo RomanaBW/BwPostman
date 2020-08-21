@@ -70,6 +70,7 @@ class JFormFieldCustomscript extends JFormField
 		$text = Text::_('COM_BWPOSTMAN_FIELD_OBLIGATION');
 		// Hide spacers on joomla 4
 		$hide_spacer = "";
+		$hide_spacer = "				jQuery('#wrapper.wrapper #config [id^=\"com_bwpostman_\"] .field-spacer').css('display', 'none');";
 
 		$js = "
 			jQuery(document).ready(function()

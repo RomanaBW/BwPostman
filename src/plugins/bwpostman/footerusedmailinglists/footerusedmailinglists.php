@@ -637,8 +637,8 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 		if (count($usedUgIds))
 		{
-			$db         = $this->db;
-			$query      = $this->db->getQuery(true);
+			$db    = $this->db;
+			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName('id'));
 			$query->select($db->quoteName('title'));

@@ -9,30 +9,21 @@
 
 defined('JPATH_BASE') or die;
 
-if (isset($displayData['options']))
+$toolbarClass = '';
+if (isset($displayData['options']['toolbar-class']))
 {
-	$doTask = $displayData['options']['doTask'];
-	$class  = $displayData['options']['class'];
-	$text   = $displayData['options']['text'];
+	$toolbarClass  = ' class="' . $displayData['options']['toolbar-class'] . '"';
 }
-else
-{
-	$doTask = $displayData['doTask'];
-	$class  = $displayData['class'];
-	$text   = $displayData['text'];
-}
-
-$id = 'toolbar-manual';
-
-if ($class === 'icon-users')
-{
-	$id = 'toolbar-forum';
-}
+$buttonClass  = $displayData['options']['btnClass'];
+$iconClass  = 'icon-' . $displayData['options']['icon-class'];
+$id    = $displayData['options']['id'];
+$url    = $displayData['options']['url'];
+$text   = $displayData['options']['text'];
 
 ?>
-<div id="<?php echo $id; ?>" class="btn-wrapper">
-	<button onclick="window.open('<?php echo $doTask; ?>', '_blank', '');" class="btn btn-small">
-		<span class="<?php echo $class; ?>" aria-hidden="true"></span>
+<joomla-toolbar-button id="<?php echo $id; ?>" task="" <?php echo $toolbarClass; ?>>
+	<button onclick="window.open('<?php echo $url; ?>', '_blank', '');" class="<?php echo $buttonClass; ?>" type="button">
+		<span class="<?php echo $iconClass; ?>" aria-hidden="true"></span>
 		<?php echo $text; ?>
 	</button>
-</div>
+</joomla-toolbar-button>

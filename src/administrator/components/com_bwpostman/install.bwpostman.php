@@ -64,7 +64,7 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @since       2.0.0
 	 */
-	private $minimum_joomla_release = "3.7.0";
+	private $minimum_joomla_release = "4.0.0";
 
 	/**
 	 * @var string release
@@ -408,7 +408,7 @@ class Com_BwPostmanInstallerScript
 			// Let Ajax client redirect
 			$modal = $this->getModal();
 
-			$app->enqueueMessage(Text::_('Installing BwPostman ... ') . $modal);
+			$app->enqueueMessage($modal);
 		}
 
 		return true;
@@ -801,8 +801,7 @@ class Com_BwPostmanInstallerScript
 		try
 		{
 			// get the model for user groups
-			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+			$groupModel = new GroupModel();
 
 			$public_id = 1;
 
@@ -896,8 +895,7 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// get the model for viewlevels
-			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-			$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
+			$viewlevelModel = new LevelModel();
 
 			// Get viewlevel special
 			$specialLevel = $viewlevelModel->getItem(3);
@@ -1070,8 +1068,7 @@ class Com_BwPostmanInstallerScript
 			}
 
 			// get the model for user groups
-			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models', 'UsersModel');
-			$groupModel = JModelLegacy::getInstance('Group', 'UsersModel');
+			$groupModel = new GroupModel();
 
 			Access::clearStatics();
 
@@ -1115,8 +1112,7 @@ class Com_BwPostmanInstallerScript
 			try
 			{
 				// get the model for viewlevels
-				JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/models');
-				$viewlevelModel = JModelLegacy::getInstance('Level', 'UsersModel');
+				$viewlevelModel = new LevelModel();
 
 				// Get viewlevel special
 				$specialLevel = $viewlevelModel->getItem(3);
@@ -1449,66 +1445,6 @@ class Com_BwPostmanInstallerScript
 
 		return $update_count;
 	}
-
-	/**
-	 * sets parameter values in the component's row of the extension table
-	 *
-	 * @param array     $param_array
-	 *
-	 * @return  void
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-//	private function setParams($param_array)
-//	{
-//		if (count($param_array) > 0)
-//		{
-//			// read the existing component value(s)
-//			$db	= Factory::getDbo();
-//			$query	= $db->getQuery(true);
-//			$params = '';
-//
-//			$query->select($db->quoteName('params'));
-//			$query->from($db->quoteName('#__extensions'));
-//			$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-//			$db->setQuery($query);
-//
-//			try
-//			{
-//				$params = json_decode($db->loadResult(), true);
-//			}
-//			catch (RuntimeException $e)
-//			{
-//				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-//			}
-//
-//			// add the new variable(s) to the existing one(s)
-//			foreach ($param_array as $name => $value)
-//			{
-//				$params[(string) $name] = (string) $value;
-//			}
-//
-//			// store the combined new and existing values back as a JSON string
-//			$paramsString = json_encode($params);
-//			$query	= $db->getQuery(true);
-//
-//			$query->update($db->quoteName('#__extensions'));
-//			$query->set($db->quoteName('params') . " = " . $db->quote($paramsString));
-//			$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-//			$db->setQuery($query);
-//
-//			try
-//			{
-//				$db->execute();
-//			}
-//			catch (RuntimeException $e)
-//			{
-//				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-//			}
-//		}
-//	}
 
 	/**
 	 * shows the HTML after installation/update
@@ -2009,13 +1945,12 @@ class Com_BwPostmanInstallerScript
 		$html    = '
 		<div id="bwp_Modal" class="bwp_modal">
 			<div id="bwp_modal-content">
-				<div id="bwp_modal-header"><span class="bwp_close" style="display:none;">&times;</span></div>
 				<div id="bwp_wrapper"></div>
 			</div>
 		</div>
 	';
-		$css     = "#bwpostman .bwp_modal{display:none;position:fixed;z-index:99999;padding-top:10px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,0.4)}#bwpostman #bwp_modal-content{position:relative;background-color:#fefefe;margin:auto;border:1px solid #888;border-radius:6px;box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);height:100%;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;pointer-events:auto;outline:0;padding:15px}#bwpostman #bwp_modal-header{height:35px}#bwpostman #bwp_wrapper{position:relative;-ms-flex:1 1 auto;flex:1 1 auto}#bwpostman .bwp_close{color:#aaa;float:right;font-size:28px;font-weight:700;line-height:28px;-webkit-appearance:non}#bwpostman .bwp_close:hover,#bwpostman .bwp_close:focus{color:#000;text-decoration:none;cursor:pointer}";
-		$percent = 0.10;
+		$css = "#bwpostman{padding:0!important}#bwpostman .bwp_modal{display:none;z-index:99999;padding:0;width:100%;height:100%;overflow:auto}#bwpostman #bwp_modal-content{position:relative;background-color:#fefefe;margin:auto;border:1px solid #888;border-radius:6px;box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);height:100%;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;pointer-events:auto;outline:0;padding:15px}#bwpostman #bwp_modal-header{height:35px}#bwpostman #bwp_wrapper{padding:0;position:relative;-ms-flex:1 1 auto;flex:1 1 auto}";
+		$percent = 0.15;
 
 		$js = "
 			var css = '{$css}',

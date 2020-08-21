@@ -79,6 +79,15 @@ class BwPostmanPhpCron {
 	protected $_variables = array();
 
 	/**
+	 * Property to hold subject
+	 *
+	 * @var $_subject object
+	 *
+	 * @since	0.9.0
+	 */
+	protected $_subject;
+
+	/**
 	 * Property to hold logger
 	 *
 	 * @var    object
@@ -274,7 +283,7 @@ class BwPostmanPhpCron {
 	/**
 	 * Method to get encryption key from database
 	 *
-	 * @return Key  the encryption key
+	 * @return Key|boolean  the encryption key, false on failure
 	 *
 	 * @since  0.9.2
 	 */
@@ -301,13 +310,12 @@ class BwPostmanPhpCron {
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->log_cat));
 		}
 
-		$key = new Key('sodium');
-
-		if ($keyValues !== null)
+		if ($keyValues === null)
 		{
-			$key->public = $keyValues->pub;
-			$key->private = $keyValues->priv;
+			return false;
 		}
+
+		$key = new Key('sodium', $keyValues->priv, $keyValues->pub);
 
 		return $key;
 	}

@@ -630,7 +630,7 @@ class BwPostmanModelTemplates extends JModelList
 
 		if (!$result || $result instanceof Exception) // extract failed
 		{
-			$this->delMessage();
+//			$this->delMessage();
 			echo '<p class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR_EXTRACT') . '</p>';
 			return false;
 		}
@@ -795,7 +795,7 @@ class BwPostmanModelTemplates extends JModelList
 				File::copy($imagedir . $file, $media_path . '/' . $file);
 			}
 
-			$this->delMessage();
+//			$this->delMessage();
 			$path_now = $dest . '/';
 
 			if (!File::exists($dest . '/' . $file))
@@ -879,7 +879,7 @@ class BwPostmanModelTemplates extends JModelList
 			Folder::delete($extractdir);
 		}
 
-		$this->delMessage();
+//		$this->delMessage();
 
 		if (File::exists($archivename))
 		{
@@ -922,22 +922,22 @@ class BwPostmanModelTemplates extends JModelList
 	 *
 	 * @since 1.1.0
 	 */
-	private function delMessage()
-	{
-		$app           = Factory::getApplication();
-		$appReflection = new ReflectionClass(get_class($app));
-		$_messageQueue = $appReflection->getProperty('_messageQueue');
-		$_messageQueue->setAccessible(true);
-
-		$messages = $_messageQueue->getValue($app);
-
-		foreach ($messages as $key => $message)
-		{
-			unset($messages[$key]);
-		}
-
-		$_messageQueue->setValue($app, $messages);
-	}
+//	private function delMessage()
+//	{
+//		$app           = Factory::getApplication();
+//		$appReflection = new ReflectionClass(get_class($app));
+//		$_messageQueue = $appReflection->getProperty('_messageQueue');
+//		$_messageQueue->setAccessible(true);
+//
+//		$messages = $_messageQueue->getValue($app);
+//
+//		foreach ($messages as $key => $message)
+//		{
+//			unset($messages[$key]);
+//		}
+//
+//		$_messageQueue->setValue($app, $messages);
+//	}
 
 	/**
 	 * Get file name for ZIP archive

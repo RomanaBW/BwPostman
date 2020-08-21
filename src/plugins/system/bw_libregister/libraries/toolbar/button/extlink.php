@@ -68,7 +68,7 @@ class JButtonExtlink extends ToolbarButton
 	 */
 	public function fetchId($type = 'Extlink', $name = '')
 	{
-		return $this->_parent->getName() . '-' . $name;
+		return $this->parent->getName() . '-' . $name;
 	}
 
 	/**

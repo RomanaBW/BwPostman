@@ -32,7 +32,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
 // Depends on jQuery UI
-HtmlHelper::_('behavior.tooltip');
+HTMLHelper::_('bootstrap.tooltip');
 
 ?>
 

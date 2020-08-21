@@ -43,9 +43,10 @@ $n	= count($mailinglists);
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
-JHtml::_('stylesheet', 'mod_bwpostman/bwpm_register.css', array('version' => 'auto', 'relative' => true));
-JHtml::_('script', 'mod_bwpostman/bwpm_register.js', array('version' => 'auto', 'relative' => true));
-$inputClass = 'input';
+$app->getDocument()->getWebAssetManager()
+	->registerAndUseStyle('mod_bwpostman', 'mod_bwpostman/bwpm_register.css')
+	->registerAndUseScript('mod_bwpostman', 'mod_bwpostman/bwpm_register.js', [], ['defer' => true]);
+$inputClass = 'in';
 
 if (file_exists(JPATH_BASE . $css_filename))
 {

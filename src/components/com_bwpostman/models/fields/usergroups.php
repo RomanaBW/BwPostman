@@ -97,10 +97,10 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 		$html[] = '			<table class="adminlist table table-striped">';
 		$html[] = '				<thead class="thead-light">';
 		$html[] = '					<tr>';
-		$html[] = '						<th width="30" nowrap="nowrap">' . Text::_('JGRID_HEADING_ID') . '</th>';
-		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="'
+		$html[] = '						<th scope="col" style="width: 3%;">' . Text::_('JGRID_HEADING_ID') . '</th>';
+		$html[] = '						<th scope="col" style="width: 1%;" class="text-center"><input type="checkbox" name="checkall-toggle" value="" title="'
 			. Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
-		$html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
+		$html[] = '						<th class="text-nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
 		$html[] = '				<tbody>';
@@ -161,9 +161,9 @@ class JFormFieldUserGroups extends JFormFieldCheckboxes
 
 			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
-			$query->select('CONCAT("-",' . $db->quoteName('a') . '.' . $db->quoteName('id') . ' AS  value');
+			$query->select('CONCAT("-",' . $db->quoteName('a') . '.' . $db->quoteName('id') . ') AS  value');
 			$query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');
-			$query->select('COUNT(DISTINCT ' . $db->quoteName('b') . '.' . $db->quoteName('id')  . ' AS level');
+			$query->select('COUNT(DISTINCT ' . $db->quoteName('b') . '.' . $db->quoteName('id')  . ') AS level');
 			$query->from('#__usergroups as a');
 			$query->join(
 				'LEFT',

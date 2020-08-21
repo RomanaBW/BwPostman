@@ -91,13 +91,13 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 		$html[] = '			<table class="adminlist table table-striped">';
 		$html[] = '				<thead class="thead-light">';
 		$html[] = '					<tr>';
-		$html[] = '						<th width="30" nowrap="nowrap">' . Text::_('JGRID_HEADING_ID') . '</th>';
-		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value=""
-				title="' . Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
-		$html[] = '						<th width="70" nowrap="nowrap">' . Text::_('COM_BWPOSTMAN_ARCHIVED') . '</th>';
-		$html[] = '						<th width="200" nowrap="nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
-		$html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_DESCRIPTION') . '</th>';
-		$html[] = '						<th width="80" nowrap="nowrap">' . Text::_('COM_BWPOSTMAN_CAM_NL_NUM') . '</th>';
+		$html[] = '						<th scope="col" style="width: 3%;">' . Text::_('JGRID_HEADING_ID') . '</th>';
+		$html[] = '						<th scope="col" style="width: 1%;" class="text-center"><input type="checkbox" name="checkall-toggle" value=""
+					title="' . Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+		$html[] = '						<th style="width: 10%;" scope="col">' . Text::_('COM_BWPOSTMAN_ARCHIVED') . '</th>';
+		$html[] = '						<th style="min-width: 200px;" scope="col">' . Text::_('JGLOBAL_TITLE') . '</th>';
+		$html[] = '						<th class="d-none d-lg-table-cell" style="min-width: 250px;" scope="col">' . Text::_('JGLOBAL_DESCRIPTION') . '</th>';
+		$html[] = '						<th style="width: 10%;" scope="col">' . Text::_('COM_BWPOSTMAN_CAM_NL_NUM') . '</th>';
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
 		$html[] = '				<tbody>';
@@ -115,12 +115,12 @@ class JFormFieldComCam extends JFormFieldCheckboxes
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
-				$html[] = '								<td align="center">' . Text::_($option->value) . '</td>';
-				$html[] = '								<td><input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
+				$html[] = '								<td class="text-center">' . Text::_($option->value) . '</td>';
+				$html[] = '								<td class="text-center"><input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
 					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
-				$html[] = '								<td style="text-align: center;">' . $archived . '</td>';
+				$html[] = '								<td class="text-center"><span class="tbody-icon">' . $archived . '</span></td>';
 				$html[] = '								<td>' . Text::_($option->text) . '</td>';
-				$html[] = '								<td>' . Text::_($option->description) . '</td>';
+				$html[] = '								<td class="d-none d-lg-table-cell">' . Text::_($option->description) . '</td>';
 				$html[] = '								<td>' . Text::_($option->newsletters) . '</td>';
 				$html[] = '							</tr>';
 			}

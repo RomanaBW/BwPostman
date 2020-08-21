@@ -2,14 +2,12 @@
 # Fast changing variables
 #joomla_version_4a: "4.0.0a12"
 joomla_version_4b: "4.0.0b1-5"
-joomla_version_3: "3.9.20"
 
 # this one has to be adjusted to the desired Joomla version
-joomla_version: "{{ joomla_version_3 }}"
+joomla_version: "{{ joomla_version_4b }}"
 
-j_version_short: "j3"
 #j_version_short: "j4a"
-#j_version_short: "j4b"
+j_version_short: "j4b"
 
 bwpm_version: "2.4.0"
 #j_alpha_version: "alpha12"
@@ -24,17 +22,14 @@ j_version_hyphen: "{{ joomla_version_3 | replace('.', '-') }}"
 #j_master_version: "4"
 j_master_version: "{{ j_version_short[1] }}"
 j_package_name:
-  j3: "Joomla_{{ j_version_hyphen }}-Stable-Full_Package.tar.bz2"
 #  j4a: "Joomla_4.0.0-{{ j_alpha_version }}-Alpha-Full_Package.tar.bz2"
   j4b: "Joomla_4.0.0-{{ j_beta_dev_version }}-Development-Full_Package.zip"
 
 j_main_version: "{{ joomla_version[0] }}"
 
 joomla_packages:
-  - src: "https://downloads.joomla.org/cms/Joomla3/{{ j_version_hyphen }}/{{ j_package_name.j3 }}"
-    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j3 }}"
-#  - src: "https://developer.joomla.org/nightlies/{{ j_package_name.j4b }}"
-#    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j4b }}"
+  - src: "https://developer.joomla.org/nightlies/{{ j_package_name.j4b }}"
+    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j4b }}"
 #  - src: "https://github.com/joomla/joomla-cms/releases/download/4.0.0-{{ j_alpha_version }}/{{ j_package_name.j4a }}"
 #    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j4a }}"
 

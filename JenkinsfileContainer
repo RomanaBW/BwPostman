@@ -5,22 +5,23 @@ pipeline {
         stage('Set variables') {
 			steps {
 				script {
-					BWPM_VERSION = "2.4.0"
+					BWPM_VERSION = "4.0.0"
 
-					JOOMLA_VERSION_3 = "3.9.20"
+					JOOMLA_VERSION = "4.0.0b1-5"  // Nightly from 2020-05-06
+//					JOOMLA_VERSION = "4.0.0b2-1"  // Nightly from 2020-06-03
 
 					GIT_MESSAGE = "not specified"
 
-					PROJECT_NAME_3 = "j${JOOMLA_VERSION_3}_bwpm${BWPM_VERSION}"
-					VERSIONS_EXTRA_VAR_3 = "joomla_version=${JOOMLA_VERSION_3} bwpm_version=${BWPM_VERSION}";
-					DO_RECORD_J3_SMOKE = "true";
-					DO_RECORD_J3_1 = "false";
-					DO_RECORD_J3_2 = "false";
-					DO_RECORD_J3_3 = "false";
-					DO_RECORD_J3_4 = "true"; // has always to be true, because this suite uses codeception "friend", which does not work with "moving screens"
-					DO_RECORD_J3_5 = "true";
-					DO_RECORD_J3_6 = "false";
-					DO_RECORD_J3_7 = "false";
+					PROJECT_NAME = "j${JOOMLA_VERSION}_bwpm${BWPM_VERSION}"
+					VERSIONS_EXTRA_VAR_4 = "joomla_version=${JOOMLA_VERSION} bwpm_version=${BWPM_VERSION}";
+					DO_RECORD_SMOKE = "true";
+					DO_RECORD_1 = "false";
+					DO_RECORD_2 = "false";
+					DO_RECORD_3 = "false";
+					DO_RECORD_4 = "false"; // possibly has always to be true, because this suite uses codeception "friend", which does not work well with "moving screens"
+					DO_RECORD_5 = "false";
+					DO_RECORD_6 = "false";
+					DO_RECORD_7 = "false";
 				}
 			}
         }
@@ -39,102 +40,104 @@ pipeline {
 		}
 
 		stage('Run smoke tests') {
-			steps {
-//				echo "Dummy Smoke"
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} do_record=${DO_RECORD_J3_SMOKE} ${VERSIONS_EXTRA_VAR_3}'"
-				sh "docker exec -t bwpm_enh_tester-3 /data/do-tests.sh ${BWPM_VERSION}"
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-testers.yml --extra-vars '${VERSIONS_EXTRA_VAR_3}'"
-			}
-			post {
-				always {
-//					echo "Dummy Smoke ALWAYS"
-					sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_3}'"
+			stage('Smoke Joomla 4') {
+				steps {
+//					echo "Dummy Smoke"
+					sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} do_record=${DO_RECORD_SMOKE} ${VERSIONS_EXTRA_VAR_4}'"
+					sh "docker exec -t bwpm_enh_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
+					sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-testers.yml --extra-vars '${VERSIONS_EXTRA_VAR_4}'"
 				}
-				failure {
-					bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME_3}")
+				post {
+					always {
+//						echo "Dummy Smoke ALWAYS"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_4}'"
+					}
+					failure {
+						bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME}")
+					}
 				}
 			}
 		}
 
-		stage('Run acceptance Joomla 3') {
+		stage('Run acceptance Joomla 4') {
 			parallel {
-				stage('3-1: Lists + P2') {
+				stage('4-1: Lists + P2') {
 					steps {
 //						echo "Dummy 1"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1 do_record=${DO_RECORD_J3_1} ${VERSIONS_EXTRA_VAR_3}'"
-						sh "docker exec -t bwpm_accept1_tester-3 /data/do-tests.sh ${BWPM_VERSION}"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_4}'"
+						sh "docker exec -t bwpm_accept1_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
 						always {
 //							echo "Dummy 1 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_3}'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_4}'"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME_3}")
+							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
 						}
 					}
 				}
-				stage('3-2: Details') {
+				stage('4-2: Details') {
 					steps {
 //						echo "Dummy 2"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept2 do_record=${DO_RECORD_J3_2} ${VERSIONS_EXTRA_VAR_3}'"
-						sh "docker exec -t bwpm_accept2_tester-3 /data/do-tests.sh ${BWPM_VERSION}"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_4}'"
+						sh "docker exec -t bwpm_accept2_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
 						always {
 //							echo "Dummy 2 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2 ${VERSIONS_EXTRA_VAR_3}'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2 ${VERSIONS_EXTRA_VAR_4}'"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME_3}")
+							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")
 						}
 					}
 				}
-				stage('3-3: Maintenance + P4') {
+				stage('4-3: Maintenance + P4') {
 					steps {
 //						echo "Dummy 3"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept3 do_record=${DO_RECORD_J3_3} ${VERSIONS_EXTRA_VAR_3}'"
-						sh "docker exec -t bwpm_accept3_tester-3 /data/do-tests.sh ${BWPM_VERSION}"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_4}'"
+						sh "docker exec -t bwpm_accept3_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
 						always {
 //							echo "Dummy 3 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept3 ${VERSIONS_EXTRA_VAR_3}'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept3 ${VERSIONS_EXTRA_VAR_4}'"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME_3}")
+							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME}")
 						}
 					}
 				}
-				stage('3-4: FUM + U2S + P1') {
+				stage('4-4: FUM + U2S + P1') {
 					steps {
 //						echo "Dummy 4"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept4 do_record=${DO_RECORD_J3_4} ${VERSIONS_EXTRA_VAR_3}'"
-						sh "docker exec -t bwpm_accept4_tester-3 /data/do-tests.sh ${BWPM_VERSION}"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_4}'"
+						sh "docker exec -t bwpm_accept4_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
 						always {
 //							echo "Dummy 4 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4 ${VERSIONS_EXTRA_VAR_3}'"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4 ${VERSIONS_EXTRA_VAR_4}'"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME_3}")
+							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME}")
 						}
 					}
 				}
-				stage('3-5: FE + P3') {
+				stage('4-5: FE + P3') {
 					steps {
 //						echo "Dummy 5"
-						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5 do_record=${DO_RECORD_J3_5} ${VERSIONS_EXTRA_VAR_3}'"
-						sh "docker exec -t bwpm_accept5_tester-3 /data/do-tests.sh ${BWPM_VERSION}"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5 do_record=${DO_RECORD_5} ${VERSIONS_EXTRA_VAR_4}'"
+						sh "docker exec -t bwpm_accept5_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
 					}
 					post {
 						always {
-							echo "Dummy 5 always"
-//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept5 ${VERSIONS_EXTRA_VAR_3}'"
+//							echo "Dummy 5 always"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept5 ${VERSIONS_EXTRA_VAR_4}'"
 						}
 						failure {
-							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME_3}")
+							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
 						}
 					}
 				}
@@ -193,7 +196,7 @@ pipeline {
 			)
 
 				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed smoke testand all acceptance tests for Joomla 3 and Joomla 4 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 4 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
 					subject:"BwPostman build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de'
 				)
@@ -210,3 +213,4 @@ pipeline {
 
 	}
 }
+

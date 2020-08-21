@@ -30,15 +30,13 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\Filesystem\File;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 // Import CONTROLLER object class
 jimport('joomla.application.component.controlleradmin');
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * BwPostman Templates Controller

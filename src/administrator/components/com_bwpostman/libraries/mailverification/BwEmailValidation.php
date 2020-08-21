@@ -26,9 +26,9 @@
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\LogEntry;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/exceptions/BwException.php');
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * Email verification class

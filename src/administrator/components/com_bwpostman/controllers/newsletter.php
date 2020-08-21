@@ -38,9 +38,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
-
-// Require helper class
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 /**
  * BwPostman Newsletter Controller

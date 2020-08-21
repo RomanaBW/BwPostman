@@ -24,8 +24,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
+
 defined('JPATH_PLATFORM') or die;
 
+use Exception;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Table\Asset;
 use Joomla\CMS\Factory;
@@ -35,8 +38,10 @@ use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Helper\UserGroupsHelper;
 use Joomla\CMS\User\User;
 use Joomla\CMS\Log\LogEntry;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use SimpleXMLElement;
 
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+//require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * Class that handles all access authorisation routines.

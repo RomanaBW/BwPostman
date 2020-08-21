@@ -36,12 +36,12 @@ define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
 define('BWPM_SITE', JPATH_SITE.'/components/com_bwpostman');
 
 // register classes
-JLoader::register('BwAccess', BWPM_ADMINISTRATOR . '/libraries/access/BwAccess.php');
-JLoader::register('BwAccess', BWPM_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
+//JLoader::register('BwAccess', BWPM_ADMINISTRATOR . '/libraries/access/BwAccess.php');
+JLoader::register('BwLogger', BWPM_ADMINISTRATOR . '/libraries/BwLogger.php');
 
 
-//JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', BWPM_ADMINISTRATOR . '/libraries', false, false, 'psr4');
 //JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\BwAccess', BWPM_ADMINISTRATOR . '/libraries/access', false, false, 'psr4');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', BWPM_ADMINISTRATOR . '/Helper', false, false, 'psr4');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Field', BWPM_ADMINISTRATOR . '/Field', false, false, 'psr4');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Classes', BWPM_ADMINISTRATOR . '/classes', false, false, 'psr4');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', BWPM_ADMINISTRATOR . '/libraries', false, false, 'psr4');

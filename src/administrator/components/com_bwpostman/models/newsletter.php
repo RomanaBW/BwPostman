@@ -27,9 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Import MODEL and Helper object class
-jimport('joomla.application.component.modeladmin');
-
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -47,9 +44,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriber
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\ContentRenderer;
-
-// Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 /**
  * BwPostman newsletter model

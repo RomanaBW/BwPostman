@@ -26,12 +26,11 @@
 
 defined('JPATH_PLATFORM') or die;
 
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 FormHelper::loadFieldClass('checkboxes');
 

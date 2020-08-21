@@ -34,10 +34,10 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * BwPostman templates model

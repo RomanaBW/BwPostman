@@ -35,8 +35,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
-
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 if (!class_exists('vmUserfieldPlugin'))
 {

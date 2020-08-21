@@ -24,9 +24,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
+
+defined('JPATH_PLATFORM') or die;
+
+use JLoader;
+use JLogLoggerW3c;
 use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
+use RuntimeException;
 
 JLoader::import('libraries.joomla.log.logger.w3c');
 

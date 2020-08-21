@@ -30,6 +30,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Classes;
 defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use Exception;
 
 /**
  * BwPostman Footer
@@ -47,7 +48,7 @@ class BwPostmanAdmin {
 	 *
 	 * @since   0.9.1
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	static public function footer()
 	{

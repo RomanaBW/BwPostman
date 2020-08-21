@@ -36,9 +36,9 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Access\Access;
 use JHtmlSidebar;
-//use BoldtWebservice\Component\BwPostman\Administrator\BwAccess;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwAccess;
 
-require_once JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php';
+//require_once JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php';
 
 
 /**
@@ -1991,7 +1991,7 @@ class BwPostmanHelper
 	{
 		$userId = Factory::getUser()->id;
 
-		return \BwAccess::check($userId, $action, $assetName, false, $recordId);
+		return BwAccess::check($userId, $action, $assetName, false, $recordId);
 	}
 
 	/**

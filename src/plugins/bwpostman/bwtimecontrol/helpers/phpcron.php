@@ -34,8 +34,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Log\LogEntry;
 use Joomla\Filter\InputFilter;
-
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 /**
  * Handles the cron jobs by php

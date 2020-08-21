@@ -40,10 +40,9 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 jimport('joomla.plugin.plugin');
-
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * Class User2Subscriber

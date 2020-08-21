@@ -39,6 +39,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 HTMLHelper::_('jquery.framework');
 

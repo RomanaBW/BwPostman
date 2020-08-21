@@ -33,8 +33,9 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwAccess;
 
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php');
+//require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php');
 
 JFormHelper::loadFieldClass('rules');
 
@@ -133,14 +134,13 @@ class JFormFieldBwRules extends JFormFieldRules
 		// Remove action create, at item level not needed
 		for ($i = 0; $i <= count($actions); $i++)
 		{
-			$action = $actions[$i];
+			$action      = $actions[$i];
 			$actionParts = explode('.', $action->name);
 			if ($actionParts[2] === 'create')
 			{
 				unset($actions[$i]);
 			}
 		}
-
 
 		// Get the asset id.
 		// Note that for global configuration, com_config injects asset_id = 1 into the form.

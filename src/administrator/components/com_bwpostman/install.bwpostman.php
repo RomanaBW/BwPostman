@@ -45,6 +45,7 @@ use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\Component\Users\Administrator\Model\GroupModel;
 use Joomla\Component\Users\Administrator\Model\LevelModel;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanInstallHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 /**
  * Class Com_BwPostmanInstallerScript
@@ -317,7 +318,7 @@ class Com_BwPostmanInstallerScript
 
 		if ($type == 'install' || $type == 'update')
 		{
-			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+//			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 			$log_options  = array();
 

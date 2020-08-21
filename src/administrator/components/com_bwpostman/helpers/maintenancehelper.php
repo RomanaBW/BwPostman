@@ -101,7 +101,7 @@ abstract class BwPostmanMaintenanceHelper
 	 *
 	 * @since    2.0.0
 	 */
-	private static function compressByZip($compressedFile, $fileName, $fileData)
+	public static function compressByZip($compressedFile, $fileName, $fileData)
 	{
 		$files = array(
 			'track' => array(

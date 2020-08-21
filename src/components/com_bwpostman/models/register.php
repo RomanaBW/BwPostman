@@ -33,12 +33,10 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Mail\MailHelper;
-use Joomla\Utilities\ArrayHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
-
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 
 /**
  * Class BwPostmanModelRegister
@@ -182,6 +180,12 @@ class BwPostmanModelRegister extends JModelAdmin
 		jimport('joomla.user.helper');
 
 		$app	= Factory::getApplication();
+
+		// Check input values
+		if (!BwPostmanSubscriberHelper::checkSubscriberInputFields($data))
+		{
+			return false;
+		}
 
 		// Create the editlink and check if the string doesn't exist twice or more
 		$subsTable = $this->getTable();
@@ -437,7 +441,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function setNotificationAddresses($mode = 'activation')
 	{

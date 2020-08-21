@@ -37,10 +37,10 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlContent.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 
 // Needed for Joomla 3!!
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');

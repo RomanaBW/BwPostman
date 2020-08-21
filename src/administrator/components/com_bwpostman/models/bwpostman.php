@@ -40,7 +40,6 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/campaignhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 
 /**
  * BwPostman cover page model
@@ -212,7 +211,7 @@ class BwPostmanModelBwPostman extends JModelLegacy
 		if (is_null($permission))
 		{
 			// Get data from input.
-			$input = $app->input;
+			$input = $app->input->Json;
 
 			$permission = array(
 				'component' => $input->getWord('comp'),

@@ -31,12 +31,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Multilanguage;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
-
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
-
 
 /**
  * Class BwPostmanModelEdit
@@ -338,6 +336,13 @@ class BwPostmanModelEdit extends JModelAdmin
 	 */
 	public function save($data)
 	{
+		// Check input values
+		if (!BwPostmanSubscriberHelper::checkSubscriberInputFields($data))
+		{
+			return false;
+		}
+
+
 		parent::save($data);
 
 		// Get the subscriber id

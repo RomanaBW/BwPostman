@@ -30,12 +30,12 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
-//get helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/models/mailinglist.php');
 
 
@@ -86,9 +86,21 @@ class BwPostmanViewEdit extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app		    = Factory::getApplication();
-		$session 	    = Factory::getSession();
-		$this->params	= ComponentHelper::getParams('com_bwpostman', true);
+		$app        = Factory::getApplication();
+		$session    = Factory::getSession();
+		$params     = ComponentHelper::getParams('com_bwpostman', true);
+		$menuParams = new Registry;
+		$menu       = $app->getMenu()->getActive();
+
+		if ($menu)
+		{
+			$menuParams->loadString($menu->getParams());
+		}
+
+		$mergedParams = clone $menuParams;
+		$params->merge($mergedParams);
+
+		$this->params = $params;
 
 		// If there occurred an error while storing the data load the data from the session
 		$subscriber_data = $session->get('subscriber_data');

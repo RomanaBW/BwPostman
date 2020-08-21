@@ -29,6 +29,7 @@ defined ('_JEXEC') or die ();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 /**
  * Class BwPostmanHTMLHelper
@@ -81,7 +82,6 @@ abstract class BwPostmanHTMLHelper {
 	 */
 	static public function getExportFieldsList()
 	{
-		require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 		$export_fields	= array();
 
 		$columns = BwPostmanSubscriberHelper::getExportFieldsList();

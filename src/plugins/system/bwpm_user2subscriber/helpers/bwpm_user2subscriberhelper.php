@@ -31,8 +31,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 
-require_once(JPATH_ROOT . '/administrator/components/com_bwpostman/helpers/subscriberhelper.php');
-
 /**
  * Class BwPostmanHelper
  *

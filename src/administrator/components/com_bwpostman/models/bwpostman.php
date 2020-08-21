@@ -32,12 +32,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Access\Rules;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
 
 // Import MODEL object class
 jimport('joomla.application.component.model');
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
 /**

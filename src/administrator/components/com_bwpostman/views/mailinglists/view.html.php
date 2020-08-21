@@ -33,12 +33,10 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
-
-// Require helper class
-JLoader::register('BwPostmanHTMLHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
  * BwPostman Lists View

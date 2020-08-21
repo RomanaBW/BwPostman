@@ -38,15 +38,12 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 
 HTMLHelper::_('jquery.framework');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
-
-// Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
-
 
 /**
  * BwPostman Newsletter View

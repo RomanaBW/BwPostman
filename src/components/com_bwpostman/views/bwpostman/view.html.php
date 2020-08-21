@@ -30,9 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 // Import VIEW object class
 jimport('joomla.application.component.view');
 
-// Require helper classes
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
-
 /**
  * BwPostman General View
  *

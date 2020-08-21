@@ -37,14 +37,10 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
-
-//HTMLHelper::_('jquery.framework', true, null, true);
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
-
-// Require helper classes
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlhelper.php');
 
 /**
  * BwPostman maintenance View

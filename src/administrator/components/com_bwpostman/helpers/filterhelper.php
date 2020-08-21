@@ -26,7 +26,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\Registry\Registry;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * Component helper class
@@ -47,7 +47,7 @@ class BwPostmanFilterHelper
 	public static function filterContent($text)
 	{
 		// Filter settings
-		$config     = static::getParams('com_config');
+		$config     = ComponentHelper::getParams('com_config', true);
 		$user       = JFactory::getUser();
 		$userGroups = JAccess::getGroupsByUser($user->get('id'));
 
@@ -216,4 +216,32 @@ class BwPostmanFilterHelper
 		return $text;
 	}
 
+	/**
+	 * Method to check, if value contains a link
+	 *
+	 * @param   string $value The string to check
+	 *
+	 * @return  boolean  true if value contains link
+	 *
+	 * @since   3.0.0
+	 */
+	public static function containsLink($value)
+	{
+		$patterns = array(
+			"/(http|https|ftp):\/\//i",
+			 "/www\./i",
+		);
+
+		foreach ($patterns as $pattern)
+		{
+			preg_match($pattern, $value, $matches);
+
+			if (count($matches) > 0)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

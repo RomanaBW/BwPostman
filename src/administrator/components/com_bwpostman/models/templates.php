@@ -38,7 +38,6 @@ use Joomla\CMS\Table\Table;
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
 /**
  * BwPostman templates model

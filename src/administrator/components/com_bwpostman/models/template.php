@@ -40,9 +40,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\Registry\Registry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
-
-// Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanTplHelper;
 
 /**
  * BwPostman mailinglist model

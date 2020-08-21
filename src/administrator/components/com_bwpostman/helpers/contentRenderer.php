@@ -38,9 +38,9 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanTplHelper;
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlContent.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
 // Needed for Joomla 3!!
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');

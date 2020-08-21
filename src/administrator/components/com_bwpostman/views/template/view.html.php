@@ -36,9 +36,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
-
-// Require helper class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanTplHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');

@@ -50,7 +50,6 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletter
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/contentRenderer.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
 /**
  * BwPostman newsletter model

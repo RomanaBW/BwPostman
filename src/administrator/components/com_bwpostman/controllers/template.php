@@ -34,7 +34,6 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanTplHelper;
 
 // Import CONTROLLER and Helper object class
 jimport('joomla.application.component.controllerform');

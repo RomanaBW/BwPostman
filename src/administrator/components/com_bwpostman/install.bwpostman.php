@@ -44,6 +44,7 @@ use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\Component\Users\Administrator\Model\GroupModel;
 use Joomla\Component\Users\Administrator\Model\LevelModel;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanInstallHelper;
 
 /**
  * Class Com_BwPostmanInstallerScript
@@ -277,7 +278,7 @@ class Com_BwPostmanInstallerScript
 			jimport('joomla.filesystem.file');
 			$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 
-			require_once($tmp_path . '/helpers/installhelper.php');
+//			require_once($tmp_path . '/helpers/installhelper.php');
 
 			$name = $db->getName();
 

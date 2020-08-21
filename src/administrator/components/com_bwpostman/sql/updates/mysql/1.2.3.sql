@@ -1,1 +1,0 @@
-/* Placeholder file for database changes for version 1.2.3 to satisfy Joomla!'s extensions installer */

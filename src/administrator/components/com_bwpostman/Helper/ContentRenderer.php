@@ -24,6 +24,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -37,10 +39,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanTplHelper;
-
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/htmlContent.php');
+use Joomla\Registry\Registry;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\HtmlContent;
 
 // Needed for Joomla 3!!
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
@@ -55,7 +55,7 @@ JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/he
 *
 * @since       2.3.0 (here, moved from newsletter model)
 */
-class contentRenderer
+class ContentRenderer
 {
 	/**
 	 * This is the main function to render the content from an ID to HTML
@@ -233,14 +233,14 @@ class contentRenderer
 		{
 			$row = $_db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (\RuntimeException $e)
 		{
 			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if ($row)
 		{
-			$params = new JRegistry();
+			$params = new Registry();
 			$params->loadString($row->attribs, 'JSON');
 
 			$params->def('link_titles', $app->get('link_titles'));
@@ -327,7 +327,7 @@ class contentRenderer
 
 				$intro_text = $row->text;
 
-				$html_content = new htmlContent();
+				$html_content = new HtmlContent();
 
 				if (key_exists('show_title', $tpl->article) && $tpl->article['show_title'] != 0)
 				{
@@ -707,21 +707,21 @@ class contentRenderer
 
 		if (is_string($tpl->basics))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($tpl->basics);
 			$tpl->basics = $registry->toArray();
 		}
 
 		if (is_string($tpl->article))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($tpl->article);
 			$tpl->article = $registry->toArray();
 		}
 
 		if (is_string($tpl->intro))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($tpl->intro);
 			$tpl->intro = $registry->toArray();
 		}

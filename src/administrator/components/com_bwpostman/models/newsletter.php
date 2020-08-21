@@ -46,10 +46,10 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\ContentRenderer;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/contentRenderer.php');
 
 /**
  * BwPostman newsletter model

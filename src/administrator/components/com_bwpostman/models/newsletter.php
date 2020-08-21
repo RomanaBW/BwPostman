@@ -44,12 +44,12 @@ use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Filter\InputFilter;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/contentRenderer.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/tplhelper.php');
 
 /**

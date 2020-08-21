@@ -32,11 +32,10 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanCampaignHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
 
 // Import VIEW object class
 jimport('joomla.application.component.view');
-
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/mailinglisthelper.php');
 
 /**
  * BwPostman Archive RAW View

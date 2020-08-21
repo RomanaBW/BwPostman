@@ -26,13 +26,11 @@
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
 
 FormHelper::loadFieldClass('checkboxes');
-
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/mailinglisthelper.php');
 
 /**
  * Form Field class for the Joomla Platform.

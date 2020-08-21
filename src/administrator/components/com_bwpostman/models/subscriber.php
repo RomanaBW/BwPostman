@@ -40,9 +40,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Filter\InputFilter;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
-
-// Require helper class
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/mailinglisthelper.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
 
 /**
  * BwPostman subscriber model

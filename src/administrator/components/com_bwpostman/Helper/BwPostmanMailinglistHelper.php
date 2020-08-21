@@ -24,6 +24,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
+
 defined ('_JEXEC') or die ();
 
 use Joomla\CMS\Factory;

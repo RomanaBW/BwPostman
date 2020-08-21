@@ -30,13 +30,12 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
 
 HTMLHelper::_('jquery.framework');
 HTMLHelper::_('script', 'com_bwpostman/bwpm_menuhelper.js', array('version' => 'auto', 'relative' => true));
 
 FormHelper::loadFieldClass('checkboxes');
-
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/mailinglisthelper.php');
 
 /**
  * Form Field class.

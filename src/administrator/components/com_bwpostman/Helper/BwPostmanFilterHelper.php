@@ -24,9 +24,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Access\Access;
 
 /**
  * Component helper class
@@ -48,8 +52,8 @@ class BwPostmanFilterHelper
 	{
 		// Filter settings
 		$config     = ComponentHelper::getParams('com_config', true);
-		$user       = JFactory::getUser();
-		$userGroups = JAccess::getGroupsByUser($user->get('id'));
+		$user       = Factory::getUser();
+		$userGroups = Access::getGroupsByUser($user->get('id'));
 
 		$filters = $config->get('filters');
 

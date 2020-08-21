@@ -34,6 +34,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanFilterHelper;
+
 
 /**
  * Class BwPostmanSubscriberHelper

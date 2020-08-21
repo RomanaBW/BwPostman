@@ -42,9 +42,6 @@ HtmlHelper::_('formbehavior.chosen', 'select');
 
 HTMLHelper::_('bootstrap.tooltip');
 
-// Depends on jQuery UI
-HtmlHelper::_('jquery.ui', array('core'));
-
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 ?>
 
@@ -53,11 +50,13 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 		<?php // displays a message if no availible mailinglist
 		if ($this->lists['available_mailinglists'])
 		{
-			if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
+			if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != ''))
+			{ ?>
 				<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
-					<?php echo $this->params->escape($this->params->get('page_heading')); ?>
+					<?php echo $this->escape($this->params->get('page_heading')); ?>
 				</h1>
-			<?php endif; ?>
+			<?php
+			} ?>
 
 		<div class="content_inner">
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post"

@@ -29,6 +29,8 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use ContentHelperRoute;
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -40,10 +42,8 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Registry\Registry;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\HtmlContent;
-
-// Needed for Joomla 3!!
-JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+use RuntimeException;
+use stdClass;
 
 /**
 * Content Renderer Class

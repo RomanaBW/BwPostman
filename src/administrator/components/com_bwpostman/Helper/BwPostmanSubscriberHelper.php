@@ -28,14 +28,16 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Mail\MailHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanFilterHelper;
-
+use RuntimeException;
 
 /**
  * Class BwPostmanSubscriberHelper
@@ -272,7 +274,7 @@ class BwPostmanSubscriberHelper
 	 * @param    int    $type   emailtype    --> 0 = send registration email, 1 = send editlink, 2 = send activation reminder
 	 * @param    int    $itemid menu item ID
 	 *
-	 * @return    boolean|\JException True on success | error object
+	 * @return    boolean|Exception True on success | error object
 	 *
 	 * @throws Exception
 	 *
@@ -593,7 +595,7 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to check if a subscriber has a subscription to a specific mailinglist
 	 *
-	 * @param JForm $form   subscriber form
+	 * @param Form $form   subscriber form
 	 *
 	 * @since 2.4.0 here
 	 */
@@ -738,10 +740,9 @@ class BwPostmanSubscriberHelper
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
-
 	}
 
 	/**
@@ -788,7 +789,7 @@ class BwPostmanSubscriberHelper
 			}
 			catch (RuntimeException $e)
 			{
-				JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 	}
@@ -940,8 +941,6 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function validateEmail($email)
 	{
-		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/mailverification/BwEmailValidation.php');
-
 		$config     = Factory::getConfig();
 		$logOptions = array();
 
@@ -954,8 +953,8 @@ class BwPostmanSubscriberHelper
 
 		$isValidEmail = $validator->check($email);
 
-		PluginHelper::importPlugin('system');
-		$dispatcher = \JEventDispatcher::getInstance();
+//		PluginHelper::importPlugin('system');
+//		$dispatcher = EventDispatcher::getInstance();
 
 //		$isValidEmail = $dispatcher->trigger('onSubscriberBeforeSave', $email);
 

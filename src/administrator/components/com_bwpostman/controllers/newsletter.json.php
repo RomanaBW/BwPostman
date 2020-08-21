@@ -31,12 +31,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
-
-// Import CONTROLLER object class
-jimport('joomla.application.component.controller');
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwWebApp;
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
 
 /**
  * BwPostman Newsletter Controller

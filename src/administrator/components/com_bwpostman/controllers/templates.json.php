@@ -31,12 +31,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
-
-// Import CONTROLLER object class
-jimport('joomla.application.component.controlleradmin');
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwWebApp;
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
 
 /**
  * BwPostman Templates Controller

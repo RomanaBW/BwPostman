@@ -34,11 +34,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
-
-// Import VIEW object class
-jimport('joomla.application.component.view');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
-
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwWebApp;
 
 /**
  * BwPostman Maintenance RAW View

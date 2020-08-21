@@ -33,12 +33,9 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
-
-// Import CONTROLLER object class
-jimport('joomla.application.component.controller');
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwWebApp;
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/models/maintenance.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
 
 /**
  * BwPostman Campaigns Controller

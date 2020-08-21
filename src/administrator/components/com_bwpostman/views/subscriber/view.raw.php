@@ -31,10 +31,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Uri\Uri;
-
-// Import VIEW object class
-jimport('joomla.application.component.view');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/webapp/BwWebApp.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwWebApp;
 
 /**
  * BwPostman Subscriber RAW View

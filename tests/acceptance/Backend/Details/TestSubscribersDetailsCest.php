@@ -412,6 +412,117 @@ class TestSubscribersDetailsCest
 	}
 
 	/**
+	 * Test method to create a single Subscriber from list view, fill text fields with links
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.0.0
+	 */
+	public function CreateOneSubscriberAbuseListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Subscriber complete list view");
+		$I->amOnPage(SubManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		$options    = $I->getManifestOptions('com_bwpostman');
+
+		// Fill needed fields
+		if ($options->show_gender)
+		{
+			$I->clickAndWait(SubEdit::$gender, 1);
+			$I->clickAndWait(SubEdit::$male, 1);
+		}
+
+		$I->fillField(SubEdit::$email, SubEdit::$field_email);
+
+		if ($options->show_emailformat)
+		{
+			$I->clickAndWait(SubEdit::$mailformat, 1);
+			$I->clickAndWait(SubManage::$format_text, 1);
+		}
+
+		$I->clickAndWait(SubEdit::$confirm, 1);
+		$I->clickAndWait(SubEdit::$confirmed, 1);
+
+		$I->scrollTo(SubEdit::$mls_label, 0, -100);
+		$I->click(sprintf(SubEdit::$mls_accessible, 2));
+		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
+		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);
+		$I->click(sprintf(SubEdit::$mls_internal, 4));
+		$I->scrollTo(Generals::$sys_message_container, 0, -100);
+
+		// Fill first name with link
+		if ($options->show_firstname_field || $options->firstname_field_obligation)
+		{
+			$I->fillField(SubEdit::$firstname, SubEdit::$abuseLink);
+		}
+
+		if ($options->show_name_field || $options->name_field_obligation)
+		{
+			$I->fillField(SubEdit::$name, SubEdit::$field_name);
+		}
+
+		if ($options->show_special || $options->special_field_obligation)
+		{
+			$I->fillField(SubEdit::$special, SubEdit::$field_special);
+		}
+
+		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+
+		// Check error message first name
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Error", Generals::$alert_header);
+		$I->see(SubEdit::$errorAbuseFirstName, Generals::$alert_msg);
+
+		// Fill last name with link
+		if ($options->show_firstname_field || $options->firstname_field_obligation)
+		{
+			$I->fillField(SubEdit::$firstname, SubEdit::$field_firstname);
+		}
+
+		if ($options->show_name_field || $options->name_field_obligation)
+		{
+			$I->fillField(SubEdit::$name, SubEdit::$abuseLink);
+		}
+
+		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+
+		// Check error message last name
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Error", Generals::$alert_header);
+		$I->see(SubEdit::$errorAbuseLastName, Generals::$alert_msg);
+
+		// Fill special with link
+		if ($options->show_name_field || $options->name_field_obligation)
+		{
+			$I->fillField(SubEdit::$name, SubEdit::$field_name);
+		}
+
+		if ($options->show_special || $options->special_field_obligation)
+		{
+			$I->fillField(SubEdit::$special, SubEdit::$abuseLink);
+		}
+
+		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+
+		// Check error message special
+		$I->waitForElement(Generals::$alert_header, 30);
+		$I->see("Error", Generals::$alert_header);
+		$I->see(sprintf(SubEdit::$errorAbuseSpecial, trim(SubEdit::$specialTitle)), Generals::$alert_msg);
+
+		$I->clickAndWait(SubEdit::$toolbar['Cancel'], 1);
+	}
+
+	/**
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester    $I

@@ -9,6 +9,7 @@
 	<license>This component is released under the GNU/GPLv3 License or later</license>
 	<version>%%version_number%%</version>
 	<description></description>
+	<namespace path="src">BoldtWebservice\Component\BwPostman</namespace>
 
 	<install>
 		<sql>
@@ -90,6 +91,7 @@
 			<filename>import_demo.xml</filename>
 			<folder>assets</folder>
 			<folder>helpers</folder>
+			<folder>includes</folder>
 			<folder>libraries</folder>
 			<folder>elements</folder>
 			<folder>layouts</folder>

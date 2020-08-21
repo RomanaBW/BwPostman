@@ -32,7 +32,6 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HtmlHelper::_('jquery.ui', array('searchtools'));
 HtmlHelper::_('formbehavior.chosen', 'select');
 
 /**

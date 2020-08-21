@@ -31,8 +31,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
-
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 
 /**
  * #__bwpostman_sendmailqueue table handler

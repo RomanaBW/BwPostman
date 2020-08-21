@@ -38,10 +38,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
-
-// Require component helper classes and exception class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
-
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 
 /**
  * Class BwPostmanControllerRegister

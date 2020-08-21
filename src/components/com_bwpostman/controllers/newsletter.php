@@ -28,13 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-
-// Import CONTROLLER object class
-jimport('joomla.application.component.controller');
-
-// Require component admin helper class and exception class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
-
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 
 /**
  * Class BwPostmanControllerNewsletter

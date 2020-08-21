@@ -34,12 +34,12 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 
 // Import CONTROLLER object class
 jimport('joomla.application.component.controller');
 
 // Require component admin helper class and exception class
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/subscriber.php');
 
 

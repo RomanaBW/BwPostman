@@ -40,9 +40,7 @@ use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMaintenanceHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
-
-// Require some classes
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/exceptions/BwException.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 
 /**
  * BwPostman maintenance page model

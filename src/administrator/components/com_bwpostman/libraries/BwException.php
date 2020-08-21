@@ -24,6 +24,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
+
+use Exception;
+
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Basic exception class implemented by every exception of BwPostman

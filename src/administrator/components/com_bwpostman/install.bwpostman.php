@@ -46,6 +46,7 @@ use Joomla\Component\Users\Administrator\Model\GroupModel;
 use Joomla\Component\Users\Administrator\Model\LevelModel;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanInstallHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 
 /**
  * Class Com_BwPostmanInstallerScript

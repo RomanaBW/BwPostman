@@ -32,6 +32,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 
 // Import CONTROLLER object class
 jimport('joomla.application.component.controller');

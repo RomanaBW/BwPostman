@@ -53,7 +53,6 @@ class BwPostmanControllerTemplates extends JControllerAdmin
 	 *
 	 * @return void
 	 *
-	 * @throws BwException
 	 * @throws Exception
 	 *
 	 * @since       1.1.0

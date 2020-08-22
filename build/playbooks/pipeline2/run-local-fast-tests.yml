@@ -20,6 +20,8 @@
     - name: Set test source dir depending on joomla main version
       set_fact:
         test_src_dir: "tests3"
+        src_dir: "/vhosts/dev/joomla-cms"
+        base_dir: "/vhosts/dev/joomla-cms"
       when: joomla_version[0] == '3'
 
     - name: VM part of project name
@@ -77,14 +79,25 @@
     - name: Start infrastructure
       command: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm-fast.yml -p {{ project_name }} up -d"
 
+    - name: Show synchronization command
+      debug:
+        msg: "{{ test_dir }}/job_scripts/bwpm_rsync_build.sh {{ src_dir }} {{ web_dir }}/{{ project_name }}/files"
+
     - name: Synchronize files
       command: "{{ test_dir }}/job_scripts/bwpm_rsync_build.sh {{ src_dir }} {{ web_dir }}/{{ project_name }}/files"
 
-    - name: Synchronize tests J3
-      command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir }}/tests3 {{ src_dir }}/tests3"
+    - name: Set test synchronization command J3
+      set_fact:
+        sync_test_command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir_3 }}/tests3 {{ src_dir }}/tests3"
+      when: joomla_version[0] == '3'
 
-    - name: Synchronize tests J4
-      command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir }}/tests {{ src_dir }}/tests"
+    - name: Set test synchronization command J4
+      set_fact:
+        sync_test_command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir_4 }}/tests {{ src_dir }}/tests"
+      when: joomla_version[0] == '4'
+
+    - name: Synchronize tests
+      command: "{{ sync_test_command }}"
 
     - name: Set rebase command
       set_fact:

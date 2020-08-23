@@ -192,7 +192,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$fileName = File::makeSafe($fileName);
 
-		if (is_null($fileName))
+		if (is_null($fileName) || $fileName == "")
 		{
 			$dottedVersion = BwPostmanHelper::getInstalledBwPostmanVersion();
 

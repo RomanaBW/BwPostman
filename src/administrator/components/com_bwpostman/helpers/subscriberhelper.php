@@ -32,9 +32,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Mail\MailHelper;
-
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/filterhelper.php');
+use Joomla\CMS\User\UserHelper;
 
 /**
  * Class BwPostmanSubscriberHelper

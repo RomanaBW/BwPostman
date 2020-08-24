@@ -31,6 +31,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwWebApp;
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');

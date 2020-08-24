@@ -32,6 +32,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Load the tooltip behavior for the notes
 HTMLHelper::_('bootstrap.tooltip');

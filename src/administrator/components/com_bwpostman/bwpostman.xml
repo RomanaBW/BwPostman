@@ -9,7 +9,7 @@
 	<license>This component is released under the GNU/GPLv3 License or later</license>
 	<version>%%version_number%%</version>
 	<description></description>
-	<namespace path="src">BoldtWebservice\Component\BwPostman</namespace>
+	<namespace>BoldtWebservice\Component\BwPostman</namespace>
 
 	<install>
 		<sql>

@@ -205,7 +205,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		$this->count_queue		= $this->get('CountQueue');
 		$this->context			= 'com_bwpostman.newsletters';
 
-		BwPostmanHelper::addSubmenu('bwpostman');
+		BwPostmanHelper::addSubmenu('newsletters');
 		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();

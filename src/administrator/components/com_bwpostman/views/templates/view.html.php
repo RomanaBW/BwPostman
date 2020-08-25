@@ -171,7 +171,7 @@ class BwPostmanViewTemplates extends JViewLegacy
 		$this->pagination		= $this->get('Pagination');
 		$this->total			= $this->get('total');
 
-		BwPostmanHelper::addSubmenu('bwpostman');
+		BwPostmanHelper::addSubmenu('templates');
 		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();

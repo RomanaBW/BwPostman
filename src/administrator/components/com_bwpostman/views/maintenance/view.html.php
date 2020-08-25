@@ -211,7 +211,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 
 		$this->template	= $app->getTemplate();
 
-		BwPostmanHelper::addSubmenu('bwpostman');
+		BwPostmanHelper::addSubmenu('maintenance');
 		$this->addToolbar();
 
 		switch ($layout)

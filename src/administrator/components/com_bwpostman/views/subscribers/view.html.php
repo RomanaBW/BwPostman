@@ -228,7 +228,7 @@ class BwPostmanViewSubscribers extends JViewLegacy
 		$this->filterMl         = $this->state->get('filter.mailinglist');
 
 		$this->addToolbar();
-		BwPostmanHelper::addSubmenu('bwpostman');
+		BwPostmanHelper::addSubmenu('subscribers');
 
 		$this->sidebar = JHtmlSidebar::render();
 

@@ -170,7 +170,7 @@ class BwPostmanViewArchive extends JViewLegacy
 			$app->redirect($this->request_url);
 		}
 
-		BwPostmanHelper::addSubmenu('bwpostman');
+		BwPostmanHelper::addSubmenu('archive');
 		$this->addToolbar();
 
 		$this->sidebar = JHtmlSidebar::render();

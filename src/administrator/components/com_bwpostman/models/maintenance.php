@@ -272,8 +272,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			foreach ($this->tableNames as $table)
 			{
 				// do not save the table "bwpostman_templates_tpl"
-				if (strpos($table['tableNameRaw'], 'templates_tpl') === false)
-				{
+//				if (strpos($table['tableNameRaw'], 'templates_tpl') === false)
+//				{
 					$databaseXml = $this->databaseXml;
 
 					$tablesXml = $this->xml->createElement('tables');
@@ -336,7 +336,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 						return false;
 					}
-				}
+//				}
 			}
 
 			// Reformat XML string with new lines and indents for each entry
@@ -2410,6 +2410,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 								|| ($key == 'tpl_css')
 								|| ($key == 'tpl_article')
 								|| ($key == 'tpl_divider')))
+						|| (($tableName == '#__bwpostman_templates_tpl')
+							&& (($key == 'css')
+								|| ($key == 'header_tpl')
+								|| ($key == 'intro_tpl')
+								|| ($key == 'divider_tpl')
+								|| ($key == 'article_tpl')
+								|| ($key == 'readon_tpl')
+								|| ($key == 'footer_tpl')
+								|| ($key == 'button_tpl')))
 					)
 					{
 						// Remove most outer CDATA tags. These are inserted for valid XML, but never removed, although they are not needed except for writing valid backup file!
@@ -2708,7 +2717,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			{
 				$tables          = unserialize(fread($fp, filesize($tmp_file)));
 				$asset_loop      = 0;
-				$asset_siblings   = 0;
+				$asset_siblings  = 0;
 				$asset_transform = array();
 				$rawTableName    = $this->getRawTableName($table);
 

@@ -123,7 +123,7 @@
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}/pkg_{{ extension_name }}.zip"
         dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}-{{ version_number }}.{{ build }}.zip"
-      when: not replace_vars|bool
+#      when: not replace_vars|bool
 
     - name: copy package to test data folder without build and version number
       copy:

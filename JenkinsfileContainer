@@ -25,11 +25,11 @@ pipeline {
 			}
         }
 
-		stage('Create tester package') {
-			steps {
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
-			}
-		}
+//		stage('Create tester package') {
+//			steps {
+//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
+//			}
+//		}
 
 
 		stage('Create full package') {
@@ -193,7 +193,7 @@ pipeline {
 			)
 
 				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed smoke testand all acceptance tests for Joomla 3 and Joomla 4 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 3 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
 					subject:"BwPostman build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de'
 				)

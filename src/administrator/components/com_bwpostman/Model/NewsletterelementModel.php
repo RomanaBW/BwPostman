@@ -24,13 +24,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 // Import MODEL object class
 jimport('joomla.application.component.model');
 
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Pagination\Pagination;
 
@@ -43,7 +47,7 @@ use Joomla\CMS\Pagination\Pagination;
  *
  * @since
  */
-class BwPostmanModelNewsletterelement extends JModelLegacy
+class NewsletterelementModel extends BaseDatabaseModel
 {
 
 	/**

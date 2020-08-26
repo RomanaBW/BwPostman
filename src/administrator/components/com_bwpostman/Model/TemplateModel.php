@@ -24,14 +24,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 // Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -41,6 +45,8 @@ use Joomla\Registry\Registry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanTplHelper;
+use RuntimeException;
+use stdClass;
 
 /**
  * BwPostman mailinglist model
@@ -52,7 +58,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanTplHelper;
  *
  * @since 1.1.0
  */
-class BwPostmanModelTemplate extends JModelAdmin
+class TemplateModel extends AdminModel
 {
 	/**
 	 * template ID
@@ -96,7 +102,7 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 * @param	string	$prefix     A prefix for the table class name. Optional.
 	 * @param	array	$config     Configuration array for model. Optional.
 	 *
-	 * @return	bool|JTable	A database object
+	 * @return	bool|Table	A database object
 	 *
 	 * @since  1.1.0
 	 */
@@ -983,10 +989,9 @@ class BwPostmanModelTemplate extends JModelAdmin
 	private function makePreview($item)
 	{
 		// make preview
-		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates_tpl.php');
 		// first get templates tpls
 		$tpl_id    = $item->tpl_id;
-		$tpl_model = new BwPostmanModelTemplates_Tpl();
+		$tpl_model = new Templates_TplModel();
 		$tpl       = $tpl_model->getItem($tpl_id);
 
 		// make html preview data
@@ -1109,7 +1114,6 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 */
 	private function makePreviewText($item)
 	{
-		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
 		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
 		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
 
@@ -1178,15 +1182,13 @@ class BwPostmanModelTemplate extends JModelAdmin
 	 */
 	private function makePreviewTextStd($item)
 	{
-		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
 		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
 		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
 
 		// make preview
-		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates_tpl.php');
 		// first get templates tpls
 		$tpl_id    = $item->tpl_id;
-		$tpl_model = new BwPostmanModelTemplates_Tpl();
+		$tpl_model = new Templates_TplModel();
 		$tpl       = $tpl_model->getItem($tpl_id);
 
 		// make text preview data

@@ -24,9 +24,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die ('Restricted access');
 
+use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
@@ -44,7 +47,7 @@ jimport('joomla.application.component.helper');
  *
  * @since 1.1.0
  */
-class BwPostmanModelTemplates_Tpl extends JModelAdmin
+class Templates_TplModel extends AdminModel
 {
 	/**
 	 * Alias Constructor

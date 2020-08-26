@@ -24,12 +24,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -45,6 +49,9 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglis
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\ContentRenderer;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use RuntimeException;
+use stdClass;
+use Throwable;
 
 /**
  * BwPostman newsletter model
@@ -56,7 +63,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
  *
  * @since       0.9.1
  */
-class BwPostmanModelNewsletter extends JModelAdmin
+class NewsletterModel extends AdminModel
 {
 	/**
 	 * Newsletter id
@@ -662,7 +669,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			$query = $db->getQuery(true);
 			$query->select($db->quoteName('c') . '.' . $db->quoteName('id'));
-			$query->select($db->quoteName('c') . '.' . $db->quoteName('title') . ', (' . $subquery) . ') AS ' . $db->quoteName('category_name');
+			$query->select($db->quoteName('c') . '.' . $db->quoteName('title') . ', (' . $subquery . ') AS ' . $db->quoteName('category_name'));
 			$query->from($db->quoteName('#__content') . ' AS ' . $db->quoteName('c'));
 			$query->where($db->quoteName('c') . '.' . $db->quoteName('id') . ' = ' . $db->quote($content_id));
 
@@ -871,7 +878,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 * Method to copy one or more newsletters
 	 * --> the assigned mailing lists will be copied, too
 	 *
-	 * @param 	integer   $cid        Newsletter-ID
+	 * @param 	integer   $id        Newsletter-ID
 	 *
 	 * @return 	boolean
 	 *
@@ -1864,31 +1871,24 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if ($ret === 0)
 				{                              // Queue is empty!
 					return 0;
-					break;
 				}
 
 				$sendMailCounter++;
 				if ($sendMailCounter >= (int)$mailsPerStep)
 				{     // Maximum is reached.
 					return 1;
-					break;
 				}
 
 				$counter++;
 				if ($counter >= 10)
 				{     // package for ajax call
 					return $sendMailCounter;
-					break;
 				}
 			}
 
 			return 0;
 		}
-		catch (Throwable $e) // PHP-Version >= 7
-		{
-			return 2;
-		}
-		catch (Exception $e) // PHP-Version < 7
+		catch (Throwable $e)
 		{
 			return 2;
 		}

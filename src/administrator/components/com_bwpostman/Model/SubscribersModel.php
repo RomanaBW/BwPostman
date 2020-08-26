@@ -24,12 +24,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Database\QueryInterface;
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
@@ -44,7 +50,7 @@ jimport('joomla.application.component.modellist');
  *
  * @since       0.9.1
  */
-class BwPostmanModelSubscribers extends JModelList
+class SubscribersModel extends ListModel
 {
 	/**
 	 * The query object
@@ -179,7 +185,7 @@ class BwPostmanModelSubscribers extends JModelList
 				'list.select',
 				'a.id, a.name, a.firstname, a.gender, a.email, a.checked_out, a.checked_out_time' .
 				', a.emailformat, a.user_id, a.status, a.registered_by'
-			) . ', (' . $sub_query . ') AS mailinglists'
+			) . ', (' . (string)$sub_query . ') AS mailinglists'
 		);
 		$this->query->from($this->_db->quoteName('#__bwpostman_subscribers', 'a'));
 
@@ -196,7 +202,7 @@ class BwPostmanModelSubscribers extends JModelList
 	 * Method to get the subquery this query needs
 	 * This subquery counts the mailinglists of each subscriber
 	 *
-	 * @return JDatabaseQuery
+	 * @return QueryInterface
 	 *
 	 * @since   2.0.0
 	 */

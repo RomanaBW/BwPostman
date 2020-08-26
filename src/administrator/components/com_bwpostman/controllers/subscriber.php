@@ -330,8 +330,9 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		{
 			case 'save':
 			case 'save2new':
-			case 'save2copy':
+//			case 'save2copy':
 				Factory::getApplication()->setUserState('subscriber.id', null);
+				Factory::getApplication()->setUserState('com_bwpostman.edit.subscriber.mailinglists', null);
 				break;
 		}
 	}
@@ -354,6 +355,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 		parent::cancel();
 
 		Factory::getApplication()->setUserState('subscriber.id', null);
+		Factory::getApplication()->setUserState('com_bwpostman.edit.subscriber.mailinglists', null);
 	}
 
 	/**

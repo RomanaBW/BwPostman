@@ -24,12 +24,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Import MODEL and Helper object class
-jimport('joomla.application.component.model');
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\Folder;
@@ -51,7 +51,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
  *
  * @since       1.0.1
  */
-class BwPostmanModelMaintenance extends JModelLegacy
+class MaintenanceModel extends BaseDatabaseModel
 {
 
 	/**
@@ -127,7 +127,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	protected $db;
 
 	/**
-	 * SimpleXML object
+	 * DomDocument object
 	 *
 	 * @var object
 	 *
@@ -189,7 +189,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		$fileName = File::makeSafe($fileName);
 
-		if (is_null($fileName))
+		if (is_null($fileName) || $fileName == "")
 		{
 			$dottedVersion = BwPostmanHelper::getInstalledBwPostmanVersion();
 
@@ -269,8 +269,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			foreach ($this->tableNames as $table)
 			{
 				// do not save the table "bwpostman_templates_tpl"
-				if (strpos($table['tableNameRaw'], 'templates_tpl') === false)
-				{
+//				if (strpos($table['tableNameRaw'], 'templates_tpl') === false)
+//				{
 					$databaseXml = $this->databaseXml;
 
 					$tablesXml = $this->xml->createElement('tables');
@@ -333,7 +333,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 						return false;
 					}
-				}
+//				}
 			}
 
 			// Reformat XML string with new lines and indents for each entry
@@ -2407,6 +2407,15 @@ class BwPostmanModelMaintenance extends JModelLegacy
 								|| ($key == 'tpl_css')
 								|| ($key == 'tpl_article')
 								|| ($key == 'tpl_divider')))
+						|| (($tableName == '#__bwpostman_templates_tpl')
+							&& (($key == 'css')
+								|| ($key == 'header_tpl')
+								|| ($key == 'intro_tpl')
+								|| ($key == 'divider_tpl')
+								|| ($key == 'article_tpl')
+								|| ($key == 'readon_tpl')
+								|| ($key == 'footer_tpl')
+								|| ($key == 'button_tpl')))
 					)
 					{
 						// Remove most outer CDATA tags. These are inserted for valid XML, but never removed, although they are not needed except for writing valid backup file!

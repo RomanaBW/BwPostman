@@ -24,17 +24,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
-
-// Import MODEL and Helper object class
-jimport('joomla.application.component.modeladmin');
+use RuntimeException;
+use stdClass;
 
 /**
  * BwPostman mailinglist model
@@ -46,7 +49,7 @@ jimport('joomla.application.component.modeladmin');
  *
  * @since       0.9.1
  */
-class BwPostmanModelMailinglist extends JModelAdmin
+class MailinglistModel extends AdminModel
 {
 	/**
 	 * Mailinglist ID
@@ -90,7 +93,7 @@ class BwPostmanModelMailinglist extends JModelAdmin
 	 * @param	string	$prefix     A prefix for the table class name. Optional.
 	 * @param	array	$config     Configuration array for model. Optional.
 	 *
-	 * @return	boolean|JTable	A database object
+	 * @return	boolean|Table	A database object
 	 *
 	 * @since  1.0.1
 	 */

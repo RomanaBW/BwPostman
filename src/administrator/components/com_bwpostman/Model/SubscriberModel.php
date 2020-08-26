@@ -24,14 +24,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 // Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
 
+use DOMDocument;
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Form\Form;
 use Joomla\Utilities\ArrayHelper;
@@ -41,6 +46,10 @@ use Joomla\CMS\Filter\InputFilter;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use RuntimeException;
+use SimpleXMLElement;
+use stdClass;
 
 /**
  * BwPostman subscriber model
@@ -52,7 +61,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglis
  *
  * @since       0.9.1
  */
-class BwPostmanModelSubscriber extends JModelAdmin
+class SubscriberModel extends AdminModel
 {
 	/**
 	 * Subscriber/Test-recipient id
@@ -240,15 +249,36 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$data         = $app->getUserState('com_bwpostman.edit.subscriber.data', null);
 		$mailinglists = $app->getUserState('com_bwpostman.edit.subscriber.mailinglists', null);
 
-		//@SpecialNote: Workaround:$this->getState() doesn't appear reliable at new item at J4, which is only saved (no save and close)
-		//@SpecialNote: This misbehaviour leads to empty item, also it is stored
+//		if (!empty($pk))
+//		{
+//			$pk = (int) $pk;
+//		}
+//		else
+//		{
+//			$pk = (int) $this->getState($this->getName() . '.id');
+//		}
+
+//		$log_options = array();
+//		$logger = new BwLogger($log_options);
+//		$logger->addEntry(new JLogEntry('Joomla state subscriber id: ' . $this->getState($this->getName() . '.id'), BwLogger::BW_DEBUG, 'subscribers'));
+//		$logger->addEntry(new JLogEntry('My state subscriber id: ' . $app->getUserState('subscriber.id'), BwLogger::BW_DEBUG, 'subscribers'));
+
+		//@SpecialNote: Workaround:$this->getState() doesn't appear reliable at J4 at new item, which is only saved (no save and close) and at a duplicated item
+		//@SpecialNote: This misbehaviour leads to empty/old item, also it is stored
 		if (empty($pk))
 		{
-			$pk = (int) $app->getUserState('subscriber.id');
+			$jPk  = (int) $this->getState($this->getName() . '.id');
+			$myPk = (int) $app->getUserState('subscriber.id');
+			$pk   = $jPk;
 
-			if (empty($pk))
+			if ($myPk > $jPk)
 			{
-				$pk = (int) $this->getState($this->getName() . '.id');
+				$pk = $myPk;
+
+				if ($jPk > 0)
+				{
+					$this->checkin($data[$jPk]);
+				}
 			}
 		}
 
@@ -776,13 +806,26 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			// Get data from the file and store them into an array
 			while(($row = fgetcsv($fh, '', $delimiter, $enclosure)) !== false)
 			{
+				$intKeys = array(
+					'emailformat',
+					'gender',
+					'status',
+				);
+
 				foreach($colNumToDBName as $key => $value)
 				{
 					// Reset the import values. We should do this for every import row preventively.
 					$values[$key] = 0;
 
-					// Get the values from the csv
-					$values[$value] = $filter->clean($row[$key], 'STRING');
+					// Get the values from the csv and filter them
+					$filterType = 'STRING';
+
+					if (in_array(strtolower($value), $intKeys))
+					{
+						$filterType = 'INT';
+					}
+
+					$values[$value] = $filter->clean($row[$key], $filterType);
 				}
 
 				// Count CSV-file line numbers

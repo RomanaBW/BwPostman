@@ -38,6 +38,7 @@ use Joomla\Filter\InputFilter;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\User\UserHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 /**
  * #__bwpostman_subscribers table handler
@@ -433,7 +434,7 @@ class BwPostmanTableSubscribers extends JTable
 		$this->name              = $filter->clean($this->name);
 		$this->firstname         = $filter->clean($this->firstname);
 		$this->email             = $filter->clean($this->email);
-		$this->emailformat       = $filter->clean($this->emailformat, 'BOOLEAN');
+		$this->emailformat       = $filter->clean($this->emailformat, 'INT');
 		$this->gender            = $filter->clean($this->gender, 'UINT');
 		$this->special           = $filter->clean($this->special);
 		$this->status            = $filter->clean($this->status, 'UINT');

@@ -24,22 +24,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 // Import MODEL and Helper object class
 jimport('joomla.application.component.modeladmin');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanCampaignHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
-
-jimport('joomla.application.component.helper');
+use RuntimeException;
+use stdClass;
 
 /**
  * BwPostman campaign model
@@ -51,7 +55,7 @@ jimport('joomla.application.component.helper');
  *
  * @since       0.9.1
  */
-class BwPostmanModelCampaign extends JModelAdmin
+class CampaignModel extends AdminModel
 {
 	/**
 	 * Campaign ID

@@ -24,17 +24,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
+use JLogEntry;
 use Joomla\Archive\Archive;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use Joomla\Database\DatabaseDriver;
+use RuntimeException;
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
@@ -49,7 +57,7 @@ jimport('joomla.application.component.modellist');
  *
  * @since 1.1.0
  */
-class BwPostmanModelTemplates extends JModelList
+class TemplatesModel extends ListModel
 {
 	/**
 	 * The query object
@@ -147,7 +155,7 @@ class BwPostmanModelTemplates extends JModelList
 	 * @param	string	$prefix     A prefix for the table class name. Optional.
 	 * @param	array	$config     Configuration array for model. Optional.
 	 *
-	 * @return	bool|JTable	A database object
+	 * @return	bool|Table	A database object
 	 *
 	 * @since  1.1.0
 	 */
@@ -667,7 +675,7 @@ class BwPostmanModelTemplates extends JModelList
 		{
 			// Create an array of queries from the sql file
 			jimport('joomla.installer.helper');
-			$queries = JDatabaseDriver::splitSql($buffer);
+			$queries = DatabaseDriver::splitSql($buffer);
 
 			// Are there queries to process?
 			if (count($queries) !== 0)
@@ -749,7 +757,7 @@ class BwPostmanModelTemplates extends JModelList
 		$imagedir = $tempPath . '/tmp_bwpostman_installtpl/images/';
 
 		// make new folder and copy template thumbnails
-		$m_params   = JComponentHelper::getParams('com_media');
+		$m_params   = ComponentHelper::getParams('com_media');
 		$dest       = JPATH_ROOT . '/' . $m_params->get('file_path', 'images') . '/com_bwpostman';
 		$dest2      = JPATH_ROOT . '/images/com_bwpostman';
 		$media_path = JPATH_ROOT . '/media/com_bwpostman/images/';
@@ -957,7 +965,7 @@ class BwPostmanModelTemplates extends JModelList
 
 			jimport('joomla.filesystem.file');
 
-			$app            = Factory::getApplication('administrator');
+			$app            = Factory::getApplication();
 			$this->tmp_path = $app->get('tmp_path') . '/';
 
 			$basename = 'bwpostman_template_export_id_' . $this->exportId . '.zip';

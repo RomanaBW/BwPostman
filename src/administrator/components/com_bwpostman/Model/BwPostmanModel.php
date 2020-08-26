@@ -24,17 +24,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Access\Rules;
-
-// Import MODEL object class
-jimport('joomla.application.component.model');
 
 /**
  * BwPostman cover page model
@@ -44,7 +45,7 @@ jimport('joomla.application.component.model');
  *
  * @since       0.9.1
  */
-class BwPostmanModelBwPostman extends JModelLegacy
+class BwPostmanModel extends BaseDatabaseModel
 {
 	/**
 	 * Constructor

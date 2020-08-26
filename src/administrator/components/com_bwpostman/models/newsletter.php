@@ -1870,25 +1870,21 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if ($ret === 0)
 				{                              // Queue is empty!
 					return 0;
-					break;
 				}
 
 				$sendMailCounter++;
 				if ($sendMailCounter >= (int)$mailsPerStep)
 				{     // Maximum is reached.
 					return 1;
-					break;
 				}
 
 				$counter++;
 				if ($counter >= 10)
 				{     // package for ajax call
 					return $sendMailCounter;
-					break;
 				}
 			}
 
-			return 0;
 		}
 		catch (Throwable $e) // PHP-Version >= 7
 		{

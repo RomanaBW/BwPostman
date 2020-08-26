@@ -194,7 +194,7 @@ pipeline {
 
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 3 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman build ${currentBuild.number} successful",
+					subject:"BwPostman build ${currentBuild.number} for J3 successful",
 					to: 'webmaster@boldt-webservice.de'
 				)
 //				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!

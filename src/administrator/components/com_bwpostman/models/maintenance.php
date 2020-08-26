@@ -3666,15 +3666,16 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	/**
 	 * Method to get the current default asset of table or BwPostman, based on section asset (parent)
 	 *
-	 * @param array $sectionAsset
+	 * @param array  $sectionAsset
+	 * @param string $currentSection
 	 *
 	 * @return  array   $default_asset  default asset of table or BwPostman
 	 *
 	 * @since    1.3.0
 	 */
-	protected function getDefaultAsset($sectionAsset)
+	protected function getDefaultAsset($sectionAsset, $currentSection)
 	{
-		$default_asset = $sectionAsset;
+		$default_asset  = $sectionAsset;
 
 		$default_asset['parent_id'] = $sectionAsset['id'];
 		$default_asset['id']        = 0;
@@ -3682,8 +3683,39 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$default_asset['rgt']       = $default_asset['lft'] + 1;
 		$default_asset['level']     = (int) $sectionAsset['level'] + 1;
 
+		$default_asset['rules'] = $this->getOptimizedRules($default_asset['rules'], $currentSection);
+
 		return $default_asset;
 	}
+
+	/**
+	 * Method to get the minimized rules for a dataset
+	 *
+	 * @param array  $defaultRules
+	 * @param string $currentSection
+	 *
+	 * @return  string   $optimizedRules  optimized rules for a dataset
+	 *
+	 * @since    3.0.0
+	 */
+	protected function getOptimizedRules($defaultRules, $currentSection)
+	{
+		$optimizedRules = array();
+		$allRules       = json_decode($defaultRules, true);
+		$allRuleNames   = array_keys($allRules);
+
+		foreach ($allRuleNames as $ruleName)
+		{
+			if (strpos($ruleName, $currentSection) !== false)
+			{
+				$optimizedRules[$ruleName] = $allRules[$ruleName];
+			}
+		}
+
+		return json_encode($optimizedRules);
+	}
+
+
 
 	/**
 	 * Method to write the collected assets by loop. Also shifts left and right values by number of inserted assets.
@@ -6266,7 +6298,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			return false;
 		}
 
-		$default_asset = $this->getDefaultAsset($sectionAsset);
+		$default_asset = $this->getDefaultAsset($sectionAsset, strtolower($table['tableNameUC']));
 		$title         = $this->getAssetTitle($table['tableNameGeneric']);
 
 		$assetLoopCounter = 0;

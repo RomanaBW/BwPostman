@@ -41,7 +41,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Mail\MailHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Log\LogEntry;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filter\InputFilter;
 
 // Require helper class

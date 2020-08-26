@@ -668,7 +668,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 
 			$query = $db->getQuery(true);
 			$query->select($db->quoteName('c') . '.' . $db->quoteName('id'));
-			$query->select($db->quoteName('c') . '.' . $db->quoteName('title') . ', (' . $subquery) . ') AS ' . $db->quoteName('category_name');
+			$query->select($db->quoteName('c') . '.' . $db->quoteName('title') . ', (' . $subquery . ') AS ' . $db->quoteName('category_name'));
 			$query->from($db->quoteName('#__content') . ' AS ' . $db->quoteName('c'));
 			$query->where($db->quoteName('c') . '.' . $db->quoteName('id') . ' = ' . $db->quote($content_id));
 

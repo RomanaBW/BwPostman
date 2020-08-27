@@ -24,14 +24,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
+use JAccessRules;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
+use Joomla\Database\DatabaseDriver;
+use RuntimeException;
 
 /**
  * #__bwpostman_sendmailqueue table handler
@@ -42,7 +48,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
  *
  * @since       0.9.1
  */
-class BwPostmanTableSendmailqueue extends JTable
+class SendmailqueueTable extends Table
 {
 	/**
 	 * @var int Primary Key
@@ -103,7 +109,7 @@ class BwPostmanTableSendmailqueue extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */

@@ -24,12 +24,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
+use Exception;
+use JAccessRules;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Filter\InputFilter;
+use RuntimeException;
 
 /**
  * #__bwpostman_sendmailcontent table handler
@@ -41,7 +49,7 @@ use Joomla\Filter\InputFilter;
  *
  * @since       0.9.1
  */
-class BwPostmanTableSendmailcontent extends JTable
+class SendmailcontentTable extends Table
 {
 	/**
 	 * @var int Primary Key --> every ID exists twice (once for mode text, once for mode html
@@ -137,7 +145,7 @@ class BwPostmanTableSendmailcontent extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */

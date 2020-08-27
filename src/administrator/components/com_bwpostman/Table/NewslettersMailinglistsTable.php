@@ -24,12 +24,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Filter\InputFilter;
+use RuntimeException;
 
 /**
  * #__bwpostman_newsletters_mailinglists table handler
@@ -41,7 +47,7 @@ use Joomla\Filter\InputFilter;
  *
  * @since       0.9.1
  */
-class BwPostmanTableNewsletters_Mailinglists extends JTable
+class NewslettersMailinglistsTable extends Table
 {
 	/**
 	 * @var int Primary Key Newsletter-ID
@@ -60,7 +66,7 @@ class BwPostmanTableNewsletters_Mailinglists extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */

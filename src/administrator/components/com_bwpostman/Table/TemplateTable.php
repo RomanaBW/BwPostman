@@ -24,14 +24,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
+use BoldtWebservice\Component\BwPostman\Administrator\Model\TemplateModel;
+use BoldtWebservice\Component\BwPostman\Administrator\Model\Templates_TplModel;
+use DateTime;
+use Exception;
+use JAccessRules;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Versioning\VersionableTableInterface;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Filter\InputFilter;
 use Joomla\Registry\Registry;
+use RuntimeException;
+use stdClass;
 
 /**
  * #__bwpostman_templates table handler
@@ -43,7 +55,7 @@ use Joomla\Registry\Registry;
  *
  * @since       1.1.0
  */
-class BwPostmanTableTemplates extends JTable
+class TemplateTable extends Table implements VersionableTableInterface
 {
 	/**
 	 * @var int Primary Key
@@ -272,7 +284,7 @@ class BwPostmanTableTemplates extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since 1.1.0
 	 */
@@ -505,13 +517,11 @@ class BwPostmanTableTemplates extends JTable
 		{
 			// first get templates tpls
 			$tpl_id		= $item->tpl_id;
-			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates_tpl.php');
-			$tpl_model = new BwPostmanModelTemplates_Tpl();
+			$tpl_model = new Templates_TplModel();
 			$tpl		= $tpl_model->getItem($tpl_id);
 
 			// get template model
-			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/template.php');
-			$model = new BwPostmanModelTemplate();
+			$model = new TemplateModel();
 			// make html template data
 			$this->tpl_html	= $model->makeTexttemplate($item, $tpl);
 			if ($this->footer['show_impressum'] == 1)
@@ -536,14 +546,12 @@ class BwPostmanTableTemplates extends JTable
 		else
 		{
 			// first get templates tpls
-			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates_tpl.php');
 			$tpl_id    = $item->tpl_id;
-			$tpl_model = new BwPostmanModelTemplates_Tpl();
+			$tpl_model = new Templates_TplModel();
 			$tpl       = $tpl_model->getItem($tpl_id);
 
 			// get template model
-			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/template.php');
-			$model = new BwPostmanModelTemplate();
+			$model = new TemplateModel();
 			// make html template data
 			$this->tpl_html = $model->makeTemplate($item, $tpl);
 			if ($this->footer['show_impressum'] == 1)
@@ -1103,5 +1111,20 @@ class BwPostmanTableTemplates extends JTable
 		$key = $this->getColumnAlias($key);
 
 		return property_exists($this, $key);
+	}
+
+	/**
+	 * Get the type alias for the history table
+	 *
+	 * The type alias generally is the internal component name with the
+	 * content type. Ex.: com_content.article
+	 *
+	 * @return  string  The alias as described above
+	 *
+	 * @since   4.0.0
+	 */
+	public function getTypeAlias()
+	{
+		return 'com_bwpostman.template';
 	}
 }

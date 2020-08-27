@@ -103,7 +103,7 @@
 			<filename>bwpostman.php</filename>
 			<folder>Controller</folder>
 			<folder>Model</folder>
-			<folder>tables</folder>
+			<folder>Table</folder>
 			<folder>views</folder>
 <!--	J4 stuff-->
 <!--			<filename>dispatcher.php</filename>-->

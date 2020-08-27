@@ -24,21 +24,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
+use DateTime;
+use Exception;
+use JAccessRules;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Mail\MailHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Versioning\VersionableTableInterface;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Registry\Registry;
 use Joomla\Filter\InputFilter;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\User\UserHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
+use RuntimeException;
 
 /**
  * #__bwpostman_subscribers table handler
@@ -49,7 +58,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriber
  *
  * @since       0.9.1
  */
-class BwPostmanTableSubscribers extends JTable
+class SubscribersTable extends Table implements VersionableTableInterface
 {
 	/**
 	 * @var int Primary Key
@@ -239,7 +248,7 @@ class BwPostmanTableSubscribers extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since       0.9.1
 	 */
@@ -1554,5 +1563,20 @@ class BwPostmanTableSubscribers extends JTable
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Get the type alias for the history table
+	 *
+	 * The type alias generally is the internal component name with the
+	 * content type. Ex.: com_content.article
+	 *
+	 * @return  string  The alias as described above
+	 *
+	 * @since   4.0.0
+	 */
+	public function getTypeAlias()
+	{
+		return 'com_bwpostman.subscriber';
 	}
 }

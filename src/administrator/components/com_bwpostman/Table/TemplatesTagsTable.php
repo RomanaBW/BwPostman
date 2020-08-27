@@ -24,11 +24,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Versioning\VersionableTableInterface;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Filter\InputFilter;
+use RuntimeException;
 
 /**
  * #__bwpostman_templates_tags table handler
@@ -40,7 +47,7 @@ use Joomla\Filter\InputFilter;
  *
  * @since       2.0.0
  */
-class BwPostmanTableTemplates_Tags extends JTable
+class TemplatesTagsTable extends Table implements VersionableTableInterface
 {
 	/**
 	 * @var int Primary Key Template-ID
@@ -143,7 +150,7 @@ class BwPostmanTableTemplates_Tags extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param 	JDatabaseDriver  $db Database object
+	 * @param 	DatabaseDriver  $db Database object
 	 *
 	 * @since       2.0.0
 	 */
@@ -346,5 +353,20 @@ class BwPostmanTableTemplates_Tags extends JTable
 		$key = $this->getColumnAlias($key);
 
 		return property_exists($this, $key);
+	}
+
+	/**
+	 * Get the type alias for the history table
+	 *
+	 * The type alias generally is the internal component name with the
+	 * content type. Ex.: com_content.article
+	 *
+	 * @return  string  The alias as described above
+	 *
+	 * @since   4.0.0
+	 */
+	public function getTypeAlias()
+	{
+		return 'com_bwpostman.templates_tags';
 	}
 }

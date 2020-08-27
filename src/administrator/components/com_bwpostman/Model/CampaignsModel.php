@@ -29,8 +29,10 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Database\QueryInterface;
 use Joomla\Utilities\ArrayHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
@@ -175,7 +177,7 @@ class CampaignsModel extends ListModel
 				'list.select',
 				'a.id, a.title, a.description, a.checked_out, a.checked_out_time' .
 				', a.published, a.access, a.created_date, a.created_by'
-			) . ', (' . $sub_query . ') AS newsletters'
+			) . ', (' . (string)$sub_query . ') AS newsletters'
 		);
 		$this->query->from($this->_db->quoteName('#__bwpostman_campaigns', 'a'));
 
@@ -192,7 +194,7 @@ class CampaignsModel extends ListModel
 	 * Method to get the subquery this query needs
 	 * This subquery counts the newsletters of each campaign
 	 *
-	 * @return JDatabaseQuery
+	 * @return QueryInterface
 	 *
 	 * @since   2.0.0
 	 */

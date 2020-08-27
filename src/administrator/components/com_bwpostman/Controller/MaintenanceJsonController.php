@@ -24,18 +24,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwWebApp;
-
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/models/maintenance.php');
+use BoldtWebservice\Component\BwPostman\Administrator\Model\MaintenanceModel;
+use RuntimeException;
 
 /**
  * BwPostman Campaigns Controller
@@ -45,7 +49,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . '/models/maintenance.php');
  *
  * @since       1.0.1
  */
-class BwPostmanControllerMaintenance extends JControllerLegacy
+class MaintenanceJsonController extends AdminController
 {
 	/**
 	 * Integer to hold ready state
@@ -84,7 +88,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	public function tCheck()
 	{
 		$session = Factory::getSession();
-		$model   = $this->getModel('maintenance');
+		$model   = new MaintenanceModel();
 
 		try
 		{
@@ -238,7 +242,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	public function tRestore()
 	{
 		$session = Factory::getSession();
-		$model   = $this->getModel('maintenance');
+		$model   = new MaintenanceModel();
 
 		try
 		{
@@ -679,7 +683,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 	protected function getNeededTables($session)
 	{
-		$model        = $this->getModel('maintenance');
+		$model        = new MaintenanceModel();
 		$neededTables = $model->getNeededTables();
 
 		if ($neededTables === false || !is_array($neededTables))
@@ -720,7 +724,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 	protected function getInstalledTableNames($session)
 	{
-		$model           = $this->getModel('maintenance');
+		$model           = new MaintenanceModel();
 		$tableNamesArray = $model->getTableNamesFromDB();
 
 		if ($tableNamesArray === false || !is_array($tableNamesArray))
@@ -759,7 +763,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 	protected function convertTableNames($session)
 	{
-		$model             = $this->getModel('maintenance');
+		$model             = new MaintenanceModel();
 		$genericTableNames = $session->get('tcheck_inTaNa');
 		$neededTables      = $session->get('tcheck_needTa');
 
@@ -793,7 +797,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	protected function checkTableColumns($session)
 	{
 		// get stored session variables
-		$model        = $this->getModel('maintenance');
+		$model        = new MaintenanceModel();
 		$neededTables = $session->get('tcheck_needTa');
 
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_TABLE_COLUMNS') . '</h4>';
@@ -832,7 +836,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	protected function checkAssetAndUserIds()
 	{
-		$model	= $this->getModel('maintenance');
+		$model = new MaintenanceModel();
 
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_ASSET_IDS') . '</h4>';
 
@@ -894,7 +898,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	private function handleBwException($errorCode, $result, $error, $step)
 	{
 		$app   = Factory::getApplication();
-		$model = $this->getModel('maintenance');
+		$model = new MaintenanceModel();
 
 		if ((1050 <= $errorCode) && ($errorCode <= 1100))
 		{

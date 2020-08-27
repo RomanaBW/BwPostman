@@ -24,18 +24,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
+use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
-
-// Import CONTROLLER and Helper object class
-jimport('joomla.application.component.controlleradmin');
 
 /**
  * BwPostman Newsletters Controller
@@ -45,7 +47,7 @@ jimport('joomla.application.component.controlleradmin');
  *
  * @since       0.9.1
  */
-class BwPostmanControllerNewsletters extends JControllerAdmin
+class NewslettersController extends AdminController
 {
 	/**
 	 * @var		string		The prefix to use with controller messages.
@@ -93,7 +95,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
 	 *
-	 * @return  BwPostmanControllerNewsletters		This object to support chaining.
+	 * @return  NewslettersController		This object to support chaining.
 	 *
 	 * @throws Exception
 	 *
@@ -120,7 +122,7 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 	 * @param	string	$prefix 	The prefix for the PHP class name.
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
-	 * @return	JModelLegacy
+	 * @return	BaseDatabaseModel
 
 	 * @since	1.0.1
 	 */
@@ -160,13 +162,13 @@ class BwPostmanControllerNewsletters extends JControllerAdmin
 		$layout = $jinput->get('tab', 'unsent');
 
 		// Get the selected newsletter(s)
-		$cid = $jinput->get('cid', array(0), 'post', 'array');
+		$cid = $jinput->get('cid', array(0), 'post');
 		$cid = ArrayHelper::toInteger($cid);
 
 		$n     = count($cid);
 		$model = $this->getModel('newsletter');
 
-		if(!$model->copy($cid))
+		if(!$model->copy($cid[0]))
 		{ // Couldn't copy
 			if ($n > 1)
 			{

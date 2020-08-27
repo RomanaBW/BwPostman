@@ -24,12 +24,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Import CONTROLLER and Helper object class
-jimport('joomla.application.component.controllerform');
-
+use Exception;
+use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
@@ -45,7 +46,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
  * @package 	BwPostman-Admin
  * @subpackage 	Subscribers
  */
-class BwPostmanControllerSubscriber extends JControllerForm
+class SubscriberController extends FormController
 {
 	/**
 	 * @var		string		The prefix to use with controller messages.
@@ -92,7 +93,7 @@ class BwPostmanControllerSubscriber extends JControllerForm
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
 	 *
-	 * @return  BwPostmanControllerSubscriber		This object to support chaining.
+	 * @return  SubscriberController		This object to support chaining.
 	 *
 	 * @throws Exception
 	 *

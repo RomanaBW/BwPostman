@@ -24,19 +24,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
-
-// Import CONTROLLER object class
-jimport('joomla.application.component.controlleradmin');
 
 /**
  * BwPostman Mailinglists Controller
@@ -46,7 +47,7 @@ jimport('joomla.application.component.controlleradmin');
  *
  * @since       0.9.1
  */
-class BwPostmanControllerMailinglists extends JControllerAdmin
+class MailinglistsController extends AdminController
 {
 	/**
 	 * @var		string	The prefix to use with controller messages.
@@ -110,7 +111,7 @@ class BwPostmanControllerMailinglists extends JControllerAdmin
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   boolean  $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
 	 *
-	 * @return  BwPostmanControllerMailinglists		This object to support chaining.
+	 * @return  MailinglistsController		This object to support chaining.
 	 *
 	 * @throws Exception
 	 *

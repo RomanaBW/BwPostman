@@ -24,19 +24,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Import CONTROLLER and Helper object class
-jimport('joomla.application.component.controlleradmin');
-
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
+use Exception;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Filesystem\File;
+use SimpleXMLElement;
+use stdClass;
 
 /**
  * BwPostman Subscribers Controller
@@ -46,7 +51,7 @@ use Joomla\CMS\Filesystem\File;
  *
  * @since       0.9.1
  */
-class BwPostmanControllerSubscribers extends JControllerAdmin
+class SubscribersController extends AdminController
 {
 	/**
 	 * @var		string	The prefix to use with controller messages.
@@ -93,7 +98,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
 	 *
-	 * @return  BwPostmanControllerSubscribers		This object to support chaining.
+	 * @return  SubscribersController		This object to support chaining.
 	 *
 	 * @throws Exception
 	 *
@@ -120,7 +125,7 @@ class BwPostmanControllerSubscribers extends JControllerAdmin
 	 * @param	string	$prefix 	The prefix for the PHP class name.
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
-	 * @return	JModelLegacy
+	 * @return	BaseDatabaseModel
 
 	 * @since	1.0.1
 	 */

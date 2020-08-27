@@ -24,10 +24,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Model\MaintenanceModel;
+use Exception;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
@@ -35,9 +41,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMaintenanceHelper;
-
-// Import CONTROLLER object class
-jimport('joomla.application.component.controller');
+use Joomla\Registry\Registry;
 
 /**
  * BwPostman Maintenance Controller
@@ -47,7 +51,7 @@ jimport('joomla.application.component.controller');
  *
  * @since       1.0.1
  */
-class BwPostmanControllerMaintenance extends JControllerLegacy
+class MaintenanceController extends BaseController
 {
 	/**
 	 * @var		string	The prefix to use with controller messages.
@@ -85,7 +89,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @param	string	$prefix	The prefix for the PHP class name.
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
-	 * @return	JModelLegacy
+	 * @return	BaseDatabaseModel
 	 *
 	 * @since	1.0.1
 	 */
@@ -102,7 +106,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
 	 *
-	 * @return  BwPostmanControllerMaintenance		This object to support chaining.
+	 * @return  MaintenanceController		This object to support chaining.
 	 *
 	 * @throws Exception
 	 *
@@ -132,7 +136,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 */
 	public function updateCheckSave()
 	{
-		$model = $this->getModel();
+		$model = new MaintenanceModel();
 
 		ob_start();
 
@@ -145,7 +149,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 		// then make the checks (function repairs tables automatically)
 		echo '<br /><br /><h2>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h2>';
-		$model->checkTables();
+		$this->checkTables();
 		echo '</div>';
 		ob_flush();
 		flush();
@@ -358,7 +362,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 		$plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
 
-		$pluginParams = new JRegistry();
+		$pluginParams = new Registry();
 		$pluginParams->loadString($plugin->params);
 
 		$pluginUser = $pluginParams->get('bwtimecontrol_username',null);

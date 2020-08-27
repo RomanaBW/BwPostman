@@ -90,7 +90,7 @@
 			<filename>import_demo.csv</filename>
 			<filename>import_demo.xml</filename>
 			<folder>assets</folder>
-			<folder>helpers</folder>
+			<folder>Helper</folder>
 			<folder>includes</folder>
 			<folder>libraries</folder>
 			<folder>elements</folder>
@@ -101,8 +101,8 @@
 			<filename>install.bwpostman.php</filename>
 			<filename>controller.php</filename>
 			<filename>bwpostman.php</filename>
-			<folder>controllers</folder>
-			<folder>models</folder>
+			<folder>Controller</folder>
+			<folder>Model</folder>
 			<folder>tables</folder>
 			<folder>views</folder>
 <!--	J4 stuff-->

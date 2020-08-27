@@ -24,12 +24,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Import CONTROLLER and Helper object class
-jimport('joomla.application.component.controllerform');
-
+use BoldtWebservice\Component\BwPostman\Administrator\Model\NewsletterModel;
+use Exception;
+use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
@@ -48,7 +50,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
  *
  * @since       1.0.1
  */
-class BwPostmanControllerNewsletter extends JControllerForm
+class NewsletterController extends FormController
 {
 	/**
 	 * @var		string		The prefix to use with controller messages.
@@ -113,7 +115,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
 	 *
-	 * @return  BwPostmanControllerNewsletter		This object to support chaining.
+	 * @return  NewsletterController		This object to support chaining.
 	 *
 	 * @throws Exception
 	 *
@@ -753,16 +755,16 @@ class BwPostmanControllerNewsletter extends JControllerForm
 		}
 
 		$app   = Factory::getApplication();
-		$model = $this->getModel('newsletter');
+		$model = new NewsletterModel();
 		$error = array();
 		$link  = '';
 		$this->logger->addEntry(new LogEntry('NL controller sendmail reached', BwLogger::BW_DEBUG, 'send'));
 
 		// Get record ID from list view
-		$ids      = $this->input->get('cid', 0, '');
-		$recordId = $ids[0];
-
+		$ids = $this->input->get('cid', 0, '');
 		$ids = ArrayHelper::toInteger($ids);
+
+		$recordId = $ids[0];
 
 		// If we come from single view, record ID is 0 at new newsletter
 		if ($recordId === 0 || $recordId === null)
@@ -1109,7 +1111,7 @@ class BwPostmanControllerNewsletter extends JControllerForm
 	 */
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
-		$layout	= $this->input->getWord('layout', 'edit_basic', 'string');
+		$layout	= $this->input->getWord('layout', 'edit_basic');
 
 		$append	= '';
 

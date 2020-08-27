@@ -24,17 +24,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Session\Session;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwWebApp;
-
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.php');
+use RuntimeException;
 
 /**
  * BwPostman Newsletter Controller
@@ -44,7 +47,7 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/newsletter.
  *
  * @since       2.4.0
  */
-class BwPostmanControllerNewsletter extends JControllerLegacy
+class NewsletterJsonController extends BaseController
 {
 
 	/**
@@ -144,7 +147,9 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 
 					if ($sendandpublish === 1)
 					{
-						if ($model->publish($id, 1) === true)
+						$cid = array($id);
+
+						if ($model->publish($cid, 1) === true)
 						{
 							$published = 'success';
 						}

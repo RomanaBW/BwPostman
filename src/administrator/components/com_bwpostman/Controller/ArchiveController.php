@@ -24,12 +24,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Import CONTROLLER and Helper object class
-jimport('joomla.application.component.controller');
-
+use Exception;
+use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
@@ -45,7 +47,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
  *
  * @since   0.9.1
  */
-class BwPostmanControllerArchive extends JControllerLegacy
+class ArchiveController extends AdminController
 {
 
 	/**
@@ -66,7 +68,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return  BwPostmanControllerArchive		This object to support chaining.
+	 * @return  ArchiveController		This object to support chaining.
 	 *
 	 * @throws Exception
 	 *
@@ -143,7 +145,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 * Method to unarchive items
 	 * --> operates on the models which are assigned to the tabs (e.g. tab = newsletters --> model = newsletter)
 	 *
-	 * @return boolean|JControllerLegacy
+	 * @return boolean|BaseController
 	 *
 	 * @throws Exception
 	 *
@@ -390,7 +392,7 @@ class BwPostmanControllerArchive extends JControllerLegacy
 	 * Method to remove an item from the database
 	 * --> operates on the models which are assigned to the tabs (e.g. tab = newsletters --> model = newsletter)
 	 *
-	 * @return boolean|JControllerLegacy
+	 * @return boolean|BaseController
 	 *
 	 * @throws Exception
 	 *

@@ -24,16 +24,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
-use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwWebApp;
-
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates.php');
+use RuntimeException;
 
 /**
  * BwPostman Templates Controller
@@ -43,7 +45,7 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/templates.p
  *
  * @since       1.1.0
  */
-class BwPostmanControllerTemplates extends JControllerAdmin
+class TemplatesJsonController extends AdminController
 {
 	/**
 	 * Method to call the layout for the template upload and install process

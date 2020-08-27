@@ -24,9 +24,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
@@ -34,9 +39,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
-
-// Import CONTROLLER and Helper object class
-jimport('joomla.application.component.controllerform');
+use RuntimeException;
 
 /**
  * BwPostman template Controller
@@ -46,7 +49,7 @@ jimport('joomla.application.component.controllerform');
  *
  * @since       1.1.0
  */
-class BwPostmanControllerTemplate extends JControllerForm
+class TemplateController extends FormController
 {
 	/**
 	 * @var		string	The prefix to use with controller messages.
@@ -88,7 +91,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
 	 *
-	 * @return  BwPostmanControllerTemplate		This object to support chaining.
+	 * @return  TemplateController		This object to support chaining.
 	 *
 	 * @throws Exception
 	 *
@@ -431,7 +434,7 @@ class BwPostmanControllerTemplate extends JControllerForm
 	 * @param	string	$prefix		The class prefix. Optional.
 	 * @param	array	$config		Configuration array for model. Optional.
 	 *
-	 * @return	JModelLegacy
+	 * @return	BaseDatabaseModel
 	 *
 	 * @since	1.1.0
 	 */

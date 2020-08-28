@@ -1,68 +1,71 @@
 <?php
 /**
- * BwPostman Newsletter Component
+ * @package     Joomla.Administrator
+ * @subpackage  com_banners
  *
- * BwPostman main controller for backend.
- *
- * @version %%version_number%%
- * @package BwPostman-Admin
- * @author Romana Boldt
- * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
- * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
- * @license GNU/GPL, see LICENSE.txt
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
 
+\defined('_JEXEC') or die;
+
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
-use Joomla\CMS\Language\Text;
-
-// Import CONTROLLER object class
-jimport('joomla.application.component.controller');
+use JResponseJson;
 
 /**
- * BwPostman Component Controller
+ * Banners master display controller.
  *
- * @package 	BwPostman-Admin
- *
- * @since       0.9.1
+ * @since  1.6
  */
-class BwPostmanController extends JControllerLegacy
+class DisplayController extends BaseController
 {
+	/**
+	 * The default view.
+	 *
+	 * @var    string
+	 * @since  1.6
+	 */
+	protected $default_view = 'bwpostman';
 
 	/**
-	 * Display
+	 * Method to display a view.
 	 *
-	 * @param bool $cachable
-	 * @param bool $urlparams
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe URL parameters and their variable types, for valid values see {@link \JFilterInput::clean()}.
 	 *
-	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
+	 * @return  BaseController|bool  This object to support chaining.
 	 *
-	 * @since       0.9.1
-	 *
-	 * @throws Exception
+	 * @since   4.0.0
 	 */
-	public function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = array())
 	{
-		parent::display();
+		// Get the user object
+//		$user = Factory::getUser();
+		$app  = Factory::getApplication();
+		$user = $app->getIdentity();
 
-		return $this;
+		// Access check.
+		if ((!$user->authorise('core.manage', 'com_bwpostman')))
+		{
+			$app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'warning');
+
+			return false;
+		}
+
+		// Preload user permissions
+		BwPostmanHelper::setPermissionsState();
+
+		return parent::display();
 	}
+
 
 	/**
 	 * Method to call the start layout for the add text template

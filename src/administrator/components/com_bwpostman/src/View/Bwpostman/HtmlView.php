@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BoldtWebservice\Component\BwPostman\Administrator\View\BwPostman;
+namespace BoldtWebservice\Component\BwPostman\Administrator\View\Bwpostman;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -49,7 +49,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  *
  * @since       0.9.1
  */
-class BwpostmanView extends BaseHtmlView
+class HtmlView extends BaseHtmlView
 {
 	/**
 	 * property to hold archive data

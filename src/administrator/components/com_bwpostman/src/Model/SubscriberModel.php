@@ -118,11 +118,13 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @return	boolean|Table	A database object
 	 *
+	 * @throws Exception
+	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($type = 'Subscribers', $prefix = 'BwPostmanTable', $config = array())
+	public function getTable($type = 'Subscriber', $prefix = 'Administrator', $config = array())
 	{
-		return Table::getInstance($type, $prefix, $config);
+		return parent::getTable($type, $prefix, $config);
 	}
 
 	/**

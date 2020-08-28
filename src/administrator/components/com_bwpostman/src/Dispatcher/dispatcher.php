@@ -24,19 +24,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Dispatcher;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 // constants and autoload
-require_once __DIR__ . '/includes/includes.php';
+require_once __DIR__ . '../includes/includes.php';
 
+use Joomla\CMS\Dispatcher\ComponentDispatcher;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
-// import joomla controller library
-jimport('joomla.application.component.controller');
+/**
+ * BwPostman Component Dispatcher
+ *
+ * @package 	BwPostman-Admin
+ *
+ * @since       4.0.0
+ */
+class BwpostmanDispatcher extends ComponentDispatcher
+{
+	public function dispatch()
+	{
+//		if ($this->input->get('view') === 'contacts' && $this->input->get('layout') === 'modal')
+//		{
+//			if (!$this->app->getIdentity()->authorise('core.create', 'com_bwpostman'))
+//			{
+//				$this->app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'warning');
+//
+//				return;
+//			}
+//
+//			$this->app->getLanguage()->load('com_bwpostman', JPATH_ADMINISTRATOR);
+//		}
 
+		parent::dispatch();
+	}
+}
 try
 {
 	// Get the user object

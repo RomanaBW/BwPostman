@@ -68,11 +68,13 @@ class Templates_TplModel extends AdminModel
 	 *
 	 * @return	boolean|Table	A database object
 	 *
+	 * @throws \Exception
+	 *
 	 * @since  1.1.0
 	 */
-	public function getTable($type = 'Templates_Tpl', $prefix = 'BwPostmanTable', $config = array())
+	public function getTable($type = 'Templates_Tpl', $prefix = 'Administrator', $config = array())
 	{
-		return Table::getInstance($type, $prefix, $config);
+		return parent::getTable($type, $prefix, $config);
 	}
 
 	/**

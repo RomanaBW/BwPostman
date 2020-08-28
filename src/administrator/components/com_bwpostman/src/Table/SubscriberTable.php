@@ -58,7 +58,7 @@ use RuntimeException;
  *
  * @since       0.9.1
  */
-class SubscribersTable extends Table implements VersionableTableInterface
+class SubscriberTable extends Table implements VersionableTableInterface
 {
 	/**
 	 * @var int Primary Key

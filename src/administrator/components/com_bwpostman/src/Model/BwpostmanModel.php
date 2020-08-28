@@ -33,6 +33,7 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
+use Joomla\CMS\MVC\Factory\MVCFactory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Access\Rules;
@@ -45,7 +46,7 @@ use Joomla\CMS\Access\Rules;
  *
  * @since       0.9.1
  */
-class BwPostmanModel extends BaseDatabaseModel
+class BwpostmanModel extends BaseDatabaseModel
 {
 	/**
 	 * Constructor
@@ -62,17 +63,19 @@ class BwPostmanModel extends BaseDatabaseModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	string  $type	    The table type to instantiate
-	 * @param	string	$prefix     A prefix for the table class name. Optional.
-	 * @param	array	$config     Configuration array for model. Optional.
+	 * @param string $type   The table type to instantiate
+	 * @param string $prefix A prefix for the table class name. Optional.
+	 * @param array  $config Configuration array for model. Optional.
 	 *
-	 * @return	boolean|Table	A database object
+	 * @return    boolean|Table    A database object
+	 *
+	 * @throws Exception
 	 *
 	 * @since  2.4.0
 	 */
-	public function getTable($type = 'Newsletters', $prefix = 'BwPostmanTable', $config = array())
+	public function getTable($type = 'Newsletter', $prefix = 'Administrator', $config = array())
 	{
-		return Table::getInstance($type, $prefix, $config);
+		return parent::getTable($type, $prefix, $config);
 	}
 
 	/**
@@ -89,26 +92,26 @@ class BwPostmanModel extends BaseDatabaseModel
 		$general = array();
 
 		// Get # of all unsent newsletters
-		$nlTable = $this->getTable('Newsletters');
+		$nlTable = $this->getTable('Newsletter', 'Administrator');
 		$general['nl_unsent'] = $nlTable->getNbrOfNewsletters(false, false);
 
 		// Get # of all sent newsletters
 		$general['nl_sent'] = $nlTable->getNbrOfNewsletters(true, false);
 
 		// Get # of all subscribers
-		$subsTable = $this->getTable('Subscribers');
+		$subsTable = $this->getTable('Subscriber', 'Administrator');
 		$general['sub'] = $subsTable->getNbrOfSubscribers(false, false);
 
 		// Get # of all test-recipients
 		$general['test'] = $subsTable->getNbrOfSubscribers(true, false);
 
 		// Get # of all campaigns
-		$camTable = $this->getTable('Campaigns');
+		$camTable = $this->getTable('Campaign', 'Administrator');
 		$general['cam'] = $camTable->getNbrOfCampaigns(false);
 
 		// Get # of all published mailinglists
 		// get available mailinglists to predefine for state
-		$mlTable = $this->getTable('Mailinglists');
+		$mlTable = $this->getTable('Mailinglist', 'Administrator');
 		$ml_available = $mlTable->getMailinglistsByRestriction(array(), 'available', 0, false);
 
 		// get unavailable mailinglists to predefine for state
@@ -123,7 +126,7 @@ class BwPostmanModel extends BaseDatabaseModel
 		$general['ml_unpublished'] = count($ml_intern);
 
 		// Get # of all html templates
-		$tplTable = $this->getTable('Templates');
+		$tplTable = $this->getTable('Template', 'Administrator');
 		$general['html_templates'] = $tplTable->getNbrOfTemplates('html', false);
 
 		// Get # of all text templates
@@ -149,26 +152,26 @@ class BwPostmanModel extends BaseDatabaseModel
 		$archive	= array();
 
 		// Get # of all archived newsletters
-		$nlTable = $this->getTable('Newsletters');
+		$nlTable = $this->getTable('Newsletter', 'Administrator');
 		$archive['arc_nl'] = $nlTable->getNbrOfNewsletters(false, true);
 
 		// Get # of all archived subscribers
-		$subsTable = $this->getTable('Subscribers');
+		$subsTable = $this->getTable('Subscriber', 'Administrator');
 		$archive['arc_sub'] = $subsTable->getNbrOfSubscribers(false, true);
 
 		// Get # of all archived campaigns
-		$camTable = $this->getTable('Campaigns');
+		$camTable = $this->getTable('Campaign', 'Administrator');
 		$archive['arc_cam'] = $camTable->getNbrOfCampaigns(true);
 
 		// Get # of all archived mailinglists
 		// get available mailinglists to predefine for state
-		$mlTable = $this->getTable('Mailinglists');
+		$mlTable = $this->getTable('Mailinglist', 'Administrator');
 		$ml_archived = $mlTable->getMailinglistsByRestriction(array(), 'available', 1, false);
 
 		$archive['arc_ml'] = count($ml_archived);
 
 		// Get # of all html templates
-		$tplTable = $this->getTable('Templates');
+		$tplTable = $this->getTable('Template', 'Administrator');
 		$archive['arc_html_templates'] = $tplTable->getNbrOfTemplates('html', true);
 
 		// Get # of all text templates

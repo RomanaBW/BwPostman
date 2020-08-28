@@ -157,11 +157,13 @@ class TemplatesModel extends ListModel
 	 *
 	 * @return	bool|Table	A database object
 	 *
+	 * @throws Exception
+	 *
 	 * @since  1.1.0
 	 */
-	public function getTable($type = 'Templates', $prefix = 'BwPostmanTable', $config = array())
+	public function getTable($type = 'Template', $prefix = 'Administrator', $config = array())
 	{
-		return Table::getInstance($type, $prefix, $config);
+		return parent::getTable($type, $prefix, $config);
 	}
 
 	/**

@@ -147,11 +147,13 @@ class CampaignModel extends AdminModel
 	 *
 	 * @return	Table|boolean   A Table object if found or boolean false on failure.
 	 *
+	 * @throws Exception
+	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($type = 'Campaigns', $prefix = 'BwPostmanTable', $config = array())
+	public function getTable($type = 'Campaign', $prefix = 'Administrator', $config = array())
 	{
-		return Table::getInstance($type, $prefix, $config);
+		return parent::getTable($type, $prefix, $config);
 	}
 
 	/**

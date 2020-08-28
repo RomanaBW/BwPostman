@@ -178,11 +178,13 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @return	object  JTable	A database object
 	 *
+	 * @throws Exception
+	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($type = 'Newsletters', $prefix = 'BwPostmanTable', $config = array())
+	public function getTable($type = 'Newsletter', $prefix = 'Administrator', $config = array())
 	{
-		return Table::getInstance($type, $prefix, $config);
+		return parent::getTable($type, $prefix, $config);
 	}
 
 	/**

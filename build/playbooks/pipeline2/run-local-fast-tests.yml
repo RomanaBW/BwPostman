@@ -27,10 +27,10 @@
         base_src_dir: "/vhosts/dev4"
       when: joomla_version[0] == '4'
 
-    - name: Set test source dir depending on joomla main version
-      set_fact:
-        test_src_dir: "tests3"
-      when: joomla_version[0] == '3'
+#    - name: Set test source dir depending on joomla main version
+#      set_fact:
+#        test_src_dir: "tests3"
+#      when: joomla_version[0] == '3'
 
     - name: VM part of project name
       set_fact:
@@ -94,8 +94,8 @@
     - name: Synchronize files
       command: "{{ test_dir }}/job_scripts/bwpm_rsync_build.sh {{ src_dir }} {{ web_dir }}/{{ project_name }}/files"
 
-    - name: Synchronize tests J3
-      command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir_3 }}/tests3 {{ src_dir }}/tests3"
+#    - name: Synchronize tests J3
+#      command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir_3 }}/tests3 {{ src_dir }}/tests3"
 
     - name: Synchronize tests J4
       command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir_4 }}/tests {{ src_dir }}/tests"

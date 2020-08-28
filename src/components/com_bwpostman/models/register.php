@@ -27,6 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
@@ -66,11 +67,13 @@ class BwPostmanModelRegister extends JModelAdmin
 	 *
 	 * @return	Table	A database object
 	 *
+	 * @throws Exception
+	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($type = 'Subscribers', $prefix = 'BwPostmanTable', $config = array())
+	public function getTable($type = 'Subscriber', $prefix = 'Administrator', $config = array())
 	{
-		return Table::getInstance($type, $prefix, $config);
+		return parent::getTable($type, $prefix, $config);
 	}
 
 	/**

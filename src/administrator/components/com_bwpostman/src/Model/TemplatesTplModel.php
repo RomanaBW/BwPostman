@@ -47,7 +47,7 @@ jimport('joomla.application.component.helper');
  *
  * @since 1.1.0
  */
-class Templates_TplModel extends AdminModel
+class TemplatesTplModel extends AdminModel
 {
 	/**
 	 * Alias Constructor
@@ -72,7 +72,7 @@ class Templates_TplModel extends AdminModel
 	 *
 	 * @since  1.1.0
 	 */
-	public function getTable($type = 'Templates_Tpl', $prefix = 'Administrator', $config = array())
+	public function getTable($type = 'TemplatesTpl', $prefix = 'Administrator', $config = array())
 	{
 		return parent::getTable($type, $prefix, $config);
 	}

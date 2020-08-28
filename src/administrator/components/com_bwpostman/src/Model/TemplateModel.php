@@ -993,7 +993,7 @@ class TemplateModel extends AdminModel
 		// make preview
 		// first get templates tpls
 		$tpl_id    = $item->tpl_id;
-		$tpl_model = new Templates_TplModel();
+		$tpl_model = new TemplatesTplModel();
 		$tpl       = $tpl_model->getItem($tpl_id);
 
 		// make html preview data
@@ -1190,7 +1190,7 @@ class TemplateModel extends AdminModel
 		// make preview
 		// first get templates tpls
 		$tpl_id    = $item->tpl_id;
-		$tpl_model = new Templates_TplModel();
+		$tpl_model = new TemplatesTplModel();
 		$tpl       = $tpl_model->getItem($tpl_id);
 
 		// make text preview data

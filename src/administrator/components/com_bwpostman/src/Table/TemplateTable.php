@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use BoldtWebservice\Component\BwPostman\Administrator\Model\TemplateModel;
-use BoldtWebservice\Component\BwPostman\Administrator\Model\Templates_TplModel;
+use BoldtWebservice\Component\BwPostman\Administrator\Model\TemplatesTplModel;
 use DateTime;
 use Exception;
 use JAccessRules;
@@ -517,7 +517,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 		{
 			// first get templates tpls
 			$tpl_id		= $item->tpl_id;
-			$tpl_model = new Templates_TplModel();
+			$tpl_model = new TemplatesTplModel();
 			$tpl		= $tpl_model->getItem($tpl_id);
 
 			// get template model
@@ -547,7 +547,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 		{
 			// first get templates tpls
 			$tpl_id    = $item->tpl_id;
-			$tpl_model = new Templates_TplModel();
+			$tpl_model = new TemplatesTplModel();
 			$tpl       = $tpl_model->getItem($tpl_id);
 
 			// get template model

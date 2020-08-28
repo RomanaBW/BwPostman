@@ -131,7 +131,9 @@ class SubscribersController extends AdminController
 	 */
 	public function getModel($name = 'Subscriber', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
-		$model = parent::getModel($name, $prefix, $config);
+		$component = Factory::getApplication()->bootComponent('com_bwpostman');
+		$MVCFactory = $component->getMVCFactory();
+		$model = $MVCFactory->createModel($name, $prefix, $config);
 
 		return $model;
 	}

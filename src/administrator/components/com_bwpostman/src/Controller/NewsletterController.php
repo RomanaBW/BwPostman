@@ -32,6 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use BoldtWebservice\Component\BwPostman\Administrator\Model\NewsletterModel;
 use Exception;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
@@ -209,6 +210,28 @@ class NewsletterController extends FormController
 	}
 
 	/**
+	 * Proxy for getModel.
+	 *
+	 * @param string $name   The name of the model.
+	 * @param string $prefix The prefix for the PHP class name.
+	 * @param array  $config An optional associative array of configuration settings.
+	 *
+	 * @return bool|BaseDatabaseModel
+	 *
+	 * @throws Exception
+	 *
+	 * @since    4.0.0
+	 */
+	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true))
+	{
+		$component = Factory::getApplication()->bootComponent('com_bwpostman');
+		$MVCFactory = $component->getMVCFactory();
+		$model = $MVCFactory->createModel($name, $prefix, $config);
+
+		return $model;
+	}
+
+	/**
 	 * Override method to edit an existing record, based on Joomla method.
 	 * We need an override, because we want to handle state a bit different than Joomla at this point
 	 *
@@ -226,7 +249,8 @@ class NewsletterController extends FormController
 	{
 		// Initialise variables.
 		$app     = Factory::getApplication();
-		$model   = $this->getModel();
+		$model   = $this->getModel('Newsletter', 'Administrator');
+
 		$table   = $model->getTable();
 		$cid     = $this->input->post->get('cid', array(), 'array');
 		$context = "$this->option.edit.$this->context";

@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
@@ -111,6 +112,28 @@ class SubscriberController extends FormController
 		parent::display();
 
 		return $this;
+	}
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @param string $name   The name of the model.
+	 * @param string $prefix The prefix for the PHP class name.
+	 * @param array  $config An optional associative array of configuration settings.
+	 *
+	 * @return bool|BaseDatabaseModel
+	 *
+	 * @throws Exception
+	 *
+	 * @since    4.0.0
+	 */
+	public function getModel($name = 'Subscriber', $prefix = 'Administrator', $config = array('ignore_request' => true))
+	{
+		$component = Factory::getApplication()->bootComponent('com_bwpostman');
+		$MVCFactory = $component->getMVCFactory();
+		$model = $MVCFactory->createModel($name, $prefix, $config);
+
+		return $model;
 	}
 
 	/**

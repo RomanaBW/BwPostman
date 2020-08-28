@@ -440,7 +440,9 @@ class TemplateController extends FormController
 	 */
 	public function getModel($name = 'Template', $prefix = 'Administrator', $config = array())
 	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+		$component = Factory::getApplication()->bootComponent('com_bwpostman');
+		$MVCFactory = $component->getMVCFactory();
+		$model = $MVCFactory->createModel($name, $prefix, $config);
 
 		return $model;
 	}

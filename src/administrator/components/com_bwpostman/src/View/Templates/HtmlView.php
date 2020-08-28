@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BoldtWebservice\Component\BwPostman\Administrator\View\Template;
+namespace BoldtWebservice\Component\BwPostman\Administrator\View\Templates;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -42,9 +42,6 @@ use Joomla\CMS\Toolbar\Button\CustomButton;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-
-// Import VIEW object class
-jimport('joomla.application.component.view');
 
 /**
  * BwPostman templates View

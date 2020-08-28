@@ -861,7 +861,7 @@ class BwPostmanPhpCron {
 			return false;
 		}
 
-		$nlTable = $nlModel->getTable('Newsletters');
+		$nlTable = $nlModel->getTable('Newsletter');
 		$campaignId = $nlTable->getCampaignId($nlToSend);
 
 		if (!$nlModel->checkRecipients($ret_msg, $nlToSend, 0, $campaignId))

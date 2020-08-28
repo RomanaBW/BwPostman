@@ -702,7 +702,7 @@ class TemplatesModel extends ListModel
 
 							// get last id
 							$lastID   = $db->insertid();
-							$tplTable = $this->getTable('Templates');
+							$tplTable = $this->getTable('Template');
 
 							// get template title
 							$TplTitle = $tplTable->getTemplateTitle($lastID);

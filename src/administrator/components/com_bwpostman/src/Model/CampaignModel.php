@@ -226,14 +226,14 @@ class CampaignModel extends AdminModel
 			}
 
 			//get associated mailinglists
-			$camMlTable = $this->getTable('Campaigns_Mailinglists');
+			$camMlTable = $this->getTable('CampaignsMailinglists');
 			$item->mailinglists = $camMlTable->getAssociatedMailinglistsByCampaign((int)$item->id);
 
 			//extract associated usergroups
 			$item->usergroups	= BwPostmanMailinglistHelper::extractAssociatedUsergroups($item->mailinglists);
 
 			// get available mailinglists to predefine for state
-			$mlTable = $this->getTable('Mailinglists');
+			$mlTable = $this->getTable('Mailinglist');
 			$item->ml_available = $mlTable->getMailinglistsByRestriction($item->mailinglists, 'available');
 
 			// get unavailable mailinglists to predefine for state
@@ -472,7 +472,7 @@ class CampaignModel extends AdminModel
 				// Delete all entries of the newsletter from newsletters_mailinglists table
 				if ($data['id'])
 				{
-					$this->getTable('Campaigns_Mailinglists')->deleteCampaignsMailinglistsEntry($data['id']);
+					$this->getTable('CampaignsMailinglists')->deleteCampaignsMailinglistsEntry($data['id']);
 				}
 				else
 				{
@@ -489,7 +489,7 @@ class CampaignModel extends AdminModel
 				}
 
 				// Store the selected BwPostman mailinglists into campaigns_mailinglists-table
-				$this->getTable('Campaigns_Mailinglists')->addCampaignsMailinglistsEntry($data);
+				$this->getTable('CampaignsMailinglists')->addCampaignsMailinglistsEntry($data);
 
 				PluginHelper::importPlugin('bwpostman');
 
@@ -537,7 +537,7 @@ class CampaignModel extends AdminModel
 			}
 
 			// Delete campaigns from campaigns table
-			$camsTable = $this->getTable('Campaigns');
+			$camsTable = $this->getTable('Campaign');
 
 			foreach ($pks as $id)
 			{
@@ -548,7 +548,7 @@ class CampaignModel extends AdminModel
 				}
 
 				// Remove campaigns mailinglists entries
-				if (!$this->getTable('Campaigns_Mailinglists')->deleteCampaignsMailinglistsEntry($id))
+				if (!$this->getTable('CampaignsMailinglists')->deleteCampaignsMailinglistsEntry($id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NO_ML_DELETED', $id), 'error');
 					return false;
@@ -557,7 +557,7 @@ class CampaignModel extends AdminModel
 				// Remove_nl = 1 if the user want to delete the assigned newsletters
 				if ($remove_nl)
 				{
-					if (!$this->getTable('Newsletters')->deleteCampaignsNewsletters($id))
+					if (!$this->getTable('Newsletter')->deleteCampaignsNewsletters($id))
 					{
 						$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_NLS_DELETED', $id), 'error');
 						return false;

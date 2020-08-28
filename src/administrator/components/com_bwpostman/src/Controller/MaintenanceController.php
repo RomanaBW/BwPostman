@@ -93,7 +93,7 @@ class MaintenanceController extends BaseController
 	 *
 	 * @since	1.0.1
 	 */
-	public function getModel($name = 'Maintenance', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Maintenance', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
 

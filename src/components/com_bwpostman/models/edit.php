@@ -274,7 +274,7 @@ class BwPostmanModelEdit extends JModelAdmin
 
 		// set id and mailinglists property
 		$this->id                 = $pk;
-		$this->data->mailinglists = $this->getTable('Subscribers_Mailinglists')->getMailinglistIdsOfSubscriber($pk);
+		$this->data->mailinglists = $this->getTable('SubscribersMailinglists')->getMailinglistIdsOfSubscriber($pk);
 
 		return $this->data;
 	}
@@ -351,14 +351,14 @@ class BwPostmanModelEdit extends JModelAdmin
 		$subscriber_id = (int)$data['id'];
 
 		// Delete all mailinglist entries for the subscriber_id from newsletters_mailinglists-table
-		$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+		$subsMlTable = $this->getTable('SubscribersMailinglists');
 		$subsMlTable->deleteMailinglistsOfSubscriber($subscriber_id);
 
 		// Store subscribed mailinglists in newsletters_mailinglists-table
 		if (isset($data['mailinglists']))
 		{
 			if (($data['mailinglists']) != '') {
-				$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+//				$subsMlTable = $this->getTable('SubscribersMailinglists');
 				$subsMlTable->storeMailinglistsOfSubscriber($subscriber_id, $data['mailinglists']);
 			}
 		}

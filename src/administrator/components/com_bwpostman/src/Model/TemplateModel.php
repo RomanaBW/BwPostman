@@ -619,7 +619,7 @@ class TemplateModel extends AdminModel
 			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 		}
 
-		$this->getTable('Templates')->setDefaultTpl((int)$id);
+		$this->getTable('Template')->setDefaultTpl((int)$id);
 
 		return true;
 	}
@@ -1320,7 +1320,7 @@ class TemplateModel extends AdminModel
 		// get id from template state
 		$tplId = $this->getState('template.id');
 
-		$this->getTable('Templates_Tags', 'BwPostmanTable')->saveTags($data, $tplId);
+		$this->getTable('TemplatesTags')->saveTags($data, $tplId);
 
 		return true;
 	}

@@ -108,7 +108,7 @@ class TemplatesController extends AdminController
 
 	 * @since	1.1.0
 	 */
-	public function getModel($name = 'Template', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Template', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
 

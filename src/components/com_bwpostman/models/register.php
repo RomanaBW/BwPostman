@@ -208,7 +208,7 @@ class BwPostmanModelRegister extends JModelAdmin
 			{
 				if ($data['mailinglists'] != '')
 				{
-					$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+					$subsMlTable = $this->getTable('SubscribersMailinglists');
 					$subsMlTable->storeMailinglistsOfSubscriber($subscriber_id, $data['mailinglists']);
 				}
 			}
@@ -253,7 +253,7 @@ class BwPostmanModelRegister extends JModelAdmin
 				$subsTable->delete((int)$pks);
 
 				// delete subscriber entries from subscribers-lists table
-				$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+				$subsMlTable = $this->getTable('SubscribersMailinglists');
 				$subsMlTable->deleteMailinglistsOfSubscriber((int)$pks);
 			}
 			catch (RuntimeException $e)

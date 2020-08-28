@@ -227,9 +227,9 @@ class SubscriberModel extends AdminModel
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		$mailinglist_ids = $this->getTable('Subscribers_Mailinglists')->getMailinglistIdsOfSubscriber($sub_id);
+		$mailinglist_ids = $this->getTable('SubscribersMailinglists')->getMailinglistIdsOfSubscriber($sub_id);
 
-		$subscriber->lists = $this->getTable('Mailinglists')->getCompleteMailinglistsOfSubscriber($mailinglist_ids);
+		$subscriber->lists = $this->getTable('Mailinglist')->getCompleteMailinglistsOfSubscriber($mailinglist_ids);
 
 		return $subscriber;
 	}
@@ -288,7 +288,7 @@ class SubscriberModel extends AdminModel
 		{
 			$item = parent::getItem((int)$pk);
 
-			$item->list_id_values = $this->getTable('Subscribers_Mailinglists')->getMailinglistIdsOfSubscriber((int) $item->id);
+			$item->list_id_values = $this->getTable('SubscribersMailinglists')->getMailinglistIdsOfSubscriber((int) $item->id);
 		}
 		else
 		{
@@ -433,7 +433,7 @@ class SubscriberModel extends AdminModel
 			// Admin creates a new subscriber?
 			if (!$data['id'])
 			{
-				$subsTable        = $this->getTable('Subscribers');
+				$subsTable        = $this->getTable('Subscriber');
 				$data['editlink'] = $subsTable->getEditlink();
 
 				// Admin doesn't confirm the subscriber?
@@ -485,7 +485,7 @@ class SubscriberModel extends AdminModel
 			{
 				// Get the subscriber ID
 				$subscriber_id = (int)$app->getUserState('com_bwpostman.subscriber.id');
-				$subsMlTable   = $this->getTable('Subscribers_Mailinglists');
+				$subsMlTable   = $this->getTable('SubscribersMailinglists');
 
 				// Delete all entries of the subscriber from subscribers_mailinglists-Table
 				$subsMlTable->deleteMailinglistsOfSubscriber($subscriber_id);
@@ -648,7 +648,7 @@ class SubscriberModel extends AdminModel
 			// Delete subscribed mailinglists from subscribers_mailinglists-table
 			foreach ($pks as $pk)
 			{
-				$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+				$subsMlTable = $this->getTable('SubscribersMailinglists');
 				$subsMlTable->deleteMailinglistsOfSubscriber($pk);
 			}
 		}
@@ -987,7 +987,7 @@ class SubscriberModel extends AdminModel
 			$values["confirmation_ip"]   = $remote_ip;
 		}
 
-		$subsTable = $this->getTable('Subscribers');
+		$subsTable = $this->getTable('Subscriber');
 
 		try
 		{
@@ -1099,7 +1099,7 @@ class SubscriberModel extends AdminModel
 				//Save Mailinglists if selected
 				if ($mailinglists && ($values['status'] != '9'))
 				{
-					$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+					$subsMlTable = $this->getTable('SubscribersMailinglists');
 					$subsMlTable->storeMailinglistsOfSubscriber($subscriber_id, $mailinglists);
 				}
 
@@ -1300,7 +1300,7 @@ class SubscriberModel extends AdminModel
 
 		if ($mlToExport !== '')
 		{
-			$subsMlTable         = $this->getTable('Subscribers_Mailinglists');
+			$subsMlTable         = $this->getTable('SubscribersMailinglists');
 			$filteredSubscribers = $subsMlTable->getSubscribersOfMailinglist((int)$mlToExport);
 
 			if ($where)
@@ -1482,7 +1482,7 @@ class SubscriberModel extends AdminModel
 		$subscribed  = 0;
 		$skipped     = 0;
 		$mailinglist = (int)$mailinglist;
-		$subsMlTable = $this->getTable('Subscribers_Mailinglists');
+		$subsMlTable = $this->getTable('SubscribersMailinglists');
 
 		// Subscribers exists so let's proceed
 		while (!empty($pks))
@@ -1534,7 +1534,7 @@ class SubscriberModel extends AdminModel
 		$unsubscribed = 0;
 		$skipped      = 0;
 		$mailinglist  = (int)$mailinglist;
-		$subsMlTable  = $this->getTable('Subscribers_Mailinglists');
+		$subsMlTable  = $this->getTable('SubscribersMailinglists');
 
 		// Subscribers exists so let's proceed
 		while (!empty($pks))

@@ -197,13 +197,13 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl=null)
 	{
 		// Initialize variables
-		$app		= Factory::getApplication();
+		$app = Factory::getApplication();
 		$app->setUserState('bwpostman.send.alsoUnconfirmed', false);
 
-		$log_options    = array();
-		$this->logger   = BwLogger::getInstance($log_options);
+		$log_options  = array();
+		$this->logger = BwLogger::getInstance($log_options);
 
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['newsletter'])
 		{

@@ -438,7 +438,7 @@ class TemplateController extends FormController
 	 *
 	 * @since	1.1.0
 	 */
-	public function getModel($name = 'Template', $prefix = 'BwpostmanModel', $config = array())
+	public function getModel($name = 'Template', $prefix = 'Administrator', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

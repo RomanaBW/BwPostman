@@ -134,8 +134,8 @@ class BwPostmanViewEdit extends JViewLegacy
 
 		// Get the mailinglists which the subscriber is authorized to see
 		$model = $this->getModel();
-		$mlTable = $model->getTable('Mailinglists');
-		$subsTable = $model->getTable('Subscribers');
+		$mlTable = $model->getTable('Mailinglist');
+		$subsTable = $model->getTable('Subscriber');
 		$userId  = $subsTable->getUserIdOfSubscriber((int)$subscriber->id);
 		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists((int)$userId);
 

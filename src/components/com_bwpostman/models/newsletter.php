@@ -55,7 +55,7 @@ class BwPostmanModelNewsletter extends JModelItem
 		$newsletter = null;
 		$user	= Factory::getUser();
 
-		$newsletter = $this->getTable('Sendmailcontent', 'BwPostmanTable')->getContent($id);
+		$newsletter = $this->getTable('Sendmailcontent')->getContent($id);
 
 		// Get the dispatcher and include bwpostman plugins
 		PluginHelper::importPlugin('bwpostman');

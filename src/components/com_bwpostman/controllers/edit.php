@@ -107,7 +107,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$user 	        = Factory::getUser();
 		$user_is_guest  = $user->get('guest');
 		$userid 		= (int) $user->get('id');
-		$subsTable      = $this->getModel('subscriber')->getTable('Subscribers');
+		$subsTable      = $this->getModel('subscriber')->getTable('Subscriber');
 
 		// if user is logged in fetch subscriber id (subscriber id = 0 means the user has no newsletter subscription)
 		if ($userid)
@@ -319,7 +319,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		}
 
 		$newEmail	= false;
-		$subsTable  = $this->getModel('subscriber')->getTable('Subscribers');
+		$subsTable  = $this->getModel('subscriber')->getTable('Subscriber');
 
 		if (isset($post['unsubscribe']))
 		{
@@ -464,7 +464,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		// We come from the edit view
 		if ($id)
 		{
-			$subsTable       = $this->getModel('subscriber')->getTable('Subscribers');
+			$subsTable       = $this->getModel('subscriber')->getTable('Subscriber');
 			$unsubscribedata = $subsTable->getSubscriberState((int)$id);
 			$email           = $unsubscribedata->email;
 			$editlink        = $unsubscribedata->editlink;
@@ -553,7 +553,7 @@ class BwPostmanControllerEdit extends JControllerLegacy
 		$err->err_code  = 0;
 		$subs_id        = null;
 		$subscriber     = new stdClass();
-		$subsTable      = $this->getModel('subscriber')->getTable('Subscribers');
+		$subsTable      = $this->getModel('subscriber')->getTable('Subscriber');
 		$subscriberdata = $subsTable->getSubscriberState($id);
 
 		if (!is_object($subscriberdata))

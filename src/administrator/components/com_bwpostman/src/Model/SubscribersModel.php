@@ -510,7 +510,7 @@ class SubscribersModel extends ListModel
 	 */
 	public function getMailinglists()
 	{
-		$mailinglistsFromTable = $this->getTable('Mailinglists', 'BwPostmanTable')->getMailinglistsValueText();
+		$mailinglistsFromTable = $this->getTable('Mailinglist')->getMailinglistsValueText();
 
 		$mlSelectList   = array ();
 		$mlSelectList[] = HtmlHelper::_('select.option',  '', '- ' . Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') . ' -');

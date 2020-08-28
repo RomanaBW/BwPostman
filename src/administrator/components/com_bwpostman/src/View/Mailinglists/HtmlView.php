@@ -49,7 +49,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  *
  * @since       0.9.1
  */
-class BwPostmanViewMailinglists extends BaseHtmlView
+class HtmlView extends BaseHtmlView
 {
 	/**
 	 * property to hold selected items

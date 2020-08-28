@@ -129,7 +129,7 @@ class SubscribersController extends AdminController
 
 	 * @since	1.0.1
 	 */
-	public function getModel($name = 'Subscriber', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Subscriber', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
 

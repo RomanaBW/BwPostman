@@ -682,7 +682,7 @@ class BwPostmanModelNewsletters extends JModelList
 		// get authorized viewlevels
 		$viewLevels	= Access::getAuthorisedViewLevels($user->id);
 
-		$allowedMailinglists = $this->getTable('_Mailinglists')->getAllowedMailinglists($viewLevels);
+		$allowedMailinglists = $this->getTable('_Mailinglist')->getAllowedMailinglists($viewLevels);
 
 		return $allowedMailinglists;
 	}
@@ -702,7 +702,7 @@ class BwPostmanModelNewsletters extends JModelList
 	{
 		$params        = $this->getAppropriateParams();
 		$check         = $params->get('access-check');
-		$mlTable       = $this->getTable('Mailinglists');
+		$mlTable       = $this->getTable('Mailinglist');
 
 		// fetch only from mailing lists, which are selected, if so
 		$all_mls = $params->get('ml_selected_all');
@@ -771,7 +771,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		if ($all_cams)
 		{
-			$cams	= $this->getTable('Campaigns')->getAllCampaignIds();
+			$cams	= $this->getTable('Campaign')->getAllCampaignIds();
 		}
 
 		// if no cam is left, make array
@@ -786,7 +786,7 @@ class BwPostmanModelNewsletters extends JModelList
 		if ($all_cams || $check != 'no')
 		{
 			$mailinglists = $this->getMailinglistsByViewlevel();
-			$cams    = $this->getTable('Campaigns_Mailinglists')->getAllCampaignIdsByMlCam($mailinglists, $cams);
+			$cams    = $this->getTable('CampaignsMailinglists')->getAllCampaignIdsByMlCam($mailinglists, $cams);
 		}
 
 		// if no cam is left, make array to return
@@ -799,7 +799,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		if ($title === true)
 		{
-			$campaigns	= $this->getTable('Campaigns')->getCampaignsIdTitle($cams);
+			$campaigns	= $this->getTable('Campaign')->getCampaignsIdTitle($cams);
 		}
 
 		return $campaigns;
@@ -1014,7 +1014,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$viewLevelKeys[] = 0;
 		}
 
-		$mailinglists = $this->getTable('Mailinglists')->getAllowedMailinglists($viewLevels);
+		$mailinglists = $this->getTable('Mailinglist')->getAllowedMailinglists($viewLevels);
 
 		return $mailinglists;
 	}

@@ -9,11 +9,15 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Categories\CategoryFactoryInterface;
+// BwPostman Administration Component
+define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
+
+// BwPostman Site Component
+define('BWPM_SITE', JPATH_SITE.'/components/com_bwpostman');
+
 use Joomla\CMS\Component\Router\RouterFactoryInterface;
 use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;
 use Joomla\CMS\Extension\ComponentInterface;
-use Joomla\CMS\Extension\Service\Provider\CategoryFactory;
 use Joomla\CMS\Extension\Service\Provider\ComponentDispatcherFactory;
 use Joomla\CMS\Extension\Service\Provider\MVCFactory;
 use Joomla\CMS\Extension\Service\Provider\RouterFactory;
@@ -41,7 +45,6 @@ return new class implements ServiceProviderInterface
 	 */
 	public function register(Container $container)
 	{
-		$container->registerServiceProvider(new CategoryFactory('\\BoldtWebservice\\Component\\BwPostman'));
 		$container->registerServiceProvider(new MVCFactory('\\BoldtWebservice\\Component\\BwPostman'));
 		$container->registerServiceProvider(new ComponentDispatcherFactory('\\BoldtWebservice\\Component\\BwPostman'));
 		$container->registerServiceProvider(new RouterFactory('\\BoldtWebservice\\Component\\BwPostman'));
@@ -54,7 +57,6 @@ return new class implements ServiceProviderInterface
 
 				$component->setRegistry($container->get(Registry::class));
 				$component->setMVCFactory($container->get(MVCFactoryInterface::class));
-				$component->setCategoryFactory($container->get(CategoryFactoryInterface::class));
 				$component->setRouterFactory($container->get(RouterFactoryInterface::class));
 
 				return $component;

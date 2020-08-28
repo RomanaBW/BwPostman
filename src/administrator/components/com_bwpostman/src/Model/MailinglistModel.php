@@ -391,7 +391,7 @@ class MailinglistModel extends AdminModel
 				}
 			}
 
-			$mlTable = $this->getTable('Mailinglists');
+			$mlTable = $this->getTable('Mailinglist');
 
 			// Delete all entries from the mailinglists-table
 			foreach ($pks as $id)
@@ -402,20 +402,20 @@ class MailinglistModel extends AdminModel
 					return false;
 				}
 
-				if (!$this->getTable('Campaigns_Mailinglists')->deleteMailinglistsCampaignsEntry($id))
+				if (!$this->getTable('CampaignsMailinglists')->deleteMailinglistsCampaignsEntry($id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_ML_CAM_DELETED', $id), 'error');
 					return false;
 				}
 
-				if (!$this->getTable('Subscribers_Mailinglists')->deleteMailinglistSubscribers($id))
+				if (!$this->getTable('SubscribersMailinglists')->deleteMailinglistSubscribers($id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_SUBS_DELETED', $id), 'error');
 					return false;
 				}
 
 				// Delete all entries from the newsletters_mailinglists-table
-				if (!$this->getTable('Newsletters_Mailinglists')->deleteMailinglistNewsletters($id))
+				if (!$this->getTable('NewslettersMailinglists')->deleteMailinglistNewsletters($id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_NLS_DELETED', $id), 'error');
 					return false;

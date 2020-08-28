@@ -277,7 +277,7 @@ class NewsletterModel extends AdminModel
 				}
 
 				// Get associated mailinglists
-				$crossTable = $this->getTable('Newsletters_Mailinglists');
+				$crossTable = $this->getTable('NewslettersMailinglists');
 				$item->mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter($item->id);
 
 				//extract associated usergroups
@@ -299,7 +299,7 @@ class NewsletterModel extends AdminModel
 				}
 
 				// get available mailinglists to predefine for state
-				$mlTable            = $this->getTable('Mailinglists');
+				$mlTable            = $this->getTable('Mailinglist');
 				$item->ml_available = $mlTable->getMailinglistsByRestriction($item->mailinglists, 'available');
 
 				// get unavailable mailinglists to predefine for state
@@ -788,7 +788,7 @@ class NewsletterModel extends AdminModel
 			return false;
 		}
 
-		$crossTableNlMl = $this->getTable('Newsletters_Mailinglists');
+		$crossTableNlMl = $this->getTable('NewslettersMailinglists');
 
 		// On existing newsletter delete all entries of the newsletter from newsletters_mailinglists table
 		if ($data['id'])
@@ -953,7 +953,7 @@ class NewsletterModel extends AdminModel
 		$newsletters_data_copy->substitute_links = null;
 		$newsletters_data_copy->is_template      = 0;
 
-		$crossTable = $this->getTable('Newsletters_Mailinglists');
+		$crossTable = $this->getTable('NewslettersMailinglists');
 
 		$newsletters_data_copy->mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter((int) $id);
 
@@ -1003,7 +1003,7 @@ class NewsletterModel extends AdminModel
 				}
 
 				// Delete assigned mailinglists from newsletters_mailinglists-table
-				if (!$this->getTable('newsletters_mailinglists')->delete($id))
+				if (!$this->getTable('NewslettersMailinglists')->delete($id))
 				{
 					return false;
 				}
@@ -1354,7 +1354,7 @@ class NewsletterModel extends AdminModel
 	 */
 	public function checkForTestrecipients()
 	{
-		$subsTable      = $this->getTable('subscribers');
+		$subsTable      = $this->getTable('Subscriber');
 		$testrecipients = $subsTable->checkForTestrecipients();
 
 		return $testrecipients;
@@ -1566,7 +1566,7 @@ class NewsletterModel extends AdminModel
 		// Update the newsletters table, to prevent repeated sending of the newsletter
 		if ($recipients == 'recipients')
 		{
-			$tblNewsletters = $this->getTable('newsletters', 'BwPostmanTable');
+			$tblNewsletters = $this->getTable('Newsletter');
 			$tblNewsletters->markAsSent($nl_id);
 		}
 
@@ -1593,7 +1593,7 @@ class NewsletterModel extends AdminModel
 			return false;
 		}
 
-		$tblSendmailQueue = $this->getTable('sendmailqueue', 'BwPostmanTable');
+		$tblSendmailQueue = $this->getTable('Sendmailqueue');
 		$tblSendmailQueue->resetTrials();
 		return true;
 	}
@@ -1626,7 +1626,7 @@ class NewsletterModel extends AdminModel
 		}
 
 		// Initialize the sendmailContent
-		$sendMailContent = $this->getTable('sendmailcontent', 'BwPostmanTable');
+		$sendMailContent = $this->getTable('Sendmailcontent');
 
 		// Copy needed data from newsletters to sendmailContent
 		$sendMailContent->nl_id       = $newsletters_data->id;
@@ -1720,7 +1720,7 @@ class NewsletterModel extends AdminModel
 			return false;
 		}
 
-		$tblSendmailQueue = $this->getTable('sendmailqueue', 'BwPostmanTable');
+		$tblSendmailQueue = $this->getTable('Sendmailqueue');
 
 		switch ($recipients)
 		{
@@ -1791,7 +1791,7 @@ class NewsletterModel extends AdminModel
 				break;
 
 			case "testrecipients":
-				$tblSubscribers = $this->getTable('subscribers', 'BwPostmanTable');
+				$tblSubscribers = $this->getTable('Subscriber');
 				$testrecipients = $tblSubscribers->loadTestrecipients();
 
 				if(count($testrecipients) > 0)
@@ -1834,7 +1834,7 @@ class NewsletterModel extends AdminModel
 		PluginHelper::importPlugin('bwpostman');
 		Factory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
 
-		$tblSendmailQueue = $this->getTable('sendmailqueue', 'BwPostmanTable');
+		$tblSendmailQueue = $this->getTable('Sendmailqueue');
 
 		$result = $tblSendmailQueue->checkTrials($trial, $count);
 
@@ -1920,8 +1920,8 @@ class NewsletterModel extends AdminModel
 		$queueTableName     = '#__bwpostman_sendmailqueue';
 
 		// getting object for queue and content
-		$tblSendMailQueue   = $this->getTable('sendmailqueue', 'BwPostmanTable');
-		$tblSendMailContent = $this->getTable('sendmailcontent', 'BwPostmanTable');
+		$tblSendMailQueue   = $this->getTable('Sendmailqueue');
+		$tblSendMailContent = $this->getTable('Sendmailcontent');
 
 		PluginHelper::importPlugin('bwpostman');
 
@@ -1985,7 +1985,7 @@ class NewsletterModel extends AdminModel
 
 		if ($tblSendMailQueue->subscriber_id)
 		{
-			$subsTable       = $this->getTable('Subscribers', 'BwPostmanTable');
+			$subsTable       = $this->getTable('Subscriber');
 			$recipients_data = $subsTable->getSubscriberNewsletterData($tblSendMailQueue->subscriber_id);
 
 			// if subscriber is archived, do nothing
@@ -2167,7 +2167,7 @@ class NewsletterModel extends AdminModel
 
 		if ($item->id == 0)
 		{
-			$item->template_id = $this->getTable('Templates')->getStandardTpl('html');
+			$item->template_id = $this->getTable('Template')->getStandardTpl('html');
 		}
 		elseif ($item->template_id == 0)
 		{
@@ -2189,7 +2189,7 @@ class NewsletterModel extends AdminModel
 
 			if (is_null($html_tpl))
 			{
-				$html_tpl = $this->getTable('Templates')->getStandardTpl('html');
+				$html_tpl = $this->getTable('Template')->getStandardTpl('html');
 			}
 
 			$item->template_id = $html_tpl;
@@ -2214,7 +2214,7 @@ class NewsletterModel extends AdminModel
 
 		if ($item->id == 0)
 		{
-			$item->text_template_id = $this->getTable('Templates')->getStandardTpl('text');
+			$item->text_template_id = $this->getTable('Template')->getStandardTpl('text');
 		}
 		elseif ($item->text_template_id == 0)
 		{
@@ -2236,7 +2236,7 @@ class NewsletterModel extends AdminModel
 
 			if (is_null($text_tpl))
 			{
-				$text_tpl = $this->getTable('Templates')->getStandardTpl('text');
+				$text_tpl = $this->getTable('Template')->getStandardTpl('text');
 			}
 
 			$item->text_template_id = $text_tpl;
@@ -2394,13 +2394,13 @@ class NewsletterModel extends AdminModel
 		if ($cam_id !== -1)
 		{
 			// Check if there are assigned mailinglists or usergroups
-			$crossTable = $this->getTable('Campaigns_Mailinglists');
+			$crossTable = $this->getTable('CampaignsMailinglists');
 			$mailinglists = $crossTable->getAssociatedMailinglistsByCampaign((int) $cam_id);
 		}
 		else
 		{
 			// Check if there are assigned mailinglists or usergroups of the campaign
-			$crossTable = $this->getTable('Newsletters_Mailinglists');
+			$crossTable = $this->getTable('NewslettersMailinglists');
 			$mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter((int) $nl_id);
 		}
 

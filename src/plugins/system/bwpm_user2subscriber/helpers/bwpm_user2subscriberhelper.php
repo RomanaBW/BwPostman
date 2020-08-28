@@ -340,7 +340,7 @@ abstract class BWPM_User2SubscriberHelper
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/subscriber.php');
 		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/tables/subscribers.php');
 		$subsModel = JModelLegacy::getInstance('Subscriber', 'BwPostmanModel');
-		$subsTable = $subsModel->getTable('Subscribers');
+		$subsTable = $subsModel->getTable('Subscriber');
 
 		$subscriber->id                = 0;
 		$subscriber->user_id           = $user_id;
@@ -379,8 +379,9 @@ abstract class BWPM_User2SubscriberHelper
 	public static function saveSubscriber($data)
 	{
 		// @Todo: As from version 2.0.0 BwPostmanModelRegister->save() may be used, depends on spam check solution
-		Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_bwpostman/tables');
-		$table  = Table::getInstance('Subscribers', 'BwPostmanTable');
+		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
+		$table = $MvcFactory->createTable('Subscriber', 'Administrator');
 
 		// Bind the data.
 		if (!$table->bind($data))

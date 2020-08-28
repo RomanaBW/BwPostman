@@ -695,8 +695,9 @@ class ContentRenderer
 	 */
 	public function getTemplate($template_id)
 	{
-		$params   = ComponentHelper::getParams('com_bwpostman');
-		$tplTable = Table::getInstance('Templates', 'BwPostmanTable');
+		$params     = ComponentHelper::getParams('com_bwpostman');
+		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+		$tplTable   = $MvcFactory->createTable('Template', 'Administrator');
 
 		if (is_null($template_id))
 		{
@@ -750,7 +751,8 @@ class ContentRenderer
 	 */
 	public function getTemplateAssets($template_id)
 	{
-		$tplTagsTable = Table::getInstance('Templates_Tags', 'BwPostmanTable');
+		$MvcFactory   = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+		$tplTagsTable = $MvcFactory->createTable('TemplatesTags', 'Administrator');
 
 		$tpl_assets = $tplTagsTable->getTemplateAssets((int)$template_id);
 

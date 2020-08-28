@@ -320,6 +320,7 @@ class SendmailqueueTable extends Table
 		}
 
 		$subscribers = array();
+		$MvcFactory  = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -329,23 +330,23 @@ class SendmailqueueTable extends Table
 			if ($cam_id != '-1')
 			{
 				// Select mailinglist IDs from campaigns_mailinglists, if campaign ID is provided
-				$camMlsTable = Table::getInstance('Campaigns_Mailinglists', 'BwPostmanTable');
+				$camMlsTable = $MvcFactory->createTable('CampaignsMailinglists', 'Administrator');
 				$mailinglists = $camMlsTable->getAssociatedMailinglistsByCampaign($cam_id);
 			}
 			else
 			{
 				// Select mailinglist IDs from newsletters_mailinglists, if no campaign ID is provided
-				$nlsMlsTable = Table::getInstance('Newsletters_Mailinglists', 'BwPostmanTable');
+				$nlsMlsTable = $MvcFactory->createTable('NewslettersMailinglists', 'Administrator');
 				$mailinglists = $nlsMlsTable->getAssociatedMailinglistsByNewsletter($nl_id);
 			}
 
 			// Select unique subscriber IDs from subscribers_mailinglists of the calculated mailinglists
-			$subsMlsTable = Table::getInstance('Subscribers_Mailinglists', 'BwPostmanTable');
+			$subsMlsTable = $MvcFactory->createTable('SubscribersMailinglists', 'Administrator');
 			$subscribers = $subsMlsTable->getSubscribersOfMailinglist($mailinglists);
 
 		}
 		// Select subscribers data of the calculated subscriber IDs
-		$subsTable = Table::getInstance('Subscribers', 'BwPostmanTable');
+		$subsTable = $MvcFactory->createTable('Subscriber', 'Administrator');
 		$subscribersData = $subsTable->getSubscriberDataForSendmailqueue($content_id, $status, $subscribers);
 
 		$data = array();

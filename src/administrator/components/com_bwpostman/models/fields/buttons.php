@@ -63,7 +63,9 @@ class JFormFieldbuttons extends JFormField
 		$doc       = Factory::getDocument();
 		$fieldName = $this->name;
 
-		$newsletter = Table::getInstance('newsletters', 'BwPostmanTable');
+		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
+		$newsletter = $MvcFactory->createTable('Newsletter', 'Administrator');
 
 		if ($this->value)
 		{

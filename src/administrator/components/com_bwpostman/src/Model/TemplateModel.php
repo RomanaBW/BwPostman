@@ -574,9 +574,10 @@ class TemplateModel extends AdminModel
 
 		if (count($pks))
 		{
+			$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
-			$lists_table = Table::getInstance('templates', 'BwPostmanTable');
-			$tags_table  = Table::getInstance('templates_tags', 'BwPostmanTable');
+			$lists_table = $MvcFactory->createTable('Template', 'Administrator');
+			$tags_table = $MvcFactory->createTable('TemplatesTags', 'Administrator');
 
 			// Delete all entries from the templates-table
 			foreach ($pks as $id)

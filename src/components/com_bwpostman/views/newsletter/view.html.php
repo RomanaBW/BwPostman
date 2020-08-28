@@ -102,12 +102,13 @@ class BwPostmanViewNewsletter extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app	= Factory::getApplication();
-		$id		= $app->input->getInt('id', 0);
-		$params	= ComponentHelper::getParams('com_bwpostman');
+		$app        = Factory::getApplication();
+		$id         = $app->input->getInt('id', 0);
+		$params     = ComponentHelper::getParams('com_bwpostman');
+		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
 		// Count how often the newsletter has been viewed
-		$newsletter = Table::getInstance('newsletters', 'BwPostmanTable');
+		$newsletter = $MvcFactory->createTable('Newsletter', 'Administrator');
 		$newsletter->load($id);
 		$newsletter->hit($id);
 

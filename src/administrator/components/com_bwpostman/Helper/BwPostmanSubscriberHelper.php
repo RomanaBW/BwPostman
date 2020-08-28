@@ -551,7 +551,9 @@ class BwPostmanSubscriberHelper
 	public static function fillVoidSubscriber()
 	{
 		// Load an empty subscriber
-		$subscriber = Table::getInstance('subscribers', 'BwPostmanTable');
+		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
+		$subscriber = $MvcFactory->createTable('Subscriber', 'Administrator');
 		$subscriber->load();
 		$subscriber->mailinglists  = array();
 

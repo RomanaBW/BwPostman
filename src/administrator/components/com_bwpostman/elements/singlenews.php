@@ -63,12 +63,10 @@ class JFormFieldsinglenews extends JFormField
 	 */
 	protected function getinput()
 	{
-		$doc       = Factory::getDocument();
-		$fieldName = $this->name;
+		$doc        = Factory::getDocument();
+		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
-		Table::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_bwpostman/tables');
-
-		$newsletter = Table::getInstance('newsletters', 'BwPostmanTable');
+		$newsletter = $MvcFactory->createTable('Newsletter', 'Administrator');
 
 		if ($this->value)
 		{

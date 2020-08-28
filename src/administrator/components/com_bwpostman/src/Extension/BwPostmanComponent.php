@@ -11,15 +11,12 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Extension;
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\Categories\CategoryServiceInterface;
-use Joomla\CMS\Categories\CategoryServiceTrait;
+use JLoader;
 use Joomla\CMS\Component\Router\RouterServiceInterface;
 use Joomla\CMS\Component\Router\RouterServiceTrait;
 use Joomla\CMS\Extension\BootableExtensionInterface;
 use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
-use Joomla\CMS\Tag\TagServiceInterface;
-use Joomla\CMS\Tag\TagServiceTrait;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\Html\BwPostman;
 use Psr\Container\ContainerInterface;
 
@@ -28,15 +25,10 @@ use Psr\Container\ContainerInterface;
  *
  * @since  4.0.0
  */
-class BwPostmanComponent extends MVCComponent implements BootableExtensionInterface, CategoryServiceInterface, RouterServiceInterface,
-	TagServiceInterface
+class BwPostmanComponent extends MVCComponent implements BootableExtensionInterface, RouterServiceInterface
 {
 	use HTMLRegistryAwareTrait;
 	use RouterServiceTrait;
-	use CategoryServiceTrait, TagServiceTrait {
-		CategoryServiceTrait::getTableNameForSection insteadof TagServiceTrait;
-		CategoryServiceTrait::getStateColumnForSection insteadof TagServiceTrait;
-	}
 
 	/**
 	 * Booting the extension. This is the function to set up the environment of the extension like
@@ -53,6 +45,19 @@ class BwPostmanComponent extends MVCComponent implements BootableExtensionInterf
 	 */
 	public function boot(ContainerInterface $container)
 	{
-		$this->getRegistry()->register('bwpostman', new BwPostman());
+		$this->getRegistry()->register('bwpostman', new BwPostman);
+
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', BWPM_ADMINISTRATOR . '/Helper', false, false, 'psr4');
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Field', BWPM_ADMINISTRATOR . '/Field', false, false, 'psr4');
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Classes', BWPM_ADMINISTRATOR . '/classes', false, false, 'psr4');
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', BWPM_ADMINISTRATOR . '/libraries', false, false, 'psr4');
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Model', BWPM_ADMINISTRATOR . '/src/Model', false, false, 'psr4');
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Controller', BWPM_ADMINISTRATOR . '/src/Controller', false, false, 'psr4');
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\View', BWPM_ADMINISTRATOR . '/src/View', false, false, 'psr4');
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Table', BWPM_ADMINISTRATOR . '/src/Table', false, false, 'psr4');
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service', BWPM_ADMINISTRATOR . '/src/Service', false, false, 'psr4');
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service\\Html', BWPM_ADMINISTRATOR . '/src/Service/Html', false, false, 'psr4');
+
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Models', BWPM_SITE . '/models', false, false, 'psr4');
 	}
 }

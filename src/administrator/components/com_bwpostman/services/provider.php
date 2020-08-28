@@ -47,7 +47,7 @@ return new class implements ServiceProviderInterface
 	{
 		$container->registerServiceProvider(new MVCFactory('\\BoldtWebservice\\Component\\BwPostman'));
 		$container->registerServiceProvider(new ComponentDispatcherFactory('\\BoldtWebservice\\Component\\BwPostman'));
-		$container->registerServiceProvider(new RouterFactory('\\BoldtWebservice\\Component\\BwPostman'));
+//		$container->registerServiceProvider(new RouterFactory('\\BoldtWebservice\\Component\\BwPostman'));
 
 		$container->set(
 			ComponentInterface::class,
@@ -57,7 +57,7 @@ return new class implements ServiceProviderInterface
 
 				$component->setRegistry($container->get(Registry::class));
 				$component->setMVCFactory($container->get(MVCFactoryInterface::class));
-				$component->setRouterFactory($container->get(RouterFactoryInterface::class));
+//				$component->setRouterFactory($container->get(RouterFactoryInterface::class));
 
 				return $component;
 			}

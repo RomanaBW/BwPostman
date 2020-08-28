@@ -126,7 +126,7 @@ class NewslettersController extends AdminController
 
 	 * @since	1.0.1
 	 */
-	public function getModel($name = 'Newsletter', $prefix = 'BwPostmanModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
 

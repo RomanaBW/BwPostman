@@ -25,10 +25,9 @@ use Psr\Container\ContainerInterface;
  *
  * @since  4.0.0
  */
-class BwPostmanComponent extends MVCComponent implements BootableExtensionInterface, RouterServiceInterface
+class BwPostmanComponent extends MVCComponent implements BootableExtensionInterface
 {
 	use HTMLRegistryAwareTrait;
-	use RouterServiceTrait;
 
 	/**
 	 * Booting the extension. This is the function to set up the environment of the extension like

@@ -50,7 +50,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
 	}
 	?>
-	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters'); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=Newsletters'); ?>"
 			method="post" name="adminForm" id="adminForm">
 		<div class="row">
 			<div class="col-md-12">

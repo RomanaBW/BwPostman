@@ -282,7 +282,7 @@ class HtmlView extends BaseHtmlView
 		{
 			$options['text'] = "COM_BWPOSTMAN_BACK";
 			$options['name'] = 'back';
-			$options['url'] = "index.php?option=com_bwpostman&view=newsletters";
+			$options['url'] = "index.php?option=com_bwpostman&view=Newsletters";
 			$options['icon'] = "icon-arrow-left";
 
 			$button = new LinkButton('back');

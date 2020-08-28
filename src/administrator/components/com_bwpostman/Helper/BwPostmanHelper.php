@@ -85,7 +85,7 @@ class BwPostmanHelper
 		{
 			JHtmlSidebar::addEntry(
 				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS'),
-				'index.php?option=com_bwpostman&view=newsletters',
+				'index.php?option=com_bwpostman&view=Newsletters',
 				$vName == 'newsletters'
 			);
 		}
@@ -94,7 +94,6 @@ class BwPostmanHelper
 		{
 			JHtmlSidebar::addEntry(
 				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_SUBS'),
-				'index.php?option=com_bwpostman&view=subscribers',
 				$vName == 'subscribers'
 			);
 		}
@@ -103,7 +102,7 @@ class BwPostmanHelper
 		{
 			JHtmlSidebar::addEntry(
 				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_CAMS'),
-				'index.php?option=com_bwpostman&view=campaigns',
+				'index.php?option=com_bwpostman&view=Campaigns',
 				$vName == 'campaigns'
 			);
 		}
@@ -112,7 +111,7 @@ class BwPostmanHelper
 		{
 			JHtmlSidebar::addEntry(
 				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MLS'),
-				'index.php?option=com_bwpostman&view=mailinglists',
+				'index.php?option=com_bwpostman&view=Mailinglists',
 				$vName == 'mailinglists'
 			);
 		}
@@ -121,7 +120,7 @@ class BwPostmanHelper
 		{
 			JHtmlSidebar::addEntry(
 				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_TPLS'),
-				'index.php?option=com_bwpostman&view=templates',
+				'index.php?option=com_bwpostman&view=Templates',
 				$vName == 'templates'
 			);
 		}
@@ -130,7 +129,7 @@ class BwPostmanHelper
 		{
 			JHtmlSidebar::addEntry(
 				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_ARC'),
-				'index.php?option=com_bwpostman&view=archive&layout=newsletters',
+				'index.php?option=com_bwpostman&view=Archive&layout=newsletters',
 				$vName == 'archive'
 			);
 		}
@@ -139,7 +138,7 @@ class BwPostmanHelper
 		{
 			JHtmlSidebar::addEntry(
 				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MAINTENANCE'),
-				'index.php?option=com_bwpostman&view=maintenance',
+				'index.php?option=com_bwpostman&view=Maintenance',
 				$vName == 'maintenance'
 			);
 		}

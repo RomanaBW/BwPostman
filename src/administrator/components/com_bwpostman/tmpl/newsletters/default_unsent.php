@@ -64,7 +64,7 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 		}
 	}
 	?>
-	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters'); ?>"
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=Newsletters'); ?>"
 			method="post" name="adminForm" id="adminForm">
 		<div class="row">
 			<div class="col-md-12">

@@ -76,7 +76,7 @@ class RawView extends BaseHtmlView
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		$model	= $this->getModel('newsletter');
+		$model	= $this->getModel('Newsletter');
 		$task	= $jinput->get('task', 'previewHTML');
 		$nl_id	= $jinput->get('nl_id');
 		$app->setUserState('com_bwpostman.viewraw.newsletter.id', $nl_id);

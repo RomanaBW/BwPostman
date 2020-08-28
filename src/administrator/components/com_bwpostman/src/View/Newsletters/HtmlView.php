@@ -188,10 +188,10 @@ class HtmlView extends BaseHtmlView
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
-		$app->setUserState('com_bwpostman.edit.newsletter.referrer', 'newsletters');
+		$app->setUserState('com_bwpostman.edit.newsletter.referrer', 'Newsletters');
 		// The query always contains the tab which we are in, but this might be confusing
 		// That's why we will set the query only to controller = newsletters
-		$uri_query	= 'option=com_bwpostman&view=newsletters';
+		$uri_query	= 'option=com_bwpostman&view=Newsletters';
 		$uri->setQuery($uri_query);
 
 		// Get data from the model

@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 
 defined('_JEXEC') or die('Restricted access');
 
+use BwPostmanModelEdit;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -38,6 +39,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use RuntimeException;
+use BoldtWebservice\Component\BwPostman\Site\Models\BwPostmanModelRegister;
 
 /**
  * Class BwPostmanSubscriberHelper
@@ -117,8 +119,6 @@ class BwPostmanSubscriberHelper
 				$jinput->set('layout', 'error_accountnotactivated');
 				break;
 			case 407: // Subscriber account already exists
-				require_once(JPATH_SITE . '/components/com_bwpostman/models/edit.php');
-				$model = new BwPostmanModelEdit();
 				$itemid        = BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
 				$session_error = array(
 					'err_msg'     => $err->err_msg,
@@ -132,8 +132,6 @@ class BwPostmanSubscriberHelper
 				$jinput->set('layout', 'error_accountgeneral');
 				break;
 			case 408: // Email doesn't exist
-				require_once(JPATH_SITE . '/components/com_bwpostman/models/register.php');
-				$model = new BwPostmanModelRegister();
 				$itemid        = BwPostmanSubscriberHelper::getMenuItemid('register'); // Itemid from register-view
 				$session_error = array(
 					'err_msg'     => $err->err_msg,
@@ -225,7 +223,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function errorSendingEmail($err_msg, $email = null)
+	public static function errorSendingEmail($err_msg, $email = '')
 	{
 		$jinput        = Factory::getApplication()->input;
 		$session       = Factory::getSession();

@@ -63,7 +63,7 @@ if ($moduleId !== null && $moduleId !== '')
 			</h1>
 		<?php endif; ?>
 
-		<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&' . $actionSuffix); ?>" method="post"
+		<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=Newsletters&' . $actionSuffix); ?>" method="post"
 				name="adminForm" id="adminForm" class="form-inline form-horizontal">
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="js-tools clearfix">
 				<div class="clearfix">

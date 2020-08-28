@@ -24,6 +24,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Site\Models;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -35,6 +37,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Mail\MailHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
+use JModelAdmin;
 
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');

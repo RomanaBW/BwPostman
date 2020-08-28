@@ -28,6 +28,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+// constants and autoload
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/includes/includes.php');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -41,6 +44,7 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use BoldtWebservice\Component\BwPostman\Site\Models\BwPostmanModelRegister;
 
 jimport('joomla.plugin.plugin');
 
@@ -952,7 +956,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			// @ToDo: How could I get here with no object $this->stored_subscriber_data
 			if ($send_mail && $res && $subscriber_id)
 			{
-				require_once(JPATH_SITE . '/components/com_bwpostman/models/register.php');
+//				require_once(JPATH_SITE . '/components/com_bwpostman/models/register.php');
 				$model = new BwPostmanModelRegister();
 
 				$model->sendActivationNotification($this->stored_subscriber_data['id']);

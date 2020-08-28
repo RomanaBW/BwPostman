@@ -9,7 +9,7 @@
 	<license>This component is released under the GNU/GPLv3 License or later</license>
 	<version>%%version_number%%</version>
 	<description></description>
-	<namespace>BoldtWebservice\Component\BwPostman</namespace>
+	<namespace path="src">BoldtWebservice\Component\BwPostman</namespace>
 
 	<install>
 		<sql>
@@ -84,25 +84,21 @@
 			<filename>access.xml</filename>
 			<filename>CHANGELOG.txt</filename>
 			<filename>config.xml</filename>
-			<filename>index.html</filename>
-			<filename>LICENSE.txt</filename>
 			<filename>import_demo.csv</filename>
 			<filename>import_demo.xml</filename>
+			<filename>index.html</filename>
+			<filename>LICENSE.txt</filename>
 			<filename>install.bwpostman.php</filename>
-			<filename>controller.php</filename>
-			<filename>bwpostman.php</filename>
 			<folder>assets</folder>
 			<folder>classes</folder>
-			<folder>Controller</folder>
 			<folder>elements</folder>
 			<folder>Helper</folder>
-			<folder>includes</folder>
-			<folder>libraries</folder>
 			<folder>layouts</folder>
-			<folder>Model</folder>
+			<folder>libraries</folder>
+			<folder>models</folder>
 			<folder>sql</folder>
-			<folder>Table</folder>
-			<folder>View</folder>
+			<folder>src</folder>
+			<folder>tmpl</folder>
 <!--	J4 stuff-->
 <!--			<filename>dispatcher.php</filename>-->
 		</files>

@@ -203,7 +203,7 @@ class TestNewslettersDetailsCest
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
-		$I->seeElement("//*/table[@id='main-table']/tbody/tr[1]/td[8]/button/span[contains(@class, 'icon-featured')]");
+		$I->seeElement("//*/table[@id='main-table']/tbody/tr[1]/td[8]/button[contains(@class, 'data-state-1')]");
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);

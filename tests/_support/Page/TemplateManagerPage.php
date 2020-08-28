@@ -106,9 +106,9 @@ class TemplateManagerPage
 	 */
 	public static $publish_by_icon   = array(
 		'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/a",
-		'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'fa-check')]",
 		'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/a",
-		'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+		'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'fa-times')]",
 	);
 
 	// publish by toolbar
@@ -120,9 +120,9 @@ class TemplateManagerPage
 	 */
 	public static $publish_by_toolbar   = array(
 		'publish_button'    => "//*[@id='cb0']",
-		'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-publish')]",
+		'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'fa-check')]",
 		'unpublish_button'  => "//*[@id='cb0']",
-		'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
+		'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'fa-times')]",
 	);
 
 
@@ -495,7 +495,7 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $exportDownloadButton    = "//*[@id='system-message-container']/div[1]/joomla-alert/div[2]/p/a";
+	public static $exportDownloadButton    = "//*[@id='system-message-container']/div[1]/joomla-alert/div[2]/div/a";
 
 	/**
 	 * @var array

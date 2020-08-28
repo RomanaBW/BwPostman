@@ -1950,9 +1950,9 @@ class User2SubscriberCest
 
 				if ($user_found)
 				{
-					$I->seeElement(".//*[@id='userList']/tbody/tr[1]/td[5]/a/span", array('class' => 'icon-unpublish'));
+					$I->seeElement(".//*[@id='userList']/tbody/tr[1]/td[5]/a/span", array('class' => 'fa-times'));
 					$I->clickAndWait('.//*[@id=\'userList\']/tbody/tr[1]/td[5]/a', 1);
-					$I->seeElement(".//*[@id='userList']/tbody/tr[1]/td[5]/a/span", array('class' => 'icon-publish'));
+					$I->seeElement(".//*[@id='userList']/tbody/tr[1]/td[5]/a/span", array('class' => 'fa-check'));
 					$this->activated    = true;
 
 					self::checkForSubscriptionSuccess($I);

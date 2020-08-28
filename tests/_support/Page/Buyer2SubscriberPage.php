@@ -1372,7 +1372,7 @@ class Buyer2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $shopper_field_published      = "//*/td[6]/a/span[contains(@class, 'icon-publish')]";
+	public static $shopper_field_published      = "//*/td[6]/a/span[contains(@class, 'fa-check')]";
 
 
 	/**

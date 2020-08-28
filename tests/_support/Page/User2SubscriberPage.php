@@ -416,7 +416,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $success_message_identifier   = "//*[@id='system-message']/joomla-alert[@type='success']/div/p";
+	public static $success_message_identifier   = "//*[@id='system-message']/joomla-alert[@type='success']/div";
 
 	/**
 	 * @var string

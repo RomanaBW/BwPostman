@@ -590,7 +590,7 @@ class InstallationPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $icon_published       = "//*[@id='pluginList']/tbody/tr/td[3]/a/span[contains(@class, 'icon-publish')]";
+	public static $icon_published       = "//*[@id='pluginList']/tbody/tr/td[3]/a/span[contains(@class, 'fa-check')]";
 
 	/**
 	 * @var string

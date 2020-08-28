@@ -732,7 +732,7 @@ class SubscriberManagerPage
 			'name' => 'Muster',
 			'firstname' => 'Nanni',
 			'email' => 'tester10@boldt-services.nul',
-			'emailformat' => '1',
+			'emailformat' => '0',
 			'status' => '1',
 		),
 	);

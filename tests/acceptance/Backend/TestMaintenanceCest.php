@@ -86,7 +86,7 @@ class TestMaintenanceCest
 		$downloadPath = $path . $filename;
 		codecept_debug("Download path: " . $downloadPath);
 
-		$I->clickAndWait(MaintenancePage::$saveTablesButton, 40);
+		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
 
 		$I->assertTrue(file_exists($downloadPath));
 		unlink($downloadPath);
@@ -133,9 +133,10 @@ class TestMaintenanceCest
 		$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml';
 		$downloadPath = $path . $filename;
 
-		$I->clickAndWait(MaintenancePage::$saveTablesButton, 40);
+		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
 
 		$I->assertTrue(file_exists($downloadPath));
+		unlink($downloadPath);
 
 		$I->setManifestOption('com_bwpostman', 'compress_backup', '1');
 	}

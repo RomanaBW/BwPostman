@@ -689,7 +689,7 @@ class Acceptance extends Codeception\Module
 				}
 
 				$I->expectTo('see arrow ' . $arrow . ' at ' . $criterion);
-				$I->waitForElementVisible(sprintf(Generals::$table_headcol_arrow_location, $i, Generals::$sort_arrows[$arrow]), 30);
+				$I->waitForElementVisible(sprintf(Generals::$table_headcol_arrow_location, $i, Generals::$sort_arrows[$arrow]), 5);
 				$I->seeElement(sprintf(Generals::$table_headcol_arrow_location, $i, Generals::$sort_arrows[$arrow]));
 				$I->expectTo('see text ' . $sort_data_array['sort_criteria_select'][$key] . ' ' . $order);
 				$I->click(Generals::$filterOptionsSwitcher);

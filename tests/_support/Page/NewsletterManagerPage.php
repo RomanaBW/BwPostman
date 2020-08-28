@@ -90,14 +90,14 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_line_unpublished   = "//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[@class='icon-unpublish']";
+	public static $first_line_unpublished   = "//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'fa-times')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_line_published     = "//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[@class='icon-publish']";
+	public static $first_line_published     = "//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'fa-check')]";
 
 	/**
 	 * @var string
@@ -502,9 +502,9 @@ class NewsletterManagerPage
 	 */
 	public static $set_template_by_icon   = array(
 		'is_template_button'     => "//*/table[@id='main-table']/tbody/tr[4]/td[8]/button",
-		'is_template_result'     => "//*/table[@id='main-table']/tbody/tr[4]/td[8]/button/span[contains(@class, 'icon-featured')]",
+		'is_template_result'     => "//*/table[@id='main-table']/tbody/tr[4]/td[8]/button[contains(@class, 'data-state-1')]",
 		'is_not_template_button' => "//*/table[@id='main-table']/tbody/tr[4]/td[8]/button",
-		'is_not_template_result' => "//*/table[@id='main-table']/tbody/tr[4]/td[8]/button/span[contains(@class, 'icon-unfeatured')]",
+		'is_not_template_result' => "//*/table[@id='main-table']/tbody/tr[4]/td[8]/button[contains(@class, 'data-state-0')]",
 	);
 
 	/**
@@ -542,9 +542,9 @@ class NewsletterManagerPage
 	 */
 	public static $publish_by_icon   = array(
 		'publish_button'    => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
-		'publish_result'    => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
+		'publish_result'    => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'fa-check')]",
 		'unpublish_button'  => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
-		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
+		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'fa-times')]",
 	);
 
 

@@ -26,7 +26,7 @@
 
 namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
 
-use JApplicationWeb;
+use Joomla\CMS\Application\WebApplication;
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since       2.4.0
  */
-class BwWebApp extends JApplicationWeb
+class BwWebApp extends WebApplication
 {
 	/**
 	 * Execute the application.

@@ -50,6 +50,6 @@ Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/c
 	</div>
 </div>
 
-<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=templates.installtpl&format=json&<?php echo Session::getFormToken(); ?>=1" />
+<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=templatesjson.installtpl&format=json&<?php echo Session::getFormToken(); ?>=1" />
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>

@@ -60,7 +60,7 @@ $uri    = Uri::root();
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
-<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=maintenance.tCheck&format=json&<?php echo Session::getFormToken(); ?>=1" />
+<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=maintenancejson.tCheck&format=json&<?php echo Session::getFormToken(); ?>=1" />
 
 <?php
 Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_maintenance_doAjax.js');

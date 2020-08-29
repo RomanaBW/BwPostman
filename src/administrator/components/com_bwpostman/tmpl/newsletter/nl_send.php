@@ -91,7 +91,7 @@ $token      = Session::getFormToken();
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
-	<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=newsletter.startsending&format=json&<?php echo Session::getFormToken(); ?>=1" />
+	<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&&task=newsletterjson.startsending&tmpl=nl_send&format=json&<?php echo Session::getFormToken(); ?>=1" />
 	<input type="hidden" id="delay" value="<?php echo $this->delay; ?>" />
 
 <?php

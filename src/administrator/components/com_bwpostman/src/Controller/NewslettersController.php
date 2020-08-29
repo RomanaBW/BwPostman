@@ -78,7 +78,9 @@ class NewslettersController extends AdminController
 	 */
 	public function __construct($config = array())
 	{
-		parent::__construct($config);
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
+		parent::__construct($config, $this->factory);
 
 		// Register Extra tasks
 		$this->registerTask('add', 'edit');
@@ -128,9 +130,7 @@ class NewslettersController extends AdminController
 	 */
 	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
-		$component = Factory::getApplication()->bootComponent('com_bwpostman');
-		$MVCFactory = $component->getMVCFactory();
-		$model = $MVCFactory->createModel($name, $prefix, $config);
+		$model = $this->factory->createModel($name, $prefix, $config);
 
 		return $model;
 	}
@@ -192,7 +192,7 @@ class NewslettersController extends AdminController
 				$msg = Text::_('COM_BWPOSTMAN_NL_COPIED');
 			}
 
-			$link = Route::_('index.php?option=com_bwpostman&view=Newsletters&layout=' . $layout, false);
+			$link = Route::_('index.php?option=com_bwpostman&view=newsletters&layout=' . $layout, false);
 			$this->setRedirect($link, $msg);
 		}
 
@@ -218,7 +218,7 @@ class NewslettersController extends AdminController
 
 			if (!$allowed)
 			{
-				$link = Route::_('index.php?option=com_bwpostman&view=Newsletters', false);
+				$link = Route::_('index.php?option=com_bwpostman&view=newsletters', false);
 				$this->setRedirect($link, Text::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
 
 				return false;
@@ -261,7 +261,7 @@ class NewslettersController extends AdminController
 		$tab = $jinput->get('tab', 'sent');
 
 		// From which view do we come?
-		$view = $jinput->get('view', 'Newsletters');
+		$view = $jinput->get('view', 'newsletters');
 
 		parent::publish();
 
@@ -271,7 +271,7 @@ class NewslettersController extends AdminController
 		}
 		else
 		{
-			$this->setRedirect('index.php?option=com_bwpostman&view=Newsletters&tab=' . $tab);
+			$this->setRedirect('index.php?option=com_bwpostman&view=newsletters&tab=' . $tab);
 		}
 
 		return true;
@@ -308,7 +308,7 @@ class NewslettersController extends AdminController
 			else
 			{
 				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
-				$this->setRedirect(Route::_('index.php?option=com_bwpostman&view=Newsletters', false));
+				$this->setRedirect(Route::_('index.php?option=com_bwpostman&view=newsletters', false));
 				return false;
 			}
 		}
@@ -333,7 +333,7 @@ class NewslettersController extends AdminController
 
 		$app->setUserState('com_bwpostman.newsletters.tab', $tab);
 
-		$link = Route::_('index.php?option=com_bwpostman&view=Newsletters', false);
+		$link = Route::_('index.php?option=com_bwpostman&view=newsletters', false);
 
 		$this->setRedirect($link);
 	}
@@ -393,7 +393,7 @@ class NewslettersController extends AdminController
 		{ // Cleared queue successfully
 			$msg = Text::_('COM_BWPOSTMAN_NL_CLEARED_QUEUE');
 
-			$link = Route::_('index.php?option=com_bwpostman&view=Newsletters&tab=unsent', false);
+			$link = Route::_('index.php?option=com_bwpostman&view=newsletters&tab=unsent', false);
 			$this->setRedirect($link, $msg);
 		}
 
@@ -422,7 +422,7 @@ class NewslettersController extends AdminController
 
 		$model = $this->getModel('newsletter');
 		$model->resetSendAttempts();
-		$link = Route::_('index.php?option=com_bwpostman&view=Newsletters&tab=queue', false);
+		$link = Route::_('index.php?option=com_bwpostman&view=newsletters&tab=queue', false);
 		$this->setRedirect($link);
 
 		return true;

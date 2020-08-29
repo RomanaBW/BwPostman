@@ -80,7 +80,9 @@ class MailinglistController extends FormController
 	{
 		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
-		parent::__construct($config);
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
+		parent::__construct($config, $this->factory);
 	}
 
 	/**
@@ -123,9 +125,7 @@ class MailinglistController extends FormController
 	 */
 	public function getModel($name = 'Mailinglist', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
-		$component = Factory::getApplication()->bootComponent('com_bwpostman');
-		$MVCFactory = $component->getMVCFactory();
-		$model = $MVCFactory->createModel($name, $prefix, $config);
+		$model = $this->factory->createModel($name, $prefix, $config);
 
 		return $model;
 	}

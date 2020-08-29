@@ -32,6 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use Exception;
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
@@ -59,7 +60,9 @@ class ArchiveController extends AdminController
 	 */
 	public function __construct($config = array())
 	{
-		parent::__construct($config);
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
+		parent::__construct($config, $this->factory);
 	}
 
 	/**
@@ -142,6 +145,24 @@ class ArchiveController extends AdminController
 	}
 
 	/**
+	 * Proxy for getModel.
+	 *
+	 * @param	string	$name   	The name of the model.
+	 * @param	string	$prefix 	The prefix for the PHP class name.
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @return	BaseDatabaseModel
+
+	 * @since	4.0.0
+	 */
+	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true))
+	{
+		$model = $this->factory->createModel($name, $prefix, $config);
+
+		return $model;
+	}
+
+	/**
 	 * Method to unarchive items
 	 * --> operates on the models which are assigned to the tabs (e.g. tab = newsletters --> model = newsletter)
 	 *
@@ -173,7 +194,7 @@ class ArchiveController extends AdminController
 		{
 			$this->setRedirect(
 				Route::_(
-					'index.php?option=com_bwpostman&view=archive&layout=' . $tab,
+					'index.php?option=com_bwpostman&view=Archive&layout=' . $tab,
 					false
 				)
 			);
@@ -187,7 +208,7 @@ class ArchiveController extends AdminController
 			// We are in the newsletters_tab
 			default:
 			case "newsletters":
-				$model = $this->getModel('newsletter');
+				$model = $this->getModel('Newsletter');
 
 				if(!$model->archive($cid, 0))
 				{
@@ -220,7 +241,7 @@ class ArchiveController extends AdminController
 
 			// We are in the subscribers_tab
 			case "subscribers":
-				$model = $this->getModel('subscriber');
+				$model = $this->getModel('Subscriber');
 
 				if(!$model->archive($cid, 0))
 				{
@@ -256,7 +277,7 @@ class ArchiveController extends AdminController
 				// If archive_nl = 1 the assigned newsletters shall be archived, too
 				$unarchive_nl = $jinput->get('unarchive_nl');
 
-				$model = $this->getModel('campaign');
+				$model = $this->getModel('Campaign');
 
 				if(!$model->archive($cid, 0, $unarchive_nl))
 				{
@@ -318,7 +339,7 @@ class ArchiveController extends AdminController
 
 			// We are in the mailinglists_tab
 			case "mailinglists":
-				$model = $this->getModel('mailinglist');
+				$model = $this->getModel('Mailinglist');
 
 				if(!$model->archive($cid, 0))
 				{
@@ -351,7 +372,7 @@ class ArchiveController extends AdminController
 
 			// We are in the templates_tab
 			case "templates":
-				$model = $this->getModel('template');
+				$model = $this->getModel('Template');
 
 				if(!$model->archive($cid, 0))
 				{
@@ -383,7 +404,7 @@ class ArchiveController extends AdminController
 				break;
 		}
 
-		$jinput->set('view', 'archive');
+		$jinput->set('view', 'Archive');
 
 		return parent::display();
 	}
@@ -421,7 +442,7 @@ class ArchiveController extends AdminController
 		if (!$this->allowDelete($view, $cid))
 		{
 			$this->setRedirect(
-				Route::_('index.php?option=com_bwpostman&view=archive&layout=' . $tab, false)
+				Route::_('index.php?option=com_bwpostman&view=Archive&layout=' . $tab, false)
 			);
 			return false;
 		}
@@ -433,7 +454,7 @@ class ArchiveController extends AdminController
 			// We are in the newsletters_tab
 			default:
 			case "newsletters":
-				$model = $this->getModel('newsletter');
+				$model = $this->getModel('Newsletter');
 
 				if(!$model->delete($cid))
 				{
@@ -462,7 +483,7 @@ class ArchiveController extends AdminController
 
 			// We are in the subscribers_tab
 			case "subscribers":
-				$model = $this->getModel('subscriber');
+				$model = $this->getModel('Subscriber');
 
 				if(!$model->delete($cid))
 				{
@@ -493,7 +514,7 @@ class ArchiveController extends AdminController
 			case "campaigns":
 				// If archive_nl = 1 the assigned newsletters shall be archived, too
 				$remove_nl = $jinput->get('remove_nl');
-				$model     = $this->getModel('campaign');
+				$model     = $this->getModel('Campaign');
 
 				if(!$model->delete($cid, $remove_nl))
 				{
@@ -546,7 +567,7 @@ class ArchiveController extends AdminController
 
 			// We are in the mailinglists_tab
 			case "mailinglists":
-				$model = $this->getModel('mailinglist');
+				$model = $this->getModel('Mailinglist');
 
 				if(!$model->delete($cid))
 				{
@@ -575,7 +596,7 @@ class ArchiveController extends AdminController
 
 			// We are in the templates_tab
 			case "templates":
-				$model = $this->getModel('template');
+				$model = $this->getModel('Template');
 
 				if(!$model->delete($cid))
 				{

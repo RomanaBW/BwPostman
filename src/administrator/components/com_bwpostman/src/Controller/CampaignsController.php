@@ -80,7 +80,9 @@ class CampaignsController extends AdminController
 	{
 		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
-		parent::__construct($config);
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
+		parent::__construct($config, $this->factory);
 
 		// Register Extra tasks
 		$this->registerTask('add', 'edit');
@@ -100,9 +102,7 @@ class CampaignsController extends AdminController
 	 */
 	public function getModel($name = 'Campaign', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
-		$component = Factory::getApplication()->bootComponent('com_bwpostman');
-		$MVCFactory = $component->getMVCFactory();
-		$model = $MVCFactory->createModel($name, $prefix, $config);
+		$model = $this->factory->createModel($name, $prefix, $config);
 
 		return $model;
 	}

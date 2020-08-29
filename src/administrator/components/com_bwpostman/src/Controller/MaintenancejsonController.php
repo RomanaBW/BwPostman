@@ -49,7 +49,7 @@ use RuntimeException;
  *
  * @since       1.0.1
  */
-class MaintenanceJsonController extends AdminController
+class MaintenancejsonController extends AdminController
 {
 	/**
 	 * Integer to hold ready state
@@ -79,9 +79,31 @@ class MaintenanceJsonController extends AdminController
 	protected $errorMessage = '';
 
 	/**
+	 * Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since	4.0.0
+	 *
+	 * @see		JController
+	 */
+	public function __construct($config = array())
+	{
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
+		parent::__construct($config, $this->factory);
+	}
+
+	/**
 	 * Method to call checkTables tables process via ajax
 	 *
 	 * @return 	void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.3.0
 	 */
@@ -163,6 +185,16 @@ class MaintenanceJsonController extends AdminController
 					$this->ready = "1";
 					$step = "6";
 					break;
+
+				case 'undefined':
+					// clear session variables
+					$session->clear('tcheck_needTa');
+					$session->clear('tcheck_inTaNa');
+					$this->ready = "1";
+					$step = "6";
+
+					$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
+					throw new BwException($error, 1010);
 			}
 
 			// return the contents of the output buffer

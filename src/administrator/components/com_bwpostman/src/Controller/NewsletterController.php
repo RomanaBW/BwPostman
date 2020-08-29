@@ -90,7 +90,9 @@ class NewsletterController extends FormController
 	 */
 	public function __construct($config = array())
 	{
-		parent::__construct($config);
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
+		parent::__construct($config, $this->factory);
 
 		$log_options  = array();
 		$this->logger = BwLogger::getInstance($log_options);
@@ -223,9 +225,7 @@ class NewsletterController extends FormController
 	 */
 	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
-		$component = Factory::getApplication()->bootComponent('com_bwpostman');
-		$MVCFactory = $component->getMVCFactory();
-		$model = $MVCFactory->createModel($name, $prefix, $config);
+		$model = $this->factory->createModel($name, $prefix, $config);
 
 		return $model;
 	}
@@ -248,7 +248,7 @@ class NewsletterController extends FormController
 	{
 		// Initialise variables.
 		$app     = Factory::getApplication();
-		$model   = $this->getModel('Newsletter', 'Administrator');
+		$model   = $this->getModel('Newsletter');
 
 		$table   = $model->getTable();
 		$cid     = $this->input->post->get('cid', array(), 'array');
@@ -896,7 +896,7 @@ class NewsletterController extends FormController
 				$app->setUserState('newsletter.id', null);
 				$app->setUserState('com_bwpostman.newsletters.publish_id', $recordId);
 				$app->setUserState('com_bwpostman.newsletters.mails_per_pageload', 	$this->input->get('mails_per_pageload'));
-				$link = Route::_('index.php?option=com_bwpostman&view=newsletter&task=newsletterjson.startsending&layout=nl_send', false);
+				$link = Route::_('index.php?option=com_bwpostman&view=newsletter&task=startsending&layout=nl_send', false);
 			}
 			else
 			{
@@ -1019,7 +1019,7 @@ class NewsletterController extends FormController
 
 		if ($res === false)
 		{
-			$link = Route::_('index.php?option=com_bwpostman&view=Newsletters&layout=' . $layout, false);
+			$link = Route::_('index.php?option=com_bwpostman&view=newsletters&layout=' . $layout, false);
 			$this->setRedirect($link, $msg, 'error');
 		}
 
@@ -1049,7 +1049,7 @@ class NewsletterController extends FormController
 				$msg = Text::_('COM_BWPOSTMAN_NL_ARCHIVED');
 			}
 
-			$link = Route::_('index.php?option=com_bwpostman&view=Newsletters', false);
+			$link = Route::_('index.php?option=com_bwpostman&view=newsletters', false);
 			$this->setRedirect($link, $msg);
 		}
 

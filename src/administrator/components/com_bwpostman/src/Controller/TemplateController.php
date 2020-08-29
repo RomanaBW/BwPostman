@@ -81,8 +81,9 @@ class TemplateController extends FormController
 	public function __construct($config = array())
 	{
 		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->factory     = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
-		parent::__construct($config);
+		parent::__construct($config, $this->factory);
 	}
 
 	/**
@@ -440,9 +441,7 @@ class TemplateController extends FormController
 	 */
 	public function getModel($name = 'Template', $prefix = 'Administrator', $config = array())
 	{
-		$component = Factory::getApplication()->bootComponent('com_bwpostman');
-		$MVCFactory = $component->getMVCFactory();
-		$model = $MVCFactory->createModel($name, $prefix, $config);
+		$model = $this->factory->createModel($name, $prefix, $config);
 
 		return $model;
 	}

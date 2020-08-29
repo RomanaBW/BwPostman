@@ -67,13 +67,17 @@ class MaintenanceController extends BaseController
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since	1.0.1
 	 *
 	 * @see		JController
 	 */
 	public function __construct($config = array())
 	{
-		parent::__construct($config);
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
+		parent::__construct($config, $this->factory);
 
 		// Register Extra tasks
 		$this->registerTask('checkTables', 'checkTables');
@@ -95,9 +99,7 @@ class MaintenanceController extends BaseController
 	 */
 	public function getModel($name = 'Maintenance', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
-		$component = Factory::getApplication()->bootComponent('com_bwpostman');
-		$MVCFactory = $component->getMVCFactory();
-		$model = $MVCFactory->createModel($name, $prefix, $config);
+		$model = $this->factory->createModel($name, $prefix, $config);
 
 		return $model;
 	}

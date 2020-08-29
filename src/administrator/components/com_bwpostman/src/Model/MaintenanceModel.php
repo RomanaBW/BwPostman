@@ -29,7 +29,11 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use DOMDocument;
+use Exception;
+use Joomla\CMS\Access\Rules;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Component\Users\Administrator\Model\GroupModel;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\Folder;
@@ -40,7 +44,9 @@ use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMaintenanceHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
-use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
+use RuntimeException;
+use SimpleXMLElement;
+use stdClass;
 
 /**
  * BwPostman maintenance page model
@@ -148,6 +154,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * Constructor.
 	 *
 	 * @throws Exception
+	 *
 	 * @since   2.4.0
 	 *
 	 */
@@ -3587,7 +3594,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		try
 		{
-			$rules = new JAccessRules($sectionRules);
+			$rules = new Rules($sectionRules);
 
 			$query = $this->db->getQuery(true);
 
@@ -3883,7 +3890,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				else
 				{
 					// insert new user group
-					$userModel = new Joomla\Component\Users\Administrator\Model\GroupModel();
+					$userModel = new GroupModel();
 
 					$data['id']        = 0;
 					$data['title']     = $item['title'];
@@ -4429,31 +4436,31 @@ class MaintenanceModel extends BaseDatabaseModel
 			case 'Campaign':
 				$asset['name']  = 'com_bwpostman.campaign';
 				$asset['title'] = 'BwPostman Campaigns';
-				$asset['rules'] = new JAccessRules($rules);
+				$asset['rules'] = new Rules($rules);
 				break;
 
 			case 'Mailinglist':
 				$asset['name']  = 'com_bwpostman.mailinglist';
 				$asset['title'] = 'BwPostman Mailinglists';
-				$asset['rules'] = new JAccessRules($rules);
+				$asset['rules'] = new Rules($rules);
 				break;
 
 			case 'Newsletter':
 				$asset['name']  = 'com_bwpostman.newsletter';
 				$asset['title'] = 'BwPostman Newsletters';
-				$asset['rules'] = new JAccessRules($rules);
+				$asset['rules'] = new Rules($rules);
 				break;
 
 			case 'Subscriber':
 				$asset['name']  = 'com_bwpostman.subscriber';
 				$asset['title'] = 'BwPostman Subscribers';
-				$asset['rules'] = new JAccessRules($rules);
+				$asset['rules'] = new Rules($rules);
 				break;
 
 			case 'Template':
 				$asset['name']  = 'com_bwpostman.template';
 				$asset['title'] = 'BwPostman Templates';
-				$asset['rules'] = new JAccessRules($rules);
+				$asset['rules'] = new Rules($rules);
 				break;
 
 			case 'component':
@@ -4706,7 +4713,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			$rulesJson = $componentAsset['rules'];
 		}
 
-		$rules = new JAccessRules($rulesJson);
+		$rules = new Rules($rulesJson);
 
 		if (!$this->updateComponentRules($rules))
 		{
@@ -4768,7 +4775,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to update component rules
 	 *
-	 * @param JAccessRules $rules
+	 * @param Rules $rules
 	 *
 	 * @return boolean
 	 *

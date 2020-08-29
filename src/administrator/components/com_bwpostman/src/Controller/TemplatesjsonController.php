@@ -45,7 +45,7 @@ use RuntimeException;
  *
  * @since       1.1.0
  */
-class TemplatesJsonController extends AdminController
+class TemplatesjsonController extends AdminController
 {
 	/**
 	 * Method to call the layout for the template upload and install process

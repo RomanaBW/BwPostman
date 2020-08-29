@@ -47,7 +47,7 @@ use RuntimeException;
  *
  * @since       2.4.0
  */
-class NewsletterJsonController extends BaseController
+class NewsletterjsonController extends BaseController
 {
 
 	/**

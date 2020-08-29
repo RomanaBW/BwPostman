@@ -282,7 +282,7 @@ class HtmlView extends BaseHtmlView
 		{
 			$options['text'] = "COM_BWPOSTMAN_BACK";
 			$options['name'] = 'back';
-			$options['url'] = "index.php?option=com_bwpostman&view=Newsletters";
+			$options['url'] = "index.php?option=com_bwpostman&view=newsletters";
 			$options['icon'] = "icon-arrow-left";
 
 			$button = new LinkButton('back');
@@ -458,7 +458,17 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// flags for template ids before editing
-		$this->template_id_old      = $this->item->template_id_old;
-		$this->text_template_id_old = $this->item->text_template_id_old;
+		$this->template_id_old      = 0;
+		$this->text_template_id_old = 0;
+
+		if (property_exists($this->item, 'template_id_old'))
+		{
+			$this->template_id_old      = $this->item->template_id_old;
+		}
+
+		if (property_exists($this->item, 'text_template_id_old'))
+		{
+			$this->text_template_id_old = $this->item->text_template_id_old;
+		}
 	}
 }

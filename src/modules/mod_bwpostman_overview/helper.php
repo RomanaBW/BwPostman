@@ -73,7 +73,7 @@ class ModBwPostmanOverviewHelper
 
 			$lists[$i]		= new stdClass;
 
-			$lists[$i]->link	= 'index.php?option=com_bwpostman&view=Newsletters&mid=' . $module_id . '&year=' . $sent_year
+			$lists[$i]->link	= 'index.php?option=com_bwpostman&view=newsletters&mid=' . $module_id . '&year=' . $sent_year
 				. '&month=' . $sent_month . $itemid;
 			$lists[$i]->text	= Text::sprintf('MOD_BWPOSTMAN_OVERVIEW_DATE', $month_name_cal, $sent_year_cal) . ' (' . $row->count_month . ')';
 

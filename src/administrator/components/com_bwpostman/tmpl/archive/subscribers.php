@@ -45,7 +45,7 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
 //Set context and layout state for filters
-$this->context	= 'archive.subscribers';
+$this->context	= 'Archive.subscribers';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'subscribers');
 
 //

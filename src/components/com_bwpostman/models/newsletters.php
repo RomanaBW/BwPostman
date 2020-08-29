@@ -649,7 +649,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 			$query->select($db->quoteName('id'));
 			$query->from($db->quoteName('#__menu'));
-			$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=Newsletters'));
+			$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=newsletters'));
 			$query->where($db->quoteName('client_id') . ' = ' . (int) 0);
 			$db->setQuery((string) $query);
 

@@ -85,7 +85,7 @@ class BwPostmanHelper
 		{
 			JHtmlSidebar::addEntry(
 				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS'),
-				'index.php?option=com_bwpostman&view=Newsletters',
+				'index.php?option=com_bwpostman&view=newsletters',
 				$vName == 'newsletters'
 			);
 		}
@@ -373,7 +373,7 @@ class BwPostmanHelper
 	{
 		$permissions	= array();
 
-		if ($view !== 'archive' && $view !== 'maintenance')
+		if (strtolower($view) !== 'archive' && strtolower($view) !== 'maintenance')
 		{
 			$permissions['create']     = self::authorise('bwpm.' . $view . '.create', 'com_bwpostman.' . $view, 0);
 			$permissions['edit']       = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view, 0);
@@ -382,19 +382,19 @@ class BwPostmanHelper
 			$permissions['archive']    = self::authorise('bwpm.' . $view . '.archive', 'com_bwpostman.' . $view, 0);
 		}
 
-		if ($view === 'newsletter')
+		if (strtolower($view) === 'newsletter')
 		{
 			$permissions['send']  = self::authorise('bwpm.' . $view . '.send', 'com_bwpostman.' . $view, 0);
 		}
 
 		$permissions['restore']   = self::authorise('bwpm.' . $view . '.restore', 'com_bwpostman.' . $view, 0);
 
-		if ($view !== 'maintenance')
+		if (strtolower($view) !== 'maintenance')
 		{
 			$permissions['delete'] = self::authorise('bwpm.' . $view . '.delete', 'com_bwpostman.' . $view, 0);
 		}
 
-		if ($view === 'maintenance')
+		if (strtolower($view) === 'maintenance')
 		{
 			$permissions['check'] = self::authorise('bwpm.' . $view . '.check', 'com_bwpostman.' . $view, 0);
 			$permissions['save']  = self::authorise('bwpm.' . $view . '.save', 'com_bwpostman.' . $view, 0);

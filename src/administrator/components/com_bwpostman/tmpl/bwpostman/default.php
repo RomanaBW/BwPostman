@@ -53,7 +53,7 @@ if ($this->queueEntries) {
 
 				if ($this->permissions['view']['newsletter'])
 				{
-					$link = 'index.php?option=' . $option . '&view=Newsletters';
+					$link = 'index.php?option=' . $option . '&view=newsletters';
 					BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-newsletters.png',
 						Text::_("COM_BWPOSTMAN_NLS"), 0, 0);
 
@@ -206,7 +206,7 @@ if ($this->queueEntries) {
 										<td width="200"><?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT_NUM') . ': '; ?></td>
 										<td width="50">
 											<b>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Newsletters&tab=unsent'); ?>">
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&tab=unsent'); ?>">
 													<?php echo $this->general['nl_unsent']; ?>
 												</a>
 											</b>
@@ -216,7 +216,7 @@ if ($this->queueEntries) {
 										<td><?php echo Text::_('COM_BWPOSTMAN_NL_SENT_NUM') . ': '; ?></td>
 										<td>
 											<b>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Newsletters&tab=sent'); ?>">
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&tab=sent'); ?>">
 													<?php echo $this->general['nl_sent']; ?>
 												</a>
 											</b>
@@ -234,7 +234,7 @@ if ($this->queueEntries) {
 										<td><?php echo Text::_('COM_BWPOSTMAN_SUB_NUM') . ': '; ?></td>
 										<td>
 											<b>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Subscribers'); ?>">
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=subscribers'); ?>">
 													<?php echo $this->general['sub']; ?>
 												</a>
 											</b>
@@ -244,7 +244,7 @@ if ($this->queueEntries) {
 										<td><?php echo Text::_('COM_BWPOSTMAN_TEST_NUM') . ': '; ?></td>
 										<td>
 											<b>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Subscribers&tab=testrecipients'); ?>">
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=subscribers&tab=testrecipients'); ?>">
 													<?php echo $this->general['test']; ?>
 												</a>
 											</b>
@@ -262,7 +262,7 @@ if ($this->queueEntries) {
 										<td><?php echo Text::_('COM_BWPOSTMAN_CAM_NUM') . ': '; ?></td>
 										<td>
 											<b>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Campaigns'); ?>">
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=campaigns'); ?>">
 													<?php echo $this->general['cam']; ?>
 												</a>
 											</b>
@@ -280,7 +280,7 @@ if ($this->queueEntries) {
 										<td><?php echo Text::_('COM_BWPOSTMAN_ML_PUBLIC_NUM') . ': '; ?></td>
 										<td>
 											<b>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Mailinglists'); ?>">
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=mailinglists'); ?>">
 													<?php echo $this->general['ml_published']; ?>
 												</a>
 											</b>
@@ -290,7 +290,7 @@ if ($this->queueEntries) {
 										<td><?php echo Text::_('COM_BWPOSTMAN_ML_INTERNAL_NUM') . ': '; ?></td>
 										<td>
 											<b>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Mailinglists'); ?>">
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=mailinglists'); ?>">
 													<?php echo $this->general['ml_unpublished']; ?>
 												</a>
 											</b>
@@ -307,7 +307,7 @@ if ($this->queueEntries) {
 											<td><?php echo Text::_('COM_BWPOSTMAN_TPL_HTML_NUM') . ': '; ?></td>
 											<td>
 												<b>
-													<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Templates'); ?>">
+													<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=templates'); ?>">
 														<?php echo $this->general['html_templates']; ?>
 													</a>
 												</b>
@@ -317,7 +317,7 @@ if ($this->queueEntries) {
 											<td><?php echo Text::_('COM_BWPOSTMAN_TPL_TEXT_NUM') . ': '; ?></td>
 											<td>
 												<b>
-													<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Templates'); ?>">
+													<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=templates'); ?>">
 														<?php echo $this->general['text_templates']; ?>
 													</a>
 												</b>
@@ -363,7 +363,7 @@ if ($this->queueEntries) {
 										<td><?php echo Text::_('COM_BWPOSTMAN_ARC_SUB_NUM') . ': '; ?></td>
 										<td>
 											<b>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Archive&layout=subscribers'); ?>">
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=subscribers'); ?>">
 													<?php echo $this->archive['arc_sub']; ?>
 												</a>
 											</b>
@@ -381,7 +381,7 @@ if ($this->queueEntries) {
 										<td><?php echo Text::_('COM_BWPOSTMAN_ARC_CAM_NUM') . ': '; ?></td>
 										<td>
 											<b>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Archive&layout=campaigns'); ?>">
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=campaigns'); ?>">
 													<?php echo $this->archive['arc_cam']; ?>
 												</a>
 											</b>
@@ -399,7 +399,7 @@ if ($this->queueEntries) {
 										<td><?php echo Text::_('COM_BWPOSTMAN_ARC_ML_NUM') . ': '; ?></td>
 										<td>
 											<b>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Archive&layout=mailinglists'); ?>">
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=mailinglists'); ?>">
 													<?php echo $this->archive['arc_ml']; ?>
 												</a>
 											</b>
@@ -416,7 +416,7 @@ if ($this->queueEntries) {
 										<td><?php echo Text::_('COM_BWPOSTMAN_ARC_TPL_HTML_NUM') . ': '; ?></td>
 										<td>
 											<b>
-												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Archive&layout=templates'); ?>">
+												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=archive&layout=templates'); ?>">
 													<?php echo $this->archive['arc_html_templates']; ?>
 												</a>
 											</b>

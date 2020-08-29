@@ -56,7 +56,7 @@ class BwPostmanControllerNewsletters extends JControllerLegacy
 		$Itemid = Factory::getApplication()->input->get('Itemid', null, 'STRING');
 		Factory::getApplication()->setUserState('com_bwpostman.newsletters.itemid', $Itemid);
 
-		Factory::getApplication()->input->set('view', 'Newsletters');
+		Factory::getApplication()->input->set('view', 'newsletters');
 		parent::display();
 	}
 }

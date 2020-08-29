@@ -46,7 +46,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $nullDate   = Factory::getDbo()->getNullDate();
 
 //Set context and layout state for filters
-$this->context	= 'archive.newsletters';
+$this->context	= 'Archive.newsletters';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsletters');
 
 //

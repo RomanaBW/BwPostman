@@ -69,8 +69,8 @@ class JFormFieldMenuItems extends JFormFieldList
 		$query->select($db->quoteName('title') . ' AS text');
 		$query->from($db->quoteName('#__menu'));
 		$query->where(
-			$db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=Archive')
-			. ' OR ' . $db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=Newsletters')
+			$db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=archive')
+			. ' OR ' . $db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=newsletters')
 		);
 		$query->where($db->quoteName('client_id') . ' = ' . 0);
 		$query->order($db->quoteName('title') . ' ASC');

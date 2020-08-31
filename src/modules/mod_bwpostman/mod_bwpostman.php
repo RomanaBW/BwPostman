@@ -46,7 +46,7 @@ $document	= Factory::getDocument();
 $module     = ModuleHelper::getModule('mod_bwpostman');
 
 // Require component admin helper class
-if (!is_file(JPATH_ADMINISTRATOR . '/components/com_bwpostman/bwpostman.php'))
+if (!is_file(JPATH_ADMINISTRATOR . '/components/com_bwpostman/src/Extension/BwPostmanComponent.php'))
 {
 	$app->enqueueMessage(Text::_('MOD_BWPOSTMANERROR_COMPONENT_NOT_INSTALLED'), 'error');
 	return false;

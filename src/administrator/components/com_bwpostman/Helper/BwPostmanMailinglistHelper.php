@@ -36,7 +36,7 @@ use Joomla\Utilities\ArrayHelper;
  *
  * @since 2.2.0
  */
-abstract class BwPostmanMailinglistHelper {
+class BwPostmanMailinglistHelper {
 	/**
 	 * Method to get the mailinglist ids for a single campaign
 	 *

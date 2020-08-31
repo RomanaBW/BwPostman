@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+	<layout title="COM_BWPOSTMAN_MENU_NEWSLETTERSALL">
+		<message>
+			<![CDATA[COM_BWPOSTMAN_MENU_NEWSLETTERSALL_NOTE]]>
+		</message>
+	</layout>
+	<fields name="params">
+		<!-- Basic options. -->
+		<fieldset name="basic" label="COM_BWPOSTMAN_NEWSLETTER_BASIC_OPTIONS">
+			<field name="show_type"
+				type="list"
+				default="not_arc_down"
+				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_TYPE_DESC"
+				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_TYPE_LABEL"
+			>
+				<option value="all">COM_BWPOSTMAN_ALL</option>
+				<option value="all_not_arc">COM_BWPOSTMAN_OVERVIEW_NEWSLETTER_ARC_SHOW_TYPE_ALL_NOT_ARC</option>
+				<option value="not_arc_down">COM_BWPOSTMAN_NEWSLETTER_SHOW_TYPE_NOT_ARC_DOWN</option>
+				<option value="not_arc_but_down">COM_BWPOSTMAN_NEWSLETTER_SHOW_TYPE_NOT_ARC_BUT_DOWN</option>
+				<option value="arc">COM_BWPOSTMAN_NEWSLETTER_SHOW_TYPE_ARC</option>
+				<option value="down">COM_BWPOSTMAN_NEWSLETTER_SHOW_TYPE_DOWN</option>
+				<option value="arc_and_down">COM_BWPOSTMAN_NEWSLETTER_SHOW_TYPE_ARC_AND_DOWN</option>
+				<option value="arc_or_down">COM_BWPOSTMAN_NEWSLETTER_SHOW_TYPE_ARC_OR_DOWN</option>
+			</field>
+
+			<field
+				name="filter_field"
+				type="list"
+				class="chzn-color"
+				default=""
+				description="COM_BWPOSTMAN_LISTS_SETTINGS_SEARCH_FIELD_DESC"
+				label="COM_BWPOSTMAN_LISTS_SETTINGS_SEARCH_FIELD_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="1">JSHOW</option>
+				<option value="hide">JHIDE</option>
+			</field>
+
+			<field name="date_filter_enable"
+				type="list"
+				class="chzn-color"
+				default=""
+				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_DATE_FILTER_DESC"
+				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_DATE_FILTER_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="1">JSHOW</option>
+				<option value="hide">JHIDE</option>
+			</field>
+
+			<field name="ml_filter_enable"
+				type="list"
+				class="chzn-color"
+				default=""
+				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_ML_FILTER_DESC"
+				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_ML_FILTER_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="1">JSHOW</option>
+				<option value="hide">JHIDE</option>
+			</field>
+
+			<field name="cam_filter_enable"
+				type="list"
+				class="chzn-color"
+				default=""
+				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_CAM_FILTER_DESC"
+				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_CAM_FILTER_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="1">JSHOW</option>
+				<option value="hide">JHIDE</option>
+			</field>
+
+			<field name="group_filter_enable"
+				type="list"
+				class="chzn-color"
+				default=""
+				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_GROUP_FILTER_DESC"
+				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_GROUP_FILTER_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="1">JSHOW</option>
+				<option value="hide">JHIDE</option>
+			</field>
+
+			<field
+				name="attachment_enable"
+				type="list"
+				class="chzn-color"
+				default=""
+				description="COM_BWPOSTMAN_NEWSLETTER_ATTACHMENT_ENABLE_DESC"
+				label="COM_BWPOSTMAN_NEWSLETTER_ATTACHMENT_ENABLE_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="1">JSHOW</option>
+				<option value="hide">JHIDE</option>
+			</field>
+
+			<field
+				name="access-check"
+				type="list"
+				class="chzn-color"
+				default=""
+				description="COM_BWPOSTMAN_LISTS_SETTINGS_ACCESS_CHECK_FIELD_DESC"
+				label="COM_BWPOSTMAN_LISTS_SETTINGS_ACCESS_CHECK_FIELD_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="1">JYES</option>
+				<option value="no">JNO</option>
+			</field>
+
+			<field name="display_num" type="list"
+				default="10"
+				description="COM_BWPOSTMAN_NEWSLETTER_NUMBER_ITEMS_LIST_DESC"
+				label="COM_BWPOSTMAN_NEWSLETTER_NUMBER_ITEMS_LIST_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="5">J5</option>
+				<option value="10">J10</option>
+				<option value="15">J15</option>
+				<option value="20">J20</option>
+				<option value="25">J25</option>
+				<option value="30">J30</option>
+				<option value="50">J50</option>
+				<option value="100">J100</option>
+				<option value="0">JALL</option>
+			</field>
+		</fieldset>
+
+		<fieldset name="COM_BWPOSTMAN_ML_AVAILABLE" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field">
+			<field name="ml_selected_all"
+				type="radio"
+				default=""
+				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_ML_FILTER_DESC"
+				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_ML_FILTER_LABEL"
+				class="radio btn-group btn-group-yesno"
+			>
+				<option value="1">COM_BWPOSTMAN_ALL</option>
+				<option value="">COM_BWPOSTMAN_ONLY_SELECTED</option>
+			</field>
+
+			<field
+				name="ml_available"
+				type="Comml"
+				label="COM_BWPOSTMAN_MENU_ML_AVAILABLE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_MENU_ML_AVAILABLE_DESC"
+				multiple="true"
+				size="5"
+				default="0"
+				class="inputbox"
+				addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field"
+			/>
+
+			<field name="groups_selected_all"
+				type="radio"
+				default=""
+				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_DESC"
+				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_LABEL"
+				class="radio btn-group btn-group-yesno"
+			>
+				<option value="1">COM_BWPOSTMAN_ALL</option>
+				<option value="">COM_BWPOSTMAN_ONLY_SELECTED</option>
+			</field>
+
+			<field
+				name="groups_available"
+				type="usergroups"
+				label="COM_BWPOSTMAN_MENU_GROUPS_AVAILABLE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_MENU_GROUPS_AVAILABLE_DESC"
+				multiple="true"
+				size="1"
+				default="0"
+				class="inputbox"
+				addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field"
+			/>
+		</fieldset>
+
+		<fieldset name="COM_BWPOSTMAN_CAM_AVAILABLE" addfieldpath="/components/com_bwpostman/models/fields" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field">
+			<field name="cam_selected_all"
+				type="radio"
+				default=""
+				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_CAM_FILTER_DESC"
+				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_CAM_FILTER_LABEL"
+				class="radio btn-group btn-group-yesno"
+			>
+				<option value="1">COM_BWPOSTMAN_ALL</option>
+				<option value="">COM_BWPOSTMAN_ONLY_SELECTED</option>
+			</field>
+
+			<field
+				name="cam_available"
+				type="Comcam"
+				label="COM_BWPOSTMAN_MENU_CAM_AVAILABLE_LABEL"
+				labelclass="control-label"
+				description="COM_BWPOSTMAN_MENU_CAM_AVAILABLE_DESC"
+				multiple="true"
+				size="5"
+				default=""
+				class="inputbox mailinglists"
+				addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field"
+			/>
+		</fieldset>
+	</fields>
+</metadata>

@@ -7,17 +7,19 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
+namespace BoldtWebservice\Component\BwPostman\Site\Controller;
 
 \defined('_JEXEC') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
+use http\Url;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 use JResponseJson;
 
 /**
@@ -36,6 +38,25 @@ class DisplayController extends BaseController
 	protected $default_view = 'bwpostman';
 
 	/**
+	 * Constructor.
+	 *
+	 * @param 	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @throws Exception
+	 *
+	 * @since	1.0.1
+
+	 * @see		JController
+	 */
+	public function __construct($config = array())
+	{
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+		$config['view_path'] = JPATH_COMPONENT . '/src/View';
+
+		parent::__construct($config, $this->factory);
+	}
+
+	/**
 	 * Method to display a view.
 	 *
 	 * @param   boolean  $cachable   If true, the view output will be cached
@@ -50,16 +71,11 @@ class DisplayController extends BaseController
 	public function display($cachable = false, $urlparams = array())
 	{
 		// Get the user object
-		$app  = Factory::getApplication();
-		$user = $app->getIdentity();
+		$app   = Factory::getApplication();
+		$input = $app->input;
+		$view  = $input->get('view', 'Register');
 
-		// Access check.
-		if ((!$user->authorise('core.manage', 'com_bwpostman')))
-		{
-			$app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'warning');
-
-			return false;
-		}
+		$input->set('view', $view);
 
 		// Preload user permissions
 		BwPostmanHelper::setPermissionsState();

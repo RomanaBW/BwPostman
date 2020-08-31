@@ -28,7 +28,9 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 
 defined ('_JEXEC') or die ();
 
+use Exception;
 use Joomla\CMS\Factory;
+use RuntimeException;
 
 /**
  * Class BwPostmanCampaignHelper
@@ -42,7 +44,7 @@ abstract class BwPostmanCampaignHelper
 	 *
 	 * @access    public
 	 *
-	 * @param int $cam_id Campaign ID
+	 * @param int|null $cam_id Campaign ID
 	 *
 	 * @return    object Campaign
 	 *

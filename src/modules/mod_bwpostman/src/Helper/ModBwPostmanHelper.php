@@ -24,12 +24,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Module\BwPostman\Site\Helper;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 /**
- * Class modBwPostmanHelper
+ * Class ModBwPostmanHelper
  *
  * @since       0.9.1
  */
@@ -46,11 +48,12 @@ class ModBwPostmanHelper
 	 */
 	public static function getSubscriberID()
 	{
-		$user 	= Factory::getUser();
+		$app  = Factory::getApplication();
+		$user = $app->getIdentity();
 
 		if ($user->get('guest'))
 		{ // User is guest
-			$session = Factory::getSession();
+			$session = $app->getSession();
 			$session_subscriberid = $session->get('session_subscriberid');
 
 			if(isset($session_subscriberid) && is_array($session_subscriberid))
@@ -84,7 +87,7 @@ class ModBwPostmanHelper
 	 */
 	public static function getMailinglists($usertype, $mod_mls)
 	{
-		$_db = Factory::getDbo();
+		$_db = Factory::getContainer()->get('DatabaseDriver');
 
 		// if mailinglists are checked in the module parameters
 		if (isset($mod_mls) && count($mod_mls) && $mod_mls[0] !== "")
@@ -156,7 +159,7 @@ class ModBwPostmanHelper
 	 */
 	public static function getSubscriberIdFromUserID($userid)
 	{
-		$_db	= Factory::getDbo();
+		$_db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
@@ -183,7 +186,7 @@ class ModBwPostmanHelper
 	 */
 	public static function getUserData($userid)
 	{
-		$_db	= Factory::getDbo();
+		$_db	= Factory::getContainer()->get('DatabaseDriver');
 		$id		= 0;
 		$query	= $_db->getQuery(true);
 
@@ -213,7 +216,7 @@ class ModBwPostmanHelper
 	 */
 	public static function getUsertype($userid)
 	{
-		$_db		= Factory::getDbo();
+		$_db		= Factory::getContainer()->get('DatabaseDriver');
 		$usertype	= '';
 
 		if ($userid)

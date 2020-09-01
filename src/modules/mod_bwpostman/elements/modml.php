@@ -159,7 +159,7 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 		$app	= Factory::getApplication();
 
 		// prepare query
-		$_db		= Factory::getDbo();
+		$_db		= Factory::getContainer()->get('DatabaseDriver');
 		$query		= $_db->getQuery(true);
 
 		$query->select("a.id AS value, a.title AS text, a.description as description, a.access AS access, a.published AS published");

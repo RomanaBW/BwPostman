@@ -29,20 +29,23 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\User\UserHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
+use BoldtWebservice\Module\BwPostman\Site\Helper\ModBwPostmanHelper;
 
-require_once(dirname(__FILE__) . '/helper.php');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', false, false, 'psr4');
+JLoader::registerNamespace('BoldtWebservice\\Module\\BwPostman\\Site\\Helper', JPATH_SITE . '/modules/mod_bwpostman/src/Helper', false, false, 'psr4');
+
+//require_once(dirname(__FILE__) . '/helper.php');
 
 jimport('joomla.application.component.helper');
 
 $app		= Factory::getApplication();
-$document	= Factory::getDocument();
+$document	= $app->getDocument();
 $module     = ModuleHelper::getModule('mod_bwpostman');
 
 // Require component admin helper class
@@ -62,11 +65,11 @@ if (!ComponentHelper::isEnabled('com_bwpostman'))
 }
 else
 {
-	$user		= Factory::getUser();
+	$user		= $app->getIdentity();
 	$userid		= $user->get('id');
 	$usertype	= '';
 
-	$subscriberid	= modBwPostmanHelper::getSubscriberID();
+	$subscriberid	= ModBwPostmanHelper::getSubscriberID();
 	$captcha		= BwPostmanHelper::getCaptcha(1);
 
 	// use module or component parameters

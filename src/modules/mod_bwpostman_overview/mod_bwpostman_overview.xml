@@ -53,7 +53,7 @@
 				/>
 
 				<field name="menu_item"
-					type="MenuItems"
+					type="Menuitems"
 					default=""
 					description="MOD_BWPOSTMAN_OVERVIEW_MENU_ITEMS_SELECT_DESC"
 					label="MOD_BWPOSTMAN_OVERVIEW_MENU_ITEMS_SELECT_LABEL"
@@ -68,7 +68,7 @@
 					description="MOD_BWPOSTMAN_LISTS_SETTINGS_ACCESS_CHECK_FIELD_DESC"
 					label="MOD_BWPOSTMAN_LISTS_SETTINGS_ACCESS_CHECK_FIELD_LABEL"
 				>
-					<option value="1">JYES</option>
+					<option value="yes">JYES</option>
 					<option value="no">JNO</option>
 				</field>
 
@@ -89,7 +89,7 @@
 				</field>
 			</fieldset>
 
-			<fieldset name="MOD_BWPOSTMAN_OVERVIEW_ML_AVAILABLE" addfieldpath="/components/com_bwpostman/models/fields" id="newsletterselect-group">
+			<fieldset name="MOD_BWPOSTMAN_OVERVIEW_ML_AVAILABLE" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field" id="newsletterselect-group">
 				<field name="ml_selected_all"
 					type="radio"
 					default=""
@@ -97,13 +97,13 @@
 					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_ML_FILTER_LABEL"
 					class="radio btn-group btn-group-yesno"
 				>
-					<option value="1">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
-					<option value="">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
+					<option value="yes">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
+					<option value="no">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
 				</field>
 
 				<field
 					name="ml_available"
-					type="comml"
+					type="Comml"
 					label="MOD_BWPOSTMAN_OVERVIEW_ML_AVAILABLE_LABEL"
 					labelclass="control-label"
 					description="MOD_BWPOSTMAN_OVERVIEW_ML_AVAILABLE_DESC"
@@ -120,8 +120,8 @@
 					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_LABEL"
 					class="radio btn-group btn-group-yesno"
 				>
-					<option value="1">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
-					<option value="">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
+					<option value="yes">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
+					<option value="no">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
 				</field>
 
 				<field
@@ -137,7 +137,7 @@
 				/>
 			</fieldset>
 
-			<fieldset name="MOD_BWPOSTMAN_OVERVIEW_CAM_AVAILABLE" addfieldpath="/components/com_bwpostman/models/fields" id="newsletterselect-group">
+			<fieldset name="MOD_BWPOSTMAN_OVERVIEW_CAM_AVAILABLE" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field" id="newsletterselect-group">
 				<field name="cam_selected_all"
 					type="radio"
 					default="no"
@@ -145,13 +145,13 @@
 					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_CAM_FILTER_LABEL"
 					class="radio btn-group btn-group-yesno"
 				>
-					<option value="1">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
+					<option value="yes">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
 					<option value="no">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
 				</field>
 
 				<field
 					name="cam_available"
-					type="comcam"
+					type="Comcam"
 					label="MOD_BWPOSTMAN_OVERVIEW_CAM_AVAILABLE_LABEL"
 					labelclass="control-label"
 					description="MOD_BWPOSTMAN_OVERVIEW_CAM_AVAILABLE_DESC"

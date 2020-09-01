@@ -29,12 +29,13 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
+use BoldtWebservice\Module\BwPostmanOverview\Site\Helper\ModBwPostmanOverviewHelper;
 
-// Include the syndicate functions only once
-require_once __DIR__ . '/helper.php';
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', false, false, 'psr4');
+JLoader::registerNamespace('BoldtWebservice\\Module\\BwPostmanOverview\\Site\\Helper', JPATH_SITE . '/modules/mod_bwpostman_overview/src/Helper', false, false, 'psr4');
 
 $app		= Factory::getApplication();
-$document	= Factory::getDocument();
+$document	= $app->getDocument();
 
 // Get document object, set document title and add css
 $templateName	= $app->getTemplate();
@@ -46,6 +47,6 @@ if (file_exists(JPATH_BASE . $css_filename)) {
 }
 
 $moduleclass_sfx	= htmlspecialchars($params->get('moduleclass_sfx'));
-$list				= modBwPostmanOverviewHelper::getList($params, $module->id);
+$list				= ModBwPostmanOverviewHelper::getList($params, $module->id);
 
 require ModuleHelper::getLayoutPath('mod_bwpostman_overview', $params->get('layout', 'default'));

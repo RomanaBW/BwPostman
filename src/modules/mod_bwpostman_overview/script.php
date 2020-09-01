@@ -66,6 +66,8 @@ class Mod_BwPostman_OverviewInstallerScript
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since       1.2.0
 	 */
 	public function install()
@@ -92,6 +94,8 @@ class Mod_BwPostman_OverviewInstallerScript
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since       1.2.0
 	 */
 	public function update()
@@ -102,16 +106,15 @@ class Mod_BwPostman_OverviewInstallerScript
 	/**
 	 * Method to run before an install/update/uninstall method
 	 *
-	 * @param string                                    $type       is the type of change (install, update or discover_install)
-	 * @param InstallerAdapter     $parent is the class calling this method
+	 * @param string           $type   is the type of change (install, update or discover_install)
+	 * @param InstallerAdapter $parent is the class calling this method
 	 *
 	 * @return boolean            false if error occurs
 	 *
 	 * @throws Exception
-	 *
 	 * @since       1.2.0
 	 */
-	public function preflight($type, InstallerAdapter $parent)
+	public function preflight(string $type, InstallerAdapter $parent)
 	{
 		$app 		= Factory::getApplication();
 
@@ -157,15 +160,15 @@ class Mod_BwPostman_OverviewInstallerScript
 	/**
 	 * get a variable from the manifest file (actually, from the manifest cache).
 	 *
-	 * @param   string      $name   name of the manifest to get
+	 * @param string $name name of the manifest to get
 	 *
 	 * @return  object      $manifest the manifest for this module
 	 *
 	 * @since       1.2.0
 	 */
-	private function getManifestVar($name)
+	private function getManifestVar(string $name)
 	{
-		$db		= Factory::getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));
@@ -180,29 +183,31 @@ class Mod_BwPostman_OverviewInstallerScript
 	/**
 	 * Method to run after an install/update/uninstall method
 	 *
-	 * @param string  $type       is the type of change (install, update or discover_install)
-	 * @param object  $parent     is the class calling this method
+	 * @param string $type   is the type of change (install, update or discover_install)
+	 * @param object $parent is the class calling this method
 	 *
 	 * @return void
 	 *
 	 * @since       1.2.0
 	 */
-	public function postflight($type, $parent)
+	public function postflight(string $type, object $parent)
 	{
 	}
 
 	/**
 	 * shows the HTML after installation/update
 	 *
-	 * @param boolean    $update     true if update
+	 * @param boolean $update true if update
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since       1.2.0
 	 */
-	public function showFinished($update)
+	public function showFinished(bool $update)
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
 		$lang->load('mod_bwpostman_overview.sys', JPATH_SITE, 'en_GB', true);
 		$lang->load('mod_bwpostman_overview', JPATH_SITE, 'en_GB', true);
@@ -388,7 +393,7 @@ class Mod_BwPostman_OverviewInstallerScript
 		{ ?>
 			<div class="cpanel">
 				<div class="icon" >
-					<a href="<?php echo Route::_('index.php?option=com_modules&amp;filter_search=bw&amp;token=' . Session::getToken()); ?>">
+					<a href="<?php echo Route::_('index.php?option=com_modules&amp;filter_search=bw&amp;token=' . (new Session)->getToken()); ?>">
 			<img alt="<?php echo Text::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_GO_MODULES'); ?>"
 					src="<?php echo Route::_($asset_path . '/images/icon-48-bwpostman.png'); ?>">
 						<span><?php echo Text::_('MOD_BWPOSTMAN_OVERVIEW_INSTALL_GO_MODULES'); ?></span>

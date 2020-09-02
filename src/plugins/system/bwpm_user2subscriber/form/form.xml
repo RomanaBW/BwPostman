@@ -1,176 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset
-		name="bwpm_user2subscriber"
-		label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_LABEL"
-		addfieldpath="/plugins/system/bwpm_user2subscriber/form/fields"
+	<fields name="bwpm_user2subscriber" addfieldpath="/plugins/system/bwpm_user2subscriber/form/fields">
+		<fieldset
+				name="bwpm_user2subscriber"
+				label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_LABEL"
 		>
-		<field
-			name="bwpm_user2subscriber_message"
-			id="bwpm_user2subscriber_bwpm_user2subscriber_message"
-			type="bwpspacer"
-			class="bwpspacer"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field
-			name="bwpm_user2subscriber"
-			id="bwpm_user2subscriber_bwpm_user2subscriber"
-			type="radio"
-			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBSCRIPTION_CHECKBOX_LABEL"
-			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBSCRIPTION_CHECKBOX_DESC"
-		    default="0"
-			class="switcher"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+			<field
+					name="bwpm_user2subscriber_message"
+					id="bwpm_user2subscriber_message"
+					type="bwpspacer"
+					class="bwpspacer"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
+					name="bwpm_user2subscriber"
+					id="bwpm_user2subscriber"
+					type="radio"
+					class="registerradio btn-group btn-group-yesno"
+					label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBSCRIPTION_CHECKBOX_LABEL"
+					description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBSCRIPTION_CHECKBOX_DESC"
+					default="0"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
 
-		<field
-			name="gender"
-			id="bwpm_user2subscriber_gender"
-			type="list"
-			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_GENDER_LABEL"
-			labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
-			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_GENDER_DESC"
-			required="false"
-			class="bwpm-u2s-fields-toggle"
-		>
-			<option value="2">
-				COM_BWPOSTMAN_NO_GENDER</option>
-			<option value="1">
-				COM_BWPOSTMAN_FEMALE</option>
-			<option value="0">
-				COM_BWPOSTMAN_MALE</option>
-		</field>
+			<field
+					name="gender"
+					type="list"
+					label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_GENDER_LABEL"
+					labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
+					description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_GENDER_DESC"
+					required="false"
+					class="bwpm-u2s-fields-toggle"
+			>
+				<option value="2">
+					COM_BWPOSTMAN_NO_GENDER</option>
+				<option value="1">
+					COM_BWPOSTMAN_FEMALE</option>
+				<option value="0">
+					COM_BWPOSTMAN_MALE</option>
+			</field>
 
-		<field
-			name="bwpm_name"
-			id="bwpm_user2subscriber_name"
-			type="text"
-			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_LABEL"
-			labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
-			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_DESC"
-			class="inputbox bwpm-u2s-fields-toggle"
-			size="30"
-			required="false"
-		/>
+			<field
+					name="bwpm_name"
+					type="text"
+					label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_LABEL"
+					labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
+					description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_DESC"
+					class="inputbox bwpm-u2s-fields-toggle"
+					size="30"
+					required="false"
+			/>
 
-		<field
-			name="firstname"
-			id="bwpm_user2subscriber_firstname"
-			type="text"
-			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_FIRSTNAME_LABEL"
-			labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
-			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_FIRSTNAME_DESC"
-			class="inputbox bwpm-u2s-fields-toggle"
-			required="false"
-			size="30"
-		/>
+			<field
+					name="firstname"
+					type="text"
+					label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_FIRSTNAME_LABEL"
+					labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
+					description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_FIRSTNAME_DESC"
+					class="inputbox bwpm-u2s-fields-toggle"
+					required="false"
+					size="30"
+			/>
 
-		<field
-			name="special"
-			id="bwpm_user2subscriber_special"
-			type="text"
-			label="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_LABEL"
-			labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
-			description="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_DESC"
-			class="inputbox bwpm-u2s-fields-toggle"
-			required="false"
-			size="30"
-		/>
+			<field
+					name="special"
+					type="text"
+					label="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_LABEL"
+					labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
+					description="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_DESC"
+					class="inputbox bwpm-u2s-fields-toggle"
+					required="false"
+					size="30"
+			/>
 
-		<field
-			name="emailformat"
-			id="bwpm_user2subscriber_emailformat"
-			type="radio"
-			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MAILFORMAT_LABEL"
-			labelclass="control-label bwpm-u2s-fields-toggle"
-			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MAILFORMAT_DESC"
-			class="bwpm-u2s-fields-toggle"
-			required="true"
-			default="1"
-		>
-			<option value="0">
-				PLG_BWPOSTMAN_TEXT</option>
-			<option value="1">
-				PLG_BWPOSTMAN_HTML</option>
-		</field>
-		<field
-			name="mailinglists"
-			id="bwpm_user2subscriber_mailinglists"
-			type="u2smls"
-			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_ML_AVAILABLE_LABEL"
-			labelclass="control-label bwpm-u2s-fields-toggle"
-			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_ML_AVAILABLE_DESC"
-			multiple="true"
-			class="inputbox mailinglists form-validate"
-			required="false"
-		>
-		</field>
-		<field
-			name="bwpdisclaimer"
-			id="bwpm_user2subscriber_bwpdisclaimer"
-			type="disclaimer"
-			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_LABEL"
-			labelclass="control-label bwpm-u2s-fields-toggle"
-			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_DESC"
-			class="form-check-input disclaimer checkbox bwpm-u2s-fields-toggle"
-			value="0"
-			required="false"
-		>
-		</field>
-		<field
-			name="bw_captcha"
-			type="hidden"
-		    default="1"
-		>
-		</field>
-		<field
-			name="name_required"
-			id="bwpm_user2subscriber_name_required"
-			type="hidden"
-			default="0"
-		>
-		</field>
-		<field
-			name="firstname_required"
-			id="bwpm_user2subscriber_firstname_required"
-			type="hidden"
-			default="0"
-		>
-		</field>
-		<field
-			name="additional_required"
-			id="bwpm_user2subscriber_additional_required"
-			type="hidden"
-			default="0"
-		>
-		</field>
-		<field
-			name="emailformat_show"
-			id="bwpm_user2subscriber_emailformat_show"
-			type="hidden"
-			default="1"
-		>
-		</field>
-		<field
-			name="mailinglists_required"
-			id="bwpm_user2subscriber_mailinglists_required"
-			type="hidden"
-			default="0"
-		>
-		</field>
-		<field
-			name="bwpdisclaimer_required"
-			id="bwpm_user2subscriber_bwpdisclaimer_required"
-			type="hidden"
-			default="0"
-		>
-		</field>
+			<field
+					name="emailformat"
+					type="radio"
+					label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MAILFORMAT_LABEL"
+					labelclass="control-label bwpm-u2s-fields-toggle"
+					description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_MAILFORMAT_DESC"
+					class="registerradio btn-group btn-group-yesno bwpm-u2s-fields-toggle"
+					required="true"
+					default="1"
+			>
+				<option value="0">
+					PLG_BWPOSTMAN_TEXT</option>
+				<option value="1">
+					PLG_BWPOSTMAN_HTML</option>
+			</field>
+			<field
+					name="mailinglists"
+					type="u2smls"
+					label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_ML_AVAILABLE_LABEL"
+					labelclass="control-label bwpm-u2s-fields-toggle"
+					description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_ML_AVAILABLE_DESC"
+					multiple="true"
+					class="inputbox mailinglists"
+					required="false"
+			>
+			</field>
+			<field
+					name="bwpdisclaimer"
+					type="disclaimer"
+					label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_LABEL"
+					labelclass="control-label bwpm-u2s-fields-toggle"
+					description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_DESC"
+					class="disclaimer bwpm-u2s-fields-toggle"
+					value="0"
+					required="false"
+			>
+			</field>
+			<field
+					name="bw_captcha"
+					type="hidden"
+					default="1"
+			>
+			</field>
+			<field
+					name="name_required"
+					type="hidden"
+					default="0"
+			>
+			</field>
+			<field
+					name="firstname_required"
+					type="hidden"
+					default="0"
+			>
+			</field>
+			<field
+					name="additional_required"
+					type="hidden"
+					default="0"
+			>
+			</field>
+			<field
+					name="emailformat_show"
+					type="hidden"
+					default="1"
+			>
+			</field>
+			<field
+					name="mailinglists_required"
+					type="hidden"
+					default="0"
+			>
+			</field>
+			<field
+					name="bwpdisclaimer_required"
+					type="hidden"
+					default="0"
+			>
+			</field>
 
-		<field name="spacer2_4" type="spacer" hr="true" class="bwpm-u2s-fields-toggle spacer-lbl" />
+			<field name="spacer2_4" type="spacer" hr="true" class="bwpm-u2s-fields-toggle spacer-lbl" />
 
-	</fieldset>
+		</fieldset>
+	</fields>
 </form>

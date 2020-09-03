@@ -254,7 +254,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subs_identifier_name             = "//*[@id='jform_bwpm_user2subscriber_name']";
+	public static $subs_identifier_name             = "//*[@id='jform_bwpm_user2subscriber_bwpm_name']";
 
 	/**
 	 * @var string

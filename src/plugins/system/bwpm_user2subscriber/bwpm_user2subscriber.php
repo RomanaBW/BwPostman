@@ -726,7 +726,6 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		if (isset($data['bwpm_user2subscriber']) && is_array($data['bwpm_user2subscriber']))
 		{
 			$dataRaw = $data['bwpm_user2subscriber'];
-			$dataRaw['bwpm_name'] = $dataRaw['name'];
 		}
 		else
 		{

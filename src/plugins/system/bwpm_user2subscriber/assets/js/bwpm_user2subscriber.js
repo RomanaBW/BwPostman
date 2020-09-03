@@ -85,7 +85,7 @@ jQuery(document).ready(function()
 			'#jform_bwpm_user2subscriber_bwpdisclaimer_required'
 		];
 		var field_identifier    = [
-			'#jform_bwpm_user2subscriber_name',
+			'#jform_bwpm_user2subscriber_bwpm_name',
 			'#jform_bwpm_user2subscriber_firstname',
 			'#jform_bwpm_user2subscriber_special',
 			'#jform_bwpm_user2subscriber_mailinglists',
@@ -119,7 +119,7 @@ jQuery(document).ready(function()
 			'#jform_bwpm_user2subscriber_bwpdisclaimer_required'
 		];
 		var field_identifier    = [
-			'#jform_bwpm_user2subscriber_name',
+			'#jform_bwpm_user2subscriber_bwpm_name',
 			'#jform_bwpm_user2subscriber_firstname',
 			'#jform_bwpm_user2subscriber_special',
 			'#jform_bwpm_user2subscriber_mailinglists',

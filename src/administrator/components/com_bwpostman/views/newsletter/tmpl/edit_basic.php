@@ -112,6 +112,10 @@ $currentTab = 'edit_basic';
 						}
 
 						echo $title;
+
+						// Convert attachment string or JSON to array, if present
+						$this->item->attachment = BwPostmanNewsletterHelper::decodeAttachments($this->item->attachment);
+
 						?>
 					</legend>
 					<div class="well well-small">

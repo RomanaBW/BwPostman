@@ -355,21 +355,21 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_accessible       = ".//*[@id='details']/div/fieldset/div[1]/div/div/fieldset/div/p[%s]/label";
+	public static $mls_accessible       = ".//*[@id='details']/div/fieldset/div/div[1]/div/fieldset/div/p[%s]/label";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_nonaccessible    = ".//*[@id='details']/div/fieldset/div[2]/div/div/fieldset/div/p[%s]/label";
+	public static $mls_nonaccessible    = ".//*[@id='details']/div/fieldset/div/div[2]/div/fieldset/div/p[%s]/label";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_internal         = ".//*[@id='details']/div/fieldset/div[3]/div/div/fieldset/div/p[%s]/label";
+	public static $mls_internal         = ".//*[@id='details']/div/fieldset/div/div[3]/div/fieldset/div/p[%s]/label";
 
 
 	/**
@@ -377,7 +377,7 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_internal_label   = ".//*[@id='details']/div/fieldset/div[3]/div/div/fieldset/legend";
+	public static $mls_internal_label   = ".//*[@id='details']/div/fieldset/div/div[3]/div/fieldset/legend";
 
 	/**
 	 * Test method to create single Subscriber without cleanup for testing restore permission

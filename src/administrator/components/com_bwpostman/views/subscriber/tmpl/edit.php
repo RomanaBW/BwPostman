@@ -65,7 +65,7 @@ $new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.ne
 			); ?>
 			<fieldset class="adminform">
 				<div class="well well-small">
-					<div class="width-60 fltlft span8 control-group">
+					<div class="span8 control-group">
 						<ul class="adminformlist unstyled">
 							<li>
 								<?php echo $this->form->getLabel('gender'); ?>
@@ -110,8 +110,8 @@ $new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.ne
 						</ul>
 					</div>
 
-					<div class="width-40 fltrt span4 control-group">
-						<ul class="adminformlist width_50 unstyled">
+					<div class="span4 control-group">
+						<ul class="adminformlist unstyled">
 							<li>
 								<a class="modal btn btn-info btn-block" href="
 									<?php echo Route::_(
@@ -168,107 +168,109 @@ $new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.ne
 			</fieldset>
 
 			<?php if ($new_test != '9') : ?>
-				<div class="width-100 fltlft row-fluid">
-					<fieldset id="subs_mailinglists" class="adminform">
+				<div class="row-fluid">
+					<fieldset id="subs_mailinglists" class="adminform span12">
 						<legend>
 							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE_NOTE'); ?>">
 								<?php echo $image; ?>
 							</span>
 							<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE'); ?></span>
 						</legend>
-						<div class="width-33 fltlft span4">
-							<div class="well well-small">
-								<fieldset class="adminform">
-									<legend>
-										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
-											<?php echo $image; ?>
-										</span>
-										<span>&nbsp;<?php echo $this->form->getLabel('ml_available'); ?></span>
-									</legend>
-									<div class="row-fluid clearfix">
-										<?php
-										$ml_available	= $this->form->getInput('ml_available');
+						<div class="row-fluid">
+							<div class="span4">
+								<div class="well well-small">
+									<fieldset class="adminform">
+										<legend>
+											<span class="editlinktip hasTip hasTooltip"
+													title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
+												<?php echo $image; ?>
+											</span>
+											<span>&nbsp;<?php echo $this->form->getLabel('ml_available'); ?></span>
+										</legend>
+										<div class="row-fluid clearfix">
+											<?php
+											$ml_available	= $this->form->getInput('ml_available');
 
-										if (!empty($ml_available))
-										{
-											echo $this->form->getInput('ml_available');
-										}
-										else
-										{ ?>
-											<div class="width-50 fltlft span6">
-												<label class="mailinglist_label noclear checkbox">
-													<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
-												</label>
-											</div><?php
-										}
-										?>
-									</div>
-								</fieldset>
+											if (!empty($ml_available))
+											{
+												echo $this->form->getInput('ml_available');
+											}
+											else
+											{ ?>
+												<div class="width-50 fltlft span6">
+													<label class="mailinglist_label noclear checkbox">
+														<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
+													</label>
+												</div><?php
+											}
+											?>
+										</div>
+									</fieldset>
+								</div>
 							</div>
-						</div>
 
-						<div class="width-33 fltlft span4">
-							<div class="well well-small">
-								<fieldset class="adminform">
-									<legend>
-										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
-											<?php echo $image; ?>
-										</span>
-										<span>&nbsp;<?php echo $this->form->getLabel('ml_unavailable'); ?></span>
-									</legend>
-									<div class="row-fluid clearfix">
-										<?php
-										$ml_unavailable	= $this->form->getInput('ml_unavailable');
+							<div class="span4">
+								<div class="well well-small">
+									<fieldset class="adminform">
+										<legend>
+											<span class="editlinktip hasTip hasTooltip"
+													title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
+												<?php echo $image; ?>
+											</span>
+											<span>&nbsp;<?php echo $this->form->getLabel('ml_unavailable'); ?></span>
+										</legend>
+										<div class="row-fluid clearfix">
+											<?php
+											$ml_unavailable	= $this->form->getInput('ml_unavailable');
 
-										if (!empty($ml_unavailable))
-										{
-											echo $this->form->getInput('ml_unavailable');
-										}
-										else
-										{ ?>
-											<div class="width-50 fltlft span6">
-												<label class="mailinglist_label noclear checkbox">
-													<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
-												</label>
-											</div><?php
-										}
-										?>
-									</div>
-								</fieldset>
+											if (!empty($ml_unavailable))
+											{
+												echo $this->form->getInput('ml_unavailable');
+											}
+											else
+											{ ?>
+												<div class="width-50 fltlft span6">
+													<label class="mailinglist_label noclear checkbox">
+														<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
+													</label>
+												</div><?php
+											}
+											?>
+										</div>
+									</fieldset>
+								</div>
 							</div>
-						</div>
 
-						<div class="width-33 fltlft span4">
-							<div class="well well-small">
-								<fieldset class="adminform">
-									<legend>
-										<span class="editlinktip hasTip hasTooltip"
-												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
-											<?php echo $image; ?>
-										</span>
-										<span>&nbsp;<?php echo $this->form->getLabel('ml_intern'); ?></span>
-									</legend>
-									<div class="row-fluid clearfix">
-										<?php
-										$ml_intern	= $this->form->getInput('ml_intern');
+							<div class="span4">
+								<div class="well well-small">
+									<fieldset class="adminform">
+										<legend>
+											<span class="editlinktip hasTip hasTooltip"
+													title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
+												<?php echo $image; ?>
+											</span>
+											<span>&nbsp;<?php echo $this->form->getLabel('ml_intern'); ?></span>
+										</legend>
+										<div class="row-fluid clearfix">
+											<?php
+											$ml_intern	= $this->form->getInput('ml_intern');
 
-										if (!empty($ml_intern))
-										{
-											echo $this->form->getInput('ml_intern');
-										}
-										else
-										{ ?>
-											<div class="width-50 fltlft span6">
-												<label class="mailinglist_label noclear checkbox">
-													<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
-												</label>
-											</div><?php
-										}
-										?>
-									</div>
-								</fieldset>
+											if (!empty($ml_intern))
+											{
+												echo $this->form->getInput('ml_intern');
+											}
+											else
+											{ ?>
+												<div class="width-50 fltlft span6">
+													<label class="mailinglist_label noclear checkbox">
+														<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
+													</label>
+												</div><?php
+											}
+											?>
+										</div>
+									</fieldset>
+								</div>
 							</div>
 						</div>
 					</fieldset>

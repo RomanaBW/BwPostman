@@ -37,6 +37,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 HtmlHelper::_('bootstrap.tooltip');
 HtmlHelper::_('formbehavior.chosen', 'select');
 HtmlHelper::_('behavior.multiselect');
+HTMLHelper::_('behavior.modal');
 
 $user		= Factory::getUser();
 $userId		= $user->get('id');

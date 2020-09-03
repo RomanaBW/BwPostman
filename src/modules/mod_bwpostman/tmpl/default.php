@@ -303,7 +303,11 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 				elseif ($paramsComponent->get('disclaimer_selection') == 2 && $paramsComponent->get('disclaimer_menuitem') > 0)
 				{
 					// Disclaimer menu item and target_blank or not
-					$disclaimer_link = Route::_('index.php?Itemid=' . $paramsComponent->get('disclaimer_menuitem') . $tpl_com);
+					if ($tpl_com !== '' && Factory::getConfig()->get('sef') === '1')
+					{
+						$tpl_com = '?tmpl=component';
+					}
+					$disclaimer_link = Route::_("index.php?Itemid={$paramsComponent->get('disclaimer_menuitem')}") . $tpl_com;
 				}
 				else
 				{

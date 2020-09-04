@@ -557,8 +557,8 @@ table.import {
 	margin-top: 0;
 }
 
-.layout-import1 .tip-wrap {
-	width:				500px !important;
+.layout-import .tip-wrap, .layout-import1 .tip-wrap {
+	max-width:				500px !important;
 }
 
 .bwptable.export span.hasTip {
@@ -589,8 +589,8 @@ table.export {
 	margin-top: 0;
 }
 
-.layout-export1 .tip-wrap {
-	width:				500px !important;
+.layout-export .tip-wrap {
+	max-width:				500px !important;
 }
 
 

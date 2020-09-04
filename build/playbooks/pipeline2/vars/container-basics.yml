@@ -62,17 +62,17 @@ tester_image:
   pi: "{{ private_docker_repo }}romana/debian-chromium-tester"
 
 db:
-  service: "mysqldbbwpm"
-  container_name: "mysqldbbwpm"
+  service: "mysqldbbwpm4"
+  container_name: "mysqldbbwpm4"
   host_name: "mysqlserver-bwpm"
 
 mailer:
-  service: "postfixbwpm"
+  service: "postfixbwpm4"
   container_name: "mail"
   host_name: "mail-bwpm"
 
 webserver:
-  service: "webserverbwpm"
+  service: "webserverbwpm4"
   container_name: "webserverbwpm"
   host_name: "webserver-bwpm"
 

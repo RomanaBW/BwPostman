@@ -6,17 +6,17 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.18.0.16/29
+        - subnet: 172.18.0.24/29
 
 services:
-  mysqldbbwpm:
-    container_name: mysqldbbwpm
+  mysqldbbwpm4:
+    container_name: mysqldbbwpm4
     image: universe3:5000/romana/mariadb
     hostname: mysqlserver-bwpm
     domainname: tester-net.nil
     networks:
       tester-net.nil:
-        ipv4_address: 172.18.0.19
+        ipv4_address: 172.18.0.27
     expose:
       - "3306"
     ports:
@@ -30,7 +30,7 @@ services:
       MYSQL_USER: tester
       MYSQL_PASSWORD: barbamama
 
-  postfixbwpm:
+  postfixbwpm4:
     container_name: "mail.tester-net.nil"
     image: romana/os-postfix
     hostname: mail-bwpm
@@ -41,22 +41,22 @@ services:
       -  {{ container_dir }}/infrastructure/os_base/os_data:/outerworld
     networks:
       tester-net.nil:
-        ipv4_address: 172.18.0.18
+        ipv4_address: 172.18.0.26
 
-  webserverbwpm:
-    container_name: webserverbwpm
+  webserverbwpm4:
+    container_name: webserverbwpm4
     image: romana/apache_{{ php_version }}
     hostname: webserver-bwpm
     domainname: tester-net.nil
     depends_on:
-      - "mysqldbbwpm"
+      - "mysqldbbwpm4"
     networks:
       tester-net.nil:
-        ipv4_address: 172.18.0.20
+        ipv4_address: 172.18.0.28
     expose:
       - "80"
     links:
-      - mysqldbbwpm:mysqldbbwpm
+      - mysqldbbwpm4:mysqldbbwpm4
     ports:
       - "8002:80"
     volumes:

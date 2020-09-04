@@ -1,9 +1,6 @@
 ---
-base_dir_3: "/vhosts/dev/joomla-cms"
-src_dir_3: "/vhosts/dev/joomla-cms"
-
-base_dir_4: "/vhosts/dev4"
-src_dir_4: "/vhosts/dev4"
+base_dir: "/vhosts/dev4"
+src_dir: "/vhosts/dev4"
 
 container_base: "/vms/dockers"
 container_dir: "{{ container_base }}/containers"
@@ -12,8 +9,7 @@ test_runner: "bwpm_test_runner.sh"
 test_dir: "{{ base_dir }}/tests"
 test_src_dir: "tests"
 
-test_project_base_dir_3: "/home/romana/PhpstormProjects/BwPostman"
-test_project_base_dir_4: "/home/romana/PhpstormProjects/BwPostman_J4"
+test_project_base_dir: "/home/romana/PhpstormProjects/BwPostman_J4"
 
 web_dir: "{{ container_base }}/global_data/test_data"
 
@@ -35,13 +31,13 @@ log_path: '/data/logs'
 record_path: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/videos"
 test_log_path: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/logs"
 
-test_db_host: "mysqldbbwpm"
-test_db_host_ip: "172.18.0.19"
+test_db_host: "mysqldbbwpm4"
+test_db_host_ip: "172.18.0.27"
 test_db_dbname: "joomlatest"
 test_db_user: "tester"
 test_db_password: "barbamama"
 
-test_url: "172.18.0.20"
+test_url: "172.18.0.28"
 
 #screen_size: '1440x900'
 screen_size: '1920x1080'

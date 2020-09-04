@@ -268,14 +268,14 @@ class User2SubscriberPage
 	 *
 	 * @since 2.4.0
 	 */
-	public static $login_label_name_identifier            = "//*[@id='jform_bwpm_user2subscriber_name-lbl'][contains(@class, 'invalid')]";
+	public static $login_label_name_identifier            = "//*[@id='jform_bwpm_user2subscriber_bwpm_name-lbl'][contains(@class, 'invalid')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.4.0
 	 */
-	public static $login_label_name_missing            = "//*[@id='jform_bwpm_user2subscriber_name-lbl'][contains(@class, 'invalid')]/span[2]";
+	public static $login_label_name_missing            = "//*[@id='jform_bwpm_user2subscriber_bwpm_name-lbl'][contains(@class, 'invalid')]/span[2]";
 
 	/**
 	 * @var string

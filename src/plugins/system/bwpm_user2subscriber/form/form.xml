@@ -47,7 +47,7 @@
 
 		<field
 			name="bwpm_name"
-			id="bwpm_user2subscriber_name"
+			id="bwpm_user2subscriber_bwpm_name"
 			type="text"
 			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_LABEL"
 			labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"

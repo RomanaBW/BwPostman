@@ -188,7 +188,7 @@ if ($moduleId !== null && $moduleId !== '')
 								{
 									foreach ($attachments as $attachment)
 									{ ?>
-										<a class="link-attachment" href="<?php echo Uri::base() . '/' . $attachment['single_attachment']; ?>" target="_blank">
+										<a class="link-attachment" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
 											<span class="icon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
 										</a>
 									<?php

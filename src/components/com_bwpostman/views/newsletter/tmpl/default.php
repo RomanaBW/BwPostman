@@ -103,7 +103,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
 				{
 					?>
 					<span class="btn" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
-						<a class="link-attachment" href="<?php echo Uri::base() . '/' . $attachment['single_attachment']; ?>" target="_blank">
+						<a class="link-attachment" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
 							<i class="icon_attachment"></i>
 						</a>
 					</span>

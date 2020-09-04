@@ -6,7 +6,7 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
-Version 3.0.0 released (2020-08-27)----
+Version 3.0.0 released (2020-09-05)----
 
 New
 + Enhanced mail verification at registration and import of subscribers, both optionally
@@ -21,6 +21,7 @@ Bugfix
 # Error message at sending of newsletters resolved, if gzip compression is set at Joomla settings
 # Use of group ids in place of english group names at restoring tables
 # Reduce block size of writing assets at maintenance from 1000 to 200 to prevent memory error
+# Reduce writing of rules at assets to only needed ones to reduce file size and prevent memory error
 
 Improvement
 ~ Memory usage, time consumption and error handling at restoring tables improved
@@ -29,7 +30,7 @@ Improvement
 ~ Check of imported user groups at restoring tables enhances by default user groups
 ~ Adjust name of media folder of BwPostman to Joomla default
 ~ Personalization of managing mails introduced (i.e. confirmation mail)
-~ Use of SimpleXML for creating and restoring tables and creating subscriber export
+~ Use of SimpleXML/DOM for creating and restoring tables and creating subscriber export
 ~ Inline javascript moved to files to improve security and loading time
 ~ Lot of code optimization (smaller methods, less code duplication, helper classes extended, …) as preparation for Joomla 4
 ~ Add menu parameters to frontend layouts

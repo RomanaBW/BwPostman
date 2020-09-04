@@ -744,7 +744,14 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// convert attachment array to JSON, to be able to save
 		if (isset($data['attachment']) && is_array($data['attachment']) && $data['attachment'] !== '')
 		{
-			$data['attachment'] = json_encode($data['attachment']);
+			if (count($data['attachment']))
+			{
+				$data['attachment'] = json_encode($data['attachment']);
+			}
+			else
+			{
+				$data['attachment'] = "";
+			}
 		}
 
 		PluginHelper::importPlugin('bwpostman');

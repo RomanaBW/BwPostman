@@ -598,12 +598,16 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			if ($com_params->get('disclaimer_selection') == 1 && $com_params->get('article_id') > 0)
 			{
 				JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-				$disclaimer_link = Route::_(ContentHelperRoute::getArticleRoute($com_params->get('article_id'))) . $tpl_com;
+				$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($com_params->get('article_id') . $tpl_com, 0));
 			}
 			// Disclaimer menu item and target_blank or not
 			elseif ($com_params->get('disclaimer_selection') == 2 && $com_params->get('disclaimer_menuitem') > 0)
 			{
-				$disclaimer_link = Route::_('index.php?Itemid=' . $com_params->get('disclaimer_menuitem')) . $tpl_com;
+				if ($tpl_com !== '' && Factory::getConfig()->get('sef') === '1')
+				{
+					$tpl_com = '?tmpl=component';
+				}
+				$disclaimer_link = Route::_("index.php?Itemid={$com_params->get('disclaimer_menuitem')}") . $tpl_com;
 			}
 			// Disclaimer url and target_blank or not
 			else

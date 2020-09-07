@@ -91,51 +91,59 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	 */
 	public function getGeneraldata()
 	{
-		$general = array();
+		try
+		{
+			$general = array();
 
-		// Get # of all unsent newsletters
-		$nlTable = $this->getTable('Newsletters');
-		$general['nl_unsent'] = $nlTable->getNbrOfNewsletters(false, false);
+			// Get # of all unsent newsletters
+			$nlTable = $this->getTable('Newsletters');
+			$general['nl_unsent'] = $nlTable->getNbrOfNewsletters(false, false);
 
-		// Get # of all sent newsletters
-		$general['nl_sent'] = $nlTable->getNbrOfNewsletters(true, false);
+			// Get # of all sent newsletters
+			$general['nl_sent'] = $nlTable->getNbrOfNewsletters(true, false);
 
-		// Get # of all subscribers
-		$subsTable = $this->getTable('Subscribers');
-		$general['sub'] = $subsTable->getNbrOfSubscribers(false, false);
+			// Get # of all subscribers
+			$subsTable = $this->getTable('Subscribers');
+			$general['sub'] = $subsTable->getNbrOfSubscribers(false, false);
 
-		// Get # of all test-recipients
-		$general['test'] = $subsTable->getNbrOfSubscribers(true, false);
+			// Get # of all test-recipients
+			$general['test'] = $subsTable->getNbrOfSubscribers(true, false);
 
-		// Get # of all campaigns
-		$camTable = $this->getTable('Campaigns');
-		$general['cam'] = $camTable->getNbrOfCampaigns(false);
+			// Get # of all campaigns
+			$camTable = $this->getTable('Campaigns');
+			$general['cam'] = $camTable->getNbrOfCampaigns(false);
 
-		// Get # of all published mailinglists
-		// get available mailinglists to predefine for state
-		$mlTable = $this->getTable('Mailinglists');
-		$ml_available = $mlTable->getMailinglistsByRestriction(array(), 'available', 0, false);
+			// Get # of all published mailinglists
+			// get available mailinglists to predefine for state
+			$mlTable = $this->getTable('Mailinglists');
+			$ml_available = $mlTable->getMailinglistsByRestriction(array(), 'available', 0, false);
 
-		// get unavailable mailinglists to predefine for state
-		$ml_unavailable = $mlTable->getMailinglistsByRestriction(array(), 'unavailable', 0, false);
+			// get unavailable mailinglists to predefine for state
+			$ml_unavailable = $mlTable->getMailinglistsByRestriction(array(), 'unavailable', 0, false);
 
-		$general['ml_published'] = count($ml_available) + count($ml_unavailable);
+			$general['ml_published'] = count($ml_available) + count($ml_unavailable);
 
-		// Get # of all unpublished mailinglists
-		// get internal mailinglists to predefine for state
-		$ml_intern = $mlTable->getMailinglistsByRestriction(array(), 'internal', 0, false);
+			// Get # of all unpublished mailinglists
+			// get internal mailinglists to predefine for state
+			$ml_intern = $mlTable->getMailinglistsByRestriction(array(), 'internal', 0, false);
 
-		$general['ml_unpublished'] = count($ml_intern);
+			$general['ml_unpublished'] = count($ml_intern);
 
-		// Get # of all html templates
-		$tplTable = $this->getTable('Templates');
-		$general['html_templates'] = $tplTable->getNbrOfTemplates('html', false);
+			// Get # of all html templates
+			$tplTable = $this->getTable('Templates');
+			$general['html_templates'] = $tplTable->getNbrOfTemplates('html', false);
 
-		// Get # of all text templates
-		$general['text_templates'] = $tplTable->getNbrOfTemplates('text', false);
+			// Get # of all text templates
+			$general['text_templates'] = $tplTable->getNbrOfTemplates('text', false);
 
-		// Get total # of general statistic
-		$general[] = array_sum($general);
+			// Get total # of general statistic
+			$general[] = array_sum($general);
+		}
+		catch (Exception $exception)
+		{
+			$message = Text::_('COM_BWPOSTMAN_ERROR_GENERAL_STATISTICS_DATA_ERROR');
+			Factory::getApplication()->enqueueMessage($message, 'error');
+		}
 
 		return $general;
 	}
@@ -151,36 +159,44 @@ class BwPostmanModelBwPostman extends JModelLegacy
 	 */
 	public function getArchivedata()
 	{
-		$archive	= array();
+		try
+		{
+			$archive	= array();
 
-		// Get # of all archived newsletters
-		$nlTable = $this->getTable('Newsletters');
-		$archive['arc_nl'] = $nlTable->getNbrOfNewsletters(false, true);
+			// Get # of all archived newsletters
+			$nlTable = $this->getTable('Newsletters');
+			$archive['arc_nl'] = $nlTable->getNbrOfNewsletters(false, true);
 
-		// Get # of all archived subscribers
-		$subsTable = $this->getTable('Subscribers');
-		$archive['arc_sub'] = $subsTable->getNbrOfSubscribers(false, true);
+			// Get # of all archived subscribers
+			$subsTable = $this->getTable('Subscribers');
+			$archive['arc_sub'] = $subsTable->getNbrOfSubscribers(false, true);
 
-		// Get # of all archived campaigns
-		$camTable = $this->getTable('Campaigns');
-		$archive['arc_cam'] = $camTable->getNbrOfCampaigns(true);
+			// Get # of all archived campaigns
+			$camTable = $this->getTable('Campaigns');
+			$archive['arc_cam'] = $camTable->getNbrOfCampaigns(true);
 
-		// Get # of all archived mailinglists
-		// get available mailinglists to predefine for state
-		$mlTable = $this->getTable('Mailinglists');
-		$ml_archived = $mlTable->getMailinglistsByRestriction(array(), 'available', 1, false);
+			// Get # of all archived mailinglists
+			// get available mailinglists to predefine for state
+			$mlTable = $this->getTable('Mailinglists');
+			$ml_archived = $mlTable->getMailinglistsByRestriction(array(), 'available', 1, false);
 
-		$archive['arc_ml'] = count($ml_archived);
+			$archive['arc_ml'] = count($ml_archived);
 
-		// Get # of all html templates
-		$tplTable = $this->getTable('Templates');
-		$archive['arc_html_templates'] = $tplTable->getNbrOfTemplates('html', true);
+			// Get # of all html templates
+			$tplTable = $this->getTable('Templates');
+			$archive['arc_html_templates'] = $tplTable->getNbrOfTemplates('html', true);
 
-		// Get # of all text templates
-		$archive['arc_text_templates'] = $tplTable->getNbrOfTemplates('text', true);
+			// Get # of all text templates
+			$archive['arc_text_templates'] = $tplTable->getNbrOfTemplates('text', true);
 
-		// Get total # of general statistic
-		$archive[] = array_sum($archive);
+			// Get total # of general statistic
+			$archive[] = array_sum($archive);
+		}
+		catch (Exception $exception)
+		{
+			$message = Text::_('COM_BWPOSTMAN_ERROR_ARCHIVE_STATISTICS_DATA_ERROR');
+			Factory::getApplication()->enqueueMessage($message, 'error');
+		}
 
 		return $archive;
 	}

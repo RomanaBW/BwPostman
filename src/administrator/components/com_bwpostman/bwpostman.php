@@ -66,5 +66,6 @@ try
 }
 catch (Exception $exception)
 {
-	Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
+	$message = Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
+	$app->enqueueMessage($message, 'error');
 }

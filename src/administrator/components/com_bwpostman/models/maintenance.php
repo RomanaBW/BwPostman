@@ -1892,7 +1892,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					}
 					else
 					{
-						$null = 'YES';
+						$null = ' NULL';
 					}
 
 					if (isset($neededColumns[$i]['Default']))
@@ -3881,7 +3881,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function getCurrentUserGroups($usergroups)
 	{
-		$groups = array();
+		$groups              = array();
 		$defaultJoomlaGroups = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
 		// first compare current user groups with backed up ones
@@ -3927,11 +3927,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 					if (!$success)
 					{
-						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ADD_USERGROUP_ERROR',
-							$item['title']);
-						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_INCOMPLETE', $item['title']);
+						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
 
-						return -1;
+						echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
+
+						continue;
 					}
 
 					$query = $this->db->getQuery(true);

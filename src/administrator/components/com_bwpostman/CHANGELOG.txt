@@ -6,6 +6,14 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
+Version 3.0.1 released (2020-09-08)----
+
+Bugfix
+# Correct query for attribute at restoring tables
+# Ignore and report unprocessable user groups at restore tables
+# Catch some exceptions to prevent white screen on dashboard
+
+
 Version 3.0.0 released (2020-09-05)----
 
 New

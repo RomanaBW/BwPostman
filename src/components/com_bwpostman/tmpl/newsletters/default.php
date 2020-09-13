@@ -27,6 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
 use BoldtWebservice\Component\BwPostman\Site\Classes\BwPostmanSite;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -168,8 +169,8 @@ if ($moduleId !== null && $moduleId !== '')
 				{
 					foreach ($this->items as $i => $item)
 					{
-						// Split attachment to array
-						$attachments = explode(';', $item->attachment);
+						// Convert attachment string or JSON to array, if present
+						$attachments = BwPostmanNewsletterHelper::decodeAttachments($item->attachment);
 						?>
 						<tr class="row<?php echo $i % 2; ?>">
 							<td class="date">
@@ -186,7 +187,7 @@ if ($moduleId !== null && $moduleId !== '')
 								{
 									foreach ($attachments as $attachment)
 									{ ?>
-										<a class="link-attachment" href="<?php echo Uri::base() . '/' . $attachment; ?>" target="_blank">
+										<a class="link-attachment" href="<?php echo Uri::base() . '/' . $attachment['single_attachment']; ?>" target="_blank">
 											<span class="icon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
 										</a>
 									<?php

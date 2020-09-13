@@ -341,21 +341,6 @@ class NewsletterModel extends AdminModel
 			$app->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
 		}
 
-		//  convert attachment string to subform array
-		if ($item->attachment != '' && is_string($item->attachment))
-		{
-			$baseArray       = explode(';', $item->attachment);
-			$attachmentArray = array();
-
-			for ($i = 0; $i < count($baseArray); $i++)
-			{
-				$key = 'attachment' . $i;
-				$attachmentArray[$key]['single_attachment'] = $baseArray[$i];
-			}
-
-			$item->attachment = $attachmentArray;
-		}
-
 		$app->setUserState('com_bwpostman.edit.newsletter.data', $item);
 
 		return $item;
@@ -759,19 +744,10 @@ class NewsletterModel extends AdminModel
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
 		BwPostmanMailinglistHelper::mergeMailinglists($data);
 
-		// convert attachment array to string, to be able to save
-		if (isset($data['attachment']) && $data['attachment'] !== '' && is_array($data['attachment']))
+		// convert attachment array to JSON, to be able to save
+		if (isset($data['attachment']) && is_array($data['attachment']) && $data['attachment'] !== '')
 		{
-			$fullAttachments = array();
-
-			foreach ($data['attachment'] as $k => $v)
-			{
-				if ($data['attachment'][$k]['single_attachment'] !== '')
-				{
-					$fullAttachments[] = $data['attachment'][$k]['single_attachment'];
-				}
-			}
-			$data['attachment'] = implode(';', $fullAttachments);
+			$data['attachment'] = json_encode($data['attachment']);
 		}
 
 		PluginHelper::importPlugin('bwpostman');
@@ -1414,7 +1390,7 @@ class NewsletterModel extends AdminModel
 			$state_data = ArrayHelper::toObject($state_data, 'stdClass', false);
 		}
 
-		// heal form fields
+		// inject newly changed values to form and heal form fields
 		switch ($layout)
 		{
 			case 'edit_send':
@@ -1439,6 +1415,14 @@ class NewsletterModel extends AdminModel
 				$form_data['is_template'] = $state_data->is_template;
 				break;
 			case 'edit_basic':
+				// convert attachment array to JSON, to be able to save and show as hidden field
+				if (isset($form_data['attachment']) && is_array($form_data['attachment']) && $form_data['attachment'] !== '')
+				{
+					$form_data['attachment'] = json_encode($form_data['attachment']);
+				}
+
+				$state_data->attachment = $form_data['attachment'];
+				break;
 			case 'edit_html':
 			case 'edit_text':
 			case 'edit_preview':
@@ -1962,18 +1946,18 @@ class NewsletterModel extends AdminModel
 		// @ToDo, store data in this class to prevent from loading every time a mail will be sent
 		$tblSendMailContent->load($tblSendMailQueue->content_id);
 
-		if ($tblSendMailContent->attachment)
+		// Convert attachment string or JSON to array, if present
+		$attachments = BwPostmanNewsletterHelper::decodeAttachments($tblSendMailContent->attachment);
+
+		// Add base path to attachments
+		$fullAttachments = array();
+
+		foreach ($attachments as $attachment)
 		{
-			$attachments = explode(';', $tblSendMailContent->attachment);
-			$fullAttachments = array();
-
-			foreach ($attachments as $attachment)
-			{
-				$fullAttachments[] = JPATH_SITE . '/' .$attachment;
-			}
-
-			$tblSendMailContent->attachment = $fullAttachments;
+			$fullAttachments[] = JPATH_SITE . '/' .$attachment['single_attachment'];
 		}
+
+		$tblSendMailContent->attachment = $fullAttachments;
 
 		if (property_exists($tblSendMailContent, 'email'))
 		{

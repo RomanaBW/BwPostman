@@ -27,6 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -113,6 +114,9 @@ $currentTab = 'edit_basic';
 								}
 
 								echo $title;
+
+								// Convert attachment string or JSON to array, if present
+								$this->item->attachment = BwPostmanNewsletterHelper::decodeAttachments($this->item->attachment);
 								?>
 							</div>
 						</div>

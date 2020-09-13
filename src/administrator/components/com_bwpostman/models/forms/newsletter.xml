@@ -55,16 +55,18 @@
 		       multiple="true"
 		       min="0"
 		       max="20"
+		       formsource="administrator/components/com_bwpostman/models/forms/attachments.xml"
+		       layout="joomla.form.field.subform.repeatable-table"
 		>
-			<form>
-				<field name="single_attachment"
-				       label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL"
-				       labelclass="control-label"
-				       link="index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=com_bwpostman_nl&amp;author="
-				       size="30"
-				       role="dialog"
-				       type="media" />
-			</form>
+<!--			<form>-->
+<!--				<field name="single_attachment"-->
+<!--				       label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL"-->
+<!--				       labelclass="control-label"-->
+<!--				       size="30"-->
+<!--				       type="media" />-->
+<!--			</form>-->
+<!--			role="dialog"-->
+			<!--				       link="index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=com_bwpostman_nl&amp;author="-->
 		</field>
 
 		<field

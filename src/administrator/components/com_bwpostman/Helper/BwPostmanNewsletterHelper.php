@@ -127,4 +127,32 @@ abstract class BwPostmanNewsletterHelper {
 
 		return $count_subscribers;
 	}
+
+	/**
+	 * Method to convert attachment JSON string (or old string version) to an array
+	 *
+	 * @param string   $attachmentString
+	 *
+	 * @return array   Array of attachments
+	 *
+	 * @since 4.0.0
+	 */
+	public static function decodeAttachments($attachmentString)
+	{
+		$attachments = array();
+
+		if (!empty($attachmentString) && gettype($attachmentString) === 'string')
+		{
+			if (strpos($attachmentString, '{') === false)
+			{
+				$attachments = explode(';', $attachmentString);
+			}
+			else
+			{
+				$attachments = json_decode($attachmentString, true);
+			}
+		}
+
+		return $attachments;
+	}
 }

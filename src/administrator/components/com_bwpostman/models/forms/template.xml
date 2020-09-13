@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset label="COM_BWPOSTMAN_TPL_BASICS_LABEL" addfieldpath="/administrator/components/com_bwpostman/models/fields">
+	<fieldset label="COM_BWPOSTMAN_TPL_BASICS_LABEL" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
 		<field
 			name="id"
 			type="hidden"

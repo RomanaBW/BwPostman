@@ -146,7 +146,7 @@
 		/>
 	</fieldset>
 
-	<fieldset name="accesscontrol" addfieldpath="/administrator/components/com_bwpostman/models/fields">
+	<fieldset name="accesscontrol" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
 		<field
 				name="asset_id"
 				type="hidden"

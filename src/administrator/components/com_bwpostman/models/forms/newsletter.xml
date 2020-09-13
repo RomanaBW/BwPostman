@@ -394,7 +394,7 @@
 		/>
 	</fieldset>
 
-	<fieldset name="rules" addfieldpath="/administrator/components/com_bwpostman/models/fields">
+	<fieldset name="rules" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
 		<field
 			name="rules"
 			type="bwrules"

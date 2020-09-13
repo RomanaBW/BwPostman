@@ -4,6 +4,7 @@
 		name="bwpm_user2subscriber"
 		label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_LABEL"
 		addfieldpath="/plugins/system/bwpm_user2subscriber/form/fields"
+		addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field"
 		>
 		<field
 			name="bwpm_user2subscriber_message"

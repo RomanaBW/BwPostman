@@ -143,7 +143,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $login_value_password     = "!08Sam15";
+	public static $login_value_password     = "!08Sam15####";
 
 	/**
 	 * @var string
@@ -181,7 +181,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $login_value2_password     = "!08Sam15";
+	public static $login_value2_password     = "!08Sam15####";
 
 	/**
 	 * @var string
@@ -331,7 +331,8 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subs_identifier_mailinglists    = "//*[@id='jform_bwpm_user2subscriber_mailinglists0']";
+	public static $subs_identifier_mailinglists    = "//*[@id='jform_bwpm_user2subscriber_mailinglists']/div/table/tbody/tr/td/input[@id='mb0']";
+//	public static $subs_identifier_mailinglists    = "//*[@id='jform_bwpm_user2subscriber_mailinglists0']";
 
 
 	// subscriber field values

@@ -102,7 +102,7 @@
 				</field>
 			</fieldset>
 
-			<fieldset name="mailinglists" addfieldpath="/components/com_bwpostman/models/fields">
+			<fieldset name="mailinglists" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field">
 
 				<field
 						name="show_desc"

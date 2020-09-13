@@ -24,30 +24,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Plugin\BwPostman\System\U2S\Helper;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Table\SubscriberTable;
+use Exception;
+use JLoader;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
+use stdClass;
+
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Table', JPATH_ADMINISTRATOR.'/components/com_bwpostman/src/Table', false, false, 'psr4');
+
 
 /**
- * Class BwPostmanHelper
+ * Class BwpmUser2SubscriberHelper
  *
  * @since 2.0.0
  */
-abstract class BWPM_User2SubscriberHelper
+abstract class BwpmUser2SubscriberHelper
 {
 	/**
 	 * Method to check if user has a subscription
 	 *
-	 * @param   string  $user_mail
+	 * @param string $user_mail
 	 *
 	 * @return  mixed   $subscriber_id|false   subscription data or false
 	 *
 	 * @since  2.0.0
 	 */
-	public static function hasSubscription($user_mail)
+	public static function hasSubscription(string $user_mail)
 	{
 		if ($user_mail == '')
 		{
@@ -336,11 +345,9 @@ abstract class BWPM_User2SubscriberHelper
 
 		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha(1);
 
+		$db         = Factory::getContainer()->get('DatabaseDriver');
+		$subsTable  = new SubscriberTable($db);
 		$subscriber = new stdClass();
-		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/subscriber.php');
-		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/tables/subscribers.php');
-		$subsModel = JModelLegacy::getInstance('Subscriber', 'BwPostmanModel');
-		$subsTable = $subsModel->getTable('Subscriber');
 
 		$subscriber->id                = 0;
 		$subscriber->user_id           = $user_id;
@@ -372,16 +379,15 @@ abstract class BWPM_User2SubscriberHelper
 	 *
 	 * @return  int      $subscriber_id     id of saved subscriber
 	 *
-	 * @throws exception
+	 * @throws Exception
 	 *
 	 * @since       2.0.0
 	 */
 	public static function saveSubscriber($data)
 	{
 		// @Todo: As from version 2.0.0 BwPostmanModelRegister->save() may be used, depends on spam check solution
-		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
-
-		$table = $MvcFactory->createTable('Subscriber', 'Administrator');
+		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$table = new SubscriberTable($db);
 
 		// Bind the data.
 		if (!$table->bind($data))

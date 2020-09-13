@@ -3978,6 +3978,11 @@ class MaintenanceModel extends BaseDatabaseModel
 		{
 			if (key_exists('rules', $asset))
 			{
+				if (empty($asset['rules']))
+				{
+					continue;
+				}
+
 				$rules = json_decode($asset['rules'], true);
 
 				if ($rules !== null)

@@ -54,7 +54,7 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * property to hold archive data
 	 *
-	 * @var string $archive
+	 * @var array $archive
 	 *
 	 * @since       0.9.1
 	 */
@@ -63,7 +63,7 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * property to hold general data
 	 *
-	 * @var string $general
+	 * @var array $general
 	 *
 	 * @since       0.9.1
 	 */
@@ -125,10 +125,12 @@ class HtmlView extends BaseHtmlView
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
 		// Get data from the model
-		$this->archive		= $this->get('Archivedata');
-		$this->general		= $this->get('Generaldata');
-		$this->request_url	= $uri_string;
-		$this->permissions	= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->archive     = $this->get('Archivedata');
+		$this->checkArchiveStatisticsData();
+		$this->general     = $this->get('Generaldata');
+		$this->checkGeneralStatisticsData();
+		$this->request_url = $uri_string;
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
 
 		$this->addToolbar();
 
@@ -173,5 +175,104 @@ class HtmlView extends BaseHtmlView
 
 		$toolbar->appendButton($manualButton);
 		$toolbar->appendButton($forumButton);
+	}
+	/**
+	 * Check array of general statistics data
+	 *
+	 * @throws Exception
+	 *
+	 * @since       3.0.1
+	 */
+	protected function checkGeneralStatisticsData()
+	{
+		if (!key_exists('nl_unsent', $this->general))
+		{
+			$this->general['nl_unsent'] = '';
+		}
+
+		if (!key_exists('nl_sent', $this->general))
+		{
+			$this->general['nl_sent'] = '';
+		}
+
+		if (!key_exists('sub', $this->general))
+		{
+			$this->general['sub'] = '';
+		}
+
+		if (!key_exists('test', $this->general))
+		{
+			$this->general['test'] = '';
+		}
+
+		if (!key_exists('cam', $this->general))
+		{
+			$this->general['cam'] = '';
+		}
+
+		if (!key_exists('ml_published', $this->general))
+		{
+			$this->general['ml_published'] = '';
+		}
+
+		if (!key_exists('ml_unpublished', $this->general))
+		{
+			$this->general['ml_unpublished'] = '';
+		}
+
+		if (!key_exists('html_templates', $this->general))
+		{
+			$this->general['html_templates'] = '';
+		}
+
+		if (!key_exists('text_templates', $this->general))
+		{
+			$this->general['text_templates'] = '';
+		}
+	}
+
+	/**
+	 * Check array of archive statistics data
+	 *
+	 * @throws Exception
+	 *
+	 * @since       3.0.1
+	 */
+	protected function checkArchiveStatisticsData()
+	{
+		if (!key_exists('arc_nl', $this->archive))
+		{
+			$this->archive['arc_nl'] = '';
+		}
+
+		if (!key_exists('arc_sub', $this->archive))
+		{
+			$this->archive['arc_sub'] = '';
+		}
+
+		if (!key_exists('sub', $this->archive))
+		{
+			$this->archive['sub'] = '';
+		}
+
+		if (!key_exists('arc_cam', $this->archive))
+		{
+			$this->archive['arc_cam'] = '';
+		}
+
+		if (!key_exists('arc_ml', $this->archive))
+		{
+			$this->archive['arc_ml'] = '';
+		}
+
+		if (!key_exists('arc_html_templates', $this->archive))
+		{
+			$this->archive['arc_html_templates'] = '';
+		}
+
+		if (!key_exists('arc_text_templates', $this->archive))
+		{
+			$this->archive['arc_text_templates'] = '';
+		}
 	}
 }

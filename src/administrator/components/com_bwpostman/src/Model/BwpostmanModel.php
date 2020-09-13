@@ -89,7 +89,9 @@ class BwpostmanModel extends BaseDatabaseModel
 	 */
 	public function getGeneraldata()
 	{
-		$general = array();
+		try
+		{
+			$general = array();
 
 		// Get # of all unsent newsletters
 		$nlTable = $this->getTable('Newsletter', 'Administrator');
@@ -132,8 +134,14 @@ class BwpostmanModel extends BaseDatabaseModel
 		// Get # of all text templates
 		$general['text_templates'] = $tplTable->getNbrOfTemplates('text', false);
 
-		// Get total # of general statistic
-		$general[] = array_sum($general);
+			// Get total # of general statistic
+			$general[] = array_sum($general);
+		}
+		catch (Exception $exception)
+		{
+			$message = Text::_('COM_BWPOSTMAN_ERROR_GENERAL_STATISTICS_DATA_ERROR');
+			Factory::getApplication()->enqueueMessage($message, 'error');
+		}
 
 		return $general;
 	}
@@ -149,7 +157,9 @@ class BwpostmanModel extends BaseDatabaseModel
 	 */
 	public function getArchivedata()
 	{
-		$archive	= array();
+		try
+		{
+			$archive	= array();
 
 		// Get # of all archived newsletters
 		$nlTable = $this->getTable('Newsletter', 'Administrator');
@@ -177,8 +187,14 @@ class BwpostmanModel extends BaseDatabaseModel
 		// Get # of all text templates
 		$archive['arc_text_templates'] = $tplTable->getNbrOfTemplates('text', true);
 
-		// Get total # of general statistic
-		$archive[] = array_sum($archive);
+			// Get total # of general statistic
+			$archive[] = array_sum($archive);
+		}
+		catch (Exception $exception)
+		{
+			$message = Text::_('COM_BWPOSTMAN_ERROR_ARCHIVE_STATISTICS_DATA_ERROR');
+			Factory::getApplication()->enqueueMessage($message, 'error');
+		}
 
 		return $archive;
 	}

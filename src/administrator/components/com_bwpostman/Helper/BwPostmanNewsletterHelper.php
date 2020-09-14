@@ -28,8 +28,10 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 
 defined ('_JEXEC') or die ();
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
+use RuntimeException;
 
 /**
  * Class BwPostmanNewsletterHelper
@@ -88,6 +90,7 @@ abstract class BwPostmanNewsletterHelper {
 	 * @return integer
 	 *
 	 * @throws Exception
+	 * @throws RuntimeException
 	 *
 	 * @since 2.3.0 (since 2.4.0 here, before at BE newsletter model)
 	 */
@@ -131,13 +134,13 @@ abstract class BwPostmanNewsletterHelper {
 	/**
 	 * Method to convert attachment JSON string (or old string version) to an array
 	 *
-	 * @param string   $attachmentString
+	 * @param string $attachmentString
 	 *
 	 * @return array   Array of attachments
 	 *
 	 * @since 4.0.0
 	 */
-	public static function decodeAttachments($attachmentString)
+	public static function decodeAttachments(string $attachmentString)
 	{
 		$attachments = array();
 

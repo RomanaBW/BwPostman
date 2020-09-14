@@ -38,7 +38,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use stdClass;
 
 /**
- * Class modBwPostmanOverviewHelper
+ * Class ModBwPostmanOverviewHelper
  *
  * @since       1.2.0
  */
@@ -47,10 +47,10 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Retrieve list of newsletters
 	 *
-	 * @param   Registry  &$params  module parameters
-	 * @param   int     $module_id      id of this module
+	 * @param   Registry  &$params      module parameters
+	 * @param   int       $module_id    id of this module
 	 *
-	 * @return  array   $lists      array of newsletter objects
+	 * @return  array     $lists        array of newsletter objects
 	 *
 	 * @throws Exception
 	 *
@@ -90,9 +90,9 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Gets the items depending on Module or Menuitem params
 	 *
-	 * @param   Registry  &$params  module parameters
+	 * @param   Registry  &$params    module parameters
 	 *
-	 * @return  object   $rows       array of newsletter objects
+	 * @return  object    $rows       array of newsletter objects
 	 *
 	 * @throws Exception
 	 *
@@ -120,7 +120,7 @@ class ModBwPostmanOverviewHelper
 		// get accessible mailing lists
 		$mls = self::getAccessibleMailinglists($params);
 
-		// get usergroups
+		// get accessible usergroups
 		$groups = self::getAccessibleUsergroups($params);
 
 		if (count($groups) > 0)
@@ -164,13 +164,12 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Method to get all published mailing lists which the user is authorized to see and which are selected in menu
 	 *
-	 * @access    public
-	 *
 	 * @param Registry  &$params module parameters
 	 *
 	 * @return    array    $mailinglists       ID and title of allowed mailinglists
 	 *
 	 * @throws Exception
+	 *
 	 * @since     1.2.0
 	 */
 	private static function getAccessibleMailinglists(Registry $params)
@@ -225,13 +224,12 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Method to get all campaigns which the user is authorized to see
 	 *
-	 * @access    public
-	 *
 	 * @param Registry  &$params module parameters
 	 *
-	 * @return    array    $campaigns          array of ids of allowed campaigns
+	 * @return    array    $campaigns     array of ids of allowed campaigns
 	 *
 	 * @throws Exception
+	 *
 	 * @since     1.2.0
 	 */
 	private static function getAccessibleCampaigns(Registry $params)
@@ -304,6 +302,7 @@ class ModBwPostmanOverviewHelper
 	 * @return    array    $groups             array of ids of user groups
 	 *
 	 * @throws Exception
+	 *
 	 * @since    1.2.0
 	 */
 	private static function getAccessibleUsergroups(Registry $params)

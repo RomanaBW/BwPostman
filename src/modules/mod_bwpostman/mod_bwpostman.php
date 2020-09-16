@@ -32,7 +32,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\CMS\User\UserHelper;
 
 require_once(dirname(__FILE__) . '/helper.php');
 require_once JPATH_ROOT . '/administrator/components/com_bwpostman/helpers/subscriberhelper.php';
@@ -97,49 +96,22 @@ else
 			$subscriber = modBwPostmanHelper::getUserData($userid);
 		}
 
-		// Build the email format select list
-		$mailformat_selected = $paramsComponent->get('default_emailformat');
-
-		$emailformat = '<fieldset id="edit_mailformat" class="radio btn-group">';
-		$emailformat .= '<input type="radio" name="a_emailformat" id="formatTextMod" value="0"';
-
-		if (!$mailformat_selected)
-		{
-			$emailformat .= ' checked="checked"';
-		}
-
-		$emailformat .= '/>';
-		$emailformat .= '<label for="formatTextMod"><span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
-		$emailformat .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
-
-		if ($mailformat_selected)
-		{
-			$emailformat .= ' checked="checked"';
-		}
-
-		$emailformat .= '/>';
-		$emailformat .= '<label for="formatHtmlMod"><span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
-		$emailformat .= '</fieldset>';
-
-		$lists['emailformat'] = $emailformat;
+	// Build the email format select list
+	$lists['emailformat'] = $emailformat = ModBwPostmanHelper::getMailformatSelectList($paramsComponent);
 
 		// Build the gender select list
-		$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender');
+		$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender', null, 'm_');
 
-		// Get the checked mailinglists from module parameters
-		$mod_mls = $params->get('mod_ml_available');
+	// Get the checked mailinglists from module parameters
+	$mod_mls = (array)$params->get('mod_ml_available');
 
-		// Get the usertype
-		$usertype      = '';
-		$usertypeArray = UserHelper::getUserGroups($userid);
+	// Get the access levels for the user, preset with access level guest and public
+	$publicAccess = array(1, 5);
+	$userAccess   = JAccess::getAuthorisedViewLevels($userid);
+	$accessTypes  = array_unique(array_merge($publicAccess, $userAccess));
 
-		if (!empty($usertypeArray))
-		{
-			$usertype = $usertypeArray[0];
-		}
-
-		// Get the available mailinglists
-		$mailinglists = modBwPostmanHelper::getMailinglists($usertype, $mod_mls);
+	// Get the available mailinglists
+	$mailinglists = modBwPostmanHelper::getMailinglists($accessTypes, $mod_mls);
 
 		$n = count($mailinglists);
 

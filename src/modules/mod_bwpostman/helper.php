@@ -38,9 +38,9 @@ class ModBwPostmanHelper
 	/**
 	 * Method to get the subscriber ID of the user
 	 *
-	 * @access	public
+	 * @return    int     $subscriberid   id of the subscriber
 	 *
-	 * @return 	int     $subscriberid   id of the subscriber
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -64,80 +64,60 @@ class ModBwPostmanHelper
 		}
 		else
 		{ // User is logged in
-			$subscriberid = self::getSubscriberIdFromUserID($user->get('id'));
+			$subscriberid = self::getSubscriberIdFromUserID((int)$user->get('id'));
 		}
 
 		return $subscriberid;
 	}
 
 	/**
-	 * Method to get all mailing lists which the user is authorized to see
+	 * Method to get all mailing lists which
+	 * - the user is authorized to see
+	 * - are not archived
+	 * - are published
 	 *
-	 * @access 	public
+	 * @param array $accessTypes user type to get mailing lists for
+	 * @param array $mod_mls     mailing lists to return, if set
 	 *
-	 * @param   string  $usertype   user type to get mailing lists for
-	 * @param   array   $mod_mls    mailing lists to return, if set
+	 * @return    array   $mailinglists   array of mailing lists objects
 	 *
-	 * @return 	array   $mailinglists   array of mailing lists objects
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public static function getMailinglists($usertype, $mod_mls)
+	public static function getMailinglists($accessTypes, $mod_mls)
 	{
-		$_db = Factory::getDbo();
+		$mailinglists = array();
 
-		// if mailinglists are checked in the module parameters
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+		$query->from($db->quoteName('#__bwpostman_mailinglists'));
+
+		// if mailinglists are selected at the module parameters use these
 		if (isset($mod_mls) && count($mod_mls) && $mod_mls[0] !== "")
 		{
-			$query	= $_db->getQuery(true);
-
-			$query->select('*');
-			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-			$query->where($_db->quoteName('id') . ' IN (' . implode(',', $mod_mls) . ')');
+			$query->where($db->quoteName('id') . ' IN (' . implode(',', $mod_mls) . ')');
 		}
 		else
 		{
-			// no mailinglist is checked in the module parameters
-			if (empty($usertype))
-			{
-				// A guest shall only see mailinglists which are public
-				$query	= $_db->getQuery(true);
-
-				$query->select('*');
-				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-				$query->where($_db->quoteName('access') . ' = ' . (int) 1);
-				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-				$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-				$query->order($_db->quoteName('title') . 'ASC');
-			}
-			elseif ($usertype == 'Registered')
-			{
-				// A registered user shall only see mailinglists which are registered or public
-				$query	= $_db->getQuery(true);
-
-				$query->select('*');
-				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-				$query->where($_db->quoteName('access') . ' = ' . (int) 2);
-				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-				$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-				$query->order($_db->quoteName('title') . 'ASC');
-			}
-			else
-			{
-				// A user with a higher status than registered shall see all mailinglists
-				$query	= $_db->getQuery(true);
-
-				$query->select('*');
-				$query->from($_db->quoteName('#__bwpostman_mailinglists'));
-				$query->where($_db->quoteName('published') . ' = ' . (int) 1);
-				$query->where($_db->quoteName('archive_flag') . ' = ' . (int) 0);
-				$query->order($_db->quoteName('title') . 'ASC');
-			}
+			// else restrict by access level, state and archive state
+			$query->where($db->quoteName('access') . ' IN (' . implode(',', $accessTypes) . ')');
+			$query->where($db->quoteName('published') . ' = ' . (int) 1);
+			$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+			$query->order($db->quoteName('title') . 'ASC');
 		}
 
-		$_db->setQuery($query);
-
-		$mailinglists = $_db->loadObjectList();
+		try
+		{
+			$db->setQuery($query);
+			$mailinglists = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $mailinglists;
 	}
@@ -146,26 +126,24 @@ class ModBwPostmanHelper
 	 * Method to check if a user has a newsletter account
 	 * --> gives back the id from the subscribers-table
 	 *
-	 * @access	public
+	 * @param int $userid Joomla! user id
 	 *
-	 * @param 	int     $userid         Joomla! user id
-	 *
-	 * @return 	int     $subscriberid   id of subscriber
+	 * @return    int     $subscriberid   id of subscriber
 	 *
 	 * @since       0.9.1
 	 */
 	public static function getSubscriberIdFromUserID($userid)
 	{
-		$_db	= Factory::getDbo();
-		$query	= $_db->getQuery(true);
+		$db	= Factory::getDbo();
+		$query	= $db->getQuery(true);
 
-		$query->select($_db->quoteName('id'));
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('user_id') . ' = ' . (int) $userid);
-		$query->where($_db->quoteName('status') . ' = ' . (int) 9);
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query->where($db->quoteName('user_id') . ' = ' . (int) $userid);
+		$query->where($db->quoteName('status') . ' = ' . (int) 9);
 
-		$_db->setQuery($query);
-		$subscriberid = $_db->loadResult();
+		$db->setQuery($query);
+		$subscriberid = $db->loadResult();
 
 		return $subscriberid;
 	}
@@ -183,17 +161,17 @@ class ModBwPostmanHelper
 	 */
 	public static function getUserData($userid)
 	{
-		$_db	= Factory::getDbo();
+		$db	= Factory::getDbo();
 		$id		= 0;
-		$query	= $_db->getQuery(true);
+		$query	= $db->getQuery(true);
 
-		$query->select($_db->quoteName('name'));
-		$query->select($_db->quoteName('email'));
-		$query->from($_db->quoteName('#__users'));
-		$query->where($_db->quoteName('id') . ' = ' . (int) $userid);
+		$query->select($db->quoteName('name'));
+		$query->select($db->quoteName('email'));
+		$query->from($db->quoteName('#__users'));
+		$query->where($db->quoteName('id') . ' = ' . (int) $userid);
 
-		$_db->setQuery($query);
-		$user = $_db->loadObject();
+		$db->setQuery($query);
+		$user = $db->loadObject();
 
 		$user->user_id = $id;
 
@@ -201,37 +179,55 @@ class ModBwPostmanHelper
 	}
 
 	/**
-	 * Method to get the user type if a user is logged in
+	 * Method to get the email format select list
 	 *
-	 * @access	public
+	 * @param JRegistry $paramsComponent
 	 *
-	 * @param	int     $userid     Joomla! user id
+	 * @return string
 	 *
-	 * @return string   $usertype   type of Joomla! user
-	 *
-	 * @since       0.9.1
+	 * @since 3.0.0
 	 */
-	public static function getUsertype($userid)
+	public static function getMailformatSelectList($paramsComponent)
 	{
-		$_db		= Factory::getDbo();
-		$usertype	= '';
+		$mailformat_selected = $paramsComponent->get('default_emailformat');
 
-		if ($userid)
+		$emailformat = '<div id="edit_mailformat" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">';
+		$emailformat .= '<label for="formatTextMod" class="btn btn-outline-secondary';
+
+		if (!$mailformat_selected)
 		{
-			$query	= $_db->getQuery(true);
-
-			$query->select($_db->quoteName('usertype'));
-			$query->from($_db->quoteName('#__users'));
-			$query->where($_db->quoteName('id') . ' = ' . (int) $userid);
-
-			$_db->setQuery($query);
-			$usertype = $_db->loadResult();
-
-			if (empty($usertype)) {
-				$usertype = "Public";
-			}
+			$emailformat .= '  active';
 		}
 
-		return $usertype;
+		$emailformat .= '">';
+		$emailformat .= '<input type="radio" name="a_emailformat" id="formatTextMod" value="0"';
+
+		if (!$mailformat_selected)
+		{
+			$emailformat .= ' checked="checked"';
+		}
+
+		$emailformat .= '/>';
+		$emailformat .= '<span>' . JText::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
+		$emailformat .= '<label for="formatHtmlMod" class="btn btn-outline-secondary';
+
+		if ($mailformat_selected)
+		{
+			$emailformat .= '  active';
+		}
+
+		$emailformat .= '">';
+		$emailformat .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
+
+		if ($mailformat_selected)
+		{
+			$emailformat .= ' checked="checked"';
+		}
+
+		$emailformat .= '/>';
+		$emailformat .= '<span>' . JText::_('COM_BWPOSTMAN_HTML') . '</span></label>';
+		$emailformat .= '</div>';
+
+		return $emailformat;
 	}
 }

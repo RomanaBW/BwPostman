@@ -38,6 +38,7 @@ JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/he
 HtmlHelper::_('behavior.keepalive');
 HtmlHelper::_('behavior.formvalidator');
 HTMLHelper::_('bootstrap.tooltip');
+HtmlHelper::_('formbehavior.chosen', 'select');
 
 $n	= count($mailinglists);
 

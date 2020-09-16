@@ -146,6 +146,7 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 
 	/**
 	 * Method to get the field options.
+	 * Here all mailing lists are selected, which are not archived
 	 *
 	 * @return  array  The field option objects.
 	 *
@@ -155,9 +156,6 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
-		$app	= Factory::getApplication();
-
 		// prepare query
 		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
@@ -173,11 +171,6 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 
 		$_db->setQuery($query);
 		$options = $_db->loadObjectList();
-
-		// Check for a database error.
-//		if ($_db->getErrorNum()) {
-//			$app->enqueueMessage($_db->getErrorMsg(), 'error');
-//		}
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

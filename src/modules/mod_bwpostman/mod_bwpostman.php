@@ -27,12 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Access\Access;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\CMS\User\UserHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use BoldtWebservice\Module\BwPostman\Site\Helper\ModBwPostmanHelper;
@@ -40,155 +40,108 @@ use BoldtWebservice\Module\BwPostman\Site\Helper\ModBwPostmanHelper;
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', false, false, 'psr4');
 JLoader::registerNamespace('BoldtWebservice\\Module\\BwPostman\\Site\\Helper', JPATH_SITE . '/modules/mod_bwpostman/src/Helper', false, false, 'psr4');
 
-//require_once(dirname(__FILE__) . '/helper.php');
+$app      = Factory::getApplication();
 
-jimport('joomla.application.component.helper');
-
-$app		= Factory::getApplication();
-$document	= $app->getDocument();
-$module     = ModuleHelper::getModule('mod_bwpostman');
-
-// Require component admin helper class
+// Check if component is installed
 if (!is_file(JPATH_ADMINISTRATOR . '/components/com_bwpostman/src/Extension/BwPostmanComponent.php'))
 {
 	$app->enqueueMessage(Text::_('MOD_BWPOSTMANERROR_COMPONENT_NOT_INSTALLED'), 'error');
+
+	return false;
+}
+
+// Check if component is enabled
+if (!ComponentHelper::isEnabled('com_bwpostman'))
+{
+	$app->enqueueMessage(Text::_('Module requires the com_bwpostman component'), 'error');
+
 	return false;
 }
 
 // Get document object, set document title and add css
-$templateName	= $app->getTemplate();
-$css_filename	= '/templates/' . $templateName . '/css/mod_bwpostman.css';
+$document     = $app->getDocument();
+$templateName = $app->getTemplate();
+$css_filename = '/templates/' . $templateName . '/css/mod_bwpostman.css';
 
-if (!ComponentHelper::isEnabled('com_bwpostman'))
+$module = ModuleHelper::getModule('mod_bwpostman');
+$userid = (int)$app->getIdentity()->get('id');
+
+$subscriberid = ModBwPostmanHelper::getSubscriberID();
+$captcha      = BwPostmanHelper::getCaptcha(1);
+
+// use module or component parameters
+if ($params->get('com_params') == 0)
 {
-	$app->enqueueMessage(Text::_('Module requires the com_bwpostman component'), 'error');
+	// Module params
+	$paramsComponent = $params;
+	$module_id       = $module->id;
 }
 else
 {
-	$user		= $app->getIdentity();
-	$userid		= $user->get('id');
-	$usertype	= '';
+	// Get the parameters of the component
+	// --> we need these parameters because we have to ensure that both the component and the module will work with the same settings
+	$paramsComponent = ComponentHelper::getParams('com_bwpostman');
+	$module_id       = '';
+}
 
-	$subscriberid	= ModBwPostmanHelper::getSubscriberID();
-	$captcha		= BwPostmanHelper::getCaptcha(1);
+if ($subscriberid)
+{
+	$layout = "_linktocomponent";
+}
+else
+{
+	$layout = $params->get('layout', 'default');
 
-	// use module or component parameters
-	if ($params->get('com_params') == 0)
+	if ($userid > 0)
 	{
-		// Module params
-		$paramsComponent = $params;
-		$module_id   = $module->id;
-	}
-	else
-	{
-		// Get the parameters of the component
-		// --> we need these parameters because we have to ensure that both the component and the module will work with the same settings
-		$paramsComponent = ComponentHelper::getParams('com_bwpostman');
-		$module_id   = '';
+		$subscriber = modBwPostmanHelper::getUserData($userid);
 	}
 
-	if ($subscriberid)
+	// Build the email format select list
+	$lists['emailformat'] = $emailformat = ModBwPostmanHelper::getMailformatSelectList($paramsComponent);
+
+	// Build the gender select list
+	$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender', 'form-control form-control-sm');
+
+	// Get the checked mailinglists from module parameters
+	$mod_mls = (array)$params->get('mod_ml_available');
+
+	// Get the access levels for the user, preset with access level guest and public
+	$publicAccess = array(1, 5);
+	$userAccess   = Access::getAuthorisedViewLevels($userid);
+	$accessTypes  = array_unique(array_merge($publicAccess, $userAccess));
+
+	// Get the available mailinglists
+	$mailinglists = modBwPostmanHelper::getMailinglists($accessTypes, $mod_mls);
+
+	$n = count($mailinglists);
+
+	// Build the mailinglist select list
+	$available_mailinglists	= array();
+	// only when count($mailinglists) > 0
+	if ($n > 0)
 	{
-		$layout = "_linktocomponent";
-	}
-	else
-	{
-		$layout = $params->get('layout', 'default');
-
-		if ($userid > 0)
+		foreach ($mailinglists AS $mailinglist)
 		{
-			$subscriber = modBwPostmanHelper::getUserData($userid);
+			$available_mailinglists[] = HTMLHelper::_('select.option', $mailinglist->id, $mailinglist->title . ':<br />' . $mailinglist->description);
 		}
-
-		// Build the email format select list
-		$mailformat_selected = $paramsComponent->get('default_emailformat');
-
-		$emailformat 	= '<div id="edit_mailformat" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">';
-		$emailformat		.= '<label for="formatTextMod" class="btn btn-outline-secondary';
-
-		if(!$mailformat_selected)
-		{
-			$emailformat .= '  active';
-		}
-
-		$emailformat		.= '">';
-		$emailformat		.= '<input type="radio" name="a_emailformat" id="formatTextMod" value="0"';
-
-		if(!$mailformat_selected)
-		{
-			$emailformat .= ' checked="checked"';
-		}
-
-		$emailformat     .= '/>';
-		$emailformat		.= '<span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
-		$emailformat     .= '<label for="formatHtmlMod" class="btn btn-outline-secondary';
-
-		if($mailformat_selected)
-		{
-			$emailformat .= '  active';
-		}
-
-		$emailformat		.= '">';
-		$emailformat     .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
-
-		if($mailformat_selected)
-		{
-			$emailformat .= ' checked="checked"';
-		}
-
-		$emailformat     .= '/>';
-		$emailformat     .= '<span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
-		$emailformat     .= '</div>';
-
-		$lists['emailformat'] = $emailformat;
-
-		// Build the gender select list
-		$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender', 'form-control form-control-sm');
-
-		// Get the checked mailinglists from module parameters
-		$mod_mls = $params->get('mod_ml_available');
-
-		// Get the usertype
-		$usertype = '';
-		$usertypeArray	= UserHelper::getUserGroups($userid);
-
-		if (!empty($usertypeArray))
-		{
-			$usertype = $usertypeArray[0];
-		}
-
-		// Get the available mailinglists
-		$mailinglists = modBwPostmanHelper::getMailinglists($usertype, $mod_mls);
-
-		$n = count($mailinglists);
-
-		// Build the mailinglist select list
-		$available_mailinglists	= array();
-		// only when count($mailinglists) > 0
-		if ($n > 0)
-		{
-			foreach ($mailinglists AS $mailinglist)
-			{
-				$available_mailinglists[] = HTMLHelper::_('select.option', $mailinglist->id, $mailinglist->title . ':<br />' . $mailinglist->description);
-			}
-		}
-
-		$lists['list']	= HTMLHelper::_(
-			'select.genericlist',
-			$available_mailinglists,
-			'list[]',
-			'class="inputbox" size="' . $n . '" multiple="multiple" style="padding: 6px; width: 150px;"',
-			'value',
-			'text'
-		);
 	}
 
-	$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
+	$lists['list']	= HTMLHelper::_(
+		'select.genericlist',
+		$available_mailinglists,
+		'list[]',
+		'class="inputbox" size="' . $n . '" multiple="multiple" style="padding: 6px; width: 150px;"',
+		'value',
+		'text'
+	);
+}
 
-	$path = ModuleHelper::getLayoutPath('mod_bwpostman', $layout);
+$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
 
-	if (file_exists($path))
-	{
-		require($path);
-	}
+$path = ModuleHelper::getLayoutPath('mod_bwpostman', $layout);
+
+if (file_exists($path))
+{
+	require($path);
 }

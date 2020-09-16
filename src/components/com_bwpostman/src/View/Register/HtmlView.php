@@ -133,8 +133,8 @@ class HtmlView extends BaseHtmlView
 		$this->captcha = BwPostmanHelper::getCaptcha(1);
 
 		// Add document css
-		$templateName	= Factory::getApplication()->getTemplate();
-		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
+		$templateName = Factory::getApplication()->getTemplate();
+		$css_filename = '/templates/' . $templateName . '/css/com_bwpostman.css';
 
 		$document->addStyleSheet(Uri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename))

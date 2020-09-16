@@ -496,35 +496,30 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get all mailinglists which the user is authorized to see
 	 *
-	 * @param   integer     $userId the user ID f this subscriber
+	 * @param integer $userId the user ID f this subscriber
 	 *
-	 * @return 	object Mailinglists
+	 * @return    object Mailinglists
 	 *
 	 * @throws Exception
-	 *
 	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
 	 */
-	public function getAuthorizedMailinglists($userId)
+	public function getAuthorizedMailinglists(int $userId)
 	{
 		$app          = Factory::getApplication();
 		$mailinglists = null;
 		$db           = $this->_db;
 		$query        = $db->getQuery(true);
 
-		// get authorized viewlevels
-		$accesslevels = Access::getAuthorisedViewLevels((int)$userId);
+		// Get the access levels for the user, preset with access level guest and public
+		$publicAccess = array(1, 5);
+		$userAccess   = Access::getAuthorisedViewLevels($userId);
+		$accesslevels  = array_unique(array_merge($publicAccess, $userAccess));
 
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
 		$query->where($db->quoteName('published') . ' = ' . 1);
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
-
-		if (!in_array('3', $accesslevels))
-		{
-			// A user shall only see mailinglists which are public or - if registered - accessible for his view level and published
-			$query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
-		}
-
 		$query->order($db->quoteName('title') . 'ASC');
 
 		try
@@ -537,7 +532,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		// Does the subscriber has internal mailinglists?
+		// Does the subscriber already has internal mailinglists?
 		$selected = $app->getUserState('com_bwpostman.subscriber.selected_lists', '');
 
 		if (is_array($selected))

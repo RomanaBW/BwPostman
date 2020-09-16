@@ -146,6 +146,7 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 
 	/**
 	 * Method to get the field options.
+	 * Here all mailing lists are selected, which are not archived
 	 *
 	 * @return  array  The field option objects.
 	 *

@@ -101,7 +101,7 @@ else
 	$lists['emailformat'] = $emailformat = ModBwPostmanHelper::getMailformatSelectList($paramsComponent);
 
 	// Build the gender select list
-	$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender', 'form-control form-control-sm');
+	$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender', 'form-control form-control-sm', 'm_');
 
 	// Get the checked mailinglists from module parameters
 	$mod_mls = (array)$params->get('mod_ml_available');

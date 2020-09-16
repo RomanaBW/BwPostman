@@ -75,7 +75,7 @@ class BwPostmanModelNewsletter extends JModelItem
 	 *
 	 * @throws Exception
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public function getItem($pk = null)
 	{

@@ -199,7 +199,7 @@ class ModBwPostmanHelper
 	{
 		$mailformat_selected = $paramsComponent->get('default_emailformat');
 
-		$emailformat = '<div id="edit_mailformat" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">';
+		$emailformat = '<div id="edit_mailformat_m" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">';
 		$emailformat .= '<label for="formatTextMod" class="btn btn-outline-secondary';
 
 		if (!$mailformat_selected)

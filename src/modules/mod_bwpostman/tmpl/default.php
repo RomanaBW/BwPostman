@@ -110,9 +110,9 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 			<?php
 		} // End: Show pretext only if set in basic parameters
 
+		// Show formfield gender only if enabled at parameters
 		if ($paramsComponent->get('show_gender') == 1)
 		{
-			// Show formfield gender only if enabled in basic parameters
 			?>
 			<p id="bwp_mod_form_genderformat">
 				<label id="gendermsg_mod">
@@ -164,18 +164,38 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 		?>
 
 		<?php
-		if ($paramsComponent->get('show_special') OR $paramsComponent->get('special_field_obligation'))
+		// Show additional field only if set in basic parameters
+		$showSpecial       = $paramsComponent->get('show_special');
+		$specialObligatory = $paramsComponent->get('special_field_obligation');
+		$specialLabel      = Text::_($paramsComponent->get('special_label'));
+		$sub_special       = '';
+
+		if (isset($subscriber->special))
 		{
-			// Show additional field only if set in basic parameters
+			$sub_special = $subscriber->special;
+		}
+
+		if($specialLabel === '')
+		{
+			$specialLabel = Text::_('MOD_BWPOSTMAN_SPECIAL');
+		}
+
+		if ($showSpecial || $specialObligatory)
+		{
+			$specialClass = '';
+			$required     = '';
+
+			if ($specialObligatory)
+			{
+				$specialClass = '-append';
+				$required     = '<span class="append-area"><i class="bwp_icon-star"></i></span>';
+			}
 			?>
-			<p id="bwp_mod_form_specialfield" class="input<?php echo ($paramsComponent->get('special_field_obligation')) ? '-append' : '' ?>">
+			<p id="bwp_mod_form_specialfield" class="input<?php echo $specialClass; ?>">
 				<?php // Is filling out the additional field obligating
-				isset($subscriber->special) ? $sub_special = $subscriber->special : $sub_special = '';
-				($paramsComponent->get('special_field_obligation'))
-					? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
-					: $required = ''; ?>
+				?>
 				<input type="text" name="a_special" id="a_special"
-						placeholder="<?php echo addslashes(Text::_($paramsComponent->get('special_label') != '' ? Text::_($paramsComponent->get('special_label')) : Text::_('MOD_BWPOSTMAN_SPECIAL'))); ?>"
+						placeholder="<?php echo addslashes($specialLabel); ?>"
 						value="<?php echo $sub_special; ?>" class="inputbox input-small" maxlength="50" />
 				<?php echo $required; ?>
 			</p>

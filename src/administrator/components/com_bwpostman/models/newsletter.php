@@ -2050,6 +2050,8 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TRIAL') . ($tblSendMailQueue->trial + 1) . ") ... ";
 		}
 
+		$unsubscribe_url = $renderer->generateUnsubscribeUrl($itemid_unsubscribe, $tblSendMailQueue->recipient, $editlink);
+
 		// Get a JMail instance
 		$mailer = Factory::getMailer();
 		$mailer->SMTPDebug = true;
@@ -2065,6 +2067,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		$mailer->setSender($sender);
+		if ($unsubscribe_url !== '')
+		{
+			$mailer->addCustomHeader("List-Unsubscribe", $unsubscribe_url);
+		}
 		$mailer->addReplyTo($tblSendMailContent->reply_email, $tblSendMailContent->reply_name);
 		$mailer->addRecipient($tblSendMailQueue->recipient);
 		$mailer->setSubject($tblSendMailContent->subject);

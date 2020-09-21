@@ -1195,6 +1195,27 @@ class contentRenderer
 		}
 	}
 
+	/**
+	 * Provides a URL for one-click unsubscription
+	 * @param $itemid_unsubscribe
+	 * @param $recipient
+	 * @param $editlink
+	 * @return string
+	 *
+	 * @since 3.0.2
+	 */
+	public function generateUnsubscribeUrl($itemid_unsubscribe, $recipient, $editlink)
+	{
+		if ($editlink === '')
+		{
+			return '';
+		}
+		$link = Text::sprintf('COM_BWPOSTMAN_NL_UNSUBSCRIBE_HREF', Uri::getInstance()->root(), $itemid_unsubscribe);
+		$link = str_replace("[UNSUBSCRIBE_EMAIL]", $recipient, $link);
+		$link = str_replace("[UNSUBSCRIBE_CODE]", $editlink, $link);
+		return $link;
+	}
+
 		/**
 	 * Method to add the Template-Tags to the content
 	 * Template tags are:

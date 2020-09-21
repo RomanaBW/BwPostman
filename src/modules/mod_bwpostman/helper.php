@@ -106,8 +106,9 @@ class ModBwPostmanHelper
 			$query->where($db->quoteName('access') . ' IN (' . implode(',', $accessTypes) . ')');
 			$query->where($db->quoteName('published') . ' = ' . (int) 1);
 			$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-			$query->order($db->quoteName('title') . 'ASC');
 		}
+
+		$query->order($db->quoteName('title') . 'ASC');
 
 		try
 		{

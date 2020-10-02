@@ -319,7 +319,7 @@ $lists      = $displayData['lists'];
 				else
 				{ ?>
 					<p class="mail_available">
-						<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS'); ?>
+						<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="icon-star"></i></sup>'; ?>
 					</p>
 					<?php
 					foreach ($lists['available_mailinglists'] as $i => $item)

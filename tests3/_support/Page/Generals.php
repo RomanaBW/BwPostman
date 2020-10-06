@@ -1,6 +1,9 @@
 <?php
 namespace Page;
 
+use AcceptanceTester;
+use Exception;
+
 /**
  * Class Generals
  *
@@ -988,6 +991,87 @@ class Generals
 	public static function getInstallFileName()
 	{
 		return '/Support/Software/Joomla/BwPostman/' . self::$versionToTest . '/com_bwpostman/com_bwpostman.' . self::$versionToTest . '.zip';
+	}
+
+	/**
+	 * Test method to preset the options of the module
+	 *
+	 * @param AcceptanceTester $I
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public static function presetComponentOptions(AcceptanceTester $I)
+	{
+		// Basic settings
+		$I->setManifestOption('com_bwpostman', 'default_from_name', '');
+		$I->setManifestOption('com_bwpostman', 'default_from_email', '');
+		$I->setManifestOption('com_bwpostman', 'default_reply_email', '');
+		$I->setManifestOption('com_bwpostman', 'legal_information_text', '');
+		$I->setManifestOption('com_bwpostman', 'excluded_categories', '');
+		$I->setManifestOption('com_bwpostman', 'default_mails_per_pageload', '100');
+		$I->setManifestOption('com_bwpostman', 'mails_per_pageload_delay', '1');
+		$I->setManifestOption('com_bwpostman', 'mails_per_pageload_delay_unit', '1000');
+		$I->setManifestOption('com_bwpostman', 'publish_nl_by_default', '0');
+		$I->setManifestOption('com_bwpostman', 'compress_backup', '1');
+		$I->setManifestOption('com_bwpostman', 'show_boldt_link', '1');
+		$I->setManifestOption('com_bwpostman', 'loglevel', 'ERROR');
+
+		// Registration form
+		$I->setManifestOption('com_bwpostman', 'pretext', 'Introtext to registration by component');
+		$I->setManifestOption('com_bwpostman', 'show_gender', '0');
+		$I->setManifestOption('com_bwpostman', 'show_firstname_field', '1');
+		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_name_field', '1');
+		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_special', '0');
+		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
+		$I->setManifestOption('com_bwpostman', 'special_label', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'special_desc', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'show_emailformat', '1');
+		$I->setManifestOption('com_bwpostman', 'default_emailformat', '1');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', '0');
+		$I->setManifestOption('com_bwpostman', 'show_desc', '1');
+		$I->setManifestOption('com_bwpostman', 'desc_length', '150');
+		$I->setManifestOption('com_bwpostman', 'disclaimer', '0');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_selection', '0');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
+		$I->setManifestOption('com_bwpostman', 'article_id', '70');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_menuitem', '437');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_target', '0');
+		$I->setManifestOption('com_bwpostman', 'showinmodal', '1');
+		$I->setManifestOption('com_bwpostman', 'use_captcha', '0');
+		$I->setManifestOption('com_bwpostman', 'security_question', 'Wieviele Beine hat ein Pferd? (1, 2, ...)');
+		$I->setManifestOption('com_bwpostman', 'security_answer', '4');
+
+		// Activation
+		$I->setManifestOption('com_bwpostman', 'activation_salutation_text', '');
+		$I->setManifestOption('com_bwpostman', 'activation_text', '');
+		$I->setManifestOption('com_bwpostman', 'permission_text', '');
+		$I->setManifestOption('com_bwpostman', 'activation_to_webmaster', '0');
+		$I->setManifestOption('com_bwpostman', 'activation_from_name', '');
+		$I->setManifestOption('com_bwpostman', 'activation_to_webmaster_email', '');
+
+		// Unsubscription
+		$I->setManifestOption('com_bwpostman', 'del_sub_1_click', '0');
+		$I->setManifestOption('com_bwpostman', 'deactivation_to_webmaster', '0');
+		$I->setManifestOption('com_bwpostman', 'deactivation_from_name', '');
+		$I->setManifestOption('com_bwpostman', 'deactivation_to_webmaster_email', '');
+
+		// Lists view
+		$I->setManifestOption('com_bwpostman', 'filter_field', '1');
+		$I->setManifestOption('com_bwpostman', 'date_filter_enable', '1');
+		$I->setManifestOption('com_bwpostman', 'ml_filter_enable', '1');
+		$I->setManifestOption('com_bwpostman', 'cam_filter_enable', '1');
+		$I->setManifestOption('com_bwpostman', 'group_filter_enable', '1');
+		$I->setManifestOption('com_bwpostman', 'attachment_enable', '1');
+		$I->setManifestOption('com_bwpostman', 'access-check', '1');
+		$I->setManifestOption('com_bwpostman', 'display_num', '10');
+
+		// Single view
+		$I->setManifestOption('com_bwpostman', 'attachment_single_enable', '1');
+		$I->setManifestOption('com_bwpostman', 'subject_as_title', '1');
 	}
 
 	/**

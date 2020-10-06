@@ -594,6 +594,106 @@ class InstallationPage
 	public static $icon_published       = "//*[@id='pluginList']/tbody/tr/td[3]/a/span[contains(@class, 'icon-publish')]";
 
 	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $siteModulesUrl  = '/administrator/index.php?option=com_modules&';
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $registrationModuleLine    = "//*[@id='moduleList']/tbody/tr/td/div/a[contains(text(), 'BwPostman Module')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $positionField    = "//*[@id='general']/div/div[2]/fieldset/div[2]/div[2]/div/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $positionValue    = "//*/ul/li[contains(text(), 'Left top [position-7]')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $publishedField    = "//*[@id='jform_published_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $publishedValue    = "//*[@id='jform_published_chzn']/div/ul/li[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $registrationTabs    = array(
+		'Module' => "//*[@id='myTabTabs']/li[1]",
+		'Menu Assignment' => "//*[@id='myTabTabs']/li[2]",
+		'Mailing list selection' => "//*[@id='myTabTabs']/li[3]",
+		'Settings for the registration form' => "//*[@id='myTabTabs']/li[4]",
+		'Advanced' => "//*[@id='myTabTabs']/li[5]",
+		'Permissions' => "//*[@id='myTabTabs']/li[6]",
+	);
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $menuAssignmentField    = "//*[@id='jform_assignment_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $menuAssignmentValue    = "//*[@id='jform_assignment_chzn']/div/ul/li[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $mlFieldset    = "//*[@id='jform_params_mod_ml_available']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $mlSelectRow    = "//*[@id='cb%s']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $RegModPositionFE    = "//*/h3[contains(text(), 'BwPostman Module')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $search_button        = "//*[@id='j-main-container']/div[1]/div[1]/div[2]/div[1]/button";
+
+
+
+	/**
 	 * Test method to install BwPostman
 	 *
 	 * @param   \AcceptanceTester                $I

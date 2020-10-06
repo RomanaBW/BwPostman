@@ -190,7 +190,7 @@ class DbHelper extends Module
 		{
 			$table_name = Generals::$db_prefix . 'modules';
 			$where      = " WHERE `module` = '$extension'";
-			$n          = 26;
+			$n          = 0;
 		}
 		else
 		{

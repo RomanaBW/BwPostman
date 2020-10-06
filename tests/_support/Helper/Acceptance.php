@@ -1445,7 +1445,9 @@ class Acceptance extends Codeception\Module
 			if ($options->com_params)
 			{
 				$extension = 'com_bwpostman';
-				$options = DbHelper::grabManifestOptionsFromDatabase($extension, $credentials, $criteria);
+				$comOptions = DbHelper::grabManifestOptionsFromDatabase($extension, $credentials, $criteria);
+
+				$options = (object)array_merge((array)$options, (array)$comOptions);
 			}
 		}
 

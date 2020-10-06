@@ -1,5 +1,7 @@
 <?php
 use Page\Generals as Generals;
+use Page\Login;
+use Page\RegistrationModulePage as Helper;
 use Page\SubscriberviewPage as SubsView;
 use Page\InstallationPage;
 
@@ -31,13 +33,79 @@ use Page\InstallationPage;
 class SubscribeModuleCest
 {
 	/**
+	 * Test method to login into backend
+	 *
+	 * @param   Login     $loginPage
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function _login(Login $loginPage)
+	{
+		$loginPage->logIntoBackend(Generals::$admin);
+	}
+
+	/**
+	 * Test method to ensure registration module is set up and activated
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function setupRegistrationModule(AcceptanceTester $I)
+	{
+		$I->wantTo("Activate and setup registration module");
+		$I->expectTo('get module active at frontend');
+
+		// Open Module configuration page
+		$I->amOnPage(InstallationPage::$siteModulesUrl);
+		$I->fillField(Generals::$search_field, 'BwPostman');
+		$I->clickAndWait(InstallationPage::$search_button, 1);
+
+		$I->click(InstallationPage::$registrationModuleLine);
+		$I->waitForElement(InstallationPage::$positionField, 5);
+
+		// Fill module tab
+		$I->click(InstallationPage::$registrationTabs['Module']);
+		$I->waitForElement(InstallationPage::$publishedField);
+
+		$I->clickAndWait(InstallationPage::$positionField, 1);
+		$I->clickAndWait(InstallationPage::$positionValue, 1);
+
+		$I->selectOption(InstallationPage::$publishedField, "Published");
+
+		// Fill menu assignment tab
+		$I->click(InstallationPage::$registrationTabs['Menu Assignment']);
+		$I->waitForElement(InstallationPage::$menuAssignmentList);
+
+		$I->selectOption(InstallationPage::$menuAssignmentList, "On all pages");
+
+		$I->click(Generals::$toolbar4['Save & Close']);
+		$I->waitForElement(Generals::$alert_success4, 5);
+
+		// Preset module options
+		Helper::presetModuleOptions($I);
+	}
+
+	/**
 	 * Test method to subscribe by module in front end with component options, activate and unsubscribe
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -100,7 +168,7 @@ class SubscribeModuleCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -122,7 +190,7 @@ class SubscribeModuleCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -777,7 +845,7 @@ class SubscribeModuleCest
 	 *
 	 * @param AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -832,7 +900,7 @@ class SubscribeModuleCest
 	 * @param string           $mailaddress
 	 * @param bool             $good
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -852,7 +920,7 @@ class SubscribeModuleCest
 	 * @param AcceptanceTester $I
 	 * @param string           $button
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -864,5 +932,22 @@ class SubscribeModuleCest
 		$I->checkOption(SubsView::$button_unsubscribe);
 		$I->click(SubsView::$button_submitleave);
 		$I->dontSee(SubsView::$mail_fill_1, SubsView::$mail);
+	}
+
+	/**
+	 * Test method to logout from backend
+	 *
+	 * @param   AcceptanceTester $I
+	 * @param Login              $loginPage
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function _logout(AcceptanceTester $I, Login $loginPage)
+	{
+		$loginPage->logoutFromBackend($I);
 	}
 }

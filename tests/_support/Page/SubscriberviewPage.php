@@ -221,7 +221,7 @@ class SubscriberviewPage
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $question    = "//*[@id='stringQuestion']";
 
@@ -426,161 +426,168 @@ class SubscriberviewPage
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $firstname_star    = "//*/p[contains(@class, 'user_firstname')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $name_star    = "//*/p[contains(@class, 'user_name')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $special_star    = "//*/p[contains(@class, 'edit_special')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $special_placeholder    = "//*/p[contains(@class, 'edit_special')]/label[contains(text(), '%s')]";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $mailaddress_star    = "//*/p[contains(@class, 'user_email')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $ml_select_star    = "//*/p[contains(@class, 'mail_available')]/sup/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $disclaimer_star    = "//*/p[contains(@class, 'agree_check')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $security_star    = "//*/p[contains(@class, 'question-result')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $ml_desc_long    = "02 Mailingliste 6 weiterer Lauf B";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $ml_desc_short    = "02 Mailingliste 6 ...";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $ml_desc_label    = "02 Mailingliste 6 B:";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $ml_desc_identifier    = "//*/p[@class='mail_available_list mailinglists2']/span[2]";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $intro_identifier    = "//*/p[@class='pre_text']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $intro_text_comp    = "Introtext to registration by component";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $disclaimer_link_modal    = "//*[@id='bwp_open']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $disclaimer_link    = "//*/p[@class='agree_check']/span/a";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $disclaimer_modal_identifier    = "//*/div[@id='DisclaimerModal']/div/div/div[contains(@class,'modal-body')]";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $disclaimer_modal_close    = "//*/div[@id='DisclaimerModal']/div/div/div[contains(@class,'modal-header')]/button";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $disclaimer_url_text    = "1. Inhalt des Onlineangebotes";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $disclaimer_article_text    = "Templates control the look and feel of your website.";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $disclaimer_menuitem_text    = "This tells you a bit about this blog and the person who writes it. ";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
 	 */
 	public static $security_question_error    = "Spam question: You entered the wrong result!";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.2
+	 * @since 4.0.0
+	 */
+	public static $activation_mail_error    = "has successfully been processed but an email with the activation code for your subscription could not be sent.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
 	 */
 	public static $mailinglist_number    = "//*/div[@id='bwp_mod_form_listsfield']/div[@class='a_mailinglist_item_%s']";
 
@@ -686,6 +693,13 @@ class SubscriberviewPage
 	 * @since 2.0.0
 	 */
 	public static $err_get_editlink             = ".//*[@id='bwp_com_error_geteditlink']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $err_no_activation             = ".//*[@id='bwp_com_error_email']";
 
 
 	/**

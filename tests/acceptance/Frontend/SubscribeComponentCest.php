@@ -562,7 +562,7 @@ class SubscribeComponentCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.2
+	 * @since   4.0.0
 	 */
 	public function SubscribeShowFieldsComponent(AcceptanceTester $I)
 	{
@@ -643,7 +643,7 @@ class SubscribeComponentCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.2
+	 * @since   4.0.0
 	 */
 	public function CheckMailinglistDescriptionComponent(AcceptanceTester $I)
 	{
@@ -691,7 +691,7 @@ class SubscribeComponentCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.2
+	 * @since   4.0.0
 	 */
 	public function CheckIntroTextComponent(AcceptanceTester $I)
 	{
@@ -731,7 +731,7 @@ class SubscribeComponentCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.2
+	 * @since   4.0.0
 	 */
 	public function CheckDisclaimerContentPopupComponent(AcceptanceTester $I)
 	{
@@ -799,7 +799,7 @@ class SubscribeComponentCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.2
+	 * @since   4.0.0
 	 */
 	public function CheckDisclaimerContentNewWindowComponent(AcceptanceTester $I)
 	{
@@ -860,7 +860,7 @@ class SubscribeComponentCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.2
+	 * @since   4.0.0
 	 */
 	public function CheckDisclaimerContentSameWindowComponent(AcceptanceTester $I)
 	{
@@ -915,7 +915,7 @@ class SubscribeComponentCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.2
+	 * @since   4.0.0
 	 */
 	public function CheckSecurityQuestionComponent(AcceptanceTester $I)
 	{
@@ -960,7 +960,7 @@ class SubscribeComponentCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.2
+	 * @since   4.0.0
 	 */
 //	public function CheckSelectableMailinglistsComponent(AcceptanceTester $I)
 //	{
@@ -983,6 +983,39 @@ class SubscribeComponentCest
 //		// Reset options
 //		Generals::presetComponentOptions($I);
 //	}
+
+	/**
+	 * Test method to subscribe by component in front end, but send no activation because of missing sender data
+	 *
+	 * @param   AcceptanceTester         $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function SubscribeActivationNoSenderData(AcceptanceTester $I)
+	{
+		$I->wantTo("Subscribe to mailinglist by component, get error message no activation mail was sent");
+		$I->expectTo('see error message');
+
+		Generals::presetComponentOptions($I);
+		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster');
+
+		SubsView::subscribeByComponent($I);
+		$I->click(SubsView::$button_register);
+
+		$I->waitForElementVisible(SubsView::$err_no_activation, 3);
+		$I->see(SubsView::$msg_err_occurred);
+		$I->see(SubsView::$activation_mail_error);
+
+		SubsView::activate($I, SubsView::$mail_fill_1);
+
+		SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
+
+		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster@boldt-webservice.de');
+	}
 
 	/**
 	 * Test method to go to edit newsletter subscription

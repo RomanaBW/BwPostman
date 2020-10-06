@@ -28,18 +28,19 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 
 defined('_JEXEC') or die('Restricted access');
 
-use BwPostmanModelEdit;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\LogEntry;
+use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\Mail\MailHelper;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use RuntimeException;
-use BoldtWebservice\Component\BwPostman\Site\Models\BwPostmanModelRegister;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwEmailValidation;
 
 /**
  * Class BwPostmanSubscriberHelper
@@ -119,7 +120,7 @@ class BwPostmanSubscriberHelper
 				$jinput->set('layout', 'error_accountnotactivated');
 				break;
 			case 407: // Subscriber account already exists
-				$itemid        = BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
+				$itemid        = self::getMenuItemid('edit'); // Itemid from edit-view
 				$session_error = array(
 					'err_msg'     => $err->err_msg,
 					'err_id'      => $err->err_id,
@@ -132,7 +133,7 @@ class BwPostmanSubscriberHelper
 				$jinput->set('layout', 'error_accountgeneral');
 				break;
 			case 408: // Email doesn't exist
-				$itemid        = BwPostmanSubscriberHelper::getMenuItemid('register'); // Itemid from register-view
+				$itemid        = self::getMenuItemid('register'); // Itemid from register-view
 				$session_error = array(
 					'err_msg'     => $err->err_msg,
 					'err_id'      => 0,
@@ -200,7 +201,7 @@ class BwPostmanSubscriberHelper
 	public static function errorUnsubscribe($err_msg)
 	{
 		$jinput  = Factory::getApplication()->input;
-		$itemid  = BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
+		$itemid  = self::getMenuItemid('edit'); // Itemid from edit-view
 		$session = Factory::getSession();
 
 		$session_error = array(
@@ -435,23 +436,30 @@ class BwPostmanSubscriberHelper
 
 		// Get a JMail instance and fill in mailer data
 		$mailer = Factory::getMailer();
-		$sender = array();
-		$reply  = array();
 
-		$sender[0] = $params->get('default_from_email');
-		$sender[1] = Text::_($params->get('default_from_name'));
+		$sender = self::getSender();
+		$reply  = self::getReplyTo();
 
-		$reply[0] = $params->get('default_from_email');
-		$reply[1] = Text::_($params->get('default_from_name'));
+		try
+		{
+			$mailer->setSender($sender);
+			$mailer->addReplyTo($reply[0], $reply[1]);
+			$mailer->addRecipient($subscriber->email);
+			$mailer->setSubject($subject);
+			$mailer->setBody($body);
+			$mailer->isHtml(false);
 
-		$mailer->setSender($sender);
-		$mailer->addReplyTo($reply[0], $reply[1]);
-		$mailer->addRecipient($subscriber->email);
-		$mailer->setSubject($subject);
-		$mailer->setBody($body);
-		$mailer->isHtml(false);
+			$res = $mailer->Send();
+		}
+		catch (\UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
+		{
+			$logOptions = array();
+			$logger     = BwLogger::getInstance($logOptions);
+			$message    = $exception->getMessage();
+			$res        = false;
 
-		$res = $mailer->Send();
+			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'activation'));
+		}
 
 		return $res;
 	}
@@ -962,6 +970,64 @@ class BwPostmanSubscriberHelper
 
 
 		return $isValidEmail;
+	}
+
+	/**
+	 * Method to get sender name and mail address from config
+	 *
+	 * @return array
+	 *
+	 * @since 4.0.0
+	 */
+	private static function getSender(): array
+	{
+		$config = Factory::getConfig();
+		$params = ComponentHelper::getParams('com_bwpostman');
+		$sender = array();
+
+		$sender[0] = MailHelper::cleanAddress($params->get('default_from_email'));
+		$sender[1] = Text::_($params->get('default_from_name'));
+
+		if (empty($sender[0]))
+		{
+			$sender[0] = MailHelper::cleanAddress($config->get('mailfrom'));
+		}
+
+		if (empty($sender[1]))
+		{
+			$sender[1] = $config->get('fromname');
+		}
+
+		return $sender;
+	}
+
+	/**
+	 * Method to get reply to name and mail address from config
+	 *
+	 * @return array
+	 *
+	 * @since 4.0.0
+	 */
+	private static function getReplyTo(): array
+	{
+		$config = Factory::getConfig();
+		$params = ComponentHelper::getParams('com_bwpostman');
+		$reply = array();
+
+		$reply[0] = MailHelper::cleanAddress($params->get('default_from_email'));
+		$reply[1] = Text::_($params->get('default_reply_email'));
+
+		if (empty($reply[0]))
+		{
+			$reply[0] = MailHelper::cleanAddress($config->get('mailfrom'));
+		}
+
+		if (empty($reply[1]))
+		{
+			$reply[1] = $config->get('fromname');
+		}
+
+		return $reply;
 	}
 }
 

@@ -8,13 +8,15 @@
 		/>
 
 		<field name="default_from_email"
-			type="text" size="50" default=""
+			type="email"
+			size="50"
+			default=""
 			label="COM_BWPOSTMAN_DEFAULT_FROM_EMAIL"
 			description="COM_BWPOSTMAN_DEFAULT_FROM_EMAIL_NOTE"
 		/>
 
 		<field name="default_reply_email"
-			type="text"
+			type="email"
 			size="50"
 			default=""
 			label="COM_BWPOSTMAN_DEFAULT_REPLY_EMAIL"

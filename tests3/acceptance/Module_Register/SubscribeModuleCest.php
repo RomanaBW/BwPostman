@@ -118,6 +118,7 @@ class SubscribeModuleCest
 
 		Helper::presetModuleOptions($I);
 		$I->setManifestOption('mod_bwpostman', 'com_params', '1');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
 
 		$this->subscribeByModule($I);
 
@@ -148,6 +149,7 @@ class SubscribeModuleCest
 
 		Helper::presetModuleOptions($I);
 		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
 
 		$this->subscribeByModule($I);
 
@@ -201,6 +203,7 @@ class SubscribeModuleCest
 
 		Helper::presetModuleOptions($I);
 		$options = $I->getManifestOptions('mod_bwpostman');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
 
 		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
 		$I->setManifestOption('mod_bwpostman', 'show_firstname_field', '0');
@@ -620,6 +623,7 @@ class SubscribeModuleCest
 		Helper::presetModuleOptions($I);
 
 		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
 
 		// Set disclaimer to link
 		$I->setManifestOption('mod_bwpostman', 'use_captcha', '1');

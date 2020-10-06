@@ -44,6 +44,9 @@ class SubscribeComponentCest
 	{
 		$I->wantTo("Subscribe to mailinglist by component");
 		$I->expectTo('get confirmation mail');
+
+		Generals::presetComponentOptions($I);
+
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
@@ -70,6 +73,9 @@ class SubscribeComponentCest
 	{
 		$I->wantTo("Subscribe to mailinglist by component a second time");
 		$I->expectTo('see error message');
+
+		Generals::presetComponentOptions($I);
+
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
@@ -103,6 +109,9 @@ class SubscribeComponentCest
 	{
 		$I->wantTo("Subscribe to mailinglist by component");
 		$I->expectTo('get confirmation mail');
+
+		Generals::presetComponentOptions($I);
+
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
@@ -139,6 +148,9 @@ class SubscribeComponentCest
 	{
 		$I->wantTo("Subscribe to mailinglist and unsubscribe by edit link");
 		$I->expectTo('unsubscribe with edit link');
+
+		Generals::presetComponentOptions($I);
+
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
@@ -175,6 +187,8 @@ class SubscribeComponentCest
 	 */
 	public function SubscribeMissingValuesComponent(AcceptanceTester $I)
 	{
+		Generals::presetComponentOptions($I);
+
 		$I->setManifestOption('com_bwpostman', 'show_firstname_field', '0');
 		$I->setManifestOption('com_bwpostman', 'show_name_field', '0');
 		$I->setManifestOption('com_bwpostman', 'show_special', '0');
@@ -225,11 +239,16 @@ class SubscribeComponentCest
 	 */
 	public function SubscribeSimpleActivateChangeAndUnsubscribe(AcceptanceTester $I)
 	{
+		Generals::presetComponentOptions($I);
+
 		$options    = $I->getManifestOptions('com_bwpostman');
 
 		// Subscribe
 		$I->wantTo("Subscribe to mailinglist by component, change values and unsubscribe");
 		$I->expectTo('get confirmation mail');
+
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
+
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
@@ -308,6 +327,9 @@ class SubscribeComponentCest
 	{
 		$I->wantTo("Subscribe to mailinglist by component");
 		$I->expectTo('get confirmation mail');
+
+		Generals::presetComponentOptions($I);
+
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
@@ -405,6 +427,8 @@ class SubscribeComponentCest
 		$I->expectTo('see error messages');
 
 		// Store current field options
+		Generals::presetComponentOptions($I);
+
 		$options       = $I->getManifestOptions('com_bwpostman');
 		$showName      = $options->show_name_field;
 		$showFirstName = $options->show_firstname_field;
@@ -500,8 +524,10 @@ class SubscribeComponentCest
 		$I->expectTo('see error message');
 
 		// Store current field options
-		$options       = $I->getManifestOptions('com_bwpostman');
-		$verify      = $options->verify_mailaddress;
+		Generals::presetComponentOptions($I);
+
+		$options = $I->getManifestOptions('com_bwpostman');
+		$verify  = $options->verify_mailaddress;
 
 		// Set verification of mail address
 		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 1);
@@ -629,6 +655,7 @@ class SubscribeComponentCest
 		$I->expectTo('to see shortened mailinglist description');
 
 		Generals::presetComponentOptions($I);
+		$I->setManifestOption('com_bwpostman', 'show_desc', '1');
 
 		// Call page with description length 50
 		$I->amOnPage(SubsView::$register_url);
@@ -903,6 +930,7 @@ class SubscribeComponentCest
 
 		// Set disclaimer to link
 		$I->setManifestOption('com_bwpostman', 'use_captcha', '1');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', '0');
 
 		$I->amOnPage(SubsView::$register_url);
 		SubsView::subscribeByComponent($I);
@@ -917,7 +945,7 @@ class SubscribeComponentCest
 		$I->fillField(SubsView::$question, '4');
 		$I->seeElement(SubsView::$security_star);
 		$I->click(SubsView::$button_register);
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElement(SubsView::$registration_complete, 3);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		SubsView::activate($I, SubsView::$mail_fill_1);
@@ -959,6 +987,39 @@ class SubscribeComponentCest
 //		// Reset options
 //		Generals::presetComponentOptions($I);
 //	}
+
+	/**
+	 * Test method to subscribe by component in front end, but send no activation because of missing sender data
+	 *
+	 * @param   AcceptanceTester         $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.0.2
+	 */
+	public function SubscribeActivationNoSenderData(AcceptanceTester $I)
+	{
+		$I->wantTo("Subscribe to mailinglist by component, get error message no activation mail was sent");
+		$I->expectTo('see error message');
+
+		Generals::presetComponentOptions($I);
+		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster');
+
+		SubsView::subscribeByComponent($I);
+		$I->click(SubsView::$button_register);
+
+		$I->waitForElementVisible(SubsView::$err_no_activation, 3);
+		$I->see(SubsView::$msg_err_occurred);
+		$I->see(SubsView::$activation_mail_error);
+
+		SubsView::activate($I, SubsView::$mail_fill_1);
+
+		SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
+
+		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster@boldt-webservice.de');
+	}
 
 	/**
 	 * Test method to go to edit newsletter subscription

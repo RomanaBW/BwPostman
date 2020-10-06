@@ -589,6 +589,13 @@ class SubscriberviewPage
 	 *
 	 * @since 3.0.2
 	 */
+	public static $activation_mail_error    = "has successfully been processed but an email with the activation code for your subscription could not be sent.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
 	public static $mailinglist_number    = "//*/div[@id='bwp_mod_form_listsfield']/div[@class='a_mailinglist_item_%s']";
 
 
@@ -693,6 +700,13 @@ class SubscriberviewPage
 	 * @since 2.0.0
 	 */
 	public static $err_get_editlink             = ".//*[@id='bwp_com_error_geteditlink']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $err_no_activation             = ".//*[@id='bwp_com_error_email']";
 
 
 	/**

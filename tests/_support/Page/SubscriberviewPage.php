@@ -218,112 +218,12 @@ class SubscriberviewPage
 	 */
 	public static $disclaimer    = ".//*[@id='agreecheck']";
 
-	// field identifier module
-
 	/**
 	 * @var string
 	 *
-	 * @since 2.0.0
+	 * @since 3.0.2
 	 */
-	public static $mod_gender_female = ".//*[@id='genFemaleMod']";
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_gender_male   = ".//*[@id='genMaleMod']";
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_female        = '1';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_male          = '0';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_firstname     = '#a_firstname';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_name          = '#a_name';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_special       = '#a_special';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_mail          = '#a_email';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_format_text   = '#formatTextMod';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_format_html   = '#formatHtmlMod';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_ml0           = '#a_mailinglists0';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_ml1           = '#a_mailinglists1';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_ml2           = '#a_mailinglists2';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_math_captcha  = '#a_stringCaptcha';
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_disclaimer    = '#agreecheck_mod';
+	public static $question    = "//*[@id='stringQuestion']";
 
 
 	/**
@@ -359,6 +259,13 @@ class SubscriberviewPage
 	/**
 	 * @var string
 	 *
+	 * @since 3.0.0
+	 */
+	public static $abuseLink     = "http://www.abuse.nil/";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $mail_fill_1      = "dummy-1@tester-net.nil";
@@ -369,6 +276,20 @@ class SubscriberviewPage
 	 * @since 2.0.0
 	 */
 	public static $mail_fill_2      = "dummy-2@tester-net.nil";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $mail_fill_unreachable_domain      = "dummy@unreachable.nil";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $mail_fill_unreachable_mailbox      = "dummy@boldt-webservice.de";
 
 	// button identifier
 
@@ -435,22 +356,6 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mod_button_register      = ".//*[@id='bwp_mod_form']/*/button[text()='Register']";
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $mod_button_edit          = ".//*[@id='bwp_mod_form_editlink']/button";
-
-	// subscriber mail and base of activation link
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
 	public static $activation_link  = "/index.php?option=com_bwpostman&view=register&task=activate&subscriber=";
 
 	/**
@@ -503,6 +408,181 @@ class SubscriberviewPage
 	 * @since 2.0.0
 	 */
 	public static $register_success         = ".//*[@id='bwp_com_register_success']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorContainerHeader         = "//*[@id='system-message']/joomla-alert/div[1][contains(@class, 'alert-heading')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorContainerContent         = "//*[@id='system-message']/joomla-alert/div[2]/div[contains(@class, 'alert-message')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $firstname_star    = "//*/p[contains(@class, 'user_firstname')]/span/i[@class='icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $name_star    = "//*/p[contains(@class, 'user_name')]/span/i[@class='icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $special_star    = "//*/p[contains(@class, 'edit_special')]/span/i[@class='icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $special_placeholder    = "//*/p[contains(@class, 'edit_special')]/label[contains(text(), '%s')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $mailaddress_star    = "//*/p[contains(@class, 'user_email')]/span/i[@class='icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $ml_select_star    = "//*/p[contains(@class, 'mail_available')]/sup/i[@class='icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $disclaimer_star    = "//*/p[contains(@class, 'agree_check')]/span/i[@class='icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $security_star    = "//*/p[contains(@class, 'question-result')]/span/i[@class='icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $ml_desc_long    = "02 Mailingliste 6 weiterer Lauf B";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $ml_desc_short    = "02 Mailingliste 6 ...";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $ml_desc_label    = "02 Mailingliste 6 B:";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $ml_desc_identifier    = "//*/p[@class='mail_available_list mailinglists2']/span[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $intro_identifier    = "//*/p[@class='pre_text']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $intro_text_comp    = "Introtext to registration by component";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $disclaimer_link_modal    = "//*[@id='bwp_open']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $disclaimer_link    = "//*/p[@class='agree_check']/span/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $disclaimer_modal_identifier    = "//*/div[@id='DisclaimerModal']/div/div/div[contains(@class,'modal-body')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $disclaimer_modal_close    = "//*/div[@id='DisclaimerModal']/div/div/div[contains(@class,'modal-header')]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $disclaimer_url_text    = "1. Inhalt des Onlineangebotes";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $disclaimer_article_text    = "Templates control the look and feel of your website.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $disclaimer_menuitem_text    = "This tells you a bit about this blog and the person who writes it. ";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $security_question_error    = "Spam question: You entered the wrong result!";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $mailinglist_number    = "//*/div[@id='bwp_mod_form_listsfield']/div[@class='a_mailinglist_item_%s']";
 
 
 	//messages
@@ -746,6 +826,34 @@ class SubscriberviewPage
 	public static $invalid_select_newsletter_132    = 'You have to select one newsletter.';
 
 	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseFirstName    = "Invalid input at 'Your first name'";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseLastName    = "Invalid input at 'Your name'";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseSpecial    = "Invalid input at '%s'";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseEmail    = "Invalid input at 'Your email address'";
+
+	/**
 	 * Test method to subscribe to newsletter in front end by component
 	 *
 	 * @param \AcceptanceTester             $I
@@ -796,8 +904,6 @@ class SubscriberviewPage
 		{
 			$I->checkOption(self::$disclaimer);
 		}
-
-		$I->click(self::$button_register);
 	}
 
 	/**

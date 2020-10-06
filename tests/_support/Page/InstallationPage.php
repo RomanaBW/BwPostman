@@ -620,6 +620,97 @@ class InstallationPage
 	 */
 	public static $sampleDataSuccessText4       = 'Blog Sample Data has been installed!';
 
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $siteModulesUrl  = '/administrator/index.php?option=com_modules&view=modules&client_id=0';
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $registrationModuleLine    = "//*[@id='moduleList']/tbody/tr/th/div/a[contains(@title, 'Edit BwPostman Module')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $positionField    = "//*[@id='general']/div/div[2]/div/div[@class='card-body']/fieldset/div[2]/div[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $positionValue    = "//*[@id='general']/div/div[2]/div/div[@class='card-body']/fieldset/div[2]/div[2]/joomla-field-fancy-select/div/div[2]/div/div[contains(text(), 'Sidebar-right')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $publishedField    = "#jform_published";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $registrationTabs    = array(
+		'Module' => "//*[@id='tab-general']",
+		'Menu Assignment' => "//*[@id='tab-assignment']",
+		'Mailing list selection' => "//*[@id='tab-attrib-ml_available']",
+		'Settings for the registration form' => "//*[@id='tab-attrib-reg_settings']",
+		'Advanced' => "//*[@id='tab-attrib-advanced']",
+		'Permissions' => "//*[@id='tab-permissions']",
+	);
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $menuAssignmentList    = "#jform_assignment";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $menuAssignmentValue    = "//*[@id='jform_assignment_chzn']/div/ul/li[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.2
+	 */
+	public static $mlFieldset    = "//*[@id='jform_params_mod_ml_available']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $mlSelectRow    = "//*[@id='cb%s']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $RegModPositionFE    = "//*/h3[contains(text(), 'BwPostman Module')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $search_button        = "//*[@id='j-main-container']/div[1]/div[2]/div/div/div/span/button";
+
 
 
 	/**

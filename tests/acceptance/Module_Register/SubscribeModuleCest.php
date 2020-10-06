@@ -1,6 +1,7 @@
 <?php
 use Page\Generals as Generals;
 use Page\SubscriberviewPage as SubsView;
+use Page\InstallationPage;
 
 /**
  * Class SubscribeModuleCest
@@ -30,7 +31,7 @@ use Page\SubscriberviewPage as SubsView;
 class SubscribeModuleCest
 {
 	/**
-	 * Test method to subscribe by module in front end, activate and unsubscribe
+	 * Test method to subscribe by module in front end with component options, activate and unsubscribe
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -40,17 +41,56 @@ class SubscribeModuleCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function SubscribeModuleSimpleActivateAndUnsubscribe(AcceptanceTester $I)
+	public function SubscribeModuleSimpleActivateAndUnsubscribeCO(AcceptanceTester $I)
 	{
-		$I->wantTo("Subscribe to mailinglist by module");
+		$I->wantTo("Subscribe to mailinglist by module using component options");
 		$I->expectTo('get confirmation mail');
+
+		Helper::presetModuleOptions($I);
+		$I->setManifestOption('mod_bwpostman', 'com_params', '1');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
+
 		$this->subscribeByModule($I);
+
+		$I->click(Helper::$mod_button_register);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		$this->activate($I, SubsView::$mail_fill_1);
 
 		$this->unsubscribe($I, SubsView::$activated_edit_Link);
+	}
+
+	/**
+	 * Test method to subscribe by module in front end with module options, activate and unsubscribe
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function SubscribeModuleSimpleActivateAndUnsubscribeMO(AcceptanceTester $I)
+	{
+		$I->wantTo("Subscribe to mailinglist by module using module options");
+		$I->expectTo('get confirmation mail');
+
+		Helper::presetModuleOptions($I);
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
+
+		$this->subscribeByModule($I);
+
+		$I->click(Helper::$mod_button_register);
+		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
+
+		$this->activate($I, SubsView::$mail_fill_1);
+
+		$this->unsubscribe($I, SubsView::$activated_edit_Link);
+		$I->setManifestOption('mod_bwpostman', 'com_params', '1');
 	}
 
 	/**
@@ -69,13 +109,14 @@ class SubscribeModuleCest
 		$I->wantTo("Edit subscription by module");
 		$I->expectTo('see get edit link page');
 		$I->amOnPage(SubsView::$register_url);
-		$I->click(SubsView::$mod_button_edit);
-		$I->waitForElement(SubsView::$mail, 30);
+		$I->click(Helper::$mod_button_edit);
+		$I->waitForElement(SubsView::$mail, 3);
 		$I->see(SubsView::$edit_get_text);
 	}
 
 	/**
 	 * Test method to verify messages for missing input values by module
+	 * Set 'show' fields to off but set obligation to on
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -87,89 +128,660 @@ class SubscribeModuleCest
 	 */
 	public function SubscribeMissingValuesModule(AcceptanceTester $I)
 	{
-		//Chromium fails to remember entered values, so some fillField are practically superfluous, but Chromium needs them
-		$options    = $I->getManifestOptions('mod_bwpostman');
-
 		$I->wantTo("Test messages for missing input values by module");
 		$I->expectTo('see error popup');
-				$I->amOnPage(SubsView::$register_url);
+
+		Helper::presetModuleOptions($I);
+		$options = $I->getManifestOptions('mod_bwpostman');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
+
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('mod_bwpostman', 'show_firstname_field', '0');
+		$I->setManifestOption('mod_bwpostman', 'show_name_field', '0');
+		$I->setManifestOption('mod_bwpostman', 'show_special', '0');
+		$I->setManifestOption('mod_bwpostman', 'firstname_field_obligation', '1');
+		$I->setManifestOption('mod_bwpostman', 'name_field_obligation', '1');
+		$I->setManifestOption('mod_bwpostman', 'special_field_obligation', '1');
+		$I->setManifestOption('mod_bwpostman', 'disclaimer', '1');
+
+		$I->amOnPage(SubsView::$register_url);
 		$I->seeElement(SubsView::$view_register);
 
-		// omit mail address
-		$I->click(SubsView::$mod_button_register);
-		$I->seeInPopup(SubsView::$popup_valid_mailaddress);
-		$I->acceptPopup();
+		// Check visibility of obligation marker
+		$I->seeElement(Helper::$mod_firstname_star);
+		$I->seeElement(Helper::$mod_name_star);
+		$I->seeElement(Helper::$mod_special_star);
+		$I->seeElement(Helper::$mod_mailaddress_star);
+		$I->seeElement(Helper::$mod_ml_select_star);
+		$I->seeElement(Helper::$mod_disclaimer_star);
 
-		$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
+		$I->scrollTo(Helper::$mod_button_register, 0, -100);
+		$I->click(Helper::$mod_button_register);
+		$I->waitForElementVisible(Helper::$errorModalFooterButton, 2);
 
-		//omit mailinglist selection
-		$I->clickAndWait(SubsView::$mod_button_register, 1);
-		$I->seeInPopup(SubsView::$popup_select_newsletter);
-		$I->acceptPopup();
+		$I->see(SubsView::$popup_valid_mailaddress, Helper::$errorModalBody);
+		$I->see(Helper::$invalid_select_newsletter_mod, Helper::$errorModalBody);
+		$I->see(Helper::$invalid_field_firstname_mod, Helper::$errorModalBody);
+		$I->see(Helper::$invalid_field_name_mod, Helper::$errorModalBody);
+		$I->see(sprintf(Helper::$invalid_field_special_mod, $options->special_label), Helper::$errorModalBody);
+		$I->see(SubsView::$popup_accept_disclaimer, Helper::$errorModalBody);
+
 		$I->wait(1);
+		$I->click(Helper::$errorModalFooterButton);
+		$I->waitForElementNotVisible(Helper::$errorModalFooterButton, 5);
 
-		$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
-		$I->checkOption(SubsView::$mod_ml1);
-		$I->checkOption(SubsView::$mod_disclaimer);
+		Helper::presetModuleOptions($I);
+	}
 
-		// omit first name
-		if ($options->show_firstname_field || $options->firstname_field_obligation)
+	/**
+	 * Test method to check visibility of input fields by module
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function SubscribeShowFieldsModule(AcceptanceTester $I)
+	{
+		$I->wantTo("Test visibility of input fields by module");
+		$I->expectTo('not to see some fields');
+
+		Helper::presetModuleOptions($I);
+		$options = $I->getManifestOptions('mod_bwpostman');
+
+		// Set visibility of fields to off
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('mod_bwpostman', 'show_gender', '0');
+		$I->setManifestOption('mod_bwpostman', 'show_firstname_field', '0');
+		$I->setManifestOption('mod_bwpostman', 'show_name_field', '0');
+		$I->setManifestOption('mod_bwpostman', 'show_special', '0');
+		$I->setManifestOption('mod_bwpostman', 'show_emailformat', '0');
+		$I->setManifestOption('mod_bwpostman', 'disclaimer', '0');
+		$I->setManifestOption('mod_bwpostman', 'firstname_field_obligation', '0');
+		$I->setManifestOption('mod_bwpostman', 'name_field_obligation', '0');
+		$I->setManifestOption('mod_bwpostman', 'special_field_obligation', '0');
+
+		// Call page with new options
+		$I->amOnPage(SubsView::$register_url);
+		$I->seeElement(SubsView::$view_register);
+
+		// Check visibility of fields switched to off
+		$I->dontSeeElement(Helper::$mod_gender_select_id);
+		$I->dontSeeElement(Helper::$mod_firstname);
+		$I->dontSeeElement(Helper::$mod_name);
+		$I->dontSeeElement(Helper::$mod_special);
+		$I->dontSeeElement(Helper::$mod_format_html);
+		$I->dontSeeElement(Helper::$mod_format_text);
+		$I->dontSeeElement(Helper::$mod_disclaimer);
+
+		// Check visibility of obligation marker
+		$I->dontSeeElement(Helper::$mod_firstname_star);
+		$I->dontSeeElement(Helper::$mod_name_star);
+		$I->dontSeeElement(Helper::$mod_special_star);
+		$I->seeElement(Helper::$mod_mailaddress_star);
+		$I->seeElement(Helper::$mod_ml_select_star);
+		$I->dontSeeElement(Helper::$mod_disclaimer_star);
+
+		// Set visibility of fields to on
+		$I->expectTo('not to see some fields');
+
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('mod_bwpostman', 'show_gender', '1');
+		$I->setManifestOption('mod_bwpostman', 'show_firstname_field', '1');
+		$I->setManifestOption('mod_bwpostman', 'show_name_field', '1');
+		$I->setManifestOption('mod_bwpostman', 'show_special', '1');
+		$I->setManifestOption('mod_bwpostman', 'show_emailformat', '1');
+		$I->setManifestOption('mod_bwpostman', 'disclaimer', '1');
+
+		// Call page with new options
+		$I->reloadPage();
+		$I->waitForElementVisible(SubsView::$view_register, 3);
+
+		// Check visibility of fields switched to on
+		$I->seeElement(Helper::$mod_gender_select_id);
+		$I->seeElement(Helper::$mod_firstname);
+		$I->seeElement(Helper::$mod_name);
+		$I->seeElement(Helper::$mod_special);
+		$I->seeElement(Helper::$mod_format_html);
+		$I->seeElement(Helper::$mod_format_text);
+		$I->seeElement(Helper::$mod_disclaimer);
+
+		// Check label of field special
+		$I->seeElement(sprintf(Helper::$mod_special_placeholder, $options->special_label));
+
+		// Reset options
+		Helper::presetModuleOptions($I);
+	}
+
+	/**
+	 * Test method to check mailing list description visibility and length by module
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function CheckMailinglistDescriptionModule(AcceptanceTester $I)
+	{
+		$I->wantTo("Test visibility and length of input mailinglist description by module");
+		$I->expectTo('to see shortened mailinglist description');
+
+		Helper::presetModuleOptions($I);
+
+		// Set usage of module parameters
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+
+		// Call page with description length 50
+		$I->amOnPage(SubsView::$register_url);
+		$I->seeElement(SubsView::$view_register);
+		$I->scrollTo(Helper::$mod_ml_desc_identifier, 0, -100);
+		$I->seeElement(Helper::$mod_ml_desc_identifier);
+		$I->see(Helper::$mod_ml_desc_long, Helper::$mod_ml_desc_identifier);
+
+		// Set description length to 18
+		$I->setManifestOption('mod_bwpostman', 'desc_length', '18');
+
+		// Call page with description length 18
+		$I->reloadPage();
+		$I->seeElement(SubsView::$view_register);
+		$I->scrollTo(Helper::$mod_ml_desc_identifier, 0, -100);
+		$I->seeElement(Helper::$mod_ml_desc_identifier);
+		$I->see(Helper::$mod_ml_desc_short, Helper::$mod_ml_desc_identifier);
+
+		// Set show description to off
+		$I->setManifestOption('mod_bwpostman', 'show_desc', '0');
+
+		// Call page with description off
+		$I->reloadPage();
+		$I->seeElement(SubsView::$view_register);
+		$I->dontSeeElement(Helper::$mod_ml_desc_identifier);
+
+		// Reset options
+		Helper::presetModuleOptions($I);
+	}
+
+	/**
+	 * Test method to check intro text by module
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function CheckIntroTextModule(AcceptanceTester $I)
+	{
+		$I->wantTo("Test intro text by module");
+		$I->expectTo('to see appropriate intro text');
+
+		Helper::presetModuleOptions($I);
+
+		// Set intro text of component
+		$I->setManifestOption('com_bwpostman', 'pretext', Helper::$mod_intro_text_comp);
+
+		$I->amOnPage(SubsView::$register_url);
+		$I->seeElement(SubsView::$view_register);
+		$I->scrollTo(Helper::$mod_intro_identifier, 0, -100);
+		$I->seeElement(Helper::$mod_intro_identifier);
+		$I->see(Helper::$mod_intro_text_comp, Helper::$mod_intro_identifier);
+
+		// Set intro text of module
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('mod_bwpostman', 'pretext', Helper::$mod_intro_text_mod);
+
+		$I->reloadPage();
+		$I->seeElement(SubsView::$view_register);
+		$I->scrollTo(Helper::$mod_intro_identifier, 0, -100);
+		$I->seeElement(Helper::$mod_intro_identifier);
+		$I->see(Helper::$mod_intro_text_mod, Helper::$mod_intro_identifier);
+
+		// Reset options
+		Helper::presetModuleOptions($I);
+	}
+
+	/**
+	 * Test method to check sources at modal window by module
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function CheckDisclaimerContentPopupModule(AcceptanceTester $I)
+	{
+		$I->wantTo("Test disclaimer text by module at modal popup");
+		$I->expectTo('to see appropriate disclaimer text at modal popup');
+
+		Helper::presetModuleOptions($I);
+
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+
+		// Set disclaimer to link
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '0');
+
+		$I->amOnPage(SubsView::$register_url);
+		$I->seeElement(SubsView::$view_register);
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(Helper::$mod_disclaimer);
+		$I->click(Helper::$mod_disclaimer_link_modal);
+		$I->wait(2);
+		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
+		$I->switchToIframe('Information');
+		$I->see(Helper::$mod_disclaimer_url_text);
+		$I->switchToIframe();
+		$I->click(Helper::$mod_disclaimer_modal_close);
+
+		// Set disclaimer to article
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '1');
+
+		$I->reloadPage();
+		$I->seeElement(SubsView::$view_register);
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(Helper::$mod_disclaimer);
+		$I->click(Helper::$mod_disclaimer_link_modal);
+		$I->wait(2);
+		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
+		$I->switchToIframe('Information');
+		$I->see(Helper::$mod_disclaimer_article_text);
+		$I->switchToIframe();
+		$I->click(Helper::$mod_disclaimer_modal_close);
+
+		// Set disclaimer to menu item
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '2');
+
+		$I->reloadPage();
+		$I->seeElement(SubsView::$view_register);
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(Helper::$mod_disclaimer);
+		$I->click(Helper::$mod_disclaimer_link_modal);
+		$I->wait(2);
+		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
+		$I->switchToIframe('Information');
+		$I->see(Helper::$mod_disclaimer_menuitem_text);
+		$I->switchToIframe();
+		$I->click(Helper::$mod_disclaimer_modal_close);
+
+		// Reset options
+		Helper::presetModuleOptions($I);
+	}
+
+	/**
+	 * Test method to check sources at new window by module
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function CheckDisclaimerContentNewWindowModule(AcceptanceTester $I)
+	{
+		$I->wantTo("Test disclaimer text by module at new window");
+		$I->expectTo('to see appropriate disclaimer text at new window');
+
+		Helper::presetModuleOptions($I);
+
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+
+		// Set disclaimer to link
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '0');
+		$I->setManifestOption('mod_bwpostman', 'showinmodal', '0');
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_target', '0');
+
+		$I->amOnPage(SubsView::$register_url);
+		$I->seeElement(SubsView::$view_register);
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(Helper::$mod_disclaimer);
+		$I->click(Helper::$mod_disclaimer_link);
+		$I->switchToNextTab();
+		$I->see(Helper::$mod_disclaimer_url_text);
+		$I->closeTab();
+
+		// Set disclaimer to article
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '1');
+
+		$I->reloadPage();
+		$I->seeElement(SubsView::$view_register);
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(Helper::$mod_disclaimer);
+		$I->click(Helper::$mod_disclaimer_link);
+		$I->switchToNextTab();
+		$I->see(Helper::$mod_disclaimer_article_text);
+		$I->closeTab();
+
+		// Set disclaimer to menu item
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '2');
+
+		$I->reloadPage();
+		$I->seeElement(SubsView::$view_register);
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(Helper::$mod_disclaimer);
+		$I->click(Helper::$mod_disclaimer_link);
+		$I->switchToNextTab();
+		$I->see(Helper::$mod_disclaimer_menuitem_text);
+		$I->closeTab();
+
+		// Reset options
+		Helper::presetModuleOptions($I);
+	}
+
+	/**
+	 * Test method to check sources at same window by module
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function CheckDisclaimerContentSameWindowModule(AcceptanceTester $I)
+	{
+		$I->wantTo("Test disclaimer text by module at new window");
+		$I->expectTo('to see appropriate disclaimer text at new window');
+
+		Helper::presetModuleOptions($I);
+
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+
+		// Set disclaimer to link
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '0');
+		$I->setManifestOption('mod_bwpostman', 'showinmodal', '0');
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_target', '1');
+
+		$I->amOnPage(SubsView::$register_url);
+		$I->waitForElementVisible(SubsView::$view_register, 3);
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(Helper::$mod_disclaimer);
+		$I->click(Helper::$mod_disclaimer_link);
+		$I->see(Helper::$mod_disclaimer_url_text);
+
+		// Set disclaimer to article
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '1');
+
+		$I->amOnPage(SubsView::$register_url);
+		$I->waitForElementVisible(SubsView::$view_register, 3);
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(Helper::$mod_disclaimer);
+		$I->click(Helper::$mod_disclaimer_link);
+		$I->see(Helper::$mod_disclaimer_article_text);
+
+		// Set disclaimer to menu item
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '2');
+
+		$I->amOnPage(SubsView::$register_url);
+		$I->waitForElementVisible(SubsView::$view_register, 3);
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(Helper::$mod_disclaimer);
+		$I->click(Helper::$mod_disclaimer_link);
+		$I->see(Helper::$mod_disclaimer_menuitem_text);
+
+		// Reset options
+		Helper::presetModuleOptions($I);
+	}
+
+	/**
+	 * Test method to check security question by module
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function CheckSecurityQuestionModule(AcceptanceTester $I)
+	{
+		$I->wantTo("Test security question by module");
+		$I->expectTo('to see error message on wrong answer');
+
+		Helper::presetModuleOptions($I);
+
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
+
+		// Set disclaimer to link
+		$I->setManifestOption('mod_bwpostman', 'use_captcha', '1');
+
+		$I->amOnPage(SubsView::$register_url);
+		$this->subscribeByModule($I);
+
+		$I->click(Helper::$mod_button_register);
+
+		$I->waitForElementVisible(Helper::$errorModalFooterButton, 2);
+		$I->see(Helper::$mod_security_question_error, Helper::$errorModalBody);
+
+		$I->wait(1);
+		$I->click(Helper::$errorModalFooterButton);
+		$I->waitForElementNotVisible(Helper::$errorModalFooterButton, 5);
+
+		$I->fillField(Helper::$mod_question, '4');
+		$I->seeElement(Helper::$mod_security_star);
+		$I->click(Helper::$mod_button_register);
+		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
+
+		$this->activate($I, SubsView::$mail_fill_1);
+		$this->unsubscribe($I, SubsView::$activated_edit_Link);
+
+		// Reset options
+		Helper::presetModuleOptions($I);
+	}
+
+	/**
+	 * Test method to check number of selectable mailing lists by module
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function CheckSelectableMailinglistsModule(AcceptanceTester $I)
+	{
+		$I->wantTo("Test the number of selectable mailing lists by module");
+		$I->expectTo('to see correct numbers of mailing lists');
+
+		Helper::presetModuleOptions($I);
+
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+
+		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(sprintf(Helper::$mod_mailinglist_number, '3'));
+
+		$I->setManifestOption('mod_bwpostman', 'mod_ml_available', array(''));
+		$I->reloadPage();
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(sprintf(Helper::$mod_mailinglist_number, '9'));
+
+		$I->reloadPage();
+		// Reset options
+		Helper::presetModuleOptions($I);
+	}
+
+	/**
+	 * Test method to subscribe by module in front end with links at text fields
+	 *
+	 * @param   AcceptanceTester         $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.0.2
+	 */
+	public function SubscribeAbuseFieldsModule(AcceptanceTester $I)
+	{
+		$I->wantTo("Subscribe to mailinglist by module with links at text fields");
+		$I->expectTo('see error messages');
+
+		// Store current field options
+		$options       = $I->getManifestOptions('mod_bwpostman');
+		$showName      = $options->show_name_field;
+		$showFirstName = $options->show_firstname_field;
+		$showSpecial   = $options->show_special;
+		$specialLabel  = $options->special_label;
+
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+
+		// Set needed field options
+		$I->setManifestOption('mod_bwpostman', 'show_name_field', '1');
+		$I->setManifestOption('mod_bwpostman', 'show_firstname_field', '1');
+		$I->setManifestOption('mod_bwpostman', 'show_special', '1');
+
+		$I->amOnPage(SubsView::$register_url);
+		$I->wait(1);
+		$I->seeElement(Helper::$mod_button_register);
+
+		// Fill needed fields
+		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_1);
+		$I->clickAndWait(Helper::$mod_format_text, 1);
+		$I->checkOption(Helper::$mod_ml1);
+		$I->checkOption(Helper::$mod_disclaimer);
+
+		// Fill first name with link
+		$I->expectTo('see error message invalid first name');
+		$I->fillField(Helper::$mod_firstname, SubsView::$abuseLink);
+		$I->fillField(Helper::$mod_name, SubsView::$lastname_fill);
+		$I->fillField(Helper::$mod_special, SubsView::$special_fill);
+
+		$I->click(Helper::$mod_button_register);
+		$I->waitForElementVisible(SubsView::$errorContainerContent, 2);
+
+
+		// Check error message first name
+		$I->see(SubsView::$errorAbuseFirstName, SubsView::$errorContainerContent);
+//		$I->see('Error', SubsView::$errorContainerHeader);
+
+		// Fill needed fields
+		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_1);
+		$I->clickAndWait(Helper::$mod_format_text, 1);
+		$I->checkOption(Helper::$mod_ml1);
+		$I->checkOption(Helper::$mod_disclaimer);
+
+		// Fill last name with link
+		$I->expectTo('see error message invalid name');
+		$I->fillField(Helper::$mod_firstname, SubsView::$firstname_fill);
+		$I->fillField(Helper::$mod_name, SubsView::$abuseLink);
+		$I->fillField(Helper::$mod_special, SubsView::$special_fill);
+
+		$I->click(Helper::$mod_button_register);
+		$I->waitForElementVisible(SubsView::$errorContainerContent, 2);
+
+		// Check error message last name
+//		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see(SubsView::$errorAbuseLastName, SubsView::$errorContainerContent);
+
+		// Fill needed fields
+		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_1);
+		$I->clickAndWait(Helper::$mod_format_text, 1);
+		$I->checkOption(Helper::$mod_ml1);
+		$I->checkOption(Helper::$mod_disclaimer);
+
+		// Fill special with link
+		$I->expectTo('see error message invalid special');
+		$I->fillField(Helper::$mod_firstname, SubsView::$firstname_fill);
+		$I->fillField(Helper::$mod_name, SubsView::$lastname_fill);
+		$I->fillField(Helper::$mod_special, SubsView::$abuseLink);
+
+		$I->click(Helper::$mod_button_register);
+		$I->waitForElementVisible(SubsView::$errorContainerContent, 2);
+
+		// Check error message special
+		if ($options->special_label === '')
 		{
-			$I->click(SubsView::$mod_button_register);
-			$I->seeElement(Generals::$alert_error);
-			$I->see(SubsView::$invalid_field_firstname_mod);
-			$I->fillField(SubsView::$mod_firstname, SubsView::$firstname_fill);
-			$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
-			$I->checkOption(SubsView::$mod_ml1);
-			$I->checkOption(SubsView::$mod_disclaimer);
+			$options->special_label = 'Additional Field';
 		}
 
-		// omit last name
-		if ($options->show_name_field || $options->name_field_obligation)
-		{
-			$I->click(SubsView::$mod_button_register);
-			$I->seeElement(Generals::$alert_error);
-			$I->see(SubsView::$invalid_field_name_mod);
-			$I->fillField(SubsView::$mod_firstname, SubsView::$firstname_fill);
-			$I->fillField(SubsView::$mod_name, SubsView::$lastname_fill);
-			$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
-			$I->checkOption(SubsView::$mod_ml1);
-			$I->checkOption(SubsView::$mod_disclaimer);
-		}
+		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see(sprintf(SubsView::$errorAbuseSpecial, $options->special_label), SubsView::$errorContainerContent);
 
-		// omit additional field
-		if ($options->show_special || $options->special_field_obligation)
-		{
-			$I->click(SubsView::$mod_button_register);
-			$I->seeElement(Generals::$alert_error);
-			$I->see(sprintf(SubsView::$invalid_field_special_mod, $options->special_label));
-			$I->fillField(SubsView::$mod_special, SubsView::$special_fill);
-			$I->fillField(SubsView::$mod_firstname, SubsView::$firstname_fill);
-			$I->fillField(SubsView::$mod_name, SubsView::$lastname_fill);
-			$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
-			$I->checkOption(SubsView::$mod_ml1);
-		}
+		// Reset field options
+		$I->setManifestOption('mod_bwpostman', 'show_name_field', $showName);
+		$I->setManifestOption('mod_bwpostman', 'show_firstname_field', $showFirstName);
+		$I->setManifestOption('mod_bwpostman', 'show_special', $showSpecial);
+		$I->setManifestOption('mod_bwpostman', 'special_label', $specialLabel);
+	}
 
-		// omit disclaimer
-		if ($options->disclaimer)
-		{
-			$I->click(SubsView::$mod_button_register);
-			$I->seeInPopup(SubsView::$popup_accept_disclaimer);
-			$I->acceptPopup();
-			$I->checkOption(SubsView::$mod_disclaimer);
-		}
+	/**
+	 * Test method to subscribe by module in front end with unreachable domain or mailbox
+	 *
+	 * @param   AcceptanceTester         $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.0.2
+	 */
+	public function SubscribeUnreachableMailAddressModule(AcceptanceTester $I)
+	{
+		$I->wantTo("Subscribe to mailinglist by module with unreachable email address");
+		$I->expectTo('see error message');
+
+		// Store current field options
+		$options = $I->getManifestOptions('com_bwpostman');
+		$verify  = $options->verify_mailaddress;
+
+		// Set verification of mail address
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 1);
+
+		// Fill form
+		$this->subscribeByModule($I);
+
+		// Set unreachable domain
+		$I->expectTo('see error message invalid email address (domain)');
+		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_unreachable_domain);
+
+		$I->click(Helper::$mod_button_register);
+		$I->waitForElementVisible(SubsView::$errorContainerContent, 2);
+
+		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), SubsView::$errorContainerContent);
+
+		// Set unreachable mailbox
+		$I->expectTo('see error message invalid email address (mailbox)');
+		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_unreachable_mailbox);
+
+		$I->click(SubsView::$button_register);
+		$I->waitForElementVisible(SubsView::$errorContainerContent, 2);
+
+		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), SubsView::$errorContainerContent);
+
+		// Reset field options
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', $verify);
 	}
 
 	/**
 	 * Test method to subscribe to newsletter in front end by module
 	 *
-	 * @param \AcceptanceTester             $I
+	 * @param AcceptanceTester $I
 	 *
 	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	private function subscribeByModule(\AcceptanceTester $I)
+	private function subscribeByModule(AcceptanceTester $I)
 	{
 		$options    = $I->getManifestOptions('mod_bwpostman');
 
@@ -178,56 +790,53 @@ class SubscribeModuleCest
 
 		if ($options->show_gender)
 		{
-			$I->click(SubsView::$gender_female);
+			$I->clickAndWait(Helper::$mod_gender_select_id, 1);
+			$I->click(Helper::$mod_gender_female);
 		}
 
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
 		{
-			$I->fillField(SubsView::$mod_firstname, SubsView::$firstname_fill);
+			$I->fillField(Helper::$mod_firstname, SubsView::$firstname_fill);
 		}
 
 		if ($options->show_name_field || $options->name_field_obligation)
 		{
-			$I->fillField(SubsView::$mod_name, SubsView::$lastname_fill);
+			$I->fillField(Helper::$mod_name, SubsView::$lastname_fill);
 		}
 
-		$I->fillField(SubsView::$mod_mail, SubsView::$mail_fill_1);
+		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_1);
 
 		if ($options->show_emailformat)
 		{
-			$I->clickAndWait(SubsView::$format_text, 1);
+			$I->clickAndWait(Helper::$mod_format_text, 1);
 		}
 
 		if ($options->show_special || $options->special_field_obligation)
 		{
-			$I->fillField(SubsView::$mod_special, SubsView::$special_fill);
+			$I->fillField(Helper::$mod_special, SubsView::$special_fill);
 		}
 
-		$I->checkOption(SubsView::$mod_ml2);
-		$I->scrollTo(SubsView::$mod_button_register);
+		$I->checkOption(Helper::$mod_ml2);
+		$I->scrollTo(Helper::$mod_button_register);
 
 		if ($options->disclaimer)
 		{
-			$I->checkOption(SubsView::$mod_disclaimer);
+			$I->checkOption(Helper::$mod_disclaimer);
 		}
-
-		$I->click(SubsView::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete, 30);
-		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 	}
 
 	/**
 	 * Test method to activate newsletter subscription
 	 *
-	 * @param \AcceptanceTester             $I
-	 * @param string                        $mailaddress
-	 * @param bool                          $good
+	 * @param AcceptanceTester $I
+	 * @param string           $mailaddress
+	 * @param bool             $good
 	 *
 	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	private function activate(\AcceptanceTester $I, $mailaddress, $good = true)
+	private function activate(AcceptanceTester $I, $mailaddress, $good = true)
 	{
 		$activation_code = $I->getActivationCode($mailaddress);
 		$I->amOnPage(SubsView::$activation_link . $activation_code);
@@ -240,14 +849,14 @@ class SubscribeModuleCest
 	/**
 	 * Test method to unsubscribe from all newsletters
 	 *
-	 * @param \AcceptanceTester             $I
-	 * @param string                        $button
+	 * @param AcceptanceTester $I
+	 * @param string           $button
 	 *
 	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	private function unsubscribe(\AcceptanceTester $I, $button)
+	private function unsubscribe(AcceptanceTester $I, $button)
 	{
 		$I->click($button);
 		$I->waitForElement(SubsView::$view_edit, 30);

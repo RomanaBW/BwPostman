@@ -439,7 +439,7 @@
 
 		<field name="activation_to_webmaster_email"
 			size="50"
-			type="text"
+			type="email"
 			default=""
 			label="COM_BWPOSTMAN_ACTIVATION_TO_EMAIL"
 			description="COM_BWPOSTMAN_ACTIVATION_TO_EMAIL_NOTE"
@@ -481,7 +481,7 @@
 
 		<field name="deactivation_to_webmaster_email"
 			size="50"
-			type="text"
+			type="email"
 			default=""
 			label="COM_BWPOSTMAN_DEACTIVATION_TO_EMAIL"
 			description="COM_BWPOSTMAN_DEACTIVATION_TO_EMAIL_NOTE"

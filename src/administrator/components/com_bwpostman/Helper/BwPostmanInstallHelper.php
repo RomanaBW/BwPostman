@@ -28,9 +28,11 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\LogEntry;
+use RuntimeException;
 
 /**
  * Component helper class

@@ -27,6 +27,7 @@
 use Joomla\CMS\Crypt\Cipher\SodiumCipher;
 use \Joomla\CMS\Crypt\Key;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
@@ -956,14 +957,23 @@ class BwPostmanPhpCron {
 				break;
 		}
 
-		$mailer->setSubject($subject);
-		$mailer->setSender($sender);
-		$mailer->addReplyTo($config->get('replyto'), $config->get('replytoname'));
-		$mailer->addRecipient($user->email);
-		$mailer->setBody($body);
+		try
+		{
+			$mailer->setSubject($subject);
+			$mailer->setSender($sender);
+			$mailer->addReplyTo($config->get('replyto'), $config->get('replytoname'));
+			$mailer->addRecipient($user->email);
+			$mailer->setBody($body);
 
-		$mailer->Send();
-		$this->logger->addEntry(new LogEntry(Text::_('Scheduled sending of newsletter with ID %s finished', $nlToSend), BwLogger::BW_ERROR, 'BwPm_TC'));
+			$mailer->Send();
+			$this->logger->addEntry(new LogEntry(Text::_('Scheduled sending of newsletter with ID %s finished', $nlToSend), BwLogger::BW_ERROR, 'BwPm_TC'));
+		}
+		catch (\UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
+		{
+			$message = $exception->getMessage();
+
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'cron newsletter'));
+		}
 
 	}
 

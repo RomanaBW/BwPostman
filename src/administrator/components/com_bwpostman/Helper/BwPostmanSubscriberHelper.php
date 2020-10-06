@@ -979,7 +979,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since 4.0.0
 	 */
-	private static function getSender(): array
+	public static function getSender(): array
 	{
 		$config = Factory::getConfig();
 		$params = ComponentHelper::getParams('com_bwpostman');
@@ -1008,7 +1008,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since 4.0.0
 	 */
-	private static function getReplyTo(): array
+	public static function getReplyTo(): array
 	{
 		$config = Factory::getConfig();
 		$params = ComponentHelper::getParams('com_bwpostman');

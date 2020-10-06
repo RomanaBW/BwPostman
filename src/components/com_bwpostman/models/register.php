@@ -28,12 +28,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Mail\MailHelper;
-use Joomla\Utilities\ArrayHelper;
 
 // Import MODEL object class
 jimport('joomla.application.component.modeladmin');
@@ -366,11 +366,8 @@ class BwPostmanModelRegister extends JModelAdmin
 	 */
 	public function sendDeactivationNotification($subscriber)
 	{
-		$mailer = $this->setNotificationAddresses('deactivation');
-
 		// set subject
 		$subject = Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION');
-		$mailer->setSubject($subject);
 
 		// Set body
 		$body	= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT');
@@ -380,10 +377,32 @@ class BwPostmanModelRegister extends JModelAdmin
 		$body	.= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_REGISTRATION_DATE') . $subscriber->registration_date . "\n";
 		$body	.= Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION_TEXT_CONFIRMATION_DATE') . $subscriber->confirmation_date . "\n";
 
-		$mailer->setBody($body);
+		try
+		{
+			$mailer = $this->setNotificationAddresses('deactivation');
 
-		// Send the email
-		$mailer->Send();
+			$mailer->setSubject($subject);
+			$mailer->setBody($body);
+
+			// Send the email
+			$mailer->Send();
+		}
+		catch (UnexpectedValueException $exception)
+		{
+			$logOptions = array();
+			$logger     = BwLogger::getInstance($logOptions);
+			$message    = $exception->getMessage();
+
+			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'activation'));
+		}
+		catch (RuntimeException $exception)
+		{
+			$logOptions = array();
+			$logger     = BwLogger::getInstance($logOptions);
+			$message    = $exception->getMessage();
+
+			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'activation'));
+		}
 	}
 
 	/**
@@ -401,11 +420,8 @@ class BwPostmanModelRegister extends JModelAdmin
 	{
 		$subscriber = null;
 
-		$mailer = $this->setNotificationAddresses('activation');
-
 		// set subject
 		$subject = Text::_('COM_BWPOSTMAN_NEW_ACTIVATION');
-		$mailer->setSubject($subject);
 
 		// get body-data for mail and set body
 		$subscriber = $this->getTable()->getSingleSubscriberData((int) $subscriber_id);
@@ -428,10 +444,31 @@ class BwPostmanModelRegister extends JModelAdmin
 		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_CONFIRMATION_IP') . $subscriber->confirmation_ip . "\n";
 		$body	.= Text::_('COM_BWPOSTMAN_NEW_ACTIVATION_TEXT_CONFIRMATION_BY') . $subscriber->confirmed_by . "\n";
 
-		$mailer->setBody($body);
+		try
+		{
+			$mailer = $this->setNotificationAddresses('activation');
+			$mailer->setSubject($subject);
+			$mailer->setBody($body);
 
-		// Send the email
-		$mailer->Send();
+			// Send the email
+			$mailer->Send();
+		}
+		catch (UnexpectedValueException $exception)
+		{
+			$logOptions = array();
+			$logger     = BwLogger::getInstance($logOptions);
+			$message    = $exception->getMessage();
+
+			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'activation'));
+		}
+		catch (RuntimeException $exception)
+		{
+			$logOptions = array();
+			$logger     = BwLogger::getInstance($logOptions);
+			$message    = $exception->getMessage();
+
+			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'activation'));
+		}
 	}
 
 	/**
@@ -451,12 +488,11 @@ class BwPostmanModelRegister extends JModelAdmin
 		$params     = ComponentHelper::getParams('com_bwpostman');
 
 		// set sender and reply-to
-		$from    = array();
-		$from[0] = MailHelper::cleanAddress($params->get('default_from_email'));
-		$from[1] = Text::_($params->get('default_from_name'));
+		$sender = BwPostmanSubscriberHelper::getSender();
+		$reply  = BwPostmanSubscriberHelper::getReplyTo();
 
-		$mailer->setSender($from);
-		$mailer->addReplyTo($from[0], $from[1]);
+		$mailer->setSender($sender);
+		$mailer->addReplyTo($reply);
 
 		// set recipient
 		$recipient_mail = MailHelper::cleanAddress($params->get('activation_to_webmaster_email'));
@@ -470,12 +506,12 @@ class BwPostmanModelRegister extends JModelAdmin
 
 		if (!is_string($recipient_mail))
 		{
-			$recipient_mail = $from[0];
+			$recipient_mail = $sender[0];
 		}
 
 		if (!is_string($recipient_name))
 		{
-			$recipient_name = $from[1];
+			$recipient_name = $sender[1];
 		}
 
 		$mailer->addRecipient($recipient_mail, $recipient_name);

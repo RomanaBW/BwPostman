@@ -137,7 +137,7 @@
 				/>
 			</fieldset>
 
-			<fieldset name="MOD_BWPOSTMAN_OVERVIEW_CAM_AVAILABLE" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field" id="newsletterselect-group">
+			<fieldset name="cam_available" label="MOD_BWPOSTMAN_OVERVIEW_CAM_AVAILABLE_FIELDSET_LABEL" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field" id="newsletterselect-group">
 				<field name="cam_selected_all"
 					type="radio"
 					default="no"

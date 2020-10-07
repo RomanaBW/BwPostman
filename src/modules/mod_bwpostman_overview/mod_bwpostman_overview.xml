@@ -89,7 +89,7 @@
 				</field>
 			</fieldset>
 
-			<fieldset name="MOD_BWPOSTMAN_OVERVIEW_ML_AVAILABLE" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field" id="newsletterselect-group">
+			<fieldset name="ml_available" label="MOD_BWPOSTMAN_OVERVIEW_ML_AVAILABLE_FIELDSET_LABEL" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field" id="newsletterselect-group">
 				<field name="ml_selected_all"
 					type="radio"
 					default=""

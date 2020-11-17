@@ -95,21 +95,42 @@ class TestSubscribersDetailsCest
 	public function CreateOneSubscriberCompleteMainView(AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Subscriber, archive and delete from main view");
+
+		// Preset all fields to be shown and obligatory if possible
+		Generals::presetComponentOptions($I);
+
+		$I->setManifestOption('com_bwpostman', 'show_gender', '1');
+		$I->setManifestOption('com_bwpostman', 'show_firstname_field', '1');
+		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_name_field', '1');
+		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_special', '1');
+		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'special_label', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'special_desc', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'show_emailformat', '1');
+		$I->setManifestOption('com_bwpostman', 'default_emailformat', '1');
+
 		$I->amOnPage(MainView::$url);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addSubscriberButton);
 
-		SubEdit::fillFormSimple($I);
-
+		SubEdit::fillFormSimple($I, SubManage::$format_text, SubEdit::$male);
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+
+		// Check success and saved values
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
+		$this->checkSavedValues($I, '0', '0');
 
 		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
 		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
+
+		// Reset settings
+		Generals::presetComponentOptions($I);
 	}
 
 	/**
@@ -158,22 +179,42 @@ class TestSubscribersDetailsCest
 	public function CreateOneSubscriberCompleteListView(AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Subscriber complete list view");
+
+		// Preset all fields to be shown and obligatory if possible
+		Generals::presetComponentOptions($I);
+
+		$I->setManifestOption('com_bwpostman', 'show_gender', '1');
+		$I->setManifestOption('com_bwpostman', 'show_firstname_field', '1');
+		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_name_field', '1');
+		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_special', '1');
+		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'special_label', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'special_desc', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'show_emailformat', '1');
+		$I->setManifestOption('com_bwpostman', 'default_emailformat', '1');
+
 		$I->amOnPage(SubManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
 
-		SubEdit::fillFormSimple($I);
-
+		SubEdit::fillFormSimple($I, SubManage::$format_html, SubEdit::$female);
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		// Check success and saved values
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
+		$this->checkSavedValues($I, '1', '1');
 
 		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
 		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
+
+		// Reset settings
+		Generals::presetComponentOptions($I);
 	}
 
 	/**
@@ -289,17 +330,34 @@ class TestSubscribersDetailsCest
 	public function CreateOneSubscriberListViewRestore(AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Subscriber list view, archive and restore");
+
+		// Preset all fields to be shown and obligatory if possible
+		Generals::presetComponentOptions($I);
+
+		$I->setManifestOption('com_bwpostman', 'show_gender', '1');
+		$I->setManifestOption('com_bwpostman', 'show_firstname_field', '1');
+		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_name_field', '1');
+		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_special', '1');
+		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'special_label', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'special_desc', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'show_emailformat', '1');
+		$I->setManifestOption('com_bwpostman', 'default_emailformat', '1');
+
 		$I->amOnPage(SubManage::$url);
 
 		$I->click(Generals::$toolbar['New']);
 
-		SubEdit::fillFormSimple($I);
-
+		SubEdit::fillFormSimple($I, SubManage::$format_html, SubEdit::$noGender);
 		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		// Check success and saved values
+		$I->waitForElement(Generals::$alert_header, 5);
 		$I->see("Message", Generals::$alert_header);
 		$I->see(SubEdit::$success_saved, Generals::$alert_msg);
+		$this->checkSavedValues($I, '1', '2');
 
 		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);
 
@@ -313,6 +371,9 @@ class TestSubscribersDetailsCest
 
 		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
 		$I->see('Subscribers', Generals::$pageTitle);
+
+		// Reset settings
+		Generals::presetComponentOptions($I);
 	}
 
 	/**
@@ -624,5 +685,31 @@ class TestSubscribersDetailsCest
 		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
 		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);
 		$I->click(sprintf(SubEdit::$mls_internal, 4));
+	}
+
+	/**
+	 * Method to check, if entered values are correctly saved at database
+	 *
+	 * @param AcceptanceTester $I
+	 * @param string $format (0 = text, 1 = HTML)
+	 * @param string $gender (0 = male, 1 = female, 2 = n.a.)
+	 *
+	 * @since 3.0.2
+	 */
+	private function checkSavedValues(AcceptanceTester $I, $format, $gender)
+	{
+		$table_subs     = Generals::$db_prefix . 'bwpostman_subscribers';
+		$valuesExpected = array(
+			'name'          => SubEdit::$field_name,
+			'firstname'     => SubEdit::$field_firstname,
+			'email'         => SubEdit::$field_email,
+			'emailformat'   => $format,
+			'gender'        => $gender,
+			'special'       => SubEdit::$field_special,
+			'registered_by' => '757',
+			'confirmed_by'  => '757',
+		);
+
+		$I->seeInDatabase($table_subs, $valuesExpected);
 	}
 }

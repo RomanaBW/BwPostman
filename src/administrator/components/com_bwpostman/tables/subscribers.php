@@ -810,7 +810,7 @@ class BwPostmanTableSubscribers extends JTable
 	{
 		$app  = Factory::getApplication();
 
-		if ($this->gender == '')
+		if ($this->gender === '')
 		{
 			$this->gender = 2;
 		}

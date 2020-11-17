@@ -269,15 +269,15 @@ if [[ "${BW_TEST_CAT}" == details_subs ]]
 then
 # single tests for subscribers
 #codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCancelMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_cancel_main.xml --html htmlreports/report_subscribers_cancel_main.html
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCompleteMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_complete_main.xml --html htmlreports/report_subscribers_complete_main.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCompleteMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_complete_main.xml --html htmlreports/report_subscribers_complete_main.html
 #codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCancelListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_cancel_list.xml --html htmlreports/report_subscribers_cancel_list.html
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCompleteListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_complete_list.xml --html htmlreports/report_subscribers_complete_list.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCompleteListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_complete_list.xml --html htmlreports/report_subscribers_complete_list.html
 #codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberSaveNewListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_save_new_list.xml --html htmlreports/report_subscribers_save_new_list.html
 #codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberSaveCopyListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_save_copy_list.xml --html htmlreports/report_subscribers_save_copy_list.html
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberListViewRestore "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_restore_list.xml --html htmlreports/report_subscribers_restore_list.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberListViewRestore "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_restore_list.xml --html htmlreports/report_subscribers_restore_list.html
 #codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateSubscriberTwiceListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_twice_list.xml --html htmlreports/report_subscribers_twice_list.html
 #codecept run acceptance Backend/Details/TestSubscribersDetailsCest::TestSubscriberPrintDataButton "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_print_data_button.xml --html htmlreports/report_subscribers_print_data_button.html
-codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberAbuseListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_abuse_fields.xml --html htmlreports/report_subscribers_abuse_fields.html
+#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberAbuseListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_abuse_fields.xml --html htmlreports/report_subscribers_abuse_fields.html
 fi
 
 ###

@@ -1,6 +1,8 @@
 <?php
 namespace Page;
 
+use AcceptanceTester;
+use Exception;
 use Page\SubscriberManagerPage as SubManage;
 
 /**
@@ -322,6 +324,13 @@ class SubscriberEditPage
 	/**
 	 * @var string
 	 *
+	 * @since 3.0.2
+	 */
+	public static $noGender   = ".//*[@id='jform_gender_chzn']/div/ul/li[1]";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $female   = ".//*[@id='jform_gender_chzn']/div/ul/li[2]";
@@ -331,7 +340,7 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $male     = ".//*[@id='jform_gender_chzn']/div/ul/li[3]";
+	public static $male     = "//*[@id='jform_gender_chzn']/div/ul/li[3]";
 
 	/**
 	 * Variables for selecting mailinglists
@@ -382,15 +391,15 @@ class SubscriberEditPage
 	/**
 	 * Test method to create single Subscriber without cleanup for testing restore permission
 	 *
-	 * @param   \AcceptanceTester   $I
+	 * @param   AcceptanceTester   $I
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public static function CreateSubscriberWithoutCleanup(\AcceptanceTester $I)
+	public static function CreateSubscriberWithoutCleanup(AcceptanceTester $I)
 	{
 		$I->wantTo("Create Subscriber without cleanup");
 		$I->amOnPage(SubManage::$url);
@@ -410,20 +419,22 @@ class SubscriberEditPage
 	 * Method to fill form without check of required fields
 	 * This method simply fills all fields, required or not
 	 *
-	 * @param \AcceptanceTester $I
+	 * @param AcceptanceTester $I
+	 * @param string $format (0 = text, 1 = HTML)
+	 * @param string $gender (0 = male, 1 = female, 2 = n.a.)
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public static function fillFormSimple(\AcceptanceTester $I)
+	public static function fillFormSimple(AcceptanceTester $I, $format = ".//*/li[text()='Text']", $gender = "//*[@id='jform_gender_chzn']/div/ul/li[3]")
 	{
 		$options    = $I->getManifestOptions('com_bwpostman');
 
 		if ($options->show_gender)
 		{
 			$I->clickAndWait(self::$gender, 1);
-			$I->clickAndWait(self::$male, 1);
+			$I->clickAndWait($gender, 1);
 		}
 
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
@@ -441,7 +452,7 @@ class SubscriberEditPage
 		if ($options->show_emailformat)
 		{
 			$I->clickAndWait(self::$mailformat, 1);
-			$I->clickAndWait(SubManage::$format_text, 1);
+			$I->clickAndWait($format, 1);
 		}
 
 		if ($options->show_special || $options->special_field_obligation)
@@ -461,15 +472,15 @@ class SubscriberEditPage
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
+	 * @param AcceptanceTester $I
 	 *
 	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since version
 	 */
-	public static function prepareDeleteArray(\AcceptanceTester $I)
+	public static function prepareDeleteArray(AcceptanceTester $I)
 	{
 		$edit_arc_del_array = self::$arc_del_array;
 		$title_col = 4;

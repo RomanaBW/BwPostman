@@ -6,12 +6,26 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
+Version 3.0.2 released (2020-11-17)----
+
+Bugfix
+# Make IDs of edit_mailformat and gender select list of registration module unique
+# Add required star to available mailinglists
+# Repair display of special field
+# Switch to get mailinglists by access level up to user access level (including lower levels)
+# Format gender select list
+# Repair saving of gender male
+
+
 Version 3.0.1 released (2020-09-08)----
 
 Bugfix
 # Correct query for attribute at restoring tables
 # Ignore and report unprocessable user groups at restore tables
 # Catch some exceptions to prevent white screen on dashboard
+
+Improvement
+~ Sending mails by BwPostman without correct sender now nearly impossible
 
 
 Version 3.0.0 released (2020-09-05)----

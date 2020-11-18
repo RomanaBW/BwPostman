@@ -1,6 +1,7 @@
 pipeline {
     agent { label 'Tester' }
 
+
     stages {
         stage('Set variables') {
 			steps {

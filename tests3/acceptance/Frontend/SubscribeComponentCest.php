@@ -958,6 +958,8 @@ class SubscribeComponentCest
 	/**
 	 * Test method to check number of selectable mailing lists by component
 	 *
+	 * This test is only copied from module cest, but not usable at component, because mailing lists are not selectable at component
+	 *
 	 * @param   AcceptanceTester                $I
 	 *
 	 * @return  void
@@ -978,9 +980,9 @@ class SubscribeComponentCest
 //		$I->scrollTo(SubsView::$disclaimer, 0, -100);
 //		$I->seeElement(sprintf(SubsView::$mailinglist_number, '3'));
 //
-//		$I->setManifestOption('mod_bwpostman', 'mod_ml_available', array(''));
+//		$I->setManifestOption('com_bwpostman', 'mod_ml_available', array(''));
 //		$I->reloadPage();
-//		$I->scrollTo(SubsView::$mod_disclaimer, 0, -100);
+//		$I->scrollTo(SubsView::$disclaimer, 0, -100);
 //		$I->seeElement(sprintf(SubsView::$mailinglist_number, '9'));
 //
 //		$I->reloadPage();
@@ -988,38 +990,38 @@ class SubscribeComponentCest
 //		Generals::presetComponentOptions($I);
 //	}
 
-	/**
-	 * Test method to subscribe by component in front end, but send no activation because of missing sender data
-	 *
-	 * @param   AcceptanceTester         $I
-	 *
-	 * @return  void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   3.0.2
-	 */
-	public function SubscribeActivationNoSenderData(AcceptanceTester $I)
-	{
-		$I->wantTo("Subscribe to mailinglist by component, get error message no activation mail was sent");
-		$I->expectTo('see error message');
-
-		Generals::presetComponentOptions($I);
-		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster');
-
-		SubsView::subscribeByComponent($I);
-		$I->click(SubsView::$button_register);
-
-		$I->waitForElementVisible(SubsView::$err_no_activation, 3);
-		$I->see(SubsView::$msg_err_occurred);
-		$I->see(SubsView::$activation_mail_error);
-
-		SubsView::activate($I, SubsView::$mail_fill_1);
-
-		SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
-
-		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster@boldt-webservice.de');
-	}
+//	/**
+//	 * Test method to subscribe by component in front end, but send no activation because of missing sender data
+//	 *
+//	 * @param   AcceptanceTester         $I
+//	 *
+//	 * @return  void
+//	 *
+//	 * @throws Exception
+//	 *
+//	 * @since   3.0.2
+//	 */
+//	public function SubscribeActivationNoSenderData(AcceptanceTester $I)
+//	{
+//		$I->wantTo("Subscribe to mailinglist by component, get error message no activation mail was sent");
+//		$I->expectTo('see error message');
+//
+//		Generals::presetComponentOptions($I);
+//		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster');
+//
+//		SubsView::subscribeByComponent($I);
+//		$I->click(SubsView::$button_register);
+//
+//		$I->waitForElementVisible(SubsView::$err_no_activation, 3);
+//		$I->see(SubsView::$msg_err_occurred);
+//		$I->see(SubsView::$activation_mail_error);
+//
+//		SubsView::activate($I, SubsView::$mail_fill_1);
+//
+//		SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
+//
+//		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster@boldt-webservice.de');
+//	}
 
 	/**
 	 * Test method to go to edit newsletter subscription

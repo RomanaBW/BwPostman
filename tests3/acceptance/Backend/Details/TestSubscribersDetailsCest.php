@@ -478,6 +478,11 @@ class TestSubscribersDetailsCest
 		$I->wantTo("Create one Subscriber complete list view");
 		$I->amOnPage(SubManage::$url);
 
+		Generals::presetComponentOptions($I);
+
+		// Set show special
+		$I->setManifestOption('com_bwpostman', 'show_special', '1');
+
 		$I->click(Generals::$toolbar['New']);
 
 		$options    = $I->getManifestOptions('com_bwpostman');
@@ -567,6 +572,8 @@ class TestSubscribersDetailsCest
 		$I->see(sprintf(SubEdit::$errorAbuseSpecial, trim(SubEdit::$specialTitle)), Generals::$alert_msg);
 
 		$I->clickAndWait(SubEdit::$toolbar['Cancel'], 1);
+
+		Generals::presetComponentOptions($I);
 	}
 
 	/**

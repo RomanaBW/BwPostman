@@ -340,7 +340,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 					// Show inside modalbox
 					if ($paramsComponent->get('showinmodal') == 1)
 					{
-						echo '<a id="bwp_mod_open" href="javascript:void(0);" data-target="#DisclaimerModModal" data-toggle="modal"';
+						echo '<a id="bwp_mod_open"';
 					}
 					// Show not in modalbox
 					else
@@ -436,19 +436,13 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 	<?php
 	}; // End: Show registration form
 	// The Modal
-	if ($paramsComponent->get('showinmodal') == 1)
-	{
-		$modalParams = array();
-		$modalParams['modalWidth'] = 80;
-		$modalParams['bodyHeight'] = 70;
-		$modalParams['url'] = $disclaimer_link;
-		$modalParams['title'] = 'Information';
-		echo HTMLHelper::_('bootstrap.renderModal', 'DisclaimerModModal', $modalParams);
-	}
-	$modalParams = array();
-	$modalParams['title'] = Text::_('ERROR');
-	$modalParams['footer'] = '<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">'
-		. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>';
-	echo HTMLHelper::_('bootstrap.renderModal', 'registerErrors', $modalParams);
 	?>
+	<input type="hidden" id="bwp_mod_Modalhref" value="<?php echo $disclaimer_link; ?>" />
+	<div id="bwp_mod_Modal" class="bwp_mod_modal">
+		<div id="bwp_mod_modal-content">
+			<h4 id="bwp_modal-title">Information</h4>
+			<span class="bwp_mod_close">&times;</span>
+			<div id="bwp_mod_wrapper"></div>
+		</div>
+	</div>
 </div>

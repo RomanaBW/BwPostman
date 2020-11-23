@@ -144,7 +144,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								// Show inside modalbox
 								if ($this->params->get('showinmodal') == 1)
 								{
-									echo '<a id="bwp_open" data-target="#DisclaimerModal" data-toggle="modal"';
+									echo '<a id="bwp_com_open"';
 								}
 								// Show not in modalbox
 								else
@@ -190,13 +190,16 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 
 			// The Modal
 			if ($this->params->get('showinmodal') == 1)
-			{
-				$modalParams               = array();
-				$modalParams['modalWidth'] = 80;
-				$modalParams['bodyHeight'] = 70;
-				$modalParams['url']        = $disclaimer_link;
-				$modalParams['title']      = Text::_('COM_BWPOSTMAN_DISCLAIMER_TITLE');
-				echo HTMLHelper::_('bootstrap.renderModal', 'DisclaimerModal', $modalParams);
+			{ ?>
+				<input type="hidden" id="bwp_com_Modalhref" value="<?php echo $disclaimer_link; ?>" />
+				<div id="bwp_com_Modal" class="bwp_com_modal">
+					<div id="bwp_com_modal-content">
+						<h4 id="bwp_modal-title">Information</h4>
+						<span class="bwp_com_close">&times;</span>
+						<div id="bwp_com_wrapper"></div>
+					</div>
+				</div>
+			<?php
 			}
 		}
 		else
@@ -256,5 +259,67 @@ jQuery(document).ready(function()
 			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
 		}
 	});
+
+	function setComModal() {
+		// Set the modal height and width 90%
+		if (typeof window.innerWidth != 'undefined')
+		{
+			viewportwidth = window.innerWidth,
+				viewportheight = window.innerHeight
+		}
+		else if (typeof document.documentElement != 'undefined'
+			&& typeof document.documentElement.clientWidth !=
+			'undefined' && document.documentElement.clientWidth != 0)
+		{
+			viewportwidth = document.documentElement.clientWidth,
+				viewportheight = document.documentElement.clientHeight
+		}
+		else
+		{
+			viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
+				viewportheight = document.getElementsByTagName('body')[0].clientHeight
+		}
+		var modalcontent = document.getElementById('bwp_com_modal-content');
+		modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
+		modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
+
+		// Get the modal
+		var commodal = document.getElementById('bwp_com_Modal');
+		var commodalhref = document.getElementById('bwp_com_Modalhref').value;
+
+		// Get the Iframe-Wrapper and set Iframe
+		var wrapper = document.getElementById('bwp_com_wrapper');
+		var html = '<iframe id="BwpFrame" name="BwpFrame" src="'+commodalhref+'" frameborder="0" style="width:100%; height:100%;"></iframe>';
+
+		// Get the button that opens the modal
+		var btnopen = document.getElementById("bwp_com_open");
+
+		// Get the <span> element that closes the modal
+		var btnclose = document.getElementsByClassName("bwp_com_close")[0];
+
+		// When the user clicks the button, open the modal
+		btnopen.onclick = function() {
+			wrapper.innerHTML = html;
+			// Hack for Beez3 template
+			var iframe = document.getElementById('BwpFrame');
+			iframe.onload = function() {
+				this.contentWindow.document.head.insertAdjacentHTML("beforeend", `<style>.contentpane #all{max-width:unset;}</style>`)
+			}
+			commodal.style.display = "block";
+		}
+
+		// When the user clicks on <span> (x), close the modal
+		btnclose.onclick = function() {
+			commodal.style.display = "none";
+		}
+
+		// When the user clicks anywhere outside of the modal, close it
+		window.addEventListener('click', function(event) {
+			if (event.target == commodal) {
+				commodal.style.display = "none";
+			}
+		});
+	}
+	setComModal();
 })
 </script>

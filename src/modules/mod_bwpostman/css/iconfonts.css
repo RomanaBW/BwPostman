@@ -1,0 +1,30 @@
+/**
+ * BwPostman Newsletter Module
+ *
+ * BwPostman font import for CSS-styles for frontend module to modify by user.
+ *
+ * @version 3.0.1
+ * @package BwPostman-Module
+ * @author Romana Boldt
+ * @copyright (C) 2020 Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
+ * @license GNU/GPL, see LICENSE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+#mod_bwpostman [class^="bwp_icon-"],
+#mod_bwpostman [class*=" bwp_icon-"] {
+	background-image:		url("../images/glyphicons-halflings.png");
+}

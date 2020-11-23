@@ -8,10 +8,10 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 Version 3.0.3 released (2020-11-27)----
 
 Bugfix
-# Revert modal window changes
+# Modal window changes of disclaimer to bootstrap reverted
 
 New
-+
++ Provide custom header List-Unsubscribe for newsletter (email)
 
 
 Version 3.0.2 released (2020-11-17)----

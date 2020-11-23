@@ -2038,50 +2038,76 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TRIAL') . ($tblSendMailQueue->trial + 1) . ") ... ";
 		}
 
+		$unsubscribe_url = $renderer->generateUnsubscribeUrl($itemid_unsubscribe, $tblSendMailQueue->recipient, $editlink);
+
 		// Get a JMail instance
 		$mailer = Factory::getMailer();
 		$mailer->SMTPDebug = true;
 
 		$sender    = array();
-		$sender[0] = $tblSendMailContent->from_email;
+		$sender[0] = MailHelper::cleanAddress($tblSendMailContent->from_email);
 		$sender[1] = $tblSendMailContent->from_name;
 
 		if ($this->demo_mode)
 		{
-			$sender[0]                       = $this->dummy_sender;
-			$tblSendMailContent->reply_email = $this->dummy_sender;
+			$sender[0]                       = MailHelper::cleanAddress($this->dummy_sender);
+			$tblSendMailContent->reply_email = MailHelper::cleanAddress($this->dummy_sender);
 		}
 
-		$mailer->setSender($sender);
-		$mailer->addReplyTo($tblSendMailContent->reply_email, $tblSendMailContent->reply_name);
-		$mailer->addRecipient($tblSendMailQueue->recipient);
-		$mailer->setSubject($tblSendMailContent->subject);
-		$mailer->setBody($body);
-
-		if ($tblSendMailContent->attachment)
+		try
 		{
-			$mailer->addAttachment($tblSendMailContent->attachment);
+			$mailer->setSender($sender);
+
+			if ($unsubscribe_url !== '')
+			{
+				$mailer->addCustomHeader("List-Unsubscribe", $unsubscribe_url);
+			}
+
+			$mailer->addReplyTo(MailHelper::cleanAddress($tblSendMailContent->reply_email), $tblSendMailContent->reply_name);
+			$mailer->addRecipient($tblSendMailQueue->recipient);
+			$mailer->setSubject($tblSendMailContent->subject);
+			$mailer->setBody($body);
+
+			if ($tblSendMailContent->attachment)
+			{
+				$mailer->addAttachment($tblSendMailContent->attachment);
+			}
+
+			if ($tblSendMailQueue->mode == 1)
+			{
+				$mailer->isHtml(true);
+			}
+
+			if (!$this->arise_queue)
+			{
+				$this->logger->addEntry(new LogEntry('Before sending', BwLogger::BW_INFO, 'send'));
+//				Use the following with care! Complete mails with body are written to log…
+//				$this->logger->addEntry(new LogEntry('Mailer data: ' . print_r($mailer, true), BwLogger::BW_DEVELOPMENT, 'send'));
+
+				$res = $mailer->Send();
+				$this->logger->addEntry(new LogEntry(sprintf('Sending result: %s', $res), BwLogger::BW_INFO, 'send'));
+			}
 		}
-
-		if ($tblSendMailQueue->mode == 1)
+		catch (UnexpectedValueException $exception)
 		{
-			$mailer->isHtml(true);
+			$message    = $exception->getMessage();
+			$res        = false;
+
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'send newsletter'));
 		}
-
-		// Newsletter sending 1=on, 0=off
-//		if (!defined('BWPOSTMAN_NL_SENDING'))
-//		{
-//			define('BWPOSTMAN_NL_SENDING', 1);
-//		}
-
-		if (!$this->arise_queue)
+		catch (InvalidArgumentException $exception)
 		{
-			$this->logger->addEntry(new LogEntry('Before sending', BwLogger::BW_INFO, 'send'));
-//			Use the following with care! Complete mails with body are written to log…
-//			$this->logger->addEntry(new LogEntry('Mailer data: ' . print_r($mailer, true), BwLogger::BW_DEVELOPMENT, 'send'));
-			$res = $mailer->Send();
-			// @ToDo: $res may be boolean of JException object!
-			$this->logger->addEntry(new LogEntry(sprintf('Sending result: %s', $res), BwLogger::BW_INFO, 'send'));
+			$message    = $exception->getMessage();
+			$res        = false;
+
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'send newsletter'));
+		}
+		catch (RuntimeException $exception)
+		{
+			$message    = $exception->getMessage();
+			$res        = false;
+
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'send newsletter'));
 		}
 
 		if ($res === true)

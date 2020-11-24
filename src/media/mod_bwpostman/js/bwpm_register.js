@@ -4,7 +4,7 @@
 // BwPostman Javascript to customize the layout of menu params for newsletters frontend view.
 //
 // @version %%version_number%%
-// @package BwPostman-Side
+// @package BwPostman-Site
 // @author Romana Boldt, Karl Klostermann
 // @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
 // @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
@@ -33,12 +33,13 @@ String.prototype.sprintf = function() {
 };
 
 function updateModal(errStr) {
-	jQuery('#registerErrors .modal-body').html(errStr);
-	jQuery('#registerErrors').modal('show');
+	var modal = document.getElementById('bwp_mod_Modal');
+	var wrapper = document.getElementById('bwp_mod_wrapper');
+	var modalcontent = document.getElementById('bwp_mod_modal-content');
+	modalcontent.classList.add('bwp-err');
+	wrapper.innerHTML = errStr;
+	modal.style.display = "block";
 }
-jQuery("#registerErrors").on('hidden.bs.modal', function () {
-	jQuery('.modal-body').empty();
-});
 
 function checkModRegisterForm()
 {
@@ -203,4 +204,67 @@ jQuery(document).ready(function()
 			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
 		}
 	});
+	function setModModal() {
+		// Set the modal height and width 90%
+		if (typeof window.innerWidth != 'undefined')
+		{
+			viewportwidth = window.innerWidth,
+				viewportheight = window.innerHeight
+		}
+		else if (typeof document.documentElement != 'undefined'
+			&& typeof document.documentElement.clientWidth !=
+			'undefined' && document.documentElement.clientWidth != 0)
+		{
+			viewportwidth = document.documentElement.clientWidth,
+				viewportheight = document.documentElement.clientHeight
+		}
+		else
+		{
+			viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
+				viewportheight = document.getElementsByTagName('body')[0].clientHeight
+		}
+		var modalcontent = document.getElementById('bwp_mod_modal-content');
+		modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
+		modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
+
+		// Get the modal
+		var modal = document.getElementById('bwp_mod_Modal');
+		var modalhref = document.getElementById('bwp_mod_Modalhref').value;
+
+		// Get the Iframe-Wrapper and set Iframe
+		var wrapper = document.getElementById('bwp_mod_wrapper');
+		var html = '<iframe id="iFrame" name="iFrame" src="'+modalhref+'" frameborder="0" style="width:100%; height:100%;"></iframe>';
+
+		// Get the button that opens the modal
+		var btnopen = document.getElementById("bwp_mod_open");
+
+		// Get the <span> element that closes the modal
+		var btnclose = document.getElementsByClassName("bwp_mod_close")[0];
+
+		// When the user clicks the button, open the modal
+		btnopen.onclick = function() {
+			wrapper.innerHTML = html;
+			// Hack for Beez3 template
+			var iframe = document.getElementById('iFrame');
+			iframe.onload = function() {
+				this.contentWindow.document.head.insertAdjacentHTML("beforeend", `<style>.contentpane #all{max-width:unset;}</style>`);
+			}
+			modal.style.display = "block";
+		}
+
+		// When the user clicks on <span> (x), close the modal
+		btnclose.onclick = function() {
+			modal.style.display = "none";
+			modalcontent.classList.remove('bwp-err');
+		}
+
+		// When the user clicks anywhere outside of the modal, close it
+		window.addEventListener('click', function(event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+				modalcontent.classList.remove('bwp-err');
+			}
+		});
+	}
+	setModModal();
 })

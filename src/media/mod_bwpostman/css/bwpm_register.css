@@ -183,14 +183,66 @@
 	margin-bottom:		0;
 }
 
-#mod_bwpostman .joomla-modal .modal-body {
-	padding: 1rem;
+#mod_bwpostman .bwp_mod_modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 99999; /* Sit on top */
+	padding-top: 10px; /* Location of the box */
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-#mod_bwpostman .joomla-modal .modal-header .close {
-	padding: 0;
+#mod_bwpostman #bwp_mod_modal-content.bwp-err{
+	max-width: 600px;
+	color: red;
 }
 
+#mod_bwpostman #bwp_mod_modal-content {
+	position: relative;
+	background-color: #fefefe;
+	margin: auto;
+	padding: 15px;
+	border: 1px solid #888;
+	border-radius: 6px;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+	height: 100%;
+}
+
+#mod_bwpostman #bwp_modal-title {
+    float: left;
+    margin: 0;
+}
+
+#mod_bwpostman #bwp_mod_wrapper {
+	padding-top: 35px;
+	height: 100%;
+}
+
+#mod_bwpostman .bwp_mod_close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	line-height: 28px;
+}
+
+#mod_bwpostman .bwp_mod_close:hover,
+#mod_bwpostman .bwp_mod_close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+#bwp_mod_wrapper,
+bwp_mod_wrapper::before,
+bwp_mod_wrapper::after {
+    box-sizing: border-box;
+}
 
 /*----------------------------------------------------------
 	Definition for specific module elements

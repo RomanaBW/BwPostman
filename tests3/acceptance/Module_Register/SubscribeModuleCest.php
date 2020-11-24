@@ -227,7 +227,7 @@ class SubscribeModuleCest
 
 		$I->scrollTo(Helper::$mod_button_register, 0, -100);
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElementVisible(Helper::$errorModalFooterButton, 2);
+		$I->waitForElementVisible(Helper::$errorModalCloseButton, 2);
 
 		$I->see(SubsView::$popup_valid_mailaddress, Helper::$errorModalBody);
 		$I->see(Helper::$invalid_select_newsletter_mod, Helper::$errorModalBody);
@@ -237,8 +237,8 @@ class SubscribeModuleCest
 		$I->see(SubsView::$popup_accept_disclaimer, Helper::$errorModalBody);
 
 		$I->wait(1);
-		$I->click(Helper::$errorModalFooterButton);
-		$I->waitForElementNotVisible(Helper::$errorModalFooterButton, 5);
+		$I->click(Helper::$errorModalCloseButton);
+		$I->waitForElementNotVisible(Helper::$errorModalCloseButton, 5);
 
 		Helper::presetModuleOptions($I);
 	}
@@ -446,8 +446,8 @@ class SubscribeModuleCest
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link_modal);
 		$I->wait(2);
-		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
-		$I->switchToIframe('Information');
+//		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
+		$I->switchToIframe('iFrame');
 		$I->see(Helper::$mod_disclaimer_url_text);
 		$I->switchToIframe();
 		$I->click(Helper::$mod_disclaimer_modal_close);
@@ -461,8 +461,8 @@ class SubscribeModuleCest
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link_modal);
 		$I->wait(2);
-		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
-		$I->switchToIframe('Information');
+//		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
+		$I->switchToIframe('iFrame');
 		$I->see(Helper::$mod_disclaimer_article_text);
 		$I->switchToIframe();
 		$I->click(Helper::$mod_disclaimer_modal_close);
@@ -476,8 +476,8 @@ class SubscribeModuleCest
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link_modal);
 		$I->wait(2);
-		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
-		$I->switchToIframe('Information');
+//		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
+		$I->switchToIframe('iFrame');
 		$I->see(Helper::$mod_disclaimer_menuitem_text);
 		$I->switchToIframe();
 		$I->click(Helper::$mod_disclaimer_modal_close);
@@ -633,12 +633,12 @@ class SubscribeModuleCest
 
 		$I->click(Helper::$mod_button_register);
 
-		$I->waitForElementVisible(Helper::$errorModalFooterButton, 2);
+		$I->waitForElementVisible(Helper::$errorModalCloseButton, 2);
 		$I->see(Helper::$mod_security_question_error, Helper::$errorModalBody);
 
 		$I->wait(1);
-		$I->click(Helper::$errorModalFooterButton);
-		$I->waitForElementNotVisible(Helper::$errorModalFooterButton, 5);
+		$I->click(Helper::$errorModalCloseButton);
+		$I->waitForElementNotVisible(Helper::$errorModalCloseButton, 5);
 
 		$I->fillField(Helper::$mod_question, '4');
 		$I->seeElement(Helper::$mod_security_star);

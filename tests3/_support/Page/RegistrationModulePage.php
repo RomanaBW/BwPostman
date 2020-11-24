@@ -147,7 +147,7 @@ class RegistrationModulePage
 	 *
 	 * @since 3.0.2
 	 */
-	public static $errorModalBody    = "//*/div[@id='registerErrors']/div[@class='modal-body']";
+	public static $errorModalBody    = "//*/div[@id='bwp_mod_wrapper']";
 
 	/**
 	 * @var string
@@ -156,6 +156,12 @@ class RegistrationModulePage
 	 */
 	public static $errorModalFooterButton    = "//*/div[@id='registerErrors']/div[@class='modal-footer']/button";
 
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.3
+	 */
+	public static $errorModalCloseButton     = "//*/div[@id='bwp_mod_modal-content']/span[contains(@class,'bwp_mod_close')]";
 	/**
 	 * @var string
 	 *
@@ -357,7 +363,7 @@ class RegistrationModulePage
 	 *
 	 * @since 3.0.2
 	 */
-	public static $mod_disclaimer_modal_close    = "//*/div[@id='DisclaimerModModal']/div[contains(@class,'modal-header')]/button";
+	public static $mod_disclaimer_modal_close    = "//*/div[@id='bwp_mod_modal-content']/span[contains(@class,'bwp_mod_close')]";
 
 	/**
 	 * @var string

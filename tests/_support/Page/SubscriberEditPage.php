@@ -263,6 +263,41 @@ class SubscriberEditPage
 	 */
 	public static $specialTitle          = "Mitgliedsnummer ";
 
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $abuseLink     = "http://www.abuse.nil/";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseFirstName    = "Invalid input at 'First name'";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseLastName    = "Invalid input at 'Last name'";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseSpecial    = "Invalid input at '%s'";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseEmail    = "Invalid input at 'Your email address'";
+
 
 	/**
 	 * @var array

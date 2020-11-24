@@ -554,7 +554,7 @@ class SubscriberviewPage
 	 *
 	 * @since 3.0.2
 	 */
-	public static $disclaimer_modal_close    = "//*/div[@id='DisclaimerModal']/div[contains(@class,'modal-header')]/button";
+	public static $disclaimer_modal_close    = "//*/div[@id='bwp_com_modal-content']/span[contains(@class,'bwp_com_close')]";
 
 	/**
 	 * @var string

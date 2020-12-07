@@ -1,5 +1,5 @@
 ---
-- hosts: tester
+- hosts: workplace
   gather_facts: no
   vars_files:
     - vars/tester-test-vars.yml
@@ -20,12 +20,17 @@
 - hosts: "{{ bare_source.db_container_name }}"
   connection: docker
   gather_facts: no
-
   vars_files:
     - vars/tester-test-vars.yml
     - vars/tester-image-vars.yml
+  vars:
+    ansible_remote_tmp: "/tmp"
 
   tasks:
+    - name: Debug ansible tmp path
+      debug:
+        msg: ansible_remote_tmp
+
     - name: copy Joomla tables to database container
       include_role:
         name: romanabw.copy-joomla-tables-to-database-container

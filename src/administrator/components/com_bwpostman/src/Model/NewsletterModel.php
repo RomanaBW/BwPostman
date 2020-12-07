@@ -30,6 +30,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
+use InvalidArgumentException;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -53,6 +54,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use RuntimeException;
 use stdClass;
 use Throwable;
+use UnexpectedValueException;
 
 /**
  * BwPostman newsletter model
@@ -2037,6 +2039,8 @@ class NewsletterModel extends AdminModel
 				Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TRIAL') . ($tblSendMailQueue->trial + 1) . ") ... ";
 		}
 
+		$unsubscribe_url = $renderer->generateUnsubscribeUrl($itemid_unsubscribe, $tblSendMailQueue->recipient, $editlink);
+
 		// Get a JMail instance
 		$mailer = Factory::getMailer();
 		$mailer->SMTPDebug = true;
@@ -2054,6 +2058,12 @@ class NewsletterModel extends AdminModel
 		try
 		{
 			$mailer->setSender($sender);
+
+			if ($unsubscribe_url !== '')
+			{
+				$mailer->addCustomHeader("List-Unsubscribe", $unsubscribe_url);
+			}
+
 			$mailer->addReplyTo(MailHelper::cleanAddress($tblSendMailContent->reply_email), $tblSendMailContent->reply_name);
 			$mailer->addRecipient($tblSendMailQueue->recipient);
 			$mailer->setSubject($tblSendMailContent->subject);
@@ -2079,7 +2089,7 @@ class NewsletterModel extends AdminModel
 				$this->logger->addEntry(new LogEntry(sprintf('Sending result: %s', $res), BwLogger::BW_INFO, 'send'));
 			}
 		}
-		catch (\UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
+		catch (UnexpectedValueException | InvalidArgumentException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
 		{
 			$message    = $exception->getMessage();
 			$res        = false;

@@ -139,8 +139,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 				?>
 				<input type="text" name="a_firstname" id="a_firstname"
 						placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANFIRSTNAME')); ?>"
-						value="<?php echo $sub_firstname; ?>" class="inputbox input-small" maxlength="50" />
-				<?php echo $required; ?>
+						value="<?php echo $sub_firstname; ?>" class="inputbox input-small" maxlength="50" /><?php echo $required; ?>
 			</p>
 			<?php
 		}
@@ -149,15 +148,15 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 		{
 			// Show name-field only if set in basic parameters
 			?>
-			<p id="bwp_mod_form_namefield" class="input-append">
+			<p id="bwp_mod_form_namefield"
+					class="input<?php echo ($paramsComponent->get('name_field_obligation')) ? '-append' : '-xx' ?>">
 				<?php // Is filling out the name field obligating
 				isset($subscriber->name) ? $sub_name = $subscriber->name : $sub_name = '';
 				($paramsComponent->get('name_field_obligation'))
 					? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
 					: $required = ''; ?>
 				<input type="text" name="a_name" id="a_name" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANNAME')); ?>"
-						value="<?php echo $sub_name; ?>" class="inputbox input-small" maxlength="50" />
-				<?php echo $required; ?>
+						value="<?php echo $sub_name; ?>" class="inputbox input-small" maxlength="50" /><?php echo $required; ?>
 			</p>
 			<?php
 		} // End: Show name field only if set in basic parameters
@@ -182,7 +181,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 
 		if ($showSpecial || $specialObligatory)
 		{
-			$specialClass = '';
+			$specialClass = '-xx';
 			$required     = '';
 
 			if ($specialObligatory)
@@ -196,8 +195,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 				?>
 				<input type="text" name="a_special" id="a_special"
 						placeholder="<?php echo addslashes($specialLabel); ?>"
-						value="<?php echo $sub_special; ?>" class="inputbox input-small" maxlength="50" />
-				<?php echo $required; ?>
+						value="<?php echo $sub_special; ?>" class="inputbox input-small" maxlength="50" /><?php echo $required; ?>
 			</p>
 			<?php
 		} // End: Show additional field only if set in basic parameters
@@ -206,8 +204,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 		<?php isset($subscriber->email) ? $sub_email = $subscriber->email : $sub_email = ''; ?>
 		<p id="bwp_mod_form_emailfield" class="input-append">
 			<input type="text" id="a_email" name="email" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANEMAIL')); ?>"
-					value="<?php echo $sub_email; ?>" class="inputbox input-small" maxlength="100" />
-			<span class="append-area"><i class="bwp_icon-star"></i></span>
+					value="<?php echo $sub_email; ?>" class="inputbox input-small" maxlength="100" /><span class="append-area"><i class="bwp_icon-star"></i></span>
 		</p>
 		<?php
 		if ($paramsComponent->get('show_emailformat') == 1)

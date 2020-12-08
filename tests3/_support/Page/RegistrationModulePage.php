@@ -400,6 +400,35 @@ class RegistrationModulePage
 	 */
 	public static $mod_mailinglist_number    = "//*/div[@id='bwp_mod_form_listsfield']/div[@class='a_mailinglist_item_%s']";
 
+	// modal registration identifiers module
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.4
+	 */
+	public static $module_position = "//*[@id='mod_bwpostman']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.4
+	 */
+	public static $module_button_module = "//*[@id='bwp_reg_open']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.4
+	 */
+	public static $module_modal_content = "//*[@id='bwp_reg_modal-content']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.4
+	 */
+	public static $mod_register_close = "//*[@id='bwp_reg_modal-content']/div/span[@class='bwp_reg_close']";
 
 
 	// subscriber mail and base of activation link
@@ -445,6 +474,9 @@ class RegistrationModulePage
 		$I->setManifestOption('mod_bwpostman', 'use_captcha', '0');
 		$I->setManifestOption('mod_bwpostman', 'security_question', 'Wieviele Beine hat ein Pferd? (1, 2, ...)');
 		$I->setManifestOption('mod_bwpostman', 'security_answer', '4');
+
+		// Settings for the layout
+		$I->setManifestOption('mod_bwpostman', 'layout', '_:default');
 	}
 
 

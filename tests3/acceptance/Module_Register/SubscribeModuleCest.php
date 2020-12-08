@@ -164,6 +164,117 @@ class SubscribeModuleCest
 	}
 
 	/**
+	 * Test method to subscribe by module in front end with module options and popup at module position, activate and unsubscribe
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.0.4
+	 */
+	public function SubscribeModuleSimpleActivateAndUnsubscribePopupMO(AcceptanceTester $I)
+	{
+		$I->wantTo("Subscribe to mailinglist by module using module options at popup");
+		$I->expectTo('get confirmation mail');
+
+		Helper::presetModuleOptions($I);
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('mod_bwpostman', 'layout', '_:modal');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
+
+		$this->subscribeByModule($I, true);
+
+		$I->click(Helper::$mod_button_register);
+		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
+
+		$this->activate($I, SubsView::$mail_fill_1);
+
+		$this->unsubscribe($I, SubsView::$activated_edit_Link);
+		$I->setManifestOption('mod_bwpostman', 'com_params', '1');
+		$I->setManifestOption('mod_bwpostman', 'layout', '_:default');
+	}
+
+	/**
+	 * Test method to subscribe by module in front end with module options and popup at module position, check error popup,
+	 * disclaimer popup and close button
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.0.4
+	 */
+	public function SubscribeModulePopupOverPopup(AcceptanceTester $I)
+	{
+		$I->wantTo("check registration popup over popup and close popup by button");
+		$I->expectTo('see registration popup, error popup, disclaimer popup and close popup');
+
+		Helper::presetModuleOptions($I);
+		$options = $I->getManifestOptions('mod_bwpostman');
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('mod_bwpostman', 'layout', '_:modal');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
+
+		$I->amOnPage(SubsView::$register_url);
+		$I->seeElement(SubsView::$view_module);
+
+		$I->scrollTo(Helper::$module_position, 0, -100);
+		$I->click(Helper::$module_button_module);
+		$I->waitForElementVisible(Helper::$module_modal_content);
+
+		// Check visibility of obligation marker
+		$I->seeElement(Helper::$mod_firstname_star);
+		$I->seeElement(Helper::$mod_name_star);
+		$I->seeElement(Helper::$mod_special_star);
+		$I->seeElement(Helper::$mod_mailaddress_star);
+		$I->seeElement(Helper::$mod_ml_select_star);
+		$I->seeElement(Helper::$mod_disclaimer_star);
+
+		// Register without filled fields
+		$I->scrollTo(Helper::$mod_button_register, 0, -100);
+		$I->click(Helper::$mod_button_register);
+		$I->waitForElementVisible(Helper::$errorModalCloseButton, 2);
+
+		// Check error messages
+		$I->see(SubsView::$popup_valid_mailaddress, Helper::$errorModalBody);
+		$I->see(Helper::$invalid_select_newsletter_mod, Helper::$errorModalBody);
+		$I->see(Helper::$invalid_field_firstname_mod, Helper::$errorModalBody);
+		$I->see(Helper::$invalid_field_name_mod, Helper::$errorModalBody);
+		$I->see(sprintf(Helper::$invalid_field_special_mod, $options->special_label), Helper::$errorModalBody);
+		$I->see(SubsView::$popup_accept_disclaimer, Helper::$errorModalBody);
+
+		$I->wait(1);
+		$I->click(Helper::$errorModalCloseButton);
+		$I->waitForElementNotVisible(Helper::$errorModalCloseButton, 5);
+
+		// Set disclaimer to article
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '1');
+
+		$I->seeElement(SubsView::$view_register);
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->seeElement(Helper::$mod_disclaimer);
+		$I->click(Helper::$mod_disclaimer_link_modal);
+		$I->wait(2);
+		$I->switchToIframe('iFrame');
+		$I->see(Helper::$mod_disclaimer_article_text);
+		$I->switchToIframe();
+		$I->click(Helper::$mod_disclaimer_modal_close);
+
+		// Close modal window of registration
+		$I->click(Helper::$mod_register_close);
+		$I->waitForElementNotVisible(Helper::$module_modal_content);
+		$I->dontSeeElement(Helper::$module_modal_content);
+
+		$I->setManifestOption('mod_bwpostman', 'com_params', '1');
+		$I->setManifestOption('mod_bwpostman', 'layout', '_:default');
+	}
+
+	/**
 	 * Test method to get edit page by click at module in front end
 	 *
 	 * @param   AcceptanceTester                $I
@@ -846,17 +957,25 @@ class SubscribeModuleCest
 	 * Test method to subscribe to newsletter in front end by module
 	 *
 	 * @param AcceptanceTester $I
+	 * @param boolean          $modal
 	 *
 	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	private function subscribeByModule(AcceptanceTester $I)
+	private function subscribeByModule(AcceptanceTester $I, $modal = false)
 	{
-		$options    = $I->getManifestOptions('mod_bwpostman');
+		$options = $I->getManifestOptions('mod_bwpostman');
 
 		$I->amOnPage(SubsView::$register_url);
 		$I->seeElement(SubsView::$view_module);
+
+		if ($modal)
+		{
+			$I->scrollTo(Helper::$module_position, 0, -100);
+			$I->click(Helper::$module_button_module);
+			$I->waitForElementVisible(Helper::$module_modal_content);
+		}
 
 		if ($options->show_gender)
 		{

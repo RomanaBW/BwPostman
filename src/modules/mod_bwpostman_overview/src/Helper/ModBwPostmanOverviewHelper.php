@@ -26,12 +26,16 @@
 
 namespace BoldtWebservice\Module\BwPostmanOverview\Site\Helper;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
+use http\Exception\RuntimeException;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
+use Joomla\CMS\Log\LogEntry;
 use Joomla\Registry\Registry;
 use Joomla\CMS\HTML\HTMLHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
@@ -65,6 +69,11 @@ class ModBwPostmanOverviewHelper
 		$lists = array();
 		$rows  = self::getItems($params);
 
+		if (count($rows) === 0)
+		{
+			$lists = array();
+		}
+
 		foreach ($rows as $row)
 		{
 			$date = Factory::getDate($row->mailing_date);
@@ -92,7 +101,7 @@ class ModBwPostmanOverviewHelper
 	 *
 	 * @param   Registry  &$params    module parameters
 	 *
-	 * @return  object    $rows       array of newsletter objects
+	 * @return  array     $rows       array of newsletter objects
 	 *
 	 * @throws Exception
 	 *
@@ -139,7 +148,12 @@ class ModBwPostmanOverviewHelper
 		$nls = array_column($nls_result, 'id');
 
 		// get count list
-		return self::getNlCountList((array)$nls);
+		if (count($nls) > 0)
+		{
+			return self::getNlCountList((array)$nls);
+		}
+
+		return array();
 	}
 
 	/**
@@ -178,6 +192,9 @@ class ModBwPostmanOverviewHelper
 		$query = $db->getQuery(true);
 		$check = $params->get('access-check', 1);
 
+		$logOptions = array();
+		$logger     = BwLogger::getInstance($logOptions);
+
 		// fetch only from mailinglists, which are selected, if so
 		$all_mls = $params->get('ml_selected_all');
 		$sel_mls = $params->get('ml_available');
@@ -188,14 +205,27 @@ class ModBwPostmanOverviewHelper
 			$query->from($db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($db->quoteName('published') . ' = ' . (int) 1);
 
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
 
-			$res_mls = $db->loadAssocList();
-			$mls     = array_column($res_mls, 'id');
+				$res_mls = $db->loadAssocList();
+				$mls     = array_column($res_mls, 'id');
+			}
+			catch (\RuntimeException $e)
+			{
+				$message = 'Query 1: ' . $e->getMessage();
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+			}
 		}
 		else
 		{
 			$mls = $sel_mls;
+		}
+
+		if (!count($mls))
+		{
+			return array();
 		}
 
 		// Check permission, if desired
@@ -212,10 +242,18 @@ class ModBwPostmanOverviewHelper
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', (array)$mls) . ')');
 			$query->where($db->quoteName('published') . ' = ' . (int) 1);
 
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
 
-			$res_mls = $db->loadAssocList();
-			$mls = array_column($res_mls, 'id');
+				$res_mls = $db->loadAssocList();
+				$mls = array_column($res_mls, 'id');
+			}
+			catch (\RuntimeException $e)
+			{
+				$message = 'Query 2: ' . $e->getMessage();
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+			}
 		}
 
 		return (array)$mls;
@@ -238,6 +276,9 @@ class ModBwPostmanOverviewHelper
 		$query = $db->getQuery(true);
 		$check = $params->get('access-check');
 
+		$logOptions = array();
+		$logger     = BwLogger::getInstance($logOptions);
+
 		// fetch only from campaigns, which are selected, if so
 		$all_cams = $params->get('cam_selected_all');
 		$sel_cams = $params->get('cam_available');
@@ -251,14 +292,28 @@ class ModBwPostmanOverviewHelper
 		{
 			$query->select('c.id');
 			$query->from('#__bwpostman_campaigns AS c');
-			$db->setQuery($query);
 
-			$res_cams = $db->loadAssocList();
-			$cams     = array_column($res_cams, 'id');
+			try
+			{
+				$db->setQuery($query);
+
+				$res_cams = $db->loadAssocList();
+				$cams     = array_column($res_cams, 'id');
+			}
+			catch (\RuntimeException $e)
+			{
+				$message = 'Query 3: ' . $e->getMessage();
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+			}
 		}
 		else
 		{
 			$cams = $sel_cams;
+		}
+
+		if (!count($cams))
+		{
+			return array();
 		}
 
 		// Check permission, if desired
@@ -273,10 +328,18 @@ class ModBwPostmanOverviewHelper
 			$query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
 			$query->where($db->quoteName('published') . ' = ' . (int) 1);
 
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
 
-			$res_mls = $db->loadAssocList();
-			$acc_mls = array_column($res_mls, 'id');
+				$res_mls = $db->loadAssocList();
+				$acc_mls = array_column($res_mls, 'id');
+			}
+			catch (\RuntimeException $e)
+			{
+				$message = 'Query 4: ' . $e->getMessage();
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+			}
 
 			$query	= $db->getQuery(true);
 
@@ -285,10 +348,19 @@ class ModBwPostmanOverviewHelper
 			$query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $acc_mls) . ')');
 			$query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', (array)$cams) . ')');
 
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
 
-			$acc_cams = $db->loadAssocList();
-			$cams     = array_column($acc_cams, 'campaign_id');
+				$acc_cams = $db->loadAssocList();
+				$cams     = array_column($acc_cams, 'campaign_id');
+
+			}
+			catch (\RuntimeException $e)
+			{
+				$message = 'Query 5: ' . $e->getMessage();
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+			}
 		}
 
 		return (array)$cams;
@@ -324,17 +396,29 @@ class ModBwPostmanOverviewHelper
 		{
 			$query->select('u.id');
 			$query->from('#__usergroups AS u');
-			$db->setQuery($query);
 
-			$res_groups = $db->loadAssocList();
-			$groups     = array_column($res_groups, 'id');
+			try
+			{
+				$db->setQuery($query);
+
+				$res_groups = $db->loadAssocList();
+				$groups     = array_column($res_groups, 'id');
+			}
+			catch (\RuntimeException $e)
+			{
+				$logOptions = array();
+				$logger     = BwLogger::getInstance($logOptions);
+				$message    = 'Query 6: ' . $e->getMessage();
+
+				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+			}
 
 			if (!is_array($groups))
 			{
 				$groups = array();
 			}
 
-			//convert usergroups to match bwPostman's needs
+			//convert usergroups to match BwPostman's needs
 			$c_groups	= array();
 
 			if (count($groups) > 0)
@@ -391,6 +475,15 @@ class ModBwPostmanOverviewHelper
 		$nullDate = $db->quote($db->getNullDate());
 		$nowDate  = $db->quote(Factory::getDate()->toSql());
 
+		$sinceDateString = ' != ' . $nullDate;
+
+		if ((int)$params->get('count') > 0)
+		{
+			$sinceMonth = Factory::getDate('now')->sub(new \DateInterval('P' . ((int)$params->get('count') - 1) . 'M'))->format('Y-m');
+			$sinceDate = $db->quote(Factory::getDate($sinceMonth)->toSql());
+			$sinceDateString = ' >= ' . $sinceDate;
+		}
+
 		$query->select(
 			'DISTINCT(' . $db->quoteName('a.id') . '), ' .
 			// Use mailing date if publish_up is 0
@@ -398,14 +491,17 @@ class ModBwPostmanOverviewHelper
 		);
 		$query->from('#__bwpostman_newsletters AS a');
 		$query->where($db->quoteName('a.published') . ' = 1');
-		$query->where($db->quoteName('a.mailing_date') . ' != ' . $nullDate);
+		$query->where($db->quoteName('a.mailing_date') . $sinceDateString);
 
 		// Filter by accessible mailing lists, user groups and campaigns
 		$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
 
 		$whereMlsCamsClause = BwPostmanHelper::getWhereMlsCamsClause($mls, $cams);
 
-		$query->where($whereMlsCamsClause);
+		if ($whereMlsCamsClause !== '')
+		{
+			$query->where($whereMlsCamsClause);
+		}
 
 		// Filter by show type
 		switch ($params->get('show_type', 'arc'))
@@ -454,9 +550,22 @@ class ModBwPostmanOverviewHelper
 		}
 
 		$query->group('a.id');
-		$db->setQuery($query);
 
-		return $db->loadAssocList();
+		try
+		{
+			$db->setQuery($query);
+
+			return $db->loadAssocList();
+		}
+		catch (\RuntimeException $e)
+		{
+			$logOptions   = array();
+			$logger  = BwLogger::getInstance($logOptions);
+			$message = 'Query 7: ' . $e->getMessage();
+
+			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+			return array();
+		}
 	}
 
 	/**
@@ -464,7 +573,7 @@ class ModBwPostmanOverviewHelper
 	 *
 	 * @param array $nls
 	 *
-	 * @return object|null
+	 * @return array|null
 	 *
 	 * @since 4.0.0
 	 */
@@ -486,8 +595,20 @@ class ModBwPostmanOverviewHelper
 		$query->group($query->year($db->quoteName('a.mailing_date')));
 		$query->group($query->month($db->quoteName('a.mailing_date')));
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		return $db->loadObjectList();
+			return $db->loadObjectList();
+		}
+		catch (\RuntimeException $e)
+		{
+			$logOptions   = array();
+			$logger  = BwLogger::getInstance($logOptions);
+			$message = 'Query 8: ' . $e->getMessage();
+
+			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+			return array();
+		}
 	}
 }

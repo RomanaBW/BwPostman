@@ -639,6 +639,13 @@ class InstallationPage
 	 *
 	 * @since 4.0.0
 	 */
+	public static $overviewModuleLine    = "//*[@id='moduleList']/tbody/tr/th/div/a[contains(@title, 'Edit BwPostman Overview Module')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
 	public static $positionField    = "//*[@id='general']/div/div[2]/div/div[@class='card-body']/fieldset/div[2]/div[2]";
 
 	/**
@@ -665,6 +672,20 @@ class InstallationPage
 		'Menu Assignment' => "//*[@id='tab-assignment']",
 		'Mailing list selection' => "//*[@id='tab-attrib-ml_available']",
 		'Settings for the registration form' => "//*[@id='tab-attrib-reg_settings']",
+		'Advanced' => "//*[@id='tab-attrib-advanced']",
+		'Permissions' => "//*[@id='tab-permissions']",
+	);
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $overviewTabs    = array(
+		'Module' => "//*[@id='tab-general']",
+		'Menu Assignment' => "//*[@id='tab-assignment']",
+		'Mailing list selection' => "//*[@id='tab-attrib-ml_available']",
+		'Campaign selection' => "//*[@id='tab-attrib-cam_available']",
 		'Advanced' => "//*[@id='tab-attrib-advanced']",
 		'Permissions' => "//*[@id='tab-permissions']",
 	);

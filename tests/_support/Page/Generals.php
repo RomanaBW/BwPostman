@@ -30,7 +30,7 @@ use Exception;
  */
 class Generals
 {
-	// include url of current page
+	// urls of some common pages
 	/**
 	 * @var string
 	 *
@@ -44,6 +44,14 @@ class Generals
 	 * @since 2.0.0
 	 */
 	public static $archive_url  = '/administrator/index.php?option=com_bwpostman&view=archive&layout=newsletters';
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $homeUrlFE = "/index.php";
+
 
 	/**
 	 * @var string

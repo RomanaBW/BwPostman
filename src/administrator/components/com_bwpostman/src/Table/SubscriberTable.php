@@ -818,7 +818,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	{
 		$app  = Factory::getApplication();
 
-		if ($this->gender == '')
+		if ($this->gender === '')
 		{
 			$this->gender = 2;
 		}

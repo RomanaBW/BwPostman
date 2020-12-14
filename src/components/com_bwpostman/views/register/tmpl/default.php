@@ -260,6 +260,9 @@ jQuery(document).ready(function()
 		}
 	});
 
+<?php
+if ($this->params->get('showinmodal') == 1)
+{ ?>
 	function setComModal() {
 		// Set the modal height and width 90%
 		if (typeof window.innerWidth != 'undefined')
@@ -321,5 +324,7 @@ jQuery(document).ready(function()
 		});
 	}
 	setComModal();
+<?php
+} ?>
 })
 </script>

@@ -142,7 +142,7 @@
 }
 
 #mod_bwpostman input.input-small, #mod_bwpostman select {
-	width:				130px;
+	width:				220px;
 }
 
 #mod_bwpostman select {
@@ -258,6 +258,54 @@ bwp_mod_wrapper::after,
 #bwp_reg_wrapper::before,
 #bwp_reg_wrapper::after {
     box-sizing: border-box;
+}
+
+#mod_bwpostman #bwp_reg_modal.big #edit_mailformat_m {
+	display: inline-block;
+}
+
+#mod_bwpostman .captcha,
+#mod_bwpostman .question {
+	border:					2px solid #ccc;
+	-webkit-border-radius:	4px;
+	-moz-border-radius:		4px;
+	border-radius:			4px;
+	padding:				10px;
+	margin-bottom:			10px;
+	margin-top:				10px;
+}
+
+#mod_bwpostman .security_question_lbl {
+	font-weight:		bold;
+}
+
+@media (min-width: 470px) {
+	#mod_bwpostman .big .security_question_lbl {
+		margin-left:		145px;
+	}
+}
+#bwp_mod_form p {
+    margin-bottom: 9px;
+    display: block;
+}
+
+#bwp_mod_form label {
+    width: 140px;
+    display: inline-block;
+}
+
+#bwp_mod_form label.btn {
+    max-width: 140px;
+    width: auto;
+}
+
+#mod_bwpostman input {
+    max-width: 206px;
+}
+
+#mod_bwpostman .input-append .inputs,
+#mod_bwpostman #edit_mailformat_m.btn-group {
+	white-space: nowrap;
 }
 
 /*----------------------------------------------------------

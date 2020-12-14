@@ -360,11 +360,10 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 		{ ?>
 			<div class="question">
 				<p class="security_question_entry"><?php echo Text::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
-				<p class="security_question_lbl"><?php echo Text::_($paramsComponent->get('security_question')); ?></p>
+				<p class="security_question_lbl"><strong><?php echo Text::_($paramsComponent->get('security_question')); ?></strong></p>
 				<p class="question input-append">
-					<input type="text" name="stringQuestion" id="a_stringQuestion"
-							placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="input-small" />
-					<span class="append-area"><i class="bwp_icon-star"></i></span>
+					<input type="text" name="stringQuestion" id="a_stringQuestion" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>"
+							maxlength="50" class="input-small" /><span class="append-area"><i class="bwp_icon-star"></i></span>
 				</p>
 			</div>
 			<?php
@@ -383,8 +382,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 				<p class="captcha input-append">
 					<input type="text" name="stringCaptcha" id="a_stringCaptcha"
 							placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>"
-							maxlength="50" class="input-small" />
-					<span class="append-area"><i class="bwp_icon-star"></i></span>
+							maxlength="50" class="input-small" /><span class="append-area"><i class="bwp_icon-star"></i></span>
 				</p>
 			</div>
 			<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />

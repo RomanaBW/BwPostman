@@ -264,10 +264,10 @@ class SubscribeModuleCest
 		$I->waitForElementVisible(Helper::$module_modal_content);
 
 		// Check visibility of obligation marker
-		$I->seeElement(Helper::$mod_firstname_star);
-		$I->seeElement(Helper::$mod_name_star);
-		$I->seeElement(Helper::$mod_special_star);
-		$I->seeElement(Helper::$mod_mailaddress_star);
+		$I->seeElement(Helper::$mod_firstname_star_popup);
+		$I->seeElement(Helper::$mod_name_star_popup);
+		$I->seeElement(Helper::$mod_special_star_popup);
+		$I->seeElement(Helper::$mod_mailaddress_star_popup);
 		$I->seeElement(Helper::$mod_ml_select_star);
 		$I->seeElement(Helper::$mod_disclaimer_star);
 

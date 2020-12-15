@@ -258,14 +258,42 @@ class RegistrationModulePage
 	 *
 	 * @since 3.0.2
 	 */
-	public static $mod_special_placeholder    = "//*[@id='bwp_mod_form_specialfield']/input[@placeholder='%s']";
+	public static $mod_mailaddress_star    = "//*[@id='bwp_mod_form_emailfield']/span/i[@class='bwp_icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.0
+	 */
+	public static $mod_firstname_star_popup    = "//*[@id='bwp_mod_form_firstnamefield']/span/span/i[@class='bwp_icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.0
+	 */
+	public static $mod_name_star_popup    = "//*[@id='bwp_mod_form_namefield']/span/span/i[@class='bwp_icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.0
+	 */
+	public static $mod_special_star_popup    = "//*[@id='bwp_mod_form_specialfield']/span/span/i[@class='bwp_icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.0
+	 */
+	public static $mod_mailaddress_star_popup    = "//*[@id='bwp_mod_form_emailfield']/span/span/i[@class='bwp_icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 3.0.2
 	 */
-	public static $mod_mailaddress_star    = "//*[@id='bwp_mod_form_emailfield']/span/i[@class='bwp_icon-star']";
+	public static $mod_special_placeholder    = "//*[@id='bwp_mod_form_specialfield']/input[@placeholder='%s']";
 
 	/**
 	 * @var string

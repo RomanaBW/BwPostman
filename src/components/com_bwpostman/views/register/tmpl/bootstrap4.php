@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman register default template for frontend.
+ * BwPostman register bootstrap 4 template for frontend.
  *
  * @version %%version_number%%
  * @package BwPostman-Site
@@ -36,21 +36,17 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
-HtmlHelper::_('behavior.keepalive');
-HtmlHelper::_('behavior.formvalidator');
-HtmlHelper::_('formbehavior.chosen', 'select');
-
 HTMLHelper::_('bootstrap.tooltip');
 
-// Depends on jQuery UI
-HtmlHelper::_('jquery.ui', array('core'));
-
-JHtml::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
-$templateName	= Factory::getApplication()->getTemplate();
-$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
-JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
+JHtml::_('stylesheet', 'com_bwpostman/bwpostman_bs4.css', array('version' => 'auto', 'relative' => true));
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+
+$this->subscriber = $displayData['subscriber'];
+$this->params     = $displayData['params'];
+$this->lists      = $displayData['lists'];
+
+$formclass	= $this->params->get('formclass');
 ?>
 
 <div id="bwpostman">
@@ -68,7 +64,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 
 		<div class="content_inner">
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post"
-					id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
+					id="bwp_com_form" name="bwp_com_form" class="form-validate">
 				<?php // Spamcheck 1 - Input-field: class="user_highlight" style="position: absolute; top: -5000px;" ?>
 				<p class="user_hightlight">
 					<label for="falle"><strong><?php echo addslashes(Text::_('COM_BWPOSTMAN_SPAMCHECK')); ?></strong></label>
@@ -78,21 +74,27 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 				<?php // End Spamcheck
 
 				echo LayoutHelper::render(
-					'default',
+					'bootstrap4',
 					array('subscriber' => $this->subscriber, 'params' => $this->params, 'lists' => $this->lists),
 					$basePath = JPATH_COMPONENT . '/layouts/subscriber'
 				);
 				?>
 				<?php // Question
 				if ($this->params->get('use_captcha') == 1) : ?>
-					<div class="question">
-						<p class="question-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
-						<p class="security_question_lbl"><?php echo Text::_($this->params->get('security_question')); ?></p>
-						<p class="question-result input-append">
-							<label id="question" for="stringQuestion"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
-							<input type="text" name="stringQuestion" id="stringQuestion" size="40" maxlength="50" />
-							<span class="append-area"><i class="icon-star"></i></span>
-						</p>
+					<div class="question card card-body">
+						<div class="question-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></div>
+						<div class="security_question_lbl col-sm-9 offset-sm-3 my-3"><?php echo Text::_($this->params->get('security_question')); ?></div>
+						<div class="form-group row question-result">
+							<label id="question" class="col-sm-3 col-form-label" for="stringQuestion"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+				            <div class="col-sm-9">
+				                <div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
+									<input type="text" name="stringQuestion" id="stringQuestion" class="form-control" size="40" maxlength="50" />
+									<div class="input-group-append">
+										<span class="input-group-text"><i class="fa fa-star"></i></span>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				<?php endif; // End question ?>
 
@@ -101,26 +103,32 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					$codeCaptcha = md5(microtime());
 					?>
 
-					<div class="captcha">
-						<p class="captcha-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
-						<p class="security_question_lbl">
+					<div class="captcha card card-body">
+						<div class="captcha-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></div>
+						<div class="security_question_lbl col-sm-9 offset-sm-3 my-3">
 							<img src="<?php echo Uri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
-						</p>
-						<p class="captcha-result input-append">
-							<label id="captcha" for="stringCaptcha"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
-							<input type="text" name="stringCaptcha" id="stringCaptcha" size="40" maxlength="50" />
-							<span class="append-area"><i class="icon-star"></i></span>
-						</p>
+						</div>
+						<div class="form-group row captcha-result">
+							<label id="captcha" class="col-sm-3 col-form-label" for="stringCaptcha"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+				            <div class="col-sm-9">
+				                <div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
+									<input type="text" name="stringCaptcha" id="stringCaptcha" class="form-control" size="40" maxlength="50" />
+									<div class="input-group-append">
+										<span class="input-group-text"><i class="fa fa-star"></i></span>
+									</div>
+								</div>
+				            </div>
+						</div>
 					</div>
 					<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
 				<?php endif; // End captcha ?>
 
-				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="disclaimer<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php // Show Disclaimer only if enabled in basic parameters
 					if ($this->params->get('disclaimer')) :
 						?>
-						<p class="agree_check">
-							<input title="agreecheck" type="checkbox" id="agreecheck" name="agreecheck" />
+						<div class="form-check agree_check my-3">
+							<input title="agreecheck" type="checkbox" id="agreecheck" class="form-check-input" name="agreecheck" />
 							<?php
 							// Extends the disclaimer link with '&tmpl=component' to see only the content
 							$tpl_com = $this->params->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
@@ -144,7 +152,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								$disclaimer_link = $this->params->get('disclaimer_link');
 							}
 							?>
-							<span>
+							<label class="form-check-label">
 								<?php
 								// Show inside modalbox
 								if ($this->params->get('showinmodal') == 1)
@@ -160,18 +168,19 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 										echo ' target="_blank"';
 									};
 								}
-								echo '>' . Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
-							</span>
-						</p>
+								echo '>' . Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <sup><i class="fa fa-star"></i></sup>'; ?>
+							</label>
+						</div>
 					<?php endif; // Show disclaimer ?>
-					<p class="show_disclaimer">
-						<?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?>
-					</p>
-				</div>
 
-				<p class="button-register text-right">
-					<button class="button validate btn text-right" type="submit"><?php echo Text::_('COM_BWPOSTMAN_BUTTON_REGISTER'); ?></button>
-				</p>
+					<div class="button-register mb-3">
+						<button class="button validate btn btn-secondary" type="submit"><?php echo Text::_('COM_BWPOSTMAN_BUTTON_REGISTER'); ?></button>
+					</div>
+
+					<div class="register-required small">
+						<?php echo str_replace('icon-star', 'fa fa-star', Text::_('COM_BWPOSTMAN_REQUIRED')); ?>
+					</div>
+				</div>
 
 			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="task" value="save" />
@@ -220,54 +229,12 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-jQuery(document).ready(function()
-{
-	// Turn radios into btn-group
-	jQuery('.radio.btn-group label').addClass('btn');
-	jQuery(".btn-group label:not(.active)").click(function()
-	{
-		var label = jQuery(this);
-		var input = jQuery('#' + label.attr('for'));
-
-		if (!input.prop('checked'))
-		{
-			label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-			if (input.val() === '')
-			{
-				label.addClass('active btn-primary');
-			}
-			else if (input.val() === 0)
-			{
-				label.addClass('active btn-danger');
-			}
-			else
-			{
-				label.addClass('active btn-success');
-			}
-			input.prop('checked', true);
-		}
-	});
-	jQuery(".btn-group input[checked=checked]").each(function()
-	{
-		if (jQuery(this).val() === '')
-		{
-			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
-		}
-		else if (jQuery(this).val() === 0)
-		{
-			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-danger');
-		}
-		else
-		{
-			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
-		}
-	});
-
 <?php
 if ($this->params->get('showinmodal') == 1)
 { ?>
+<script type="text/javascript">
+jQuery(document).ready(function()
+{
 	function setComModal() {
 		// Set the modal height and width 90%
 		if (typeof window.innerWidth != 'undefined')
@@ -329,7 +296,7 @@ if ($this->params->get('showinmodal') == 1)
 		});
 	}
 	setComModal();
-<?php
-} ?>
 })
 </script>
+<?php
+} ?>

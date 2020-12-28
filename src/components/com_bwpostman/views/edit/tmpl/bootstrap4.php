@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman edit default template for frontend.
+ * BwPostman edit bootstrap 4 template for frontend.
  *
  * @version %%version_number%%
  * @package BwPostman-Site
@@ -27,22 +27,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
-JHtml::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
-$templateName	= Factory::getApplication()->getTemplate();
-$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
-JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
-
-HtmlHelper::_('formbehavior.chosen', 'select');
-HtmlHelper::_('behavior.formvalidator');
+JHtml::_('stylesheet', 'com_bwpostman/bwpostman_bs4.css', array('version' => 'auto', 'relative' => true));
 
 HTMLHelper::_('bootstrap.tooltip');
 
+$this->subscriber = $displayData['subscriber'];
+$this->params     = $displayData['params'];
+$this->lists      = $displayData['lists'];
+
+$formclass	= $this->params->get('formclass');
 ?>
 
 <script type="text/javascript">
@@ -156,36 +154,34 @@ HTMLHelper::_('bootstrap.tooltip');
 
 		<div class="content_inner">
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
-					name="bwp_com_form" class="form-validate form-inline">
+					name="bwp_com_form" class="form-validate">
 				<?php
 				echo LayoutHelper::render(
-					'default',
+					'bootstrap4',
 					array('subscriber' => $this->subscriber, 'params' => $this->params, 'lists' => $this->lists),
 					$basePath = JPATH_COMPONENT . '/layouts/subscriber'
 				);
 				?>
 
-				<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-					<p class="edit_unsubscribe">
-						<input title="unsubscribe" type="checkbox" id="unsubscribe" name="unsubscribe" value="1" />
-						<span class="edit_unsubscribe_text"><?php echo Text::_('COM_BWPOSTMAN_UNSUBSCRIBE') ?></span>
-					</p>
+				<div class="card card-body<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+					<div class="form-check edit_unsubscribe">
+						<input title="unsubscribe" type="checkbox" id="unsubscribe" class="form-check-input" name="unsubscribe" value="1" />
+						<label class="form-check-label edit_unsubscribe_text"><?php echo Text::_('COM_BWPOSTMAN_UNSUBSCRIBE') ?></label>
+					</div>
 				</div>
 
-				<div class="maindivider<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"></div>
-
-				<div class="w-100 contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-					<p class="edit_required">
-						<?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?>
-					</p>
+				<div class="buttons my-3">
+					<button class="button validate save btn btn-secondary" type="button" onclick="return submitbutton('submit');">
+						<?php echo Text::_('COM_BWPOSTMAN_BUTTON_EDIT'); ?>
+					</button>
+					<button class="button validate leave btn btn-secondary ml-2" type="button" onclick="return submitbutton('submitleave');">
+						<?php echo Text::_('COM_BWPOSTMAN_BUTTON_LEAVEEDIT'); ?>
+					</button>
 				</div>
 
-				<button class="button validate save btn" type="button" onclick="return submitbutton('submit');">
-					<?php echo Text::_('COM_BWPOSTMAN_BUTTON_EDIT'); ?>
-				</button>
-				<button class="button validate leave btn ml-2" type="button" onclick="return submitbutton('submitleave');">
-					<?php echo Text::_('COM_BWPOSTMAN_BUTTON_LEAVEEDIT'); ?>
-				</button>
+				<div class="edit-required small">
+					<?php echo str_replace('icon-star', 'fa fa-star', Text::_('COM_BWPOSTMAN_REQUIRED')); ?>
+				</div>
 
 				<input type="hidden" name="option" value="com_bwpostman" />
 				<input type="hidden" name="task" value="save" />
@@ -210,48 +206,3 @@ HTMLHelper::_('bootstrap.tooltip');
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-	jQuery(document).ready(function()
-	{
-		// Turn radios into btn-group
-		jQuery('.radio.btn-group label').addClass('btn');
-		jQuery(".btn-group label:not(.active)").click(function()
-		{
-			var label = jQuery(this);
-			var input = jQuery('#' + label.attr('for'));
-
-			if (!input.prop('checked'))
-			{
-				label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-				if (input.val() == '')
-				{
-					label.addClass('active btn-primary');
-				}
-				else if (input.val() == 0)
-				{
-					label.addClass('active btn-danger');
-				}
-				else
-				{
-					label.addClass('active btn-success');
-				}
-				input.prop('checked', true);
-			}
-		});
-		jQuery(".btn-group input[checked=checked]").each(function()
-		{
-			if (jQuery(this).val() == '')
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
-			}
-			else if (jQuery(this).val() == 0)
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-danger');
-			}
-			else
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
-			}
-		});
-	})
-</script>

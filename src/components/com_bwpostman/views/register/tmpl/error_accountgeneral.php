@@ -33,6 +33,11 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 
+JHtml::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
+$templateName	= Factory::getApplication()->getTemplate();
+$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
+
 // Displays a link to the registration form or the editlink form
 // Will be shown if
 // 1. the unsubscribe process failed --> the editlink or email address is wrong

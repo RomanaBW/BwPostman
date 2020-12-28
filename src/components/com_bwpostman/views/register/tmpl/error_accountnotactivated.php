@@ -27,12 +27,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
 // needed to validate email
 HtmlHelper::_('behavior.formvalidator');
+
+JHtml::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
+$templateName	= Factory::getApplication()->getTemplate();
+$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 
 // Displays a button to send the activation code
 // Will be shown if

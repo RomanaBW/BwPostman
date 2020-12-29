@@ -396,6 +396,11 @@ class Com_BwPostmanInstallerScript
 
 			$this->logger->addEntry(new LogEntry("Postflight removeDoubleExtensionsEntries passed", BwLogger::BW_DEBUG, $this->log_cat));
 
+			// remove obsolete files
+			$this->removeObsoleteFiles();
+
+			$this->logger->addEntry(new LogEntry("Postflight removeObsoleteFiles passed", BwLogger::BW_DEBUG, $this->log_cat));
+
 			// ensure SQL update files are processed
 			if (!$this->processSqlUpdate($oldRelease))
 			{
@@ -1281,6 +1286,74 @@ class Com_BwPostmanInstallerScript
 				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
+	}
+
+	/**
+	 * Method to remove multiple entries in table extensions. Needed because joomla update may show updates for these unnecessary entries
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.2.0
+	 */
+	private function removeObsoleteFiles()
+	{
+		$feFilesArray     = array(
+			'views/edit/metadata.xml',
+			'views/newsletter/metadata.xml',
+			'views/newsletters/metadata.xml',
+			'views/register/metadata.xml',
+			'helpers/subscriberhelper.php',
+		);
+
+		foreach ($feFilesArray as $file)
+		{
+			if (File::exists(JPATH_ROOT . '/components/com_bwpostman/' . $file))
+			{
+				File::delete(JPATH_ROOT . '/components/com_bwpostman/' . $file);
+			}
+		}
+
+//		$beFilesArray     = array();
+//
+//		foreach ($beFilesArray as $file)
+//		{
+//			if (File::exists(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file))
+//			{
+//				File::delete(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file);
+//			}
+//		}
+
+//		$mediaFilesArray  = array();
+//
+//		foreach ($mediaFilesArray as $file)
+//		{
+//			if (File::exists(JPATH_ROOT . '/media/com_bwpostman/' . $file))
+//			{
+//				File::delete(JPATH_ROOT . '/media/com_bwpostman/' . $file);
+//			}
+//		}
+
+//		$imagesFilesArray = array();
+//
+//		foreach ($imagesFilesArray as $file)
+//		{
+//			if (File::exists(JPATH_ROOT . '/images/com_bwpostman/' . $file))
+//			{
+//				File::delete(JPATH_ROOT . '/images/com_bwpostman/' . $file);
+//			}
+//		}
+
+//		$regModFilesArray = array();
+//
+//		foreach ($regModFilesArray as $file)
+//		{
+//			if (File::exists(JPATH_ROOT . '/images/com_bwpostman/' . $file))
+//			{
+//				File::delete(JPATH_ROOT . '/images/com_bwpostman/' . $file);
+//			}
+//		}
 	}
 
 	/**

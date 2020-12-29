@@ -228,9 +228,10 @@ class contentRenderer
 		);
 		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('id') . ' = ' . (int) $id);
 
-		$_db->setQuery($query);
 		try
 		{
+			$_db->setQuery($query);
+
 			$row = $_db->loadObject();
 		}
 		catch (RuntimeException $e)
@@ -663,10 +664,10 @@ class contentRenderer
 			$query->from($_db->quoteName('#__content'));
 			$query->where($_db->quoteName('id') . ' = ' . (int) $id);
 
-			$_db->setQuery($query);
-
 			try
 			{
+				$_db->setQuery($query);
+
 				$result = $_db->loadResult();
 			}
 			catch (RuntimeException $e)

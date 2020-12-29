@@ -69,10 +69,10 @@ class JFormFieldAllMailinglists extends JFormFieldList
 		$query->from($db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

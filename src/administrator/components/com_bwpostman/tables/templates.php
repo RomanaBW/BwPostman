@@ -590,10 +590,10 @@ class BwPostmanTableTemplates extends JTable
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('title') . ' = ' . $db->quote($this->title));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$xid = intval($this->_db->loadResult());
 		}
 		catch (RuntimeException $e)
@@ -767,10 +767,10 @@ class BwPostmanTableTemplates extends JTable
 		$query->where($db->quoteName('id') . " IN (" . implode(",", $cid) . ")");
 		$query->where($db->quoteName('standard') . " = " . $db->quote(1));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$count_std = $db->getNumRows();
 		}
 		catch (RuntimeException $e)
@@ -829,10 +829,10 @@ class BwPostmanTableTemplates extends JTable
 			$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
 		}
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			return $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -863,10 +863,10 @@ class BwPostmanTableTemplates extends JTable
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' = ' . (int)$id);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$TplTitle = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -900,10 +900,11 @@ class BwPostmanTableTemplates extends JTable
 		$query->update($db->quoteName($this->_tbl));
 		$query->set($db->quoteName('title') . ' = ' . $db->quote($title));
 		$query->where($db->quoteName('id') . ' = ' . (int)$id);
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			return $db->execute();
 		}
 		catch (RuntimeException $e)
@@ -945,9 +946,10 @@ class BwPostmanTableTemplates extends JTable
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' = ' . (int) $template_id);
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
+
 			$tpl = $db->loadObject();
 		}
 		catch (RuntimeException $e)
@@ -993,10 +995,10 @@ class BwPostmanTableTemplates extends JTable
 				break;
 		}
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$tpl = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -1042,10 +1044,9 @@ class BwPostmanTableTemplates extends JTable
 			$query->where($db->quoteName('tpl_id') . ' > ' . $db->Quote(987));
 		}
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -1061,10 +1062,10 @@ class BwPostmanTableTemplates extends JTable
 		$query->set($db->quoteName('published') . " = " . $db->Quote(1));
 		$query->where($db->quoteName('id') . ' = ' . $db->Quote((int)$id));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$db->execute();
 		}
 		catch (RuntimeException $e)

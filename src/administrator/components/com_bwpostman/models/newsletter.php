@@ -657,10 +657,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$query->from($db->quoteName('#__content') . ' AS ' . $db->quoteName('c'));
 			$query->where($db->quoteName('c') . '.' . $db->quoteName('id') . ' = ' . $db->quote($content_id));
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
+
 				$items = $db->loadObjectList();
 			}
 			catch (RuntimeException $e)
@@ -2195,10 +2195,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$query->from($db->quoteName('#__bwpostman_templates'));
 			$query->where($db->quoteName('id') . ' = ' . -1);
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
+
 				$html_tpl = $db->loadResult();
 			}
 			catch (RuntimeException $e)
@@ -2242,10 +2242,10 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			$query->from($db->quoteName('#__bwpostman_templates'));
 			$query->where($db->quoteName('id') . ' = ' . -2);
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
+
 				$text_tpl = $db->loadResult();
 			}
 			catch (RuntimeException $e)

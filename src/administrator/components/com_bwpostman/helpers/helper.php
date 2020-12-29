@@ -208,10 +208,11 @@ class BwPostmanHelper
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$manifest = json_decode($db->loadResult(), true);
 		}
 		catch (RuntimeException $e)
@@ -1248,10 +1249,10 @@ class BwPostmanHelper
 		$query->where($_db->quoteName('published') . ' = ' . 1);
 		$query->where($_db->quoteName('archive_flag') . ' = ' . 0);
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
+
 			$ml_published = $_db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -1278,6 +1279,8 @@ class BwPostmanHelper
 	 */
 	public static function checkQueueEntries()
 	{
+		$queueEntriesAtLimit = array();
+
 		$db   = Factory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -1288,9 +1291,16 @@ class BwPostmanHelper
 // @ToDo: Hier ist zu überlegen, ob man die Meldung nicht generell anzeigt sobald noch Mails im Queue sind.
 // @ToDo: Ist mir erst aufgefallen, als ich den Versand manuell unterbrochen habe, dass nichts angezeigt wird.
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		$queueEntriesAtLimit = $db->loadColumn();
+			$queueEntriesAtLimit = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		// entries at limit, queue and problem
 		if (count($queueEntriesAtLimit))

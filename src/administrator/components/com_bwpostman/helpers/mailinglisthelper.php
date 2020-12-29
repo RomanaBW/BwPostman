@@ -169,9 +169,10 @@ abstract class BwPostmanMailinglistHelper {
 			$db->quoteName('ag') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('access')
 		);
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
+
 			$mailinglist = $db->loadObject();
 		}
 		catch (RuntimeException $e)
@@ -225,6 +226,7 @@ abstract class BwPostmanMailinglistHelper {
 		try
 		{
 			$db->setQuery($query);
+
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

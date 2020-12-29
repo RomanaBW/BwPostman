@@ -403,10 +403,10 @@ class BwPostmanModelCampaign extends JModelAdmin
 			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
+
 				$db->execute();
 			}
 			catch (RuntimeException $e)
@@ -425,9 +425,10 @@ class BwPostmanModelCampaign extends JModelAdmin
 				$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 				$query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', $cid) . ')');
 
-				$db->setQuery($query);
 				try
 				{
+					$db->setQuery($query);
+
 					$db->execute();
 				}
 				catch (RuntimeException $e)

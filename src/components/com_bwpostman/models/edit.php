@@ -258,6 +258,7 @@ class BwPostmanModelEdit extends JModelAdmin
 		try
 		{
 			$_db->setQuery($query);
+
 			$this->data = $_db->loadObject();
 		}
 		catch (RuntimeException $e)

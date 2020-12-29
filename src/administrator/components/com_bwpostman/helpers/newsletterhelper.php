@@ -64,10 +64,10 @@ abstract class BwPostmanNewsletterHelper {
 		$query->where($db->quoteName('u') . '.' . $db->quoteName('activation') . ' = ' . $db->quote(''));
 		$query->where($db->quoteName('u') . '.' . $db->quoteName('id') . ' IN (' . $sub_query . ')');
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$count_users = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -112,10 +112,10 @@ abstract class BwPostmanNewsletterHelper {
 		$query->where($db->quoteName('status') . ' IN (' . $status . ')');
 		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$count_subscribers = $db->loadResult();
 		}
 		catch (RuntimeException $e)

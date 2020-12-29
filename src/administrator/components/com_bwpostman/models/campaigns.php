@@ -28,6 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 
 // Import MODEL object class
@@ -185,7 +186,15 @@ class BwPostmanModelCampaigns extends JModelList
 		$this->getQueryWhere();
 		$this->getQueryOrder();
 
-		$this->_db->setQuery($this->query);
+		try
+		{
+			$this->_db->setQuery($this->query);
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
+			return false;
+		}
 
 		return $this->query;
 	}

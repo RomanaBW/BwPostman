@@ -134,10 +134,11 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 		$query->select("m.mailinglist_id AS selected");
 		$query->from($db->quoteName('#__bwpostman_campaigns_mailinglists') . ' AS m');
 		$query->where($db->quoteName('m.campaign_id') . ' = ' . $db->quote((int)$cam_id));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$ml_select = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
@@ -190,10 +191,10 @@ class JFormFieldCamMlIntern extends JFormFieldRadio
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 		$query->order('title ASC');
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

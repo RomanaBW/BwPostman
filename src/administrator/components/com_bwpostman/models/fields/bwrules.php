@@ -165,7 +165,14 @@ class JFormFieldBwRules extends JFormFieldRules
 			$query->from($db->quoteName('#__assets'));
 			$query->where($db->quoteName('name') . ' = ' . $db->quote($parentAssetName));
 
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 
 			$assetId = (int) $db->loadResult();
 		}
@@ -181,7 +188,14 @@ class JFormFieldBwRules extends JFormFieldRules
 				->from($db->quoteName('#__assets'))
 				->where($db->quoteName('id') . ' = ' . $assetId);
 
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 
 			$parentAssetId = (int) $db->loadResult();
 		}
@@ -462,7 +476,14 @@ class JFormFieldBwRules extends JFormFieldRules
 		$query->from($db->quoteName('#__assets'));
 		$query->where($db->quoteName('id') . ' = ' . $db->Quote($assetId));
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		$res = $db->loadAssoc();
 

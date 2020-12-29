@@ -415,10 +415,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		//build query to get all names of installed BwPostman tables
 		$query = "SHOW TABLES WHERE `Tables_in_{$dbname}` LIKE '%bwpostman%'";
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$tableNames = $this->db->loadColumn();
 		}
 		catch (RuntimeException $exception)
@@ -597,10 +597,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->from($this->db->quoteName('#__assets'));
 		$query->where($this->db->quoteName('name') . ' LIKE ' . $this->db->quote('%com_bwpostman%'));
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$rules = $this->db->loadAssocList();
 		}
 		catch (RuntimeException $exception)
@@ -643,10 +643,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->where('n.id = ' . (int) $group);
 			$query->order('p.lft');
 
-			$this->db->setQuery($query);
-
 			try
 			{
+				$this->db->setQuery($query);
+
 				$tree = $this->db->loadAssocList();
 			}
 			catch (RuntimeException $exception)
@@ -696,10 +696,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->from($this->db->quoteName('#__usergroups') . 'AS p');
 			$query->where($this->db->quoteName('id') . ' = ' . (int) $group);
 
-			$this->db->setQuery($query);
-
 			try
 			{
+				$this->db->setQuery($query);
+
 				$res_groups[] = $this->db->loadAssoc();
 			}
 			catch (RuntimeException $exception)
@@ -1096,10 +1096,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			foreach ($diff_1 as $missingTable)
 			{
 				$query = $queries[$missingTable];
-				$this->db->setQuery($query);
 
 				try
 				{
+					$this->db->setQuery($query);
+
 					$createDB = $this->db->execute();
 
 					if (!$createDB)
@@ -1157,9 +1158,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			{
 				$query = "DROP TABLE IF EXISTS " . $obsoleteTable;
 
-				$this->db->setQuery($query);
 				try
 				{
+					$this->db->setQuery($query);
+
 					$deleteDB = $this->db->execute();
 
 					if (!$deleteDB)
@@ -1306,10 +1308,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				}
 
 				$query = 'ALTER TABLE ' . $this->db->quoteName($table->name) . $engine_text . $c_set_text . $collation_text;
-				$this->db->setQuery($query);
 
 				try
 				{
+					$this->db->setQuery($query);
+
 					$modifyTable = $this->db->execute();
 
 					if (!$modifyTable)
@@ -1471,10 +1474,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query = 'ALTER TABLE ' . $this->db->quoteName($table->name);
 		$query .= ' MODIFY ' . $this->db->quoteName($installed_key) . ' ';
 		$query .= $type . ', DROP PRIMARY KEY';
-		$this->db->setQuery($query);
 
 		try
 		{
+			$this->db->setQuery($query);
+
 			$this->db->execute();
 		}
 		catch (RuntimeException $exception)
@@ -1500,10 +1504,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	private function writeCorrectPrimaryKey($table)
 	{
 		$query = 'ALTER TABLE ' . $this->db->quoteName($table->name) . ' ADD PRIMARY KEY (' . $this->db->quoteName($table->primary_key) . ')';
-		$this->db->setQuery($query);
 
 		try
 		{
+			$this->db->setQuery($query);
+
 			$modifyKey = $this->db->execute();
 
 			if (!$modifyKey)
@@ -1546,10 +1551,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	private function getAutoIncrement($table)
 	{
 		$query = 'SHOW columns FROM ' . $this->db->quoteName($table->name) . ' WHERE extra = "auto_increment"';
-		$this->db->setQuery($query);
 
 		try
 		{
+			$this->db->setQuery($query);
+
 			$increment_key = $this->db->loadResult();
 		}
 		catch (RuntimeException $exception)
@@ -1582,10 +1588,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query = 'ALTER TABLE ' . $this->db->quoteName($table->name);
 		$query .= ' MODIFY ' . $this->db->quoteName($table->primary_key);
 		$query .= ' INT AUTO_INCREMENT';
-		$this->db->setQuery($query);
 
 		try
 		{
+			$this->db->setQuery($query);
+
 			$incrementKey = $this->db->execute();
 
 			if (!$incrementKey)
@@ -1742,10 +1749,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query .= ' ' . $neededColumns[$i]['Type'] . $null . $default;
 			$query .= " AFTER " . $this->db->quoteName($neededColumns[$i - 1]['Column']);
 
-			$this->db->setQuery($query);
-
 			try
 			{
+				$this->db->setQuery($query);
+
 				$insertCol = $this->db->execute();
 
 				if (!$insertCol)
@@ -1812,10 +1819,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$query = "ALTER TABLE " . $this->db->quoteName($checkTable->name) . " DROP " . $this->db->quoteName($installedColumns['Field']);
 
-			$this->db->setQuery($query);
-
 			try
 			{
+				$this->db->setQuery($query);
+
 				$deleteCol = $this->db->execute();
 
 				if (!$deleteCol)
@@ -1912,10 +1919,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						$query .= " " . $neededColumns[$i]['Extra'];
 					}
 
-					$this->db->setQuery($query);
-
 					try
 					{
+						$this->db->setQuery($query);
+
 						$alterCol = $this->db->execute();
 
 						if (!$alterCol)
@@ -2174,10 +2181,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$query->where($this->db->quoteName('name') . ' LIKE ' . $this->db->Quote($sectionAsset['name'] . '.%'));
 				$query->where($this->db->quoteName('parent_id') . ' <> ' . $this->db->Quote($sectionAsset['id']));
 
-				$this->db->setQuery($query);
-
 				try
 				{
+					$this->db->setQuery($query);
+
 					$this->db->execute();
 				}
 				catch (RuntimeException $exception)
@@ -2943,10 +2950,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->select($this->db->quoteName('manifest_cache'));
 		$query->from($this->db->quoteName('#__extensions'));
 		$query->where($this->db->quoteName('element') . " = " . $this->db->quote('com_bwpostman'));
-		$this->db->setQuery($query);
 
 		try
 		{
+			$this->db->setQuery($query);
+
 			$result = $this->db->loadResult();
 		}
 		catch (RuntimeException $exception)
@@ -3322,10 +3330,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->delete($this->db->quoteName('#__assets'));
 		$query->where($this->db->quoteName('name') . ' LIKE ' . $this->db->quote('%com_bwpostman.%'));
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$asset_delete = $this->db->execute();
 
 			// Uncomment next line to test rollback (only makes sense, if deleted tables contained data)
@@ -3598,6 +3606,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->where($this->db->quoteName('name') . ' = ' . $this->db->Quote($assetName));
 
 			$this->db->setQuery($query);
+
 			$result = $this->db->execute();
 
 			return $result;
@@ -3638,10 +3647,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->set($this->db->quoteName('rules') . " = " . $this->db->quote($asset['rules']));
 		$query->where($this->db->quoteName('name') . ' = ' . $this->db->quote($asset['name']));
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$update_asset = $this->db->execute();
 
 			if (!$update_asset)
@@ -3739,13 +3748,14 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->insert($this->db->quoteName('#__assets'));
 		$query->columns($this->assetColnames);
 		$query->values($insert_data);
-		$this->db->setQuery($query);
-
-		$this->logger->addEntry(new LogEntry('Write Loop Assets Query 1: ' . (string) $query, BwLogger::BW_DEVELOPMENT,
-			'maintenance'));
 
 		try
 		{
+			$this->db->setQuery($query);
+
+			$this->logger->addEntry(new LogEntry('Write Loop Assets Query 1: ' . (string) $query, BwLogger::BW_DEVELOPMENT,
+				'maintenance'));
+
 			$this->db->execute();
 		}
 		catch (RuntimeException$exception)
@@ -3893,9 +3903,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->from($this->db->quoteName('#__usergroups'));
 			$query->where($this->db->quoteName('title') . ' = ' . $this->db->quote($item['title']));
 
-			$this->db->setQuery($query);
 			try
 			{
+				$this->db->setQuery($query);
+
 				$result = $this->db->loadAssoc();
 			}
 			catch (RuntimeException $exception)
@@ -3940,9 +3951,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					$query->from($this->db->quoteName('#__usergroups'));
 					$query->where($this->db->quoteName('title') . ' = ' . $this->db->quote($item['title']));
 
-					$this->db->setQuery($query);
 					try
 					{
+						$this->db->setQuery($query);
+
 						$result = $this->db->loadResult();
 					}
 					catch (RuntimeException $exception)
@@ -4090,10 +4102,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			// delete eventually remaining temporary tables
 			$query = 'DROP TABLE IF EXISTS ' . $this->db->quoteName($tableNameGeneric . '_tmp');
 
-			$this->db->setQuery($query);
-
 			try
 			{
+				$this->db->setQuery($query);
+
 				$this->db->execute();
 			}
 			catch (RuntimeException $exception)
@@ -4109,10 +4121,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			// copy affected tables to temporary tables, structure part
 			$query = 'CREATE TABLE ' . $this->db->quoteName($tableNameGeneric . '_tmp') . ' LIKE ' . $this->db->quoteName($tableNameGeneric);
 
-			$this->db->setQuery($query);
-
 			try
 			{
+				$this->db->setQuery($query);
+
 				$this->db->execute();
 			}
 			catch (RuntimeException $exception)
@@ -4128,10 +4140,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			// copy affected tables to temporary tables, data set part
 			$query = 'INSERT INTO ' . $this->db->quoteName($tableNameGeneric . '_tmp') . ' SELECT * FROM ' . $this->db->quoteName($tableNameGeneric);
 
-			$this->db->setQuery($query);
-
 			try
 			{
+				$this->db->setQuery($query);
+
 				$this->db->execute();
 			}
 			catch (RuntimeException $exception)
@@ -4167,10 +4179,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			// delete newly created tables
 			$query = ('DROP TABLE IF EXISTS ' . $this->db->quoteName($table['tableNameGeneric']));
 
-			$this->db->setQuery($query);
-
 			try
 			{
+				$this->db->setQuery($query);
+
 				$this->db->execute();
 			}
 			catch (RuntimeException $exception)
@@ -4188,10 +4200,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				'RENAME TABLE ' . $this->db->quoteName($table["tableNameGeneric"] . '_tmp') . ' TO ' . $this->db->quoteName($table["tableNameGeneric"])
 			);
 
-			$this->db->setQuery($query);
-
 			try
 			{
+				$this->db->setQuery($query);
+
 				$this->db->execute();
 			}
 			catch (RuntimeException $exception)
@@ -4236,10 +4248,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			{
 				$query = ('DROP TABLE IF EXISTS ' . $this->db->quoteName($table['tableNameGeneric'] . '_tmp'));
 
-				$this->db->setQuery($query);
-
 				try
 				{
+					$this->db->setQuery($query);
+
 					$this->db->execute();
 				}
 				catch (RuntimeException $exception)
@@ -4325,10 +4337,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->from($this->db->quoteName('#__assets'));
 		$query->where($this->db->quoteName('name') . ' LIKE ' . $this->db->quote($asset_name));
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$data = $this->db->loadAssocList();
 		}
 		catch (RuntimeException $exception)
@@ -4413,10 +4425,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->from($this->db->quoteName('#__usergroups'));
 		$query->where($this->db->quoteName('title') . ' IN (' . implode(',', $searchValues) . ')');
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$bwpmUserGroups = $this->db->loadAssocList('title');
 		}
 		catch (RuntimeException $exception)
@@ -4823,10 +4835,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->set($this->db->quoteName('rules') . " = " . $this->db->quote($rules));
 		$query->where($this->db->quoteName('name') . ' = ' . $this->db->Quote('com_bwpostman'));
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$writeAsset = $this->db->execute();
 		}
 		catch (RuntimeException $exception)
@@ -5634,10 +5646,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->set($this->db->quoteName('rgt') . " = (" . $this->db->quoteName('rgt') . " + 2 ) ");
 		$query->where($this->db->quoteName('rgt') . ' >= ' . (int)$com_asset['rgt']);
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$move_asset_right = $this->db->execute();
 		}
 		catch (RuntimeException $exception)
@@ -5669,10 +5681,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->set($this->db->quoteName('lft') . " = (" . $this->db->quoteName('lft') . " + 2 ) ");
 		$query->where($this->db->quoteName('lft') . ' > ' . (int)$com_asset['rgt']);
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$move_asset_left = $this->db->execute();
 		}
 		catch (RuntimeException $exception)
@@ -5724,10 +5736,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$this->db->quote($asset['title']) . ',' .
 			$this->db->quote($asset['rules'])
 		);
-		$this->db->setQuery($query);
 
 		try
 		{
+			$this->db->setQuery($query);
+
 			$insert_asset = $this->db->execute();
 		}
 		catch (RuntimeException $exception)
@@ -5758,10 +5771,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->from($this->db->quoteName('#__assets'));
 		$query->where($this->db->quoteName('name') . ' = ' . $this->db->quote($assetName));
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$base_asset = $this->db->loadAssoc();
 		}
 		catch (RuntimeException $exception)
@@ -5828,10 +5841,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->select('*');
 		$query->from($this->db->quoteName('#__assets'));
 		$query->where($this->db->quoteName('name') . ' = ' . $this->db->quote($searchValue));
-		$this->db->setQuery($query);
 
 		try
 		{
+			$this->db->setQuery($query);
+
 			$base_asset = $this->db->loadAssoc();
 		}
 		catch (RuntimeException $exception)
@@ -5936,10 +5950,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->from($this->db->quoteName('#__usergroups'));
 		$query->where($this->db->quoteName('id') . ' IN (' . implode(',', $searchValues) . ')');
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$joomlaGroups = $this->db->loadAssocList('title');
 		}
 		catch (RuntimeException $exception)
@@ -5969,10 +5983,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->from($this->db->quoteName('#__assets'));
 		$query->where($this->db->quoteName('name') . ' = ' . $this->db->quote('com_bwpostman'));
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$assets = $this->db->loadAssocList();
 		}
 		catch (RuntimeException $exception)
@@ -6003,9 +6017,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->select('asset_id');
 		$query->from($this->db->quoteName($tableNameGeneric));
 
-		$this->db->setQuery($query);
 		try
 		{
+			$this->db->setQuery($query);
+
 			$items = $this->db->loadObjectList();
 		}
 		catch (RuntimeException $exception)
@@ -6038,9 +6053,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->from($this->db->quoteName('#__assets'));
 		$query->where($this->db->quoteName('id') . ' = ' . (int) $assetId);
 
-		$this->db->setQuery($query);
 		try
 		{
+			$this->db->setQuery($query);
+
 			$res = $this->db->loadResult();
 		}
 		catch (RuntimeException $exception)
@@ -6080,9 +6096,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->from($this->db->quoteName('#__assets'));
 		$query->where($this->db->quoteName('id') . ' = ' . (int) $assetId);
 
-		$this->db->setQuery($query);
 		try
 		{
+			$this->db->setQuery($query);
+
 			$res = $this->db->loadResult();
 		}
 		catch (RuntimeException $exception)
@@ -6120,9 +6137,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->from($this->db->quoteName('#__assets'));
 		$query->where($this->db->quoteName('name') . ' = ' . $this->db->quote($assetName));
 
-		$this->db->setQuery($query);
 		try
 		{
+			$this->db->setQuery($query);
+
 			$assetId = (integer) $this->db->loadResult();
 		}
 		catch (RuntimeException $exception)
@@ -6163,10 +6181,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->set($this->db->quoteName('asset_id') . " = " . $this->db->Quote($assetId));
 			$query->where($this->db->quoteName('id') . ' = ' . $this->db->Quote($id));
 
-			$this->db->setQuery($query);
-
 			try
 			{
+				$this->db->setQuery($query);
 				$this->db->execute();
 			}
 			catch (RuntimeException $exception)
@@ -6199,9 +6216,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->from($this->db->quoteName($tableNameGeneric));
 		$query->where($this->db->quoteName('id') . ' IN (' . implode(',', $itemIds) . ')');
 
-		$this->db->setQuery($query);
 		try
 		{
+			$this->db->setQuery($query);
+
 			$items = $this->db->loadAssocList();
 		}
 		catch (RuntimeException $exception)
@@ -6489,10 +6507,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		if ($table != 'component')
 		{
 			$query = str_replace("\n", '', $tablesQueries[$table]['queries']);
-			$this->db->setQuery($query);
 
 			try
 			{
+				$this->db->setQuery($query);
+
 				$create_table = $this->db->execute();
 				if (!$create_table)
 				{
@@ -6579,10 +6598,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$query->select('*');
 		$query->from($this->db->quoteName($tableName));
 
-		$this->db->setQuery($query);
-
 		try
 		{
+			$this->db->setQuery($query);
+
 			$data = $this->db->loadAssocList();
 		}
 		catch (RuntimeException $exception)

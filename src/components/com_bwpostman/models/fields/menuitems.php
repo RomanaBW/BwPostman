@@ -78,6 +78,7 @@ class JFormFieldMenuItems extends JFormFieldList
 		try
 		{
 			$db->setQuery($query);
+
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

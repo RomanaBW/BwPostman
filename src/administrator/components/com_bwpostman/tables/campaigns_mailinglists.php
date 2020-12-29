@@ -116,10 +116,11 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 		$subQuery->select($_db->quoteName('mailinglist_id'));
 		$subQuery->from($_db->quoteName($this->_tbl));
 		$subQuery->where($_db->quoteName('campaign_id') . ' = ' . (int) $oldid);
-		$_db->setQuery($subQuery);
 
 		try
 		{
+			$_db->setQuery($subQuery);
+
 			$lists = $_db->loadAssocList();
 		}
 		catch (RuntimeException $e)
@@ -141,10 +142,10 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 				(int) $list['campaign_id'] . ',' .
 					(int) $list['mailinglist_id']
 			);
-			$_db->setQuery($query);
 
 			try
 			{
+				$_db->setQuery($query);
 				$_db->execute();
 			}
 			catch (RuntimeException $e)
@@ -177,10 +178,10 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$mailinglists = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
@@ -213,10 +214,10 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 		$query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $mls) . ')');
 		$query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
 
-		$this->_db->setQuery($query);
-
 		try
 		{
+			$this->_db->setQuery($query);
+
 			$cams = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
@@ -246,10 +247,10 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 		$query->delete($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote((int)$id));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -280,10 +281,10 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 		$query->delete($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote((int)$id));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -324,9 +325,10 @@ class BwPostmanTableCampaigns_Mailinglists extends JTable
 				(int) $data['id'] . ',' .
 				(int) $mailinglists_value
 			);
-			$db->setQuery($query);
+
 			try
 			{
+				$db->setQuery($query);
 				$db->execute();
 			}
 			catch (RuntimeException $e)

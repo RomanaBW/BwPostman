@@ -28,6 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
 
 // Import MODEL object class
@@ -254,7 +255,15 @@ class BwPostmanModelNewsletters extends JModelList
 		$this->getQueryWhere($tab);
 		$this->getQueryOrder($tab);
 
-		$db->setQuery($this->query);
+		try
+		{
+			$db->setQuery($this->query);
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
+			return false;
+		}
 
 		return $this->query;
 	}
@@ -790,9 +799,10 @@ class BwPostmanModelNewsletters extends JModelList
 		$query->select('COUNT(*)');
 		$query->from($db->quoteName('#__bwpostman_sendmailqueue'));
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
+
 			$count_queue = $db->loadResult();
 		}
 		catch (RuntimeException $e)

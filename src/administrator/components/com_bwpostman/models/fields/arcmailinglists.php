@@ -73,10 +73,10 @@ class JFormFieldArcMailinglists extends JFormFieldList
 		$query->leftJoin('#__bwpostman_mailinglists AS m ON m.id = nm.mailinglist_id');
 		$query->order('m.title');
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

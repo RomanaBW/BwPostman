@@ -519,10 +519,10 @@ class BwPostmanTableNewsletters extends JTable
 		$query->from($this->_tbl);
 		$query->where($db->quoteName('subject') . ' = ' . $db->quote($this->subject));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$xid = intval($db->loadResult());
 		}
 		catch (RuntimeException $e)
@@ -607,10 +607,9 @@ class BwPostmanTableNewsletters extends JTable
 		$query->set($db->quoteName('mailing_date') . " = NOW()");
 		$query->where($db->quoteName('id') . ' = ' . (int) $nl_id);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -659,10 +658,9 @@ class BwPostmanTableNewsletters extends JTable
 		$query->set($db->quoteName('is_template') . " = " . $newIsTemplate);
 		$query->where($db->quoteName('id') . ' = ' . (int) $nl_id);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -693,9 +691,10 @@ class BwPostmanTableNewsletters extends JTable
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' = ' . $db->quote((int)$id));
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
+
 			$isTemplate = (integer)$db->loadResult();
 
 			if ($isTemplate === 1)
@@ -747,9 +746,9 @@ class BwPostmanTableNewsletters extends JTable
 		$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 		$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -782,10 +781,10 @@ class BwPostmanTableNewsletters extends JTable
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' = ' . (int) $nlId);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$newslettersData = $db->loadObject();
 		}
 		catch (RuntimeException $e)
@@ -820,9 +819,10 @@ class BwPostmanTableNewsletters extends JTable
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' = ' . (int)$nlId);
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
+
 			$content_ids = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -855,10 +855,10 @@ class BwPostmanTableNewsletters extends JTable
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' = ' . $db->Quote((int)$nlId));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$campaignId = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -909,10 +909,10 @@ class BwPostmanTableNewsletters extends JTable
 
 		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			return $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -978,10 +978,10 @@ class BwPostmanTableNewsletters extends JTable
 		$query->delete($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote((int)$id));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$db->execute();
 		}
 		catch (RuntimeException $e)

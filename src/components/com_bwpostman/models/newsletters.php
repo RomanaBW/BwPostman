@@ -28,6 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Access\Access;
@@ -326,6 +327,7 @@ class BwPostmanModelNewsletters extends JModelList
 		{
 			$this->_db->setQuery($query);
 			$this->_db->execute();
+
 			$result = $this->_db->getNumRows();
 		}
 		catch (RuntimeException $e)
@@ -603,7 +605,15 @@ class BwPostmanModelNewsletters extends JModelList
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 		$query->group($db->quoteName('a.mailing_date'));
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
+			return false;
+		}
 
 		return $query;
 	}
@@ -649,10 +659,11 @@ class BwPostmanModelNewsletters extends JModelList
 			$query->from($db->quoteName('#__menu'));
 			$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=newsletters'));
 			$query->where($db->quoteName('client_id') . ' = ' . (int) 0);
-			$db->setQuery((string) $query);
 
 			try
 			{
+				$db->setQuery((string) $query);
+
 				$itemid = $db->loadResult();
 			}
 			catch (RuntimeException $e)
@@ -834,10 +845,10 @@ class BwPostmanModelNewsletters extends JModelList
 			$query->select('id');
 			$query->from('#__usergroups');
 
-			$this->_db->setQuery($query);
-
 			try
 			{
+				$this->_db->setQuery($query);
+
 				$groups	= $db->loadColumn();
 			}
 			catch (RuntimeException $e)
@@ -903,6 +914,7 @@ class BwPostmanModelNewsletters extends JModelList
 			try
 			{
 				$this->_db->setQuery($query);
+
 				$groups	= $db->loadAssocList();
 			}
 			catch (RuntimeException $e)
@@ -942,6 +954,7 @@ class BwPostmanModelNewsletters extends JModelList
 		try
 		{
 			$this->_db->setQuery($query);
+
 			$module	= $db->loadObject();
 		}
 		catch (RuntimeException $e)

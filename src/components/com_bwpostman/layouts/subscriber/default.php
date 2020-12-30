@@ -74,12 +74,7 @@ $lists      = $displayData['lists'];
 	if ($params->get('show_firstname_field') || $params->get('firstname_field_obligation'))
 	{ ?>
 		<p class="user_firstname input<?php echo ($params->get('firstname_field_obligation')) ? '-append' : '' ?>">
-			<label id="firstnamemsg" for="firstname"
-				<?php
-				if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
-				{
-					echo "class=\"invalid\"";
-				} ?>>
+			<label id="firstnamemsg" for="firstname">
 				<?php echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label>
 			<?php // Is filling out the firstname field obligating
 			if ($params->get('firstname_field_obligation'))

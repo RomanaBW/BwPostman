@@ -266,6 +266,34 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
+	public static $mod_firstname_star_popup    = "//*[@id='bwp_mod_form_firstnamefield']/span/span/i[@class='bwp_icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $mod_name_star_popup    = "//*[@id='bwp_mod_form_namefield']/span/span/i[@class='bwp_icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $mod_special_star_popup    = "//*[@id='bwp_mod_form_specialfield']/span/span/i[@class='bwp_icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $mod_mailaddress_star_popup    = "//*[@id='bwp_mod_form_emailfield']/span/span/i[@class='bwp_icon-star']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
 	public static $mod_special_placeholder    = "//*[@id='bwp_mod_form_specialfield']/input[@placeholder='%s']";
 
 	/**
@@ -420,28 +448,56 @@ class RegistrationModulePage
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.4
+	 * @since 4.0.0
 	 */
 	public static $module_position = "//*[@id='mod_bwpostman']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.4
+	 * @since 4.0.0
+	 */
+	public static $module_modal_button_lbl = "//*[@id='jform_params_modal_btn_label']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
 	 */
 	public static $module_button_module = "//*[@id='bwp_reg_open']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.4
+	 * @since 4.0.0
 	 */
 	public static $module_modal_content = "//*[@id='bwp_reg_modal-content']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 3.0.4
+	 * @since 4.0.0
+	 */
+	public static $module_item_identifier = "//*[@class='a_mailinglist_item_0']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $module_item_text_identifier = "//*[@class='a_mailinglist_item_0']/span";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $module_item_br = "//*[@class='a_mailinglist_item_0']/span/br";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
 	 */
 	public static $mod_register_close = "//*[@id='bwp_reg_modal-content']/div/span[@class='bwp_reg_close']";
 
@@ -492,6 +548,7 @@ class RegistrationModulePage
 
 		// Settings for the layout
 		$I->setManifestOption('mod_bwpostman', 'layout', '_:default');
+		$I->setManifestOption('mod_bwpostman', 'modal_btn_label', 'Newsletter Registration');
 	}
 
 

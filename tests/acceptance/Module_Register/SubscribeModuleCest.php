@@ -162,7 +162,8 @@ class SubscribeModuleCest
 	}
 
 	/**
-	 * Test method to subscribe by module in front end with module options and popup at module position, activate and unsubscribe
+	 * Test method to subscribe by module in front end with module options and popup at module position,
+	 * activate and unsubscribe, modal layout
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -170,7 +171,7 @@ class SubscribeModuleCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.4
+	 * @since   4.0.0
 	 */
 	public function SubscribeModuleSimpleActivateAndUnsubscribePopupMO(AcceptanceTester $I)
 	{
@@ -182,7 +183,42 @@ class SubscribeModuleCest
 		$I->setManifestOption('mod_bwpostman', 'layout', '_:modal');
 		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
 
-		$this->subscribeByModule($I, true);
+		$this->subscribeByModule($I, 'small');
+
+		$I->click(Helper::$mod_button_register);
+		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
+
+		$this->activate($I, SubsView::$mail_fill_1);
+
+		$this->unsubscribe($I, SubsView::$activated_edit_Link);
+		$I->setManifestOption('mod_bwpostman', 'com_params', '1');
+		$I->setManifestOption('mod_bwpostman', 'layout', '_:default');
+	}
+
+	/**
+	 * Test method to subscribe by module in front end with module options and popup at module position,
+	 * activate and unsubscribe, big modal layout
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function SubscribeModuleSimpleActivateAndUnsubscribeBigPopupMO(AcceptanceTester $I)
+	{
+		$I->wantTo("Subscribe to mailinglist by module using module options at popup");
+		$I->expectTo('get confirmation mail');
+
+		Helper::presetModuleOptions($I);
+		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
+		$I->setManifestOption('mod_bwpostman', 'layout', '_:modal-big');
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
+
+		$this->subscribeByModule($I, 'big');
 
 		$I->click(Helper::$mod_button_register);
 		$I->waitForElement(SubsView::$registration_complete, 30);
@@ -205,7 +241,7 @@ class SubscribeModuleCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.4
+	 * @since   4.0.0
 	 */
 	public function SubscribeModulePopupOverPopup(AcceptanceTester $I)
 	{
@@ -226,10 +262,10 @@ class SubscribeModuleCest
 		$I->waitForElementVisible(Helper::$module_modal_content);
 
 		// Check visibility of obligation marker
-		$I->seeElement(Helper::$mod_firstname_star);
-		$I->seeElement(Helper::$mod_name_star);
-		$I->seeElement(Helper::$mod_special_star);
-		$I->seeElement(Helper::$mod_mailaddress_star);
+		$I->seeElement(Helper::$mod_firstname_star_popup);
+		$I->seeElement(Helper::$mod_name_star_popup);
+		$I->seeElement(Helper::$mod_special_star_popup);
+		$I->seeElement(Helper::$mod_mailaddress_star_popup);
 		$I->seeElement(Helper::$mod_ml_select_star);
 		$I->seeElement(Helper::$mod_disclaimer_star);
 
@@ -805,7 +841,7 @@ class SubscribeModuleCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.2
+	 * @since   4.0.0
 	 */
 	public function SubscribeAbuseFieldsModule(AcceptanceTester $I)
 	{
@@ -909,7 +945,7 @@ class SubscribeModuleCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   3.0.2
+	 * @since   4.0.0
 	 */
 	public function SubscribeUnreachableMailAddressModule(AcceptanceTester $I)
 	{
@@ -968,11 +1004,23 @@ class SubscribeModuleCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->seeElement(SubsView::$view_module);
 
-		if ($modal)
+		if ($modal !== 'none')
 		{
 			$I->scrollTo(Helper::$module_position, 0, -100);
 			$I->click(Helper::$module_button_module);
-			$I->waitForElementVisible(Helper::$module_modal_content);
+			$I->waitForElementVisible(Helper::$module_modal_content, 3);
+			$I->waitForElementVisible(Helper::$module_item_identifier, 3);
+			$itemText = $I->grabTextFrom(Helper::$module_item_text_identifier);
+			codecept_debug($itemText);
+
+			if ($modal ==='small')
+			{
+				$I->assertEquals("01 Mailingliste 5 A:\n01 Mailingliste 5 weiterer Lauf A", $itemText);
+			}
+			elseif ($modal === 'big')
+			{
+				$I->assertEquals("01 Mailingliste 5 A: 01 Mailingliste 5 weiterer Lauf A", $itemText);
+			}
 		}
 
 		if ($options->show_gender)

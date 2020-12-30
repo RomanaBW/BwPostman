@@ -149,8 +149,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 		{
 			// Show name-field only if set in basic parameters
 			?>
-			<p id="bwp_mod_form_namefield"
-					class="input<?php echo ($paramsComponent->get('name_field_obligation')) ? '-append' : '-xx' ?>">
+			<p id="bwp_mod_form_namefield" class="input-append">
 				<?php // Is filling out the name field obligating
 				isset($subscriber->name) ? $sub_name = $subscriber->name : $sub_name = '';
 				($paramsComponent->get('name_field_obligation'))
@@ -182,7 +181,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 
 		if ($showSpecial || $specialObligatory)
 		{
-			$specialClass = '-xx';
+			$specialClass = '';
 			$required     = '';
 
 			if ($specialObligatory)

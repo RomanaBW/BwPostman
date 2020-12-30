@@ -189,6 +189,13 @@
 						class="custom-select"
 						default="_:default"
 				/>
+				<field name="modal_btn_label"
+				       size="50"
+				       type="text"
+				       default="MOD_BWPOSTMAN_MODAL_BTN"
+				       label="MOD_BWPOSTMAN_MODAL_BTN_LABEL"
+				       description="MOD_BWPOSTMAN_MODAL_BTN_LABEL_NOTE"
+				/>
 			</fieldset>
 		</fields>
 	</config>

@@ -31,7 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
@@ -137,17 +136,6 @@ class HtmlView extends BaseHtmlView
 		$subsTable = $model->getTable('Subscriber');
 		$userId  = $subsTable->getUserIdOfSubscriber((int)$subscriber->id);
 		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists((int)$userId);
-
-		// Get document object, set document title and add css
-		$templateName	= $app->getTemplate();
-		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
-
-		$document = Factory::getDocument();
-		$document->addStyleSheet(Uri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename))
-		{
-			$document->addStyleSheet(Uri::root(true) . $css_filename);
-		}
 
 		// Build the email format select list
 		if (!isset($subscriber->emailformat))

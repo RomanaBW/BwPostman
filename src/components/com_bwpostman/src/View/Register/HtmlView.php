@@ -31,7 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
@@ -131,16 +130,6 @@ class HtmlView extends BaseHtmlView
 
 		$this->params  = $params;
 		$this->captcha = BwPostmanHelper::getCaptcha(1);
-
-		// Add document css
-		$templateName = Factory::getApplication()->getTemplate();
-		$css_filename = '/templates/' . $templateName . '/css/com_bwpostman.css';
-
-		$document->addStyleSheet(Uri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename))
-		{
-			$document->addStyleSheet(Uri::root(true) . $css_filename);
-		}
 
 		switch ($layout)
 		{

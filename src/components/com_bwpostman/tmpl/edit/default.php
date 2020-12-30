@@ -28,10 +28,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Site\Classes\BwPostmanSite;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
+
+HtmlHelper::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
+$templateName	= Factory::getApplication()->getTemplate();
+$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+HtmlHelper::_('stylesheet', $css_filename, array('version' => 'auto'));
 
 HtmlHelper::_('formbehavior.chosen', 'select');
 HtmlHelper::_('behavior.formvalidator');

@@ -29,9 +29,15 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Site\Classes\BwPostmanSite;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+
+HtmlHelper::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
+$templateName	= Factory::getApplication()->getTemplate();
+$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+HtmlHelper::_('stylesheet', $css_filename, array('version' => 'auto'));
 
 // Success message - will be shown if
 // 1. the newsletter account has been successfully activated --> show a link to the edit mode

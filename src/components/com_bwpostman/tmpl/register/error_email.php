@@ -32,6 +32,11 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
+HtmlHelper::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
+$templateName	= Factory::getApplication()->getTemplate();
+$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+HtmlHelper::_('stylesheet', $css_filename, array('version' => 'auto'));
+
 // Displays a error message and a mailto-link of the admin email address
 // Will be shown if
 // 1. the confirmation email could not be sent

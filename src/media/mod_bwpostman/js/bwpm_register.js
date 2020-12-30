@@ -40,9 +40,6 @@ function updateModal(errStr) {
 	wrapper.innerHTML = errStr;
 	modal.style.display = "block";
 }
-jQuery("#registerErrors").on('hidden.bs.modal', function () {
-	jQuery('.modal-body').empty();
-});
 
 function checkModRegisterForm()
 {

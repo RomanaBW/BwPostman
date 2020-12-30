@@ -112,21 +112,21 @@
 	width:				13px;
 }
 
-#bwpostman .bwp_modal {
+#bwpostman .bwp_com_modal {
 	display: none; /* Hidden by default */
 	position: fixed; /* Stay in place */
 	z-index: 99999; /* Sit on top */
 	padding-top: 10px; /* Location of the box */
 	left: 0;
 	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
+	right: 0;
+	bottom: 0;
 	overflow: auto; /* Enable scroll if needed */
 	background-color: rgb(0,0,0); /* Fallback color */
 	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-#bwpostman #bwp_modal-content {
+#bwpostman #bwp_com_modal-content {
 	position: relative;
 	background-color: #fefefe;
 	margin: auto;
@@ -137,16 +137,17 @@
 	height: 100%;
 }
 
-#bwpostman #bwp_modal-header {
-	height: 30px;
+#bwpostman #bwp_modal-title {
+    float: left;
+    margin: 0;
 }
 
-#bwpostman #bwp_wrapper {
+#bwpostman #bwp_com_wrapper {
 	padding-top: 35px;
 	height: 100%;
 }
 
-#bwpostman .bwp_close {
+#bwpostman .bwp_com_close {
 	color: #aaaaaa;
 	float: right;
 	font-size: 28px;
@@ -154,15 +155,17 @@
 	line-height: 28px;
 }
 
-#bwpostman .bwp_close:hover,
-#bwpostman .bwp_close:focus {
+#bwpostman .bwp_com_close:hover,
+#bwpostman .bwp_com_close:focus {
 	color: #000;
 	text-decoration: none;
 	cursor: pointer;
 }
 
-#bwpostman .joomla-modal .modal-body {
-	padding: 1rem;
+#bwp_com_wrapper,
+bwp_com_wrapper::before,
+bwp_com_wrapper::after {
+    box-sizing: border-box;
 }
 
 #bwpostman p.input-append {
@@ -579,7 +582,6 @@
 #bwpostman .input-prepend {
 	display:			inline-block;
 	margin-bottom:		10px;
-	font-size:			0;
 	white-space:		nowrap;
 	vertical-align:		middle;
 }
@@ -710,6 +712,8 @@
 }
 
 #bwp_com_form fieldset.btn-group {
+	display: inline-block;
+	border: 0;
 	padding: 0;
 }
 
@@ -1176,6 +1180,7 @@ cursor: pointer;
 	border-radius:			4px;
 	padding:				10px;
 	margin-bottom:			10px;
+	margin-top:				10px;
 }
 
 #bwp_com_register .question {

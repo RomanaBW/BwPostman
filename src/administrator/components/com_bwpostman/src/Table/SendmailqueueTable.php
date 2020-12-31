@@ -211,10 +211,10 @@ class SendmailqueueTable extends Table
 
 		Factory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, $fromComponent));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$result = $db->loadAssoc();
 		}
 		catch (RuntimeException $e)
@@ -281,10 +281,10 @@ class SendmailqueueTable extends Table
 			(int) $subscriber_id . ',' .
 			(int) $trial
 		);
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -374,10 +374,9 @@ class SendmailqueueTable extends Table
 		);
 		$query->values($data);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -442,9 +441,10 @@ class SendmailqueueTable extends Table
 		$subQuery->where($db->quoteName('activation') . " IN ('', '0')");
 		$subQuery->where($db->quoteName('id') . ' IN (' . $subQuery1 . ')');
 
-		$db->setQuery($subQuery);
 		try
 		{
+			$db->setQuery($subQuery);
+
 			$sub_res	= $db->loadRowList();
 		}
 		catch (RuntimeException $e)
@@ -479,10 +479,9 @@ class SendmailqueueTable extends Table
 		);
 		$query->values($data);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -511,10 +510,9 @@ class SendmailqueueTable extends Table
 		$query->set($db->quoteName('trial') . " = " . (int) 0);
 		$query->where($db->quoteName('trial') . ' > ' . (int) 0);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -540,10 +538,9 @@ class SendmailqueueTable extends Table
 
 		$query = "TRUNCATE TABLE {$this->_tbl} ";
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -570,15 +567,18 @@ class SendmailqueueTable extends Table
 	 */
 	public function checkTrials($trial = 2, $count = 0)
 	{
+		$result = null;
+
 		$db	= $this->_db;
 		$query	= $db->getQuery(true);
 
 		$query->select('COUNT(' . $db->quoteName('id') . ')');
 		$query->from($db->quoteName($this->_tbl));
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
+
 			$result = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -598,10 +598,12 @@ class SendmailqueueTable extends Table
 		if ($result != 0)
 		{
 			$query->where($db->quoteName('trial') . ' < ' . (int) $trial);
-			$db->setQuery($query);
+
 			// all queue entries have trial number 2
 			try
 			{
+				$db->setQuery($query);
+
 				$result = $db->loadResult();
 			}
 			catch (RuntimeException $e)

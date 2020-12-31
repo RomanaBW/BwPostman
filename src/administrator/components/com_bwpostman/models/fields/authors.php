@@ -75,10 +75,10 @@ class JFormFieldAuthors extends JFormFieldList
 		$query->from('#__users AS u');
 		$query->where('u.id IN (' . $sub_query . ')');
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

@@ -265,6 +265,7 @@ class EditModel extends AdminModel
 		try
 		{
 			$_db->setQuery($query);
+
 			$this->data = $_db->loadObject();
 		}
 		catch (RuntimeException $e)

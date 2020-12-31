@@ -128,9 +128,10 @@ class JFormFieldSelectedContent extends JFormFieldList
 		$query_user->from($db->quoteName('#__bwpostman_subscribers'));
 		$query_user->where($db->quoteName('id') . ' = ' . (int) $this->_id);
 
-		$db->setQuery($query_user);
 		try
 		{
+			$db->setQuery($query_user);
+
 			$user_id = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -191,10 +192,10 @@ class JFormFieldSelectedContent extends JFormFieldList
 				$query->from($db->quoteName('#__content') . ' AS ' . $db->quoteName('c'));
 				$query->where($db->quoteName('c') . '.' . $db->quoteName('id') . ' = ' . (int) $value);
 
-				$db->setQuery($query);
-
 				try
 				{
+					$db->setQuery($query);
+
 					$options[] = $db->loadAssoc();
 				}
 				catch (RuntimeException $e)

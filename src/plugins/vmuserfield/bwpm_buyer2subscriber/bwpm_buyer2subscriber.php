@@ -214,10 +214,10 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('com_bwpostman'));
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
+
 			$enabled                         = $_db->loadResult();
 			$this->BwPostmanComponentEnabled = $enabled;
 
@@ -249,10 +249,11 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$query->select($_db->quoteName('manifest_cache'));
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
-		$_db->setQuery($query);
 
 		try
 		{
+			$_db->setQuery($query);
+
 			$manifest                        = json_decode($_db->loadResult(), true);
 			$this->BwPostmanComponentVersion = $manifest['version'];
 
@@ -284,10 +285,10 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('bwpm_user2subscriber'));
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
+
 			$enabled    = $_db->loadResult();
 
 			$this->BwPostmanUser2SubscriberPluginEnabled = $enabled;
@@ -320,10 +321,10 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('bwpm_buyer2subscriber'));
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
+
 			$enabled    = $_db->loadResult();
 
 			$this->BwPostmanBuyer2SubscriberPluginEnabled = $enabled;

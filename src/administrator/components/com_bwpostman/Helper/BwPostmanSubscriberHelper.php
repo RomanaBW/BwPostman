@@ -592,6 +592,7 @@ class BwPostmanSubscriberHelper
 		try
 		{
 			$db->setQuery($query);
+
 			$params	= $db->loadObject();
 		}
 		catch (RuntimeException $e)
@@ -655,6 +656,8 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function getJoomlaUserIdByEmail($email)
 	{
+		$user_id = null;
+
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -662,9 +665,16 @@ class BwPostmanSubscriberHelper
 		$query->from($db->quoteName('#__users'));
 		$query->where($db->quoteName('email') . ' = ' . $db->Quote($email));
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		$user_id = (int)$db->loadResult();
+			$user_id = (int)$db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $user_id;
 	}
@@ -680,6 +690,8 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function getMenuItemid($view)
 	{
+		$itemid = null;
+
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -688,8 +700,16 @@ class BwPostmanSubscriberHelper
 		$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=' . $view));
 		$query->where($db->quoteName('published') . ' = ' . 1);
 
-		$db->setQuery($query);
-		$itemid = $db->loadResult();
+		try
+		{
+			$db->setQuery($query);
+
+			$itemid = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		if (empty($itemid))
 		{
@@ -699,8 +719,17 @@ class BwPostmanSubscriberHelper
 			$query->from($db->quoteName('#__menu'));
 			$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=register'));
 			$query->where($db->quoteName('published') . ' = ' . 1);
-			$db->setQuery($query);
-			$itemid = $db->loadResult();
+
+			try
+			{
+				$db->setQuery($query);
+
+				$itemid = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		return $itemid;
@@ -742,10 +771,11 @@ class BwPostmanSubscriberHelper
 			$query_reg->select('name');
 			$query_reg->from($db->quoteName('#__users'));
 			$query_reg->where($db->quoteName('id') . ' = ' . (int) $subscriber->registered_by);
-			$db->setQuery($query_reg);
 
 			try
 			{
+				$db->setQuery($query_reg);
+
 				$subscriber->registered_by = $db->loadResult();
 			}
 			catch (RuntimeException $e)
@@ -791,10 +821,11 @@ class BwPostmanSubscriberHelper
 			$query_conf->select('name');
 			$query_conf->from($db->quoteName('#__users'));
 			$query_conf->where($db->quoteName('id') . ' = ' . (int) $subscriber->confirmed_by);
-			$db->setQuery($query_conf);
 
 			try
 			{
+				$db->setQuery($query_conf);
+
 				$subscriber->confirmed_by = $db->loadResult();
 			}
 			catch (RuntimeException $e)
@@ -824,10 +855,10 @@ class BwPostmanSubscriberHelper
 				{$db->quote('checked_out')},
 				{$db->quote('checked_out_time')})";
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$columns = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

@@ -172,10 +172,11 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('com_bwpostman'));
 
-		$_db->setQuery($query);
 
 		try
 		{
+			$_db->setQuery($query);
+
 			$enabled                         = $_db->loadResult();
 			$this->BwPostmanComponentEnabled = $enabled;
 			$this->_enabled                  = true;
@@ -210,10 +211,11 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		$query->select($_db->quoteName('manifest_cache'));
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
-		$_db->setQuery($query);
 
 		try
 		{
+			$_db->setQuery($query);
+
 			$manifest                        = json_decode($_db->loadResult(), true);
 			$this->BwPostmanComponentVersion = $manifest['version'];
 
@@ -567,10 +569,10 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			$query->from($db->quoteName('#__bwpostman_tc_schedule'));
 			$query->where($db->quoteName('newsletter_id') . ' = ' . $db->Quote($nl_id));
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
+
 				$scheduled_date = $db->loadAssoc();
 			}
 			catch (RuntimeException $e)
@@ -635,10 +637,10 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			$query->delete($db->quoteName('#__bwpostman_tc_schedule'));
 			$query->where($db->quoteName('newsletter_id') . ' = ' . $db->Quote($scheduledDate['newsletter_id']));
 		}
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -746,10 +748,10 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		$query->select($db->quoteName('newsletter_id'));
 		$query->from($db->quoteName('#__bwpostman_tc_schedule'));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$allAutomatedNlsIds = $db->loadColumn();
 
 			return $allAutomatedNlsIds;
@@ -788,10 +790,10 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			$query->from($db->quoteName('#__bwpostman_sendmailcontent'));
 			$query->where('nl_id' . ' IN ('  . implode(',', $automatedNlIds) . ')');
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
+
 				$allAutomatedContentIds = $db->loadColumn();
 
 				return $allAutomatedContentIds;

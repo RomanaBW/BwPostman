@@ -39,6 +39,7 @@ use Joomla\CMS\Helper\UserGroupsHelper;
 use Joomla\CMS\User\User;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use RuntimeException;
 use SimpleXMLElement;
 
 //require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
@@ -267,17 +268,25 @@ class BwAccess
 	 */
 	protected static function getSectionAsset($assetName)
 	{
-		$db = Factory::getDbo();
+		$sectionRules = null;
 
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('rules'));
 		$query->from($db->quoteName('#__assets'));
 		$query->where($db->quoteName('name') . ' = ' . $db->quote($assetName));
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		$sectionRules = $db->loadResult();
+			$sectionRules = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $sectionRules;
 	}
@@ -361,9 +370,16 @@ class BwAccess
 			$query->where('n.id = ' . (int) $identity);
 			$query->order('p.lft DESC');
 
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
 
-			$parentIdentities[$identity] = $db->loadAssocList();
+				$parentIdentities[$identity] = $db->loadAssocList();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		return $parentIdentities;
@@ -579,6 +595,7 @@ class BwAccess
 		!JDEBUG ?: Profiler::getInstance('Application')->mark('Before Access::preloadPermissions (' . $extensionName . ')');
 
 		// Get the database connection object.
+		$assets     = null;
 		$db         = Factory::getDbo();
 		$extraQuery = $db->qn('name') . ' = ' . $db->q($extensionName) . ' OR ' . $db->qn('parent_id') . ' = 0';
 
@@ -589,7 +606,14 @@ class BwAccess
 			->where($db->qn('name') . ' LIKE ' . $db->q($extensionName . '.%') . ' OR ' . $extraQuery);
 
 		// Get the permission map for all assets in the asset extension.
-		$assets = $db->setQuery($query)->loadObjectList();
+		try
+		{
+			$assets = $db->setQuery($query)->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		self::$assetPermissionsParentIdMapping[$extensionName] = array();
 
@@ -650,7 +674,8 @@ class BwAccess
 		}
 
 		// Get the database connection object.
-		$db = Factory::getDbo();
+		$assets = null;
+		$db     = Factory::getDbo();
 
 		// Get the asset info for all assets in asset names list.
 		$query = $db->getQuery(true)
@@ -659,7 +684,14 @@ class BwAccess
 			->where($db->qn('name') . ' IN (' . implode(',', $db->quote($components)) . ')');
 
 		// Get the Name Permission Map List
-		$assets = $db->setQuery($query)->loadObjectList();
+		try
+		{
+			$assets = $db->setQuery($query)->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		$rootAsset = null;
 
@@ -942,7 +974,16 @@ class BwAccess
 		}
 
 		// Execute the query and load the rules from the result.
-		$result = $db->setQuery($query)->loadObjectList();
+		$result = null;
+
+		try
+		{
+			$result = $db->setQuery($query)->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		// Get the root even if the asset is not found and in recursive mode
 		if (empty($result))
@@ -954,7 +995,14 @@ class BwAccess
 				->from($db->qn('#__assets'))
 				->where($db->qn('id') . ' = ' . $db->q($assets->getRootId()));
 
-			$result = $db->setQuery($query)->loadObjectList();
+			try
+			{
+				$result = $db->setQuery($query)->loadObjectList();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		$collected = array();
@@ -1236,8 +1284,18 @@ class BwAccess
 				}
 
 				// Execute the query and load the rules from the result.
-				$db->setQuery($query);
-				$result = $db->loadColumn();
+				$result = null;
+
+				try
+				{
+					$db->setQuery($query);
+
+					$result = $db->loadColumn();
+				}
+				catch (RuntimeException $e)
+				{
+					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				}
 
 				// Clean up any NULL or duplicate values, just in case
 				$result = ArrayHelper::toInteger($result);
@@ -1284,9 +1342,18 @@ class BwAccess
 			->join('INNER', '#__user_usergroup_map AS m ON ug2.id=m.group_id')
 			->where('ug1.id=' . $db->quote((int)$groupId));
 
-		$db->setQuery($query);
+		$result = null;
 
-		$result = $db->loadColumn();
+		try
+		{
+			$db->setQuery($query);
+
+			$result = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		// Clean up any NULL values, just in case
 		$result = ArrayHelper::toInteger($result);
@@ -1317,7 +1384,14 @@ class BwAccess
 				->from($db->quoteName('#__viewlevels'));
 
 			// Set the query for execution.
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 
 			// Build the view levels array.
 			foreach ($db->loadAssocList() as $level)

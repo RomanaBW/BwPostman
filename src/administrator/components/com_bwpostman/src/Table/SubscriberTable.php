@@ -747,10 +747,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$query->where($db->quoteName('status') . ' = ' . 9);
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$testrecipients = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -789,10 +789,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$query->where($db->quoteName('status') . ' = ' . 9);
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$result = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
@@ -921,10 +921,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$query->from($this->_tbl);
 		$query->where($db->quoteName('id') . ' = ' . $db->quote((int) $subsId));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$result = $db->loadObject();
 		}
 		catch (RuntimeException $e)
@@ -961,6 +961,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		try
 		{
 			$db->setQuery($query);
+
 			$id = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -1004,10 +1005,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		{
 			$query->where($db->quoteName('status') . ' != ' . 9);
 		}
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			if (!$isTester)
 			{
 				$id = intval($this->_db->loadResult());
@@ -1053,6 +1054,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		try
 		{
 			$db->setQuery($query);
+
 			$subscriber = $db->loadObject();
 		}
 		catch (RuntimeException $e)
@@ -1089,6 +1091,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		try
 		{
 			$db->setQuery($query);
+
 			$user_id = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -1144,10 +1147,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			return $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -1182,10 +1185,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			$query->from($db->quoteName($this->_tbl));
 			$query->where($db->quoteName('editlink') . ' = ' . $db->quote($newEditlink));
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
+
 				$editlink = $db->loadResult();
 			}
 			catch (RuntimeException $e)
@@ -1227,10 +1230,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			$query->from($db->quoteName($this->_tbl));
 			$query->where($db->quoteName('activation') . ' = ' . $db->quote($newActivation));
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
+
 				$activation = $db->loadResult();
 			}
 			catch (RuntimeException $e)
@@ -1270,11 +1273,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' = ' . (int) $id);
 
-		$db->setQuery($query);
-
 		try
 		{
 			$db->setQuery($query);
+
 			$subscriber = $db->loadObject();
 		}
 		catch (RuntimeException $e)
@@ -1290,7 +1292,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @param   array      $values
 	 *
-	 * @return  object
+	 * @return  object|boolean
 	 *
 	 * @since   2.4.0 (here)
 	 */
@@ -1316,9 +1318,18 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			$query->where($db->quoteName('status') . ' IN (0, 1)');
 		}
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		return $db->loadObject();
+			return $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return false;
 	}
 
 	/**
@@ -1349,10 +1360,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$query->where($db->quoteName('confirmed_by') . ' = ' . (int) -1);
 		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
 		$query->where($db->quoteName('archived_by') . ' = ' . (int) -1);
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$subscriber = $db->loadObject();
 		}
 		catch (RuntimeException $e)
@@ -1390,10 +1401,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$query->set($db->quoteName('confirmed_by') . ' = ' . 0);
 		$query->set($db->quoteName('confirmation_ip') . ' = ' . $db->quote($activation_ip));
 		$query->where($db->quoteName('id') . ' = ' . (int) $id);
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -1431,10 +1442,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$query->where($db->quoteName('email') . ' = ' . $db->quote($email));
 		$query->where($db->quoteName('editlink') . ' = ' . $db->quote($editlink));
 		$query->where($db->quoteName('status') . ' != ' . 9);
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
 			$id = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -1471,6 +1482,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		try
 		{
 			$db->setQuery($query);
+
 			$emailaddress = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -1494,6 +1506,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 */
 	public function checkEditlink($editlink)
 	{
+		$id    = null;
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
@@ -1507,6 +1520,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		try
 		{
 			$db->setQuery($query);
+
 			$id = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -1551,10 +1565,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $subscribers) . ')');
 		}
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$data = $db->loadRowList();
 		}
 		catch (RuntimeException $e)

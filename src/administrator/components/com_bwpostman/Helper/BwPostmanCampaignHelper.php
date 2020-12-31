@@ -54,15 +54,25 @@ abstract class BwPostmanCampaignHelper
 	 */
 	public static function getSingleCampaign($cam_id = null)
 	{
+		$campaign = null;
+
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('*');
 		$query->from($db->quoteName('#__bwpostman_campaigns'));
 		$query->where($db->quoteName('id') . ' = ' . (int) $cam_id);
-		$db->setQuery($query);
 
-		$campaign = $db->loadObject();
+		try
+		{
+			$db->setQuery($query);
+
+			$campaign = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		// Get all assigned newsletters
 		// --> we offer to unarchive not only the campaign but also the assigned newsletters,
@@ -75,9 +85,10 @@ abstract class BwPostmanCampaignHelper
 		$query->from($db->quoteName('#__bwpostman_newsletters'));
 		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
+
 			$campaign->newsletters = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
@@ -135,10 +146,10 @@ abstract class BwPostmanCampaignHelper
 			$query->where($db->quoteName('mailing_date') . $mailingDateOperator . $db->quote($db->getNullDate()));
 		}
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$newsletters = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
@@ -209,6 +220,7 @@ abstract class BwPostmanCampaignHelper
 		try
 		{
 			$db->setQuery($query);
+
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

@@ -73,10 +73,10 @@ class JFormFieldAllUsergroups extends JFormFieldList
 		$query->leftJoin('#__usergroups AS u ON CONCAT("-", u.id) = nm.mailinglist_id');
 		$query->order('u.title');
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

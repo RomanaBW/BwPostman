@@ -202,8 +202,15 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 
 			$query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
 
-			$db->setQuery($query);
-			$db->execute();
+			try
+			{
+				$db->setQuery($query);
+				$db->execute();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 	}
 
@@ -225,10 +232,11 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote($extension));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$result = $db->loadResult();
 		}
 		catch (RuntimeException $e)

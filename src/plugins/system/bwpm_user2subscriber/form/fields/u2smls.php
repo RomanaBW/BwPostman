@@ -220,8 +220,18 @@ class JFormFieldU2sMls extends CheckboxesField
 			$query->where($_db->quoteName('a.id') . ' IN (' . implode(',', $availableMailinglists) . ')');
 		}
 
-		$_db->setQuery($query);
-		$options = $_db->loadObjectList();
+		$options = array();
+
+		try
+		{
+			$_db->setQuery($query);
+
+			$options = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

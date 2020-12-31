@@ -154,23 +154,34 @@ class Mod_BwPostmanInstallerScript
 	/**
 	 * get a variable from the manifest file (actually, from the manifest cache).
 	 *
-	 * @param   string      $name   name of the manifest to get
+	 * @param string $name name of the manifest to get
 	 *
-	 * @return  object      $manifest the manifest for this module
+	 * @return  string      $manifest the manifest for this module
 	 *
 	 * @since     0.9.8
 	 */
-	private function getManifestVar($name)
+	private function getManifestVar(string $name): string
 	{
+		$manifest = null;
+
 		$db		= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote('mod_bwpostman'));
-		$db->setQuery($query);
 
-		$manifest = json_decode($db->loadResult(), true);
+		try
+		{
+			$db->setQuery($query);
+
+			$manifest = json_decode($db->loadResult(), true);
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
 		return $manifest[$name];
 	}
 

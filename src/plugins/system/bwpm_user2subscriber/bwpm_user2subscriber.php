@@ -217,10 +217,10 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('com_bwpostman'));
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
+
 			$enabled                = $_db->loadResult();
 			$this->BwPostmanComponentEnabled = $enabled;
 
@@ -252,10 +252,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$query->select($_db->quoteName('manifest_cache'));
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
-		$_db->setQuery($query);
 
 		try
 		{
+			$_db->setQuery($query);
+
 			$manifest               = json_decode($_db->loadResult(), true);
 			$this->BwPostmanComponentVersion = $manifest['version'];
 
@@ -964,9 +965,9 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$query->set($_db->quoteName('confirmation_ip') . ' = ' . $_db->quote($activation_ip));
 		$query->where($_db->quoteName('email') . ' = "' . (string) $user_mail . '"');
 
-		$_db->setQuery($query);
 		try
 		{
+			$_db->setQuery($query);
 			$res = $_db->execute();
 
 			$params    = ComponentHelper::getParams('com_bwpostman');
@@ -1033,6 +1034,8 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function updateEmailOfSubscription()
 	{
+		$result = false;
+
 		$_db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $_db->getQuery(true);
 
@@ -1040,9 +1043,16 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$query->set($_db->quoteName('email') . " = " . $_db->quote($this->stored_subscriber_data['email']));
 		$query->where($_db->quoteName('id') . ' = ' . $_db->quote((int)$this->stored_subscriber_data['id']));
 
-		$_db->setQuery($query);
+		try
+		{
+			$_db->setQuery($query);
 
-		$result  = $_db->execute();
+			$result  = $_db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $result;
 	}

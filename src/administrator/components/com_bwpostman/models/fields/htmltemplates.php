@@ -175,10 +175,10 @@ class JFormFieldHtmlTemplates extends JFormFieldRadio
 		$query->where($db->quoteName('tpl_id') . ' < ' . $db->quote('998'));
 		$query->order($db->quoteName('title') . ' ASC');
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

@@ -217,9 +217,10 @@ class SubscriberModel extends AdminModel
 		$query->from($db->quoteName('#__bwpostman_subscribers') . ' AS ' . $pre_tbl_s);
 		$query->where($pre_tbl_s . '.' . $db->quoteName('id') . ' = ' . (int) $sub_id);
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
+
 			$subscriber = $db->loadObject();
 		}
 		catch (RuntimeException $e)
@@ -594,9 +595,9 @@ class SubscriberModel extends AdminModel
 			$query->set($db->quoteName('archived_by') . " = " . $userid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 
-			$db->setQuery($query);
 			try
 			{
+				$db->setQuery($query);
 				$db->execute();
 			}
 			catch (RuntimeException $e)
@@ -1604,8 +1605,16 @@ class SubscriberModel extends AdminModel
 		$query->from($db->quoteName('#__bwpostman_subscribers'));
 		$query .= $subQuery;
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		return $db->loadAssocList();
+			return $db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_GET_SUBSCRIBERS'), 'error');
+			return false;
+		}
 	}
 }

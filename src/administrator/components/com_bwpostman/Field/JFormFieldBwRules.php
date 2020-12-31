@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwAccess;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -35,6 +36,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use RuntimeException;
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php');
 
@@ -172,9 +174,16 @@ class JFormFieldBwRules extends JFormFieldRules
 			$query->from($db->quoteName('#__assets'));
 			$query->where($db->quoteName('name') . ' = ' . $db->quote($parentAssetName));
 
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
 
-			$assetId = (int) $db->loadResult();
+				$assetId = (int) $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		// If not in global config we need the parent_id asset to calculate permissions.
@@ -188,9 +197,16 @@ class JFormFieldBwRules extends JFormFieldRules
 				->from($db->quoteName('#__assets'))
 				->where($db->quoteName('id') . ' = ' . $assetId);
 
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
 
-			$parentAssetId = (int) $db->loadResult();
+				$parentAssetId = (int) $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		// Full width format.
@@ -449,9 +465,16 @@ class JFormFieldBwRules extends JFormFieldRules
 		$query->from($db->quoteName('#__assets'));
 		$query->where($db->quoteName('id') . ' = ' . $db->Quote($assetId));
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		$res = $db->loadAssoc();
+			$res = $db->loadAssoc();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		if (is_array($res))
 		{

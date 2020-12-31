@@ -223,10 +223,11 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('templates_table_id') . ' = ' . (int) $template_id);
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$tpl_assets = $db->loadAssoc();
 		}
 		catch (RuntimeException $e)
@@ -311,10 +312,9 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 			$query->where($db->quoteName('templates_table_id') . ' = ' . $data['id']);
 		}
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)

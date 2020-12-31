@@ -122,10 +122,11 @@ class NewslettersMailinglistsTable extends Table
 		$subQuery->select($db->quoteName('mailinglist_id'));
 		$subQuery->from($db->quoteName($this->_tbl));
 		$subQuery->where($db->quoteName('newsletter_id') . ' = ' . (int) $oldid);
-		$db->setQuery($subQuery);
 
 		try
 		{
+			$db->setQuery($subQuery);
+
 			$lists = $db->loadAssocList();
 		}
 		catch (RuntimeException $e)
@@ -147,10 +148,10 @@ class NewslettersMailinglistsTable extends Table
 				(int) $list['newsletter_id'] . ',' .
 					(int) $list['mailinglist_id']
 			);
-			$db->setQuery($query);
 
 			try
 			{
+				$db->setQuery($query);
 				$db->execute();
 			}
 			catch (RuntimeException $e)
@@ -211,10 +212,9 @@ class NewslettersMailinglistsTable extends Table
 		$query->delete($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('newsletter_id') . ' =  ' . (int) $nlId);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -252,10 +252,9 @@ class NewslettersMailinglistsTable extends Table
 			(int) $mlId
 		);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -286,10 +285,10 @@ class NewslettersMailinglistsTable extends Table
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('newsletter_id') . ' = ' . (int) $id);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$mailinglists = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
@@ -319,10 +318,9 @@ class NewslettersMailinglistsTable extends Table
 		$query->delete($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote((int)$id));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)

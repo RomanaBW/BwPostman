@@ -80,6 +80,7 @@ class MenuitemsField extends ListField
 		try
 		{
 			$db->setQuery($query);
+
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

@@ -37,6 +37,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Access\Access;
 use JHtmlSidebar;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwAccess;
+use RuntimeException;
 
 //require_once JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php';
 
@@ -211,13 +212,14 @@ class BwPostmanHelper
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$manifest = json_decode($db->loadResult(), true);
 		}
-		catch (\RuntimeException $e)
+		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			return false;
@@ -1251,13 +1253,13 @@ class BwPostmanHelper
 		$query->where($_db->quoteName('published') . ' = ' . 1);
 		$query->where($_db->quoteName('archive_flag') . ' = ' . 0);
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
+
 			$ml_published = $_db->loadResult();
 		}
-		catch (\RuntimeException $e)
+		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
@@ -1281,6 +1283,8 @@ class BwPostmanHelper
 	 */
 	public static function checkQueueEntries()
 	{
+		$queueEntriesAtLimit = array();
+
 		$db   = Factory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -1291,9 +1295,16 @@ class BwPostmanHelper
 // @ToDo: Hier ist zu überlegen, ob man die Meldung nicht generell anzeigt sobald noch Mails im Queue sind.
 // @ToDo: Ist mir erst aufgefallen, als ich den Versand manuell unterbrochen habe, dass nichts angezeigt wird.
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		$queueEntriesAtLimit = $db->loadColumn();
+			$queueEntriesAtLimit = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		// entries at limit, queue and problem
 		if (count($queueEntriesAtLimit))
@@ -1672,9 +1683,16 @@ class BwPostmanHelper
 			$query->from($db->quoteName('#__bwpostman_' . $db->escape($view) . 's'));
 			$query->where($db->quoteName('id') . ' = ' . (int)$recordId);
 
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
 
-			$creatorId = $db->loadResult();
+				$creatorId = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		return (int)$creatorId;
@@ -1752,6 +1770,7 @@ class BwPostmanHelper
 	public static function getItemsSeparatedByArchive($view, $fromArchive, $itemRecords)
 	{
 		$itemsToCheck = array();
+		$reducedItems = null;
 
 		foreach ($itemRecords as $itemRecord)
 		{
@@ -1769,9 +1788,16 @@ class BwPostmanHelper
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $itemsToCheck) . ')');
 		}
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		$reducedItems = $db->loadAssocList();
+			$reducedItems = $db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $reducedItems;
 	}
@@ -1803,7 +1829,7 @@ class BwPostmanHelper
 
 			$asset_records = $_db->loadAssocList();
 		}
-		catch (\Exception $e)
+		catch (RuntimeException $e)
 		{
 			$asset_records['name']  = 'com_bwpostman.' . $view;
 		}
@@ -1960,7 +1986,7 @@ class BwPostmanHelper
 
 				$result = $_db->loadAssocList();
 			}
-			catch (\RuntimeException $e)
+			catch (RuntimeException $e)
 			{
 				return $allowed_ids;
 			}

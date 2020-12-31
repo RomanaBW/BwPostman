@@ -38,6 +38,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
+use function Zend\Diactoros\normalizeUploadedFiles;
 
 /**
  * #__bwpostman_subscribers_mailinglists table handler
@@ -131,6 +132,8 @@ class SubscribersMailinglistsTable extends Table
 	 */
 	public function getSubscribersOfMailinglist($ids)
 	{
+		$subscribersOfMailinglist = null;
+
 		if (!is_array($ids))
 		{
 			$ids = array((int)$ids);
@@ -145,9 +148,17 @@ class SubscribersMailinglistsTable extends Table
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $ids) . ')');
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		$subscribersOfMailinglist = $db->loadColumn();
+			$subscribersOfMailinglist = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
 
 		return $subscribersOfMailinglist;
 	}
@@ -177,10 +188,9 @@ class SubscribersMailinglistsTable extends Table
 			$query->where($db->quoteName('mailinglist_id') . ' IN  ' . (explode('.', $mailinglists)));
 		}
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 
 			return true;
@@ -230,6 +240,7 @@ class SubscribersMailinglistsTable extends Table
 		{
 			$db->setQuery($query);
 			$db->execute();
+
 			return  true;
 		}
 		catch (RuntimeException $e)
@@ -260,10 +271,11 @@ class SubscribersMailinglistsTable extends Table
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $subscriberId);
 		$query->where($db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglistId);
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$subsIdExists = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -301,10 +313,9 @@ class SubscribersMailinglistsTable extends Table
 		$query->delete($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote((int)$id));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -338,10 +349,10 @@ class SubscribersMailinglistsTable extends Table
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $sub_id);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$mailinglist_ids = $db->loadColumn();
 		}
 		catch (RuntimeException $e)

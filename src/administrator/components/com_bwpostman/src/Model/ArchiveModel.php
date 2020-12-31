@@ -31,7 +31,9 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
+use RuntimeException;
 
 /**
  * BwPostman archive model
@@ -471,7 +473,15 @@ class ArchiveModel extends ListModel
 			$query->order($db->escape($orderCol . ' ' . $orderDirn) . ', ' . $pef_tbl_a . '.' . $db->quoteName($orderMainCol));
 		}
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
+			return false;
+		}
 
 		return $query;
 	}

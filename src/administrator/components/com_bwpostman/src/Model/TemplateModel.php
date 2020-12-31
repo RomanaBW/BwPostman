@@ -196,10 +196,11 @@ class TemplateModel extends AdminModel
 				$query->select('*');
 				$query->from($db->quoteName('#__bwpostman_templates_tags'));
 				$query->where($db->quoteName('templates_table_id') . ' = ' . (int) $item->id);
-				$db->setQuery($query);
 
 				try
 				{
+					$db->setQuery($query);
+
 					$newitems = $db->loadAssoc();
 				}
 				catch (RuntimeException $e)
@@ -531,10 +532,9 @@ class TemplateModel extends AdminModel
 			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
 				$db->execute();
 			}
 			catch (RuntimeException $e)

@@ -36,6 +36,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\QueryInterface;
+use RuntimeException;
 
 // Import MODEL object class
 jimport('joomla.application.component.modellist');
@@ -193,7 +194,15 @@ class SubscribersModel extends ListModel
 		$this->getQueryWhere();
 		$this->getQueryOrder();
 
-		$this->_db->setQuery($this->query);
+		try
+		{
+			$this->_db->setQuery($this->query);
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
+			return false;
+		}
 
 		return $this->query;
 	}

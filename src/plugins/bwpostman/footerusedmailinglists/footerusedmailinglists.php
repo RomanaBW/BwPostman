@@ -284,10 +284,10 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$query->where($db->quoteName('mailinglist_id') . ' > ' . $db->quote(0));
 		}
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$recipients = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
@@ -329,10 +329,10 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$query->where($db->quoteName('mailinglist_id') . ' > ' . $db->quote(0));
 		}
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$recipients = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
@@ -363,10 +363,11 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		$query->select($db->quoteName('campaign_id'));
 		$query->from($db->quoteName('#__bwpostman_newsletters'));
 		$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$camId = (int)$db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -565,10 +566,10 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$query->from($db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $usedMlIds) . ')');
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
+
 				$mailinglists = $db->loadAssocList();
 			}
 			catch (RuntimeException $e)
@@ -607,10 +608,10 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$query->where($db->quoteName('subscriber_id') . ' IN (' . implode(',', $activeRecipients) . ')');
 			$query->where($db->quoteName('mailinglist_id') . ' = ' . $db->quote($mlId));
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
+
 				$nbrRecipients = $db->loadResult();
 			}
 			catch (RuntimeException $e)
@@ -645,10 +646,10 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$query->from($db->quoteName('#__usergroups'));
 			$query->where($db->quoteName('id') . ' IN (' . implode($usedUgIds) . ')');
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
+
 				$usergroups = $db->loadAssocList();
 			}
 			catch (RuntimeException $e)
@@ -682,10 +683,10 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		$query->from($db->quoteName('#__user_usergroup_map'));
 		$query->where($db->quoteName('group_id') . ' = ' . $db->quote($gid));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$nbrRecipients = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -763,10 +764,10 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		}
 		$query->where($addWhere);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$activeRecipients = $db->loadColumn();
 		}
 		catch (RuntimeException $e)

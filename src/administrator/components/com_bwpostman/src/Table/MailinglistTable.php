@@ -361,10 +361,10 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('title') . ' = ' . $db->quote($this->title));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$xid = intval($db->loadResult());
 		}
 		catch (RuntimeException $e)
@@ -465,10 +465,10 @@ class MailinglistTable extends Table implements VersionableTableInterface
 			}
 		}
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$mls = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
@@ -525,6 +525,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		try
 		{
 			$db->setQuery($query);
+
 			$mailinglists = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
@@ -560,6 +561,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 				try
 				{
 					$db->setQuery($query);
+
 					$add_mls = $db->loadObjectList();
 				}
 				catch (RuntimeException $e)
@@ -613,10 +615,10 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		$query->where($db->quoteName('id') . ' IN  (' . $mailinglists . ')');
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$lists = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
@@ -649,10 +651,10 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' IN (' . implode(',', $mls) . ')');
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$mailinglists = $db->loadAssocList();
 		}
 		catch (RuntimeException $e)
@@ -683,10 +685,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 		$query->order('title ASC');
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$mailinglists = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
@@ -717,10 +720,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		$query->select('id');
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('published') . ' = ' . 1);
-		$this->_db->setQuery($query);
 
 		try
 		{
+			$this->_db->setQuery($query);
+
 			$mailinglists = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
@@ -756,6 +760,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		try
 		{
 			$db->setQuery($query);
+
 			$mailinglists = $db->loadAssocList();
 		}
 		catch (RuntimeException $e)

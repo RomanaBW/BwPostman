@@ -135,15 +135,24 @@ class PlgBwPostmanPersonalize extends JPlugin
 	 */
 	protected function getGenderFromSubscriberId($id)
 	{
+		$gender = null;
 		$_db 	= $this->db;
-		$query  = $this->db->getQuery(true);
+		$query  = $_db->getQuery(true);
 
-		$query->select($this->db->quoteName('gender'));
+		$query->select($_db->quoteName('gender'));
 		$query->from('#__bwpostman_subscribers');
-		$query->where($this->db->quoteName('id') . ' = ' . (int) $id);
-		$_db->setQuery($query);
+		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
 
-		$gender = $this->db->loadResult();
+		try
+		{
+			$_db->setQuery($query);
+
+			$gender = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $gender;
 	}
@@ -159,15 +168,25 @@ class PlgBwPostmanPersonalize extends JPlugin
 	 */
 	protected function getGenderFromUserId($id)
 	{
+		$gender = null;
+
 		$_db   = $this->db;
-		$query = $this->db->getQuery(true);
+		$query = $_db->getQuery(true);
 
-		$query->select($this->db->quoteName('gender'));
+		$query->select($_db->quoteName('gender'));
 		$query->from('#__bwpostman_subscribers');
-		$query->where($this->db->quoteName('user_id') . ' = ' . (int) $id);
-		$_db->setQuery($query);
+		$query->where($_db->quoteName('user_id') . ' = ' . (int) $id);
 
-		$gender = $this->db->loadResult();
+		try
+		{
+			$_db->setQuery($query);
+
+			$gender = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $gender;
 	}

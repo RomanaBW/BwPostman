@@ -140,10 +140,11 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query->select($_db->quoteName('manifest_cache'));
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
-		$_db->setQuery($query);
 
 		try
 		{
+			$_db->setQuery($query);
+
 			$manifest   = json_decode($_db->loadResult(), true);
 			$version    = $manifest['version'];
 		}
@@ -176,10 +177,10 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('bwpm_user2subscriber'));
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
+
 			$plugin_id  = $_db->loadResult();
 		}
 		catch (Exception $e)
@@ -284,10 +285,10 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query->from($_db->quoteName('#__virtuemart_vmusers'));
 		$query->where($_db->quoteName('user_is_vendor') . ' = ' . (int) 1);
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
+
 			$vm_vendor_id  = $_db->loadResult();
 		}
 		catch (Exception $e)
@@ -318,12 +319,12 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query->from($_db->quoteName('#__virtuemart_userfields'));
 		$query->where($_db->quoteName('name') . ' = ' . $_db->quote($field_name));
 
-		$_db->setQuery($query);
-
 		$result = 0;
 
 		try
 		{
+			$_db->setQuery($query);
+
 			$result = $_db->loadResult();
 		}
 		catch (Exception $e)
@@ -786,6 +787,8 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function freeOrderingPosition()
 	{
+		$result = null;
+
 		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
@@ -793,9 +796,16 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query->from($_db->quoteName('#__virtuemart_userfields'));
 		$query->where($_db->quoteName('ordering') . ' = ' . $_db->quote($this->userfield_insert_ordering_position));
 
-		$_db->setQuery($query);
+		try
+		{
+			$_db->setQuery($query);
 
-		$result = $_db->loadResult();
+			$result = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		if ($result !== null)
 		{
@@ -821,10 +831,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query->set($_db->quoteName('ordering') . " = " . $_db->quoteName('ordering') . '+1');
 		$query->where($_db->quoteName('ordering') . ' >= ' . $_db->quote($this->userfield_insert_ordering_position));
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
 			$_db->execute();
 		}
 		catch (Exception $e)
@@ -887,10 +896,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		);
 		$query->values(implode(',', $values));
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
 			$_db->execute();
 		}
 		catch (Exception $e)
@@ -938,10 +946,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		);
 		$query->values(implode(',', $values));
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
 			$_db->execute();
 		}
 		catch (Exception $e)
@@ -979,10 +986,10 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query->from($_db->quoteName('#__virtuemart_userfields'));
 		$query->where($_db->quoteName('name') . ' IN (' . implode(',', $bw_userfield_names) . ')');
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
+
 			$bw_userfield_ids   = $_db->loadColumn();
 		}
 		catch (Exception $e)
@@ -1040,10 +1047,10 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query->from($_db->quoteName('#__virtuemart_userfields'));
 		$query->where($_db->quoteName('virtuemart_userfield_id') . ' = ' . $_db->quote($item_id));
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
+
 			$ordering_number = $_db->loadResult();
 		}
 		catch (Exception $e)
@@ -1071,10 +1078,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query->delete($_db->quoteName('#__virtuemart_userfields'));
 		$query->where($_db->quoteName('virtuemart_userfield_id') . ' = ' . $_db->quote($item));
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
 			$_db->execute();
 		}
 		catch (Exception $e)
@@ -1103,10 +1109,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query->set($_db->quoteName('ordering') . " = " . $_db->quoteName('ordering') . '-1');
 		$query->where($_db->quoteName('ordering') . ' >= ' . $_db->quote($ordering_number));
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
 			$_db->execute();
 		}
 		catch (Exception $e)
@@ -1134,10 +1139,9 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$query->delete($_db->quoteName('#__virtuemart_userfield_values'));
 		$query->where($_db->quoteName('virtuemart_userfield_id') . ' IN (' . implode(',', $bw_userfield_ids) . ')');
 
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
 			$_db->execute();
 		}
 		catch (Exception $e)

@@ -136,10 +136,11 @@ class JFormFieldCamMlUnavailable extends JFormFieldRadio
 		$query->select("m.mailinglist_id AS selected");
 		$query->from($db->quoteName('#__bwpostman_campaigns_mailinglists') . ' AS m');
 		$query->where($db->quoteName('m.campaign_id') . ' = ' . $db->quote((int)$cam_id));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$ml_select = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
@@ -197,10 +198,10 @@ class JFormFieldCamMlUnavailable extends JFormFieldRadio
 			$query_user->from($db->quoteName('#__bwpostman_subscribers'));
 			$query_user->where($db->quoteName('id') . ' = ' . (int) $subs_id[0]);
 
-			$db->setQuery($query_user);
-
 			try
 			{
+				$db->setQuery($query_user);
+
 				$user_id = $db->loadResult();
 			}
 			catch (RuntimeException $e)
@@ -230,10 +231,10 @@ class JFormFieldCamMlUnavailable extends JFormFieldRadio
 
 		$query->order('title ASC');
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$options = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

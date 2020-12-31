@@ -182,6 +182,7 @@ class UsergroupsField extends CheckboxesField
 			try
 			{
 				$db->setQuery($query);
+
 				$options = $db->loadObjectList();
 
 				foreach ($options as &$option)

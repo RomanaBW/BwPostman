@@ -263,9 +263,10 @@ class Com_BwPostmanInstallerScript
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
+
 			$params_default = $db->loadResult();
 			$app->setUserState('com_bwpostman.install.params', $params_default);
 		}
@@ -482,10 +483,10 @@ class Com_BwPostmanInstallerScript
 		$query = $db->getQuery(true);
 		$query->delete($db->quoteName('#__postinstall_messages'));
 		$query->where($db->quoteName('language_extension') . ' = ' . $db->quote('com_bwpostman'));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -514,10 +515,11 @@ class Com_BwPostmanInstallerScript
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$manifest = json_decode($db->loadResult(), true);
 		}
 		catch (RuntimeException $e)
@@ -546,10 +548,10 @@ class Com_BwPostmanInstallerScript
 		$query->update($db->quoteName('#__bwpostman_newsletters'));
 		$query->set($db->quoteName('campaign_id') . " = " .   -1);
 		$query->where($db->quoteName('campaign_id') . " = " . 0);
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -578,10 +580,11 @@ class Com_BwPostmanInstallerScript
 		// First get all campaigns
 		$query->select($db->quoteName('id') . ' AS ' . $db->quoteName('campaign_id'));
 		$query->from($db->quoteName('#__bwpostman_campaigns'));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$all_cams = $db->loadAssocList();
 		}
 		catch (RuntimeException $e)
@@ -600,10 +603,11 @@ class Com_BwPostmanInstallerScript
 				$query->from($db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS ' . $db->quoteName('cross1'));
 				$query->leftJoin('#__bwpostman_newsletters AS n ON cross1.newsletter_id = n.id');
 				$query->where($db->quoteName('n') . '.' . $db->quoteName('campaign_id') . ' = ' . $cam['campaign_id']);
-				$db->setQuery($query);
 
 				try
 				{
+					$db->setQuery($query);
+
 					$cross_values = $db->loadAssocList();
 				}
 				catch (RuntimeException $e)
@@ -628,10 +632,10 @@ class Com_BwPostmanInstallerScript
 								$db->quote((int)$cam['campaign_id']) . ',' .
 								$db->quote((int)$item['mailinglist_id'])
 							);
-						$db->setQuery($query);
 
 						try
 						{
+							$db->setQuery($query);
 							$db->execute();
 						}
 						catch (RuntimeException $e)
@@ -754,10 +758,10 @@ class Com_BwPostmanInstallerScript
 
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__bwpostman_templates'));
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$templateFields = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -769,10 +773,11 @@ class Com_BwPostmanInstallerScript
 
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__bwpostman_templates_tpl'));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$templatetplFields = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -1012,10 +1017,11 @@ class Com_BwPostmanInstallerScript
 			$query->select($db->quoteName('id'));
 			$query->from($db->quoteName('#__usergroups'));
 			$query->where($db->quoteName('title') . ' LIKE ' . $db->quote('%BwPostman%'));
-			$db->setQuery($query);
 
 			try
 			{
+				$db->setQuery($query);
+
 				$bwpostman_groups = $db->loadColumn();
 			}
 			catch (RuntimeException $e)
@@ -1030,10 +1036,11 @@ class Com_BwPostmanInstallerScript
 			$query->select($db->quoteName('id'));
 			$query->from($db->quoteName('#__usergroups'));
 			$query->where($db->quoteName('title') . ' = ' . $db->quote('BwPostmanAdmin'));
-			$db->setQuery($query);
 
 			try
 			{
+				$db->setQuery($query);
+
 				$bwpostman_main_group = $db->loadResult();
 				$bwpostman_main_group = array((int) $bwpostman_main_group);
 			}
@@ -1054,10 +1061,10 @@ class Com_BwPostmanInstallerScript
 				$query->where($db->quoteName('user_id') . ' = ' . (int) $user_id);
 				$query->where($db->quoteName('group_id') . ' IN (' . implode(',', $bwpostman_groups) . ')');
 
-				$db->setQuery($query);
-
 				try
 				{
+					$db->setQuery($query);
+
 					$member_ids = $db->loadColumn();
 				}
 				catch (RuntimeException $e)
@@ -1239,10 +1246,10 @@ class Com_BwPostmanInstallerScript
 		$query->from($db->quoteName('#__usergroups'));
 		$query->where("`title` LIKE '" . $db->escape($name) . "'");
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$result = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -1274,10 +1281,9 @@ class Com_BwPostmanInstallerScript
 			$query->delete($db->quoteName('#__extensions'));
 			$query->where($db->quoteName('extension_id') . ' =  ' . $db->quote($extensionId));
 
-			$db->setQuery($query);
-
 			try
 			{
+				$db->setQuery($query);
 				$db->execute();
 			}
 			catch (RuntimeException $e)
@@ -1487,10 +1493,10 @@ class Com_BwPostmanInstallerScript
 		$query = $db->getQuery(true)
 			->delete('#__schemas')
 			->where('extension_id = ' . $extensionId);
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -1506,10 +1512,10 @@ class Com_BwPostmanInstallerScript
 		$query->insert($db->quoteName('#__schemas'));
 		$query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
 		$query->values($db->quote($extensionId) . ',' . $db->quote($schemaVersion));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -1779,10 +1785,10 @@ class Com_BwPostmanInstallerScript
 					if ($query != '' && $query[0] != '#')
 					{
 						$query = str_replace("`DUMMY`", "'DUMMY'", $query);
-						$db->setQuery($query);
 
 						try
 						{
+							$db->setQuery($query);
 							$db->execute();
 						}
 						catch (RuntimeException $e)
@@ -1875,10 +1881,9 @@ class Com_BwPostmanInstallerScript
 		$query->set($db->quoteName('params') . " = " . $db->quote($params));
 		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -1925,10 +1930,10 @@ class Com_BwPostmanInstallerScript
 		$query->select($db->quoteName('rules'));
 		$query->from($db->quoteName('#__assets'));
 		$query->where($db->quoteName('name') . " = " . $db->quote('com_bwpostman'));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
 			$current_rules = json_decode($db->loadResult(), true);
 		}
 		catch (RuntimeException $e)
@@ -1953,10 +1958,10 @@ class Com_BwPostmanInstallerScript
 		$query->update($db->quoteName('#__assets'));
 		$query->set($db->quoteName('rules') . " = " . $db->quote($rules));
 		$query->where($db->quoteName('name') . " = " . $db->quote('com_bwpostman'));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -1973,6 +1978,8 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function getRootAsset()
 	{
+		$rootRules = null;
+
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -1980,9 +1987,16 @@ class Com_BwPostmanInstallerScript
 		$query->from($db->quoteName('#__assets'));
 		$query->where($db->quoteName('name') . ' = ' . $db->Quote('root.1'));
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		$rootRules = $db->loadResult();
+			$rootRules = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $rootRules;
 	}
@@ -2002,8 +2016,15 @@ class Com_BwPostmanInstallerScript
 		$query->set($db->quoteName('rules') . " = " . $db->Quote($newRootRules));
 		$query->where($db->quoteName('name') . ' = ' . $db->Quote('root.1'));
 
-		$db->setQuery($query);
-
+		try
+		{
+			$db->setQuery($query);
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 		$db->execute();
 	}
 
@@ -2106,10 +2127,10 @@ EOS;
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_bwpostman'));
 		$query->where($db->quoteName('client_id') . ' = ' . $db->quote((int)$clientId));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$result = $db->loadResult();
 		}
 		catch (RuntimeException $e)

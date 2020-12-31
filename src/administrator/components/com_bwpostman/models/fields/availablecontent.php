@@ -140,7 +140,14 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query_user->from($db->quoteName('#__bwpostman_subscribers'));
 		$query_user->where($db->quoteName('id') . ' = ' . (int) $this->_id);
 
-		$db->setQuery($query_user);
+		try
+		{
+			$db->setQuery($query_user);
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		// get authorized viewlevels
 		$options = $this->getAvailableContent();
@@ -203,10 +210,10 @@ class JFormFieldAvailableContent extends JFormFieldList
 
 		$query->order($db->quoteName('c') . '.' . $db->quoteName('title') . ' ASC');
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$categories = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
@@ -243,9 +250,10 @@ class JFormFieldAvailableContent extends JFormFieldList
 			$query->order($db->quoteName('c') . '.' . $db->quoteName('created') . ' DESC');
 			$query->order($db->quoteName('c') . '.' . $db->quoteName('title') . ' ASC');
 
-			$db->setQuery($query);
 			try
 			{
+				$db->setQuery($query);
+
 				$rows_list = $db->loadObjectList();
 			}
 			catch (RuntimeException $e)
@@ -279,9 +287,10 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$query->order($db->quoteName('created') . ' DESC');
 		$query->order($db->quoteName('title') . ' ASC');
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
+
 			$rows_list_uncat = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)

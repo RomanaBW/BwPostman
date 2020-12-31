@@ -186,9 +186,11 @@ class BwPostmanInstallHelper
 		$_db = Factory::getDbo();
 
 		$query  = 'SHOW TABLE STATUS WHERE Name = ' . $_db->quote($table_name);
-		$_db->setQuery($query);
+
 		try
 		{
+			$_db->setQuery($query);
+
 			$table_status = $_db->loadAssoc();
 
 			if ($table_status['Collation'] == 'utf8mb4_unicode_ci')
@@ -225,9 +227,10 @@ class BwPostmanInstallHelper
 
 		$query->update($db->quoteName('#__bwpostman_mailinglists'));
 		$query->set($db->quoteName('access') . " = " . $db->quoteName('access') . '+1');
-		$db->setQuery($query);
+
 		try
 		{
+			$db->setQuery($query);
 			$db->execute();
 		}
 		catch (RuntimeException $exception)

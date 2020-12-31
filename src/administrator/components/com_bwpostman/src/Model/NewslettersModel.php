@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Pagination\Pagination;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
@@ -257,7 +258,15 @@ class NewslettersModel extends ListModel
 		$this->getQueryWhere($tab);
 		$this->getQueryOrder($tab);
 
-		$db->setQuery($this->query);
+		try
+		{
+			$db->setQuery($this->query);
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
+			return false;
+		}
 
 		return $this->query;
 	}
@@ -793,9 +802,10 @@ class NewslettersModel extends ListModel
 		$query->select('COUNT(*)');
 		$query->from($db->quoteName('#__bwpostman_sendmailqueue'));
 
-		$db->setQuery($query);
 		try
 		{
+			$db->setQuery($query);
+
 			$count_queue = $db->loadResult();
 		}
 		catch (RuntimeException $e)

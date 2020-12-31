@@ -245,7 +245,7 @@ class SendmailcontentTable extends Table
 	public function store($updateNulls = false)
 	{
 		$k     = $this->_tbl_key;
-		$res   = 0;
+		$res   = null;
 		$query = $this->_db->getQuery(true);
 
 		if (!$this->$k)
@@ -253,10 +253,11 @@ class SendmailcontentTable extends Table
 			// Find the next possible id and insert
 			$query->select('IFNULL(MAX(id)+1,1) AS ' . $this->_db->quoteName('id'));
 			$query->from($this->_db->quoteName($this->_tbl));
-			$this->_db->setQuery($query);
 
 			try
 			{
+				$this->_db->setQuery($query);
+
 				$res = $this->_db->loadResult();
 			}
 			catch (RuntimeException $e)
@@ -314,7 +315,7 @@ class SendmailcontentTable extends Table
 		$mode   = $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
 		$db     = $this->_db;
 		$query  = $db->getQuery(true);
-		$result = array();
+		$result = null;
 
 		$this->reset();
 
@@ -323,10 +324,10 @@ class SendmailcontentTable extends Table
 		$query->where($db->quoteName('id') . ' = ' . (int) $keys);
 		$query->where($db->quoteName('mode') . ' = ' . (int) $mode);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$result = $db->loadAssoc();
 		}
 		catch (RuntimeException $e)
@@ -360,10 +361,11 @@ class SendmailcontentTable extends Table
 		$query->from($db->quoteName($this->_tbl) . ' AS ' . $db->quoteName('a'));
 		$query->where($db->quoteName('a') . '.' . $db->quoteName('nl_id') . ' = ' . (int)$id);
 		$query->where($db->quoteName('a') . '.' . $db->quoteName('mode') . ' = ' . 1);
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$newsletter = $db->loadResult();
 		}
 		catch (RuntimeException $e)

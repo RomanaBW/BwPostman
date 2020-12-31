@@ -211,10 +211,11 @@ class plgBwpostmanBwtimecontrolInstallerScript
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote($extension));
-		$db->setQuery($query);
 
 		try
 		{
+			$db->setQuery($query);
+
 			$result = $db->loadResult();
 		}
 		catch (RuntimeException $e)

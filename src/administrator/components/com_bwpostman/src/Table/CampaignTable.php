@@ -338,10 +338,10 @@ class CampaignTable extends Table implements VersionableTableInterface
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('title') . ' = ' . $db->quote($this->title));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$xid = intval($db->loadResult());
 		}
 		catch (RuntimeException $e)
@@ -425,10 +425,10 @@ class CampaignTable extends Table implements VersionableTableInterface
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			return $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -456,10 +456,10 @@ class CampaignTable extends Table implements VersionableTableInterface
 		$query->select('id');
 		$query->from($this->_tbl);
 
-		$this->_db->setQuery($query);
-
 		try
 		{
+			$this->_db->setQuery($query);
+
 			$cams = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
@@ -492,10 +492,10 @@ class CampaignTable extends Table implements VersionableTableInterface
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('id') . ' IN (' . implode(',', $cams) . ')');
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$campaigns = $db->loadAssocList();
 		}
 		catch (RuntimeException $e)

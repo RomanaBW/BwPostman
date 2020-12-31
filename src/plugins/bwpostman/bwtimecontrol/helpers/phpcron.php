@@ -240,10 +240,10 @@ class BwPostmanPhpCron {
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('extension_id') . ' = ' . $db->Quote($extensionId));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$storedParams = $db->loadResult();
 		}
 		catch (Exception $e)
@@ -298,10 +298,10 @@ class BwPostmanPhpCron {
 		$query->from($db->quoteName('#__bwpostman_tc_settings'));
 		$query->where($db->quoteName('type') . '= ' . $db->quote('sodium'));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$keyValues = $db->loadObject();
 		}
 		catch (Exception $e)
@@ -340,10 +340,10 @@ class BwPostmanPhpCron {
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('extension_id') . '= ' . $db->quote($extensionId));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$params = $db->loadResult();
 		}
 		catch (Exception $e)
@@ -377,10 +377,10 @@ class BwPostmanPhpCron {
 		$query->from($db->quoteName('#__bwpostman_tc_settings'));
 		$query->where($db->quoteName('type') . '= ' . $db->quote('sodium'));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$nonce = $db->loadResult();
 		}
 		catch (Exception $e)
@@ -736,10 +736,10 @@ class BwPostmanPhpCron {
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('extension_id') . ' = ' . $db->Quote($extensionId));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$pluginStateOld = $db->loadResult();
 		}
 		catch (Exception $e)
@@ -772,10 +772,10 @@ class BwPostmanPhpCron {
 		$query->where($db->quoteName('ready_to_send') . ' = ' . $db->quote('1'));
 		$query->order($db->quoteName('scheduled_date') . ' ASC');
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$nlsToSend = $db->loadColumn();
 		}
 		catch (RuntimeException $e)
@@ -814,10 +814,10 @@ class BwPostmanPhpCron {
 		$query->where($db->quoteName('id') . ' IN (' . implode (',', $scheduledNls) . ')');
 		$query->where($db->quoteName('mailing_date') . ' = ' . $db->quote($db->getNullDate()));
 
-		$db->setQuery($query);
-
 		try
 		{
+			$db->setQuery($query);
+
 			$nlsToSend = $db->loadAssocList();
 		}
 		catch (RuntimeException $e)

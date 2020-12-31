@@ -264,7 +264,15 @@ class TemplatesModel extends ListModel
 		$this->getQueryWhere();
 		$this->getQueryOrder();
 
-		$this->_db->setQuery($this->query);
+		try
+		{
+			$this->_db->setQuery($this->query);
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
+			return false;
+		}
 
 		return $this->query;
 	}
@@ -694,10 +702,10 @@ class TemplatesModel extends ListModel
 						$CountTitle = '';
 
 						$this->query = str_replace("`DUMMY`", "'DUMMY'", $this->query);
-						$db->setQuery($this->query);
 
 						try
 						{
+							$db->setQuery($this->query);
 							$db->execute();
 
 							// get last id
@@ -1059,9 +1067,10 @@ class TemplatesModel extends ListModel
 				$query->from($_db->quoteName('#__' . $setting['table'] . ''));
 				$query->where($_db->quoteName($setting['where1']) . ' = ' . (($setting['where2'] == 'id') ? (int) $id : (int) $tpl_id));
 
-				$_db->setQuery($query);
 				try
 				{
+					$_db->setQuery($query);
+
 					$res = $_db->loadAssoc();
 				}
 				catch (RuntimeException $e)

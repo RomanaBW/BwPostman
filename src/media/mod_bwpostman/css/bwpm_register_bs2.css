@@ -1,0 +1,173 @@
+/**
+ * BwPostman Newsletter Module
+ *
+ * BwPostman complete CSS-styles for frontend module to modify by user.
+ *
+ * @version %%version_number%%
+ * @package BwPostman-Module
+ * @author Romana Boldt
+ * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
+ * @license GNU/GPL, see LICENSE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#mod_bwpostman .user_hightlight {
+	position:				absolute;
+	top:					-5000px;
+	color:				rgb(255,0,0);
+}
+
+#mod_bwpostman p.bwp_mod_error_no_mailinglists {
+	font-weight:		bold;
+	color:				#ff0000;
+}
+
+#mod_bwpostman .bwp_mod_modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 99999; /* Sit on top */
+	padding-top: 10px; /* Location of the box */
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+#mod_bwpostman #bwp_mod_modal-content.bwp-err{
+	max-width: 600px;
+	color: red;
+}
+
+#mod_bwpostman #bwp_mod_modal-content {
+	position: relative;
+	background-color: #fefefe;
+	margin: auto;
+	padding: 15px;
+	border: 1px solid #888;
+	border-radius: 6px;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+	height: 100%;
+}
+
+#mod_bwpostman #bwp_modal-title {
+    float: left;
+    margin: 0;
+}
+
+#mod_bwpostman #bwp_mod_wrapper {
+	padding-top: 35px;
+	height: 100%;
+}
+
+#mod_bwpostman .bwp_mod_close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	line-height: 28px;
+}
+
+#mod_bwpostman .bwp_mod_close:hover,
+#mod_bwpostman .bwp_mod_close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+#bwp_mod_wrapper,
+bwp_mod_wrapper::before,
+bwp_mod_wrapper::after {
+    box-sizing: border-box;
+}
+
+#mod_bwpostman #bwp_mod_form_lists {
+	font-weight: bold;
+}
+
+#mod_bwpostman .btn-outline-secondary:hover {
+    background-color: #ddd !important;
+}
+
+#mod_bwpostman .strong {
+	font-weight: bold;
+}
+
+.mb-3, .my-3 {
+    margin-bottom: 1rem !important;
+}
+
+.mt-3, .my-3 {
+    margin-top: 1rem !important;
+}
+
+#mod_bwpostman .btn-group input[type=radio] {
+    display: none;
+}
+
+.input-append.input-block-level,
+.input-prepend.input-block-level {
+  display: table;
+}
+
+.input-append.input-block-level .add-on,
+.input-prepend.input-block-level .add-on {
+  display: table-cell;
+}
+
+.input-append.input-block-level > input {
+  border-right: 0;
+}
+
+.input-append.input-block-level > input,
+.input-prepend.input-block-level > input {
+  box-sizing: border-box; /* use bootstrap mixin or include vendor variants */
+  display: table; /* table-cell is not working well in Chrome for small widths */
+  min-height: inherit;
+  width: 100%;
+}
+
+#mod_bwpostman .btn:hover,
+#mod_bwpostman .btn:focus,
+#mod_bwpostman .btn:active,
+#mod_bwpostman .btn.active,
+#mod_bwpostman .btn.disabled,
+#mod_bwpostman .btn[disabled] {
+  color: #333333;
+  background-color: #e6e6e6;
+  *background-color: #d9d9d9;
+}
+
+#mod_bwpostman .btn:active,
+#mod_bwpostman .btn.active {
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: #cccccc \9;
+  border: 1px solid #cccccc;
+  *border: 0;
+  border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  border-bottom-color: #b3b3b3;
+}
+
+#bwp_mod_form_required .icon-star {
+	margin-left: 3px;
+	margin-right: 0;
+}

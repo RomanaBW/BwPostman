@@ -28,20 +28,16 @@ defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Language\Text;
 
-// replace for - function buildGenderList($gender_selected = '2', $name = 'gender', $class = '', $idPrefix = '')
-$gender_selected = isset($displayData['gender_selected']) ? $displayData['gender_selected'] : '2';
-$name = isset($displayData['name']) ? $displayData['name'] : 'gender';
-$class = isset($displayData['class']) ? ' class="' . $displayData['class'] . '"' : '';
-$genderId = isset($displayData['idPrefix']) ? $displayData['idPrefix'] . 'gender' : 'gender';
+$mailformat_selected = $displayData['mailformat_selected'];
+$formclass = $displayData['formclass'];
 ?>
-				<select id="<?php echo $genderId . '"' . $class; ?> name="<?php echo $name ?>">
-					<option value="2"<?php echo $gender_selected == '2' ? ' selected="selected"' : ''; ?>>
-			            <?php echo Text::_('COM_BWPOSTMAN_NO_GENDER'); ?>
-					</option>
-					<option value="0"<?php echo $gender_selected == '0' ? ' selected="selected"' : ''; ?>>
-			            <?php echo Text::_('COM_BWPOSTMAN_MALE'); ?>
-					</option>
-					<option value="1"<?php echo $gender_selected == '1' ? ' selected="selected"' : ''; ?>>
-			            <?php echo Text::_('COM_BWPOSTMAN_FEMALE'); ?>
-					</option>
-				</select>
+				<div id="edit_mailformat" class="btn-group" data-toggle="buttons-radio">
+					<label class="btn<?php echo $formclass === "sm" ? ' btn-small' : ''; ?><?php echo (!$mailformat_selected ? ' active' : ''); ?>" for="formatText">
+						<input type="radio" name="emailformat" id="formatText" value="0"<?php echo (!$mailformat_selected ? ' checked="checked"' : ''); ?> />
+						<span>&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_BWPOSTMAN_TEXT'); ?>&nbsp;&nbsp;&nbsp;</span>
+					</label>
+					<label class="btn<?php echo $formclass === "sm" ? ' btn-small' : ''; ?><?php echo ($mailformat_selected ? ' active' : ''); ?>" for="formatHtml">
+						<input type="radio" name="emailformat" id="formatHtml" value="1"<?php echo ($mailformat_selected ? ' checked="checked"' : ''); ?> />
+						<span>&nbsp;&nbsp;<?php echo Text::_('COM_BWPOSTMAN_HTML'); ?>&nbsp;&nbsp;</span>
+					</label>
+				</div>

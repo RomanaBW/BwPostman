@@ -254,7 +254,7 @@ class JFormFieldMlUnavailable extends JFormFieldRadio
 
 		try
 		{
-			$db->setQuery($query_user);
+			$db->setQuery($query);
 
 			$options = $db->loadObjectList();
 		}

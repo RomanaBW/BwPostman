@@ -250,7 +250,7 @@ $required_end .= '</div>';
 				<?php
 					echo LayoutHelper::render(
 						'emailformat_bs4',
-						array('mailformat_selected' => $mailformat_selected, 'formclass' => $formclass),
+						array('mailformat_selected' => $lists['emailformat'], 'formclass' => $formclass),
 						$basePath = JPATH_SITE . '/components/com_bwpostman/layouts/subscriber'
 					);
 				?>

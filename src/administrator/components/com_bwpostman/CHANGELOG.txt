@@ -5,10 +5,12 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-Version 3.1.0 released (2020-12-23)----
+Version 3.1.0 released (2021-01-06)----
 
 New
-+ Modal layout for registration module added
++ Small and large modal layout for registration module added
++ Call of css file moved to layout to enable separated css files for each layout
++ Support for bootstrap 2 + 4 added to front end files
 
 
 Version 3.0.3 released (2020-11-27)----

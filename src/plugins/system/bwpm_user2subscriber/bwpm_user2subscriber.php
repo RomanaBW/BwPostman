@@ -1024,7 +1024,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$result = false;
 
-		$_db	= Factory::getContainer()->get('DatabaseDriver');
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));

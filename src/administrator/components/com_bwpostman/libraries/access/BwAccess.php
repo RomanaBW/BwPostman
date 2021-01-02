@@ -262,8 +262,9 @@ class BwAccess
 	 */
 	protected static function getSectionAsset($assetName)
 	{
-		$db = Factory::getDbo();
+		$sectionRules = null;
 
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('rules'));
@@ -588,6 +589,7 @@ class BwAccess
 		!JDEBUG ?: Profiler::getInstance('Application')->mark('Before Access::preloadPermissions (' . $extensionName . ')');
 
 		// Get the database connection object.
+		$assets     = null;
 		$db         = Factory::getDbo();
 		$extraQuery = $db->qn('name') . ' = ' . $db->q($extensionName) . ' OR ' . $db->qn('parent_id') . ' = 0';
 
@@ -666,7 +668,8 @@ class BwAccess
 		}
 
 		// Get the database connection object.
-		$db = Factory::getDbo();
+		$assets = null;
+		$db     = Factory::getDbo();
 
 		// Get the asset info for all assets in asset names list.
 		$query = $db->getQuery(true)
@@ -965,6 +968,8 @@ class BwAccess
 		}
 
 		// Execute the query and load the rules from the result.
+		$result = null;
+
 		try
 		{
 			$result = $db->setQuery($query)->loadObjectList();
@@ -1273,6 +1278,8 @@ class BwAccess
 				}
 
 				// Execute the query and load the rules from the result.
+				$result = null;
+
 				try
 				{
 					$db->setQuery($query);
@@ -1328,6 +1335,8 @@ class BwAccess
 			->join('INNER', '#__usergroups AS ug2 ON ug2.lft' . $test . 'ug1.lft AND ug1.rgt' . $test . 'ug2.rgt')
 			->join('INNER', '#__user_usergroup_map AS m ON ug2.id=m.group_id')
 			->where('ug1.id=' . $db->quote((int)$groupId));
+
+		$result = null;
 
 		try
 		{

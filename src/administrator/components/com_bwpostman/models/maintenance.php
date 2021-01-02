@@ -1478,7 +1478,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		try
 		{
 			$this->db->setQuery($query);
-
 			$this->db->execute();
 		}
 		catch (RuntimeException $exception)
@@ -2184,7 +2183,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				try
 				{
 					$this->db->setQuery($query);
-
 					$this->db->execute();
 				}
 				catch (RuntimeException $exception)
@@ -2222,6 +2220,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->where($this->db->quoteName('user_id') . ' > ' . 0);
 
 			$this->db->setQuery($query);
+
 			$subscribers = $this->db->loadObjectList();
 
 			// update user_id in subscribers table
@@ -2234,6 +2233,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$query->where($this->db->quoteName('email') . ' = ' . $this->db->quote($subscriber->email));
 
 				$this->db->setQuery($query);
+
 				$subscriber->user_id = $this->db->loadResult();
 
 				// update subscribers table
@@ -3013,6 +3013,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		// get import file
 		$fh = fopen($file, 'rb');
+
 		if ($fh === false)
 		{ // File cannot be opened
 			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_FILE_ERROR', $file);
@@ -3398,6 +3399,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->where($this->db->quoteName('lft') . ' >= ' . $base_asset['lft']);
 
 			$this->db->setQuery($query);
+
 			$set_asset_right = $this->db->execute();
 
 			// now shift down lft values by gap for all assets above lft of BwPostman
@@ -3407,6 +3409,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->where($this->db->quoteName('lft') . ' > ' . $base_asset['lft']);
 
 			$this->db->setQuery($query);
+
 			$set_asset_left = $this->db->execute();
 
 			// next set rgt value of BwPostman and update component rules
@@ -3423,6 +3426,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->where($this->db->quoteName('lft') . ' = ' . $base_asset['lft']);
 
 			$this->db->setQuery($query);
+
 			$set_asset_base = $this->db->execute();
 
 			// Uncomment next line to test rollback (only makes sense, if deleted tables contained data)
@@ -3784,7 +3788,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			$query->where($this->db->quoteName('name') . ' NOT LIKE ' . $this->db->quote('%' . $base_asset['name'] . '.%'));
 
 			$this->db->setQuery($query);
-
 			$this->db->execute();
 
 			// now shift lft values from all assets above lft of BwPostman
@@ -3833,7 +3836,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					$table_colnames) . ') VALUES (' . $insert_data . ')';
 
 			$this->db->setQuery($query);
-
 			$this->db->execute();
 		}
 		catch (RuntimeException $exception)
@@ -4105,7 +4107,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			try
 			{
 				$this->db->setQuery($query);
-
 				$this->db->execute();
 			}
 			catch (RuntimeException $exception)
@@ -4124,7 +4125,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			try
 			{
 				$this->db->setQuery($query);
-
 				$this->db->execute();
 			}
 			catch (RuntimeException $exception)
@@ -4143,7 +4143,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			try
 			{
 				$this->db->setQuery($query);
-
 				$this->db->execute();
 			}
 			catch (RuntimeException $exception)
@@ -4182,7 +4181,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			try
 			{
 				$this->db->setQuery($query);
-
 				$this->db->execute();
 			}
 			catch (RuntimeException $exception)
@@ -4203,7 +4201,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			try
 			{
 				$this->db->setQuery($query);
-
 				$this->db->execute();
 			}
 			catch (RuntimeException $exception)
@@ -4251,7 +4248,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				try
 				{
 					$this->db->setQuery($query);
-
 					$this->db->execute();
 				}
 				catch (RuntimeException $exception)
@@ -6513,6 +6509,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				$this->db->setQuery($query);
 
 				$create_table = $this->db->execute();
+
 				if (!$create_table)
 				{
 					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', $table);

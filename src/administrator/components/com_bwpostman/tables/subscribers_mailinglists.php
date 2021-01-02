@@ -123,7 +123,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 	 */
 	public function getSubscribersOfMailinglist($ids)
 	{
-		$subscribersOfMailinglist = array();
+		$subscribersOfMailinglist = null;
 
 		if (!is_array($ids))
 		{
@@ -231,6 +231,7 @@ class BwPostmanTableSubscribers_Mailinglists extends JTable
 		{
 			$db->setQuery($query);
 			$db->execute();
+
 			return  true;
 		}
 		catch (RuntimeException $e)

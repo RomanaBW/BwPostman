@@ -562,6 +562,8 @@ class BwPostmanTableSendmailqueue extends JTable
 	 */
 	public function checkTrials($trial = 2, $count = 0)
 	{
+		$result = null;
+
 		$db	= $this->_db;
 		$query	= $db->getQuery(true);
 

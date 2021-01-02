@@ -162,15 +162,26 @@ class Mod_BwPostmanInstallerScript
 	 */
 	private function getManifestVar($name)
 	{
+		$manifest = null;
+
 		$db		= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . " = " . $db->quote('mod_bwpostman'));
-		$db->setQuery($query);
 
-		$manifest = json_decode($db->loadResult(), true);
+		try
+		{
+			$db->setQuery($query);
+
+			$manifest = json_decode($db->loadResult(), true);
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
 		return $manifest[$name];
 	}
 

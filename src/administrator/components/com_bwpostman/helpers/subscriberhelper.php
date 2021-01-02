@@ -664,7 +664,7 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function getJoomlaUserIdByEmail($email)
 	{
-		$user_id = '';
+		$user_id = null;
 
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
@@ -698,6 +698,8 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function getMenuItemid($view)
 	{
+		$itemid = null;
+
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 

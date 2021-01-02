@@ -155,6 +155,8 @@ abstract class BwPostmanMailinglistHelper {
 	 */
 	public static function getSingleMailinglist($ml_id = null)
 	{
+		$mailinglist = null;
+
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 

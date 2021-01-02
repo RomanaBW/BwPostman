@@ -156,6 +156,8 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 	 */
 	protected function getOptions()
 	{
+		$options = null;
+
 		// prepare query
 		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
@@ -169,8 +171,16 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
 		$query->order($_db->quoteName('published') . 'DESC, ' . $_db->quoteName('access_level') . 'ASC, ' . $_db->quoteName('text') . 'ASC');
 
-		$_db->setQuery($query);
-		$options = $_db->loadObjectList();
+		try
+		{
+			$_db->setQuery($query);
+
+			$options = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

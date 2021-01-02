@@ -1679,9 +1679,16 @@ class BwPostmanHelper
 			$query->from($db->quoteName('#__bwpostman_' . $db->escape($view) . 's'));
 			$query->where($db->quoteName('id') . ' = ' . (int)$recordId);
 
-			$db->setQuery($query);
+			try
+			{
+				$db->setQuery($query);
 
-			$creatorId = $db->loadResult();
+				$creatorId = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		return (int)$creatorId;
@@ -1759,6 +1766,7 @@ class BwPostmanHelper
 	public static function getItemsSeparatedByArchive($view, $fromArchive, $itemRecords)
 	{
 		$itemsToCheck = array();
+		$reducedItems = null;
 
 		foreach ($itemRecords as $itemRecord)
 		{
@@ -1776,9 +1784,16 @@ class BwPostmanHelper
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $itemsToCheck) . ')');
 		}
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-		$reducedItems = $db->loadAssocList();
+			$reducedItems = $db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $reducedItems;
 	}
@@ -1810,7 +1825,7 @@ class BwPostmanHelper
 
 			$asset_records = $_db->loadAssocList();
 		}
-		catch (Exception $e)
+		catch (RuntimeException $e)
 		{
 			$asset_records['name']  = 'com_bwpostman.' . $view;
 		}

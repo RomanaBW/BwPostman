@@ -237,7 +237,7 @@ class BwPostmanTableSendmailcontent extends JTable
 	public function store($updateNulls = false)
 	{
 		$k     = $this->_tbl_key;
-		$res   = 0;
+		$res   = null;
 		$query = $this->_db->getQuery(true);
 
 		if (!$this->$k)
@@ -307,7 +307,7 @@ class BwPostmanTableSendmailcontent extends JTable
 		$mode   = $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
 		$db     = $this->_db;
 		$query  = $db->getQuery(true);
-		$result = array();
+		$result = null;
 
 		$this->reset();
 

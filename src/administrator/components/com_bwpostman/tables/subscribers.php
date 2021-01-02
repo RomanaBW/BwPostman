@@ -1319,8 +1319,9 @@ class BwPostmanTableSubscribers extends JTable
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
@@ -1397,6 +1398,7 @@ class BwPostmanTableSubscribers extends JTable
 		try
 		{
 			$db->setQuery($query);
+
 			$db->execute();
 		}
 		catch (RuntimeException $e)
@@ -1438,7 +1440,6 @@ class BwPostmanTableSubscribers extends JTable
 		try
 		{
 			$db->setQuery($query);
-
 			$id = $db->loadResult();
 		}
 		catch (RuntimeException $e)
@@ -1499,6 +1500,7 @@ class BwPostmanTableSubscribers extends JTable
 	 */
 	public function checkEditlink($editlink)
 	{
+		$id    = null;
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 

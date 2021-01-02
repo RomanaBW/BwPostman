@@ -95,13 +95,24 @@ class JFormFieldU2sMls extends JFormFieldCheckboxes
 		$query->select("a.id AS value, a.title AS title, a.description as description");
 		$query->from('#__bwpostman_mailinglists AS a');
 		$query->where($_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+
 		if (count($availableMailinglists))
 		{
 			$query->where($_db->quoteName('a.id') . ' IN (' . implode(',', $availableMailinglists) . ')');
 		}
 
-		$_db->setQuery($query);
-		$options = $_db->loadObjectList();
+		$options = array();
+
+		try
+		{
+			$_db->setQuery($query);
+
+			$options = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		// Check for a database error.
 //		if ($_db->getErrorNum()) {

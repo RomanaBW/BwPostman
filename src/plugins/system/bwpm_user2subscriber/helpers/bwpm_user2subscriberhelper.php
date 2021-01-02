@@ -51,6 +51,8 @@ abstract class BWPM_User2SubscriberHelper
 	 */
 	public static function hasSubscription($user_mail)
 	{
+		$subscriber_id = null;
+
 		if ($user_mail == '')
 		{
 			return false;
@@ -63,9 +65,16 @@ abstract class BWPM_User2SubscriberHelper
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('email') . ' = ' . $_db->quote($user_mail));
 
-		$_db->setQuery($query);
+		try
+		{
+			$_db->setQuery($query);
 
-		$subscriber_id  = $_db->loadResult();
+			$subscriber_id  = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $subscriber_id;
 	}
@@ -86,6 +95,7 @@ abstract class BWPM_User2SubscriberHelper
 			return false;
 		}
 
+		$result = null;
 		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
@@ -94,9 +104,16 @@ abstract class BWPM_User2SubscriberHelper
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('email') . ' = ' . $_db->quote($user_mail));
 
-		$_db->setQuery($query);
+		try
+		{
+			$_db->setQuery($query);
 
-		$result  = $_db->loadAssoc();
+			$result  = $_db->loadAssoc();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		if (!$result['status'] && $result['activation'] != '')
 		{
@@ -123,6 +140,7 @@ abstract class BWPM_User2SubscriberHelper
 			return false;
 		}
 
+		$result = null;
 		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
@@ -130,9 +148,16 @@ abstract class BWPM_User2SubscriberHelper
 		$query->set($_db->quoteName('user_id') . " = " . $_db->quote($user_id));
 		$query->where($_db->quoteName('email') . ' = ' . $_db->quote($user_mail));
 
-		$_db->setQuery($query);
+		try
+		{
+			$_db->setQuery($query);
 
-		$result  = $_db->execute();
+			$result  = $_db->loadAssoc();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		if ($result)
 		{
@@ -193,9 +218,18 @@ abstract class BWPM_User2SubscriberHelper
 
 		$query->where($_db->quoteName('id') . ' = ' . $_db->quote($subscriber_id));
 
-		$_db->setQuery($query);
+		$result = false;
 
-		$result  = $_db->execute();
+		try
+		{
+			$_db->setQuery($query);
+
+			$result  = $_db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		if ($result)
 		{
@@ -264,6 +298,8 @@ abstract class BWPM_User2SubscriberHelper
 	 */
 	public static function getSubscribedMailinglists($subscriber_id)
 	{
+		$subscribed_mailinglists = null;
+
 		// @Todo: As from version 2.0.0 helper class of component may be used
 		$_db = Factory::getDbo();
 		$query  = $_db->getQuery(true);
@@ -272,9 +308,16 @@ abstract class BWPM_User2SubscriberHelper
 		$query->from($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
 		$query->where($_db->quoteName('subscriber_id') . ' = ' . $_db->quote($subscriber_id));
 
-		$_db->setQuery($query);
+		try
+		{
+			$_db->setQuery($query);
 
-		$subscribed_mailinglists = $_db->loadColumn();
+			$subscribed_mailinglists = $_db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return  $subscribed_mailinglists;
 	}
@@ -295,6 +338,8 @@ abstract class BWPM_User2SubscriberHelper
 			return false;
 		}
 
+		$subscriber = null;
+
 		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
@@ -303,9 +348,16 @@ abstract class BWPM_User2SubscriberHelper
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('user_id') . ' = ' . $_db->quote($user_id));
 
-		$_db->setQuery($query);
+		try
+		{
+			$_db->setQuery($query);
 
-		$subscriber  = $_db->loadAssoc();
+			$subscriber  = $_db->loadAssoc();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		if (is_array($subscriber))
 		{
@@ -447,9 +499,16 @@ abstract class BWPM_User2SubscriberHelper
 				$_db->quote($subscriber_id) . ',' .
 				$_db->quote($mailinglist_id)
 			);
-			$_db->setQuery($query);
 
-			$_db->execute();
+			try
+			{
+				$_db->setQuery($query);
+				$_db->execute();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 
 		return true;
@@ -466,6 +525,7 @@ abstract class BWPM_User2SubscriberHelper
 	 */
 	public static function getSubscriberIdByEmail($email)
 	{
+		$id     = null;
 		$_db    = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
@@ -473,9 +533,16 @@ abstract class BWPM_User2SubscriberHelper
 		$query->from($_db->quoteName('#__bwpostman_subscribers'));
 		$query->where($_db->quoteName('email') . ' = ' . $_db->quote($email));
 
-		$_db->setQuery($query);
+		try
+		{
+			$_db->setQuery($query);
 
-		$id = $_db->loadResult();
+			$id = $_db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return  $id;
 	}

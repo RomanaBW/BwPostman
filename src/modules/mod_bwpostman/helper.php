@@ -113,6 +113,7 @@ class ModBwPostmanHelper
 		try
 		{
 			$db->setQuery($query);
+
 			$mailinglists = $db->loadObjectList();
 		}
 		catch (RuntimeException $e)
@@ -135,6 +136,8 @@ class ModBwPostmanHelper
 	 */
 	public static function getSubscriberIdFromUserID($userid)
 	{
+		$subscriberid = null;
+
 		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
@@ -143,8 +146,16 @@ class ModBwPostmanHelper
 		$query->where($db->quoteName('user_id') . ' = ' . (int) $userid);
 		$query->where($db->quoteName('status') . ' = ' . (int) 9);
 
-		$db->setQuery($query);
-		$subscriberid = $db->loadResult();
+		try
+		{
+			$db->setQuery($query);
+
+			$subscriberid = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $subscriberid;
 	}
@@ -164,6 +175,7 @@ class ModBwPostmanHelper
 	{
 		$db	= Factory::getDbo();
 		$id		= 0;
+		$user   = null;
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('name'));
@@ -171,8 +183,16 @@ class ModBwPostmanHelper
 		$query->from($db->quoteName('#__users'));
 		$query->where($db->quoteName('id') . ' = ' . (int) $userid);
 
-		$db->setQuery($query);
-		$user = $db->loadObject();
+		try
+		{
+			$db->setQuery($query);
+
+			$user = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		$user->user_id = $id;
 

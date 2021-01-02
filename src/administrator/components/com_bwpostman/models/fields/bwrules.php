@@ -168,13 +168,13 @@ class JFormFieldBwRules extends JFormFieldRules
 			try
 			{
 				$db->setQuery($query);
+
+				$assetId = (int) $db->loadResult();
 			}
 			catch (RuntimeException $e)
 			{
 				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
-
-			$assetId = (int) $db->loadResult();
 		}
 
 		// If not in global config we need the parent_id asset to calculate permissions.
@@ -191,13 +191,13 @@ class JFormFieldBwRules extends JFormFieldRules
 			try
 			{
 				$db->setQuery($query);
+
+				$parentAssetId = (int) $db->loadResult();
 			}
 			catch (RuntimeException $e)
 			{
 				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
-
-			$parentAssetId = (int) $db->loadResult();
 		}
 
 		// Full width format.
@@ -479,13 +479,13 @@ class JFormFieldBwRules extends JFormFieldRules
 		try
 		{
 			$db->setQuery($query);
+
+			$res = $db->loadAssoc();
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
-
-		$res = $db->loadAssoc();
 
 		if (is_array($res))
 		{

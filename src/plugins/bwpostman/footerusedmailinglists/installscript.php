@@ -202,8 +202,15 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 
 			$query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
 
-			$db->setQuery($query);
-			$db->execute();
+			try
+			{
+				$db->setQuery($query);
+				$db->execute();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 		}
 	}
 

@@ -219,14 +219,14 @@ class User2SubscriberPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $gender_list           = '//*[@id="jform_bwpm_user2subscriber_gender"]';
+	public static $gender_list           = "//*[@id='jform_bwpm_user2subscriber_gender_chzn']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $gender_list_id           = "jform_bwpm_user2subscriber_gender_chzn'";
+	public static $gender_list_id           = "jform_bwpm_user2subscriber_gender_chzn";
 
 	/**
 	 * @var string
@@ -240,14 +240,14 @@ class User2SubscriberPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $subs_identifier_female           = '//*[@id="jform_bwpm_user2subscriber_gender"]/option[2]';
+	public static $subs_identifier_female           = "//*[@id='jform_bwpm_user2subscriber_gender_chzn']/div/ul/li[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $subs_identifier_male             = '//*[@id="jform_bwpm_user2subscriber_gender"]/option[3]';
+	public static $subs_identifier_male             = "//*[@id='jform_bwpm_user2subscriber_gender_chzn']/div/ul/li[3]";
 
 	/**
 	 * @var string

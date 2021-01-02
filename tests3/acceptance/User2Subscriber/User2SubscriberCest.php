@@ -1439,6 +1439,7 @@ class User2SubscriberCest
 		if ($com_options->show_gender)
 		{
 //			$I->clickSelectList(RegPage::$gender_list_id, RegPage::$subs_identifier_female, RegPage::$gender_list);
+			$I->waitForElementVisible(RegPage::$gender_list, 5);
 			$I->click(RegPage::$gender_list);
 			$I->waitForElementVisible(RegPage::$subs_identifier_female, 2);
 

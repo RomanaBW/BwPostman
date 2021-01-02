@@ -24,7 +24,7 @@
  */
 
 
-@import 'iconfonts.css';
+/* @import 'iconfonts.css'; */
 
 /*----------------------------------------------------------
 	Definition for generals and miscellaneous
@@ -43,10 +43,6 @@
 
 #bwpostman .error-message {
 	color:				#FF0000;
-}
-
-#bwpostman .contact-admin {
-
 }
 
 #bwp_com_form .user_hightlight {

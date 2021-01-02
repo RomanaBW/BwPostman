@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Module
  *
- * BwPostman default template for module.
+ * BwPostman bootstrap 4 template for module.
  *
  * @version %%version_number%%
  * @package BwPostman-Module

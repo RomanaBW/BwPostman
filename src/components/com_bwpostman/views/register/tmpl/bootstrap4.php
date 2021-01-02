@@ -45,6 +45,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 $this->subscriber = $displayData['subscriber'];
 $this->params     = $displayData['params'];
 $this->lists      = $displayData['lists'];
+$this->captcha      = $displayData['captcha'];
 
 $formclass	= $this->params->get('formclass');
 ?>

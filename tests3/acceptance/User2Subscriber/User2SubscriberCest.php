@@ -302,7 +302,7 @@ class User2SubscriberCest
 
 		$this->initializeTestValues($I);
 //		$this->show_gender       = true;
-		$I->setManifestOption('com_bwpostman', 'show_gender', '1');
+//		$I->setManifestOption('com_bwpostman', 'show_gender', '1');
 
 		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 

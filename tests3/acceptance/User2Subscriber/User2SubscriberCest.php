@@ -301,7 +301,7 @@ class User2SubscriberCest
 		$I->expectTo('see error messages, see unconfirmed Joomla user and unconfirmed subscriber with HTML format');
 
 		$this->initializeTestValues($I);
-		$this->show_gender       = true;
+//		$this->show_gender       = true;
 		$I->setManifestOption('com_bwpostman', 'show_gender', '1');
 
 		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);

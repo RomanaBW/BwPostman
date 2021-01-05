@@ -200,11 +200,22 @@ class ModBwPostmanOverviewHelper
 		}
 
 		$query->group('a.id');
-		$_db->setQuery($query);
 
-		$nls_result	= $_db->loadAssocList();
+		$nls_result = null;
+
+		try
+		{
+			$_db->setQuery($query);
+
+			$nls_result	= $_db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		$nls	= array();
+
 		foreach ($nls_result as $item)
 		{
 			$nls[]	= $item['id'];
@@ -229,9 +240,18 @@ class ModBwPostmanOverviewHelper
 		$query->group($query->year($_db->quoteName('a.mailing_date')));
 		$query->group($query->month($_db->quoteName('a.mailing_date')));
 
-		$_db->setQuery($query);
+		$rows = null;
 
-		$rows = $_db->loadObjectList();
+		try
+		{
+			$_db->setQuery($query);
+
+			$rows = $_db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 
 		return $rows;
 	}
@@ -283,12 +303,25 @@ class ModBwPostmanOverviewHelper
 			$query->from($_db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
 
-			$_db->setQuery($query);
+			$res_mls = null;
 
-			$res_mls	= $_db->loadAssocList();
+			try
+			{
+				$_db->setQuery($query);
+
+				$res_mls	= $_db->loadAssocList();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+
 			$mls		= array();
-			if (count($res_mls) > 0) {
-				foreach ($res_mls as $item) {
+
+			if (count($res_mls) > 0)
+			{
+				foreach ($res_mls as $item)
+				{
 					$mls[]	= $item['id'];
 				}
 			}
@@ -329,11 +362,21 @@ class ModBwPostmanOverviewHelper
 			$query->where($_db->quoteName('access') . ' IN (' . implode(',', $acc_levels) . ')');
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
 
-			$_db->setQuery($query);
+			$res_mls = null;
 
-			$res_mls = $_db->loadAssocList();
+			try
+			{
+				$_db->setQuery($query);
+
+				$res_mls	= $_db->loadAssocList();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 
 			$acc_mls	= array(0);
+
 			foreach ($res_mls as $item)
 			{
 				$acc_mls[]	= $item['id'];
@@ -375,10 +418,22 @@ class ModBwPostmanOverviewHelper
 		{
 			$query->select('c.id');
 			$query->from('#__bwpostman_campaigns AS c');
-			$_db->setQuery($query);
 
-			$res_cams	= $_db->loadAssocList();
+			$res_cams = null;
+
+			try
+			{
+				$_db->setQuery($query);
+
+				$res_cams	= $_db->loadAssocList();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+
 			$cams		= array();
+
 			if (count($res_cams) > 0)
 			{
 				foreach ($res_cams as $item)
@@ -422,11 +477,21 @@ class ModBwPostmanOverviewHelper
 			$query->where($_db->quoteName('access') . ' IN (' . implode(',', $acc_levels) . ')');
 			$query->where($_db->quoteName('published') . ' = ' . (int) 1);
 
-			$_db->setQuery($query);
+			$res_mls = null;
 
-			$res_mls = $_db->loadAssocList();
+			try
+			{
+				$_db->setQuery($query);
+
+				$res_mls = $_db->loadAssocList();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
 
 			$acc_mls	= array(0);
+
 			foreach ($res_mls as $item)
 			{
 				$acc_mls[]	= $item['id'];
@@ -439,9 +504,19 @@ class ModBwPostmanOverviewHelper
 			$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $acc_mls) . ')');
 			$query->where($_db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
 
-			$_db->setQuery($query);
+			$acc_cams = null;
 
-			$acc_cams	= $_db->loadAssocList();
+			try
+			{
+				$_db->setQuery($query);
+
+				$acc_cams	= $_db->loadAssocList();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+
 			if (count($acc_cams) > 0)
 			{
 				$cams		= array();
@@ -486,10 +561,22 @@ class ModBwPostmanOverviewHelper
 		{
 			$query->select('u.id');
 			$query->from('#__usergroups AS u');
-			$_db->setQuery($query);
 
-			$res_groups	= $_db->loadAssocList();
+			$res_groups = null;
+
+			try
+			{
+				$_db->setQuery($query);
+
+				$res_groups	= $_db->loadAssocList();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			}
+
 			$groups		= array();
+
 			if (count($res_groups) > 0)
 			{
 				foreach ($res_groups as $item)

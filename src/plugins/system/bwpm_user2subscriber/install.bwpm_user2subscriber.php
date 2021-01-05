@@ -96,10 +96,10 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 		$query->select($_db->quoteName('manifest_cache'));
 		$query->from($_db->quoteName('#__extensions'));
 		$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
-		$_db->setQuery($query);
-
 		try
 		{
+			$_db->setQuery($query);
+
 			$manifest   = json_decode($_db->loadResult(), true);
 			$version    = $manifest['version'];
 		}

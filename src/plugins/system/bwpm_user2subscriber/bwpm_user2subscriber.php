@@ -956,6 +956,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		try
 		{
 			$_db->setQuery($query);
+
 			$res = $_db->execute();
 
 			$params    = ComponentHelper::getParams('com_bwpostman');

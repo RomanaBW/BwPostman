@@ -1321,15 +1321,20 @@ class Com_BwPostmanInstallerScript
 			}
 		}
 
-//		$beFilesArray     = array();
-//
-//		foreach ($beFilesArray as $file)
-//		{
-//			if (File::exists(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file))
-//			{
-//				File::delete(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file);
-//			}
-//		}
+		$beFilesArray     = array(
+			'controllers/file.json.php',
+			'controllers/file.json.php_x',
+			'controllers/file.php',
+			'controllers/file.php_x',
+		);
+
+		foreach ($beFilesArray as $file)
+		{
+			if (File::exists(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file))
+			{
+				File::delete(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file);
+			}
+		}
 
 //		$mediaFilesArray  = array();
 //

@@ -377,8 +377,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 		}
 		else
 		{
-//			PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-			$results = Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceStartCron', array());
+			PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+			$app = Factory::getApplication();
+			$results = $app->triggerEvent('onBwPostmanMaintenanceStartCron', array());
 
 			if ($results[0] !== true)
 			{

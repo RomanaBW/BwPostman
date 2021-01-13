@@ -391,47 +391,49 @@ $required_end .= '</div>';
 			// Show Disclaimer only if enabled in basic parameters
 			?>
 			<div id="bwp_mod_form_disclaimer" class="my-3">
-				<input type="checkbox" id="agreecheck_mod" class="form-check-input" name="agreecheck_mod" title="agreecheck_mod" />
-				<?php
-				// Extends the disclaimer link with '&tmpl=component' to see only the content
-				$tpl_com = $paramsComponent->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
-				if ($paramsComponent->get('disclaimer_selection') == 1 && $paramsComponent->get('article_id') > 0)
-				{
-					// Disclaimer article and target_blank or not
-					$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($paramsComponent->get('article_id')) . $tpl_com);
-				}
-				elseif ($paramsComponent->get('disclaimer_selection') == 2 && $paramsComponent->get('disclaimer_menuitem') > 0)
-				{
-					// Disclaimer menu item and target_blank or not
-					if ($tpl_com !== '' && Factory::getConfig()->get('sef') === '1')
-					{
-						$tpl_com = '?tmpl=component';
-					}
-					$disclaimer_link = Route::_("index.php?Itemid={$paramsComponent->get('disclaimer_menuitem')}") . $tpl_com;
-				}
-				else
-				{
-					// Disclaimer url and target_blank or not
-					$disclaimer_link = $paramsComponent->get('disclaimer_link');
-				} ?>
-				<label class="form-check-label">
+				<div class="form-check">
+					<input type="checkbox" id="agreecheck_mod" class="form-check-input" name="agreecheck_mod" title="agreecheck_mod" />
 					<?php
-					// Show inside modalbox
-					if ($paramsComponent->get('showinmodal') == 1)
+					// Extends the disclaimer link with '&tmpl=component' to see only the content
+					$tpl_com = $paramsComponent->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
+					if ($paramsComponent->get('disclaimer_selection') == 1 && $paramsComponent->get('article_id') > 0)
 					{
-						echo '<a id="bwp_mod_open"';
+						// Disclaimer article and target_blank or not
+						$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($paramsComponent->get('article_id')) . $tpl_com);
 					}
-					// Show not in modalbox
+					elseif ($paramsComponent->get('disclaimer_selection') == 2 && $paramsComponent->get('disclaimer_menuitem') > 0)
+					{
+						// Disclaimer menu item and target_blank or not
+						if ($tpl_com !== '' && Factory::getConfig()->get('sef') === '1')
+						{
+							$tpl_com = '?tmpl=component';
+						}
+						$disclaimer_link = Route::_("index.php?Itemid={$paramsComponent->get('disclaimer_menuitem')}") . $tpl_com;
+					}
 					else
 					{
-						echo '<a href="' . $disclaimer_link . '"';
-						if ($paramsComponent->get('disclaimer_target') == 0)
+						// Disclaimer url and target_blank or not
+						$disclaimer_link = $paramsComponent->get('disclaimer_link');
+					} ?>
+					<label class="form-check-label">
+						<?php
+						// Show inside modalbox
+						if ($paramsComponent->get('showinmodal') == 1)
 						{
-							echo ' target="_blank"';
-						};
-					}
-					echo '>' . Text::_('MOD_BWPOSTMAN_DISCLAIMER') . '</a> <sup><i class="fa fa-star"></i></sup>'; ?>
-				</label>
+							echo '<a id="bwp_mod_open"';
+						}
+						// Show not in modalbox
+						else
+						{
+							echo '<a href="' . $disclaimer_link . '"';
+							if ($paramsComponent->get('disclaimer_target') == 0)
+							{
+								echo ' target="_blank"';
+							};
+						}
+						echo '>' . Text::_('MOD_BWPOSTMAN_DISCLAIMER') . '</a> <sup><i class="fa fa-star"></i></sup>'; ?>
+					</label>
+				</div>
 			</div>
 			<?php
 		} // Show disclaimer ?>

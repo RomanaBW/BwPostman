@@ -1,5 +1,5 @@
 ---
-- hosts: workplace
+- hosts: tester
   gather_facts: no
   vars_files:
     - vars/tester-test-vars.yml

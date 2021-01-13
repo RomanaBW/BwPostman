@@ -1,8 +1,9 @@
 ---
-- hosts: localhost
+- hosts: tester
   pre_tasks:
     - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: local
+  gather_facts: yes
   vars_files:
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
@@ -85,6 +86,7 @@
   pre_tasks:
     - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: docker
+  gather_facts: yes
   vars_files:
     - vars/tests.yml
     - vars/tester-image-vars.yml
@@ -138,7 +140,7 @@
   tasks:
     - name: Set ip of webserver
       set_fact:
-        web_container_ip: "{{ hostvars['localhost']['web_container_ip'] }}"
+        web_container_ip: "{{ hostvars['tester-j1']['web_container_ip'] }}"
 
     - name: Set test suite
       set_fact:
@@ -205,7 +207,7 @@
         msg: "{{ web_container_ip }}"
 
 
-- hosts: localhost
+- hosts: tester
   pre_tasks:
     - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: local

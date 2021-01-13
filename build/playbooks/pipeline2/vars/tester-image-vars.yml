@@ -2,7 +2,7 @@
 # Fast changing variables
 #joomla_version_4a: "4.0.0a12"
 joomla_version_4b: "4.0.0b1-5"
-joomla_version_3: "3.9.23"
+joomla_version_3: "3.9.24"
 
 # this one has to be adjusted to the desired Joomla version
 joomla_version: "{{ joomla_version_3 }}"
@@ -108,8 +108,8 @@ phantom_dir: "/opt/phantomJS"
 phantom_version: "2.1.1"
 
 # Settings for creating base LAMP containers
-official_mariadb: bitnami/mariadb:10.3-debian-10
-official_mariadb_short: mariadb:10.3-debian-10
+official_mariadb: bitnami/mariadb:10.5-debian-10
+official_mariadb_short: mariadb:10.5-debian-10
 official_apache: php:apache
 official_apache_short: php-apache
 official_tester: romana/os-chromium-tester:latest

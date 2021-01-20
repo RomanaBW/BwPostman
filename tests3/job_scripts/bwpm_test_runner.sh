@@ -543,6 +543,22 @@ codecept run acceptance Module_Register/SubscribeModuleCest::SubscribeAbuseField
 codecept run acceptance Module_Register/SubscribeModuleCest::SubscribeUnreachableMailAddressModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_unreachable_mail.xml --html htmlreports/report_modRegister_unreachable_mail.html
 fi
 
+if [[ "${BW_TEST_CAT}" == overview_module ]]
+then
+# single tests for registration module
+codecept run acceptance ModuleOverview/ModuleOverviewCest::setupOverviewModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_setup.xml --html htmlreports/report_modOverview_setup.html
+
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsAll "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_all.xml --html htmlreports/report_modOverview_check_number_of_months_all.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsRestricted "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_restricted.xml --html htmlreports/report_modOverview_check_number_of_months_restricted.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchived "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_archived.xml --html htmlreports/report_modOverview_check_number_of_months_not_archived.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchivedNotExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_archived_not_expired.xml --html htmlreports/report_modOverview_check_number_of_months_not_archived_not_expired.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchivedButExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_expored.xml --html htmlreports/report_modOverview_check_number_of_months_not_expored.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyArchived "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_only_archived.xml --html htmlreports/report_modOverview_check_number_of_months_only_archived.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_only_expired.xml --html htmlreports/report_modOverview_check_number_of_months_only_expired.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsArchivedAndExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_archived_and_expired.xml --html htmlreports/report_modOverview_check_number_of_months_archived_and_expired.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsArchivedOrExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_archived_or_expired.xml --html htmlreports/report_modOverview_check_number_of_months_archived_or_expired.html
+fi
+
 if [[ "${BW_TEST_CAT}" == all ]]
 then
 # run all tests

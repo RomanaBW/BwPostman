@@ -1507,8 +1507,15 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			// If subscription to this mailinglist, then unsubscribe, else only count
 			if ($hasSubscription)
 			{
-				$subsMlTable->deleteMailinglistsOfSubscriber($pk, array($mailinglist));
-				$unsubscribed++;
+				$delResult = $subsMlTable->deleteMailinglistsOfSubscriber($pk, array($mailinglist));
+
+				if ($delResult)
+				{
+					$unsubscribed++;
+				}
+				else{
+					$skipped++;
+				}
 			}
 			else
 			{

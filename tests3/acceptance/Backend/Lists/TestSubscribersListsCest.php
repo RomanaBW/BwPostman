@@ -1249,6 +1249,380 @@ class TestSubscribersListsCest
 		$I->click(Generals::$toolbar['Cancel']);
 	}
 
+	/**
+	 * Test method to test batch processing subscribe/unsubscribe all okay
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.1.2
+	 */
+	public function BatchSubscribeUnsubscribeOkay(AcceptanceTester $I)
+	{
+		// Subscribe to new mailinglist
+		$I->wantTo("subscribe by batch all okay");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		// Check if needed subscribers exists
+		$I->see('Lars', sprintf(SubsManage::$tableFirstnameField, '1'));
+		$I->see('Keno', sprintf(SubsManage::$tableFirstnameField, '3'));
+
+		// Select subscribers
+		$I->click(sprintf(SubsManage::$tableSelectField, '1'));
+		$I->click(sprintf(SubsManage::$tableSelectField, '3'));
+
+		// Click batch
+		$I->click(Generals::$toolbar['Batch']);
+		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
+		$I->wait(3);
+
+		// Select mailinglist to subscribe
+		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
+
+		// Check subscribe button
+		$I->click(sprintf(SubsManage::$batchModalTask, '1'));
+
+		// Click Process
+		$I->click(SubsManage::$batchProcess);
+		$I->waitForElementVisible(Generals::$alert_success, 5);
+
+		// Check success message
+		$I->see(SubsManage::$batchSuccessSubscribe, Generals::$alert_msg);
+
+		// Check no error or warning appears
+		$I->dontSee(Generals::$alert_error);
+		$I->dontSee(Generals::$alert_warn);
+		$I->dontSee(Generals::$alert_info);
+
+
+		// Unsubscribe from new mailinglist
+		$I->wantTo("unsubscribe by batch all okay");
+
+		// Select subscribers
+		// Check if needed subscribers exists
+		$I->see('Lars', sprintf(SubsManage::$tableFirstnameField, '1'));
+		$I->see('Keno', sprintf(SubsManage::$tableFirstnameField, '3'));
+
+		// Select subscribers
+		$I->click(sprintf(SubsManage::$tableSelectField, '1'));
+		$I->click(sprintf(SubsManage::$tableSelectField, '3'));
+
+		// Click batch
+		$I->click(Generals::$toolbar['Batch']);
+		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
+		$I->wait(3);
+
+		// Select mailinglist to unsubscribe
+		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
+
+		// Check subscribe button
+		$I->click(sprintf(SubsManage::$batchModalTask, '2'));
+
+		// Click Process
+		$I->click(SubsManage::$batchProcess);
+		$I->waitForElementVisible(Generals::$alert_success, 5);
+
+		// Check success message
+		$I->see(SubsManage::$batchSuccessUnsubscribe, Generals::$alert_msg);
+
+		// Check no error or warning appears
+		$I->dontSee(Generals::$alert_error);
+		$I->dontSee(Generals::$alert_warn);
+		$I->dontSee(Generals::$alert_info);
+	}
+
+	/**
+	 * Test method to test batch processing subscribe/unsubscribe one already subscribed
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.1.2
+	 */
+	public function BatchSubscribeUnsubscribeAlready(AcceptanceTester $I)
+	{
+		// Subscribe to new mailinglist
+		$I->wantTo("subscribe by batch one already subscribed");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		// Check if needed subscribers exists
+		$I->see('Lars', sprintf(SubsManage::$tableFirstnameField, '1'));
+		$I->see('Chiara', sprintf(SubsManage::$tableFirstnameField, '2'));
+
+		// Select subscribers
+		$I->click(sprintf(SubsManage::$tableSelectField, '1'));
+		$I->click(sprintf(SubsManage::$tableSelectField, '2'));
+
+		// Click batch
+		$I->click(Generals::$toolbar['Batch']);
+		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
+		$I->wait(3);
+
+		// Select mailinglist to subscribe
+		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectOld, SubsManage::$batchMlListId);
+
+		// Check subscribe button
+		$I->click(sprintf(SubsManage::$batchModalTask, '1'));
+
+		// Click Process
+		$I->click(SubsManage::$batchProcess);
+		$I->waitForElementVisible(Generals::$alert_success, 5);
+
+		// Check success message
+		$I->see(SubsManage::$batchSuccessSubscribeAlready, Generals::$alert_msg);
+
+		// Check no error or warning appears
+		$I->dontSee(Generals::$alert_error);
+		$I->dontSee(Generals::$alert_warn);
+		$I->dontSee(Generals::$alert_info);
+
+
+		// Unsubscribe from new mailinglist
+		$I->wantTo("unsubscribe by batch");
+
+		// Select subscribers
+		// Check if needed subscribers exists
+		$I->see('Chiara', sprintf(SubsManage::$tableFirstnameField, '2'));
+
+		// Select subscribers
+		$I->click(sprintf(SubsManage::$tableSelectField, '2'));
+
+		// Click batch
+		$I->click(Generals::$toolbar['Batch']);
+		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
+		$I->wait(3);
+
+		// Select mailinglist to unsubscribe
+		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectOld, SubsManage::$batchMlListId);
+
+		// Check subscribe button
+		$I->click(sprintf(SubsManage::$batchModalTask, '2'));
+
+		// Click Process
+		$I->click(SubsManage::$batchProcess);
+		$I->waitForElementVisible(Generals::$alert_success, 5);
+
+		// Check success message
+		$I->see(SubsManage::$batchSuccessUnsubscribeOne, Generals::$alert_msg);
+
+		// Check no error or warning appears
+		$I->dontSee(Generals::$alert_error);
+		$I->dontSee(Generals::$alert_warn);
+		$I->dontSee(Generals::$alert_info);
+	}
+
+	/**
+	 * Test method to test batch processing subscribe/unsubscribe all okay
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.1.2
+	 */
+	public function BatchSubscribeUnsubscribeNo(AcceptanceTester $I)
+	{
+		// Subscribe to new mailinglist
+		$I->wantTo("subscribe by batch");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		// Check if needed subscribers exists
+		$I->see('Lars', sprintf(SubsManage::$tableFirstnameField, '1'));
+		$I->see('Keno', sprintf(SubsManage::$tableFirstnameField, '3'));
+
+		// Select subscribers
+		$I->click(sprintf(SubsManage::$tableSelectField, '1'));
+		$I->click(sprintf(SubsManage::$tableSelectField, '3'));
+
+		// Click batch
+		$I->click(Generals::$toolbar['Batch']);
+		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
+		$I->wait(3);
+
+		// Select mailinglist to subscribe
+		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
+
+		// Check subscribe button
+		$I->click(sprintf(SubsManage::$batchModalTask, '1'));
+
+		// Click Process
+		$I->click(SubsManage::$batchProcess);
+		$I->waitForElementVisible(Generals::$alert_success, 5);
+
+		// Check success message
+		$I->see(SubsManage::$batchSuccessSubscribe, Generals::$alert_msg);
+
+		// Check no error or warning appears
+		$I->dontSee(Generals::$alert_error);
+		$I->dontSee(Generals::$alert_warn);
+		$I->dontSee(Generals::$alert_info);
+
+
+		// Unsubscribe from new mailinglist
+		$I->wantTo("unsubscribe by batch");
+
+		// Select subscribers
+		// Check if needed subscribers exists
+		$I->see('Lars', sprintf(SubsManage::$tableFirstnameField, '1'));
+		$I->see('Chiara', sprintf(SubsManage::$tableFirstnameField, '2'));
+		$I->see('Keno', sprintf(SubsManage::$tableFirstnameField, '3'));
+
+		// Select subscribers
+		$I->click(sprintf(SubsManage::$tableSelectField, '1'));
+		$I->click(sprintf(SubsManage::$tableSelectField, '2'));
+		$I->click(sprintf(SubsManage::$tableSelectField, '3'));
+
+		// Click batch
+		$I->click(Generals::$toolbar['Batch']);
+		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
+		$I->wait(3);
+
+		// Select mailinglist to unsubscribe
+		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
+
+		// Check subscribe button
+		$I->click(sprintf(SubsManage::$batchModalTask, '2'));
+
+		// Click Process
+		$I->click(SubsManage::$batchProcess);
+		$I->waitForElementVisible(Generals::$alert_success, 5);
+
+		// Check success message
+		$I->see(SubsManage::$batchSuccessUnsubscribe, Generals::$alert_msg);
+
+		// Check no error or warning appears
+		$I->dontSee(Generals::$alert_error);
+		$I->dontSee(Generals::$alert_warn);
+		$I->dontSee(Generals::$alert_info);
+	}
+
+	/**
+	 * Test method to test batch processing subscribe/unsubscribe
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.1.2
+	 */
+	public function BatchMove(AcceptanceTester $I)
+	{
+		// Move to other mailinglist
+		$I->wantTo("subscribe by batch");
+		SubsManage::$wait_db;
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		// Filter for current mailinglist
+		$I->clickAndWait(Generals::$filterbar_button, 1);
+		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$batchMlSelectOld, SubsManage::$ml_list_id);
+
+		// Check if needed subscribers exists
+		$I->see('Lars', sprintf(SubsManage::$tableFirstnameField, '1'));
+		$I->see('Keno', sprintf(SubsManage::$tableFirstnameField, '2'));
+
+		// Select subscribers
+		$I->click(sprintf(SubsManage::$tableSelectField, '1'));
+		$I->click(sprintf(SubsManage::$tableSelectField, '2'));
+
+
+		// Click batch
+		$I->click(Generals::$toolbar['Batch']);
+		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
+		$I->wait(3);
+
+
+		// Select mailinglist to move to
+		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
+
+		// Check move button
+		$I->click(sprintf(SubsManage::$batchModalTask, '3'));
+
+		// Click Process
+		$I->click(SubsManage::$batchProcess);
+		$I->waitForElementVisible(Generals::$alert_success, 5);
+
+		// Check success message
+		$I->see(SubsManage::$batchSuccessMoveForward, Generals::$alert_msg);
+
+		// Check no error or warning appears
+		$I->dontSee(Generals::$alert_error);
+		$I->dontSee(Generals::$alert_warn);
+		$I->dontSee(Generals::$alert_info);
+
+		// Clear filter
+		$I->clickAndWait(Generals::$clear_button, 1);
+
+
+		// Move to first mailinglist (needed to get initial state)
+		// Filter for new mailinglist
+		$I->clickAndWait(Generals::$filterbar_button, 1);
+		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$batchMlSelectNew, SubsManage::$ml_list_id);
+
+		// Check if needed subscribers exists
+		$I->see('Lars', sprintf(SubsManage::$tableFirstnameField, '1'));
+		$I->see('Keno', sprintf(SubsManage::$tableFirstnameField, '2'));
+
+		// Select subscribers
+		$I->click(sprintf(SubsManage::$tableSelectField, '1'));
+		$I->click(sprintf(SubsManage::$tableSelectField, '2'));
+
+		// Click batch
+		$I->click(Generals::$toolbar['Batch']);
+		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
+		$I->wait(3);
+
+		// Select mailinglist to move to
+		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectOld, SubsManage::$batchMlListId);
+
+		// Check move button
+		$I->click(sprintf(SubsManage::$batchModalTask, '3'));
+
+		// Click Process
+		$I->click(SubsManage::$batchProcess);
+		$I->waitForElementVisible(Generals::$alert_success, 5);
+
+		// Check success message
+		$I->see(SubsManage::$batchSuccessMoveBack, Generals::$alert_msg);
+
+		// Check no error or warning appears
+		$I->dontSee(Generals::$alert_error);
+		$I->dontSee(Generals::$alert_warn);
+		$I->dontSee(Generals::$alert_info);
+	}
+
 
 	/**
 	 * Test method to logout from backend

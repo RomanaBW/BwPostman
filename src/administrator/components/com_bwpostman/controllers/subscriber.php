@@ -523,7 +523,11 @@ class BwPostmanControllerSubscriber extends JControllerForm
 					$sub_text = Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE', $vars['mailinglist_id']);
 					$message  = Text::sprintf('COM_BWPOSTMAN_SUB_BATCH_RESULT_FINISHED', $sub_text);
 					$message .= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE_N_ITEMS', $result['done']);
-					$message .= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE_SKIPPED_N_ITEMS', $result['skipped']);
+
+					if ($result['skipped'] > 0)
+					{
+						$message .= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_SUBSCRIBE_SKIPPED_N_ITEMS', $result['skipped']);
+					}
 				}
 
 				if ($result['task']	== 'unsubscribe')
@@ -539,7 +543,11 @@ class BwPostmanControllerSubscriber extends JControllerForm
 					}
 
 					$message .= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE_N_ITEMS', $result['done']);
-					$message .= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE_SKIPPED_N_ITEMS', $result['skipped']);
+
+					if ($result['skipped'] > 0)
+					{
+						$message .= ' ' . Text::plural('COM_BWPOSTMAN_SUB_BATCH_RESULT_UNSUBSCRIBE_SKIPPED_N_ITEMS', $result['skipped']);
+					}
 				}
 
 				$this->setMessage($message);

@@ -5,6 +5,12 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
+Version 3.1.2 released (2021-02-03)----
+
+Bugfix
+# Moving subscribers to another mailing list by batch processing did not work
+
+
 Version 3.1.1 released (2021-01-20)----
 
 Bugfix

@@ -151,7 +151,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.7
 	 */
-	public $attachment = null;
+	public $attachment = "";
 
 	/**
 	 * @var string HTML headline

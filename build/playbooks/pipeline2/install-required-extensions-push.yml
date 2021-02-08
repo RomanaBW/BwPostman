@@ -194,6 +194,7 @@
       shell: "/data/do-installation.sh"
       args:
         chdir: "/data/tests"
+      ignore_errors: yes
 
 #    - name: remove tests folder
 #      file:

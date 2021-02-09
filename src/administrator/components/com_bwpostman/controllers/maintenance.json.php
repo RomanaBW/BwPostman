@@ -149,7 +149,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 				case 'step4':
 					// check table columns
-					$this->checkTableColumns($session);
+					$this->checkTableColumns($session, null);
 					$step = "5";
 					break;
 
@@ -568,7 +568,9 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 				case 'step10':
 					// check table columns
-					$this->checkTableColumns($session);
+					$versionOfBackup = Factory::getApplication()->getUserState('com_bwpostman.maintenance.generals', null)['BwPostmanVersion'];
+
+					$this->checkTableColumns($session, $versionOfBackup);
 					$step = "11";
 					break;
 
@@ -581,6 +583,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 						// clear session variables
 						$session->clear('tcheck_needTa');
 						$session->clear('tcheck_inTaNa');
+						Factory::getApplication()->setUserState('com_bwpostman.maintenance.generals', null);
 						$this->ready = "1";
 						$step = "12";
 					}
@@ -651,6 +654,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			$result           = $error . $session->get('trestore_content', '');
 
 			$this->handleBwException($errorCode, $result, $error, $step);
+			Factory::getApplication()->setUserState('com_bwpostman.maintenance.generals', null);
 		}
 
 		catch (RuntimeException $e)
@@ -784,7 +788,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	/**
 	 * Method to convert to generic table names
 	 *
-	 * @param   $session    $session    The session of this task
+	 * @param   $session   $session          The session of this task
+	 * @param   string     $versionOfBackup  The version of the backup
 	 *
 	 * @return void
 	 *
@@ -793,13 +798,24 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @since   1.3.0
 	 */
 
-	protected function checkTableColumns($session)
+	protected function checkTableColumns($session, $versionOfBackup = null)
 	{
+		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_TABLE_COLUMNS') . '</h4>';
+
 		// get stored session variables
 		$model        = $this->getModel('maintenance');
 		$neededTables = $session->get('tcheck_needTa');
 
-		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_TABLE_COLUMNS') . '</h4>';
+		// If we are in restore mode, version of backup is mot null, so compare versions
+		if (!is_null($versionOfBackup))
+		{
+			// Compare versions. Do nothing, if backup version is newer than installed version to prevent data lost
+			if (version_compare($versionOfBackup, $model->getBwPostmanVersion(), '>'))
+			{
+				return;
+			}
+		}
+
 		// check table columns
 		for ($i = 0; $i < count($neededTables); $i++)
 		{

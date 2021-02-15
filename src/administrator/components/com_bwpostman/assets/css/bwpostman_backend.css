@@ -638,7 +638,7 @@ table.export {
 }
 
 #restoreResult #result .bw_tablecheck_error,
-#error p.bw_tablecheck_error.err {
+#error .bw_tablecheck_error {
 	background-color:	#f2dede;
 	border:		1px solid #eed3d7;
 	border-radius: 3px;
@@ -675,7 +675,7 @@ table.export {
 #checkResult .inner .well,
 #restoreResult .inner .well,
 #result .bw_tablecheck_warn,
-#result .bw_tablecheck_error,
+#error .bw_tablecheck_error,
 #result .bw_tablecheck_finished {
     padding: 8px 15px 8px 60px;
 	margin-bottom: 5px;
@@ -684,7 +684,7 @@ table.export {
 #checkResult .inner,
 #restoreResult .inner,
 #result .bw_tablecheck_warn,
-#result .bw_tablecheck_error,
+#error .bw_tablecheck_error,
 #result .bw_tablecheck_finished {
     font-size: 1.2em;
 }
@@ -719,7 +719,7 @@ table.export {
 
 #checkResult .inner .well.alert-error,
 #restoreResult .inner .well.alert-error,
-#result .bw_tablecheck_error {
+#error .bw_tablecheck_error {
 	background-image: url("../images/prozess-error.png");
 }
 

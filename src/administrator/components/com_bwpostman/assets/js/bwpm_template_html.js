@@ -25,5 +25,5 @@
 
 // insert placeholder
 function buttonClick(text, editor) {
-	jInsertEditorText(text, editor);
+	Joomla.editors.instances[editor].replaceSelection(text);
 }

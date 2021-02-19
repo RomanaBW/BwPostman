@@ -25,10 +25,14 @@
 
 function processUpdateStep(data)
 {
-	jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert-'+data.aClass);
-	jQuery('p#step'+data.step).addClass('alert alert-info');
+	var alert_step_old = document.getElementById('step' + (data.step - 1));
+	if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
+		alert_step_old.classList.remove('alert-info');
+		alert_step_old.classList.add('alert-' + data.aClass);
+	}
+	document.getElementById('step' + data.step).classList.add('alert', 'alert-info');
 	// Do AJAX post
-	post = {step : 'step'+data.step};
+	post = 'step=step' + data.step;
 	doAjax(post, function(data){
 		if(data.ready !== "1")
 		{
@@ -36,11 +40,25 @@ function processUpdateStep(data)
 		}
 		else
 		{
-			jQuery('p#step'+(data.step-1)).removeClass('alert-info').addClass('alert alert-'+data.aClass);
-			jQuery('div#loading2').css({display:'none'});
-			jQuery('div#result').html(data.result);
-			jQuery('div#toolbar').find('button').removeAttr('disabled');
-			jQuery('div#toolbar').find('a').removeAttr('disabled');
+			var alert_step_old = document.getElementById('step' + (data.step - 1));
+			if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
+				alert_step_old.classList.remove('alert-info');
+				alert_step_old.classList.add('alert', 'alert-' + data.aClass);
+			}
+
+			document.getElementById('loading2').style.display = 'none';
+			document.getElementById('result').innerHTML = data.result;
+			var toolbar = document.getElementById('toolbar');
+			if (toolbar) {
+				var buttags = toolbar.getElementsByTagName('button');
+				for (var i = 0; i < buttags.length; i++) {
+					buttags[i].removeAttribute('disabled');
+				}
+				var atags = toolbar.getElementsByTagName('a');
+				for (var i = 0; i < atags.length; i++) {
+					atags[i].removeAttribute('disabled');
+				}
+			}
 			// Get the modal
 			var modal = window.parent.document.getElementById('bwp_Modal');
 			var btnclose = window.parent.document.getElementsByClassName('bwp_close')[0];
@@ -56,10 +74,37 @@ function processUpdateStep(data)
 		}
 	});
 }
-jQuery('div#toolbar').find('button').attr("disabled","disabled");
-jQuery('div#toolbar').find('a').attr("disabled","disabled");
+var toolbar = document.getElementById('toolbar');
+if (toolbar) {
+	var buttags = toolbar.getElementsByTagName('button');
+	for (var i = 0; i < buttags.length; i++) {
+		buttags[i].setAttribute("disabled", "disabled");
+	}
+	var atags = toolbar.getElementsByTagName('a');
+	for (var i = 0; i < atags.length; i++) {
+		atags[i].setAttribute("disabled", "disabled");
+	}
+}
 var data = {step: "0"};
-jQuery(document).ready(function() {
-	jQuery('body.contentpane').css('overflow-x', 'hidden');
+
+function ready(callbackFunc) {
+	if (document.readyState !== 'loading') {
+		// Document is already ready, call the callback directly
+		callbackFunc();
+	} else if (document.addEventListener) {
+		// All modern browsers to register DOMContentLoaded
+		document.addEventListener('DOMContentLoaded', callbackFunc);
+	} else {
+		// Old IE browsers
+		document.attachEvent('onreadystatechange', function() {
+			if (document.readyState === 'complete') {
+				callbackFunc();
+			}
+		});
+	}
+}
+
+ready(function() {
+	document.querySelector('body.contentpane').style.overflowX = 'hidden';
 	processUpdateStep(data);
 });

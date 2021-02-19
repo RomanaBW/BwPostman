@@ -57,7 +57,7 @@ $option	= $jinput->getCmd('option');
 					</td>
 					<td class="bwptable"><div class="bwpmailformat"><?php echo $this->lists['fileformat']; ?></div></td>
 				</tr>
-				<tr class="bwptable delimiter">
+				<tr id="delimiter_tr" class="bwptable delimiter">
 					<td align="right" class="key">
 						<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></span>
 						<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_DELIMITER_NOTE'); ?>">
@@ -66,7 +66,7 @@ $option	= $jinput->getCmd('option');
 					</td>
 					<td><?php echo $this->lists['delimiter'];?></td>
 				</tr>
-				<tr class="bwptable enclosure">
+				<tr id="enclosure_tr" class="bwptable enclosure">
 					<td align="right" class="key">
 						<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE'); ?></span>
 						<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOTE'); ?>">
@@ -75,7 +75,7 @@ $option	= $jinput->getCmd('option');
 					</td>
 					<td><?php echo $this->lists['enclosure'];?></td>
 				</tr>
-				<tr class="bwptable exportgroups">
+				<tr id="exportgroups_tr" class="bwptable exportgroups">
 					<td align="right" class="key"><span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS'); ?></span>
 						<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS_NOTE'); ?>">
 							<?php echo $image; ?>
@@ -104,7 +104,7 @@ $option	= $jinput->getCmd('option');
 						</div>
 					</td>
 				</tr>
-				<tr class="exportfields">
+				<tr id="exportfields_tr" class="exportfields">
 					<td width="150" align="right" class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS'); ?><br />
 						<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS_NOTE'); ?>">
 							<?php echo $image; ?>
@@ -127,7 +127,7 @@ $option	= $jinput->getCmd('option');
 					<td>&nbsp;</td>
 					<td valign="top"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS_ANNOTATION'); ?></td>
 				</tr>
-				<tr class="button">
+				<tr id="button_tr" class="button">
 					<td width="150" align="center" class="key">
 						<input class="btn btn-success" type="button" name="submitbutton"
 								onclick="if(check()){selectAllOptions(document.adminForm['export_fields[]']);Joomla.submitbutton('subscribers.export');}"

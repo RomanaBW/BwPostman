@@ -59,7 +59,7 @@ $token      = Session::getFormToken();
 		<p id="step11" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STEP_11'); ?></p>
 		<p id="step12" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STEP_12'); ?></p>
 	</div>
-	<div class="span6 well well-small resultSet">
+	<div id="resultSet" class="span6 well well-small resultSet">
 		<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESULT'); ?></h2>
 		<div id="loading2"></div>
 		<div id="error"></div>

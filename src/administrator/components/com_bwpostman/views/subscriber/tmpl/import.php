@@ -53,7 +53,7 @@ $option	= $jinput->getCmd('option');
 		<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_STP1'); ?></legend>
 		<div class="well well-small">
 			<div class="row-fluid">
-				<table class="admintable bwptable import">
+				<table id="import" class="admintable bwptable import">
 					<tr class="bwptable">
 						<td width="250" align="right" class="key">
 							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?></span>
@@ -67,7 +67,7 @@ $option	= $jinput->getCmd('option');
 							</div>
 						</td>
 					</tr>
-					<tr class="importfile">
+					<tr id="importfile_tr" class="importfile">
 						<td align="right" class="key">
 							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?></span>
 							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_NOTE'); ?>">
@@ -79,7 +79,7 @@ $option	= $jinput->getCmd('option');
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?> />
 						</td>
 					</tr>
-					<tr class="delimiter">
+					<tr id="delimiter_tr" class="delimiter">
 						<td align="right" class="key">
 							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?></span>
 							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DELIMITER_NOTE'); ?>">
@@ -88,7 +88,7 @@ $option	= $jinput->getCmd('option');
 						</td>
 						<td><?php echo $this->lists['delimiter'];?></td>
 					</tr>
-					<tr class="enclosure">
+					<tr id="enclosure_tr" class="enclosure">
 						<td align="right" class="key">
 							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?></span>
 							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE_NOTE'); ?>">
@@ -97,7 +97,7 @@ $option	= $jinput->getCmd('option');
 						</td>
 						<td><?php echo $this->lists['enclosure'];?></td>
 					</tr>
-					<tr class="caption">
+					<tr id="caption_tr" class="caption">
 						<td align="right" class="key">
 							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?></span>
 							<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>">
@@ -117,7 +117,7 @@ $option	= $jinput->getCmd('option');
 							/>
 						</td>
 					</tr>
-					<tr class="button">
+					<tr id="button_tr" class="button">
 						<td width="250" align="center" class="key">
 							<input type="button" class="btn btn-success" name="submitbutton" id=""
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?>

@@ -24,37 +24,69 @@
 //
 
 // insert placeholder
-jQuery(function ($) {
-	$.fn.EnableInsertAtCaret = function () {
-		$(this).on("focus", function () {
-			$(".insertatcaretactive").removeClass("insertatcaretactive");
-			$(this).addClass("insertatcaretactive");
+function addEventHandler(elem, eventType, handler) {
+	if (elem.addEventListener)
+		elem.addEventListener (eventType, handler, false);
+	else if (elem.attachEvent)
+		elem.attachEvent ('on' + eventType, handler);
+}
+
+function ready(callbackFunc) {
+	if (document.readyState !== 'loading') {
+		// Document is already ready, call the callback directly
+		callbackFunc();
+	} else if (document.addEventListener) {
+		// All modern browsers to register DOMContentLoaded
+		document.addEventListener('DOMContentLoaded', callbackFunc);
+	} else {
+		// Old IE browsers
+		document.attachEvent('onreadystatechange', function() {
+			if (document.readyState === 'complete') {
+				callbackFunc();
+			}
 		});
-	};
-	$("#jform_intro_intro_text,#jform_intro_intro_headline,#jform_tpl_html").EnableInsertAtCaret();
-});
+	}
+}
 
 function InsertAtCaret(myValue) {
-	return jQuery(".insertatcaretactive").each(function (i) {
+	var ele = document.getElementsByClassName("insertatcaretactive");
+	for (var i = 0; i<ele.length; i++) {
 		if (document.selection) {
 			//For browsers like Internet Explorer
-			this.focus();
-			sel = document.selection.createRange();
+			ele[i].focus();
+			var sel = document.selection.createRange();
 			sel.text = myValue;
-			this.focus();
-		} else if (this.selectionStart || this.selectionStart === '0') {
-			//For browsers like Firefox and Webkit based
-			var startPos = this.selectionStart;
-			var endPos = this.selectionEnd;
-			var scrollTop = this.scrollTop;
-			this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos, this.value.length);
-			this.focus();
-			this.selectionStart = startPos + myValue.length;
-			this.selectionEnd = startPos + myValue.length;
-			this.scrollTop = scrollTop;
-		} else {
-			this.value += myValue;
-			this.focus();
+			ele[i].focus();
 		}
-	})
+		else if (ele[i].selectionStart || ele[i].selectionStart === 0) {
+			//For browsers like Firefox and Webkit based
+			var startPos = ele[i].selectionStart;
+			var endPos = ele[i].selectionEnd;
+			var scrollTop = ele[i].scrollTop;
+			ele[i].value = ele[i].value.substring(0, startPos) + myValue + ele[i].value.substring(endPos, ele[i].value.length);
+			ele[i].focus();
+			ele[i].selectionStart = startPos + myValue.length;
+			ele[i].selectionEnd = startPos + myValue.length;
+			ele[i].scrollTop = scrollTop;
+		}
+		else {
+			ele[i].value += myValue;
+			ele[i].focus();
+		}
+		ele[i].classList.remove('insertatcaretactive');
+	}
 }
+
+ready(function() {
+	// enable InsertAtCaret
+	var elms = document.querySelectorAll("#jform_intro_intro_text,#jform_intro_intro_headline,#jform_tpl_html");
+	for(var i = 0; i < elms.length; i++) {
+		addEventHandler(elms[i], 'focus', function() {
+			var actives = document.getElementsByClassName('insertatcaretactive');
+			for (var z = 0; z < actives.length; z++) {
+				actives[z].classList.remove('insertatcaretactive');
+			}
+			this.classList.add('insertatcaretactive');
+		});
+	}
+});

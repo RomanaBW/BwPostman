@@ -167,7 +167,7 @@ $options = array(
 										foreach ($linktexts as $key => $linktext)
 										{
 											echo "                    <a class=\"btn btn-small pull-left\" 
-											onclick=\"buttonClick('jform_tpl_html', '" . $linktext . "');
+											onclick=\"InsertAtCaret('" . $linktext . "');
 											return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
 											echo '                     <p>&nbsp;' . Text::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</p>';
 										}
@@ -234,6 +234,5 @@ $options = array(
 </div>
 
 <?php
-Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_text.js');
-Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_text_buttonClick.js');
+Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template.js');
 Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_base.js');

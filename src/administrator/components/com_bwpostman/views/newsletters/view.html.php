@@ -32,6 +32,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('jquery.framework');
 
 // Import VIEW object class
 jimport('joomla.application.component.view');

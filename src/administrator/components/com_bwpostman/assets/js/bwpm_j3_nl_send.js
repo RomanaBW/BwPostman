@@ -23,44 +23,89 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-jQuery(document).ready(function() {
-	function doAjax(data, successCallback) {
-		var structure =
-			{
-				url: starturl,
-				data: data,
-				type: 'POST',
-				dataType: 'json'
-			};
+function ready(callbackFunc) {
+	if (document.readyState !== 'loading') {
+		// Document is already ready, call the callback directly
+		callbackFunc();
+	} else if (document.addEventListener) {
+		// All modern browsers to register DOMContentLoaded
+		document.addEventListener('DOMContentLoaded', callbackFunc);
+	} else {
+		// Old IE browsers
+		document.attachEvent('onreadystatechange', function() {
+			if (document.readyState === 'complete') {
+				callbackFunc();
+			}
+		});
+	}
+}
 
-		jQuery.ajax(structure)
-			.done(function( data ) {
-					// Call the callback function
-					successCallback(data);
-				})
-			.fail(function(req) {
-					var message = '<p class="bw_tablecheck_error">AJAX Error: ' + req.statusText + '<br />' + req.responseText + '</p>';
-					jQuery('div#load').css({display: 'none'});
-					jQuery('div#error').attr('class', 'alert alert-error');
-					jQuery('div#result').prepend(message);
-					jQuery('div#toolbar').find('button').removeAttr('disabled');
-					jQuery('div#toolbar').find('a').removeAttr('disabled');
-			});
+ready(function() {
+	function doAjax(data, successCallback) {
+		var	url = starturl,
+			data = data,
+			type = 'POST';
+		var request = new XMLHttpRequest();
+		request.onreadystatechange = function()
+		{
+			if (this.readyState === 4) {
+				if (this.status >= 200 && this.status < 300)
+				{
+					successCallback(parse(this.responseText));
+				}
+				else
+				{
+					var message = document.createElement('div');
+					message.innerHTML = '<p class="bw_tablecheck_error">AJAX Error: ' + this.statusText + '<br />' + this.responseText + '</p>';
+					document.getElementById('loading2').style.display = "none";
+					document.getElementById('error').setAttribute('class', 'alert alert-error');
+					var resultdiv = document.getElementById('result');
+					resultdiv.insertBefore(message, resultdiv.firstChild);
+					var toolbar = document.getElementById('toolbar');
+					var buttags = toolbar.getElementsByTagName('button');
+                    for (var i = 0; i < buttags.length; i++) {
+						buttags[i].removeAttribute('disabled');
+					}
+					var atags = toolbar.getElementsByTagName('a');
+                    for (var i = 0; i < atags.length; i++) {
+						atags[i].removeAttribute('disabled');
+					}
+				}
+			}
+		};
+		request.open(type, url, true);
+		request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		request.send(data);
+	}
+
+	function parse(text){
+		try {
+			return JSON.parse(text);
+		} catch(e){
+			return text;
+		}
 	}
 
 	function processUpdateStep(data) {
 		var timeout = document.getElementById('delay').value;
 		// Do AJAX post
-		post = {mailsDone: data.mailsDone};
+		post = 'mailsDone=' + data.mailsDone;
 		doAjax(post, function (data) {
+			var res_container = document.getElementById('sendResult');
 			if (data.ready !== "1") {
 				setStatusDivs(data);
-				jQuery('div.alert').removeClass('hidden');
-				jQuery('div.alert-secondary').addClass('hidden');
+				var alerts = res_container.getElementsByClassName('alert');
+                for (var i = 0; i < alerts.length; i++) {
+					alerts[i].classList.remove('hidden');
+				}
+				var alerts_sec = res_container.getElementsByClassName('alert-secondary');
+				for (var i = 0; i < alerts_sec.length; i++) {
+					alerts_sec[i].classList.add('hidden');
+				}
 				if (data.delay_msg === "success") {
 					setTimeout(function() {
-						jQuery('div#sending').attr('class', 'alert alert-success');
-						jQuery('div#delay_msg').addClass('hidden');
+						document.getElementById('sending').setAttribute('class', 'alert alert-success');
+						document.getElementById('delay_msg').classList.add('hidden');
 						processUpdateStep(data);
 					}, timeout);
 				} else {
@@ -68,35 +113,64 @@ jQuery(document).ready(function() {
 				}
 			} else {
 				setStatusDivs(data);
-				jQuery('div.progress').removeClass('active');
-				jQuery('div.alert').removeClass('hidden');
-				jQuery('div.alert-secondary').addClass('hidden');
-				jQuery('div#loading2').css({display: 'none'});
-				jQuery('div#toolbar').find('button').removeAttr('disabled');
-				jQuery('div#toolbar').find('a').removeAttr('disabled');
+				var progress = res_container.getElementsByClassName('progress');
+                for (var i = 0; i < progress.length; i++) {
+					progress[i].classList.remove('active');
+				}
+				var alerts = res_container.getElementsByClassName('alert');
+                for (var i = 0; i < alerts.length; i++) {
+					alerts[i].classList.remove('hidden');
+				}
+				var alerts_sec = res_container.getElementsByClassName('alert-secondary');
+				for (var i = 0; i < alerts_sec.length; i++) {
+					alerts_sec[i].classList.add('hidden');
+				}
+				document.getElementById('loading2').style.display = 'none';
+				var toolbar = document.getElementById('toolbar');
+				var buttags = toolbar.getElementsByTagName('button');
+				for (var i = 0; i < buttags.length; i++) {
+					buttags[i].removeAttribute('disabled');
+				}
+				var atags = toolbar.getElementsByTagName('a');
+				for (var i = 0; i < atags.length; i++) {
+					atags[i].removeAttribute('disabled');
+				}
 			}
 		});
 		function setStatusDivs(data) {
-			jQuery('div#nl_bar').text(data.percent+'%');
-			jQuery('div#nl_bar').css('width', data.percent+'%');
-			jQuery('div#nl_bar').attr('aria-valuenow', data.percent);
-			jQuery('div#nl_to_send_message').html(data.nl2sendmsg);
-			jQuery('div#result').prepend(data.result);
-			jQuery('div#sending').attr('class', 'alert alert-'+data.sending);
-			jQuery('div#delay_msg').attr('class', 'alert alert-'+data.delay_msg);
-			jQuery('div#complete').attr('class', 'alert alert-'+data.complete);
-			jQuery('div#published').attr('class', 'alert alert-'+data.published);
-			jQuery('div#nopublished').attr('class', 'alert alert-'+data.nopublished);
-			jQuery('div#error').attr('class', 'alert alert-'+data.error);
+			var nl_bar = document.getElementById('nl_bar');
+			nl_bar.textContent = data.percent+'%';
+			nl_bar.style.width = data.percent+'%';
+			nl_bar.setAttribute('aria-valuenow', data.percent);
+			document.getElementById('nl_to_send_message').innerHTML = data.nl2sendmsg;
+			var result = document.createElement('div');
+			result.innerHTML = data.result;
+			var resultdiv = document.getElementById('result');
+			resultdiv.insertBefore(result, resultdiv.firstChild);
+			document.getElementById('sending').setAttribute('class', 'alert alert-'+data.sending);
+			document.getElementById('delay_msg').setAttribute('class', 'alert alert-'+data.delay_msg);
+			document.getElementById('complete').setAttribute('class', 'alert alert-'+data.complete);
+			document.getElementById('published').setAttribute('class', 'alert alert-'+data.published);
+			document.getElementById('nopublished').setAttribute('class', 'alert alert-'+data.nopublished);
+			document.getElementById('error').setAttribute('class', 'alert alert-'+data.error);
 		}
 	}
 
-	jQuery('div.alert-secondary').addClass('hidden');
-	jQuery('div#toolbar').find('button').attr("disabled", "disabled");
-	jQuery('div#toolbar').find('a').attr("disabled", "disabled");
+	var res_container = document.getElementById('sendResult');
+	var alerts_sec = res_container.getElementsByClassName('alert-secondary');
+	for (var i = 0; i < alerts_sec.length; i++) {
+		alerts_sec[i].classList.add('hidden');
+	}
+	var toolbar = document.getElementById('toolbar');
+	var buttags = toolbar.getElementsByTagName('button');
+	for (var i = 0; i < buttags.length; i++) {
+		buttags[i].setAttribute("disabled", "disabled");
+	}
+	var atags = toolbar.getElementsByTagName('a');
+	for (var i = 0; i < atags.length; i++) {
+		atags[i].setAttribute("disabled", "disabled");
+	}
 	var starturl = document.getElementById('startUrl').value;
-	var data = {};
+	var data = {mailsDone: "0"};
 	processUpdateStep(data);
 });
-
-

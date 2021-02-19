@@ -946,8 +946,17 @@ class BwPostmanModelMaintenance extends JModelLegacy
 								{
 									$start              = $start + 8;
 									$stop               = strpos($column, " ", $start);
-									$length             = $stop - $start;
-									$col_arr->collation = substr($column, $start, $length);
+
+									if ($stop === false)
+									{
+										$col_arr->collation = substr($column, $start);
+									}
+									else
+									{
+										$length             = $stop - $start;
+										$col_arr->collation = substr($column, $start, $length);
+									}
+
 									$sub_txt            = str_ireplace('collate ' . $col_arr->collation, '', $column);
 									$column             = trim($sub_txt);
 								}

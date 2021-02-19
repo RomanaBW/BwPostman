@@ -496,9 +496,10 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 					try
 					{
 						// get stored $base_asset and $curr_asset_id from session
-						$table_names = $session->get('trestore_tablenames', '');
-						$i           = $session->get('trestore_i', 0);
-						$error       = '';
+						$table_names    = $session->get('trestore_tablenames', '');
+						$i              = $session->get('trestore_i', 0);
+						$currentContent = '';
+						$error          = '';
 
 						if ($i == 0)
 						{
@@ -512,12 +513,26 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 							}
 						}
 
+						$content = ob_get_contents();
+
+						// use session to store result while $this->ready != "1"
+						$storedContent = $session->get('trestore_content', '');
+
+						if ($i == 0)
+						{
+							$content       = $content . '<br />';
+						}
+						$content       = $content . $storedContent;
+						$session->set('trestore_content', $content);
+
+						ob_end_clean();
+
 						if ($error === '')
 						{
 							$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
 							// loop over all tables
-							echo '<h5>' . Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TABLE',
+							$currentContent .= '<h5>' . Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TABLE',
 									$table_names[$i]) . '</h5>';
 
 							$lastTable = false;
@@ -527,7 +542,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 								$lastTable = true;
 							}
 
-							$tablesRewritten = $model->reWriteTables($table_names[$i], $lastTable);
+							$tablesRewritten = $model->reWriteTables($table_names[$i], $currentContent, $lastTable);
 
 							if ($tablesRewritten === false)
 							{
@@ -536,11 +551,13 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 							}
 
 							$i++;
+							echo $currentContent;
 							$session->set('trestore_i', $i);
 							$step = "7";
 
 							if ($lastTable)
 							{
+
 								// clear session variables
 								$session->clear('trestore_tablenames');
 								$session->clear('trestore_i');

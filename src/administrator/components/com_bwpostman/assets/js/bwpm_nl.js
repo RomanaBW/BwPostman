@@ -211,19 +211,6 @@ function buttonClick(text, editor) {
 	jInsertEditorText(text, editor);
 }
 
-//insert placeholder Joomla 4
-function buttonClick4(text, editor) {
-	// jInsertEditorText(text, editor);
-
-	var content = window.Joomla.editors.instances[editor].getValue();
-
-	if (content) {
-		Joomla.editors.instances[editor].replaceSelection(text);
-	}
-
-	return true;
-}
-
 //-------------------------------------------------------------------
 //http://www.mattkruse.com/javascript/selectbox/source.html
 //-------------------------------------------------------------------

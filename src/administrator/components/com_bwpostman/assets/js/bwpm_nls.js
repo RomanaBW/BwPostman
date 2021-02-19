@@ -52,24 +52,3 @@ function changeTab(newTab, currentTab)
 	};
 
 })();
-
-jQuery(document).ready(function() {
-	function updateModal(selector) {
-		var $sel = selector;
-		var src = $sel.data('src');
-		$('.modal-title').text($sel.data('title'));
-		var windowheight = $(window).height()-225;
-		$('.modal-text').html('<iframe id="frame" src="'+src+'" width="100%" height="'+windowheight+'" frameborder="0"></iframe>');
-		$('.modal-spinner').addClass('hidden');
-	}
-	$('span.iframe').on('click',function(){
-		updateModal($(this));
-	});
-	$("#bwp-modal").on('hidden.bs.modal', function () {
-		$('.modal-title').empty();
-		$('.modal-text').empty();
-		$('.modal-spinner').removeClass('hidden');
-		$('.modal-footer .counter').empty();
-	});
-});
-

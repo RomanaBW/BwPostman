@@ -1756,7 +1756,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 
-		return true;
+		return 'Column check finished';
 	}
 
 

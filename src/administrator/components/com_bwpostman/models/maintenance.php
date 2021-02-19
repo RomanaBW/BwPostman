@@ -1727,16 +1727,36 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// check for col names
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
-			// check for needed columns and add them if needed
-			if($this->handleNeededColumns($neededColumns, $i, $search_cols_1, $checkTable) === false)
+			try
 			{
-				return 'Needed Columns Error';
+				// check for needed columns and add them if needed
+				if($this->handleNeededColumns($neededColumns, $i, $search_cols_1, $checkTable) === false)
+				{
+					return 'Needed Columns Error';
+				}
+			}
+			catch (RuntimeException $exception)
+			{
+				$message = $exception->getMessage();
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+				return 'Needed Columns Exception';
 			}
 
-			// check for obsolete columns and remove them if needed
-			if($this->handleObsoleteColumns($installedColumns[$i], $search_cols_2, $checkTable) === false)
+			try
 			{
-				return  'Obsolete Columns Error';
+				// check for obsolete columns and remove them if needed
+				if($this->handleObsoleteColumns($installedColumns[$i], $search_cols_2, $checkTable) === false)
+				{
+					return  'Obsolete Columns Error';
+				}
+			}
+			catch (RuntimeException $exception)
+			{
+				$message = $exception->getMessage();
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+				return 'Obsolete Columns Exception';
 			}
 		}
 
@@ -1745,10 +1765,20 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		echo '<p class="bw_tablecheck_ok">' . $message	 . '</p>';
 
-		// compare table attributes and correct them if needed
-		if(!$this->handleColumnAttributes($neededColumns, $installedColumns, $checkTable))
+		try
 		{
-			return false;
+			// compare table attributes and correct them if needed
+			if(!$this->handleColumnAttributes($neededColumns, $installedColumns, $checkTable))
+			{
+				return 'Handle attributes error';
+			}
+		}
+		catch (RuntimeException $exception)
+		{
+			$message = $exception->getMessage();
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+			return 'Handle attributes Exception';
 		}
 
 		$message = str_pad(strip_tags(Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_ATTRIBUTES_OK', $checkTable->name)), 4096);

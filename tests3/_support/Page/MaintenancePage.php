@@ -132,6 +132,20 @@ class MaintenancePage
 	/**
 	 * @var string
 	 *
+	 * @since 3.1.3
+	 */
+	public static $buttonGetFile        = "//*[@id='restorefile']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $buttonStartRestore   = "//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $step1Field           = "//*[@id='step1'][contains(@class, 'alert-success')]";
@@ -212,7 +226,7 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step5SuccessClass    = "//*[@id='step5'][contains(@class, 'alert-success')]";
+	public static $step7SuccessClass    = "//*[@id='step6'][contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
@@ -226,7 +240,7 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $step5SuccessMsg      = "Check asset-id's and user-id's..";
+	public static $step7SuccessMsg      = "User IDs of subscribers are alright";
 
 	/**
 	 * @var string
@@ -242,11 +256,320 @@ class MaintenancePage
 	 */
 	public static $statisticsUnsentNewsletters     = "//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a";
 
+	/*
+	 * Success messages
+	 */
+
+	/**
+	 * @var array
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTableArray     = array(
+		'#__bwpostman_campaigns',
+		'#__bwpostman_campaigns_mailinglists',
+		'#__bwpostman_mailinglists',
+		'#__bwpostman_newsletters',
+		'#__bwpostman_newsletters_mailinglists',
+		'#__bwpostman_sendmailcontent',
+		'#__bwpostman_sendmailqueue',
+		'#__bwpostman_subscribers',
+		'#__bwpostman_subscribers_mailinglists',
+		'#__bwpostman_tc_schedule',
+		'#__bwpostman_tc_settings',
+		'#__bwpostman_templates',
+		'#__bwpostman_templates_tags',
+		'#__bwpostman_templates_tpl',
+	);
+
+	/**
+	 * @var array
+	 *
+	 * @since 3.1.3
+	 */
+	public static $assetTableArray     = array(
+		'#__bwpostman_campaigns',
+		'#__bwpostman_mailinglists',
+		'#__bwpostman_newsletters',
+		'#__bwpostman_subscribers',
+		'#__bwpostman_templates',
+	);
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successAllIdentifierResult     = "//*[@id='result']/p[contains(@class, 'bw_tablecheck_finished')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $resultIdentifierId     = "//*[@id='result']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successIdentifierResult     = "//*[@id='result']/p[@class='bw_tablecheck_ok']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTextAllResult     = "The check encountered no errors.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTextReadBackup     = "Backup data read successfully";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTextRevUsergroups     = "Revision of user groups successful";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTextDelAssets     = "Deleting of assets successful";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTextRepairAssets     = "Repairing of assets successful";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTextDeleteTables     = "table `%s` deleted successfully";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTextCreateTables     = "table `%s` created successfully";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTextRestoreTables     = "table `%s` restored successfully";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTextColumns     = "The column names of table `%s` are in order";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTextAttributes     = "The attributes of the columns of table `%s` are in order";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $successTextAssets     = "Asset IDs of table `%s` are alright";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $repairTextEngine     = "ENGINE of table `%s` adjusted successfully";
+
+
+	/*
+	 * Error and warning handling identifiers
+	 */
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $step7FieldError           = "//*[@id='step7'][contains(@class, 'alert-error')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $errorIdentifierSetBack     = "//*[@id='error']/p[contains(@class, 'alert-error')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $errorIdentifierResult     = "//*[@id='result']/p[contains(@class, 'bw_tablecheck_error')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $warningIdentifier     = "//*[@id='result']/p[contains(@class, 'bw_tablecheck_warn')]";
+
+	/*
+	 * Error and warning handling messages
+	 */
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $errorTextSetBack     = "Error while restoring tables! Tables are set back to initial condition!";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $errorTextDefault     = "Creating table `#__bwpostman_campaigns` failed with error message Invalid default value for 'asset_id'";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $errorTextPrimary     = "Creating table `#__bwpostman_campaigns` failed with error message Key column 'id' doesn't exist in table";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $warningTextIncrement     = "The auto increment value of table `#__bwpostman_campaigns` is missing or wrong. Trying to adjust the correct auto increment value...";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $repairTextIncrement     = "Auto increment value of table `#__bwpostman_campaigns` created successfully.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $warningTextCollation     = "The attribute(s) 'collation' of column 'title' of table `#__bwpostman_mailinglists` is/are not as expected. Trying to adjust defective attribute(s)...";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $repairTextCollation     = "Attribute 'collation' of column 'title' of table `#__bwpostman_mailinglists` adjusted successfully";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $warningTextColumn     = "The attribute(s) 'Column' of column 'published' of table `#__bwpostman_campaigns` is/are not as expected. Trying to adjust defective attribute(s)...";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $repairTextColumn     = "Attribute 'Column' of column 'published' of table `#__bwpostman_campaigns` adjusted successfully";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $warningTextType     = "The attribute(s) 'Type' of column 'title' of table `#__bwpostman_campaigns` is/are not as expected. Trying to adjust defective attribute(s)...";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $repairTextType     = "Attribute 'Type' of column 'title' of table `#__bwpostman_campaigns` adjusted successfully";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $warningTextNull     = "The attribute(s) 'Null' of column 'asset_id' of table `#__bwpostman_campaigns` is/are not as expected. Trying to adjust defective attribute(s)...";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $repairTextNull     = "Attribute 'Null' of column 'asset_id' of table `#__bwpostman_campaigns` adjusted successfully";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $warningTextPublishe     = "The column 'publishe' of table `#__bwpostman_campaigns` is installed but not needed. Trying to delete obsolete column...";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $repairTextPublishe     = "Column 'publishe' of table `#__bwpostman_campaigns` deleted successfully";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $warningTextPublished     = "Column 'published' of table `#__bwpostman_campaigns` is not installed, but is needed urgently. Trying to install missing column...";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $repairTextPublished     = "Column 'published' of table `#__bwpostman_campaigns` created successfully";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.3
+	 */
+	public static $warningTextVersion     = "Installed version of BwPostman is lower than version of backup. Column check is not performed to prevent data loss. Please Update to backed up version of BwPostman.";
+
+
 	/**
 	 * Test method to restore tables
 	 *
 	 * @param   \AcceptanceTester   $I
-	 * @param   boolean             $compressed
+	 * @param   boolean             $compressed   Is the backup compressed?
+	 * @param   string              $filename     regular backup or having modifications? Last case needs file name transmitted.
 	 *
 	 * @before  _login
 	 *
@@ -258,7 +581,7 @@ class MaintenancePage
 	 *
 	 * @since   2.0.0
 	 */
-	public static function restoreTables(\AcceptanceTester $I, $compressed = false)
+	public static function restoreTables(\AcceptanceTester $I, $compressed = false, $filename = '')
 	{
 		$I->wantTo("Restore tables");
 		$I->expectTo("see 'Result check okay'");
@@ -272,9 +595,64 @@ class MaintenancePage
 		$I->click(self::$restoreTablesButton);
 		$I->waitForElement(self::$headingRestoreFile, 30);
 
+		if($filename === '')
+		{
+			$filename = self::calculateFilename($compressed);
+		}
+
+		$I->attachFile(self::$buttonGetFile, $filename);
+
+		$I->click(self::$buttonStartRestore);
+		$I->dontSeeElement(Generals::$alert_error);
+
+		// Check result of regular backup
+		if(strpos($filename, 'error') === false && strpos($filename, 'modified') === false)
+		{
+			self::checkRegularResult($I);
+		}
+
+		// Check result of modified backup, which can be repaired
+		if(strpos($filename, 'modified_simple') !== false)
+		{
+			self::checkModifiedSimpleResult($I);
+		}
+
+		// Check result of modified backup with version greater than installed version
+		if(strpos($filename, 'modified_version') !== false)
+		{
+			self::checkModifiedVersionResult($I);
+		}
+
+		// Check result of modified backup, which cannot be repaired
+		if(strpos($filename, 'error') !== false)
+		{
+			self::checkErrorResult($I, $filename);
+		}
+
+		$I->click(self::$checkBackButton);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(self::$heading, Generals::$pageTitle);
+
+		$I->amOnPage(MainView::$url);
+
+		$I->waitForElementVisible(self::$statisticsUnsentNewsletters, 5);
+		$I->see("53", self::$statisticsUnsentNewsletters);
+	}
+
+	/**
+	 * Method to calculate file name for regular backup file
+	 *
+	 * @param bool   $compressed
+	 *
+	 * @return string
+	 *
+	 * @since 3.1.3
+	 */
+	private static function calculateFilename(bool $compressed): string
+	{
 		$bwpm_version = getenv('BWPM_VERSION_TO_TEST');
 
-		if (substr_count($bwpm_version,  ".") == 0)
+		if (substr_count($bwpm_version, ".") == 0)
 		{
 			$bwpm_version_underline = $bwpm_version[0] . '_' . $bwpm_version[1] . '_' . $bwpm_version[2];
 		}
@@ -290,11 +668,20 @@ class MaintenancePage
 			$filename .= ".zip";
 		}
 
-		$I->attachFile("//*[@id='restorefile']", $filename);
+		return $filename;
+	}
 
-		$I->click("//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input");
-		$I->dontSeeElement(Generals::$alert_error);
-
+/**
+ * Method to check result of regular backup, no modifications expected while restore
+ *
+ * @param \AcceptanceTester $I
+ *
+ * @throws \Exception
+ *
+ * @since 3.1.3
+ */
+	private static function checkRegularResult(\AcceptanceTester $I)
+	{
 		$I->waitForElementVisible(self::$step1Field, 30);
 		$I->waitForElementVisible(self::$step2Field, 30);
 		$I->waitForElementVisible(self::$step3Field, 30);
@@ -308,13 +695,275 @@ class MaintenancePage
 		$I->waitForElementVisible(self::$step11Field, 180);
 		$I->waitForElementVisible(self::$step11SuccessClass, 30);
 		$I->see(self::$step11SuccessMsg, self::$step11SuccessClass);
-		$I->click(self::$checkBackButton);
-		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->see(self::$heading, Generals::$pageTitle);
+		$I->wait(10);
 
-		$I->amOnPage(MainView::$url);
+		$resultsOkay = $I->grabMultiple(self::$successIdentifierResult);
+		$resultsWarn = $I->grabMultiple(self::$warningIdentifier);
 
-		$I->waitForElementVisible(self::$statisticsUnsentNewsletters, 5);
-		$I->see("53", self::$statisticsUnsentNewsletters);
+//		codecept_debug($resultsWarn);
+		$I->assertEquals(count($resultsWarn), 0);
+
+		$found = in_array(self::$successTextReadBackup, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$successTextReadBackup, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$successTextDelAssets, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$successTextRepairAssets, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		foreach (self::$successTableArray as $table)
+		{
+			$found = in_array(sprintf(self::$successTextDelAssets, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$successTextCreateTables, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$successTextRestoreTables, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$successTextColumns, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$successTextAttributes, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+		}
+
+		foreach (self::$assetTableArray as $table)
+		{
+			$found = in_array(sprintf(self::$successTextAssets, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+		}
+	}
+
+	/**
+	 * Method to check result of backup with modifications, which can be repaired
+	 *
+	 * @param \AcceptanceTester $I
+	 *
+	 * @throws \Exception
+	 *
+	 * @since 3.1.3
+	 */
+	private static function checkModifiedSimpleResult(\AcceptanceTester $I)
+	{
+		$I->waitForElementVisible(self::$step1Field, 30);
+		$I->waitForElementVisible(self::$step2Field, 30);
+		$I->waitForElementVisible(self::$step3Field, 30);
+		$I->waitForElementVisible(self::$step4Field, 300);
+		$I->waitForElementVisible(self::$step5Field, 30);
+		$I->waitForElementVisible(self::$step6Field, 300);
+		$I->waitForElementVisible(self::$step7Field, 30);
+		$I->waitForElementVisible(self::$step8Field, 30);
+		$I->waitForElementVisible(self::$step9Field, 30);
+		$I->waitForElementVisible(self::$step10Field, 30);
+		$I->waitForElementVisible(self::$step11Field, 180);
+		$I->waitForElementVisible(self::$step11SuccessClass, 30);
+		$I->see(self::$step11SuccessMsg, self::$step11SuccessClass);
+		$I->wait(10);
+
+		$resultsOkay = $I->grabMultiple(self::$successIdentifierResult);
+		$resultsWarn = $I->grabMultiple(self::$warningIdentifier);
+
+		$found = in_array(self::$successTextReadBackup, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$successTextReadBackup, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$successTextDelAssets, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$successTextRepairAssets, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		foreach (self::$successTableArray as $table)
+		{
+			$found = in_array(sprintf(self::$successTextDelAssets, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$successTextCreateTables, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$successTextRestoreTables, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$repairTextEngine, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$successTextColumns, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$successTextAttributes, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+		}
+
+		$found = in_array(self::$warningTextIncrement, $resultsWarn);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$repairTextIncrement, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$warningTextCollation, $resultsWarn);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$repairTextCollation, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$warningTextColumn, $resultsWarn);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$repairTextColumn, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$warningTextType, $resultsWarn);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$repairTextType, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$warningTextNull, $resultsWarn);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$repairTextNull, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$warningTextPublishe, $resultsWarn);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$repairTextPublishe, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$warningTextPublished, $resultsWarn);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$repairTextPublished, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		foreach (self::$assetTableArray as $table)
+		{
+			$found = in_array(sprintf(self::$successTextAssets, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+		}
+	}
+
+	/**
+	 * Method to check result of backup with modifications, which can be repaired
+	 *
+	 * @param \AcceptanceTester $I
+	 *
+	 * @throws \Exception
+	 *
+	 * @since 3.1.3
+	 */
+	private static function checkModifiedVersionResult(\AcceptanceTester $I)
+	{
+		$I->waitForElementVisible(self::$step1Field, 30);
+		$I->waitForElementVisible(self::$step2Field, 30);
+		$I->waitForElementVisible(self::$step3Field, 30);
+		$I->waitForElementVisible(self::$step4Field, 300);
+		$I->waitForElementVisible(self::$step5Field, 30);
+		$I->waitForElementVisible(self::$step6Field, 300);
+		$I->waitForElementVisible(self::$step7Field, 30);
+		$I->waitForElementVisible(self::$step8Field, 30);
+		$I->waitForElementVisible(self::$step9Field, 30);
+		$I->waitForElementVisible(self::$step10Field, 30);
+		$I->waitForElementVisible(self::$step11Field, 180);
+		$I->waitForElementVisible(self::$step11SuccessClass, 30);
+		$I->see(self::$step11SuccessMsg, self::$step11SuccessClass);
+		$I->wait(10);
+
+		$resultsOkay = $I->grabMultiple(self::$successIdentifierResult);
+		$resultsWarn = $I->grabMultiple(self::$warningIdentifier);
+
+		$found = in_array(self::$successTextReadBackup, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$successTextReadBackup, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$successTextDelAssets, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$successTextRepairAssets, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		foreach (self::$successTableArray as $table)
+		{
+			$found = in_array(sprintf(self::$successTextDelAssets, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$successTextCreateTables, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$successTextRestoreTables, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+
+			$found = in_array(sprintf(self::$repairTextEngine, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+		}
+
+		$found = in_array(self::$warningTextVersion, $resultsWarn);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$warningTextIncrement, $resultsWarn);
+		$I->assertEquals($found, true);
+
+		$found = in_array(self::$repairTextIncrement, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		foreach (self::$assetTableArray as $table)
+		{
+			$found = in_array(sprintf(self::$successTextAssets, $table), $resultsOkay);
+			$I->assertEquals($found, true);
+		}
+	}
+
+	/**
+	 *
+	 * Method to check result of backup with modifications, which cannot be repaired
+	 *
+	 * @param \AcceptanceTester $I
+	 * @param string            $filename
+	 *
+	 * @throws \Exception
+	 * @since 3.1.3
+	 */
+	private static function checkErrorResult(\AcceptanceTester $I, string $filename)
+	{
+		$I->waitForElementVisible(self::$step1Field, 30);
+		$I->waitForElementVisible(self::$step2Field, 30);
+		$I->waitForElementVisible(self::$step3Field, 30);
+		$I->waitForElementVisible(self::$step4Field, 300);
+		$I->waitForElementVisible(self::$step5Field, 30);
+		$I->waitForElementVisible(self::$step6Field, 300);
+
+		$I->waitForElementVisible(self::$step7FieldError, 30);
+		$I->dontSeeElement(self::$step7Field);
+		$I->dontSeeElement(self::$step8Field);
+		$I->dontSeeElement(self::$step9Field);
+		$I->dontSeeElement(self::$step10Field);
+		$I->dontSeeElement(self::$step11Field);
+
+		$I->see(self::$successTextReadBackup, self::$successIdentifierResult);
+		$I->see(self::$successTextRevUsergroups, self::$successIdentifierResult);
+		$I->see(self::$successTextDelAssets, self::$successIdentifierResult);
+		$I->see(self::$successTextRepairAssets, self::$successIdentifierResult);
+
+		$I->see(self::$errorTextSetBack, self::$errorIdentifierSetBack);
+
+		if(strpos($filename, 'default') !== false)
+		{
+			$I->see(self::$errorTextDefault, self::$errorIdentifierResult);
+		}
+
+		if(strpos($filename, 'primary') !== false)
+		{
+			$I->see(self::$errorTextPrimary, self::$errorIdentifierResult);
+		}
 	}
 }

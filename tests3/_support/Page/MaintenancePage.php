@@ -720,6 +720,7 @@ class MaintenancePage
 			$found = in_array(sprintf(self::$successTextDelAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+			codecept_debug('Success table ' . $table);
 			$found = in_array(sprintf(self::$successTextCreateTables, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 

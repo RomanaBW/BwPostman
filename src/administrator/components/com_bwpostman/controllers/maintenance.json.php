@@ -876,7 +876,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 			if ($res === false)
 			{
 				$errorMessage = '<p class="alert alert-error bw_tablecheck_error">';
-				$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_COLS_ERROR');
+				$errorMessage .= Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_COLS_ERROR', $neededTables[$i]->name);
 				$errorMessage .= '<br /><br />';
 				$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
 				$errorMessage .= '</p>';

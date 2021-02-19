@@ -1768,9 +1768,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		try
 		{
 			// compare table attributes and correct them if needed
-			if(!$this->handleColumnAttributes($neededColumns, $installedColumns, $checkTable))
+			$attributesResult = $this->handleColumnAttributes($neededColumns, $installedColumns, $checkTable);
+			if($attributesResult !== true)
 			{
-				return 'Handle attributes error';
+				return 'Handle attributes error: ' . $attributesResult;
 			}
 		}
 		catch (RuntimeException $exception)
@@ -2023,7 +2024,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 						$message = $exception->getMessage();
 						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-						return false;
+						return $message;
 					}
 				}
 			}

@@ -91,11 +91,6 @@
         sync_test_command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir_3 }}/tests3 {{ src_dir }}/tests3"
       when: joomla_version[0] == '3'
 
-    - name: Set test synchronization command J4
-      set_fact:
-        sync_test_command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir_4 }}/tests {{ src_dir }}/tests"
-      when: joomla_version[0] == '4'
-
     - name: Synchronize tests
       command: "{{ sync_test_command }}"
 

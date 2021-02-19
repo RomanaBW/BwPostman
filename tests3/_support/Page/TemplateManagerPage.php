@@ -365,7 +365,7 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $importSuccessField      = "html/body/div[2]/section/div/div/div[2]/div[2]/div/h3";
+	public static $importSuccessField      = "//*/div[@id='result']/div[5]/h3";
 
 	/**
 	 * @var string

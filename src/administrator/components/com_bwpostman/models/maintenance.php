@@ -1706,9 +1706,9 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-			return false;
+			return 'Get table columns error';
 		}
 
 		foreach ($columnsObject as $col)
@@ -1730,13 +1730,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			// check for needed columns and add them if needed
 			if($this->handleNeededColumns($neededColumns, $i, $search_cols_1, $checkTable) === false)
 			{
-				return false;
+				return 'Needed Columns Error';
 			}
 
 			// check for obsolete columns and remove them if needed
 			if($this->handleObsoleteColumns($installedColumns[$i], $search_cols_2, $checkTable) === false)
 			{
-				return  false;
+				return  'Obsolete Columns Error';
 			}
 		}
 

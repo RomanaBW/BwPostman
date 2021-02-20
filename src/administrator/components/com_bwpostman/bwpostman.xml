@@ -33,14 +33,13 @@
 		<filename>controller.php</filename>
 		<filename>index.html</filename>
 		<filename>bwpostman.php</filename>
-		<filename>router.php</filename>
 		<folder>assets</folder>
-		<folder>classes</folder>
-		<folder>controllers</folder>
+		<folder>Field</folder>
+		<folder>forms</folder>
 		<folder>helpers</folder>
 		<folder>layouts</folder>
-		<folder>models</folder>
-		<folder>views</folder>
+		<folder>src</folder>
+		<folder>tmpl</folder>
 	</files>
 
 	<languages folder="site/language">
@@ -96,6 +95,7 @@
 			<folder>layouts</folder>
 			<folder>libraries</folder>
 			<folder>models</folder>
+			<folder>services</folder>
 			<folder>sql</folder>
 			<folder>src</folder>
 			<folder>tmpl</folder>

@@ -37,8 +37,9 @@ test_file:
     testsuite_file: Backend/TestOptionsCest
 
   - suite: lists
-    testsuite_file: Backend/Lists/
-#    testsuite_file: Backend/Lists/TestNewslettersListsCest::ResetSendingTrialsAndSendAnewQueue
+#    testsuite_file: Backend/Lists/
+    testsuite_file: Backend/Lists/TestSubscribersListsCest::SortSubscribersByTableHeader
+    testsuite_file: Backend/Lists/TestSubscribersListsCest::SortSubscribersBySelectList
 #    testsuite_file: Backend/Lists/TestTemplatesListsCest
 
   - suite: maintenance
@@ -83,6 +84,9 @@ test_file:
     testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart2
 
   - suite: moduleRegistration
+    testsuite_file: Module_Register/SubscribeModuleCest
+
+  - suite: moduleOverview
     testsuite_file: Module_Register/SubscribeModuleCest
 
   - suite: installB2S
@@ -142,6 +146,7 @@ test_suites:
       - user2subscriber
       - access1
       - moduleRegistration
+#      - moduleOverview
 
   - name: accept5
     tests:

@@ -638,10 +638,12 @@ codecept_debug('After Grab Multiple');
 				}
 				elseif ($key == 'gender')
 				{
+					codecept_debug('Substitute gender');
 					$row_values = self::SubstituteGender($row_values_raw);
 				}
 				elseif ($key == 'Email format')
 				{
+					codecept_debug('Substitute mail format');
 					$row_values = self::SubstituteMailformat($row_values_raw);
 				}
 				elseif ($key == 'tpl_id')

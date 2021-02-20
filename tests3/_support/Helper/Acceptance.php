@@ -702,8 +702,11 @@ class Acceptance extends Codeception\Module
 
 				for ($k = 0; $k < $list_length; $k++)
 				{
+					codecept_debug('Get needle and haystack');
 					$needle     = $row_values_nominal[$k][$key];
+					codecept_debug('Needle: ' . $needle);
 					$haystack   = $row_values_actual[$k];
+					codecept_debug('Haystack: ' . $haystack);
 
 					switch ($key)
 					{

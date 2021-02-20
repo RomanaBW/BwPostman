@@ -275,7 +275,7 @@ codecept_debug('After Grab Multiple');
 	private function SubstituteGender($data = array())
 	{
 		$result     = array();
-		$gender     = array('male', 'female');
+		$gender     = array('male', 'female', 'not specified');
 		foreach ($data as $item)
 		{
 			$dataset = array();
@@ -283,6 +283,7 @@ codecept_debug('After Grab Multiple');
 			{
 				if ($key == 'gender')
 				{
+					codecept_debug('Gender value: ' . $value);
 					if ($value != '')
 					{
 						$value = $gender[$value];

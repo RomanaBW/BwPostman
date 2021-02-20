@@ -332,7 +332,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// get the fileformat select list for the layouts import1 and import2
-		$lists['fileformat']	= BwPostmanHTMLHelper::getFileFormatList(isset($import['fileformat']) ? $import['fileformat'] : '');
+		$lists['fileformat']	= BwPostmanHTMLHelper::getFileFormatList('');
 
 		// Get the csv-delimiter select list for the layouts import1 and import2
 		// Delimiter which is stored in the session

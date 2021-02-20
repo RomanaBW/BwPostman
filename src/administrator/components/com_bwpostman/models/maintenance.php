@@ -2785,7 +2785,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 			$base_asset      = $this->getBaseAsset($rawTableName);
 
-			if ($base_asset === false || $base_asset === -1)
+			if ($base_asset === false)
 			{
 				if ($lastTable)
 				{
@@ -2795,103 +2795,104 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					unlink($dest);
 				}
 
-				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STORE_SUCCESS', $table);
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
-
-				$currentContent .= '<p class="bw_tablecheck_ok">' . $message . '</p>';
-
 				return $base_asset;
 			}
-
-			try
-			{
-				$this->assetColnames = array_keys($this->db->getTableColumns('#__assets'));
-			}
-			catch (RuntimeException $exception)
-			{
-				$message =  $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-				return false;
-			}
-
-			$asset_name = $base_asset['name'];
 
 			// Set some loop values (block size, …)
 			// To accelerate writing data and assets are pooled to blocks. Block size depends on table.
 			$data_loop_max = $this->getDataLoopMax($table);
 			$max_count     = ini_get('max_execution_time');
 			$data_max      = 0;
+			$asset_name    = '';
+
 			if (key_exists('table_data', $tables[$table]))
 			{
 				$data_max = count($tables[$table]['table_data']);
 			}
 
-			$asset_loop_max = 1000;
-			$asset_max      = 0;
-			if (isset($tables[$table]['table_assets']))
+			if ($base_asset !== -1)
 			{
-				$tables[$table]['table_assets'] = $assetsFromState[$table];
-				$asset_max = count($tables[$table]['table_assets']);
-			}
-
-			//Asset Inserting
-			if ($asset_name != '')
-			{
-				$s     = 0;
-				$count = 0;
-
-				// if there are data sets
-				if ($asset_max)
+				try
 				{
-					$asset_loop = 0;
+					$this->assetColnames = array_keys($this->db->getTableColumns('#__assets'));
+				}
+				catch (RuntimeException $exception)
+				{
+					$message = $exception->getMessage();
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+					return false;
 				}
 
-				// … insert data sets…
+				$asset_name = $base_asset['name'];
+
+				$asset_loop_max = 1000;
+				$asset_max      = 0;
 				if (isset($tables[$table]['table_assets']))
 				{
-					if ($tables[$table]['table_assets'][0]['name'] === $asset_name)
-					{ // update base asset
-						$update_asset = array_shift($tables[$table]['table_assets']);
+					$tables[$table]['table_assets'] = $assetsFromState[$table];
+					$asset_max                      = count($tables[$table]['table_assets']);
+				}
 
-						if (!$this->updateBaseAsset($update_asset))
-						{
-							return false;
-						}
+				//Asset Inserting
+				if ($asset_name != '')
+				{
+					$s     = 0;
+					$count = 0;
+
+					// if there are data sets
+					if ($asset_max)
+					{
+						$asset_loop = 0;
 					}
-					else
-					{ // process dataset assets
-						foreach ($tables[$table]['table_assets'] as $asset)
-						{
-							$asset_loop++;
 
-							if ($count++ == $max_count)
+					// … insert data sets…
+					if (isset($tables[$table]['table_assets']))
+					{
+						if ($tables[$table]['table_assets'][0]['name'] === $asset_name)
+						{ // update base asset
+							$update_asset = array_shift($tables[$table]['table_assets']);
+
+							if (!$this->updateBaseAsset($update_asset))
 							{
-								$count = 0;
-								ini_set('max_execution_time', ini_get('max_execution_time'));
+								return false;
 							}
-
-							// collect data sets until loop max
-							$dataset[] = $this->prepareAssetValues($asset, $asset_transform, $s, $base_asset, $asset_siblings);
-							$s++;
-
-							// if asset loop max is reached or last data set, insert into table
-							if (($asset_loop == $asset_loop_max) || ($s == $asset_max))
+						}
+						else
+						{ // process dataset assets
+							foreach ($tables[$table]['table_assets'] as $asset)
 							{
-								// write collected assets to table
-								if (!$this->writeLoopAssets($dataset, $s, $base_asset, $asset_transform))
+								$asset_loop++;
+
+								if ($count++ == $max_count)
 								{
-									return false;
+									$count = 0;
+									ini_set('max_execution_time', ini_get('max_execution_time'));
 								}
 
-								//reset loop values
-								$asset_loop = 0;
-								$dataset    = array();
-							}
-						} // end foreach table assets
-					} // end switch base asset
-				} // end table assets exists
-			} // end asset inserting
+								// collect data sets until loop max
+								$dataset[] = $this->prepareAssetValues($asset, $asset_transform, $s, $base_asset,
+									$asset_siblings);
+								$s++;
+
+								// if asset loop max is reached or last data set, insert into table
+								if (($asset_loop == $asset_loop_max) || ($s == $asset_max))
+								{
+									// write collected assets to table
+									if (!$this->writeLoopAssets($dataset, $s, $base_asset, $asset_transform))
+									{
+										return false;
+									}
+
+									//reset loop values
+									$asset_loop = 0;
+									$dataset    = array();
+								}
+							} // end foreach table assets
+						} // end switch base asset
+					} // end table assets exists
+				} // end asset inserting
+			}
 
 			/*
 			 * Import data (can't use table bind/store, because we have IDs and Joomla sets mode to update, if ID is set,
@@ -2986,7 +2987,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 				unlink($tmp_file);
 				unlink($dest);
-//					$this->deleteRestorePoint();
 			}
 		}
 		return true;

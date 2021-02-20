@@ -78,7 +78,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 							{
 							?>
 								<li class="nav-item"><!-- We need to use the setAttribute-function because of the IE -->
-									<a href="javascript:void(0);" data-layout="newsletters" class="nav-link">
+									<a href="javascript:void(0);" data-layout="newsletters" class="nav-link bwpm-arc-tab">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_NLS'); ?>
 									</a>
 								</li>
@@ -89,7 +89,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 							{
 							?>
 								<li class="nav-item">
-									<a href="javascript:void(0);" data-layout="subscribers" class="nav-link">
+									<a href="javascript:void(0);" data-layout="subscribers" class="nav-link bwpm-arc-tab">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_SUBS'); ?>
 									</a>
 								</li>
@@ -100,7 +100,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 							{
 							?>
 								<li class="nav-item">
-									<a href="javascript:void(0);" data-layout="campaigns" class="nav-link active">
+									<a href="javascript:void(0);" data-layout="campaigns" class="nav-link active bwpm-arc-tab">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_CAMS'); ?>
 									</a>
 								</li>
@@ -111,7 +111,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 							{
 							?>
 								<li class="nav-item">
-									<a href="javascript:void(0);" data-layout="mailinglists" class="nav-link">
+									<a href="javascript:void(0);" data-layout="mailinglists" class="nav-link bwpm-arc-tab">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_MLS'); ?>
 									</a>
 								</li>
@@ -122,7 +122,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 							{
 							?>
 								<li class="nav-item">
-									<a href="javascript:void(0);" data-layout="templates" class="nav-link">
+									<a href="javascript:void(0);" data-layout="templates" class="nav-link bwpm-arc-tab">
 										<?php echo Text::_('COM_BWPOSTMAN_ARC_TPLS'); ?>
 									</a>
 								</li>

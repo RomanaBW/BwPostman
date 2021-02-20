@@ -67,7 +67,7 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @since       2.0.0
 	 */
-	private $minimum_joomla_release = "4.0.0";
+	private $minimum_joomla_release = "4.0.0-beta";
 
 	/**
 	 * @var string release
@@ -281,7 +281,7 @@ class Com_BwPostmanInstallerScript
 			jimport('joomla.filesystem.file');
 			$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 
-//			require_once($tmp_path . '/helpers/installhelper.php');
+			require_once($tmp_path . '/helpers/installhelper.php');
 
 			$name = $db->getName();
 

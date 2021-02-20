@@ -281,7 +281,7 @@ class Com_BwPostmanInstallerScript
 			jimport('joomla.filesystem.file');
 			$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 
-			require_once($tmp_path . '/helpers/installhelper.php');
+			require_once($tmp_path . '/Helper/BwPostmanInstallHelper.php');
 
 			$name = $db->getName();
 

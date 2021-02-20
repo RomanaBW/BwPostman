@@ -320,7 +320,10 @@ class Com_BwPostmanInstallerScript
 
 		if ($type == 'install' || $type == 'update')
 		{
-//			require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
+			jimport('joomla.filesystem.file');
+			$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
+
+			require_once($tmp_path . '/libraries/BwLogger.php');
 
 			$log_options  = array();
 

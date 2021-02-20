@@ -1382,7 +1382,9 @@ class Com_BwPostmanInstallerScript
 		 * Rewrite section assets
 		 *
 		 */
-		require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/maintenance.php');
+		$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
+
+		require_once($tmp_path . '/src/Model/MaintenanceModel.php');
 		$maintenanceModel = new BwPostmanModelMaintenance();
 
 		$maintenanceModel->createBaseAssets();

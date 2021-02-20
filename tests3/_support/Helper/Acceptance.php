@@ -97,7 +97,7 @@ class Acceptance extends Codeception\Module
 
 		// get all table rows
 		$rows  = $I->grabMultiple($rowsIdentifier);
-
+codecept_debug('After Grab Multiple');
 		// remove empty elements
 		$filteredRows = array_filter($rows);
 
@@ -698,15 +698,14 @@ class Acceptance extends Codeception\Module
 				);
 
 				// loop over column values
+				codecept_debug('Loop filter list: Before get table rows');
 				$row_values_actual = self::GetTableRows($I);
+				codecept_debug('Loop filter list: After get table rows, list length: ' . $list_length);
 
 				for ($k = 0; $k < $list_length; $k++)
 				{
-					codecept_debug('Get needle and haystack');
 					$needle     = $row_values_nominal[$k][$key];
-					codecept_debug('Needle: ' . $needle);
 					$haystack   = $row_values_actual[$k];
-					codecept_debug('Haystack: ' . $haystack);
 
 					switch ($key)
 					{

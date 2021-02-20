@@ -56,7 +56,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @var integer
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $ready = 0;
 
@@ -65,7 +65,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @var string
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $alertClass = 'success';
 
@@ -74,7 +74,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @var string
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $errorMessage = '';
 
@@ -925,7 +925,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function handleBwException($errorCode, $result, $error, $step)
 	{

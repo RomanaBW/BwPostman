@@ -6,7 +6,7 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
-Version 2.4.0 released (2020-07-31)----
+Version 3.0.0 released (2020-08-14)----
 
 New
 + Enhanced mail verification at import of subscribers

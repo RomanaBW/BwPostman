@@ -634,7 +634,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public function getParamsFromSelectedMenuEntry($menuItem)
 	{
@@ -651,7 +651,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public function getMenuItemid()
 	{
@@ -983,7 +983,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected function getAppropriateParams()
 	{
@@ -1013,7 +1013,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
  */
 	private function getMailinglistsByViewlevel()
 	{

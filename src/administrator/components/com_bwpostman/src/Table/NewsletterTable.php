@@ -690,7 +690,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.4.0 (here, originally since 2.2.0 at model newsletter)
+	 * @since	3.0.0 (here, originally since 2.2.0 at model newsletter)
 	 */
 	public function isTemplate($id)
 	{
@@ -730,7 +730,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function archive($cid, $archive)
 	{
@@ -780,7 +780,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function getNewsletterData($nlId)
 	{
@@ -816,7 +816,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	public function getSelectedContentOfNewsletter($nlId)
 	{
@@ -852,7 +852,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 (here, before since 2.3.0 at newsletter helper)
+	 * @since 3.0.0 (here, before since 2.3.0 at newsletter helper)
 	 */
 	public function getCampaignId($nlId)
 	{
@@ -889,7 +889,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 (here, before since 2.3.0 at newsletter helper)
+	 * @since 3.0.0 (here, before since 2.3.0 at newsletter helper)
 	 */
 	public function getNbrOfNewsletters($sent, $archived)
 	{
@@ -978,7 +978,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0 (here, before since 2.0.0 at campaign model)
+	 * @since  3.0.0 (here, before since 2.0.0 at campaign model)
 	 */
 	public function deleteCampaignsNewsletters($id)
 	{
@@ -1007,7 +1007,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -1023,7 +1023,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

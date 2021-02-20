@@ -366,6 +366,13 @@ class SubscriberviewPage
 	/**
 	 * @var string
 	 *
+	 * @since 3.0.0
+	 */
+	public static $abuseLink     = "http://www.abuse.nil/";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $mail_fill_1      = "dummy-1@tester-net.nil";
@@ -376,6 +383,20 @@ class SubscriberviewPage
 	 * @since 2.0.0
 	 */
 	public static $mail_fill_2      = "dummy-2@tester-net.nil";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $mail_fill_unreachable_domain      = "dummy@unreachable.nil";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $mail_fill_unreachable_mailbox      = "dummy@boldt-webservice.de";
 
 	// button identifier
 
@@ -510,6 +531,20 @@ class SubscriberviewPage
 	 * @since 2.0.0
 	 */
 	public static $register_success         = ".//*[@id='bwp_com_register_success']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorContainerHeader         = "//*[@id='system-message']/div/h4";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorContainerContent         = "//*[@id='system-message']/div/div/div[contains(@class, 'alert-message')]";
 
 
 	//messages
@@ -753,6 +788,34 @@ class SubscriberviewPage
 	public static $invalid_select_newsletter_132    = 'You have to select one newsletter.';
 
 	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseFirstName    = "Invalid input at 'Your first name'";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseLastName    = "Invalid input at 'Your name'";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseSpecial    = "Invalid input at '%s'";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.0.0
+	 */
+	public static $errorAbuseEmail    = "Invalid input at 'Your email address'";
+
+	/**
 	 * Test method to subscribe to newsletter in front end by component
 	 *
 	 * @param \AcceptanceTester             $I
@@ -802,8 +865,6 @@ class SubscriberviewPage
 		{
 			$I->checkOption(self::$disclaimer);
 		}
-
-		$I->click(self::$button_register);
 	}
 
 	/**

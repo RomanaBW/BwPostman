@@ -80,7 +80,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @var array
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	private $mailinglists = array();
 
@@ -89,7 +89,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @var array
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	private $ml_available = array();
 
@@ -98,7 +98,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @var array
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	private $ml_unavailable = array();
 
@@ -107,7 +107,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @var array
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	private $ml_intern = array();
 
@@ -116,7 +116,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @var array
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	private $usergroups = array();
 

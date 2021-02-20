@@ -165,7 +165,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @var    array
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public $confirmed;
 
@@ -174,7 +174,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @var    array
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public $unconfirmed;
 
@@ -183,7 +183,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @var    array
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public $testers;
 

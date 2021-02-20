@@ -1334,7 +1334,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @return string|string[]|null
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function replaceZoomPaddingBasics($item, $content)
 	{
@@ -1396,7 +1396,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @return string|string[]
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function replaceEditAndUnsubscribeLink($itemid_edit, $preview_text)
 	{
@@ -1420,7 +1420,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @return string
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function buildHtmlSkeleton($preview_text)
 	{

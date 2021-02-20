@@ -84,7 +84,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function check()
 	{
@@ -172,7 +172,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 (here, before since 2.3.0 at BE newsletter model)
+	 * @since 3.0.0 (here, before since 2.3.0 at BE newsletter model)
 	 */
 	public function getAssociatedMailinglistsByCampaign($cam_id)
 	{
@@ -208,7 +208,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.4.0
+	 * @since	3.0.0
 	 */
 	public function getAllCampaignIdsByMlCam($mls, $cams)
 	{
@@ -243,7 +243,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0 (here, before since 2.0.0 at campaign model)
+	 * @since   3.0.0 (here, before since 2.0.0 at campaign model)
 	 */
 	public function deleteCampaignsMailinglistsEntry($id)
 	{
@@ -276,7 +276,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0 (here, before since 2.0.0 at mailinglist model)
+	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
 	 */
 	public function deleteMailinglistsCampaignsEntry($id)
 	{
@@ -309,7 +309,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function addCampaignsMailinglistsEntry(array $data)
 	{
@@ -350,7 +350,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -366,7 +366,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

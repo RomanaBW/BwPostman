@@ -128,7 +128,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0 (here, before since 2.2.0 at mailinglist helper)
+	 * @since       3.0.0 (here, before since 2.2.0 at mailinglist helper)
 	 */
 	public function getSubscribersOfMailinglist($ids)
 	{
@@ -173,7 +173,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 * @since   3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
 	public function deleteMailinglistsOfSubscriber($subscriber_id, $mailinglists = null)
 	{
@@ -213,7 +213,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 * @since   3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
 	public function storeMailinglistsOfSubscriber($subscriber_id, $mailinglist_ids)
 	{
@@ -260,7 +260,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	public function hasSubscriptionForMailinglist($subscriberId, $mailinglistId)
 	{
@@ -303,7 +303,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0 (here, before since 2.0.0 at mailinglist model)
+	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
 	 */
 	public function deleteMailinglistSubscribers($id)
 	{
@@ -336,7 +336,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function getMailinglistIdsOfSubscriber($sub_id)
 	{
@@ -368,7 +368,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -384,7 +384,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

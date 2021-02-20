@@ -407,7 +407,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 (here. before since 2.3.0 at campaign helper)
+	 * @since 3.0.0 (here. before since 2.3.0 at campaign helper)
 	 */
 	public function getNbrOfCampaigns($archived)
 	{
@@ -445,7 +445,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.4.0
+	 * @since	3.0.0
 	 */
 	public function getAllCampaignIds()
 	{
@@ -479,7 +479,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getCampaignsIdTitle($cams)
 	{
@@ -511,7 +511,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{

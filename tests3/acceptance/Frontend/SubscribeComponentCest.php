@@ -45,6 +45,8 @@ class SubscribeComponentCest
 		$I->wantTo("Subscribe to mailinglist by component");
 		$I->expectTo('get confirmation mail');
 		SubsView::subscribeByComponent($I);
+		$I->click(SubsView::$button_register);
+
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
@@ -69,11 +71,15 @@ class SubscribeComponentCest
 		$I->wantTo("Subscribe to mailinglist by component a second time");
 		$I->expectTo('see error message');
 		SubsView::subscribeByComponent($I);
+		$I->click(SubsView::$button_register);
+
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 		$I->wait(5);
 
 		SubsView::subscribeByComponent($I);
+		$I->click(SubsView::$button_register);
+
 		$I->waitForElement(SubsView::$err_activation_incomplete, 30);
 		$I->see(SubsView::$error_occurred_text, SubsView::$err_activation_incomplete);
 
@@ -98,10 +104,14 @@ class SubscribeComponentCest
 		$I->wantTo("Subscribe to mailinglist by component");
 		$I->expectTo('get confirmation mail');
 		SubsView::subscribeByComponent($I);
+		$I->click(SubsView::$button_register);
+
 		$I->waitForElement(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		SubsView::subscribeByComponent($I);
+		$I->click(SubsView::$button_register);
+
 		$I->waitForElement(SubsView::$err_activation_incomplete, 5);
 		$I->see(SubsView::$error_occurred_text, SubsView::$err_activation_incomplete);
 
@@ -130,12 +140,16 @@ class SubscribeComponentCest
 		$I->wantTo("Subscribe to mailinglist and unsubscribe by edit link");
 		$I->expectTo('unsubscribe with edit link');
 		SubsView::subscribeByComponent($I);
+		$I->click(SubsView::$button_register);
+
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		SubsView::activate($I, SubsView::$mail_fill_1);
 
 		SubsView::subscribeByComponent($I);
+		$I->click(SubsView::$button_register);
+
 		$I->waitForElement(SubsView::$err_already_subscribed, 30);
 		$I->see(SubsView::$error_occurred_text, SubsView::$err_already_subscribed);
 
@@ -286,6 +300,8 @@ class SubscribeComponentCest
 		$I->wantTo("Subscribe to mailinglist by component, change values and unsubscribe");
 		$I->expectTo('get confirmation mail');
 		SubsView::subscribeByComponent($I);
+		$I->click(SubsView::$button_register);
+
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
@@ -362,6 +378,8 @@ class SubscribeComponentCest
 		$I->wantTo("Subscribe to mailinglist by component");
 		$I->expectTo('get confirmation mail');
 		SubsView::subscribeByComponent($I);
+		$I->click(SubsView::$button_register);
+
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
@@ -437,6 +455,149 @@ class SubscribeComponentCest
 			$I->waitForElement(SubsView::$mail, 5);
 			$I->see(SubsView::$edit_get_text);
 		}
+	}
+
+	/**
+	 * Test method to subscribe by component in front end with links at text fields
+	 *
+	 * @param   AcceptanceTester         $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.0.0
+	 */
+	public function SubscribeAbuseFields(AcceptanceTester $I)
+	{
+		$I->wantTo("Subscribe to mailinglist by component with links at text fields");
+		$I->expectTo('see error messages');
+
+		// Store current field options
+		$options       = $I->getManifestOptions('com_bwpostman');
+		$showName      = $options->show_name_field;
+		$showFirstName = $options->show_firstname_field;
+		$showSpecial   = $options->show_special;
+		$specialLabel  = $options->special_label;
+
+		// Set needed field options
+		$I->setManifestOption('com_bwpostman', 'show_name_field', '1');
+		$I->setManifestOption('com_bwpostman', 'show_firstname_field', '1');
+		$I->setManifestOption('com_bwpostman', 'show_special', '1');
+
+		$I->amOnPage(SubsView::$register_url);
+		$I->wait(1);
+		$I->seeElement(SubsView::$view_register);
+
+		// Fill needed fields
+		$I->fillField(SubsView::$mail, SubsView::$mail_fill_1);
+
+		if ($options->show_emailformat)
+		{
+			$I->clickAndWait(SubsView::$format_text, 1);
+		}
+
+		$I->checkOption(SubsView::$ml1);
+
+		if ($options->disclaimer)
+		{
+			$I->checkOption(SubsView::$disclaimer);
+		}
+
+		// Fill first name with link
+		$I->expectTo('see error message invalid first name');
+		$I->fillField(SubsView::$firstname, SubsView::$abuseLink);
+		$I->fillField(SubsView::$name, SubsView::$lastname_fill);
+		$I->fillField(SubsView::$special, SubsView::$special_fill);
+
+		$I->click(SubsView::$button_register);
+
+		// Check error message first name
+		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see(SubsView::$errorAbuseFirstName, SubsView::$errorContainerContent);
+
+		// Fill last name with link
+		$I->expectTo('see error message invalid name');
+		$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
+		$I->fillField(SubsView::$name, SubsView::$abuseLink);
+		$I->fillField(SubsView::$special, SubsView::$special_fill);
+
+		$I->click(SubsView::$button_register);
+
+		// Check error message last name
+		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see(SubsView::$errorAbuseLastName, SubsView::$errorContainerContent);
+
+		// Fill special with link
+		$I->expectTo('see error message invalid special');
+		$I->fillField(SubsView::$firstname, SubsView::$firstname_fill);
+		$I->fillField(SubsView::$name, SubsView::$lastname_fill);
+		$I->fillField(SubsView::$special, SubsView::$abuseLink);
+
+		$I->click(SubsView::$button_register);
+
+		// Check error message special
+		if ($options->special_label === '')
+		{
+			$options->special_label = 'Additional Field';
+		}
+
+		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see(sprintf(SubsView::$errorAbuseSpecial, $options->special_label), SubsView::$errorContainerContent);
+
+		// Reset field options
+		$I->setManifestOption('com_bwpostman', 'show_name_field', $showName);
+		$I->setManifestOption('com_bwpostman', 'show_firstname_field', $showFirstName);
+		$I->setManifestOption('com_bwpostman', 'show_special', $showSpecial);
+		$I->setManifestOption('com_bwpostman', 'special_label', $specialLabel);
+	}
+
+	/**
+	 * Test method to subscribe by component in front end with unreachable domain or mailbox
+	 *
+	 * @param   AcceptanceTester         $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.0.0
+	 */
+	public function SubscribeUnreachableMailAddress(AcceptanceTester $I)
+	{
+		$I->wantTo("Subscribe to mailinglist by component with unreachable email address");
+		$I->expectTo('see error message');
+
+		// Store current field options
+		$options       = $I->getManifestOptions('com_bwpostman');
+		$verify      = $options->verify_mailaddress;
+
+		// Set verification of mail address
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 1);
+
+		// Fill form
+		SubsView::subscribeByComponent($I);
+
+		// Set unreachable domain
+		$I->expectTo('see error message invalid email address (domain)');
+		$I->fillField(SubsView::$mail, SubsView::$mail_fill_unreachable_domain);
+
+		$I->click(SubsView::$button_register);
+
+		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), SubsView::$errorContainerContent);
+
+		// Set unreachable mailbox
+		$I->expectTo('see error message invalid email address (mailbox)');
+		$I->fillField(SubsView::$mail, SubsView::$mail_fill_unreachable_mailbox);
+
+		$I->click(SubsView::$button_register);
+
+		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), SubsView::$errorContainerContent);
+
+		// Reset field options
+		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', $verify);
 	}
 
 	/**

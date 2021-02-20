@@ -868,7 +868,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -884,7 +884,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{
@@ -902,7 +902,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function getSubscriberNewsletterData($subsId)
 	{
@@ -946,7 +946,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 * @since       3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
 	public function getSubscriberIdByUserId($uid)
 	{
@@ -1038,7 +1038,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 * @since       3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
 	public function getSubscriberState($id)
 	{
@@ -1075,7 +1075,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+	 * @since       3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
 	public function getUserIdOfSubscriber($id)
 	{
@@ -1117,7 +1117,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0 (here, before since 2.3.0 at subscriber helper)
+	 * @since       3.0.0 (here, before since 2.3.0 at subscriber helper)
 	 */
 	public function getNbrOfSubscribers($tester, $archived)
 	{
@@ -1167,7 +1167,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	public function getEditlink()
 	{
@@ -1212,7 +1212,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	public function createActivation()
 	{
@@ -1260,7 +1260,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function getSingleSubscriberData($id)
 	{
@@ -1294,7 +1294,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @return  object|boolean
 	 *
-	 * @since   2.4.0 (here)
+	 * @since   3.0.0 (here)
 	 */
 	public function getSubscriberDataByEmail($values)
 	{
@@ -1341,7 +1341,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function getSubscriberActivationData($activation)
 	{
@@ -1384,7 +1384,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function storeSubscriberActivation($id, $activation_ip)
 	{
@@ -1426,7 +1426,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function validateSubscriberEditlink($email, $editlink)
 	{
@@ -1466,7 +1466,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getEmailaddress($id)
 	{
@@ -1502,7 +1502,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function checkEditlink($editlink)
 	{
@@ -1542,7 +1542,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getSubscriberDataForSendmailqueue($content_id, $status, $subscribers)
 	{

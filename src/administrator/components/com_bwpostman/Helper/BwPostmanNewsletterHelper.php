@@ -46,7 +46,7 @@ abstract class BwPostmanNewsletterHelper {
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.3.0 (since 2.4.0 here, before at BE newsletter model)
+	 * @since 2.3.0 (since 3.0.0 here, before at BE newsletter model)
 	 */
 	public static function countUsersOfNewsletter(array $usergroup)
 	{
@@ -92,7 +92,7 @@ abstract class BwPostmanNewsletterHelper {
 	 * @throws Exception
 	 * @throws RuntimeException
 	 *
-	 * @since 2.3.0 (since 2.4.0 here, before at BE newsletter model)
+	 * @since 2.3.0 (since 3.0.0 here, before at BE newsletter model)
 	 */
 	public static function countSubscribersOfNewsletter(array $associatedMailinglists, $status, $allSubscribers)
 	{

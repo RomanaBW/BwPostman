@@ -530,7 +530,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public function clearQueue()
 	{
@@ -563,7 +563,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @throws Exception
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public function checkTrials($trial = 2, $count = 0)
 	{
@@ -625,7 +625,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -641,7 +641,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

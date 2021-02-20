@@ -71,7 +71,7 @@ class BwpostmanModel extends BaseDatabaseModel
 	 *
 	 * @throws Exception
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getTable($type = 'Newsletter', $prefix = 'Administrator', $config = array())
 	{

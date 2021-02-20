@@ -145,7 +145,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @var string
 	 *
-	 * @since       2.4.0
+	 * @since       3.0.0
 	 */
 	public $sendmessage;
 	/**
@@ -702,7 +702,7 @@ class NewsletterModel extends AdminModel
 	 * @see     FormRule
 	 * @see     InputFilter
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function validate($form, $data, $group = null)
 	{
@@ -2465,7 +2465,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function processChangedContent($form_data, $add_content, $nl_content)
 	{
@@ -2538,7 +2538,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @return array
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function getDiffDataKeys($state_data, $form_data)
 	{
@@ -2558,7 +2558,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @return array
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function getDiffDataValues($state_data, $form_data)
 	{

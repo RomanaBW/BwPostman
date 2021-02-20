@@ -45,7 +45,7 @@ class BwPostmanMailinglistHelper {
 	 *
 	 * @return array
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public static function extractAssociatedUsergroups($mailinglists = array())
 	{
@@ -67,7 +67,7 @@ class BwPostmanMailinglistHelper {
 	 *
 	 * @param array $data      list of mailinglists
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public static function mergeMailinglists(&$data = array())
 	{
@@ -112,7 +112,7 @@ class BwPostmanMailinglistHelper {
 	 *
 	 * @return array
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public static function mergeMailinglistsOnly($data = array())
 	{
@@ -154,7 +154,7 @@ class BwPostmanMailinglistHelper {
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 here
+	 * @since 3.0.0 here
 	 */
 	public static function getSingleMailinglist($ml_id = null)
 	{
@@ -197,7 +197,7 @@ class BwPostmanMailinglistHelper {
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public static function getMailinglistsFieldlistOptions($archiveMatters = false)
 	{

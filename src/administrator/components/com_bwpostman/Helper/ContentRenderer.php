@@ -803,7 +803,7 @@ class ContentRenderer
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.4.0 (here, moved from newsletter model)
+	 * @since	3.0.0 (here, moved from newsletter model)
 	 */
 	public function replaceAllFooterLinks(&$body, $subscriberId, $mode)
 	{
@@ -1122,7 +1122,7 @@ class ContentRenderer
 	 *
 	 * @param string $body        the newsletter content
 	 *
-	 * @since 2.4.0 (here, moved from newsletter model)
+	 * @since 3.0.0 (here, moved from newsletter model)
 	 */
 	public function addTestrecipientsFooter(&$body)
 	{
@@ -1144,7 +1144,7 @@ class ContentRenderer
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 (here, moved from newsletter model)
+	 * @since 3.0.0 (here, moved from newsletter model)
 	 */
 	public function replaceContentPlaceholders(&$body, $tblSendMailQueue, $itemid_edit, $itemid_unsubscribe, $editlink, $substituteLinks)
 	{
@@ -1516,7 +1516,7 @@ class ContentRenderer
  *
  * @throws Exception
  *
- * @since 2.4.0
+ * @since 3.0.0
  */
 	private function getIntroText(stdClass $row)
 	{
@@ -1545,7 +1545,7 @@ class ContentRenderer
 	 *
 	 * @return string
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	private function getAuthorAndDate($text_tpl, $create_date, $content_text, stdClass $row)
 	{

@@ -119,7 +119,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @var    object
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	protected $group;
 

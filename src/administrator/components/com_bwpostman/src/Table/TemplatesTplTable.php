@@ -165,7 +165,7 @@ class TemplatesTplTable extends Table implements VersionableTableInterface
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -181,7 +181,7 @@ class TemplatesTplTable extends Table implements VersionableTableInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

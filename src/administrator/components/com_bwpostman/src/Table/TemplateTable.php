@@ -760,7 +760,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function getNumberOfStdTemplates($cid)
 	{
@@ -802,7 +802,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0 (here, before since 2.3.0 at template helper)
+	 * @since 3.0.0 (here, before since 2.3.0 at template helper)
 	 */
 	public function getNbrOfTemplates($mode, $archived, $title = '')
 	{
@@ -859,7 +859,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function getTemplateTitle($id)
 	{
@@ -897,7 +897,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function setTemplateTitle($id, $title)
 	{
@@ -934,7 +934,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.4.0 (here, since 2.3.0 at ContentRenderer, since 1.1.0 at newsletter model)
+	 * @since	3.0.0 (here, since 2.3.0 at ContentRenderer, since 1.1.0 at newsletter model)
 	 */
 	public function getTemplate($template_id)
 	{
@@ -976,7 +976,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since	2.4.0 (here, since 1.2.0 at model newsletter)
+	 * @since	3.0.0 (here, since 1.2.0 at model newsletter)
 	 */
 	public function getStandardTpl($mode = 'html')
 	{
@@ -1088,7 +1088,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @return  mixed
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	public function getId()
 	{
@@ -1104,7 +1104,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @return  boolean
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public function hasField($key)
 	{

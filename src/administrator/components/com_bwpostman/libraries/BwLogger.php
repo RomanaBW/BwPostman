@@ -49,7 +49,7 @@ class BwLogger extends JLogLoggerW3c
 	 * Action must be taken immediately.
 	 *
 	 * @var    integer
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	const BW_ERROR = 1;
 
@@ -57,7 +57,7 @@ class BwLogger extends JLogLoggerW3c
 	 * Warning conditions
 	 *
 	 * @var    integer
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	const BW_WARNING = 2;
 
@@ -65,7 +65,7 @@ class BwLogger extends JLogLoggerW3c
 	 * Informational message.
 	 *
 	 * @var    integer
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	const BW_INFO = 4;
 
@@ -73,7 +73,7 @@ class BwLogger extends JLogLoggerW3c
 	 * Debugging message.
 	 *
 	 * @var    integer
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	const BW_DEBUG = 8;
 
@@ -81,7 +81,7 @@ class BwLogger extends JLogLoggerW3c
 	 * Trace message.
 	 *
 	 * @var    integer
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	const BW_DEVELOPMENT = 16;
 
@@ -105,7 +105,7 @@ class BwLogger extends JLogLoggerW3c
 	 *
 	 * @var    BwLogger
 	 *
-	 * @since  2.4.0
+	 * @since  3.0.0
 	 */
 	protected static $instances = array();
 
@@ -138,7 +138,7 @@ class BwLogger extends JLogLoggerW3c
 	 *
 	 * @return  BwLogger  The BwLogger object.
 	 *
-	 * @since   2.4.0
+	 * @since   3.0.0
 	 */
 	public static function getInstance(array &$options, $name = 'bwLogger')
 	{
@@ -157,13 +157,14 @@ class BwLogger extends JLogLoggerW3c
 	 *
 	 * @return  void
 	 *
-	 * @since   2.4.0
-	 * @throws  RuntimeException
+	 * @since   3.0.0
+	 *
+	 * @throws  \RuntimeException
 	 */
 	public function addEntry(LogEntry $entry)
 	{
 		// Get component option loglevel
-		$param = ComponentHelper::getParams('com_bwpostman');
+		$param    = ComponentHelper::getParams('com_bwpostman');
 		$loglevel = $param->get('loglevel');
 
 		// Rewrite Joomla default loglevel (Info) to the one of BwPostman (Info)

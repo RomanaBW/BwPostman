@@ -1385,7 +1385,7 @@ class Com_BwPostmanInstallerScript
 		$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 
 		require_once($tmp_path . '/src/Model/MaintenanceModel.php');
-		$maintenanceModel = new BwPostmanModelMaintenance();
+		$maintenanceModel = new MaintenanceModel();
 
 		$maintenanceModel->createBaseAssets();
 	}

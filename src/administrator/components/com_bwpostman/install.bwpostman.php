@@ -47,6 +47,7 @@ use Joomla\Component\Users\Administrator\Model\LevelModel;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanInstallHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
+use BoldtWebservice\Component\BwPostman\Administrator\Model\MaintenanceModel;
 
 /**
  * Class Com_BwPostmanInstallerScript
@@ -1384,7 +1385,7 @@ class Com_BwPostmanInstallerScript
 		 */
 		$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 
-		require_once($tmp_path . '/src/Model/MaintenanceModel.php');
+//		require_once($tmp_path . '/src/Model/MaintenanceModel.php');
 		$maintenanceModel = new MaintenanceModel();
 
 		$maintenanceModel->createBaseAssets();

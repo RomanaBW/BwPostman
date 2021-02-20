@@ -51,7 +51,7 @@ HTMLHelper::_('bootstrap.tooltip');
 				</div>
 				<button type="button" class="btn btn-outline-primary" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_CLEAR'); ?>"
 						aria-label="<?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.getElementById('search').setAttribute('value', '');this.form.submit();">
-					<span class="fa fa-times mr-2" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
+					<span class="fa icon-unpublish mr-2" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
 				</button>
 			</div>
 		</div>

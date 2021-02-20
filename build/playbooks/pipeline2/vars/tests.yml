@@ -37,9 +37,8 @@ test_file:
     testsuite_file: Backend/TestOptionsCest
 
   - suite: lists
-#    testsuite_file: Backend/Lists/
-    testsuite_file: Backend/Lists/TestSubscribersListsCest::SortSubscribersByTableHeader
-    testsuite_file: Backend/Lists/TestSubscribersListsCest::SortSubscribersBySelectList
+    testsuite_file: Backend/Lists/
+#    testsuite_file: Backend/Lists/TestNewslettersListsCest::ResetSendingTrialsAndSendAnewQueue
 #    testsuite_file: Backend/Lists/TestTemplatesListsCest
 
   - suite: maintenance

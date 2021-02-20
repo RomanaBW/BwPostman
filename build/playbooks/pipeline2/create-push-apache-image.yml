@@ -60,8 +60,9 @@
       include_role:
         name: romanabw.configure-sendmail
 
-- hosts: localhost
+- hosts: tester
   connection: local
+  gather_facts: no
   vars_files:
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml

@@ -5,6 +5,8 @@
     - vars/container-basics.yml
     - vars/tester-test-vars.yml
     - vars/tester-image-vars.yml
+  vars:
+    ansible_remote_tmp: "/tmp"
 
   tasks:
     - name: Show name of bare source web container

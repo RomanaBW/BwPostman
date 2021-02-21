@@ -1387,6 +1387,7 @@ class Com_BwPostmanInstallerScript
 
 		// BwPostman Administration Component
 		define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
+		define('BWPM_SITE', JPATH_SITE.'/components/com_bwpostman');
 
 		// Really needed
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension\\BwPostmanComponent', BWPM_ADMINISTRATOR . '/src/Extension', false, false);
@@ -1402,6 +1403,14 @@ class Com_BwPostmanInstallerScript
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Controller', BWPM_ADMINISTRATOR . '/src/Controller', false, false);
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\View', BWPM_ADMINISTRATOR . '/src/View', false, false);
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Table', BWPM_ADMINISTRATOR . '/src/Table', false, false);
+
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Dispatcher', BWPM_SITE . '/src/Dispatcher', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Service', BWPM_SITE . '/src/Service', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Controller', BWPM_SITE . '/src/Controller', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Model', BWPM_SITE . '/src/Model', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\View', BWPM_SITE . '/src/View', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Classes', BWPM_SITE . '/classes', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Field', BWPM_SITE . '/Field', false, false);
 
 //		$basePath        = '/administrator/components/com_bwpostman';
 		$pathComponent   = BWPM_ADMINISTRATOR . '/src/Extension/BwPostmanComponent.php';

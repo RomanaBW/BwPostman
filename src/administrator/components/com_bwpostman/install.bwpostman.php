@@ -1386,12 +1386,12 @@ class Com_BwPostmanInstallerScript
 		 */
 		$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 		require_once($tmp_path . '/src/Model/MaintenanceModel.php');
-		$this->getRegistry()->register('bwpostman', new BwPostman);
+
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Model', BWPM_ADMINISTRATOR . '/src/Model', false, false, 'psr4');
+//		$maintenanceModel = new MaintenanceModel();
+
 		JModelLegacy::addIncludePath($tmp_path . '/src/Model', 'MaintenanceModel');
 		$maintenanceModel = JModelLegacy::getInstance( 'MaintenanceModel');
-
-//		$maintenanceModel = new MaintenanceModel();
 
 		$maintenanceModel->createBaseAssets();
 	}

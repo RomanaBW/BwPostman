@@ -1387,9 +1387,13 @@ class Com_BwPostmanInstallerScript
 		$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 		require_once($tmp_path . '/src/Model/MaintenanceModel.php');
 
-		$this->basePath = '/administrator/components/com_bwpostman';
-		$path = JPATH_SITE . $this->basePath . '/src/Model/MaintenanceModel.php';
-		JLoader::register('MaintenanceModel', $path);
+		$basePath = '/administrator/components/com_bwpostman';
+
+		$pathComponent   = JPATH_SITE . $basePath . '/src/Extension/BwPostmanComponent.php';
+		JLoader::register('BwPostmanComponent', $pathComponent);
+
+		$pathMaintenance = JPATH_SITE . $basePath . '/src/Model/MaintenanceModel.php';
+		JLoader::register('MaintenanceModel', $pathMaintenance);
 
 		$maintenanceModel = new MaintenanceModel();
 

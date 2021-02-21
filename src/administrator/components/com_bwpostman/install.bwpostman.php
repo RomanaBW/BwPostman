@@ -1384,15 +1384,27 @@ class Com_BwPostmanInstallerScript
 		 * Rewrite section assets
 		 *
 		 */
-		$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
-		require_once($tmp_path . '/src/Model/MaintenanceModel.php');
 
-		$basePath = '/administrator/components/com_bwpostman';
+		// BwPostman Administration Component
+		define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
 
-		$pathComponent   = JPATH_SITE . $basePath . '/src/Extension/BwPostmanComponent.php';
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension\\BwPostmanComponent', BWPM_ADMINISTRATOR . '/src/Extension', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', BWPM_ADMINISTRATOR . '/Helper', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Field', BWPM_ADMINISTRATOR . '/Field', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Classes', BWPM_ADMINISTRATOR . '/classes', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', BWPM_ADMINISTRATOR . '/libraries', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Model', BWPM_ADMINISTRATOR . '/src/Model', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Controller', BWPM_ADMINISTRATOR . '/src/Controller', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\View', BWPM_ADMINISTRATOR . '/src/View', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Table', BWPM_ADMINISTRATOR . '/src/Table', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service', BWPM_ADMINISTRATOR . '/src/Service', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service\\Html', BWPM_ADMINISTRATOR . '/src/Service/Html', false, false);
+
+//		$basePath        = '/administrator/components/com_bwpostman';
+		$pathComponent   = JPATH_ADMINISTRATOR . '/src/Extension/BwPostmanComponent.php';
+		$pathMaintenance = JPATH_ADMINISTRATOR . '/src/Model/MaintenanceModel.php';
+
 		JLoader::register('BoldtWebservice\Component\BwPostman\Administrator\Extension\BwPostmanComponent', $pathComponent);
-
-		$pathMaintenance = JPATH_SITE . $basePath . '/src/Model/MaintenanceModel.php';
 		JLoader::register('MaintenanceModel', $pathMaintenance);
 
 		$maintenanceModel = new MaintenanceModel();

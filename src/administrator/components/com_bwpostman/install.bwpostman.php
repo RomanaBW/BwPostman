@@ -27,6 +27,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Service\Html\BwPostman;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
@@ -1384,6 +1385,8 @@ class Com_BwPostmanInstallerScript
 		 *
 		 */
 		$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
+//		$this->getRegistry()->register('bwpostman', new BwPostman);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Model', BWPM_ADMINISTRATOR . '/src/Model', false, false, 'psr4');
 
 //		require_once($tmp_path . '/src/Model/MaintenanceModel.php');
 		$maintenanceModel = new MaintenanceModel();

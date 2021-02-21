@@ -1401,8 +1401,8 @@ class Com_BwPostmanInstallerScript
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service\\Html', BWPM_ADMINISTRATOR . '/src/Service/Html', false, false);
 
 //		$basePath        = '/administrator/components/com_bwpostman';
-		$pathComponent   = JPATH_ADMINISTRATOR . '/src/Extension/BwPostmanComponent.php';
-		$pathMaintenance = JPATH_ADMINISTRATOR . '/src/Model/MaintenanceModel.php';
+		$pathComponent   = BWPM_ADMINISTRATOR . '/src/Extension/BwPostmanComponent.php';
+		$pathMaintenance = BWPM_ADMINISTRATOR . '/src/Model/MaintenanceModel.php';
 
 		JLoader::register('BoldtWebservice\Component\BwPostman\Administrator\Extension\BwPostmanComponent', $pathComponent);
 		JLoader::register('MaintenanceModel', $pathMaintenance);

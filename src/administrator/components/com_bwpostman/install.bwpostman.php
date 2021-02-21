@@ -1391,7 +1391,7 @@ class Com_BwPostmanInstallerScript
 		$maintenanceModel = JModelLegacy::getInstance( 'MaintenanceModel');
 
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Model', $tmp_path . '/src/Model', false, false, 'psr4');
-//		$maintenanceModel = new MaintenanceModel();
+		$maintenanceModel = new MaintenanceModel();
 
 		$maintenanceModel->createBaseAssets();
 	}

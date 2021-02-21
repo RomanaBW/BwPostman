@@ -34,6 +34,7 @@
 		<filename>index.html</filename>
 		<filename>bwpostman.php</filename>
 		<folder>assets</folder>
+		<folder>classes</folder>
 		<folder>Field</folder>
 		<folder>forms</folder>
 		<folder>helpers</folder>

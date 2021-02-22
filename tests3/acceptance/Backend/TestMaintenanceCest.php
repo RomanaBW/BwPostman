@@ -174,12 +174,12 @@ class TestMaintenanceCest
 		$I->waitForElement(MaintenancePage::$step7Field, 30);
 		$I->waitForElement(MaintenancePage::$step7SuccessClass, 30);
 		$I->see(MaintenancePage::$step7SuccessMsg, MaintenancePage::$successIdentifierResult);
-		$I->clickAndWait(MaintenancePage::$checkBackButton, 1);
 
 		$resultsWarn = $I->grabMultiple(MaintenancePage::$warningIdentifier);
 		$I->assertEquals(count($resultsWarn), 0);
-
 		$I->see(MaintenancePage::$successTextAllResult, MaintenancePage::$successAllIdentifierResult);
+
+		$I->clickAndWait(MaintenancePage::$checkBackButton, 1);
 	}
 
 	/**

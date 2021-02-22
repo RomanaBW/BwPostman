@@ -527,6 +527,8 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 
 						ob_end_clean();
 
+						ob_start();
+
 						if ($error === '')
 						{
 							$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);

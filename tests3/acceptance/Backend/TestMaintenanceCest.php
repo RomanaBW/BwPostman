@@ -178,6 +178,8 @@ class TestMaintenanceCest
 
 		$resultsWarn = $I->grabMultiple(MaintenancePage::$warningIdentifier);
 		$I->assertEquals(count($resultsWarn), 0);
+
+		$I->see(MaintenancePage::$successTextAllResult, MaintenancePage::$successAllIdentifierResult);
 	}
 
 	/**

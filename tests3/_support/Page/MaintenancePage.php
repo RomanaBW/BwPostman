@@ -720,7 +720,6 @@ class MaintenancePage
 			$found = in_array(sprintf(self::$successTextDelAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
-			codecept_debug('Success table ' . $table);
 			$found = in_array(sprintf(self::$successTextCreateTables, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
@@ -739,6 +738,8 @@ class MaintenancePage
 			$found = in_array(sprintf(self::$successTextAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}
+
+		$I->see(MaintenancePage::$successTextAllResult, MaintenancePage::$successAllIdentifierResult);
 	}
 
 	/**
@@ -850,6 +851,8 @@ class MaintenancePage
 			$found = in_array(sprintf(self::$successTextAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}
+
+		$I->see(MaintenancePage::$successTextAllResult, MaintenancePage::$successAllIdentifierResult);
 	}
 
 	/**
@@ -922,6 +925,8 @@ class MaintenancePage
 			$found = in_array(sprintf(self::$successTextAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}
+
+		$I->see(MaintenancePage::$successTextAllResult, MaintenancePage::$successAllIdentifierResult);
 	}
 
 	/**
@@ -966,5 +971,7 @@ class MaintenancePage
 		{
 			$I->see(self::$errorTextPrimary, self::$errorIdentifierResult);
 		}
+
+		$I->dontSee(MaintenancePage::$successTextAllResult, MaintenancePage::$successAllIdentifierResult);
 	}
 }

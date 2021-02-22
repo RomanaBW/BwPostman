@@ -36,6 +36,7 @@ function processUpdateStep(data)
 	doAjax(post, function(data){
 		if(data.ready !== "1")
 		{
+			document.getElementById('result').innerHTML = data.result;
 			processUpdateStep(data);
 		}
 		else

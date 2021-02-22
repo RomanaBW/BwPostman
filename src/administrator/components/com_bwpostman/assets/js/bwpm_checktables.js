@@ -52,6 +52,7 @@ ready(function() {
 		post = 'step=step' + data.step;
 		doAjax(post, function (data) {
 			if (data.ready !== "1") {
+				document.getElementById('result').innerHTML = data.result;
 				processUpdateStep(data);
 			} else {
 				var alert_step_old = document.getElementById('step' + (data.step - 1));

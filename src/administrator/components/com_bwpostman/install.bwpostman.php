@@ -1326,6 +1326,12 @@ class Com_BwPostmanInstallerScript
 			'controllers/file.json.php_x',
 			'controllers/file.php',
 			'controllers/file.php_x',
+			'assets/js/bwpm_nl_modal.js',
+			'assets/js/bwpm_nl_send.js',
+			'assets/js/bwpm_tabshelper.js',
+			'assets/js/bwpm_template_checkValues.js',
+			'assets/js/bwpm_template_text_buttonClick.js',
+			'assets/js/bwpm_template_text.js',
 		);
 
 		foreach ($beFilesArray as $file)

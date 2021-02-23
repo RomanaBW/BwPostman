@@ -49,6 +49,19 @@ function processUpdateStep(data)
 
 			document.getElementById('loading2').style.display = 'none';
 			document.getElementById('result').innerHTML = data.result;
+			if (typeof data.error !== 'undefined' && data.error !== null) {
+				document.getElementById('resultSet').style.backgroundColor = '#f2dede';
+				document.getElementById('resultSet').style.borderColor = '#eed3d7';
+				var alert_step = document.getElementById(data.step);
+				if(typeof alert_step !== 'undefined' && alert_step !== null) {
+					alert_step.classList.remove('alert-info');
+					alert_step.classList.add('alert-error');
+				}
+			} else {
+				document.getElementById('resultSet').style.backgroundColor = '#dff0d8';
+				document.getElementById('resultSet').style.borderColor = '#d6e9c6';
+			}
+
 			var toolbar = document.getElementById('toolbar');
 			if (toolbar) {
 				var buttags = toolbar.getElementsByTagName('button');

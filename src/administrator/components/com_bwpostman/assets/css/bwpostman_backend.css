@@ -689,10 +689,13 @@ table.export {
     font-size: 1.2em;
 }
 
-#checkResult .inner .well, #checkResult .alert-success, #checkResult .alert-error, #checkResult .alert-warning,
-#restoreResult .inner .well, #restoreResult .alert-success, #restoreResult .alert-error, #restoreResult .alert-warning,
-#result .bw_tablecheck_warn, #result .bw_tablecheck_error, #result .bw_tablecheck_finished {
-	background: 10px 3px no-repeat;
+#checkResult .inner .well, #restoreResult .inner .well,
+#checkResult .inner .well.alert-info, #restoreResult .inner .well.alert-info,
+#checkResult .inner .well.alert-success, #restoreResult .inner .well.alert-success, #result .bw_tablecheck_finished,
+#checkResult .inner .well.alert-warning, #restoreResult .inner .well.alert-warning, #result .bw_tablecheck_warn,
+#checkResult .inner .well.alert-error, #restoreResult .inner .well.alert-error, #error .bw_tablecheck_error {
+    background-repeat: no-repeat;
+    background-position: 10px 3px;
 }
 
 #checkResult .inner .well,

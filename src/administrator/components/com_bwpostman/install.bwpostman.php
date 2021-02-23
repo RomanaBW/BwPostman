@@ -1569,13 +1569,13 @@ class Com_BwPostmanInstallerScript
 		{
 			$lang_ver = 'en';
 			$forum    = "https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html";
+			$manual = "https://www.boldt-webservice.de/index.php/en/forum-en/manuals/bwpostman-manual.html";
 		}
 		else
 		{
 			$forum = "https://www.boldt-webservice.de/de/forum/bwpostman.html";
+			$manual = "https://www.boldt-webservice.de/index.php/de/forum/handb%C3%BCcher/handbuch-zu-bwpostman.html";
 		}
-
-		$manual = "https://www.boldt-webservice.de/$lang_ver/downloads/bwpostman/bwpostman-$lang_ver-$release.html";
 
 		if ($update)
 		{

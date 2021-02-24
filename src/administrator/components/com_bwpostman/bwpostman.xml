@@ -96,7 +96,6 @@
 			<folder>layouts</folder>
 			<folder>classes</folder>
 			<folder>sql</folder>
-<!--	J3 stuff-->
 			<filename>install.bwpostman.php</filename>
 			<filename>controller.php</filename>
 			<filename>bwpostman.php</filename>
@@ -104,8 +103,6 @@
 			<folder>models</folder>
 			<folder>tables</folder>
 			<folder>views</folder>
-<!--	J4 stuff-->
-<!--			<filename>dispatcher.php</filename>-->
 		</files>
 
 		<languages folder="admin/language">

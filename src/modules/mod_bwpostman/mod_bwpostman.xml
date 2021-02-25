@@ -14,15 +14,13 @@
 	<files folder="site">
 		<filename module="mod_bwpostman">mod_bwpostman.php</filename>
 		<filename>CHANGELOG.txt</filename>
-		<filename>helper.php</filename>
 		<filename>LICENSE.txt</filename>
 		<filename>index.html</filename>
 		<filename>script.php</filename>
 		<filename>mod_bwpostman.xml</filename>
 		<folder>elements</folder>
+		<folder>src</folder>
 		<folder>tmpl</folder>
-		<folder>css</folder>
-		<folder>images</folder>
 	</files>
 
 	<languages folder="language">

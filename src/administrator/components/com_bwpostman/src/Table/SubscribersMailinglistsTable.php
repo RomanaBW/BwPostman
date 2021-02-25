@@ -185,7 +185,7 @@ class SubscribersMailinglistsTable extends Table
 
 		if (!is_null($mailinglists))
 		{
-			$query->where($db->quoteName('mailinglist_id') . ' IN  ' . (explode('.', $mailinglists)));
+			$query->where($db->quoteName('mailinglist_id') . ' IN (' . (implode('.', $mailinglists)) . ')');
 		}
 
 		try

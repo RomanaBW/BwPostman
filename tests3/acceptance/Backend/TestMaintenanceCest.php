@@ -88,6 +88,7 @@ class TestMaintenanceCest
 		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
 
 		$I->assertTrue(file_exists($downloadPath));
+		unlink($downloadPath);
 	}
 
 	/**
@@ -134,6 +135,7 @@ class TestMaintenanceCest
 		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
 
 		$I->assertTrue(file_exists($downloadPath));
+		unlink($downloadPath);
 
 		$I->setManifestOption('com_bwpostman', 'compress_backup', '1');
 	}

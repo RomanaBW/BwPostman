@@ -1325,15 +1325,26 @@ class Com_BwPostmanInstallerScript
 			}
 		}
 
-//		$beFilesArray     = array();
-//
-//		foreach ($beFilesArray as $file)
-//		{
-//			if (File::exists(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file))
-//			{
-//				File::delete(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file);
-//			}
-//		}
+		$beFilesArray     = array(
+			'controllers/file.json.php',
+			'controllers/file.json.php_x',
+			'controllers/file.php',
+			'controllers/file.php_x',
+			'assets/js/bwpm_nl_modal.js',
+			'assets/js/bwpm_nl_send.js',
+			'assets/js/bwpm_tabshelper.js',
+			'assets/js/bwpm_template_checkValues.js',
+			'assets/js/bwpm_template_text_buttonClick.js',
+			'assets/js/bwpm_template_text.js',
+		);
+
+		foreach ($beFilesArray as $file)
+		{
+			if (File::exists(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file))
+			{
+				File::delete(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file);
+			}
+		}
 
 //		$mediaFilesArray  = array();
 //
@@ -1576,8 +1587,6 @@ class Com_BwPostmanInstallerScript
 	 */
 	public function showFinished($update)
 	{
-		JLoader::register('JButtonExtlink', JPATH_SITE . '/plugins/system/bw_libregister/libraries/extlink.php');
-
 		$lang = Factory::getLanguage();
 		//Load first english files
 		$lang->load('com_bwpostman.sys', JPATH_ADMINISTRATOR, 'en_GB', true);
@@ -1595,13 +1604,13 @@ class Com_BwPostmanInstallerScript
 		{
 			$lang_ver = 'en';
 			$forum    = "https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html";
+			$manual = "https://www.boldt-webservice.de/index.php/en/forum-en/manuals/bwpostman-manual.html";
 		}
 		else
 		{
 			$forum = "https://www.boldt-webservice.de/de/forum/bwpostman.html";
+			$manual = "https://www.boldt-webservice.de/index.php/de/forum/handb%C3%BCcher/handbuch-zu-bwpostman.html";
 		}
-
-		$manual = "https://www.boldt-webservice.de/$lang_ver/downloads/bwpostman/bwpostman-$lang_ver-$release.html";
 
 		if ($update)
 		{

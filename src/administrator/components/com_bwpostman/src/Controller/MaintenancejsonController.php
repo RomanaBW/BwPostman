@@ -153,48 +153,82 @@ class MaintenancejsonController extends AdminController
 					$session->set('tcheck_needTa', '');
 					$session->set('tcheck_inTaNa', '');
 
-					// get needed tables from installation file
-					$this->getNeededTables($session);
+					$sessionContent = $session->get('tcheck_content', '');
+
+					$this->createRestorePoint($sessionContent, 1300);
+
+					$session->set('tcheck_content', $sessionContent);
 					$step = "2";
 					break;
 
 				case 'step2':
-					// get installed table names
-					$this->getInstalledTableNames($session);
+					// get needed tables from installation file
+					$this->getNeededTables($session, 1320);
 					$step = "3";
 					break;
 
 				case 'step3':
-					// convert to generic table names
-					$this->convertTableNames($session);
+					// get installed table names
+					$this->getInstalledTableNames($session, 1330);
 					$step = "4";
 					break;
 
 				case 'step4':
-					// check table columns
-					$this->checkTableColumns($session);
+					// convert to generic table names
+					$this->convertTableNames($session, 1340);
 					$step = "5";
 					break;
 
 				case 'step5':
-					// check asset IDs (necessary because asset_id = 0 prevents deleting) and user IDs in subscriber table
-					$this->checkAssetAndUserIds();
-					// clear session variables
-					$session->clear('tcheck_needTa');
-					$session->clear('tcheck_inTaNa');
-					$this->ready = "1";
+					// check table columns
+					$this->checkTableColumns($session, 1350, null);
 					$step = "6";
 					break;
 
-				case 'undefined':
-					// clear session variables
-					$session->clear('tcheck_needTa');
-					$session->clear('tcheck_inTaNa');
-					$this->ready = "1";
-					$step = "6";
+				case 'step6':
+					// check asset IDs (necessary because asset_id = 0 prevents deleting) and user IDs in subscriber table
+					try
+					{
+						$sessionContent = $session->get('tcheck_content', '');
 
-					$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
-					throw new BwException($error, 1010);
+						// check asset IDs (necessary because asset_id = 0 prevents deleting) and user IDs in subscriber table
+						$this->checkAssetAndUserIds($sessionContent, 'assets');
+						$this->checkAssetAndUserIds($sessionContent, 'users');
+
+						$session->set('tcheck_content', $sessionContent);
+
+
+						$step = "7";
+					}
+					catch (Exception $e)
+					{
+						$error  = $e->getMessage();
+						throw new BwException($error, 1360);
+					}
+					break;
+
+				case 'step7':
+					try
+					{
+						$sessionContent = $session->get('tcheck_content', '');
+
+						$this->deleteRestorePoint($sessionContent);
+
+						$session->set('tcheck_content', $sessionContent);
+
+						// clear session variables
+						$session->clear('tcheck_needTa');
+						$session->clear('tcheck_inTaNa');
+						Factory::getApplication()->setUserState('com_bwpostman.maintenance.generals', null);
+						$this->ready = "1";
+						$step = "8";
+					}
+					catch (Exception $e)
+					{
+						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
+						throw new BwException($error, 1370);
+					}
+					break;
 			}
 
 			// return the contents of the output buffer
@@ -202,10 +236,11 @@ class MaintenancejsonController extends AdminController
 
 			// use session to store result while $this->ready != "1"
 			$storedContent = $session->get('tcheck_content', '');
-			$content = $storedContent . $content;
+			$content = $content . $storedContent;
+
 			if ($this->ready != "1")
 			{
-				$result = '';
+				$result = $content;
 				$session->set('tcheck_content', $content);
 			}
 			else
@@ -383,7 +418,7 @@ class MaintenancejsonController extends AdminController
 				case 'step3':
 					Factory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', '');
 					// get needed tables from installation file
-					$neededTableNames = $this->getNeededTables($session);
+					$neededTableNames = $this->getNeededTables($session, 1030);
 
 					// Reduce parsed table names to such which are needed by BwPostman (got from sql installation files)
 					// to prevent adding tables to database which are not part of BwPostman or its installed extensions
@@ -414,7 +449,7 @@ class MaintenancejsonController extends AdminController
 						if ($assetGroupsProcessed === false)
 						{
 							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_GENERAL_ERROR');
-							throw new BwException($error, 1030);
+							throw new BwException($error, 1040);
 						}
 
 						$step = "5";
@@ -431,40 +466,17 @@ class MaintenancejsonController extends AdminController
 					catch (Exception $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						throw new BwException($error, 1031);
+						throw new BwException($error, 1041);
 					}
 					break;
 
 				case 'step5':
-					try
-					{
-						$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
+					$sessionContent = $session->get('trestore_content', '');
 
-						echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_CREATE_RESTORE_POINT') . '</h4>';
-						$restorePointCreated = $model->createRestorePoint();
+					$this->createRestorePoint($sessionContent, 1050);
 
-						if ($restorePointCreated === false)
-						{
-							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
-							throw new BwException($error, 1040);
-						}
-
-						$step = "6";
-
-						$logger->addEntry(
-							new LogEntry(
-								sprintf(
-									'Speicherverbrauch in Schritt 5: %01.3f MB',
-									(memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
-								),
-								BwLogger::BW_DEBUG, 'maintenance')
-						);
-					}
-					catch (Exception $e)
-					{
-						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						throw new BwException($error, 1041);
-					}
+					$session->set('trestore_content', $sessionContent);
+					$step = "6";
 					break;
 
 				case 'step6':
@@ -479,7 +491,7 @@ class MaintenancejsonController extends AdminController
 						if ($subAssetsDeleted === false)
 						{
 							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_ERROR');
-							throw new BwException($error, 1050);
+							throw new BwException($error, 1060);
 						}
 
 						// uncomment next line to test rollback (only makes sense, if deleted tables contained data)
@@ -491,7 +503,7 @@ class MaintenancejsonController extends AdminController
 						if ($assetTableHealed === false)
 						{
 							$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR');
-							throw new BwException($error, 1052);
+							throw new BwException($error, 1061);
 						}
 
 						$step = "7";
@@ -508,8 +520,7 @@ class MaintenancejsonController extends AdminController
 					catch (Exception $e)
 					{
 						$error  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
-						$error  .= Factory::getApplication()->getUserState('com_bwpostman.maintenance.restorePoint_text', '');
-						throw new BwException($error, 1053);
+						throw new BwException($error, 1062);
 					}
 					break;
 
@@ -517,9 +528,10 @@ class MaintenancejsonController extends AdminController
 					try
 					{
 						// get stored $base_asset and $curr_asset_id from session
-						$table_names = $session->get('trestore_tablenames', '');
-						$i           = $session->get('trestore_i', 0);
-						$error       = '';
+						$table_names    = $session->get('trestore_tablenames', '');
+						$i              = $session->get('trestore_i', 0);
+						$currentContent = '';
+						$error          = '';
 
 						if ($i == 0)
 						{
@@ -529,16 +541,32 @@ class MaintenancejsonController extends AdminController
 							if ($tablesRenewed !== true)
 							{
 								$error = Text::_($tablesRenewed);
-								throw new BwException($error, 1060);
+								throw new BwException($error, 1070);
 							}
 						}
+
+						$content = ob_get_contents();
+
+						// use session to store result while $this->ready != "1"
+						$storedContent = $session->get('trestore_content', '');
+
+						if ($i == 0)
+						{
+							$content       = $content . '<br />';
+						}
+						$content       = $content . $storedContent;
+						$session->set('trestore_content', $content);
+
+						ob_end_clean();
+
+						ob_start();
 
 						if ($error === '')
 						{
 							$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
 							// loop over all tables
-							echo '<h5>' . Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TABLE',
+							$currentContent .= '<h5>' . Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TABLE',
 									$table_names[$i]) . '</h5>';
 
 							$lastTable = false;
@@ -548,20 +576,22 @@ class MaintenancejsonController extends AdminController
 								$lastTable = true;
 							}
 
-							$tablesRewritten = $model->reWriteTables($table_names[$i], $lastTable);
+							$tablesRewritten = $model->reWriteTables($table_names[$i], $currentContent, $lastTable);
 
 							if ($tablesRewritten === false)
 							{
-								$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_TABLE_ERROR');
-								throw new BwException($error, 1061);
+								$error = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_TABLE_ERROR') . '<br />';
+								throw new BwException($error, 1071);
 							}
 
 							$i++;
+							echo $currentContent;
 							$session->set('trestore_i', $i);
 							$step = "7";
 
 							if ($lastTable)
 							{
+
 								// clear session variables
 								$session->clear('trestore_tablenames');
 								$session->clear('trestore_i');
@@ -582,47 +612,73 @@ class MaintenancejsonController extends AdminController
 					catch (Exception $e)
 					{
 						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						$error  .= Factory::getApplication()->getUserState('com_bwpostman.maintenance.restorePoint_text', '');
-						throw new BwException($error, 1062);
+						throw new BwException($error, 1072);
 					}
 					break;
 
 				case 'step8':
 					// get installed table names
-					$this->getInstalledTableNames($session);
+					$this->getInstalledTableNames($session, 1080);
 					$step = "9";
 					break;
 
 				case 'step9':
 					// convert to generic table names
-					$this->convertTableNames($session);
+					$this->convertTableNames($session, 1090);
 					$step = "10";
 					break;
 
 				case 'step10':
 					// check table columns
-					$this->checkTableColumns($session);
+					$versionOfBackup = Factory::getApplication()->getUserState('com_bwpostman.maintenance.generals', null)['BwPostmanVersion'];
+
+					try
+					{
+					$this->checkTableColumns($session, 1100, $versionOfBackup);
 					$step = "11";
+					}
+					catch (Exception $e)
+					{
+						$error  = $e->getMessage();
+						throw new BwException($error, 1101);
+					}
+
 					break;
 
 				case 'step11':
 					try
 					{
-						// check asset IDs (necessary because asset_id = 0 prevents deleting) and user IDs in subscriber table
-						$this->checkAssetAndUserIds();
+						$sessionContent = $session->get('trestore_content', '');
 
-						// clear session variables
-						$session->clear('tcheck_needTa');
-						$session->clear('tcheck_inTaNa');
-						$this->ready = "1";
+						// check asset IDs (necessary because asset_id = 0 prevents deleting) and user IDs in subscriber table
+						$this->checkAssetAndUserIds($sessionContent, 'assets');
+						$this->checkAssetAndUserIds($sessionContent, 'users');
+
+						$session->set('trestore_content', $sessionContent);
+
 						$step = "12";
 					}
 					catch (Exception $e)
 					{
-						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
-						$error  .= Factory::getApplication()->getUserState('com_bwpostman.maintenance.restorePoint_text', '');
+						$error  = $e->getMessage();
 						throw new BwException($error, 1110);
 					}
+					break;
+
+				case 'step12':
+					$sessionContent = $session->get('trestore_content', '');
+
+					$this->deleteRestorePoint($sessionContent);
+
+					$session->set('trestore_content', $sessionContent);
+
+					// clear session variables
+					$session->clear('tcheck_needTa');
+					$session->clear('tcheck_inTaNa');
+					Factory::getApplication()->setUserState('com_bwpostman.maintenance.generals', null);
+					$this->ready = "1";
+					$step = "13";
+
 					break;
 			}
 
@@ -684,6 +740,7 @@ class MaintenancejsonController extends AdminController
 			$result           = $error . $session->get('trestore_content', '');
 
 			$this->handleBwException($errorCode, $result, $error, $step);
+			Factory::getApplication()->setUserState('com_bwpostman.maintenance.generals', null);
 		}
 
 		catch (RuntimeException $e)
@@ -705,6 +762,7 @@ class MaintenancejsonController extends AdminController
 	 * Method to get needed tables from installation file
 	 *
 	 * @param   $session    $session    The session of this task
+	 * @param   integer    $errorCode  Needed, because we come from check and also from restore
 	 *
 	 * @return array
 	 *
@@ -713,7 +771,7 @@ class MaintenancejsonController extends AdminController
 	 * @since   1.3.0
 	 */
 
-	protected function getNeededTables($session)
+	protected function getNeededTables($session, $errorCode)
 	{
 		$model        = new MaintenanceModel();
 		$neededTables = $model->getNeededTables();
@@ -726,7 +784,7 @@ class MaintenancejsonController extends AdminController
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
 			$errorMessage .= '</p>';
 
-			throw new BwException($errorMessage, 1070);
+			throw new BwException($errorMessage, $errorCode);
 		}
 
 		// store $neededTables in session
@@ -746,6 +804,7 @@ class MaintenancejsonController extends AdminController
 	 * Method to get installed table names
 	 *
 	 * @param   $session    $session    The session of this task
+	 * @param   integer    $errorCode  Needed, because we come from check and also from restore
 	 *
 	 * @return void
 	 *
@@ -754,7 +813,7 @@ class MaintenancejsonController extends AdminController
 	 * @since   1.3.0
 	 */
 
-	protected function getInstalledTableNames($session)
+	protected function getInstalledTableNames($session, int $errorCode)
 	{
 		$model           = new MaintenanceModel();
 		$tableNamesArray = $model->getTableNamesFromDB();
@@ -767,7 +826,7 @@ class MaintenancejsonController extends AdminController
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
 			$errorMessage .= '</p>';
 
-			throw new BwException($errorMessage, 1080);
+			throw new BwException($errorMessage, $errorCode);
 		}
 
 		$installedTableNames = array();
@@ -784,7 +843,8 @@ class MaintenancejsonController extends AdminController
 	/**
 	 * Method to convert to generic table names
 	 *
-	 * @param   $session    $session    The session of this task
+	 * @param   session    $session    The session of this task
+	 * @param   integer    $errorCode  Needed, because we come from check and also from restore
 	 *
 	 * @return void
 	 *
@@ -793,7 +853,7 @@ class MaintenancejsonController extends AdminController
 	 * @since   1.3.0
 	 */
 
-	protected function convertTableNames($session)
+	protected function convertTableNames($session, $errorCode)
 	{
 		$model             = new MaintenanceModel();
 		$genericTableNames = $session->get('tcheck_inTaNa');
@@ -810,14 +870,16 @@ class MaintenancejsonController extends AdminController
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
 			$errorMessage .= '</p>';
 
-			throw new BwException($errorMessage, 1090);
+			throw new BwException($errorMessage, $errorCode);
 		}
 	}
 
 	/**
 	 * Method to convert to generic table names
 	 *
-	 * @param   $session    $session    The session of this task
+	 * @param   $session   $session          The session of this task
+	 * @param   integer    $errorCode        Needed, because we come from check and also from restore
+	 * @param   string     $versionOfBackup  The version of the backup
 	 *
 	 * @return void
 	 *
@@ -826,13 +888,31 @@ class MaintenancejsonController extends AdminController
 	 * @since   1.3.0
 	 */
 
-	protected function checkTableColumns($session)
+	protected function checkTableColumns($session, $errorCode, $versionOfBackup = null)
 	{
+		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_TABLE_COLUMNS') . '</h4>';
+
 		// get stored session variables
 		$model        = new MaintenanceModel();
 		$neededTables = $session->get('tcheck_needTa');
 
-		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_TABLE_COLUMNS') . '</h4>';
+		// If we are in restore mode, version of backup is not null, so compare versions
+		if (!is_null($versionOfBackup))
+		{
+			// Compare versions. Do nothing, if backup version is newer than installed version to prevent data lost
+			if (version_compare($versionOfBackup, $model->getBwPostmanVersion(), '>'))
+			{
+//				$message =  '<h5>' . Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_TABLE_COLUMNS_TABLE', $neededTables[$i]->name) . '</h5>';
+				$message = '<p class="alert alert-warning bw_tablecheck_warn">';
+				$message .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_NO_COLUMN_CHECK');
+				$message .= '</p>';
+
+				echo $message;
+
+				return;
+			}
+		}
+
 		// check table columns
 		for ($i = 0; $i < count($neededTables); $i++)
 		{
@@ -844,15 +924,16 @@ class MaintenancejsonController extends AdminController
 				$i--;
 			}
 
-			if ($res === false)
+			if ($res === false || $res !== 'Column check finished')
 			{
 				$errorMessage = '<p class="alert alert-error bw_tablecheck_error">';
-				$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_COLS_ERROR');
+				$errorMessage .= Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_COLS_ERROR', $neededTables[$i]->name);
 				$errorMessage .= '<br /><br />';
+				$errorMessage .= 'Error: ' . $res . '<br /><br />';
 				$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
 				$errorMessage .= '</p>';
 
-				throw new BwException($errorMessage, 1100);
+				throw new BwException($errorMessage, $errorCode);
 			}
 		}
 	}
@@ -860,57 +941,143 @@ class MaintenancejsonController extends AdminController
 	/**
 	 * Method to check Assets and User IDs
 	 *
+	 * @param  string $sessionContent  Content for output
+	 * @param  string $mode            Shall we check for assets or user ids?
+	 *
 	 * @return void
 	 *
 	 * @throws Exception
 	 *
 	 * @since   1.3.0
 	 */
-	protected function checkAssetAndUserIds()
+	protected function checkAssetAndUserIds(&$sessionContent, $mode = 'assets')
 	{
-		$model = new MaintenanceModel();
+		$model        = new MaintenanceModel();
+		$errorMessage = '';
 
-		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_ASSET_IDS') . '</h4>';
-
-		// check asset IDs (necessary because asset_id = 0 prevents deleting)
-		if (!$model->checkAssetId())
+		if($mode === 'assets')
 		{
-			$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
-			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSETS_WARN');
+			$message = '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_ASSET_IDS') . '</h4>';
+
+			// check asset IDs (necessary because asset_id = 0 prevents deleting)
+			$checkAsset = $model->checkAssetId();
+
+			if ($checkAsset === false)
+			{
+				$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
+				$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSETS_WARN');
+				$errorMessage .= '</p>';
+
+				$this->alertClass = 'warning';
+			}
+			else
+			{
+				$message .= $checkAsset;
+			}
+
+			// check asset IDs (necessary because asset_id = 0 prevents deleting)
+			if (!$model->checkAssetParentId())
+			{
+				$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
+				$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_PARENT_ASSETS_WARN');
+				$errorMessage .= '</p>';
+
+				$this->alertClass = 'warning';
+			}
+
+			$sessionContent = $message  . $errorMessage . $sessionContent;
+		}
+
+		if($mode === 'users')
+		{
+			// check user IDs in subscriber Table
+			$message   = '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_USER_IDS') . '</h4>';
+			$checkUser = $model->checkUserIds();
+
+			if (!$checkUser)
+			{
+				$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
+				$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_USER_ID_WARN');
+				$errorMessage .= '</p>';
+
+				$this->alertClass = 'warning';
+			}
+			else
+			{
+				$message .= str_pad('<p class="bw_tablecheck_ok">' . Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_USER_ID_OK') . '</p>', 4096);
+			}
+			$sessionContent = $message  . $errorMessage . $sessionContent;
+		}
+	}
+
+	/**
+	 * Method to create the restore point
+	 *
+	 * @param  string $sessionContent  Content for output
+	 * @param   integer    $errorCode  Needed, because we come from check and also from restore
+	 *
+	 * @return void
+	 *
+	 * @since   3.1.3
+	 */
+
+	protected function createRestorePoint(&$sessionContent, $errorCode)
+	{
+		$model        = new MaintenanceModel();
+		$errorMessage = '';
+
+		$message =  '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_CREATE_RESTORE_POINT') . '</h4>';
+
+		$createRestore = $model->createRestorePoint();
+
+		if ($createRestore !== true)
+		{
+			$errorMessage = '<p class="alert alert-error bw_tablecheck_error">';
+			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
+			$errorMessage .= '<br />' . $createRestore;
 			$errorMessage .= '</p>';
 
-			$this->errorMessage = $errorMessage;
+			$this->alertClass = 'error';
+
+			$sessionContent = $message  . $errorMessage . $sessionContent;
+
+			throw new BwException($errorMessage, $errorCode);
+		}
+
+		$sessionContent = $message  . $errorMessage . $sessionContent;
+	}
+
+	/**
+	 * Method to delete the restore point
+	 *
+	 * @param  string $sessionContent  Content for output
+	 *
+	 * @return void
+	 *
+	 * @since   3.1.3
+	 */
+
+	protected function deleteRestorePoint(&$sessionContent)
+	{
+		$model        = new MaintenanceModel();
+		$errorMessage = '';
+
+		$message = '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_DELETE_RESTORE_POINT') . '</h4>';
+
+		$deleteRestore = $model->deleteRestorePoint();
+
+		if ($deleteRestore !== true)
+		{
+			$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
+			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DELETE_RESTORE_POINT_WARN');
+			$errorMessage .= '<br />' . $deleteRestore;
+			$errorMessage .= '</p>';
+
 			$this->alertClass = 'warning';
 		}
 
-		// check asset IDs (necessary because asset_id = 0 prevents deleting)
-		if (!$model->checkAssetParentId())
-		{
-			$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
-			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSETS_WARN');
-			$errorMessage .= '</p>';
+		$sessionContent = $message  . $errorMessage . $sessionContent;
 
-			$this->errorMessage = $errorMessage;
-			$this->alertClass = 'warning';
-		}
-
-		echo '<br />';
-		// check user IDs in subscriber Table
-		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_USER_IDS') . '</h4>';
-
-		if (!$model->checkUserIds())
-		{
-			$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
-			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_USER_ID_WARN');
-			$errorMessage .= '</p>';
-
-			$this->errorMessage = $errorMessage;
-			$this->alertClass = 'warning';
-		}
-		else
-		{
-			echo str_pad('<p class="bw_tablecheck_ok">' . Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_USER_ID_OK') . '</p>', 4096);
-		}
 	}
 
 	/**
@@ -932,9 +1099,23 @@ class MaintenancejsonController extends AdminController
 		$app   = Factory::getApplication();
 		$model = new MaintenanceModel();
 
-		if ((1050 <= $errorCode) && ($errorCode <= 1100))
+		// Restore restore point only if needed (and available)
+		if ((1060 <= $errorCode) && ($errorCode <= 1200)
+		|| (1340 <= $errorCode) && ($errorCode <= 1399))
 		{
-			$model->restoreRestorePoint();
+			$restoreResult = $model->restoreRestorePoint();
+
+			if ($restoreResult !== true)
+			{
+				$message = '<p class="alert alert-error bw_tablecheck_error">' . $restoreResult . '</p>';
+				$message .= '<p class="alert alert-error bw_tablecheck_error">' .  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESTORE_RESTORE_POINT_ERROR_NOT_DONE') . '</p>';
+//				$result .=  $message;
+				$error  .= $message;
+			}
+			else
+			{
+				$error .= '<p class="alert alert-error bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_POINT_RESTORED_WARNING') . "</p>";
+			}
 		}
 
 		// clean the output buffer and turn off output buffering

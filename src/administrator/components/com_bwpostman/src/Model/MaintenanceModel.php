@@ -407,11 +407,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * Also sets a list as property of all BwPostman tables with different variations of names
 	 *
+	 * @param boolean $restore   are we at restore mode?
+	 *
 	 * @return   array|boolean
 	 *
 	 * @since    1.0.1
 	 */
-	public function getTableNamesFromDB()
+	public function getTableNamesFromDB($restore = false)
 	{
 		// Get database name
 		$dbname = self::getDBName();
@@ -433,14 +435,40 @@ class MaintenanceModel extends BaseDatabaseModel
 			return false;
 		}
 
-		$tableArray = array();
+		$tableArray      = array();
+		$tmpTables       = array();
+		$installedTables = array();
 
 		foreach ($tableNames as $tableName)
 		{
 			if (strpos($tableName, '_tmp') === false)
 			{
+				$table = array();
+
 				$table['tableNameDb']      = $tableName;
 				$table['tableNameGeneric'] = self::getGenericTableName($tableName);
+				$table['tableNameRaw']     = $this->getRawTableName($table['tableNameGeneric']);
+				$table['tableNameUC']      = ucfirst(substr($table['tableNameRaw'], 0, -1));
+
+				$tableArray[]      = $table;
+				$installedTables[] = $tableName;
+			}
+			else
+			{
+				$tmpTables[] = substr($tableName, 0, -4);
+			}
+		}
+
+		$differences = array_diff($tmpTables, $installedTables);
+
+		if ($restore && count($differences))
+		{
+			foreach ($differences as $difference)
+			{
+				$table = array();
+
+				$table['tableNameDb']      = $difference;
+				$table['tableNameGeneric'] = self::getGenericTableName($difference);
 				$table['tableNameRaw']     = $this->getRawTableName($table['tableNameGeneric']);
 				$table['tableNameUC']      = ucfirst(substr($table['tableNameRaw'], 0, -1));
 
@@ -829,8 +857,8 @@ class MaintenanceModel extends BaseDatabaseModel
 						$query = implode(array_map('trim', preg_split('/(\n|\r\r)/i', $query)));
 						$query = preg_replace('/\s+/', ' ', trim($query));
 
-						$query = $db->escape($query);
-						$table->install_query = $query;
+//						$query = $db->escape($query);
+						$table->install_query = $db->escape($query);
 
 						// get table name
 						$start = strpos($query, '#');
@@ -853,24 +881,10 @@ class MaintenanceModel extends BaseDatabaseModel
 						}
 
 						// get default character set
-						$start = stripos($query, 'DEFAULT CHARSET');
-
-						if ($start !== false)
-						{
-							$stop           = stripos($query, ' COLLATE');
-							$length         = $stop - $start - 16;
-							$table->charset = substr($query, $start + 16, $length);
-						}
+						$this->getCharset($query, $table);
 
 						// get default collation
-						$start = stripos($query, 'COLLATE');
-
-						if ($start !== false)
-						{
-							$stop             = stripos($query, ';', $start);
-							$length           = $stop - $start - 8;
-							$table->collation = substr($query, $start + 8, $length);
-						}
+						$this->getCollation($query, $table);
 
 						// get primary key
 						$start = strripos($query, '(`') + 2;
@@ -929,6 +943,28 @@ class MaintenanceModel extends BaseDatabaseModel
 									$column        = $sub_txt;
 								}
 
+								// get column collation
+								$start = stripos($column, 'collate');
+
+								if ($start !== false)
+								{
+									$start              = $start + 8;
+									$stop               = strpos($column, " ", $start);
+
+									if ($stop === false)
+									{
+										$col_arr->collation = substr($column, $start);
+									}
+									else
+									{
+										$length             = $stop - $start;
+										$col_arr->collation = substr($column, $start, $length);
+									}
+
+									$sub_txt            = str_ireplace('collate ' . $col_arr->collation, '', $column);
+									$column             = trim($sub_txt);
+								}
+
 								// get NOT NULL
 								$start = stripos($column, 'NOT NULL');
 
@@ -957,7 +993,7 @@ class MaintenanceModel extends BaseDatabaseModel
 									$col_arr->Extra = substr($column, $start, 15);
 									$sub_txt        = str_replace('auto_increment', '', $column);
 									$column         = trim($sub_txt);
-									$table->auto    = $col_arr->Column;
+									$table->auto    = $col_arr->Extra;
 								}
 
 								// get default
@@ -1253,8 +1289,6 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 
 			$engine    = '';
-			$c_set     = '';
-			$collation = '';
 
 			// Extract engine of installed table
 			$start = strpos($createTableQuery, 'ENGINE=');
@@ -1266,79 +1300,92 @@ class MaintenanceModel extends BaseDatabaseModel
 				$engine = substr($createTableQuery, $start + 7, $length);
 			}
 
-			// Extract default charset of installed table
-			$start = strpos($createTableQuery, 'DEFAULT CHARSET=');
-			$stop  = 0;
+			$installedTable = new stdClass();
 
-			if ($start !== false)
-			{
-				$stop   = strpos($createTableQuery, ' ', $start);
-				$length = $stop - $start;
-				$c_set  = substr($createTableQuery, $start + 16, $length);
-			}
+			// Extract default charset of installed table
+			$this->getCharset($createTableQuery, $installedTable);
 
 			// Extract collation of installed table
-			$start = strpos($createTableQuery, 'COLLATE=', $stop);
+			$this->getCollation($createTableQuery, $installedTable);
 
-			if ($start !== false)
+			try
 			{
-				$collation = substr($createTableQuery, $start + 8);
-			}
-
-			// @ToDo: Use Joomla methods from libraries/joomla/database/driver.php
-			// @ToDo: Check if values used for altering are the correct ones (not interchanged)
-			// Compare installed values with needed values and alter table if necessary
-			if ((strcasecmp($engine, $table->engine) != 0)
-				|| (strcasecmp($c_set, $table->charset) != 0)
-				|| (strcasecmp($collation, $table->collation) != 0))
-			{
-				$engine_text    = '';
-				$c_set_text     = '';
-				$collation_text = '';
-
-				if ($engine != '')
+				// @ToDo: Use Joomla methods from libraries/joomla/database/driver.php
+				// @ToDo: Check if values used for altering are the correct ones (not interchanged)
+				// Compare installed values with needed values and alter table if necessary
+				if (strcasecmp($engine, $table->engine) != 0)
 				{
-					$engine_text = ' ENGINE=' . $engine;
+					if ($engine != '')
+					{
+						// Correct table engine
+						$engine_text = ' ENGINE = ' . $this->db->quote($table->engine);
+						$query       = 'ALTER TABLE ' . $this->db->quoteName($table->name) . $engine_text;
+
+						$this->db->setQuery($query);
+
+						$modifyTableEngine = $this->db->execute();
+
+						if (!$modifyTableEngine)
+						{
+							$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_ENGINE_ERROR',
+								$table->name);
+							echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+
+							return false;
+						}
+						else
+						{
+							$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_ENGINE_SUCCESS',
+								$table->name);
+							echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+						}
+					}
 				}
 
-				if ($c_set != '')
+				if ((strcasecmp($installedTable->charset, $table->charset) !== 0)
+					|| (strcasecmp($installedTable->collation, $table->collation) !== 0))
 				{
-					$c_set_text = ' DEFAULT CHARSET=' . $c_set;
-				}
+					$c_set_text     = '';
+					$collation_text = '';
 
-				if ($collation != '')
-				{
-					$collation_text = ' COLLATION ' . $collation;
-				}
+					if ($installedTable->charset != '')
+					{
+						$c_set_text = ' CONVERT TO CHARACTER SET ' . $this->db->quote($table->charset);
+					}
 
-				$query = 'ALTER TABLE ' . $this->db->quoteName($table->name) . $engine_text . $c_set_text . $collation_text;
+					if (!property_exists($installedTable, 'collation') || $installedTable->collation != '')
+					{
+						$collation_text = ' COLLATE ' . $this->db->quote($table->collation);
+					}
 
-				try
-				{
+					$query = 'ALTER TABLE ' . $this->db->quoteName($table->name) . $c_set_text . $collation_text;
+
 					$this->db->setQuery($query);
 
 					$modifyTable = $this->db->execute();
 
 					if (!$modifyTable)
 					{
-						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_ERROR', $table->name);
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_CHARSET_ERROR',
+							$table->name);
 						echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
 						return false;
 					}
 					else
 					{
-						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_SUCCESS', $table->name);
+						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_CHARSET_SUCCESS',
+							$table->name);
 						echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 					}
 				}
-				catch (RuntimeException $exception)
-				{
-					$message = $exception->getMessage();
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+			}
+			catch (RuntimeException $exception)
+			{
+				$message = $exception->getMessage();
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-					return false;
-				}
+				return false;
 			}
 		}
 
@@ -1397,7 +1444,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					return false;
 				}
 
-				if (strcasecmp($table->auto, $increment_key) != 0)
+				if (strcasecmp($table->primary_key, $increment_key) != 0)
 				{
 					if(!$this->setCorrectAutoIncrement($table))
 					{
@@ -1629,7 +1676,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to check needed table columns
 	 *
-	 * @param object $checkTable object of table, that must be installed
+	 * @param object $checkTable object of table from installation file, that must be installed
 	 *
 	 * @return    boolean|integer
 	 *
@@ -1672,9 +1719,9 @@ class MaintenanceModel extends BaseDatabaseModel
 		catch (RuntimeException $exception)
 		{
 			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-			return false;
+			return 'Get table columns error';
 		}
 
 		foreach ($columnsObject as $col)
@@ -1693,16 +1740,16 @@ class MaintenanceModel extends BaseDatabaseModel
 		// check for col names
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
-			// check for needed col names
+			// check for needed columns and add them if needed
 			if($this->handleNeededColumns($neededColumns, $i, $search_cols_1, $checkTable) === false)
 			{
-				return false;
+				return 'Needed Columns Error';
 			}
 
-			// check for obsolete col names
+			// check for obsolete columns and remove them if needed
 			if($this->handleObsoleteColumns($installedColumns[$i], $search_cols_2, $checkTable) === false)
 			{
-				return  false;
+				return  'Obsolete Columns Error';
 			}
 		}
 
@@ -1711,9 +1758,11 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		echo '<p class="bw_tablecheck_ok">' . $message	 . '</p>';
 
-		if(!$this->handleColumnAttributes($neededColumns, $installedColumns, $checkTable))
+		// compare table attributes and correct them if needed
+		$attributesResult = $this->handleColumnAttributes($neededColumns, $installedColumns, $checkTable);
+		if($attributesResult !== true)
 		{
-			return false;
+			return 'Handle attributes error: ' . $attributesResult;
 		}
 
 		$message = str_pad(strip_tags(Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_ATTRIBUTES_OK', $checkTable->name)), 4096);
@@ -1721,17 +1770,17 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 
-		return 1;
+		return 'Column check finished';
 	}
 
 
 	/**
 	 * Check for missing columns and install them, if needed
 	 *
-	 * @param array $neededColumns
-	 * @param       $i
-	 * @param array $search_cols_1
-	 * @param       $checkTable
+	 * @param array   $neededColumns  columns which are named at installation file
+	 * @param         $i
+	 * @param array   $search_cols_1  columns which are installed
+	 * @param object  $checkTable     object of table from installation file, that must be installed
 	 *
 	 * @return boolean|integer
 	 *
@@ -1800,9 +1849,9 @@ class MaintenanceModel extends BaseDatabaseModel
 
 	/**
 	 * Check for obsolete columns and remove them, if needed
-	 * @param       $installedColumns
-	 * @param array $search_cols_2
-	 * @param       $checkTable
+	 * @param array   $installedColumns  columns which are installed
+	 * @param array   $search_cols_2     columns which are named at installation file
+	 * @param object  $checkTable     object of table from installation file, that must be installed
 	 *
 	 * @return boolean|integer
 	 *
@@ -1869,9 +1918,9 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Check for column attributes and correct them, if needed
 	 *
-	 * @param array $neededColumns
-	 * @param array $installedColumns
-	 * @param       $checkTable
+	 * @param array   $neededColumns     array of columns which are named at installation file containing an array of all column attributes
+	 * @param array   $installedColumns  array of columns which are installed containing an array of all column attributes
+	 * @param object  $checkTable        object of table from installation file, that must be installed
 	 *
 	 * @return bool
 	 *
@@ -1896,26 +1945,27 @@ class MaintenanceModel extends BaseDatabaseModel
 				// install missing columns
 				foreach (array_keys($diff) as $missingCol)
 				{
-					if ($neededColumns[$i]['Null'] == 'NO')
+					$null      = ' NULL';
+					$default   = '';
+					$collation = '';
+
+					if (array_key_exists('Null', $neededColumns[$i]) && $neededColumns[$i]['Null'] == 'NO')
 					{
 						$null = ' NOT NULL';
 					}
-					else
-					{
-						$null = ' NULL';
-					}
 
-					if (isset($neededColumns[$i]['Default']))
+					if (array_key_exists('Default', $neededColumns[$i]) && isset($neededColumns[$i]['Default']))
 					{
 						$default = ' DEFAULT ' . $this->db->quote($neededColumns[$i]['Default']);
 					}
-					else
+
+					if (array_key_exists('collation', $neededColumns[$i]))
 					{
-						$default = '';
+						$collation = ' COLLATE ' . $neededColumns[$i]['collation'];
 					}
 
 					$query = "ALTER TABLE " . $this->db->quoteName($checkTable->name);
-					$query .= " MODIFY " . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededColumns[$i]['Type'] . $null . $default;
+					$query .= " MODIFY " . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededColumns[$i]['Type']  . $collation. $null . $default;
 
 					if (array_key_exists('Extra', $neededColumns[$i]))
 					{
@@ -1957,7 +2007,7 @@ class MaintenanceModel extends BaseDatabaseModel
 						$message = $exception->getMessage();
 						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-						return false;
+						return $message;
 					}
 				}
 			}
@@ -1970,7 +2020,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * Method to check, if column asset_id has a real value. If not, there is no possibility to delete data sets in BwPostman.
 	 * Therefore each dataset without real value for asset_id has to be stored one time, to get this value
 	 *
-	 * @return    boolean
+	 * @return    boolean|string false on error, otherwise success message
 	 *
 	 * @throws Exception
 	 *
@@ -1983,6 +2033,8 @@ class MaintenanceModel extends BaseDatabaseModel
 		{
 			return false;
 		}
+
+		$returnMessage = '';
 
 		// Set tables that have column asset_id
 		foreach ($this->tableNames as $table)
@@ -2129,11 +2181,11 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSET_OK', $tableNameGeneric);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-				echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+				$returnMessage .= '<p class="bw_tablecheck_ok">' . $message . '</p>';
 			}
 		}
 
-		return true;
+		return $returnMessage;
 	}
 
 	/**
@@ -2676,19 +2728,23 @@ class MaintenanceModel extends BaseDatabaseModel
 		// delete tables and create it anew
 		foreach ($tables as $table)
 		{
-			if (!$this->deleteBwPostmanTable($table))
+			$tableDeleteResult = $this->deleteBwPostmanTable($table);
+
+			if ($tableDeleteResult !== true)
 			{
 				if (empty($table))
 				{
 					$table = 'unknown';
 				}
 
-				return Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_ERROR', $table, '');
+				return Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_ERROR', $table, $tableDeleteResult);
 			}
 
-			if (!$this->createBwPostmanTableAnew($table, $tablesQueries))
+			$tableCreateResult = $this->createBwPostmanTableAnew($table, $tablesQueries);
+
+			if ($tableCreateResult !== true)
 			{
-				return Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', $table);
+				return Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', $table, $tableCreateResult);
 			}
 		}
 
@@ -2704,8 +2760,9 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to the rewrite tables content one by one from backup file
 	 *
-	 * @param string  $table     generic name of table to rewrite
-	 * @param boolean $lastTable is this the last table?
+	 * @param string  $table           generic name of table to rewrite
+	 * @param string  $currentContent  current output content
+	 * @param boolean $lastTable       is this the last table?
 	 *
 	 * @return    boolean
 	 *
@@ -2713,7 +2770,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	public function reWriteTables($table, $lastTable = false)
+	public function reWriteTables($table, &$currentContent, $lastTable = false)
 	{
 		$tmp_file        = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
 		$tmpFileExists   = file_exists($tmp_file);
@@ -2724,28 +2781,48 @@ class MaintenanceModel extends BaseDatabaseModel
 		{
 			$fp = fopen($tmp_file, 'r');
 
-			try
+			$tables          = unserialize(fread($fp, filesize($tmp_file)));
+			$asset_loop      = 0;
+			$asset_siblings  = 0;
+			$asset_transform = array();
+			$rawTableName    = $this->getRawTableName($table);
+
+			$base_asset      = $this->getBaseAsset($rawTableName);
+
+			if ($base_asset === false)
 			{
-				$tables          = unserialize(fread($fp, filesize($tmp_file)));
-				$asset_loop      = 0;
-				$asset_siblings   = 0;
-				$asset_transform = array();
-				$rawTableName    = $this->getRawTableName($table);
-
-				$base_asset      = $this->getBaseAsset($rawTableName);
-
-				if ($base_asset === false)
+				if ($lastTable)
 				{
-					return false;
+					fclose($fp);
+
+					unlink($tmp_file);
+					unlink($dest);
 				}
 
+				return $base_asset;
+			}
+
+			// Set some loop values (block size, …)
+			// To accelerate writing data and assets are pooled to blocks. Block size depends on table.
+			$data_loop_max = $this->getDataLoopMax($table);
+			$max_count     = ini_get('max_execution_time');
+			$data_max      = 0;
+			$asset_name    = '';
+
+			if (key_exists('table_data', $tables[$table]))
+			{
+				$data_max = count($tables[$table]['table_data']);
+			}
+
+			if ($base_asset !== -1)
+			{
 				try
 				{
 					$this->assetColnames = array_keys($this->db->getTableColumns('#__assets'));
 				}
 				catch (RuntimeException $exception)
 				{
-					$message =  $exception->getMessage();
+					$message = $exception->getMessage();
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 					return false;
@@ -2753,22 +2830,12 @@ class MaintenanceModel extends BaseDatabaseModel
 
 				$asset_name = $base_asset['name'];
 
-				// Set some loop values (block size, …)
-				// To accelerate writing data and assets are pooled to blocks. Block size depends on table.
-				$data_loop_max = $this->getDataLoopMax($table);
-				$max_count     = ini_get('max_execution_time');
-				$data_max      = 0;
-				if (key_exists('table_data', $tables[$table]))
-				{
-					$data_max = count($tables[$table]['table_data']);
-				}
-
 				$asset_loop_max = 1000;
 				$asset_max      = 0;
 				if (isset($tables[$table]['table_assets']))
 				{
 					$tables[$table]['table_assets'] = $assetsFromState[$table];
-					$asset_max = count($tables[$table]['table_assets']);
+					$asset_max                      = count($tables[$table]['table_assets']);
 				}
 
 				//Asset Inserting
@@ -2808,7 +2875,8 @@ class MaintenanceModel extends BaseDatabaseModel
 								}
 
 								// collect data sets until loop max
-								$dataset[] = $this->prepareAssetValues($asset, $asset_transform, $s, $base_asset, $asset_siblings);
+								$dataset[] = $this->prepareAssetValues($asset, $asset_transform, $s, $base_asset,
+									$asset_siblings);
 								$s++;
 
 								// if asset loop max is reached or last data set, insert into table
@@ -2828,112 +2896,101 @@ class MaintenanceModel extends BaseDatabaseModel
 						} // end switch base asset
 					} // end table assets exists
 				} // end asset inserting
+			}
 
-				/*
-				 * Import data (can't use table bind/store, because we have IDs and Joomla sets mode to update, if ID is set,
-				 * but in empty tables there is nothing to update)
-				 */
-				$s     = 0;
-				$count = 0;
+			/*
+			 * Import data (can't use table bind/store, because we have IDs and Joomla sets mode to update, if ID is set,
+			 * but in empty tables there is nothing to update)
+			 */
+			$s     = 0;
+			$count = 0;
 
-				// if there are data sets
-				if ($data_max)
+			// if there are data sets
+			if ($data_max)
+			{
+				$dataset   = array();
+				$data_loop = 0;
+
+				// … insert data sets…
+				foreach ($tables[$table]['table_data'] as $item)
 				{
-					$dataset   = array();
-					$data_loop = 0;
+					$data_loop++;
 
-					// … insert data sets…
-					foreach ($tables[$table]['table_data'] as $item)
+					// update asset_id
+					if ($asset_name != '')
 					{
-						$data_loop++;
-
-						// update asset_id
-						if ($asset_name != '')
+						$asset_found = false;
+						for ($i = 0; $i < count($asset_transform); $i++)
 						{
-							$asset_found = false;
-							for ($i = 0; $i < count($asset_transform); $i++)
+							$new_id = array_search($item['asset_id'], $asset_transform[$i]);
+							if ($new_id !== false)
 							{
-								$new_id = array_search($item['asset_id'], $asset_transform[$i]);
-								if ($new_id !== false)
-								{
-									$item['asset_id'] = $asset_transform[$i]['newAssetId'];
-									$asset_found      = true;
-									break;
-								}
-							}
-
-							if (!$asset_found)
-							{
-								$item['asset_id'] = 0;
+								$item['asset_id'] = $asset_transform[$i]['newAssetId'];
+								$asset_found      = true;
+								break;
 							}
 						}
 
-						if ($count++ == $max_count)
+						if (!$asset_found)
 						{
-							$count = 0;
-							ini_set('max_execution_time', ini_get('max_execution_time'));
+							$item['asset_id'] = 0;
 						}
-
-						// collect data sets until loop max
-						$values = $this->dbQuoteArray($item);
-
-						$dataset[] = '(' . implode(',', $values) . ')';
-						$s++;
-
-						// if data loop max is reached or last data set, insert into table
-						if (($data_loop == $data_loop_max) || ($s == $data_max))
-						{
-							// write collected data sets to table
-							if (!$this->writeLoopDatasets($dataset, $table))
-							{
-								return false;
-							}
-
-							// reset loop values
-							$data_loop = 0;
-							$dataset   = array();
-						}
-					} // end foreach table items
-				} // endif data sets exists
-
-				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STORE_SUCCESS', $table);
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
-
-				echo '<p class="bw_tablecheck_ok">' . $message . '</p><br />';
-
-				if ($table == '#__bwpostman_subscribers')
-				{
-					if (!$this->checkUserIds())
-					{
-						return false;
 					}
-				}
 
-				/*
-				 * // For transaction test purposes only
-				if($table_name_raw == 'newsletters') {
-					throw new BwException(Text::_('Test-Exception Newsletter written'));
-				}
-				*/
+					if ($count++ == $max_count)
+					{
+						$count = 0;
+						ini_set('max_execution_time', ini_get('max_execution_time'));
+					}
 
-				if ($lastTable)
+					// collect data sets until loop max
+					$values = $this->dbQuoteArray($item);
+
+					$dataset[] = '(' . implode(',', $values) . ')';
+					$s++;
+
+					// if data loop max is reached or last data set, insert into table
+					if (($data_loop == $data_loop_max) || ($s == $data_max))
+					{
+						// write collected data sets to table
+						if (!$this->writeLoopDatasets($dataset, $table))
+						{
+							return false;
+						}
+
+						// reset loop values
+						$data_loop = 0;
+						$dataset   = array();
+					}
+				} // end foreach table items
+			} // endif data sets exists
+
+			$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STORE_SUCCESS', $table);
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+
+			$currentContent .= '<p class="bw_tablecheck_ok">' . $message . '</p>';
+
+			if ($table == '#__bwpostman_subscribers')
+			{
+				if (!$this->checkUserIds())
 				{
-					fclose($fp);
-
-					unlink($tmp_file);
-					unlink($dest);
-					$this->deleteRestorePoint();
+					return false;
 				}
 			}
-//			@ToDo: All runtime exceptions are handled in sub routines, catch will never met, so close and unlink have to be done other way
-			catch (RuntimeException $exception)
+
+			/*
+			 * // For transaction test purposes only
+			if($table_name_raw == 'newsletters') {
+				throw new BwException(Text::_('Test-Exception Newsletter written'));
+			}
+			*/
+
+			if ($lastTable)
 			{
 				fclose($fp);
+
 				unlink($tmp_file);
 				unlink($dest);
-
-				$message =  $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 			}
 		}
 		return true;
@@ -2946,7 +3003,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.0.8
 	 */
-	private function getBwPostmanVersion()
+	public function getBwPostmanVersion()
 	{
 		$query  = $this->db->getQuery(true);
 		$result = '';
@@ -3049,7 +3106,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 		$message =  sprintf('Memory consumption while parsing with XML file: %01.3f MB', $memoryConsumption);
-		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
 
 		// Get general data
 		$generals = array();
@@ -3176,7 +3233,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 		$message =  sprintf('Memory consumption while parsing before loop: %01.3f MB', $memoryConsumption);
-		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
 
 		// paraphrase tables array per table for better handling and convert simple xml objects to strings
 		$i = 0;
@@ -3185,7 +3242,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		{
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing at very beginning loop: %01.3f MB', $memoryConsumption);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
 
 			$w_table = array();
 
@@ -3198,7 +3255,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing at loop with query: %01.3f MB', $memoryConsumption);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
 
 			// extract table assets
 			if (property_exists($tmp_table, 'table_assets'))
@@ -3238,7 +3295,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing at loop with assets: %01.3f MB', $memoryConsumption);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
 
 			// get table data; cannot use get_object_vars() because this returns empty objects on empty values, not empty array fields
 			$items = array();
@@ -3275,7 +3332,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing at loop with data sets: %01.3f MB', $memoryConsumption);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
 
 			unset($items);
 
@@ -3308,7 +3365,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing of table %s: %01.3f MB', $table_names[$i - 1],$memoryConsumption);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
 		}
 
 		$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_SUCCESS');
@@ -3363,6 +3420,8 @@ class MaintenanceModel extends BaseDatabaseModel
 		{
 			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_DATABASE_ERROR');
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+			return false;
 		}
 
 		return  true;
@@ -3605,7 +3664,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		try
 		{
-			$rules = new Rules($sectionRules);
+			$rules = new JAccessRules($sectionRules);
 
 			$query = $this->db->getQuery(true);
 
@@ -3996,6 +4055,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 	/**
 	 * Method to rewrite user groups in the assets. Needed, if backup file processed contains other usergroups than currently installed ones.
+	 * Done to read values, no database action here.
 	 *
 	 * @param string $table           component or table name of the assets are to rewrite
 	 * @param array  $assets          array of the table assets
@@ -4168,13 +4228,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @throws Exception
 	 *
-	 * @return boolean
+	 * @return boolean|string
 	 *
 	 * @since    1.3.0
 	 */
 	public function restoreRestorePoint()
 	{
-		$tables = $this->getAffectedTables();
+		$tables = $this->getAffectedTables(true);
 
 		foreach ($tables as $table)
 		{
@@ -4193,10 +4253,10 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message .= $exception->getMessage();
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-				return false;
+				return $message;
 			}
 
-			// delete newly created tables
+			// rename temporary tables to real ones
 			$query = (
 				'RENAME TABLE ' . $this->db->quoteName($table["tableNameGeneric"] . '_tmp') . ' TO ' . $this->db->quoteName($table["tableNameGeneric"])
 			);
@@ -4205,6 +4265,9 @@ class MaintenanceModel extends BaseDatabaseModel
 			{
 				$this->db->setQuery($query);
 				$this->db->execute();
+
+				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_POINT_RESTORED_WARNING');
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 			}
 			catch (RuntimeException $exception)
 			{
@@ -4213,14 +4276,9 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message .= $exception->getMessage();
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-				return false;
+				return $message;
 			}
 		}
-
-		$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_POINT_RESTORED_WARNING');
-		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
-
-		Factory::getApplication()->setUserState('com_bwpostman.maintenance.restorePoint_text', '<p class="bw_tablecheck_error">' . $message . '</p>');
 
 		return true;
 	}
@@ -4229,13 +4287,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * Method to delete tmp copies of affected tables. This is a very fast method to use as restore point. If error occurred,
 	 * only delete current tables and rename tmp names to the original ones. If all went well, delete tmp tables.
 	 *
-	 * @return boolean
+	 * @return boolean|string
 	 *
 	 * @throws Exception
 	 *
 	 * @since    1.3.0
 	 */
-	protected function deleteRestorePoint()
+	public function deleteRestorePoint()
 	{
 		$tables = $this->getAffectedTables();
 
@@ -4258,7 +4316,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DELETE_RESTORE_POINT_ERROR') . $exception->getMessage();
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-					return false;
+					return $message;
 				}
 			}
 
@@ -4269,17 +4327,19 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * Method to get the affected tables for restore point, but without temporary tables. Affected tables are not only all
 	 * tables with bwpostman in their name, but also assets and usergroups
 	 *
+	 * @param boolean $restore  are we at restore mode
+	 *
 	 * @return  array|boolean   $tableNames     array of affected tables
 	 *
 	 * @since    1.3.0
 	 */
-	protected function getAffectedTables()
+	protected function getAffectedTables($restore = false)
 	{
 		// get db prefix
 		$prefix = $this->db->getPrefix();
 
 		// get all names of installed BwPostman tables
-		if ($this->getTableNamesFromDB() === false)
+		if ($this->getTableNamesFromDB($restore) === false)
 		{
 			return  false;
 		}
@@ -4295,10 +4355,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		$tables = array();
 		foreach ($this->tableNames as $table)
 		{
-			if (!strpos($table['tableNameGeneric'], '_tmp'))
-			{
-				$tables[] = $table;
-			}
+			$tables[] = $table;
 		}
 
 		$tables[]['tableNameGeneric'] = $prefix . 'usergroups';
@@ -6494,7 +6551,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * @param string $table         table to create
 	 * @param array  $tablesQueries query used for creation
 	 *
-	 * @return boolean
+	 * @return    boolean|string boolean on success, string with error message on failure
 	 *
 	 * @throws Exception
 	 *
@@ -6506,6 +6563,27 @@ class MaintenanceModel extends BaseDatabaseModel
 		if ($table != 'component')
 		{
 			$query = str_replace("\n", '', $tablesQueries[$table]['queries']);
+
+			$tableProps = new stdClass();
+
+			$this->getCharset($query, $tableProps);
+			$this->getCollation($query, $tableProps);
+			$mainPartCollation = substr($tableProps->collation, 0, strpos($tableProps->collation, '_'));
+
+			if ($tableProps->charset !== $mainPartCollation)
+			{
+				// Replace columns collation
+				$search   = 'COLLATE ' . $mainPartCollation;
+				$replace  = 'COLLATE ' . $tableProps->charset;
+				$newQuery1 = str_replace($search, $replace, $query);
+
+				// Replace columns collation
+				$search    = 'COLLATE=' . $mainPartCollation;
+				$replace   = 'COLLATE=' . $tableProps->charset;
+				$newQuery2 = str_replace($search, $replace, $newQuery1);
+
+				$query    = $newQuery2;
+			}
 
 			try
 			{
@@ -6521,10 +6599,10 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message =  $exception->getMessage();
+				$message =  $exception->getMessage() . $table;
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-				return false;
+				return $exception->getMessage();
 			}
 
 			$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_SUCCESS', $table);
@@ -6613,5 +6691,48 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 
 		return $data;
+	}
+
+	/**
+	 * @param string   $query
+	 * @param stdClass $table
+	 *
+	 * @return void
+	 *
+	 * @since 3.1.3
+	 */
+	private function getCharset(string $query, stdClass $table)
+	{
+		$start1 = stripos($query, 'DEFAULT CHARSET');
+
+		if ($start1 !== false)
+		{
+			$start2         = strpos($query, '=', $start1);
+			$stop           = stripos($query, ' ', $start2);
+			$length         = $stop - $start2;
+			$table->charset = substr($query, $start2, $length);
+			$table->charset = str_replace('=', '', $table->charset);
+		}
+	}
+
+	/**
+	 * @param string   $query
+	 * @param stdClass $table
+	 *
+	 * @return void
+	 *
+	 * @since 3.1.3
+	 */
+	private function getCollation(string $query, stdClass $table)
+	{
+		$start = strripos($query, 'COLLATE');
+
+		if ($start !== false)
+		{
+			$stop             = stripos($query, ';', $start);
+//			$length           = $stop - $start - 8;
+			$table->collation = substr($query, $start + 8);
+			$table->collation = str_replace(';', '', $table->collation);
+		}
 	}
 }

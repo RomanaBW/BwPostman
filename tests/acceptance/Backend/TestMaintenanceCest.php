@@ -173,9 +173,77 @@ class TestMaintenanceCest
 		$I->wait(10);
 		$I->waitForElement(MaintenancePage::$step4Field, 30);
 		$I->waitForElement(MaintenancePage::$step5Field, 30);
-		$I->waitForElement(MaintenancePage::$step5SuccessClass, 30);
-		$I->see(MaintenancePage::$step5SuccessMsg, MaintenancePage::$step5SuccessClass);
+		$I->waitForElement(MaintenancePage::$step6Field, 30);
+		$I->waitForElement(MaintenancePage::$step7Field, 30);
+		$I->waitForElement(MaintenancePage::$step7SuccessClass, 30);
+		$I->see(MaintenancePage::$step7SuccessMsg, MaintenancePage::$successIdentifierResult);
+
+		$resultsWarn = $I->grabMultiple(MaintenancePage::$warningIdentifier);
+		$I->assertEquals(count($resultsWarn), 0);
+		$I->see(MaintenancePage::$successTextAllResult, MaintenancePage::$successAllIdentifierResult);
+
 		$I->clickAndWait(MaintenancePage::$checkBackButton, 1);
+	}
+
+	/**
+	 * Test method to restore tables from unzipped file with errors to see if they are handled correctly
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   3.1.3
+	 */
+	public function restoreTablesWithErrors(AcceptanceTester $I)
+	{
+		MaintenancePage::restoreTables($I, false, 'BwPostman_3_1_x_Tables_error_default.xml');
+		MaintenancePage::restoreTables($I, false, 'BwPostman_3_1_x_Tables_error_primary.xml');
+	}
+
+	/**
+	 * Test method to restore tables from unzipped file with modifications to see if they are handled correctly, simple modifications
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   3.1.3
+	 */
+	public function restoreTablesWithModsSimple(AcceptanceTester $I)
+	{
+		MaintenancePage::restoreTables($I, false, 'BwPostman_3_1_x_Tables_modified_simple.xml');
+	}
+
+	/**
+	 * Test method to restore tables from unzipped file with modifications to see if they are handled correctly, higher version as installed
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   3.1.3
+	 */
+	public function restoreTablesWithModsVersion(AcceptanceTester $I)
+	{
+		MaintenancePage::restoreTables($I, false, 'BwPostman_3_1_x_Tables_modified_version.xml');
 	}
 
 	/**
@@ -278,6 +346,7 @@ class TestMaintenanceCest
 
 			$I->click(MaintenancePage::$forumButton);
 			$I->switchToNextTab();
+			$I->wait(2);
 //			$I->switchToWindow("new");
 			$I->see("In this category you can ask your questions for the Joomla! extension BwPostman.");
 		}

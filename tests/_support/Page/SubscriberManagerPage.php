@@ -925,6 +925,132 @@ class SubscriberManagerPage
 	 */
 	public static $exportFieldRemoveButton = "//*[@name='removebutton']";
 
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $tableSelectField = "//*/table[@id='main-table-bw-confirmed']/tbody/tr[%s]/td[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $tableFirstnameField = "//*/table[@id='main-table-bw-confirmed']/tbody/tr[%s]/td[3]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchModalBody = "//*[@id='collapseModal']/div[@class='modal-body modal-batch']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchModalSelectList = ".//*[@id='batch_mailinglist_id_chzn']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchModalTask = "//*[@id='batch-task']/div/label[%s]/input";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchMlListId       = "batch_mailinglist_id_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchMlList          = "//*[@id='batch_mailinglist_id_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchMlSelectNew        = "//*/li[text()='01 Mailingliste 2 A']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchMlSelectOld        = "//*/li[text()='01 Mailingliste 5 A']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchMlSelectAlready        = "//*/li[text()='01 Mailingliste 2 B']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchProcess        = "//*[@class='modal-footer']/button[2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchSuccessSubscribe        = "Batch processing „Add subscribers to mailing list with ID 1“ finished. 2 subscribers added.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchSuccessSubscribeAlready        = "Batch processing „Add subscribers to mailing list with ID 4“ finished. One subscriber added. There was one subscriber, that already was subscribed to this mailing list. Subscriber skipped.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchSuccessUnsubscribe        = "Batch processing „Remove subscribers from mailing list with ID 1“ finished. 2 subscribers removed.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchSuccessUnsubscribeOne        = "Batch processing „Remove subscribers from mailing list with ID 4“ finished. One subscriber removed.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchSuccessUnsubscribeNo        = "Batch processing „Remove subscribers from mailing list with ID 1“ finished. 2 subscribers removed. There was one subscriber, that was not subscribed to this mailing list. Subscriber skipped.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchSuccessMoveForward        = "Batch processing „Add subscribers to mailing list with ID 1“ finished. 2 subscribers added.\nBatch processing „Remove subscribers from mailing list with ID 4“ finished. 2 subscribers removed.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.2
+	 */
+	public static $batchSuccessMoveBack        = "Batch processing „Add subscribers to mailing list with ID 4“ finished. 2 subscribers added.\nBatch processing „Remove subscribers from mailing list with ID 1“ finished. 2 subscribers removed.";
+
 
 	/**
 	 * @param \AcceptanceTester $I

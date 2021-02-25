@@ -275,7 +275,7 @@ class Acceptance extends Codeception\Module
 	private function SubstituteGender($data = array())
 	{
 		$result     = array();
-		$gender     = array('male', 'female');
+		$gender     = array('male', 'female', 'not specified');
 		foreach ($data as $item)
 		{
 			$dataset = array();

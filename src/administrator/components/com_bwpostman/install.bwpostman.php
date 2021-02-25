@@ -1576,6 +1576,7 @@ class Com_BwPostmanInstallerScript
 	 */
 	public function showFinished($update)
 	{
+		JLoader::register('JButtonExtlink', JPATH_SITE . '/plugins/system/bw_libregister/libraries/extlink.php');
 
 		$lang = Factory::getLanguage();
 		//Load first english files

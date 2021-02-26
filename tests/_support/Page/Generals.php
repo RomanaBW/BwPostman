@@ -197,7 +197,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $pageTitle        = 'h1.page-title';
+	public static $pageTitle        = "//*/h1[@class='page-title']";
 
 	/**
 	 * @var string

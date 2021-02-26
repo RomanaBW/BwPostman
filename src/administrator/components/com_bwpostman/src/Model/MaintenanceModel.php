@@ -3664,7 +3664,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		try
 		{
-			$rules = new JAccessRules($sectionRules);
+			$rules = new Rules($sectionRules);
 
 			$query = $this->db->getQuery(true);
 

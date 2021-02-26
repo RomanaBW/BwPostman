@@ -880,15 +880,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 						'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span",
-						'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+						'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 						'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span",
-						'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+						'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 					),
 				'publish_by_toolbar'   => array(
 						'publish_button'    => "//*[@id='cb0']",
-						'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+						'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 						'unpublish_button'  => "//*[@id='cb0']",
-						'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+						'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 					),
 			),
 
@@ -976,15 +976,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1016,15 +1016,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1074,15 +1074,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1170,15 +1170,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1210,15 +1210,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1268,15 +1268,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1364,15 +1364,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1404,15 +1404,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1462,15 +1462,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1558,15 +1558,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1598,15 +1598,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1766,15 +1766,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1815,15 +1815,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1864,15 +1864,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1914,15 +1914,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -1964,15 +1964,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -2014,15 +2014,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[8]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -2174,15 +2174,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -2223,15 +2223,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -2272,15 +2272,15 @@ class AccessPage
 				'check link'    => "//*[@id='main-table']/tbody/tr/td/a[contains(text(), '%s')]",
 				'publish_by_icon'   => array(
 					'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 				'publish_by_toolbar'   => array(
 					'publish_button'    => "//*[@id='cb0']",
-					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-check')]",
+					'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-publish')]",
 					'unpublish_button'  => "//*[@id='cb0']",
-					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'fa-times')]",
+					'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/*/span[contains(@class, 'icon-unpublish')]",
 				),
 			),
 
@@ -2296,9 +2296,9 @@ class AccessPage
 	 */
 	public static $publish_by_icon   = array(
 		'publish_button'    => "////*[@id='main-table']/tbody/tr[3]/td[4]/*",
-		'publish_result'    => "////*[@id='main-table']/tbody/tr[3]/td[4]/*/span[contains(@class, 'fa-check')]",
+		'publish_result'    => "////*[@id='main-table']/tbody/tr[3]/td[4]/*/span[contains(@class, 'icon-publish')]",
 		'unpublish_button'  => "////*[@id='main-table']/tbody/tr[4]/td[4]/*",
-		'unpublish_result'  => "////*[@id='main-table']/tbody/tr[4]/td[4]/*/span[contains(@class, 'fa-times')]",
+		'unpublish_result'  => "////*[@id='main-table']/tbody/tr[4]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 	);
 
 	/**
@@ -2308,9 +2308,9 @@ class AccessPage
 	 */
 	public static $publish_by_toolbar   = array(
 		'publish_button'    => "//*[@id='cb5']",
-		'publish_result'    => "////*[@id='main-table']/tbody/tr[6]/td[4]/*/span[contains(@class, 'fa-check')]",
+		'publish_result'    => "////*[@id='main-table']/tbody/tr[6]/td[4]/*/span[contains(@class, 'icon-publish')]",
 		'unpublish_button'  => "//*[@id='cb6']",
-		'unpublish_result'  => "////*[@id='main-table']/tbody/tr[7]/td[4]/*/span[contains(@class, 'fa-times')]",
+		'unpublish_result'  => "////*[@id='main-table']/tbody/tr[7]/td[4]/*/span[contains(@class, 'icon-unpublish')]",
 	);
 
 

@@ -217,7 +217,7 @@ class TestSubscribersListsCest
 		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 
-		$I->searchLoop($I, SubsManage::$search_data_array, true, SubsManage::$confirmedMainTable);
+		$I->searchLoop($I, SubsManage::$search_data_array, true, true, SubsManage::$confirmedMainTable);
 
 		$I->click(Generals::$clear_button);
 		$I->see(SubsManage::$search_clear_val);
@@ -462,7 +462,7 @@ class TestSubscribersListsCest
 
 		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
 
-		$I->searchLoop($I, SubsManage::$search_data_array_unconfirmed, true, SubsManage::$unconfirmedMainTable);
+		$I->searchLoop($I, SubsManage::$search_data_array_unconfirmed, true, true, SubsManage::$unconfirmedMainTable);
 
 		$I->click(Generals::$clear_button);
 		$I->see(SubsManage::$search_clear_val_unconfirmed);
@@ -695,7 +695,7 @@ class TestSubscribersListsCest
 //		$I->amOnPage(SubsManage::$url);
 //		$I->clickAndWait(SubsManage::$tab_testers, 1);
 //
-//		$I->searchLoop($I, SubsManage::$search_data_array, true);
+//		$I->searchLoop($I, SubsManage::$search_data_array, true, true);
 //
 //		$I->click(Generals::$clear_button);
 //		$I->see(SubsManage::$search_clear_val);
@@ -1753,7 +1753,7 @@ class TestSubscribersListsCest
 				$I->click(SubsManage::$tab_unconfirmed);
 			}
 
-			$I->searchLoop($I, $search_data_array, true, SubsManage::$confirmedMainTable);
+			$I->searchLoop($I, $search_data_array, true, true, SubsManage::$confirmedMainTable);
 			$table_identifier = ".//*[@id='main-table-bw-confirmed']/tbody/tr[1]/td";
 
 			$I->see($subscriber['name'], $table_identifier . '[2]');

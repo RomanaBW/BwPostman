@@ -109,9 +109,9 @@ class MailinglistManagerPage
 	 */
 	public static $publish_by_icon   = array(
 		'publish_button'    => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a",
-		'publish_result'    => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'fa-check')]",
+		'publish_result'    => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
 		'unpublish_button'  => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a",
-		'unpublish_result'  => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'fa-times')]",
+		'unpublish_result'  => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 
@@ -122,9 +122,9 @@ class MailinglistManagerPage
 	 */
 	public static $publish_by_toolbar   = array(
 		'publish_button'    => "//*[@id='cb5']",
-		'publish_result'    => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'fa-check')]",
+		'publish_result'    => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-publish')]",
 		'unpublish_button'  => "//*[@id='cb5']",
-		'unpublish_result'  => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'fa-times')]",
+		'unpublish_result'  => "//*[@id='j-main-container']/table/tbody/tr[6]/td[4]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 

@@ -58,7 +58,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $control_panel        = "Control Panel";
+	public static $control_panel        = "Home Dashboard";
 
 	/**
 	 * @var string
@@ -204,21 +204,21 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_header     = "//*[@id='system-message-container']/div[1]/joomla-alert/div[@class='alert-heading']";
+	public static $alert_header     = "//*[@id='system-message-container']/joomla-alert/div[@class='alert-heading']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_heading    = "//*[@id='system-message-container']/div[1]/joomla-alert/div[@class='alert-heading']";
+	public static $alert_heading    = "//*[@id='system-message-container']/joomla-alert/div[@class='alert-heading']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.4.0
 	 */
-	public static $alert_heading4    = "//*[@id='system-message-container']/div[1]/joomla-alert/div[@class='alert-heading']";
+	public static $alert_heading4    = "//*[@id='system-message-container']/joomla-alert/div[@class='alert-heading']";
 
 	/**
 	 * @var string
@@ -232,35 +232,35 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_success    = '//*[@id="system-message"]/joomla-alert[@type="success"]/div';
+	public static $alert_success    = '//*[@id="system-message-container"]/joomla-alert[@type="success"]/div';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.4.0
 	 */
-	public static $alert_success4    = '//*[@id="system-message"]/joomla-alert[@type="success"]/div[2]';
+	public static $alert_success4    = '//*[@id="system-message-container"]/joomla-alert[@type="success"]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_msg        = '//*[@id="system-message"]/joomla-alert[@type="message"]';
+	public static $alert_msg        = '//*[@id="system-message-container"]/joomla-alert[@type="message"]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.0
 	 */
-	public static $alert_info        = '//*[@id="system-message"]/joomla-alert[@type="info"]/div[2]';
+	public static $alert_info        = '//*[@id="system-message-container"]/joomla-alert[@type="info"]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_warn       = '//*[@id="system-message"]/joomla-alert[@type="warning"]/div[2]';
+	public static $alert_warn       = '//*[@id="system-message-container"]/joomla-alert[@type="warning"]';
 
 	/**
 	 * @var string
@@ -274,7 +274,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_error      = "//*[@id='system-message']/joomla-alert[@type='danger']/div[2]";
+	public static $alert_error      = "//*[@id='system-message-container']/joomla-alert[@type='danger']";
 
 	/**
 	 * @var string
@@ -288,7 +288,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $systemMessageClose      = "//*[@id='system-message']/joomla-alert/button";
+	public static $systemMessageClose      = "//*[@id='system-message-container']/joomla-alert/button";
 
 	/**
 	 * @var string
@@ -576,8 +576,8 @@ class Generals
 	 * @since 2.0.0
 	 */
 	public static $sort_arrows = array(
-		'up'    => 'fa-caret-up', # [contains(@class, 'icon-arrow-up-3')]
-		'down'  => 'fa-caret-down' # [contains(@class, 'icon-arrow-down-3')]
+		'up'    => 'icon-caret-up', # [contains(@class, 'icon-arrow-up-3')]
+		'down'  => 'icon-caret-down' # [contains(@class, 'icon-arrow-down-3')]
 	);
 
 	/**
@@ -647,7 +647,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $search_button        = "//*[@class='js-stools-container-bar']/div[1]/div[1]/div[1]/span/button";
+	public static $search_button        = "//*[@class='js-stools-container-bar']/div[1]/div[1]/div[1]/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $search_button_span        = "//*[@class='js-stools-container-bar']/div[1]/div[1]/div[1]/span/button";
 
 	// Filter bar
 
@@ -728,14 +735,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $icon_unpublished     = "//*/a/span[contains(@class, 'fa-times')]";
+	public static $icon_unpublished     = "//*/a/span[contains(@class, 'icon-unpublish')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $icon_published       = "//*/a/span[contains(@class, 'fa-check')]";
+	public static $icon_published       = "//*/a/span[contains(@class, 'icon-publish')]";
 
 	// filter identifiers
 
@@ -744,14 +751,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $publish_row          = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'fa-check')]";
+	public static $publish_row          = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-publish')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $unpublish_row        = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'fa-times')]";
+	public static $unpublish_row        = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-unpublish')]";
 
 	/**
 	 * @var string

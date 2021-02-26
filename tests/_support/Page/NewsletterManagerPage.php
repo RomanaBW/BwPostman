@@ -90,14 +90,14 @@ class NewsletterManagerPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_line_unpublished   = "//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'fa-times')]";
+	public static $first_line_unpublished   = "//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $first_line_published     = "//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'fa-check')]";
+	public static $first_line_published     = "//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]";
 
 	/**
 	 * @var string
@@ -542,9 +542,9 @@ class NewsletterManagerPage
 	 */
 	public static $publish_by_icon   = array(
 		'publish_button'    => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
-		'publish_result'    => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'fa-check')]",
+		'publish_result'    => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-publish')]",
 		'unpublish_button'  => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a",
-		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'fa-times')]",
+		'unpublish_result'  => ".//*[@id='main-table']/tbody/tr[1]/td[8]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 

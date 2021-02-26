@@ -519,6 +519,46 @@ codecept run acceptance FooterUsedMailinglists/FooterUsedMailinglistsCest::ShowR
 codecept run acceptance FooterUsedMailinglists/FooterUsedMailinglistsCest::ShowRecipientsOnlySummarized "${BW_TEST_DEBUG}" --xml xmlreports/report_footerUsedMailinglists_only_sum.xml --html htmlreports/report_footerUsedMailinglists_only_sum.html
 fi
 
+if [[ "${BW_TEST_CAT}" == registration_module ]]
+then
+# single tests for registration module
+codecept run acceptance Module_Register/SubscribeModuleCest::setupRegistrationModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_setup.xml --html htmlreports/report_modRegister_setup.html
+
+codecept run acceptance Module_Register/SubscribeModuleCest::SubscribeModuleSimpleActivateAndUnsubscribeCO "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_activate_and_unsubscribe_co.xml --html htmlreports/report_modRegister_activate_and_unsubscribe_co.html
+codecept run acceptance Module_Register/SubscribeModuleCest::SubscribeModuleSimpleActivateAndUnsubscribeMO "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_activate_and_unsubscribe_mo.xml --html htmlreports/report_modRegister_activate_and_unsubscribe_mo.html
+codecept run acceptance Module_Register/SubscribeModuleCest::SubscribeModuleSimpleActivateAndUnsubscribePopupMO "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_activate_and_unsubscribe_popup_mo.xml --html htmlreports/report_modRegister_activate_and_unsubscribe_popup_mo.html
+codecept run acceptance Module_Register/SubscribeModuleCest::SubscribeModuleSimpleActivateAndUnsubscribeBigPopupMO "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_activate_and_unsubscribe_big_popup_mo.xml --html htmlreports/report_modRegister_activate_and_unsubscribe_big_popup_mo.html
+codecept run acceptance Module_Register/SubscribeModuleCest::SubscribeModulePopupOverPopup "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_popup_over_popup.xml --html htmlreports/report_modRegister_popup_over_popup.html
+codecept run acceptance Module_Register/SubscribeModuleCest::EditSubscriptionByModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_edit_subscription.xml --html htmlreports/report_modRegister_edit_subscription.html
+codecept run acceptance Module_Register/SubscribeModuleCest::SubscribeMissingValuesModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_missing_values.xml --html htmlreports/report_modRegister_missing_values.html
+codecept run acceptance Module_Register/SubscribeModuleCest::SubscribeShowFieldsModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_show_fields.xml --html htmlreports/report_modRegister_show_fields.html
+codecept run acceptance Module_Register/SubscribeModuleCest::CheckMailinglistDescriptionModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_show_desc.xml --html htmlreports/report_modRegister_show_desc.html
+codecept run acceptance Module_Register/SubscribeModuleCest::CheckIntroTextModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_check_intro.xml --html htmlreports/report_modRegister_check_intro.html
+codecept run acceptance Module_Register/SubscribeModuleCest::CheckDisclaimerContentPopupModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_check_disclaimer_selection_popup.xml --html htmlreports/report_modRegister_check_disclaimer_selection_popup.html
+codecept run acceptance Module_Register/SubscribeModuleCest::CheckDisclaimerContentNewWindowModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_check_disclaimer_selection_new.xml --html htmlreports/report_modRegister_check_disclaimer_selection_new.html
+codecept run acceptance Module_Register/SubscribeModuleCest::CheckDisclaimerContentSameWindowModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_check_disclaimer_selection_same.xml --html htmlreports/report_modRegister_check_disclaimer_selection_same.html
+codecept run acceptance Module_Register/SubscribeModuleCest::CheckSecurityQuestionModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_check_security_question.xml --html htmlreports/report_modRegister_check_security_question.html
+codecept run acceptance Module_Register/SubscribeModuleCest::CheckSelectableMailinglistsModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_check_mailinglists_number.xml --html htmlreports/report_modRegister_check_mailinglists_number.html
+codecept run acceptance Module_Register/SubscribeModuleCest::SubscribeAbuseFieldsModule "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_modRegister_fields.xml --html htmlreports/report_modRegister_abuse_fields.html
+codecept run acceptance Module_Register/SubscribeModuleCest::SubscribeUnreachableMailAddressModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister_unreachable_mail.xml --html htmlreports/report_modRegister_unreachable_mail.html
+fi
+
+if [[ "${BW_TEST_CAT}" == overview_module ]]
+then
+# single tests for registration module
+codecept run acceptance ModuleOverview/ModuleOverviewCest::setupOverviewModule "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_setup.xml --html htmlreports/report_modOverview_setup.html
+
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsAll "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_all.xml --html htmlreports/report_modOverview_check_number_of_months_all.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsRestricted "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_restricted.xml --html htmlreports/report_modOverview_check_number_of_months_restricted.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchived "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_archived.xml --html htmlreports/report_modOverview_check_number_of_months_not_archived.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchivedNotExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_archived_not_expired.xml --html htmlreports/report_modOverview_check_number_of_months_not_archived_not_expired.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchivedButExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_expored.xml --html htmlreports/report_modOverview_check_number_of_months_not_expored.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyArchived "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_only_archived.xml --html htmlreports/report_modOverview_check_number_of_months_only_archived.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_only_expired.xml --html htmlreports/report_modOverview_check_number_of_months_only_expired.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsArchivedAndExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_archived_and_expired.xml --html htmlreports/report_modOverview_check_number_of_months_archived_and_expired.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsArchivedOrExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_archived_or_expired.xml --html htmlreports/report_modOverview_check_number_of_months_archived_or_expired.html
+fi
+
 if [[ "${BW_TEST_CAT}" == all ]]
 then
 # run all tests

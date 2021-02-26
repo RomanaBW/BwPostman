@@ -88,12 +88,12 @@ class InstallRequiredCest
 		{
 			self::doInstallation($I, $installFile);
 
-			$heading = $I->grabTextFrom(Generals::$alert_heading4);
-
-			if ($heading == "Warning")
-			{
-				continue;
-			}
+//			$heading = $I->grabTextFrom(Generals::$alert_heading4);
+//
+//			if ($heading == "Warning")
+//			{
+//				continue;
+//			}
 
 			$I->waitForElementVisible(Generals::$alert_success4, 30);
 			$I->see(self::$installSuccessMsg1, Generals::$alert_success4);

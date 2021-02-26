@@ -106,9 +106,9 @@ class TemplateManagerPage
 	 */
 	public static $publish_by_icon   = array(
 		'publish_button'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/a",
-		'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'fa-check')]",
+		'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-publish')]",
 		'unpublish_button'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/a",
-		'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'fa-times')]",
+		'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 	// publish by toolbar
@@ -120,9 +120,9 @@ class TemplateManagerPage
 	 */
 	public static $publish_by_toolbar   = array(
 		'publish_button'    => "//*[@id='cb0']",
-		'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'fa-check')]",
+		'publish_result'    => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-publish')]",
 		'unpublish_button'  => "//*[@id='cb0']",
-		'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'fa-times')]",
+		'unpublish_result'  => "//*[@id='main-table']/tbody/tr[1]/td[6]/a/span[contains(@class, 'icon-unpublish')]",
 	);
 
 

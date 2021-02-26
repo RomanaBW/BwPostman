@@ -1127,13 +1127,14 @@ class Acceptance extends Codeception\Module
 	 * @param \AcceptanceTester $I
 	 * @param array             $search_data_array
 	 * @param bool              $exact
+	 * @param bool              $searchWithSpan
 	 * @param string            $mainTable
 	 *
 	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function searchLoop(\AcceptanceTester $I, $search_data_array, $exact = true, $mainTable = "//*[@id='main-table']")
+	public function searchLoop(\AcceptanceTester $I, $search_data_array, $exact = true, bool $searchWithSpan = false, $mainTable = "//*[@id='main-table']")
 	{
 		// loop search value
 		for ($j = 0; $j < count($search_data_array['search_val']); $j++)
@@ -1148,7 +1149,14 @@ class Acceptance extends Codeception\Module
 				$I->selectOption(Generals::$search_list, $search_data_array['search_by'][$i]);
 
 				// click search button
-				$I->click(Generals::$search_button);
+				$searchButton = Generals::$search_button;
+
+				if ($searchWithSpan)
+				{
+					$searchButton = Generals::$search_button_span;
+				}
+
+				$I->click($searchButton);
 				$I->waitForElement($mainTable);
 				// check result
 				if ((int) $search_data_array['search_res'][$j][$i] == 0)
@@ -1212,7 +1220,14 @@ class Acceptance extends Codeception\Module
 		$I->click(Generals::$search_list);
 		$I->selectOption(Generals::$search_list, $edit_data['archive_identifier']);
 
-		$I->click(Generals::$search_button);
+		$searchButton = Generals::$search_button;
+
+		if ($manage_data['section'] == 'archive' || $manage_data['section'] == 'subscriber' || $manage_data['section'] == 'newsletter')
+		{
+			$searchButton = Generals::$search_button_span;
+		}
+
+		$I->click($searchButton);
 
 		$mainTableId = Generals::$main_table;
 		if (isset($edit_data['mainTableId']))
@@ -1284,7 +1299,7 @@ class Acceptance extends Codeception\Module
 		$I->click(Generals::$search_list);
 		$I->selectOption(Generals::$search_list, $edit_data['delete_identifier']);
 
-		$I->click(Generals::$search_button);
+		$I->click(Generals::$search_button_span);
 
 		$I->waitForElement(Generals::$main_table);
 
@@ -1346,7 +1361,7 @@ class Acceptance extends Codeception\Module
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
 		$I->clickAndWait(Generals::$filterbar_button, 2);
 		$I->clickSelectList(Generals::$search_list, $edit_data['delete_identifier'], Generals::$search_list_id);
-		$I->clickAndWait(Generals::$search_button, 1);
+		$I->clickAndWait(Generals::$search_button_span, 1);
 		$I->see($edit_data['field_title']);
 
 		//count items

@@ -1,13 +1,13 @@
 ---
-bw_artifacts_base: "/repositories/artifacts/bwpostman"
-project_base_dir: "/repositories/BwPostman/"
+bw_artifacts_base: "/repositories/artifacts/bwpostman4"
+project_base_dir: "/repositories/BwPostman4/"
 
 build: "smoke"
 test_suite: "smoke"
 
 log_path: '/data/logs'
-record_path: "/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ bwpm_version }}/{{ test_suite }}/videos"
-test_log_path: "/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ bwpm_version }}/{{ test_suite }}/logs"
+record_path: "/repositories/artifacts/bwpostman4/j{{ joomla_version }}_bwpm{{ bwpm_version }}/{{ test_suite }}/videos"
+test_log_path: "/repositories/artifacts/bwpostman4/j{{ joomla_version }}_bwpm{{ bwpm_version }}/{{ test_suite }}/logs"
 
 test_db_host: "joomla_db"
 test_db_dbname: "joomlatest"

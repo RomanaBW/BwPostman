@@ -76,7 +76,7 @@ webserver:
   container_name: "webserverbwpm"
   host_name: "webserver-bwpm"
 
-repository_base_path: "/repositories/artifacts/bwpostman"
+repository_base_path: "/repositories/artifacts/bwpostman4"
 
 codecept_path_tests: "tests"
 codecept_path_data: "repo_data/data"

@@ -25,7 +25,7 @@
       vars:
         target_folder: "{{ joomla_base_folders[sub_path_smoke] }}"
         source_folder: "{{ joomla_base_folders[sub_path_source] }}"
-      with_items: "{{ acceptance_j3_folders }}"
+      with_items: "{{ acceptance_j4_folders }}"
 
     - name: ensure joomla sub folder exists
       become: true

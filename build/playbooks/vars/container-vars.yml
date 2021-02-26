@@ -105,8 +105,8 @@ Suites:
 
 BW_TEST_DB_HOST: "mysqldbbwpm"
 
-repository_database_path: "/repositories/artifacts/bwpostman/database/{{ project_name }}"
-repository_joomla_database_path: "/repositories/artifacts/bwpostman/database/{{ joomla_name }}"
+repository_database_path: "/repositories/artifacts/bwpostman4/database/{{ project_name }}"
+repository_joomla_database_path: "/repositories/artifacts/bwpostman4/database/{{ joomla_name }}"
 repository_project_path: "{{ repository_base_path }}/{{ project_log_name }}"
 repository_project_suite_path: "{{ repository_project_path }}/{{ item.value.suite_name }}"
 repository_project_suite_path_alt: "{{ repository_project_path }}/{{ suite_vars.suite_name }}"

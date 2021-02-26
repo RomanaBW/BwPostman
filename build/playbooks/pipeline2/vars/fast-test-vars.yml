@@ -21,8 +21,8 @@ bwpm_install: ""
 
 
 
-bw_artifacts_base: "/repositories/artifacts/bwpostman/fast"
-project_base_dir: "/repositories/BwPostman/"
+bw_artifacts_base: "/repositories/artifacts/bwpostman4/fast"
+project_base_dir: "/repositories/BwPostman4/"
 
 build: "fast"
 test_suite: "fast"

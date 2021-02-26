@@ -27,7 +27,7 @@
       become: true
       become_user: root
       file:
-        path: "/repositories/artifacts/bwpostman/j{{ joomla_version }}_bwpm{{ version_number }}/{{ test_suite }}/videos"
+        path: "/repositories/artifacts/bwpostman4/j{{ joomla_version }}_bwpm{{ version_number }}/{{ test_suite }}/videos"
         state: directory
         mode: 0777
 
@@ -74,7 +74,7 @@
 
     - name: Set project dir variable
       set_fact:
-        bw_project_base_dir: "{{ project_base_dir | default('/data/repositories/BwPostman/') }}"
+        bw_project_base_dir: "{{ project_base_dir | default('/data/repositories/BwPostman4/') }}"
 
     - name: copy tests
       become: true

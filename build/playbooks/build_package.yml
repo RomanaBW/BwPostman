@@ -138,7 +138,7 @@
 
     - name: Show package target path
       debug:
-        message: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
+        msg: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
 
     - name: copy package to test data folder without build and version number
       copy:

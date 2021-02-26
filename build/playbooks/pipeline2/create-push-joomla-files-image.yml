@@ -100,21 +100,10 @@
 
     - name: Replace table prefix at Joomla 4
       replace:
-        path: "{{ playbook_dir }}/files/joomla/{{ item }}"
+        path: "{{ playbook_dir }}/files/joomla4/{{ item }}"
         regexp: '`#__'
         replace: "`{{ tester_db_prefix }}"
       with_items:
         - "base.sql"
         - "supports.sql"
         - "extensions.sql"
-      when: j_master_version == '4'
-
-    - name: Replace table prefix at Joomla 3
-      replace:
-        path: "{{ playbook_dir }}/files/joomla/{{ item }}"
-        regexp: '`#__'
-        replace: "`{{ tester_db_prefix }}"
-      with_items:
-        - "joomla.sql"
-        - "sample_learn.sql"
-      when: j_master_version == '3'

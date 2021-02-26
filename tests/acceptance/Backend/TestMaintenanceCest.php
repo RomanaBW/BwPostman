@@ -202,8 +202,8 @@ class TestMaintenanceCest
 	 */
 	public function restoreTablesWithErrors(AcceptanceTester $I)
 	{
-		MaintenancePage::restoreTables($I, false, 'BwPostman_3_1_x_Tables_error_default.xml');
-		MaintenancePage::restoreTables($I, false, 'BwPostman_3_1_x_Tables_error_primary.xml');
+		MaintenancePage::restoreTables($I, false, 'BwPostman_4_x_x_Tables_error_default.xml');
+		MaintenancePage::restoreTables($I, false, 'BwPostman_4_x_x_Tables_error_primary.xml');
 	}
 
 	/**
@@ -223,7 +223,7 @@ class TestMaintenanceCest
 	 */
 	public function restoreTablesWithModsSimple(AcceptanceTester $I)
 	{
-		MaintenancePage::restoreTables($I, false, 'BwPostman_3_1_x_Tables_modified_simple.xml');
+		MaintenancePage::restoreTables($I, false, 'BwPostman_4_x_x_Tables_modified_simple.xml');
 	}
 
 	/**
@@ -243,7 +243,7 @@ class TestMaintenanceCest
 	 */
 	public function restoreTablesWithModsVersion(AcceptanceTester $I)
 	{
-		MaintenancePage::restoreTables($I, false, 'BwPostman_3_1_x_Tables_modified_version.xml');
+		MaintenancePage::restoreTables($I, false, 'BwPostman_4_x_x_Tables_modified_version.xml');
 	}
 
 	/**

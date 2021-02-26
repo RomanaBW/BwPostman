@@ -136,10 +136,14 @@
         dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}-{{ version_number }}.{{ build }}.zip"
       when: not replace_vars|bool
 
+    - name: Show package target path
+      debug:
+        message: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
+
     - name: copy package to test data folder without build and version number
       copy:
         src: "{{ target_base_path }}/{{ extension_name }}4/pkg_{{ extension_name }}.zip"
-        dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}4.zip"
+        dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
 
     - name: copy changelog to test data folder
       copy:

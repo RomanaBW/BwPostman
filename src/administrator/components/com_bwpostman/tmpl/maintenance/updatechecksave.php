@@ -106,8 +106,8 @@ if ($show_update || $string_special != '')
 			<p id="step6" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_6'); ?></p>
 			<p id="step7" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_7'); ?></p>
 	</div>
-	<div id="resultSet" class="span5 well well-small">
-		<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
+	<div id="resultSet" class="col-lg-6 well mx-3">
+		<h2 class="mb-3"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
 		<div id="loading2"></div>
 		<div id="result"></div>
 </div>

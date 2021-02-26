@@ -795,7 +795,7 @@ class InstallationPage
 
 		if ($new_j_installer)
 		{
-			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: visible');");
+			$I->executeJS("document.getElementById('legacy-uploader').className = 'visible';");
 		}
 
 		$I->attachFile(self::$installField, $install_file);
@@ -807,7 +807,7 @@ class InstallationPage
 
 		if ($new_j_installer)
 		{
-			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: none');");
+			$I->executeJS("document.getElementById('legacy-uploader').className = 'hidden';");
 		}
 
 		$I->waitForElement(Generals::$sys_message_container, 150);

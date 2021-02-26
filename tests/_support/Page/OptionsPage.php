@@ -2268,6 +2268,7 @@ class OptionsPage
 		$I->expectTo("see success message and component in menu");
 		$I->amOnPage(MainView::$url);
 
+		$I->waitForElementVisible(Generals::$pageTitle, 3);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->clickAndWait(Generals::$toolbar4['Options'], 1);

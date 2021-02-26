@@ -142,7 +142,7 @@ class MaintenancePage
 	 *
 	 * @since 3.1.3
 	 */
-	public static $buttonStartRestore   = "//*[@id='adminForm']/fieldset/div[2]/div/table/tbody/tr[2]/td/input";
+	public static $buttonStartRestore   = "//*/input[@name='submitbutton']";
 
 	/**
 	 * @var string
@@ -255,7 +255,7 @@ class MaintenancePage
 	 *
 	 * @since 2.2.0
 	 */
-	public static $statisticsUnsentNewsletters     = "//*[@id='bwpostman_statistic-pane']/div/div/table/tbody/tr[1]/td[2]/b/a";
+	public static $statisticsUnsentNewsletters     = "//*[@id='generals']/div/table/tbody/tr[1]/td[2]/b/a";
 
 	/*
 	 * Success messages
@@ -718,24 +718,30 @@ class MaintenancePage
 
 		foreach (self::$successTableArray as $table)
 		{
+//			codecept_debug('Delete table assets: ' . $table);
 			$found = in_array(sprintf(self::$successTextDelAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+//			codecept_debug('Create table: ' . $table);
 			$found = in_array(sprintf(self::$successTextCreateTables, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+//			codecept_debug('Restore table: ' . $table);
 			$found = in_array(sprintf(self::$successTextRestoreTables, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+//			codecept_debug('Column check table: ' . $table);
 			$found = in_array(sprintf(self::$successTextColumns, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+//			codecept_debug('Attributes check table: ' . $table);
 			$found = in_array(sprintf(self::$successTextAttributes, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}
 
 		foreach (self::$assetTableArray as $table)
 		{
+//			codecept_debug('Create table assets: ' . $table);
 			$found = in_array(sprintf(self::$successTextAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}

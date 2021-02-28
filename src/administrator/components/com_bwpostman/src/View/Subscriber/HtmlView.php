@@ -505,15 +505,6 @@ class HtmlView extends BaseHtmlView
 
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'), 'info');
 
-				$options['text'] = "COM_BWPOSTMAN_BACK";
-				$options['name'] = 'back';
-				$options['url'] = "index.php?option=com_bwpostman&view=subscriber&layout=import1";
-				$options['icon'] = "icon-arrow-left";
-
-				$button = new LinkButton('back');
-				$button->setOptions($options);
-
-				$toolbar->appendButton($button);
 				$toolbar->cancel('subscriber.cancel');
 				break;
 

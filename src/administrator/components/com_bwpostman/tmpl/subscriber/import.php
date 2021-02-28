@@ -64,7 +64,7 @@ $option	= $jinput->getCmd('option');
 							</div>
 						</div>
 					</fieldset>
-					<div class="importfile form-group row">
+					<div id="importfile_tr" class="importfile form-group row">
 						<label class="key col-md-6 text-md-right">
 							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?>
 							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_NOTE'); ?>">
@@ -76,7 +76,7 @@ $option	= $jinput->getCmd('option');
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?> />
 						</div>
 					</div>
-					<div class="delimiter form-group row">
+					<div id="delimiter_tr" class="delimiter form-group row">
 						<label class="key col-md-6 text-md-right">
 							<?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?>
 							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DELIMITER_NOTE'); ?>">
@@ -87,7 +87,7 @@ $option	= $jinput->getCmd('option');
 							<?php echo $this->lists['delimiter'];?>
 						</div>
 					</div>
-					<div class="enclosure form-group row">
+					<div id="enclosure_tr" class="enclosure form-group row">
 						<label class="key col-md-6 text-md-right">
 							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?>
 							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE_NOTE'); ?>">
@@ -98,7 +98,7 @@ $option	= $jinput->getCmd('option');
 							<?php echo $this->lists['enclosure'];?>
 						</div>
 					</div>
-					<div class="caption form-group row">
+					<div d="caption_tr" class="caption form-group row">
 						<label class="key col-md-6 text-md-right">
 							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?>
 							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>">
@@ -120,7 +120,7 @@ $option	= $jinput->getCmd('option');
 							</div>
 						</div>
 					</div>
-					<div class="button form-group row mt-3">
+					<div id="button_tr" class="button form-group row mt-3">
 						<div class="key col-12 text-center">
 							<input type="button" class="btn btn-success" name="submitbutton" id="further"
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?>

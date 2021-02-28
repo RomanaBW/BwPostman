@@ -57,7 +57,7 @@ $option	= $jinput->getCmd('option');
 					</label>
 					<div class="col-md-6"><?php echo $this->lists['fileformat']; ?></div>
 				</div>
-				<div class="delimiter form-group row">
+				<div id="delimiter_tr" class="delimiter form-group row">
 					<label class="key col-md-6 text-md-right">
 						<?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?>
 						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_DELIMITER_NOTE'); ?>">
@@ -66,7 +66,7 @@ $option	= $jinput->getCmd('option');
 					</label>
 					<div class="col-md-6"><?php echo $this->lists['delimiter'];?></div>
 				</div>
-				<div class="enclosure form-group row">
+				<div id="enclosure_tr" class="enclosure form-group row">
 					<label class="key col-md-6 text-md-right">
 						<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE'); ?>
 						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOTE'); ?>">
@@ -75,7 +75,7 @@ $option	= $jinput->getCmd('option');
 					</label>
 					<div class="col-md-6"><?php echo $this->lists['enclosure'];?></div>
 				</div>
-				<div class="exportgroups form-group row">
+				<div id="exportgroups_tr" class="exportgroups form-group row">
 					<label class="key col-md-6 text-md-right">
 						<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS'); ?>
 						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS_NOTE'); ?>">
@@ -104,7 +104,7 @@ $option	= $jinput->getCmd('option');
 						</div>
 					</div>
 				</div>
-				<div class="exportfields form-group row">
+				<div id="exportfields_tr" class="exportfields form-group row">
 					<label class="key col-md-6 text-md-right">
 						<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS'); ?>
 						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS_NOTE'); ?>">
@@ -130,7 +130,7 @@ $option	= $jinput->getCmd('option');
 					</div>
 					<div><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS_ANNOTATION'); ?></div>
 				</div>
-				<div class="button">
+				<div id="button_tr" class="button">
 					<div class="key text-center">
 						<input class="btn btn-success" type="button" name="submitbutton"
 								onclick="if(check()){selectAllOptions(document.adminForm['export_fields[]']);Joomla.submitbutton('subscribers.export');}"

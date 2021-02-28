@@ -44,7 +44,7 @@ Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/c
 		<p id="step4" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_4'); ?></p>
 		<p id="step5" class="well"><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_5'); ?></p>
 	</div>
-	<div class="col-lg-6 well well-small resultSet">
+	<div id="resultSet" class="col-lg-6 well well-small resultSet">
 		<h2><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_RESULT'); ?></h2>
 		<div id="result"></div>
 	</div>

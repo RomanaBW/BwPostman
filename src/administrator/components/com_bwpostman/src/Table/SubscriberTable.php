@@ -443,7 +443,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$this->name              = $filter->clean($this->name);
 		$this->firstname         = $filter->clean($this->firstname);
 		$this->email             = $filter->clean($this->email);
-		$this->emailformat       = $filter->clean($this->emailformat, 'BOOLEAN');
+		$this->emailformat       = $filter->clean($this->emailformat, 'INT');
 		$this->gender            = $filter->clean($this->gender, 'UINT');
 		$this->special           = $filter->clean($this->special);
 		$this->status            = $filter->clean($this->status, 'UINT');

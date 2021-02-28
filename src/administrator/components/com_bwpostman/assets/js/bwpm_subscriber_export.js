@@ -28,7 +28,7 @@
 //-----------------------------------------------------------------------------
 function selectAllOptions(obj)
 {
-	for (var i=0; i<obj.options.length; i++)
+	for (var i = 0; i < obj.options.length; i++)
 	{
 		obj.options[i].selected = true;
 	}
@@ -102,57 +102,92 @@ function check() // Method to check if the user didn't delete all items in the s
 	return 1;
 }
 
+function addEventHandler(elem, eventType, handler) {
+	if (elem.addEventListener)
+		elem.addEventListener (eventType, handler, false);
+	else if (elem.attachEvent)
+		elem.attachEvent ('on' + eventType, handler);
+}
+
 window.onload = function() {
-	var $j = jQuery.noConflict();
 
 	function extCheck() {
-		var format = $j("input[name='fileformat']:checked").val();
+		var format = document.querySelector('input[name="fileformat"]:checked').value
 
 		switch (format) {
 			case 'xml':
-				$j(".exportgroups").show();
-				$j(".exportfields").show();
+				document.getElementById('exportgroups_tr').style.display = '';
+				document.getElementById('exportfields_tr').style.display = '';
 				break;
 			case 'csv':
-				$j(".exportgroups").show();
-				$j(".exportfields").show();
-				$j(".delimiter").show();
-				$j(".enclosure").show();
-				$j(".caption").show();
+				document.getElementById('exportgroups_tr').style.display = '';
+				document.getElementById('exportfields_tr').style.display = '';
+				document.getElementById('delimiter_tr').style.display = '';
+				document.getElementById('enclosure_tr').style.display = '';
+// Romana, ich glaube .caption gibt es nur beim Import
+//				$j(".caption").show();
 				break;
 		}
 	}
 
-	$j(document).ready(function () {
-		$j(".delimiter").hide();
-		$j(".enclosure").hide();
-		$j(".caption").hide();
-		$j(".exportgroups").hide();
-		$j(".exportfields").hide();
-		$j(".button").hide();
+	function ready(callbackFunc) {
+		if (document.readyState !== 'loading') {
+			// Document is already ready, call the callback directly
+			callbackFunc();
+		} else if (document.addEventListener) {
+			// All modern browsers to register DOMContentLoaded
+			document.addEventListener('DOMContentLoaded', callbackFunc);
+		} else {
+			// Old IE browsers
+			document.attachEvent('onreadystatechange', function() {
+				if (document.readyState === 'complete') {
+					callbackFunc();
+				}
+			});
+		}
+	}
+
+	ready(function() {
+		document.getElementById('delimiter_tr').style.display = 'none';
+		document.getElementById('enclosure_tr').style.display = 'none';
+// siehe oben
+//		$j(".caption").hide();
+		document.getElementById('exportgroups_tr').style.display = 'none';
+		document.getElementById('exportfields_tr').style.display = 'none';
+		document.getElementById('button_tr').style.display = 'none';
 	});
 
-	$j("input[name='fileformat']").on("change", function () {
-		$j(".delimiter").hide();
-		$j(".enclosure").hide();
-		extCheck();
-	});
+	var fileformat = document.querySelectorAll("input[name=fileformat]");
+	for (var i = 0; i < fileformat.length; i++) {
+		addEventHandler(fileformat[i], 'change', function() {
+			document.getElementById('delimiter_tr').style.display = 'none';
+			document.getElementById('enclosure_tr').style.display = 'none';
+			extCheck();
+		});
+	}
 
-	$j(".state input[type='checkbox']").on("change", function () {
-		if ($j(".archive input:checked").length) {
-			$j(".button").show();
-		}
-		if ($j(".state input:checked").length === 0) {
-			$j(".button").hide();
-		}
-	});
+	var states = document.querySelectorAll(".state input[type='checkbox']");
+	for (var i = 0; i < states.length; i++) {
+		addEventHandler(states[i], 'change', function() {
+			if (document.querySelectorAll(".archive input:checked").length) {
+				document.getElementById('button_tr').style.display = '';
+			}
+			if (document.querySelectorAll(".state input:checked").length === 0) {
+				document.getElementById('button_tr').style.display = 'none';
+			}
+		});
+	}
 
-	$j(".archive input[type='checkbox']").on("change", function () {
-		if ($j(".state input:checked").length) {
-			$j(".button").show();
-		}
-		if ($j(".archive input:checked").length === 0) {
-			$j(".button").hide();
-		}
-	});
+	var archives = document.querySelectorAll(".archive input[type='checkbox']");
+	for (var i = 0; i < archives.length; i++) {
+		addEventHandler(archives[i], 'change', function() {
+			if (document.querySelectorAll(".state input:checked").length) {
+				document.getElementById('button_tr').style.display = '';
+			}
+			if (document.querySelectorAll(".archive input:checked").length === 0) {
+				document.getElementById('button_tr').style.display = 'none';
+			}
+		});
+	}
+
 };

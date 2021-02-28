@@ -25,57 +25,107 @@
 
 window.onload = function() {
 	function doAjax(data, successCallback) {
-		var structure =
-			{
-				url: starturl,
-				data: data,
-				type: 'POST',
-				dataType: 'json'
-			};
+		var	url = starturl,
+			data = data,
+			type = 'POST';
+		var request = new XMLHttpRequest();
+		request.onreadystatechange = function()
+		{
+			if (this.readyState === 4) {
+				if (this.status >= 200 && this.status < 300)
+				{
+					successCallback(parse(this.responseText));
+				}
+				else
+				{
+					var message = '<p class="bw_tablecheck_error">AJAX Error: ' + this.statusText + '<br />' + this.responseText + '</p>';
+					var alert_step = document.getElementById('step' + parseInt(data.match(/\d/g)));
+					if(typeof alert_step !== 'undefined' && alert_step !== null) {
+						alert_step.classList.remove('alert-info');
+						alert_step.classList.add('alert-error');
+					}
+					document.getElementById('result').innerHTML = message;
+					document.getElementById('resultSet').style.backgroundColor = '#f2dede';
+					document.getElementById('resultSet').style.borderColor = '#eed3d7';
+					var toolbar = document.getElementById('toolbar');
+					var buttags = toolbar.getElementsByTagName('button');
+					for (var i = 0; i < buttags.length; i++) {
+						buttags[i].removeAttribute('disabled');
+					}
+					var atags = toolbar.getElementsByTagName('a');
+					for (var i = 0; i < atags.length; i++) {
+						atags[i].removeAttribute('disabled');
+					}
+				}
+			}
+		};
+		request.open(type, url, true);
+		request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		request.send(data);
+	}
 
-		jQuery.ajax(structure)
-			.done(function( data ) {
-					// Call the callback function
-					successCallback(data);
-				})
-			.fail(function (req) {
-				var message = '<p class="bw_tablecheck_error">AJAX Error: ' + req.statusText + '<br />' + req.responseText + '</p>';
-				jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
-				jQuery('div#result').html(message);
-				jQuery('div.resultSet').css('background-color', '#f2dede');
-				jQuery('div.resultSet').css('border-color', '#eed3d7');
-				jQuery('div#toolbar').find('button').removeAttr('disabled');
-				jQuery('div#toolbar').find('a').removeAttr('disabled');
-			});
+	function parse(text){
+		try {
+			return JSON.parse(text);
+		} catch(e){
+			return text;
+		}
 	}
 
 	function processUpdateStep(data) {
-		jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert-' + data.aClass);
-		jQuery('p#step' + data.step).addClass('alert alert-info');
+		var alert_step_old = document.getElementById('step' + (data.step - 1));
+		if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
+			alert_step_old.classList.remove('alert-info');
+			alert_step_old.classList.add('alert-' + data.aClass);
+		}
+		document.getElementById('step' + data.step).classList.add('alert', 'alert-info');
 		// Do AJAX post
-		post = {step: 'step' + data.step};
+		post = 'step=step' + data.step;
 		doAjax(post, function (data) {
 			if (data.ready !== "1") {
-				jQuery('div#result').append(data.result);
+				var resultdiv = document.createElement('div');
+				resultdiv.innerHTML = data.result;
+				document.getElementById('result').appendChild(resultdiv);
 				processUpdateStep(data);
 			} else {
-				jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
-				jQuery('div#result').append(data.result);
-				if (data.aClass !== 'error') {
-					jQuery('div.resultSet').css('background-color', '#dff0d8');
-					jQuery('div.resultSet').css('border-color', '#d6e9c6');
-				} else {
-					jQuery('div.resultSet').css('background-color', '#f2dede');
-					jQuery('div.resultSet').css('border-color', '#eed3d7');
+				var alert_step_old = document.getElementById('step' + (data.step - 1));
+				if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
+					alert_step_old.classList.remove('alert-info');
+					alert_step_old.classList.add('alert', 'alert-' + data.aClass);
 				}
-				jQuery('div#toolbar').find('button').removeAttr('disabled');
-				jQuery('div#toolbar').find('a').removeAttr('disabled');
+				var resultdiv = document.createElement('div');
+				resultdiv.innerHTML = data.result;
+				document.getElementById('result').appendChild(resultdiv);
+				var resultSet = document.getElementById('resultSet');
+				if (data.aClass !== 'error') {
+					resultSet.style.backgroundColor = '#dff0d8';
+					resultSet.style.borderColor = '#d6e9c6';
+				} else {
+					resultSet.style.backgroundColor = '#f2dede';
+					resultSet.style.borderColor = '#eed3d7';
+				}
+				var toolbar = document.getElementById('toolbar');
+				var buttags = toolbar.getElementsByTagName('button');
+				for (var i = 0; i < buttags.length; i++) {
+					buttags[i].removeAttribute('disabled');
+				}
+				var atags = toolbar.getElementsByTagName('a');
+				for (var i = 0; i < atags.length; i++) {
+					atags[i].removeAttribute('disabled');
+				}
 			}
 		});
 	}
 
-	jQuery('div#toolbar').find('button').attr("disabled", "disabled");
-	jQuery('div#toolbar').find('a').attr("disabled", "disabled");
+	var toolbar = document.getElementById('toolbar');
+	var buttags = toolbar.getElementsByTagName('button');
+	for (var i = 0; i < buttags.length; i++) {
+		buttags[i].setAttribute("disabled", "disabled");
+	}
+	var atags = toolbar.getElementsByTagName('a');
+	for (var i = 0; i < atags.length; i++) {
+		atags[i].setAttribute("disabled", "disabled");
+	}
 	var starturl = document.getElementById('startUrl').value;
 	var data = {step: "1"};
 	processUpdateStep(data);

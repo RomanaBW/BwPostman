@@ -135,7 +135,7 @@
 				default=""
 				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_ML_FILTER_DESC"
 				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_ML_FILTER_LABEL"
-				class="radio btn-group btn-group-yesno"
+			    layout="joomla.form.field.radio.switcher"
 			>
 				<option value="1">COM_BWPOSTMAN_ALL</option>
 				<option value="">COM_BWPOSTMAN_ONLY_SELECTED</option>
@@ -159,7 +159,7 @@
 				default=""
 				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_DESC"
 				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_LABEL"
-				class="radio btn-group btn-group-yesno"
+			    layout="joomla.form.field.radio.switcher"
 			>
 				<option value="1">COM_BWPOSTMAN_ALL</option>
 				<option value="">COM_BWPOSTMAN_ONLY_SELECTED</option>
@@ -185,7 +185,7 @@
 				default=""
 				description="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_CAM_FILTER_DESC"
 				label="COM_BWPOSTMAN_NEWSLETTER_SHOW_SELECT_CAM_FILTER_LABEL"
-				class="radio btn-group btn-group-yesno"
+			    layout="joomla.form.field.radio.switcher"
 			>
 				<option value="1">COM_BWPOSTMAN_ALL</option>
 				<option value="">COM_BWPOSTMAN_ONLY_SELECTED</option>

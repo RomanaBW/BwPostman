@@ -193,7 +193,7 @@
 			<field
 				name="alignment"
 				type="radio"
-				class="btn-group"
+				layout="joomla.form.field.radio.switcher"
 				default="left"
 				label="COM_BWPOSTMAN_ALIGNMENT_LABEL"
 				description="COM_BWPOSTMAN_ALIGNMENT_NOTE"
@@ -291,7 +291,7 @@
 			<field
 				name="show_intro"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_SHOW_INTRO_LABEL"
 				labelclass="control-label"
@@ -329,7 +329,7 @@
 			<field
 				name="divider"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_DIVIDER_LABEL"
 				labelclass="control-label"
@@ -350,7 +350,7 @@
 			<field
 					name="show_title"
 					type="radio"
-					class="btn-group btn-group-yesno inputbox"
+					layout="joomla.form.field.radio.switcher"
 					default="1"
 					label="COM_BWPOSTMAN_TPL_SHOW_TITLE_LABEL"
 					labelclass="control-label"
@@ -362,7 +362,7 @@
 			<field
 				name="show_author"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_SHOW_AUTHOR_LABEL"
 				labelclass="control-label"
@@ -374,7 +374,7 @@
 			<field
 				name="show_createdate"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_SHOW_CREATEDATE_LABEL"
 				labelclass="control-label"
@@ -386,7 +386,7 @@
 			<field
 				name="show_readon"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_SHOW_READON_LABEL"
 				labelclass="control-label"
@@ -455,7 +455,7 @@
 			<field
 				name="show_impressum"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="0"
 				label="COM_BWPOSTMAN_TPL_SHOW_IMPRESSUM_LABEL"
 				labelclass="control-label"
@@ -468,7 +468,7 @@
 			<field
 				name="show_address"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_SHOW_ADDRESS_LABEL"
 				labelclass="control-label"
@@ -505,7 +505,7 @@
 			<field
 				name="show_button"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_SHOW_BUTTON_LABEL"
 				labelclass="control-label"
@@ -569,7 +569,7 @@
 			<field
 				name="show_button"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_SHOW_BUTTON_LABEL"
 				labelclass="control-label"
@@ -633,7 +633,7 @@
 			<field
 				name="show_button"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_SHOW_BUTTON_LABEL"
 				labelclass="control-label"
@@ -697,7 +697,7 @@
 			<field
 				name="show_button"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_SHOW_BUTTON_LABEL"
 				labelclass="control-label"
@@ -761,7 +761,7 @@
 			<field
 				name="show_button"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_SHOW_BUTTON_LABEL"
 				labelclass="control-label"
@@ -885,7 +885,7 @@
 		<field
 				name="tpl_tags_head"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_LABEL"
 				labelclass="control-label"
@@ -906,7 +906,7 @@
 		<field
 				name="tpl_tags_body"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_LABEL"
 				labelclass="control-label"
@@ -927,7 +927,7 @@
 		<field
 				name="tpl_tags_article"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_LABEL"
 				labelclass="control-label"
@@ -956,7 +956,7 @@
 		<field
 				name="tpl_tags_readon"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_LABEL"
 				labelclass="control-label"
@@ -977,7 +977,7 @@
 		<field
 				name="tpl_tags_legal"
 				type="radio"
-				class="btn-group btn-group-yesno inputbox"
+				layout="joomla.form.field.radio.switcher"
 				default="1"
 				label="COM_BWPOSTMAN_TPL_TAGS_STANDARD_ADVANCED_LABEL"
 				labelclass="control-label"

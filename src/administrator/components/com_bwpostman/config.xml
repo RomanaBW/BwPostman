@@ -66,7 +66,7 @@
 
 		<field name="mails_per_pageload_delay_unit"
 			type="radio"
-			class="btn-group btn-group-yesno"
+		    layout="joomla.form.field.radio.switcher"
 			default="1000"
 			label="COM_BWPOSTMAN_MAILS_PER_PAGELOAD_DELAY_UNIT"
 			description="COM_BWPOSTMAN_MAILS_PER_PAGELOAD_DELAY_UNIT_NOTE"
@@ -79,7 +79,7 @@
 
 		<field name="publish_nl_by_default"
 		       type="radio"
-		       class="btn-group btn-group-yesno"
+		       layout="joomla.form.field.radio.switcher"
 		       default="0"
 		       label="COM_BWPOSTMAN_PUBLISH_NL_BY_DEFAULT"
 		       description="COM_BWPOSTMAN_PUBLISH_NL_BY_DEFAULT_NOTE"
@@ -92,7 +92,7 @@
 
 		<field name="compress_backup"
 		       type="radio"
-		       class="btn-group btn-group-yesno"
+		       layout="joomla.form.field.radio.switcher"
 		       default="1"
 		       label="COM_BWPOSTMAN_COMPRESS_BACKUP_FILE"
 		       description="COM_BWPOSTMAN_COMPRESS_BACKUP_FILE_NOTE"
@@ -105,7 +105,7 @@
 
 		<field name="show_boldt_link"
 			type="radio"
-			class="btn-group btn-group-yesno"
+		    layout="joomla.form.field.radio.switcher"
 			default="1"
 			label="COM_BWPOSTMAN_SHOW_BOLDT_LINK"
 			description="COM_BWPOSTMAN_SHOW_BOLDT_LINK_NOTE"
@@ -144,7 +144,7 @@
 
 		<field name="show_gender"
 		       type="radio"
-		       class="btn-group btn-group-yesno"
+		       layout="joomla.form.field.radio.switcher"
 		       default="0"
 		       label="COM_BWPOSTMAN_SHOW_GENDER"
 		       description="COM_BWPOSTMAN_SHOW_GENDER_NOTE"
@@ -157,7 +157,8 @@
 
 		<field name="show_firstname_field"
 		       type="radio"
-		       class="btn-group btn-group-yesno bwpcheck"
+		       class="bwpcheck"
+		       layout="joomla.form.field.radio.switcher"
 		       default="1"
 		       label="COM_BWPOSTMAN_SHOW_FIRSTNAME_FIELD"
 		       description="COM_BWPOSTMAN_SHOW_FIRSTNAME_FIELD_NOTE"
@@ -168,7 +169,8 @@
 
 		<field name="firstname_field_obligation"
 		       type="radio"
-		       class="btn-group btn-group-yesno bwpcheck"
+		       class="bwpcheck"
+		       layout="joomla.form.field.radio.switcher"
 		       default="1"
 		       label="COM_BWPOSTMAN_FIRSTNAME_FIELD_OBLIGATION"
 		       description="COM_BWPOSTMAN_FIRSTNAME_FIELD_OBLIGATION_NOTE"
@@ -181,7 +183,8 @@
 
 		<field name="show_name_field"
 		       type="radio"
-		       class="btn-group btn-group-yesno bwpcheck"
+		       class="bwpcheck"
+		       layout="joomla.form.field.radio.switcher"
 		       default="1"
 		       label="COM_BWPOSTMAN_SHOW_NAME_FIELD"
 		       description="COM_BWPOSTMAN_SHOW_NAME_FIELD_NOTE"
@@ -192,7 +195,8 @@
 
 		<field name="name_field_obligation"
 		       type="radio"
-		       class="btn-group btn-group-yesno bwpcheck"
+		       class="bwpcheck"
+		       layout="joomla.form.field.radio.switcher"
 		       default="1"
 		       label="COM_BWPOSTMAN_NAME_FIELD_OBLIGATION"
 		       description="COM_BWPOSTMAN_NAME_FIELD_OBLIGATION_NOTE"
@@ -205,7 +209,8 @@
 
 		<field name="show_special"
 		       type="radio"
-		       class="btn-group btn-group-yesno bwpcheck"
+		       class="bwpcheck"
+		       layout="joomla.form.field.radio.switcher"
 		       default="0"
 		       label="COM_BWPOSTMAN_SHOW_SPECIAL"
 		       description="COM_BWPOSTMAN_SHOW_SPECIAL_NOTE"
@@ -216,7 +221,8 @@
 
 		<field name="special_field_obligation"
 		       type="radio"
-		       class="btn-group btn-group-yesno bwpcheck"
+		       class="bwpcheck"
+		       layout="joomla.form.field.radio.switcher"
 		       default="0"
 		       label="COM_BWPOSTMAN_SPECIAL_FIELD_OBLIGATION"
 		       description="COM_BWPOSTMAN_SPECIAL_FIELD_OBLIGATION_NOTE"
@@ -245,7 +251,7 @@
 
 		<field name="show_emailformat"
 			type="radio"
-			class="btn-group btn-group-yesno"
+			   layout="joomla.form.field.radio.switcher"
 			default="1"
 			label="COM_BWPOSTMAN_SHOW_EMAILFORMAT"
 			description="COM_BWPOSTMAN_SHOW_EMAILFORMAT_NOTE"
@@ -256,7 +262,7 @@
 
 		<field name="default_emailformat"
 			type="radio"
-			class="btn-group btn-group-yesno"
+			   layout="joomla.form.field.radio.switcher"
 			default="1"
 			label="COM_BWPOSTMAN_DEFAULT_EMAILFORMAT"
 			description="COM_BWPOSTMAN_DEFAULT_EMAILFORMAT_NOTE"
@@ -267,7 +273,7 @@
 
 		<field name="verify_mailaddress"
 		       type="radio"
-		       class="btn-group btn-group-yesno"
+		       layout="joomla.form.field.radio.switcher"
 		       default="0"
 		       label="COM_BWPOSTMAN_VERIFY_EMAILADDRESS"
 		       description="COM_BWPOSTMAN_VERIFY_EMAILADDRESS_NOTE"
@@ -278,7 +284,13 @@
 
 		<field name="spacer2_5" type="spacer" hr="true" />
 
-		<field name="show_desc" type="radio" class="btn-group btn-group-yesno" default="1" label="COM_BWPOSTMAN_SHOW_DESC" description="COM_BWPOSTMAN_SHOW_DESC_NOTE">
+		<field name="show_desc"
+		       type="radio"
+		       layout="joomla.form.field.radio.switcher"
+		       default="1"
+		       label="COM_BWPOSTMAN_SHOW_DESC"
+		       description="COM_BWPOSTMAN_SHOW_DESC_NOTE"
+		>
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -288,7 +300,7 @@
 
 		<field name="disclaimer"
 			type="radio"
-			class="btn-group btn-group-yesno"
+			   layout="joomla.form.field.radio.switcher"
 			default="0"
 			label="COM_BWPOSTMAN_ENABLE_DISCLAIMER"
 			description="COM_BWPOSTMAN_ENABLE_DISCLAIMER_NOTE"
@@ -302,7 +314,7 @@
 
 		<field name="disclaimer_selection"
 			type="radio"
-			class="btn-group btn-group-yesno"
+			   layout="joomla.form.field.radio.switcher"
 			default="0"
 			label="COM_BWPOSTMAN_DISCLAIMER_SELECTION"
 			description="COM_BWPOSTMAN_DISCLAIMER_SELECTION_NOTE"
@@ -338,7 +350,7 @@
 
 		<field name="disclaimer_target"
 			type="radio"
-			class="btn-group btn-group-yesno"
+			   layout="joomla.form.field.radio.switcher"
 			default="0"
 			label="COM_BWPOSTMAN_DISCLAIMER_TARGET"
 			description="COM_BWPOSTMAN_DISCLAIMER_TARGET_NOTE"
@@ -349,7 +361,7 @@
 
 		<field name="showinmodal"
 		       type="radio"
-		       class="btn-group btn-group-yesno"
+		       layout="joomla.form.field.radio.switcher"
 		       default="1"
 		       label="COM_BWPOSTMAN_DISCLAIMER_SHOWINMODAL"
 		       description="COM_BWPOSTMAN_DISCLAIMER_SHOWINMODAL_NOTE"
@@ -362,7 +374,7 @@
 
 		<field name="use_captcha"
 			type="radio"
-			class="btn-group btn-group-yesno"
+		    layout="joomla.form.field.radio.switcher"
 			default="0"
 			label="COM_BWPOSTMAN_ENABLE_SECURITY"
 			description="COM_BWPOSTMAN_ENABLE_SECURITY_NOTE"
@@ -419,8 +431,8 @@
 		<field name="spacer3_2" type="spacer" hr="true" />
 
 		<field name="activation_to_webmaster"
-			type="radio"
-			class="btn-group btn-group-yesno"
+	       type="radio"
+		   layout="joomla.form.field.radio.switcher"
 			default="0"
 			label="COM_BWPOSTMAN_ENABLE_ACTIVATION_COPY"
 			description="COM_BWPOSTMAN_ENABLE_ACTIVATION_COPY_NOTE"
@@ -449,7 +461,7 @@
 	<fieldset name="com_bwpostman_deactivation_settings" label="COM_BWPOSTMAN_DEREG_SETTINGS" description="COM_BWPOSTMAN_DEREG_SETTINGS_DESCRIPTION">
 		<field name="del_sub_1_click"
 			type="radio"
-			class="btn-group btn-group-yesno"
+		    layout="joomla.form.field.radio.switcher"
 			default="0"
 			label="COM_BWPOSTMAN_DELETE_SUBSCRIPTION"
 			description="COM_BWPOSTMAN_DELETE_SUBSCRIPTION_NOTE"
@@ -462,7 +474,7 @@
 
 		<field name="deactivation_to_webmaster"
 			type="radio"
-			class="btn-group btn-group-yesno"
+		    layout="joomla.form.field.radio.switcher"
 			default="0"
 			label="COM_BWPOSTMAN_ENABLE_DEACTIVATION_COPY"
 			description="COM_BWPOSTMAN_ENABLE_DEACTIVATION_COPY_NOTE"
@@ -492,7 +504,7 @@
 		<field
 			name="filter_field"
 			type="radio"
-			class="btn-group btn-group-yesno"
+			layout="joomla.form.field.radio.switcher"
 			default="1"
 			description="COM_BWPOSTMAN_LISTS_SETTINGS_SEARCH_FIELD_DESC"
 			label="COM_BWPOSTMAN_LISTS_SETTINGS_SEARCH_FIELD_LABEL"
@@ -503,7 +515,7 @@
 
 		<field name="date_filter_enable"
 			type="radio"
-			class="btn-group btn-group-yesno"
+		    layout="joomla.form.field.radio.switcher"
 			default="1"
 			description="COM_BWPOSTMAN_NEWSLETTER_SHOW_DATE_FILTER_DESC"
 			label="COM_BWPOSTMAN_NEWSLETTER_SHOW_DATE_FILTER_LABEL"
@@ -514,7 +526,7 @@
 
 		<field name="ml_filter_enable"
 			type="radio"
-			class="btn-group btn-group-yesno"
+		    layout="joomla.form.field.radio.switcher"
 			default="1"
 			description="COM_BWPOSTMAN_NEWSLETTER_SHOW_ML_FILTER_DESC"
 			label="COM_BWPOSTMAN_NEWSLETTER_SHOW_ML_FILTER_LABEL"
@@ -525,7 +537,7 @@
 
 		<field name="cam_filter_enable"
 			type="radio"
-			class="btn-group btn-group-yesno"
+		    layout="joomla.form.field.radio.switcher"
 			default="1"
 			description="COM_BWPOSTMAN_NEWSLETTER_SHOW_CAM_FILTER_DESC"
 			label="COM_BWPOSTMAN_NEWSLETTER_SHOW_CAM_FILTER_LABEL"
@@ -536,7 +548,7 @@
 
 		<field name="group_filter_enable"
 			type="radio"
-			class="btn-group btn-group-yesno"
+		    layout="joomla.form.field.radio.switcher"
 			default="1"
 			description="COM_BWPOSTMAN_NEWSLETTER_SHOW_GROUP_FILTER_DESC"
 			label="COM_BWPOSTMAN_NEWSLETTER_SHOW_GROUP_FILTER_LABEL"
@@ -548,7 +560,7 @@
 		<field
 			name="attachment_enable"
 			type="radio"
-			class="btn-group btn-group-yesno"
+			layout="joomla.form.field.radio.switcher"
 			default="1"
 			description="COM_BWPOSTMAN_NEWSLETTER_ATTACHMENT_ENABLE_DESC"
 			label="COM_BWPOSTMAN_NEWSLETTER_ATTACHMENT_ENABLE_LABEL"
@@ -560,7 +572,7 @@
 		<field
 			name="access-check"
 			type="radio"
-			class="btn-group btn-group-yesno"
+			layout="joomla.form.field.radio.switcher"
 			default="1"
 			description="COM_BWPOSTMAN_LISTS_SETTINGS_ACCESS_CHECK_FIELD_DESC"
 			label="COM_BWPOSTMAN_LISTS_SETTINGS_ACCESS_CHECK_FIELD_LABEL"
@@ -606,7 +618,7 @@
 		<field
 			name="attachment_single_enable"
 			type="radio"
-			class="btn-group btn-group-yesno"
+			layout="joomla.form.field.radio.switcher"
 			default="1"
 			description="COM_BWPOSTMAN_NEWSLETTER_ATTACHMENT_SINGLE_ENABLE_DESC"
 			label="COM_BWPOSTMAN_NEWSLETTER_ATTACHMENT_ENABLE_LABEL"
@@ -618,7 +630,7 @@
 		<field
 			name="subject_as_title"
 			type="radio"
-			class="btn-group btn-group-yesno"
+			layout="joomla.form.field.radio.switcher"
 			default="1"
 			description="COM_BWPOSTMAN_NEWSLETTER_SUBJECT_AS_TITLE_DESC"
 			label="COM_BWPOSTMAN_NEWSLETTER_SUBJECT_AS_TITLE_LABEL"

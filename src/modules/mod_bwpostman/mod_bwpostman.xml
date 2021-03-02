@@ -54,7 +54,13 @@
 						class="inputbox mailinglists"
 				/>
 				<field name="spacer0_2" type="spacer" hr="true" />
-				<field name="show_desc" type="radio" class="btn-group btn-group-yesno" default="1" label="MOD_BWPOSTMAN_SHOW_DESC" description="MOD_BWPOSTMAN_SHOW_DESC_NOTE">
+				<field name="show_desc"
+				       type="radio"
+				       layout="joomla.form.field.radio.switcher"
+				       default="1"
+				       label="MOD_BWPOSTMAN_SHOW_DESC"
+				       description="MOD_BWPOSTMAN_SHOW_DESC_NOTE"
+				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -64,7 +70,13 @@
 <!--			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL">-->
 			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL" addfieldprefix="Joomla\Component\Content\Administrator\Field" addfieldpath="/administrator/components/com_content/models/fields">
 				<field name="spacer1_1" type="spacer" label="MOD_BWPOSTMAN_REG_SETTINGS_LABEL" />
-				<field name="com_params" type="radio" class="btn-group btn-group-yesno" default="1" label="MOD_BWPOSTMAN_USE_COM_PARAMS" description="MOD_BWPOSTMAN_USE_COM_PARAMS_NOTE">
+				<field name="com_params"
+				       type="radio"
+				       layout="joomla.form.field.radio.switcher"
+				       default="1"
+				       label="MOD_BWPOSTMAN_USE_COM_PARAMS"
+				       description="MOD_BWPOSTMAN_USE_COM_PARAMS_NOTE"
+				>
 					<option value="0" onclick="display_yes_no();">JNO</option>
 					<option value="1" onclick="display_yes_no();">JYES</option>
 				</field>
@@ -73,7 +85,8 @@
 				<field name="spacer1_3" type="spacer" class="mod_set" hr="true" />
 				<field name="show_gender"
 				       type="radio"
-				       class="btn-group btn-group-yesno mod_set"
+				       class="mod_set"
+				       layout="joomla.form.field.radio.switcher"
 				       labelclass="mod_set"
 				       default="0"
 				       label="MOD_BWPOSTMAN_SHOW_GENDER"
@@ -83,20 +96,51 @@
 					<option value="1">JYES</option>
 				</field>
 				<field name="spacer1_4" type="spacer" class="mod_set" hr="true" />
-				<field name="show_firstname_field" type="radio" class="btn-group btn-group-yesno mod_set bwpcheck" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_SHOW_FIRSTNAME_FIELD" description="MOD_BWPOSTMAN_SHOW_FIRSTNAME_FIELD_NOTE">
+				<field name="show_firstname_field"
+				       type="radio"
+				       class="mod_set bwpcheck"
+				       layout="joomla.form.field.radio.switcher"
+				       labelclass="mod_set"
+				       default="1"
+				       label="MOD_BWPOSTMAN_SHOW_FIRSTNAME_FIELD"
+				       description="MOD_BWPOSTMAN_SHOW_FIRSTNAME_FIELD_NOTE">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="firstname_field_obligation" type="radio" class="btn-group btn-group-yesno mod_set bwpcheck" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_FIRSTNAME_FIELD_OBLIGATION" description="MOD_BWPOSTMAN_FIRSTNAME_FIELD_OBLIGATION_NOTE">
+				<field name="firstname_field_obligation"
+				       type="radio"
+				       class="mod_set bwpcheck"
+				       layout="joomla.form.field.radio.switcher"
+				       labelclass="mod_set"
+				       default="1"
+				       label="MOD_BWPOSTMAN_FIRSTNAME_FIELD_OBLIGATION"
+				       description="MOD_BWPOSTMAN_FIRSTNAME_FIELD_OBLIGATION_NOTE"
+				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 				<field name="spacer1_5" type="spacer" class="mod_set" hr="true" />
-				<field name="show_name_field" type="radio" class="btn-group btn-group-yesno mod_set bwpcheck" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_SHOW_NAME_FIELD" description="MOD_BWPOSTMAN_SHOW_NAME_FIELD_NOTE">
+				<field name="show_name_field"
+				       type="radio"
+				       class="mod_set bwpcheck"
+				       layout="joomla.form.field.radio.switcher"
+				       labelclass="mod_set"
+				       default="1"
+				       label="MOD_BWPOSTMAN_SHOW_NAME_FIELD"
+				       description="MOD_BWPOSTMAN_SHOW_NAME_FIELD_NOTE"
+				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="name_field_obligation" type="radio" class="btn-group btn-group-yesno mod_set bwpcheck" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_NAME_FIELD_OBLIGATION" description="MOD_BWPOSTMAN_NAME_FIELD_OBLIGATION_NOTE">
+				<field name="name_field_obligation"
+				       type="radio"
+				       class="mod_set bwpcheck"
+				       layout="joomla.form.field.radio.switcher"
+				       labelclass="mod_set"
+				       default="1"
+				       label="MOD_BWPOSTMAN_NAME_FIELD_OBLIGATION"
+				       description="MOD_BWPOSTMAN_NAME_FIELD_OBLIGATION_NOTE"
+				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -104,7 +148,8 @@
 
 				<field name="show_special"
 				       type="radio"
-				       class="btn-group btn-group-yesno mod_set bwpcheck"
+				       class="mod_set bwpcheck"
+				       layout="joomla.form.field.radio.switcher"
 				       labelclass="mod_set"
 				       default="0"
 				       label="MOD_BWPOSTMAN_SHOW_SPECIAL"
@@ -116,7 +161,8 @@
 
 				<field name="special_field_obligation"
 				       type="radio"
-				       class="btn-group btn-group-yesno mod_set bwpcheck"
+				       class="mod_set bwpcheck"
+				       layout="joomla.form.field.radio.switcher"
 				       labelclass="mod_set"
 				       default="0"
 				       label="MOD_BWPOSTMAN_SPECIAL_FIELD_OBLIGATION"
@@ -138,21 +184,53 @@
 
 				<field name="spacer1_7" type="spacer" class="mod_set" hr="true" />
 
-				<field name="show_emailformat" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_SHOW_EMAILFORMAT" description="MOD_BWPOSTMAN_SHOW_EMAILFORMAT_NOTE">
+				<field name="show_emailformat"
+				       type="radio"
+				       class="mod_set"
+				       layout="joomla.form.field.radio.switcher"
+				       labelclass="mod_set"
+				       default="1"
+				       label="MOD_BWPOSTMAN_SHOW_EMAILFORMAT"
+				       description="MOD_BWPOSTMAN_SHOW_EMAILFORMAT_NOTE"
+				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="default_emailformat" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_DEFAULT_EMAILFORMAT" description="MOD_BWPOSTMAN_DEFAULT_EMAILFORMAT_NOTE">
+				<field name="default_emailformat"
+				       type="radio"
+				       class="mod_set"
+				       layout="joomla.form.field.radio.switcher"
+				       labelclass="mod_set"
+				       default="1"
+				       label="MOD_BWPOSTMAN_DEFAULT_EMAILFORMAT"
+				       description="MOD_BWPOSTMAN_DEFAULT_EMAILFORMAT_NOTE"
+				>
 					<option value="0">Text</option>
 					<option value="1">HTML</option>
 				</field>
 				<field name="spacer1_8" type="spacer" class="mod_set" hr="true" />
-				<field name="disclaimer" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="0" label="MOD_BWPOSTMAN_ENABLE_DISCLAIMER" description="MOD_BWPOSTMAN_ENABLE_DISCLAIMER_NOTE">
+				<field name="disclaimer"
+				       type="radio"
+				       class="mod_set"
+				       layout="joomla.form.field.radio.switcher"
+				       labelclass="mod_set"
+				       default="0"
+				       label="MOD_BWPOSTMAN_ENABLE_DISCLAIMER"
+				       description="MOD_BWPOSTMAN_ENABLE_DISCLAIMER_NOTE"
+				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 				<field name="spacer1_9" type="spacer" class="mod_set" label="MOD_BWPOSTMAN_DISCLAIMER_LABEL" />
-				<field name="disclaimer_selection" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="0" label="MOD_BWPOSTMAN_DISCLAIMER_SELECTION" description="MOD_BWPOSTMAN_DISCLAIMER_SELECTION_NOTE">
+				<field name="disclaimer_selection"
+				       type="radio"
+				       class="mod_set"
+				       layout="joomla.form.field.radio.switcher"
+				       labelclass="mod_set"
+				       default="0"
+				       label="MOD_BWPOSTMAN_DISCLAIMER_SELECTION"
+				       description="MOD_BWPOSTMAN_DISCLAIMER_SELECTION_NOTE"
+				>
 					<option value="0">MOD_BWPOSTMAN_DISCLAIMER_URL</option>
 					<option value="1">MOD_BWPOSTMAN_DISCLAIMER_ARTICLE</option>
 					<option value="2">MOD_BWPOSTMAN_DISCLAIMER_MENUITEM</option>
@@ -162,16 +240,40 @@
 				<field name="disclaimer_menuitem" type="menuitem" labelclass="mod_set" default="" label="MOD_BWPOSTMAN_DISCLAIMER_MENUITEM" description="MOD_BWPOSTMAN_DISCLAIMER_MENUITEM_NOTE">
 					<option value="">JSELECT</option>
 				</field>
-				<field name="disclaimer_target" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="0" label="MOD_BWPOSTMAN_DISCLAIMER_TARGET" description="MOD_BWPOSTMAN_DISCLAIMER_TARGET_NOTE">
+				<field name="disclaimer_target"
+				       type="radio"
+				       class="mod_set"
+				       layout="joomla.form.field.radio.switcher"
+				       labelclass="mod_set"
+				       default="0"
+				       label="MOD_BWPOSTMAN_DISCLAIMER_TARGET"
+				       description="MOD_BWPOSTMAN_DISCLAIMER_TARGET_NOTE">
+
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="showinmodal" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="1" label="MOD_BWPOSTMAN_DISCLAIMER_SHOWINMODAL" description="MOD_BWPOSTMAN_DISCLAIMER_SHOWINMODAL_NOTE">
+				<field name="showinmodal"
+				       type="radio"
+				       class="mod_set"
+				       layout="joomla.form.field.radio.switcher"
+				       labelclass="mod_set"
+				       default="1"
+				       label="MOD_BWPOSTMAN_DISCLAIMER_SHOWINMODAL"
+				       description="MOD_BWPOSTMAN_DISCLAIMER_SHOWINMODAL_NOTE"
+				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 				<field name="spacer1_10" type="spacer" class="mod_set" hr="true" />
-				<field name="use_captcha" type="radio" class="btn-group btn-group-yesno mod_set" labelclass="mod_set" default="0" label="MOD_BWPOSTMAN_ENABLE_SECURITY" description="MOD_BWPOSTMAN_ENABLE_SECURITY_NOTE">
+				<field name="use_captcha"
+				       type="radio"
+				       class="mod_set"
+				       layout="joomla.form.field.radio.switcher"
+				       labelclass="mod_set"
+				       default="0"
+				       label="MOD_BWPOSTMAN_ENABLE_SECURITY"
+				       description="MOD_BWPOSTMAN_ENABLE_SECURITY_NOTE"
+				>
 					<option value="0">JNO</option>
 					<option value="1">MOD_BWPOSTMAN_QUESTION</option>
 					<option value="2">MOD_BWPOSTMAN_CAPTCHA</option>

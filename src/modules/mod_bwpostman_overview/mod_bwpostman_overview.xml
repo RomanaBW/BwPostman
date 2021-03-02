@@ -89,10 +89,10 @@
 			<fieldset name="ml_available" label="MOD_BWPOSTMAN_OVERVIEW_ML_AVAILABLE_FIELDSET_LABEL" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field" id="newsletterselect-group">
 				<field name="ml_selected_all"
 					type="radio"
+				    layout="joomla.form.field.radio.switcher"
 					default="no"
 					description="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_ML_FILTER_DESC"
 					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_ML_FILTER_LABEL"
-					class="radio btn-group btn-group-yesno"
 				>
 					<option value="yes">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
 					<option value="no">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
@@ -112,10 +112,10 @@
 
 				<field name="groups_selected_all"
 					type="radio"
+				    layout="joomla.form.field.radio.switcher"
 					default="no"
 					description="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_DESC"
 					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_LABEL"
-					class="radio btn-group btn-group-yesno"
 				>
 					<option value="yes">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
 					<option value="no">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
@@ -137,10 +137,10 @@
 			<fieldset name="cam_available" label="MOD_BWPOSTMAN_OVERVIEW_CAM_AVAILABLE_FIELDSET_LABEL" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field" id="newsletterselect-group">
 				<field name="cam_selected_all"
 					type="radio"
+				    layout="joomla.form.field.radio.switcher"
 					default="no"
 					description="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_CAM_FILTER_DESC"
 					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_CAM_FILTER_LABEL"
-					class="radio btn-group btn-group-yesno"
 				>
 					<option value="yes">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
 					<option value="no">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>

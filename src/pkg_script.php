@@ -336,9 +336,11 @@ class Pkg_BwPostmanInstallerScript
 		<?php
 		// check all tables of BwPostman
 		// Let Ajax client redirect
-
-		$modal = $this->getModal();
-		echo  $modal;
+		if ($update)
+		{
+			$modal = $this->getModal();
+			echo $modal;
+		}
 	}
 
 	/**

@@ -61,14 +61,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $nav_user_menu        = "//*[@title='User Menu']";
+	public static $nav_user_menu        = "//*[@class='dropdown-toggle']/span[@class='icon-user']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $nav_user_menu_logout = "//*/a[@class='dropdown-item'][normalize-space() = 'Log out']";
+	public static $nav_user_menu_logout = "//*/ul[@class='dropdown-menu']/li/a[normalize-space() = 'Logout']";
 
 	/**
 	 * @var string

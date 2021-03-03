@@ -414,7 +414,8 @@ class Com_BwPostmanInstallerScript
 			// Let Ajax client redirect
 			$modal = $this->getModal();
 
-			$app->enqueueMessage(Text::_('Installing BwPostman ... ') . $modal);
+			$app->enqueueMessage(Text::_('Installing BwPostman ... '));
+			echo  $modal;
 		}
 
 		return true;

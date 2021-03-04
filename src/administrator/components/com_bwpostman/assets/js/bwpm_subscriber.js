@@ -29,6 +29,7 @@ window.onload = function() {
 
 	Joomla.submitbutton = function (pressbutton) {
 		var form = document.adminForm;
+
 		if (pressbutton === 'subscriber.cancel') {
 			Joomla.submitform(pressbutton, form);
 		} else {
@@ -36,7 +37,7 @@ window.onload = function() {
 			var action = pressbutton.split('.');
 
 			if (action[1] !== 'cancel' && action[1] !== 'close') {
-				var forms = jQuery('form.form-validate');
+				var forms = document.querySelectorAll('form.form-validate');
 				for (var i = 0; i < forms.length; i++) {
 					if (!document.formvalidator.isValid(forms[i])) {
 						isValid = false;

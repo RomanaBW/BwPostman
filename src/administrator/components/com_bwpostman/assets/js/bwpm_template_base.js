@@ -23,6 +23,65 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+/*
+ * Modified version of
+ * FormChanges(string FormID | DOMelement FormNode)
+ * Returns true if any form element changed.
+ * And false no changes have been made.
+ * NULL indicates that the form does not exist.
+ *
+ * seen on http://blogs.sitepointstatic.com/examples/tech/formchanges/index.html
+ */
+function FormChanges(form) {
+
+	// get form
+	if (typeof form == "string") form = document.getElementById(form);
+	if (!form || !form.nodeName || form.nodeName.toLowerCase() != "form") return null;
+
+	// find changed elements
+	var changed = [], n, c, def, o, ol, opt;
+	for (var e = 0, el = form.elements.length; e < el; e++) {
+		n = form.elements[e];
+		c = false;
+
+		switch (n.nodeName.toLowerCase()) {
+
+			// select boxes
+			case "select":
+				def = 0;
+				for (o = 0, ol = n.options.length; o < ol; o++) {
+					opt = n.options[o];
+					c = c || (opt.selected != opt.defaultSelected);
+					if (opt.defaultSelected) def = o;
+				}
+				if (c && !n.multiple) c = (def != n.selectedIndex);
+				break;
+
+			// input / textarea
+			case "textarea":
+			case "input":
+
+				switch (n.type.toLowerCase()) {
+					case "checkbox":
+					case "radio":
+						// checkbox / radio
+						c = (n.checked != n.defaultChecked);
+						break;
+					default:
+						// standard values
+						c = (n.value != n.defaultValue);
+						break;
+				}
+				break;
+		}
+
+		if (c) return true;
+	}
+
+	return false;
+
+}
+
 window.onload = function() {
 	var Joomla = window.Joomla || {};
 
@@ -30,7 +89,7 @@ window.onload = function() {
 		var form = document.adminForm;
 
 		if (pressbutton === 'template.cancel') {
-			if (jQuery("#adminForm").data("changed")) {
+			if (FormChanges(form) === true) {
 				// confirm if cancel or not
 				var confirmCancel = confirm(document.getElementById('cancelText').value);
 				if (confirmCancel === false) {
@@ -61,10 +120,3 @@ window.onload = function() {
 		framefenster.style.height = framefenster_size + 'px';
 	}
 };
-
-jQuery( document ).ready(function() {
-	jQuery("#adminForm :input").change(function() {
-		jQuery("#adminForm").data("changed",true);
-	});
-});
-

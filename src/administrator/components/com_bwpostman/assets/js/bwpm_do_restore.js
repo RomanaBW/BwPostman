@@ -23,64 +23,130 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-jQuery(document).ready(function() {
-	function doAjax(data, successCallback) {
-		var structure =
-			{
-				url: starturl,
-				data: data,
-				type: 'POST',
-				dataType: 'json'
-			};
+function ready(callbackFunc) {
+	if (document.readyState !== 'loading') {
+		// Document is already ready, call the callback directly
+		callbackFunc();
+	} else if (document.addEventListener) {
+		// All modern browsers to register DOMContentLoaded
+		document.addEventListener('DOMContentLoaded', callbackFunc);
+	} else {
+		// Old IE browsers
+		document.attachEvent('onreadystatechange', function() {
+			if (document.readyState === 'complete') {
+				callbackFunc();
+			}
+		});
+	}
+}
 
-		jQuery.ajax(structure)
-			.done(function( data ) {
-					// Call the callback function
-					successCallback(data);
-				})
-			.fail( function(req) {
-					var message = '<p class="bw_tablecheck_error">AJAX Error: ' + req.statusText + '<br />' + req.responseText + '</p>';
-					jQuery('div#loading2').css({display: 'none'});
-					jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
-					jQuery('div#result').html(message);
-					jQuery('div.resultSet').css('background-color', '#f2dede');
-					jQuery('div.resultSet').css('border-color', '#eed3d7');
-					jQuery('div#toolbar').find('button').removeAttr('disabled');
-					jQuery('div#toolbar').find('a').removeAttr('disabled');
-			});
+ready(function() {
+	function doAjax(data, successCallback) {
+		var	url = starturl,
+			data = data,
+			type = 'POST';
+		var request = new XMLHttpRequest();
+		request.onreadystatechange = function()
+		{
+			if (this.readyState === 4) {
+				if (this.status >= 200 && this.status < 300)
+				{
+					successCallback(parse(this.responseText));
+				}
+				else
+				{
+					var message = '<p class="bw_tablecheck_error">AJAX Error: ' + this.statusText + '<br />' + this.responseText + '</p>';
+					document.getElementById('loading2').style.display = "none";
+					var alert_step = document.getElementById('step' + parseInt(data.match(/\d/g)));
+					if(typeof alert_step !== 'undefined' && alert_step !== null) {
+						alert_step.classList.remove('alert-info');
+						alert_step.classList.add('alert-error');
+					}
+					document.getElementById('result').innerHTML = message;
+					document.getElementById('resultSet').style.backgroundColor = '#f2dede';
+					document.getElementById('resultSet').style.borderColor = '#eed3d7';
+					var toolbar = document.getElementById('toolbar');
+					var buttags = toolbar.getElementsByTagName('button');
+					for (var i = 0; i < buttags.length; i++) {
+						buttags[i].removeAttribute('disabled');
+					}
+					var atags = toolbar.getElementsByTagName('a');
+					for (var i = 0; i < atags.length; i++) {
+						atags[i].removeAttribute('disabled');
+					}
+				}
+			}
+		};
+		request.open(type, url, true);
+		request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		request.send(data);
+	}
+
+	function parse(text){
+		try {
+			return JSON.parse(text);
+		} catch(e){
+			return text;
+		}
 	}
 
 	function processUpdateStep(data) {
-		jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert-' + data.aClass);
-		jQuery('p#step' + data.step).addClass('alert alert-info');
+		var alert_step_old = document.getElementById('step' + (data.step - 1));
+		if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
+			alert_step_old.classList.remove('alert-info');
+			alert_step_old.classList.add('alert-' + data.aClass);
+		}
+		document.getElementById('step' + data.step).classList.add('alert', 'alert-info');
 		// Do AJAX post
-		post = {step: 'step' + data.step};
+		post = 'step=step' + data.step;
 		doAjax(post, function (data) {
 			if (data.ready !== "1") {
-				jQuery('div#result').html(data.result);
-				jQuery('div#error').html(data.error);
+				document.getElementById('result').innerHTML = data.result;
+				document.getElementById('error').innerHTML = data.error;
 				processUpdateStep(data);
 			} else {
-				jQuery('p#step' + (data.step - 1)).removeClass('alert-info').addClass('alert alert-' + data.aClass);
-				jQuery('div#loading2').css({display: 'none'});
-				jQuery('div#result').html(data.result);
-				if (data.error !== '') {
-					jQuery('div.resultSet').css('background-color', '#f2dede');
-					jQuery('div.resultSet').css('border-color', '#eed3d7');
-					jQuery('p#' + data.step).removeClass('alert-info').addClass('alert-error');
-				} else {
-					jQuery('div.resultSet').css('background-color', '#dff0d8');
-					jQuery('div.resultSet').css('border-color', '#d6e9c6');
+				var alert_step_old = document.getElementById('step' + (data.step - 1));
+				if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
+					alert_step_old.classList.remove('alert-info');
+					alert_step_old.classList.add('alert', 'alert-' + data.aClass);
 				}
-				jQuery('div#error').html(data.error);
-				jQuery('div#toolbar').find('button').removeAttr('disabled');
-				jQuery('div#toolbar').find('a').removeAttr('disabled');
+				document.getElementById('loading2').style.display = 'none';
+				document.getElementById('result').innerHTML = data.result;
+				if (data.error !== '') {
+					document.getElementById('resultSet').style.backgroundColor = '#f2dede';
+					document.getElementById('resultSet').style.borderColor = '#eed3d7';
+					var alert_step = document.getElementById(data.step);
+					if(typeof alert_step !== 'undefined' && alert_step !== null) {
+						alert_step.classList.remove('alert-info');
+						alert_step.classList.add('alert-error');
+					}
+				} else {
+					document.getElementById('resultSet').style.backgroundColor = '#dff0d8';
+					document.getElementById('resultSet').style.borderColor = '#d6e9c6';
+				}
+				document.getElementById('error').innerHTML = data.error;
+				var toolbar = document.getElementById('toolbar');
+				var buttags = toolbar.getElementsByTagName('button');
+				for (var i = 0; i < buttags.length; i++) {
+					buttags[i].removeAttribute('disabled');
+				}
+				var atags = toolbar.getElementsByTagName('a');
+				for (var i = 0; i < atags.length; i++) {
+					atags[i].removeAttribute('disabled');
+				}
 			}
 		});
 	}
 
-	jQuery('div#toolbar').find('button').attr("disabled", "disabled");
-	jQuery('div#toolbar').find('a').attr("disabled", "disabled");
+	var toolbar = document.getElementById('toolbar');
+	var buttags = toolbar.getElementsByTagName('button');
+	for (var i = 0; i < buttags.length; i++) {
+		buttags[i].setAttribute("disabled", "disabled");
+	}
+	var atags = toolbar.getElementsByTagName('a');
+	for (var i = 0; i < atags.length; i++) {
+		atags[i].setAttribute("disabled", "disabled");
+	}
 	var starturl = document.getElementById('startUrl').value;
 	var data = {step: "1"};
 	processUpdateStep(data);

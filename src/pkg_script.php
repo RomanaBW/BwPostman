@@ -348,7 +348,7 @@ class Pkg_BwPostmanInstallerScript
 	 *
 	 * @return	string
 	 *
-	 * @since	2.2.0
+	 * @since	2.2.0 (since 3.1.4 here)
 	 */
 	private function getModal()
 	{

@@ -5,10 +5,10 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-Version 3.1.4 released (2021-03-26)----
+Version 3.1.4 released (2021-03-05)----
 
 Bugfix
-#
+# Check of tables after update did not work with Joomla 3.9.25
 
 
 Version 3.1.3 released (2021-02-26)----

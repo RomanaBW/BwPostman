@@ -193,7 +193,7 @@ class TestMailinglistsDetailsCest
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->click(Generals::$toolbar4['Save & New']);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_header);
+//		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
 		$I->see('', MlEdit::$title);
 
@@ -242,7 +242,7 @@ class TestMailinglistsDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_header);
+//		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(MlEdit::$title, MlEdit::$field_title2);
 

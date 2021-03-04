@@ -237,7 +237,7 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$toolbar4['Save & New']);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->wait(1);
 		$I->click(Generals::$systemMessageClose);
@@ -277,7 +277,7 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$toolbar4['Save']);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -292,7 +292,7 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject2);
@@ -336,7 +336,7 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$toolbar4['Save']);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -372,7 +372,7 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject2);
@@ -994,7 +994,7 @@ class TestNewslettersDetailsCest
 			$I->click(Generals::$toolbar['Save']);
 			Generals::dontSeeAnyWarning($I);
 
-			$I->see("Message", Generals::$alert_heading);
+//			$I->see("Message", Generals::$alert_heading);
 			$I->see(NlEdit::$success_saved, Generals::$alert_success);
 
 			// check changes
@@ -1039,7 +1039,7 @@ class TestNewslettersDetailsCest
 			$I->waitForElement(Generals::$pageTitle, 30);
 			Generals::dontSeeAnyWarning($I);
 
-			$I->see("Message", Generals::$alert_heading);
+//			$I->see("Message", Generals::$alert_heading);
 			$I->see(NlEdit::$success_saved, Generals::$alert_success);
 			$I->see('Newsletters', Generals::$pageTitle);
 

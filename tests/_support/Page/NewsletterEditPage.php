@@ -1126,7 +1126,7 @@ class NewsletterEditPage
 	{
 		$I->waitForElementVisible(Generals::$systemMessageClose, 5);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_header);
+//		$I->see("Message", Generals::$alert_header);
 		$I->see(self::$success_saved, Generals::$alert_success);
 		$I->click(Generals::$systemMessageClose);
 

@@ -194,7 +194,7 @@ class CampaignEditPage
 		$I->click(Generals::$toolbar4['Save & Close']);
 
 		$I->waitForElementVisible(Generals::$alert_header, 10);
-		$I->see("Message", Generals::$alert_header);
+//		$I->see("Message", Generals::$alert_header);
 		$I->see(self::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 

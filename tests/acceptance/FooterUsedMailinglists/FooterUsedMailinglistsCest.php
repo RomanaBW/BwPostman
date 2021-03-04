@@ -1368,7 +1368,7 @@ class FooterUsedMailinglistsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 
 		return;

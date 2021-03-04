@@ -354,12 +354,12 @@ class TestTemplatesListsCest
 
 		$arrowClass = $I->grabAttributeFrom(TplManage::$tableHeaderIdArrow, 'class');
 
-		if (strpos($arrowClass, 'fa-caret-down') === false)
+		if (strpos($arrowClass, 'icon-caret-down') === false)
 		{
 			$I->clickAndWait(TplManage::$tableHeaderId, 1);
 			$arrowClass = $I->grabAttributeFrom(TplManage::$tableHeaderIdArrow, 'class');
 
-			if (strpos($arrowClass, 'fa-caret-down') === false)
+			if (strpos($arrowClass, 'icon-caret-down') === false)
 			{
 				$I->clickAndWait(TplManage::$tableHeaderId, 1);
 				$arrowClass = $I->grabAttributeFrom(TplManage::$tableHeaderIdArrow, 'class');

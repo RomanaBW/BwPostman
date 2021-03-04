@@ -86,7 +86,7 @@ foreach ($fieldset as $fieldName => $field)
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary hasTooltip js-stools-btn-filter">
 					<?php echo Text::_('JFILTER_OPTIONS'); ?>
-					<span class="fa fa-caret-down" aria-hidden="true"></span>
+					<span class="fa icon-caret-down" aria-hidden="true"></span>
 				</button>
 				<button type="button" class="btn btn-primary js-stools-btn-clear mr-2">
 					<?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>

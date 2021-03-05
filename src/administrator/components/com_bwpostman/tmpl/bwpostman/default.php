@@ -192,7 +192,7 @@ if ($this->queueEntries) {
 		<div class="bw-generals col-md-3 module-wrapper">
 			<div id="bwpostman_statistic-pane" class="accordion collapse show" role="tablist">
 				<div class="card mb-2">
-					<a href="#generals" data-toggle="collapse" class="card-header" role="tab" aria-expanded="true"><?php echo Text::_('COM_BWPOSTMAN_GENERAL_STATS'); ?></a>
+					<a href="#generals" data-bs-toggle="collapse" class="card-header" role="tab" aria-expanded="true"><?php echo Text::_('COM_BWPOSTMAN_GENERAL_STATS'); ?></a>
 					<div class="collapse show" id="generals" role="tabpanel" data-parent="#bwpostman_statistic-pane">
 						<div class="card-body">
 							<table class="adminlist">
@@ -331,7 +331,7 @@ if ($this->queueEntries) {
 				<?php	if ($this->permissions['com']['admin'] || $this->permissions['view']['maintenance'] || $this->permissions['view']['archive'])
 				{ ?>
 				<div class="card mb-2">
-					<a href="#archive" data-toggle="collapse" class="card-header collapsed" role="tab"><?php echo Text::_('COM_BWPOSTMAN_ARC_STATS'); ?></a>
+					<a href="#archive" data-bs-toggle="collapse" class="card-header collapsed" role="tab"><?php echo Text::_('COM_BWPOSTMAN_ARC_STATS'); ?></a>
 					<div class="collapse" id="archive" role="tabpanel" data-parent="#bwpostman_statistic-pane">
 						<div class="card-body">
 							<table class="adminlist">

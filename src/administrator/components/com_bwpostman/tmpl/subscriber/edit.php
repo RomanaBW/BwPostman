@@ -96,14 +96,39 @@ $new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.ne
 							</div>
 							<div class="col-lg-6">
 								<?php
-								$link = Route::_('index.php?option=com_bwpostman&view=subscriber&layout=print&format=raw&task=insideModal&id=' . (int) $this->item->id);
 								$title = Text::_('COM_BWPOSTMAN_PRINT_SUB_DAT');
-								$modalParams['url'] = $link;
 								$modalParams['title'] = $title;
+								$printLayout = LayoutHelper::render('print', array('form' => $this->form, 'subscriberId' => $this->item->id), JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/subscriber/');
 								?>
-								<button type="button" data-target="#subsData" class="btn btn-info mb-2" data-toggle="modal">
-									<?php echo Text::_('COM_BWPOSTMAN_PRINT_SUB_DAT');?>
-								</button>
+								<div class="control-group">
+									<div class="control-label">
+									</div>
+									<div class="controls">
+										<button type="button" data-bs-target="#subsData" class="btn btn-primary" data-bs-toggle="modal">
+											<?php echo Text::_('COM_BWPOSTMAN_PRINT_SUB_DAT');?>
+										</button>
+									</div>
+								</div>
+
+								<!-- Modal -->
+								<div id="subsData" class="modal" tabindex="-1">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title"><?php echo $title; ?></h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<p><?php echo $printLayout; ?></p>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary btn-danger" data-bs-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
 								<?php echo HTMLHelper::_('bootstrap.renderModal','subsData', $modalParams); ?>
 
 								<div class="control-group">
@@ -177,7 +202,7 @@ $new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.ne
 					<?php if ($new_test != '9')
 					{
 						?>
-						<div class="card subs-mailinglists mb-3">
+						<div id="subs_mailinglists" class="card subs-mailinglists mb-3">
 							<h4 class="card-header">
 								<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE_NOTE'); ?>">
 									<?php echo $image; ?>

@@ -246,7 +246,7 @@ class AccessPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $checkout_icon        = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'fa-lock')]";
+	public static $checkout_icon        = "//*[@id='main-table']/tbody/tr[%s]/td[%s]/a/span[contains(@class, 'icon-checkedout')]";
 
 
 	// set permission variables

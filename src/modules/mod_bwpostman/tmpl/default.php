@@ -333,7 +333,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 					// Show inside modalbox
 					if ($paramsComponent->get('showinmodal') == 1)
 					{
-						echo '<a id="bwp_mod_open" href="javascript:void(0);" data-target="#DisclaimerModModal" data-toggle="modal"';
+						echo '<a id="bwp_mod_open" href="javascript:void(0);" data-bs-target="#DisclaimerModModal" data-bs-toggle="modal"';
 					}
 					// Show not in modalbox
 					else
@@ -349,9 +349,34 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 			</p>
 			<?php
 		} // Show disclaimer
-		?>
 
-		<?php // Question
+		if ($paramsComponent->get('showinmodal') == 1)
+		{
+		?>
+			<!-- Modal -->
+			<div id="DisclaimerModal" class="modal" tabindex="-1">
+				<div class="modal-dialog modal-xl">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title"><?php echo 'Information'; ?></h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<iframe name="disclaimerFrame"
+									src="<?php echo $disclaimer_link; ?>"
+									height="500" width="100%"></iframe>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary btn-danger" data-bs-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<?php
+		}
+		// Question
 		if ($paramsComponent->get('use_captcha') == 1)
 		{ ?>
 			<div class="question">

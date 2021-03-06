@@ -44,7 +44,7 @@ HtmlHelper::_('formbehavior.chosen', 'select');
 HTMLHelper::_('bootstrap.tooltip');
 
 // Depends on jQuery UI
-HtmlHelper::_('jquery.ui', array('core'));
+//HtmlHelper::_('jquery.ui', array('core'));
 
 HtmlHelper::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
 $templateName	= Factory::getApplication()->getTemplate();
@@ -148,11 +148,13 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								// Show inside modalbox
 								if ($this->params->get('showinmodal') == 1)
 								{
-									echo '<a id="bwp_open" data-target="#DisclaimerModal" data-toggle="modal"';
+									echo '<a id="bwp_open" data-bs-target="#DisclaimerModal" data-bs-toggle="modal"';
+									$title = Text::_('COM_BWPOSTMAN_DISCLAIMER_TITLE');
 								}
 								// Show not in modalbox
 								else
 								{
+
 									echo '<a href="' . $disclaimer_link . '"';
 									if ($this->params->get('disclaimer_target') == 0)
 									{
@@ -162,11 +164,41 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								echo '>' . Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
 							</span>
 						</p>
+
 					<?php endif; // Show disclaimer ?>
 					<p class="show_disclaimer">
 						<?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?>
 					</p>
 				</div>
+
+				<?php
+				if ($this->params->get('disclaimer') == 1)
+				{
+				?>
+					<!-- Modal -->
+					<div id="DisclaimerModal" class="modal" tabindex="-1">
+						<div class="modal-dialog modal-xl">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title"><?php echo $title; ?></h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<iframe name="disclaimerFrame"
+											src="<?php echo $disclaimer_link; ?>"
+											height="500" width="100%"></iframe>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary btn-danger" data-bs-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php
+				}
+				?>
+
+
 
 				<p class="button-register text-right">
 					<button class="button validate btn text-right" type="submit"><?php echo Text::_('COM_BWPOSTMAN_BUTTON_REGISTER'); ?></button>
@@ -191,17 +223,6 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 			</form>
 
 			<?php
-
-			// The Modal
-			if ($this->params->get('showinmodal') == 1)
-			{
-				$modalParams               = array();
-				$modalParams['modalWidth'] = 80;
-				$modalParams['bodyHeight'] = 70;
-				$modalParams['url']        = $disclaimer_link;
-				$modalParams['title']      = Text::_('COM_BWPOSTMAN_DISCLAIMER_TITLE');
-				echo HTMLHelper::_('bootstrap.renderModal', 'DisclaimerModal', $modalParams);
-			}
 		}
 		else
 		{

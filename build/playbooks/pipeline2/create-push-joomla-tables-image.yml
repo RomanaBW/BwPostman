@@ -44,6 +44,7 @@
 
     - name: Push container image to private registry
       shell: "docker push {{ private_docker_repo }}/{{ bare_target.db_image_tag_target }}"
+      ignore_errors: true
 
     - name: Remove the container
       docker_container:

@@ -11,16 +11,6 @@
     - "base.sql"
     - "supports.sql"
     - "extensions.sql"
-  when: j_master_version == '4'
-
-- name: Copy joomla 3 sql table files to container
-  copy:
-    src: "../files/joomla/{{ item }}"
-    dest: "{{ joomla_additional_files_folder }}"
-  with_items:
-    - "joomla.sql"
-    - "sample_learn.sql"
-  when: j_master_version == '3'
 
 - name: Replace placeholder for table prefix J4 with real value
   replace:
@@ -31,17 +21,6 @@
     - "base.sql"
     - "supports.sql"
     - "extensions.sql"
-  when: j_master_version == '4'
-
-- name: Replace placeholder for table prefix J3 with real value
-  replace:
-    path: "{{ joomla_additional_files_folder }}/{{ item }}"
-    regexp: '`#__'
-    replace: '`jos_'
-  with_items:
-    - "joomla.sql"
-    - "sample_learn.sql"
-  when: j_master_version == '3'
 
 - name: Copy configuring sql table files to container
   copy:
@@ -56,6 +35,7 @@
     - "reset-update-notification.sql"
     - "reset-sending-stats.sql"
     - "change-install-plugins-order.sql"
+    - "disable-top-modules.sql"
 
 - name: insert Joomla data to database to J4
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item }}"
@@ -63,14 +43,6 @@
     - "base.sql"
     - "supports.sql"
     - "extensions.sql"
-  when: j_master_version == '4'
-
-- name: insert Joomla data to database to J3
-  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item }}"
-  with_items:
-    - "joomla.sql"
-    - "sample_learn.sql"
-  when: j_master_version == '3'
 
 - name: create Joomla admin user
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/add-joomla-users.sql"
@@ -95,3 +67,8 @@
 
 - name: change order of installer plugins
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/change-install-plugins-order.sql"
+
+- name: disable some top modules
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/disable-top-modules.sql"
+
+

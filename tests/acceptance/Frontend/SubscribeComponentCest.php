@@ -168,7 +168,9 @@ class SubscribeComponentCest
 		$editlink_code  = $this->gotoEdit($I);
 		$I->amOnPage(SubsView::$editlink . $editlink_code);
 
-		$I->seeElement(SubsView::$view_edit);
+		$I->waitForElementVisible(SubsView::$view_edit, 2);
+		$I->scrollTo(SubsView::$button_unsubscribe);
+		$I->wait(2);
 		$I->checkOption(SubsView::$button_unsubscribe);
 		$I->click(SubsView::$button_submitleave);
 		$I->dontSee(SubsView::$mail_fill_1, SubsView::$mail);
@@ -212,6 +214,7 @@ class SubscribeComponentCest
 		$I->seeElement(SubsView::$disclaimer_star);
 
 		$I->scrollTo(SubsView::$button_register, 0, -100);
+		$I->wait(1);
 		$I->click(SubsView::$button_register);
 		$I->waitForElementVisible(Generals::$alert_error, 2);
 		$I->scrollTo(Generals::$alert_error, 0, -100);
@@ -264,6 +267,8 @@ class SubscribeComponentCest
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
 		{
 			$I->fillField(SubsView::$firstname, "Charles");
+			$I->scrollTo(SubsView::$button_submit);
+			$I->wait(1);
 			$I->click(SubsView::$button_submit);
 			$I->waitForElement(Generals::$alert_heading, 30);
 			$I->see(SubsView::$msg_saved_successfully);
@@ -274,6 +279,8 @@ class SubscribeComponentCest
 		if ($options->show_name_field || $options->name_field_obligation)
 		{
 			$I->fillField(SubsView::$name, "Crackerbarrel");
+			$I->scrollTo(SubsView::$button_submit);
+			$I->wait(1);
 			$I->click(SubsView::$button_submit);
 			$I->waitForElement(Generals::$alert_heading, 30);
 			$I->see(SubsView::$msg_saved_successfully);
@@ -284,6 +291,8 @@ class SubscribeComponentCest
 		if ($options->show_special || $options->special_field_obligation)
 		{
 			$I->fillField(SubsView::$special, "4711");
+			$I->scrollTo(SubsView::$button_submit);
+			$I->wait(1);
 			$I->click(SubsView::$button_submit);
 			$I->waitForElement(Generals::$alert_heading, 30);
 			$I->see(SubsView::$msg_saved_successfully);
@@ -291,17 +300,30 @@ class SubscribeComponentCest
 			$I->seeInField(SubsView::$special, '4711');
 		}
 
+		$I->scrollTo(SubsView::$ml2);
+		$I->wait(1);
 		$I->checkOption(SubsView::$ml2);
+		$I->scrollTo(SubsView::$button_submit);
+		$I->wait(1);
 		$I->click(SubsView::$button_submit);
 		$I->waitForElement(Generals::$alert_heading, 30);
 		$I->see(SubsView::$msg_saved_successfully);
 		$I->waitForElement(SubsView::$view_edit, 30);
 		$I-> seeCheckboxIsChecked(SubsView::$ml2);
+
+		$I->scrollTo(SubsView::$ml1);
+		$I->wait(1);
 		$I->uncheckOption(SubsView::$ml1);
+		$I->scrollTo(SubsView::$button_submit);
+		$I->wait(1);
 		$I->click(SubsView::$button_submit);
+		$I->scrollTo(SubsView::$ml1);
+		$I->wait(1);
 		$I-> dontSeeCheckboxIsChecked(SubsView::$ml1);
 
 		$I->fillField(SubsView::$mail, SubsView::$mail_fill_2);
+		$I->scrollTo(SubsView::$button_submit);
+		$I->wait(1);
 		$I->click(SubsView::$button_submit);
 		$I->waitForElement(Generals::$alert_info, 30);
 		$I->see(SubsView::$msg_changed_mailaddress);
@@ -446,6 +468,8 @@ class SubscribeComponentCest
 			$I->clickAndWait(SubsView::$format_text, 1);
 		}
 
+		$I->scrollTo(SubsView::$ml1);
+		$I->wait(1);
 		$I->checkOption(SubsView::$ml1);
 
 		if ($options->disclaimer)
@@ -459,6 +483,8 @@ class SubscribeComponentCest
 		$I->fillField(SubsView::$name, SubsView::$lastname_fill);
 		$I->fillField(SubsView::$special, SubsView::$special_fill);
 
+		$I->scrollTo(SubsView::$button_register);
+		$I->wait(1);
 		$I->click(SubsView::$button_register);
 
 		// Check error message first name
@@ -471,6 +497,8 @@ class SubscribeComponentCest
 		$I->fillField(SubsView::$name, SubsView::$abuseLink);
 		$I->fillField(SubsView::$special, SubsView::$special_fill);
 
+		$I->scrollTo(SubsView::$button_register);
+		$I->wait(1);
 		$I->click(SubsView::$button_register);
 
 		// Check error message last name
@@ -483,6 +511,8 @@ class SubscribeComponentCest
 		$I->fillField(SubsView::$name, SubsView::$lastname_fill);
 		$I->fillField(SubsView::$special, SubsView::$abuseLink);
 
+		$I->scrollTo(SubsView::$button_register);
+		$I->wait(1);
 		$I->click(SubsView::$button_register);
 
 		// Check error message special
@@ -533,6 +563,8 @@ class SubscribeComponentCest
 		$I->expectTo('see error message invalid email address (domain)');
 		$I->fillField(SubsView::$mail, SubsView::$mail_fill_unreachable_domain);
 
+		$I->scrollTo(SubsView::$button_register);
+		$I->wait(1);
 		$I->click(SubsView::$button_register);
 		$I->waitForElementVisible(SubsView::$errorContainerHeader, 3);
 
@@ -543,6 +575,8 @@ class SubscribeComponentCest
 		$I->expectTo('see error message invalid email address (mailbox)');
 		$I->fillField(SubsView::$mail, SubsView::$mail_fill_unreachable_mailbox);
 
+		$I->scrollTo(SubsView::$button_register);
+		$I->wait(1);
 		$I->click(SubsView::$button_register);
 		$I->waitForElementVisible(SubsView::$errorContainerHeader, 3);
 
@@ -747,11 +781,12 @@ class SubscribeComponentCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link_modal);
 		$I->wait(2);
 		$I->waitForElementVisible(SubsView::$disclaimer_modal_identifier, 5);
-		$I->switchToIframe('Disclaimer');
+		$I->switchToIframe('disclaimerFrame');
 		$I->see(SubsView::$disclaimer_url_text);
 		$I->switchToIframe();
 		$I->click(SubsView::$disclaimer_modal_close);
@@ -762,11 +797,12 @@ class SubscribeComponentCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link_modal);
 		$I->wait(2);
 		$I->waitForElementVisible(SubsView::$disclaimer_modal_identifier, 5);
-		$I->switchToIframe('Disclaimer');
+		$I->switchToIframe('disclaimerFrame');
 		$I->see(SubsView::$disclaimer_article_text);
 		$I->switchToIframe();
 		$I->click(SubsView::$disclaimer_modal_close);
@@ -777,11 +813,12 @@ class SubscribeComponentCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link_modal);
 		$I->wait(2);
 		$I->waitForElementVisible(SubsView::$disclaimer_modal_identifier, 5);
-		$I->switchToIframe('Disclaimer');
+		$I->switchToIframe('disclaimerFrame');
 		$I->see(SubsView::$disclaimer_menuitem_text);
 		$I->switchToIframe();
 		$I->click(SubsView::$disclaimer_modal_close);
@@ -817,6 +854,7 @@ class SubscribeComponentCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link);
 		$I->switchToNextTab();
@@ -829,6 +867,7 @@ class SubscribeComponentCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link);
 		$I->switchToNextTab();
@@ -841,6 +880,7 @@ class SubscribeComponentCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link);
 		$I->switchToNextTab();
@@ -878,6 +918,7 @@ class SubscribeComponentCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->waitForElementVisible(SubsView::$view_register, 3);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link);
 		$I->see(SubsView::$disclaimer_url_text);
@@ -888,6 +929,7 @@ class SubscribeComponentCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->waitForElementVisible(SubsView::$view_register, 3);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link);
 		$I->see(SubsView::$disclaimer_article_text);
@@ -898,6 +940,7 @@ class SubscribeComponentCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->waitForElementVisible(SubsView::$view_register, 3);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link);
 		$I->see(SubsView::$disclaimer_menuitem_text);
@@ -931,15 +974,20 @@ class SubscribeComponentCest
 		$I->amOnPage(SubsView::$register_url);
 		SubsView::subscribeByComponent($I);
 
+		$I->scrollTo(SubsView::$button_register);
+		$I->wait(1);
 		$I->click(SubsView::$button_register);
 
 		$I->waitForElementVisible(Generals::$alert_error, 2);
 		$I->scrollTo(Generals::$alert_error, 0, -100);
+		$I->wait(1);
 
 		$I->see(SubsView::$security_question_error);
 
 		$I->fillField(SubsView::$question, '4');
 		$I->seeElement(SubsView::$security_star);
+		$I->scrollTo(SubsView::$button_register);
+		$I->wait(1);
 		$I->click(SubsView::$button_register);
 		$I->waitForElement(SubsView::$registration_complete, 3);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
@@ -972,6 +1020,7 @@ class SubscribeComponentCest
 //
 //		$I->amOnPage(SubsView::$register_url);
 //		$I->scrollTo(SubsView::$disclaimer, 0, -100);
+//		$I->wait(1);
 //		$I->seeElement(sprintf(SubsView::$mailinglist_number, '3'));
 //
 //		$I->setManifestOption('mod_bwpostman', 'mod_ml_available', array(''));

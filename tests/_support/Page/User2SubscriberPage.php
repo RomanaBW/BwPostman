@@ -410,7 +410,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $success_heading_identifier   = "//*[@id='system-message-container']/div[1]/joomla-alert/div[@class='alert-heading']";
+	public static $success_heading_identifier   = "//*[@id='system-message-container']/joomla-alert/div[@class='alert-heading']";
 
 	/**
 	 * @var string

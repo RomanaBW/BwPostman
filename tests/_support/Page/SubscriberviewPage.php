@@ -207,6 +207,13 @@ class SubscriberviewPage
 	/**
 	 * @var string
 	 *
+	 * @since 4.0.0
+	 */
+	public static $ml5           = ".//*[@id='mailinglists5']";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $math_captcha  = ".//*[@id='stringCaptcha']";
@@ -414,14 +421,14 @@ class SubscriberviewPage
 	 *
 	 * @since 3.0.0
 	 */
-	public static $errorContainerHeader         = "//*[@id='system-message']/joomla-alert/div[1][contains(@class, 'alert-heading')]";
+	public static $errorContainerHeader         = "//*[@id='system-message-container']/joomla-alert/div[1][contains(@class, 'alert-heading')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 3.0.0
 	 */
-	public static $errorContainerContent         = "//*[@id='system-message']/joomla-alert/div[2]/div[contains(@class, 'alert-message')]";
+	public static $errorContainerContent         = "//*[@id='system-message-container']/joomla-alert/div[2]/div[contains(@class, 'alert-message')]";
 
 	/**
 	 * @var string
@@ -912,6 +919,8 @@ class SubscriberviewPage
 			$I->fillField(self::$special, self::$special_fill);
 		}
 
+		$I->scrollTo(self::$ml1, 0, -100);
+		$I->wait(1);
 		$I->checkOption(self::$ml1);
 
 		if ($options->disclaimer)
@@ -953,10 +962,13 @@ class SubscriberviewPage
 	 */
 	public static function unsubscribe(\AcceptanceTester $I, $button)
 	{
+		$I->scrollTo($button, 0, -150);
+		$I->wait(1);
 		$I->click($button);
 		$I->waitForElement(self::$view_edit, 30);
 		$I->seeElement(self::$view_edit);
 		$I->scrollTo(self::$button_submitleave, 0, -150);
+		$I->wait(1);
 		$I->checkOption(self::$button_unsubscribe);
 		$I->click(self::$button_submitleave);
 		$I->dontSee(self::$mail_fill_1, self::$mail);

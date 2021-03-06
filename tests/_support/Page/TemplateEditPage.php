@@ -112,7 +112,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_select_button     = "//*/joomla-field-media/div/div[@class='input-group-append']/button[1]";
+	public static $thumb_select_button     = "//*/joomla-field-media/div[@class='input-group']/button[contains(@class, 'button-select')]";
 
 	/**
 	 * @var string
@@ -167,87 +167,199 @@ class TemplateEditPage
 	/**
 	 * @var string
 	 *
-	 * @since 2.0.0
+	 * @since 4.0.0
 	 */
-	public static $show_author_no   = "//*[@id='jform_article_show_author']/div/label[contains(@class, 'btn-outline-danger')]";
+	public static $show_title_no   = "//*[@id='jform_article_show_title0']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 2.4.0
+	 * @since 4.0.0
 	 */
-	public static $show_author_no_active   = "//*[@id='jform_article_show_author']/div/label[contains(@class, 'btn-outline-danger') and contains(@class, 'active')]";
+	public static $show_title_no_active   = "//*/input[@id='jform_article_show_title0'][contains(@class, 'active')]";
 
 	/**
 	 * @var string
 	 *
-	 * @since 2.0.0
+	 * @since 4.0.0
 	 */
-	public static $show_author_yes  = "//*[@id='jform_article_show_author']/div/label[contains(@class, 'btn-outline-success')]";
+	public static $show_title_yes  = "//*[@id='jform_article_show_title1']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 2.4.0
+	 * @since 4.0.0
 	 */
-	public static $show_author_yes_active   = "//*[@id='jform_article_show_author']/div/label[contains(@class, 'btn-outline-success') and contains(@class, 'active')]";
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $show_created_no   = "//*[@id='jform_article_show_createdate']/div/label[contains(@class, 'btn-outline-danger')]";
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.4.0
-	 */
-	public static $show_created_no_active   = "//*[@id='jform_article_show_createdate']/div/label[contains(@class, 'btn-outline-danger') and contains(@class, 'active')]";
+	public static $show_title_yes_active   = "//*/input[@id='jform_article_show_title1'][contains(@class, 'active')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $show_created_yes  = "//*[@id='jform_article_show_createdate']/div/label[contains(@class, 'btn-outline-success')]";
-
+	public static $show_author_no   = "//*[@id='jform_article_show_author0']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.4.0
 	 */
-	public static $show_created_yes_active   = "//*[@id='jform_article_show_createdate']/div/label[contains(@class, 'btn-outline-success') and contains(@class, 'active')]";
+	public static $show_author_no_active   = "//*/input[@id='jform_article_show_author0'][contains(@class, 'active')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $show_readon_no   = "//*[@id='jform_article_show_readon']/div/label[contains(@class, 'btn-outline-danger')]";
+	public static $show_author_yes  = "//*[@id='jform_article_show_author1']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.4.0
 	 */
-	public static $show_readon_no_active   = "//*[@id='jform_article_show_readon']/div/label[contains(@class, 'btn-outline-danger') and contains(@class, 'active')]";
+	public static $show_author_yes_active   = "//*/input[@id='jform_article_show_author1'][contains(@class, 'active')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $show_readon_yes  = "//*[@id='jform_article_show_readon']/div/label[contains(@class, 'btn-outline-success')]";
+	public static $show_created_no   = "//*[@id='jform_article_show_createdate0']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.4.0
 	 */
-	public static $show_readon_yes_active   = "//*[@id='jform_article_show_readon']/div/label[contains(@class, 'btn-outline-success') and contains(@class, 'active')]";
+	public static $show_created_no_active   = "//*/input[@id='jform_article_show_createdate0'][contains(@class, 'active')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $show_created_yes  = "//*[@id='jform_article_show_createdate1']";
+
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $show_created_yes_active   = "//*/input[@id='jform_article_show_createdate1'][contains(@class, 'active')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $show_readon_no   = "//*[@id='jform_article_show_readon0']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $show_readon_no_active   = "//*/input[@id='jform_article_show_readon0'][contains(@class, 'active')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $show_readon_yes  = "//*[@id='jform_article_show_readon1']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $show_readon_yes_active   = "//*/input[@id='jform_article_show_readon1'][contains(@class, 'active')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $htmlIframe   = "myIframeHtml";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $htmlHeaderIdentifier   = "//*[@class='article-title']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $htmlArticleIdentifier   = "//*[@class='article-content']/div/h2";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $htmlAuthorIdentifier   = "//*[@class='created_by']/small";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $htmlDateIdentifier   = "//*[@class='createdate']/small";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $htmlReadonIdentifier   = "//*/a[@class='readon']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $textIframe   = "myIframeHtml";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $textHeaderIdentifier   = "//*/body";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $textArticleIdentifier   = "//*/body";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $textAuthorIdentifier   = "//*/body";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $textDateIdentifier   = "//*/body";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $textReadonIdentifier   = "//*/body";
 
 
 	/**
@@ -323,7 +435,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_editor_toggle     = "//a[contains(text(), 'Code')]";
+	public static $button_editor_toggle     = "//*/button[contains(@class, 'wf-editor-toggle')]";
 
 	/**
 	 * @var string
@@ -506,7 +618,7 @@ class TemplateEditPage
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(self::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Template', Generals::$pageTitle);
@@ -568,7 +680,7 @@ class TemplateEditPage
 		$I->switchToIFrame(Generals::$media_frame);
 		$I->wait(1);
 
-		$I->waitForElement(".//*[@id='browser-list']", 5);
+		$I->waitForElementVisible(".//*[@id='browser-list']", 5);
 		$I-> waitForElement(self::$thumb_select, 5);
 		$I->scrollTo(self::$thumb_select, 0, -100);
 		$I->clickAndWait(self::$thumb_select, 1);
@@ -578,7 +690,7 @@ class TemplateEditPage
 		$I->switchToIFrame();
 
 		// Workaround because of JS error at media manager
-		$I->clickAndWait("//*/button[contains(@class, 'close')]", 1);
+//		$I->clickAndWait("//*/button[contains(@class, 'close')]", 1);
 	}
 
 	/**
@@ -588,11 +700,15 @@ class TemplateEditPage
 	 */
 	public static function fillTextContent(\AcceptanceTester $I)
 	{
-		$text_style_content   = self::getFileContent('tests/_data/html-newsletter.txt');
+		$text_style_content   = self::getFileContent('tests/_data/text-newsletter.txt');
 
 		$I->click(self::$tpl_tab2);
 		$I->fillField(self::$text_style, $text_style_content);
 		$I->scrollTo(self::$button_refresh_preview, 0, -100);
 		$I->clickAndWait(self::$button_refresh_preview, 2);
+
+		$I->switchToIFrame(self::$textIframe);
+		$I->see('Intro-Headline', self::$textHeaderIdentifier);
+		$I->switchToIFrame();
 	}
 }

@@ -108,7 +108,7 @@ class TestTemplatesDetailsCest
 		// check if save and close is successful
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 3);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -185,7 +185,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -220,7 +220,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -270,7 +270,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -287,7 +287,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -341,7 +341,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template', Generals::$pageTitle);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -436,7 +436,7 @@ class TestTemplatesDetailsCest
 		// check if save and close is successful
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -515,7 +515,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -550,7 +550,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -600,7 +600,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->see('Template TEXT', TplEdit::$tpl_tab2);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -617,7 +617,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(TplEdit::$title, TplEdit::$field_title2);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -671,7 +671,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -715,7 +715,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Template', Generals::$pageTitle);
@@ -774,7 +774,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Template HTML', TplEdit::$tpl_tab3);
@@ -828,7 +828,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(TplEdit::$success_save, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -909,11 +909,11 @@ class TestTemplatesDetailsCest
 		// select thumbnail
 		TplEdit::selectThumbnail($I, 'AdminTester');
 
-		$this->fillHtmlContent($I);
-
 		$this->fillCssContent($I);
 
-		$this->selectRadiosExtended($I);
+		$this->fillHtmlContent($I);
+
+		$this->selectRadiosExtended($I, 'html');
 	}
 
 	/**
@@ -936,7 +936,7 @@ class TestTemplatesDetailsCest
 
 		TplEdit::fillTextContent($I);
 
-		$this->selectRadiosExtended($I);
+		$this->selectRadiosExtended($I, 'text');
 	}
 
 	/**
@@ -952,7 +952,6 @@ class TestTemplatesDetailsCest
 		$I->waitForElementVisible(TplEdit::$tpl_tab1, 5);
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 
-		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 		$I->fillField(TplEdit::$title, TplEdit::$field_title);
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->seeInPopup(TplEdit::$popup_description);
@@ -969,45 +968,120 @@ class TestTemplatesDetailsCest
 
 	/**
 	 * @param AcceptanceTester $I
+	 * @param string           $mode
 	 *
 	 * @since 2.0.0
 	 */
-	private function selectRadiosExtended(AcceptanceTester $I)
+	private function selectRadiosExtended(AcceptanceTester $I, $mode)
 	{
+		$iFrame            = TplEdit::$htmlIframe;
+		$articleIdentifier = TplEdit::$htmlArticleIdentifier;
+		$authorIdentifier  = TplEdit::$htmlAuthorIdentifier;
+		$dateIdentifier    = TplEdit::$htmlDateIdentifier;
+		$readonIdentifier  = TplEdit::$htmlReadonIdentifier;
+
+		if ($mode === 'text')
+		{
+			$iFrame            = TplEdit::$textIframe;
+			$articleIdentifier = TplEdit::$textArticleIdentifier;
+			$authorIdentifier  = TplEdit::$textAuthorIdentifier;
+			$dateIdentifier    = TplEdit::$textDateIdentifier;
+			$readonIdentifier  = TplEdit::$textReadonIdentifier;
+		}
+
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 
-		//show author
-		// switch no
-		$I->click(TplEdit::$show_author_no);
-		$I->seeElement(TplEdit::$show_author_no_active);
-		$I->dontSeeElement(TplEdit::$show_author_yes_active);
+		// don't show title
+		$I->click(TplEdit::$show_title_no);
+		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
+		$I->switchToIFrame($iFrame);
 
-		// switch yes
+		if ($mode === 'html')
+		{
+			$I->dontSeeElement($articleIdentifier);
+		}
+		else
+		{
+			$I->dontSee('Article<br>', $articleIdentifier);
+		}
+
+		$I->switchToIFrame();
+
+		// show title
+		$I->click(TplEdit::$show_title_yes);
+		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
+		$I->switchToIFrame($iFrame);
+		$I->see('Article', $articleIdentifier);
+		$I->switchToIFrame();
+
+		//don't show author
+		$I->click(TplEdit::$show_author_no);
+		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
+		$I->switchToIFrame($iFrame);
+
+		if ($mode === 'html')
+		{
+			$I->dontSeeElement($authorIdentifier);
+		}
+		else
+		{
+			$I->dontSee('Written by', $authorIdentifier);
+		}
+
+		$I->switchToIFrame();
+
+		// show author
 		$I->click(TplEdit::$show_author_yes);
-		$I->dontSeeElement(TplEdit::$show_author_no_active);
-		$I->seeElement(TplEdit::$show_author_yes_active);
+		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
+		$I->switchToIFrame($iFrame);
+		$I->see('Written by', $authorIdentifier);
+		$I->switchToIFrame();
+
+		//don't show created date
+		$I->click(TplEdit::$show_created_no);
+		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
+		$I->switchToIFrame($iFrame);
+
+		if ($mode === 'html')
+		{
+			$I->dontSeeElement($dateIdentifier);
+		}
+		else
+		{
+			$I->dontSee('Created on', $dateIdentifier);
+		}
+
+		$I->switchToIFrame();
 
 		// show created date
-		// switch no
-		$I->click(TplEdit::$show_created_no);
-		$I->seeElement(TplEdit::$show_created_no_active);
-		$I->dontSeeElement(TplEdit::$show_created_yes_active);
-
-		// switch yes
 		$I->click(TplEdit::$show_created_yes);
-		$I->dontSeeElement(TplEdit::$show_created_no_active);
-		$I->seeElement(TplEdit::$show_created_yes_active);
+		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
+		$I->switchToIFrame($iFrame);
+		$I->see('Created on ', $dateIdentifier);
+		$I->switchToIFrame();
+
+		//don't show readon button
+		$I->click(TplEdit::$show_readon_no);
+		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
+		$I->switchToIFrame($iFrame);
+
+		if ($mode === 'html')
+		{
+			$I->dontSeeElement($readonIdentifier);
+		}
+		else
+		{
+			$I->dontSee('read more', $readonIdentifier);
+		}
+
+		$I->switchToIFrame();
 
 		// show readon button
-		// switch no
-		$I->click(TplEdit::$show_readon_no);
-		$I->seeElement(TplEdit::$show_readon_no_active);
-		$I->dontSeeElement(TplEdit::$show_readon_yes_active);
-
-		// switch yes
 		$I->click(TplEdit::$show_readon_yes);
-		$I->dontSeeElement(TplEdit::$show_readon_no_active);
-		$I->seeElement(TplEdit::$show_readon_yes_active);
+		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
+		$I->switchToIFrame($iFrame);
+		$I->see('read more', $readonIdentifier);
+		$I->switchToIFrame();
 	}
 
 	/**
@@ -1023,15 +1097,17 @@ class TestTemplatesDetailsCest
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
 		$I->clickAndWait(TplEdit::$button_editor_toggle, 1);
 
-		$I->executeJS("document.getElementById('jform_tpl_html').style.display = 'inline'");
 		$I->fillField(TplEdit::$html_style, $html_style_content);
-		$I->executeJS("document.getElementById('jform_tpl_html').style.display = 'none'");
 
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
-		$I->click(TplEdit::$button_editor_toggle);
+		$I->clickAndWait(TplEdit::$button_editor_toggle, 1);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
+		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
-//		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
+
+		$I->switchToIFrame(TplEdit::$htmlIframe);
+		$I->see('Intro-Headline', TplEdit::$htmlHeaderIdentifier);
+		$I->switchToIFrame();
 //		$I->clickAndWait(Generals::$systemMessageClose, 1);
 	}
 
@@ -1047,6 +1123,7 @@ class TestTemplatesDetailsCest
 		$I->click(TplEdit::$tpl_tab2);
 		$I->fillField(TplEdit::$css_style, $css_style_content);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
+		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
 	}
 }

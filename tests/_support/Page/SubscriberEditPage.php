@@ -1,6 +1,7 @@
 <?php
 namespace Page;
 
+use AcceptanceTester;
 use Page\SubscriberManagerPage as SubManage;
 
 /**
@@ -118,14 +119,14 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $unconfirmed  = "unconfirmed";
+	public static $unconfirmed  = "0";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $confirmed    = "confirmed";
+	public static $confirmed    = "1";
 
 
 	/**
@@ -356,6 +357,13 @@ class SubscriberEditPage
 	/**
 	 * @var string
 	 *
+	 * @since 4.0.0
+	 */
+	public static $printSubsDataMail   = "//*/div[@id='subsData']/div/div/div[@class='modal-body']/table/tbody/tr[4]/td[2]";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.4.0
 	 */
 	public static $printSubsDataClose   = "//*/button[@aria-label='Close']";
@@ -364,16 +372,23 @@ class SubscriberEditPage
 	/**
 	 * @var string
 	 *
-	 * @since 2.0.0
+	 * @since 4.0.0
 	 */
-	public static $female   = "//*[@id='jform_gender_chosen']/div/ul/li[2]";
+	public static $noGender   = "2";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $male     = "//*[@id='jform_gender_chosen']/div/ul/li[3]";
+	public static $female   = "1";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $male     = "0";
 
 	/**
 	 * Variables for selecting mailinglists
@@ -384,6 +399,13 @@ class SubscriberEditPage
 	 * @since  2.0.0
 	 */
 	public static $firstSubscriber       = "//*/table[@id='main-table-bw-confirmed']/tbody/tr[1]/td[2]/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.4.0
+	 */
+	public static $mls_label            = "//*[@id='subs_mailinglists']";
 
 	/**
 	 * @var string
@@ -436,7 +458,7 @@ class SubscriberEditPage
 
 		$I->click(Generals::$toolbar4['Save & Close']);
 		$I->waitForElementVisible(Generals::$alert_header, 30);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(self::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Subscribers', Generals::$pageTitle);
@@ -446,19 +468,21 @@ class SubscriberEditPage
 	 * Method to fill form without check of required fields
 	 * This method simply fills all fields, required or not
 	 *
-	 * @param \AcceptanceTester $I
+	 * @param AcceptanceTester $I
+	 * @param string $format (0 = text, 1 = HTML)
+	 * @param string $gender (0 = male, 1 = female, 2 = n.a.)
 	 *
 	 * @throws \Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public static function fillFormSimple(\AcceptanceTester $I)
+	public static function fillFormSimple(AcceptanceTester $I, $format = "0", $gender = "0")
 	{
 		$options    = $I->getManifestOptions('com_bwpostman');
 
 		if ($options->show_gender)
 		{
-			$I->selectOption(self::$gender, 'male');
+			$I->selectOption(self::$gender, $gender);
 		}
 
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
@@ -476,7 +500,7 @@ class SubscriberEditPage
 		if ($options->show_emailformat)
 		{
 			$I->click(self::$mailformat);
-			$I->selectOption(self::$mailformat, self::$format_text);
+			$I->selectOption(self::$mailformat, $format);
 			$I->wait(1);
 			$I->waitForText("Text", 5);
 		}
@@ -491,6 +515,7 @@ class SubscriberEditPage
 		$I->wait(1);
 		$I->waitForText("confirmed", 5);
 
+		$I->scrollTo(self::$mls_label, 0, -100);
 		$I->click(sprintf(self::$mls_accessible, 2));
 		$I->click(sprintf(self::$mls_nonaccessible, 3));
 		$I->scrollTo(self::$mls_internal_label, 0, -100);

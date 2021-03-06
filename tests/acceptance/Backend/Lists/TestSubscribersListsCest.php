@@ -1326,12 +1326,14 @@ class TestSubscribersListsCest
 		$I->click(sprintf(SubsManage::$tableSelectField, '3'));
 
 		// Click batch
+		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(Generals::$toolbar['Batch']);
 		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
 		$I->wait(3);
 
 		// Select mailinglist to subscribe
-		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
+		$I->selectOption(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew);
+//		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
 
 		// Check subscribe button
 		$I->click(sprintf(SubsManage::$batchModalTask, '1'));
@@ -1341,7 +1343,7 @@ class TestSubscribersListsCest
 		$I->waitForElementVisible(Generals::$alert_success, 5);
 
 		// Check success message
-		$I->see(SubsManage::$batchSuccessSubscribe, Generals::$alert_msg);
+		$I->see(SubsManage::$batchSuccessSubscribe, Generals::$alert_success4);
 
 		// Check no error or warning appears
 		$I->dontSee(Generals::$alert_error);
@@ -1362,12 +1364,13 @@ class TestSubscribersListsCest
 		$I->click(sprintf(SubsManage::$tableSelectField, '3'));
 
 		// Click batch
+		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(Generals::$toolbar['Batch']);
 		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
 		$I->wait(3);
 
 		// Select mailinglist to unsubscribe
-		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
+		$I->selectOption(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew);
 
 		// Check subscribe button
 		$I->click(sprintf(SubsManage::$batchModalTask, '2'));
@@ -1377,7 +1380,7 @@ class TestSubscribersListsCest
 		$I->waitForElementVisible(Generals::$alert_success, 5);
 
 		// Check success message
-		$I->see(SubsManage::$batchSuccessUnsubscribe, Generals::$alert_msg);
+		$I->see(SubsManage::$batchSuccessUnsubscribe, Generals::$alert_success4);
 
 		// Check no error or warning appears
 		$I->dontSee(Generals::$alert_error);
@@ -1417,12 +1420,13 @@ class TestSubscribersListsCest
 		$I->click(sprintf(SubsManage::$tableSelectField, '2'));
 
 		// Click batch
+		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(Generals::$toolbar['Batch']);
 		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
 		$I->wait(3);
 
 		// Select mailinglist to subscribe
-		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectOld, SubsManage::$batchMlListId);
+		$I->selectOption(SubsManage::$batchMlList, SubsManage::$batchMlSelectOld);
 
 		// Check subscribe button
 		$I->click(sprintf(SubsManage::$batchModalTask, '1'));
@@ -1432,7 +1436,7 @@ class TestSubscribersListsCest
 		$I->waitForElementVisible(Generals::$alert_success, 5);
 
 		// Check success message
-		$I->see(SubsManage::$batchSuccessSubscribeAlready, Generals::$alert_msg);
+		$I->see(SubsManage::$batchSuccessSubscribeAlready, Generals::$alert_success4);
 
 		// Check no error or warning appears
 		$I->dontSee(Generals::$alert_error);
@@ -1451,12 +1455,13 @@ class TestSubscribersListsCest
 		$I->click(sprintf(SubsManage::$tableSelectField, '2'));
 
 		// Click batch
+		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(Generals::$toolbar['Batch']);
 		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
 		$I->wait(3);
 
 		// Select mailinglist to unsubscribe
-		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectOld, SubsManage::$batchMlListId);
+		$I->selectOption(SubsManage::$batchMlList, SubsManage::$batchMlSelectOld);
 
 		// Check subscribe button
 		$I->click(sprintf(SubsManage::$batchModalTask, '2'));
@@ -1466,7 +1471,7 @@ class TestSubscribersListsCest
 		$I->waitForElementVisible(Generals::$alert_success, 5);
 
 		// Check success message
-		$I->see(SubsManage::$batchSuccessUnsubscribeOne, Generals::$alert_msg);
+		$I->see(SubsManage::$batchSuccessUnsubscribeOne, Generals::$alert_success4);
 
 		// Check no error or warning appears
 		$I->dontSee(Generals::$alert_error);
@@ -1506,12 +1511,13 @@ class TestSubscribersListsCest
 		$I->click(sprintf(SubsManage::$tableSelectField, '3'));
 
 		// Click batch
+		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(Generals::$toolbar['Batch']);
 		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
 		$I->wait(3);
 
 		// Select mailinglist to subscribe
-		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
+		$I->selectOption(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew);
 
 		// Check subscribe button
 		$I->click(sprintf(SubsManage::$batchModalTask, '1'));
@@ -1521,7 +1527,7 @@ class TestSubscribersListsCest
 		$I->waitForElementVisible(Generals::$alert_success, 5);
 
 		// Check success message
-		$I->see(SubsManage::$batchSuccessSubscribe, Generals::$alert_msg);
+		$I->see(SubsManage::$batchSuccessSubscribe, Generals::$alert_success4);
 
 		// Check no error or warning appears
 		$I->dontSee(Generals::$alert_error);
@@ -1544,12 +1550,13 @@ class TestSubscribersListsCest
 		$I->click(sprintf(SubsManage::$tableSelectField, '3'));
 
 		// Click batch
+		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(Generals::$toolbar['Batch']);
 		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
 		$I->wait(3);
 
 		// Select mailinglist to unsubscribe
-		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
+		$I->selectOption(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew);
 
 		// Check subscribe button
 		$I->click(sprintf(SubsManage::$batchModalTask, '2'));
@@ -1559,7 +1566,7 @@ class TestSubscribersListsCest
 		$I->waitForElementVisible(Generals::$alert_success, 5);
 
 		// Check success message
-		$I->see(SubsManage::$batchSuccessUnsubscribe, Generals::$alert_msg);
+		$I->see(SubsManage::$batchSuccessUnsubscribe, Generals::$alert_success4);
 
 		// Check no error or warning appears
 		$I->dontSee(Generals::$alert_error);
@@ -1604,13 +1611,14 @@ class TestSubscribersListsCest
 
 
 		// Click batch
+		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(Generals::$toolbar['Batch']);
 		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
 		$I->wait(3);
 
 
 		// Select mailinglist to move to
-		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
+		$I->selectOption(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew);
 
 		// Check move button
 		$I->click(sprintf(SubsManage::$batchModalTask, '3'));
@@ -1620,7 +1628,7 @@ class TestSubscribersListsCest
 		$I->waitForElementVisible(Generals::$alert_success, 5);
 
 		// Check success message
-		$I->see(SubsManage::$batchSuccessMoveForward, Generals::$alert_msg);
+		$I->see(SubsManage::$batchSuccessMoveForward, Generals::$alert_success4);
 
 		// Check no error or warning appears
 		$I->dontSee(Generals::$alert_error);
@@ -1645,12 +1653,13 @@ class TestSubscribersListsCest
 		$I->click(sprintf(SubsManage::$tableSelectField, '2'));
 
 		// Click batch
+		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(Generals::$toolbar['Batch']);
 		$I->waitForElementVisible(SubsManage::$batchModalBody, 5);
 		$I->wait(3);
 
 		// Select mailinglist to move to
-		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectOld, SubsManage::$batchMlListId);
+		$I->selectOption(SubsManage::$batchMlList, SubsManage::$batchMlSelectOld);
 
 		// Check move button
 		$I->click(sprintf(SubsManage::$batchModalTask, '3'));
@@ -1660,7 +1669,7 @@ class TestSubscribersListsCest
 		$I->waitForElementVisible(Generals::$alert_success, 5);
 
 		// Check success message
-		$I->see(SubsManage::$batchSuccessMoveBack, Generals::$alert_msg);
+		$I->see(SubsManage::$batchSuccessMoveBack, Generals::$alert_success4);
 
 		// Check no error or warning appears
 		$I->dontSee(Generals::$alert_error);

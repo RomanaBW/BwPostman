@@ -258,6 +258,7 @@ class SubscribeModuleCest
 		$I->seeElement(SubsView::$view_module);
 
 		$I->scrollTo(Helper::$module_position, 0, -100);
+		$I->wait(1);
 		$I->click(Helper::$module_button_module);
 		$I->waitForElementVisible(Helper::$module_modal_content);
 
@@ -271,6 +272,7 @@ class SubscribeModuleCest
 
 		// Register without filled fields
 		$I->scrollTo(Helper::$mod_button_register, 0, -100);
+		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
 		$I->waitForElementVisible(Helper::$errorModalCloseButton, 2);
 
@@ -291,6 +293,7 @@ class SubscribeModuleCest
 
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link_modal);
 		$I->wait(2);
@@ -324,6 +327,9 @@ class SubscribeModuleCest
 		$I->wantTo("Edit subscription by module");
 		$I->expectTo('see get edit link page');
 		$I->amOnPage(SubsView::$register_url);
+
+		$I->scrollTo(Helper::$mod_button_edit,0, -100);
+		$I->wait(1);
 		$I->click(Helper::$mod_button_edit);
 		$I->waitForElement(SubsView::$mail, 3);
 		$I->see(SubsView::$edit_get_text);
@@ -371,6 +377,7 @@ class SubscribeModuleCest
 		$I->seeElement(Helper::$mod_disclaimer_star);
 
 		$I->scrollTo(Helper::$mod_button_register, 0, -100);
+		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
 		$I->waitForElementVisible(Helper::$errorModalFooterButton, 2);
 
@@ -496,6 +503,7 @@ class SubscribeModuleCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(Helper::$mod_ml_desc_identifier, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_ml_desc_identifier);
 		$I->see(Helper::$mod_ml_desc_long, Helper::$mod_ml_desc_identifier);
 
@@ -506,6 +514,7 @@ class SubscribeModuleCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(Helper::$mod_ml_desc_identifier, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_ml_desc_identifier);
 		$I->see(Helper::$mod_ml_desc_short, Helper::$mod_ml_desc_identifier);
 
@@ -545,6 +554,7 @@ class SubscribeModuleCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(Helper::$mod_intro_identifier, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_intro_identifier);
 		$I->see(Helper::$mod_intro_text_comp, Helper::$mod_intro_identifier);
 
@@ -555,6 +565,7 @@ class SubscribeModuleCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(Helper::$mod_intro_identifier, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_intro_identifier);
 		$I->see(Helper::$mod_intro_text_mod, Helper::$mod_intro_identifier);
 
@@ -588,6 +599,7 @@ class SubscribeModuleCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link_modal);
 		$I->wait(2);
@@ -603,6 +615,7 @@ class SubscribeModuleCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link_modal);
 		$I->wait(2);
@@ -618,6 +631,7 @@ class SubscribeModuleCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link_modal);
 		$I->wait(2);
@@ -659,6 +673,7 @@ class SubscribeModuleCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link);
 		$I->switchToNextTab();
@@ -671,6 +686,7 @@ class SubscribeModuleCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link);
 		$I->switchToNextTab();
@@ -683,6 +699,7 @@ class SubscribeModuleCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link);
 		$I->switchToNextTab();
@@ -721,6 +738,7 @@ class SubscribeModuleCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->waitForElementVisible(SubsView::$view_register, 3);
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link);
 		$I->see(Helper::$mod_disclaimer_url_text);
@@ -731,6 +749,7 @@ class SubscribeModuleCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->waitForElementVisible(SubsView::$view_register, 3);
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link);
 		$I->see(Helper::$mod_disclaimer_article_text);
@@ -741,6 +760,7 @@ class SubscribeModuleCest
 		$I->amOnPage(SubsView::$register_url);
 		$I->waitForElementVisible(SubsView::$view_register, 3);
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link);
 		$I->see(Helper::$mod_disclaimer_menuitem_text);
@@ -820,11 +840,13 @@ class SubscribeModuleCest
 
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_mailinglist_number, '3'));
 
 		$I->setManifestOption('mod_bwpostman', 'mod_ml_available', array(''));
 		$I->reloadPage();
 		$I->scrollTo(Helper::$mod_disclaimer, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_mailinglist_number, '9'));
 
 		$I->reloadPage();
@@ -868,6 +890,9 @@ class SubscribeModuleCest
 
 		// Fill needed fields
 		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_1);
+
+		$I->scrollTo(Helper::$mod_format_text, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Helper::$mod_format_text, 1);
 		$I->checkOption(Helper::$mod_ml1);
 		$I->checkOption(Helper::$mod_disclaimer);
@@ -878,6 +903,8 @@ class SubscribeModuleCest
 		$I->fillField(Helper::$mod_name, SubsView::$lastname_fill);
 		$I->fillField(Helper::$mod_special, SubsView::$special_fill);
 
+		$I->scrollTo(Helper::$mod_button_register, 0, -100);
+		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
 		$I->waitForElementVisible(SubsView::$errorContainerContent, 2);
 
@@ -898,6 +925,8 @@ class SubscribeModuleCest
 		$I->fillField(Helper::$mod_name, SubsView::$abuseLink);
 		$I->fillField(Helper::$mod_special, SubsView::$special_fill);
 
+		$I->scrollTo(Helper::$mod_button_register, 0, -100);
+		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
 		$I->waitForElementVisible(SubsView::$errorContainerContent, 2);
 
@@ -967,6 +996,8 @@ class SubscribeModuleCest
 		$I->expectTo('see error message invalid email address (domain)');
 		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_unreachable_domain);
 
+		$I->scrollTo(Helper::$mod_button_register, 0, -100);
+		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
 		$I->waitForElementVisible(SubsView::$errorContainerContent, 2);
 
@@ -977,6 +1008,8 @@ class SubscribeModuleCest
 		$I->expectTo('see error message invalid email address (mailbox)');
 		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_unreachable_mailbox);
 
+		$I->scrollTo(Helper::$mod_button_register, 0, -100);
+		$I->wait(1);
 		$I->click(SubsView::$button_register);
 		$I->waitForElementVisible(SubsView::$errorContainerContent, 2);
 
@@ -997,7 +1030,7 @@ class SubscribeModuleCest
 	 *
 	 * @since   2.0.0
 	 */
-	private function subscribeByModule(AcceptanceTester $I, $modal = false)
+	private function subscribeByModule(AcceptanceTester $I, $modal = 'none')
 	{
 		$options = $I->getManifestOptions('mod_bwpostman');
 
@@ -1007,6 +1040,7 @@ class SubscribeModuleCest
 		if ($modal !== 'none')
 		{
 			$I->scrollTo(Helper::$module_position, 0, -100);
+			$I->wait(1);
 			$I->click(Helper::$module_button_module);
 			$I->waitForElementVisible(Helper::$module_modal_content, 3);
 			$I->waitForElementVisible(Helper::$module_item_identifier, 3);
@@ -1025,6 +1059,8 @@ class SubscribeModuleCest
 
 		if ($options->show_gender)
 		{
+			$I->scrollTo(Helper::$mod_gender_select_id, 0, -100);
+			$I->wait(1);
 			$I->clickAndWait(Helper::$mod_gender_select_id, 1);
 			$I->click(Helper::$mod_gender_female);
 		}
@@ -1041,6 +1077,8 @@ class SubscribeModuleCest
 
 		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_1);
 
+		$I->scrollTo(Helper::$mod_format_text, 0, -100);
+		$I->wait(1);
 		if ($options->show_emailformat)
 		{
 			$I->clickAndWait(Helper::$mod_format_text, 1);
@@ -1052,12 +1090,17 @@ class SubscribeModuleCest
 		}
 
 		$I->checkOption(Helper::$mod_ml2);
-		$I->scrollTo(Helper::$mod_button_register);
+
+		$I->scrollTo(Helper::$mod_disclaimer, 0, -150);
+		$I->wait(1);
 
 		if ($options->disclaimer)
 		{
 			$I->checkOption(Helper::$mod_disclaimer);
 		}
+
+		$I->scrollTo(Helper::$mod_button_register, 0, -150);
+		$I->wait(1);
 	}
 
 	/**
@@ -1096,6 +1139,9 @@ class SubscribeModuleCest
 		$I->click($button);
 		$I->waitForElement(SubsView::$view_edit, 30);
 		$I->seeElement(SubsView::$view_edit);
+
+		$I->scrollTo(SubsView::$button_unsubscribe, 0, -100);
+		$I->wait(1);
 		$I->checkOption(SubsView::$button_unsubscribe);
 		$I->click(SubsView::$button_submitleave);
 		$I->dontSee(SubsView::$mail_fill_1, SubsView::$mail);

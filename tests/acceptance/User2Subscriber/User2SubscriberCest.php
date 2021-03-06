@@ -1563,7 +1563,7 @@ class User2SubscriberCest
 
 		$I->waitForElementVisible(RegPage::$success_heading_identifier, 30);
 
-		$I->see(Generals::$alert_msg_txt, RegPage::$success_heading_identifier);
+//		$I->see(Generals::$alert_msg_txt, RegPage::$success_heading_identifier);
 		$I->see(RegPage::$register_success, RegPage::$success_message_identifier);
 	}
 

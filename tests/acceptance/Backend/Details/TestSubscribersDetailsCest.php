@@ -117,11 +117,10 @@ class TestSubscribersDetailsCest
 		$I->click(MainView::$addSubscriberButton);
 
 		SubEdit::fillFormSimple($I, SubManage::$format_text, SubEdit::$male);
-		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$this->checkSavedValues($I, '0', '0');
@@ -202,12 +201,11 @@ class TestSubscribersDetailsCest
 		$I->click(Generals::$toolbar['New']);
 
 		SubEdit::fillFormSimple($I, SubManage::$format_html, SubEdit::$female);
-		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$this->checkSavedValues($I, '1', '1');
@@ -249,7 +247,7 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->see('', SubEdit::$name);
 
@@ -289,7 +287,7 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -304,7 +302,7 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -362,12 +360,10 @@ class TestSubscribersDetailsCest
 		$I->click(Generals::$toolbar['New']);
 
 		SubEdit::fillFormSimple($I, SubManage::$format_html, SubEdit::$noGender);
-		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
-
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$this->checkSavedValues($I, '1', '2');
@@ -415,7 +411,7 @@ class TestSubscribersDetailsCest
 
 		$I->click(Generals::$toolbar4['Save & Close']);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Message", Generals::$alert_heading);
+//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Subscribers', Generals::$pageTitle);
@@ -464,10 +460,8 @@ class TestSubscribersDetailsCest
 
 		$I->clickAndWait(sprintf(SubEdit::$printSubsDataButton, SubEdit::$printSubsDataText), 3);
 
-		$I->switchToIFrame(SubEdit::$printSubsDataText);
-		$I->see(" l.abbott@tester-net.nil ", "html/body/table[1]/tbody/tr[4]/td[2]");
+		$I->see(" l.abbott@tester-net.nil ", SubEdit::$printSubsDataMail);
 
-		$I->switchToIFrame();
 		$I->clickAndWait(SubEdit::$printSubsDataClose, 2);
 		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
 
@@ -491,7 +485,7 @@ class TestSubscribersDetailsCest
 	 */
 	public function CreateOneSubscriberAbuseListView(AcceptanceTester $I)
 	{
-		$I->wantTo("Create one Subscriber complete list view");
+		$I->wantTo("Create one Subscriber with http:// at name field");
 		$I->amOnPage(SubManage::$url);
 
 		Generals::presetComponentOptions($I);
@@ -506,20 +500,17 @@ class TestSubscribersDetailsCest
 		// Fill needed fields
 		if ($options->show_gender)
 		{
-			$I->clickAndWait(SubEdit::$gender, 1);
-			$I->clickAndWait(SubEdit::$male, 1);
+			$I->selectOption(SubEdit::$gender, "0");
 		}
 
 		$I->fillField(SubEdit::$email, SubEdit::$field_email);
 
 		if ($options->show_emailformat)
 		{
-			$I->clickAndWait(SubEdit::$mailformat, 1);
-			$I->clickAndWait(SubManage::$format_text, 1);
+			$I->selectOption(SubEdit::$mailformat, "0");
 		}
 
-		$I->clickAndWait(SubEdit::$confirm, 1);
-		$I->clickAndWait(SubEdit::$confirmed, 1);
+		$I->selectOption(SubEdit::$confirm, SubEdit::$confirmed);
 
 		$I->scrollTo(SubEdit::$mls_label, 0, -100);
 		$I->click(sprintf(SubEdit::$mls_accessible, 2));
@@ -544,12 +535,12 @@ class TestSubscribersDetailsCest
 			$I->fillField(SubEdit::$special, SubEdit::$field_special);
 		}
 
-		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		// Check error message first name
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Error", Generals::$alert_header);
-		$I->see(SubEdit::$errorAbuseFirstName, Generals::$alert_msg);
+		$I->see(SubEdit::$errorAbuseFirstName, Generals::$alert_error);
 
 		// Fill last name with link
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
@@ -562,12 +553,12 @@ class TestSubscribersDetailsCest
 			$I->fillField(SubEdit::$name, SubEdit::$abuseLink);
 		}
 
-		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		// Check error message last name
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Error", Generals::$alert_header);
-		$I->see(SubEdit::$errorAbuseLastName, Generals::$alert_msg);
+		$I->see(SubEdit::$errorAbuseLastName, Generals::$alert_error);
 
 		// Fill special with link
 		if ($options->show_name_field || $options->name_field_obligation)
@@ -580,12 +571,12 @@ class TestSubscribersDetailsCest
 			$I->fillField(SubEdit::$special, SubEdit::$abuseLink);
 		}
 
-		$I->clickAndWait(SubEdit::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		// Check error message special
 		$I->waitForElement(Generals::$alert_header, 30);
 		$I->see("Error", Generals::$alert_header);
-		$I->see(sprintf(SubEdit::$errorAbuseSpecial, trim(SubEdit::$specialTitle)), Generals::$alert_msg);
+		$I->see(sprintf(SubEdit::$errorAbuseSpecial, trim(SubEdit::$specialTitle)), Generals::$alert_error);
 
 		$I->clickAndWait(SubEdit::$toolbar['Cancel'], 1);
 

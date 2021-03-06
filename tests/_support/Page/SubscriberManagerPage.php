@@ -265,7 +265,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_list          = "//*[@id='filter_emailformat']/a";
+	public static $format_list          = "//*[@id='filter_emailformat']";
 
 	/**
 	 * @var string
@@ -279,14 +279,14 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_text          = "Text";
+	public static $format_text          = "0";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_html          = "HTML";
+	public static $format_html          = "1";
 
 	/**
 	 * @var string
@@ -323,7 +323,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $ml_list          = "//*[@id='filter_mailinglist']/a";
+	public static $ml_list          = "//*[@id='filter_mailinglist']";
 
 	/**
 	 * @var string
@@ -732,7 +732,7 @@ class SubscriberManagerPage
 			'name' => 'Muster',
 			'firstname' => 'Nanni',
 			'email' => 'tester10@boldt-services.nul',
-			'emailformat' => '0',
+			'emailformat' => '1',
 			'status' => '1',
 		),
 	);
@@ -944,7 +944,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 3.1.2
 	 */
-	public static $batchModalBody = "//*[@id='collapseModal']/div[@class='modal-body modal-batch']";
+	public static $batchModalBody = "//*[@id='collapseModal']/div/div/div[@class='modal-body']";
 
 	/**
 	 * @var string
@@ -958,7 +958,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 3.1.2
 	 */
-	public static $batchModalTask = "//*[@id='batch-task']/div/label[%s]/input";
+	public static $batchModalTask = "//*[@id='batch-task']/div/div[%s]/input";
 
 	/**
 	 * @var string
@@ -972,28 +972,28 @@ class SubscriberManagerPage
 	 *
 	 * @since 3.1.2
 	 */
-	public static $batchMlList          = "//*[@id='batch_mailinglist_id_chzn']/a";
+	public static $batchMlList          = "//*[@id='batch-mailinglist-id']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 3.1.2
 	 */
-	public static $batchMlSelectNew        = "//*/li[text()='01 Mailingliste 2 A']";
+	public static $batchMlSelectNew        = "1";
 
 	/**
 	 * @var string
 	 *
 	 * @since 3.1.2
 	 */
-	public static $batchMlSelectOld        = "//*/li[text()='01 Mailingliste 5 A']";
+	public static $batchMlSelectOld        = "4";
 
 	/**
 	 * @var string
 	 *
 	 * @since 3.1.2
 	 */
-	public static $batchMlSelectAlready        = "//*/li[text()='01 Mailingliste 2 B']";
+	public static $batchMlSelectAlready        = "20";
 
 	/**
 	 * @var string

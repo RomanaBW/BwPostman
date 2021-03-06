@@ -730,7 +730,7 @@ class InstallationPage
 	 *
 	 * @since 3.0.0
 	 */
-	public static $search_button        = "//*[@id='j-main-container']/div[1]/div[2]/div/div/div/span/button";
+	public static $search_button        = "//*[@id='j-main-container']/div[1]/div[2]/div/div/div/button";
 
 
 

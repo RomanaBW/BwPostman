@@ -274,7 +274,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_error      = "//*[@id='system-message-container']/joomla-alert[@type='danger']";
+	public static $alert_error      = "//*[@id='system-message-container']/joomla-alert[@type='danger']/div/div[@class='alert-message']";
 
 	/**
 	 * @var string
@@ -502,7 +502,7 @@ class Generals
 		'Import'               => "//*[@id='toolbar-download']/button",
 		'Export'               => "//*[@id='toolbar-upload']/button",
 		'Export Popup'         => "//*[@id='toolbar-popup-upload']/button",
-		'Batch'                => "//*[@id='toolbar-batch']/button",
+		'Batch'                => "//*[@id='status-group-children-batch']/button",
 		'Reset sending trials' => "//*[@id='toolbar-checkin']/button",
 		'Continue sending'     => "//*[@id='toolbar-envelope']/button",
 		'Clear queue'          => "//*[@id='toolbar-trash']/button",
@@ -523,7 +523,7 @@ class Generals
 	 *
 	 * @since 2.4.0
 	 */
-	public static $toolbarSaveActions  = "//*/button[@data-target='#toolbar-dropdown-save-group']";
+	public static $toolbarSaveActions  = "//*/div[@id='toolbar-dropdown-save-group']/button";
 
 	/**
 	 * Array of toolbar id values for list page

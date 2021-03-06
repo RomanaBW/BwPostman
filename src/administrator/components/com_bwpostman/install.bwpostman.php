@@ -1293,7 +1293,7 @@ class Com_BwPostmanInstallerScript
 	}
 
 	/**
-	 * Method to remove multiple entries in table extensions. Needed because joomla update may show updates for these unnecessary entries
+	 * Method to remove obsolete files and folders
 	 *
 	 * @return void
 	 *
@@ -1309,6 +1309,9 @@ class Com_BwPostmanInstallerScript
 			'views/newsletters/metadata.xml',
 			'views/register/metadata.xml',
 			'helpers/subscriberhelper.php',
+			'assets/css/bwpostman.css',
+			'assets/css/iconfonts.css',
+			'assets/css/index.html',
 		);
 
 		foreach ($feFilesArray as $file)
@@ -1316,6 +1319,19 @@ class Com_BwPostmanInstallerScript
 			if (File::exists(JPATH_ROOT . '/components/com_bwpostman/' . $file))
 			{
 				File::delete(JPATH_ROOT . '/components/com_bwpostman/' . $file);
+			}
+		}
+
+		$feFoldersArray     = array(
+			'assets/css',
+			'assets/js',
+		);
+
+		foreach ($feFoldersArray as $folder)
+		{
+			if (Folder::exists(JPATH_ROOT . '/components/com_bwpostman/' . $folder))
+			{
+				Folder::delete(JPATH_ROOT . '/components/com_bwpostman/' . $folder);
 			}
 		}
 
@@ -1337,6 +1353,17 @@ class Com_BwPostmanInstallerScript
 			if (File::exists(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file))
 			{
 				File::delete(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $file);
+			}
+		}
+
+		$beFoldersArray     = array(
+		);
+
+		foreach ($beFoldersArray as $folder)
+		{
+			if (Folder::exists(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $folder))
+			{
+				Folder::delete(JPATH_ROOT . '/administrator/components/com_bwpostman/' . $folder);
 			}
 		}
 

@@ -102,8 +102,20 @@
 }
 
 #bwp_com_wrapper,
-bwp_com_wrapper::before,
-bwp_com_wrapper::after {
+#bwp_com_wrapper::before,
+#bwp_com_wrapper::after {
     box-sizing: border-box;
 }
 
+#bwpostman .strong {
+	font-weight: bold;
+}
+
+#bwpostman .input-group, #bwpostman .form-control {
+    max-width: 300px;
+}
+
+#bwpostman .btn-group-toggle .btn-secondary.active{
+    background-color: #545b62 !important;
+    border-color: #4e555b !important;
+}

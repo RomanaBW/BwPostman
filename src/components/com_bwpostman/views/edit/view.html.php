@@ -168,6 +168,12 @@ class BwPostmanViewEdit extends JViewLegacy
 		$this->lists        = $lists;
 		$this->subscriber   = $subscriber;
 
+		// switch frontend layout
+		$layout   = $this->getLayout();
+		if ($layout !== "editlink_form")
+		{
+			$tpl = $this->params->get('fe_layout');
+		}
 		// Set parent display
 		parent::display($tpl);
 

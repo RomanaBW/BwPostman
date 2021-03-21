@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman register default template for frontend.
+ * BwPostman register bootstrap 3 template for frontend.
  *
  * @version %%version_number%%
  * @package BwPostman-Site
@@ -36,21 +36,16 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
-HtmlHelper::_('behavior.keepalive');
-HtmlHelper::_('behavior.formvalidator');
-HtmlHelper::_('formbehavior.chosen', 'select');
-
 HTMLHelper::_('bootstrap.tooltip');
 
-// Depends on jQuery UI
-HtmlHelper::_('jquery.ui', array('core'));
-
-JHtml::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
+JHtml::_('stylesheet', 'com_bwpostman/bwpostman_bs3.css', array('version' => 'auto', 'relative' => true));
 $templateName	= Factory::getApplication()->getTemplate();
 $css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
 JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
+
+$formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 ?>
 
 <div id="bwpostman">
@@ -68,133 +63,132 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 
 		<div class="content_inner">
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post"
-					id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
+					id="bwp_com_form" name="bwp_com_form" class="form-validate">
 				<?php // Spamcheck 1 - Input-field: class="user_highlight" style="position: absolute; top: -5000px;" ?>
 				<p class="user_hightlight">
 					<label for="falle"><strong><?php echo addslashes(Text::_('COM_BWPOSTMAN_SPAMCHECK')); ?></strong></label>
 					<input type="text" name="falle" id="falle" size="20"
 							title="<?php echo addslashes(Text::_('COM_BWPOSTMAN_SPAMCHECK')); ?>" maxlength="50" />
 				</p>
-				<?php // End Spamcheck ?>
 
 				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
-
 					<?php // Show pretext only if set in basic parameters
 					if ($this->params->get('pretext'))
 					{
 						$preText = Text::_($this->params->get('pretext'));
 						?>
-						<p class="pre_text"><?php echo $preText; ?></p>
+						<div class="pre_text mb-3"><?php echo $preText; ?></div>
 						<?php
 					} // End: Show pretext only if set in basic parameters ?>
 
 					<?php // Show editlink only if the user is not logged in
-					$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
-					?>
-						<p class="user_edit">
+					if (Factory::getApplication()->input->get('view') !== 'edit')
+					{
+						$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
+						?>
+						<div class="user_edit mb-3">
 							<a href="<?php echo $link; ?>">
 								<?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
 							</a>
-						</p>
-					<?php // End: Show editlink only if the user is not logged in
-					?>
+						</div><?php
+					}
+
+					// End: Show editlink only if the user is not logged in ?>
 
 					<?php // Show formfield gender only if enabled in basic parameters
 					if ($this->params->get('show_gender') == 1)
-					{ ?>
-						<p class="edit_gender">
-							<label id="gendermsg"><?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
-							<?php echo $this->lists['gender']; ?>
-						</p> <?php
+					{
+				        $gender_selected = isset($this->subscriber->gender) ? $this->subscriber->gender : '2';
+						$class = $formclass === 'sm' ? ' class="form-control input-sm"' : ' class="form-control"';
+				    ?>
+						<div class="form-group row">
+							<label id="gendermsg" class="col-sm-2 control-label" for="gender"> <?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
+				            <div class="col-sm-10">
+								<select id="gender"<?php echo $class; ?> name="gender">
+									<option value="2"<?php echo $gender_selected == '2' ? ' selected="selected"' : ''; ?>>
+							            <?php echo Text::_('COM_BWPOSTMAN_NO_GENDER'); ?>
+									</option>
+									<option value="0"<?php echo $gender_selected == '0' ? ' selected="selected"' : ''; ?>>
+							            <?php echo Text::_('COM_BWPOSTMAN_MALE'); ?>
+									</option>
+									<option value="1"<?php echo $gender_selected == '1' ? ' selected="selected"' : ''; ?>>
+							            <?php echo Text::_('COM_BWPOSTMAN_FEMALE'); ?>
+									</option>
+								</select>
+				            </div>
+						</div>
+					<?php
 					} // End gender ?>
 
 					<?php // Show first name-field only if set in basic parameters
 					if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation'))
 					{ ?>
-						<p class="user_firstname input<?php echo ($this->params->get('firstname_field_obligation')) ? '-append' : '' ?>">
-							<label id="firstnamemsg" for="firstname">
-								<?php echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>:</label>
+						<div class="form-group row user_firstname">
+							<label id="firstnamemsg" class="col-sm-2 control-label" for="firstname">
+								<?php echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label>
 							<?php // Is filling out the firstname field obligating
 							if ($this->params->get('firstname_field_obligation'))
 							{ ?>
-								<input type="text" name="firstname" id="firstname" size="40"
-										value="<?php
-										if (!empty($this->subscriber->firstname))
-										{
-											echo $this->subscriber->firstname;
-										} ?>"
-										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-										{
-											echo "invalid";
-										} ?>"
-										maxlength="50" /> <span class="append-area"><i class="icon-star"></i></span>
+					            <div class="col-sm-10">
+					                <div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
+										<input type="text" name="firstname" id="firstname" size="40"
+											value="<?php echo $this->subscriber->firstname; ?>"
+											class="form-control" maxlength="50" />
+										<span class="input-group-addon"><i class="fa fa-star"></i></span>
+									</div>
+					            </div>
 							<?php
 							}
 							else
 							{ ?>
-								<input type="text" name="firstname" id="firstname" size="40"
-										value="<?php echo $this->subscriber->firstname; ?>"
-										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-										{
-											echo "invalid";
-										}
-										else
-										{
-											echo "inputbox";
-										} ?>"
-										maxlength="50" />
+					            <div class="col-sm-10">
+									<input type="text" name="firstname" id="firstname" size="40"
+											class="form-control<?php echo $formclass === "sm" ? ' input-sm' : ''; ?>"
+											value="<?php echo $this->subscriber->firstname; ?>" maxlength="50" />
+					            </div>
 							<?php
 							}
 
 							// End: Is filling out the firstname field obligating
 							?>
-						</p> <?php
+						</div> <?php
 					}
 
 					// End: Show first name-field only if set in basic parameters ?>
 
+
 					<?php // Show name-field only if set in basic parameters
 					if ($this->params->get('show_name_field') || $this->params->get('name_field_obligation'))
 					{ ?>
-						<p class="user_name edit_name input<?php echo ($this->params->get('name_field_obligation')) ? '-append' : '' ?>">
-							<label id="namemsg" for="name"
-								<?php
-								if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-								{
-									echo "class=\"invalid\"";
-								} ?>>
+						<div class="form-group row user_name edit_name">
+							<label id="namemsg" class="col-sm-2 control-label" for="name">
 								<?php echo Text::_('COM_BWPOSTMAN_NAME'); ?>: </label>
 							<?php // Is filling out the name field obligating
 							if ($this->params->get('name_field_obligation'))
-							{
-								?>
-								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
-										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-										{
-											echo "invalid";
-										} ?>"
-										maxlength="50" />  <span class="append-area"><i class="icon-star"></i></span> <?php
+							{ ?>
+					            <div class="col-sm-10">
+					                <div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
+										<input type="text" name="name" id="name" size="40"
+											value="<?php echo $this->subscriber->name; ?>"
+											class="form-control" maxlength="50" />
+										<span class="input-group-addon"><i class="fa fa-star"></i></span>
+									</div>
+					            </div>
+							<?php
 							}
 							else
 							{ ?>
-								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
-									class="<?php
-									if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) {
-										echo "invalid";
-									}
-									else
-									{
-										echo "inputbox";
-									} ?>"
-									maxlength="50" /> <?php
+					            <div class="col-sm-10">
+									<input type="text" name="name" id="name" size="40"
+										class="form-control<?php echo $formclass === "sm" ? ' input-sm' : ''; ?>"
+										value="<?php echo $this->subscriber->name; ?>" maxlength="50" />
+					            </div>
+							<?php
 							}
 
 							// End: Is filling out the name field obligating
 							?>
-						</p> <?php
+						</div> <?php
 					}
 
 					// End: Show name-fields only if set in basic parameters ?>
@@ -211,14 +205,9 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							$tip = Text::_('COM_BWPOSTMAN_SPECIAL');
 						} ?>
 
-						<p class="edit_special input<?php echo ($this->params->get('special_field_obligation')) ? '-append' : '' ?>">
-							<label id="specialmsg" class="hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special"
+						<div class="form-group row edit_special">
+							<label id="specialmsg" class="col-sm-2 control-label hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special">
 								<?php
-								if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-								{
-									echo " class=\"invalid\"";
-								}
-								echo ">";
 								if ($this->params->get('special_label') != '')
 								{
 									echo Text::_($this->params->get('special_label'));
@@ -232,67 +221,63 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							<?php // Is filling out the special field obligating
 							if ($this->params->get('special_field_obligation'))
 							{ ?>
-								<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
-										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-										{
-											echo "invalid";
-										}
-										else
-										{
-											echo "inputbox";
-										} ?>"
-										maxlength="50" /> <span class="append-area"><i class="icon-star"></i></span> <?php
+					            <div class="col-sm-10">
+					                <div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
+										<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
+											class="form-control" maxlength="50" />
+										<span class="input-group-addon"><i class="fa fa-star"></i></span>
+									</div>
+					            </div>
+							<?php
 							}
 							else
 							{ ?>
-								<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
-										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-										{
-											echo "invalid";
-										}
-										else
-										{
-											echo "inputbox";
-										} ?>"
-										maxlength="50" /> <?php
+					            <div class="col-sm-10">
+									<input type="text" name="special" id="special" size="40"
+										class="form-control<?php echo $formclass === "sm" ? ' input-sm' : ''; ?>"
+										value="<?php echo $this->subscriber->special; ?>" maxlength="50" />
+					            </div>
+							<?php
 							}
 
 							// End: Is filling out the special field obligating
 							?>
-						</p> <?php
+						</div> <?php
 					} // End: Show special field only if set in basic parameters ?>
 
-					<p class="user_email edit_email input-append">
-						<label id="emailmsg" for="email"
-							<?php
-							if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1))
-							{
-								echo "class=\"invalid\"";
-							} ?>>
+
+					<div class="form-group row user_email edit_email">
+						<label id="emailmsg" class="col-sm-2 control-label" for="email">
 							<?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:
 						</label>
-						<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
-							class="<?php
-							if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1))
-							{
-								echo "invalid";
-							}
-							else
-							{
-								echo "inputbox validate-email";
-							} ?>"
-							maxlength="100" />  <span class="append-area"><i class="icon-star"></i></span>
-					</p>
-
+					    <div class="col-sm-10">
+							<div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
+								<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
+									class="form-control" maxlength="50" />
+								<span class="input-group-addon"><i class="fa fa-star"></i></span>
+							</div>
+						</div>
+					</div>
 					<?php
 					// Show formfield email format only if enabled in basic parameters
 					if ($this->params->get('show_emailformat') == 1)
-					{ ?>
-						<div class="user_mailformat edit_emailformat">
-							<label id="emailformatmsg"><?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>:</label>
-							<?php echo $this->lists['emailformat']; ?>
+					{
+				        $mailformat_selected = isset($this->subscriber->emailformat) ? $this->subscriber->emailformat : $this->params->get('default_emailformat');
+					?>
+						<div class="form-group row user_mailformat edit_emailformat">
+							<label id="emailformatmsg" class="col-sm-2 control-label"> <?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label>
+						    <div class="col-sm-10">
+								<div id="edit_mailformat" class="btn-group<?php echo $formclass === "sm" ? ' btn-group-sm' : ''; ?>" data-toggle="buttons">
+									<label class="btn btn-default<?php echo (!$mailformat_selected ? ' active' : ''); ?>" for="formatText">
+										<input type="radio" name="emailformat" id="formatText" value="0"<?php echo (!$mailformat_selected ? ' checked="checked"' : ''); ?> />
+										<span>&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_BWPOSTMAN_TEXT'); ?>&nbsp;&nbsp;&nbsp;</span>
+									</label>
+									<label class="btn btn-default<?php echo ($mailformat_selected ? ' active' : ''); ?>" for="formatHtml">
+										<input type="radio" name="emailformat" id="formatHtml" value="1"<?php echo ($mailformat_selected ? ' checked="checked"' : ''); ?> />
+										<span>&nbsp;&nbsp;<?php echo Text::_('COM_BWPOSTMAN_HTML'); ?>&nbsp;&nbsp;</span>
+									</label>
+								</div>
+							</div>
 						</div>
 					<?php
 					}
@@ -311,9 +296,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					// Show available mailinglists
 					if ($this->lists['available_mailinglists'])
 					{ ?>
-						<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
-
-						<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+						<div class="lists my-3<?php echo $this->params->get('pageclass_sfx'); ?>">
 							<?php
 							$n = count($this->lists['available_mailinglists']);
 
@@ -328,13 +311,13 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 									<?php
 									if ($this->params->get('show_desc') == 1)
 									{ ?>
-										<p class="mail_available">
+										<div class="mail_available">
 											<?php echo Text::_('COM_BWPOSTMAN_MAILINGLIST'); ?>
-										</p>
-										<p class="mailinglist-description-single">
-											<span class="mail_available_list_title">
+										</div>
+										<div class="mailinglist-description-single">
+											<span class="mail_available_list_title strong">
 												<?php echo $this->lists['available_mailinglists'][0]->title . ": "; ?>
-											</span>
+											</span><br />
 											<?php
 											echo substr(Text::_($this->lists['available_mailinglists'][0]->description), 0, $descLength);
 
@@ -342,22 +325,23 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 											{
 												echo '... ';
 												echo HtmlHelper::tooltip(Text::_($this->lists['available_mailinglists'][0]->description),
-													$this->lists['available_mailinglists'][0]->title, 'tooltip.png', '', '');
+													$this->lists['available_mailinglists'][0]->title, '', '<i class="fa fa-info-circle fa-lg"></i>', '');
 											} ?>
-										</p>
+										</div>
 										<?php
 									}
 								}
 								else
 								{ ?>
-									<p class="mail_available">
-										<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="icon-star"></i></sup>'; ?>
-									</p>
+									<div class="mail_available strong">
+										<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="fa fa-star"></i></sup>'; ?>
+									</div>
 									<?php
 									foreach ($this->lists['available_mailinglists'] as $i => $item)
 									{ ?>
-										<p class="mail_available_list <?php echo "mailinglists$i"; ?>">
-											<input title="mailinglists_array" type="checkbox" id="<?php echo "mailinglists$i"; ?>"
+										<div class="checkbox mail_available_list <?php echo "mailinglists$i"; ?>">
+				                            <label class="form-check-label" for="<?php echo "mailinglists$i"; ?>">
+											<input class="form-check-input" title="mailinglists_array" type="checkbox" id="<?php echo "mailinglists$i"; ?>"
 													name="<?php echo "mailinglists[]"; ?>" value="<?php echo $item->id; ?>"
 											<?php
 											if ((is_array($this->subscriber->mailinglists)) && (in_array((int) $item->id,
@@ -365,28 +349,27 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 											{
 												echo "checked=\"checked\"";
 											} ?> />
-											<span class="mail_available_list_title">
-												<?php echo $this->params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
-											</span>
-											<?php
-											if ($this->params->get('show_desc') == 1)
-											{ ?>
-											<span>
+												<span class="mail_available_list_title strong">
+													<?php echo $this->params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
+												</span><br />
 												<?php
-												echo substr(Text::_($item->description), 0, $descLength);
-												if (strlen(Text::_($item->description)) > $descLength)
-												{
-													echo '... ';
-													echo HtmlHelper::tooltip(Text::_($item->description), $item->title, 'tooltip.png', '', '');
+												if ($this->params->get('show_desc') == 1)
+												{ ?>
+												<span>
+													<?php
+													echo substr(Text::_($item->description), 0, $descLength);
+													if (strlen(Text::_($item->description)) > $descLength)
+													{
+														echo '... ';
+														echo HtmlHelper::tooltip(Text::_($item->description), $item->title, '', '<i class="fa fa-info-circle fa-lg"></i>', '');
+													} ?>
+												</span>
+												<?php
 												} ?>
-											</span>
-											<?php
-											} ?>
-										</p>
+				                            </label>
+										</div>
 										<?php
-									} ?>
-									<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
-									<?php
+									}
 								}
 							}?>
 						</div>
@@ -400,14 +383,20 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 
 				<?php // Question
 				if ($this->params->get('use_captcha') == 1) : ?>
-					<div class="question">
-						<p class="question-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
-						<p class="security_question_lbl"><?php echo Text::_($this->params->get('security_question')); ?></p>
-						<p class="question-result input-append">
-							<label id="question" for="stringQuestion"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
-							<input type="text" name="stringQuestion" id="stringQuestion" size="40" maxlength="50" />
-							<span class="append-area"><i class="icon-star"></i></span>
-						</p>
+					<div class="question panel panel-default panel-body">
+						<div class="question-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></div>
+						<div class="form-group row">
+							<div class="security_question_lbl col-sm-10 offset-sm-2 my-3"><?php echo Text::_($this->params->get('security_question')); ?></div>
+						</div>
+						<div class="form-group row question-result">
+							<label id="question" class="col-sm-2 col-form-label" for="stringQuestion"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+				            <div class="col-sm-10">
+				                <div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
+									<input type="text" name="stringQuestion" id="stringQuestion" class="form-control" size="40" maxlength="50" />
+									<span class="input-group-addon"><i class="fa fa-star"></i></span>
+								</div>
+							</div>
+						</div>
 					</div>
 				<?php endif; // End question ?>
 
@@ -416,26 +405,32 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					$codeCaptcha = md5(microtime());
 					?>
 
-					<div class="captcha">
-						<p class="captcha-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
-						<p class="security_question_lbl">
-							<img src="<?php echo Uri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
-						</p>
-						<p class="captcha-result input-append">
-							<label id="captcha" for="stringCaptcha"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
-							<input type="text" name="stringCaptcha" id="stringCaptcha" size="40" maxlength="50" />
-							<span class="append-area"><i class="icon-star"></i></span>
-						</p>
+					<div class="captcha panel panel-default panel-body">
+						<div class="captcha-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></div>
+						<div class="form-group row">
+							<div class="security_question_lbl col-sm-10 col-sm-offset-2 my-3">
+								<img src="<?php echo Uri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
+							</div>
+						</div>
+						<div class="form-group row captcha-result">
+							<label id="captcha" class="col-sm-2 control-label" for="stringCaptcha"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+				            <div class="col-sm-10">
+				                <div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
+									<input type="text" name="stringCaptcha" id="stringCaptcha" class="form-control" size="40" maxlength="50" />
+									<span class="input-group-addon"><i class="fa fa-star"></i></span>
+								</div>
+				            </div>
+						</div>
 					</div>
 					<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
 				<?php endif; // End captcha ?>
 
-				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="disclaimer<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php // Show Disclaimer only if enabled in basic parameters
 					if ($this->params->get('disclaimer')) :
 						?>
-						<p class="agree_check">
-							<input title="agreecheck" type="checkbox" id="agreecheck" name="agreecheck" />
+						<div class="form-check agree_check my-3">
+							<input title="agreecheck" type="checkbox" id="agreecheck" class="form-check-input" name="agreecheck" />
 							<?php
 							// Extends the disclaimer link with '&tmpl=component' to see only the content
 							$tpl_com = $this->params->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
@@ -459,7 +454,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								$disclaimer_link = $this->params->get('disclaimer_link');
 							}
 							?>
-							<span>
+							<label class="form-check-label">
 								<?php
 								// Show inside modalbox
 								if ($this->params->get('showinmodal') == 1)
@@ -475,18 +470,19 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 										echo ' target="_blank"';
 									};
 								}
-								echo '>' . Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
-							</span>
-						</p>
+								echo '>' . Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <sup><i class="fa fa-star"></i></sup>'; ?>
+							</label>
+						</div>
 					<?php endif; // Show disclaimer ?>
-					<p class="show_disclaimer">
-						<?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?>
-					</p>
-				</div>
 
-				<p class="button-register text-right">
-					<button class="button validate btn text-right" type="submit"><?php echo Text::_('COM_BWPOSTMAN_BUTTON_REGISTER'); ?></button>
-				</p>
+					<div class="button-register mb-3">
+						<button class="button validate btn btn-default" type="submit"><?php echo Text::_('COM_BWPOSTMAN_BUTTON_REGISTER'); ?></button>
+					</div>
+
+					<div class="register-required small">
+						<?php echo str_replace('icon-star', 'fa fa-star', Text::_('COM_BWPOSTMAN_REQUIRED')); ?>
+					</div>
+				</div>
 
 			<input type="hidden" name="option" value="com_bwpostman" />
 			<input type="hidden" name="task" value="save" />
@@ -535,54 +531,12 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-jQuery(document).ready(function()
-{
-	// Turn radios into btn-group
-	jQuery('.radio.btn-group label').addClass('btn');
-	jQuery(".btn-group label:not(.active)").click(function()
-	{
-		var label = jQuery(this);
-		var input = jQuery('#' + label.attr('for'));
-
-		if (!input.prop('checked'))
-		{
-			label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-			if (input.val() === '')
-			{
-				label.addClass('active btn-primary');
-			}
-			else if (input.val() === 0)
-			{
-				label.addClass('active btn-danger');
-			}
-			else
-			{
-				label.addClass('active btn-success');
-			}
-			input.prop('checked', true);
-		}
-	});
-	jQuery(".btn-group input[checked=checked]").each(function()
-	{
-		if (jQuery(this).val() === '')
-		{
-			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
-		}
-		else if (jQuery(this).val() === 0)
-		{
-			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-danger');
-		}
-		else
-		{
-			jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
-		}
-	});
-
 <?php
 if ($this->params->get('showinmodal') == 1)
 { ?>
+<script type="text/javascript">
+jQuery(document).ready(function()
+{
 	function setComModal() {
 		// Set the modal height and width 90%
 		if (typeof window.innerWidth != 'undefined')
@@ -644,7 +598,7 @@ if ($this->params->get('showinmodal') == 1)
 		});
 	}
 	setComModal();
-<?php
-} ?>
 })
 </script>
+<?php
+} ?>

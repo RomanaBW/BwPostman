@@ -146,6 +146,8 @@ class BwPostmanViewRegister extends JViewLegacy
 				$this->displaySuccess();
 				break;
 			default:
+				// switch frontend layout
+				$tpl = $this->params->get('fe_layout');
 				$this->displayDefault();
 				break;
 		}

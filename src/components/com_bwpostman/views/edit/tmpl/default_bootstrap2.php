@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman edit default template for frontend.
+ * BwPostman edit bootstrap 2 template for frontend.
  *
  * @version %%version_number%%
  * @package BwPostman-Site
@@ -33,16 +33,14 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
-JHtml::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
+JHtml::_('stylesheet', 'com_bwpostman/bwpostman_bs2.css', array('version' => 'auto', 'relative' => true));
 $templateName	= Factory::getApplication()->getTemplate();
 $css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
 JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 
-HtmlHelper::_('formbehavior.chosen', 'select');
-HtmlHelper::_('behavior.formvalidator');
-
 HTMLHelper::_('bootstrap.tooltip');
 
+$formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 ?>
 
 <script type="text/javascript">
@@ -156,126 +154,112 @@ HTMLHelper::_('bootstrap.tooltip');
 
 		<div class="content_inner">
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
-					name="bwp_com_form" class="form-validate form-inline">
+					name="bwp_com_form" class="form-validate form-horizontal">
 
-				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
-
+				<div class="contentpane mb-3<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php // Show pretext only if set in basic parameters
 					if ($this->params->get('pretext'))
 					{
 						$preText = Text::_($this->params->get('pretext'));
 						?>
-						<p class="pre_text"><?php echo $preText; ?></p>
+						<div class="pre_text mb-3"><?php echo $preText; ?></div>
 						<?php
 					} // End: Show pretext only if set in basic parameters ?>
 
-					<?php // Show editlink only if the user is not logged in
-					$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
-					?>
-						<p class="user_edit">
-							<a href="<?php echo $link; ?>">
-								<?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
-							</a>
-						</p>
-					<?php // End: Show editlink only if the user is not logged in
-					?>
-
 					<?php // Show formfield gender only if enabled in basic parameters
 					if ($this->params->get('show_gender') == 1)
-					{ ?>
-						<p class="edit_gender">
-							<label id="gendermsg"> <?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
-							<?php echo $this->lists['gender']; ?>
-						</p> <?php
+					{
+				        $gender_selected = isset($this->subscriber->gender) ? $this->subscriber->gender : '2';
+						$class = $formclass === 'sm' ? ' class="input-small"' : ' class="input-medium"';
+				    ?>
+						<div class="control-group">
+							<label id="gendermsg" class="control-label" for="gender"> <?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
+				            <div class="controls">
+								<select id="gender"<?php echo $class; ?> name="gender">
+									<option value="2"<?php echo $gender_selected == '2' ? ' selected="selected"' : ''; ?>>
+							            <?php echo Text::_('COM_BWPOSTMAN_NO_GENDER'); ?>
+									</option>
+									<option value="0"<?php echo $gender_selected == '0' ? ' selected="selected"' : ''; ?>>
+							            <?php echo Text::_('COM_BWPOSTMAN_MALE'); ?>
+									</option>
+									<option value="1"<?php echo $gender_selected == '1' ? ' selected="selected"' : ''; ?>>
+							            <?php echo Text::_('COM_BWPOSTMAN_FEMALE'); ?>
+									</option>
+								</select>
+				            </div>
+						</div>
+					<?php
 					} // End gender ?>
 
 					<?php // Show first name-field only if set in basic parameters
 					if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation'))
 					{ ?>
-						<p class="user_firstname input<?php echo ($this->params->get('firstname_field_obligation')) ? '-append' : '' ?>">
-							<label id="firstnamemsg" for="firstname">
+						<div class="control-group user_firstname">
+							<label id="firstnamemsg" class="control-label" for="firstname">
 								<?php echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label>
 							<?php // Is filling out the firstname field obligating
 							if ($this->params->get('firstname_field_obligation'))
 							{ ?>
-								<input type="text" name="firstname" id="firstname" size="40"
-										value="<?php
-										if (!empty($this->subscriber->firstname))
-										{
-											echo $this->subscriber->firstname;
-										} ?>"
-										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-										{
-											echo "invalid";
-										} ?>"
-										maxlength="50" /> <span class="append-area"><i class="icon-star"></i></span>
+					            <div class="controls">
+					                <div class="input-append">
+										<input type="text" name="firstname" id="firstname" size="40"
+											value="<?php echo $this->subscriber->firstname; ?>"
+											class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
+										<span class="add-on"><i class="icon-star"></i></span>
+									</div>
+					            </div>
 							<?php
 							}
 							else
 							{ ?>
-								<input type="text" name="firstname" id="firstname" size="40"
-										value="<?php echo $this->subscriber->firstname; ?>"
-										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-										{
-											echo "invalid";
-										}
-										else
-										{
-											echo "inputbox";
-										} ?>"
-										maxlength="50" />
+					            <div class="controls">
+									<input type="text" name="firstname" id="firstname" size="40"
+											class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>"
+											value="<?php echo $this->subscriber->firstname; ?>" maxlength="50" />
+					            </div>
 							<?php
 							}
 
 							// End: Is filling out the firstname field obligating
 							?>
-						</p> <?php
+						</div> <?php
 					}
 
 					// End: Show first name-field only if set in basic parameters ?>
 
+
 					<?php // Show name-field only if set in basic parameters
 					if ($this->params->get('show_name_field') || $this->params->get('name_field_obligation'))
 					{ ?>
-						<p class="user_name edit_name input<?php echo ($this->params->get('name_field_obligation')) ? '-append' : '' ?>">
-							<label id="namemsg" for="name"
-								<?php
-								if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-								{
-									echo "class=\"invalid\"";
-								} ?>>
+						<div class="control-group user_name edit_name">
+							<label id="namemsg" class="control-label" for="name">
 								<?php echo Text::_('COM_BWPOSTMAN_NAME'); ?>: </label>
 							<?php // Is filling out the name field obligating
 							if ($this->params->get('name_field_obligation'))
-							{
-								?>
-								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
-										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-										{
-											echo "invalid";
-										} ?>"
-										maxlength="50" />  <span class="append-area"><i class="icon-star"></i></span> <?php
+							{ ?>
+					            <div class="controls">
+					                <div class="input-append">
+										<input type="text" name="name" id="name" size="40"
+											value="<?php echo $this->subscriber->name; ?>"
+											class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
+										<span class="add-on"><i class="icon-star"></i></span>
+									</div>
+					            </div>
+							<?php
 							}
 							else
 							{ ?>
-								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
-									class="<?php
-									if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) {
-										echo "invalid";
-									}
-									else
-									{
-										echo "inputbox";
-									} ?>"
-									maxlength="50" /> <?php
+					            <div class="controls">
+									<input type="text" name="name" id="name" size="40"
+										class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>"
+										value="<?php echo $this->subscriber->name; ?>" maxlength="50" />
+					            </div>
+							<?php
 							}
 
 							// End: Is filling out the name field obligating
 							?>
-						</p> <?php
+						</div> <?php
 					}
 
 					// End: Show name-fields only if set in basic parameters ?>
@@ -292,14 +276,9 @@ HTMLHelper::_('bootstrap.tooltip');
 							$tip = Text::_('COM_BWPOSTMAN_SPECIAL');
 						} ?>
 
-						<p class="edit_special input<?php echo ($this->params->get('special_field_obligation')) ? '-append' : '' ?>">
-							<label id="specialmsg" class="hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special"
+						<div class="control-group edit_special">
+							<label id="specialmsg" class="control-label hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special">
 								<?php
-								if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-								{
-									echo " class=\"invalid\"";
-								}
-								echo ">";
 								if ($this->params->get('special_label') != '')
 								{
 									echo Text::_($this->params->get('special_label'));
@@ -313,67 +292,63 @@ HTMLHelper::_('bootstrap.tooltip');
 							<?php // Is filling out the special field obligating
 							if ($this->params->get('special_field_obligation'))
 							{ ?>
-								<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
-										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-										{
-											echo "invalid";
-										}
-										else
-										{
-											echo "inputbox";
-										} ?>"
-										maxlength="50" /> <span class="append-area"><i class="icon-star"></i></span> <?php
+					            <div class="controls">
+					                <div class="input-append">
+										<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
+											class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
+										<span class="add-on"><i class="icon-star"></i></span>
+									</div>
+					            </div>
+							<?php
 							}
 							else
 							{ ?>
-								<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
-										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
-										{
-											echo "invalid";
-										}
-										else
-										{
-											echo "inputbox";
-										} ?>"
-										maxlength="50" /> <?php
+					            <div class="controls">
+									<input type="text" name="special" id="special" size="40"
+										class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>"
+										value="<?php echo $this->subscriber->special; ?>" maxlength="50" />
+					            </div>
+							<?php
 							}
 
 							// End: Is filling out the special field obligating
 							?>
-						</p> <?php
+						</div> <?php
 					} // End: Show special field only if set in basic parameters ?>
 
-					<p class="user_email edit_email input-append">
-						<label id="emailmsg" for="email"
-							<?php
-							if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1))
-							{
-								echo "class=\"invalid\"";
-							} ?>>
+
+					<div class="control-group user_email edit_email">
+						<label id="emailmsg" class="control-label" for="email">
 							<?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:
 						</label>
-						<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
-							class="<?php
-							if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1))
-							{
-								echo "invalid";
-							}
-							else
-							{
-								echo "inputbox validate-email";
-							} ?>"
-							maxlength="100" />  <span class="append-area"><i class="icon-star"></i></span>
-					</p>
-
+					    <div class="controls">
+							<div class="input-append">
+								<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
+									class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
+								<span class="add-on"><i class="icon-star"></i></span>
+							</div>
+						</div>
+					</div>
 					<?php
 					// Show formfield email format only if enabled in basic parameters
 					if ($this->params->get('show_emailformat') == 1)
-					{ ?>
-						<div class="user_mailformat edit_emailformat">
-							<label id="emailformatmsg"><?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label>
-							<?php echo $this->lists['emailformat']; ?>
+					{
+				        $mailformat_selected = isset($this->subscriber->emailformat) ? $this->subscriber->emailformat : $this->params->get('default_emailformat');
+					?>
+						<div class="control-group user_mailformat edit_emailformat">
+							<label id="emailformatmsg" class="control-label"> <?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label>
+						    <div class="controls">
+								<div id="edit_mailformat" class="btn-group" data-toggle="buttons-radio">
+									<label class="btn<?php echo $formclass === "sm" ? ' btn-small' : ''; ?><?php echo (!$mailformat_selected ? ' active' : ''); ?>" for="formatText">
+										<input type="radio" name="emailformat" id="formatText" value="0"<?php echo (!$mailformat_selected ? ' checked="checked"' : ''); ?> />
+										<span>&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_BWPOSTMAN_TEXT'); ?>&nbsp;&nbsp;&nbsp;</span>
+									</label>
+									<label class="btn<?php echo $formclass === "sm" ? ' btn-small' : ''; ?><?php echo ($mailformat_selected ? ' active' : ''); ?>" for="formatHtml">
+										<input type="radio" name="emailformat" id="formatHtml" value="1"<?php echo ($mailformat_selected ? ' checked="checked"' : ''); ?> />
+										<span>&nbsp;&nbsp;<?php echo Text::_('COM_BWPOSTMAN_HTML'); ?>&nbsp;&nbsp;</span>
+									</label>
+								</div>
+							</div>
 						</div>
 					<?php
 					}
@@ -392,9 +367,7 @@ HTMLHelper::_('bootstrap.tooltip');
 					// Show available mailinglists
 					if ($this->lists['available_mailinglists'])
 					{ ?>
-						<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
-
-						<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+						<div class="lists <?php echo $this->params->get('pageclass_sfx'); ?>">
 							<?php
 							$n = count($this->lists['available_mailinglists']);
 
@@ -409,13 +382,13 @@ HTMLHelper::_('bootstrap.tooltip');
 									<?php
 									if ($this->params->get('show_desc') == 1)
 									{ ?>
-										<p class="mail_available">
+										<p class="mail_available strong">
 											<?php echo Text::_('COM_BWPOSTMAN_MAILINGLIST'); ?>
 										</p>
-										<p class="mailinglist-description-single">
+										<div class="mailinglist-description-single">
 											<span class="mail_available_list_title">
 												<?php echo $this->lists['available_mailinglists'][0]->title . ": "; ?>
-											</span>
+											</span><br />
 											<?php
 											echo substr(Text::_($this->lists['available_mailinglists'][0]->description), 0, $descLength);
 
@@ -423,51 +396,51 @@ HTMLHelper::_('bootstrap.tooltip');
 											{
 												echo '... ';
 												echo HtmlHelper::tooltip(Text::_($this->lists['available_mailinglists'][0]->description),
-													$this->lists['available_mailinglists'][0]->title, 'tooltip.png', '', '');
+													$this->lists['available_mailinglists'][0]->title, '', '<i class="icon-info"></i>', '');
 											} ?>
-										</p>
+										</div>
 										<?php
 									}
 								}
 								else
 								{ ?>
-									<p class="mail_available">
+									<p class="mail_available strong">
 										<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="icon-star"></i></sup>'; ?>
 									</p>
 									<?php
 									foreach ($this->lists['available_mailinglists'] as $i => $item)
 									{ ?>
-										<p class="mail_available_list <?php echo "mailinglists$i"; ?>">
-											<input title="mailinglists_array" type="checkbox" id="<?php echo "mailinglists$i"; ?>"
-													name="<?php echo "mailinglists[]"; ?>" value="<?php echo $item->id; ?>"
-											<?php
-											if ((is_array($this->subscriber->mailinglists)) && (in_array((int) $item->id,
-													$this->subscriber->mailinglists)))
-											{
-												echo "checked=\"checked\"";
-											} ?> />
-											<span class="mail_available_list_title">
-												<?php echo $this->params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
-											</span>
-											<?php
-											if ($this->params->get('show_desc') == 1)
-											{ ?>
-											<span>
+										<div class="mail_available_list <?php echo "mailinglists$i"; ?>">
+				                            <label class="checkbox" for="<?php echo "mailinglists$i"; ?>">
+												<input class="" title="mailinglists_array" type="checkbox" id="<?php echo "mailinglists$i"; ?>"
+														name="<?php echo "mailinglists[]"; ?>" value="<?php echo $item->id; ?>"
 												<?php
-												echo substr(Text::_($item->description), 0, $descLength);
-												if (strlen(Text::_($item->description)) > $descLength)
+												if ((is_array($this->subscriber->mailinglists)) && (in_array((int) $item->id,
+														$this->subscriber->mailinglists)))
 												{
-													echo '... ';
-													echo HtmlHelper::tooltip(Text::_($item->description), $item->title, 'tooltip.png', '', '');
+													echo "checked=\"checked\"";
+												} ?> />
+												<span class="mail_available_list_title">
+													<?php echo $this->params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
+												</span><br />
+												<?php
+												if ($this->params->get('show_desc') == 1)
+												{ ?>
+												<span>
+													<?php
+													echo substr(Text::_($item->description), 0, $descLength);
+													if (strlen(Text::_($item->description)) > $descLength)
+													{
+														echo '... ';
+														echo HtmlHelper::tooltip(Text::_($item->description), $item->title, '', '<i class="icon-info"></i>', '');
+													} ?>
+												</span>
+												<?php
 												} ?>
-											</span>
-											<?php
-											} ?>
-										</p>
+				                            </label>
+										</div>
 										<?php
-									} ?>
-									<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
-									<?php
+									}
 								}
 							}?>
 						</div>
@@ -479,27 +452,27 @@ HTMLHelper::_('bootstrap.tooltip');
 
 				</div>
 
-				<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-					<p class="edit_unsubscribe">
-						<input title="unsubscribe" type="checkbox" id="unsubscribe" name="unsubscribe" value="1" />
-						<span class="edit_unsubscribe_text"><?php echo Text::_('COM_BWPOSTMAN_UNSUBSCRIBE') ?></span>
-					</p>
+				<div class="well well-small<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+					<div class="edit_unsubscribe">
+						<label class="checkbox edit_unsubscribe_text text-error">
+							<input title="unsubscribe" type="checkbox" id="unsubscribe" class="form-check-input" name="unsubscribe" value="1" />
+							<?php echo Text::_('COM_BWPOSTMAN_UNSUBSCRIBE') ?>
+						</label>
+					</div>
 				</div>
 
-				<div class="maindivider<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"></div>
-
-				<div class="w-100 contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-					<p class="edit_required">
-						<?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?>
-					</p>
+				<div class="buttons my-3">
+					<button class="button validate save btn mb-3" type="button" onclick="return submitbutton('submit');">
+						<?php echo Text::_('COM_BWPOSTMAN_BUTTON_EDIT'); ?>
+					</button>
+					<button class="button validate leave btn" type="button" onclick="return submitbutton('submitleave');">
+						<?php echo Text::_('COM_BWPOSTMAN_BUTTON_LEAVEEDIT'); ?>
+					</button>
 				</div>
 
-				<button class="button validate save btn" type="button" onclick="return submitbutton('submit');">
-					<?php echo Text::_('COM_BWPOSTMAN_BUTTON_EDIT'); ?>
-				</button>
-				<button class="button validate leave btn ml-2" type="button" onclick="return submitbutton('submitleave');">
-					<?php echo Text::_('COM_BWPOSTMAN_BUTTON_LEAVEEDIT'); ?>
-				</button>
+				<div class="edit-required small">
+					<?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?>
+				</div>
 
 				<input type="hidden" name="option" value="com_bwpostman" />
 				<input type="hidden" name="task" value="save" />
@@ -524,48 +497,3 @@ HTMLHelper::_('bootstrap.tooltip');
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-	jQuery(document).ready(function()
-	{
-		// Turn radios into btn-group
-		jQuery('.radio.btn-group label').addClass('btn');
-		jQuery(".btn-group label:not(.active)").click(function()
-		{
-			var label = jQuery(this);
-			var input = jQuery('#' + label.attr('for'));
-
-			if (!input.prop('checked'))
-			{
-				label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-				if (input.val() == '')
-				{
-					label.addClass('active btn-primary');
-				}
-				else if (input.val() == 0)
-				{
-					label.addClass('active btn-danger');
-				}
-				else
-				{
-					label.addClass('active btn-success');
-				}
-				input.prop('checked', true);
-			}
-		});
-		jQuery(".btn-group input[checked=checked]").each(function()
-		{
-			if (jQuery(this).val() == '')
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
-			}
-			else if (jQuery(this).val() == 0)
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-danger');
-			}
-			else
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
-			}
-		});
-	})
-</script>

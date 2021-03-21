@@ -397,9 +397,9 @@ class Com_BwPostmanInstallerScript
 			$this->logger->addEntry(new LogEntry("Postflight removeDoubleExtensionsEntries passed", BwLogger::BW_DEBUG, $this->log_cat));
 
 			// remove obsolete files
-			$this->removeObsoleteFiles();
+			$this->removeObsoleteFilesAndFolders();
 
-			$this->logger->addEntry(new LogEntry("Postflight removeObsoleteFiles passed", BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry("Postflight removeObsoleteFilesAndFolders passed", BwLogger::BW_DEBUG, $this->log_cat));
 
 			// ensure SQL update files are processed
 			if (!$this->processSqlUpdate($oldRelease))
@@ -1290,7 +1290,7 @@ class Com_BwPostmanInstallerScript
 	}
 
 	/**
-	 * Method to remove multiple entries in table extensions. Needed because joomla update may show updates for these unnecessary entries
+	 * Method to remove obsolete files and folders
 	 *
 	 * @return void
 	 *
@@ -1298,14 +1298,22 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @since   3.2.0
 	 */
-	private function removeObsoleteFiles()
+	private function removeObsoleteFilesAndFolders()
 	{
-		$feFilesArray     = array(
+		$feFilesArray = array(
 			'views/edit/metadata.xml',
 			'views/newsletter/metadata.xml',
 			'views/newsletters/metadata.xml',
 			'views/register/metadata.xml',
 			'helpers/subscriberhelper.php',
+			'layouts/subscriber/bootstrap2.php',
+			'layouts/subscriber/bootstrap4.php',
+			'layouts/subscriber/default.php',
+			'layouts/subscriber/emailformat_bs2.php',
+			'layouts/subscriber/emailformat_bs4.php',
+			'layouts/subscriber/gender_bs4.php',
+			'layouts/subscriber/index.html',
+			'layouts/index.html',
 		);
 
 		foreach ($feFilesArray as $file)
@@ -1316,7 +1324,20 @@ class Com_BwPostmanInstallerScript
 			}
 		}
 
-		$beFilesArray     = array(
+		$feFoldersArray = array(
+			'layouts/subscriber',
+			'layouts',
+		);
+
+		foreach ($feFoldersArray as $folder)
+		{
+			if (Folder::exists(JPATH_ROOT . '/components/com_bwpostman/' . $folder))
+			{
+				Folder::delete(JPATH_ROOT . '/components/com_bwpostman/' . $folder);
+			}
+		}
+
+		$beFilesArray = array(
 			'controllers/file.json.php',
 			'controllers/file.json.php_x',
 			'controllers/file.php',

@@ -4,10 +4,10 @@
  *
  * BwPostman maintenance model for backend.
  *
- * @version 2.1.0 build 416
+ * @version %%version_number%%
  * @package BwPostman-Admin
  * @author Romana Boldt
- * @copyright (C) 2018 Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -151,6 +151,60 @@ class MaintenanceModel extends BaseDatabaseModel
 	protected $databaseXml;
 
 	/**
+	 * Array of tables which contains text columns that must be encoded with CDATA
+	 *
+	 * @var array
+	 *
+	 * @since 4.0.0
+	 */
+	protected $cdataTables = array(
+		'#__bwpostman_sendmailcontent',
+		'#__bwpostman_tc_sendmailcontent',
+		'#__bwpostman_newsletters',
+		'#__bwpostman_templates',
+		'#__bwpostman_templates_tpl',
+		'#__bwpostman_templates_tags',
+	);
+
+	/**
+	 * Array of columns that must be encoded with CDATA
+	 *
+	 * @var array
+	 *
+	 * @since 4.0.0
+	 */
+	protected $cdataColumns = array(
+		'#__bwpostman_sendmailcontent' => array('body'),
+		'#__bwpostman_tc_sendmailcontent' => array('body'),
+		'#__bwpostman_newsletters' => array('html_version'),
+		'#__bwpostman_templates' => array(
+			'tpl_html',
+			'tpl_css',
+			'tpl_article',
+			'tpl_divider',
+		),
+		'#__bwpostman_templates_tpl' => array(
+			'css',
+			'header_tpl',
+			'intro_tpl',
+			'divider_tpl',
+			'article_tpl',
+			'readon_tpl',
+			'footer_tpl',
+			'button_tpl',
+		),
+		'#__bwpostman_templates_tags' => array(
+			'tpl_tags_head_advanced',
+			'tpl_tags_body_advanced',
+			'tpl_tags_article_advanced_b',
+			'tpl_tags_article_advanced_e',
+			'tpl_tags_readon_advanced',
+			'tpl_tags_legal_advanced_b',
+			'tpl_tags_legal_advanced_e',
+		),
+	);
+
+	/**
 	 * Constructor.
 	 *
 	 * @throws Exception
@@ -221,7 +275,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 				if ($update)
 				{
-					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+					echo '<p class="text-danger">' . $message . '</p>';
 
 					return false;
 				}
@@ -240,7 +294,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 				if ($update)
 				{
-					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+					echo '<p class="text-danger">' . $message . '</p>';
 
 					return false;
 				}
@@ -259,7 +313,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 				if ($update)
 				{
-					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+					echo '<p class="text-danger">' . $message . '</p>';
 
 					return false;
 				}
@@ -295,7 +349,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 						if ($update)
 						{
-							echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+							echo '<p class="text-danger">' . $message . '</p>';
 
 							return false;
 						}
@@ -307,7 +361,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 						if ($update)
 						{
-							echo '<p class="bw_tablecheck_ok">'	. $message . '</p>';
+							echo '<p class="text-success">'	. $message . '</p>';
 						}
 					}
 
@@ -319,7 +373,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 						if ($update)
 						{
-							echo '<p class="bw_tablecheck_error">' . $ $message . '</p>';
+							echo '<p class="text-danger">' . $ $message . '</p>';
 						}
 
 						return false;
@@ -335,7 +389,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 						if ($update)
 						{
-							echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+							echo '<p class="text-danger">' . $message . '</p>';
 						}
 
 						return false;
@@ -365,7 +419,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 				if ($update)
 				{
-					echo '<p class="bw_tablecheck_ok">'	. $message . '</p>';
+					echo '<p class="text-success">'	. $message . '</p>';
 				}
 			}
 			else
@@ -375,7 +429,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 				if ($update)
 				{
-					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+					echo '<p class="text-danger">' . $message . '</p>';
 				}
 
 				return false;
@@ -795,7 +849,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OPEN_INSTALL_FILE_ERROR', $filename);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-				echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+				echo '<p class="text-danger">' . $message . '</p>';
 
 				return false;
 			}
@@ -1097,7 +1151,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 
 		$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_OK');
-		echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+		echo '<p class="text-success">' . $message . '</p>';
 
 		return true;
 	}
@@ -1122,7 +1176,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED', implode(',', $diff_1));
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-			echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
+			echo '<p class="text-warning">' . $message . '</p>';
 
 			// set all install queries
 			$queries = array();
@@ -1148,12 +1202,12 @@ class MaintenanceModel extends BaseDatabaseModel
 						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED_CREATE_ERROR',	$missingTable);
 						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-						echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+						echo '<p class="text-danger">' . $message . '</p>';
 					}
 					else
 					{
 						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED_CREATE_SUCCESS', $missingTable);
-						echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+						echo '<p class="text-success">' . $message . '</p>';
 					}
 				}
 				catch (RuntimeException $exception)
@@ -1168,7 +1222,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		else
 		{
 			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ALL_TABLES_INSTALLED');
-			echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+			echo '<p class="text-success">' . $message . '</p>';
 		}
 
 		return true;
@@ -1191,7 +1245,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		if (!empty($diff_2))
 		{
 			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_OBSOLETE', implode(',', $diff_2));
-			echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
+			echo '<p class="text-warning">' . $message . '</p>';
 
 			// delete obsolete tables
 			foreach ($diff_2 as $obsoleteTable)
@@ -1207,12 +1261,12 @@ class MaintenanceModel extends BaseDatabaseModel
 					if (!$deleteDB)
 					{
 						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_OBSOLETE_DELETE_ERROR', $obsoleteTable);
-						echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+						echo '<p class="text-danger">' . $message . '</p>';
 					}
 					else
 					{
 						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_OBSOLETE_DELETE_SUCCESS', $obsoleteTable);
-						echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+						echo '<p class="text-success">' . $message . '</p>';
 					}
 				}
 				catch (RuntimeException $exception)
@@ -1227,7 +1281,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		else
 		{
 			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NO_OBSOLETE_TABLES');
-			echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+			echo '<p class="text-success">' . $message . '</p>';
 		}
 
 		return true;
@@ -1252,7 +1306,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK');
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-		echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+		echo '<p class="text-success">' . $message . '</p>';
 
 		if (!$this->checkPrimaryAndIncrement($neededTables))
 		{
@@ -1329,7 +1383,7 @@ class MaintenanceModel extends BaseDatabaseModel
 						{
 							$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_ENGINE_ERROR',
 								$table->name);
-							echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+							echo '<p class="text-danger">' . $message . '</p>';
 
 							return false;
 						}
@@ -1337,7 +1391,7 @@ class MaintenanceModel extends BaseDatabaseModel
 						{
 							$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_ENGINE_SUCCESS',
 								$table->name);
-							echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+							echo '<p class="text-success">' . $message . '</p>';
 						}
 					}
 				}
@@ -1368,7 +1422,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					{
 						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_CHARSET_ERROR',
 							$table->name);
-						echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+						echo '<p class="text-danger">' . $message . '</p>';
 
 						return false;
 					}
@@ -1376,7 +1430,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					{
 						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_TABLE_CHARSET_SUCCESS',
 							$table->name);
-						echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+						echo '<p class="text-success">' . $message . '</p>';
 					}
 				}
 			}
@@ -1418,7 +1472,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_WRONG', $table->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
 
-				echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
+				echo '<p class="text-warning">' . $message . '</p>';
 
 				if ($installed_key != '')
 				{
@@ -1566,7 +1620,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_INSTALL_ERROR', $table->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-				echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+				echo '<p class="text-danger">' . $message . '</p>';
 
 				return false;
 			}
@@ -1575,7 +1629,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_INSTALL_SUCCESS', $table->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-				echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+				echo '<p class="text-success">' . $message . '</p>';
 			}
 		}
 		catch (RuntimeException $exception)
@@ -1633,7 +1687,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_WRONG', $table->name);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-		echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
+		echo '<p class="text-warning">' . $message . '</p>';
 
 		$query = 'ALTER TABLE ' . $this->db->quoteName($table->name);
 		$query .= ' MODIFY ' . $this->db->quoteName($table->primary_key);
@@ -1650,7 +1704,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_INSTALL_ERROR', $table->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-				echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+				echo '<p class="text-danger">' . $message . '</p>';
 
 				return false;
 			}
@@ -1659,7 +1713,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_INSTALL_SUCCESS', $table->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-				echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+				echo '<p class="text-success">' . $message . '</p>';
 			}
 		}
 		catch (RuntimeException $exception)
@@ -1756,7 +1810,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		$message = str_pad(Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_OK', $checkTable->name), 4096);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-		echo '<p class="bw_tablecheck_ok">' . $message	 . '</p>';
+		echo '<p class="text-success">' . $message	 . '</p>';
 
 		// compare table attributes and correct them if needed
 		$attributesResult = $this->handleColumnAttributes($neededColumns, $installedColumns, $checkTable);
@@ -1768,7 +1822,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		$message = str_pad(strip_tags(Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_ATTRIBUTES_OK', $checkTable->name)), 4096);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-		echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+		echo '<p class="text-success">' . $message . '</p>';
 
 		return 'Column check finished';
 	}
@@ -1794,7 +1848,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			(isset($neededColumns[$i]['Default'])) ? $default = ' DEFAULT ' . $this->db->quote($neededColumns[$i]['Default']) : $default = '';
 
 			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COLS', $neededColumns[$i]['Column'], $checkTable->name);
-			echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
+			echo '<p class="text-warning">' . $message . '</p>';
 
 			$query = "ALTER TABLE " . $this->db->quoteName($checkTable->name);
 			$query .= " ADD " . $this->db->quoteName($neededColumns[$i]['Column']);
@@ -1816,7 +1870,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+					echo '<p class="text-danger">' . $message . '</p>';
 
 					return 0;
 				}
@@ -1830,7 +1884,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-					echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+					echo '<p class="text-success">' . $message . '</p>';
 
 					return 2; // reset iteration
 				}
@@ -1867,7 +1921,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			);
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-			echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
+			echo '<p class="text-warning">' . $message . '</p>';
 
 			$query = "ALTER TABLE " . $this->db->quoteName($checkTable->name) . " DROP " . $this->db->quoteName($installedColumns['Field']);
 
@@ -1884,7 +1938,7 @@ class MaintenanceModel extends BaseDatabaseModel
 						$checkTable->name);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+					echo '<p class="text-danger">' . $message . '</p>';
 
 					return 0;
 				}
@@ -1898,7 +1952,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-					echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+					echo '<p class="text-success">' . $message . '</p>';
 
 					return 2; // reset iteration
 				}
@@ -1940,7 +1994,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					$checkTable->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
 
-				echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
+				echo '<p class="text-warning">' . $message . '</p>';
 
 				// install missing columns
 				foreach (array_keys($diff) as $missingCol)
@@ -1986,7 +2040,7 @@ class MaintenanceModel extends BaseDatabaseModel
 								$checkTable->name);
 							$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-							echo '<p class="bw_tablecheck_error">' . $message . '</p>';
+							echo '<p class="text-danger">' . $message . '</p>';
 						}
 						else
 						{
@@ -1999,7 +2053,7 @@ class MaintenanceModel extends BaseDatabaseModel
 							);
 							$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-							echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+							echo '<p class="text-success">' . $message . '</p>';
 						}
 					}
 					catch (RuntimeException $exception)
@@ -2181,7 +2235,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSET_OK', $tableNameGeneric);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-				$returnMessage .= '<p class="bw_tablecheck_ok">' . $message . '</p>';
+				$returnMessage .= '<p class="text-success">' . $message . '</p>';
 			}
 		}
 
@@ -2455,7 +2509,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		$tableXml->appendChild($tableXmlLAttr);
 		$tablesXml->appendChild($tableXml);
 
-		if (is_array($data))
+		if (is_array($data) && count($data))
 		{
 			foreach ($data as $item)
 			{
@@ -2466,23 +2520,8 @@ class MaintenanceModel extends BaseDatabaseModel
 				{
 					$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
 
-					if (((($tableName == '#__bwpostman_sendmailcontent') || ($tableName == '#__bwpostman_tc_sendmailcontent')) && ($key == 'body'))
-						|| (($tableName == '#__bwpostman_newsletters') && ($key == 'html_version'))
-						|| (($tableName == '#__bwpostman_templates')
-							&& (($key == 'tpl_html')
-								|| ($key == 'tpl_css')
-								|| ($key == 'tpl_article')
-								|| ($key == 'tpl_divider')))
-						|| (($tableName == '#__bwpostman_templates_tpl')
-							&& (($key == 'css')
-								|| ($key == 'header_tpl')
-								|| ($key == 'intro_tpl')
-								|| ($key == 'divider_tpl')
-								|| ($key == 'article_tpl')
-								|| ($key == 'readon_tpl')
-								|| ($key == 'footer_tpl')
-								|| ($key == 'button_tpl')))
-					)
+					// Check if column has to be prepared with CDATA
+					if (in_array($tableName, $this->cdataTables) && in_array($key, $this->cdataColumns[$tableName]))
 					{
 						// Remove most outer CDATA tags. These are inserted for valid XML, but never removed, although they are not needed except for writing valid backup file!
 						$pos = strpos($insert_string, '<![CDATA[');
@@ -2604,13 +2643,13 @@ class MaintenanceModel extends BaseDatabaseModel
 			if (key_exists('BwPostmanVersion', $generals))
 			{
 				$message =  Text::_('COM_BWPOSTMAN_VERSION') . $generals['BwPostmanVersion'];
-				echo '<p class="bw_tablecheck_info">' . $message . '</p>';
+				echo '<p class="text-info">' . $message . '</p>';
 			}
 
 			if (key_exists('SaveDate', $generals))
 			{
 				$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_DATE') . $generals['SaveDate'];
-				echo '<p class="bw_tablecheck_info">' . $message . '</p>';
+				echo '<p class="text-info">' . $message . '</p>';
 			}
 		}
 	}
@@ -2693,14 +2732,14 @@ class MaintenanceModel extends BaseDatabaseModel
 			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_PROCESSED');
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-			echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+			echo '<p class="text-success">' . $message . '</p>';
 		}
 		else
 		{
 			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_MESSAGE');
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-			echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+			echo '<p class="text-success">' . $message . '</p>';
 		}
 
 		return  true;
@@ -2968,7 +3007,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STORE_SUCCESS', $table);
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-			$currentContent .= '<p class="bw_tablecheck_ok">' . $message . '</p>';
+			$currentContent .= '<p class="text-success">' . $message . '</p>';
 
 			if ($table == '#__bwpostman_subscribers')
 			{
@@ -3371,7 +3410,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_SUCCESS');
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-		echo '<p class="bw_tablecheck_ok">' . $message . '</p><br />';
+		echo '<p class="text-success">' . $message . '</p><br />';
 
 		Factory::getApplication()->setUserState('com_bwpostman.maintenance.tmp_file', $tmp_file);
 		fclose($fp);
@@ -3413,7 +3452,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_SUCCESS');
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-				echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+				echo '<p class="text-success">' . $message . '</p>';
 			}
 		}
 		catch (RuntimeException $exception)
@@ -3507,7 +3546,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_SUCCESS');
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-				echo '<p class="bw_tablecheck_ok">' . $message . '</p><br />';
+				echo '<p class="text-success">' . $message . '</p><br />';
 				$base_asset['rgt'] = $base_asset['lft'] + 1;
 			}
 		}
@@ -3642,7 +3681,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		if ($showMessage)
 		{
-			echo '<p class="bw_tablecheck_ok">' . $message . '</p><br />';
+			echo '<p class="text-success">' . $message . '</p><br />';
 		}
 
 		return $base_asset;
@@ -4005,7 +4044,7 @@ class MaintenanceModel extends BaseDatabaseModel
 						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_INCOMPLETE', $item['title']);
 						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
 
-						echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
+						echo '<p class="text-warning">' . $message . '</p>';
 
 						continue;
 					}
@@ -6537,7 +6576,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_SUCCESS', $table);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-		echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+		echo '<p class="text-success">' . $message . '</p>';
 
 		return  true;
 	}
@@ -6608,7 +6647,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_SUCCESS', $table);
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-			echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
+			echo '<p class="text-success">' . $message . '</p>';
 		}
 
 		return true;

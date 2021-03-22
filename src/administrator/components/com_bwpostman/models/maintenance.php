@@ -146,6 +146,60 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	protected $databaseXml;
 
 	/**
+	 * Array of tables which contains text columns that must be encoded with CDATA
+	 *
+	 * @var array
+	 *
+	 * @since 3.1.5
+	 */
+	protected $cdataTables = array(
+		'#__bwpostman_sendmailcontent',
+		'#__bwpostman_tc_sendmailcontent',
+		'#__bwpostman_newsletters',
+		'#__bwpostman_templates',
+		'#__bwpostman_templates_tpl',
+		'#__bwpostman_templates_tags',
+	);
+
+	/**
+	 * Array of columns that must be encoded with CDATA
+	 *
+	 * @var array
+	 *
+	 * @since 3.1.5
+	 */
+	protected $cdataColumns = array(
+		'#__bwpostman_sendmailcontent' => array('body'),
+		'#__bwpostman_tc_sendmailcontent' => array('body'),
+		'#__bwpostman_newsletters' => array('html_version'),
+		'#__bwpostman_templates' => array(
+			'tpl_html',
+			'tpl_css',
+			'tpl_article',
+			'tpl_divider',
+		),
+		'#__bwpostman_templates_tpl' => array(
+			'css',
+			'header_tpl',
+			'intro_tpl',
+			'divider_tpl',
+			'article_tpl',
+			'readon_tpl',
+			'footer_tpl',
+			'button_tpl',
+		),
+		'#__bwpostman_templates_tags' => array(
+			'tpl_tags_head_advanced',
+			'tpl_tags_body_advanced',
+			'tpl_tags_article_advanced_b',
+			'tpl_tags_article_advanced_e',
+			'tpl_tags_readon_advanced',
+			'tpl_tags_legal_advanced_b',
+			'tpl_tags_legal_advanced_e',
+		),
+	);
+
+	/**
 	 * Constructor.
 	 *
 	 * @throws Exception
@@ -2451,7 +2505,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$tableXml->appendChild($tableXmlLAttr);
 		$tablesXml->appendChild($tableXml);
 
-		if (is_array($data))
+		if (is_array($data) && count($data))
 		{
 			foreach ($data as $item)
 			{
@@ -2462,23 +2516,8 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				{
 					$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
 
-					if (((($tableName == '#__bwpostman_sendmailcontent') || ($tableName == '#__bwpostman_tc_sendmailcontent')) && ($key == 'body'))
-						|| (($tableName == '#__bwpostman_newsletters') && ($key == 'html_version'))
-						|| (($tableName == '#__bwpostman_templates')
-							&& (($key == 'tpl_html')
-								|| ($key == 'tpl_css')
-								|| ($key == 'tpl_article')
-								|| ($key == 'tpl_divider')))
-						|| (($tableName == '#__bwpostman_templates_tpl')
-							&& (($key == 'css')
-								|| ($key == 'header_tpl')
-								|| ($key == 'intro_tpl')
-								|| ($key == 'divider_tpl')
-								|| ($key == 'article_tpl')
-								|| ($key == 'readon_tpl')
-								|| ($key == 'footer_tpl')
-								|| ($key == 'button_tpl')))
-					)
+					// Check if column has to be prepared with CDATA
+					if (in_array($tableName, $this->cdataTables) && in_array($key, $this->cdataColumns[$tableName]))
 					{
 						// Remove most outer CDATA tags. These are inserted for valid XML, but never removed, although they are not needed except for writing valid backup file!
 						$pos = strpos($insert_string, '<![CDATA[');

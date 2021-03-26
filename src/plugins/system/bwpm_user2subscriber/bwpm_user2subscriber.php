@@ -697,14 +697,13 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 * @param array  $data   User data
 	 * @param bool   $isNew  true on new user
 	 * @param bool   $result result of saving user
-	 * @param string $error  error message translated by JText()
 	 *
 	 * @return  bool
 	 *
 	 * @throws Exception
 	 * @since  2.0.0
 	 */
-	public function onUserAfterSave(array $data, bool $isNew, bool $result, string $error)
+	public function onUserAfterSave(array $data, bool $isNew, bool $result): bool
 	{
 		if ($this->debug)
 		{

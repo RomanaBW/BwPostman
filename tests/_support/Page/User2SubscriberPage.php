@@ -245,6 +245,13 @@ class User2SubscriberPage
 	/**
 	 * @var string
 	 *
+	 * @since 4.0.0
+	 */
+	public static $subs_option_female           = "female";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.1.0
 	 */
 	public static $subs_identifier_male             = '//*[@id="jform_bwpm_user2subscriber_gender"]/option[3]';
@@ -308,6 +315,20 @@ class User2SubscriberPage
 	/**
 	 * @var string
 	 *
+	 * @since 4.0.0
+	 */
+	public static $login_label_special_identifier            = "//*[@id='jform_bwpm_user2subscriber_special-lbl'][contains(@class, 'invalid')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $login_label_special_missing            = "//*[@id='jform_bwpm_user2subscriber_special-lbl'][contains(@class, 'invalid')]/span[2]";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $subs_identifier_special          = "//*[@id='jform_bwpm_user2subscriber_special']";
@@ -324,7 +345,21 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subs_identifier_format_html      = "//*[@id='jform_bwpm_user2subscriber_emailformat1']";
+//	public static $subs_identifier_format_html      = "//*[@id='jform_bwpm_user2subscriber_emailformat1']";
+	public static $subs_identifier_format_html      = "//*/label[@for='jform_bwpm_user2subscriber_emailformat%s']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $login_label_mailinglists            = "Mailing Lists";
+
+	/* @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $login_label_mailinglists_identifier            = "//*[@id='jform_bwpm_user2subscriber_mailinglists-lbl'][contains(@class, 'invalid')]";
 
 	/**
 	 * @var string
@@ -332,7 +367,6 @@ class User2SubscriberPage
 	 * @since 2.0.0
 	 */
 	public static $subs_identifier_mailinglists    = "//*[@id='jform_bwpm_user2subscriber_mailinglists']/div/table/tbody/tr/td/input[@id='mb0']";
-//	public static $subs_identifier_mailinglists    = "//*[@id='jform_bwpm_user2subscriber_mailinglists0']";
 
 
 	// subscriber field values
@@ -417,7 +451,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $success_message_identifier   = "//*[@id='system-message']/joomla-alert[@type='success']/div";
+	public static $success_message_identifier   = "//*[@id='system-message-container']/joomla-alert[@type='success']/div/div[@class='alert-message']";
 
 	/**
 	 * @var string
@@ -432,7 +466,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $activation_complete          = "//*[@id='system-message']/div/div/div";
+	public static $activation_complete          = "//*[@id='system-message-container']/div/div/div";
 
 	// error message identifiers
 
@@ -469,7 +503,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $error_message_mailinglists      = "Invalid field:  Mailing Lists";
+	public static $error_message_mailinglists      = "One of the options must be selected";
 
 	// backend stuff
 
@@ -639,28 +673,28 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mailformat_identifier            = "//*/label[@for='jform_default_emailformat0']";
+	public static $mailformat_identifier            = "//*/label[@for='jform_default_emailformat%s']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mailformat_button_identifier     = "//*/label[@for='jform_default_emailformat%s']";
+	public static $mailformat_button_identifier    = "//*/input[@id='jform_default_emailformat%s']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_show_identifier           = "//*[@id='jform_show_emailformat-lbl']";
+	public static $format_show_label_identifier           = "//*/label[@for='jform_show_emailformat%s']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $format_show_button_identifier    = "//*/label[@for='jform_show_emailformat%s']";
+	public static $format_show_button_identifier    = "//*/input[@id='jform_show_emailformat%s']";
 
 	// com_plugin related
 

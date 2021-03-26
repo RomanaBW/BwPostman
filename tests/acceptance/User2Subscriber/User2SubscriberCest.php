@@ -213,6 +213,7 @@ class User2SubscriberCest
 		$I->waitForElement("//*[@id='jform_params_ml_available']/div", 30);
 
 		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 6), 0, -100);
+		$I->wait(1);
 		$checked    = $I->grabAttributeFrom(sprintf(RegPage::$plugin_checkbox_mailinglist_input, 6), "checked");
 		codecept_debug('Checkbox Mailinglist ID6: ' . $checked);
 		if (!$checked)
@@ -458,27 +459,27 @@ class User2SubscriberCest
 	 */
 	public function User2SubscriberFunctionWithActivationByBackend(AcceptanceTester $I)
 	{
-//		$I->wantTo("Register at Joomla and subscribe to BwPostman with activation by backend");
-//		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format');
-//
-//		$this->initializeTestValues($I);
-//		$this->name_obligation          = false;
-//		$this->firstname_obligation     = false;
-//		$this->special_obligation       = false;
-//		self::$visitor                  = 1;
-//		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '0');
-//		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
-//		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
-//
-//		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
-//
-//		$this->fillJoomlaPartAtRegisterForm($I);
-//
-//		$this->fillBwPostmanPartAtRegisterFormSimple($I);
-//
-//		$this->registerAndCheckMessage($I);
-//
-//		$this->activateByBackend($I);
+		$I->wantTo("Register at Joomla and subscribe to BwPostman with activation by backend");
+		$I->expectTo('see confirmed Joomla user and confirmed subscriber with HTML format');
+
+		$this->initializeTestValues($I);
+		$this->name_obligation          = false;
+		$this->firstname_obligation     = false;
+		$this->special_obligation       = false;
+		self::$visitor                  = 1;
+		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '0');
+		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
+		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
+
+		$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
+
+		$this->fillJoomlaPartAtRegisterForm($I);
+
+		$this->fillBwPostmanPartAtRegisterFormSimple($I);
+
+		$this->registerAndCheckMessage($I);
+
+		$this->activateByBackend($I);
 	}
 
 	/**
@@ -1015,11 +1016,14 @@ class User2SubscriberCest
 		$I->wantTo("switch option 'newsletter show format' from yes to no and back");
 		$I->expectTo('see, see not, see format selection at Joomla registration form');
 
+		// Preset all fields to be shown and obligatory if possible
+		Generals::presetComponentOptions($I);
+
 		$this->editComponentOptions($I);
 
 		// switch to no
 		$I->clickAndWait(RegPage::$bwpm_com_options_regTab, 1);
-		$this->switchPredefinedNewsletterFormat($I, RegPage::$format_show_button_identifier, 0);
+		$this->switchPredefinedNewsletterShow($I, RegPage::$format_show_button_identifier, 0);
 
 		// getManifestOption
 		$com_options = $I->getManifestOptions('com_bwpostman');
@@ -1031,6 +1035,7 @@ class User2SubscriberCest
 			function (AcceptanceTester $I) {
 				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 				$I->scrollTo(RegPage::$view_register_subs);
+				$I->wait(1);
 				$this->switchSubscriptionToYes($I);
 
 				$I->dontSeeElement(RegPage::$subs_identifier_format_html);
@@ -1040,7 +1045,7 @@ class User2SubscriberCest
 		$user->leave();
 
 		// switch to yes
-		$this->switchPredefinedNewsletterFormat($I, RegPage::$format_show_button_identifier, 1);
+		$this->switchPredefinedNewsletterShow($I, RegPage::$format_show_button_identifier, 1);
 
 		// getManifestOption
 		$com_options = $I->getManifestOptions('com_bwpostman');
@@ -1052,10 +1057,14 @@ class User2SubscriberCest
 			function (AcceptanceTester $I) {
 				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 				$I->scrollTo(RegPage::$view_register_subs);
+				$I->wait(1);
 				$this->switchSubscriptionToYes($I);
 
-				$I->seeElement(RegPage::$subs_identifier_format_text);
-				$I->seeElement(RegPage::$subs_identifier_format_html);
+				$I->scrollTo(RegPage::$subs_identifier_format_text, 0, -150);
+				$I->wait(1);
+
+				$I->see('HTML', sprintf(RegPage::$subs_identifier_format_html, 1));
+
 			}
 		);
 		$user->leave();
@@ -1081,6 +1090,9 @@ class User2SubscriberCest
 		$I->wantTo("switch option 'newsletter format' from yes to no and back");
 		$I->expectTo('see Text, see HTML preselected at Joomla registration form');
 
+		// Preset all fields to be shown and obligatory if possible
+		Generals::presetComponentOptions($I);
+
 		$this->editComponentOptions($I);
 
 		// switch to Text
@@ -1100,9 +1112,11 @@ class User2SubscriberCest
 				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 				$this->switchSubscriptionToYes($I);
 
-				// @ToDo: FF gets green, Chromium gets red (additional class button-danger)
-				$I->seeElement(RegPage::$subs_identifier_format_text . "[contains(@checked,'checked')]");
-				$I->dontSeeElement(RegPage::$subs_identifier_format_html . "[contains(@checked,'checked')]");
+				$I->scrollTo(RegPage::$subs_identifier_format_text, 0, -150);
+				$I->wait(1);
+
+				$I->see('TEXT', sprintf(RegPage::$subs_identifier_format_html, 0));
+				$I->dontSee('HTML', sprintf(RegPage::$subs_identifier_format_html, 1));
 			}
 		);
 		$user->leave();
@@ -1126,101 +1140,14 @@ class User2SubscriberCest
 				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 				$this->switchSubscriptionToYes($I);
 
-				// @ToDo: FF gets green, Chromium gets red (additional class button-danger)
-				$I->dontSeeElement(RegPage::$subs_identifier_format_text . "[contains(@checked,'checked')]");
-				$I->seeElement(RegPage::$subs_identifier_format_html . "[contains(@checked,'checked')]");
+				$I->scrollTo(RegPage::$subs_identifier_format_text, 0, -150);
+				$I->wait(1);
+
+				$I->dontSee('TEXT', sprintf(RegPage::$subs_identifier_format_html, 0));
+				$I->see('HTML', sprintf(RegPage::$subs_identifier_format_html, 1));
 			}
 		);
 		$user->leave();
-
-		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
-
-		LoginPage::logoutFromBackend($I, false);
-	}
-
-	/**
-	 * Test method to option auto update
-	 *
-	 * @param   AcceptanceTester $I
-	 *
-	 * @return  void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	public function User2SubscriberOptionsAutoUpdate(AcceptanceTester $I)
-	{
-		$I->wantTo("switch option 'auto update email' from yes to no and back");
-		$I->expectTo('see No, see Yes at field auto update of plugin options form');
-
-		$this->editPluginOptions($I);
-		$I->clickAndWait(RegPage::$plugin_tab_options, 1);
-
-		// switch to Text
-		$I->clickAndWait(RegPage::$plugin_auto_update_no, 1);
-		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
-		$I->see(Generals::$plugin_saved_success);
-		$I->seeElement(RegPage::$plugin_auto_update_no . "[contains(@class, '" . Generals::$button_red . "')]");
-
-		// getManifestOption
-		$options = $I->getManifestOptions('bwpm_user2subscriber');
-		$I->assertEquals("0", $options->auto_update_email_option);
-
-		// switch to yes
-		$I->clickAndWait(RegPage::$plugin_auto_update_yes, 1);
-		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
-		$I->see(Generals::$plugin_saved_success);
-		$I->seeElement(RegPage::$plugin_auto_update_yes . "[contains(@class, '" . Generals::$button_green . "')]");
-
-		// getManifestOption
-		$options = $I->getManifestOptions('bwpm_user2subscriber');
-		$I->assertEquals("1", $options->auto_update_email_option);
-
-		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
-
-		LoginPage::logoutFromBackend($I, false);
-	}
-
-	/**
-	 * Test method to option auto delete
-	 *
-	 * @param   AcceptanceTester $I
-	 *
-	 * @return  void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	public function User2SubscriberOptionsAutoDelete(AcceptanceTester $I)
-	{
-		$I->wantTo("switch option 'auto delete' from yes to no and back");
-		$I->expectTo('see No, see Yes at auto delete of plugin options form');
-
-		$this->editPluginOptions($I);
-		$I->clickAndWait(RegPage::$plugin_tab_options, 1);
-
-		// switch to Text
-		$I->clickAndWait(RegPage::$plugin_auto_delete_no, 1);
-		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
-		$I->see(Generals::$plugin_saved_success);
-		$I->seeElement(RegPage::$plugin_auto_delete_no . "[contains(@class, '" . Generals::$button_red . "')]");
-
-		// getManifestOption
-		$options = $I->getManifestOptions('bwpm_user2subscriber');
-		$I->assertEquals("0", $options->auto_delete_option);
-
-		// switch to yes
-		$I->scrollTo(RegPage::$plugin_auto_delete_yes, 0, -100);
-		$I->clickAndWait(RegPage::$plugin_auto_delete_yes, 1);
-		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
-		$I->see(Generals::$plugin_saved_success);
-		$I->seeElement(RegPage::$plugin_auto_delete_yes . "[contains(@class, '" . Generals::$button_green . "')]");
-
-		// getManifestOption
-		$options = $I->getManifestOptions('bwpm_user2subscriber');
-		$I->assertEquals("1", $options->auto_delete_option);
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
@@ -1243,16 +1170,21 @@ class User2SubscriberCest
 		$I->wantTo("add additional mailinglist to options");
 		$I->expectTo('see further selected mailinglist at plugin options form');
 
+		// Preset all fields to be shown and obligatory if possible
+		Generals::presetComponentOptions($I);
+
 		$this->editPluginOptions($I);
 		$I->clickAndWait(RegPage::$plugin_tab_mailinglists, 1);
 
 		// click checkbox for further mailinglist
 		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 0), 0, -100);
+		$I->wait(1);
 		$I->click(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->see(Generals::$plugin_saved_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 6), 0, -100);
+		$I->wait(1);
 		$I->seeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist_input, 6));
 
 		// getManifestOption
@@ -1264,12 +1196,14 @@ class User2SubscriberCest
 
 		// deselect further mailinglist
 		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 0), 0, -100);
+		$I->wait(1);
 		$I->click(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
 		$I->dontSeeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist_input, 0));
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->see(Generals::$plugin_saved_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 5), 0, -100);
+		$I->wait(1);
 		$I->dontSeeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist_input, 5));
 
 		// getManifestOption
@@ -1347,6 +1281,7 @@ class User2SubscriberCest
 	protected function switchSubscriptionToYes(AcceptanceTester $I)
 	{
 		$I->scrollTo(".//*[@id='member-registration']");
+		$I->wait(1);
 		$I->click(RegPage::$subs_identifier_subscribe_yes);
 		$I->waitForElementVisible(RegPage::$subs_identifier_name, 5);
 	}
@@ -1363,6 +1298,7 @@ class User2SubscriberCest
 	protected function switchSubscriptionToNo(AcceptanceTester $I)
 	{
 		$I->scrollTo(".//*[@id='member-registration']");
+		$I->wait(1);
 		$I->click(RegPage::$subs_identifier_subscribe_no);
 		$I->waitForElementNotVisible(RegPage::$subs_identifier_name);
 	}
@@ -1378,6 +1314,7 @@ class User2SubscriberCest
 	protected function fillJoomlaPartAtRegisterForm(AcceptanceTester $I, $run   = 1)
 	{
 		$I->scrollTo("//*[@id='member-registration']");
+		$I->wait(1);
 
 		if (self::$visitor == 1)
 		{
@@ -1441,9 +1378,13 @@ class User2SubscriberCest
 		$I->clickAndWait(RegPage::$subs_identifier_subscribe_yes, 1);
 
 		// omit BwPostman fields
+		$I->scrollTo(RegPage::$login_identifier_register, 0, -100);
+		$I->wait(2);
 		$I->clickAndWait(RegPage::$login_identifier_register, 1);
 		$I->scrollTo(RegPage::$subs_identifier_subscribe_yes, 0, -100);
-		$I->clickAndWait(RegPage::$login_identifier_register, 1);
+		$I->wait(2);
+
+		$I->fillField(RegPage::$subs_identifier_special, '');
 
 		$I->see(RegPage::$login_label_name, RegPage::$login_label_name_identifier);
 		$I->see(RegPage::$error_message_missing, RegPage::$login_label_name_missing);
@@ -1451,11 +1392,16 @@ class User2SubscriberCest
 		$I->see(RegPage::$login_label_firstname, RegPage::$login_label_firstname_identifier);
 		$I->see(RegPage::$error_message_missing, RegPage::$login_label_firstname_missing);
 
-//		$I->see(sprintf(RegPage::$error_message_special, $com_options->special_label));
-//		$I->see(RegPage::$error_message_mailinglists);
+		$I->fillField(RegPage::$subs_identifier_name, '');
 
-//		$I->fillField(RegPage::$login_identifier_password1, RegPage::$login_value_password);
-//		$I->fillField(RegPage::$login_identifier_password2, RegPage::$login_value_password);
+		$I->see($com_options->special_label, RegPage::$login_label_special_identifier);
+		$I->see(RegPage::$error_message_missing, RegPage::$login_label_special_missing);
+
+		$I->see(RegPage::$login_label_mailinglists, RegPage::$login_label_mailinglists_identifier);
+		$I->see(RegPage::$error_message_mailinglists);
+
+		$I->fillField(RegPage::$login_identifier_password1, RegPage::$login_value_password);
+		$I->fillField(RegPage::$login_identifier_password2, RegPage::$login_value_password);
 
 		$I->scrollTo(RegPage::$subs_identifier_subscribe_no);
 		$I->wait(2);
@@ -1468,8 +1414,7 @@ class User2SubscriberCest
 			// click wanted value
 			$I->click(RegPage::$subs_identifier_female);
 
-
-//			$I->clickSelectList(RegPage::$gender_list, RegPage::$subs_identifier_female, RegPage::$gender_list_id);
+			$I->selectOption(RegPage::$gender_list, RegPage::$subs_option_female);
 
 			self::$check_gender     = true;
 			self::$gender_selected  = 'female';
@@ -1532,6 +1477,8 @@ class User2SubscriberCest
 
 		if ($withMl)
 		{
+			$I->scrollTo(RegPage::$subs_identifier_mailinglists);
+			$I->wait(1);
 			$I->clickAndWait(RegPage::$subs_identifier_mailinglists, 2);
 		}
 	}
@@ -1546,6 +1493,9 @@ class User2SubscriberCest
 	protected function fillBwPostmanPartAtRegisterFormSimpleOnlySubscription(AcceptanceTester $I)
 	{
 		$I->clickAndWait(RegPage::$subs_identifier_subscribe_yes, 1);
+
+		$I->scrollTo(RegPage::$subs_identifier_mailinglists, 0, -100);
+		$I->wait(1);
 
 		$I->clickAndWait(RegPage::$subs_identifier_mailinglists, 2);
 	}
@@ -1952,7 +1902,7 @@ class User2SubscriberCest
 				{
 					$I->seeElement(".//*[@id='userList']/tbody/tr[1]/td[5]/a/span", array('class' => 'icon-unpublish'));
 					$I->clickAndWait('.//*[@id=\'userList\']/tbody/tr[1]/td[5]/a', 1);
-					$I->seeElement(".//*[@id='userList']/tbody/tr[1]/td[5]/a/span", array('class' => 'icon-publish'));
+					$I->seeElement(".//*[@id='userList']/tbody/tr[1]/td[5]/span/span", array('class' => 'icon-publish'));
 					$this->activated    = true;
 
 					self::checkForSubscriptionSuccess($I);
@@ -1993,6 +1943,7 @@ class User2SubscriberCest
 				$I->clickAndWait($edit_identifier, 1);
 
 				$I->scrollTo(RegPage::$mailinglist_fieldset_identifier, 0, -100);
+				$I->wait(1);
 
 				foreach ($this->mls_to_subscribe as $ml)
 				{
@@ -2126,13 +2077,15 @@ class User2SubscriberCest
 	 */
 	private function switchPredefinedNewsletterFormat(AcceptanceTester $I, $button, $format)
 	{
-		$class  = "[contains(@class, '" . Generals::$button_red . "')]";
+		$formatText  = "Text";
+
 		if ($format == 1)
 		{
-			$class  = "[contains(@class, '" . Generals::$button_green . "')]";
+			$formatText  = "HTML";
 		}
 
 		$I->scrollTo(sprintf($button, 0), 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(sprintf($button, $format), 1);
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 
@@ -2143,6 +2096,41 @@ class User2SubscriberCest
 
 		$I->clickAndWait(RegPage::$bwpm_com_options_regTab, 1);
 		$I->scrollTo(sprintf($button, 0), 0, -100);
-		$I->seeElement(sprintf($button, $format) . $class);
+		$I->wait(1);
+		$I->see($formatText, sprintf(RegPage::$mailformat_identifier, $format));
+	}
+
+	/**
+	 * @param AcceptanceTester $I
+	 * @param string           $button
+	 * @param int              $format
+	 *
+	 * @throws Exception
+	 *
+	 * @since 4.0.0
+	 */
+	private function switchPredefinedNewsletterShow(AcceptanceTester $I, $button, $format)
+	{
+		$formatShowText  = "No";
+
+		if ($format == 1)
+		{
+			$formatShowText  = "Yes";
+		}
+
+		$I->scrollTo(sprintf($button, 0), 0, -100);
+		$I->wait(1);
+		$I->clickAndWait(sprintf($button, $format), 1);
+		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
+
+		$I->waitForElementVisible(Generals::$alert_success4, 30);
+		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
+		$I->see(RegPage::$config_save_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+
+		$I->clickAndWait(RegPage::$bwpm_com_options_regTab, 1);
+		$I->scrollTo(sprintf($button, 0), 0, -100);
+		$I->wait(1);
+		$I->see($formatShowText, sprintf(RegPage::$format_show_label_identifier, $format));
 	}
 }

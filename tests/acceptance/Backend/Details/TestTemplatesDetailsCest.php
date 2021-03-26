@@ -103,7 +103,7 @@ class TestTemplatesDetailsCest
 
 		$I->click(MainView::$addHtmlTemplateButton);
 
-		$this->fillFormSimpleHtml($I);
+		$this->fillFormExtendedHtml($I);
 
 		// check if save and close is successful
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 3);
@@ -142,7 +142,7 @@ class TestTemplatesDetailsCest
 		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
-		$this->fillFormExtendedHtml($I);
+		$this->fillFormSimpleHtml($I);
 
 		$I->click(Generals::$toolbar['Cancel']);
 

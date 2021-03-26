@@ -1091,6 +1091,6 @@ class SubscriberManagerPage
 		$I->click(Generals::$search_list);
 		$I->selectOption(Generals::$search_list, $search_for);
 
-		$I->clickAndWait(Generals::$search_button, 1);
+//		$I->clickAndWait(Generals::$search_button, 1);
 	}
 }

@@ -53,112 +53,112 @@ class MainviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $newslettersButton        = '//*/div[contains(@class,"bw-icons")]/div[1]/div/a';
+	public static $newslettersButton        = '//*/div[contains(@class,"bw-icons")]/div/div[1]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addNewsletterButton      = '//*/div[contains(@class,"bw-icons")]/div[2]/div/a';
+	public static $addNewsletterButton      = '//*/div[contains(@class,"bw-icons")]/div/div[2]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $subscribersButton        = '//*/div[contains(@class,"bw-icons")]/div[3]/div/a';
+	public static $subscribersButton        = '//*/div[contains(@class,"bw-icons")]/div/div[3]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addSubscriberButton      = '//*/div[contains(@class,"bw-icons")]/div[4]/div/a';
+	public static $addSubscriberButton      = '//*/div[contains(@class,"bw-icons")]/div/div[4]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addTestRecipientButton   = '//*/div[contains(@class,"bw-icons")]/div[5]/div/a';
+	public static $addTestRecipientButton   = '//*/div[contains(@class,"bw-icons")]/div/div[5]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $campaignsButton          = '//*/div[contains(@class,"bw-icons")]/div[6]/div/a';
+	public static $campaignsButton          = '//*/div[contains(@class,"bw-icons")]/div/div[6]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addCampaignButton        = '//*/div[contains(@class,"bw-icons")]/div[7]/div/a';
+	public static $addCampaignButton        = '//*/div[contains(@class,"bw-icons")]/div/div[7]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mailinglistsButton       = '//*/div[contains(@class,"bw-icons")]/div[8]/div/a';
+	public static $mailinglistsButton       = '//*/div[contains(@class,"bw-icons")]/div/div[8]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addMailinglistButton     = '//*/div[contains(@class,"bw-icons")]/div[9]/div/a';
+	public static $addMailinglistButton     = '//*/div[contains(@class,"bw-icons")]/div/div[9]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $templatesButton          = '//*/div[contains(@class,"bw-icons")]/div[10]/div/a';
+	public static $templatesButton          = '//*/div[contains(@class,"bw-icons")]/div/div[10]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addHtmlTemplateButton    = "//*/div[contains(@class,'bw-icons')]/div[11]/div/a";
+	public static $addHtmlTemplateButton    = "//*/div[contains(@class,'bw-icons')]/div/div[11]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addTextTemplateButton    = '//*/div[contains(@class,"bw-icons")]/div[12]/div/a';
+	public static $addTextTemplateButton    = '//*/div[contains(@class,"bw-icons")]/div/div[12]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $archiveButton            = '//*/div[contains(@class,"bw-icons")]/div[12]/div/a';
+	public static $archiveButton            = '//*/div[contains(@class,"bw-icons")]/div/div[12]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $settingsButton           = '//*/div[contains(@class,"bw-icons")]/div[14]/div/a';
+	public static $settingsButton           = '//*/div[contains(@class,"bw-icons")]/div/div[14]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $maintenanceButton        = '//*/div[contains(@class,"bw-icons")]/div[15]/div/a';
+	public static $maintenanceButton        = '//*/div[contains(@class,"bw-icons")]/div/div[15]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $forumButton              = '//*/div[contains(@class,"bw-icons")]/div[16]/div/a';
+	public static $forumButton              = '//*/div[contains(@class,"bw-icons")]/div/div[16]';
 
 	/**
 	 * @var object  AcceptanceTester

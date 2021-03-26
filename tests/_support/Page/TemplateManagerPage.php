@@ -393,7 +393,7 @@ class TemplateManagerPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $importSuccessField      = "//*/h3[@class='bw_tablecheck_ok']";
+	public static $importSuccessField      = "//*/h3[@class='text-success']";
 
 	/**
 	 * @var string

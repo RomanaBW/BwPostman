@@ -60,14 +60,14 @@ class AccessPage
 	 * @since 2.0.0
 	 */
 	public static $main_list_buttons   = array(
-		'Newsletters'        => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Newsletters')]",
-		'Subscribers'        => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Subscribers')]",
-		'Campaigns'          => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Campaigns')]",
-		'Mailinglists'       => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Mailinglists')]",
-		'Templates'          => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Templates')]",
-		'Archive'            => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Archive')]",
-		'Basic settings'     => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Basic settings')]",
-		'Maintenance'        => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Maintenance')]",
+		'Newsletters'        => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Newsletters')]",
+		'Subscribers'        => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Subscribers')]",
+		'Campaigns'          => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Campaigns')]",
+		'Mailinglists'       => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Mailinglists')]",
+		'Templates'          => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Templates')]",
+		'Archive'            => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Archive')]",
+		'Basic settings'     => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Basic settings')]",
+		'Maintenance'        => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Maintenance')]",
 	);
 
 	/**
@@ -76,13 +76,13 @@ class AccessPage
 	 * @since 2.0.0
 	 */
 	public static $main_add_buttons   = array(
-		'Newsletter'        => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Add newsletter')]",
-		'Subscriber'        => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Add subscriber')]",
-		'Test-Recipient'    => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Add Test-Recipient')]",
-		'Campaign'          => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Add campaign')]",
-		'Mailinglist'       => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Add mailinglist')]",
-		'HTML-Template'     => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Add HTML-Template')]",
-		'Text-Template'     => "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'Add Text-Template')]",
+		'Newsletter'        => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Add newsletter')]",
+		'Subscriber'        => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Add subscriber')]",
+		'Test-Recipient'    => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Add Test-Recipient')]",
+		'Campaign'          => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Add campaign')]",
+		'Mailinglist'       => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Add mailinglist')]",
+		'HTML-Template'     => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Add HTML-Template')]",
+		'Text-Template'     => "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'Add Text-Template')]",
 	);
 
 	/**
@@ -90,7 +90,7 @@ class AccessPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $forum_icon       = "//*/div[contains(@class,'bw-icons')]/div/div/a/span[contains(text(), 'BwPostman Forum')]";
+	public static $forum_icon       = "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(), 'BwPostman Forum')]";
 
 	/**
 	 * @var string
@@ -133,7 +133,7 @@ class AccessPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $link_statistics_archive  = "//*[@id='bwpostman_statistic-pane']/div/a[contains(text(), 'Archive statistics')]";
+	public static $link_statistics_archive  = "//*/h2[@id='archive-heading']/button[contains(text(), 'Archive statistics')]";
 
 	/**
 	 * @var string

@@ -491,7 +491,7 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $ml_desc_long    = "02 Mailingliste 6 weiterer Lauf B";
+	public static $ml_desc_long    = "02 Mailingliste 6 weiterer Lauf A";
 
 	/**
 	 * @var string
@@ -575,7 +575,7 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $disclaimer_menuitem_text    = "This tells you a bit about this blog and the person who writes it. ";
+	public static $disclaimer_menuitem_text    = "Your home page is set to display the four most recent articles from the blog category in a column.";
 
 	/**
 	 * @var string

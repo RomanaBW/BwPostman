@@ -56,28 +56,28 @@ class MaintenancePage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $checkTablesButton    = '//*/div[contains(@class,"bw-icons")]/div[1]/div/a';
+	public static $checkTablesButton    = '//*/div[contains(@class,"bw-icons")]/div/div[1]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $saveTablesButton     = '//*/div[contains(@class,"bw-icons")]/div[2]/div/a';
+	public static $saveTablesButton     = '//*/div[contains(@class,"bw-icons")]/div/div[2]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $restoreTablesButton  = '//*/div[contains(@class,"bw-icons")]/div[3]/div/a';
+	public static $restoreTablesButton  = '//*/div[contains(@class,"bw-icons")]/div/div[3]';
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $settingsButton       = '//*/div[contains(@class,"bw-icons")]/div[4]/div/a';
+	public static $settingsButton       = '//*/div[contains(@class,"bw-icons")]/div/div[4]';
 
 	/**
 	 * @var string
@@ -301,7 +301,7 @@ class MaintenancePage
 	 *
 	 * @since 3.1.3
 	 */
-	public static $successAllIdentifierResult     = "//*[@id='result']/p[contains(@class, 'bw_tablecheck_finished')]";
+	public static $successAllIdentifierResult     = "//*[@id='result']/p[contains(@class, 'alert-success')]";
 
 	/**
 	 * @var string
@@ -315,7 +315,7 @@ class MaintenancePage
 	 *
 	 * @since 3.1.3
 	 */
-	public static $successIdentifierResult     = "//*[@id='result']/p[@class='bw_tablecheck_ok']";
+	public static $successIdentifierResult     = "//*[@id='result']/p[@class='text-success']";
 
 	/**
 	 * @var string
@@ -411,28 +411,35 @@ class MaintenancePage
 	 *
 	 * @since 3.1.3
 	 */
-	public static $step7FieldError           = "//*[@id='step7'][contains(@class, 'alert-error')]";
+	public static $step7FieldError           = "//*[@id='step7'][contains(@class, 'alert-danger')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 3.1.3
 	 */
-	public static $errorIdentifierSetBack     = "//*[@id='error']/p[contains(@class, 'alert-error')]";
+	public static $errorIdentifierSetBack     = "//*[@id='error']/p[contains(@class, 'alert-danger')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 3.1.3
 	 */
-	public static $errorIdentifierResult     = "//*[@id='result']/p[contains(@class, 'bw_tablecheck_error')]";
+	public static $errorIdentifierResult     = "//*[@id='result']/p[contains(@class, 'text-danger')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 3.1.3
 	 */
-	public static $warningIdentifier     = "//*[@id='result']/p[contains(@class, 'bw_tablecheck_warn')]";
+	public static $warningIdentifier     = "//*[@id='result']/p[contains(@class, 'text-warning')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $versionWarningIdentifier     = "//*[@id='result']/p[contains(@class, 'alert-warning')]";
 
 	/*
 	 * Error and warning handling messages
@@ -890,6 +897,7 @@ class MaintenancePage
 
 		$resultsOkay = $I->grabMultiple(self::$successIdentifierResult);
 		$resultsWarn = $I->grabMultiple(self::$warningIdentifier);
+		$resultsWarnVersion = $I->grabMultiple(self::$versionWarningIdentifier);
 
 		$found = in_array(self::$successTextReadBackup, $resultsOkay);
 		$I->assertEquals($found, true);
@@ -917,8 +925,9 @@ class MaintenancePage
 			$found = in_array(sprintf(self::$repairTextEngine, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}
+codecept_debug('TP');
 
-		$found = in_array(self::$warningTextVersion, $resultsWarn);
+		$found = in_array(self::$warningTextVersion, $resultsWarnVersion);
 		$I->assertEquals($found, true);
 
 		$found = in_array(self::$warningTextIncrement, $resultsWarn);

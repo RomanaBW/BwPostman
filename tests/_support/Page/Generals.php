@@ -1206,7 +1206,7 @@ class Generals
 		$I->setManifestOption('com_bwpostman', 'disclaimer_selection', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
 		$I->setManifestOption('com_bwpostman', 'article_id', '6');
-		$I->setManifestOption('com_bwpostman', 'disclaimer_menuitem', '103');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_menuitem', '124');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_target', '0');
 		$I->setManifestOption('com_bwpostman', 'showinmodal', '1');
 		$I->setManifestOption('com_bwpostman', 'use_captcha', '0');

@@ -175,7 +175,21 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
+	public static $errorModulBody    = "//*/joomla-alert/div/div[%s]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
 	public static $mod_disclaimer    = "//*[@id='agreecheck_mod']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $mod_disclaimer_scroll    = "//*[@id='bwp_mod_form_disclaimer']";
 
 	/**
 	 * @var string
@@ -217,28 +231,69 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $invalid_field_name_mod           = 'Please enter a lastname!';
+	public static $invalid_field_name_mod           = 'Please enter a name!';
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $invalid_field_firstname_mod      = 'Please enter a firstname!';
+	public static $invalid_field_firstname_mod      = 'Please enter a first name!';
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $invalid_field_special_mod        = 'Please enter a value in field %s!';
+	public static $invalid_field_special_mod        = 'Please enter a value into the %s  field!';
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $invalid_select_newsletter_mod    = 'You have to select at least one newsletter for finishing up your registration.';
+	public static $invalid_select_newsletter_mod    = 'You have to select one newsletter.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $invalid_select_mailaddress_mod    = 'Please enter an email address!';
+
+	/* @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $invalid_field_name_mod_pop           = 'Please enter a lastname!';
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $invalid_field_firstname_mod_pop      = 'Please enter a firstname!';
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $invalid_field_special_mod_pop        = 'Please enter a value in field %s!';
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $invalid_select_newsletter_mod_pop    = 'You have to select at least one newsletter for finishing up your registration.';
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $invalid_select_mailaddress_mod_pop    = 'You have to select at least one newsletter for finishing up your registration.';
 
 	/**
 	 * @var string
@@ -266,28 +321,28 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_firstname_star_popup    = "//*[@id='bwp_mod_form_firstnamefield']/span/span/i[@class='bwp_icon-star']";
+	public static $mod_firstname_star_popup    = "//*[@id='bwp_mod_form_firstnamefield']/span/i[@class='bwp_icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_name_star_popup    = "//*[@id='bwp_mod_form_namefield']/span/span/i[@class='bwp_icon-star']";
+	public static $mod_name_star_popup    = "//*[@id='bwp_mod_form_namefield']/span/i[@class='bwp_icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_special_star_popup    = "//*[@id='bwp_mod_form_specialfield']/span/span/i[@class='bwp_icon-star']";
+	public static $mod_special_star_popup    = "//*[@id='bwp_mod_form_specialfield']/span/i[@class='bwp_icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_mailaddress_star_popup    = "//*[@id='bwp_mod_form_emailfield']/span/span/i[@class='bwp_icon-star']";
+	public static $mod_mailaddress_star_popup    = "//*[@id='bwp_mod_form_emailfield']/span/i[@class='bwp_icon-star']";
 
 	/**
 	 * @var string
@@ -329,7 +384,7 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_ml_desc_long    = "02 Mailingliste 6 weiterer Lauf B";
+	public static $mod_ml_desc_long    = "02 Mailingliste 6 weiterer Lauf A";
 
 	/**
 	 * @var string
@@ -427,14 +482,14 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_disclaimer_menuitem_text    = "This tells you a bit about this blog and the person who writes it. ";
+	public static $mod_disclaimer_menuitem_text    = "Your home page is set to display the four most recent articles from the blog category in a column.";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_security_question_error    = "You have to enter the result of the spam question.";
+	public static $mod_security_question_error    = "Spam question: You entered the wrong result!";
 
 	/**
 	 * @var string
@@ -485,7 +540,7 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $module_item_text_identifier = "//*[@class='a_mailinglist_item_0']/span";
+	public static $module_item_text_identifier = "//*[@class='a_mailinglist_item_0']";
 
 	/**
 	 * @var string
@@ -539,7 +594,7 @@ class RegistrationModulePage
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '1');
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
 		$I->setManifestOption('mod_bwpostman', 'article_id', '6');
-		$I->setManifestOption('mod_bwpostman', 'disclaimer_menuitem', '103');
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_menuitem', '124');
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_target', '0');
 		$I->setManifestOption('mod_bwpostman', 'showinmodal', '1');
 		$I->setManifestOption('mod_bwpostman', 'use_captcha', '0');

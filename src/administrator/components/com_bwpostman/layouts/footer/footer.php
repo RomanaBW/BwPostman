@@ -33,11 +33,13 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 $version = BwPostmanHelper::getInstalledBwPostmanVersion();
 ?>
 
-<div class="bwpm-footer col-md-12 well well-white">
-	<p class="bwpm_copyright">
-		BwPostman version <?php echo $version; ?> by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>
-	</p>
-	<p class="bwpm-review">
-		<?php echo Text::_('COM_BWPOSTMAN_REVIEW_MESSAGE'); ?>
-	</p>
+<div class="bwpm-footer col-md-12">
+	<div class="card card-footer text-center mt-3">
+		<p class="bwpm_copyright">
+			BwPostman version <?php echo $version; ?> by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>
+		</p>
+		<p class="bwpm-review">
+			<?php echo Text::_('COM_BWPOSTMAN_REVIEW_MESSAGE'); ?>
+		</p>
+	</div>
 </div>

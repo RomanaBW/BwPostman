@@ -648,11 +648,11 @@ class TemplatesModel extends ListModel
 		if (!$result || $result instanceof Exception) // extract failed
 		{
 //			$this->delMessage();
-			echo '<p class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR_EXTRACT') . '</p>';
+			echo '<p class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR_EXTRACT') . '</p>';
 			return false;
 		}
 
-		echo '<p class="bw_tablecheck_ok">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_EXTRACT_OK') . '</p>';
+		echo '<p class="text-success">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_EXTRACT_OK') . '</p>';
 		return true;
 	}
 
@@ -732,8 +732,8 @@ class TemplatesModel extends ListModel
 
 						if ($TplTitle === false || $CountTitle === false || $error !== '')
 						{
-							echo '<p class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
-							echo '<p class="bw_tablecheck_error">' . $error . '</p>';
+							echo '<p class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
+							echo '<p class="text-danger">' . $error . '</p>';
 							return false;
 						}
 					}
@@ -742,11 +742,11 @@ class TemplatesModel extends ListModel
 		}
 		else
 		{
-			echo '<p class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
+			echo '<p class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
 			return false;
 		}
 
-		echo '<p class="bw_tablecheck_ok">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step . '_OK') . '</p>';
+		echo '<p class="text-success">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step . '_OK') . '</p>';
 		return true;
 	}
 
@@ -817,38 +817,38 @@ class TemplatesModel extends ListModel
 
 			if (!File::exists($dest . '/' . $file))
 			{
-				echo '<p class="bw_tablecheck_warn">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
-				echo '<p class="bw_tablecheck_warn">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_NO_THUMB_WARNING', $file, $path_now) . '</p>';
+				echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
+				echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_NO_THUMB_WARNING', $file, $path_now) . '</p>';
 				$warn = true;
 			}
 			else
 			{
-				echo '<p class="bw_tablecheck_ok">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
+				echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
 			}
 
 			$path_now = $dest2 . '/';
 
 			if (!File::exists($dest2 . '/' . $file))
 			{
-				echo '<p class="bw_tablecheck_warn">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
-				echo '<p class="bw_tablecheck_warn">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_NO_THUMB_WARNING', $file, $path_now) . '</p>';
+				echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
+				echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_NO_THUMB_WARNING', $file, $path_now) . '</p>';
 				$warn = true;
 			}
 			else
 			{
-				echo '<p class="bw_tablecheck_ok">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
+				echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
 			}
 
 			$path_now = $media_path;
 
 			if (!File::exists($media_path . $file))
 			{
-				echo '<p class="bw_tablecheck_warn">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
+				echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
 				$warn = true;
 			}
 			else
 			{
-				echo '<p class="bw_tablecheck_ok">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
+				echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
 			}
 		}
 
@@ -900,24 +900,24 @@ class TemplatesModel extends ListModel
 
 		if (File::exists($archivename))
 		{
-			echo '<p class="bw_tablecheck_warn">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_WARNING', $archivename, $tempPath) . '</p>';
+			echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_WARNING', $archivename, $tempPath) . '</p>';
 			$warn = true;
 		}
 		else
 		{
-			echo '<p class="bw_tablecheck_ok">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_OK', $archivename, $tempPath) . '</p>';
+			echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_OK', $archivename, $tempPath) . '</p>';
 		}
 
 		if (Folder::exists($extractdir))
 		{
-			echo '<p class="bw_tablecheck_warn">' .
+			echo '<p class="text-warning">' .
 				Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_WARNING', '/tmp_bwpostman_installtpl/', $tempPath) .
 				'</p>';
 			$warn = true;
 		}
 		else
 		{
-			echo '<p class="bw_tablecheck_ok">' .
+			echo '<p class="text-success">' .
 				Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_OK', '/tmp_bwpostman_installtpl/', $tempPath) .
 				'</p>';
 		}

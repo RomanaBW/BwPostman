@@ -35,6 +35,11 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = $this->document->getWebAssetManager();
+$wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
+$wa->useScript('com_bwpostman.admin-bwpm_update_checksave');
+
 $uncompressed = Factory::getConfig()->get('debug') ? '-uncompressed' : '';
 HTMLHelper::_('script', 'system/modal' . $uncompressed . '.js', array('relative' => true, 'detectBrowser' => true));
 HTMLHelper::_('stylesheet', 'media/system/css/modal.css');
@@ -92,30 +97,36 @@ if ($show_update || $string_special != '')
 
 <div id="com_bwp_install_outer">
 </div>
-	<div id="checkResult" class="row">
-		<div class="col-12 alert"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_WARNING'); ?></div>
-		<div class="col-lg-6 inner well mx-3">
-			<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES'); ?></h2>
-			<p id="step0" class="well mb-3"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_0'); ?></p>
-			<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
-			<p id="step1" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
-			<p id="step2" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
-			<p id="step3" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
-			<p id="step4" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
-			<p id="step5" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
-			<p id="step6" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_6'); ?></p>
-			<p id="step7" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_7'); ?></p>
+<div class="row">
+	<div class="col-12">
+		<div class="card alert-warning my-3 p-2">
+			<?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_WARNING'); ?>
+		</div>
 	</div>
-	<div id="resultSet" class="col-lg-6 well mx-3">
-		<h2 class="mb-3"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
-		<div id="loading2"></div>
-		<div id="result"></div>
 </div>
+<div id="checkResult" class="row">
+	<div class="col-lg-6">
+		<div class="card card-body">
+			<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES'); ?></h2>
+			<p id="step0" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_0'); ?></p>
+			<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
+			<p id="step1" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
+			<p id="step2" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
+			<p id="step3" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
+			<p id="step4" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
+			<p id="step5" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
+			<p id="step6" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_6'); ?></p>
+			<p id="step7" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_7'); ?></p>
+		</div>
+	</div>
+	<div class="col-lg-6">
+		<div id="resultSet" class="resultSet card card-body">
+			<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
+			<div id="loading2" class="text-center my-3"></div>
+			<div id="result"></div>
+		</div>
+	</div>
 </div>
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
 <input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=maintenancejson.tCheck&format=json&<?php echo Session::getFormToken(); ?>=1" />
-
-<?php
-Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_maintenance_doAjax.js');
-Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_update_checksave.js');

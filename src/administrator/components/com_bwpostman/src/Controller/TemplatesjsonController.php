@@ -96,7 +96,7 @@ class TemplatesjsonController extends AdminController
 					if (!$model->extractTplFiles($file))
 					{
 						$model->deleteTempFolder($file);
-						echo '<h3 class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
+						echo '<h3 class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
 						$alertClass = 'error';
 						$ready = "1";
 					}
@@ -110,7 +110,7 @@ class TemplatesjsonController extends AdminController
 					if (!$model->installTplFiles($templatestplsql, "STEP2"))
 					{
 						$model->deleteTempFolder($file);
-						echo '<h3 class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
+						echo '<h3 class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
 						$alertClass = 'error';
 						$ready = "1";
 					}
@@ -124,7 +124,7 @@ class TemplatesjsonController extends AdminController
 					if (!$model->installTplFiles($templatessql, "STEP3"))
 					{
 						$model->deleteTempFolder($file);
-						echo '<h3 class="bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
+						echo '<h3 class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
 						$alertClass = 'error';
 						$ready = "1";
 					}
@@ -151,7 +151,7 @@ class TemplatesjsonController extends AdminController
 
 					$app->setUserState('com_bwpostman.templates.uploadfile', '');
 					$ready = "1";
-					echo '<h3 class="bw_tablecheck_ok">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_OK') . '</h3>';
+					echo '<h3 class="text-success">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_OK') . '</h3>';
 					break;
 			}
 

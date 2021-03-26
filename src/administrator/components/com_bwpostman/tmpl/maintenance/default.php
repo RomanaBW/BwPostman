@@ -43,7 +43,8 @@ if ($this->queueEntries)
 
 <div id="view_bwpostman_maintenance">
 	<div class="top-spacer row">
-		<div class="bw-icons col-md-12 module-wrapper">
+		<div class="bw-icons col-md-12 module-wrapper clearfix">
+			<div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-3">
 			<?php
 			if (BwPostmanHelper::canAdmin('maintenance')) {
 				$option = $jinput->getCmd('option', 'com_bwpostman');
@@ -84,9 +85,9 @@ if ($this->queueEntries)
 			$link = BwPostmanHTMLHelper::getForumLink();
 			BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-forum.png', Text::_("COM_BWPOSTMAN_FORUM"), 0, 0, 'new');
 			?>
+			</div>
 		</div>
 		<div id="loading" style="display: none;"></div>
+		<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 	</div>
-	<div class="clr clearfix"></div>
-	<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 </div>

@@ -42,6 +42,7 @@ HtmlHelper::_('behavior.formvalidator');
 HtmlHelper::_('formbehavior.chosen', 'select');
 
 HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('bootstrap.modal');
 
 // Depends on jQuery UI
 //HtmlHelper::_('jquery.ui', array('core'));
@@ -176,7 +177,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 				{
 				?>
 					<!-- Modal -->
-					<div id="DisclaimerModal" class="modal" tabindex="-1">
+					<div id="DisclaimerModal" class="modal" tabindex="-1" aria-hidden="true">
 						<div class="modal-dialog modal-xl">
 							<div class="modal-content">
 								<div class="modal-header">

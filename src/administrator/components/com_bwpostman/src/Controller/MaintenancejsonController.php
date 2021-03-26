@@ -225,7 +225,7 @@ class MaintenancejsonController extends AdminController
 					}
 					catch (Exception $e)
 					{
-						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
+						$error  = '<p class="text-danger">' . $e->getMessage() . '</p>';
 						throw new BwException($error, 1370);
 					}
 					break;
@@ -247,7 +247,7 @@ class MaintenancejsonController extends AdminController
 			{
 				$result = $content;
 
-				$successMessage  = '<p class="alert alert-success bw_tablecheck_finished mb-2">';
+				$successMessage  = '<p class="alert alert-success mb-2">';
 				$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
 				$successMessage .= '</p>';
 
@@ -384,7 +384,7 @@ class MaintenancejsonController extends AdminController
 					}
 					catch (Exception $e)
 					{
-						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
+						$error  = '<p class="text-danger">' . $e->getMessage() . '</p>';
 						throw new BwException($error, 1011);
 					}
 					break;
@@ -410,7 +410,7 @@ class MaintenancejsonController extends AdminController
 					}
 					catch (Exception $e)
 					{
-						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
+						$error  = '<p class="text-danger">' . $e->getMessage() . '</p>';
 						throw new BwException($error, 1020);
 					}
 					break;
@@ -465,7 +465,7 @@ class MaintenancejsonController extends AdminController
 					}
 					catch (Exception $e)
 					{
-						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
+						$error  = '<p class="text-danger">' . $e->getMessage() . '</p>';
 						throw new BwException($error, 1041);
 					}
 					break;
@@ -519,7 +519,7 @@ class MaintenancejsonController extends AdminController
 					}
 					catch (Exception $e)
 					{
-						$error  = '<p class="bw_tablecheck_error err">' . $e->getMessage() . '</p>';
+						$error  = '<p class="text-danger err">' . $e->getMessage() . '</p>';
 						throw new BwException($error, 1062);
 					}
 					break;
@@ -611,7 +611,7 @@ class MaintenancejsonController extends AdminController
 					}
 					catch (Exception $e)
 					{
-						$error  = '<p class="bw_tablecheck_error">' . $e->getMessage() . '</p>';
+						$error  = '<p class="text-danger">' . $e->getMessage() . '</p>';
 						throw new BwException($error, 1072);
 					}
 					break;
@@ -698,7 +698,7 @@ class MaintenancejsonController extends AdminController
 			{
 				$result = $content;
 
-				$successMessage = '<p class="alert alert-success bw_tablecheck_finished mb-2">';
+				$successMessage = '<p class="alert alert-success mb-2">';
 				$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
 				$successMessage .= '</p>';
 
@@ -778,7 +778,7 @@ class MaintenancejsonController extends AdminController
 
 		if ($neededTables === false || !is_array($neededTables))
 		{
-			$errorMessage = '<p class="alert alert-error bw_tablecheck_error">';
+			$errorMessage = '<p class="alert alert-error">';
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_NEEDED_ERROR');
 			$errorMessage .= '<br /><br />';
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
@@ -820,7 +820,7 @@ class MaintenancejsonController extends AdminController
 
 		if ($tableNamesArray === false || !is_array($tableNamesArray))
 		{
-			$errorMessage = '<p class="alert alert-error bw_tablecheck_error">';
+			$errorMessage = '<p class="alert alert-danger">';
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_INSTALLED_ERROR');
 			$errorMessage .= '<br /><br />';
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
@@ -864,7 +864,7 @@ class MaintenancejsonController extends AdminController
 		// check table names
 		if ($model->checkTableNames($neededTables, $genericTableNames, 'check') === false)
 		{
-			$errorMessage = '<p class="bw_tablecheck_error">';
+			$errorMessage = '<p class="text-danger">';
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_NAMES_ERROR');
 			$errorMessage .= '<br /><br />';
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR_FINISH');
@@ -903,7 +903,7 @@ class MaintenancejsonController extends AdminController
 			if (version_compare($versionOfBackup, $model->getBwPostmanVersion(), '>'))
 			{
 //				$message =  '<h5>' . Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_TABLE_COLUMNS_TABLE', $neededTables[$i]->name) . '</h5>';
-				$message = '<p class="alert alert-warning bw_tablecheck_warn">';
+				$message = '<p class="alert alert-warning">';
 				$message .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_NO_COLUMN_CHECK');
 				$message .= '</p>';
 
@@ -926,7 +926,7 @@ class MaintenancejsonController extends AdminController
 
 			if ($res === false || $res !== 'Column check finished')
 			{
-				$errorMessage = '<p class="alert alert-error bw_tablecheck_error">';
+				$errorMessage = '<p class="alert alert-danger">';
 				$errorMessage .= Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_COLS_ERROR', $neededTables[$i]->name);
 				$errorMessage .= '<br /><br />';
 				$errorMessage .= 'Error: ' . $res . '<br /><br />';
@@ -964,7 +964,7 @@ class MaintenancejsonController extends AdminController
 
 			if ($checkAsset === false)
 			{
-				$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
+				$errorMessage = '<p class="alert alert-warning">';
 				$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSETS_WARN');
 				$errorMessage .= '</p>';
 
@@ -978,7 +978,7 @@ class MaintenancejsonController extends AdminController
 			// check asset IDs (necessary because asset_id = 0 prevents deleting)
 			if (!$model->checkAssetParentId())
 			{
-				$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
+				$errorMessage = '<p class="alert alert-warning">';
 				$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_PARENT_ASSETS_WARN');
 				$errorMessage .= '</p>';
 
@@ -996,7 +996,7 @@ class MaintenancejsonController extends AdminController
 
 			if (!$checkUser)
 			{
-				$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
+				$errorMessage = '<p class="alert alert-warning">';
 				$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_USER_ID_WARN');
 				$errorMessage .= '</p>';
 
@@ -1004,7 +1004,7 @@ class MaintenancejsonController extends AdminController
 			}
 			else
 			{
-				$message .= str_pad('<p class="bw_tablecheck_ok">' . Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_USER_ID_OK') . '</p>', 4096);
+				$message .= str_pad('<p class="text-success">' . Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_USER_ID_OK') . '</p>', 4096);
 			}
 			$sessionContent = $message  . $errorMessage . $sessionContent;
 		}
@@ -1032,7 +1032,7 @@ class MaintenancejsonController extends AdminController
 
 		if ($createRestore !== true)
 		{
-			$errorMessage = '<p class="alert alert-error bw_tablecheck_error">';
+			$errorMessage = '<p class="alert alert-danger">';
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
 			$errorMessage .= '<br />' . $createRestore;
 			$errorMessage .= '</p>';
@@ -1068,7 +1068,7 @@ class MaintenancejsonController extends AdminController
 
 		if ($deleteRestore !== true)
 		{
-			$errorMessage = '<p class="alert alert-warning bw_tablecheck_warn">';
+			$errorMessage = '<p class="alert alert-warning">';
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DELETE_RESTORE_POINT_WARN');
 			$errorMessage .= '<br />' . $deleteRestore;
 			$errorMessage .= '</p>';
@@ -1107,14 +1107,14 @@ class MaintenancejsonController extends AdminController
 
 			if ($restoreResult !== true)
 			{
-				$message = '<p class="alert alert-error bw_tablecheck_error">' . $restoreResult . '</p>';
-				$message .= '<p class="alert alert-error bw_tablecheck_error">' .  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESTORE_RESTORE_POINT_ERROR_NOT_DONE') . '</p>';
+				$message = '<p class="alert alert-danger">' . $restoreResult . '</p>';
+				$message .= '<p class="alert alert-danger">' .  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESTORE_RESTORE_POINT_ERROR_NOT_DONE') . '</p>';
 //				$result .=  $message;
 				$error  .= $message;
 			}
 			else
 			{
-				$error .= '<p class="alert alert-error bw_tablecheck_error">' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_POINT_RESTORED_WARNING') . "</p>";
+				$error .= '<p class="alert alert-danger">' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_POINT_RESTORED_WARNING') . "</p>";
 			}
 		}
 

@@ -30,6 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 
@@ -43,8 +44,9 @@ if ($this->queueEntries) {
 ?>
 
 <div id="view_bwpostman">
-	<div class="top-spacer row">
-		<div class="bw-icons col-md-9 module-wrapper">
+	<div class="top-spacer row clearfix">
+		<div class="bw-icons col-md-8 module-wrapper">
+			<div class="row row-cols-2 row-cols-lg-3 row-cols-xl-4 g-3">
 			<?php
 			$option = $jinput->getCmd('option', 'com_bwpostman');
 
@@ -188,14 +190,12 @@ if ($this->queueEntries) {
 			$link = BwPostmanHTMLHelper::getForumLink();
 			BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-forum.png', Text::_("COM_BWPOSTMAN_FORUM"), 0, 0, 'new');
 			?>
+			</div>
 		</div>
-		<div class="bw-generals col-md-3 module-wrapper">
-			<div id="bwpostman_statistic-pane" class="accordion collapse show" role="tablist">
-				<div class="card mb-2">
-					<a href="#generals" data-bs-toggle="collapse" class="card-header" role="tab" aria-expanded="true"><?php echo Text::_('COM_BWPOSTMAN_GENERAL_STATS'); ?></a>
-					<div class="collapse show" id="generals" role="tabpanel" data-parent="#bwpostman_statistic-pane">
-						<div class="card-body">
-							<table class="adminlist">
+		<div class="bw-generals col-md-4 module-wrapper">
+			<?php echo HTMLHelper::_('bootstrap.startAccordion', 'bwpostman_statistic-pane', array('active' => 'generals', 'toggle' => 'true')); ?>
+				<?php echo HTMLHelper::_('bootstrap.addSlide', 'bwpostman_statistic-pane', Text::_('COM_BWPOSTMAN_GENERAL_STATS'), 'generals'); ?>
+							<table class="adminlist table table-bordered table-sm">
 								<?php
 								if ($this->permissions['com']['admin']
 									|| $this->permissions['view']['maintenance']
@@ -203,8 +203,8 @@ if ($this->queueEntries) {
 								)
 								{ ?>
 									<tr>
-										<td width="200"><?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT_NUM') . ': '; ?></td>
-										<td width="50">
+										<td><?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT_NUM') . ': '; ?></td>
+										<td>
 											<b>
 												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&tab=unsent'); ?>">
 													<?php echo $this->general['nl_unsent']; ?>
@@ -325,16 +325,11 @@ if ($this->queueEntries) {
 										</tr>
 									<?php } ?>
 							</table>
-						</div>
-					</div>
-				</div>
-				<?php	if ($this->permissions['com']['admin'] || $this->permissions['view']['maintenance'] || $this->permissions['view']['archive'])
-				{ ?>
-				<div class="card mb-2">
-					<a href="#archive" data-bs-toggle="collapse" class="card-header collapsed" role="tab"><?php echo Text::_('COM_BWPOSTMAN_ARC_STATS'); ?></a>
-					<div class="collapse" id="archive" role="tabpanel" data-parent="#bwpostman_statistic-pane">
-						<div class="card-body">
-							<table class="adminlist">
+				<?php echo HTMLHelper::_('bootstrap.endSlide');
+				if ($this->permissions['com']['admin'] || $this->permissions['view']['maintenance'] || $this->permissions['view']['archive'])
+				{
+				echo HTMLHelper::_('bootstrap.addSlide', 'bwpostman_statistic-pane', Text::_('COM_BWPOSTMAN_ARC_STATS'), 'archive'); ?>
+							<table class="adminlist table table-bordered table-sm">
 								<?php
 								if ($this->permissions['com']['admin']
 									|| $this->permissions['view']['maintenance']
@@ -342,8 +337,8 @@ if ($this->queueEntries) {
 								)
 								{ ?>
 									<tr>
-										<td width="200"><?php echo Text::_('COM_BWPOSTMAN_ARC_NL_NUM') . ': '; ?></td>
-										<td width="50">
+										<td><?php echo Text::_('COM_BWPOSTMAN_ARC_NL_NUM') . ': '; ?></td>
+										<td>
 											<b>
 												<a href="<?php echo Route::_('index.php?option=com_bwpostman&view=Archive&layout=newsletters'); ?>">
 													<?php echo $this->archive['arc_nl']; ?>
@@ -442,13 +437,10 @@ if ($this->queueEntries) {
 									</tr>
 								<?php } ?>
 							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-			<?php	} ?>
+				<?php echo HTMLHelper::_('bootstrap.endSlide');
+				}
+			echo HTMLHelper::_('bootstrap.endAccordion'); ?>
 		</div>
+		<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 	</div>
-	<div class="clr clearfix"></div>
-	<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 </div>

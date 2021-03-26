@@ -42,61 +42,53 @@ function ready(callbackFunc) {
 
 ready(function() {
 	function doAjax(data, successCallback) {
-		var	url = starturl,
-			data = data,
-			type = 'POST';
-		var request = new XMLHttpRequest();
-		request.onreadystatechange = function()
-		{
-			if (this.readyState === 4) {
-				if (this.status >= 200 && this.status < 300)
-				{
-					successCallback(parse(this.responseText));
-				}
-				else
-				{
-					var message = '<p class="bw_tablecheck_error">AJAX Error: ' + this.statusText + '<br />' + this.responseText + '</p>';
-					document.getElementById('loading2').style.display = "none";
-					var alert_step = document.getElementById('step' + parseInt(data.match(/\d/g)));
-					if(typeof alert_step !== 'undefined' && alert_step !== null) {
-						alert_step.classList.remove('alert-info');
-						alert_step.classList.add('alert-error');
-					}
-					document.getElementById('result').innerHTML = message;
-					document.getElementById('resultSet').style.backgroundColor = '#f2dede';
-					document.getElementById('resultSet').style.borderColor = '#eed3d7';
-					var toolbar = document.getElementById('toolbar');
-					var buttags = toolbar.getElementsByTagName('button');
-					for (var i = 0; i < buttags.length; i++) {
-						buttags[i].removeAttribute('disabled');
-					}
-					var atags = toolbar.getElementsByTagName('a');
-					for (var i = 0; i < atags.length; i++) {
-						atags[i].removeAttribute('disabled');
-					}
-				}
+		Joomla.request({
+			url: document.getElementById('startUrl').value,
+			method: 'POST',
+			data: data,
+			perform: true,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			onSuccess: function onSuccess(response) {
+				successCallback(JSON.parse(response));
+			},
+			onError: function onError(xhr) {
+						var message = '<p class="text-danger">AJAX Error: ' + xhr.statusText + '<br />' + xhr.responseText + '</p>';
+						document.getElementById('loading2').style.display = "none";
+						var alert_step = document.getElementById('step' + parseInt(data.match(/\d/g)));
+						if(typeof alert_step !== 'undefined' && alert_step !== null) {
+							alert_step.querySelector('span.fa').classList.remove('fa-spinner');
+							alert_step.classList.remove('alert-info');
+							alert_step.classList.add('alert-danger');
+						}
+						document.getElementById('result').innerHTML = message;
+						document.getElementById('resultSet').style.backgroundColor = '#f3d4d4';
+						document.getElementById('resultSet').style.borderColor = '#eebfbe';
+						var toolbar = document.getElementById('toolbar');
+						var buttags = toolbar.getElementsByTagName('button');
+						for (var i = 0; i < buttags.length; i++) {
+							buttags[i].removeAttribute('disabled');
+						}
+						var atags = toolbar.getElementsByTagName('a');
+						for (var i = 0; i < atags.length; i++) {
+							atags[i].removeAttribute('disabled');
+						}
 			}
-		};
-		request.open(type, url, true);
-		request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		request.send(data);
-	}
-
-	function parse(text){
-		try {
-			return JSON.parse(text);
-		} catch(e){
-			return text;
-		}
+		});
 	}
 
 	function processUpdateStep(data) {
 		var alert_step_old = document.getElementById('step' + (data.step - 1));
 		if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
+			alert_step_old.querySelector('span.fa').classList.remove('fa-spinner');
 			alert_step_old.classList.remove('alert-info');
 			alert_step_old.classList.add('alert-' + data.aClass);
 		}
-		document.getElementById('step' + data.step).classList.add('alert', 'alert-info');
+		var pstep = document.getElementById('step' + data.step);
+		pstep.classList.remove('alert-secondary');
+		pstep.classList.add('alert-info');
+		pstep.querySelector('span.fa').classList.add('fa-spinner');
 		// Do AJAX post
 		post = 'step=step' + data.step;
 		doAjax(post, function (data) {
@@ -107,22 +99,24 @@ ready(function() {
 			} else {
 				var alert_step_old = document.getElementById('step' + (data.step - 1));
 				if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
+					alert_step_old.querySelector('span.fa').classList.remove('fa-spinner');
 					alert_step_old.classList.remove('alert-info');
-					alert_step_old.classList.add('alert', 'alert-' + data.aClass);
+					alert_step_old.classList.add('alert-' + data.aClass);
 				}
 				document.getElementById('loading2').style.display = 'none';
 				document.getElementById('result').innerHTML = data.result;
 				if (data.error !== '') {
-					document.getElementById('resultSet').style.backgroundColor = '#f2dede';
-					document.getElementById('resultSet').style.borderColor = '#eed3d7';
+					document.getElementById('resultSet').style.backgroundColor = '#f3d4d4';
+					document.getElementById('resultSet').style.borderColor = '#eebfbe';
 					var alert_step = document.getElementById(data.step);
 					if(typeof alert_step !== 'undefined' && alert_step !== null) {
+						alert_step.querySelector('span.fa').classList.remove('fa-spinner');
 						alert_step.classList.remove('alert-info');
-						alert_step.classList.add('alert-error');
+						alert_step.classList.add('alert-danger');
 					}
 				} else {
-					document.getElementById('resultSet').style.backgroundColor = '#dff0d8';
-					document.getElementById('resultSet').style.borderColor = '#d6e9c6';
+					document.getElementById('resultSet').style.backgroundColor = '#e1f5ec';
+					document.getElementById('resultSet').style.borderColor = '#0f2f21';
 				}
 				document.getElementById('error').innerHTML = data.error;
 				var toolbar = document.getElementById('toolbar');

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "com_bwpostman",
+  "version": "4.0.0",
+  "description": "Joomla CMS",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+    {
+      "name": "com_bwpostman.admin-bwpostman",
+      "type": "style",
+      "uri": "com_bwpostman/admin-bwpostman.css",
+      "dependencies": [
+        "fontawesome"
+      ]
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_maintenance_doAjax",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_maintenance_doAjax.js",
+      "dependencies": [
+        "jquery"
+      ],
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_do_restore",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_do_restore.js",
+      "dependencies": [
+        "jquery"
+      ],
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_update_checksave",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_update_checksave.js",
+      "dependencies": [
+        "jquery"
+      ],
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_checktables",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_checktables.js",
+      "dependencies": [
+        "jquery"
+      ],
+      "attributes": {
+        "defer": true
+      }
+    }
+  ]
+}

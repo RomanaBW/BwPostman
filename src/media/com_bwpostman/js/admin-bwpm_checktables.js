@@ -44,10 +44,14 @@ ready(function() {
 	function processUpdateStep(data) {
 		var alert_step_old = document.getElementById('step' + (data.step - 1));
 		if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
+			alert_step_old.querySelector('span.fa').classList.remove('fa-spinner');
 			alert_step_old.classList.remove('alert-info');
 			alert_step_old.classList.add('alert-' + data.aClass);
 		}
-		document.getElementById('step' + data.step).classList.add('alert', 'alert-info');
+		var pstep = document.getElementById('step' + data.step);
+		pstep.classList.remove('alert-secondary');
+		pstep.classList.add('alert-info');
+		pstep.querySelector('span.fa').classList.add('fa-spinner');
 		// Do AJAX post
 		post = 'step=step' + data.step;
 		doAjax(post, function (data) {
@@ -57,22 +61,24 @@ ready(function() {
 			} else {
 				var alert_step_old = document.getElementById('step' + (data.step - 1));
 				if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
+					alert_step_old.querySelector('span.fa').classList.remove('fa-spinner');
 					alert_step_old.classList.remove('alert-info');
-					alert_step_old.classList.add('alert', 'alert-' + data.aClass);
+					alert_step_old.classList.add('alert-' + data.aClass);
 				}
 				document.getElementById('loading2').style.display = 'none';
 				document.getElementById('result').innerHTML = data.result;
 				if (typeof data.error !== 'undefined' && data.error !== null) {
-					document.getElementById('resultSet').style.backgroundColor = '#f2dede';
-					document.getElementById('resultSet').style.borderColor = '#eed3d7';
+					document.getElementById('resultSet').style.backgroundColor = '#f3d4d4';
+					document.getElementById('resultSet').style.borderColor = '#eebfbe';
 					var alert_step = document.getElementById(data.step);
 					if(typeof alert_step !== 'undefined' && alert_step !== null) {
+						alert_step.querySelector('span.fa').classList.remove('fa-spinner');
 						alert_step.classList.remove('alert-info');
-						alert_step.classList.add('alert-error');
+						alert_step.classList.add('alert-danger');
 					}
 				} else {
-					document.getElementById('resultSet').style.backgroundColor = '#dff0d8';
-					document.getElementById('resultSet').style.borderColor = '#d6e9c6';
+					document.getElementById('resultSet').style.backgroundColor = '#e1f5ec';
+					document.getElementById('resultSet').style.borderColor = '#0f2f21';
 				}
 
 				var toolbar = document.getElementById('toolbar');
@@ -98,5 +104,8 @@ ready(function() {
 		atags[i].setAttribute("disabled", "disabled");
 	}
 	var data = {step: "1"};
-	processUpdateStep(data);
+	setTimeout(function(){
+		processUpdateStep(data);
+	}, 1000);
+
 });

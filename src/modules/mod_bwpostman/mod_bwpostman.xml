@@ -223,9 +223,8 @@
 				</field>
 				<field name="spacer1_9" type="spacer" class="mod_set" label="MOD_BWPOSTMAN_DISCLAIMER_LABEL" />
 				<field name="disclaimer_selection"
-				       type="radio"
+				       type="list"
 				       class="mod_set"
-				       layout="joomla.form.field.radio.switcher"
 				       labelclass="mod_set"
 				       default="0"
 				       label="MOD_BWPOSTMAN_DISCLAIMER_SELECTION"

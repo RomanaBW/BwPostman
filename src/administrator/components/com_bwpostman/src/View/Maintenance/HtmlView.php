@@ -251,7 +251,9 @@ class HtmlView extends BaseHtmlView
 		// Get document object, set document title and add css
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+		$wa = $document->getWebAssetManager();
+		$wa->useStyle('com_bwpostman.admin-bwpostman');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');

@@ -39,6 +39,7 @@ use Joomla\CMS\Language\Text;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\WebAsset\WebAssetRegistry;
 
 /**
  * BwPostman General View
@@ -156,7 +157,10 @@ class HtmlView extends BaseHtmlView
 		// Get document object, set document title and add css
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+		$wa = $document->getWebAssetManager();
+		$wa->useStyle('com_bwpostman.admin-bwpostman');
+//		$wa->registerAndUseStyle('com_bwpostman.bwpostman_backend', 'com_bwpostman/bwpostman_backend.css');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN'), 'envelope');

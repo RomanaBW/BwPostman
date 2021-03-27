@@ -253,7 +253,8 @@ class HtmlView extends BaseHtmlView
 		$document->setTitle(Text::_('COM_BWPOSTMAN'));
 		/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = $document->getWebAssetManager();
-		$wa->useStyle('com_bwpostman.admin-bwpostman');
+//		$wa->useStyle('com_bwpostman.admin-bwpostman');
+		$wa->registerAndUseStyle('com_bwpostman.bwpostman_backend', 'com_bwpostman/bwpostman_backend.css');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');

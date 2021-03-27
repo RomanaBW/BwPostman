@@ -23,90 +23,204 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-window.onload = function() {
-	var $j = jQuery.noConflict();
+function getRadioChecked(element) {
+	var radios = document.getElementsByName(element);
 
+	for (var i = 0, length = radios.length; i < length; i++) {
+		if (radios[i].checked) {
+			// do whatever you want with the checked radio
+			// only one radio can be logically checked, don't check the rest
+			return radios[i].value;
+		}
+	}
+}
+
+function extCheck() {
+	// get the file name, possibly with path (depends on browser)
+	var filename = document.getElementById("importfile").value;
+	var format = getRadioChecked('fileformat');
+
+	// Use a regular expression to trim everything before final dot
+	var extension = filename.replace(/^.*\./, '');
+	// If there is no dot anywhere in filename, we would have extension == filename,
+	// so we account for this possibility now
+	if (extension === filename) {
+		extension = '';
+	} else {
+		// if there is an extension, we convert to lower case
+		// (N.B. this conversion will not effect the value of the extension
+		// on the file upload.)
+		extension = extension.toLowerCase();
+	}
+
+	var errorTextFileFormat = document.getElementById('importAlertFileFormat').value;
+
+	switch (extension) {
+		case 'xml':
+			if (format === 'xml') {
+				document.getElementById("further").parentNode.parentNode.style.display = "flex";
+			} else {
+				alert(errorTextFileFormat);
+				document.getElementById("importfile").value = '';
+				document.getElementById("further").parentNode.parentNode.style.display = "none";
+			}
+			break;
+		case 'csv':
+			if (format === 'csv') {
+				document.getElementById("further").parentNode.parentNode.style.display = "flex";
+				document.getElementById("delimiter").parentNode.parentNode.style.display = "flex";
+				document.getElementById("enclosure").parentNode.parentNode.style.display = "flex";
+				document.getElementById("caption").parentNode.parentNode.parentNode.style.display = "flex";
+			} else {
+				alert(errorTextFileFormat);
+				document.getElementById("importfile").value = '';
+				document.getElementById("further").parentNode.parentNode.style.display = "none";
+			}
+			break;
+		default:
+			alert(errorTextFileFormat);
+			document.getElementById("importfile").value = '';
+			document.getElementById("further").parentNode.parentNode.style.display = "none";
+			break;
+	}
+}
+
+function getExtensionOfFilename(filename) {
+	// Use a regular expression to trim everything before final dot
+	var extension = filename.replace(/^.*\./, '');
+	// If there is no dot anywhere in filename, we would have extension == filename,
+	// so we account for this possibility now
+	if (extension === filename) {
+		extension = '';
+	} else {
+		// if there is an extension, we convert to lower case
+		// (N.B. this conversion will not effect the value of the extension
+		// on the file upload.)
+		extension = extension.toLowerCase();
+	}
+
+	return extension;
+}
+
+function switchCsvFieldsVisibility(visibility) {
+	document.getElementById("delimiter").parentNode.parentNode.style.display = visibility;
+	document.getElementById("enclosure").parentNode.parentNode.style.display = visibility;
+	document.getElementById("caption").parentNode.parentNode.parentNode.style.display = visibility;
+}
+
+
+
+
+window.onload = function() {
 	function extCheck() {
 		// get the file name, possibly with path (depends on browser)
-		var filename = $j("#importfile").val();
-		var format = $j("input[name='fileformat']:checked").val();
+		var filename = document.getElementById("importfile").value;
+		var format = getRadioChecked('fileformat');
 
-
-		// Use a regular expression to trim everything before final dot
-		var extension = filename.replace(/^.*\./, '');
-
-		// If there is no dot anywhere in filename, we would have extension == filename,
-		// so we account for this possibility now
-		if (extension === filename) {
-			extension = '';
-		} else {
-			// if there is an extension, we convert to lower case
-			// (N.B. this conversion will not effect the value of the extension
-			// on the file upload.)
-			extension = extension.toLowerCase();
-		}
+		var extension = getExtensionOfFilename(filename);
 
 		var errorTextFileFormat = document.getElementById('importAlertFileFormat').value;
+
 		switch (extension) {
 			case 'xml':
 				if (format === 'xml') {
-					$j(".button").show();
+					document.getElementById("further").parentNode.parentNode.style.display = "flex";
 				} else {
 					alert(errorTextFileFormat);
-					$j("#importfile").val('');
+					document.getElementById("importfile").value = '';
+					document.getElementById("further").parentNode.parentNode.style.display = "none";
 				}
 				break;
 			case 'csv':
 				if (format === 'csv') {
-					$j(".button").show();
-					$j(".delimiter").show();
-					$j(".enclosure").show();
-					$j(".caption").show();
+					document.getElementById("further").parentNode.parentNode.style.display = "flex";
+					document.getElementById("delimiter").parentNode.parentNode.style.display = "flex";
+					document.getElementById("enclosure").parentNode.parentNode.style.display = "flex";
+					document.getElementById("caption").parentNode.parentNode.parentNode.style.display = "flex";
 				} else {
 					alert(errorTextFileFormat);
-					$j("#importfile").val('');
+					document.getElementById("importfile").value = '';
+					document.getElementById("further").parentNode.parentNode.style.display = "none";
 				}
 				break;
 			default:
 				alert(errorTextFileFormat);
-				$j("#importfile").val('');
+				document.getElementById("importfile").value = '';
+				document.getElementById("further").parentNode.parentNode.style.display = "none";
 				break;
 		}
 	}
 
-	$j(document).ready(function () {
-		var format = $j("input[name='fileformat']:checked").val();
+	var fileformat = document.getElementsByName('fileformat');
+	var i = 0;
+	var len = fileformat.length
 
-		$j(".delimiter").hide();
-		$j(".enclosure").hide();
-		$j(".caption").hide();
-		$j(".button").hide();
+	for(i = 0, len; i < len; i++) {
+		fileformat[i].onclick = function () {
+			var format = getRadioChecked('fileformat');
 
-		if (typeof (format) == 'undefined') {
-			$j(".importfile").hide();
+			var importfile = document.getElementById("importfile");
+			var extension = getExtensionOfFilename(importfile.value);
+
+			importfile.parentNode.parentNode.style.display = "flex";
+
+
+			if (importfile.value !== '') {
+				importfile.value = '';
+				switchCsvFieldsVisibility('none');
+				document.getElementById("further").parentNode.parentNode.style.display = "none";
+
+				if (format === 'csv') {
+					switchCsvFieldsVisibility('flex');
+					document.getElementById("further").parentNode.parentNode.style.display = "flex";
+				}
+
+				if (format === 'xml') {
+					switchCsvFieldsVisibility('none');
+					document.getElementById("further").parentNode.parentNode.style.display = "flex";
+				}
+			}
+
+			importfile.onchange = () => {
+				if (importfile.value !== '') {
+					extCheck();
+				}
+				else {
+					document.getElementById("further").parentNode.parentNode.style.display = "none";
+				}
+			};
+		}
+	}
+};
+
+var formatExists = document.body.contains(document.getElementsByName('fileformat')[0]);
+
+document.addEventListener('readystatechange', (event) => {
+
+	if (formatExists)
+	{
+		var format = getRadioChecked('fileformat');
+		var importfile = document.getElementById("importfile");
+
+		switchCsvFieldsVisibility('none');
+		document.getElementById("further").parentNode.parentNode.style.display = "none";
+
+		if (typeof (format) === 'undefined') {
+			importfile.parentNode.parentNode.style.display = "none";
 		} else {
-			$j(".importfile").show();
-			if ($j("#importfile").val() !== '') {
+			importfile.parentNode.parentNode.style.display = "flex";
+
+			if (importfile.value !== '') {
 				extCheck();
 			}
 		}
-	});
+	}
+});
 
-	$j("input[name='fileformat']").on("change", function () {
-		$j(".importfile").show();
-		$j(".delimiter").hide();
-		$j(".enclosure").hide();
-		$j(".caption").hide();
-		$j(".button").hide();
-		$j("#importfile").val('');
-	});
+if (formatExists) {
+	document.getElementById("importfile").addEventListener('change', extCheck);
+}
 
-	$j("#importfile").on("change", function () {
-		if ($j("#importfile").val() !== '') {
-			extCheck();
-		}
-	});
-};
 
 //-----------------------------------------------------------------------------
 //http://www.mattkruse.com/javascript/selectbox/source.html

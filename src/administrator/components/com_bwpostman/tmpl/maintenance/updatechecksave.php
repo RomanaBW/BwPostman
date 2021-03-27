@@ -37,8 +37,10 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
-$wa->useScript('com_bwpostman.admin-bwpm_update_checksave');
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_maintenance_doAjax', 'com_bwpostman/admin-bwpm_maintenance_doAjax.js');
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_update_checksave', 'com_bwpostman/admin-bwpm_update_checksave.js');
+//$wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
+//$wa->useScript('com_bwpostman.admin-bwpm_update_checksave');
 
 $uncompressed = Factory::getConfig()->get('debug') ? '-uncompressed' : '';
 HTMLHelper::_('script', 'system/modal' . $uncompressed . '.js', array('relative' => true, 'detectBrowser' => true));

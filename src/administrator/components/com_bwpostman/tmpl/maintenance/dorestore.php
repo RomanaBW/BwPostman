@@ -35,7 +35,8 @@ use Joomla\CMS\Uri\Uri;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->useScript('com_bwpostman.admin-bwpm_do_restore');
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_do_restore', 'com_bwpostman/admin-bwpm_do_restore.js');
+//$wa->useScript('com_bwpostman.admin-bwpm_do_restore');
 
 $model		= $this->getModel();
 $token      = Session::getFormToken();

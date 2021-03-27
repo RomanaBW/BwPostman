@@ -166,20 +166,6 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 						<?php
 					} // End: Show pretext only if set in basic parameters ?>
 
-					<?php // Show editlink only if the user is not logged in
-					if (Factory::getApplication()->input->get('view') !== 'edit')
-					{
-						$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
-						?>
-						<div class="user_edit mb-3">
-							<a href="<?php echo $link; ?>">
-								<?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
-							</a>
-						</div><?php
-					}
-
-					// End: Show editlink only if the user is not logged in ?>
-
 					<?php // Show formfield gender only if enabled in basic parameters
 					if ($this->params->get('show_gender') == 1)
 					{

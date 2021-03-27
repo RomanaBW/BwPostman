@@ -33,7 +33,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
-JHtml::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
+JHtml::_('stylesheet', 'com_bwpostman/bwpostman3.css', array('version' => 'auto', 'relative' => true));
 $templateName	= Factory::getApplication()->getTemplate();
 $css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
 JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
@@ -165,20 +165,6 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 						<div class="pre_text mb-3"><?php echo $preText; ?></div>
 						<?php
 					} // End: Show pretext only if set in basic parameters ?>
-
-					<?php // Show editlink only if the user is not logged in
-					if (Factory::getApplication()->input->get('view') !== 'edit')
-					{
-						$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
-						?>
-						<div class="user_edit mb-3">
-							<a href="<?php echo $link; ?>">
-								<?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
-							</a>
-						</div><?php
-					}
-
-					// End: Show editlink only if the user is not logged in ?>
 
 					<?php // Show formfield gender only if enabled in basic parameters
 					if ($this->params->get('show_gender') == 1)

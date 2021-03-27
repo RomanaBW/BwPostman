@@ -169,17 +169,6 @@ HTMLHelper::_('bootstrap.tooltip');
 						<?php
 					} // End: Show pretext only if set in basic parameters ?>
 
-					<?php // Show editlink only if the user is not logged in
-					$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
-					?>
-						<p class="user_edit">
-							<a href="<?php echo $link; ?>">
-								<?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
-							</a>
-						</p>
-					<?php // End: Show editlink only if the user is not logged in
-					?>
-
 					<?php // Show formfield gender only if enabled in basic parameters
 					if ($this->params->get('show_gender') == 1)
 					{ ?>

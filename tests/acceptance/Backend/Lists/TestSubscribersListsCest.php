@@ -775,6 +775,7 @@ class TestSubscribersListsCest
 
 		$I->click(Generals::$toolbar['Import']);
 		$I->waitForElementVisible(SubsManage::$import_csv_button, 5);
+		$I->wait(2);
 		$I->dontSeeElement(SubsManage::$import_search_button);
 
 		$I->click(SubsManage::$import_csv_button);
@@ -835,6 +836,7 @@ class TestSubscribersListsCest
 
 		$I->click(Generals::$toolbar['Import']);
 		$I->waitForElementVisible(SubsManage::$import_xml_button, 5);
+		$I->wait(2);
 		$I->dontSeeElement(SubsManage::$import_search_button);
 
 		$I->click(SubsManage::$import_xml_button);

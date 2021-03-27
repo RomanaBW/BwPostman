@@ -1296,7 +1296,7 @@ class Acceptance extends Codeception\Module
 		// select items to delete
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
 		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$search_list);
+		$I->clickAndWait(Generals::$search_list, 1);
 		$I->selectOption(Generals::$search_list, $edit_data['delete_identifier']);
 
 		$I->click(Generals::$search_button_span);

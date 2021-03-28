@@ -889,6 +889,8 @@ class SubscriberviewPage
 
 		$I->amOnPage(self::$register_url);
 		$I->wait(1);
+		$I->scrollTo(self::$view_edit_link);
+		$I->wait(1);
 		$I->seeElement(self::$view_register);
 
 		if ($options->show_gender)

@@ -1,6 +1,7 @@
 ---
 bw_artifacts_base: "/repositories/artifacts/bwpostman4"
-project_base_dir: "/repositories/BwPostman4/"
+project_base_dir: "/vhosts/dev4"
+#project_base_dir: "/repositories/BwPostman4/"
 
 build: "smoke"
 test_suite: "smoke"

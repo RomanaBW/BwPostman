@@ -124,6 +124,8 @@ class SubscribeComponentCest
 		$I->waitForElement(SubsView::$err_activation_incomplete, 5);
 		$I->see(SubsView::$error_occurred_text, SubsView::$err_activation_incomplete);
 
+		$I->scrollTo(SubsView::$button_send_activation);
+		$I->wait(1);
 		$I->click(SubsView::$button_send_activation);
 		$I->waitForElement(SubsView::$success_message, 30);
 		$I->see(SubsView::$activation_sent_text, SubsView::$success_message);
@@ -154,6 +156,8 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
+		$I->scrollTo(SubsView::$view_edit_link);
+		$I->wait(1);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
@@ -255,6 +259,8 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
+		$I->scrollTo(SubsView::$view_edit_link);
+		$I->wait(1);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
@@ -355,6 +361,8 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
+		$I->scrollTo(SubsView::$view_edit_link);
+		$I->wait(1);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
@@ -989,6 +997,9 @@ class SubscribeComponentCest
 		$I->scrollTo(SubsView::$button_register);
 		$I->wait(1);
 		$I->click(SubsView::$button_register);
+
+		$I->scrollTo(SubsView::$view_edit_link);
+		$I->wait(1);
 		$I->waitForElement(SubsView::$registration_complete, 3);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 

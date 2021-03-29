@@ -207,6 +207,8 @@ class SubscribeComponentCest
 		$I->wantTo("Test messages for missing input values by component");
 		$I->expectTo('see error messages');
 		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(SubsView::$view_register, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$view_register);
 
 		// Check visibility of obligation marker
@@ -392,6 +394,8 @@ class SubscribeComponentCest
 		$I->wantTo('Get edit link');
 		$I->expectTo('see message wrong mail address');
 		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(SubsView::$view_register, 0, -100);
+		$I->wait(1);
 		$I->waitForElementVisible(SubsView::$register_edit_url, 5);
 		$I->click(SubsView::$register_edit_url);
 		$I->fillField(SubsView::$edit_mail, SubsView::$mail_fill_2);
@@ -465,6 +469,8 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'show_special', '1');
 
 		$I->amOnPage(SubsView::$register_url);
+		$I->wait(1);
+		$I->scrollTo(SubsView::$view_register, 0, -100);
 		$I->wait(1);
 		$I->seeElement(SubsView::$view_register);
 
@@ -627,6 +633,8 @@ class SubscribeComponentCest
 
 		// Call page with new options
 		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(SubsView::$view_register, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$view_register);
 
 		// Check visibility of fields switched to off
@@ -697,6 +705,8 @@ class SubscribeComponentCest
 
 		// Call page with description length 50
 		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(SubsView::$view_register, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$ml_desc_identifier, 0, -100);
 		$I->seeElement(SubsView::$ml_desc_identifier);
@@ -746,6 +756,8 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'pretext', SubsView::$intro_text_comp);
 
 		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(SubsView::$view_register, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$intro_identifier, 0, -100);
 		$I->seeElement(SubsView::$intro_identifier);
@@ -787,6 +799,8 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
 
 		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(SubsView::$view_register, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
 		$I->wait(1);
@@ -860,6 +874,8 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
 
 		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(SubsView::$view_register, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
 		$I->wait(1);
@@ -924,6 +940,8 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
 
 		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(SubsView::$view_register, 0, -100);
+		$I->wait(1);
 		$I->waitForElementVisible(SubsView::$view_register, 3);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
 		$I->wait(1);
@@ -935,6 +953,8 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'disclaimer_selection', '1');
 
 		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(SubsView::$view_register, 0, -100);
+		$I->wait(1);
 		$I->waitForElementVisible(SubsView::$view_register, 3);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
 		$I->wait(1);
@@ -946,6 +966,8 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'disclaimer_selection', '2');
 
 		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(SubsView::$view_register, 0, -100);
+		$I->wait(1);
 		$I->waitForElementVisible(SubsView::$view_register, 3);
 		$I->scrollTo(SubsView::$disclaimer, 0, -100);
 		$I->wait(1);

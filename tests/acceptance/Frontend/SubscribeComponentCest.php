@@ -156,7 +156,7 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
-		$I->scrollTo(SubsView::$view_edit_link);
+		$I->scrollTo(SubsView::$registration_complete);
 		$I->wait(1);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
@@ -166,6 +166,8 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
+		$I->scrollTo(SubsView::$err_already_subscribed);
+		$I->wait(1);
 		$I->waitForElement(SubsView::$err_already_subscribed, 30);
 		$I->see(SubsView::$error_occurred_text, SubsView::$err_already_subscribed);
 
@@ -261,7 +263,7 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
-		$I->scrollTo(SubsView::$view_edit_link);
+		$I->scrollTo(SubsView::$registration_complete);
 		$I->wait(1);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
@@ -363,7 +365,7 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
-		$I->scrollTo(SubsView::$view_edit_link);
+		$I->scrollTo(SubsView::$registration_complete);
 		$I->wait(1);
 		$I->waitForElement(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
@@ -1004,7 +1006,7 @@ class SubscribeComponentCest
 		$I->amOnPage(SubsView::$register_url);
 		SubsView::subscribeByComponent($I);
 
-		$I->scrollTo(SubsView::$button_register);
+		$I->scrollTo(SubsView::$view_register);
 		$I->wait(1);
 		$I->click(SubsView::$button_register);
 
@@ -1088,6 +1090,7 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
+		$I->scrollTo(SubsView::$err_no_activation, 0, -100);
 		$I->waitForElementVisible(SubsView::$err_no_activation, 3);
 		$I->see(SubsView::$msg_err_occurred);
 		$I->see(SubsView::$activation_mail_error);

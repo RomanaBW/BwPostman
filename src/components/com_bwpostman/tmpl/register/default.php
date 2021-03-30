@@ -44,9 +44,6 @@ HtmlHelper::_('formbehavior.chosen', 'select');
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('bootstrap.modal');
 
-// Depends on jQuery UI
-//HtmlHelper::_('jquery.ui', array('core'));
-
 HtmlHelper::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
 $templateName	= Factory::getApplication()->getTemplate();
 $css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';

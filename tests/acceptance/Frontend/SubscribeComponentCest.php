@@ -265,13 +265,15 @@ class SubscribeComponentCest
 
 		$I->scrollTo(SubsView::$registration_complete);
 		$I->wait(1);
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElement(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		// Activate
 		SubsView::activate($I, SubsView::$mail_fill_1);
 
 		// Edit
+		$I->scrollTo(SubsView::$button_edit, 0, -150);
+		$I->wait(1);
 		$I->click(SubsView::$button_edit);
 
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
@@ -280,7 +282,7 @@ class SubscribeComponentCest
 			$I->scrollTo(SubsView::$button_submit);
 			$I->wait(1);
 			$I->click(SubsView::$button_submit);
-			$I->waitForElement(Generals::$alert_heading, 30);
+			$I->waitForElement(Generals::$alert_heading, 5);
 			$I->see(SubsView::$msg_saved_successfully);
 			$I->dontSeeInField(SubsView::$firstname, SubsView::$firstname_fill);
 			$I->seeInField(SubsView::$firstname, 'Charles');
@@ -292,7 +294,7 @@ class SubscribeComponentCest
 			$I->scrollTo(SubsView::$button_submit);
 			$I->wait(1);
 			$I->click(SubsView::$button_submit);
-			$I->waitForElement(Generals::$alert_heading, 30);
+			$I->waitForElement(Generals::$alert_heading, 5);
 			$I->see(SubsView::$msg_saved_successfully);
 			$I->dontSeeInField(SubsView::$name, SubsView::$lastname_fill);
 			$I->seeInField(SubsView::$name, 'Crackerbarrel');
@@ -304,7 +306,7 @@ class SubscribeComponentCest
 			$I->scrollTo(SubsView::$button_submit);
 			$I->wait(1);
 			$I->click(SubsView::$button_submit);
-			$I->waitForElement(Generals::$alert_heading, 30);
+			$I->waitForElement(Generals::$alert_heading, 5);
 			$I->see(SubsView::$msg_saved_successfully);
 			$I->dontSeeInField(SubsView::$special, SubsView::$special_fill);
 			$I->seeInField(SubsView::$special, '4711');
@@ -316,9 +318,9 @@ class SubscribeComponentCest
 		$I->scrollTo(SubsView::$button_submit);
 		$I->wait(1);
 		$I->click(SubsView::$button_submit);
-		$I->waitForElement(Generals::$alert_heading, 30);
+		$I->waitForElement(Generals::$alert_heading, 5);
 		$I->see(SubsView::$msg_saved_successfully);
-		$I->waitForElement(SubsView::$view_edit, 30);
+		$I->waitForElement(SubsView::$view_edit, 5);
 		$I-> seeCheckboxIsChecked(SubsView::$ml2);
 
 		$I->scrollTo(SubsView::$ml1);
@@ -335,10 +337,12 @@ class SubscribeComponentCest
 		$I->scrollTo(SubsView::$button_submit);
 		$I->wait(1);
 		$I->click(SubsView::$button_submit);
-		$I->waitForElement(Generals::$alert_info, 30);
+		$I->waitForElement(Generals::$alert_info, 5);
 		$I->see(SubsView::$msg_changed_mailaddress);
 
 		SubsView::activate($I, SubsView::$mail_fill_2);
+		$I->scrollTo(SubsView::$button_edit, 0, -100);
+		$I->wait(1);
 		$I->click(SubsView::$button_edit);
 
 		SubsView::unsubscribe($I, SubsView::$button_unsubscribe);
@@ -401,8 +405,13 @@ class SubscribeComponentCest
 		$I->waitForElementVisible(SubsView::$register_edit_url, 5);
 		$I->click(SubsView::$register_edit_url);
 		$I->fillField(SubsView::$edit_mail, SubsView::$mail_fill_2);
+		$I->scrollTo(SubsView::$send_edit_link, 0, -100);
+		$I->wait(1);
 		$I->click(SubsView::$send_edit_link);
-		$I->waitForElement(SubsView::$err_get_editlink, 30);
+
+		$I->scrollTo(SubsView::$err_get_editlink, 0, -100);
+		$I->wait(1);
+		$I->waitForElement(SubsView::$err_get_editlink, 5);
 		$I->see(SubsView::$msg_err_occurred);
 		$I->see(SubsView::$msg_err_no_subscription);
 	}
@@ -999,21 +1008,20 @@ class SubscribeComponentCest
 
 		Generals::presetComponentOptions($I);
 
-		// Set disclaimer to link
+		// Set use captcha, disable verify mail address
 		$I->setManifestOption('com_bwpostman', 'use_captcha', '1');
 		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', '0');
 
 		$I->amOnPage(SubsView::$register_url);
 		SubsView::subscribeByComponent($I);
 
-		$I->scrollTo(SubsView::$view_register);
+		$I->scrollTo(SubsView::$button_register);
 		$I->wait(1);
 		$I->click(SubsView::$button_register);
 
 		$I->waitForElementVisible(Generals::$alert_error, 2);
 		$I->scrollTo(Generals::$alert_error, 0, -100);
 		$I->wait(1);
-
 		$I->see(SubsView::$security_question_error);
 
 		$I->fillField(SubsView::$question, '4');
@@ -1022,8 +1030,9 @@ class SubscribeComponentCest
 		$I->wait(1);
 		$I->click(SubsView::$button_register);
 
-		$I->scrollTo(SubsView::$view_edit_link);
+		$I->scrollTo("//*/div/nav/ol");
 		$I->wait(1);
+
 		$I->waitForElement(SubsView::$registration_complete, 3);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
@@ -1116,11 +1125,13 @@ class SubscribeComponentCest
 	private function gotoEdit(\AcceptanceTester $I)
 	{
 		$I->click(SubsView::$get_edit_Link);
-		$I->waitForElement(SubsView::$view_edit_link, 30);
+		$I->scrollTo(SubsView::$view_edit_link,0 , -50);
+		$I->wait(1);
+		$I->waitForElement(SubsView::$view_edit_link, 5);
 		$I->see(SubsView::$edit_get_text);
 		$I->fillField(SubsView::$edit_mail, SubsView::$mail_fill_1);
 		$I->click(SubsView::$send_edit_link);
-		$I->waitForElement(SubsView::$success_message, 30);
+		$I->waitForElement(SubsView::$success_message, 5);
 		$I->see(SubsView::$editlink_sent_text);
 
 		$editlink_code = $I->getEditlinkCode(SubsView::$mail_fill_1);

@@ -16,8 +16,8 @@ pipeline {
 					DO_RECORD_SMOKE = "true";
 					DO_RECORD_1 = "false";
 					DO_RECORD_2 = "false";
-					DO_RECORD_3 = "true";
-					DO_RECORD_4 = "false";
+					DO_RECORD_3 = "false";
+					DO_RECORD_4 = "true";
 					DO_RECORD_5 = "false";
 					DO_RECORD_6 = "false";
 					DO_RECORD_7 = "false";
@@ -194,7 +194,7 @@ pipeline {
 
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 4 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman build ${currentBuild.number} successful",
+					subject:"BwPostman J4 build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de'
 				)
 //				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!

@@ -2,7 +2,7 @@
 bw_artifacts_base: "/repositories/artifacts/bwpostman4"
 project_base_dir: "/vhosts/dev4"
 #project_base_dir: "/repositories/BwPostman4/"
-bw_debug: "--debug"
+#bw_debug: "--debug"
 bw_debug: ""
 
 build: "smoke"

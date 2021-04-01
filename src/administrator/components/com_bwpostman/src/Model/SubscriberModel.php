@@ -278,7 +278,7 @@ class SubscriberModel extends AdminModel
 			{
 				$pk = $myPk;
 
-				if ($jPk > 0)
+				if ($jPk > 0 && is_array($data))
 				{
 					$this->checkin($data[$jPk]);
 				}

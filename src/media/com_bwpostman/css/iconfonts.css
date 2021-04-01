@@ -21,10 +21,10 @@
  */
 
 
-#bwpostman [class^="icon-"],
-#bwpostman [class*=" icon-"] {
-	background-image:		url("../images/glyphicons-halflings.png");
-}
+/*#bwpostman [class^="icon-"],*/
+/*#bwpostman [class*=" icon-"] {*/
+/*	background-image:		url("../images/glyphicons-halflings.png");*/
+/*}*/
 
 #bwpostman .icon_attachment {
 	background-image:	url(../images/icon-16-attachment.png) ;

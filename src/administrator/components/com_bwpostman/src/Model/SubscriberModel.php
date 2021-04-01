@@ -1095,7 +1095,9 @@ class SubscriberModel extends AdminModel
 
 			if (parent::save($values))
 			{
-				$subscriber_id = $this->getState('subscriber.id');
+				// Workaround because state is not reliable on Joomla 4
+//				$subscriber_id = $this->getState('com_bwpostman.subscriber.id');
+				$subscriber_id = $subsTable->getSubscriberIdByEmail($values['email']);
 
 				//Save Mailinglists if selected
 				if ($mailinglists && ($values['status'] != '9'))

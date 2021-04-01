@@ -29,6 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
 use BoldtWebservice\Component\BwPostman\Site\Classes\BwPostmanSite;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -36,12 +37,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 HtmlHelper::_('formbehavior.chosen', 'select');
 
-/**
- * BwPostman Newsletter Overview Layout
- *
- * @package 	BwPostman-Site
- * @subpackage 	Newsletters
- */
+HtmlHelper::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
+$templateName	= Factory::getApplication()->getTemplate();
+$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
+HtmlHelper::_('stylesheet', $css_filename, array('version' => 'auto'));
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));

@@ -56,7 +56,7 @@ if [ {{ do_record }} != "true" ]; then
 fi
 
 if [ ${failed_check} = 0 ]; then
-#  /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} --{{ bw_debug }} -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
+#  /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} {{ bw_debug }} -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
   /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} --debug -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
 fi
 

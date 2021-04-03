@@ -26,6 +26,11 @@
 		<language tag="de-DE">de-DE/de-DE.plg_system_bw_libregister.sys.ini</language>
 	</languages>
 
+	<media destination="plg_bw_libregister" folder="media">
+		<filename>index.html</filename>
+		<folder>images</folder>
+	</media>
+
 	<updateservers>
 		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/libraries/bw_libregister.xml</server>
 	</updateservers>

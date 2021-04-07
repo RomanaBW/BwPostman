@@ -40,7 +40,7 @@
 
 	<config>
 		<fields name="params">
-			<fieldset name="basic">
+			<fieldset name="basic" addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field" >
 				<field
 					name="count"
 					type="text"

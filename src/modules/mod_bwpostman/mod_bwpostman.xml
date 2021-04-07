@@ -68,7 +68,7 @@
 			</fieldset>
 
 <!--			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL">-->
-			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL" addfieldprefix="Joomla\Component\Content\Administrator\Field" addfieldpath="/administrator/components/com_content/models/fields">
+			<fieldset name="reg_settings" label="MOD_BWPOSTMAN_REG_SETTINGS_FIELDSET_LABEL" addfieldprefix="Joomla\Component\Content\Administrator\Field">
 				<field name="spacer1_1" type="spacer" label="MOD_BWPOSTMAN_REG_SETTINGS_LABEL" />
 				<field name="com_params"
 				       type="radio"

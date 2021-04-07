@@ -46,7 +46,7 @@ use BoldtWebservice\Plugin\BwPostman\System\U2S\Helper\BwpmUser2SubscriberHelper
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', false, false, 'psr4');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries', false, false, 'psr4');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Model', JPATH_SITE.'/components/com_bwpostman/src/Model', false, false, 'psr4');
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Field', JPATH_SITE.'/components/com_bwpostman/Field', false, false, 'psr4');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Field', JPATH_SITE.'/components/com_bwpostman/src/Field', false, false, 'psr4');
 JLoader::registerNamespace('BoldtWebservice\\Plugin\\BwPostman\\System\\U2S\\Field', JPATH_PLUGINS . '/system/bwpm_user2subscriber/form/fields', false, false, 'psr4');
 JLoader::registerNamespace('BoldtWebservice\\Plugin\\BwPostman\\System\\U2S\\Helper', JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers', false, false, 'psr4');
 

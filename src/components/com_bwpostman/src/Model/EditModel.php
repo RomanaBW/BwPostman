@@ -176,7 +176,7 @@ class EditModel extends AdminModel
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		Form::addFieldPath('JPATH_COMPONENT/models/fields');
+//		Form::addFieldPath('JPATH_COMPONENT/models/fields');
 
 		// Get the form.
 		$form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));

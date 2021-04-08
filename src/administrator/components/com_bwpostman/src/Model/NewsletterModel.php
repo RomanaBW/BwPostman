@@ -363,7 +363,7 @@ class NewsletterModel extends AdminModel
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		Form::addFieldPath('JPATH_ADMINISTRATOR/components/com_bwpostman/models/fields');
+//		Form::addFieldPath('JPATH_ADMINISTRATOR/components/com_bwpostman/fields');
 
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$config = Factory::getConfig();

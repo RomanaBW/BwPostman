@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="newsletters">
+	<fieldset name="newsletters" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
 		<fields name="filter">
 			<field
 				name="search"
@@ -101,7 +101,7 @@
 				<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
 				<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 			</field>
-		
+
 			<field
 				name="limit"
 				type="limitbox"
@@ -114,7 +114,7 @@
 		</fields>
 	</fieldset>
 
-	<fieldset name="subscribers">
+	<fieldset name="subscribers" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
 		<fields name="filter">
 			<field
 				name="search"
@@ -375,7 +375,7 @@
 				<option value="1">COM_BWPOSTMAN_FIELD_VALUE_PUBLISHED</option>
 			</field>
 		</fields>
-	
+
 		<fields name="list">
 			<field
 				name="fullordering"

@@ -46,8 +46,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 // Configure featured button renderer.
 $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE']))
-	->addState(0, 'newsletter.changeIsTemplate', 'unfeatured', 'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_SET_TITLE')
-	->addState(1, 'newsletter.changeIsTemplate', 'featured', 'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_UNSET_TITLE');
+	->addState(0, 'newsletter.changeIsTemplate', 'unpublish', 'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_SET_TITLE')
+	->addState(1, 'newsletter.changeIsTemplate', 'publish', 'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_UNSET_TITLE');
 ?>
 
 <div id="bwp_view_lists">

@@ -30,7 +30,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 defined('JPATH_BASE') or die;
 
 use Exception;
-use JFormHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
@@ -38,7 +37,7 @@ use RuntimeException;
 use stdClass;
 
 /**
- * Class JFormFieldAuthors
+ * Class AuthorsField
  *
  * @since       1.0.8
  */

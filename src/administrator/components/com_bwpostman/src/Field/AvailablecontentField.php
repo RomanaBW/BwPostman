@@ -29,13 +29,11 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 defined('JPATH_BASE') or die;
 
 use Exception;
-use JFormHelper;
 use JHtmlSelect;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
 use \Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\Utilities\ArrayHelper;
 use RuntimeException;
 

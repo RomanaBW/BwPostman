@@ -32,9 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\Component\Fields\Administrator\Model\FieldModel;
 
 /**
  * Renders a newsletter element

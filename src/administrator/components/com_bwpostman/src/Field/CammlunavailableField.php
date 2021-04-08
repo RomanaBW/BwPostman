@@ -34,7 +34,6 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
-use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
 
 /**
@@ -53,7 +52,7 @@ class CammlunavailableField extends RadioField
 	 *
 	 * @since  1.0.1
 	 */
-	public $type = 'CamMlUnavailable';
+	public $type = 'Cammlunavailable';
 
 	/**
 	 * Method to get the field input markup.

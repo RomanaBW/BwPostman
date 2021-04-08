@@ -37,7 +37,7 @@ use RuntimeException;
 use stdClass;
 
 /**
- * Class JFormFieldCampaignlist
+ * Class CampaignlistField
  *
  * @since       1.0.8
  */

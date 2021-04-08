@@ -44,7 +44,7 @@ use RuntimeException;
  *
  * @since		1.0.1
  */
-class CammlinternField extends RadioField
+class CammlavailableField extends RadioField
 {
 	/**
 	 * The form field type.

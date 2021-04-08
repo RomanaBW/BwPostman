@@ -42,7 +42,7 @@ use RuntimeException;
  *
  * @since		1.0.1
  */
-class JFormFieldCamMlIntern extends RadioField
+class CammlinternField extends RadioField
 {
 	/**
 	 * The form field type.
@@ -51,7 +51,7 @@ class JFormFieldCamMlIntern extends RadioField
 	 *
 	 * @since  1.0.1
 	 */
-	public $type = 'CamMlIntern';
+	public $type = 'Cammlintern';
 
 	/**
 	 * Method to get the field input markup.

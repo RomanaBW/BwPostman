@@ -55,7 +55,7 @@
 		       multiple="true"
 		       min="0"
 		       max="20"
-		       formsource="administrator/components/com_bwpostman/models/forms/attachments.xml"
+		       formsource="administrator/components/com_bwpostman/forms/attachments.xml"
 		       layout="joomla.form.field.subform.repeatable-table"
 		>
 <!--			<form>-->
@@ -414,7 +414,7 @@
 			type="list"
 			label="JSTATUS"
 			labelclass="control-label"
-			description="COM_BWPOSTMAN_PUBLISHED_DESC"
+			description="COM_BWPOSTMAN_NL_PUBLISH_DESC"
 			class="chzn-color-state"
 			filter="intval"
 			size="1"

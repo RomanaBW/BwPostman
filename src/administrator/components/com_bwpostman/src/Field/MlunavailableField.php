@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman  form field intern mailinglists class.
+ * BwPostman  form field unavailable mailinglists class.
  *
  * @version %%version_number%%
  * @package BwPostman-Admin
@@ -24,14 +24,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
+
 defined('JPATH_BASE') or die;
 
+use Exception;
+use Joomla\CMS\Form\Field\RadioField;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Access\Access;
 use Joomla\Utilities\ArrayHelper;
-
-JFormHelper::loadFieldClass('radio');
+use RuntimeException;
 
 /**
  * Form Field class for the Joomla Framework.
@@ -40,7 +44,7 @@ JFormHelper::loadFieldClass('radio');
  *
  * @since		1.0.1
  */
-class JFormFieldMlIntern extends JFormFieldRadio
+class MlunavailableField extends RadioField
 {
 	/**
 	 * The form field type.
@@ -49,7 +53,7 @@ class JFormFieldMlIntern extends JFormFieldRadio
 	 *
 	 * @since  1.0.1
 	 */
-	public $type = 'MlIntern';
+	public $type = 'Mlunavailable';
 
 	/**
 	 * Method to get the field input markup.
@@ -60,8 +64,8 @@ class JFormFieldMlIntern extends JFormFieldRadio
 	 */
 	public function getLabel()
 	{
-		$return = Text::_($this->element['label']);
-		return $return;
+		  $return = Text::_($this->element['label']);
+		  return $return;
 	}
 
 	/**
@@ -81,15 +85,10 @@ class JFormFieldMlIntern extends JFormFieldRadio
 		$ml_select = array();
 		$selected  = '';
 
-		// Get item and selected mailinglists
-		$item    = $app->getUserState('com_bwpostman.edit.newsletter.data');
-		$nl_id   = $app->getUserState('com_bwpostman.edit.newsletter.id', null);
-		$subs_id = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
-
-		$disabled	= $this->element['disabled'] == 'true' ? true : false;
-		$readonly	= $this->element['readonly'] == 'true' ? true : false;
-		$attributes	= ' ';
-		$return		= '';
+		$disabled   = $this->element['disabled'] == 'true' ? true : false;
+		$readonly   = $this->element['readonly'] == 'true' ? true : false;
+		$attributes = ' ';
+		$return     = '';
 
 		$type = 'checkbox';
 		$v    = $this->element['class'];
@@ -105,8 +104,7 @@ class JFormFieldMlIntern extends JFormFieldRadio
 
 		$m = $this->element['multiple'];
 
-		if ($m)
-		{
+		if ($m) {
 			$type = 'checkbox';
 		}
 
@@ -119,15 +117,21 @@ class JFormFieldMlIntern extends JFormFieldRadio
 			$registry->loadString($value);
 		}
 
-		if ($disabled || $readonly) {
+		if ($disabled || $readonly)
+		{
 			$attributes .= 'disabled="disabled"';
 		}
 
 		$options = (array) $this->getOptions();
 
+		// Get item and selected mailinglists
+		$item    = $app->getUserState('com_bwpostman.edit.newsletter.data');
+		$nl_id   = $app->getUserState('com_bwpostman.edit.newsletter.id', null);
+		$subs_id = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
+
 		if (is_object($item))
 		{
-			(property_exists($item, 'ml_intern')) ? $ml_select	= $item->ml_intern : $ml_select = '';
+			(property_exists($item, 'ml_unavailable')) ? $ml_select = $item->ml_unavailable : $ml_select = '';
 		}
 		elseif (is_array($nl_id) && !empty($nl_id))
 		{
@@ -186,7 +190,6 @@ class JFormFieldMlIntern extends JFormFieldRadio
 		return $return;
 	}
 
-
 	/**
 	 * Method to get the field options.
 	 *
@@ -201,9 +204,10 @@ class JFormFieldMlIntern extends JFormFieldRadio
 		$app = Factory::getApplication();
 
 		// Initialize variables.
-		$user_id = null;
-		$options = array();
-		$subs_id = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
+		$user_id      = null;
+		$accesslevels = array();
+		$options      = array();
+		$subs_id      = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
 		$db         = Factory::getDbo();
@@ -229,10 +233,26 @@ class JFormFieldMlIntern extends JFormFieldRadio
 			}
 		}
 
+		// get authorized viewlevels
+		if ($user_id)
+		{
+			$accesslevels = Access::getAuthorisedViewLevels($user_id);
+		}
+
 		$query->select("id AS value, title, description AS text");
 		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('published') . ' = ' . 0);
+		$query->where($db->quoteName('published') . ' = ' . 1);
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+
+		if (is_array($accesslevels) && !empty($accesslevels))
+		{
+			$query->where($db->quoteName('access') . ' NOT IN (' . implode(',', $accesslevels) . ')');
+		}
+		else
+		{
+			$query->where($db->quoteName('access') . ' > ' . (int) 1);
+		}
+
 		$query->order('title ASC');
 
 		try

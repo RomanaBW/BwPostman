@@ -3,7 +3,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman  form field authors class.
+ * BwPostman  form field campaigns class.
  *
  * @version %%version_number%%
  * @package BwPostman-Admin
@@ -25,28 +25,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
+
 defined('JPATH_BASE') or die;
 
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
-
-JFormHelper::loadFieldClass('list');
+use RuntimeException;
+use stdClass;
 
 /**
- * Class JFormFieldAuthors
+ * Class JFormFieldCampaignlist
  *
  * @since       1.0.8
  */
-class JFormFieldAuthors extends JFormFieldList
+class CampaignlistField extends ListField
 {
 	/**
-	 * property to hold authors
+	 * property to hold campaigns
 	 *
 	 * @var string  $type
 	 *
 	 * @since       1.0.8
 	 */
-	protected $type = 'Authors';
+	protected $type = 'Campaignlist';
 
 	/**
 	 * Method to get the field options.
@@ -60,20 +64,15 @@ class JFormFieldAuthors extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db        = Factory::getDbo();
-		$query     = $db->getQuery(true);
-		$sub_query = $db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
-		// Build the sub query
-		$sub_query->select('nl.created_by');
-		$sub_query->from('#__bwpostman_newsletters AS nl');
-		$sub_query->group('nl.created_by');
-
-		// Get all authors that composed a newsletter
-		$query->select('u.id AS value');
-		$query->select('u.name AS text');
-		$query->from('#__users AS u');
-		$query->where('u.id IN (' . $sub_query . ')');
+		// Get all published campaigns
+		$query->select($db->quoteName('id') . ' AS value');
+		$query->select($db->quoteName('title') . 'AS text');
+		$query->select($db->quoteName('description') . ' AS description');
+		$query->from($db->quoteName('#__bwpostman_campaigns'));
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
 		try
 		{
@@ -87,8 +86,8 @@ class JFormFieldAuthors extends JFormFieldList
 		}
 
 		$parent = new stdClass;
-		$parent->value	= '';
-		$parent->text	= '- ' . Text::_('COM_BWPOSTMAN_NL_FILTER_AUTHOR') . ' -';
+		$parent->value	= '-1';
+		$parent->text	= '- ' . Text::_('COM_BWPOSTMAN_NL_FILTER_CAMPAIGN') . ' -';
 		array_unshift($options, $parent);
 
 		// Merge any additional options in the XML definition.

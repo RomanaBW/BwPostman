@@ -24,8 +24,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
+
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Form\Field\RadioField;
 use Joomla\CMS\HTML\HTMLHelper;
 
 /**
@@ -37,7 +40,7 @@ use Joomla\CMS\HTML\HTMLHelper;
  *
  * @since		1.0.2
  */
-class JFormFieldUsergroups extends JFormField
+class UsergroupsField extends RadioField
 {
 	/**
 	 * The form field type.

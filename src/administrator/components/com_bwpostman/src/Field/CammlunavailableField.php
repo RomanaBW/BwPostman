@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman  form field available mailinglists class.
+ * BwPostman  form field unavailable mailinglists class.
  *
  * @version %%version_number%%
  * @package BwPostman-Admin
@@ -24,15 +24,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
+
 defined('JPATH_BASE') or die;
 
+use Exception;
+use Joomla\CMS\Form\Field\RadioField;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
 use Joomla\Utilities\ArrayHelper;
-
-JFormHelper::loadFieldClass('radio');
+use RuntimeException;
 
 /**
  * Form Field class for the Joomla Framework.
@@ -41,7 +44,7 @@ JFormHelper::loadFieldClass('radio');
  *
  * @since		1.0.1
  */
-class JFormFieldCamMlAvailable extends JFormFieldRadio
+class CammlunavailableField extends RadioField
 {
 	/**
 	 * The form field type.
@@ -50,7 +53,7 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 	 *
 	 * @since  1.0.1
 	 */
-	public $type = 'CamMlAvailable';
+	public $type = 'CamMlUnavailable';
 
 	/**
 	 * Method to get the field input markup.
@@ -61,8 +64,9 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 	 */
 	public function getLabel()
 	{
-		$return = Text::_($this->element['label']);
-		return $return;
+		  $return = Text::_($this->element['label']);
+
+		  return $return;
 	}
 
 	/**
@@ -76,17 +80,15 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 	 */
 	public function getInput()
 	{
-		$app = Factory::getApplication();
+		$app       = Factory::getApplication();
 
 		// Get item and selected mailinglists
-		$item    = $app->getUserState('com_bwpostman.edit.campaign.data');
-		$cam_id  = $app->getUserState('com_bwpostman.edit.campaign.id', null);
-		$options = (array) $this->getOptions();
-
+		$item		= $app->getUserState('com_bwpostman.edit.campaign.data');
+		$cam_id		= $app->getUserState('com_bwpostman.edit.campaign.id', null);
 
 		if (is_object($item))
 		{
-			(property_exists($item, 'ml_available')) ? $ml_select = $item->ml_available : $ml_select = '';
+			(property_exists($item, 'ml_unavailable')) ? $ml_select	= $item->ml_unavailable : $ml_select = '';
 		}
 
 		$db        = Factory::getDbo();
@@ -100,7 +102,7 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 		$return     = '';
 
 		$type = 'checkbox';
-		$v    = $this->element['class'];
+		$v = $this->element['class'];
 
 		if ($v)
 		{
@@ -132,6 +134,8 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 			$attributes .= 'disabled="disabled"';
 		}
 
+		$options = (array) $this->getOptions();
+
 		$query->select("m.mailinglist_id AS selected");
 		$query->from($db->quoteName('#__bwpostman_campaigns_mailinglists') . ' AS m');
 		$query->where($db->quoteName('m.campaign_id') . ' = ' . $db->quote((int)$cam_id));
@@ -158,14 +162,13 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 
 			$i++;
 			$return	.= '<p class="mllabel"><label for="' . $this->id . '_' . $i . '" class="mailinglist_label noclear checkbox">';
-			$return	.= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[] " ';
+			$return	.= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]" ';
 			$return	.= 'value="' . $option->value . '"' . $attributes . $selected . ' />';
 			$return	.= '<span class="editlinktip hasTip hasTooltip" title="' . $option->text . '">' . $option->title . '</span></label></p>';
 		}
 
 		return $return;
 	}
-
 
 	/**
 	 * Method to get the field options.
@@ -181,23 +184,22 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 		$app	= Factory::getApplication();
 
 		// Initialize variables.
-		$user_id      = null;
-		$accesslevels = array();
-		$options      = array();
-		$subs_id      = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
+		$user_id		= null;
+		$accesslevels	= array();
+		$options        = array();
+		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
-		$db         = Factory::getDbo();
-		$query      = $db->getQuery(true);
-		$query_user = $db->getQuery(true);
+		$db		= Factory::getDbo();
+		$query		= $db->getQuery(true);
+		$query_user	= $db->getQuery(true);
 
 		// get user_ids if exists
 		if (is_array($subs_id) && !empty($subs_id))
 		{
-			$subs_id = ArrayHelper::toInteger($subs_id);
 			$query_user->select($db->quoteName('user_id'));
 			$query_user->from($db->quoteName('#__bwpostman_subscribers'));
-			$query_user->where($db->quoteName('id') . ' = ' . $subs_id[0]);
+			$query_user->where($db->quoteName('id') . ' = ' . (int) $subs_id[0]);
 
 			try
 			{
@@ -214,21 +216,20 @@ class JFormFieldCamMlAvailable extends JFormFieldRadio
 		// get authorized viewlevels
 		if ($user_id)
 		{
-			$accesslevels = Access::getAuthorisedViewLevels($user_id);
+			$accesslevels	= Access::getAuthorisedViewLevels($user_id);
 		}
 
 		$query->select("id AS value, title, description AS text");
 		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('published') . ' = ' . 1);
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
-
+		$query->where($db->quoteName('published') . ' = ' . (int) 1);
+		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
 		if (is_array($accesslevels) && !empty($accesslevels))
 		{
-			$query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
+			$query->where($db->quoteName('access') . ' NOT IN (' . implode(',', $accesslevels) . ')');
 		}
 		else
 		{
-			$query->where($db->quoteName('access') . ' = ' . (int) 1);
+			$query->where($db->quoteName('access') . ' > ' . (int) 1);
 		}
 
 		$query->order('title ASC');

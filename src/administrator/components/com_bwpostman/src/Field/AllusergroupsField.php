@@ -25,37 +25,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
+
 defined('JPATH_BASE') or die;
 
+use Exception;
+use JFormHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
-
-JFormHelper::loadFieldClass('list');
+use RuntimeException;
+use stdClass;
 
 /**
- * Class JFormFieldAllMailinglists
+ * Class JFormFieldAllUsergroups
  *
  * @since
  */
-class JFormFieldAllMailinglists extends JFormFieldList
+class AllusergroupsField extends ListField
 {
 	/**
-	 * property to hold all mailing lists
+	 * property to hold all user groups
 	 *
 	 * @var string  $type
 	 *
 	 * @since
 	 */
-	protected $type = 'AllMailinglists';
+	protected $type = 'AllUsergroups';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return  array  The field option objects.
+	 * @return	array  The field option objects.
 	 *
 	 * @throws Exception
 	 *
-	 * @since   1.0.8
+	 * @since	1.2.0
 	 */
 	protected function getOptions()
 	{
@@ -64,10 +69,14 @@ class JFormFieldAllMailinglists extends JFormFieldList
 		$query = $db->getQuery(true);
 
 		// Get # of all published mailinglists
-		$query->select($db->quoteName('id') . ' AS value');
-		$query->select($db->quoteName('title') . ' AS text');
-		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+		$query->select('DISTINCT (nm.mailinglist_id) AS value');
+		$query->select('u.title AS text');
+		$query->from('#__bwpostman_newsletters_mailinglists AS nm');
+		$query->where('nm.mailinglist_id < 0');
+		$query->rightJoin('#__bwpostman_newsletters AS n ON n.id = nm.newsletter_id');
+		$query->where('n.archive_flag = 0');
+		$query->leftJoin('#__usergroups AS u ON CONCAT("-", u.id) = nm.mailinglist_id');
+		$query->order('u.title');
 
 		try
 		{
@@ -82,7 +91,7 @@ class JFormFieldAllMailinglists extends JFormFieldList
 
 		$parent = new stdClass;
 		$parent->value = '';
-		$parent->text = Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS');
+		$parent->text = Text::_('COM_BWPOSTMAN_ARC_FILTER_USERGROUPS');
 		array_unshift($options, $parent);
 
 		// Merge any additional options in the XML definition.

@@ -3,7 +3,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman  form field mailinglists class.
+ * BwPostman  form field authors class.
  *
  * @version %%version_number%%
  * @package BwPostman-Admin
@@ -25,53 +25,60 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
+
 defined('JPATH_BASE') or die;
 
+use Exception;
+use JFormHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
-
-JFormHelper::loadFieldClass('list');
+use RuntimeException;
+use stdClass;
 
 /**
- * Class JFormFieldAllUsergroups
+ * Class JFormFieldAuthors
  *
- * @since
+ * @since       1.0.8
  */
-class JFormFieldAllUsergroups extends JFormFieldList
+class AuthorsField extends ListField
 {
 	/**
-	 * property to hold all user groups
+	 * property to hold authors
 	 *
 	 * @var string  $type
 	 *
-	 * @since
+	 * @since       1.0.8
 	 */
-	protected $type = 'AllUsergroups';
+	protected $type = 'Authors';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array  The field option objects.
+	 * @return  array  The field option objects.
 	 *
 	 * @throws Exception
 	 *
-	 * @since	1.2.0
+	 * @since   1.0.8
 	 */
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db        = Factory::getDbo();
+		$query     = $db->getQuery(true);
+		$sub_query = $db->getQuery(true);
 
-		// Get # of all published mailinglists
-		$query->select('DISTINCT (nm.mailinglist_id) AS value');
-		$query->select('u.title AS text');
-		$query->from('#__bwpostman_newsletters_mailinglists AS nm');
-		$query->where('nm.mailinglist_id < 0');
-		$query->rightJoin('#__bwpostman_newsletters AS n ON n.id = nm.newsletter_id');
-		$query->where('n.archive_flag = 0');
-		$query->leftJoin('#__usergroups AS u ON CONCAT("-", u.id) = nm.mailinglist_id');
-		$query->order('u.title');
+		// Build the sub query
+		$sub_query->select('nl.created_by');
+		$sub_query->from('#__bwpostman_newsletters AS nl');
+		$sub_query->group('nl.created_by');
+
+		// Get all authors that composed a newsletter
+		$query->select('u.id AS value');
+		$query->select('u.name AS text');
+		$query->from('#__users AS u');
+		$query->where('u.id IN (' . $sub_query . ')');
 
 		try
 		{
@@ -85,8 +92,8 @@ class JFormFieldAllUsergroups extends JFormFieldList
 		}
 
 		$parent = new stdClass;
-		$parent->value = '';
-		$parent->text = Text::_('COM_BWPOSTMAN_ARC_FILTER_USERGROUPS');
+		$parent->value	= '';
+		$parent->text	= '- ' . Text::_('COM_BWPOSTMAN_NL_FILTER_AUTHOR') . ' -';
 		array_unshift($options, $parent);
 
 		// Merge any additional options in the XML definition.

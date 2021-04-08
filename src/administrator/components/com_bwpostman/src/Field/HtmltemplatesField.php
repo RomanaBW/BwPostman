@@ -24,13 +24,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\RadioField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-
-JFormHelper::loadFieldClass('radio');
+use Exception;
+use RuntimeException;
 
 /**
  * Form Field class for the Joomla Platform.
@@ -41,7 +44,7 @@ JFormHelper::loadFieldClass('radio');
  *
  * @since		1.2.0
  */
-class JFormFieldHtmlTemplates extends JFormFieldRadio
+class HtmltemplatesField extends RadioField
 {
 	/**
 	 * The form field type.
@@ -50,7 +53,7 @@ class JFormFieldHtmlTemplates extends JFormFieldRadio
 	 *
 	 * @since  1.2.0
 	 */
-	protected $type = 'HtmlTemplates';
+	protected $type = 'Htmltemplates';
 
 	/**
 	 * Method to get the HTML template field input markup.

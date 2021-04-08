@@ -25,19 +25,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
+
 defined('JPATH_BASE') or die;
 
+use Exception;
+use JFormHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
-
-JFormHelper::loadFieldClass('list');
+use RuntimeException;
+use stdClass;
 
 /**
  * Class JFormFieldArcMailinglists
  *
  * @since           1.2.0
  */
-class JFormFieldArcMailinglists extends JFormFieldList
+class ArcmailinglistsField extends ListField
 {
 	/**
 	 * property to hold archived mailing lists

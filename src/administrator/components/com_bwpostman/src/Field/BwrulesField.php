@@ -24,9 +24,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
+
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\RulesField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
@@ -34,10 +37,9 @@ use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwAccess;
+use RuntimeException;
 
 //require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php');
-
-JFormHelper::loadFieldClass('rules');
 
 /**
  * Form Field class for the Joomla Platform.
@@ -46,7 +48,7 @@ JFormHelper::loadFieldClass('rules');
  * @see    JAccess
  * @since  2.0.0
  */
-class JFormFieldBwRules extends JFormFieldRules
+class BwrulesField extends RulesField
 {
 	/**
 	 * Method to set certain otherwise inaccessible properties of the form field object.

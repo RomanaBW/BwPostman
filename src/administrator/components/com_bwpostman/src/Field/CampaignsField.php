@@ -25,19 +25,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
+
 defined('JPATH_BASE') or die;
 
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
-
-JFormHelper::loadFieldClass('list');
+use RuntimeException;
+use stdClass;
 
 /**
  * Class JFormFieldCampaigns
  *
  * @since       1.0.8
  */
-class JFormFieldCampaigns extends JFormFieldList
+class CampaignsField extends ListField
 {
 	/**
 	 * property to hold campaigns

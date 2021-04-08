@@ -3,7 +3,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman  form field campaigns class.
+ * BwPostman  form field mailinglists class.
  *
  * @version %%version_number%%
  * @package BwPostman-Admin
@@ -28,25 +28,24 @@
 defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
 
-JFormHelper::loadFieldClass('list');
-
 /**
- * Class JFormFieldCampaignlist
+ * Class JFormFieldAllMailinglists
  *
- * @since       1.0.8
+ * @since
  */
-class JFormFieldCampaignlist extends JFormFieldList
+class AllmailinglistsField extends ListField
 {
 	/**
-	 * property to hold campaigns
+	 * property to hold all mailing lists
 	 *
 	 * @var string  $type
 	 *
-	 * @since       1.0.8
+	 * @since
 	 */
-	protected $type = 'Campaigns';
+	protected $type = 'AllMailinglists';
 
 	/**
 	 * Method to get the field options.
@@ -63,11 +62,10 @@ class JFormFieldCampaignlist extends JFormFieldList
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
-		// Get all published campaigns
+		// Get # of all published mailinglists
 		$query->select($db->quoteName('id') . ' AS value');
-		$query->select($db->quoteName('title') . 'AS text');
-		$query->select($db->quoteName('description') . ' AS description');
-		$query->from($db->quoteName('#__bwpostman_campaigns'));
+		$query->select($db->quoteName('title') . ' AS text');
+		$query->from($db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
 		try
@@ -82,8 +80,8 @@ class JFormFieldCampaignlist extends JFormFieldList
 		}
 
 		$parent = new stdClass;
-		$parent->value	= '-1';
-		$parent->text	= '- ' . Text::_('COM_BWPOSTMAN_NL_FILTER_CAMPAIGN') . ' -';
+		$parent->value = '';
+		$parent->text = Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS');
 		array_unshift($options, $parent);
 
 		// Merge any additional options in the XML definition.

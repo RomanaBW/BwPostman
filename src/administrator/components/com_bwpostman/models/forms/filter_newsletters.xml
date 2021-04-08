@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="unsent">
+	<fieldset name="unsent" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
 		<fields name="filter">
 			<field
 				name="search"
@@ -24,7 +24,7 @@
 			</field>
 			<field
 				name="campaign_id"
-				type="Campaigns"
+				type="campaigns"
 				label="COM_BWPOSTMAN_NL_FILTER_CAMPAIGNLIST_LBL"
 				description="COM_BWPOSTMAN_NL_FILTER_CAMPAIGNLIST_DESC"
 				onchange="this.form.submit();"
@@ -93,7 +93,7 @@
 		</fields>
 	</fieldset>
 
-	<fieldset name="sent">
+	<fieldset name="sent" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
 		<fields name="filter">
 			<field
 				name="search"
@@ -210,7 +210,7 @@
 		</fields>
 	</fieldset>
 
-	<fieldset name="queue">
+	<fieldset name="queue" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
 		<fields name="filter">
 			<field
 				name="search"

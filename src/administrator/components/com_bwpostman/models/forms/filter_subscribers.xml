@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="confirmed">
+	<fieldset name="confirmed" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
 		<fields name="filter">
 			<field
 				name="search"
@@ -82,7 +82,7 @@
 		</fields>
 	</fieldset>
 
-	<fieldset name="unconfirmed">
+	<fieldset name="unconfirmed" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
 		<fields name="filter">
 			<field
 				name="search"
@@ -163,7 +163,7 @@
 		</fields>
 	</fieldset>
 
-	<fieldset name="testrecipients">
+	<fieldset name="testrecipients" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
 		<fields name="filter">
 			<field
 				name="search"

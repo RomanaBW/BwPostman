@@ -25,14 +25,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
+
 defined('JPATH_BASE') or die;
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
+use RuntimeException;
+use stdClass;
 
 /**
- * Class JFormFieldAllMailinglists
+ * Class AllmailinglistsField
  *
  * @since
  */
@@ -45,7 +50,7 @@ class AllmailinglistsField extends ListField
 	 *
 	 * @since
 	 */
-	protected $type = 'AllMailinglists';
+	protected $type = 'Allmailinglists';
 
 	/**
 	 * Method to get the field options.

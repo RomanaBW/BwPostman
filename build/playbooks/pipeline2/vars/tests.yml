@@ -78,6 +78,12 @@ test_file:
   - suite: access4
     testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart2
 
+  - suite: ModReg
+    testsuite_file: Module_Register/SubscribeModuleCest
+
+  - suite: ModOverview
+    testsuite_file: ModuleOverview/ModuleOverviewCest
+
   - suite: installB2S
     testsuite_file: Buyer2Subscriber/Buyer2SubscriberInstallCest
 
@@ -89,10 +95,6 @@ test_file:
 #  - personalize:
 
 #  - restore:
-
-#  - module_subs:
-
-#  - module_overview:
 
 test_suites:
   - name: ext_install
@@ -134,6 +136,8 @@ test_suites:
       - footerusedmailinglists
       - user2subscriber
       - access1
+      - modReg
+#      - ModOverview
 
   - name: accept5
     tests:

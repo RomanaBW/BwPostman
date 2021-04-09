@@ -133,11 +133,11 @@ test_suites:
 
   - name: accept4
     tests:
-      - footerusedmailinglists
-      - user2subscriber
-      - access1
       - modReg
 #      - ModOverview
+      - footerusedmailinglists
+      - access1
+      - user2subscriber
 
   - name: accept5
     tests:

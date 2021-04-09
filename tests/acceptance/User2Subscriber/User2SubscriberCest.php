@@ -974,6 +974,8 @@ class User2SubscriberCest
 			function (AcceptanceTester $I) {
 				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
+				$I->scrollTo(".//*[@id='member-registration']/fieldset[2]/div[1]/div[2]/p", 0, -100);
+				$I->wait(1);
 				$I->see(RegPage::$plugin_message_new, ".//*[@id='member-registration']/fieldset[2]/div[1]/div[2]/p");
 			}
 		);
@@ -990,6 +992,8 @@ class User2SubscriberCest
 			function (AcceptanceTester $I) {
 				$I->selectRegistrationPage($I, RegPage::$register_url, RegPage::$view_register);
 
+				$I->scrollTo(".//*[@id='member-registration']/fieldset[2]/div[1]/div[2]/p", 0, -100);
+				$I->wait(1);
 				$I->see(RegPage::$plugin_message_old, ".//*[@id='member-registration']/fieldset[2]/div[1]/div[2]/p");
 			}
 		);

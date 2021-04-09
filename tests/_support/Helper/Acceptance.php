@@ -1807,6 +1807,9 @@ class Acceptance extends Codeception\Module
 	public function selectRegistrationPage(\AcceptanceTester $I, $registerUrl, $viewRegister)
 	{
 		$I->amOnPage($registerUrl);
+		$I->wait(2);
+		$I->scrollTo($viewRegister, 0, -100);
+		$I->wait(1);
 		$I->waitForElementVisible($viewRegister, 5);
 		$I->seeElement($viewRegister);
 	}

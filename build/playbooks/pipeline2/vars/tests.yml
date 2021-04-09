@@ -133,7 +133,7 @@ test_suites:
 
   - name: accept4
     tests:
-      - modReg
+      - ModReg
 #      - ModOverview
       - footerusedmailinglists
       - access1

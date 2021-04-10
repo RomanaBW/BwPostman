@@ -206,6 +206,24 @@
         msg: "{{ web_container_ip }}"
 
 
+- hosts: "{{ required_source.db_container_name }}"
+  pre_tasks:
+    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
+  connection: docker
+  vars_files:
+    - vars/tests.yml
+    - vars/tester-image-vars.yml
+    - vars/tester-test-vars.yml
+
+  tasks:
+    - name: set base sql command
+      set_fact:
+        sql_base_cmd: "mysql -u {{ mariadb_user }} -p{{ mariadb_password }} {{ mariadb_database }}"
+
+    - name: disable some top modules
+      shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/disable-top-modules.sql"
+
+
 - hosts: localhost
   pre_tasks:
     - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"

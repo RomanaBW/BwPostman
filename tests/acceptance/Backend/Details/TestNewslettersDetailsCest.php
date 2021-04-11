@@ -681,6 +681,7 @@ class TestNewslettersDetailsCest
 
 		// change to tab 2
 		$I->scrollTo(Generals::$nlTabBar, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(NlEdit::$tab2, 3);
 		$I->switchToIFrame(NlEdit::$tab2_iframe);
 		$I->waitForElement(NlEdit::$tab2_editor);
@@ -689,12 +690,16 @@ class TestNewslettersDetailsCest
 		$I->switchToIFrame();
 
 		// change to tab 3
+		$I->scrollTo(Generals::$nlTabBar, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(NlEdit::$tab3, 3);
 		$I->waitForElement(NlEdit::$tab3_editor);
 		$I->waitForText($content_title, 30);
 		$I->see($content_title, NlEdit::$tab3_editor);
 
 		// change to tab 4
+		$I->scrollTo(Generals::$nlTabBar, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(NlEdit::$tab4, 5);
 		$I->scrollTo(NlEdit::$tab4_preview_html);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
@@ -710,6 +715,7 @@ class TestNewslettersDetailsCest
 
 		// change to tab 5
 		$I->scrollTo(Generals::$nlTabBar, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(NlEdit::$tab5, 1);
 		$I->clickAndWait(NlEdit::$button_send_test, 1);
 

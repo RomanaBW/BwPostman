@@ -989,6 +989,8 @@ class TestTemplatesDetailsCest
 			$readonIdentifier  = TplEdit::$textReadonIdentifier;
 		}
 
+		$I->scrollTo(TplEdit::$tpl_tab1, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(TplEdit::$tpl_tab1, 1);
 
 		// don't show title
@@ -1095,14 +1097,20 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(TplEdit::$tpl_tab3, 1);
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(TplEdit::$button_editor_toggle, 1);
 
 		$I->fillField(TplEdit::$html_style, $html_style_content);
 
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(TplEdit::$button_editor_toggle, 1);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
+
+		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
 
 		$I->switchToIFrame(TplEdit::$htmlIframe);

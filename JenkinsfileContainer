@@ -143,7 +143,7 @@ pipeline {
 
 		stage('Dev-Upload') {
 			steps {
-				dir("/repositories/artifacts/bwpostman/data") {
+				dir("/repositories/artifacts/bwpostman4/data") {
 					fileOperations([
 						fileCopyOperation(
 							excludes: '',
@@ -153,7 +153,7 @@ pipeline {
 				])
 				}
 
-				dir("/repositories/artifacts/bwpostman/data") {
+				dir("/repositories/artifacts/bwpostman4/data") {
 					fileOperations([
 						fileCopyOperation(
 							excludes: '',

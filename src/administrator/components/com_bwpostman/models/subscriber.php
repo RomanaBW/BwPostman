@@ -780,13 +780,26 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			// Get data from the file and store them into an array
 			while(($row = fgetcsv($fh, '', $delimiter, $enclosure)) !== false)
 			{
+				$intKeys = array(
+					'emailformat',
+					'gender',
+					'status',
+				);
+
 				foreach($colNumToDBName as $key => $value)
 				{
 					// Reset the import values. We should do this for every import row preventively.
 					$values[$key] = 0;
 
-					// Get the values from the csv
-					$values[$value] = $filter->clean($row[$key], 'STRING');
+					// Get the values from the csv and filter them
+					$filterType = 'STRING';
+
+					if (in_array(strtolower($value), $intKeys))
+					{
+						$filterType = 'INT';
+					}
+
+					$values[$value] = $filter->clean($row[$key], $filterType);
 				}
 
 				// Count CSV-file line numbers

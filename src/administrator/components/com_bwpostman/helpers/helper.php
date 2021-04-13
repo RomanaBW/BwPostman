@@ -427,13 +427,16 @@ class BwPostmanHelper
 		// Enhancement for item specific rights
 		$allowedItems = self::getAllowedRecords($view, $action,  $itemsFromArchive);
 
-		foreach ($allowedItems as $allowedItem)
+		if (is_countable($allowedItems))
 		{
-			$editItem = self::checkActionPermission($view, $action, $allowedItem);
-
-			if ($editItem === true)
+			foreach ($allowedItems as $allowedItem)
 			{
-				return true;
+				$editItem = self::checkActionPermission($view, $action, $allowedItem);
+
+				if ($editItem === true)
+				{
+					return true;
+				}
 			}
 		}
 

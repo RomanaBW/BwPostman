@@ -412,7 +412,7 @@
 			type="list"
 			label="JSTATUS"
 			labelclass="control-label"
-			description="COM_BWPOSTMAN_PUBLISHED_DESC"
+			description="COM_BWPOSTMAN_NL_PUBLISH_DESC"
 			class="chzn-color-state"
 			filter="intval"
 			size="1"

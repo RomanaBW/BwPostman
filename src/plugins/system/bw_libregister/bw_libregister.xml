@@ -16,6 +16,7 @@
 		<filename plugin="bw_libregister">bw_libregister.php</filename>
 		<filename>installscript.php</filename>
 		<filename>index.html</filename>
+		<folder>language</folder>
 		<folder>libraries</folder>
 	</files>
 

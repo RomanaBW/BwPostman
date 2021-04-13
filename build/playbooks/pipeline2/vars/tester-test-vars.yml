@@ -1,6 +1,8 @@
 ---
 bw_artifacts_base: "/repositories/artifacts/bwpostman"
 project_base_dir: "/repositories/BwPostman/"
+#bw_debug: "--debug"
+bw_debug: ""
 
 build: "smoke"
 test_suite: "smoke"

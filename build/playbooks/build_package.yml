@@ -86,7 +86,7 @@
         bw_plugin_name: "bw_libregister"
         bw_plugin_group: "system"
         bw_external_lang: true
-        bw_media_folder: "plg_bw_libregister"
+        bw_media_folder: ""
 
 #    - name: build u2s plugin package
     - include_role:

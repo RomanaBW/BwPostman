@@ -4,7 +4,7 @@ The pipeline for testing BwPostman processes multiple steps:
 1. Set some parameters needed later
 2. Build installation packages of the extension
 	1. One without replacing variables at code files for version number and others. This is a package used for manual 
-	testing. Without ever changing version one is able to run a fast diff against predecessors to see the changes. But the 
+	testing. Without ever-changing version one is able to run a fast diff against predecessors to see the changes. But the 
 	package name contains version and build of this run.
 	2. One with replaced variables at code files. This is the delivery package used for smoke tests. To get constant 
 	identification of the package, the package name does not contain any changing values. If all went well this package 

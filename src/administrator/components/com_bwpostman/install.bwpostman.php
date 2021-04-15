@@ -1425,7 +1425,7 @@ class Com_BwPostmanInstallerScript
 		 */
 
 		// BwPostman Administration Component
-		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+//		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
 //		define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
 //		define('BWPM_SITE', JPATH_SITE.'/components/com_bwpostman');
@@ -1458,7 +1458,10 @@ class Com_BwPostmanInstallerScript
 //		JLoader::register('BoldtWebservice\Component\BwPostman\Administrator\Extension\BwPostmanComponent', $pathComponent);
 //		JLoader::register('MaintenanceModel', $pathMaintenance);
 
-		$maintenanceModel = new MaintenanceModel();
+//		$maintenanceModel = new MaintenanceModel();
+		$maintenanceModel = Factory::getApplication()->bootComponent('com_bwpostman')
+			->getMVCFactory()->createModel('Maintenance', 'Administrator', ['ignore_request' => true]);
+
 
 		$maintenanceModel->createBaseAssets();
 	}

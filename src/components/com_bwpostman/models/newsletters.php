@@ -619,6 +619,80 @@ class BwPostmanModelNewsletters extends JModelList
 	}
 
 	/**
+	 * Method to get a \JPagination object for the data set.
+	 *
+	 * @return  \JPagination  A \JPagination object for the data set.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.1.5
+	 */
+	public function getPagination()
+	{
+		// Get a storage key.
+		$store = $this->getStoreId('getPagination');
+
+		$limit = (int) $this->getState('list.limit') - (int) $this->getState('list.links');
+
+		// Create the pagination object and add the object to the internal cache.
+		$total      = $this->getTotal();
+		$start      = $this->getStart();
+		$pagination = new \JPagination($total, $start, $limit);
+
+		$this->cache[$store] = $pagination;
+
+		return $this->cache[$store];
+	}
+
+	/**
+	 * Method to get the total number of items for the data set.
+	 *
+	 * @return  integer  The total number of items available in the data set.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.1.5
+	 */
+	public function getTotal()
+	{
+		// Get a storage key.
+		$store = $this->getStoreId('getTotal');
+
+		try
+		{
+			// Load the total and add the total to the internal cache.
+			$listCountQuery = $this->_getListQuery();
+			$this->cache[$store] = (int) $this->_getListCount($listCountQuery);
+		}
+		catch (\RuntimeException $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+
+		return $this->cache[$store];
+	}
+
+	/**
+	 * Method to cache the last query constructed.
+	 *
+	 * This method ensures that the query is constructed only once for a given state of the model.
+	 *
+	 * @return false|JDatabaseQuery[]|object|string
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.1.5
+	 */
+	protected function _getListQuery()
+	{
+		$this->query = $this->getListQuery();
+
+		return $this->query;
+	}
+
+	/**
 	 * Method to get the params from selected menu item
 	 *
 	 * @param integer $menuItem

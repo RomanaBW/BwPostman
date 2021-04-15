@@ -1425,12 +1425,10 @@ class Com_BwPostmanInstallerScript
 		 */
 
 		// BwPostman Administration Component
-//		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
-
-//		define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
+		define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
 //		define('BWPM_SITE', JPATH_SITE.'/components/com_bwpostman');
 
-//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension\\BwPostmanComponent', BWPM_ADMINISTRATOR . '/src/Extension', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension\\BwPostmanComponent', BWPM_ADMINISTRATOR . '/src/Extension', false, false);
 //		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Field', BWPM_ADMINISTRATOR . '/src/Field', false, false);
 //		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service', BWPM_ADMINISTRATOR . '/src/Service', false, false);
 //		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service\\Html', BWPM_ADMINISTRATOR . '/src/Service/Html', false, false);

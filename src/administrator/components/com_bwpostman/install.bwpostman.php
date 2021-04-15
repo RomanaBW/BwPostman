@@ -406,9 +406,9 @@ class Com_BwPostmanInstallerScript
 			$this->logger->addEntry(new LogEntry("Postflight removeDoubleExtensionsEntries passed", BwLogger::BW_DEBUG, $this->log_cat));
 
 			// remove obsolete files
-			$this->removeObsoleteFiles();
+			$this->removeObsoleteFilesAndFolders();
 
-			$this->logger->addEntry(new LogEntry("Postflight removeObsoleteFiles passed", BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry("Postflight removeObsoleteFilesAndFolders passed", BwLogger::BW_DEBUG, $this->log_cat));
 
 			// ensure SQL update files are processed
 			if (!$this->processSqlUpdate($oldRelease))
@@ -417,6 +417,8 @@ class Com_BwPostmanInstallerScript
 			}
 
 			$this->logger->addEntry(new LogEntry("Postflight processSqlUpdate passed", BwLogger::BW_DEBUG, $this->log_cat));
+
+			$app->enqueueMessage(Text::_('Installing BwPostman ... '));
 		}
 
 		return true;
@@ -1301,17 +1303,22 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @since   4.0.0
 	 */
-	private function removeObsoleteFiles()
+	private function removeObsoleteFilesAndFolders()
 	{
-		$feFilesArray     = array(
+		$feFilesArray = array(
 			'views/edit/metadata.xml',
 			'views/newsletter/metadata.xml',
 			'views/newsletters/metadata.xml',
 			'views/register/metadata.xml',
 			'helpers/subscriberhelper.php',
-			'assets/css/bwpostman.css',
-			'assets/css/iconfonts.css',
-			'assets/css/index.html',
+			'layouts/subscriber/bootstrap2.php',
+			'layouts/subscriber/bootstrap4.php',
+			'layouts/subscriber/default.php',
+			'layouts/subscriber/emailformat_bs2.php',
+			'layouts/subscriber/emailformat_bs4.php',
+			'layouts/subscriber/gender_bs4.php',
+			'layouts/subscriber/index.html',
+			'layouts/index.html',
 		);
 
 		foreach ($feFilesArray as $file)
@@ -1322,9 +1329,9 @@ class Com_BwPostmanInstallerScript
 			}
 		}
 
-		$feFoldersArray     = array(
-			'assets/css',
-			'assets/js',
+		$feFoldersArray = array(
+			'layouts/subscriber',
+			'layouts',
 		);
 
 		foreach ($feFoldersArray as $folder)
@@ -1335,7 +1342,7 @@ class Com_BwPostmanInstallerScript
 			}
 		}
 
-		$beFilesArray     = array(
+		$beFilesArray = array(
 			'controllers/file.json.php',
 			'controllers/file.json.php_x',
 			'controllers/file.php',
@@ -1418,36 +1425,38 @@ class Com_BwPostmanInstallerScript
 		 */
 
 		// BwPostman Administration Component
-		define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
-		define('BWPM_SITE', JPATH_SITE.'/components/com_bwpostman');
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension\\BwPostmanComponent', BWPM_ADMINISTRATOR . '/src/Extension', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Field', BWPM_ADMINISTRATOR . '/src/Field', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service', BWPM_ADMINISTRATOR . '/src/Service', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service\\Html', BWPM_ADMINISTRATOR . '/src/Service/Html', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Model', BWPM_ADMINISTRATOR . '/src/Model', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', BWPM_ADMINISTRATOR . '/Helper', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Classes', BWPM_ADMINISTRATOR . '/classes', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', BWPM_ADMINISTRATOR . '/libraries', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Controller', BWPM_ADMINISTRATOR . '/src/Controller', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\View', BWPM_ADMINISTRATOR . '/src/View', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Table', BWPM_ADMINISTRATOR . '/src/Table', false, false);
+//		define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
+//		define('BWPM_SITE', JPATH_SITE.'/components/com_bwpostman');
 
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Dispatcher', BWPM_SITE . '/src/Dispatcher', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Service', BWPM_SITE . '/src/Service', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Controller', BWPM_SITE . '/src/Controller', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Model', BWPM_SITE . '/src/Model', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\View', BWPM_SITE . '/src/View', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Classes', BWPM_SITE . '/classes', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Field', BWPM_SITE . '/src/Field', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension\\BwPostmanComponent', BWPM_ADMINISTRATOR . '/src/Extension', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Field', BWPM_ADMINISTRATOR . '/src/Field', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service', BWPM_ADMINISTRATOR . '/src/Service', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service\\Html', BWPM_ADMINISTRATOR . '/src/Service/Html', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Model', BWPM_ADMINISTRATOR . '/src/Model', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', BWPM_ADMINISTRATOR . '/Helper', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Classes', BWPM_ADMINISTRATOR . '/classes', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', BWPM_ADMINISTRATOR . '/libraries', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Controller', BWPM_ADMINISTRATOR . '/src/Controller', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\View', BWPM_ADMINISTRATOR . '/src/View', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Table', BWPM_ADMINISTRATOR . '/src/Table', false, false);
+//
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Dispatcher', BWPM_SITE . '/src/Dispatcher', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Service', BWPM_SITE . '/src/Service', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Controller', BWPM_SITE . '/src/Controller', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Model', BWPM_SITE . '/src/Model', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\View', BWPM_SITE . '/src/View', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Classes', BWPM_SITE . '/classes', false, false);
+//		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Field', BWPM_SITE . '/src/Field', false, false);
 
 //		$basePath        = '/administrator/components/com_bwpostman';
-		$pathComponent   = BWPM_ADMINISTRATOR . '/src/Extension/BwPostmanComponent.php';
-		$pathMaintenance = BWPM_ADMINISTRATOR . '/src/Model/MaintenanceModel.php';
+//		$pathComponent   = BWPM_ADMINISTRATOR . '/src/Extension/BwPostmanComponent.php';
+//		$pathMaintenance = BWPM_ADMINISTRATOR . '/src/Model/MaintenanceModel.php';
 
 		// Needed after registering namespaces? Needed full namespace path?
-		JLoader::register('BoldtWebservice\Component\BwPostman\Administrator\Extension\BwPostmanComponent', $pathComponent);
-		JLoader::register('MaintenanceModel', $pathMaintenance);
+//		JLoader::register('BoldtWebservice\Component\BwPostman\Administrator\Extension\BwPostmanComponent', $pathComponent);
+//		JLoader::register('MaintenanceModel', $pathMaintenance);
 
 		$maintenanceModel = new MaintenanceModel();
 

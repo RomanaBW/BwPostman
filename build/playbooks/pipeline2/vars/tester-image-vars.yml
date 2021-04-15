@@ -2,7 +2,7 @@
 # Fast changing variables
 #joomla_version_4a: "4.0.0a12"
 joomla_version_4b: "4.0.0b1-7"
-joomla_version_3: "3.9.25"
+joomla_version_3: "3.9.26"
 
 # this one has to be adjusted to the desired Joomla version
 joomla_version: "{{ joomla_version_3 }}"

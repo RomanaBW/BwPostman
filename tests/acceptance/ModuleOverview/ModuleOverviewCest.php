@@ -127,6 +127,7 @@ class ModuleOverviewCest
 		// Call page with 12 months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 11));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 12));
 
@@ -196,6 +197,7 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 13));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 14));
 
@@ -234,6 +236,7 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 16));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 17));
 
@@ -272,6 +275,7 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 15));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 16));
 
@@ -310,6 +314,7 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 1));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 2));
 
@@ -348,6 +353,7 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 3));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 4));
 
@@ -386,6 +392,7 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 2));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 3));
 
@@ -424,6 +431,7 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 1));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 2));
 
@@ -462,6 +470,7 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 4));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 5));
 

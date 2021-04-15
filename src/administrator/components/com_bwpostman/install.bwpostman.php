@@ -1428,7 +1428,7 @@ class Com_BwPostmanInstallerScript
 		define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
 //		define('BWPM_SITE', JPATH_SITE.'/components/com_bwpostman');
 
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension\\BwPostmanComponent\\', BWPM_ADMINISTRATOR . '/src/Extension', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension\\BwPostmanComponent', BWPM_ADMINISTRATOR . '/src/Extension', false, false);
 //		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Field', BWPM_ADMINISTRATOR . '/src/Field', false, false);
 //		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service', BWPM_ADMINISTRATOR . '/src/Service', false, false);
 //		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service\\Html', BWPM_ADMINISTRATOR . '/src/Service/Html', false, false);
@@ -1457,8 +1457,9 @@ class Com_BwPostmanInstallerScript
 //		JLoader::register('MaintenanceModel', $pathMaintenance);
 
 //		$maintenanceModel = new MaintenanceModel();
-		$maintenanceModel = Factory::getApplication()->bootComponent('com_bwpostman')
-			->getMVCFactory()->createModel('Maintenance', 'Administrator', ['ignore_request' => true]);
+		$component = Factory::getApplication()->bootComponent('com_bwpostman');
+		$componentFactory = $component->getMVCFactory();
+		$maintenanceModel = $componentFactory->createModel('Maintenance', 'Administrator', ['ignore_request' => true]);
 
 
 		$maintenanceModel->createBaseAssets();

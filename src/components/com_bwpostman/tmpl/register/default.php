@@ -88,9 +88,9 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="question-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
 						<p class="security_question_lbl"><?php echo Text::_($this->params->get('security_question')); ?></p>
 						<p class="question-result input-append">
-							<label id="question" for="stringQuestion"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
-							<input type="text" name="stringQuestion" id="stringQuestion" size="40" maxlength="50" />
-							<span class="append-area"><i class="icon-star"></i></span>
+							<label id="question" for="stringQuestion"><?php
+								echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL');
+								?>:</label><input type="text" name="stringQuestion" id="stringQuestion" size="40" maxlength="50" /><span class="append-area"><i class="icon-star"></i></span>
 						</p>
 					</div>
 				<?php endif; // End question ?>

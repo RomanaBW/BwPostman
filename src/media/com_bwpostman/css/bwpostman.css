@@ -163,8 +163,8 @@
 }
 
 #bwp_com_wrapper,
-bwp_com_wrapper::before,
-bwp_com_wrapper::after {
+#bwp_com_wrapper::before,
+#bwp_com_wrapper::after {
     box-sizing: border-box;
 }
 
@@ -174,6 +174,33 @@ bwp_com_wrapper::after {
 #bwpostman p.edit_gender div {
 	display: inline-block;
 }
+
+#bwpostman .rounded-right {
+	border-radius : 0 4px 4px 0!important;
+}
+
+#bwpostman .rounded-left {
+	border-radius : 4px 0 0 4px!important;
+}
+
+#bwpostman .rounded-none {
+	border-radius : 0;
+}
+
+#bwpostman .rounded-all {
+	border-radius : 4px;
+}
+
+#bwpostman .chosen-container.chosen-container-single a.chosen-single {
+	padding: 5px 60px 5px 16px;
+	line-height: 18px;
+	height: auto;
+}
+
+#bwpostman .chosen-container.chosen-container-single a.chosen-single span {
+	width: 164px;
+}
+
 
 /*----------------------------------------------------------
 		Tooltip
@@ -549,6 +576,7 @@ bwp_com_wrapper::after {
 	-webkit-border-radius:	4px;
 	-moz-border-radius:		4px;
 	border-radius:			4px;
+	border:					1px solid #ced4da;
 }
 
 #t3-mainbody input {
@@ -668,6 +696,7 @@ bwp_com_wrapper::after {
 	-webkit-border-radius:	4px 0 0 4px;
 	-moz-border-radius:		4px 0 0 4px;
 	border-radius:			4px 0 0 4px;
+	border-right: 0;
 }
 
 #bwpostman .btn {
@@ -719,7 +748,8 @@ bwp_com_wrapper::after {
 
 #bwp_com_form .btn-group >.btn {
 	min-width: 60px;
-	padding: 2px 12px;
+	width: 123px;
+	padding: 3px 3px 2px 3px;
 }
 
 #bwp_com_form .radio.btn-group > label:first-of-type {
@@ -753,8 +783,10 @@ bwp_com_wrapper::after {
 
 #bwp_com_form .btn.active, .btn:active {
 	background-image: none;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+	/*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);*/
 	outline: 0 none;
+	font-weight: bold;
+	border-color: #0e0e0e;
 }
 
 #bwp_com_form .btn:hover,
@@ -790,6 +822,7 @@ bwp_com_wrapper::after {
 	background-repeat:		repeat-x;
 	border:					1px solid #cccccc;
 	*border:				0;
+	border-left: 			0;
 	border-color:			#e6e6e6 #e6e6e6 #bfbfbf;
 	border-color:			rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 	border-bottom-color:	#b3b3b3;
@@ -843,9 +876,9 @@ bwp_com_wrapper::after {
 #bwpostman .btn:active {
 	background-image:	none;
 	outline:			0;
-	-webkit-box-shadow:	inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-	-moz-box-shadow:	inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-	box-shadow:			inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+	/*-webkit-box-shadow:	inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);*/
+	/*-moz-box-shadow:	inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);*/
+	/*box-shadow:			inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);*/
 }
 
 #bwpostman .btn.disabled,

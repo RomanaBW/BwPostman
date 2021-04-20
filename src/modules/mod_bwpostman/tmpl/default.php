@@ -134,11 +134,16 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 				<?php
 				// Is filling out the firstname field obligating
 				isset($subscriber->firstname) ? $sub_firstname = $subscriber->firstname : $sub_firstname = '';
-				($paramsComponent->get('firstname_field_obligation'))
-					? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
-					: $required = '';
+				$required = '';
+				$append   = ' class=input-small';
+
+				if ($paramsComponent->get('firstname_field_obligation'))
+					{
+						$required = '<span class="append-area"><i class="bwp_icon-star"></i></span>';
+						$append   = ' class=input-small input-append';
+					}
 				?>
-				<input type="text" name="a_firstname" id="a_firstname"
+				<input type="text" name="a_firstname" id="a_firstname" <?php echo $append; ?>
 						placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANFIRSTNAME')); ?>"
 						value="<?php echo $sub_firstname; ?>" class="inputbox input-small" maxlength="50" /><?php echo $required; ?>
 			</p>
@@ -149,13 +154,20 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 		{
 			// Show name-field only if set in basic parameters
 			?>
-			<p id="bwp_mod_form_namefield" class="input-append">
+			<p id="bwp_mod_form_namefield">
 				<?php // Is filling out the name field obligating
 				isset($subscriber->name) ? $sub_name = $subscriber->name : $sub_name = '';
-				($paramsComponent->get('name_field_obligation'))
-					? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
-					: $required = ''; ?>
-				<input type="text" name="a_name" id="a_name" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANNAME')); ?>"
+				$required = '';
+				$append   = ' class=input-small';
+
+				if ($paramsComponent->get('name_field_obligation'))
+				{
+					$required = '<span class="append-area"><i class="bwp_icon-star"></i></span>';
+					$append   = ' class=input-small input-append';
+				}
+				?>
+				<input type="text" name="a_name" id="a_name" <?php echo $append; ?>
+						placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANNAME')); ?>"
 						value="<?php echo $sub_name; ?>" class="inputbox input-small" maxlength="50" /><?php echo $required; ?>
 			</p>
 			<?php
@@ -383,9 +395,9 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 				<p class="security_question_entry"><?php echo Text::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
 				<p class="security_question_lbl"><?php echo Text::_($paramsComponent->get('security_question')); ?></p>
 				<p class="question input-append">
-					<input type="text" name="stringQuestion" id="a_stringQuestion"
-							placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="input-small" />
-					<span class="append-area"><i class="bwp_icon-star"></i></span>
+					<input type="text" name="stringQuestion" id="a_stringQuestion" class="inputbox input-small"
+							placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="input-small" /><span
+					class="append-area"><i class="bwp_icon-star"></i></span>
 				</p>
 			</div>
 			<?php

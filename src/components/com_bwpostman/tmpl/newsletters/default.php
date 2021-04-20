@@ -77,12 +77,12 @@ if ($moduleId !== null && $moduleId !== '')
 								<input type="text" name="filter_search" id="filter_search" class="inputbox go"
 										value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
 										title="<?php echo Text::_('COM_BWPOSTMAN_FILTER_SEARCH_DESC'); ?>"
-										placeholder="<?php echo Text::_('COM_BWPOSTMAN_SEARCH'); ?> " />
-								<button type="submit" class="append-area hasTooltip"
+										placeholder="<?php echo Text::_('COM_BWPOSTMAN_SEARCH');
+										?> " /><button type="submit" class="append-area hasTooltip"
 										title="<?php echo HtmlHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>">
 									<i class="icon-search"></i>
-								</button>
-								<button type="button" class="append-area hasTooltip js-stools-btn-clear reset"
+								</button><button
+										type="button" class="append-area hasTooltip js-stools-btn-clear reset"
 										title="<?php echo HtmlHelper::tooltipText('COM_BWPOSTMAN_RESET'); ?>"
 										onclick="document.getElementById('filter_search').setAttribute('value','');this.form.submit();">
 									<i class="icon-remove"></i>

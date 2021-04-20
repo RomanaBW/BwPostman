@@ -527,14 +527,14 @@ class BwPostmanSubscriberHelper
 	public static function buildMailformatSelectList($mailformat_selected)
 	{
 		$emailformat = '<fieldset id="edit_mailformat" class="radio btn-group">';
-		$emailformat .= '<input type="radio" name="emailformat" id="formatText" value="0"';
+		$emailformat .= '<input type="radio" name="emailformat" id="formatText" class="rounded-left" value="0"';
 		if (!$mailformat_selected)
 		{
 			$emailformat .= ' checked="checked"';
 		}
 
 		$emailformat .= ' />';
-		$emailformat .= '<label for="formatText"><span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
+		$emailformat .= '<label for="formatText" class="rounded-left"><span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
 		$emailformat .= '<input type="radio" name="emailformat" id="formatHtml" value="1"';
 		if ($mailformat_selected)
 		{
@@ -542,7 +542,7 @@ class BwPostmanSubscriberHelper
 		}
 
 		$emailformat .= ' />';
-		$emailformat .= '<label for="formatHtml"><span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
+		$emailformat .= '<label for="formatHtml" class="rounded-right"><span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
 		$emailformat .= '</fieldset>';
 
 		return $emailformat;

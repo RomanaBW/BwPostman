@@ -1313,10 +1313,10 @@ class Acceptance extends Codeception\Module
 
 		if ($manage_data['section'] == 'campaigns')
 		{
-			$I->setIframeName($manage_data['popup_delete_iframe']);
+//			$I->setIframeName($manage_data['popup_delete_iframe']);
 			$I->switchToIFrame($manage_data['popup_delete_iframe']);
-//			$I->waitForElement(".//*[@id='confirm-delete']", 20);
-			$I->waitForText($manage_data['popup_delete_newsletters']);
+			$I->waitForElementVisible("//*[@id='confirm-delete']", 5);
+			$I->waitForText($manage_data['popup_delete_newsletters'], 5, "//*[@id='confirm-delete']/tbody/tr/th");
 			$I->see($manage_data['popup_delete_newsletters']);
 			$I->clickAndWait($manage_data['popup_button_delete_no'], 1);
 			$I->switchToIFrame();
@@ -1380,7 +1380,7 @@ class Acceptance extends Codeception\Module
 
 		if ($manage_data['section'] == 'campaigns')
 		{
-			$I->setIframeName($manage_data['popup_restore_iframe']);
+//			$I->setIframeName($manage_data['popup_restore_iframe']);
 			$I->switchToIFrame($manage_data['popup_restore_iframe']);
 //			$I->waitForElement(".//*[@id='confirm-unarchive']", 20);
 			$I->waitForText($manage_data['popup_restore_newsletters']);

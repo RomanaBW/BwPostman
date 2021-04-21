@@ -113,9 +113,9 @@ class JFormFieldsinglenews extends JFormField
 		$html .= '<button'
 			. ' class="btn btn-primary"'
 			. ' id="' . $this->id . '_select"'
-			. ' data-toggle="modal"'
+			. ' data-bs-toggle="modal"'
 			. ' type="button"'
-			. ' data-target="#ModalSelect' . $modalId . '">'
+			. ' data-bs-target="#ModalSelect' . $modalId . '">'
 			. '<span class="icon-file" aria-hidden="true"></span> ' . Text::_('JSELECT')
 			. '</button>';
 
@@ -130,7 +130,7 @@ class JFormFieldsinglenews extends JFormField
 
 		$html .= '</span></span>';
 
-		// Select article modal
+		// Select newsletter modal
 		$html .= HTMLHelper::_(
 			'bootstrap.renderModal',
 			'ModalSelect' . $modalId,
@@ -141,7 +141,7 @@ class JFormFieldsinglenews extends JFormField
 				'width'       => '800px',
 				'bodyHeight'  => 70,
 				'modalWidth'  => 80,
-				'footer'      => '<button type="button" class="btn btn-secondary" data-dismiss="modal">'
+				'footer'      => '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">'
 					. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>',
 			)
 		);

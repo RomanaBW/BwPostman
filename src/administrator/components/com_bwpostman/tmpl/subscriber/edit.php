@@ -122,7 +122,7 @@ $new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.ne
 												<p><?php echo $printLayout; ?></p>
 											</div>
 											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary btn-danger" data-bs-dismiss="modal">Close</button>
+												<button type="button" class="btn btn-secondary btn-danger" data-bs-dismiss="modal"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
 											</div>
 										</div>
 									</div>

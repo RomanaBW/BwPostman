@@ -227,10 +227,11 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 								<?php
 								if (count($this->items) > 0) {
 									foreach ($this->items as $i => $item) :
-									$linkHtml = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id=' . $item->id);
-									$linkText = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id=' . $item->id);
-									$titleHtml = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
-									$titleText = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
+										$linkHtml = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_html_modal&task=insideModal&nl_id=' . $item->id);
+										$titleHtml = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
+
+										$linkText = Route::_('index.php?option=com_bwpostman&view=newsletter&format=raw&layout=newsletter_text_modal&task=insideModal&nl_id=' . $item->id);
+										$titleText = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 										?>
 										<tr class="row<?php echo $i % 2; ?>">
 											<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
@@ -243,14 +244,16 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 														<span class="iframe btn btn-info btn-sm hasTooltip mt-1"
 																title="<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>
 															<?php echo '<br />'.$this->escape($item->subject); ?>"
-																data-title="<?php echo $titleHtml;?>" data-src="<?php echo $linkHtml;?>" data-toggle="modal" data-target="#bwp-modal">
+																data-title="<?php echo $titleHtml;?>" data-bs-title="<?php echo $titleHtml;?>" data-bs-frame="myIframeHtml" data-bs-src="<?php echo $linkHtml;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
 															<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
+															<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
 														</span>
 														<span class="iframe btn btn-info btn-sm hasTooltip mt-1"
 																title="<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_NL');?>
 															<?php echo '<br />'.$this->escape($item->subject); ?>"
-																data-title="<?php echo $titleText;?>" data-src="<?php echo $linkText;?>" data-toggle="modal" data-target="#bwp-modal">
+																data-title="<?php echo $titleText;?>" data-bs-title="<?php echo $titleText;?>" data-bs-frame="myIframeText" data-bs-src="<?php echo $linkText;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
 															<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
+															<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
 														</span>
 													</div>
 												<?php } ?>
@@ -324,25 +327,22 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 		</div>
 	</form>
 </div>
-<div id="bwp-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="bwp-modal" class="modal fade" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title text-center">&nbsp;</h4>
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></span></button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"></button>
 			</div>
 			<div class="modal-body">
-				<div class="modal-spinner fa-4x text-center">
-					<i class="fa fa-spinner fa-spin"></i>
-				</div>
-				<div class="modal-text"></div>
+				<iframe class="modal-frame" width="100%"></iframe>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-dark btn-sm" data-dismiss="modal" type="button" title="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
+				<button class="btn btn-dark btn-sm" data-bs-dismiss="modal" type="button" title="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
 			</div>
 		</div>
 	</div>
 </div>
 <?php
-Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_tabshelper.js');
+Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_tabshelper.js');
 ?>

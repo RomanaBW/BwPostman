@@ -221,17 +221,17 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'subsc
 													<span class="iframe btn btn-outline-info btn-sm hasTooltip"
 															title="<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_SUB');?>:
 														<?php echo '<br />'.$this->escape($item->firstname).'&nbsp;'.$this->escape($item->name).'<br />'.$this->escape($item->email); ?>"
-															data-title="<?php echo $titleSub;?>" data-src="<?php echo $linkSub;?>" data-toggle="modal" data-target="#bwp-modal">
+															data-title="<?php echo $titleSub;?>" data-bs-title="<?php echo $titleSub;?>" data-bs-frame="myIframeSub" data-bs-src="<?php echo $linkSub;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
 														<?php
+														$itemName = Text::_('COM_BWPOSTMAN_SUB_NONAME');
+
 														if ($item->name)
 														{
-															echo $item->name;
+															$itemName = $item->name;
 														}
-														else
-														{
-															echo Text::_('COM_BWPOSTMAN_SUB_NONAME');
-														}
+														echo $itemName;
 														?>
+														<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
 													</span>
 												</td>
 												<td><?php echo $item->firstname; ?></td>
@@ -276,25 +276,24 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'subsc
 		</div>
 	</form>
 </div>
-<div id="bwp-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- Modal -->
+<div id="bwp-modal" class="modal fade" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title text-center">&nbsp;</h4>
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></span></button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"></button>
 			</div>
 			<div class="modal-body">
-				<div class="modal-spinner fa-4x text-center">
-					<i class="fa fa-spinner fa-spin"></i>
-				</div>
-				<div class="modal-text"></div>
+				<iframe class="modal-frame" width="100%"></iframe>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-dark btn-sm" data-dismiss="modal" type="button" title="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
+				<button class="btn btn-dark btn-sm" data-bs-dismiss="modal" type="button" title="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 <?php
-Factory::getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_tabshelper.js');
+Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_tabshelper.js');
 ?>

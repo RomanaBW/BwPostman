@@ -429,10 +429,10 @@ class BwPostmanSubscriberHelper
 			if (PluginHelper::isEnabled('bwpostman', 'personalize'))
 			{
 				$arguments = array('com_bwpostman.send', &$body, $subscriber_id);
-				$event = AbstractEvent::create('onBwPostmanPersonalize', $arguments);
-
-				$app->getDispatcher()->dispatch('onBwPostmanPersonalize', $event);
-//				$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, $subscriber_id));
+//				$event = AbstractEvent::create('onBwPostmanPersonalize', $arguments);
+//
+//				$app->getDispatcher()->dispatch('onBwPostmanPersonalize', $event);
+				$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, $subscriber_id));
 			}
 		}
 

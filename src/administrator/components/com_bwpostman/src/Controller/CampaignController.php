@@ -313,10 +313,10 @@ class CampaignController extends FormController
 
 		PluginHelper::importPlugin('bwpostman');
 		$arguments = array('subject' => '');
-		$event = AbstractEvent::create('onBwPostmanAfterCampaignControllerSave', $arguments);
+//		$event = AbstractEvent::create('onBwPostmanAfterCampaignControllerSave', $arguments);
 
-		Factory::getApplication()->getDispatcher()->dispatch('onBwPostmanAfterCampaignControllerSave', $event);
-//		Factory::getApplication()->triggerEvent('onBwPostmanAfterCampaignControllerSave', array());
+//		Factory::getApplication()->getDispatcher()->dispatch('onBwPostmanAfterCampaignControllerSave', $event);
+		Factory::getApplication()->triggerEvent('onBwPostmanAfterCampaignControllerSave', array());
 	}
 
 	/**

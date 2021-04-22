@@ -113,7 +113,7 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl=null)
 	{
 		$app      = Factory::getApplication();
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 		$layout   = $this->getLayout();
 		$params   = ComponentHelper::getParams('com_bwpostman', true);
 
@@ -162,7 +162,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	private function displayError()
 	{
-		$session	    = Factory::getSession();
+		$session	    = Factory::getApplication()->getSession();
 		$this->error    = new stdClass();
 		$err	    = $session->get('session_error', null);
 
@@ -189,7 +189,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	private function displaySuccess()
 	{
-		$session	    = Factory::getSession();
+		$session	    = Factory::getApplication()->getSession();
 		$this->success  = new stdClass();
 
 		$session_success = $session->get('session_success');
@@ -212,8 +212,8 @@ class HtmlView extends BaseHtmlView
 	 */
 	private function displayDefault()
 	{
-		$user		= Factory::getUser();
-		$session	= Factory::getSession();
+		$user		= Factory::getApplication()->getIdentity();
+		$session	= Factory::getApplication()->getSession();
 		$subscriber	= new stdClass();
 		$lists      = array();
 

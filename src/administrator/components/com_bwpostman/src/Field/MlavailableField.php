@@ -80,7 +80,7 @@ class MlavailableField extends RadioField
 	public function getInput()
 	{
 		$app       = Factory::getApplication();
-		$db        = Factory::getDbo();
+		$db        = Factory::getContainer()->get('DatabaseDriver');
 		$query     = $db->getQuery(true);
 		$ml_select = array();
 		$selected  = '';
@@ -212,7 +212,7 @@ class MlavailableField extends RadioField
 		$subs_id      = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
-		$db         = Factory::getDbo();
+		$db         = Factory::getContainer()->get('DatabaseDriver');
 		$query      = $db->getQuery(true);
 		$query_user = $db->getQuery(true);
 

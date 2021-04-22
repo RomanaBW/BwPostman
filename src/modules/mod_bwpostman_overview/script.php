@@ -170,7 +170,7 @@ class Mod_BwPostman_OverviewInstallerScript
 	{
 		$manifest = null;
 
-		$db		= Factory::getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));

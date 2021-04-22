@@ -62,7 +62,7 @@ class ButtonsField extends FormField
 	 */
 	protected function getinput()
 	{
-		$doc       = Factory::getDocument();
+		$doc       = Factory::getApplication()->getDocument();
 		$fieldName = $this->name;
 
 		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();

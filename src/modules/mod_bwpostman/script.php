@@ -164,7 +164,7 @@ class Mod_BwPostmanInstallerScript
 	{
 		$manifest = null;
 
-		$db		= Factory::getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));
@@ -210,7 +210,7 @@ class Mod_BwPostmanInstallerScript
 	 */
 	public function showFinished($update)
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
 		$lang->load('mod_bwpostman.sys', JPATH_SITE, 'en_GB', true);
 		$lang->load('mod_bwpostman', JPATH_SITE, 'en_GB', true);

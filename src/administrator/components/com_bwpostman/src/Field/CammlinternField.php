@@ -90,7 +90,7 @@ class CammlinternField extends RadioField
 			(property_exists($item, 'ml_intern')) ? $ml_select	= $item->ml_intern : $ml_select = '';
 		}
 
-		$db        = Factory::getDbo();
+		$db        = Factory::getContainer()->get('DatabaseDriver');
 		$query     = $db->getQuery(true);
 		$ml_select = array();
 		$selected  = '';
@@ -184,7 +184,7 @@ class CammlinternField extends RadioField
 		$options        = array();
 
 		// prepare query
-		$db		= Factory::getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query		= $db->getQuery(true);
 
 		$query->select("id AS value, title, description AS text");

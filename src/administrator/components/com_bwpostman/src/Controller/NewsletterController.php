@@ -456,7 +456,7 @@ class NewsletterController extends FormController
 			return false;
 		}
 
-		$lang    = Factory::getLanguage();
+		$lang    = Factory::getApplication()->getLanguage();
 		$checkin = property_exists($table, 'checked_out');
 		$context = "$this->option.edit.$this->context";
 		$task    = (string)$this->getTask();

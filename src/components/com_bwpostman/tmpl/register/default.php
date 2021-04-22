@@ -34,8 +34,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
-
-JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 HtmlHelper::_('behavior.keepalive');
 HtmlHelper::_('behavior.formvalidator');
@@ -128,7 +127,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							// Disclaimer article and target_blank or not
 							if ($this->params->get('disclaimer_selection') == 1 && $this->params->get('article_id') > 0)
 							{
-								$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($this->params->get('article_id') . $tpl_com, 0));
+								$disclaimer_link = Route::_(Uri::base() . RouteHelper::getArticleRoute($this->params->get('article_id') . $tpl_com, 0));
 							}
 							// Disclaimer menu item and target_blank or not
 							elseif ($this->params->get('disclaimer_selection') == 2 && $this->params->get('disclaimer_menuitem') > 0)

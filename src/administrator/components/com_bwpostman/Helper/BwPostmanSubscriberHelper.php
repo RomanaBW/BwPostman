@@ -30,6 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Exception;
+use Joomla\CMS\Event\AbstractEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -62,7 +63,7 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function loginGuest($subscriberid = 0, $itemid = null)
 	{
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 
 		$session_subscriberid = array('id' => $subscriberid);
 		$session->set('session_subscriberid', $session_subscriberid);
@@ -91,7 +92,7 @@ class BwPostmanSubscriberHelper
 	public static function errorSubscriberData($err, &$subscriberid = null, $email = null)
 	{
 		$jinput        = Factory::getApplication()->input;
-		$session       = Factory::getSession();
+		$session       = Factory::getApplication()->getSession();
 		$session_error = array();
 
 		// The error code numbers 4-6 are the same like in the subscribers-table check function
@@ -159,7 +160,7 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function errorEditlink()
 	{
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 
 		$session_error = array('err_msg' => 'COM_BWPOSTMAN_ERROR_WRONGEDITLINK');
 		$session->set('session_error', $session_error);
@@ -177,7 +178,7 @@ class BwPostmanSubscriberHelper
 	public static function errorActivationCode($err_msg)
 	{
 		$jinput  = Factory::getApplication()->input;
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 
 		$session_error = array(
 			'err_msg' => $err_msg,
@@ -202,7 +203,7 @@ class BwPostmanSubscriberHelper
 	{
 		$jinput  = Factory::getApplication()->input;
 		$itemid  = self::getMenuItemid('edit'); // Itemid from edit-view
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 
 		$session_error = array(
 			'err_msg'    => $err_msg,
@@ -227,7 +228,7 @@ class BwPostmanSubscriberHelper
 	public static function errorSendingEmail($err_msg, $email = '')
 	{
 		$jinput        = Factory::getApplication()->input;
-		$session       = Factory::getSession();
+		$session       = Factory::getApplication()->getSession();
 		$session_error = array(
 			'err_msg'   => $err_msg,
 			'err_email' => $email
@@ -253,7 +254,7 @@ class BwPostmanSubscriberHelper
 	public static function success($success_msg, $editlink = null, $itemid = null)
 	{
 		$jinput          = Factory::getApplication()->input;
-		$session         = Factory::getSession();
+		$session         = Factory::getApplication()->getSession();
 		$session_success = array(
 			'success_msg' => $success_msg,
 			'editlink'    => $editlink,
@@ -292,7 +293,7 @@ class BwPostmanSubscriberHelper
 			$name = $firstname . ' ' . $name;
 		} //Cat fo full name
 
-		$sitename = Factory::getConfig()->get('sitename');
+		$sitename = Factory::getApplication()->getConfig()->get('sitename');
 		$siteURL  = Uri::root();
 
 		$active_title      = Text::_($params->get('activation_salutation_text'));
@@ -427,7 +428,11 @@ class BwPostmanSubscriberHelper
 
 			if (PluginHelper::isEnabled('bwpostman', 'personalize'))
 			{
-				$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, $subscriber_id));
+				$arguments = array('com_bwpostman.send', &$body, $subscriber_id);
+				$event = AbstractEvent::create('onBwPostmanPersonalize', $arguments);
+
+				$app->getDispatcher()->dispatch('onBwPostmanPersonalize', $event);
+//				$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, $subscriber_id));
 			}
 		}
 
@@ -582,7 +587,7 @@ class BwPostmanSubscriberHelper
 	public static function getModParams($id = 0)
 	{
 		$params = null;
-		$db     = Factory::getDbo();
+		$db     = Factory::getContainer()->get('DatabaseDriver');
 		$query  = $db->getQuery(true);
 
 		$query->select('params');
@@ -638,7 +643,7 @@ class BwPostmanSubscriberHelper
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
-		if ($m_date == Factory::getDbo()->getNullDate())
+		if ($m_date == Factory::getContainer()->get('DatabaseDriver')->getNullDate())
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
@@ -658,7 +663,7 @@ class BwPostmanSubscriberHelper
 	{
 		$user_id = null;
 
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -692,7 +697,7 @@ class BwPostmanSubscriberHelper
 	{
 		$itemid = null;
 
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -765,7 +770,7 @@ class BwPostmanSubscriberHelper
 		}
 		else
 		{
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 
 			$query_reg	= $db->getQuery(true);
 			$query_reg->select('name');
@@ -815,7 +820,7 @@ class BwPostmanSubscriberHelper
 		}
 		else
 		{
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 
 			$query_conf	= $db->getQuery(true);
 			$query_conf->select('name');
@@ -846,7 +851,7 @@ class BwPostmanSubscriberHelper
 	 */
 	static public function getExportFieldsList()
 	{
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		$query = "SHOW COLUMNS FROM {$db->quoteName('#__bwpostman_subscribers')}
 			WHERE {$db->quoteName('Field')} NOT IN (
@@ -982,7 +987,7 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function validateEmail($email)
 	{
-		$config     = Factory::getConfig();
+		$config     = Factory::getApplication()->getConfig();
 		$logOptions = array();
 
 		$validator = new BwEmailValidation($logOptions);
@@ -1012,7 +1017,7 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function getSender(): array
 	{
-		$config = Factory::getConfig();
+		$config = Factory::getApplication()->getConfig();
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$sender = array();
 
@@ -1041,7 +1046,7 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function getReplyTo(): array
 	{
-		$config = Factory::getConfig();
+		$config = Factory::getApplication()->getConfig();
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$reply = array();
 

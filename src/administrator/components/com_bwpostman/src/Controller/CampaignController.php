@@ -30,6 +30,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
+use Joomla\CMS\Event\AbstractEvent;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
@@ -311,7 +312,11 @@ class CampaignController extends FormController
 		parent::save();
 
 		PluginHelper::importPlugin('bwpostman');
-		Factory::getApplication()->triggerEvent('onBwPostmanAfterCampaignControllerSave', array());
+		$arguments = array('subject' => '');
+		$event = AbstractEvent::create('onBwPostmanAfterCampaignControllerSave', $arguments);
+
+		Factory::getApplication()->getDispatcher()->dispatch('onBwPostmanAfterCampaignControllerSave', $event);
+//		Factory::getApplication()->triggerEvent('onBwPostmanAfterCampaignControllerSave', array());
 	}
 
 	/**

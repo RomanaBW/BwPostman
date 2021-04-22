@@ -109,7 +109,7 @@ class MaintenancejsonController extends AdminController
 	 */
 	public function tCheck()
 	{
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 		$model   = new MaintenanceModel();
 
 		try
@@ -308,7 +308,7 @@ class MaintenancejsonController extends AdminController
 	 */
 	public function tRestore()
 	{
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 		$model   = new MaintenanceModel();
 
 		try

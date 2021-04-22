@@ -142,7 +142,7 @@ class BwPostmanHelperQuery
 	 */
 	public static function getQueryDate($orderDate)
 	{
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		switch ($orderDate)
 		{

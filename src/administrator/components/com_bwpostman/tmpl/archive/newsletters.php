@@ -39,11 +39,11 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 
-$user		= Factory::getUser();
+$user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$nullDate   = Factory::getDbo()->getNullDate();
+$nullDate   = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
 
 //Set context and layout state for filters
 $this->context	= 'Archive.newsletters';
@@ -238,7 +238,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 											<td>
 												<?php
 												echo $item->subject;
-												if ($item->mailing_date != Factory::getDbo()->getNullDate())
+												if ($item->mailing_date != Factory::getContainer()->get('DatabaseDriver')->getNullDate())
 												{ ?>&nbsp;&nbsp;
 													<div class="bw-btn">
 														<span class="iframe btn btn-info btn-sm hasTooltip mt-1"

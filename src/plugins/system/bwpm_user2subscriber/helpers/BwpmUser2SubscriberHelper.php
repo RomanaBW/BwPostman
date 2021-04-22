@@ -66,7 +66,7 @@ abstract class BwpmUser2SubscriberHelper
 			return false;
 		}
 
-		$_db	= Factory::getDbo();
+		$_db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
@@ -104,7 +104,7 @@ abstract class BwpmUser2SubscriberHelper
 		}
 
 		$result = null;
-		$_db	= Factory::getDbo();
+		$_db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('status'));
@@ -149,7 +149,7 @@ abstract class BwpmUser2SubscriberHelper
 		}
 
 		$result = null;
-		$_db	= Factory::getDbo();
+		$_db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -194,7 +194,7 @@ abstract class BwpmUser2SubscriberHelper
 			return false;
 		}
 
-		$_db	= Factory::getDbo();
+		$_db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -309,7 +309,7 @@ abstract class BwpmUser2SubscriberHelper
 		$subscribed_mailinglists = null;
 
 		// @Todo: As from version 2.0.0 helper class of component may be used
-		$_db = Factory::getDbo();
+		$_db = Factory::getContainer()->get('DatabaseDriver');
 		$query  = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('mailinglist_id'));
@@ -348,7 +348,7 @@ abstract class BwpmUser2SubscriberHelper
 
 		$subscriber = null;
 
-		$_db	= Factory::getDbo();
+		$_db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('email'));
@@ -488,7 +488,7 @@ abstract class BwpmUser2SubscriberHelper
 	public static function saveSubscribersMailinglists($subscriber_id, $mailinglist_ids)
 	{
 		// @Todo: As from version 2.0.0 helper class of component may be used
-		$_db   = Factory::getDbo();
+		$_db   = Factory::getContainer()->get('DatabaseDriver');
 
 		foreach ($mailinglist_ids as $mailinglist_id)
 		{
@@ -532,7 +532,7 @@ abstract class BwpmUser2SubscriberHelper
 	public static function getSubscriberIdByEmail($email)
 	{
 		$id     = null;
-		$_db    = Factory::getDbo();
+		$_db    = Factory::getContainer()->get('DatabaseDriver');
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));

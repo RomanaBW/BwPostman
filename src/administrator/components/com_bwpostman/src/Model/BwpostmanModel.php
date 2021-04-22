@@ -218,8 +218,8 @@ class BwpostmanModel extends BaseDatabaseModel
 	public function storePermissions($permission = null)
 	{
 		$app  = Factory::getApplication();
-		$db   = Factory::getDbo();
-		$user = Factory::getUser();
+		$db   = Factory::getContainer()->get('DatabaseDriver');
+		$user = Factory::getApplication()->getIdentity();
 
 		$statePermissions = $app->getUserState('com_bwpm.permissions');
 
@@ -313,7 +313,9 @@ class BwpostmanModel extends BaseDatabaseModel
 
 		try
 		{
-			$asset  = Table::getInstance('asset');
+//			$asset  = Table::getInstance('asset');
+			$MvcFactory  = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+			$asset  = $MvcFactory->createTable('asset');
 			$result = $asset->loadByName($permission['component']);
 
 			if ($result === false)

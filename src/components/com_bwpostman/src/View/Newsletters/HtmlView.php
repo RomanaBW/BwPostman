@@ -260,7 +260,7 @@ class HtmlView extends BaseHtmlView
 		$templateName	= $app->getTemplate();
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 
 		$document->addStyleSheet(Uri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename))

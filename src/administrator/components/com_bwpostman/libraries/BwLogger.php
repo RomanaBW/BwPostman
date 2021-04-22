@@ -34,8 +34,8 @@ use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
 use RuntimeException;
+use Joomla\CMS\Log\Logger\W3cLogger;
 
-JLoader::import('libraries.joomla.log.logger.w3c');
 
 
 /**
@@ -43,7 +43,7 @@ JLoader::import('libraries.joomla.log.logger.w3c');
  *
  * @since 2.0.0
  */
-class BwLogger extends JLogLoggerW3c
+class BwLogger extends W3cLogger
 {
 	/**
 	 * Action must be taken immediately.

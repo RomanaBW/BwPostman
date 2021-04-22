@@ -35,7 +35,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
-$user		= Factory::getUser();
+$user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));

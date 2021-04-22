@@ -34,6 +34,7 @@ use JHtmlSidebar;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\CMS\Language\Text;
@@ -173,7 +174,7 @@ class HtmlView extends BaseHtmlView
 
 		$this->sidebar = JHtmlSidebar::render();
 
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_unarchive.js');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_delete_cam_nls.js');
 
@@ -190,13 +191,14 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function addToolbar()
 	{
-		$jinput	= Factory::getApplication()->input;
+		$app    = Factory::getApplication();
+		$jinput	= $app->input;
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document = Factory::getDocument();
+		$document = $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_ARC'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 

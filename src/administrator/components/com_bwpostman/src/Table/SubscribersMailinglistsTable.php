@@ -38,7 +38,6 @@ use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
-use function Zend\Diactoros\normalizeUploadedFiles;
 
 /**
  * #__bwpostman_subscribers_mailinglists table handler

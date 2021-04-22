@@ -217,7 +217,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		$logOptions   = array();
 		$this->logger = BwLogger::getInstance($logOptions);
 
-		$this->db = Factory::getDbo();
+		$this->db = Factory::getContainer()->get('DatabaseDriver');
 
 		parent::__construct();
 	}
@@ -1096,7 +1096,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	public static function getGenericTableName($table)
 	{
 		// get db prefix
-		$prefix = Factory::getDbo()->getPrefix();
+		$prefix = Factory::getContainer()->get('DatabaseDriver')->getPrefix();
 
 		// Replace the magic prefix if found.
 		$table = preg_replace("|^$prefix|", '#__', $table);
@@ -3078,7 +3078,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 */
 	protected static function getDBName()
 	{
-		$config = Factory::getConfig();
+		$config = Factory::getApplication()->getConfig();
 
 		// Get database name
 		return $config->get('db', '');
@@ -3250,7 +3250,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		unset($table);
 
 		// get buffer file
-		$tmp_file = Factory::getConfig()->get('tmp_path') . '/bwpostman_restore.tmp';
+		$tmp_file = Factory::getApplication()->getConfig()->get('tmp_path') . '/bwpostman_restore.tmp';
 		$fp       = fopen($tmp_file, 'w+');
 
 		if ($fp === false)

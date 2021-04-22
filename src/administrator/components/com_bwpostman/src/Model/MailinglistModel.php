@@ -222,7 +222,7 @@ class MailinglistModel extends AdminModel
 			$form->setFieldAttribute('parent_id', 'action', 'bwpm.create');
 		}
 
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		// Check for existing mailinglist.
 		// Modify the form based on Edit State access controls.
@@ -246,7 +246,7 @@ class MailinglistModel extends AdminModel
 
 		// Check to show created data
 		$c_date   = $form->getValue('created_date');
-		$nullDate = Factory::getDbo()->getNullDate();
+		$nullDate = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
 
 		if ($c_date === $nullDate)
 		{
@@ -307,7 +307,7 @@ class MailinglistModel extends AdminModel
 	{
 		$db   = $this->_db;
 		$date = Factory::getDate();
-		$uid  = Factory::getUser()->get('id');
+		$uid  = Factory::getApplication()->getIdentity()->get('id');
 		$cid  = ArrayHelper::toInteger($cid);
 
 		if ($archive == 1)
@@ -334,7 +334,7 @@ class MailinglistModel extends AdminModel
 				}
 			}
 
-			$time = Factory::getDbo()->getNullDate();
+			$time = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
 			$uid  = 0;
 		}
 

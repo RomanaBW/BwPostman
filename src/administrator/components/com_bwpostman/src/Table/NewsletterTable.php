@@ -734,7 +734,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 */
 	public function archive($cid, $archive)
 	{
-		$uid = Factory::getUser()->get('id');
+		$uid = Factory::getApplication()->getIdentity()->get('id');
 		$db  = $this->_db;
 		$cid = ArrayHelper::toInteger($cid);
 
@@ -946,7 +946,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	public function store($updateNulls = false)
 	{
 		$date = Factory::getDate();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$app  = Factory::getApplication();
 		$id   = $this->id;
 

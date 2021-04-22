@@ -165,7 +165,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	protected function setBwPostmanComponentStatus()
 	{
-		$_db   = Factory::getDbo();
+		$_db   = Factory::getContainer()->get('DatabaseDriver');
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -205,7 +205,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	protected function setBwPostmanComponentVersion()
 	{
-		$_db   = Factory::getDbo();
+		$_db   = Factory::getContainer()->get('DatabaseDriver');
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -241,7 +241,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	protected function loadLanguageFiles()
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 
 		//Load first english file of component
 		$lang->load('com_bwpostman', JPATH_SITE, 'en_GB', true);
@@ -483,7 +483,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 		}
 
 		$message  = Text::_("PLG_BWTIMECONTROL_MAINTENANCE_STARTING_CRON");
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 		$document->addScriptDeclaration("let message = '$message'");
 		$document->addScript(Uri::root(true) . '/plugins/bwpostman/bwtimecontrol/assets/js/bwtimecontrol.js');
 
@@ -557,7 +557,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	private function getItem($nl_id)
 	{
-		$db             = Factory::getDbo();
+		$db             = Factory::getContainer()->get('DatabaseDriver');
 		$scheduled_date = $db->getNullDate();
 
 		if ($nl_id !== 0)
@@ -606,7 +606,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return true;
 		}
 
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 
 		// New scheduled date
@@ -742,7 +742,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	public function getAutomatedNlIds()
 	{
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('newsletter_id'));
@@ -783,7 +783,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		if (count($automatedNlIds))
 		{
-			$db	= Factory::getDbo();
+			$db	= Factory::getContainer()->get('DatabaseDriver');
 			$query	= $db->getQuery(true);
 
 			$query->select('DISTINCT ' . $db->quoteName('id'));

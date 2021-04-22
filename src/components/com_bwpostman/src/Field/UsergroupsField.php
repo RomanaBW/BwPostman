@@ -161,7 +161,7 @@ class UsergroupsField extends CheckboxesField
 		{
 			static::$options[$hash] = parent::getOptions();
 
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = $db->getQuery(true);
 			$query->select('CONCAT("-",' . $db->quoteName('a') . '.' . $db->quoteName('id') . ') AS  value');
 			$query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');

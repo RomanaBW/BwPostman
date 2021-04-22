@@ -249,7 +249,7 @@ class HtmlView extends BaseHtmlView
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN'));
 		/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = $document->getWebAssetManager();

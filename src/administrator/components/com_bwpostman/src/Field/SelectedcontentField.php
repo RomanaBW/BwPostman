@@ -122,7 +122,7 @@ class SelectedcontentField extends ListField
 		$user_id = null;
 
 		// prepare query
-		$db         = Factory::getDbo();
+		$db         = Factory::getContainer()->get('DatabaseDriver');
 		$query_user = $db->getQuery(true);
 
 		// get user_ids if exists
@@ -162,7 +162,7 @@ class SelectedcontentField extends ListField
 	private function getSelectedContent()
 	{
 		$app              = Factory::getApplication();
-		$db               = Factory::getDbo();
+		$db               = Factory::getContainer()->get('DatabaseDriver');
 		$options          = array();
 		$selected_content = '';
 

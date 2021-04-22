@@ -164,13 +164,13 @@ class HtmlView extends BaseHtmlView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 		$uri		= Uri::getInstance('SERVER');
-		$userId		= Factory::getUser()->get('id');
+		$userId		= Factory::getApplication()->getIdentity()->get('id');
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_CAM_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_campaign.js');

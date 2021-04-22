@@ -92,7 +92,7 @@ class PlgBwPostmanDemoInstallerScript
 		// We only need to perform this if the extension is being installed, not updated
 		if ($type == 'install')
 		{
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = $db->getQuery(true);
 
 			$fields = array(

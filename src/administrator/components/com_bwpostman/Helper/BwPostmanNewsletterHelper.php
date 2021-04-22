@@ -53,7 +53,7 @@ abstract class BwPostmanNewsletterHelper {
 		$count_users = 0;
 		$usergroup   = ArrayHelper::toInteger($usergroup);
 
-		$db       = Factory::getDbo();
+		$db       = Factory::getContainer()->get('DatabaseDriver');
 		$sub_query = $db->getQuery(true);
 
 		$sub_query->select($db->quoteName('g') . '.' . $db->quoteName('user_id'));
@@ -99,7 +99,7 @@ abstract class BwPostmanNewsletterHelper {
 		$count_subscribers      = 0;
 		$associatedMailinglists = ArrayHelper::toInteger($associatedMailinglists);
 
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(' . $db->quoteName('id') . ')');

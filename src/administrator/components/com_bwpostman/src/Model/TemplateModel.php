@@ -412,7 +412,7 @@ class TemplateModel extends AdminModel
 			$form->setFieldAttribute('parent_id', 'action', 'bwpm.create');
 		}
 
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		// Check for existing mailinglist.
 		// Modify the form based on Edit State access controls.
@@ -428,7 +428,7 @@ class TemplateModel extends AdminModel
 		}
 
 		// Check to show created data
-		$nullDate = Factory::getDbo()->getNullDate();
+		$nullDate = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
 		$c_date   = $form->getValue('created_date');
 
 		if ($c_date === $nullDate)
@@ -491,7 +491,7 @@ class TemplateModel extends AdminModel
 		$db   = $this->_db;
 		$app  = Factory::getApplication();
 		$date = Factory::getDate();
-		$uid  = Factory::getUser()->get('id');
+		$uid  = Factory::getApplication()->getIdentity()->get('id');
 		$cid  = ArrayHelper::toInteger($cid);
 
 		if ($archive == 1)
@@ -612,7 +612,7 @@ class TemplateModel extends AdminModel
 	 */
 	public function setDefaultTemplate($id = 0)
 	{
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		// Access checks.
 		if (!$user->authorise('bwpm.edit.state', 'com_bwpostman'))

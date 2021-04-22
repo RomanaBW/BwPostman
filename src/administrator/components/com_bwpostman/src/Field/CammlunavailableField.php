@@ -90,7 +90,7 @@ class CammlunavailableField extends RadioField
 			(property_exists($item, 'ml_unavailable')) ? $ml_select	= $item->ml_unavailable : $ml_select = '';
 		}
 
-		$db        = Factory::getDbo();
+		$db        = Factory::getContainer()->get('DatabaseDriver');
 		$query     = $db->getQuery(true);
 		$ml_select = array();
 		$selected  = '';
@@ -189,7 +189,7 @@ class CammlunavailableField extends RadioField
 		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
-		$db		= Factory::getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query		= $db->getQuery(true);
 		$query_user	= $db->getQuery(true);
 

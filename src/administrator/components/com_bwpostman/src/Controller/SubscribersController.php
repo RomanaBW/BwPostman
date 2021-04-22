@@ -150,7 +150,7 @@ class SubscribersController extends AdminController
 	public function importSubscribers()
 	{
 		$jinput = Factory::getApplication()->input;
-		$user   = Factory::getUser();
+		$user   = Factory::getApplication()->getIdentity();
 
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -273,7 +273,7 @@ class SubscribersController extends AdminController
 		}
 
 		//Get session object
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 		$session->set('import_general_data', $import_general_data);
 
 		// If the file isn't okay, redirect to import.php
@@ -463,7 +463,7 @@ class SubscribersController extends AdminController
 		$maildata   = array();
 
 		$model->import($post, $maildata);
-		$import_result = Factory::getSession()->set('com_bwpostman.subscriber.import.messages', array());
+		$import_result = Factory::getApplication()->getSession()->set('com_bwpostman.subscriber.import.messages', array());
 
 		// Send emails to subscribers if they weren't confirmed
 		if (count($maildata))
@@ -487,7 +487,7 @@ class SubscribersController extends AdminController
 		}
 
 		//Get session object and store the result-array into the session
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 		$session->set('com_bwpostman.subscriber.import.messages', $import_result);
 
 		$link = Route::_('index.php?option=com_bwpostman&view=subscriber&layout=import2', false);
@@ -506,7 +506,7 @@ class SubscribersController extends AdminController
 	public function exportSubscribers()
 	{
 		$jinput = Factory::getApplication()->input;
-		$user   = Factory::getUser();
+		$user   = Factory::getApplication()->getIdentity();
 
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -557,7 +557,7 @@ class SubscribersController extends AdminController
 			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 		$app      = Factory::getApplication();
 		$jinput   = $app->input;
 		$post     = $jinput->getArray(

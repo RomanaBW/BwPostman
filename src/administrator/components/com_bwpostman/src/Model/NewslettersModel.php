@@ -441,7 +441,7 @@ class NewslettersModel extends ListModel
 
 		if (Factory::getApplication()->isClient('site'))
 		{
-			$user = Factory::getUser();
+			$user = Factory::getApplication()->getIdentity();
 
 			if (!$user->authorise('core.admin'))
 			{
@@ -752,7 +752,7 @@ class NewslettersModel extends ListModel
 				break;
 		}
 
-		$this->query->where('a.mailing_date' . $tab_int . $this->_db->quote(Factory::getDbo()->getNullDate()));
+		$this->query->where('a.mailing_date' . $tab_int . $this->_db->quote(Factory::getContainer()->get('DatabaseDriver')->getNullDate()));
 	}
 
 	/**

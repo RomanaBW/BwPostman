@@ -182,7 +182,7 @@ class ContentRenderer
 	{
 		$row   = new stdClass();
 		$app   = Factory::getApplication();
-		$_db   = Factory::getDbo();
+		$_db   = Factory::getContainer()->get('DatabaseDriver');
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('a') . '.*');
@@ -283,7 +283,7 @@ class ContentRenderer
 	 */
 	public function replaceContentHtml($id, $tpl)
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -417,7 +417,7 @@ class ContentRenderer
 	 */
 	public function replaceContentHtmlNew($id, $tpl)
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -591,7 +591,7 @@ class ContentRenderer
 	 */
 	public function replaceContentText($id, $text_tpl)
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -657,7 +657,7 @@ class ContentRenderer
 		if (Multilanguage::isEnabled())
 		{
 			$result = '';
-			$_db    = Factory::getDbo();
+			$_db    = Factory::getContainer()->get('DatabaseDriver');
 			$query  = $_db->getQuery(true);
 
 			$query->select($_db->quoteName('language'));
@@ -771,7 +771,7 @@ class ContentRenderer
 	 */
 	public function replaceTplLinks(&$text)
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -923,7 +923,7 @@ class ContentRenderer
 	public function addHTMLFooter(&$text, $templateId)
 	{
 		$app  = Factory::getApplication();
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -1004,7 +1004,7 @@ class ContentRenderer
 	 */
 	public function replaceTextTplLinks(&$text)
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -1058,7 +1058,7 @@ class ContentRenderer
 	 */
 	public function addTextFooter(&$text, $id)
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 

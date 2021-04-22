@@ -57,7 +57,7 @@ class BwPostmanHTMLHelper {
 	 */
 	public static function quickiconButton($link, $image, $text, $x_size = 0, $y_size = 0, $target = '', $onclick = '', $closable = true)
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$closable = $closable != true ? ', closable: false' : '';
 		($x_size && $y_size) ? $modal_text	= 'class="modal" rel="{handler: \'iframe\', size: {x: ' . $x_size . ', y: ' . $y_size . '}' . $closable . '}"' : $modal_text	= '';
 		?>
@@ -269,7 +269,7 @@ class BwPostmanHTMLHelper {
 	 */
 	static function getForumLink()
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 
 		$lang_ver		= substr($lang->getTag(), 0, 2);
 		if ($lang_ver != 'de')
@@ -325,7 +325,7 @@ class BwPostmanHTMLHelper {
 	 */
 	static function getManualLink($section)
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$sectionPart = "handbuch-zu-bwpostman.html";
 
 		$lang_ver		= substr($lang->getTag(), 0, 2);

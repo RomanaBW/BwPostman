@@ -186,7 +186,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 		// We only need to perform this if the extension is being installed, not updated
 		if ($type == 'install')
 		{
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 			$query = $db->getQuery(true);
 
 			$fields = array(
@@ -226,7 +226,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 */
 	private function getManifestVar($name, $extension)
 	{
-		$db		= Factory::getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));

@@ -221,7 +221,7 @@ class JoomlaExtensionInstallerCli extends JApplicationCli
 
 		// Load the language files
 		$paths = array(JPATH_ADMINISTRATOR, JPATH_ROOT);
-		$jlang = JFactory::getLanguage();
+		$jlang = JFactory::getApplication()->getLanguage();
 		$jlang->load('lib_joomla', $paths[0], 'en-GB', true);
 
 		$packageFile = $this->input->get('package', null, 'folder');
@@ -353,8 +353,8 @@ class JoomlaExtensionInstallerCli extends JApplicationCli
 	 */
 	public function setUserState($key, $value)
 	{
-		$session  = &JFactory::getSession();
-		$registry = &$session->get('registry');
+		$session  = JFactory::getApplication()->getSession();
+		$registry = $session->get('registry');
 
 		if (!is_null($registry))
 		{
@@ -362,6 +362,28 @@ class JoomlaExtensionInstallerCli extends JApplicationCli
 		}
 
 		return null;
+	}
+
+	/**
+	 *
+	 * @return void
+	 *
+	 * @since
+	 */
+	public function doExecute()
+	{
+		$this->execute();
+	}
+
+	/**
+	 *
+	 * @return void
+	 *
+	 * @since
+	 */
+	public function getName()
+	{
+
 	}
 }
 

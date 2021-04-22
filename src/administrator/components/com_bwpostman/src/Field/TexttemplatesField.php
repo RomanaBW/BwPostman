@@ -150,7 +150,7 @@ class TexttemplatesField extends RadioField
 		$options = array();
 
 		// prepare query
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		// Build the select list for the templates
 		$query = $db->getQuery(true);

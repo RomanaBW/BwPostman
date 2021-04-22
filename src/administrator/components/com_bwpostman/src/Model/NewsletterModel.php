@@ -366,8 +366,8 @@ class NewsletterModel extends AdminModel
 //		Form::addFieldPath('JPATH_ADMINISTRATOR/components/com_bwpostman/fields');
 
 		$params = ComponentHelper::getParams('com_bwpostman');
-		$config = Factory::getConfig();
-		$user   = Factory::getUser();
+		$config = Factory::getApplication()->getConfig();
+		$user   = Factory::getApplication()->getIdentity();
 
 		$form = $this->loadForm('com_bwpostman.newsletter', 'newsletter', array('control' => 'jform', 'load_data' => $loadData));
 
@@ -429,7 +429,7 @@ class NewsletterModel extends AdminModel
 		}
 
 		// Check to show created data
-		$nulldate = Factory::getDbo()->getNullDate();
+		$nulldate = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
 		$c_date   = $form->getValue('created_date');
 
 		if ($c_date === $nulldate)
@@ -731,7 +731,7 @@ class NewsletterModel extends AdminModel
 	{
 		$app      = Factory::getApplication();
 		$jinput   = $app->input;
-		$nullDate = Factory::getDbo()->getNullDate();
+		$nullDate = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
 
 		// Correct empty publishing dates
 		if (isset($data['publish_up']) &&  $data['publish_up'] === "")
@@ -917,7 +917,7 @@ class NewsletterModel extends AdminModel
 
 		$date = Factory::getDate();
 		$time = $date->toSql();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$uid  = $user->get('id');
 
 		// Reset some item specific values
@@ -1043,7 +1043,7 @@ class NewsletterModel extends AdminModel
 	 */
 	public function changeIsTemplate($id)
 	{
-		$user  = Factory::getUser();
+		$user  = Factory::getApplication()->getIdentity();
 		$table = $this->getTable();
 		$id    = (int) $id;
 
@@ -1216,7 +1216,7 @@ class NewsletterModel extends AdminModel
 			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_HTML_AND_TEXT');
 		}
 
-		$nullDate = Factory::getDbo()->getNullDate();
+		$nullDate = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
 
 		// Check for valid publish_up values
 		if (!$data['publish_up'])

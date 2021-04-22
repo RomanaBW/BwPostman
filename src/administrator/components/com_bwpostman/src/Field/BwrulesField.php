@@ -90,7 +90,7 @@ class BwrulesField extends RulesField
 
 		// Add Javascript for permission change
 		HTMLHelper::_('form.csrf');
-		Factory::getDocument()->getWebAssetManager()
+		Factory::getApplication()->getDocument()->getWebAssetManager()
 			->useStyle('webcomponent.field-permissions')
 			->useScript('webcomponent.field-permissions')
 			->useStyle('webcomponent.joomla-tab')
@@ -164,7 +164,7 @@ class BwrulesField extends RulesField
 				$parentAssetName .= '.' . $section;
 			}
 
-			$db    = Factory::getDbo();
+			$db    = Factory::getContainer()->get('DatabaseDriver');
 			$query = $db->getQuery(true);
 			$query->clear();
 
@@ -188,7 +188,7 @@ class BwrulesField extends RulesField
 		if (!$isGlobalConfig)
 		{
 			// In this case we need to get the section rules too.
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');
 
 			$query = $db->getQuery(true)
 				->select($db->quoteName('parent_id'))
@@ -456,7 +456,7 @@ class BwrulesField extends RulesField
 	 */
 	private function checkAssetId($assetId)
 	{
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));

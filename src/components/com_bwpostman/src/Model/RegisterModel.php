@@ -104,7 +104,7 @@ class RegisterModel extends AdminModel
 		$this->setState('list.offset', $offset);
 
 		// TODO: Tune these values based on other permissions.
-		$user		= Factory::getUser();
+		$user		= Factory::getApplication()->getIdentity();
 		if ((!$user->authorise('core.edit.state', 'com_bwpostman')) &&  (!$user->authorise('core.edit', 'com_bwpostman')))
 		{
 			$this->setState('filter.published', 1);

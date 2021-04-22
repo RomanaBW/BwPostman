@@ -74,7 +74,7 @@ class RawView extends BaseHtmlView
 		$jinput	= $app->input;
 		$task	= $jinput->get('task', 'export');
 
-		$document	= Factory::getDocument();
+		$document	= Factory::getApplication()->getDocument();
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber.js');
 
 		if ($task == 'insideModal')

@@ -67,7 +67,7 @@ HtmlHelper::_('stylesheet', $css_filename, array('version' => 'auto'));
 			{ // Case 4
 				echo '<p class="error-message">' . Text::_($this->error->err_msg) . '</p>';
 
-				$admin_email = $this->params->def('default_from_email', Factory::getConfig()->get('mailfrom'));
+				$admin_email = $this->params->def('default_from_email', Factory::getApplication()->getConfig()->get('mailfrom'));
 
 				$msg1 = '<p class="contact-admin">' . Text::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email) . '</p>';
 				echo HtmlHelper::_('content.prepare', $msg1);

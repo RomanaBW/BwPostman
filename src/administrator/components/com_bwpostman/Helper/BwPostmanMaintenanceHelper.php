@@ -151,7 +151,7 @@ abstract class BwPostmanMaintenanceHelper
 		jimport('joomla.filesystem.file');
 		jimport('joomla.archive.archive');
 
-		$destPath	= Factory::getConfig()->get('tmp_path') . "/bwpm_unzipped";
+		$destPath	= Factory::getApplication()->getConfig()->get('tmp_path') . "/bwpm_unzipped";
 
 		if (Folder::exists($destPath))
 		{

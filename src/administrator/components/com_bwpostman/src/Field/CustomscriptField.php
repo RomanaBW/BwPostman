@@ -69,7 +69,7 @@ class CustomscriptField extends FormField
 	{
 		HTMLHelper::_('jquery.framework');
 
-		$doc  = Factory::getDocument();
+		$doc  = Factory::getApplication()->getDocument();
 		$text = Text::_('COM_BWPOSTMAN_FIELD_OBLIGATION');
 		// Hide spacers on joomla 4
 		$hide_spacer = "";

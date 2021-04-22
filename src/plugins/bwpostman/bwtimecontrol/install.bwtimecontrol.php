@@ -205,7 +205,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 	 */
 	private function getManifestVar($name, $extension)
 	{
-		$db		= Factory::getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));
@@ -237,7 +237,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 	 */
 	public function showFinished($update){
 
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
 		$lang->load('plg_bwpostman_bwtimecontrol.sys', JPATH_PLUGINS . '/bwpostman/bwtimecontrol', 'en_GB',true);
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_PLUGINS . '/bwpostman/bwtimecontrol', 'en_GB',true);

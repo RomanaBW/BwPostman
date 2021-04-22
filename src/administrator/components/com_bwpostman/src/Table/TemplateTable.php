@@ -638,7 +638,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	public function store($updateNulls = false)
 	{
 		$date = Factory::getDate();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		// trim leading and last <style>-tag
 		$this->tpl_css = trim($this->tpl_css);

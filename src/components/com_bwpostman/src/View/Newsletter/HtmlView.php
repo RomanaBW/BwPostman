@@ -119,7 +119,7 @@ class HtmlView extends BaseHtmlView
 		$templateName	= $app->getTemplate();
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 		if ($params->get('page_heading') != '')
 		{
 			$document->setTitle($params->get('page_title'));

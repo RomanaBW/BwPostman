@@ -260,14 +260,14 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar()
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
-		$userId		= Factory::getUser()->get('id');
+		$userId		= Factory::getApplication()->getIdentity()->get('id');
 		$layout		= Factory::getApplication()->input->get('layout', '');
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document	= Factory::getDocument();
+		$document	= Factory::getApplication()->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		HTMLHelper::_('jquery.framework');

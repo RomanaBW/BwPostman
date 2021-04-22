@@ -184,7 +184,7 @@ class MaintenanceController extends BaseController
 		}
 
 		$jinput   = Factory::getApplication()->input;
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 
 		$jinput->set('view', 'subscriber');
 
@@ -313,7 +313,7 @@ class MaintenanceController extends BaseController
 			// Check if the file has the right extension, we need xml
 			// --> if the extension is wrong, redirect to restoretables.php
 			$fileExt = File::getExt($filename);
-			$dest    = Factory::getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $fileExt;
+			$dest    = Factory::getApplication()->getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $fileExt;
 
 			if ($fileExt !== 'xml' && $fileExt !== 'zip')
 			{
@@ -361,7 +361,7 @@ class MaintenanceController extends BaseController
 	 */
 	public function startCron()
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_PLUGINS . '/bwpostman/bwtimecontrol');
 
 		$plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
@@ -416,7 +416,7 @@ class MaintenanceController extends BaseController
 	 */
 	public function stopCron()
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
 
 		PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');

@@ -58,7 +58,7 @@ HtmlHelper::_('stylesheet', $css_filename, array('version' => 'auto'));
 		<?php
 		}
 
-		$admin_email = $this->params->def('default_from_email', Factory::getConfig()->get('mailfrom'));
+		$admin_email = $this->params->def('default_from_email', Factory::getApplication()->getConfig()->get('mailfrom'));
 
 		echo '<p class="bwp-error">' . Text::_('COM_BWPOSTMAN_ERROR') . '</p>';
 

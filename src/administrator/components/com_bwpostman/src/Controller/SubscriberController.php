@@ -510,7 +510,7 @@ class SubscriberController extends FormController
 		$vars     = $jinput->post->get('batch', array(), 'array');
 		$cid      = $jinput->post->get('cid', array(), 'array');
 		$cid      = ArrayHelper::toInteger($cid);
-		$old_list = Factory::getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
+		$old_list = Factory::getApplication()->getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
 		$message  = '';
 
 		// Build an array of item contexts to check

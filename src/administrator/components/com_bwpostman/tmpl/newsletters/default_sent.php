@@ -43,11 +43,11 @@ HTMLHelper::_('bootstrap.tooltip');
 // @Todo: Requires adminform to be present!!!!
 //HTMLHelper::_('behavior.tabstate');
 
-$user		= Factory::getUser();
+$user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$nullDate   = Factory::getDbo()->getNullDate();
+$nullDate   = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
 
 $iconImage = Uri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png';
 

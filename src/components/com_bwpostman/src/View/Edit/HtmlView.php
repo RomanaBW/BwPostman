@@ -85,7 +85,7 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null)
 	{
 		$app        = Factory::getApplication();
-		$session    = Factory::getSession();
+		$session    = Factory::getApplication()->getSession();
 		$params     = ComponentHelper::getParams('com_bwpostman', true);
 		$menuParams = new Registry;
 		$menu       = $app->getMenu()->getActive();

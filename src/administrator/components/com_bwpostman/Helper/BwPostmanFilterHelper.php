@@ -52,7 +52,7 @@ class BwPostmanFilterHelper
 	{
 		// Filter settings
 		$config     = ComponentHelper::getParams('com_config', true);
-		$user       = Factory::getUser();
+		$user       = Factory::getApplication()->getIdentity();
 		$userGroups = Access::getGroupsByUser($user->get('id'));
 
 		$filters = $config->get('filters');

@@ -64,7 +64,7 @@ class AuthorsField extends ListField
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db        = Factory::getDbo();
+		$db        = Factory::getContainer()->get('DatabaseDriver');
 		$query     = $db->getQuery(true);
 		$sub_query = $db->getQuery(true);
 

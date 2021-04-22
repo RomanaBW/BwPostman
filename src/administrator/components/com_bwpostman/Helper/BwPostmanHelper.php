@@ -206,7 +206,7 @@ class BwPostmanHelper
 	 */
 	static public function getInstalledBwPostmanVersion()
 	{
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));
@@ -539,7 +539,7 @@ class BwPostmanHelper
 	public static function getActions($id = 0, $section = '')
 	{
 		$path   = JPATH_ADMINISTRATOR . '/components/com_bwpostman/access.xml';
-		$result = new \JObject;
+		$result = new \stdClass();
 
 		if (($section != '') && $id)
 		{
@@ -602,7 +602,7 @@ class BwPostmanHelper
 			return;
 		}
 
-		$user        = Factory::getUser();
+		$user        = Factory::getApplication()->getIdentity();
 		$permissions = array();
 
 		// Set permissions for component
@@ -781,7 +781,7 @@ class BwPostmanHelper
 			return true;
 		}
 
-		$user   = Factory::getUser();
+		$user   = Factory::getApplication()->getIdentity();
 		$userId = (int)$user->get('id');
 
 		// If current user checked out, he may check in.
@@ -834,7 +834,7 @@ class BwPostmanHelper
 		 */
 
 		// Initialise variables.
-		$user      = Factory::getUser();
+		$user      = Factory::getApplication()->getIdentity();
 		$userId    = (int)$user->get('id');
 		$recordId  = 0;
 		$createdBy = 0;
@@ -1246,7 +1246,7 @@ class BwPostmanHelper
 	 */
 	public static function getMailinglistsWarning()
 	{
-		$_db          = Factory::getDbo();
+		$_db          = Factory::getContainer()->get('DatabaseDriver');
 		$query        = $_db->getQuery(true);
 		$ml_published = '';
 
@@ -1288,7 +1288,7 @@ class BwPostmanHelper
 	{
 		$queueEntriesAtLimit = array();
 
-		$db   = Factory::getDbo();
+		$db   = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 
 		// Get queue entries, which cannot be sent because sending trials have reached limit
@@ -1679,7 +1679,7 @@ class BwPostmanHelper
 
 		if (!$creatorId)
 		{
-			$db	= Factory::getDbo();
+			$db	= Factory::getContainer()->get('DatabaseDriver');
 			$query	= $db->getQuery(true);
 
 			$query->select($db->quoteName($createdPropertyName));
@@ -1780,7 +1780,7 @@ class BwPostmanHelper
 			$itemsToCheck[] = $itemRecord['id'];
 		}
 
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -1818,7 +1818,7 @@ class BwPostmanHelper
 	private static function getSectionAssetNames($view)
 	{
 		$asset_records  = array();
-		$_db            = Factory::getDbo();
+		$_db            = Factory::getContainer()->get('DatabaseDriver');
 
 		try
 		{
@@ -1975,7 +1975,7 @@ class BwPostmanHelper
 		{
 			try
 			{
-				$_db	= Factory::getDbo();
+				$_db	= Factory::getContainer()->get('DatabaseDriver');
 				$query	= $_db->getQuery(true);
 
 				$query->select($_db->quoteName($field));
@@ -2017,7 +2017,7 @@ class BwPostmanHelper
 	 */
 	public static function authorise($action, $assetName = null, $recordId = 0)
 	{
-		$userId = Factory::getUser()->id;
+		$userId = Factory::getApplication()->getIdentity()->id;
 
 		return BwAccess::check($userId, $action, $assetName, false, $recordId);
 	}

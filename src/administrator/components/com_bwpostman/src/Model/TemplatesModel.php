@@ -389,7 +389,7 @@ class TemplatesModel extends ListModel
 	{
 		if (Factory::getApplication()->isClient('site'))
 		{
-			$user = Factory::getUser();
+			$user = Factory::getApplication()->getIdentity();
 
 			if (!$user->authorise('core.admin'))
 			{
@@ -570,7 +570,7 @@ class TemplatesModel extends ListModel
 		// Set up the source and destination of the file
 		$src         = $file['tmp_name'];
 		$ext         = File::getExt($filename);
-		$tempPath    = Factory::getConfig()->get('tmp_path');
+		$tempPath    = Factory::getApplication()->getConfig()->get('tmp_path');
 		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
 
 		// If the file isn't okay, redirect to templates
@@ -636,7 +636,7 @@ class TemplatesModel extends ListModel
 
 		$filename    = File::makeSafe($file['name']);
 		$ext         = File::getExt($filename);
-		$tempPath    = Factory::getConfig()->get('tmp_path');
+		$tempPath    = Factory::getApplication()->getConfig()->get('tmp_path');
 		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
 		$extractdir  = $tempPath . '/tmp_bwpostman_installtpl/';
 
@@ -672,9 +672,9 @@ class TemplatesModel extends ListModel
 	public function installTplFiles(&$sql, $step)
 	{
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step) . '</h4>';
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
-		$tempPath   = Factory::getConfig()->get('tmp_path');
+		$tempPath   = Factory::getApplication()->getConfig()->get('tmp_path');
 		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
 
 		//we call sql file for the templates data
@@ -763,7 +763,7 @@ class TemplatesModel extends ListModel
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 
-		$tempPath = Factory::getConfig()->get('tmp_path');
+		$tempPath = Factory::getApplication()->getConfig()->get('tmp_path');
 		$imagedir = $tempPath . '/tmp_bwpostman_installtpl/images/';
 
 		// make new folder and copy template thumbnails
@@ -880,7 +880,7 @@ class TemplatesModel extends ListModel
 
 		$filename    = File::makeSafe($file['name']);
 		$ext         = File::getExt($filename);
-		$tempPath    = Factory::getConfig()->get('tmp_path');
+		$tempPath    = Factory::getApplication()->getConfig()->get('tmp_path');
 		$extractdir  = $tempPath . '/tmp_bwpostman_installtpl/';
 		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
 

@@ -418,7 +418,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			}
 		}
 
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 		$err     = $session->get('session_error');
 		$fault   = false;
 
@@ -827,7 +827,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		{
 			// Existing subscriber
 			$this->modified_time = Factory::getDate()->toSql();
-			$this->modified_by   = Factory::getUser()->get('id');
+			$this->modified_by   = Factory::getApplication()->getIdentity()->get('id');
 		}
 
 		if ($this->confirmation_date == 0)

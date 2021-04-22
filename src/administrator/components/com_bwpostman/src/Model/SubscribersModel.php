@@ -332,7 +332,7 @@ class SubscribersModel extends ListModel
 	{
 		if (Factory::getApplication()->isClient('site'))
 		{
-			$user = Factory::getUser();
+			$user = Factory::getApplication()->getIdentity();
 
 			if (!$user->authorise('core.admin'))
 			{

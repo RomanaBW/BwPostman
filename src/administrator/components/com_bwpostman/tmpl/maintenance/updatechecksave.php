@@ -42,17 +42,17 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_update_checksave', 'com_bwpo
 //$wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
 //$wa->useScript('com_bwpostman.admin-bwpm_update_checksave');
 
-$uncompressed = Factory::getConfig()->get('debug') ? '-uncompressed' : '';
+$uncompressed = Factory::getApplication()->getConfig()->get('debug') ? '-uncompressed' : '';
 HTMLHelper::_('script', 'system/modal' . $uncompressed . '.js', array('relative' => true, 'detectBrowser' => true));
 HTMLHelper::_('stylesheet', 'media/system/css/modal.css');
 
 $model		= $this->getModel();
 
-$session	= Factory::getSession();
+$session	= Factory::getApplication()->getSession();
 $update		= $session->get('update', false, 'bwpostman');
 $release	= $session->get('release', null, 'bwpostman');
 
-$lang = Factory::getLanguage();
+$lang = Factory::getApplication()->getLanguage();
 //Load first english files
 $lang->load('com_bwpostman.sys', JPATH_ADMINISTRATOR, 'en_GB', true);
 $lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);

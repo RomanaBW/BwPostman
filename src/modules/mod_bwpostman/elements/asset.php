@@ -61,7 +61,7 @@ class JFormFieldAsset extends JFormField
 
 		$text = Text::_('MOD_BWPOSTMAN_FIELD_OBLIGATION');
 
-		$doc 		= Factory::getDocument();
+		$doc 		= Factory::getApplication()->getDocument();
 		$js = "
 			window.onload=display_yes_no;
 			function display_yes_no()

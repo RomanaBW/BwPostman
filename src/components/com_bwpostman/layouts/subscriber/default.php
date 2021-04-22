@@ -176,8 +176,9 @@ $lists      = $displayData['lists'];
 				if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
 				{
 					echo " class=\"invalid\"";
-				}
-				echo ">";
+				}?>
+				>
+				<?php
 				if ($params->get('special_label') != '')
 				{
 					echo Text::_($params->get('special_label'));

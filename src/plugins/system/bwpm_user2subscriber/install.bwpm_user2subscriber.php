@@ -90,7 +90,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	protected function getComponentVersion()
 	{
 		$version    = '0.0.0';
-		$_db        = Factory::getDbo();
+		$_db        = Factory::getContainer()->get('DatabaseDriver');
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));

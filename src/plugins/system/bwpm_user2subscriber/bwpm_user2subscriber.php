@@ -615,7 +615,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			// Disclaimer menu item and target_blank or not
 			elseif ($com_params->get('disclaimer_selection') == 2 && $com_params->get('disclaimer_menuitem') > 0)
 			{
-				if ($tpl_com !== '' && Factory::getConfig()->get('sef') === '1')
+				if ($tpl_com !== '' && Factory::getApplication()->getConfig()->get('sef') === '1')
 				{
 					$tpl_com = '?tmpl=component';
 				}

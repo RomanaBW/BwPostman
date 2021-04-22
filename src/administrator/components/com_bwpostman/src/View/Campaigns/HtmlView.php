@@ -186,7 +186,7 @@ class HtmlView extends BaseHtmlView
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document	= Factory::getDocument();
+		$document	= Factory::getApplication()->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_CAMS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_archive_cam_nls.js');

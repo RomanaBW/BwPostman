@@ -167,7 +167,7 @@ class BwPostmanPhpCron {
 		$this->app = $app;
 
 		// Load the language file
-		$language = Factory::getLanguage();
+		$language = Factory::getApplication()->getLanguage();
 		$language->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
 
 		// Load the plugin system
@@ -233,7 +233,7 @@ class BwPostmanPhpCron {
 	protected function getStoredParams($extensionId)
 	{
 		$storedParams = array();
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('params'));
@@ -290,7 +290,7 @@ class BwPostmanPhpCron {
 	public function getKeyFromDatabase()
 	{
 		$keyValues = new stdClass();
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('priv'));
@@ -333,7 +333,7 @@ class BwPostmanPhpCron {
 	{
 		$oldPassword = null;
 		$params      = null;
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('params'));
@@ -370,7 +370,7 @@ class BwPostmanPhpCron {
 	public function getNonceFromDatabase()
 	{
 		$nonce = null;
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('nonce'));
@@ -625,7 +625,7 @@ class BwPostmanPhpCron {
 			}
 			while ($doRun);
 
-			$user = Factory::getUser();
+			$user = Factory::getApplication()->getIdentity();
 			$this->UserLogout($user->id);
 		}
 		else
@@ -729,7 +729,7 @@ class BwPostmanPhpCron {
 	{
 		$pluginStateOld = 0;
 
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('enabled'));
@@ -762,7 +762,7 @@ class BwPostmanPhpCron {
 	{
 		$currentTime = date('Y-m-d H:i:s', time());
 
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('newsletter_id'));
@@ -805,7 +805,7 @@ class BwPostmanPhpCron {
 	 */
 	public function checkMailingDate($scheduledNls)
 	{
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 
 		$query	= $db->getQuery(true);
 
@@ -912,11 +912,11 @@ class BwPostmanPhpCron {
 	 */
 	public function sendCronMail($messages, $nlToSend, $context)
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_PLUGINS . '/bwpostman/bwtimecontrol');
 
-		$config = Factory::getConfig();
-		$user = Factory::getUser();
+		$config = Factory::getApplication()->getConfig();
+		$user = Factory::getApplication()->getIdentity();
 
 		$mailer		= Factory::getMailer();
 		$sender		= array();
@@ -990,7 +990,7 @@ class BwPostmanPhpCron {
 	 */
 	public function setSentStatus($nlToSend)
 	{
-		$db	= Factory::getDbo();
+		$db	= Factory::getContainer()->get('DatabaseDriver');
 		$query	= $db->getQuery(true);
 
 		$query->update($db->quoteName('#__bwpostman_tc_schedule'));

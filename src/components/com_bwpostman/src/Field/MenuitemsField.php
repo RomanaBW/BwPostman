@@ -64,7 +64,7 @@ class MenuitemsField extends ListField
 	protected function getOptions()
 	{
 		$options    = null;
-		$db	    = Factory::getDbo();
+		$db	    = Factory::getContainer()->get('DatabaseDriver');
 		$query	    = $db->getQuery(true);
 
 		$query->select($db->quoteName('id') . ' AS value');

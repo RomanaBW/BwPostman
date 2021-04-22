@@ -60,7 +60,7 @@ class Pkg_BwPostmanInstallerScript
 	public function install($parent)
   {
 		sleep(5);
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 		$session->set('update', false, 'bwpostman');
 
 		// Get component manifest file version
@@ -80,7 +80,7 @@ class Pkg_BwPostmanInstallerScript
 
 	public function update($parent)
   {
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 		$session->set('update', true, 'bwpostman');
 
 		// Get component manifest file version
@@ -129,7 +129,7 @@ class Pkg_BwPostmanInstallerScript
 	 */
 	public function showFinished($update)
 		{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
 		$lang->load('com_bwpostman.sys', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);

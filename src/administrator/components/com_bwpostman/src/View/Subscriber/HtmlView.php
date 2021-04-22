@@ -307,7 +307,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app		= Factory::getApplication();
 		$params 	= ComponentHelper::getParams('com_bwpostman');
-		$session 	= Factory::getSession();
+		$session 	= Factory::getApplication()->getSession();
 		$template	= $app->getTemplate();
 		$uri		= Uri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
@@ -439,7 +439,7 @@ class HtmlView extends BaseHtmlView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 		$uri		= Uri::getInstance();
-		$userId		= Factory::getUser()->get('id');
+		$userId		= Factory::getApplication()->getIdentity()->get('id');
 		$layout		= Factory::getApplication()->input->get('layout', '');
 		$tester		= false;
 		$status 	= 1;
@@ -456,7 +456,7 @@ class HtmlView extends BaseHtmlView
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document	= Factory::getDocument();
+		$document	= Factory::getApplication()->getDocument();
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber.js');
 

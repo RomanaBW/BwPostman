@@ -36,7 +36,7 @@ $filter_id	= $this->escape($this->state->get('filter.mailinglist'));
 $published	= $this->escape($this->state->get('filter.published'));
 
 // Set session filter state for moving, needed in model
-Factory::getSession()->set('com_bwpostman.subscriber.batch_filter_mailinglist', $filter_id);
+Factory::getApplication()->getSession()->set('com_bwpostman.subscriber.batch_filter_mailinglist', $filter_id);
 
 // Create the subscribe/unsubscribe/move options.
 $options = array(

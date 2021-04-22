@@ -344,7 +344,7 @@ class SubscriberModel extends AdminModel
 
 		$jinput = Factory::getApplication()->input;
 		$id     = $jinput->get('id', 0, 'INT');
-		$user   = Factory::getUser();
+		$user   = Factory::getApplication()->getIdentity();
 
 		// Check for existing subscriber.
 		// Modify the form based on Edit State access controls.
@@ -413,7 +413,7 @@ class SubscriberModel extends AdminModel
 		//initialize variables
 		$app        = Factory::getApplication();
 		$date       = Factory::getDate();
-		$user       = Factory::getUser();
+		$user       = Factory::getApplication()->getIdentity();
 		$result     = true;
 		$subscriber = new stdClass();
 
@@ -554,7 +554,7 @@ class SubscriberModel extends AdminModel
 	{
 		$app  = Factory::getApplication();
 		$date = Factory::getDate();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		$db   = $this->_db;
 		$cid  = ArrayHelper::toInteger($cid);
 
@@ -678,7 +678,7 @@ class SubscriberModel extends AdminModel
 		}
 
 		$app     = Factory::getApplication();
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 		$ext     = '';
 		$dest    = '';
 
@@ -701,7 +701,7 @@ class SubscriberModel extends AdminModel
 
 		$date = Factory::getDate();
 		$time = $date->toSql();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		// Load the post data
 		$import_fields = $data['import_fields'];
@@ -932,7 +932,7 @@ class SubscriberModel extends AdminModel
 			return false;
 		}
 
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 
 		$importMessages = $session->get('com_bwpostman.subscriber.import.messages', array());
 
@@ -973,7 +973,7 @@ class SubscriberModel extends AdminModel
 
 		$date         = Factory::getDate();
 		$time         = $date->toSql();
-		$user         = Factory::getUser();
+		$user         = Factory::getApplication()->getIdentity();
 		$ret_maildata = '';
 
 		// We may set confirmation data if the confirm-box is checked and the import value does not stand against
@@ -1370,7 +1370,7 @@ class SubscriberModel extends AdminModel
 	public function batch($commands, $pks, $contexts)
 	{
 		// Sanitize user ids.
-		$old_list = Factory::getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
+		$old_list = Factory::getApplication()->getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
 		$pks      = array_unique($pks);
 		$pks      = ArrayHelper::toInteger($pks);
 
@@ -1456,7 +1456,7 @@ class SubscriberModel extends AdminModel
 
 		// Clear the cache unset Session variable
 		$this->cleanCache();
-		Factory::getSession()->clear('com_bwpostman.subscriber.batch_filter_mailinglist');
+		Factory::getApplication()->getSession()->clear('com_bwpostman.subscriber.batch_filter_mailinglist');
 
 		return $result;
 	}

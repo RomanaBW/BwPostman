@@ -45,7 +45,7 @@ if (!class_exists('vmUserfieldPlugin'))
 if(!include_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php'))
 {
 	// For some reason, J3.3 does not load the language file otherwise
-	$language = Factory::getLanguage();
+	$language = Factory::getApplication()->getLanguage();
 	$language->load('plg_vmcustom_bwpm_buyer2subscriber');
 	Factory::getApplication()->enqueueMessage(Text::_('VMCUSTOM_BWPOSTMAN_COMPONENT_NEEDED'), 'error');
 	return;
@@ -207,7 +207,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setComponentStatus()
 	{
-		$_db        = Factory::getDbo();
+		$_db        = Factory::getContainer()->get('DatabaseDriver');
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -243,7 +243,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setComponentVersion()
 	{
-		$_db        = Factory::getDbo();
+		$_db        = Factory::getContainer()->get('DatabaseDriver');
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -278,7 +278,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setUser2SubscriberPluginStatus()
 	{
-		$_db        = Factory::getDbo();
+		$_db        = Factory::getContainer()->get('DatabaseDriver');
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -314,7 +314,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setBuyer2SubscriberPluginStatus()
 	{
-		$_db        = Factory::getDbo();
+		$_db        = Factory::getContainer()->get('DatabaseDriver');
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -387,7 +387,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	public function plgVmOnSelfCallFE($type, $name, &$render)
 	{
 		// Add CSS
-		$doc = Factory::getDocument();
+		$doc = Factory::getApplication()->getDocument();
 
 		$css_file   = Uri::base(true) . '/plugins/vmuserfield/bwpm_buyer2subscriber/assets/css/bwpm_buyer2subscriber.css';
 		$doc->addStyleSheet($css_file);
@@ -423,7 +423,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		}
 
 		// Add JS for additional fields
-		$doc = Factory::getDocument();
+		$doc = Factory::getApplication()->getDocument();
 
 		// makes sure that jQuery is loaded first
 		Htmlhelper::_('jquery.framework');
@@ -758,7 +758,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$subscription_data['mailinglists']          = json_encode($this->params->get('ml_available', array()));
 		$subscription_data['id']                    = BwPostmanSubscriberHelper::getJoomlaUserIdByEmail($data->email);
 
-		$session = Factory::getSession();
+		$session = Factory::getApplication()->getSession();
 		$session->set('plg_bwpm_buyer2subscriber.subscription_data', $subscription_data);
 
 		if ($this->debug)

@@ -672,7 +672,7 @@ class TemplatesModel extends ListModel
 	public function installTplFiles(&$sql, $step)
 	{
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step) . '</h4>';
-		$db = Factory::getContainer()->get('DatabaseDriver');
+		$db = $this->_db;
 
 		$tempPath   = Factory::getApplication()->getConfig()->get('tmp_path');
 		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';

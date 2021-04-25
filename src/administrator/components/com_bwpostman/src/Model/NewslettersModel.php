@@ -752,7 +752,7 @@ class NewslettersModel extends ListModel
 				break;
 		}
 
-		$this->query->where('a.mailing_date' . $tab_int . $this->_db->quote(Factory::getContainer()->get('DatabaseDriver')->getNullDate()));
+		$this->query->where('a.mailing_date' . $tab_int . $this->_db->quote($this->_db->getNullDate()));
 	}
 
 	/**

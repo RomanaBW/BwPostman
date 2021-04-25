@@ -246,7 +246,7 @@ class MailinglistModel extends AdminModel
 
 		// Check to show created data
 		$c_date   = $form->getValue('created_date');
-		$nullDate = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
+		$nullDate = $this->_db->getNullDate();
 
 		if ($c_date === $nullDate)
 		{
@@ -334,7 +334,7 @@ class MailinglistModel extends AdminModel
 				}
 			}
 
-			$time = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
+			$time = $this->_db->getNullDate();
 			$uid  = 0;
 		}
 

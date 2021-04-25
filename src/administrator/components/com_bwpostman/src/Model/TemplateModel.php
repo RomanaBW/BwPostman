@@ -428,7 +428,7 @@ class TemplateModel extends AdminModel
 		}
 
 		// Check to show created data
-		$nullDate = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
+		$nullDate = $this->_db->getNullDate();
 		$c_date   = $form->getValue('created_date');
 
 		if ($c_date === $nullDate)

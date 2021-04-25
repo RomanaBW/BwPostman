@@ -429,7 +429,7 @@ class NewsletterModel extends AdminModel
 		}
 
 		// Check to show created data
-		$nulldate = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
+		$nulldate = $this->_db->getNullDate();
 		$c_date   = $form->getValue('created_date');
 
 		if ($c_date === $nulldate)
@@ -731,7 +731,7 @@ class NewsletterModel extends AdminModel
 	{
 		$app      = Factory::getApplication();
 		$jinput   = $app->input;
-		$nullDate = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
+		$nullDate = $this->_db->getNullDate();
 
 		// Correct empty publishing dates
 		if (isset($data['publish_up']) &&  $data['publish_up'] === "")
@@ -1216,7 +1216,7 @@ class NewsletterModel extends AdminModel
 			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_HTML_AND_TEXT');
 		}
 
-		$nullDate = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
+		$nullDate = $this->_db->getNullDate();
 
 		// Check for valid publish_up values
 		if (!$data['publish_up'])

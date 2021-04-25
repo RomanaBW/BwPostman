@@ -33,7 +33,6 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
-use Joomla\CMS\MVC\Factory\MVCFactory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Access\Rules;
@@ -218,7 +217,7 @@ class BwpostmanModel extends BaseDatabaseModel
 	public function storePermissions($permission = null)
 	{
 		$app  = Factory::getApplication();
-		$db   = Factory::getContainer()->get('DatabaseDriver');
+		$db   = $this->_db;
 		$user = Factory::getApplication()->getIdentity();
 
 		$statePermissions = $app->getUserState('com_bwpm.permissions');

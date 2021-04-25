@@ -68,7 +68,7 @@ class RawView extends BaseHtmlView
 	public function display($tpl = null)
 	{
 		$app 	= Factory::getApplication();
-		$jinput	= Factory::getApplication()->input;
+		$jinput	= $app->input;
 		$date	= Factory::getDate();
 
 		if (!BwPostmanHelper::canView('maintenance'))
@@ -117,7 +117,7 @@ class RawView extends BaseHtmlView
 			}
 
 			// Joomla overwrites content-type, we can't use $appWeb->setHeader()
-			$document = Factory::getApplication()->getDocument();
+			$document = $app->getDocument();
 			$document->setMimeEncoding($mimeType);
 			$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_checktables.js');
 

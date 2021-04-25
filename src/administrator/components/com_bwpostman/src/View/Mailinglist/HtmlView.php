@@ -133,7 +133,7 @@ class HtmlView extends BaseHtmlView
 		$uri		= Uri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= $app->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['mailinglist'])
 		{
@@ -141,7 +141,7 @@ class HtmlView extends BaseHtmlView
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		$app->setUserState('com_bwpostman.edit.mailinglist.id', Factory::getApplication()->input->getInt('id', 0));
+		$app->setUserState('com_bwpostman.edit.mailinglist.id', $app->input->getInt('id', 0));
 
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
@@ -170,15 +170,16 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function addToolbar()
 	{
-		Factory::getApplication()->input->set('hidemainmenu', true);
+		$app    = Factory::getApplication();
+		$app->input->set('hidemainmenu', true);
 		$uri		= Uri::getInstance();
-		$userId		= Factory::getApplication()->getIdentity()->get('id');
+		$userId		= $app->getIdentity()->get('id');
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document = Factory::getApplication()->getDocument();
+		$document = $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_ML_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_mailinglist.js');
@@ -247,7 +248,7 @@ class HtmlView extends BaseHtmlView
 		$backlink   = '';
 		if (key_exists('HTTP_REFERER', $_SERVER))
 		{
-			$backlink 	= Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
+			$backlink 	= $app->input->server->get('HTTP_REFERER', '', '');
 		}
 
 		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';

@@ -192,7 +192,7 @@ class HtmlView extends BaseHtmlView
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		$app->setUserState('com_bwpostman.edit.template.id', Factory::getApplication()->input->getInt('id', 0));
+		$app->setUserState('com_bwpostman.edit.template.id', $app->input->getInt('id', 0));
 
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
@@ -249,15 +249,16 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function addToolbar()
 	{
-		Factory::getApplication()->input->set('hidemainmenu', true);
+		$app    = Factory::getApplication();
+		$app->input->set('hidemainmenu', true);
 		$uri		= Uri::getInstance();
-		$userId		= Factory::getApplication()->getIdentity()->get('id');
+		$userId		= $app->getIdentity()->get('id');
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document = Factory::getApplication()->getDocument();
+		$document = $app->getDocument();
 		$document->setTitle(Text::_('BWP_TPL_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
@@ -331,7 +332,7 @@ class HtmlView extends BaseHtmlView
 			}
 		}
 
-		$backlink 	= Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
+		$backlink 	= $app->input->server->get('HTTP_REFERER', '', '');
 		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
 
 		// If we came from the cover page we will show a back-button

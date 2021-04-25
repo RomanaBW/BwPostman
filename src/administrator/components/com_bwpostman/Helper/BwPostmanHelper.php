@@ -602,7 +602,7 @@ class BwPostmanHelper
 			return;
 		}
 
-		$user        = Factory::getApplication()->getIdentity();
+		$user        = $app->getIdentity();
 		$permissions = array();
 
 		// Set permissions for component

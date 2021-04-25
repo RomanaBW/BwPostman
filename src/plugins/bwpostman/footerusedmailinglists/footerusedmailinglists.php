@@ -102,11 +102,12 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 */
 	public function onBwPostmanBeforeObligatoryFooterHtml(&$text)
 	{
-		$usedUgIds = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
+		$app       = Factory::getApplication();
+		$usedUgIds = $app->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
 
-		$mlAvailable = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_available', array());
-		$mlUnavailable = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_unavailable', array());
-		$mlIntern = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_intern', array());
+		$mlAvailable = $app->getUserState('com_bwpostman.edit.newsletter.data.ml_available', array());
+		$mlUnavailable = $app->getUserState('com_bwpostman.edit.newsletter.data.ml_unavailable', array());
+		$mlIntern = $app->getUserState('com_bwpostman.edit.newsletter.data.ml_intern', array());
 		$usedMlIds = array_merge($mlAvailable, $mlUnavailable, $mlIntern);
 
 		$usedMailinglists = $this->getUsedMailinglists($usedMlIds);
@@ -166,11 +167,12 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 */
 	public function onBwPostmanBeforeObligatoryFooterText(&$text)
 	{
-		$usedUgIds = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
+		$app       = Factory::getApplication();
+		$usedUgIds = $app->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
 
-		$mlAvailable = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_available', array());
-		$mlUnavailable = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_unavailable', array());
-		$mlIntern = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.ml_intern', array());
+		$mlAvailable = $app->getUserState('com_bwpostman.edit.newsletter.data.ml_available', array());
+		$mlUnavailable = $app->getUserState('com_bwpostman.edit.newsletter.data.ml_unavailable', array());
+		$mlIntern = $app->getUserState('com_bwpostman.edit.newsletter.data.ml_intern', array());
 		$usedMlIds = array_merge($mlAvailable, $mlUnavailable, $mlIntern);
 
 		$usedMailinglists = $this->getUsedMailinglists($usedMlIds);

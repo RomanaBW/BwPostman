@@ -175,7 +175,7 @@ class ArchiveController extends AdminController
 	public function unarchive()
 	{
 		$app    = Factory::getApplication();
-		$jinput = Factory::getApplication()->input;
+		$jinput = $app->input;
 
 		// Check for request forgeries
 		if (!Session::checkToken()) {
@@ -421,7 +421,8 @@ class ArchiveController extends AdminController
 	 */
 	public function delete()
 	{
-		$jinput	= Factory::getApplication()->input;
+		$app    = Factory::getApplication();
+		$jinput	= $app->input;
 
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -429,7 +430,6 @@ class ArchiveController extends AdminController
 			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
-		$app  = Factory::getApplication();
 		$tab  = $jinput->get('layout', 'newsletters');
 		$cid  = $jinput->get('cid', array(0), 'post');
 		$type = 'message';

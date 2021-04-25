@@ -917,7 +917,7 @@ class NewsletterModel extends AdminModel
 
 		$date = Factory::getDate();
 		$time = $date->toSql();
-		$user = Factory::getApplication()->getIdentity();
+		$user = $app->getIdentity();
 		$uid  = $user->get('id');
 
 		// Reset some item specific values

@@ -413,7 +413,7 @@ class SubscriberModel extends AdminModel
 		//initialize variables
 		$app        = Factory::getApplication();
 		$date       = Factory::getDate();
-		$user       = Factory::getApplication()->getIdentity();
+		$user       = $app->getIdentity();
 		$result     = true;
 		$subscriber = new stdClass();
 
@@ -554,7 +554,7 @@ class SubscriberModel extends AdminModel
 	{
 		$app  = Factory::getApplication();
 		$date = Factory::getDate();
-		$user = Factory::getApplication()->getIdentity();
+		$user = $app->getIdentity();
 		$db   = $this->_db;
 		$cid  = ArrayHelper::toInteger($cid);
 
@@ -678,7 +678,7 @@ class SubscriberModel extends AdminModel
 		}
 
 		$app     = Factory::getApplication();
-		$session = Factory::getApplication()->getSession();
+		$session = $app->getSession();
 		$ext     = '';
 		$dest    = '';
 
@@ -701,7 +701,7 @@ class SubscriberModel extends AdminModel
 
 		$date = Factory::getDate();
 		$time = $date->toSql();
-		$user = Factory::getApplication()->getIdentity();
+		$user = $app->getIdentity();
 
 		// Load the post data
 		$import_fields = $data['import_fields'];

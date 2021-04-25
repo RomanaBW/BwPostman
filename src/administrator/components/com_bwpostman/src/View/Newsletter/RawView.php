@@ -68,7 +68,7 @@ class RawView extends BaseHtmlView
 	public function display($tpl = null)
 	{
 		$app 	= Factory::getApplication();
-		$jinput	= Factory::getApplication()->input;
+		$jinput	= $app->input;
 
 		if (!BwPostmanHelper::canView('newsletter'))
 		{

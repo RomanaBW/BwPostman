@@ -142,7 +142,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app	= Factory::getApplication();
 
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= $app->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['archive'])
 		{
@@ -174,7 +174,7 @@ class HtmlView extends BaseHtmlView
 
 		$this->sidebar = JHtmlSidebar::render();
 
-		$document = Factory::getApplication()->getDocument();
+		$document = $app->getDocument();
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_unarchive.js');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_delete_cam_nls.js');
 

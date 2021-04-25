@@ -212,7 +212,7 @@ class Com_BwPostmanInstallerScript
 	public function preflight($type, InstallerAdapter $parent)
 	{
 		$app     = Factory::getApplication();
-		$session = Factory::getApplication()->getSession();
+		$session = $app->getSession();
 
 		if (function_exists('set_time_limit'))
 		{

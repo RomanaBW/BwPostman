@@ -221,7 +221,7 @@ class AvailablecontentField extends ListField
 		}
 		catch (RuntimeException $e)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$rows_list = array();
@@ -261,7 +261,7 @@ class AvailablecontentField extends ListField
 			}
 			catch (RuntimeException $e)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				$app->enqueueMessage($e->getMessage(), 'error');
 			}
 
 			if(count($rows_list) > 0)
@@ -298,7 +298,7 @@ class AvailablecontentField extends ListField
 		}
 		catch (RuntimeException $e)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		if(count($rows_list_uncat) > 0)

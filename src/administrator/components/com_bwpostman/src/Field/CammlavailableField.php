@@ -147,7 +147,7 @@ class CammlavailableField extends RadioField
 		}
 		catch (RuntimeException $e)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		$i = 0;
@@ -210,7 +210,7 @@ class CammlavailableField extends RadioField
 			}
 			catch (RuntimeException $e)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				$app->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 

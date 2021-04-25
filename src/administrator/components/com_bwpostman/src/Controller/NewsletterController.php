@@ -284,7 +284,7 @@ class NewsletterController extends FormController
 
 		if (!$allowed)
 		{
-			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 			$this->setRedirect(
 				Route::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend(),
@@ -456,7 +456,7 @@ class NewsletterController extends FormController
 			return false;
 		}
 
-		$lang    = Factory::getApplication()->getLanguage();
+		$lang    = $app->getLanguage();
 		$checkin = property_exists($table, 'checked_out');
 		$context = "$this->option.edit.$this->context";
 		$task    = (string)$this->getTask();

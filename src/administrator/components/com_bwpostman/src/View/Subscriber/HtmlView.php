@@ -184,10 +184,10 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl=null)
 	{
 		$app	= Factory::getApplication();
-		$jinput	= Factory::getApplication()->input;
+		$jinput	= $app->input;
 		$params = ComponentHelper::getParams('com_bwpostman');
 
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= $app->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['subscriber'])
 		{
@@ -307,7 +307,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app		= Factory::getApplication();
 		$params 	= ComponentHelper::getParams('com_bwpostman');
-		$session 	= Factory::getApplication()->getSession();
+		$session 	= $app->getSession();
 		$template	= $app->getTemplate();
 		$uri		= Uri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
@@ -437,18 +437,19 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function addToolbar()
 	{
-		Factory::getApplication()->input->set('hidemainmenu', true);
-		$uri		= Uri::getInstance();
-		$userId		= Factory::getApplication()->getIdentity()->get('id');
-		$layout		= Factory::getApplication()->input->get('layout', '');
-		$tester		= false;
-		$status 	= 1;
+		$app    = Factory::getApplication();
+		$app->input->set('hidemainmenu', true);
+		$uri    = Uri::getInstance();
+		$userId = $app->getIdentity()->get('id');
+		$layout = $app->input->get('layout', '');
+		$tester = false;
+		$status = 1;
 
 		if (is_object($this->item)) {
 			$status	= $this->item->status;
 		}
 
-		if (Factory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $status) == '9') {
+		if ($app->getUserState('com_bwpostman.subscriber.new_test', $status) == '9') {
 			$tester	= true;
 		}
 
@@ -456,7 +457,7 @@ class HtmlView extends BaseHtmlView
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document	= Factory::getApplication()->getDocument();
+		$document	= $app->getDocument();
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber.js');
 
@@ -577,8 +578,8 @@ class HtmlView extends BaseHtmlView
 					$toolbar->cancel('subscriber.cancel', 'JTOOLBAR_CLOSE');
 				}
 
-				$backlink 	= Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
-				$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
+				$backlink = $app->input->server->get('HTTP_REFERER', '', '');
+				$siteURL  = $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
 
 				// If we came from the cover page we will show a back-button
 				if ($backlink == $siteURL)

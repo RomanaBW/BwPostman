@@ -108,7 +108,7 @@ class HtmlView extends BaseHtmlView
 		$app        = Factory::getApplication();
 		$id         = $app->input->getInt('id', 0);
 		$params     = ComponentHelper::getParams('com_bwpostman');
-		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+		$MvcFactory = $app->bootComponent('com_bwpostman')->getMVCFactory();
 
 		// Count how often the newsletter has been viewed
 		$newsletter = $MvcFactory->createTable('Newsletter', 'Administrator');
@@ -119,7 +119,7 @@ class HtmlView extends BaseHtmlView
 		$templateName	= $app->getTemplate();
 		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
 
-		$document = Factory::getApplication()->getDocument();
+		$document = $app->getDocument();
 		if ($params->get('page_heading') != '')
 		{
 			$document->setTitle($params->get('page_title'));
@@ -184,7 +184,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// Setting the backlink
-		$backlink = Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
+		$backlink = $app->input->server->get('HTTP_REFERER', '', '');
 
 		// Save a reference into the view
 		$this->backlink = $backlink;

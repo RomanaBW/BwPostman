@@ -218,7 +218,7 @@ class BwpostmanModel extends BaseDatabaseModel
 	{
 		$app  = Factory::getApplication();
 		$db   = $this->_db;
-		$user = Factory::getApplication()->getIdentity();
+		$user = $app->getIdentity();
 
 		$statePermissions = $app->getUserState('com_bwpm.permissions');
 
@@ -313,7 +313,7 @@ class BwpostmanModel extends BaseDatabaseModel
 		try
 		{
 //			$asset  = Table::getInstance('asset');
-			$MvcFactory  = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+			$MvcFactory  = $app->bootComponent('com_bwpostman')->getMVCFactory();
 			$asset  = $MvcFactory->createTable('asset');
 			$result = $asset->loadByName($permission['component']);
 

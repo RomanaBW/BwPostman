@@ -161,7 +161,7 @@ class TemplateModel extends AdminModel
 		$app       = Factory::getApplication();
 		$cid       = $app->getUserState('com_bwpostman.edit.template.id', 0);
 		$data      = $app->getUserState('com_bwpostman.edit.template.data', null);
-		$jinput    = Factory::getApplication()->input;
+		$jinput    = $app->input;
 		$form_data = $jinput->get('jform', '', 'array');
 
 		// no $data and no $form_data - standard
@@ -205,7 +205,7 @@ class TemplateModel extends AdminModel
 				}
 				catch (RuntimeException $e)
 				{
-					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					$app->enqueueMessage($e->getMessage(), 'error');
 				}
 
 				if (!empty($newitems))
@@ -491,7 +491,7 @@ class TemplateModel extends AdminModel
 		$db   = $this->_db;
 		$app  = Factory::getApplication();
 		$date = Factory::getDate();
-		$uid  = Factory::getApplication()->getIdentity()->get('id');
+		$uid  = $app->getIdentity()->get('id');
 		$cid  = ArrayHelper::toInteger($cid);
 
 		if ($archive == 1)
@@ -574,7 +574,7 @@ class TemplateModel extends AdminModel
 
 		if (count($pks))
 		{
-			$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+			$MvcFactory = $app->bootComponent('com_bwpostman')->getMVCFactory();
 
 			$lists_table = $MvcFactory->createTable('Template', 'Administrator');
 			$tags_table = $MvcFactory->createTable('TemplatesTags', 'Administrator');

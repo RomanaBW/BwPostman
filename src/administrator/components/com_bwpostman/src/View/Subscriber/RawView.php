@@ -74,7 +74,7 @@ class RawView extends BaseHtmlView
 		$jinput	= $app->input;
 		$task	= $jinput->get('task', 'export');
 
-		$document	= Factory::getApplication()->getDocument();
+		$document	= $app->getDocument();
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber.js');
 
 		if ($task == 'insideModal')
@@ -90,7 +90,7 @@ class RawView extends BaseHtmlView
 		}
 		else
 		{
-			$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+			$this->permissions = $app->getUserState('com_bwpm.permissions');
 
 			if (!$this->permissions['view']['subscriber'])
 			{

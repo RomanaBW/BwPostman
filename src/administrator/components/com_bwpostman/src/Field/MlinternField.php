@@ -147,7 +147,7 @@ class MlinternField extends RadioField
 			}
 			catch (RuntimeException $e)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				$app->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -166,7 +166,7 @@ class MlinternField extends RadioField
 			}
 			catch (RuntimeException $e)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				$app->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -228,7 +228,7 @@ class MlinternField extends RadioField
 			}
 			catch (RuntimeException $e)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+				$app->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
 
@@ -246,7 +246,7 @@ class MlinternField extends RadioField
 		}
 		catch (RuntimeException $e)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

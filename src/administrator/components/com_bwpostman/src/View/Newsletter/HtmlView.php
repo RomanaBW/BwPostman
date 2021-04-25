@@ -203,7 +203,7 @@ class HtmlView extends BaseHtmlView
 		$log_options  = array();
 		$this->logger = BwLogger::getInstance($log_options);
 
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = $app->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['newsletter'])
 		{
@@ -259,15 +259,16 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function addToolbar()
 	{
-		Factory::getApplication()->input->set('hidemainmenu', true);
-		$userId		= Factory::getApplication()->getIdentity()->get('id');
-		$layout		= Factory::getApplication()->input->get('layout', '');
+		$app    = Factory::getApplication();
+		$app->input->set('hidemainmenu', true);
+		$userId		= $app->getIdentity()->get('id');
+		$layout		= $app->input->get('layout', '');
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document	= Factory::getApplication()->getDocument();
+		$document	= $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		HTMLHelper::_('jquery.framework');
@@ -322,7 +323,7 @@ class HtmlView extends BaseHtmlView
 					}
 				);
 
-				$task		= Factory::getApplication()->input->get('task', '', 'string');
+				$task		= $app->input->get('task', '', 'string');
 				// If we came from the main page we will show a back button
 				if ($task == 'add')
 				{

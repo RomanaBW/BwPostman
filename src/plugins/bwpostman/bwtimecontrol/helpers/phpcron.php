@@ -162,12 +162,12 @@ class BwPostmanPhpCron {
 	public function __construct()
 	{
 		/* Create the Application */
-		$app = Factory::getApplication('site');
+		$app = Factory::getApplication();
 		$app->initialise();
 		$this->app = $app;
 
 		// Load the language file
-		$language = Factory::getApplication()->getLanguage();
+		$language = $app->getLanguage();
 		$language->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
 
 		// Load the plugin system

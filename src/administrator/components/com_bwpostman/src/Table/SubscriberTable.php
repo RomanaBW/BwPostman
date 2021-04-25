@@ -418,7 +418,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			}
 		}
 
-		$session = Factory::getApplication()->getSession();
+		$session = $app->getSession();
 		$err     = $session->get('session_error');
 		$fault   = false;
 

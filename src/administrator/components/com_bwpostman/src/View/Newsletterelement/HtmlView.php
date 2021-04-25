@@ -103,7 +103,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app = Factory::getApplication();
 
-		$user		= Factory::getApplication()->getIdentity();
+		$user		= $app->getIdentity();
 		$uri		= Uri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
@@ -117,7 +117,7 @@ class HtmlView extends BaseHtmlView
 		$search				= StringHelper::strtolower($search);
 
 		// Get document object, set document title and add css
-		$document = Factory::getApplication()->getDocument();
+		$document = $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_SELECTNEWSLETTER'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 

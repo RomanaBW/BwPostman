@@ -202,7 +202,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app = Factory::getApplication();
 
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = $app->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['subscriber'])
 		{
@@ -226,7 +226,7 @@ class HtmlView extends BaseHtmlView
 		$this->addToolbar();
 
 		// Show the layout depending on the tab
-		$tpl = Factory::getApplication()->input->get('tab', '');
+		$tpl = $app->input->get('tab', '');
 
 		if ($tpl === '')
 		{
@@ -256,7 +256,7 @@ class HtmlView extends BaseHtmlView
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document = Factory::getApplication()->getDocument();
+		$document = $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_SUBS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscribers.js');

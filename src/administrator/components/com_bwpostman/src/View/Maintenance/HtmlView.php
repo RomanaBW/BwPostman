@@ -156,7 +156,7 @@ class HtmlView extends BaseHtmlView
 
 		PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= $app->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['maintenance'])
 		{
@@ -164,7 +164,7 @@ class HtmlView extends BaseHtmlView
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		$jinput		= Factory::getApplication()->input;
+		$jinput		= $app->input;
 		$model		= $this->getModel();
 		$layout		= $jinput->getCmd('layout', '');
 
@@ -243,13 +243,14 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function addToolbar()
 	{
-		$layout		= Factory::getApplication()->input->getCmd('layout', '');
+		$app    = Factory::getApplication();
+		$layout = $app->input->getCmd('layout', '');
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document = Factory::getApplication()->getDocument();
+		$document = $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN'));
 		/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = $document->getWebAssetManager();
@@ -269,7 +270,7 @@ class HtmlView extends BaseHtmlView
 		// Set toolbar items for the page
 		if ($layout == 'restoreTables')
 		{
-			Factory::getApplication()->input->set('hidemainmenu', true);
+			$app->input->set('hidemainmenu', true);
 			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
 			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
 
@@ -280,7 +281,7 @@ class HtmlView extends BaseHtmlView
 
 		if ($layout == 'doRestore')
 		{
-			Factory::getApplication()->input->set('hidemainmenu', true);
+			$app->input->set('hidemainmenu', true);
 			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
 			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
 
@@ -291,7 +292,7 @@ class HtmlView extends BaseHtmlView
 
 		if ($layout == 'checkTables')
 		{
-			Factory::getApplication()->input->set('hidemainmenu', true);
+			$app->input->set('hidemainmenu', true);
 			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
 			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
 

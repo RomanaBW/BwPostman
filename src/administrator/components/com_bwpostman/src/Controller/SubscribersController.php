@@ -188,8 +188,8 @@ class SubscribersController extends AdminController
 	 */
 	public function prepareImport()
 	{
-		$jinput = Factory::getApplication()->input;
 		$app    = Factory::getApplication();
+		$jinput = $app->input;
 
 		$delimiter  = '';
 		$enclosure  = '"';
@@ -273,7 +273,7 @@ class SubscribersController extends AdminController
 		}
 
 		//Get session object
-		$session = Factory::getApplication()->getSession();
+		$session = $app->getSession();
 		$session->set('import_general_data', $import_general_data);
 
 		// If the file isn't okay, redirect to import.php
@@ -557,8 +557,8 @@ class SubscribersController extends AdminController
 			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
-		$document = Factory::getApplication()->getDocument();
 		$app      = Factory::getApplication();
+		$document = $app->getDocument();
 		$jinput   = $app->input;
 		$post     = $jinput->getArray(
 			array(

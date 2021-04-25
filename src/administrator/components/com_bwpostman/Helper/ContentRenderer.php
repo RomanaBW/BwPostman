@@ -283,7 +283,8 @@ class ContentRenderer
 	 */
 	public function replaceContentHtml($id, $tpl)
 	{
-		$lang = Factory::getApplication()->getLanguage();
+		$app  = Factory::getApplication();
+		$lang = $app->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -377,10 +378,10 @@ class ContentRenderer
 					$link = str_replace('administrator/', '', $link);
 
 					// Trigger Plugin "substitutelinks"
-					if (Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+					if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 					{
 						PluginHelper::importPlugin('bwpostman');
-						Factory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
+						$app->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
 					}
 
 					$tag_readon = str_replace('[%readon_href%]', $link, $tag_readon);
@@ -417,7 +418,8 @@ class ContentRenderer
 	 */
 	public function replaceContentHtmlNew($id, $tpl)
 	{
-		$lang = Factory::getApplication()->getLanguage();
+		$app  = Factory::getApplication();
+		$lang = $app->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -499,10 +501,10 @@ class ContentRenderer
 				$content      = str_replace('[%content_text%]', $content_text, $content);
 
 				// Trigger Plugin "substitutelinks"
-				if (Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+				if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 				{
 					PluginHelper::importPlugin('bwpostman');
-					Factory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
+					$app->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
 				}
 
 				$content = str_replace('[%readon_href%]', $link, $content);
@@ -591,7 +593,8 @@ class ContentRenderer
 	 */
 	public function replaceContentText($id, $text_tpl)
 	{
-		$lang = Factory::getApplication()->getLanguage();
+		$app  = Factory::getApplication();
+		$lang = $app->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -625,10 +628,10 @@ class ContentRenderer
 				if ($text_tpl->article['show_readon'] == 1)
 				{
 					// Trigger Plugin "substitutelinks"
-					if (Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+					if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 					{
 						PluginHelper::importPlugin('bwpostman');
-						Factory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
+						$app->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
 					}
 
 					$content .= Text::_('READ_MORE') . ": \n" . str_replace('administrator/', '', $link) . "\n\n";
@@ -923,7 +926,7 @@ class ContentRenderer
 	public function addHTMLFooter(&$text, $templateId)
 	{
 		$app  = Factory::getApplication();
-		$lang = Factory::getApplication()->getLanguage();
+		$lang = $app->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -1004,7 +1007,8 @@ class ContentRenderer
 	 */
 	public function replaceTextTplLinks(&$text)
 	{
-		$lang = Factory::getApplication()->getLanguage();
+		$app  = Factory::getApplication();
+		$lang = $app->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -1029,10 +1033,10 @@ class ContentRenderer
 		$sitelink = '';
 
 		// Trigger Plugin "substitutelinks"
-		if(Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+		if($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 		{
 			PluginHelper::importPlugin('bwpostman');
-			Factory::getApplication()->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
+			$app->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
 		}
 
 		// replace edit and unsubscribe link
@@ -1058,7 +1062,8 @@ class ContentRenderer
 	 */
 	public function addTextFooter(&$text, $id)
 	{
-		$lang = Factory::getApplication()->getLanguage();
+		$app  = Factory::getApplication();
+		$lang = $app->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
@@ -1075,13 +1080,13 @@ class ContentRenderer
 		$sitelink = $uri->root();
 
 		PluginHelper::importPlugin('bwpostman');
-		Factory::getApplication()->triggerEvent('onBwPostmanBeforeObligatoryFooterText', array(&$text));
+		$app->triggerEvent('onBwPostmanBeforeObligatoryFooterText', array(&$text));
 
 		// Trigger Plugin "substitutelinks"
-		if(Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
+		if($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
 		{
 			PluginHelper::importPlugin('bwpostman');
-			Factory::getApplication()->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
+			$app->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
 		}
 
 		if (strpos($text, '[%impressum%]') !== false)

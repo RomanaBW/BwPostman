@@ -120,7 +120,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app		= Factory::getApplication();
 
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = $app->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['campaign'])
 		{
@@ -162,15 +162,16 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function addToolbar()
 	{
-		Factory::getApplication()->input->set('hidemainmenu', true);
+		$app    = Factory::getApplication();
+		$app->input->set('hidemainmenu', true);
 		$uri		= Uri::getInstance('SERVER');
-		$userId		= Factory::getApplication()->getIdentity()->get('id');
+		$userId		= $app->getIdentity()->get('id');
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		// Get document object, set document title and add css
-		$document = Factory::getApplication()->getDocument();
+		$document = $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_CAM_DETAILS'));
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_campaign.js');
@@ -239,7 +240,7 @@ class HtmlView extends BaseHtmlView
 				}
 
 				// Rename the cancel button for existing items
-				if (Factory::getApplication()->getUserState('bwtimecontrol.cam_data.nl_referrer', null) == 'remove')
+				if ($app->getUserState('bwtimecontrol.cam_data.nl_referrer', null) == 'remove')
 				{
 					$toolbar->cancel('campaign.save', 'JTOOLBAR_CLOSE');
 				}
@@ -250,8 +251,8 @@ class HtmlView extends BaseHtmlView
 			}
 		}
 
-		Factory::getApplication()->setUserState('bwtimecontrol.cam_data.nl_referrer', null);
-		$backlink 	= Factory::getApplication()->input->server->get('HTTP_REFERER', '', '');
+		$app->setUserState('bwtimecontrol.cam_data.nl_referrer', null);
+		$backlink 	= $app->input->server->get('HTTP_REFERER', '', '');
 		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
 
 		// If we came from the cover page we will show a back-button

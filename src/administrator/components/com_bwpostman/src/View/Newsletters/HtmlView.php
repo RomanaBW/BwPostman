@@ -174,7 +174,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app	= Factory::getApplication();
 
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= $app->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['newsletter'])
 		{
@@ -182,7 +182,7 @@ class HtmlView extends BaseHtmlView
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		$jinput		= Factory::getApplication()->input;
+		$jinput		= $app->input;
 		$uri		= Uri::getInstance();
 
 		//check for queue entries

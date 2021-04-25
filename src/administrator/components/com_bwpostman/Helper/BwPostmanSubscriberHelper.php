@@ -293,7 +293,7 @@ class BwPostmanSubscriberHelper
 			$name = $firstname . ' ' . $name;
 		} //Cat fo full name
 
-		$sitename = Factory::getApplication()->getConfig()->get('sitename');
+		$sitename = $app->getConfig()->get('sitename');
 		$siteURL  = Uri::root();
 
 		$active_title      = Text::_($params->get('activation_salutation_text'));
@@ -396,7 +396,7 @@ class BwPostmanSubscriberHelper
 					);
 				}
 				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
-				Factory::getApplication()->enqueueMessage(Text::_("COM_BWPOSTMAN_SEND_CONFIRM_SCREEN_MSG"));
+				$app->enqueueMessage(Text::_("COM_BWPOSTMAN_SEND_CONFIRM_SCREEN_MSG"));
 				break;
 			case 4: // Send registration mail because of import or new account
 				$subject 	= Text::sprintf('COM_BWPOSTMAN_SUB_SEND_REGISTRATION_SUBJECT', $sitename);

@@ -113,7 +113,7 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl=null)
 	{
 		$app      = Factory::getApplication();
-		$document = Factory::getApplication()->getDocument();
+		$document = $app->getDocument();
 		$layout   = $this->getLayout();
 		$params   = ComponentHelper::getParams('com_bwpostman', true);
 

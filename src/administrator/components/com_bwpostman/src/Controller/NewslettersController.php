@@ -328,7 +328,7 @@ class NewslettersController extends AdminController
 	public function changeTab()
 	{
 		$app	= Factory::getApplication();
-		$jinput	= Factory::getApplication()->input;
+		$jinput	= $app->input;
 		$tab	= $jinput->get('tab', 'unsent');
 
 		$app->setUserState('com_bwpostman.newsletters.tab', $tab);

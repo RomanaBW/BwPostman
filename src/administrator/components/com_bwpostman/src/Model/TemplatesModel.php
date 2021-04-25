@@ -970,12 +970,12 @@ class TemplatesModel extends ListModel
 		// @Karl: This method is never called? Perhaps to do at constructor?
 		if (!isset($this->basename))
 		{
-			$jinput         = Factory::getApplication()->input;
+			$app            = Factory::getApplication();
+			$jinput         = $app->input;
 			$this->exportId = $jinput->get('id');
 
 			jimport('joomla.filesystem.file');
 
-			$app            = Factory::getApplication();
 			$this->tmp_path = $app->get('tmp_path') . '/';
 
 			$basename = 'bwpostman_template_export_id_' . $this->exportId . '.zip';

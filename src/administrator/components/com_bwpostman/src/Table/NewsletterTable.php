@@ -946,8 +946,8 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	public function store($updateNulls = false)
 	{
 		$date = Factory::getDate();
-		$user = Factory::getApplication()->getIdentity();
 		$app  = Factory::getApplication();
+		$user = $app->getIdentity();
 		$id   = $this->id;
 
 		if ($id)

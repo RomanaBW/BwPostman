@@ -140,7 +140,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app	= Factory::getApplication();
 
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = $app->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['campaign'])
 		{
@@ -159,7 +159,7 @@ class HtmlView extends BaseHtmlView
 		$this->total			= $this->get('total');
 
 		// trigger Plugin BwTimeControl event and get results
-//		$this->auto_nbr	= Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepare', array (&$this->items));
+//		$this->auto_nbr	= $app->triggerEvent('onBwPostmanCampaignsPrepare', array (&$this->items));
 
 		$this->addToolbar();
 

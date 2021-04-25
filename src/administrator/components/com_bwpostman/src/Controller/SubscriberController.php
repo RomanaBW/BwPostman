@@ -248,7 +248,7 @@ class SubscriberController extends FormController
 
 		if (!$allowed)
 		{
-			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
 			$this->setRedirect(
 				Route::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_list
@@ -510,7 +510,7 @@ class SubscriberController extends FormController
 		$vars     = $jinput->post->get('batch', array(), 'array');
 		$cid      = $jinput->post->get('cid', array(), 'array');
 		$cid      = ArrayHelper::toInteger($cid);
-		$old_list = Factory::getApplication()->getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
+		$old_list = $app->getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
 		$message  = '';
 
 		// Build an array of item contexts to check

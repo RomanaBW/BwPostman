@@ -313,7 +313,7 @@ class MaintenanceController extends BaseController
 			// Check if the file has the right extension, we need xml
 			// --> if the extension is wrong, redirect to restoretables.php
 			$fileExt = File::getExt($filename);
-			$dest    = Factory::getApplication()->getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $fileExt;
+			$dest    = $app->getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $fileExt;
 
 			if ($fileExt !== 'xml' && $fileExt !== 'zip')
 			{

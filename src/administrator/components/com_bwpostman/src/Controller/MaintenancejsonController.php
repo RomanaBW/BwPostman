@@ -109,7 +109,8 @@ class MaintenancejsonController extends AdminController
 	 */
 	public function tCheck()
 	{
-		$session = Factory::getApplication()->getSession();
+		$app     = Factory::getApplication();
+		$session = $app->getSession();
 		$model   = new MaintenanceModel();
 
 		try
@@ -119,7 +120,6 @@ class MaintenancejsonController extends AdminController
 				throw new Exception((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
 			}
 
-			$app     = Factory::getApplication();
 			$jinput  = $app->input;
 
 			$step = $jinput->get('step', 0);
@@ -219,7 +219,7 @@ class MaintenancejsonController extends AdminController
 						// clear session variables
 						$session->clear('tcheck_needTa');
 						$session->clear('tcheck_inTaNa');
-						Factory::getApplication()->setUserState('com_bwpostman.maintenance.generals', null);
+						$app->setUserState('com_bwpostman.maintenance.generals', null);
 						$this->ready = "1";
 						$step = "8";
 					}
@@ -308,7 +308,8 @@ class MaintenancejsonController extends AdminController
 	 */
 	public function tRestore()
 	{
-		$session = Factory::getApplication()->getSession();
+		$app     = Factory::getApplication();
+		$session = $app->getSession();
 		$model   = new MaintenanceModel();
 
 		try
@@ -323,8 +324,6 @@ class MaintenancejsonController extends AdminController
 			{
 				set_time_limit(0);
 			}
-
-			$app = Factory::getApplication();
 
 			// Initialize variables
 			$jinput = $app->input;
@@ -347,7 +346,7 @@ class MaintenancejsonController extends AdminController
 				$session->set('trestore_tablenames', '');
 				$session->set('tcheck_needTa', '');
 				$session->set('tcheck_inTaNa', '');
-				Factory::getApplication()->setUserState('com_bwpostman.maintenance.modifiedAssets', array());
+				$app->setUserState('com_bwpostman.maintenance.modifiedAssets', array());
 			}
 
 			// start output buffer
@@ -416,7 +415,7 @@ class MaintenancejsonController extends AdminController
 					break;
 
 				case 'step3':
-					Factory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', '');
+					$app->setUserState('com_bwpostman.maintenance.com_assets', '');
 					// get needed tables from installation file
 					$neededTableNames = $this->getNeededTables($session, 1030);
 
@@ -630,7 +629,7 @@ class MaintenancejsonController extends AdminController
 
 				case 'step10':
 					// check table columns
-					$versionOfBackup = Factory::getApplication()->getUserState('com_bwpostman.maintenance.generals', null)['BwPostmanVersion'];
+					$versionOfBackup = $app->getUserState('com_bwpostman.maintenance.generals', null)['BwPostmanVersion'];
 
 					try
 					{
@@ -675,7 +674,7 @@ class MaintenancejsonController extends AdminController
 					// clear session variables
 					$session->clear('tcheck_needTa');
 					$session->clear('tcheck_inTaNa');
-					Factory::getApplication()->setUserState('com_bwpostman.maintenance.generals', null);
+					$app->setUserState('com_bwpostman.maintenance.generals', null);
 					$this->ready = "1";
 					$step = "13";
 
@@ -740,7 +739,7 @@ class MaintenancejsonController extends AdminController
 			$result           = $error . $session->get('trestore_content', '');
 
 			$this->handleBwException($errorCode, $result, $error, $step);
-			Factory::getApplication()->setUserState('com_bwpostman.maintenance.generals', null);
+			$app->setUserState('com_bwpostman.maintenance.generals', null);
 		}
 
 		catch (RuntimeException $e)

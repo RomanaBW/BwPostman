@@ -2669,10 +2669,12 @@ class MaintenanceModel extends BaseDatabaseModel
 	 */
 	public function healAssetUserGroups($table_names)
 	{
+		$app = Factory::getApplication();
+
 		// process user groups, if they exists in backup
-		$com_assets = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
-		$usergroups = Factory::getApplication()->getUserState('com_bwpostman.maintenance.usergroups', array());
-		$tmp_file   = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
+		$com_assets = $app->getUserState('com_bwpostman.maintenance.com_assets', array());
+		$usergroups = $app->getUserState('com_bwpostman.maintenance.usergroups', array());
+		$tmp_file   = $app->getUserState('com_bwpostman.maintenance.tmp_file', null);
 		$fp         = fopen($tmp_file, 'r');
 		$tables     = unserialize(fread($fp, filesize($tmp_file)));
 		$modifiedAssets = array();
@@ -2689,7 +2691,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 		}
 
-		Factory::getApplication()->setUserState('com_bwpostman.maintenance.modifiedAssets', $modifiedAssets);
+		$app->setUserState('com_bwpostman.maintenance.modifiedAssets', $modifiedAssets);
 
 		if (count($usergroups))
 		{
@@ -2708,7 +2710,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					return  false;
 				}
 
-				$com_assets = Factory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
+				$com_assets = $app->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
 
 				// rewrite table asset user groups
 				foreach ($table_names as $table)
@@ -2726,8 +2728,8 @@ class MaintenanceModel extends BaseDatabaseModel
 				}
 			}
 
-			Factory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
-			Factory::getApplication()->setUserState('com_bwpostman.maintenance.usergroups', '');
+			$app->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
+			$app->setUserState('com_bwpostman.maintenance.usergroups', '');
 
 			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_PROCESSED');
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
@@ -3159,7 +3161,8 @@ class MaintenanceModel extends BaseDatabaseModel
 			$generals['SaveDate'] = (string) $xml->database->Generals->SaveDate;
 		}
 
-		Factory::getApplication()->setUserState('com_bwpostman.maintenance.generals', $generals);
+		$app = Factory::getApplication();
+		$app->setUserState('com_bwpostman.maintenance.generals', $generals);
 
 		// Get component asset
 		$com_assets = array();
@@ -3182,7 +3185,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 		}
 
-		Factory::getApplication()->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
+		$app->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
 
 		// Get backed up user groups
 		$usergroups = array();
@@ -3198,7 +3201,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 		}
 
-		Factory::getApplication()->setUserState('com_bwpostman.maintenance.usergroups', $usergroups);
+		$app->setUserState('com_bwpostman.maintenance.usergroups', $usergroups);
 
 		// Get all tables from the xml file converted to arrays recursively, results in an array/list of table-arrays
 		$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_DATA');
@@ -3250,7 +3253,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		unset($table);
 
 		// get buffer file
-		$tmp_file = Factory::getApplication()->getConfig()->get('tmp_path') . '/bwpostman_restore.tmp';
+		$tmp_file = $app->getConfig()->get('tmp_path') . '/bwpostman_restore.tmp';
 		$fp       = fopen($tmp_file, 'w+');
 
 		if ($fp === false)
@@ -3412,7 +3415,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		echo '<p class="text-success">' . $message . '</p><br />';
 
-		Factory::getApplication()->setUserState('com_bwpostman.maintenance.tmp_file', $tmp_file);
+		$app->setUserState('com_bwpostman.maintenance.tmp_file', $tmp_file);
 		fclose($fp);
 
 		return $table_names;

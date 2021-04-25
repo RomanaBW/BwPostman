@@ -481,7 +481,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 		$this->archived_by         = $filter->clean($this->archived_by, 'INT');
 
 		// unset standard template if task is save2copy
-		$task   = Factory::getApplication()->input->get('task', 0);
+		$task   = $app->input->get('task', 0);
 
 		if ($task == 'save2copy')
 		{

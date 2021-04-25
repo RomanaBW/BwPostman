@@ -78,7 +78,7 @@ class RawView extends BaseHtmlView
 	{
 		$app		= Factory::getApplication();
 
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= $app->getUserState('com_bwpm.permissions');
 
 		if (!$this->permissions['view']['template'])
 		{
@@ -87,12 +87,12 @@ class RawView extends BaseHtmlView
 		}
 
 		// load template data and decode object
-		$pre = Factory::getApplication()->getUserState('com_bwpostman.edit.template.tpldata');
+		$pre = $app->getUserState('com_bwpostman.edit.template.tpldata');
 
 		$this->pre	= $pre;
 
 		// clear preview data
-		Factory::getApplication()->setUserState('com_bwpostman.edit.template.tpldata', null);
+		$app->setUserState('com_bwpostman.edit.template.tpldata', null);
 
 		// Call parent display
 		parent::display($tpl);

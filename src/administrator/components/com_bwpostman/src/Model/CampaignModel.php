@@ -274,7 +274,7 @@ class CampaignModel extends AdminModel
 	{
 		// Get the form.
 		$form     = $this->loadForm('com_bwpostman.campaign', 'Campaign', array('control' => 'jform', 'load_data' => $loadData));
-		$nullDate = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
+		$nullDate = $this->_db->getNullDate();
 
 		if (empty($form))
 		{

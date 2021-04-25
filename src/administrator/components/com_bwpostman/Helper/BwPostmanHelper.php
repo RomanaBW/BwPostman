@@ -206,7 +206,7 @@ class BwPostmanHelper
 	 */
 	static public function getInstalledBwPostmanVersion()
 	{
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));
@@ -1246,7 +1246,7 @@ class BwPostmanHelper
 	 */
 	public static function getMailinglistsWarning()
 	{
-		$_db          = Factory::getContainer()->get('DatabaseDriver');
+		$_db          = Factory::getDbo();
 		$query        = $_db->getQuery(true);
 		$ml_published = '';
 
@@ -1288,7 +1288,7 @@ class BwPostmanHelper
 	{
 		$queueEntriesAtLimit = array();
 
-		$db   = Factory::getContainer()->get('DatabaseDriver');
+		$db   = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		// Get queue entries, which cannot be sent because sending trials have reached limit
@@ -1679,7 +1679,7 @@ class BwPostmanHelper
 
 		if (!$creatorId)
 		{
-			$db	= Factory::getContainer()->get('DatabaseDriver');
+			$db	= Factory::getDbo();
 			$query	= $db->getQuery(true);
 
 			$query->select($db->quoteName($createdPropertyName));
@@ -1780,7 +1780,7 @@ class BwPostmanHelper
 			$itemsToCheck[] = $itemRecord['id'];
 		}
 
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -1818,7 +1818,7 @@ class BwPostmanHelper
 	private static function getSectionAssetNames($view)
 	{
 		$asset_records  = array();
-		$_db            = Factory::getContainer()->get('DatabaseDriver');
+		$_db            = Factory::getDbo();
 
 		try
 		{
@@ -1975,7 +1975,7 @@ class BwPostmanHelper
 		{
 			try
 			{
-				$_db	= Factory::getContainer()->get('DatabaseDriver');
+				$_db	= Factory::getDbo();
 				$query	= $_db->getQuery(true);
 
 				$query->select($_db->quoteName($field));

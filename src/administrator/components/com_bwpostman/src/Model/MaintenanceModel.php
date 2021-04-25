@@ -217,9 +217,9 @@ class MaintenanceModel extends BaseDatabaseModel
 		$logOptions   = array();
 		$this->logger = BwLogger::getInstance($logOptions);
 
-		$this->db = Factory::getContainer()->get('DatabaseDriver');
-
 		parent::__construct();
+
+		$this->db = $this->_db;
 	}
 
 	/**
@@ -1096,7 +1096,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	public static function getGenericTableName($table)
 	{
 		// get db prefix
-		$prefix = Factory::getContainer()->get('DatabaseDriver')->getPrefix();
+		$prefix = Factory::getDbo()->getPrefix();
 
 		// Replace the magic prefix if found.
 		$table = preg_replace("|^$prefix|", '#__', $table);

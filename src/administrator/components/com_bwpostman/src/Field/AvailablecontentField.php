@@ -134,7 +134,7 @@ class AvailablecontentField extends ListField
 		$user_id = null;
 
 		// prepare query
-		$db         = Factory::getContainer()->get('DatabaseDriver');
+		$db         = Factory::getDbo();
 		$query_user = $db->getQuery(true);
 
 		// get user_ids if exists
@@ -172,7 +172,7 @@ class AvailablecontentField extends ListField
 	private function getAvailableContent()
 	{
 		$app        = Factory::getApplication();
-		$db         = Factory::getContainer()->get('DatabaseDriver');
+		$db         = Factory::getDbo();
 		$query      = $db->getQuery(true);
 		$options    = array();
 		$categories = array();

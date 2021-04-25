@@ -150,7 +150,7 @@ class HtmltemplatesField extends RadioField
 		$item		= $app->getUserState('com_bwpostman.edit.newsletter.data', null);
 
 		// prepare query
-		$db		= Factory::getContainer()->get('DatabaseDriver');
+		$db		= Factory::getDbo();
 
 		// Build the select list for the templates
 		$query = $db->getQuery(true);

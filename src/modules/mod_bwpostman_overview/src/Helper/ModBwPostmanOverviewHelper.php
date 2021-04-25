@@ -188,7 +188,7 @@ class ModBwPostmanOverviewHelper
 	 */
 	private static function getAccessibleMailinglists(Registry $params)
 	{
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$check = $params->get('access-check', 1);
 
@@ -272,7 +272,7 @@ class ModBwPostmanOverviewHelper
 	 */
 	private static function getAccessibleCampaigns(Registry $params)
 	{
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$check = $params->get('access-check');
 
@@ -379,7 +379,7 @@ class ModBwPostmanOverviewHelper
 	 */
 	private static function getAccessibleUsergroups(Registry $params)
 	{
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$check = $params->get('access-check', 1);
 
@@ -468,7 +468,7 @@ class ModBwPostmanOverviewHelper
 	private static function getUniqueNlIds(array $mls, array $cams, Registry $params)
 	{
 		// Get database
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		// Define null and now dates
@@ -580,7 +580,7 @@ class ModBwPostmanOverviewHelper
 	private static function getNlCountList(array $nls)
 	{
 		// Get database
-		$db = Factory::getContainer()->get('DatabaseDriver');
+		$db = Factory::getDbo();
 
 		$query = $db->getQuery(true);
 		$query->select($query->month($db->quoteName('a.mailing_date')) . ' AS sent_month');

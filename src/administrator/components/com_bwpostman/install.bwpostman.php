@@ -162,7 +162,7 @@ class Com_BwPostmanInstallerScript
 	private function bwpostman_install()
 	{
 		/*
-		$db = Factory::getContainer()->get('DatabaseDriver');
+		$db = Factory::getDbo();
 		$query = 'INSERT INTO '. $db->quoteName('#__postinstall_messages') .
 		' ( `extension_id`,
 				  `title_key`,
@@ -258,7 +258,7 @@ class Com_BwPostmanInstallerScript
 			jimport('joomla.filesystem.folder');
 		}
 
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('params'));
@@ -480,7 +480,7 @@ class Com_BwPostmanInstallerScript
 
 		Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_UNINSTALL_FOLDER_BWPOSTMAN', $image_path), 'notice');
 
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->delete($db->quoteName('#__postinstall_messages'));
 		$query->where($db->quoteName('language_extension') . ' = ' . $db->quote('com_bwpostman'));
@@ -510,7 +510,7 @@ class Com_BwPostmanInstallerScript
 	private function getManifestVar($name)
 	{
 		$manifest = array();
-		$db       = Factory::getContainer()->get('DatabaseDriver');
+		$db       = Factory::getDbo();
 		$query    = $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));
@@ -543,7 +543,7 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function correctCamId()
 	{
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->update($db->quoteName('#__bwpostman_newsletters'));
@@ -575,7 +575,7 @@ class Com_BwPostmanInstallerScript
 	private function fillCamCrossTable()
 	{
 		$all_cams = array();
-		$db       = Factory::getContainer()->get('DatabaseDriver');
+		$db       = Factory::getDbo();
 		$query    = $db->getQuery(true);
 
 		// First get all campaigns
@@ -754,7 +754,7 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function checkSampleTemplates()
 	{
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -1009,7 +1009,7 @@ class Com_BwPostmanInstallerScript
 	{
 		try
 		{
-			$db               = Factory::getContainer()->get('DatabaseDriver');
+			$db               = Factory::getDbo();
 			$user_id          = Factory::getApplication()->getIdentity()->get('id');
 			$bwpostman_groups = array(0);
 			$query            = $db->getQuery(true);
@@ -1240,7 +1240,7 @@ class Com_BwPostmanInstallerScript
 	private function getGroupId($name)
 	{
 		$result = false;
-		$db     = Factory::getContainer()->get('DatabaseDriver');
+		$db     = Factory::getDbo();
 		$query  = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -1273,7 +1273,7 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function removeDoubleExtensionsEntries()
 	{
-		$db          = Factory::getContainer()->get('DatabaseDriver');
+		$db          = Factory::getDbo();
 		$extensionId = $this->getExtensionId(0);
 
 		if ($extensionId)
@@ -1470,7 +1470,7 @@ class Com_BwPostmanInstallerScript
 	protected function processSqlUpdate($oldVersion)
 	{
 		$update_count = 0;
-		$db           = Factory::getContainer()->get('DatabaseDriver');
+		$db           = Factory::getDbo();
 		$schemapath   = JPATH_ROOT . '/administrator/components/com_bwpostman/sql/updates/mysql';
 		$extensionId  = $this->getExtensionId(1);
 
@@ -1814,7 +1814,7 @@ class Com_BwPostmanInstallerScript
 	private function installdata(&$sql)
 	{
 		$app = Factory::getApplication();
-		$db  = Factory::getContainer()->get('DatabaseDriver');
+		$db  = Factory::getDbo();
 
 		//we call sql file for the templates data
 		$buffer = file_get_contents(JPATH_ADMINISTRATOR . '/components/com_bwpostman/sql/' . $sql);
@@ -1924,7 +1924,7 @@ class Com_BwPostmanInstallerScript
 
 		$params	= json_encode($params_default);
 
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->update($db->quoteName('#__extensions'));
@@ -1974,7 +1974,7 @@ class Com_BwPostmanInstallerScript
 							);
 		// get stored component rules
 		$current_rules = array();
-		$db            = Factory::getContainer()->get('DatabaseDriver');
+		$db            = Factory::getDbo();
 		$query         = $db->getQuery(true);
 
 		$query->select($db->quoteName('rules'));
@@ -2030,7 +2030,7 @@ class Com_BwPostmanInstallerScript
 	{
 		$rootRules = null;
 
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('rules'));
@@ -2059,7 +2059,7 @@ class Com_BwPostmanInstallerScript
 	 */
 	private function saveRootAsset($newRootRules)
 	{
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->update($db->quoteName('#__assets'));
@@ -2089,7 +2089,7 @@ class Com_BwPostmanInstallerScript
  */
 	private function getExtensionId($clientId)
 	{
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$result = 0;
 
 		$query = $db->getQuery(true);

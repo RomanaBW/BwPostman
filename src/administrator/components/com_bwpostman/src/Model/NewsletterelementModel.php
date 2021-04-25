@@ -195,7 +195,7 @@ class NewsletterelementModel extends BaseDatabaseModel
 	private function buildQuery()
 	{
 		$app   = Factory::getApplication();
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		// Build the query

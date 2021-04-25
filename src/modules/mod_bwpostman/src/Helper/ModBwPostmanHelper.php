@@ -97,7 +97,7 @@ class ModBwPostmanHelper
 	{
 		$mailinglists = array();
 
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('*');
@@ -146,7 +146,7 @@ class ModBwPostmanHelper
 	{
 		$subscriberid = null;
 
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -181,7 +181,7 @@ class ModBwPostmanHelper
 	 */
 	public static function getUserData(int $userid)
 	{
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 		$id		= 0;
 		$user   = null;
 		$query	= $db->getQuery(true);

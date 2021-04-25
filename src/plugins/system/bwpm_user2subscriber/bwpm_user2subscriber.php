@@ -210,7 +210,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function setBwPostmanComponentStatus()
 	{
-		$_db        = Factory::getContainer()->get('DatabaseDriver');
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -246,7 +246,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function setBwPostmanComponentVersion()
 	{
-		$_db        = Factory::getContainer()->get('DatabaseDriver');
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -950,7 +950,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$activation_ip  = $this->app->input->server->get('REMOTE_ADDR', '', '');
 		$subscriber_id  = BwpmUser2SubscriberHelper::getSubscriberIdByEmail($user_mail);
 
-		$_db	= Factory::getContainer()->get('DatabaseDriver');
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$date   = Factory::getDate();
@@ -1035,7 +1035,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$result = false;
 
-		$_db	= Factory::getContainer()->get('DatabaseDriver');
+		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -1163,7 +1163,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		try
 		{
-			$_db	= Factory::getContainer()->get('DatabaseDriver');
+			$_db	= Factory::getDbo();
 			$query	= $_db->getQuery(true);
 
 			$query->delete($_db->quoteName('#__bwpostman_subscribers'));
@@ -1198,7 +1198,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		try
 		{
-			$_db	= Factory::getContainer()->get('DatabaseDriver');
+			$_db	= Factory::getDbo();
 			$query	= $_db->getQuery(true);
 
 			$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
@@ -1245,7 +1245,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 			if ($this->stored_subscriber_data['id'] != 0)
 			{
-				$_db	= Factory::getContainer()->get('DatabaseDriver');
+				$_db	= Factory::getDbo();
 				$query	= $_db->getQuery(true);
 
 				$query->update($_db->quoteName('#__bwpostman_subscribers'));

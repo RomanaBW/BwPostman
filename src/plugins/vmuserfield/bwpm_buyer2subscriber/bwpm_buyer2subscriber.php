@@ -207,7 +207,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setComponentStatus()
 	{
-		$_db        = Factory::getContainer()->get('DatabaseDriver');
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -243,7 +243,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setComponentVersion()
 	{
-		$_db        = Factory::getContainer()->get('DatabaseDriver');
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -278,7 +278,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setUser2SubscriberPluginStatus()
 	{
-		$_db        = Factory::getContainer()->get('DatabaseDriver');
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -314,7 +314,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setBuyer2SubscriberPluginStatus()
 	{
-		$_db        = Factory::getContainer()->get('DatabaseDriver');
+		$_db        = Factory::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));

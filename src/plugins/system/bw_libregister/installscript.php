@@ -98,7 +98,7 @@ class PlgSystemBW_LibregisterInstallerScript
 		// We only need to perform this if the extension is being installed, not update
 		if ($type == 'install')
 		{
-			$db = Factory::getContainer()->get('DatabaseDriver');
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			$fields = array(

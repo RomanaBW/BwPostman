@@ -233,7 +233,7 @@ class BwPostmanPhpCron {
 	protected function getStoredParams($extensionId)
 	{
 		$storedParams = array();
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('params'));
@@ -290,7 +290,7 @@ class BwPostmanPhpCron {
 	public function getKeyFromDatabase()
 	{
 		$keyValues = new stdClass();
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('priv'));
@@ -333,7 +333,7 @@ class BwPostmanPhpCron {
 	{
 		$oldPassword = null;
 		$params      = null;
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('params'));
@@ -370,7 +370,7 @@ class BwPostmanPhpCron {
 	public function getNonceFromDatabase()
 	{
 		$nonce = null;
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('nonce'));
@@ -729,7 +729,7 @@ class BwPostmanPhpCron {
 	{
 		$pluginStateOld = 0;
 
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('enabled'));
@@ -762,7 +762,7 @@ class BwPostmanPhpCron {
 	{
 		$currentTime = date('Y-m-d H:i:s', time());
 
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('newsletter_id'));
@@ -805,7 +805,7 @@ class BwPostmanPhpCron {
 	 */
 	public function checkMailingDate($scheduledNls)
 	{
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 
 		$query	= $db->getQuery(true);
 
@@ -990,7 +990,7 @@ class BwPostmanPhpCron {
 	 */
 	public function setSentStatus($nlToSend)
 	{
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->update($db->quoteName('#__bwpostman_tc_schedule'));

@@ -47,7 +47,7 @@ $user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$nullDate   = Factory::getContainer()->get('DatabaseDriver')->getNullDate();
+$nullDate   = Factory::getDbo()->getNullDate();
 
 $iconImage = Uri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png';
 

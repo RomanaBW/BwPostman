@@ -208,7 +208,7 @@ class JFormFieldU2sMls extends CheckboxesField
 		}
 
 		// prepare query
-		$_db		= Factory::getContainer()->get('DatabaseDriver');
+		$_db		= Factory::getDbo();
 		$query		= $_db->getQuery(true);
 
 		$query->select("a.id AS value, a.title AS text, a.description");

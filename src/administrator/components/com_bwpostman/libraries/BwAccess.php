@@ -271,7 +271,7 @@ class BwAccess
 	{
 		$sectionRules = null;
 
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('rules'));
@@ -362,7 +362,7 @@ class BwAccess
 
 		foreach ($identities as $identity)
 		{
-			$db    = Factory::getContainer()->get('DatabaseDriver');
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select('p.parent_id');
@@ -597,7 +597,7 @@ class BwAccess
 
 		// Get the database connection object.
 		$assets     = null;
-		$db         = Factory::getContainer()->get('DatabaseDriver');
+		$db         = Factory::getDbo();
 		$extraQuery = $db->qn('name') . ' = ' . $db->q($extensionName) . ' OR ' . $db->qn('parent_id') . ' = 0';
 
 		// Get a fresh query object.
@@ -676,7 +676,7 @@ class BwAccess
 
 		// Get the database connection object.
 		$assets = null;
-		$db     = Factory::getContainer()->get('DatabaseDriver');
+		$db     = Factory::getDbo();
 
 		// Get the asset info for all assets in asset names list.
 		$query = $db->getQuery(true)
@@ -946,7 +946,7 @@ class BwAccess
 		}
 
 		// Get the database connection object.
-		$db = Factory::getContainer()->get('DatabaseDriver');
+		$db = Factory::getDbo();
 
 		// Build the database query to get the rules for the asset.
 		$query = $db->getQuery(true)
@@ -1046,7 +1046,7 @@ class BwAccess
 		}
 
 		// No preload. Return root asset id from Assets.
-		$assets = new Asset(Factory::getContainer()->get('DatabaseDriver'));
+		$assets = new Asset(Factory::getDbo());
 
 		return $assets->getRootId();
 	}
@@ -1089,7 +1089,7 @@ class BwAccess
 				// Else we have to do an extra db query to fetch it from the table fetch it from table.
 				else
 				{
-					$table = new Asset(Factory::getContainer()->get('DatabaseDriver'));
+					$table = new Asset(Factory::getDbo());
 					$table->load(array('name' => $assetKey));
 					$loaded[$assetKey] = $table->id;
 				}
@@ -1133,7 +1133,7 @@ class BwAccess
 			// Else we have to do an extra db query to fetch it from the table fetch it from table.
 			else
 			{
-				$table = new Asset(Factory::getContainer()->get('DatabaseDriver'));
+				$table = new Asset(Factory::getDbo());
 				$table->load($assetKey);
 				$loaded[$assetKey] = $table->name;
 			}
@@ -1260,7 +1260,7 @@ class BwAccess
 			// Registered user and guest if all groups are requested
 			else
 			{
-				$db = Factory::getContainer()->get('DatabaseDriver');
+				$db = Factory::getDbo();
 
 				// Build the database query to get the rules for the asset.
 				$query = $db->getQuery(true)
@@ -1331,7 +1331,7 @@ class BwAccess
 	public static function getUsersByGroup($groupId, $recursive = false)
 	{
 		// Get a database object.
-		$db = Factory::getContainer()->get('DatabaseDriver');
+		$db = Factory::getDbo();
 
 		$test = $recursive ? '>=' : '=';
 
@@ -1377,7 +1377,7 @@ class BwAccess
 		if (empty(self::$viewLevels))
 		{
 			// Get a database object.
-			$db = Factory::getContainer()->get('DatabaseDriver');
+			$db = Factory::getDbo();
 
 			// Build the base query.
 			$query = $db->getQuery(true)

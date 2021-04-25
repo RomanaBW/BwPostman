@@ -64,7 +64,7 @@ class CampaignsField extends ListField
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		// Get all published campaigns

@@ -182,7 +182,7 @@ class ContentRenderer
 	{
 		$row   = new stdClass();
 		$app   = Factory::getApplication();
-		$_db   = Factory::getContainer()->get('DatabaseDriver');
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('a') . '.*');
@@ -657,7 +657,7 @@ class ContentRenderer
 		if (Multilanguage::isEnabled())
 		{
 			$result = '';
-			$_db    = Factory::getContainer()->get('DatabaseDriver');
+			$_db    = Factory::getDbo();
 			$query  = $_db->getQuery(true);
 
 			$query->select($_db->quoteName('language'));

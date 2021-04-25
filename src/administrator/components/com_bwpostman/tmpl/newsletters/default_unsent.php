@@ -185,7 +185,7 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 											<td class="d-none d-lg-table-cell"><?php echo $this->escape($item->description); ?></td>
 											<td class="d-none d-xl-table-cell">
 												<?php
-												if ($item->modified_time !== Factory::getContainer()->get('DatabaseDriver')->getNullDate())
+												if ($item->modified_time !== Factory::getDbo()->getNullDate())
 												{
 													echo HTMLHelper::date($item->modified_time, Text::_('BW_DATE_FORMAT_LC5'));
 												} ?>

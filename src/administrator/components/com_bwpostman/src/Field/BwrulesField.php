@@ -164,7 +164,7 @@ class BwrulesField extends RulesField
 				$parentAssetName .= '.' . $section;
 			}
 
-			$db    = Factory::getContainer()->get('DatabaseDriver');
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 			$query->clear();
 
@@ -188,7 +188,7 @@ class BwrulesField extends RulesField
 		if (!$isGlobalConfig)
 		{
 			// In this case we need to get the section rules too.
-			$db = Factory::getContainer()->get('DatabaseDriver');
+			$db = Factory::getDbo();
 
 			$query = $db->getQuery(true)
 				->select($db->quoteName('parent_id'))
@@ -456,7 +456,7 @@ class BwrulesField extends RulesField
 	 */
 	private function checkAssetId($assetId)
 	{
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));

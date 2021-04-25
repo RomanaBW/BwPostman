@@ -56,7 +56,7 @@ abstract class BwPostmanCampaignHelper
 	{
 		$campaign = null;
 
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('*');
@@ -128,7 +128,7 @@ abstract class BwPostmanCampaignHelper
 			$archiveFlag = 1;
 		}
 
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('a') . '.*');
@@ -175,7 +175,7 @@ abstract class BwPostmanCampaignHelper
 	public static function getCampaignsFieldlistOptions($hasMailingdate = false, $archiveMatters = false)
 	{
 		$options   = null;
-		$db        = Factory::getContainer()->get('DatabaseDriver');
+		$db        = Factory::getDbo();
 		$nullDate  = $db->getNullDate();
 		$query     = $db->getQuery(true);
 		$sub_query = $db->getQuery(true);

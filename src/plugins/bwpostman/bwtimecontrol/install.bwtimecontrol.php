@@ -205,7 +205,7 @@ class plgBwpostmanBwtimecontrolInstallerScript
 	 */
 	private function getManifestVar($name, $extension)
 	{
-		$db		= Factory::getContainer()->get('DatabaseDriver');
+		$db		= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));

@@ -33,6 +33,8 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Service\Provider\Database;
+use Joomla\Database\DatabaseDriver;
 use RuntimeException;
 use stdClass;
 
@@ -64,7 +66,7 @@ class AuthorsField extends ListField
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db        = Factory::getContainer()->get('DatabaseDriver');
+		$db        = Factory::getDbo();
 		$query     = $db->getQuery(true);
 		$sub_query = $db->getQuery(true);
 

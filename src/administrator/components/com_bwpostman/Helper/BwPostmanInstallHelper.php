@@ -54,7 +54,7 @@ class BwPostmanInstallHelper
 	 */
 	public static function serverClaimsUtf8mb4Support($format)
 	{
-		$_db = Factory::getContainer()->get('DatabaseDriver');
+		$_db = Factory::getDbo();
 
 		switch ($format)
 		{
@@ -107,7 +107,7 @@ class BwPostmanInstallHelper
 	 */
 	public static function convertToUtf8Mb4($reference_table = '', $conversion_file = '')
 	{
-		$_db       = Factory::getContainer()->get('DatabaseDriver');
+		$_db       = Factory::getDbo();
 		$converted = false;
 
 		// This is only required for MySQL databases
@@ -183,7 +183,7 @@ class BwPostmanInstallHelper
 		$table_name = $dbprefix . $test_table;
 		$ret        = false;
 
-		$_db = Factory::getContainer()->get('DatabaseDriver');
+		$_db = Factory::getDbo();
 
 		$query  = 'SHOW TABLE STATUS WHERE Name = ' . $_db->quote($table_name);
 
@@ -222,7 +222,7 @@ class BwPostmanInstallHelper
 		$logOptions   = array();
 		$logger = BwLogger::getInstance($logOptions);
 
-		$db = Factory::getContainer()->get('DatabaseDriver');
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->update($db->quoteName('#__bwpostman_mailinglists'));

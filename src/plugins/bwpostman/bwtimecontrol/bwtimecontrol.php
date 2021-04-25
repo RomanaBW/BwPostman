@@ -165,7 +165,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	protected function setBwPostmanComponentStatus()
 	{
-		$_db   = Factory::getContainer()->get('DatabaseDriver');
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -205,7 +205,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	protected function setBwPostmanComponentVersion()
 	{
-		$_db   = Factory::getContainer()->get('DatabaseDriver');
+		$_db   = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -557,7 +557,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	private function getItem($nl_id)
 	{
-		$db             = Factory::getContainer()->get('DatabaseDriver');
+		$db             = Factory::getDbo();
 		$scheduled_date = $db->getNullDate();
 
 		if ($nl_id !== 0)
@@ -606,7 +606,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return true;
 		}
 
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		// New scheduled date
@@ -742,7 +742,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 	 */
 	public function getAutomatedNlIds()
 	{
-		$db	= Factory::getContainer()->get('DatabaseDriver');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('newsletter_id'));
@@ -783,7 +783,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 
 		if (count($automatedNlIds))
 		{
-			$db	= Factory::getContainer()->get('DatabaseDriver');
+			$db	= Factory::getDbo();
 			$query	= $db->getQuery(true);
 
 			$query->select('DISTINCT ' . $db->quoteName('id'));

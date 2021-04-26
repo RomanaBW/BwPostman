@@ -34,7 +34,7 @@ use Joomla\CMS\Table\Table;
 require_once(JPATH_COMPONENT_SITE . '/classes/bwpostman.class.php');
 
 // Set the table directory
-Table::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
+//Table::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
 
 // Require the base controller
 require_once(JPATH_COMPONENT . '/controller.php');

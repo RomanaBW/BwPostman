@@ -74,27 +74,6 @@ class BwAccess
 	protected static $assetRulesIdentities = array();
 
 	/**
-	 * Array of permissions for an asset type
-	 * (Array Key = Asset ID)
-	 * Also includes the rules string for the asset
-	 *
-	 * @var    array
-	 * @since  11.1
-	 * @deprecated  3.7.0  No replacement. Will be removed in 4.0.
-	 */
-	protected static $assetPermissionsById = array();
-
-	/**
-	 * Array of permissions for an asset type
-	 * (Array Key = Asset Name)
-	 *
-	 * @var    array
-	 * @since  11.1
-	 * @deprecated  3.7.0  No replacement. Will be removed in 4.0.
-	 */
-	protected static $assetPermissionsByName = array();
-
-	/**
 	 * Array of the permission parent ID mappings
 	 *
 	 * @var    array
@@ -186,10 +165,6 @@ class BwAccess
 		self::$groupsByUser                    = array();
 		self::$preloadedAssets                 = array();
 		self::$rootAssetId                     = null;
-
-		// The following properties are deprecated since 3.7.0 and will be removed in 4.0.
-		self::$assetPermissionsById   = array();
-		self::$assetPermissionsByName = array();
 	}
 
 	/**
@@ -629,18 +604,10 @@ class BwAccess
 
 		self::$assetPermissionsParentIdMapping[$extensionName] = array();
 
-		// B/C Populate the old class properties. They are deprecated since 3.7.0 and will be removed in 4.0.
-		self::$assetPermissionsById[$assetType]   = array();
-		self::$assetPermissionsByName[$assetType] = array();
-
 		foreach ($assets as $asset)
 		{
 			self::$assetPermissionsParentIdMapping[$extensionName][$asset->id] = $asset;
 			self::$preloadedAssets[$asset->id]                                 = $asset->name;
-
-			// B/C Populate the old class properties. They are deprecated since 3.7.0 and will be removed in 4.0.
-			self::$assetPermissionsById[$assetType][$asset->id]     = $asset;
-			self::$assetPermissionsByName[$assetType][$asset->name] = $asset;
 		}
 
 		// Mark asset type and it's extension name as preloaded.
@@ -1351,39 +1318,39 @@ class BwAccess
 	 *
 	 * @since   11.1
 	 */
-	public static function getUsersByGroup(int $groupId, $recursive = false): array
-	{
-		// Get a database object.
-		$db = Factory::getDbo();
-
-		$test = $recursive ? '>=' : '=';
-
-		// First find the users contained in the group
-		$query = $db->getQuery(true)
-			->select('DISTINCT(user_id)')
-			->from('#__usergroups as ug1')
-			->join('INNER', '#__usergroups AS ug2 ON ug2.lft' . $test . 'ug1.lft AND ug1.rgt' . $test . 'ug2.rgt')
-			->join('INNER', '#__user_usergroup_map AS m ON ug2.id=m.group_id')
-			->where('ug1.id=' . $db->quote($groupId));
-
-		$result = null;
-
-		try
-		{
-			$db->setQuery($query);
-
-			$result = $db->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-		// Clean up any NULL values, just in case
-		$result = ArrayHelper::toInteger($result);
-
-		return $result;
-	}
+//	public static function getUsersByGroup(int $groupId, $recursive = false): array
+//	{
+//		// Get a database object.
+//		$db = Factory::getDbo();
+//
+//		$test = $recursive ? '>=' : '=';
+//
+//		// First find the users contained in the group
+//		$query = $db->getQuery(true)
+//			->select('DISTINCT(user_id)')
+//			->from('#__usergroups as ug1')
+//			->join('INNER', '#__usergroups AS ug2 ON ug2.lft' . $test . 'ug1.lft AND ug1.rgt' . $test . 'ug2.rgt')
+//			->join('INNER', '#__user_usergroup_map AS m ON ug2.id=m.group_id')
+//			->where('ug1.id=' . $db->quote($groupId));
+//
+//		$result = null;
+//
+//		try
+//		{
+//			$db->setQuery($query);
+//
+//			$result = $db->loadColumn();
+//		}
+//		catch (RuntimeException $e)
+//		{
+//			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+//		}
+//
+//		// Clean up any NULL values, just in case
+//		$result = ArrayHelper::toInteger($result);
+//
+//		return $result;
+//	}
 
 	/**
 	 * Method to return a list of view levels for which the user is authorised.

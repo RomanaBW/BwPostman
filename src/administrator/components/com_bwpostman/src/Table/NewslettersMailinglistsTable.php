@@ -70,7 +70,7 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function __construct(& $db)
+	public function __construct($db = null)
 	{
 		parent::__construct('#__bwpostman_newsletters_mailinglists', 'newsletter_id', $db);
 	}
@@ -86,7 +86,7 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @since  3.0.0
 	 */
-	public function check()
+	public function check(): bool
 	{
 		// Remove all HTML tags from the title and description
 		$filter = new InputFilter(array(), array(), 0, 0);
@@ -102,8 +102,8 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @access	public
 	 *
-	 * @param 	int $oldid      ID of the existing newsletter
-	 * @param 	int $newid      ID of the copied newsletter
+	 * @param int $oldid ID of the existing newsletter
+	 * @param int $newid ID of the copied newsletter
 	 *
 	 * @return 	boolean
 	 *
@@ -111,17 +111,17 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function copyLists($oldid, $newid)
+	public function copyLists(int $oldid, int $newid): bool
 	{
 		$lists    = array();
 		$db       = $this->_db;
 		$query    = $db->getQuery(true);
 		$subQuery = $db->getQuery(true);
 
-		$subQuery->select($db->quote((int)$newid) . ' AS ' . $db->quoteName('newsletter_id'));
+		$subQuery->select($db->quote($newid) . ' AS ' . $db->quoteName('newsletter_id'));
 		$subQuery->select($db->quoteName('mailinglist_id'));
 		$subQuery->from($db->quoteName($this->_tbl));
-		$subQuery->where($db->quoteName('newsletter_id') . ' = ' . (int) $oldid);
+		$subQuery->where($db->quoteName('newsletter_id') . ' = ' . $oldid);
 
 		try
 		{
@@ -186,7 +186,7 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @since   3.0.0
 	 */
-	public function hasField($key)
+	public function hasField($key): bool
 	{
 		$key = $this->getColumnAlias($key);
 
@@ -198,19 +198,19 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @access	public
 	 *
-	 * @param 	integer $nlId      ID of the newsletter
+	 * @param integer $nlId ID of the newsletter
 	 *
 	 * @throws Exception
 	 *
 	 * @since       3.0.0
 	 */
-	public function deleteNewsletter($nlId)
+	public function deleteNewsletter(int $nlId)
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('newsletter_id') . ' =  ' . (int) $nlId);
+		$query->where($db->quoteName('newsletter_id') . ' =  ' . $nlId);
 
 		try
 		{
@@ -228,14 +228,14 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @access	public
 	 *
-	 * @param 	integer $nlId      ID of the newsletter
-	 * @param 	integer $mlId      ID of the mailinglist
+	 * @param integer $nlId ID of the newsletter
+	 * @param integer $mlId ID of the mailinglist
 	 *
 	 * @throws Exception
 	 *
 	 * @since       3.0.0
 	 */
-	public function insertNewsletter($nlId, $mlId)
+	public function insertNewsletter(int $nlId, int $mlId)
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -248,8 +248,8 @@ class NewslettersMailinglistsTable extends Table
 			)
 		);
 		$query->values(
-			(int) $nlId . ',' .
-			(int) $mlId
+			$nlId . ',' .
+			$mlId
 		);
 
 		try
@@ -266,7 +266,7 @@ class NewslettersMailinglistsTable extends Table
 	/**
 	 * Method to get associated mailing lists by newsletter
 	 *
-	 * @param  integer   $id   newsletter id
+	 * @param integer $id newsletter id
 	 *
 	 * @return array
 	 *
@@ -274,7 +274,7 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @since 3.0.0 (here, before since 2.3.0 at BE newsletter model)
 	 */
-	public function getAssociatedMailinglistsByNewsletter($id)
+	public function getAssociatedMailinglistsByNewsletter(int $id): array
 	{
 		$mailinglists = array();
 
@@ -283,7 +283,7 @@ class NewslettersMailinglistsTable extends Table
 
 		$query->select($db->quoteName('mailinglist_id'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('newsletter_id') . ' = ' . (int) $id);
+		$query->where($db->quoteName('newsletter_id') . ' = ' . $id);
 
 		try
 		{
@@ -310,7 +310,7 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
 	 */
-	public function deleteMailinglistNewsletters($id)
+	public function deleteMailinglistNewsletters($id): bool
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);

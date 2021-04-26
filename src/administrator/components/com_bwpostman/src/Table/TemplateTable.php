@@ -370,7 +370,9 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 */
 	protected function _getAssetParentId(Table $table = null, $id = null)
 	{
-		$asset = Table::getInstance('Asset');
+		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+		$asset      = $MvcFactory->createTable('asset');
+
 		$asset->loadByName('com_bwpostman.template');
 		return $asset->id;
 	}
@@ -380,16 +382,16 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @access public
 	 *
-	 * @param array|object  $data       Named array
-	 * @param string        $ignore     Space separated list of fields not to bind
-	 *
-	 * @throws BwException
+	 * @param   array|object  $src     An associative array or object to bind to the Table instance.
+	 * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return boolean
 	 *
+	 * @throws BwException
+	 *
 	 * @since 1.1.0
 	 */
-	public function bind($data, $ignore='')
+	public function bind($src, $ignore='')
 	{
 
 		// Remove all HTML tags from the title and description
@@ -398,19 +400,19 @@ class TemplateTable extends Table implements VersionableTableInterface
 		$this->description	= $filter->clean($this->description);
 
 		// Bind the rules.
-		if (is_object($data))
+		if (is_object($src))
 		{
-			if (property_exists($data, 'rules') && is_array($data->rules))
+			if (property_exists($src, 'rules') && is_array($src->rules))
 			{
-				$rules = new JAccessRules($data->rules);
+				$rules = new JAccessRules($src->rules);
 				$this->setRules($rules);
 			}
 		}
-		elseif (is_array($data))
+		elseif (is_array($src))
 		{
-			if (array_key_exists('rules', $data) && is_array($data['rules']))
+			if (array_key_exists('rules', $src) && is_array($src['rules']))
 			{
-				$rules = new JAccessRules($data['rules']);
+				$rules = new JAccessRules($src['rules']);
 				$this->setRules($rules);
 			}
 		}
@@ -422,7 +424,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 		// Cast properties
 		$this->id	= (int) $this->id;
 
-		return parent::bind($data, $ignore);
+		return parent::bind($src, $ignore);
 	}
 
 	/**

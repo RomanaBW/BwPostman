@@ -149,7 +149,7 @@ class SendmailcontentTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function __construct(& $db)
+	public function __construct($db = null)
 	{
 		parent::__construct('#__bwpostman_sendmailcontent', 'id', $db);
 	}
@@ -159,31 +159,31 @@ class SendmailcontentTable extends Table
 	 *
 	 * @access public
 	 *
-	 * @param array|object  $data       Named array
-	 * @param string        $ignore     Space separated list of fields not to bind
-	 *
-	 * @throws BwException
+	 * @param   array|object  $src     An associative array or object to bind to the Table instance.
+	 * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return boolean
 	 *
+	 * @throws BwException
+	 *
 	 * @since       0.9.1
 	 */
-	public function bind($data, $ignore='')
+	public function bind($src, $ignore=''): bool
 	{
 		// Bind the rules.
-		if (is_object($data))
+		if (is_object($src))
 		{
-			if (property_exists($data, 'rules') && is_array($data->rules))
+			if (property_exists($src, 'rules') && is_array($src->rules))
 			{
-				$rules = new JAccessRules($data->rules);
+				$rules = new JAccessRules($src->rules);
 				$this->setRules($rules);
 			}
 		}
-		elseif (is_array($data))
+		elseif (is_array($src))
 		{
-			if (array_key_exists('rules', $data) && is_array($data['rules']))
+			if (array_key_exists('rules', $src) && is_array($src['rules']))
 			{
-				$rules = new JAccessRules($data['rules']);
+				$rules = new JAccessRules($src['rules']);
 				$this->setRules($rules);
 			}
 		}
@@ -195,7 +195,7 @@ class SendmailcontentTable extends Table
 		// Cast properties
 		$this->id = (int) $this->id;
 
-		return parent::bind($data, $ignore);
+		return parent::bind($src, $ignore);
 	}
 
 	/**
@@ -207,7 +207,7 @@ class SendmailcontentTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function check()
+	public function check(): bool
 	{
 		$filter = new InputFilter(array(), array(), 0, 0);
 
@@ -242,7 +242,7 @@ class SendmailcontentTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function store($updateNulls = false)
+	public function store($updateNulls = false): bool
 	{
 		$k     = $this->_tbl_key;
 		$res   = null;
@@ -297,7 +297,7 @@ class SendmailcontentTable extends Table
 	 * @param 	int		    $keys       ID
 	 * @param 	boolean	    $reset      Mode (0 = Text, 1 = HTML)
 	 *
-	 * @return mixed
+	 * @return bool|int
 	 *
 	 * @throws Exception
 	 *
@@ -341,7 +341,7 @@ class SendmailcontentTable extends Table
 	/**
 	 * Method to get  newsletter content
 	 *
-	 * @param int $id       id of the content
+	 * @param int $id id of the content
 	 *
 	 * @return	mixed	string on success, null on failure.
 	 *
@@ -349,7 +349,7 @@ class SendmailcontentTable extends Table
 	 *
 	 * @since	2.4.0
 	 */
-	public function getContent($id)
+	public function getContent(int $id)
 	{
 		$newsletter = null;
 
@@ -359,7 +359,7 @@ class SendmailcontentTable extends Table
 		// build query
 		$query->select($db->quoteName('body'));
 		$query->from($db->quoteName($this->_tbl) . ' AS ' . $db->quoteName('a'));
-		$query->where($db->quoteName('a') . '.' . $db->quoteName('nl_id') . ' = ' . (int)$id);
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('nl_id') . ' = ' . $id);
 		$query->where($db->quoteName('a') . '.' . $db->quoteName('mode') . ' = ' . 1);
 
 		try
@@ -399,7 +399,7 @@ class SendmailcontentTable extends Table
 	 *
 	 * @since   2.4.0
 	 */
-	public function hasField($key)
+	public function hasField($key): bool
 	{
 		$key = $this->getColumnAlias($key);
 

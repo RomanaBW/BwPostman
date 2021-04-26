@@ -174,7 +174,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public function __construct(& $db)
+	public function __construct($db = null)
 	{
 		parent::__construct('#__bwpostman_mailinglists', 'id', $db);
 	}
@@ -186,7 +186,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	public function getAssetName()
+	public function getAssetName(): string
 	{
 		return self::_getAssetName();
 	}
@@ -198,7 +198,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	public function getAssetTitle()
+	public function getAssetTitle(): ?string
 	{
 		return self::_getAssetTitle();
 	}
@@ -206,11 +206,13 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	/**
 	 * Alias function
 	 *
-	 * @return  string
+	 * @return  int
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
-	public function getAssetParentId()
+	public function getAssetParentId(): int
 	{
 		return self::_getAssetParentId();
 	}
@@ -224,7 +226,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   11.1
 	 */
-	protected function _getAssetName()
+	protected function _getAssetName(): string
 	{
 		$k = $this->_tbl_key;
 		return 'com_bwpostman.mailinglist.' . (int) $this->$k;
@@ -237,7 +239,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   11.1
 	 */
-	protected function _getAssetTitle()
+	protected function _getAssetTitle(): ?string
 	{
 		return $this->title;
 	}
@@ -245,16 +247,19 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the parent asset id for the record
 	 *
-	 * @param   Table   $table  A Table object (optional) for the asset parent
-	 * @param   integer  $id     The id (optional) of the content.
+	 * @param Table|null $table A Table object (optional) for the asset parent
+	 * @param null       $id    The id (optional) of the content.
 	 *
 	 * @return  integer
 	 *
+	 * @throws Exception
 	 * @since   11.1
 	 */
-	protected function _getAssetParentId(Table $table = null, $id = null)
+	protected function _getAssetParentId(Table $table = null, $id = null): int
 	{
-		$asset = Table::getInstance('Asset');
+		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+		$asset      = $MvcFactory->createTable('asset');
+
 		$asset->loadByName('com_bwpostman.mailinglist');
 		return (int)$asset->id;
 	}
@@ -264,31 +269,31 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @access public
 	 *
-	 * @param array|object  $data       Named array or object
-	 * @param string        $ignore     Space separated list of fields not to bind
-	 *
-	 * @throws BwException
+	 * @param   array|object  $src     An associative array or object to bind to the Table instance.
+	 * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return boolean
 	 *
+	 * @throws BwException
+	 *
 	 * @since       0.9.1
 	 */
-	public function bind($data, $ignore='')
+	public function bind($src, $ignore=''): bool
 	{
 		// Bind the rules.
-		if (is_object($data))
+		if (is_object($src))
 		{
-			if (property_exists($data, 'rules') && is_array($data->rules))
+			if (property_exists($src, 'rules') && is_array($src->rules))
 			{
-				$rules = new JAccessRules($data->rules);
+				$rules = new JAccessRules($src->rules);
 				$this->setRules($rules);
 			}
 		}
-		elseif (is_array($data))
+		elseif (is_array($src))
 		{
-			if (array_key_exists('rules', $data) && is_array($data['rules']))
+			if (array_key_exists('rules', $src) && is_array($src['rules']))
 			{
-				$rules = new JAccessRules($data['rules']);
+				$rules = new JAccessRules($src['rules']);
 				$this->setRules($rules);
 			}
 		}
@@ -300,7 +305,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		// Cast properties
 		$this->id	= (int) $this->id;
 
-		return parent::bind($data, $ignore);
+		return parent::bind($src, $ignore);
 	}
 
 	/**
@@ -314,7 +319,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public function check()
+	public function check(): bool
 	{
 		$app   = Factory::getApplication();
 		$db    = $this->_db;
@@ -397,7 +402,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	public function store($updateNulls = false)
+	public function store($updateNulls = false): bool
 	{
 		$date = Factory::getDate();
 		$user = Factory::getApplication()->getIdentity();
@@ -424,10 +429,10 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the mailinglists by restriction of archive, published and access
 	 *
-	 * @param array     $mailinglists
-	 * @param string    $condition
-	 * @param integer   $archived
-	 * @param boolean   $restricted
+	 * @param array   $mailinglists
+	 * @param string  $condition
+	 * @param integer $archived
+	 * @param boolean $restricted
 	 *
 	 * @return array
 	 *
@@ -435,7 +440,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 2.4.0 (here, before since 2.3.0 at mailinglist helper)
 	 */
-	public function getMailinglistsByRestriction($mailinglists, $condition = 'available', $archived = 0, $restricted = true)
+	public function getMailinglistsByRestriction(array $mailinglists, $condition = 'available', $archived = 0, $restricted = true): ?array
 	{
 		$mls = null;
 		$restrictedMls = array();
@@ -503,7 +508,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 * @throws Exception
 	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
 	 */
-	public function getAuthorizedMailinglists(int $userId)
+	public function getAuthorizedMailinglists(int $userId): ?object
 	{
 		$app          = Factory::getApplication();
 		$mailinglists = null;
@@ -591,7 +596,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 2.4.0
 	 */
-	public function getCompleteMailinglistsOfSubscriber($mailinglist_ids)
+	public function getCompleteMailinglistsOfSubscriber(array $mailinglist_ids)
 	{
 		$lists = array();
 
@@ -632,7 +637,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get id and title of all provided mailinglist ids
 	 *
-	 * @param array  $mls  ids of mailinglists to get the title for
+	 * @param array $mls ids of mailinglists to get the title for
 	 *
 	 * @return 	array mailinglists
 	 *
@@ -640,7 +645,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  2.4.0
 	 */
-	public function getMailinglistsIdTitle($mls)
+	public function getMailinglistsIdTitle(array $mls): array
 	{
 		$mailinglists = array();
 		$db     = $this->_db;
@@ -674,7 +679,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
 	 */
-	public function getMailinglistsValueText()
+	public function getMailinglistsValueText(): array
 	{
 		$mailinglists = array();
 		$db     = $this->_db;
@@ -711,7 +716,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
 	 */
-	public function getPublishedMailinglistsIds()
+	public function getPublishedMailinglistsIds(): array
 	{
 		$mailinglists = array();
 		$db     = $this->_db;
@@ -746,7 +751,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  2.4.0 (here, before since 1.0.1 at FE newsletters model)
 	 */
-	public function getAllowedMailinglists($viewLevels)
+	public function getAllowedMailinglists(array $viewLevels): array
 	{
 		$mailinglists   = null;
 		$db    = $this->_db;
@@ -755,7 +760,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		$query->select('id');
 		$query->from($db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($db->quoteName('access') . ' IN (' . implode(',', $viewLevels) . ')');
-		$query->where($db->quoteName('published') . ' = ' . (int) 1);
+		$query->where($db->quoteName('published') . ' = ' . 1);
 
 		try
 		{
@@ -801,7 +806,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   2.4.0
 	 */
-	public function hasField($key)
+	public function hasField($key): bool
 	{
 		$key = $this->getColumnAlias($key);
 
@@ -818,7 +823,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   4.0.0
 	 */
-	public function getTypeAlias()
+	public function getTypeAlias(): string
 	{
 		return 'com_bwpostman.mailinglist';
 	}

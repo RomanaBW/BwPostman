@@ -314,7 +314,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public function __construct(& $db)
+	public function __construct($db = null)
 	{
 		parent::__construct('#__bwpostman_newsletters', 'id', $db);
 	}
@@ -326,7 +326,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	public function getAssetName()
+	public function getAssetName(): string
 	{
 		return self::_getAssetName();
 	}
@@ -338,7 +338,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	public function getAssetTitle()
+	public function getAssetTitle(): ?string
 	{
 		return self::_getAssetTitle();
 	}
@@ -346,13 +346,13 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	/**
 	 * Alias function
 	 *
-	 * @return  string
+	 * @return  int
 	 *
 	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
-	public function getAssetParentId()
+	public function getAssetParentId(): int
 	{
 		return self::_getAssetParentId();
 	}
@@ -366,7 +366,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	protected function _getAssetName()
+	protected function _getAssetName(): string
 	{
 		$k = $this->_tbl_key;
 		return 'com_bwpostman.newsletter.' . (int) $this->$k;
@@ -379,7 +379,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	protected function _getAssetTitle()
+	protected function _getAssetTitle(): ?string
 	{
 		return $this->subject;
 	}
@@ -387,16 +387,19 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the parent asset id for the record
 	 *
-	 * @param   Table   $table  A Table object (optional) for the asset parent
-	 * @param   integer  $id     The id (optional) of the content.
+	 * @param Table|null $table A Table object (optional) for the asset parent
+	 * @param null       $id    The id (optional) of the content.
 	 *
 	 * @return  integer
 	 *
+	 * @throws Exception
 	 * @since   11.1
 	 */
-	protected function _getAssetParentId(Table $table = null, $id = null)
+	protected function _getAssetParentId(Table $table = null, $id = null): int
 	{
-		$asset = Table::getInstance('Asset');
+		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+		$asset      = $MvcFactory->createTable('asset');
+
 		$asset->loadByName('com_bwpostman.newsletter');
 		return (int)$asset->id;
 	}
@@ -406,31 +409,31 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @access public
 	 *
-	 * @param array|object  $data       Named array
-	 * @param string        $ignore     Space separated list of fields not to bind
-	 *
-	 * @throws BwException
+	 * @param   array|object  $src     An associative array or object to bind to the Table instance.
+	 * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return boolean
 	 *
+	 * @throws BwException
+	 *
 	 * @since       0.9.1
 	 */
-	public function bind($data, $ignore='')
+	public function bind($src, $ignore=''): bool
 	{
 		// Bind the rules.
-		if (is_object($data))
+		if (is_object($src))
 		{
-			if (property_exists($data, 'rules') && is_array($data->rules))
+			if (property_exists($src, 'rules') && is_array($src->rules))
 			{
-				$rules = new JAccessRules($data->rules);
+				$rules = new JAccessRules($src->rules);
 				$this->setRules($rules);
 			}
 		}
-		elseif (is_array($data))
+		elseif (is_array($src))
 		{
-			if (array_key_exists('rules', $data) && is_array($data['rules']))
+			if (array_key_exists('rules', $src) && is_array($src['rules']))
 			{
-				$rules = new JAccessRules($data['rules']);
+				$rules = new JAccessRules($src['rules']);
 				$this->setRules($rules);
 			}
 		}
@@ -442,7 +445,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 		// Cast properties
 		$this->id	= (int) $this->id;
 
-		return parent::bind($data, $ignore);
+		return parent::bind($src, $ignore);
 	}
 
 	/**
@@ -456,7 +459,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public function check()
+	public function check(): bool
 	{
 		jimport('joomla.mail.helper');
 
@@ -591,7 +594,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public function markAsSent($id = null)
+	public function markAsSent($id = null): bool
 	{
 		if ($id)
 		{
@@ -684,7 +687,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	/**
 	 * Method check if newsletter is content template
 	 *
-	 * @param   integer  $id        ID of newsletter
+	 * @param integer $id ID of newsletter
 	 *
 	 * @return	boolean           state of is_template
 	 *
@@ -692,14 +695,14 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since	3.0.0 (here, originally since 2.2.0 at model newsletter)
 	 */
-	public function isTemplate($id)
+	public function isTemplate(int $id): bool
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('is_template'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . $db->quote((int)$id));
+		$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
 
 		try
 		{
@@ -723,8 +726,8 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to set archive/unarchive a newsletter
 	 *
-	 * @param array   $cid      array of items to archive/unarchive
-	 * @param integer $archive  archive/unarchive flag
+	 * @param array   $cid     array of items to archive/unarchive
+	 * @param integer $archive archive/unarchive flag
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -732,13 +735,13 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function archive($cid, $archive)
+	public function archive(array $cid, int $archive): bool
 	{
 		$uid = Factory::getApplication()->getIdentity()->get('id');
 		$db  = $this->_db;
 		$cid = ArrayHelper::toInteger($cid);
 
-		if ((int)$archive === 1)
+		if ($archive === 1)
 		{
 			$time = Factory::getDate()->toSql();
 		}
@@ -751,7 +754,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 		$query = $db->getQuery(true);
 
 		$query->update($db->quoteName($this->_tbl));
-		$query->set($db->quoteName('archive_flag') . " = " . (int) $archive);
+		$query->set($db->quoteName('archive_flag') . " = " . $archive);
 		$query->set($db->quoteName('archive_date') . " = " . $db->quote($time, false));
 		$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 		$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
@@ -782,14 +785,14 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0
 	 */
-	public function getNewsletterData($nlId)
+	public function getNewsletterData(int $nlId)
 	{
 		$db	   = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . (int) $nlId);
+		$query->where($db->quoteName('id') . ' = ' . $nlId);
 
 		try
 		{
@@ -818,7 +821,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0 here
 	 */
-	public function getSelectedContentOfNewsletter($nlId)
+	public function getSelectedContentOfNewsletter(int $nlId): string
 	{
 		$content_ids = '';
 
@@ -827,7 +830,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 		$query->select($db->quoteName('selected_content'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . (int)$nlId);
+		$query->where($db->quoteName('id') . ' = ' . $nlId);
 
 		try
 		{
@@ -854,7 +857,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0 (here, before since 2.3.0 at newsletter helper)
 	 */
-	public function getCampaignId($nlId)
+	public function getCampaignId(int $nlId): int
 	{
 		$campaignId = -1;
 
@@ -863,7 +866,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 		$query->select($db->quoteName('campaign_id'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . $db->Quote((int)$nlId));
+		$query->where($db->quoteName('id') . ' = ' . $db->Quote($nlId));
 
 		try
 		{
@@ -891,7 +894,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0 (here, before since 2.3.0 at newsletter helper)
 	 */
-	public function getNbrOfNewsletters($sent, $archived)
+	public function getNbrOfNewsletters(bool $sent, bool $archived)
 	{
 		$archiveFlag         = 0;
 		$mailingDateOperator = "=";
@@ -980,7 +983,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  3.0.0 (here, before since 2.0.0 at campaign model)
 	 */
-	public function deleteCampaignsNewsletters($id)
+	public function deleteCampaignsNewsletters($id): bool
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -1025,7 +1028,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function hasField($key)
+	public function hasField($key): bool
 	{
 		$key = $this->getColumnAlias($key);
 
@@ -1042,7 +1045,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   4.0.0
 	 */
-	public function getTypeAlias()
+	public function getTypeAlias(): string
 	{
 		return 'com_bwpostman.newsletter';
 	}

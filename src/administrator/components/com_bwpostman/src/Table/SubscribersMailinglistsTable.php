@@ -72,7 +72,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function __construct(& $db)
+	public function __construct($db = null)
 	{
 		parent::__construct('#__bwpostman_subscribers_mailinglists', 'subscriber_id', $db);
 	}
@@ -82,31 +82,31 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @access public
 	 *
-	 * @param array|object  $data       Named array
-	 * @param string        $ignore     Space separated list of fields not to bind
-	 *
-	 * @throws  BwException
+	 * @param   array|object  $src     An associative array or object to bind to the Table instance.
+	 * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return boolean
 	 *
+	 * @throws  BwException
+	 *
 	 * @since       0.9.1
 	 */
-	public function bind($data, $ignore='')
+	public function bind($src, $ignore=''): bool
 	{
 		// Bind the rules.
-		if (is_object($data))
+		if (is_object($src))
 		{
-			if (property_exists($data, 'rules') && is_array($data->rules))
+			if (property_exists($src, 'rules') && is_array($src->rules))
 			{
-				$rules = new JAccessRules($data->rules);
+				$rules = new JAccessRules($src->rules);
 				$this->setRules($rules);
 			}
 		}
-		elseif (is_array($data))
+		elseif (is_array($src))
 		{
-			if (array_key_exists('rules', $data) && is_array($data['rules']))
+			if (array_key_exists('rules', $src) && is_array($src['rules']))
 			{
-				$rules = new JAccessRules($data['rules']);
+				$rules = new JAccessRules($src['rules']);
 				$this->setRules($rules);
 			}
 		}
@@ -115,7 +115,7 @@ class SubscribersMailinglistsTable extends Table
 			throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
-		return parent::bind($data, $ignore);
+		return parent::bind($src, $ignore);
 	}
 
 	/**
@@ -129,7 +129,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since       3.0.0 (here, before since 2.2.0 at mailinglist helper)
 	 */
-	public function getSubscribersOfMailinglist($ids)
+	public function getSubscribersOfMailinglist($ids): ?array
 	{
 		$subscribersOfMailinglist = null;
 
@@ -165,7 +165,7 @@ class SubscribersMailinglistsTable extends Table
 	/**
 	 * Method to delete all or selected mailinglist entries for the subscriber_id from subscribers_mailinglists-table
 	 *
-	 * @param integer    $subscriber_id
+	 * @param integer $subscriber_id
 	 * @param array|null
 	 *
 	 * @return boolean
@@ -174,13 +174,13 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since   3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
-	public function deleteMailinglistsOfSubscriber($subscriber_id, $mailinglists = null)
+	public function deleteMailinglistsOfSubscriber(int $subscriber_id, $mailinglists = null): bool
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('subscriber_id') . ' =  ' . (int) $subscriber_id);
+		$query->where($db->quoteName('subscriber_id') . ' =  ' . $subscriber_id);
 
 		if (!is_null($mailinglists))
 		{
@@ -206,7 +206,7 @@ class SubscribersMailinglistsTable extends Table
 	 * Method to store subscribed mailinglists in newsletters_mailinglists table
 	 *
 	 * @param integer $subscriber_id
-	 * @param array $mailinglist_ids
+	 * @param array   $mailinglist_ids
 	 *
 	 * @return boolean
 	 *
@@ -214,7 +214,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since   3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
-	public function storeMailinglistsOfSubscriber($subscriber_id, $mailinglist_ids)
+	public function storeMailinglistsOfSubscriber(int $subscriber_id, array $mailinglist_ids): bool
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -230,7 +230,7 @@ class SubscribersMailinglistsTable extends Table
 		{
 			$query->insert($db->quoteName($this->_tbl));
 			$query->values(
-				(int) $subscriber_id . ',' .
+				$subscriber_id . ',' .
 				(int) $list_id
 			);
 		}
@@ -252,8 +252,8 @@ class SubscribersMailinglistsTable extends Table
 	/**
 	 * Method to check if a subscriber has a subscription to a specific mailinglist
 	 *
-	 * @param integer $subscriberId   ID of subscriber to check
-	 * @param integer $mailinglistId  ID of mailinglist to check
+	 * @param integer $subscriberId  ID of subscriber to check
+	 * @param integer $mailinglistId ID of mailinglist to check
 	 *
 	 * @return boolean
 	 *
@@ -261,15 +261,15 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since 3.0.0 here
 	 */
-	public function hasSubscriptionForMailinglist($subscriberId, $mailinglistId)
+	public function hasSubscriptionForMailinglist(int $subscriberId, int $mailinglistId)
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('subscriber_id'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $subscriberId);
-		$query->where($db->quoteName('mailinglist_id') . ' = ' . (int) $mailinglistId);
+		$query->where($db->quoteName('subscriber_id') . ' = ' . $subscriberId);
+		$query->where($db->quoteName('mailinglist_id') . ' = ' . $mailinglistId);
 
 		try
 		{
@@ -304,7 +304,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
 	 */
-	public function deleteMailinglistSubscribers($id)
+	public function deleteMailinglistSubscribers($id): bool
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -337,7 +337,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since 3.0.0
 	 */
-	public function getMailinglistIdsOfSubscriber($sub_id)
+	public function getMailinglistIdsOfSubscriber($sub_id): array
 	{
 		$mailinglist_ids = array();
 
@@ -385,7 +385,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since   3.0.0
 	 */
-	public function hasField($key)
+	public function hasField($key): bool
 	{
 		$key = $this->getColumnAlias($key);
 

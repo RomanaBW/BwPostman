@@ -70,7 +70,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since
 	 */
-	public function __construct(& $db)
+	public function __construct($db = null)
 	{
 		parent::__construct('#__bwpostman_campaigns_mailinglists', 'campaign_id', $db);
 	}
@@ -86,7 +86,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since  3.0.0
 	 */
-	public function check()
+	public function check(): bool
 	{
 		// Remove all HTML tags from the title and description
 		$filter = new InputFilter(array(), array(), 0, 0);
@@ -102,26 +102,26 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @access	public
 	 *
-	 * @param 	int $oldid      ID of the existing campaign
-	 * @param 	int $newid      ID of the copied campaign
-	 *
-	 * @throws Exception
+	 * @param int $oldid ID of the existing campaign
+	 * @param int $newid ID of the copied campaign
 	 *
 	 * @return 	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	public function copyLists($oldid, $newid)
+	public function copyLists(int $oldid, int $newid): bool
 	{
 		$lists    = array();
 		$_db      = $this->_db;
 		$query    = $_db->getQuery(true);
 		$subQuery = $_db->getQuery(true);
 
-		$subQuery->select($_db->quote((integer)$newid) . ' AS ' . $_db->quoteName('campaign_id'));
+		$subQuery->select($_db->quote($newid) . ' AS ' . $_db->quoteName('campaign_id'));
 		$subQuery->select($_db->quoteName('mailinglist_id'));
 		$subQuery->from($_db->quoteName($this->_tbl));
-		$subQuery->where($_db->quoteName('campaign_id') . ' = ' . (int) $oldid);
+		$subQuery->where($_db->quoteName('campaign_id') . ' = ' . $oldid);
 
 		try
 		{
@@ -166,7 +166,7 @@ class CampaignsMailinglistsTable extends Table
 	/**
 	 * Method to get the mailinglist ids for a single campaign
 	 *
-	 * @param  integer   $cam_id   campaign id
+	 * @param integer $cam_id campaign id
 	 *
 	 * @return array
 	 *
@@ -174,7 +174,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since 3.0.0 (here, before since 2.3.0 at BE newsletter model)
 	 */
-	public function getAssociatedMailinglistsByCampaign($cam_id)
+	public function getAssociatedMailinglistsByCampaign(int $cam_id): array
 	{
 		$mailinglists = array();
 		$db	= $this->_db;
@@ -182,7 +182,7 @@ class CampaignsMailinglistsTable extends Table
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('mailinglist_id'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
+		$query->where($db->quoteName('campaign_id') . ' = ' . $cam_id);
 
 		try
 		{
@@ -201,8 +201,8 @@ class CampaignsMailinglistsTable extends Table
 	/**
 	 * Method to get all campaign ids by specified mailinglists and campaigns
 	 *
-	 * @param array    $mls    mailinglist ids
-	 * @param array    $cams   campaign ids
+	 * @param array $mls  mailinglist ids
+	 * @param array $cams campaign ids
 	 *
 	 * @return 	array
 	 *
@@ -210,7 +210,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since	3.0.0
 	 */
-	public function getAllCampaignIdsByMlCam($mls, $cams)
+	public function getAllCampaignIdsByMlCam(array $mls, array $cams): array
 	{
 		$db         = $this->_db;
 		$query      = $db->getQuery(true);
@@ -245,7 +245,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since   3.0.0 (here, before since 2.0.0 at campaign model)
 	 */
-	public function deleteCampaignsMailinglistsEntry($id)
+	public function deleteCampaignsMailinglistsEntry($id): bool
 	{
 		$db   = $this->_db;
 		$query = $db->getQuery(true);
@@ -278,7 +278,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
 	 */
-	public function deleteMailinglistsCampaignsEntry($id)
+	public function deleteMailinglistsCampaignsEntry($id): bool
 	{
 		$db            = $this->_db;
 		$query          = $db->getQuery(true);
@@ -311,7 +311,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since 3.0.0
 	 */
-	public function addCampaignsMailinglistsEntry(array $data)
+	public function addCampaignsMailinglistsEntry(array $data): bool
 	{
 		foreach ($data['mailinglists'] as $mailinglists_value)
 		{
@@ -368,7 +368,7 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since   3.0.0
 	 */
-	public function hasField($key)
+	public function hasField($key): bool
 	{
 		$key = $this->getColumnAlias($key);
 

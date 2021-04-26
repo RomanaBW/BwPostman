@@ -252,7 +252,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public function __construct(& $db)
+	public function __construct($db = null)
 	{
 		parent::__construct('#__bwpostman_subscribers', 'id', $db);
 	}
@@ -264,7 +264,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	public function getAssetName()
+	public function getAssetName(): string
 	{
 		return self::_getAssetName();
 	}
@@ -276,7 +276,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	public function getAssetTitle()
+	public function getAssetTitle(): ?string
 	{
 		return self::_getAssetTitle();
 	}
@@ -284,13 +284,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Alias function
 	 *
-	 * @return  string
+	 * @return  int
 	 *
 	 * @throws Exception
 	 *
 	 * @since   1.0.1
 	 */
-	public function getAssetParentId()
+	public function getAssetParentId(): int
 	{
 		return self::_getAssetParentId();
 	}
@@ -304,7 +304,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	protected function _getAssetName()
+	protected function _getAssetName(): string
 	{
 		$k = $this->_tbl_key;
 		return 'com_bwpostman.subscriber.' . (int) $this->$k;
@@ -317,7 +317,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	protected function _getAssetTitle()
+	protected function _getAssetTitle(): ?string
 	{
 		return $this->name;
 	}
@@ -325,16 +325,19 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the parent asset id for the record
 	 *
-	 * @param   Table   $table  A Table object (optional) for the asset parent
-	 * @param   integer  $id     The id (optional) of the content.
+	 * @param Table|null $table A Table object (optional) for the asset parent
+	 * @param null       $id    The id (optional) of the content.
 	 *
 	 * @return  integer
 	 *
+	 * @throws Exception
 	 * @since   11.1
 	 */
-	protected function _getAssetParentId(Table $table = null, $id = null)
+	protected function _getAssetParentId(Table $table = null, $id = null): int
 	{
-		$asset = Table::getInstance('Asset');
+		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+		$asset      = $MvcFactory->createTable('asset');
+
 		$asset->loadByName('com_bwpostman.subscriber');
 		return $asset->id;
 	}
@@ -344,31 +347,31 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @access public
 	 *
-	 * @param array|object  $data       Named array
-	 * @param string        $ignore     Space separated list of fields not to bind
-	 *
-	 * @throws  BwException
+	 * @param   array|object  $src     An associative array or object to bind to the Table instance.
+	 * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return boolean
 	 *
+	 * @throws  BwException
+	 *
 	 * @since       0.9.1
 	 */
-	public function bind($data, $ignore='')
+	public function bind($src, $ignore=''): bool
 	{
 		// Bind the rules.
-		if (is_object($data))
+		if (is_object($src))
 		{
-			if (property_exists($data, 'rules') && is_array($data->rules))
+			if (property_exists($src, 'rules') && is_array($src->rules))
 			{
-				$rules = new JAccessRules($data->rules);
+				$rules = new JAccessRules($src->rules);
 				$this->setRules($rules);
 			}
 		}
-		elseif (is_array($data))
+		elseif (is_array($src))
 		{
-			if (array_key_exists('rules', $data) && is_array($data['rules']))
+			if (array_key_exists('rules', $src) && is_array($src['rules']))
 			{
-				$rules = new JAccessRules($data['rules']);
+				$rules = new JAccessRules($src['rules']);
 				$this->setRules($rules);
 			}
 		}
@@ -377,10 +380,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
 
-		// Cast properties
-		$this->id = (int) $this->id;
-
-		return parent::bind($data, $ignore);
+		return parent::bind($src, $ignore);
 	}
 
 	/**
@@ -394,7 +394,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public function check()
+	public function check(): bool
 	{
 		//Initialize
 		jimport('joomla.mail.helper');
@@ -735,7 +735,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since
 	 */
-	public function checkForTestrecipients()
+	public function checkForTestrecipients(): bool
 	{
 		$testrecipients = null;
 
@@ -777,7 +777,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since
 	 */
-	public function loadTestrecipients()
+	public function loadTestrecipients(): array
 	{
 		$result = array();
 		$this->reset();
@@ -814,7 +814,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	public function store($updateNulls = false)
+	public function store($updateNulls = false): bool
 	{
 		$app  = Factory::getApplication();
 
@@ -858,7 +858,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	public function delete($pk = null)
+	public function delete($pk = null): bool
 	{
 		return parent::delete($pk);
 	}
@@ -886,7 +886,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function hasField($key)
+	public function hasField($key): bool
 	{
 		$key = $this->getColumnAlias($key);
 
@@ -896,7 +896,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to check if a subscriber is archived
 	 *
-	 * @param integer $subsId   ID of the subscriber to check
+	 * @param integer $subsId ID of the subscriber to check
 	 *
 	 * @return 	object|false
 	 *
@@ -904,7 +904,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0
 	 */
-	public function getSubscriberNewsletterData($subsId)
+	public function getSubscriberNewsletterData(int $subsId)
 	{
 		$result = false;
 		$this->reset();
@@ -919,7 +919,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$query->select($db->quoteName('status'));
 		$query->select($db->quoteName('emailformat'));
 		$query->from($this->_tbl);
-		$query->where($db->quoteName('id') . ' = ' . $db->quote((int) $subsId));
+		$query->where($db->quoteName('id') . ' = ' . $db->quote($subsId));
 
 		try
 		{
@@ -940,7 +940,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * Returns 0 if user has no newsletter subscription
 	 *
-	 * @param    int $uid user ID
+	 * @param int $uid user ID
 	 *
 	 * @return    int $id     subscriber ID
 	 *
@@ -948,14 +948,14 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
-	public function getSubscriberIdByUserId($uid)
+	public function getSubscriberIdByUserId(int $uid): int
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('user_id') . ' = ' . (int) $uid);
+		$query->where($db->quoteName('user_id') . ' = ' . $uid);
 		$query->where($db->quoteName('status') . ' != ' . 9);
 
 		try
@@ -983,13 +983,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 * @param string  $email    subscriber email
 	 * @param boolean $isTester is tester?
 	 *
-	 * @return 	int|array     $id     subscriber ID
+	 * @return    int     $id     subscriber ID
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function getSubscriberIdByEmail($email, $isTester = false)
+	public function getSubscriberIdByEmail(string $email, $isTester = false): int
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -1032,7 +1032,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @access    public
 	 *
-	 * @param    int $id subscriber ID
+	 * @param int $id subscriber ID
 	 *
 	 * @return    object  $subscriber subscriber object
 	 *
@@ -1040,7 +1040,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
-	public function getSubscriberState($id)
+	public function getSubscriberState(int $id): ?object
 	{
 		$subscriber = null;
 		$db         = $this->_db;
@@ -1048,7 +1048,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . (int) $id);
+		$query->where($db->quoteName('id') . ' = ' . $id);
 		$query->where($db->quoteName('status') . ' != ' . 9);
 
 		try
@@ -1069,7 +1069,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 * Method to get the user ID of a subscriber from the subscribers-table depending on the subscriber ID
 	 * --> is needed for the constructor
 	 *
-	 * @param 	int     $id     subscriber ID
+	 * @param int $id subscriber ID
 	 *
 	 * @return 	int user ID
 	 *
@@ -1077,7 +1077,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
-	public function getUserIdOfSubscriber($id)
+	public function getUserIdOfSubscriber(int $id): ?int
 	{
 		$user_id    = null;
 		$db	    = $this->_db;
@@ -1085,7 +1085,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 		$query->select($db->quoteName('user_id'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . (int) $id);
+		$query->where($db->quoteName('id') . ' = ' . $id);
 		$query->where($db->quoteName('status') . ' != ' . 9);
 
 		try
@@ -1119,7 +1119,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       3.0.0 (here, before since 2.3.0 at subscriber helper)
 	 */
-	public function getNbrOfSubscribers($tester, $archived)
+	public function getNbrOfSubscribers(bool $tester, bool $archived)
 	{
 		$archiveFlag    = 0;
 		$statusOperator = "!=";
@@ -1254,7 +1254,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the complete subscriber data by email
 	 *
-	 * @param   integer      $id
+	 * @param integer $id
 	 *
 	 * @return  object
 	 *
@@ -1262,7 +1262,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function getSingleSubscriberData($id)
+	public function getSingleSubscriberData(int $id): ?object
 	{
 		$subscriber = null;
 
@@ -1271,7 +1271,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . (int) $id);
+		$query->where($db->quoteName('id') . ' = ' . $id);
 
 		try
 		{
@@ -1290,13 +1290,15 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the complete subscriber data by email
 	 *
-	 * @param   array      $values
+	 * @param array $values
 	 *
 	 * @return  object|boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since   3.0.0 (here)
 	 */
-	public function getSubscriberDataByEmail($values)
+	public function getSubscriberDataByEmail(array $values)
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -1335,7 +1337,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the subscriber activation data
 	 *
-	 * @param 	string  $activation     activation code for the newsletter account
+	 * @param string $activation activation code for the newsletter account
 	 *
 	 * @return  object
 	 *
@@ -1343,7 +1345,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function getSubscriberActivationData($activation)
+	public function getSubscriberActivationData(string $activation): ?object
 	{
 		$subscriber = null;
 
@@ -1355,11 +1357,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$query->select($db->quoteName('editlink'));
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('activation') . ' = ' . $db->quote($activation));
-		$query->where($db->quoteName('status') . ' = ' . (int) 0);
+		$query->where($db->quoteName('status') . ' = ' . 0);
 		$query->where($db->quoteName('confirmation_date') . ' = ' . $db->quote($db->getNullDate()));
-		$query->where($db->quoteName('confirmed_by') . ' = ' . (int) -1);
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
-		$query->where($db->quoteName('archived_by') . ' = ' . (int) -1);
+		$query->where($db->quoteName('confirmed_by') . ' = ' . -1);
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+		$query->where($db->quoteName('archived_by') . ' = ' . -1);
 		try
 		{
 			$db->setQuery($query);
@@ -1377,8 +1379,8 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to store the subscriber activation
 	 *
-	 * @param integer  $id              id of the subscriber to store activation
-	 * @param string   $activation_ip   IP used for activation
+	 * @param integer $id            id of the subscriber to store activation
+	 * @param string  $activation_ip IP used for activation
 	 *
 	 * @return  boolean true on success
 	 *
@@ -1386,7 +1388,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function storeSubscriberActivation($id, $activation_ip)
+	public function storeSubscriberActivation(int $id, string $activation_ip): bool
 	{
 		$date = Factory::getDate();
 		$time = $date->toSql();
@@ -1400,7 +1402,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$query->set($db->quoteName('confirmation_date') . ' = ' . $db->quote($time, false));
 		$query->set($db->quoteName('confirmed_by') . ' = ' . 0);
 		$query->set($db->quoteName('confirmation_ip') . ' = ' . $db->quote($activation_ip));
-		$query->where($db->quoteName('id') . ' = ' . (int) $id);
+		$query->where($db->quoteName('id') . ' = ' . $id);
 		try
 		{
 			$db->setQuery($query);
@@ -1419,8 +1421,8 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to validate edit link, if exists return subscriber id
 	 *
-	 * @param integer  $email      email of the demanded unsubscription
-	 * @param string   $editlink   editlink provided by the unsubscription
+	 * @param integer $email    email of the demanded unsubscription
+	 * @param string  $editlink editlink provided by the unsubscription
 	 *
 	 * @return  integer|boolean false on failure
 	 *
@@ -1428,7 +1430,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function validateSubscriberEditlink($email, $editlink)
+	public function validateSubscriberEditlink(int $email, string $editlink)
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -1460,7 +1462,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the mail address of a subscriber from the subscribers-table depending on the subscriber ID
 	 *
-	 * @param 	int		$id     subscriber ID
+	 * @param int $id subscriber ID
 	 *
 	 * @return 	string	user ID
 	 *
@@ -1468,7 +1470,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  3.0.0
 	 */
-	public function getEmailaddress($id)
+	public function getEmailaddress(int $id): ?string
 	{
 		$emailaddress = null;
 
@@ -1477,7 +1479,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 		$query->select($db->quoteName('email'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . (int) $id);
+		$query->where($db->quoteName('id') . ' = ' . $id);
 
 		try
 		{
@@ -1496,7 +1498,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Checks if an editlink exists in the subscribers-table
 	 *
-	 * @param 	string  $editlink   to edit the subscriber data
+	 * @param string $editlink to edit the subscriber data
 	 *
 	 * @return 	int subscriber ID
 	 *
@@ -1504,7 +1506,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  3.0.0
 	 */
-	public function checkEditlink($editlink)
+	public function checkEditlink(string $editlink): ?int
 	{
 		$id    = null;
 		$db    = $this->_db;
@@ -1534,9 +1536,9 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the subscribers data for push to sendmailqueue
 	 *
-	 * @param int    $content_id     Content ID --> from the sendmailcontent-Table
-	 * @param string $status         Status --> 0 = unconfirmed, 1 = confirmed
-	 * @param array  $subscribers    array of subscriber ids to get the data for
+	 * @param int    $content_id  Content ID --> from the sendmailcontent-Table
+	 * @param string $status      Status --> 0 = unconfirmed, 1 = confirmed
+	 * @param array  $subscribers array of subscriber ids to get the data for
 	 *
 	 * @return 	array
 	 *
@@ -1544,7 +1546,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  3.0.0
 	 */
-	public function getSubscriberDataForSendmailqueue($content_id, $status, $subscribers)
+	public function getSubscriberDataForSendmailqueue(int $content_id, string $status, array $subscribers): array
 	{
 		$data  = array();
 		$db    = $this->_db;
@@ -1589,7 +1591,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   4.0.0
 	 */
-	public function getTypeAlias()
+	public function getTypeAlias(): string
 	{
 		return 'com_bwpostman.subscriber';
 	}

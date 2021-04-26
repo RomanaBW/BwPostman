@@ -113,7 +113,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function __construct(& $db)
+	public function __construct($db = null)
 	{
 		parent::__construct('#__bwpostman_sendmailqueue', 'id', $db);
 	}
@@ -123,32 +123,32 @@ class SendmailqueueTable extends Table
 	 *
 	 * @access public
 	 *
-	 * @param array|object  $data       Named array
-	 * @param string        $ignore     Space separated list of fields not to bind
-	 *
-	 * @throws Exception
+	 * @param   array|object  $src     An associative array or object to bind to the Table instance.
+	 * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	public function bind($data, $ignore='')
+	public function bind($src, $ignore=''): bool
 	{
 		try
 		{// Bind the rules.
-			if (is_object($data))
+			if (is_object($src))
 			{
-				if (property_exists($data, 'rules') && is_array($data->rules))
+				if (property_exists($src, 'rules') && is_array($src->rules))
 				{
-					$rules = new JAccessRules($data->rules);
+					$rules = new JAccessRules($src->rules);
 					$this->setRules($rules);
 				}
 			}
-			elseif (is_array($data))
+			elseif (is_array($src))
 			{
-				if (array_key_exists('rules', $data) && is_array($data['rules']))
+				if (array_key_exists('rules', $src) && is_array($src['rules']))
 				{
-					$rules = new JAccessRules($data['rules']);
+					$rules = new JAccessRules($src['rules']);
 					$this->setRules($rules);
 				}
 			}
@@ -165,7 +165,7 @@ class SendmailqueueTable extends Table
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return parent::bind($data, $ignore);
+		return parent::bind($src, $ignore);
 	}
 
 	/**
@@ -177,7 +177,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function check()
+	public function check(): bool
 	{
 		return true;
 	}
@@ -188,13 +188,13 @@ class SendmailqueueTable extends Table
 	 * @param   integer     $trial           Only pop entries with < trial
 	 * @param   boolean     $fromComponent   do we come from component or from plugin
 	 *
-	 * @return 	int --> 0 if nothing was selected
+	 * @return    bool --> 0 if nothing was selected
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function pop($trial = 2, $fromComponent = true)
+	public function pop($trial = 2, $fromComponent = true): bool
 	{
 		$this->reset();
 		$result = array();
@@ -241,13 +241,13 @@ class SendmailqueueTable extends Table
 	 *
 	 * @access 	public
 	 *
-	 * @param 	int     $content_id         Content ID --> from the sendmailcontent-Table
-	 * @param 	int     $emailformat        Emailformat --> 0 = Text, 1 = HTML
-	 * @param 	string  $email              Recipient email
-	 * @param   string  $name               Recipient name
-	 * @param   string  $firstname          Recipient first name
-	 * @param   int     $subscriber_id      Subscriber ID
-	 * @param   int     $trial              Number of delivery attempts
+	 * @param int    $content_id    Content ID --> from the sendmailcontent-Table
+	 * @param int    $emailformat   Emailformat --> 0 = Text, 1 = HTML
+	 * @param string $email         Recipient email
+	 * @param string $name          Recipient name
+	 * @param string $firstname     Recipient first name
+	 * @param int    $subscriber_id Subscriber ID
+	 * @param   int  $trial         Number of delivery attempts
 	 *
 	 * @return 	boolean
 	 *
@@ -255,7 +255,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function push($content_id, $emailformat, $email, $name, $firstname, $subscriber_id, $trial = 0)
+	public function push(int $content_id, int $emailformat, string $email, string $name, string $firstname, int $subscriber_id, $trial = 0): bool
 	{
 		$db	= $this->_db;
 		$query	= $db->getQuery(true);
@@ -273,12 +273,12 @@ class SendmailqueueTable extends Table
 				)
 		);
 		$query->values(
-			(int) $content_id . ',' .
-			(int) $emailformat . ',' .
+			$content_id . ',' .
+			$emailformat . ',' .
 			$db->quote($email) . ',' .
 			$db->quote($name) . ',' .
 			$db->quote($firstname) . ',' .
-			(int) $subscriber_id . ',' .
+			$subscriber_id . ',' .
 			(int) $trial
 		);
 
@@ -300,10 +300,10 @@ class SendmailqueueTable extends Table
 	 *
 	 * @access	public
 	 *
-	 * @param 	int     $content_id     Content ID --> from the sendmailcontent-Table
-	 * @param 	string  $status         Status --> 0 = unconfirmed, 1 = confirmed
-	 * @param 	int     $nl_id          Newsletter-ID
-	 * @param	int		$cam_id         campaign id
+	 * @param int    $content_id Content ID --> from the sendmailcontent-Table
+	 * @param string $status     Status --> 0 = unconfirmed, 1 = confirmed
+	 * @param int    $nl_id      Newsletter-ID
+	 * @param int    $cam_id     campaign id
 	 *
 	 * @return 	boolean
 	 *
@@ -312,7 +312,7 @@ class SendmailqueueTable extends Table
 	 * @since       0.9.1
 	 */
 
-	public function pushSubscribers($content_id, $status, $nl_id, $cam_id)
+	public function pushSubscribers(int $content_id, string $status, int $nl_id, int $cam_id): bool
 	{
 		if (!$content_id)
 		{
@@ -394,9 +394,9 @@ class SendmailqueueTable extends Table
 	 *
 	 * @access	public
 	 *
-	 * @param 	int     $content_id     Content ID --> from the sendmailcontent-Table
-	 * @param 	array   $usergroups     Usergroups
-	 * @param 	int     $format         Emailformat --> standard email format defined by BwPostman preferences
+	 * @param int    $content_id Content ID --> from the sendmailcontent-Table
+	 * @param array  $usergroups Usergroups
+	 * @param 	int $format     Emailformat --> standard email format defined by BwPostman preferences
 	 *
 	 * @return 	boolean
 	 *
@@ -404,7 +404,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function pushJoomlaUser($content_id, $usergroups, $format = 0)
+	public function pushJoomlaUser(int $content_id, array $usergroups, $format = 0): bool
 	{
 		if (!$content_id)
 		{
@@ -435,7 +435,7 @@ class SendmailqueueTable extends Table
 		$subQuery->select($db->quoteName('email', 'recipient'));
 		$subQuery->select($db->quote($format) . ' AS mode');
 		$subQuery->select($db->quoteName('name', 'name'));
-		$subQuery->select((int) 0 . ' AS subscriber_id');
+		$subQuery->select(0 . ' AS subscriber_id');
 		$subQuery->from($db->quoteName('#__users'));
 		$subQuery->where($db->quoteName('block') . ' = ' . 0);
 		$subQuery->where($db->quoteName('activation') . " IN ('', '0')");
@@ -501,14 +501,14 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function resetTrials()
+	public function resetTrials(): bool
 	{
 		$db	= $this->_db;
 		$query	= $db->getQuery(true);
 
 		$query->update($db->quoteName($this->_tbl));
-		$query->set($db->quoteName('trial') . " = " . (int) 0);
-		$query->where($db->quoteName('trial') . ' > ' . (int) 0);
+		$query->set($db->quoteName('trial') . " = " . 0);
+		$query->where($db->quoteName('trial') . ' > ' . 0);
 
 		try
 		{
@@ -532,11 +532,11 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       3.0.0
 	 */
-	public function clearQueue()
+	public function clearQueue(): bool
 	{
 		$db	= $this->_db;
 
-		$query = "TRUNCATE TABLE {$this->_tbl} ";
+		$query = "TRUNCATE TABLE $this->_tbl ";
 
 		try
 		{
@@ -567,8 +567,6 @@ class SendmailqueueTable extends Table
 	 */
 	public function checkTrials($trial = 2, $count = 0)
 	{
-		$result = null;
-
 		$db	= $this->_db;
 		$query	= $db->getQuery(true);
 
@@ -643,7 +641,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since   3.0.0
 	 */
-	public function hasField($key)
+	public function hasField($key): bool
 	{
 		$key = $this->getColumnAlias($key);
 

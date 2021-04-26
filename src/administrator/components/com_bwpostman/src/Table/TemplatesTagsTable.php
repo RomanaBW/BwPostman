@@ -154,7 +154,7 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       2.0.0
 	 */
-	public function __construct(& $db)
+	public function __construct($db = null)
 	{
 		parent::__construct('#__bwpostman_templates_tags', 'templates_table_id', $db);
 	}
@@ -170,7 +170,7 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       2.0.0
 	 */
-	public function check()
+	public function check(): bool
 	{
 		// unset standard template if task is save2copy
 		$jinput = Factory::getApplication()->input;
@@ -206,7 +206,7 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 	 *
 	 * @access	public
 	 *
-	 * @param   int    $template_id     template id
+	 * @param int $template_id template id
 	 *
 	 * @return	array
 	 *
@@ -214,7 +214,7 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 	 *
 	 * @since	2.3.0 here (moved from newsletter model there since 2.0.0)
 	 */
-	public function getTemplateAssets($template_id)
+	public function getTemplateAssets(int $template_id): array
 	{
 		$tpl_assets = array();
 
@@ -222,7 +222,7 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 		$query	= $db->getQuery(true);
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('templates_table_id') . ' = ' . (int) $template_id);
+		$query->where($db->quoteName('templates_table_id') . ' = ' . $template_id);
 
 		try
 		{
@@ -242,8 +242,8 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 	 * Method to save template tags for user-made html templates
 	 *
 	 *
-	 * @param   array   $data  The form data.
-	 * @param   integer $tplId The id of the template the tags belongs to
+	 * @param array   $data  The form data.
+	 * @param integer $tplId The id of the template the tags belongs to
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -251,7 +251,7 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function saveTags($data, $tplId)
+	public function saveTags(array $data, int $tplId): bool
 	{
 		$db	= $this->_db;
 		$query	= $db->getQuery(true);
@@ -277,7 +277,7 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 				)
 			);
 			$query->values(
-				(int) $tplId . ',' .
+				$tplId . ',' .
 				(int) $data['tpl_tags_head'] . ',' .
 				$db->quote($data['tpl_tags_head_advanced']) . ',' .
 				(int) $data['tpl_tags_body'] . ',' .
@@ -348,7 +348,7 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function hasField($key)
+	public function hasField($key): bool
 	{
 		$key = $this->getColumnAlias($key);
 
@@ -365,7 +365,7 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   4.0.0
 	 */
-	public function getTypeAlias()
+	public function getTypeAlias(): string
 	{
 		return 'com_bwpostman.templates_tags';
 	}

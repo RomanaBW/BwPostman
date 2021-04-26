@@ -33,6 +33,7 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Access\Rules;
@@ -48,6 +49,13 @@ use Joomla\CMS\Access\Rules;
 class BwpostmanModel extends BaseDatabaseModel
 {
 	/**
+	 * @var MVCFactoryInterface
+	 *
+	 * @since       4.0.0
+	 */
+	protected $factory;
+
+	/**
 	 * Constructor
 	 *
 	 * @throws Exception
@@ -57,6 +65,9 @@ class BwpostmanModel extends BaseDatabaseModel
 	public function __construct()
 	{
 		parent::__construct();
+
+		$this->factory  = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
 	}
 
 	/**
@@ -313,8 +324,7 @@ class BwpostmanModel extends BaseDatabaseModel
 		try
 		{
 //			$asset  = Table::getInstance('asset');
-			$MvcFactory  = $app->bootComponent('com_bwpostman')->getMVCFactory();
-			$asset  = $MvcFactory->createTable('asset');
+			$asset  = $this->factory->createTable('asset');
 			$result = $asset->loadByName($permission['component']);
 
 			if ($result === false)
@@ -328,7 +338,7 @@ class BwpostmanModel extends BaseDatabaseModel
 				$asset->title = (string) $permission['title'];
 
 				// Get the parent asset id so we have a correct tree.
-				$parentAsset = Table::getInstance('Asset');
+				$parentAsset = $this->factory->createTable('asset');
 
 				if (strpos($asset->name, '.') !== false)
 				{

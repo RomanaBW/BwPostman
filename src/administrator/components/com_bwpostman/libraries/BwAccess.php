@@ -29,7 +29,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
 defined('JPATH_PLATFORM') or die;
 
 use Exception;
-use Joomla\CMS\User\UserFactory;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Table\Asset;
 use Joomla\CMS\Factory;
@@ -37,9 +36,7 @@ use Joomla\CMS\Profiler\Profiler;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Helper\UserGroupsHelper;
-use Joomla\CMS\User\User;
 use Joomla\CMS\Log\LogEntry;
-use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use RuntimeException;
 use SimpleXMLElement;
 
@@ -198,20 +195,21 @@ class BwAccess
 	/**
 	 * Method to check if a user is authorised to perform an action, optionally on an asset.
 	 *
-	 * @param   integer         $userId     Id of the user for which to check authorisation.
-	 * @param   string          $action     The name of the action to authorise.
-	 * @param   integer|string  $assetKey   The asset key (asset id or asset name). null fallback to root asset.
-	 * @param   boolean         $preload    Indicates whether preloading should be used.
-	 * @param   integer         $recordId   the id of the record to check for, if given
+	 * @param integer        $userId   Id of the user for which to check authorisation.
+	 * @param string         $action   The name of the action to authorise.
+	 * @param integer|string $assetKey The asset key (asset id or asset name). null fallback to root asset.
+	 * @param boolean        $preload  Indicates whether preloading should be used.
+	 * @param integer        $recordId the id of the record to check for, if given
 	 *
 	 * @return  boolean|null  True if allowed, false for an explicit deny, null for an implicit deny.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   11.1
 	 */
-	public static function check($userId, $action, $assetKey = null, $preload = false, $recordId = 0)
+	public static function check(int $userId, string $action, $assetKey = null, $preload = false, $recordId = 0): ?bool
 	{
 		// Sanitise inputs.
-		$userId = (int) $userId;
 		$action = strtolower(preg_replace('#[\s\-]+#', '.', trim($action)));
 
 		if (!isset(self::$identities[$userId]))
@@ -265,9 +263,11 @@ class BwAccess
 	 *
 	 * @return string
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
-	protected static function getSectionAsset($assetName)
+	protected static function getSectionAsset($assetName): ?string
 	{
 		$sectionRules = null;
 
@@ -299,7 +299,7 @@ class BwAccess
 	 *
 	 * @since 2.0.0
 	 */
-	protected static function isRoot($identities)
+	protected static function isRoot(array $identities): bool
 	{
 		$isRoot = array_keys($identities, 8);
 
@@ -314,6 +314,8 @@ class BwAccess
 	/**
 	 * @param $userId
 	 *
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -350,13 +352,15 @@ class BwAccess
 	 * The identity is an integer where +ve represents a user group,
 	 * and -ve represents a user.
 	 *
-	 * @param   mixed   $identities  An integer representing the identity, or an array of identities
+	 * @param mixed $identities An integer representing the identity, or an array of identities
 	 *
 	 * @return  array   parent identities, oldest last
 	 *
+	 * @throws Exception
+	 *
 	 * @since   11.1
 	 */
-	public static function getParentIdentities($identities)
+	public static function getParentIdentities($identities): array
 	{
 		$parentIdentities = array();
 
@@ -436,17 +440,21 @@ class BwAccess
 	/**
 	 * Method to preload the Rules object for the given asset type.
 	 *
-	 * @param   integer|string|array  $assetTypes  The type or name of the asset (e.g. 'com_content.article', 'com_menus.menu.2').
-	 *                                             Also accepts the asset id. An array of asset type or a special
+	 * @param integer|string|array $assetTypes     The type or name of the asset (e.g. 'com_content.article',
+	 *                                             'com_menus.menu.2'). Also accepts the asset id. An array of asset
+	 *                                             type or a special
 	 *                                             'components' string to load all component assets.
-	 * @param   boolean               $reload      Set to true to reload from database.
+	 * @param boolean              $reload         Set to true to reload from database.
 	 *
 	 * @return  boolean  True on success.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.6
+	 *
 	 * @note    This method will return void in 4.0.
 	 */
-	public static function preload($assetTypes = 'components', $reload = false)
+	public static function preload($assetTypes = 'components', $reload = false): bool
 	{
 		// If sent an asset id, we first get the asset type for that asset id.
 		if (is_numeric($assetTypes))
@@ -483,15 +491,15 @@ class BwAccess
 	 * Method to recursively retrieve the list of parent Asset IDs
 	 * for a particular Asset.
 	 *
-	 * @param   string   $assetType  The asset type, or the asset name, or the extension of the asset
+	 * @param string  $assetType     The asset type, or the asset name, or the extension of the asset
 	 *                               (e.g. 'com_content.article', 'com_menus.menu.2', 'com_contact').
-	 * @param   integer  $assetId    The numeric asset id.
+	 * @param integer $assetId       The numeric asset id.
 	 *
 	 * @return  array  List of ancestor ids (includes original $assetId).
 	 *
 	 * @since   1.6
 	 */
-	protected static function getAssetAncestors($assetType, $assetId)
+	protected static function getAssetAncestors(string $assetType, int $assetId): array
 	{
 		// Get the extension name from the $assetType provided
 		$extensionName = self::getExtensionNameFromAsset($assetType);
@@ -500,10 +508,10 @@ class BwAccess
 		$ancestors = array();
 
 		// Add in our starting Asset ID:
-		$ancestors[] = (int) $assetId;
+		$ancestors[] = $assetId;
 
 		// Initialize the variable we'll use in the loop:
-		$id = (int) $assetId;
+		$id = $assetId;
 
 		while ($id !== 0)
 		{
@@ -573,16 +581,19 @@ class BwAccess
 	 * Stores 2 arrays: one where the list has the Asset ID as the key
 	 * and a second one where the Asset Name is the key.
 	 *
-	 * @param   string   $assetType  The asset type, or the asset name, or the extension of the asset
+	 * @param string  $assetType     The asset type, or the asset name, or the extension of the asset
 	 *                               (e.g. 'com_content.article', 'com_menus.menu.2', 'com_contact').
-	 * @param   boolean  $reload     Reload the preloaded assets.
+	 * @param boolean $reload        Reload the preloaded assets.
 	 *
 	 * @return  bool  True
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.6
+	 *
 	 * @note    This function will return void in 4.0.
 	 */
-	protected static function preloadPermissions($assetType, $reload = false)
+	protected static function preloadPermissions(string $assetType, $reload = false): bool
 	{
 		// Get the extension name from the $assetType provided
 		$extensionName = self::getExtensionNameFromAsset($assetType);
@@ -650,9 +661,11 @@ class BwAccess
 	 *
 	 * @return   array  Array of component names that were preloaded.
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.6
 	 */
-	protected static function preloadComponents()
+	protected static function preloadComponents(): array
 	{
 		// If the components already been preloaded do nothing.
 		if (isset(self::$preloadedAssetTypes['components']))
@@ -733,19 +746,20 @@ class BwAccess
 	/**
 	 * Method to check if a group is authorised to perform an action, optionally on an asset.
 	 *
-	 * @param   integer         $groupId   The path to the group for which to check authorisation.
-	 * @param   string          $action    The name of the action to authorise.
-	 * @param   integer|string  $assetKey  The asset key (asset id or asset name). null fallback to root asset.
-	 * @param   boolean         $preload   Indicates whether preloading should be used.
+	 * @param integer        $groupId  The path to the group for which to check authorisation.
+	 * @param string         $action   The name of the action to authorise.
+	 * @param integer|string $assetKey The asset key (asset id or asset name). null fallback to root asset.
+	 * @param boolean        $preload  Indicates whether preloading should be used.
 	 *
 	 * @return  boolean  True if authorised.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   11.1
 	 */
-	public static function checkGroup($groupId, $action, $assetKey = null, $preload = true)
+	public static function checkGroup(int $groupId, string $action, $assetKey = null, $preload = true): bool
 	{
 		// Sanitize input.
-		$groupId = (int) $groupId;
 		$action  = strtolower(preg_replace('#[\s\-]+#', '.', trim($action)));
 
 		return self::getAssetRules($assetKey, true, true, $preload)->allow($action, self::getGroupPath($groupId));
@@ -779,17 +793,21 @@ class BwAccess
 	 * only the rules explicitly set for the asset or the summation of all inherited rules from
 	 * parent assets and explicit rules.
 	 *
-	 * @param   integer|string  $assetKey              The asset key (asset id or asset name). null fallback to root asset.
-	 * @param   boolean         $recursive             True to return the rules object with inherited rules.
-	 * @param   boolean         $recursiveParentAsset  True to calculate the rule also based on inherited component/extension rules.
-	 * @param   boolean         $preload               Indicates whether preloading should be used.
+	 * @param integer|string $assetKey             The asset key (asset id or asset name). null fallback to root asset.
+	 * @param boolean        $recursive            True to return the rules object with inherited rules.
+	 * @param boolean        $recursiveParentAsset True to calculate the rule also based on inherited
+	 *                                             component/extension rules.
+	 * @param boolean        $preload              Indicates whether preloading should be used.
 	 *
 	 * @return  Rules  Rules object for the asset.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   11.1
+	 *
 	 * @note    The non preloading code will be removed in 4.0. All asset rules should use asset preloading.
 	 */
-	public static function getAssetRules($assetKey, $recursive = false, $recursiveParentAsset = false, $preload = true)
+	public static function getAssetRules($assetKey, $recursive = false, $recursiveParentAsset = false, $preload = true): Rules
 	{
 		$logOptions = array();
 		$logger     = BwLogger::getInstance($logOptions);
@@ -1060,7 +1078,7 @@ class BwAccess
 	 *
 	 * @since   3.7.0
 	 */
-	protected static function getAssetId($assetKey)
+	protected static function getAssetId($assetKey): int
 	{
 		static $loaded = array();
 
@@ -1187,7 +1205,7 @@ class BwAccess
 	 *
 	 * @since    1.6
 	 */
-	public static function getAssetType($assetKey)
+	public static function getAssetType($assetKey): string
 	{
 		// If the asset is already a string return it.
 		$assetName = self::getAssetName($assetKey);
@@ -1228,14 +1246,16 @@ class BwAccess
 	 * only the groups explicitly mapped to the user or all groups both explicitly mapped and inherited
 	 * by the user.
 	 *
-	 * @param   integer  $userId     Id of the user for which to get the list of groups.
-	 * @param   boolean  $recursive  True to include inherited user groups.
+	 * @param integer $userId    Id of the user for which to get the list of groups.
+	 * @param boolean $recursive True to include inherited user groups.
 	 *
 	 * @return  array    List of user group ids to which the user is mapped.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   11.1
 	 */
-	public static function getGroupsByUser($userId, $recursive = true)
+	public static function getGroupsByUser(int $userId, $recursive = true): array
 	{
 		// Creates a simple unique string for each parameter combination:
 		$storeId = $userId . ':' . (int) $recursive;
@@ -1274,7 +1294,7 @@ class BwAccess
 				else
 				{
 					$query->from('#__user_usergroup_map AS map')
-						->where('map.user_id = ' . (int) $userId)
+						->where('map.user_id = ' . $userId)
 						->join('LEFT', '#__usergroups AS a ON a.id = map.group_id');
 				}
 
@@ -1320,15 +1340,18 @@ class BwAccess
 	/**
 	 * Method to return a list of user Ids contained in a Group
 	 *
-	 * @param   integer  $groupId    The group Id
-	 * @param   boolean  $recursive  Recursively include all child groups (optional)
+	 * @param integer $groupId   The group Id
+	 * @param boolean $recursive Recursively include all child groups (optional)
 	 *
 	 * @return  array
 	 *
-	 * @since   11.1
+	 * @throws Exception
+	 *
 	 * @todo    This method should move somewhere else
+	 *
+	 * @since   11.1
 	 */
-	public static function getUsersByGroup($groupId, $recursive = false)
+	public static function getUsersByGroup(int $groupId, $recursive = false): array
 	{
 		// Get a database object.
 		$db = Factory::getDbo();
@@ -1341,7 +1364,7 @@ class BwAccess
 			->from('#__usergroups as ug1')
 			->join('INNER', '#__usergroups AS ug2 ON ug2.lft' . $test . 'ug1.lft AND ug1.rgt' . $test . 'ug2.rgt')
 			->join('INNER', '#__user_usergroup_map AS m ON ug2.id=m.group_id')
-			->where('ug1.id=' . $db->quote((int)$groupId));
+			->where('ug1.id=' . $db->quote($groupId));
 
 		$result = null;
 
@@ -1365,13 +1388,15 @@ class BwAccess
 	/**
 	 * Method to return a list of view levels for which the user is authorised.
 	 *
-	 * @param   integer  $userId  Id of the user for which to get the list of authorised view levels.
+	 * @param integer $userId Id of the user for which to get the list of authorised view levels.
 	 *
 	 * @return  array    List of view levels for which the user is authorised.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   11.1
 	 */
-	public static function getAuthorisedViewLevels($userId)
+	public static function getAuthorisedViewLevels(int $userId): array
 	{
 		// Only load the view levels once.
 		if (empty(self::$viewLevels))
@@ -1454,16 +1479,18 @@ class BwAccess
 	/**
 	 * Method to return a list of actions for which permissions can be set given a component and section.
 	 *
-	 * @param   string  $component  The component from which to retrieve the actions.
-	 * @param   string  $section    The name of the section within the component from which to retrieve the actions.
+	 * @param string   $component The component from which to retrieve the actions.
+	 * @param   string $section   The name of the section within the component from which to retrieve the actions.
 	 *
 	 * @return  array  List of actions available for the given component and section.
 	 *
 	 * @since       11.1
+	 *
 	 * @deprecated  12.3 (Platform) & 4.0 (CMS)  Use Access::getActionsFromFile or Access::getActionsFromData instead.
+	 *
 	 * @codeCoverageIgnore
 	 */
-	public static function getActions($component, $section = 'component')
+	public static function getActions(string $component, $section = 'component')
 	{
 		$logOptions   = array();
 		$logger = BwLogger::getInstance($logOptions);
@@ -1489,14 +1516,14 @@ class BwAccess
 	/**
 	 * Method to return a list of actions from a file for which permissions can be set.
 	 *
-	 * @param   string  $file   The path to the XML file.
-	 * @param   string  $xpath  An optional xpath to search for the fields.
+	 * @param string   $file  The path to the XML file.
+	 * @param   string $xpath An optional xpath to search for the fields.
 	 *
 	 * @return  boolean|array   False if case of error or the list of actions available.
 	 *
 	 * @since   12.1
 	 */
-	public static function getActionsFromFile($file, $xpath = "/access/section[@name='component']/")
+	public static function getActionsFromFile(string $file, $xpath = "/access/section[@name='component']/")
 	{
 		if (!is_file($file) || !is_readable($file))
 		{

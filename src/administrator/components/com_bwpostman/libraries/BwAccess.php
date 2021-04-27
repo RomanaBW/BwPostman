@@ -718,13 +718,13 @@ class BwAccess
 	 * @param integer|string $assetKey The asset key (asset id or asset name). null fallback to root asset.
 	 * @param boolean        $preload  Indicates whether preloading should be used.
 	 *
-	 * @return  boolean  True if authorised.
+	 * @return  boolean|null  True if authorised, null otherwise
 	 *
 	 * @throws Exception
 	 *
 	 * @since   11.1
 	 */
-	public static function checkGroup(int $groupId, string $action, $assetKey = null, $preload = true): bool
+	public static function checkGroup(int $groupId, string $action, $assetKey = null, $preload = true): ?bool
 	{
 		// Sanitize input.
 		$action  = strtolower(preg_replace('#[\s\-]+#', '.', trim($action)));

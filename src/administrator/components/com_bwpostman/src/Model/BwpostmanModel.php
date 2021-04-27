@@ -323,8 +323,8 @@ class BwpostmanModel extends BaseDatabaseModel
 
 		try
 		{
-//			$asset  = Table::getInstance('asset');
-			$asset  = $this->factory->createTable('asset');
+			$asset  = Table::getInstance('asset');
+//			$asset  = $this->factory->createTable('asset');
 			$result = $asset->loadByName($permission['component']);
 
 			if ($result === false)
@@ -338,7 +338,8 @@ class BwpostmanModel extends BaseDatabaseModel
 				$asset->title = (string) $permission['title'];
 
 				// Get the parent asset id so we have a correct tree.
-				$parentAsset = $this->factory->createTable('asset');
+				$parentAsset  = Table::getInstance('asset');
+//				$parentAsset = $this->factory->createTable('asset');
 
 				if (strpos($asset->name, '.') !== false)
 				{

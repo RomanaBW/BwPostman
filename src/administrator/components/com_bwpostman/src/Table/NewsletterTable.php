@@ -397,8 +397,9 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 */
 	protected function _getAssetParentId(Table $table = null, $id = null): int
 	{
-		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
-		$asset      = $MvcFactory->createTable('asset');
+//		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+//		$asset      = $MvcFactory->createTable('Asset', 'Administrator');
+		$asset = Table::getInstance('Asset');
 
 		$asset->loadByName('com_bwpostman.newsletter');
 		return (int)$asset->id;

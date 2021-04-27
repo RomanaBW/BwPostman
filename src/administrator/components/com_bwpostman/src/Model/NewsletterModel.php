@@ -280,8 +280,13 @@ class NewsletterModel extends AdminModel
 				}
 
 				// Get associated mailinglists
-				$crossTable = $this->getTable('NewslettersMailinglists');
-				$item->mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter($item->id);
+				$item->mailinglists = array();
+
+				if (property_exists($item, 'id') && $item->id !== null)
+				{
+					$crossTable = $this->getTable('NewslettersMailinglists');
+					$item->mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter($item->id);
+				}
 
 				//extract associated usergroups
 				$usergroups = array();

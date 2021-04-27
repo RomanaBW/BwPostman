@@ -235,6 +235,11 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
+		if ($tpl_assets === null)
+		{
+			return array();
+		}
+
 		return $tpl_assets;
 	}
 

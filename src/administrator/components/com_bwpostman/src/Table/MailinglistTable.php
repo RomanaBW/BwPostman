@@ -504,12 +504,12 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @param integer $userId the user ID f this subscriber
 	 *
-	 * @return    object Mailinglists
+	 * @return    array Mailinglists
 	 *
 	 * @throws Exception
 	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
 	 */
-	public function getAuthorizedMailinglists(int $userId): ?object
+	public function getAuthorizedMailinglists(int $userId): ?array
 	{
 		$app          = Factory::getApplication();
 		$mailinglists = null;

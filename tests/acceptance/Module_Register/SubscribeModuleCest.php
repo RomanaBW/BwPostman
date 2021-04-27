@@ -121,7 +121,7 @@ class SubscribeModuleCest
 		$this->subscribeByModule($I);
 
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElement(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		$this->activate($I, SubsView::$mail_fill_1);

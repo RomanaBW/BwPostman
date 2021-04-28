@@ -584,8 +584,6 @@ class EditController extends FormController
 		$subscriber     = new stdClass();
 		$subsModel      = $this->getModel('subscriber', 'Administrator');
 		$subsTable      = $subsModel->getTable('Subscriber');
-
-		// @ToDo: What if $id is null?
 		$subscriberdata = $subsTable->getSubscriberState($id);
 
 		if (!is_object($subscriberdata))

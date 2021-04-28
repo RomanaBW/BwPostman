@@ -407,9 +407,7 @@ class RegisterController extends FormController
 			}
 		}
 
-		$subsTable    = $this->getModel('subscriber', 'Administrator')->getTable('Subscriber');
-
-		// @ToDo: What if $id is null?
+		$subsTable      = $this->getModel('subscriber', 'Administrator')->getTable('Subscriber');
 		$subscriberdata = $subsTable->getSubscriberState($id);
 
 		if (!is_object($subscriberdata))

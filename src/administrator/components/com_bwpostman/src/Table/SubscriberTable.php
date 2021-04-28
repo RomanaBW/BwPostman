@@ -1012,7 +1012,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			if (!$isTester)
 			{
-				$id = $this->_db->loadResult();
+				$id = (int)$this->_db->loadResult();
 			}
 			else
 			{

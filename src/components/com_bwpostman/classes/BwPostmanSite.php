@@ -57,7 +57,8 @@ class BwPostmanSite
 
 		$copyright = '<span>BwPostman by </span><a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
 
-		$arguments = array('eventClass' => '0815','copyright' => &$copyright);
+		$arguments = array(&$copyright);
+//		$arguments = array('eventClass' => '0815','copyright' => &$copyright);
 
 //		$event = AbstractEvent::create('onPrepareBwpostman', $arguments);
 //

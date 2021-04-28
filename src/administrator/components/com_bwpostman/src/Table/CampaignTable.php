@@ -213,7 +213,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	protected function _getAssetName(): string
 	{
 		$k = $this->_tbl_key;
-		return 'com_bwpostman.campaign.' . (int) $this->$k;
+		return 'com_bwpostman.campaign.' . $this->$k;
 	}
 
 	/**

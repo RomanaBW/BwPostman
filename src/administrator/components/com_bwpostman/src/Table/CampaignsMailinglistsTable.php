@@ -157,6 +157,7 @@ class CampaignsMailinglistsTable extends Table
 			catch (RuntimeException $e)
 			{
 				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_COPY_MAILINGLISTS_FAILED'), 'error');
+				return false;
 			}
 		}
 

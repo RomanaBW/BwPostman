@@ -229,7 +229,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	protected function _getAssetName(): string
 	{
 		$k = $this->_tbl_key;
-		return 'com_bwpostman.mailinglist.' . (int) $this->$k;
+		return 'com_bwpostman.mailinglist.' . $this->$k;
 	}
 
 	/**

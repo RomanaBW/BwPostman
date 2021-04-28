@@ -125,7 +125,7 @@ class TemplatesTplTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 1.1.0
 	 */
-	public function __construct(& $db)
+	public function __construct($db = null)
 	{
 		parent::__construct('#__bwpostman_templates_tpl', 'id', $db);
 	}
@@ -141,7 +141,7 @@ class TemplatesTplTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 1.1.0
 	 */
-	public function check()
+	public function check(): bool
 	{
 		// Sanitize values
 		$filter = new InputFilter(array(), array(), 0, 0);
@@ -183,7 +183,7 @@ class TemplatesTplTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function hasField($key)
+	public function hasField($key): bool
 	{
 		$key = $this->getColumnAlias($key);
 
@@ -200,7 +200,7 @@ class TemplatesTplTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   4.0.0
 	 */
-	public function getTypeAlias()
+	public function getTypeAlias(): string
 	{
 		return 'com_bwpostman.templates_tpl';
 	}

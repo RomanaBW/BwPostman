@@ -462,8 +462,6 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 */
 	public function check(): bool
 	{
-		jimport('joomla.mail.helper');
-
 		$app	= Factory::getApplication();
 		$db     = $this->_db;
 		$query	= $db->getQuery(true);
@@ -947,7 +945,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	public function store($updateNulls = false)
+	public function store($updateNulls = false): bool
 	{
 		$date = Factory::getDate();
 		$app  = Factory::getApplication();

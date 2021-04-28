@@ -984,7 +984,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 * @param string  $email    subscriber email
 	 * @param boolean $isTester is tester?
 	 *
-	 * @return    int     $id     subscriber ID
+	 * @return    int|array     $id     single subscriber ID if regular subscriber, array if testrecipient
 	 *
 	 * @throws Exception
 	 *
@@ -1012,7 +1012,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			if (!$isTester)
 			{
-				$id = intval($this->_db->loadResult());
+				$id = $this->_db->loadResult();
 			}
 			else
 			{
@@ -1024,7 +1024,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return (int)$id;
+		return $id;
 	}
 
 	/**
@@ -1422,7 +1422,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to validate edit link, if exists return subscriber id
 	 *
-	 * @param integer $email    email of the demanded unsubscription
+	 * @param string  $email    email of the demanded unsubscription
 	 * @param string  $editlink editlink provided by the unsubscription
 	 *
 	 * @return  integer|boolean false on failure
@@ -1431,7 +1431,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function validateSubscriberEditlink(int $email, string $editlink)
+	public function validateSubscriberEditlink(string $email, string $editlink)
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);

@@ -288,7 +288,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 1.1.0
 	 */
-	public function __construct(& $db)
+	public function __construct($db = null)
 	{
 		parent::__construct('#__bwpostman_templates', 'id', $db);
 	}
@@ -300,7 +300,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.1.0
 	 */
-	public function getAssetName()
+	public function getAssetName(): string
 	{
 		return self::_getAssetName();
 	}
@@ -312,7 +312,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.1.0
 	 */
-	public function getAssetTitle()
+	public function getAssetTitle(): ?string
 	{
 		return self::_getAssetTitle();
 	}
@@ -320,13 +320,13 @@ class TemplateTable extends Table implements VersionableTableInterface
 	/**
 	 * Alias function
 	 *
-	 * @return  string
+	 * @return  int
 	 *
 	 * @throws Exception
 	 *
 	 * @since   1.1.0
 	 */
-	public function getAssetParentId()
+	public function getAssetParentId(): int
 	{
 		return self::_getAssetParentId();
 	}
@@ -340,7 +340,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.1.0
 	 */
-	protected function _getAssetName()
+	protected function _getAssetName(): string
 	{
 		$k = $this->_tbl_key;
 		return 'com_bwpostman.template.' . (int) $this->$k;
@@ -353,7 +353,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.1.0
 	 */
-	protected function _getAssetTitle()
+	protected function _getAssetTitle(): ?string
 	{
 		return $this->title;
 	}
@@ -361,14 +361,14 @@ class TemplateTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the parent asset id for the record
 	 *
-	 * @param   Table   $table  A Table object (optional) for the asset parent
-	 * @param   integer  $id     The id (optional) of the content.
+	 * @param Table|null $table A Table object (optional) for the asset parent
+	 * @param null       $id    The id (optional) of the content.
 	 *
 	 * @return  integer
 	 *
 	 * @since   11.1
 	 */
-	protected function _getAssetParentId(Table $table = null, $id = null)
+	protected function _getAssetParentId(Table $table = null, $id = null): int
 	{
 //		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 //		$asset      = $MvcFactory->createTable('Asset', 'Administrator');
@@ -392,7 +392,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 1.1.0
 	 */
-	public function bind($src, $ignore='')
+	public function bind($src, $ignore=''): bool
 	{
 
 		// Remove all HTML tags from the title and description
@@ -439,7 +439,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 1.1.0
 	 */
-	public function check()
+	public function check(): bool
 	{
 		$app   = Factory::getApplication();
 		$db    = $this->_db;
@@ -638,7 +638,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.1.0
 	 */
-	public function store($updateNulls = false)
+	public function store($updateNulls = false): bool
 	{
 		$date = Factory::getDate();
 		$user = Factory::getApplication()->getIdentity();
@@ -672,13 +672,13 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @access private
 	 *
-	 * @param   object  $data
+	 * @param object $data
 	 *
 	 * @return object   $data
 	 *
 	 * @since 1.1.0
 	 */
-	private function converttostr($data)
+	private function converttostr(object $data): object
 	{
 		// array to string
 		if (isset($data->basics) && is_array($data->basics))
@@ -765,7 +765,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0
 	 */
-	public function getNumberOfStdTemplates($cid)
+	public function getNumberOfStdTemplates($cid): int
 	{
 		$count_std = 0;
 
@@ -807,7 +807,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0 (here, before since 2.3.0 at template helper)
 	 */
-	public function getNbrOfTemplates($mode, $archived, $title = '')
+	public function getNbrOfTemplates(string $mode, bool $archived, $title = '')
 	{
 		$archiveFlag = 0;
 
@@ -856,7 +856,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the title of a template
 	 *
-	 * @param integer  $id
+	 * @param integer $id
 	 *
 	 * @return 	string|boolean title of template or false
 	 *
@@ -864,7 +864,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0
 	 */
-	public function getTemplateTitle($id)
+	public function getTemplateTitle(int $id)
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -872,7 +872,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 		// get template title
 		$query->select($db->quoteName('title'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . (int)$id);
+		$query->where($db->quoteName('id') . ' = ' . $id);
 
 		try
 		{
@@ -893,8 +893,8 @@ class TemplateTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to set the title of a template
 	 *
-	 * @param integer  $id
-	 * @param string   $title
+	 * @param integer $id
+	 * @param string  $title
 	 *
 	 * @return 	boolean
 	 *
@@ -902,7 +902,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0
 	 */
-	public function setTemplateTitle($id, $title)
+	public function setTemplateTitle(int $id, string $title): bool
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -910,7 +910,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 		// get template title
 		$query->update($db->quoteName($this->_tbl));
 		$query->set($db->quoteName('title') . ' = ' . $db->quote($title));
-		$query->where($db->quoteName('id') . ' = ' . (int)$id);
+		$query->where($db->quoteName('id') . ' = ' . $id);
 
 		try
 		{
@@ -931,7 +931,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @access	public
 	 *
-	 * @param   int    $template_id     template id
+	 * @param int $template_id template id
 	 *
 	 * @return	object
 	 *
@@ -939,7 +939,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since	3.0.0 (here, since 2.3.0 at ContentRenderer, since 1.1.0 at newsletter model)
 	 */
-	public function getTemplate($template_id)
+	public function getTemplate(int $template_id)
 	{
 		$tpl    = new stdClass();
 		$db   = $this->_db;
@@ -955,7 +955,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 		$query->select($db->quoteName('article'));
 		$query->select($db->quoteName('intro'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' = ' . (int) $template_id);
+		$query->where($db->quoteName('id') . ' = ' . $template_id);
 
 		try
 		{
@@ -1031,7 +1031,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 1.1.0
 	 */
-	public function setDefaultTpl($id = 0)
+	public function setDefaultTpl($id = 0): bool
 	{
 		if (!$this->load((int) $id))
 		{
@@ -1109,7 +1109,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function hasField($key)
+	public function hasField($key): bool
 	{
 		$key = $this->getColumnAlias($key);
 
@@ -1126,7 +1126,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   4.0.0
 	 */
-	public function getTypeAlias()
+	public function getTypeAlias(): string
 	{
 		return 'com_bwpostman.template';
 	}

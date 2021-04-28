@@ -577,13 +577,15 @@ class EditController extends FormController
 			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_WARNING_FAULTY_MAIL_ADDRESS', $post['email']), 'warning');
 		}
 
-		$id	            = (int)$model->isRegSubscriber($post['email']);
+		$id	            = $model->isRegSubscriber($post['email']);
 		$err            = new stdClass();
 		$err->err_code  = 0;
 		$subs_id        = null;
 		$subscriber     = new stdClass();
 		$subsModel      = $this->getModel('subscriber', 'Administrator');
 		$subsTable      = $subsModel->getTable('Subscriber');
+
+		// @ToDo: What if $id is null?
 		$subscriberdata = $subsTable->getSubscriberState($id);
 
 		if (!is_object($subscriberdata))

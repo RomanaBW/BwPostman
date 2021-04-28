@@ -152,7 +152,7 @@ class SubscribeModuleCest
 		$this->subscribeByModule($I);
 
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElement(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		$this->activate($I, SubsView::$mail_fill_1);
@@ -186,7 +186,7 @@ class SubscribeModuleCest
 		$this->subscribeByModule($I, 'small');
 
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElement(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		$this->activate($I, SubsView::$mail_fill_1);
@@ -221,7 +221,7 @@ class SubscribeModuleCest
 		$this->subscribeByModule($I, 'big');
 
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElement(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		$this->activate($I, SubsView::$mail_fill_1);
@@ -379,7 +379,7 @@ class SubscribeModuleCest
 		$I->scrollTo(Helper::$mod_button_register, 0, -100);
 		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElementVisible(\Page\SubscriberviewPage::$errorContainerContent, 2);
+		$I->waitForElementVisible(SubsView::$errorContainerContent, 2);
 
 		$I->see(Helper::$invalid_select_mailaddress_mod, sprintf(Helper::$errorModulBody, 4));
 		$I->see(Helper::$invalid_select_newsletter_mod, sprintf(Helper::$errorModulBody, 5));
@@ -1060,7 +1060,7 @@ class SubscribeModuleCest
 				$grabField = Helper::$module_item_text_identifier . "/span/span";
 				$itemText = $I->grabTextFrom($grabField);
 			}
-			codecept_debug($itemText);
+//			codecept_debug($itemText);
 			$I->assertEquals("01 Mailingliste 4 weiterer Lauf A", $itemText);
 		}
 
@@ -1144,7 +1144,7 @@ class SubscribeModuleCest
 	private function unsubscribe(AcceptanceTester $I, $button)
 	{
 		$I->click($button);
-		$I->waitForElement(SubsView::$view_edit, 30);
+		$I->waitForElement(SubsView::$view_edit, 5);
 		$I->seeElement(SubsView::$view_edit);
 
 		$I->scrollTo(SubsView::$button_unsubscribe, 0, -100);

@@ -509,6 +509,9 @@ class User2SubscriberCest
 		$this->fillJoomlaPartAtRegisterForm($I);
 
 		$this->fillBwPostmanPartAtRegisterFormSimple($I);
+
+		$I->scrollTo(RegPage::$subs_identifier_format_text, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(RegPage::$subs_identifier_format_text, 1);
 
 		$this->registerAndCheckMessage($I);
@@ -1412,13 +1415,14 @@ class User2SubscriberCest
 
 		if ($com_options->show_gender)
 		{
-			$I->click(RegPage::$gender_list);
+			$I->scrollTo(RegPage::$gender_list, 0, -100);
+			$I->wait(1);
+
+			$I->click(RegPage::$gender_list_id);
 			$I->waitForElementVisible(RegPage::$subs_identifier_female, 2);
 
 			// click wanted value
 			$I->click(RegPage::$subs_identifier_female);
-
-			$I->selectOption(RegPage::$gender_list, RegPage::$subs_option_female);
 
 			self::$check_gender     = true;
 			self::$gender_selected  = 'female';

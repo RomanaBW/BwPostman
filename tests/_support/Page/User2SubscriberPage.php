@@ -219,7 +219,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $gender_list           = '//*[@id="jform_bwpm_user2subscriber_gender_chosen"]';
+	public static $gender_list           = "//*[@id='jform_bwpm_user2subscriber_gender_chosen']";
 
 	/**
 	 * @var string

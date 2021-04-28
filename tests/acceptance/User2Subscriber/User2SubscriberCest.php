@@ -1415,14 +1415,39 @@ class User2SubscriberCest
 
 		if ($com_options->show_gender)
 		{
-			$I->scrollTo(RegPage::$gender_list, 0, -100);
-			$I->wait(1);
+			$isPipeline = true;
 
-			$I->click(RegPage::$gender_list_id);
-			$I->waitForElementVisible(RegPage::$subs_identifier_female, 2);
+			try
+			{
+				$I->grabTextFrom(RegPage::$gender_list . '/a/span');
+				$isPipeline = false;
+			}
+			catch (Exception $e)
+			{
+				// Do nothing
+			}
 
-			// click wanted value
-			$I->click(RegPage::$subs_identifier_female);
+			if (!$isPipeline)
+			{
+				$I->scrollTo(RegPage::$gender_list, 0, -100);
+				$I->wait(1);
+
+				$I->click(RegPage::$gender_list_id);
+				$I->waitForElementVisible(RegPage::$subs_identifier_female, 2);
+
+				// click wanted value
+				$I->click(RegPage::$subs_identifier_female);
+			}
+			else
+			{
+				$I->click(RegPage::$gender_list);
+				$I->waitForElementVisible(RegPage::$subs_identifier_female, 2);
+
+				// click wanted value
+				$I->click(RegPage::$subs_identifier_female);
+
+				$I->selectOption(RegPage::$gender_list, RegPage::$subs_option_female);
+			}
 
 			self::$check_gender     = true;
 			self::$gender_selected  = 'female';

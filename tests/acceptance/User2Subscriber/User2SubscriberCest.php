@@ -1440,13 +1440,13 @@ class User2SubscriberCest
 			}
 			else
 			{
-				$I->click(RegPage::$gender_list);
-				$I->waitForElementVisible(RegPage::$subs_identifier_female, 2);
+				$I->click(RegPage::$gender_list_classical);
+				$I->waitForElementVisible(RegPage::$subs_identifier_female_classical, 2);
 
 				// click wanted value
-				$I->click(RegPage::$subs_identifier_female);
+				$I->click(RegPage::$subs_identifier_female_classical);
 
-				$I->selectOption(RegPage::$gender_list, RegPage::$subs_option_female);
+				$I->selectOption(RegPage::$gender_list_classical, RegPage::$subs_option_female);
 			}
 
 			self::$check_gender     = true;

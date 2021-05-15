@@ -1510,7 +1510,7 @@ codecept_debug('After Grab Multiple');
 	 *
 	 * @since   3.1.5
 	 */
-	private function getExtensionEnabledState($extension = 'com_bwpostman')
+	public function getExtensionEnabledState($extension = 'com_bwpostman')
 	{
 		$credentials    = $this->getDbCredentials();
 

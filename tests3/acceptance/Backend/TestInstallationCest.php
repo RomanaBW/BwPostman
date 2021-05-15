@@ -106,7 +106,7 @@ class TestInstallationCest
 
 		// Plugin U2S has to be disabled
 		$state = $I->getExtensionEnabledState('bwpm_user2subscriber');
-		$I->assertEquals(true, $state, 'Plugin U2S disabled');
+		$I->assertEquals(false, $state, 'Plugin U2S disabled');
 
 		// Plugin FUM has to be enabled
 		$state = $I->getExtensionEnabledState('footerusedmailinglists');

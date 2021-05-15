@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman newsletter single default template for frontend.
+ * BwPostman newsletter single bootstrap2 template for frontend.
  *
  * @version %%version_number%%
  * @package BwPostman-Site
@@ -34,7 +34,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
 
-JHtml::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
+JHtml::_('stylesheet', 'com_bwpostman/bwpostman_bs2.css', array('version' => 'auto', 'relative' => true));
 $templateName	= Factory::getApplication()->getTemplate();
 $css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
 JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
@@ -123,12 +123,12 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 	</div>
 	<?php
 	} ?>
-		<p class="back_link btn"><a href="<?php echo htmlspecialchars($this->backlink); ?>"><?php echo Text::_('JPREV'); ?></a></p>
+		<p class="back_link btn mt-3"><a href="<?php echo htmlspecialchars($this->backlink); ?>"><?php echo Text::_('JPREV'); ?></a></p>
 
 		<?php
 		if ($this->params->get('show_boldt_link') === '1')
 		{ ?>
-		<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+		<p class="bwpm_copyright text-center my-3"><?php echo BwPostman::footer(); ?></p>
 		<?php
 		} ?>
 	</div>

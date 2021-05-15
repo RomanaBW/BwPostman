@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman newsletter single default template for frontend.
+ * BwPostman newsletter single bootstrap4 template for frontend.
  *
  * @version %%version_number%%
  * @package BwPostman-Site
@@ -34,7 +34,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
 
-JHtml::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
 $templateName	= Factory::getApplication()->getTemplate();
 $css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
 JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
@@ -54,7 +53,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 			{
 				framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
 			}
-			framefenster.style.height = framefenster_size + 2 +'px';
+			framefenster.style.height = framefenster_size + 4 +'px';
 		}
 	};
 /* ]]> */
@@ -108,9 +107,9 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 				foreach ($attachments as $attachment)
 				{
 					?>
-					<span class="btn" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
-						<a class="link-attachment" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
-							<i class="icon_attachment"></i>
+					<span title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
+						<a class="link-attachment btn btn-outline-secondary" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
+							<i class="fa fa-paperclip"></i>
 						</a>
 					</span>
 					<?php
@@ -123,12 +122,12 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 	</div>
 	<?php
 	} ?>
-		<p class="back_link btn"><a href="<?php echo htmlspecialchars($this->backlink); ?>"><?php echo Text::_('JPREV'); ?></a></p>
+		<p class="back_link btn btn-outline-secondary mt-3"><a href="<?php echo htmlspecialchars($this->backlink); ?>"><?php echo Text::_('JPREV'); ?></a></p>
 
 		<?php
 		if ($this->params->get('show_boldt_link') === '1')
 		{ ?>
-		<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+		<p class="bwpm_copyright text-center my-3"><?php echo BwPostman::footer(); ?></p>
 		<?php
 		} ?>
 	</div>

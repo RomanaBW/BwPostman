@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman newsletter all default template for frontend.
+ * BwPostman newsletter all bootstrap2 template for frontend.
  *
  * @version %%version_number%%
  * @package BwPostman-Site
@@ -36,7 +36,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
 
 HtmlHelper::_('jquery.ui', array('searchtools'));
-HtmlHelper::_('formbehavior.chosen', 'select');
 
 /**
  * BwPostman Newsletter Overview Layout
@@ -57,7 +56,7 @@ if ($moduleId !== null && $moduleId !== '')
 	$actionSuffix = 'mid=' . $moduleId;
 }
 
-JHtml::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
+JHtml::_('stylesheet', 'com_bwpostman/bwpostman_bs2.css', array('version' => 'auto', 'relative' => true));
 $templateName	= Factory::getApplication()->getTemplate();
 $css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
 JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
@@ -72,10 +71,10 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 		<?php endif; ?>
 
 		<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&' . $actionSuffix); ?>" method="post"
-				name="adminForm" id="adminForm" class="form-inline form-horizontal">
-			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="js-tools clearfix">
+				name="adminForm" id="adminForm">
+			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="clearfix">
 				<div class="clearfix">
-					<div class="search_left">
+					<div class="search_left pull-left">
 						<?php if ($this->params->get('filter_field') != "hide") : ?>
 							<label for="filter_search" class="element-invisible">
 								<?php echo Text::_('JSEARCH_FILTER'); ?>
@@ -85,11 +84,11 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 										value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
 										title="<?php echo Text::_('COM_BWPOSTMAN_FILTER_SEARCH_DESC'); ?>"
 										placeholder="<?php echo Text::_('COM_BWPOSTMAN_SEARCH'); ?> " />
-								<button type="submit" class="append-area hasTooltip"
+								<button type="submit" class="btn hasTooltip"
 										title="<?php echo HtmlHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>">
 									<i class="icon-search"></i>
 								</button>
-								<button type="button" class="append-area hasTooltip js-stools-btn-clear reset"
+								<button type="button" class="btn hasTooltip reset"
 										title="<?php echo HtmlHelper::tooltipText('COM_BWPOSTMAN_RESET'); ?>"
 										onclick="document.getElementById('filter_search').setAttribute('value','');this.form.submit();">
 									<i class="icon-remove"></i>
@@ -97,65 +96,65 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 							</div>
 						<?php endif; ?>
 					</div>
-					<div class="js-stools-container-list search_right">
-						<?php if ($this->params->get('date_filter_enable') != 'hide') : ?>
-							<div class="js-stools-field-filter filter_month"><?php echo $this->form->monthField; ?></div>
-							<div class="js-stools-field-filter filter_year"><?php echo $this->form->yearField; ?></div>
-						<?php endif; ?>
-						<div class="js-stools-field-filter filter_list"><?php echo $this->form->limitField; ?></div><br />
-						<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
-						{ ?>
-							<div class="js-stools-field-filter filter_mls">
-								<?php echo HtmlHelper::_(
-									'select.genericlist',
-									$this->mailinglists,
-									'filter.mailinglist',
-									'class="inputbox input-medium filter-mailinglist"',
-									'id',
-									'title',
-									$this->state->get('filter.mailinglist'),
-									'filter.mailinglist'
-								); ?>
-							</div>
-						<?php
-						}
-						else
-						{
-//							$this->state->set('filter.mailinglist', '');
-						} ?>
-						<?php if ($this->params->get('groups_filter_enable') != 'hide' && is_array($this->usergroups) && count($this->usergroups) > 2) : ?>
-							<div class="js-stools-field-filter filter_groups">
-								<?php echo HtmlHelper::_(
-									'select.genericlist',
-									$this->usergroups,
-									'filter.usergroup',
-									'class="inputbox input-medium filter-usergroup"',
-									'id',
-									'title',
-									$this->state->get('filter.usergroup'),
-									'filter.usergroup'
-								); ?>
-							</div>
-						<?php endif; ?>
-						<?php if ($this->params->get('cam_filter_enable') != 'hide' && is_array($this->campaigns) && count($this->campaigns) > 2) : ?>
-							<div class="js-stools-field-filter filter_cams">
-								<?php echo HtmlHelper::_(
-									'select.genericlist',
-									$this->campaigns,
-									'filter.campaign',
-									'class="inputbox input-medium filter-campaign"',
-									'id',
-									'title',
-									$this->state->get('filter.campaign'),
-									'filter.campaign'
-								); ?>
-							</div>
-						<?php endif; ?>
+					<div class="search_right1 clearfix">
+						<div class="form-inline pull-right mb-2">
+							<?php if ($this->params->get('date_filter_enable') != 'hide') : ?>
+								<?php echo $this->form->monthField; ?>
+								<?php echo $this->form->yearField; ?>
+							<?php endif; ?>
+							<?php echo $this->form->limitField; ?>
+						</div>
+					</div>
+					<div class="search_right2 clearfix">
+						<div class="form-inline pull-right">
+							<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
+							{ ?>
+									<?php echo HtmlHelper::_(
+										'select.genericlist',
+										$this->mailinglists,
+										'filter.mailinglist',
+										'class="mb-2 inputbox input-medium filter-mailinglist"',
+										'id',
+										'title',
+										$this->state->get('filter.mailinglist'),
+										'filter.mailinglist'
+									); ?>
+							<?php
+							}
+							else
+							{
+	//							$this->state->set('filter.mailinglist', '');
+							} ?>
+							<?php if ($this->params->get('groups_filter_enable') != 'hide' && is_array($this->usergroups) && count($this->usergroups) > 2) : ?>
+									<?php echo HtmlHelper::_(
+										'select.genericlist',
+										$this->usergroups,
+										'filter.usergroup',
+										'class="mb-2 inputbox input-medium filter-usergroup"',
+										'id',
+										'title',
+										$this->state->get('filter.usergroup'),
+										'filter.usergroup'
+									); ?>
+							<?php endif; ?>
+							<?php if ($this->params->get('cam_filter_enable') != 'hide' && is_array($this->campaigns) && count($this->campaigns) > 2) : ?>
+									<?php echo HtmlHelper::_(
+										'select.genericlist',
+										$this->campaigns,
+										'filter.campaign',
+										'class="mb-2 inputbox input-medium filter-campaign"',
+										'id',
+										'title',
+										$this->state->get('filter.campaign'),
+										'filter.campaign'
+									); ?>
+							<?php endif; ?>
+						</div>
 					</div>
 					<div class="clearfix"></div>
 				</div>
 			</div>
-			<table id="bwp_newsletters_table<?php echo $this->params->get('pageclass_sfx'); ?>">
+			<table id="bwp_newsletters_table" class="table table-striped<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<thead>
 					<tr>
 						<th class="date_head">
@@ -216,7 +215,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 			<?php
 			if ($this->pagination->pagesTotal > 1)
 			{ ?>
-				<div class="pagination">
+				<div class="pagination text-center">
 					<?php echo $this->pagination->getPagesLinks(); ?>
 					<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?> </p>
 				</div>

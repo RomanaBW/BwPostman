@@ -111,10 +111,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$newsletter->load($id);
 		$newsletter->hit($id);
 
-		// Get document object, set document title and add css
-		$templateName	= $app->getTemplate();
-		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
-
 		$document = Factory::getDocument();
 		if ($params->get('page_heading') != '')
 		{
@@ -123,12 +119,6 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		else
 		{
 			$document->setTitle($newsletter->subject);
-		}
-
-		$document->addStyleSheet(Uri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename))
-		{
-			$document->addStyleSheet(Uri::root(true) . $css_filename);
 		}
 
 		// Get the global list params and preset them
@@ -186,6 +176,9 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$this->backlink = $backlink;
 		$this->newsletter = $newsletter;
 		$this->params = $params;
+
+		// switch frontend layout
+		$tpl = $this->params->get('fe_layout_detail');
 
 		// Set parent display
 		parent::display($tpl);

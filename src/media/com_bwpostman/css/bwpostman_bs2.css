@@ -111,6 +111,10 @@
 	font-weight: bold;
 }
 
+.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
 .mb-3, .my-3 {
     margin-bottom: 1rem !important;
 }
@@ -164,4 +168,23 @@
 
 #bwpostman .input-append input {
 	width: 180px;
+}
+
+#bwp_newsletters_table th {
+	background:			rgba(136, 136, 136, 0.5);
+}
+
+#bwpostman .icon_attachment {
+	background-repeat:	no-repeat;
+	display:			inline-block;
+	height:				16px;
+	line-height:		16px;
+	margin-top:			1px;
+	vertical-align:		text-top;
+	width:				16px;
+	z-index:			2;
+}
+
+#bwpostman .icon_attachment {
+	background-image:	url(../images/icon-16-attachment.png) ;
 }

@@ -316,7 +316,7 @@ class DbHelper extends Module
 
 		$table_name = Generals::$db_prefix . 'extensions';
 
-		$query      = "SELECT `extension_id` FROM $table_name WHERE `element` = $extension";
+		$query      = "SELECT `extension_id` FROM $table_name WHERE `element` = '$extension'";
 		$sth        = $driver->executeQuery($query, $criteria);
 
 		$result         = $sth->fetch(\PDO::FETCH_ASSOC);
@@ -341,7 +341,7 @@ class DbHelper extends Module
 
 		$table_name = Generals::$db_prefix . 'extensions';
 
-		$query      = "SELECT `enabled` FROM $table_name WHERE `element` = $extension";
+		$query      = "SELECT `enabled` FROM $table_name WHERE `element` = '$extension'";
 		$sth        = $driver->executeQuery($query, $criteria);
 
 		$result         = $sth->fetch(\PDO::FETCH_ASSOC);

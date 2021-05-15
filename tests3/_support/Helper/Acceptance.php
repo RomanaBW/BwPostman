@@ -1500,6 +1500,26 @@ codecept_debug('After Grab Multiple');
 	}
 
 	/**
+	 * Method to get ID of an extension
+	 *
+	 * @param string $extension the extension to check extension state
+	 *
+	 * @return  boolean     $enabled enabled state of an extension
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   3.1.5
+	 */
+	private function getExtensionEnabledState($extension = 'com_bwpostman')
+	{
+		$credentials    = $this->getDbCredentials();
+
+		$enabled = DbHelper::getExtensionEnabledStateFromDatabase($extension, $credentials);
+
+		return $enabled;
+	}
+
+	/**
 	 * Method to set component id of the extension for a specified menu entry
 	 *
 	 * @param   string      $title         the title of the menu entry

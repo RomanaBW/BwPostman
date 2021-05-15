@@ -93,7 +93,7 @@ class TestInstallationCest
 		$I->assertEquals(true, $state, 'Module Register enabled');
 
 		// Module Overview has to be enabled
-		$state = $I->getExtensionEnabledState('Module mod_bwpostman_overview');
+		$state = $I->getExtensionEnabledState('mod_bwpostman_overview');
 		$I->assertEquals(true, $state, 'Module Overview enabled');
 
 		// Plugin Personalize has to be enabled

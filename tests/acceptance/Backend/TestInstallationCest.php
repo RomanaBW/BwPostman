@@ -34,7 +34,7 @@ class TestInstallationCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -54,13 +54,75 @@ class TestInstallationCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
 	public function installation(AcceptanceTester $I)
 	{
 		InstallPage::installation($I);
+	}
+
+	/**
+	 * Test method to check the enabled state of the parts of BwPostman after installation ordered by of their installation order
+	 *
+	 * @param   AcceptanceTester  $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function checkExtensionsEnabledState(AcceptanceTester $I)
+	{
+		//Plugin  BwLibregister has to be enabled
+		$state = $I->getExtensionEnabledState('bw_libregister');
+		$I->assertEquals(true, $state, 'Plugin BwLibregister enabled');
+
+		// Component BwPostman has to be enabled
+		$state = $I->getExtensionEnabledState('com_bwpostman');
+		$I->assertEquals(true, $state, 'Component BwPostman enabled');
+
+		// Module Register has to be enabled
+		$state = $I->getExtensionEnabledState('mod_bwpostman');
+		$I->assertEquals(true, $state, 'Module Register enabled');
+
+		// Module Overview has to be enabled
+		$state = $I->getExtensionEnabledState('mod_bwpostman_overview');
+		$I->assertEquals(true, $state, 'Module Overview enabled');
+
+		// Plugin Personalize has to be enabled
+		$state = $I->getExtensionEnabledState('personalize');
+		$I->assertEquals(true, $state, 'Plugin Personalize enabled');
+
+		// Plugin BwMediaOverride has to be enabled
+		$state = $I->getExtensionEnabledState('bwpm_mediaoverride');
+		$I->assertEquals(true, $state, 'Plugin BwMediaOverride enabled');
+
+		// Plugin U2S has to be disabled
+		$state = $I->getExtensionEnabledState('bwpm_user2subscriber');
+		$I->assertEquals(false, $state, 'Plugin U2S disabled');
+
+		// Plugin FUM has to be enabled
+		$state = $I->getExtensionEnabledState('footerusedmailinglists');
+		$I->assertEquals(true, $state, 'Plugin FUM enabled');
+
+		// Package BwPostman has to be enabled
+		$state = $I->getExtensionEnabledState('pkg_bwpostman');
+		$I->assertEquals(true, $state, 'Package BwPostman enabled');
+
+		// Plugin B2S has to be enabled
+//		$state = $I->getExtensionEnabledState('Plugin bwpm_buyer2subscriber');
+//		$I->assertEquals(true, $state, 'Plugin B2S enabled');
+
+		// Plugin bwtimecontrol has to be enabled
+//		$state = $I->getExtensionEnabledState('bwtimecontrol');
+//		$I->assertEquals(true, $state, 'Plugin TC enabled');
 	}
 
 	/**
@@ -71,7 +133,7 @@ class TestInstallationCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */

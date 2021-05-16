@@ -300,26 +300,51 @@ class DbHelper extends Module
     /**
 	 * DbHelper Method to get ID of an extension
 	 *
-	 * @param   string      $extension          component, module name
-	 * @param   array       $credentials        credentials of database
+	 * @param string  $extension   component, module name
+	 * @param   array $credentials credentials of database
 	 *
 	 * @return  integer     $id                 ID of the extension
 	 *
 	 * @since   2.0.0
 	 */
-	public static function getExtensionIdFromDatabase($extension, array $credentials)
+	public static function getExtensionIdFromDatabase(string $extension, array $credentials): int
 	{
 		$criteria   = array();
 		$driver = self::getDbDriver($credentials);
 
 		$table_name = Generals::$db_prefix . 'extensions';
 
-		$query      = "SELECT `extension_id` FROM $table_name WHERE `element` = 'com_bwpostman'";
+		$query      = "SELECT `extension_id` FROM $table_name WHERE `element` = '$extension'";
 		$sth        = $driver->executeQuery($query, $criteria);
 
 		$result         = $sth->fetch(\PDO::FETCH_ASSOC);
 
-		return $result['extension_id'];
+		return (int)$result['extension_id'];
+	}
+
+	/**
+	 * DbHelper Method to enabled state of an extension
+	 *
+	 * @param string  $extension   component, module name
+	 * @param   array $credentials credentials of database
+	 *
+	 * @return  bool     $enabled            enabled of extension
+	 *
+	 * @since   2.0.0
+	 */
+	public static function getExtensionEnabledStateFromDatabase(string $extension, array $credentials): bool
+	{
+		$criteria   = array();
+		$driver = self::getDbDriver($credentials);
+
+		$table_name = Generals::$db_prefix . 'extensions';
+
+		$query      = "SELECT `enabled` FROM $table_name WHERE `element` = '$extension'";
+		$sth        = $driver->executeQuery($query, $criteria);
+
+		$result         = $sth->fetch(\PDO::FETCH_ASSOC);
+
+		return (boolean)$result['enabled'];
 	}
 
 	/**

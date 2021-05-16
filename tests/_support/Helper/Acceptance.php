@@ -2,6 +2,7 @@
 namespace Helper;
 
 use Codeception;
+use Exception;
 use Page\Generals;
 
 /**
@@ -33,7 +34,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param $browser
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -47,7 +48,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.1.0
 	 */
@@ -143,7 +144,7 @@ class Acceptance extends Codeception\Module
 	 * @return  array
 	 *
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 * @since   2.0.0
 	 */
 	public function GetListData(
@@ -201,7 +202,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -379,7 +380,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -466,7 +467,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return mixed
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -495,7 +496,7 @@ class Acceptance extends Codeception\Module
 	 * @return  array
 	 *
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 * @since   2.0.0
 	 */
 
@@ -515,7 +516,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -536,7 +537,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  string
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -562,7 +563,7 @@ class Acceptance extends Codeception\Module
 	 * @param integer               $loop_counts    how many sort criteria are given?
 	 * @param int                   $tab            tab of view, not always needed
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -779,7 +780,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param \AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -866,7 +867,7 @@ class Acceptance extends Codeception\Module
 	 * @param string            $extra_click
 	 * @param boolean           $allowed
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1016,7 +1017,7 @@ class Acceptance extends Codeception\Module
 	 * @param \AcceptanceTester $I
 	 * @param string            $tableIdentifier
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1054,7 +1055,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param \AcceptanceTester $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1130,7 +1131,7 @@ class Acceptance extends Codeception\Module
 	 * @param bool              $searchWithSpan
 	 * @param string            $mainTable
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1181,7 +1182,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1206,7 +1207,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1287,7 +1288,7 @@ class Acceptance extends Codeception\Module
 	 * @param                   $manage_data
 	 * @param                   $edit_data
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1349,7 +1350,7 @@ class Acceptance extends Codeception\Module
 	 * @param                   $manage_data
 	 * @param                   $edit_data
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1410,7 +1411,7 @@ class Acceptance extends Codeception\Module
 	 * @param \AcceptanceTester $I
 	 * @param string            $archive_tab
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
@@ -1444,7 +1445,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  object      $options
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1476,7 +1477,7 @@ class Acceptance extends Codeception\Module
 	 * @param   string            $option         the option to update
 	 * @param   mixed|array       $value          the new value for this option
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1496,21 +1497,15 @@ class Acceptance extends Codeception\Module
 	/**
 	 * Updates an SQL record into a database. This record will **not** be reset after the test.
 	 *
-	 * ``` php
-	 * <?php
-	 * $I->updateInDatabase('users', array('email' => 'miles@davis.com'), array('name' => 'miles'));
-	 * ?>
-	 * ```
+	 * @param string  $table the name of table to update
+	 * @param   array $data  array of key-value pairs to update
+	 * @param array   $where_condition
 	 *
-	 * @param   string      $table              the name of table to update
-	 * @param   array       $data               array of key-value pairs to update
-	 * @param   array       $where_condition
-	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0.
 	 */
-	public function updateInDatabase($table, array $data, $where_condition)
+	public function updateInDatabase(string $table, array $data, array $where_condition)
 	{
 		$credentials    = $this->getDbCredentials();
 		$criteria       = array();
@@ -1535,7 +1530,7 @@ class Acceptance extends Codeception\Module
 	 * @param   string      $table              the name of table to update
 	 * @param   int         $value              value to set autoincrement to
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0.
 	 */
@@ -1550,7 +1545,7 @@ class Acceptance extends Codeception\Module
 	/**
 	 * Truncate table session. This record will **not** be reset after the test.
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0.
 	 */
@@ -1564,15 +1559,15 @@ class Acceptance extends Codeception\Module
 	/**
 	 * Method to get ID of an extension
 	 *
-	 * @param   string      $extension      the extension to set the option for
+	 * @param string $extension the extension to set the option for
 	 *
 	 * @return  integer     $id             ID of the extension
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	private function getExtensionId($extension = 'com_bwpostman')
+	private function getExtensionId(string $extension = 'com_bwpostman'): int
 	{
 		$credentials    = $this->getDbCredentials();
 
@@ -1582,11 +1577,31 @@ class Acceptance extends Codeception\Module
 	}
 
 	/**
+	 * Method to get ID of an extension
+	 *
+	 * @param string $extension the extension to check extension state
+	 *
+	 * @return  boolean     $enabled enabled state of an extension
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function getExtensionEnabledState(string $extension = 'com_bwpostman'): bool
+	{
+		$credentials    = $this->getDbCredentials();
+
+		$enabled = DbHelper::getExtensionEnabledStateFromDatabase($extension, $credentials);
+
+		return $enabled;
+	}
+
+	/**
 	 * Method to set component id of the extension for a specified menu entry
 	 *
 	 * @param   string      $title         the title of the menu entry
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1624,7 +1639,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  int
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1645,7 +1660,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1712,7 +1727,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1735,7 +1750,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1779,7 +1794,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1800,7 +1815,7 @@ class Acceptance extends Codeception\Module
 	 * @param $registerUrl
 	 * @param $viewRegister
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */

@@ -1184,7 +1184,7 @@ class Generals
 		$I->setManifestOption('com_bwpostman', 'publish_nl_by_default', '0');
 		$I->setManifestOption('com_bwpostman', 'compress_backup', '1');
 		$I->setManifestOption('com_bwpostman', 'show_boldt_link', '1');
-		$I->setManifestOption('com_bwpostman', 'loglevel', 'BW_ERROR');
+		$I->setManifestOption('com_bwpostman', 'loglevel', 'BW_DEVELOPMENT');
 
 		// Registration form
 		$I->setManifestOption('com_bwpostman', 'pretext', 'Introtext to registration by component');

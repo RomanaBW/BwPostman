@@ -30,7 +30,7 @@ use Exception;
  */
 class Generals
 {
-	// include url of current page
+	// urls of some common pages
 	/**
 	 * @var string
 	 *
@@ -44,6 +44,14 @@ class Generals
 	 * @since 2.0.0
 	 */
 	public static $archive_url  = '/administrator/index.php?option=com_bwpostman&view=archive&layout=newsletters';
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.5
+	 */
+	public static $homeUrlFE = "/index.php";
+
 
 	/**
 	 * @var string
@@ -254,6 +262,20 @@ class Generals
 	 * @since 2.0.0
 	 */
 	public static $alert_error_txt      = 'Error';
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.5
+	 */
+	public static $warningMessage = "<b>Warning</b>";
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.5
+	 */
+	public static $noticeMessage = "<b>Notice</b>";
 
 	/**
 	 * @var string
@@ -1000,7 +1022,7 @@ class Generals
 	 *
 	 * @throws Exception
 	 *
-	 * @since   4.0.0
+	 * @since   3.1.5
 	 */
 	public static function presetComponentOptions(AcceptanceTester $I)
 	{

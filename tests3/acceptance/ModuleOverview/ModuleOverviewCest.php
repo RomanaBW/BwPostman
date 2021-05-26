@@ -83,16 +83,16 @@ class ModuleOverviewCest
 		$I->clickAndWait(InstallationPage::$positionField, 1);
 		$I->clickAndWait(InstallationPage::$positionValue, 1);
 
-		$I->selectOption(InstallationPage::$publishedField, "Published");
+		$I->clickSelectList(InstallationPage::$published_list, InstallationPage::$published_published, InstallationPage::$published_list_id);
 
 		// Fill menu assignment tab
 		$I->click(InstallationPage::$overviewTabs['Menu Assignment']);
 		$I->waitForElement(InstallationPage::$menuAssignmentList);
 
-		$I->selectOption(InstallationPage::$menuAssignmentList, "On all pages");
+		$I->clickSelectList(InstallationPage::$menuAssignment_list, InstallationPage::$menuAssignment_All, InstallationPage::$menuAssignment_list_id);
 
-		$I->click(Generals::$toolbar4['Save & Close']);
-		$I->waitForElement(Generals::$alert_success4, 5);
+		$I->click(Generals::$toolbar['Save & Close']);
+		$I->waitForElement(Generals::$alert_success, 5);
 
 		// Preset module options
 		Helper::presetModuleOptions($I);
@@ -119,36 +119,43 @@ class ModuleOverviewCest
 		$I->expectTo('see the appropriate number of months and count of newsletters');
 
 		Helper::presetModuleOptions($I);
-		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
-		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array("-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12", "-13", "-14", "-15", "-16", "-17", "-18", "-19", "-20", "-21", "-22", "-23", "-24", "-25", "-26", "-27", "-28"));
-		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42"));
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', Helper::$selectedMls);
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', Helper::$selectedUgs);
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', Helper::$selectedCams);
 		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "no");
 
 		// Call page with 12 months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 11));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 12));
 
 		// Check summarized number of newsletters
 		$nbrNls = $this->countNewsletters($I);
-		$I->assertEquals(17, $nbrNls);
+		$I->assertEquals(20, $nbrNls);
 
 		// Call page with 4 months
 		$I->setManifestOption('mod_bwpostman_overview', 'count', '4');
 
 		$I->reloadPage();
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 3));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 4));
 
 		// Check summarized number of newsletters
 		$nbrNls = $this->countNewsletters($I);
-		$I->assertEquals(6, $nbrNls);
+		$I->assertEquals(4, $nbrNls);
 
 		// Call page with 1 month
 		$I->setManifestOption('mod_bwpostman_overview', 'count', '1');
 
 		$I->reloadPage();
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
 		$I->see(Helper::$mod_count_0_message, Helper::$mod_content_position);
 
 		// Check summarized number of newsletters
@@ -159,12 +166,14 @@ class ModuleOverviewCest
 		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
 
 		$I->reloadPage();
-		$I->seeElement(sprintf(Helper::$mod_count_n, 16));
-		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 17));
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 20));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 21));
 
 		// Check summarized number of newsletters
 		$nbrNls = $this->countNewsletters($I);
-		$I->assertEquals(23, $nbrNls);
+		$I->assertEquals(29, $nbrNls);
 
 		// Reset options
 		Helper::presetModuleOptions($I);
@@ -187,21 +196,24 @@ class ModuleOverviewCest
 		$I->expectTo('see the appropriate number of months and count of newsletters');
 
 		Helper::presetModuleOptions($I);
-		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
-		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array("-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12", "-13", "-14", "-15", "-16", "-17", "-18", "-19", "-20", "-21", "-22", "-23", "-24", "-25", "-26", "-27", "-28"));
-		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42"));
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', Helper::$selectedMls);
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', Helper::$selectedUgs);
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', Helper::$selectedCams);
 		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "yes");
 		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
 
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
-		$I->seeElement(sprintf(Helper::$mod_count_n, 13));
-		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 14));
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 19));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 20));
 
 		// Check summarized number of newsletters
 		$nbrNls = $this->countNewsletters($I);
-		$I->assertEquals(19, $nbrNls);
+		$I->assertEquals(28, $nbrNls);
 
 		// Reset options
 		Helper::presetModuleOptions($I);
@@ -224,9 +236,9 @@ class ModuleOverviewCest
 		$I->expectTo('see the appropriate number of months and count of newsletters');
 
 		Helper::presetModuleOptions($I);
-		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
-		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array("-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12", "-13", "-14", "-15", "-16", "-17", "-18", "-19", "-20", "-21", "-22", "-23", "-24", "-25", "-26", "-27", "-28"));
-		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42"));
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', Helper::$selectedMls);
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', Helper::$selectedUgs);
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', Helper::$selectedCams);
 		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "no");
 		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
 		$I->setManifestOption('mod_bwpostman_overview', 'show_type', 'all_not_arc');
@@ -234,14 +246,17 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 16));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 17));
 
-		// Reset options
 		// Check summarized number of newsletters
 		$nbrNls = $this->countNewsletters($I);
-		$I->assertEquals(20, $nbrNls);
+		$I->assertEquals(22, $nbrNls);
 
+		// Reset options
 		Helper::presetModuleOptions($I);
 	}
 
@@ -262,9 +277,9 @@ class ModuleOverviewCest
 		$I->expectTo('see the appropriate number of months and count of newsletters');
 
 		Helper::presetModuleOptions($I);
-		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
-		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array("-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12", "-13", "-14", "-15", "-16", "-17", "-18", "-19", "-20", "-21", "-22", "-23", "-24", "-25", "-26", "-27", "-28"));
-		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42"));
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', Helper::$selectedMls);
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', Helper::$selectedUgs);
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', Helper::$selectedCams);
 		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "no");
 		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
 		$I->setManifestOption('mod_bwpostman_overview', 'show_type', 'not_arc_down');
@@ -272,8 +287,11 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
-		$I->seeElement(sprintf(Helper::$mod_count_n, 15));
-		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 16));
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 14));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 15));
 
 		// Check summarized number of newsletters
 		$nbrNls = $this->countNewsletters($I);
@@ -300,9 +318,9 @@ class ModuleOverviewCest
 		$I->expectTo('see the appropriate number of months and count of newsletters');
 
 		Helper::presetModuleOptions($I);
-		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
-		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array("-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12", "-13", "-14", "-15", "-16", "-17", "-18", "-19", "-20", "-21", "-22", "-23", "-24", "-25", "-26", "-27", "-28"));
-		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42"));
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', Helper::$selectedMls);
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', Helper::$selectedUgs);
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', Helper::$selectedCams);
 		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "no");
 		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
 		$I->setManifestOption('mod_bwpostman_overview', 'show_type', 'not_arc_but_down');
@@ -310,12 +328,15 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
-		$I->seeElement(sprintf(Helper::$mod_count_n, 1));
-		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 2));
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 2));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 3));
 
 		// Check summarized number of newsletters
 		$nbrNls = $this->countNewsletters($I);
-		$I->assertEquals(1, $nbrNls);
+		$I->assertEquals(3, $nbrNls);
 
 		// Reset options
 		Helper::presetModuleOptions($I);
@@ -338,9 +359,9 @@ class ModuleOverviewCest
 		$I->expectTo('see the appropriate number of months and count of newsletters');
 
 		Helper::presetModuleOptions($I);
-		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
-		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array("-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12", "-13", "-14", "-15", "-16", "-17", "-18", "-19", "-20", "-21", "-22", "-23", "-24", "-25", "-26", "-27", "-28"));
-		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42"));
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', Helper::$selectedMls);
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', Helper::$selectedUgs);
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', Helper::$selectedCams);
 		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "no");
 		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
 		$I->setManifestOption('mod_bwpostman_overview', 'show_type', 'arc');
@@ -348,12 +369,15 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
-		$I->seeElement(sprintf(Helper::$mod_count_n, 3));
-		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 4));
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 6));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 7));
 
 		// Check summarized number of newsletters
 		$nbrNls = $this->countNewsletters($I);
-		$I->assertEquals(3, $nbrNls);
+		$I->assertEquals(7, $nbrNls);
 
 		// Reset options
 		Helper::presetModuleOptions($I);
@@ -376,9 +400,9 @@ class ModuleOverviewCest
 		$I->expectTo('see the appropriate number of months and count of newsletters');
 
 		Helper::presetModuleOptions($I);
-		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
-		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array("-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12", "-13", "-14", "-15", "-16", "-17", "-18", "-19", "-20", "-21", "-22", "-23", "-24", "-25", "-26", "-27", "-28"));
-		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42"));
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', Helper::$selectedMls);
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', Helper::$selectedUgs);
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', Helper::$selectedCams);
 		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "no");
 		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
 		$I->setManifestOption('mod_bwpostman_overview', 'show_type', 'down');
@@ -386,12 +410,15 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
-		$I->seeElement(sprintf(Helper::$mod_count_n, 2));
-		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 3));
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 3));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 4));
 
 		// Check summarized number of newsletters
 		$nbrNls = $this->countNewsletters($I);
-		$I->assertEquals(2, $nbrNls);
+		$I->assertEquals(4, $nbrNls);
 
 		// Reset options
 		Helper::presetModuleOptions($I);
@@ -414,9 +441,9 @@ class ModuleOverviewCest
 		$I->expectTo('see the appropriate number of months and count of newsletters');
 
 		Helper::presetModuleOptions($I);
-		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
-		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array("-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12", "-13", "-14", "-15", "-16", "-17", "-18", "-19", "-20", "-21", "-22", "-23", "-24", "-25", "-26", "-27", "-28"));
-		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42"));
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', Helper::$selectedMls);
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', Helper::$selectedUgs);
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', Helper::$selectedCams);
 		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "no");
 		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
 		$I->setManifestOption('mod_bwpostman_overview', 'show_type', 'arc_and_down');
@@ -424,6 +451,9 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 1));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 2));
 
@@ -452,9 +482,9 @@ class ModuleOverviewCest
 		$I->expectTo('see the appropriate number of months and count of newsletters');
 
 		Helper::presetModuleOptions($I);
-		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
-		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array("-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12", "-13", "-14", "-15", "-16", "-17", "-18", "-19", "-20", "-21", "-22", "-23", "-24", "-25", "-26", "-27", "-28"));
-		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42"));
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', Helper::$selectedMls);
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', Helper::$selectedUgs);
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', Helper::$selectedCams);
 		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "no");
 		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
 		$I->setManifestOption('mod_bwpostman_overview', 'show_type', 'arc_or_down');
@@ -462,19 +492,22 @@ class ModuleOverviewCest
 		// Call page with all months
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(Helper::$mod_title_position, 0, -100);
-		$I->seeElement(sprintf(Helper::$mod_count_n, 4));
-		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 5));
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 8));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 9));
 
 		// Check summarized number of newsletters
 		$nbrNls = $this->countNewsletters($I);
-		$I->assertEquals(4, $nbrNls);
+		$I->assertEquals(10, $nbrNls);
 
 		// Reset options
 		Helper::presetModuleOptions($I);
 	}
 
 	/**
-	 * Test method to
+	 * Test method to check the number of months displayed only mailinglists
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -484,17 +517,65 @@ class ModuleOverviewCest
 	 *
 	 * @since   4.0.0
 	 */
-	public function OverviewModule10(AcceptanceTester $I)
+	public function OverviewModuleCheckNumberOfMonthsOnlyAllMailinglists(AcceptanceTester $I)
 	{
-		$I->wantTo("");
-		$I->expectTo('');
+		$I->wantTo("check the number of months displayed at FE only mailinglists");
+		$I->expectTo('see the appropriate number of months and count of newsletters');
 
 		Helper::presetModuleOptions($I);
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', Helper::$selectedMls);
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array());
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array());
+		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "no");
+		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
+		$I->setManifestOption('mod_bwpostman_overview', 'show_type', 'all');
 
+		// Call page with all mailinglists selected
+		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 17));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 18));
+
+		// Check summarized number of newsletters
+		$nbrNls = $this->countNewsletters($I);
+		$I->assertEquals(26, $nbrNls);
+
+		// Call page with some mailinglists selected
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', Helper::$someSelectedMls);
+		$I->reloadPage();
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 14));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 15));
+
+		// Check summarized number of newsletters
+		$nbrNls = $this->countNewsletters($I);
+		$I->assertEquals(18, $nbrNls);
+
+		// Call page with option all
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_selected_all', 'yes');
+
+		$I->reloadPage();
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 17));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 18));
+
+		// Check summarized number of newsletters
+		$nbrNls = $this->countNewsletters($I);
+		$I->assertEquals(26, $nbrNls);
+
+		// Reset options
+		Helper::presetModuleOptions($I);
 	}
 
 	/**
-	 * Test method to
+	 * Test method to check the number of months displayed only usergroups
 	 *
 	 * @param   AcceptanceTester                $I
 	 *
@@ -504,13 +585,131 @@ class ModuleOverviewCest
 	 *
 	 * @since   4.0.0
 	 */
-	public function OverviewModule11(AcceptanceTester $I)
+	public function OverviewModuleCheckNumberOfMonthsOnlyAllUsergroups(AcceptanceTester $I)
 	{
-		$I->wantTo("");
-		$I->expectTo('');
+		$I->wantTo("check the number of months displayed at FE only usergroups");
+		$I->expectTo('see the appropriate number of months and count of newsletters');
 
 		Helper::presetModuleOptions($I);
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array());
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', Helper::$selectedUgs);
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array());
+		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "no");
+		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
+		$I->setManifestOption('mod_bwpostman_overview', 'show_type', 'all');
 
+		// Call page with all months
+		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 7));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 8));
+
+		// Check summarized number of newsletters
+		$nbrNls = $this->countNewsletters($I);
+		$I->assertEquals(10, $nbrNls);
+
+
+		// Call page with some user groups selected
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', Helper::$someSelectedUgs);
+		$I->reloadPage();
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 7));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 8));
+
+		// Check summarized number of newsletters
+		$nbrNls = $this->countNewsletters($I);
+		$I->assertEquals(9, $nbrNls);
+
+		// Call page with option all
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_selected_all', 'yes');
+
+		$I->reloadPage();
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 5));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 6));
+
+		// Check summarized number of newsletters
+		$nbrNls = $this->countNewsletters($I);
+		$I->assertEquals(6, $nbrNls);
+
+		// Reset options
+		Helper::presetModuleOptions($I);
+	}
+
+	/**
+	 * Test method to check the number of months displayed only campaigns
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function OverviewModuleCheckNumberOfMonthsOnlyAllCampaigns(AcceptanceTester $I)
+	{
+		$I->wantTo("check the number of months displayed at FE only usergroups");
+		$I->expectTo('see the appropriate number of months and count of newsletters');
+
+		Helper::presetModuleOptions($I);
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array());
+		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array());
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', Helper::$selectedCams);
+		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "no");
+		$I->setManifestOption('mod_bwpostman_overview', 'count', '0');
+		$I->setManifestOption('mod_bwpostman_overview', 'show_type', 'all');
+
+		// Call page with all months
+		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+//		$I->see(Helper::$mod_count_0_message, Helper::$mod_content_position);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 20));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 21));
+
+		// Check summarized number of newsletters
+		$nbrNls = $this->countNewsletters($I);
+		$I->assertEquals(29, $nbrNls);
+
+		// Call page with some campaigns selected
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', Helper::$someSelectedCams);
+		$I->reloadPage();
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 7));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 8));
+
+		// Check summarized number of newsletters
+		$nbrNls = $this->countNewsletters($I);
+		$I->assertEquals(8, $nbrNls);
+
+		// Call page with option all
+		$I->setManifestOption('mod_bwpostman_overview', 'cam_selected_all', 'yes');
+
+		$I->reloadPage();
+		$I->wait(1);
+		$I->dontSeeInSource(Generals::$warningMessage);
+		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->seeElement(sprintf(Helper::$mod_count_n, 3));
+		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 4));
+
+		// Check summarized number of newsletters
+		$nbrNls = $this->countNewsletters($I);
+		$I->assertEquals(3, $nbrNls);
+
+		// Reset options
+		Helper::presetModuleOptions($I);
 	}
 
 	/**

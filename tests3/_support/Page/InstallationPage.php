@@ -610,6 +610,13 @@ class InstallationPage
 	/**
 	 * @var string
 	 *
+	 * @since 3.1.5
+	 */
+	public static $overviewModuleLine    = "//*[@id='moduleList']/tbody/tr/td/div/a[contains(text(), 'BwPostman Overview Module')]";
+
+	/**
+	 * @var string
+	 *
 	 * @since 3.0.2
 	 */
 	public static $positionField    = "//*[@id='general']/div/div[2]/fieldset/div[2]/div[2]/div/a";
@@ -638,6 +645,27 @@ class InstallationPage
 	/**
 	 * @var string
 	 *
+	 * @since   3.1.5
+	 */
+	public static $published_list_id        = "jform_published_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.1.5
+	 */
+	public static $published_list           = ".//*[@id='jform_published_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.1.5
+	 */
+	public static $published_published      = ".//*[@id='jform_published_chzn']/div/ul/li[text()='Published']";
+
+	/**
+	 * @var string
+	 *
 	 * @since 3.0.2
 	 */
 	public static $registrationTabs    = array(
@@ -648,6 +676,48 @@ class InstallationPage
 		'Advanced' => "//*[@id='myTabTabs']/li[5]",
 		'Permissions' => "//*[@id='myTabTabs']/li[6]",
 	);
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.5
+	 */
+	public static $overviewTabs    = array(
+		'Module' => "//*[@id='myTabTabs']/li[1]",
+		'Menu Assignment' => "//*[@id='myTabTabs']/li[2]",
+		'Mailing list selection' => "//*[@id='myTabTabs']/li[3]",
+		'Campaign selection' => "//*[@id='myTabTabs']/li[4]",
+		'Advanced' => "//*[@id='myTabTabs']/li[5]",
+		'Permissions' => "//*[@id='myTabTabs']/li[6]",
+	);
+
+	/**
+	 * @var string
+	 *
+	 * @since 3.1.5
+	 */
+	public static $menuAssignmentList    = "#jform_assignment";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.1.5
+	 */
+	public static $menuAssignment_list_id        = "jform_assignment_chzn";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.1.5
+	 */
+	public static $menuAssignment_list           = ".//*[@id='jform_assignment_chzn']/a";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.1.5
+	 */
+	public static $menuAssignment_All      = ".//*[@id='jform_assignment_chzn']/div/ul/li[text()='On all pages']";
 
 	/**
 	 * @var string

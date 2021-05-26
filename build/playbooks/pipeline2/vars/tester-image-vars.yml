@@ -2,7 +2,7 @@
 # Fast changing variables
 #joomla_version_4a: "4.0.0a12"
 joomla_version_4b: "4.0.0b1-7"
-joomla_version_3: "3.9.26"
+joomla_version_3: "3.9.27"
 
 # this one has to be adjusted to the desired Joomla version
 joomla_version: "{{ joomla_version_3 }}"
@@ -101,7 +101,7 @@ tester_db_prefix: "jos_"
 tester_mail_from: "webmaster@boldt-webservice.de"
 tester_mail_from_name: "Joomla-Test"
 # SMTP configuration is not really needed
-tester_smtp_user: "info@boldt-webservice.de"
+tester_smtp_user: "info@boldt-webservice.de"bitnami mari
 tester_smtp_password: "@Miriam02#"
 tester_smtp_host: "192.168.2.100"
 

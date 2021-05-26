@@ -14,6 +14,7 @@
       docker_container:
         image: '{{ base_source.db_image_tag_source }}'
         name: '{{ base_source.db_container_name }}'
+        user: root
         env:
           MARIADB_ROOT_PASSWORD: "{{ mariadb_root_password }}"
           MARIADB_USER: "{{ mariadb_user }}"
@@ -32,7 +33,15 @@
 
     - name: Install python at container
       become: yes
-      shell: "docker exec -u root -t {{ base_source.db_container_name }} apt-get install sudo python-apt --no-install-recommends -y"
+      shell: "docker exec -t {{ base_source.db_container_name }} apt-get install sudo python3 --no-install-recommends -y"
+
+#    - name: Set python2 alternatives
+#      become: yes
+#      shell: "docker exec -t {{ base_source.db_container_name }} update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1"
+
+    - name: Set python3 alternatives
+      become: yes
+      shell: "docker exec -t {{ base_source.db_container_name }} update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2"
 
     - name: clean up apt
       shell: "docker exec -u root -t {{ base_source.db_container_name }} apt-get clean"

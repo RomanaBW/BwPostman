@@ -39,7 +39,15 @@
 
     - name: Install python at container
       become: yes
-      shell: "docker exec -t {{ base_source.web_container_name }} apt-get install sudo python-apt --no-install-recommends -y"
+      shell: "docker exec -t {{ base_source.web_container_name }} apt-get install sudo python3 --no-install-recommends -y"
+
+    - name: Set python2 alternatives
+      become: yes
+      shell: "docker exec -t {{ base_source.web_container_name }} update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1"
+
+    - name: Set python3 alternatives
+      become: yes
+      shell: "docker exec -t {{ base_source.web_container_name }} update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2"
 
 - hosts: "{{ base_source.web_container_name }}"
   connection: docker

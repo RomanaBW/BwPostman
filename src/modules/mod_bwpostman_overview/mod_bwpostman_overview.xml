@@ -64,11 +64,11 @@
 				<field
 					name="access-check"
 					type="list"
-					default="1"
+					default="yes"
 					description="MOD_BWPOSTMAN_LISTS_SETTINGS_ACCESS_CHECK_FIELD_DESC"
 					label="MOD_BWPOSTMAN_LISTS_SETTINGS_ACCESS_CHECK_FIELD_LABEL"
 				>
-					<option value="1">JYES</option>
+					<option value="yes">JYES</option>
 					<option value="no">JNO</option>
 				</field>
 
@@ -92,13 +92,13 @@
 			<fieldset name="MOD_BWPOSTMAN_OVERVIEW_ML_AVAILABLE" addfieldpath="/components/com_bwpostman/models/fields" id="newsletterselect-group">
 				<field name="ml_selected_all"
 					type="radio"
-					default=""
+					default="no"
 					description="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_ML_FILTER_DESC"
 					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_ML_FILTER_LABEL"
 					class="radio btn-group btn-group-yesno"
 				>
-					<option value="1">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
-					<option value="">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
+					<option value="yes">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
+					<option value="no">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
 				</field>
 
 				<field
@@ -115,13 +115,13 @@
 
 				<field name="groups_selected_all"
 					type="radio"
-					default=""
+					default="no"
 					description="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_DESC"
 					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_GROUPS_FILTER_LABEL"
 					class="radio btn-group btn-group-yesno"
 				>
-					<option value="1">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
-					<option value="">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
+					<option value="yes">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
+					<option value="no">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
 				</field>
 
 				<field
@@ -132,7 +132,7 @@
 					description="MOD_BWPOSTMAN_OVERVIEW_MENU_GROUPS_AVAILABLE_DESC"
 					multiple="true"
 					size="1"
-					default="0"
+					default=""
 					class="inputbox"
 				/>
 			</fieldset>
@@ -145,7 +145,7 @@
 					label="MOD_BWPOSTMAN_OVERVIEW_NEWSLETTER_SHOW_SELECT_CAM_FILTER_LABEL"
 					class="radio btn-group btn-group-yesno"
 				>
-					<option value="1">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
+					<option value="yes">MOD_BWPOSTMAN_OVERVIEW_ALL</option>
 					<option value="no">MOD_BWPOSTMAN_OVERVIEW_ONLY_SELECTED</option>
 				</field>
 
@@ -156,7 +156,7 @@
 					labelclass="control-label"
 					description="MOD_BWPOSTMAN_OVERVIEW_CAM_AVAILABLE_DESC"
 					multiple="true" size="5"
-					default="0"
+					default=""
 					class="inputbox mailinglists"
 				/>
 			</fieldset>

@@ -27,12 +27,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 
 require_once (JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
 /**
  * #__bwpostman_sendmailqueue table handler
@@ -102,6 +104,13 @@ class BwPostmanTableSendmailqueue extends JTable
 	public $trial = null;
 
 	/**
+	 * @var BwLogger hold instance of BwLogger
+	 *
+	 * @since       3.1.5
+	 */
+	public $logger;
+
+	/**
 	 * Constructor
 	 *
 	 * @param 	JDatabaseDriver  $db Database object
@@ -111,6 +120,9 @@ class BwPostmanTableSendmailqueue extends JTable
 	public function __construct(& $db)
 	{
 		parent::__construct('#__bwpostman_sendmailqueue', 'id', $db);
+
+		$log_options  = array();
+		$this->logger = BwLogger::getInstance($log_options);
 	}
 
 	/**
@@ -377,6 +389,12 @@ class BwPostmanTableSendmailqueue extends JTable
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$message1 = 'Database error while pushSubscribers, error message is "' . $e->getMessage() . '"';
+			$message2 = 'Query pushSubscribers: ' . $query;
+
+			$this->logger->addEntry(new LogEntry($message1, BwLogger::BW_ERROR, 'send'));
+			$this->logger->addEntry(new LogEntry($message2, BwLogger::BW_ERROR, 'send'));
+
 
 			return false;
 		}

@@ -2245,5 +2245,8 @@ class OptionsPage
 
 		$I->see("Message", Generals::$alert_header);
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_success);
+
+		// Set guest user group
+		$I->setManifestOption('com_users', 'guest_usergroup', '9');
 	}
 }

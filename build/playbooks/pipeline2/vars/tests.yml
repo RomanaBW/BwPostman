@@ -140,7 +140,7 @@ test_suites:
       - footerusedmailinglists
       - user2subscriber
       - ModReg
-#      - ModOverview
+      - ModOverview
       - access1
 
   - name: accept5

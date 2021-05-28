@@ -107,7 +107,7 @@ pipeline {
 						}
 					}
 				}
-				stage('3-4: FUM + U2S + P1') {
+				stage('3-4: FUM + U2S + P1 + Overview') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept4 do_record=${DO_RECORD_J3_4} ${VERSIONS_EXTRA_VAR_3}'"
@@ -115,8 +115,8 @@ pipeline {
 					}
 					post {
 						always {
-//							echo "Dummy 4 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4 ${VERSIONS_EXTRA_VAR_3}'"
+							echo "Dummy 4 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4 ${VERSIONS_EXTRA_VAR_3}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME_3}")

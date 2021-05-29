@@ -165,7 +165,8 @@ class ModuleOverviewPage
 		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array(""));
 
 		// Set guest user group
-		$I->setManifestOption('com_users', 'guest_usergroup', Generals::$guestGroupId);
+		$guestGroupId = $I->getGroupIdByName('Guest');
+		$I->setManifestOption('com_users', 'guest_usergroup', $guestGroupId);
 	}
 
 

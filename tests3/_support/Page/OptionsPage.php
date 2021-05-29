@@ -2247,6 +2247,7 @@ class OptionsPage
 		$I->see(Generals::$alert_msg_txt, Generals::$alert_success);
 
 		// Set guest user group
-		$I->setManifestOption('com_users', 'guest_usergroup', Generals::$guestGroupId);
+		$guestGroupId = $I->getGroupIdByName('Guest');
+		$I->setManifestOption('com_users', 'guest_usergroup', $guestGroupId);
 	}
 }

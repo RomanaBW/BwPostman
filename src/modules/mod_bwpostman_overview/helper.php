@@ -514,12 +514,15 @@ class ModBwPostmanOverviewHelper
 		$nowDate  = $db->quote(Factory::getDate()->toSql());
 
 		$sinceDateString = ' != ' . $nullDate;
+		$count = (int)$params->get('count');
 
-		if ((int)$params->get('count') > 0)
+		if ($count > 0)
 		{
-			$sinceMonth = Factory::getDate()->sub(new DateInterval('P' . ((int)$params->get('count') - 1) . 'M'))->format('Y-m');
-			$sinceDate = $db->quote(Factory::getDate($sinceMonth)->toSql());
-			$sinceDateString = ' >= ' . $sinceDate;
+			$backCountString = 'first day of -' . ($count - 1) . ' month';
+			$firstOfMonthObject  = new DateTime($backCountString);
+			$sinceDate = $firstOfMonthObject->format('Y-m-d') . ' 0000:00:00';
+
+			$sinceDateString = ' >= ' . $db->quote($sinceDate);
 		}
 
 		$query->select(

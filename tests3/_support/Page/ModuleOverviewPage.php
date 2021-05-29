@@ -24,7 +24,7 @@ use Exception;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @since   4.0.0
+ * @since   3.0.0
  */
 class ModuleOverviewPage
 {
@@ -33,91 +33,91 @@ class ModuleOverviewPage
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $mod_title_position = "//*/h3[contains(text(), 'BwPostman Overview Module')]";
 
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $mod_content_position = "//*/div[@id='mod_bwpostman_overview']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $mod_count_n = "//*/div[@id='mod_bwpostman_overview']/ul/li[%s]";
 
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $mod_count_li = "//*/div[@id='mod_bwpostman_overview']/ul/li";
 
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $mod_count_0_message = "No newsletters in the selection";
 
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $warningMessage = "<b>Warning</b>";
 
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $noticeMessage = "<b>Notice</b>";
 
 	/**
 	 * @var array
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $selectedMls = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59");
 
 	/**
 	 * @var array
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $selectedUgs = array("-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12", "-13", "-14", "-15", "-16", "-17", "-18", "-19", "-20", "-21", "-22", "-23", "-24", "-25", "-26", "-27", "-28");
 
 	/**
 	 * @var array
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $selectedCams = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48");
 
 	/**
 	 * @var array
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $someSelectedMls = array("5", "27", "4", "24");
 
 	/**
 	 * @var array
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $someSelectedUgs = array("-1", "-2","-8");
 
 	/**
 	 * @var array
 	 *
-	 * @since 4.0.0
+	 * @since 3.0.0
 	 */
 	public static $someSelectedCams = array("1", "4", "16", "18");
 
@@ -144,7 +144,7 @@ class ModuleOverviewPage
 	 *
 	 * @throws Exception
 	 *
-	 * @since   4.0.0
+	 * @since   3.0.0
 	 */
 	public static function presetModuleOptions(AcceptanceTester $I)
 	{
@@ -165,7 +165,7 @@ class ModuleOverviewPage
 		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array(""));
 
 		// Set guest user group
-		$I->setManifestOption('com_users', 'guest_usergroup', '13');
+		$I->setManifestOption('com_users', 'guest_usergroup', Generals::$guestGroupId);
 	}
 
 
@@ -182,7 +182,7 @@ class ModuleOverviewPage
 	 *
 	 * @throws Exception
 	 *
-	 * @since   4.0.0
+	 * @since   3.0.0
 	 */
 	public static function placeholder(AcceptanceTester $I)
 	{

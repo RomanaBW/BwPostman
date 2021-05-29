@@ -52,6 +52,13 @@ class Generals
 	 */
 	public static $homeUrlFE = "/index.php";
 
+	/**
+	 * @var array
+	 *
+	 * @since 3.0.0
+	 */
+	public static $guestGroupId = 13;
+
 
 	/**
 	 * @var string

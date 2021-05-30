@@ -578,30 +578,30 @@ class NewsletterManagerPage
 	 * @since   2.0.0
 	 */
 	public static $pagination_sent_data_array  = array(
-		'p1_val1'              => "Kopie von 'Kopie von 'Template Gedicht 1''",
+		'p1_val1'              => "Copy of 'Newsletter for testing 1'",
 		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p1_val_last'          => "Test Newsletter 11.4.2015 13:26:59",
+		'p1_val_last'          => "Test Newsletter 10.4.2015 22:16:28",
 		'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
-		'p2_val1'              => "Test Newsletter 11.4.2015 18:28:23",
+		'p2_val1'              => "Test Newsletter 10.4.2015 6:45:11",
 		'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p2_val_last'          => "Test Newsletter 12.4.2015 10:32:6",
+		'p2_val_last'          => "Test Newsletter 11.4.2015 22:30:55",
 		'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
-		'p3_val1'              => "Test Newsletter 12.4.2015 2:1:47",
+		'p3_val1'              => "Test Newsletter 11.4.2015 23:30:35",
 		'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p3_val3'              => " Test Newsletter 9.4.2015 22:52:14",
+		'p3_val3'              => "Test Newsletter 9.4.2015 21:16:47",
 		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
-		'p_prev_val1'          => "Test Newsletter 12.4.2015 2:1:47",
+		'p_prev_val1'          => "Test Newsletter 11.4.2015 23:30:35",
 		'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p_prev_val_last'      => "Test Newsletter 9.4.2015 22:52:14",
+		'p_prev_val_last'      => "Test Newsletter 9.4.2015 21:16:47",
 		'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[10]/td[3]",
 
-		'p_last_val1'          => "Test Newsletter 9.4.2015 23:5:25",
+		'p_last_val1'          => "Test Newsletter 9.4.2015 21:29:1",
 		'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
-		'p_last_val_last'      => " Test Newsletter 9.4.2015 23:5:25",
-		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[1]/td[3]",
+		'p_last_val_last'      => "Test Newsletter 9.4.2015 23:5:25",
+		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[4]/td[3]",
 	);
 
 

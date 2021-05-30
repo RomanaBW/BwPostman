@@ -444,6 +444,17 @@ class NewsletterManagerPage
 		"Test Newsletter 12.4.2015 10:32:6",
 	);
 
+	/**
+	 * @var array
+	 *
+	 * @since   3.1.5
+	 */
+	public static $filter_sent_without_cam_result   = array(
+		"Copy of 'Newsletter for testing 1",
+		"Copy of 'Newsletter for testing 1",
+		"Copy of 'Newsletter for testing 1",
+	);
+
 
 	/**
 	 * @var array

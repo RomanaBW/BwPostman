@@ -483,7 +483,7 @@ class TestNewslettersListsCest
 		// select campaign
 		$I->clickSelectList(NlManage::$filter_campaign_list, NlManage::$filter_campaign_without, NlManage::$filter_campaign_list_id);
 
-		$I->see(Generals::$null_msg, Generals::$null_row);
+		$I->assertFilterResult(NlManage::$filter_sent_without_cam_result);
 
 		$I->click(Generals::$submenu_toggle_button);
 	}

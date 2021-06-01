@@ -432,6 +432,9 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 
 				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php // Show Disclaimer only if enabled in basic parameters
+					$disclaimer_link = '';
+					$title = '';
+
 					if ($this->params->get('disclaimer')) :
 						?>
 						<p class="agree_check">

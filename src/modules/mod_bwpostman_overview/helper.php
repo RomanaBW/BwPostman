@@ -596,6 +596,12 @@ class ModBwPostmanOverviewHelper
 		{
 			$db->setQuery($query);
 
+			$logOptions   = array();
+			$logger  = BwLogger::getInstance($logOptions);
+			$message = 'Query getUniqueNlIds: ' . $query;
+
+			$logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mod_overview'));
+
 			$result = $db->loadAssocList();
 
 			if ($result === null)

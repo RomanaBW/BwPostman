@@ -230,7 +230,7 @@ class ModuleOverviewCest
 	 *
 	 * @since   4.0.0
 	 */
-	public function OverviewModuleCheckNumberOfMonthsNotArchived(AcceptanceTester $I)
+	public function OverviewModuleCheckNumberOfMonthsOnlyNotArchived(AcceptanceTester $I)
 	{
 		$I->wantTo("check the number of months displayed at FE without archived");
 		$I->expectTo('see the appropriate number of months and count of newsletters');

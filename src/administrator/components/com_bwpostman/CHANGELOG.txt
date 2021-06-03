@@ -5,17 +5,21 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-Version 3.1.5 released (2021-04-26)----
+Version 3.1.5 released (2021-06-08)----
+
+New
++ Add option for selecting FE layout to component options
 
 Bugfix
-# Improve selecting of columns to handle with CDATA at saving tables
+# Repair pagination at FE
+# Correct calculating of start date (February 29/30 problem) at module overview
 # Correct tooltip for publish at sent newsletter
 # Correct typos at language strings, add missing strings, remove icon of BwLibRegister
-# Adjust filter type at import of subscribers
-# Repair pagination at FE
 
 Improvement
 ~ Install plugin BwLibregister as first element of installation package
+~ Improve filter type at import of subscribers
+~ Improve selecting of table columns to handle with CDATA at saving tables
 
 
 Version 3.1.4 released (2021-03-05)----

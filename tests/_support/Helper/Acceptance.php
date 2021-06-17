@@ -1272,7 +1272,8 @@ class Acceptance extends Codeception\Module
 
 		// see message archived
 		$I->waitForElementVisible(Generals::$alert_heading4, 30);
-		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading4);
+		$I->seeElement(Generals::$alert_heading4);
+
 		if ($count == '1')
 		{
 			$I->see($edit_data['archive_success_msg'], Generals::$alert_success4);
@@ -1331,7 +1332,7 @@ class Acceptance extends Codeception\Module
 
 		// see message deleted
 		$I->waitForElementVisible(Generals::$alert_heading4, 30);
-		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading4);
+		$I->seeElement(Generals::$alert_heading4);
 
 		if ($count == '1')
 		{

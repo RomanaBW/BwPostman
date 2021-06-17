@@ -211,7 +211,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_heading    = "//*[@id='system-message-container']/joomla-alert/div[@class='alert-heading']";
+	public static $alert_heading    = "//*[@id='system-message-container']/joomla-alert/div[@class='alert-heading']/span[2]";
 
 	/**
 	 * @var string
@@ -232,7 +232,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_success    = '//*[@id="system-message-container"]/joomla-alert[@type="success"]/div';
+	public static $alert_success    = '//*[@id="system-message-container"]/joomla-alert[@type="success"]/div[2]/div';
 
 	/**
 	 * @var string
@@ -274,7 +274,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_error      = "//*[@id='system-message-container']/joomla-alert[@type='danger']/div/div[@class='alert-message']";
+	public static $alert_error      = "//*[@id='system-message-container']/joomla-alert[@type='danger']/div[2]/div[@class='alert-message'][2]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $alert_error_1      = "//*[@id='system-message-container']/joomla-alert[@type='danger']/div[2]/div[@class='alert-message'][1]";
 
 	/**
 	 * @var string
@@ -295,7 +302,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_success_txt    = 'Success';
+	public static $alert_success_txt    = 'success';
 
 	/**
 	 * @var string
@@ -323,7 +330,21 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $alert_error_txt      = 'Error';
+	public static $alert_error_txt      = 'danger';
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $warningMessage = "<b>Warning</b>";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $noticeMessage = "<b>Notice</b>";
 
 	/**
 	 * @var string

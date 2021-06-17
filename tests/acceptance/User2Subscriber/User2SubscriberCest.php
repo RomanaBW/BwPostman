@@ -1753,7 +1753,7 @@ class User2SubscriberCest
 
 			// see message deleted
 			$I->waitForElementVisible(Generals::$alert_success4, 30);
-			$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
+			$I->see(Generals::$alert_success_txt, Generals::$alert_header);
 			$I->see(RegPage::$delete_success, Generals::$alert_success4);
 		}
 	}
@@ -2123,7 +2123,7 @@ class User2SubscriberCest
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_success4, 30);
-		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
+		$I->see(Generals::$alert_success_txt, Generals::$alert_header);
 		$I->see(RegPage::$config_save_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -2157,7 +2157,7 @@ class User2SubscriberCest
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_success4, 30);
-		$I->see(Generals::$alert_msg_txt, Generals::$alert_header);
+		$I->see(Generals::$alert_success_txt, Generals::$alert_header);
 		$I->see(RegPage::$config_save_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 

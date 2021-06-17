@@ -340,7 +340,7 @@ class TestNewslettersDetailsCest
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
-		$I->see("Notice", Generals::$alert_heading);
+		$I->see("info", Generals::$alert_heading);
 		$I->see(NlEdit::$message_template, Generals::$alert_info);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -947,8 +947,8 @@ class TestNewslettersDetailsCest
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see('Newsletters', Generals::$pageTitle);
-		$I->see("Error", Generals::$alert_header);
-		$I->see(NlEdit::$is_template_error, Generals::$alert_error);
+		$I->see("danger", Generals::$alert_header);
+		$I->see(NlEdit::$is_template_error, Generals::$alert_error_1);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);

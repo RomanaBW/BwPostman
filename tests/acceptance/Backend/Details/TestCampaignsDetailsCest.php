@@ -360,7 +360,7 @@ class TestCampaignsDetailsCest
 		$I->click(Generals::$toolbar4['Save & Close']);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 
-		$I->see("Error", Generals::$alert_heading);
+		$I->see("danger", Generals::$alert_heading);
 		$I->see(CamEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(Generals::$toolbar4['Cancel']);

@@ -422,8 +422,8 @@ class TestSubscribersDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Error", Generals::$alert_header);
-		$I->see(SubEdit::$error_save, Generals::$alert_error);
+		$I->see("danger", Generals::$alert_header);
+		$I->see(SubEdit::$error_save, Generals::$alert_error_1);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->click(Generals::$toolbar4['Cancel']);
@@ -539,8 +539,8 @@ class TestSubscribersDetailsCest
 
 		// Check error message first name
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Error", Generals::$alert_header);
-		$I->see(SubEdit::$errorAbuseFirstName, Generals::$alert_error);
+		$I->see("danger", Generals::$alert_header);
+		$I->see(SubEdit::$errorAbuseFirstName, Generals::$alert_error_1);
 
 		// Fill last name with link
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
@@ -557,8 +557,8 @@ class TestSubscribersDetailsCest
 
 		// Check error message last name
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Error", Generals::$alert_header);
-		$I->see(SubEdit::$errorAbuseLastName, Generals::$alert_error);
+		$I->see("danger", Generals::$alert_header);
+		$I->see(SubEdit::$errorAbuseLastName, Generals::$alert_error_1);
 
 		// Fill special with link
 		if ($options->show_name_field || $options->name_field_obligation)
@@ -575,8 +575,8 @@ class TestSubscribersDetailsCest
 
 		// Check error message special
 		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see("Error", Generals::$alert_header);
-		$I->see(sprintf(SubEdit::$errorAbuseSpecial, trim(SubEdit::$specialTitle)), Generals::$alert_error);
+		$I->see("danger", Generals::$alert_header);
+		$I->see(sprintf(SubEdit::$errorAbuseSpecial, trim(SubEdit::$specialTitle)), Generals::$alert_error_1);
 
 		$I->clickAndWait(SubEdit::$toolbar['Cancel'], 1);
 
@@ -632,8 +632,8 @@ class TestSubscribersDetailsCest
 				if ($options->firstname_field_obligation)
 				{
 					$I->waitForElement(Generals::$alert_header, 30);
-					$I->see("Error", Generals::$alert_heading);
-					$I->see(SubEdit::$firstNameMissing, Generals::$alert_error);
+					$I->see("danger", Generals::$alert_heading);
+					$I->see(SubEdit::$firstNameMissing, Generals::$alert_error_1);
 				}
 			}
 
@@ -652,8 +652,8 @@ class TestSubscribersDetailsCest
 				if ($options->name_field_obligation)
 				{
 					$I->waitForElement(Generals::$alert_header, 30);
-					$I->see("Error", Generals::$alert_heading);
-					$I->see(SubEdit::$lastNameMissing, Generals::$alert_error);
+					$I->see("danger", Generals::$alert_heading);
+					$I->see(SubEdit::$lastNameMissing, Generals::$alert_error_1);
 				}
 			}
 
@@ -669,8 +669,8 @@ class TestSubscribersDetailsCest
 				$I->click(Generals::$toolbar4['Save']);
 
 				$I->waitForElement(Generals::$alert_header, 30);
-				$I->see("Error", Generals::$alert_heading);
-				$I->see(sprintf(SubEdit::$popup_special, $options->special_label), Generals::$alert_error);
+				$I->see("danger", Generals::$alert_heading);
+				$I->see(sprintf(SubEdit::$popup_special, $options->special_label), Generals::$alert_error_1);
 			}
 
 			$I->fillField(SubEdit::$special, SubEdit::$field_special);

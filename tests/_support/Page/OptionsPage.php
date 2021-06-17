@@ -2284,5 +2284,9 @@ class OptionsPage
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
+
+		// Set guest user group
+		$guestGroupId = $I->getGroupIdByName('Guest');
+		$I->setManifestOption('com_users', 'guest_usergroup', $guestGroupId);
 	}
 }

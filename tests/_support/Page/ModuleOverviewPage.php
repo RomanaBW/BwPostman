@@ -65,6 +65,62 @@ class ModuleOverviewPage
 	 */
 	public static $mod_count_0_message = "No newsletters in the selection";
 
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $warningMessage = "<b>Warning</b>";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $noticeMessage = "<b>Notice</b>";
+
+	/**
+	 * @var array
+	 *
+	 * @since 4.0.0
+	 */
+	public static $selectedMls = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59");
+
+	/**
+	 * @var array
+	 *
+	 * @since 4.0.0
+	 */
+	public static $selectedUgs = array("-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12", "-13", "-14", "-15", "-16", "-17", "-18", "-19", "-20", "-21", "-22", "-23", "-24", "-25", "-26", "-27", "-28");
+
+	/**
+	 * @var array
+	 *
+	 * @since 4.0.0
+	 */
+	public static $selectedCams = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48");
+
+	/**
+	 * @var array
+	 *
+	 * @since 4.0.0
+	 */
+	public static $someSelectedMls = array("5", "27", "4", "24");
+
+	/**
+	 * @var array
+	 *
+	 * @since 4.0.0
+	 */
+	public static $someSelectedUgs = array("-1", "-2","-8");
+
+	/**
+	 * @var array
+	 *
+	 * @since 4.0.0
+	 */
+	public static $someSelectedCams = array("1", "4", "16", "18");
+
 
 
 
@@ -97,17 +153,20 @@ class ModuleOverviewPage
 		$I->setManifestOption('mod_bwpostman_overview', 'menu_item', "");
 		$I->setManifestOption('mod_bwpostman_overview', 'access-check', "yes");
 		$I->setManifestOption('mod_bwpostman_overview', 'show_type', "all");
-		// Possible values: all, all_not_arc, not_arc_down, not_arc_but_down, arc, down, arc_and_down, arc_or_down
 
 		// Tab mailinglist selection
 		$I->setManifestOption('mod_bwpostman_overview', 'ml_selected_all', 'no');
-		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', array("5", "27", "4", "24"));
+		$I->setManifestOption('mod_bwpostman_overview', 'ml_available', self::$someSelectedMls);
 		$I->setManifestOption('mod_bwpostman_overview', 'groups_selected_all', 'no');
 		$I->setManifestOption('mod_bwpostman_overview', 'groups_available', array(""));
 
 		// Tab campaign selection
 		$I->setManifestOption('mod_bwpostman_overview', 'cam_selected_all', 'no');
 		$I->setManifestOption('mod_bwpostman_overview', 'cam_available', array(""));
+
+		// Set guest user group
+		$guestGroupId = $I->getGroupIdByName('Guest');
+		$I->setManifestOption('com_users', 'guest_usergroup', $guestGroupId);
 	}
 
 

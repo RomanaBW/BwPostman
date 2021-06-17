@@ -646,14 +646,14 @@ class InstallationPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $positionField    = "//*[@id='general']/div/div[2]/div/div[@class='card-body']/fieldset/div[2]/div[2]";
+	public static $positionField    = "//*[@id='general']/div/div[2]/fieldset/div[2]/div[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $positionValue    = "//*[@id='general']/div/div[2]/div/div[@class='card-body']/fieldset/div[2]/div[2]/joomla-field-fancy-select/div/div[2]/div/div[contains(text(), 'Sidebar-right')]";
+	public static $positionValue    = "//*[@id='general']/div/div[2]/fieldset/div[2]/div[2]/joomla-field-fancy-select/div/div[2]/div/div[contains(text(), 'Sidebar-right')]";
 
 	/**
 	 * @var string

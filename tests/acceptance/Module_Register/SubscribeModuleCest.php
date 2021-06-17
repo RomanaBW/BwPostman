@@ -959,7 +959,7 @@ class SubscribeModuleCest
 			$options->special_label = 'Additional Field';
 		}
 
-		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see('danger', SubsView::$errorContainerHeader);
 		$I->see(sprintf(SubsView::$errorAbuseSpecial, $options->special_label), sprintf(Helper::$errorModulBody, 1));
 
 		// Reset field options
@@ -1005,7 +1005,7 @@ class SubscribeModuleCest
 		$I->click(Helper::$mod_button_register);
 		$I->waitForElementVisible(sprintf(Helper::$errorModulBody, 1), 2);
 
-		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see('danger', SubsView::$errorContainerHeader);
 		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), sprintf(Helper::$errorModulBody, 1));
 
 		// Set unreachable mailbox
@@ -1017,7 +1017,7 @@ class SubscribeModuleCest
 		$I->click(Helper::$mod_button_register);
 		$I->waitForElementVisible(sprintf(Helper::$errorModulBody, 1), 2);
 
-		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see('danger', SubsView::$errorContainerHeader);
 		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), sprintf(Helper::$errorModulBody, 1));
 
 		// Reset field options
@@ -1061,7 +1061,7 @@ class SubscribeModuleCest
 				$itemText = $I->grabTextFrom($grabField);
 			}
 //			codecept_debug($itemText);
-			$I->assertEquals("01 Mailingliste 4 weiterer Lauf A", $itemText);
+			$I->assertEquals("01 Mailingliste 5 weiterer Lauf A", $itemText);
 		}
 
 		if ($options->show_gender)

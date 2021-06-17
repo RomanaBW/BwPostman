@@ -86,7 +86,7 @@ class TestMaintenanceCest
 		$downloadPath = $path . $filename;
 		codecept_debug("Download path: " . $downloadPath);
 
-		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
+		$I->clickAndWait(MaintenancePage::$saveTablesButton, 15);
 
 		$I->assertTrue(file_exists($downloadPath));
 		unlink($downloadPath);

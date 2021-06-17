@@ -513,7 +513,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$button_register);
 
 		// Check error message first name
-		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see('danger', SubsView::$errorContainerHeader);
 		$I->see(SubsView::$errorAbuseFirstName, SubsView::$errorContainerContent);
 
 		// Fill last name with link
@@ -527,7 +527,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$button_register);
 
 		// Check error message last name
-		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see('danger', SubsView::$errorContainerHeader);
 		$I->see(SubsView::$errorAbuseLastName, SubsView::$errorContainerContent);
 
 		// Fill special with link
@@ -546,7 +546,7 @@ class SubscribeComponentCest
 			$options->special_label = 'Additional Field';
 		}
 
-		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see('danger', SubsView::$errorContainerHeader);
 		$I->see(sprintf(SubsView::$errorAbuseSpecial, $options->special_label), SubsView::$errorContainerContent);
 
 		// Reset field options
@@ -593,7 +593,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$button_register);
 		$I->waitForElementVisible(SubsView::$errorContainerHeader, 3);
 
-		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see('danger', SubsView::$errorContainerHeader);
 		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), SubsView::$errorContainerContent);
 
 		// Set unreachable mailbox
@@ -605,7 +605,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$button_register);
 		$I->waitForElementVisible(SubsView::$errorContainerHeader, 3);
 
-		$I->see('Error', SubsView::$errorContainerHeader);
+		$I->see('danger', SubsView::$errorContainerHeader);
 		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), SubsView::$errorContainerContent);
 
 		// Reset field options
@@ -1019,8 +1019,8 @@ class SubscribeComponentCest
 		$I->wait(1);
 		$I->click(SubsView::$button_register);
 
-		$I->waitForElementVisible(Generals::$alert_error, 2);
-		$I->scrollTo(Generals::$alert_error, 0, -100);
+		$I->waitForElementVisible(Generals::$alert_error_1, 2);
+		$I->scrollTo(Generals::$alert_error_1, 0, -100);
 		$I->wait(1);
 		$I->see(SubsView::$security_question_error);
 
@@ -1042,40 +1042,6 @@ class SubscribeComponentCest
 		// Reset options
 		Generals::presetComponentOptions($I);
 	}
-
-	/**
-	 * Test method to check number of selectable mailing lists by component
-	 *
-	 * @param   AcceptanceTester                $I
-	 *
-	 * @return  void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   4.0.0
-	 */
-//	public function CheckSelectableMailinglistsComponent(AcceptanceTester $I)
-//	{
-//		$I->wantTo("Test the number of selectable mailing lists by component");
-//		$I->expectTo('to see correct numbers of mailing lists');
-//
-//		Generals::presetComponentOptions($I);
-//		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
-//
-//		$I->amOnPage(SubsView::$register_url);
-//		$I->scrollTo(SubsView::$disclaimer, 0, -100);
-//		$I->wait(1);
-//		$I->seeElement(sprintf(SubsView::$mailinglist_number, '3'));
-//
-//		$I->setManifestOption('mod_bwpostman', 'mod_ml_available', array(''));
-//		$I->reloadPage();
-//		$I->scrollTo(SubsView::$mod_disclaimer, 0, -100);
-//		$I->seeElement(sprintf(SubsView::$mailinglist_number, '9'));
-//
-//		$I->reloadPage();
-//		// Reset options
-//		Generals::presetComponentOptions($I);
-//	}
 
 	/**
 	 * Test method to subscribe by component in front end, but send no activation because of missing sender data

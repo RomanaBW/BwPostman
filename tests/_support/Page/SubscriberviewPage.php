@@ -491,7 +491,7 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $ml_desc_long    = "02 Mailingliste 6 weiterer Lauf A";
+	public static $ml_desc_long    = "02 Mailingliste 6 weiterer Lauf B";
 
 	/**
 	 * @var string

@@ -62,7 +62,6 @@ class TestNewslettersListsCest
 	public function SortNewslettersByTableHeader(AcceptanceTester $I)
 	{
 		$I->wantTo("Sort unsent newsletters by table header");
-		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 		$I->wait(1);
 
@@ -89,7 +88,6 @@ class TestNewslettersListsCest
 	public function SortNewslettersBySelectList(AcceptanceTester $I)
 	{
 		$I->wantTo("Sort unsent newsletters by select list");
-		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 		$I->wait(1);
 
@@ -148,7 +146,6 @@ class TestNewslettersListsCest
 	public function FilterNewslettersByAuthor(AcceptanceTester $I)
 	{
 		$I->wantTo("Filter unsent newsletters by author");
-		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 
 		// Get filter bar
@@ -296,7 +293,6 @@ class TestNewslettersListsCest
 	public function SearchNewsletters(AcceptanceTester $I)
 	{
 		$I->wantTo("Search unsent Newsletters");
-		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 
 		$I->searchLoop($I, NlManage::$search_data_array, false, true);
@@ -405,7 +401,6 @@ class TestNewslettersListsCest
 	public function SortSentNewslettersBySelectList(AcceptanceTester $I)
 	{
 		$I->wantTo("Sort sent newsletters by select list");
-		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 		$I->wait(1);
 		$I->clickAndWait(NlManage::$tab2, 1);
@@ -603,7 +598,6 @@ class TestNewslettersListsCest
 	public function SearchSentNewsletters(AcceptanceTester $I)
 	{
 		$I->wantTo("Search sent Newsletters");
-		NlManage::$wait_db;
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
 

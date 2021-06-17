@@ -353,7 +353,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Error", Generals::$alert_header);
+		$I->see("danger", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -726,7 +726,7 @@ class TestTemplatesDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-		$I->see("Error", Generals::$alert_header);
+		$I->see("danger", Generals::$alert_header);
 		$I->see(TplEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 

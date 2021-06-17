@@ -187,7 +187,7 @@ class TestAccessCest
 			}
 			else
 			{
-				$I->waitForElementVisible(Generals::$alert_error, 5);
+				$I->waitForElementVisible(Generals::$alert_error_1, 5);
 				$I->see(sprintf(AccessPage::$list_view_no_permission, $button));
 				$I->see(Generals::$extension, Generals::$pageTitle);
 			}
@@ -766,7 +766,7 @@ class TestAccessCest
 		{
 			$I->see($button, Generals::$pageTitle);
 			// for button tests I may only get here at edit other owners items!
-			$I->see('No permission to edit this item!', Generals::$alert_error);
+			$I->see('No permission to edit this item!', Generals::$alert_error_1);
 			$I->click(Generals::$systemMessageClose);
 			$I->waitForElementNotVisible(Generals::$systemMessageClose, 3);
 		}

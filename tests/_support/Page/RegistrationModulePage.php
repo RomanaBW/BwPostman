@@ -384,7 +384,7 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_ml_desc_long    = "02 Mailingliste 6 weiterer Lauf A";
+	public static $mod_ml_desc_long    = "02 Mailingliste 6 weiterer Lauf B";
 
 	/**
 	 * @var string

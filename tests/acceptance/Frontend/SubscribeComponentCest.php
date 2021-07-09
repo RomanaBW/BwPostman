@@ -226,6 +226,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$button_register);
 		$I->waitForElementVisible(Generals::$alert_error, 2);
 		$I->scrollTo(Generals::$alert_error, 0, -100);
+		$I->wait(1);
 
 		$I->see(SubsView::$invalid_field_mailaddress);
 		$I->see(SubsView::$invalid_field_firstname);
@@ -720,6 +721,7 @@ class SubscribeComponentCest
 		$I->wait(1);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$ml_desc_identifier, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$ml_desc_identifier);
 		$I->see(SubsView::$ml_desc_long, SubsView::$ml_desc_identifier);
 
@@ -730,6 +732,7 @@ class SubscribeComponentCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$ml_desc_identifier, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$ml_desc_identifier);
 		$I->see(SubsView::$ml_desc_short, SubsView::$ml_desc_identifier);
 
@@ -771,6 +774,7 @@ class SubscribeComponentCest
 		$I->wait(1);
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$intro_identifier, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$intro_identifier);
 		$I->see(SubsView::$intro_text_comp, SubsView::$intro_identifier);
 
@@ -780,6 +784,7 @@ class SubscribeComponentCest
 		$I->reloadPage();
 		$I->seeElement(SubsView::$view_register);
 		$I->scrollTo(SubsView::$intro_identifier, 0, -100);
+		$I->wait(1);
 		$I->seeElement(SubsView::$intro_identifier);
 		$I->see(SubsView::$intro_text_comp, SubsView::$intro_identifier);
 
@@ -1066,6 +1071,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$button_register);
 
 		$I->scrollTo(SubsView::$err_no_activation, 0, -100);
+		$I->wait(1);
 		$I->waitForElementVisible(SubsView::$err_no_activation, 3);
 		$I->see(SubsView::$msg_err_occurred);
 		$I->see(SubsView::$activation_mail_error);

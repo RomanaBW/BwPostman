@@ -1166,7 +1166,8 @@ class NewsletterEditPage
 		// fill publish and unpublish
 		self::fillPublishedDate($I);
 
-		$I->scrollTo(self::$legend_templates);
+		$I->scrollTo(self::$legend_templates, 0, -100);
+		$I->wait(2);
 		$I->click(self::$template_html);
 		$I->click(self::$template_text);
 		$I->wait(1);
@@ -1175,11 +1176,13 @@ class NewsletterEditPage
 
 		// add content
 		$I->scrollTo(self::$legend_content);
+		$I->wait(2);
 		$I->doubleClick(sprintf(self::$available_content, 2));
 		$I->wait(2);
 		$content_title = $I->grabTextFrom(sprintf(self::$selected_content, 1));
 		$I->see($content_title, self::$selected_content_list);
 		$I->scrollTo(self::$legend_general, 0, -100);
+		$I->wait(1);
 
 		return $content_title;
 	}
@@ -1209,6 +1212,7 @@ class NewsletterEditPage
 		$I->switchToIFrame(Generals::$image_frame);
 		$I->waitForElementVisible("ul.manager", 5);
 		$I->scrollTo(self::$attachment_select1, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(self::$attachment_select1, 1);
 
 		$I->switchToIFrame();
@@ -1226,6 +1230,7 @@ class NewsletterEditPage
 		$I->switchToIFrame(Generals::$image_frame);
 		$I->waitForElementVisible("ul.manager", 5);
 		$I->scrollTo(self::$attachment_select2, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(self::$attachment_select2, 1);
 
 		$I->switchToIFrame();
@@ -1248,12 +1253,14 @@ class NewsletterEditPage
 	{
 		if (!$toUsergroup)
 		{
-			$I->scrollTo(self::$legend_recipients);
+			$I->scrollTo(self::$legend_recipients, 0, -100);
+			$I->wait(1);
 			$I->click(sprintf(Generals::$mls_accessible, 2));
 		}
 		else
 		{
 			$I->scrollTo(self::$usergroup_recipients, 0, -100);
+			$I->wait(1);
 			$I->click(Generals::$mls_usergroup);
 		}
 		$I->wait(2);

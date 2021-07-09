@@ -215,10 +215,12 @@ class TimeControlCest
 
 			$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
 			$I->scrollTo($checkbox, 0, -100);
+			$I->wait(1);
 			$I->click($checkbox);
 
 			// Set timezone
 			$I->scrollTo('/html/body/div[2]/section/div/div/form/fieldset/div/div[2]/div[3]/div/label', 0, -300);
+			$I->wait(1);
 			$I->click(TimeControlPage::$userTimezoneTab);
 			$I->waitForElement(TimeControlPage::$pluginUserTimezoneField);
 			$I->clickSelectList(TimeControlPage::$pluginUserTimezoneField, TimeControlPage::$pluginUserTimezoneValue, TimeControlPage::$pluginUserTimezoneFieldId);

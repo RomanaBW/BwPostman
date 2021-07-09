@@ -683,6 +683,7 @@ class TestNewslettersDetailsCest
 		$I->scrollTo(Generals::$nlTabBar, 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(NlEdit::$tab2, 3);
+		$I->executeJS("document.getElementById('" . NlEdit::$tab2_iframe . "').setAttribute('name', '" . NlEdit::$tab2_iframe . "');");
 		$I->switchToIFrame(NlEdit::$tab2_iframe);
 		$I->waitForElement(NlEdit::$tab2_editor);
 		$I->waitForText($content_title, 30);
@@ -702,8 +703,10 @@ class TestNewslettersDetailsCest
 		$I->wait(1);
 		$I->clickAndWait(NlEdit::$tab4, 5);
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(NlEdit::$tab4_preview_html_divider, 0, 20); // scroll to divider before article
+		$I->wait(1);
 		$I->waitForElement(NlEdit::$preview_html);
 		$I->waitForText($content_title, 30);
 		$I->see($content_title, NlEdit::$preview_html);
@@ -990,10 +993,10 @@ class TestNewslettersDetailsCest
 			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_published, NlEdit::$published_list_id);
 
 			$I->fillField(NlEdit::$publish_up, NlEdit::$field_edit_publish_up);
-			$I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
+			$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
 
 			$I->fillField(NlEdit::$publish_down, NlEdit::$field_edit_publish_down);
-			$I->pressKey(NlEdit::$publish_down, \WebDriverKeys::TAB);
+			$I->pressKey(NlEdit::$publish_down, \Facebook\WebDriver\WebDriverKeys::TAB);
 
 			$I->fillField(NlEdit::$description, NlEdit::$field_edit_description);
 
@@ -1034,10 +1037,10 @@ class TestNewslettersDetailsCest
 			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_unpublished, NlEdit::$published_list_id);
 
 			$I->fillField(NlEdit::$publish_up, NlEdit::$field_publish_up);
-			$I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
+			$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
 
 			$I->fillField(NlEdit::$publish_down, NlEdit::$field_publish_down);
-			$I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
+			$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
 
 			$I->fillField(NlEdit::$description, NlEdit::$field_description);
 
@@ -1106,7 +1109,8 @@ class TestNewslettersDetailsCest
 		// fill publish and unpublish
 		NlEdit::fillPublishedDate($I);
 
-		$I->scrollTo(NlEdit::$legend_templates);
+		$I->scrollTo(NlEdit::$legend_templates, 0, -100);
+		$I->wait(1);
 		$I->click(NlEdit::$template_html);
 		$I->click(NlEdit::$template_text);
 
@@ -1142,7 +1146,8 @@ class TestNewslettersDetailsCest
 		NlEdit::selectRecipients($I);
 
 		// omit from_name
-		$I->scrollTo(NlEdit::$legend_general);
+		$I->scrollTo(NlEdit::$legend_general, 0, -100);
+		$I->wait(1);
 		$I->fillField(NlEdit::$from_name, '');
 		$I->fillField(NlEdit::$subject, NlEdit::$field_subject);
 		$I->clickAndWait(NlEdit::$description, 1);
@@ -1154,7 +1159,8 @@ class TestNewslettersDetailsCest
 
 		// omit from_email
 		NlEdit::selectRecipients($I);
-		$I->scrollTo(NlEdit::$legend_general);
+		$I->scrollTo(NlEdit::$legend_general, 0, -100);
+		$I->wait(1);
 		$I->fillField(NlEdit::$from_name, NlEdit::$field_from_name);
 		$I->fillField(NlEdit::$from_email, '');
 		$I->clickAndWait(NlEdit::$description, 1);
@@ -1166,7 +1172,8 @@ class TestNewslettersDetailsCest
 
 		// omit reply_email
 		NlEdit::selectRecipients($I);
-		$I->scrollTo(NlEdit::$legend_general);
+		$I->scrollTo(NlEdit::$legend_general, 0, -100);
+		$I->wait(1);
 		$I->fillField(NlEdit::$from_name, NlEdit::$field_from_name);
 		$I->fillField(NlEdit::$from_email, NlEdit::$field_reply_email);
 		$I->fillField(NlEdit::$reply_email, '');
@@ -1179,7 +1186,8 @@ class TestNewslettersDetailsCest
 
 		// omit subject
 		NlEdit::selectRecipients($I);
-		$I->scrollTo(NlEdit::$legend_general);
+		$I->scrollTo(NlEdit::$legend_general, 0, -100);
+		$I->wait(1);
 		$I->fillField(NlEdit::$from_name, NlEdit::$field_from_name);
 		$I->fillField(NlEdit::$from_email, NlEdit::$field_from_email);
 		$I->fillField(NlEdit::$reply_email, NlEdit::$field_reply_email);
@@ -1192,7 +1200,8 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		NlEdit::selectRecipients($I);
-		$I->scrollTo(NlEdit::$legend_general);
+		$I->scrollTo(NlEdit::$legend_general, 0, -100);
+		$I->wait(1);
 		$I->fillField(NlEdit::$from_email, NlEdit::$field_from_email);
 		$I->fillField(NlEdit::$reply_email, NlEdit::$field_reply_email);
 		$I->fillField(NlEdit::$subject, NlEdit::$field_subject);
@@ -1205,14 +1214,16 @@ class TestNewslettersDetailsCest
 		// fill publish and unpublish
 		NlEdit::fillPublishedDate($I);
 
-		$I->scrollTo(NlEdit::$legend_templates);
+		$I->scrollTo(NlEdit::$legend_templates, 0, -100);
 		$I->wait(1);
 		$I->click(NlEdit::$template_html);
 		$I->click(NlEdit::$template_text);
-		$I->scrollTo(NlEdit::$legend_recipients);
+		$I->scrollTo(NlEdit::$legend_recipients, 0, -100);
+		$I->wait(1);
 
 		// add content
 		$I->scrollTo(NlEdit::$legend_content, 0, -100);
+		$I->wait(1);
 		// …by button
 		$I->click(sprintf(NlEdit::$available_content, 3));
 		$I->click(NlEdit::$add_content);

@@ -790,6 +790,7 @@ class TestSubscribersListsCest
 		$I->see('Yes');
 
 		$I->scrollTo(SubsManage::$import_legend_step_2);
+		$I->wait(1);
 		$I->see(SubsManage::$import_csv_field_0);
 		$I->see(SubsManage::$import_csv_field_1);
 		$I->see(SubsManage::$import_csv_field_2);
@@ -797,9 +798,11 @@ class TestSubscribersListsCest
 		$I->see(SubsManage::$import_csv_field_4);
 
 		$I->scrollTo(SubsManage::$import_legend_mls, 0, -100);
+		$I->wait(1);
 		$I->click(SubsManage::$import_mls_target);
 
 		$I->scrollTo(SubsManage::$import_legend_format, 0, -100);
+		$I->wait(1);
 		$I->click(SubsManage::$import_cb_confirm_subs);
 
 		$I->click(SubsManage::$import_button_import);
@@ -848,6 +851,7 @@ class TestSubscribersListsCest
 		$I->see(SubsManage::$import_xml_file);
 
 		$I->scrollTo(SubsManage::$import_legend_step_2);
+		$I->wait(1);
 		$I->see(SubsManage::$import_xml_field_0);
 		$I->see(SubsManage::$import_xml_field_1);
 		$I->see(SubsManage::$import_xml_field_2);
@@ -855,9 +859,11 @@ class TestSubscribersListsCest
 		$I->see(SubsManage::$import_xml_field_4);
 
 		$I->scrollTo(SubsManage::$import_legend_mls, 0, -100);
+		$I->wait(1);
 		$I->click(SubsManage::$import_mls_target);
 
 		$I->scrollTo(SubsManage::$import_legend_format, 0, -100);
+		$I->wait(1);
 		$I->click(SubsManage::$import_cb_confirm_subs);
 
 		$I->click(SubsManage::$import_button_import);
@@ -904,6 +910,7 @@ class TestSubscribersListsCest
 		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
+		$I->wait(1);
 
 		$user = getenv('BW_TESTER_USER');
 
@@ -973,6 +980,7 @@ class TestSubscribersListsCest
 		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
+		$I->wait(1);
 
 		$user = getenv('BW_TESTER_USER');
 
@@ -1042,6 +1050,7 @@ class TestSubscribersListsCest
 		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
+		$I->wait(1);
 
 		$user = getenv('BW_TESTER_USER');
 
@@ -1125,6 +1134,7 @@ class TestSubscribersListsCest
 		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
+		$I->wait(1);
 
 		// Determine download path depending on user, which process the tests
 		$user = getenv('BW_TESTER_USER');
@@ -1209,6 +1219,7 @@ class TestSubscribersListsCest
 		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
+		$I->wait(1);
 
 		// Determine download path depending on user, which process the tests
 		$user = getenv('BW_TESTER_USER');
@@ -1276,6 +1287,7 @@ class TestSubscribersListsCest
 		$this->removeAssetIdFromFields($I);
 
 		$I->scrollTo(SubsManage::$export_legend_fields);
+		$I->wait(1);
 
 		$user = getenv('BW_TESTER_USER');
 
@@ -1802,6 +1814,7 @@ class TestSubscribersListsCest
 	{
 		$I->selectOption(SubsManage::$exportFieldList, SubsManage::$exportFieldAssetId);
 		$I->scrollTo(SubsManage::$exportFieldRemoveButton, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(SubsManage::$exportFieldRemoveButton, 1);
 	}
 }

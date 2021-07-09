@@ -217,6 +217,13 @@ class AccessPage
 	/**
 	 * @var string
 	 *
+	 * @since 4.0.0
+	 */
+	public static $j_menu_bwpostman_link      = "//*[@id='sidebarmenu']/nav/ul/li/ul/li/a[contains(@href,'index.php?option=com_bwpostman')]";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $j_menu_bwpostman_sub         = "//*[@id='sidebarmenu']/nav/ul/li/ul/li/ul/li/a/span[contains(text(), 'Dashboard')]";

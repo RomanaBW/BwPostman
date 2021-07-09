@@ -156,6 +156,7 @@ class TestTemplatesDetailsCest
 			codecept_debug('Popup Template Cancel not found');
 		}
 
+		$I->wait(1);
 		$I->see("Template", Generals::$pageTitle);
 	}
 
@@ -1131,6 +1132,7 @@ class TestTemplatesDetailsCest
 		$I->click(TplEdit::$tpl_tab2);
 		$I->fillField(TplEdit::$css_style, $css_style_content);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 1);
 	}

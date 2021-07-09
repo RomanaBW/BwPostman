@@ -516,11 +516,14 @@ class SubscriberEditPage
 		$I->waitForText("confirmed", 5);
 
 		$I->scrollTo(self::$mls_label, 0, -100);
+		$I->wait(1);
 		$I->click(sprintf(self::$mls_accessible, 2));
 		$I->click(sprintf(self::$mls_nonaccessible, 3));
 		$I->scrollTo(self::$mls_internal_label, 0, -100);
+		$I->wait(1);
 		$I->click(sprintf(self::$mls_internal, 4));
 		$I->scrollTo(Generals::$sys_message_container, 0, -100);
+		$I->wait(1);
 	}
 
 	/**

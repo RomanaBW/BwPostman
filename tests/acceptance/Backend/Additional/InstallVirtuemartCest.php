@@ -229,6 +229,7 @@ class InstallVirtuemartCest
 //		$I->amOnPage(InstallPage::$virtuemart_editshop_url);
 		$I->clickAndWait(InstallPage::$virtuemart_shop_shopper_tab, 1);
 		$I->scrollTo(InstallPage::$virtuemart_shop_shopper_billto, 0, -50);
+		$I->wait(1);
 
 		$I->fillField(InstallPage::$virtuemart_shopper_firstname_field, InstallPage::$virtuemart_shopper_firstname_value);
 		$I->fillField(InstallPage::$virtuemart_shopper_lastname_field, InstallPage::$virtuemart_shopper_lastname_value);
@@ -254,12 +255,14 @@ class InstallVirtuemartCest
 		$I->amOnPage(InstallPage::$virtuemart_config_url);
 		$I->clickAndWait(InstallPage::$virtuemart_config_shop_tab, 1);
 		$I->scrollTo(InstallPage::$virtuemart_config_advanced, 0, -50);
+		$I->wait(1);
 		$I->click(InstallPage::$virtuemart_config_enable_db_tools);
 		$I->click(Generals::$toolbar['Save']);
 
 		$I->amOnPage(InstallPage::$virtuemart_setup_url);
 		$I->clickAndWait(InstallPage::$virtuemart_tools_db_tab, 1);
 		$I->scrollTo(InstallPage::$virtuemart_sample_data_button, 0, -50);
+		$I->wait(1);
 		$I->click(InstallPage::$virtuemart_sample_data_button);
 		$I->seeInPopup(InstallPage::$virtuemart_sample_data_popup_text);
 		$I->acceptPopup();

@@ -106,8 +106,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->dontSeeElement(FooterPage::$html_preview_add_footer_outer);
@@ -132,6 +134,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -198,8 +201,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -223,6 +228,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -292,8 +298,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -317,6 +325,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -386,8 +395,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -411,6 +422,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -480,8 +492,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -506,6 +520,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -574,8 +589,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -600,6 +617,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -670,8 +688,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -696,6 +716,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -766,8 +787,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -792,6 +815,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -862,8 +886,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -888,6 +914,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -963,8 +990,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -989,6 +1018,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -1065,8 +1095,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -1091,6 +1123,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -1165,8 +1198,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -1191,6 +1226,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -1263,8 +1299,10 @@ class FooterUsedMailinglistsCest
 
 		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
+		$I->wait(1);
 
 		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
@@ -1289,6 +1327,7 @@ class FooterUsedMailinglistsCest
 
 		// Check text version
 		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
 
 		$I->see(FooterPage::$text_preview_footer_legal);
@@ -1353,6 +1392,7 @@ class FooterUsedMailinglistsCest
 		$I->fillField(NlEdit::$description, NlEdit::$field_description);
 
 		$I->scrollTo(NlEdit::$legend_templates);
+		$I->wait(1);
 		$I->click(NlEdit::$template_html);
 		$I->click(NlEdit::$template_text);
 
@@ -1363,6 +1403,7 @@ class FooterUsedMailinglistsCest
 
 		// add content
 		$I->scrollTo(NlEdit::$legend_content);
+		$I->wait(1);
 		$I->doubleClick(sprintf(NlEdit::$available_content, 2));
 		$I->wait(2);
 
@@ -1390,18 +1431,22 @@ class FooterUsedMailinglistsCest
 		{
 			case 'available':
 				$I->scrollTo(NlEdit::$legend_recipients);
+				$I->wait(1);
 				$I->click(sprintf(Generals::$mls_accessible, 2));
 				break;
 			case 'unavailable':
 				$I->scrollTo(NlEdit::$legend_recipients);
+				$I->wait(1);
 				$I->click(sprintf(Generals::$mls_nonaccessible, 3));
 				break;
 			case 'internal':
 				$I->scrollTo(NlEdit::$legend_recipients);
+				$I->wait(1);
 				$I->click(sprintf(Generals::$mls_internal, 4));
 				break;
 			case 'usergroups':
 				$I->scrollTo(NlEdit::$usergroup_recipients, 0, -100);
+				$I->wait(1);
 				$I->click(Generals::$mls_usergroup);
 				break;
 		}

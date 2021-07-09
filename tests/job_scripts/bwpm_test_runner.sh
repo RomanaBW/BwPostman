@@ -114,30 +114,35 @@ fi
 if [[ "${BW_TEST_CAT}" == lists_subs ]]
 then
 # single tests for subscribers
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortSubscribersByTableHeader  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_sort_by_tableheader.xml --html htmlreports/report_subscribers_sort_by_tableheader.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortSubscribersBySelectList  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_sort_by_selectlist.xml --html htmlreports/report_subscribers_sort_by_selectlist.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterSubscribersByMailformat  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_filter_by_mailformat.xml --html htmlreports/report_subscribers_filter_by_mailformat.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterSubscribersByMailinglist  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_filter_by_mailinglist.xml --html htmlreports/report_subscribers_filter_by_mailinglist.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SearchSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_search.xml --html htmlreports/report_subscribers_search.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::ListlimitSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_listlimit.xml --html htmlreports/report_subscribers_listlimit.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::PaginationSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_pagination.xml --html htmlreports/report_subscribers_pagination.html
-#
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortUnconfirmedSubscribersByTableHeader  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_sort_by_tableheader.xml --html htmlreports/report_subscribers_unconfirmed_sort_by_tableheader.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortUnconfirmedSubscribersBySelectList  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_sort_by_selectlist.xml --html htmlreports/report_subscribers_unconfirmed_sort_by_selectlist.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterUnconfirmedSubscribersByMailformat  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_filter_by_mailformat.xml --html htmlreports/report_subscribers_unconfirmed_filter_by_mailformat.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterUnconfirmedSubscribersByMailinglist  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_filter_by_mailinglist.xml --html htmlreports/report_subscribers_unconfirmed_filter_by_mailinglist.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::SearchUnconfirmedSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_search.xml --html htmlreports/report_subscribers_unconfirmed_search.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::ListlimitUnconfirmedSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_listlimit.xml --html htmlreports/report_subscribers_unconfirmed_listlimit.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::PaginationUnconfirmedSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_pagination.xml --html htmlreports/report_subscribers_unconfirmed_pagination.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortSubscribersByTableHeader  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_sort_by_tableheader.xml --html htmlreports/report_subscribers_sort_by_tableheader.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortSubscribersBySelectList  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_sort_by_selectlist.xml --html htmlreports/report_subscribers_sort_by_selectlist.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterSubscribersByMailformat  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_filter_by_mailformat.xml --html htmlreports/report_subscribers_filter_by_mailformat.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterSubscribersByMailinglist  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_filter_by_mailinglist.xml --html htmlreports/report_subscribers_filter_by_mailinglist.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SearchSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_search.xml --html htmlreports/report_subscribers_search.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::ListlimitSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_listlimit.xml --html htmlreports/report_subscribers_listlimit.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::PaginationSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_pagination.xml --html htmlreports/report_subscribers_pagination.html
+
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortUnconfirmedSubscribersByTableHeader  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_sort_by_tableheader.xml --html htmlreports/report_subscribers_unconfirmed_sort_by_tableheader.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SortUnconfirmedSubscribersBySelectList  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_sort_by_selectlist.xml --html htmlreports/report_subscribers_unconfirmed_sort_by_selectlist.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterUnconfirmedSubscribersByMailformat  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_filter_by_mailformat.xml --html htmlreports/report_subscribers_unconfirmed_filter_by_mailformat.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::FilterUnconfirmedSubscribersByMailinglist  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_filter_by_mailinglist.xml --html htmlreports/report_subscribers_unconfirmed_filter_by_mailinglist.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::SearchUnconfirmedSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_search.xml --html htmlreports/report_subscribers_unconfirmed_search.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::ListlimitUnconfirmedSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_listlimit.xml --html htmlreports/report_subscribers_unconfirmed_listlimit.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::PaginationUnconfirmedSubscribers  "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_unconfirmed_pagination.xml --html htmlreports/report_subscribers_unconfirmed_pagination.html
 
 codecept run acceptance Backend/Lists/TestSubscribersListsCest::ImportSubscribersByCSV "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_import_csv.xml --html htmlreports/report_subscribers_import_csv.html
 codecept run acceptance Backend/Lists/TestSubscribersListsCest::ImportSubscribersByXML "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_import_xml.xml --html htmlreports/report_subscribers_import_xml.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToCSVCA "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_csv_ca.xml --html htmlreports/report_subscribers_export_csv_ca.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToCSVUA "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_csv_ua.xml --html htmlreports/report_subscribers_export_csv_ua.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToCSVAll "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_csv_all.xml --html htmlreports/report_subscribers_export_csv_all.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToCSVFilteredYes "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_csv_filtered_yes.xml --html htmlreports/report_subscribers_export_csv_filtered_yes.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToCSVFilteredNo "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_csv_filtered_no.xml --html htmlreports/report_subscribers_export_csv_filtered_no.html
-#codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToXML "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_xml.xml --html htmlreports/report_subscribers_export_xml.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToCSVCA "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_csv_ca.xml --html htmlreports/report_subscribers_export_csv_ca.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToCSVUA "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_csv_ua.xml --html htmlreports/report_subscribers_export_csv_ua.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToCSVAll "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_csv_all.xml --html htmlreports/report_subscribers_export_csv_all.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToCSVFilteredYes "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_csv_filtered_yes.xml --html htmlreports/report_subscribers_export_csv_filtered_yes.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToCSVFilteredNo "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_csv_filtered_no.xml --html htmlreports/report_subscribers_export_csv_filtered_no.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::ExportSubscribersToXML "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_export_xml.xml --html htmlreports/report_subscribers_export_xml.html
+
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::BatchSubscribeUnsubscribeOkay "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_batch_subscribe_okay_xml.xml --html htmlreports/report_subscribers_batch_subscribe_okay_xml.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::BatchSubscribeUnsubscribeAlready "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_batch_subscribe_already_xml.xml --html htmlreports/report_subscribers_batch_subscribe_already_xml.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::BatchSubscribeUnsubscribeNo "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_batch_subscribe_no_xml.xml --html htmlreports/report_subscribers_batch_subscribe_no_xml.html
+codecept run acceptance Backend/Lists/TestSubscribersListsCest::BatchMove "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_batch_move_xml.xml --html htmlreports/report_subscribers_batch_move_xml.html
 fi
 
 ###
@@ -268,15 +273,15 @@ fi
 if [[ "${BW_TEST_CAT}" == details_subs ]]
 then
 # single tests for subscribers
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCancelMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_cancel_main.xml --html htmlreports/report_subscribers_cancel_main.html
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCompleteMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_complete_main.xml --html htmlreports/report_subscribers_complete_main.html
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCancelListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_cancel_list.xml --html htmlreports/report_subscribers_cancel_list.html
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCompleteListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_complete_list.xml --html htmlreports/report_subscribers_complete_list.html
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberSaveNewListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_save_new_list.xml --html htmlreports/report_subscribers_save_new_list.html
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberSaveCopyListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_save_copy_list.xml --html htmlreports/report_subscribers_save_copy_list.html
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberListViewRestore "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_restore_list.xml --html htmlreports/report_subscribers_restore_list.html
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateSubscriberTwiceListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_twice_list.xml --html htmlreports/report_subscribers_twice_list.html
-#codecept run acceptance Backend/Details/TestSubscribersDetailsCest::TestSubscriberPrintDataButton "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_print_data_button.xml --html htmlreports/report_subscribers_print_data_button.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCancelMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_cancel_main.xml --html htmlreports/report_subscribers_cancel_main.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCompleteMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_complete_main.xml --html htmlreports/report_subscribers_complete_main.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCancelListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_cancel_list.xml --html htmlreports/report_subscribers_cancel_list.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberCompleteListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_complete_list.xml --html htmlreports/report_subscribers_complete_list.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberSaveNewListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_save_new_list.xml --html htmlreports/report_subscribers_save_new_list.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberSaveCopyListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_save_copy_list.xml --html htmlreports/report_subscribers_save_copy_list.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberListViewRestore "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_restore_list.xml --html htmlreports/report_subscribers_restore_list.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateSubscriberTwiceListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_twice_list.xml --html htmlreports/report_subscribers_twice_list.html
+codecept run acceptance Backend/Details/TestSubscribersDetailsCest::TestSubscriberPrintDataButton "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_print_data_button.xml --html htmlreports/report_subscribers_print_data_button.html
 codecept run acceptance Backend/Details/TestSubscribersDetailsCest::CreateOneSubscriberAbuseListView "${BW_TEST_DEBUG}" --xml xmlreports/report_subscribers_abuse_fields.xml --html htmlreports/report_subscribers_abuse_fields.html
 fi
 
@@ -325,28 +330,25 @@ fi
 if [[ "${BW_TEST_CAT}" == frontend_single ]]
 then
 # single tests for frontend
-#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeSimpleActivateAndUnsubscribe "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_activate_and_unsubscribe.xml --html htmlreports/report_frontend_activate_and_unsubscribe.html
-#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeTwiceActivateAndUnsubscribe "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_activate_twice_and_unscubscribe.xml --html htmlreports/report_frontend_activate_twice_and_unscubscribe.html
-#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeTwiceActivateGetActivationAndUnsubscribe "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_get_code_and_unsubscribe.xml --html htmlreports/report_frontend_get_code_and_unsubscribe.html
-#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeActivateSubscribeGetEditlinkAndUnsubscribe "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_get_editlink_and_unsubscribe.xml --html htmlreports/report_frontend_get_editlink_and_unsubscribe.html
-#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeMissingValuesComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_missing_values.xml --html htmlreports/report_frontend_missing_values.html
-#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeSimpleActivateChangeAndUnsubscribe "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_activate_change_and_unsubscribe.xml --html htmlreports/report_frontend_activate_change_and_unsubscribe.html
-#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeActivateUnsubscribeAndActivate "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_activate_unsubscribe_activate.xml --html htmlreports/report_frontend_activate_unsubscribe_activate.html
-#codecept run acceptance Frontend/SubscribeComponentCest::GetEditlinkWrongAddress "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_get_editlink_wrong_address.xml --html htmlreports/report_frontend_get_editlink_wrong_address.html
-#codecept run acceptance Frontend/SubscribeComponentCest::WrongUnsubscribeLinks "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_wrong_unsubscribe_link.xml --html htmlreports/report_frontend_wrong_unsubscribe_link.html
-#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeAbuseFields "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_abuse_fields.xml --html htmlreports/report_frontend_abuse_fields.html
-#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeUnreachableMailAddress "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_unreachable_mail.xml --html htmlreports/report_frontend_unreachable_mail.html
-#
-#codecept run acceptance Frontend/SubscribeComponentCest::SubscribeShowFieldsComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_show_fields.xml --html htmlreports/report_frontend_show_fields.html
-#codecept run acceptance Frontend/SubscribeComponentCest::CheckMailinglistDescriptionComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_show_desc.xml --html htmlreports/report_frontend_show_desc.html
-#codecept run acceptance Frontend/SubscribeComponentCest::CheckIntroTextComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_check_intro.xml --html htmlreports/report_frontend_check_intro.html
+codecept run acceptance Frontend/SubscribeComponentCest::SubscribeSimpleActivateAndUnsubscribe "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_activate_and_unsubscribe.xml --html htmlreports/report_frontend_activate_and_unsubscribe.html
+codecept run acceptance Frontend/SubscribeComponentCest::SubscribeTwiceActivateAndUnsubscribe "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_activate_twice_and_unscubscribe.xml --html htmlreports/report_frontend_activate_twice_and_unscubscribe.html
+codecept run acceptance Frontend/SubscribeComponentCest::SubscribeTwiceActivateGetActivationAndUnsubscribe "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_get_code_and_unsubscribe.xml --html htmlreports/report_frontend_get_code_and_unsubscribe.html
+codecept run acceptance Frontend/SubscribeComponentCest::SubscribeActivateSubscribeGetEditlinkAndUnsubscribe "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_get_editlink_and_unsubscribe.xml --html htmlreports/report_frontend_get_editlink_and_unsubscribe.html
+codecept run acceptance Frontend/SubscribeComponentCest::SubscribeMissingValuesComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_missing_values.xml --html htmlreports/report_frontend_missing_values.html
+codecept run acceptance Frontend/SubscribeComponentCest::SubscribeSimpleActivateChangeAndUnsubscribe "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_activate_change_and_unsubscribe.xml --html htmlreports/report_frontend_activate_change_and_unsubscribe.html
+codecept run acceptance Frontend/SubscribeComponentCest::SubscribeActivateUnsubscribeAndActivate "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_activate_unsubscribe_activate.xml --html htmlreports/report_frontend_activate_unsubscribe_activate.html
+codecept run acceptance Frontend/SubscribeComponentCest::GetEditlinkWrongAddress "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_get_editlink_wrong_address.xml --html htmlreports/report_frontend_get_editlink_wrong_address.html
+codecept run acceptance Frontend/SubscribeComponentCest::WrongUnsubscribeLinks "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_wrong_unsubscribe_link.xml --html htmlreports/report_frontend_wrong_unsubscribe_link.html
+codecept run acceptance Frontend/SubscribeComponentCest::SubscribeAbuseFields "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_abuse_fields.xml --html htmlreports/report_frontend_abuse_fields.html
+codecept run acceptance Frontend/SubscribeComponentCest::SubscribeUnreachableMailAddress "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_unreachable_mail.xml --html htmlreports/report_frontend_unreachable_mail.html
+
+codecept run acceptance Frontend/SubscribeComponentCest::SubscribeShowFieldsComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_show_fields.xml --html htmlreports/report_frontend_show_fields.html
+codecept run acceptance Frontend/SubscribeComponentCest::CheckMailinglistDescriptionComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_show_desc.xml --html htmlreports/report_frontend_show_desc.html
+codecept run acceptance Frontend/SubscribeComponentCest::CheckIntroTextComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_check_intro.xml --html htmlreports/report_frontend_check_intro.html
 codecept run acceptance Frontend/SubscribeComponentCest::CheckDisclaimerContentPopupComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_check_disclaimer_selection_popup.xml --html htmlreports/report_frontend_check_disclaimer_selection_popup.html
 codecept run acceptance Frontend/SubscribeComponentCest::CheckDisclaimerContentNewWindowComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_check_disclaimer_selection_new.xml --html htmlreports/report_frontend_check_disclaimer_selection_new.html
 codecept run acceptance Frontend/SubscribeComponentCest::CheckDisclaimerContentSameWindowComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_check_disclaimer_selection_same.xml --html htmlreports/report_frontend_check_disclaimer_selection_same.html
 codecept run acceptance Frontend/SubscribeComponentCest::CheckSecurityQuestionComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_check_security_question.xml --html htmlreports/report_frontend_check_security_question.html
-
-# !!!Following test is not usable because at component mailing lists are not selectable!!!
-########codecept run acceptance Frontend/SubscribeComponentCest::CheckSelectableMailinglistsComponent "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_check_mailinglists_number.xml --html htmlreports/report_frontend_check_mailinglists_number.html
 
 # !!!Following test don't work automated because of some technical reasons!!!
 ########codecept run acceptance Frontend/SubscribeComponentCest::SubscribeActivationNoSenderData "${BW_TEST_DEBUG}" --xml xmlreports/report_frontend_no_activation_mail.xml --html htmlreports/report_frontend_no_activation_mail.html
@@ -368,6 +370,9 @@ then
 codecept run acceptance Backend/TestMaintenanceCest::saveTablesZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_save_tables_zip.xml --html htmlreports/report_maintenance_save_tables_zip.html
 codecept run acceptance Backend/TestMaintenanceCest::saveTablesNoZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_save_tables.xml --html htmlreports/report_maintenance_save_tables.html
 codecept run acceptance Backend/TestMaintenanceCest::checkTables "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_check_tables.xml --html htmlreports/report_maintenance_check_tables.html
+codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithErrors "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_errors.xml --html htmlreports/report_maintenance_restore_tables_errors.html
+codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithModsSimple "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_mods_simple.xml --html htmlreports/report_maintenance_restore_tables_mods_simple.html
+codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithModsVersion "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_mods_version.xml --html htmlreports/report_maintenance_restore_tables_mods_version.html
 codecept run acceptance Backend/TestMaintenanceCest::restoreTablesNoZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables.xml --html htmlreports/report_maintenance_restore_tables.html
 codecept run acceptance Backend/TestMaintenanceCest::restoreTablesZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_zip.xml --html htmlreports/report_maintenance_restore_tables_zip.html
 codecept run acceptance Backend/TestMaintenanceCest::testBasicSettings "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_basic_settings.xml --html htmlreports/report_maintenance_basic_settings.html
@@ -410,8 +415,6 @@ codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOpti
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsMessage "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_options_message.xml --html htmlreports/report_u2s_options_message.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsSwitchShowFormat "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_switch_show_format.xml --html htmlreports/report_u2s_switch_show_format.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberPredefinedFormat "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_predefined_format.xml --html htmlreports/report_u2s_predefined_format.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoUpdate "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_auto_update.xml --html htmlreports/report_u2s_auto_update.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoDelete "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_auto_delete.xml --html htmlreports/report_u2s_auto_delete.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsMailinglists "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_options_mailinglists.xml --html htmlreports/report_u2s_options_mailinglists.html
 fi
 
@@ -441,7 +444,7 @@ codecept run acceptance Backend/TestOptionsCest::saveDefaults "${BW_TEST_DEBUG}"
 #codecept run acceptance Backend/TestOptionsCest::checkRegistrationOptionShowGender "${BW_TEST_DEBUG}" --xml xmlreports/report_options_showGender.xml --html htmlreports/report_options_showGender.html
 #codecept run acceptance Backend/TestOptionsCest::checkRegistrationOptionLastNameMandatory "${BW_TEST_DEBUG}" --xml xmlreports/report_options_LastNameMandatory.xml --html htmlreports/report_options_LastNameMandatory.html
 #codecept run acceptance Backend/TestOptionsCest::checkRegistrationOptionShowLastName "${BW_TEST_DEBUG}" --xml xmlreports/report_options_ShowLastName.xml --html htmlreports/report_options_ShowLastName.html
-#codecept run acceptance Backend/TestOptionsCest::checkRegistrationOptionFirstNameMandatory "${BW_TEST_DEBUG}" --xml xmlreports/report_options_FirstNameMandator.xml --html htmlreports/report_options_FirstNameMandator.html
+#codecept run acceptance Backend/TestOptionsCest::checkRegistrationOptionFirstNameMandatory "${BW_TEST_DEBUG}" --xml xmlreports/report_options_FirstNameMandatory.xml --html htmlreports/report_options_FirstNameMandatory.html
 #codecept run acceptance Backend/TestOptionsCest::checkRegistrationOptionShowFirstName "${BW_TEST_DEBUG}" --xml xmlreports/report_options_.xml --html htmlreports/report_options_.html
 #codecept run acceptance Backend/TestOptionsCest::checkRegistrationOptionShowAdditionalField "${BW_TEST_DEBUG}" --xml xmlreports/report_options_ShowFirstName.xml --html htmlreports/report_options_ShowFirstName.html
 #codecept run acceptance Backend/TestOptionsCest::checkRegistrationOptionAdditionalFieldMandatory "${BW_TEST_DEBUG}" --xml xmlreports/report_options_AdditionalFieldMandatory.xml --html htmlreports/report_options_AdditionalFieldMandatory.html
@@ -467,7 +470,7 @@ codecept run acceptance Backend/TestOptionsCest::saveDefaults "${BW_TEST_DEBUG}"
 #codecept run acceptance Backend/TestOptionsCest::checkUnsubscriptionOptionUnsubscriptionWithOneClick "${BW_TEST_DEBUG}" --xml xmlreports/report_options_UnsubscriptionWithOneClick.xml --html htmlreports/report_options_UnsubscriptionWithOneClick.html
 ##codecept run acceptance Backend/TestOptionsCest::checkUnsubscriptionOptionUnsubscriptionToWebmaster "${BW_TEST_DEBUG}" --xml xmlreports/report_options_UnsubscriptionToWebmaster.xml --html htmlreports/report_options_UnsubscriptionToWebmaster.html
 #codecept run acceptance Backend/TestOptionsCest::checkUnsubscriptionOptionUnsubscriptionSenderName "${BW_TEST_DEBUG}" --xml xmlreports/report_options_UnsubscriptionSenderName.xml --html htmlreports/report_options_UnsubscriptionSenderName.html
-#codecept run acceptance Backend/TestOptionsCest::checkUnsubscriptionOptionUnsubscriptionSenderMail "${BW_TEST_DEBUG}" --xml xmlreports/report_options_UnsubscriptionSenderMail.xml --html htmlreports/report_options_.UnsubscriptionSenderMailhtml
+#codecept run acceptance Backend/TestOptionsCest::checkUnsubscriptionOptionUnsubscriptionSenderMail "${BW_TEST_DEBUG}" --xml xmlreports/report_options_UnsubscriptionSenderMail.xml --html htmlreports/report_options_.UnsubscriptionSenderMail.html
 #
 #codecept run acceptance Backend/TestOptionsCest::checkListsOptionSearchField "${BW_TEST_DEBUG}" --xml xmlreports/report_options_SearchField.xml --html htmlreports/report_options_SearchField.html
 #codecept run acceptance Backend/TestOptionsCest::checkListsOptionDateFilter "${BW_TEST_DEBUG}" --xml xmlreports/report_options_DateFilter.xml --html htmlreports/report_options_DateFilter.html
@@ -485,10 +488,10 @@ fi
 if [[ "${BW_TEST_CAT}" == access_single ]]
 then
 # single tests for permissions
-codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForListViewButtonsFromMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_acceptance_main_buttons_list.xml --html htmlreports/report_acceptance_main_buttons_list.html
-codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForAddButtonsFromMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_acceptance_main_buttons_add.xml --html htmlreports/report_acceptance_main_buttons_add.html
-codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart1 "${BW_TEST_DEBUG}" --xml xmlreports/report_acceptance_list_action_buttons1.xml --html htmlreports/report_list_action_buttons1.html
-#codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart2 "${BW_TEST_DEBUG}" --xml xmlreports/report_acceptance_list_action_buttons2.xml --html htmlreports/report_list_action_buttons2.html
+#codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForListViewButtonsFromMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_acceptance_main_buttons_list.xml --html htmlreports/report_acceptance_main_buttons_list.html
+#codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForAddButtonsFromMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_acceptance_main_buttons_add.xml --html htmlreports/report_acceptance_main_buttons_add.html
+#codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart1 "${BW_TEST_DEBUG}" --xml xmlreports/report_acceptance_list_action_buttons1.xml --html htmlreports/report_list_action_buttons1.html
+codecept run acceptance Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart2 "${BW_TEST_DEBUG}" --xml xmlreports/report_acceptance_list_action_buttons2.xml --html htmlreports/report_list_action_buttons2.html
 fi
 
 ######################################
@@ -550,13 +553,16 @@ codecept run acceptance ModuleOverview/ModuleOverviewCest::setupOverviewModule "
 
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsAll "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_all.xml --html htmlreports/report_modOverview_check_number_of_months_all.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsRestricted "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_restricted.xml --html htmlreports/report_modOverview_check_number_of_months_restricted.html
-codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchived "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_archived.xml --html htmlreports/report_modOverview_check_number_of_months_not_archived.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyNotArchived "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_archived.xml --html htmlreports/report_modOverview_check_number_of_months_not_archived.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchivedNotExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_archived_not_expired.xml --html htmlreports/report_modOverview_check_number_of_months_not_archived_not_expired.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchivedButExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_expored.xml --html htmlreports/report_modOverview_check_number_of_months_not_expored.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyArchived "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_only_archived.xml --html htmlreports/report_modOverview_check_number_of_months_only_archived.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_only_expired.xml --html htmlreports/report_modOverview_check_number_of_months_only_expired.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsArchivedAndExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_archived_and_expired.xml --html htmlreports/report_modOverview_check_number_of_months_archived_and_expired.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsArchivedOrExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_archived_or_expired.xml --html htmlreports/report_modOverview_check_number_of_months_archived_or_expired.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyAllMailinglists "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_mailinglists.xml --html htmlreports/report_modOverview_check_number_of_months_mailinglists.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyAllUsergroups "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_usergroups.xml --html htmlreports/report_modOverview_check_number_of_months_usergroups.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyAllCampaigns "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_campaigns.xml --html htmlreports/report_modOverview_check_number_of_months_campaigns.html
 fi
 
 if [[ "${BW_TEST_CAT}" == all ]]

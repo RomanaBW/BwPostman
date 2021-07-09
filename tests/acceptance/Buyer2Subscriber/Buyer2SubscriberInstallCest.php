@@ -366,6 +366,7 @@ class Buyer2SubscriberInstallCest
 	{
 		$I->click(BuyerPage::$button_enter_address);
 		$I->scrollTo('//*[@id="userForm"]');
+		$I->wait(1);
 		$I->waitForElement(BuyerPage::$header_account_details);
 		$I->see(BuyerPage::$header_account_details_text);
 	}

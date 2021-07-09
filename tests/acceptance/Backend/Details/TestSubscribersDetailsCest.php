@@ -513,11 +513,14 @@ class TestSubscribersDetailsCest
 		$I->selectOption(SubEdit::$confirm, SubEdit::$confirmed);
 
 		$I->scrollTo(SubEdit::$mls_label, 0, -100);
+		$I->wait(1);
 		$I->click(sprintf(SubEdit::$mls_accessible, 2));
 		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
 		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);
+		$I->wait(1);
 		$I->click(sprintf(SubEdit::$mls_internal, 4));
 		$I->scrollTo(Generals::$sys_message_container, 0, -100);
+		$I->wait(1);
 
 		// Fill first name with link
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
@@ -700,9 +703,11 @@ class TestSubscribersDetailsCest
 		$I->waitForText("confirmed", 5);
 
 		$I->scrollTo(SubEdit::$mls_label, 0, -100);
+		$I->wait(1);
 		$I->click(sprintf(SubEdit::$mls_accessible, 2));
 		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
 		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);
+		$I->wait(1);
 		$I->click(sprintf(SubEdit::$mls_internal, 4));
 	}
 

@@ -86,10 +86,12 @@ class TestAccessCest
 			$this->_login($loginPage, $user);
 
 			$I->click(AccessPage::$j_menu_components);
+			$I->wait(1);
 			$I->waitForElementVisible(AccessPage::$j_menu_tags, 3);
 			$I->see('BwPostman', AccessPage::$j_menu_bwpostman);
 
-			$I->click(AccessPage::$j_menu_bwpostman);
+			$I->click(AccessPage::$j_menu_bwpostman_link);
+			$I->wait(1);
 			$I->waitForElementVisible(sprintf(AccessPage::$j_menu_bwpostman_sub_item, 'Maintenance'), 3);
 
 			foreach (AccessPage::$main_list_buttons as $button => $link)
@@ -309,6 +311,7 @@ class TestAccessCest
 					$I->waitForElementVisible(Generals::$pageTitle, 3);
 					$I->see($text_to_see, Generals::$pageTitle);
 					$I->click(Generals::$toolbar4['Back']);
+					$I->wait(1);
 				}
 				else
 				{
@@ -844,6 +847,7 @@ class TestAccessCest
 			if ($button == 'Newsletters')
 			{
 				$I->scrollTo(NewsletterManagerPage::$tab1, 0, -100);
+				$I->wait(1);
 				$I->click(NewsletterManagerPage::$tab1);// switch to tab unsent newsletters to finish
 				$I->waitForElement(".//*[@id='main-table']/thead/tr/th[5]/a", 20);
 			}
@@ -1046,6 +1050,7 @@ class TestAccessCest
 	private function checkCheckinResult(\AcceptanceTester $I, $check_content, $lock_icon, $button, $tableId)
 	{
 		$I->scrollTo(Generals::$sys_message_container, 0, 100);
+		$I->wait(1);
 
 		$item = substr(strtolower($button), 0, -1);
 
@@ -1131,6 +1136,7 @@ class TestAccessCest
 			else
 			{
 				$I->scrollTo(Generals::$sys_message_container, 0, 100);
+				$I->wait(1);
 				$I->see(AccessPage::$checkin_error_text, Generals::$alert_error);
 
 				// logout current user
@@ -1404,11 +1410,13 @@ class TestAccessCest
 		$set_default_allowed = $item_permission_array['Templates']['permissions']['ModifyState'];
 
 		$I->scrollTo(Generals::$filter_toolbar, 0, -100);
+		$I->wait(1);
 		$I->waitForElementVisible(Generals::$clear_button, 2);
 		$I->clickAndWait(Generals::$clear_button, 2);
 
 		codecept_debug('Scroll to pagination');
 		$I->scrollTo(Generals::$pagination_bar);
+		$I->wait(1);
 
 		$linkToFirstPage    = count($I->grabMultiple(Generals::$first_page));
 
@@ -1418,6 +1426,7 @@ class TestAccessCest
 		}
 
 		$I->scrollTo(TemplateManagerPage::$default_button1, 0, -250);
+		$I->wait(1);
 		TemplateManagerPage::setDefaultTemplates($I, $set_default_allowed);
 	}
 

@@ -683,6 +683,7 @@ class TemplateEditPage
 		$I->waitForElementVisible(".//*[@id='browser-list']", 5);
 		$I-> waitForElement(self::$thumb_select, 5);
 		$I->scrollTo(self::$thumb_select, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(self::$thumb_select, 1);
 
 		$I->clickAndWait(self::$thumb_insert, 1);
@@ -705,6 +706,7 @@ class TemplateEditPage
 		$I->click(self::$tpl_tab2);
 		$I->fillField(self::$text_style, $text_style_content);
 		$I->scrollTo(self::$button_refresh_preview, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(self::$button_refresh_preview, 2);
 
 		$I->switchToIFrame(self::$textIframe);

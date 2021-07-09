@@ -660,6 +660,7 @@ class TestNewslettersListsCest
 		$I->checkPagination($I, NlManage::$pagination_sent_data_array, 10);
 
 		$I->scrollTo(Generals::$pageTitle);
+		$I->wait(1);
 	}
 
 	/**
@@ -738,6 +739,7 @@ class TestNewslettersListsCest
 		$I->checkPagination($I, NlManage::$pagination_queue_data_array, 10);
 
 		$I->scrollTo(Generals::$pageTitle);
+		$I->wait(1);
 
 		$this->cleanupQueue($I);
 
@@ -880,6 +882,8 @@ class TestNewslettersListsCest
 		$I->setExtensionStatus('bwtestmode', 0);
 		$I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
 
+		$I->scrollTo(Generals::$systemMessageClose, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->clickAndWait(Generals::$toolbar['Clear queue'], 1);
 

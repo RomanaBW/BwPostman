@@ -70,6 +70,13 @@ class Generals
 	/**
 	 * @var string
 	 *
+	 * @since 4.0.0
+	 */
+	public static $pageTop        = "//*[@id='header']";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $nav_user_menu        = "//*[@title='User Menu']";

@@ -136,6 +136,8 @@ class Login
 	{
 		$loginArea     = sprintf(".//*/button[contains(., '%s')]", Generals::$login_txt);
 
+		$I->scrollTo(Generals::$pageTop, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$nav_user_menu);
 		$I->click(Generals::$nav_user_menu_logout);
 

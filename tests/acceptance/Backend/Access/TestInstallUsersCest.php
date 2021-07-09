@@ -140,6 +140,7 @@ class TestInstallUsersCest
 
 				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
 				$I->scrollTo($checkbox, 0, -100);
+				$I->wait(1);
 				$I->click($checkbox);
 
 				$I->click(Generals::$toolbar['Save & Close']);

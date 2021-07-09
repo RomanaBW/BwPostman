@@ -1628,8 +1628,10 @@ class Acceptance extends Codeception\Module
 	private function browsePages(\AcceptanceTester $I, $top_val, $top_val_field, $last_val, $last_val_field)
 	{
 		$I->scrollTo(Generals::$table_header);
+		$I->wait(1);
 		$I->see($top_val, $top_val_field);
-		$I->scrollTo(Generals::$pagination_bar, 0, -150);
+		$I->scrollTo(Generals::$pagination_bar, 0, -100);
+		$I->wait(1);
 		$I->see($last_val, $last_val_field);
 	}
 

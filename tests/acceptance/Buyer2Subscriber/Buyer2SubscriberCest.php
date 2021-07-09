@@ -654,6 +654,7 @@ class Buyer2SubscriberCest
 		$I->acceptPopup();
 
 		$I->scrollTo(Generals::$sys_message_container, 0, 100);
+		$I->wait(1);
 		$I->see(BuyerPage::$error_alert_missing_additional, BuyerPage::$alert_error_div);
 	}
 
@@ -861,6 +862,7 @@ class Buyer2SubscriberCest
 	private function checkoutCart($I)
 	{
 		$I->scrollTo(BuyerPage::$button_check_out_now, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(BuyerPage::$button_tos, 1);
 		$I->clickAndWait(BuyerPage::$button_check_out_now, 1);
 		$I->waitForText(BuyerPage::$thank_you_page, 30);

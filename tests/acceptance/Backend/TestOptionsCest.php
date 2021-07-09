@@ -261,6 +261,7 @@ class TestOptionsCest
 		// Get first available content
 		$I->click(MainView::$addNewsletterButton);
 		$I->scrollTo(NlEditPage::$legend_content);
+		$I->wait(1);
 		$availableContent1 = $I->grabTextFrom(sprintf(NlEditPage::$available_content, 2));
 
 		$I->assertEquals("sample-data-articles/park-site/photo-gallery/animals = Phyllopteryx", $availableContent1);
@@ -271,6 +272,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$excludedCategories, 0, -120);
+		$I->wait(1);
 		$I->fillField(OptionsPage::$excludedCategories, " Animals");
 		$I->moveMouseOver(OptionsPage::$excludedCategories, 200, 0);
 		$I->wait(2);
@@ -279,6 +281,7 @@ class TestOptionsCest
 		$I->click(Generals::$toolbar['Save']);
 
 		$I->scrollTo(OptionsPage::$excludedCategories, 0, -120);
+		$I->wait(1);
 		$excluded = $I->grabTextFrom(OptionsPage::$excludedCategoriesResult);
 		$I->assertEquals("- - - Animals (en-GB)", $excluded);
 
@@ -288,6 +291,7 @@ class TestOptionsCest
 		// Get second available content
 		$I->click(MainView::$addNewsletterButton);
 		$I->scrollTo(NlEditPage::$legend_content);
+		$I->wait(1);
 		$availableContent2 = $I->grabTextFrom(sprintf(NlEditPage::$available_content, 2));
 
 		$I->assertNotEquals("sample-data-articles/park-site/photo-gallery/animals = Phyllopteryx", $availableContent2);
@@ -300,10 +304,12 @@ class TestOptionsCest
 
 
 		$I->scrollTo(OptionsPage::$excludedCategories, 0, -120);
+		$I->wait(1);
 		$I->click(OptionsPage::$excludedCategoriesEmptyResult);
 		$I->click(Generals::$toolbar['Save']);
 
 		$I->scrollTo(OptionsPage::$excludedCategories, 0, -120);
+		$I->wait(1);
 		$I->dontSeeInField(OptionsPage::$excludedCategories, "Content Modules");
 	}
 
@@ -334,6 +340,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$numberNlsToSend, 0, -120);
+		$I->wait(1);
 		$I->fillField(OptionsPage::$numberNlsToSend, OptionsPage::$newslettersPerStep);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -353,6 +360,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$numberNlsToSend, 0, -120);
+		$I->wait(1);
 		$I->fillField(OptionsPage::$numberNlsToSend, OptionsPage::$newslettersPerStepDefault);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -385,6 +393,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$delayTime, 0, -120);
+		$I->wait(1);
 		$I->fillField(OptionsPage::$delayTime, OptionsPage::$numberOfSeconds);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -404,6 +413,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$delayTime, 0, -120);
+		$I->wait(1);
 		$I->fillField(OptionsPage::$delayTime, OptionsPage::$numberOfSecondsDefault);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -436,6 +446,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$delayUnitMinutes, 0, -120);
+		$I->wait(1);
 		$I->click(OptionsPage::$delayUnitMinutes);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -455,6 +466,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$delayTime, 0, -120);
+		$I->wait(1);
 		$I->click(OptionsPage::$delayUnitSeconds);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -490,6 +502,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$publishNlsAtSendingYes, 0, -120);
+		$I->wait(1);
 		$I->click(OptionsPage::$publishNlsAtSendingYes);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -507,6 +520,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$publishNlsAtSendingNo, 0, -120);
+		$I->wait(1);
 		$I->click(OptionsPage::$publishNlsAtSendingNo);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -544,6 +558,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$compressBackupFileNo, 0, -120);
+		$I->wait(1);
 		$I->click(OptionsPage::$compressBackupFileNo);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -561,6 +576,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$compressBackupFileYes, 0, -120);
+		$I->wait(1);
 		$I->click(OptionsPage::$compressBackupFileYes);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -598,6 +614,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$showBwLinkNo, 0, -120);
+		$I->wait(1);
 		$I->click(OptionsPage::$showBwLinkNo);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -611,6 +628,7 @@ class TestOptionsCest
 				$I->seeElement(SubsView::$view_register);
 
 				$I->scrollTo('.button-register');
+				$I->wait(1);
 				$I->dontSee('BwPostman by Boldt Webservice', '.bwpm_copyright');
 			}
 		);
@@ -623,6 +641,7 @@ class TestOptionsCest
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->scrollTo(OptionsPage::$showBwLinkYes, 0, -120);
+		$I->wait(1);
 		$I->click(OptionsPage::$showBwLinkYes);
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$pageTitle);
@@ -636,6 +655,7 @@ class TestOptionsCest
 				$I->seeElement(SubsView::$view_register);
 
 				$I->scrollTo('.button-register', 0, -120);
+				$I->wait(1);
 				$I->see('BwPostman by Boldt Webservice', '.bwpm_copyright');
 			}
 		);
@@ -1813,6 +1833,7 @@ class TestOptionsCest
 
 			// select usergroup
 			$I->scrollTo($slider, 0, -100);
+			$I->wait(1);
 
 			$I->click($slider);
 			$I->waitForElement($slider, 30);
@@ -1866,6 +1887,7 @@ class TestOptionsCest
 //		codecept_debug("Value: $value");
 
 		$I->scrollTo($scrollPos, 0, -150);
+		$I->wait(1);
 		$I->waitForElementVisible($scrollPos);
 
 		$I->see($value, $identifier);
@@ -1894,6 +1916,7 @@ class TestOptionsCest
 //		codecept_debug('Value: ' . $value);
 
 		$I->scrollTo($identifier, 0, -150);
+		$I->wait(1);
 		$I->waitForElementVisible($identifier, 30);
 
 		$I->click($identifier);
@@ -1933,6 +1956,7 @@ class TestOptionsCest
 	{
 		$slider = sprintf(OptionsPage::$perm_slider, $group_id);
 		$I->scrollTo($slider, 0, -100);
+		$I->wait(1);
 
 		$I->click($slider);
 		$I->waitForElement($slider, 30);

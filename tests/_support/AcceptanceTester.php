@@ -1,5 +1,6 @@
 <?php
 use Page\Generals as Generals;
+use \Codeception\Lib\Actor\Shared\Friend;
 
 /**
  * Inherited Methods
@@ -37,6 +38,7 @@ use Page\Generals as Generals;
 class AcceptanceTester extends \Codeception\Actor
 {
 	use _generated\AcceptanceTesterActions;
+	use \Codeception\Lib\Actor\Shared\Friend;
 
 	/**
 	 * Define custom actions here
@@ -276,6 +278,7 @@ class AcceptanceTester extends \Codeception\Actor
 			{
 				$position   = sprintf("//*[@id='" . $tableId . "']/tbody/tr[%s]", $table_search_result);
 				$this->scrollTo($position, 0, $yOffset);
+				$this->wait(1);
 				$found  = true;
 			}
 			else
@@ -286,6 +289,7 @@ class AcceptanceTester extends \Codeception\Actor
 				}
 
 				$this->scrollTo(Generals::$pagination_bar);
+				$this->wait(1);
 				$this->click(Generals::$next_page);
 
 				$this->waitForElement(Generals::$pageTitle, 30);
@@ -344,6 +348,7 @@ class AcceptanceTester extends \Codeception\Actor
 		$last_page = 1;
 
 		$this->scrollTo(Generals::$pagination_bar);
+		$this->wait(1);
 
 		$pagination_accessible   = count($this->grabMultiple(Generals::$last_page));
 
@@ -351,9 +356,11 @@ class AcceptanceTester extends \Codeception\Actor
 		{
 			$this->click(Generals::$last_page);
 			$this->scrollTo(Generals::$pagination_bar);
+			$this->wait(1);
 			$last_page = $this->grabTextFrom(Generals::$last_page_identifier);
 
 			$this->scrollTo(Generals::$pagination_bar);
+			$this->wait(1);
 			$this->click(Generals::$first_page);
 		}
 

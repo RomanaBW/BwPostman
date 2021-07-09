@@ -163,6 +163,7 @@ class InstallRequiredCest
 
 		$I->waitForText(InstallPage::$sampleDataText, 30);
 		$I->scrollTo(InstallPage::$sampleDataInstallButton, 0, -100);
+		$I->wait(1);
 		$I->click(InstallPage::$sampleDataInstallButton);
 		$I->acceptPopup();
 		$I->waitForElementVisible(InstallPage::$sampleDataSuccessStep4, 120);

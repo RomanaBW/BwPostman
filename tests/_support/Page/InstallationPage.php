@@ -611,14 +611,14 @@ class InstallationPage
 	 *
 	 * @since 2.4.0
 	 */
-	public static $sampleDataSuccessStep4       = '//*/li[@class="sampledata-steps-blog-4"]';
+	public static $sampleDataSuccessStep4       = "//*[@id='system-message-container']/joomla-alert[@type='success']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.4.0
 	 */
-	public static $sampleDataSuccessText4       = 'Blog Sample Data has been installed!';
+	public static $sampleDataSuccessText4       = 'Sample data installed.';
 
 	/**
 	 * @var string

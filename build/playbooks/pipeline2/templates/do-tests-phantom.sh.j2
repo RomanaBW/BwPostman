@@ -19,7 +19,7 @@ echo "phantom webdriver started"
 # run tests
 cd /data
 
-/usr/local/bin/codecept build
+codecept build
 
 # initialize failed check variable
 failed_check=0
@@ -31,7 +31,7 @@ failed_check=0
 {% for selected_file in test_file if selected_file.suite == item %}
 
 if [ ${failed_check} = 0 ]; then
-  /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} --debug -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
+  codecept run acceptance {{ selected_file.testsuite_file }} --debug -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
 fi
 
 if [ -f {{ codecept_failed_file }} ]; then

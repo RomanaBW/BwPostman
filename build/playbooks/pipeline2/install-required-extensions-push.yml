@@ -160,13 +160,6 @@
         - /data
         - /data/tests
 
-#    - name: rename .bashrc
-#      become: true
-#      command: mv /root/.bashrc /root/.bashrc_sav
-
-
-
-# See https://bobcares.com/blog/rsync-error-protocol-incompatibility/
     - name: copy codeception files
       synchronize:
         src: "{{ test_files_source_local }}"
@@ -202,11 +195,6 @@
       args:
         chdir: "/data/tests"
       ignore_errors: yes
-
-#    - name: remove tests folder
-#      file:
-#        path: "/data/tests"
-#        state: absent
 
     - name: Show IP of webserver
       debug:

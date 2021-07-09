@@ -20,6 +20,16 @@
       set_fact:
         sub_path: "smoke_j{{ j_main_version }}"
 
+    - name: ensure folder images/com_bwpostman exists
+      become: true
+      become_user: root
+      file:
+        path: "{{ joomla_base_folders[sub_path] }}/images/com_bwpostman"
+        state: directory
+        mode: 0777
+        owner: 1200
+        group: users
+
     - name: copy misc files to webserver
       become: yes
       copy:

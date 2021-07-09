@@ -27,8 +27,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Session\Session;
@@ -38,9 +36,6 @@ use Joomla\CMS\Uri\Uri;
 $wa = $this->document->getWebAssetManager();
 $wa->registerAndUseScript('com_bwpostman.admin-bwpm_maintenance_doAjax', 'com_bwpostman/admin-bwpm_maintenance_doAjax.js');
 $wa->registerAndUseScript('com_bwpostman.admin-bwpm_checktables', 'com_bwpostman/admin-bwpm_checktables.js');
-
-//$wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
-//$wa->useScript('com_bwpostman.admin-bwpm_checktables');
 
 $model	= $this->getModel();
 $uri    = Uri::root();

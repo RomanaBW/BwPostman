@@ -175,13 +175,13 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl=null)
+	public function display($tpl=null): HtmlView
 	{
 		$app	= Factory::getApplication();
 		$jinput	= $app->input;
@@ -332,7 +332,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// get the fileformat select list for the layouts import1 and import2
-		$lists['fileformat']	= BwPostmanHTMLHelper::getFileFormatList('');
+		$lists['fileformat']	= BwPostmanHTMLHelper::getFileFormatList();
 
 		// Get the csv-delimiter select list for the layouts import1 and import2
 		// Delimiter which is stored in the session
@@ -375,9 +375,13 @@ class HtmlView extends BaseHtmlView
 		// Get import result data from the session for the layout import2
 		$import_result = $session->get('com_bwpostman.subscriber.import.messages', null);
 
-		if(isset($import_result) && is_array($import_result)){
+		if(isset($import_result) && is_array($import_result))
+		{
 			$result = $import_result;
 		}
+
+//		Cleanup session messages
+		$session->set('com_bwpostman.subscriber.import.messages', null);
 
 		// Save a reference into view
 		$this->import       = $import;
@@ -454,14 +458,12 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance();
 
 		// Get document object, set document title and add css
 		$document	= $app->getDocument();
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber.js');
-
-		$alt 	= "COM_BWPOSTMAN_BACK";
 
 		switch ($layout)
 		{
@@ -546,9 +548,9 @@ class HtmlView extends BaseHtmlView
 						}
 					);
 
-					$toolbar->cancel('subscriber.cancel');
 				}
-				else {
+				else
+				{
 					// Can't save the record if it's checked out.
 					if (!$checkedOut) {
 						ToolbarHelper::title($title . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
@@ -575,8 +577,9 @@ class HtmlView extends BaseHtmlView
 					}
 
 					// Rename the cancel button for existing items
-					$toolbar->cancel('subscriber.cancel', 'JTOOLBAR_CLOSE');
 				}
+
+				$toolbar->cancel('subscriber.cancel');
 
 				$backlink = $app->input->server->get('HTTP_REFERER', '', '');
 				$siteURL  = $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';

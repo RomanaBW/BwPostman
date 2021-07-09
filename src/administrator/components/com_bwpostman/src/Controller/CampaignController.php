@@ -30,7 +30,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
-use Joomla\CMS\Event\AbstractEvent;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
@@ -100,7 +99,7 @@ class CampaignController extends FormController
 	 *
 	 * @since   2.0.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array()): CampaignController
 	{
 		if (!$this->permissions['view']['campaign'])
 		{
@@ -129,9 +128,7 @@ class CampaignController extends FormController
 	 */
 	public function getModel($name = 'Campaign', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
@@ -143,7 +140,7 @@ class CampaignController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	protected function allowAdd($data = array())
+	protected function allowAdd($data = array()): ?bool
 	{
 		return $this->permissions['campaign']['create'];
 	}
@@ -160,7 +157,7 @@ class CampaignController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = array(), $key = 'id'): bool
 	{
 		return BwPostmanHelper::canEdit('campaign', $data);
 	}
@@ -168,7 +165,7 @@ class CampaignController extends FormController
 	/**
 	 * Method to check if you can archive records
 	 *
-	 * @param	array 	$recordIds		an array of items to check permission for
+	 * @param array $recordIds an array of items to check permission for
 	 *
 	 * @return	boolean
 	 *
@@ -176,7 +173,7 @@ class CampaignController extends FormController
 	 *
 	 * @since	2.0.0
 	 */
-	protected function allowArchive($recordIds = array())
+	protected function allowArchive(array $recordIds = array()): bool
 	{
 		foreach ($recordIds as $recordId)
 		{
@@ -205,7 +202,7 @@ class CampaignController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	public function edit($key = null, $urlVar = null)
+	public function edit($key = null, $urlVar = null): bool
 	{
 		// Initialise variables.
 		$jinput  = Factory::getApplication()->input;
@@ -237,7 +234,7 @@ class CampaignController extends FormController
 		}
 		else
 		{
-			$allowed = $this->allowEdit(array('id' => $recordId), 'id');
+			$allowed = $this->allowEdit(array('id' => $recordId));
 		}
 
 		if (!$allowed)
@@ -312,7 +309,7 @@ class CampaignController extends FormController
 		parent::save();
 
 		PluginHelper::importPlugin('bwpostman');
-		$arguments = array('subject' => '');
+//		$arguments = array('subject' => '');
 //		$event = AbstractEvent::create('onBwPostmanAfterCampaignControllerSave', $arguments);
 
 //		Factory::getApplication()->getDispatcher()->dispatch('onBwPostmanAfterCampaignControllerSave', $event);
@@ -329,7 +326,7 @@ class CampaignController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	public function archive()
+	public function archive(): bool
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())

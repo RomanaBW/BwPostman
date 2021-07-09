@@ -28,8 +28,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
 
 defined('JPATH_PLATFORM') or die;
 
-use JLoader;
-use JLogLoggerW3c;
 use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
@@ -112,12 +110,12 @@ class BwLogger extends W3cLogger
 	/**
 	 * Constructor.
 	 *
-	 * @param   array  &$options  Log object options.
-	 * @param   string $name      The logger name
+	 * @param   array  &$options Log object options.
+	 * @param string    $name    The logger name
 	 *
 	 * @since   2.0.0
 	 */
-	public function __construct(array &$options, $name = 'bwLogger')
+	public function __construct(array &$options, string $name = 'bwLogger')
 	{
 		// The name of the text file defaults to 'bwpostman/BwPostman.log' if not explicitly given, based on log folder of Joomla.
 		if (empty($options['text_file']))
@@ -133,14 +131,14 @@ class BwLogger extends W3cLogger
 	 * Returns the global BwLogger object, only creating it if it
 	 * doesn't already exist.
 	 *
-	 * @param   array  &$options  Log object options.
-	 * @param   string  $name  The name of the toolbar.
+	 * @param   array  &$options Log object options.
+	 * @param string    $name    The name of the toolbar.
 	 *
 	 * @return  BwLogger  The BwLogger object.
 	 *
 	 * @since   3.0.0
 	 */
-	public static function getInstance(array &$options, $name = 'bwLogger')
+	public static function getInstance(array &$options, string $name = 'bwLogger'): BwLogger
 	{
 		if (empty(self::$instances[$name]))
 		{
@@ -159,7 +157,7 @@ class BwLogger extends W3cLogger
 	 *
 	 * @since   3.0.0
 	 *
-	 * @throws  \RuntimeException
+	 * @throws  RuntimeException
 	 */
 	public function addEntry(LogEntry $entry)
 	{
@@ -240,7 +238,7 @@ class BwLogger extends W3cLogger
 			if ((strlen($entry->date) != 10) || !isset($entry->time))
 			{
 				// Get the date and time strings in GMT.
-				$entry->datetime = $entry->date->toISO8601();
+//				$entry->datetime = $entry->date->toISO8601();
 				$entry->time     = $entry->date->format('H:i:s', false);
 				$entry->date     = $entry->date->format('Y-m-d', false);
 			}

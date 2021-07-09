@@ -75,7 +75,7 @@ if (isset($data['view']->filterForm) && !empty($data['view']->filterForm))
 		}
 	}
 
-	$showFilterButton = isset($filters['filter_search']) && count($filters) === 1 ? false : true;
+	$showFilterButton = !(isset($filters['filter_search']) && count($filters) === 1);
 
 	// Checks if it should show the be hidden.
 	$hideActiveFilters = empty($data['view']->activeFilters);
@@ -100,7 +100,7 @@ $customOptions = array(
 	'filterButton'        => isset($data['options']['filterButton']) && $data['options']['filterButton'] ? $data['options']['filterButton'] : $showFilterButton,
 	'selectorFieldName'   => $selectorFieldName,
 	'showSelector'        => $showSelector,
-	'showNoResults'       => !empty($noResultsText) ? true : false,
+	'showNoResults'       => !empty($noResultsText),
 	'noResultsText'       => !empty($noResultsText) ? $noResultsText : '',
 	'formSelector'        => !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm',
 );

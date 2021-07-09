@@ -64,17 +64,15 @@ class NewslettersController extends AdminController
 	 * @param string $prefix The prefix for the PHP class name.
 	 * @param array  $config An optional associative array of configuration settings.
 	 *
-	 * @return bool|BaseDatabaseModel
+	 * @return BaseDatabaseModel
 	 *
 	 * @throws Exception
 	 *
 	 * @since    4.0.0
 	 */
-	public function getModel($name = 'newsletters', $prefix = 'Site', $config = array('ignore_request' => true))
+	public function getModel($name = 'newsletters', $prefix = 'Site', $config = array('ignore_request' => true)): BaseDatabaseModel
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**

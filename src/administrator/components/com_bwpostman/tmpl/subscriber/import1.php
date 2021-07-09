@@ -33,9 +33,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
 
-// Load the tooltip behavior for the notes
-//HTMLHelper::_('behavior.tooltip');
-
 // Keep session alive while editing
 HTMLHelper::_('behavior.keepalive');
 

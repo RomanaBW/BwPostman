@@ -127,7 +127,7 @@ $colNum = 8;
 								{
 									foreach ($this->items as $i => $item) :
 										$ordering	= ($listOrder == 'a.ordering');
-										$name		= ($item->name) ? $item->name : Text::_('COM_BWPOSTMAN_SUB_NONAME');
+										$name		= ($item->name) ?: Text::_('COM_BWPOSTMAN_SUB_NONAME');
 										?>
 									<tr class="row<?php echo $i % 2; ?>">
 										<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
@@ -181,7 +181,7 @@ $colNum = 8;
 										<?php } ?>
 										<td><?php echo $item->email; ?></td>
 										<td class="d-none d-lg-table-cell text-center"><?php echo ($item->emailformat) ? Text::_('COM_BWPOSTMAN_HTML') : Text::_('COM_BWPOSTMAN_TEXT')?></td>
-										<td class="d-none d-lg-table-cell text-center"><?php echo ($item->user_id) ? $item->user_id : ''; ?></td>
+										<td class="d-none d-lg-table-cell text-center"><?php echo ($item->user_id) ?: ''; ?></td>
 										<td class="d-none d-lg-table-cell text-center"><?php echo $item->mailinglists; ?></td>
 										<td class="d-none d-lg-table-cell text-center"><?php echo $item->id; ?></td>
 										</tr><?php

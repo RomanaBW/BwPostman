@@ -77,6 +77,8 @@ class EditModel extends AdminModel
 	 * Constructor
 	 * Builds object, determines the subscriber ID and the viewlevel
 	 *
+	 * @return void
+	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
@@ -114,9 +116,9 @@ class EditModel extends AdminModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	string      $type       The table type to instantiate
-	 * @param	string	    $prefix     A prefix for the table class name. Optional.
-	 * @param	array	    $config     Configuration array for model. Optional.
+	 * @param	string $name    The table type to instantiate
+	 * @param	string $prefix  A prefix for the table class name. Optional.
+	 * @param	array  $options Configuration array for model. Optional.
 	 *
 	 * @return	Table	A database object
 	 *
@@ -124,15 +126,17 @@ class EditModel extends AdminModel
 	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($type = 'Subscriber', $prefix = 'Administrator', $config = array())
+	public function getTable($name = 'Subscriber', $prefix = 'Administrator', $options = array()): Table
 	{
-		return parent::getTable($type, $prefix, $config);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @return void
 	 *
 	 * @throws Exception
 	 *
@@ -168,7 +172,7 @@ class EditModel extends AdminModel
 	 * @param	array	$data		Data for the form.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return	mixed	A JForm object on success, false on failure
+	 * @return    false|Form    A JForm object on success, false on failure
 	 *
 	 * @throws Exception
 	 *
@@ -176,11 +180,10 @@ class EditModel extends AdminModel
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-//		Form::addFieldPath('JPATH_COMPONENT/models/fields');
-
-		// Get the form.
+		// Get the form
 		$form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));
 
+		// @ToDo: $this->loadForm throws RuntimeException, if form or file not found => there is never an empty form
 		if (empty($form))
 		{
 			return false;
@@ -250,7 +253,6 @@ class EditModel extends AdminModel
 	public function getItem($pk = null)
 	{
 		$app	        = Factory::getApplication();
-		$list_id_values = null;
 		$_db	        = $this->_db;
 		$query	        = $_db->getQuery(true);
 
@@ -289,7 +291,7 @@ class EditModel extends AdminModel
 	/**
 	 * Method to get the mail address of a subscriber from the subscribers-table depending on the subscriber ID
 	 *
-	 * @param 	int		$id     subscriber ID
+	 * @param int $id subscriber ID
 	 *
 	 * @return 	string	user ID
 	 *
@@ -297,7 +299,7 @@ class EditModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function getEmailaddress($id)
+	public function getEmailaddress(int $id): string
 	{
 		return $this->getTable()->getEmailaddress($id);
 	}
@@ -305,7 +307,7 @@ class EditModel extends AdminModel
 	/**
 	 * Checks if an editlink exists in the subscribers-table
 	 *
-	 * @param 	string  $editlink   to edit the subscriber data
+	 * @param string $editlink to edit the subscriber data
 	 *
 	 * @return 	int subscriber ID
 	 *
@@ -313,7 +315,7 @@ class EditModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function checkEditlink($editlink)
+	public function checkEditlink(string $editlink): int
 	{
 		if ($editlink === null)
 		{
@@ -343,7 +345,7 @@ class EditModel extends AdminModel
 	 *
 	 * @since     1.0.1
 	 */
-	public function save($data)
+	public function save($data): bool
 	{
 		// Check input values
 		if (!BwPostmanSubscriberHelper::checkSubscriberInputFields($data))

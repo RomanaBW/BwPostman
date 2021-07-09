@@ -42,10 +42,8 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Joomla\Database\DatabaseDriver;
+use Joomla\Database\QueryInterface;
 use RuntimeException;
-
-// Import MODEL object class
-jimport('joomla.application.component.modellist');
 
 /**
  * BwPostman templates model
@@ -151,9 +149,9 @@ class TemplatesModel extends ListModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	string  $type	    The table type to instantiate
-	 * @param	string	$prefix     A prefix for the table class name. Optional.
-	 * @param	array	$config     Configuration array for model. Optional.
+	 * @param	string $name    The table type to instantiate
+	 * @param	string $prefix  A prefix for the table class name. Optional.
+	 * @param	array  $options Configuration array for model. Optional.
 	 *
 	 * @return	bool|Table	A database object
 	 *
@@ -161,9 +159,9 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since  1.1.0
 	 */
-	public function getTable($type = 'Template', $prefix = 'Administrator', $config = array())
+	public function getTable($name = 'Template', $prefix = 'Administrator', $options = array())
 	{
-		return parent::getTable($type, $prefix, $config);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
@@ -226,7 +224,7 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since	1.1.0
 	 */
-	protected function getStoreId($id = '')
+	protected function getStoreId($id = ''): string
 	{
 		// Compile the store id.
 		$id	.= ':' . $this->getState('filter.search');
@@ -240,7 +238,7 @@ class TemplatesModel extends ListModel
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @return 	string Query
+	 * @return    false|QueryInterface|object Query
 	 *
 	 * @throws Exception
 	 *
@@ -433,7 +431,7 @@ class TemplatesModel extends ListModel
 	private function getFilterByNewTemplates()
 	{
 		// Filter show only the new templates id > 0
-		$this->query->where($this->_db->quoteName('a.id') . ' > ' . (int) 0);
+		$this->query->where($this->_db->quoteName('a.id') . ' > ' . 0);
 	}
 
 
@@ -449,7 +447,7 @@ class TemplatesModel extends ListModel
 	private function getFilterByTemplateFormat()
 	{
 		// Filter show only the new templates id > 0
-		$this->query->where($this->_db->quoteName('a.id') . ' > ' . (int) 0);
+		$this->query->where($this->_db->quoteName('a.id') . ' > ' . 0);
 
 		// Filter by format.
 		$format = $this->getState('filter.tpl_id');
@@ -500,7 +498,7 @@ class TemplatesModel extends ListModel
 	 */
 	private function getFilterByArchiveState()
 	{
-		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
 	/**
@@ -541,15 +539,14 @@ class TemplatesModel extends ListModel
 	/**
 	 * Method to call the layout for the template upload and install process
 	 *
-	 * @param   string
+	 * @param array $file
 	 *
-	 * @return  string
+	 * @return  string|boolean
 	 *
 	 * @throws Exception
-	 *
 	 * @since 1.1.0
 	 */
-	public function uploadTplFiles($file)
+	public function uploadTplFiles(array $file)
 	{
 		// Access check.
 		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
@@ -560,9 +557,6 @@ class TemplatesModel extends ListModel
 		}
 
 		$msg = '';
-
-		// Import filesystem libraries. Perhaps not necessary, but does not hurt
-		jimport('joomla.filesystem.file');
 
 		// Clean up filename to get rid of strange characters like spaces etc
 		$filename = File::makeSafe($file['name']);
@@ -619,7 +613,7 @@ class TemplatesModel extends ListModel
 	/**
 	 * Method to extract template zip
 	 *
-	 * @param   string
+	 * @param array $file
 	 *
 	 * @return  boolean
 	 *
@@ -627,12 +621,9 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since 1.1.0
 	 */
-	public function extractTplFiles($file)
+	public function extractTplFiles(array $file): bool
 	{
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_EXTRACT') . '</h4>';
-		// Import filesystem libraries. Perhaps not necessary, but does not hurt
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
 
 		$filename    = File::makeSafe($file['name']);
 		$ext         = File::getExt($filename);
@@ -645,7 +636,7 @@ class TemplatesModel extends ListModel
 		$adapter = $archiveclass->getAdapter('zip');
 		$result  = $adapter->extract($archivename, $extractdir);
 
-		if (!$result || $result instanceof Exception) // extract failed
+		if (!$result) // extract failed
 		{
 //			$this->delMessage();
 			echo '<p class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR_EXTRACT') . '</p>';
@@ -659,8 +650,8 @@ class TemplatesModel extends ListModel
 	/**
 	 * Method to install template
 	 *
-	 * @param string    $sql
-	 * @param string    $step
+	 * @param string $sql
+	 * @param string $step
 	 *
 	 * @return boolean
 	 *
@@ -669,7 +660,7 @@ class TemplatesModel extends ListModel
 	 * @since 1.1.0
 	 */
 
-	public function installTplFiles(&$sql, $step)
+	public function installTplFiles(string $sql, string $step): bool
 	{
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step) . '</h4>';
 		$db = $this->_db;
@@ -684,7 +675,6 @@ class TemplatesModel extends ListModel
 		if ($buffer)
 		{
 			// Create an array of queries from the sql file
-			jimport('joomla.installer.helper');
 			$queries = DatabaseDriver::splitSql($buffer);
 
 			// Are there queries to process?
@@ -710,7 +700,7 @@ class TemplatesModel extends ListModel
 
 							// get last id
 							$lastID   = $db->insertid();
-							$tplTable = $this->getTable('Template');
+							$tplTable = $this->getTable();
 
 							// get template title
 							$TplTitle = $tplTable->getTemplateTitle($lastID);
@@ -757,11 +747,9 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since 1.1.0
 	 */
-	public function copyThumbsFiles()
+	public function copyThumbsFiles(): bool
 	{
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_THUMBS') . '</h4>';
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
 
 		$tempPath = Factory::getApplication()->getConfig()->get('tmp_path');
 		$imagedir = $tempPath . '/tmp_bwpostman_installtpl/images/';
@@ -864,7 +852,7 @@ class TemplatesModel extends ListModel
 	/**
 	 * Method to delete temp folder
 	 *
-	 * @param   array  $file
+	 * @param array $file
 	 *
 	 * @return boolean
 	 *
@@ -872,11 +860,9 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since 1.1.0
 	 */
-	public function deleteTempFolder($file)
+	public function deleteTempFolder(array $file): bool
 	{
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER') . '</h4>';
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
 
 		$filename    = File::makeSafe($file['name']);
 		$ext         = File::getExt($filename);
@@ -965,16 +951,14 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   2.1.0
 	 */
-	public function getBaseName()
+	public function getBaseName(): string
 	{
-		// @Karl: This method is never called? Perhaps to do at constructor?
+		// @ToDo: Karl: This method is never called? Perhaps to do at constructor?
 		if (!isset($this->basename))
 		{
 			$app            = Factory::getApplication();
 			$jinput         = $app->input;
 			$this->exportId = $jinput->get('id');
-
-			jimport('joomla.filesystem.file');
 
 			$this->tmp_path = $app->get('tmp_path') . '/';
 
@@ -989,8 +973,8 @@ class TemplatesModel extends ListModel
 	/**
 	 * Method to call the template export process
 	 *
-	 * @param integer  $id      ID to export
-	 * @param integer  $tpl_id  template ID
+	 * @param integer|null $id     ID to export
+	 * @param integer|null $tpl_id template ID
 	 *
 	 * @return  string
 	 *
@@ -998,7 +982,7 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since	2.1.0
 	 */
-	public function getExportTpl($id = NULL, $tpl_id = NULL)
+	public function getExportTpl(int $id = NULL, int $tpl_id = NULL)
 	{
 		$id          = $this->exportId;
 		$zip_created = '';
@@ -1110,7 +1094,7 @@ class TemplatesModel extends ListModel
 
 					foreach ($res as $key => $value) {
 
-						if (!isset($value) || is_null($value))	// NULL
+						if (!isset($value))	// NULL
 						{
 							$values[] = 'NULL';
 						}
@@ -1155,17 +1139,14 @@ class TemplatesModel extends ListModel
 	/**
 	 * Method to create zip archive
 	 *
-	 * @return  string
+	 * @return  boolean
 	 *
 	 * @throws Exception
 	 *
 	 * @since	2.1.0
 	 */
-	protected function createZip()
+	protected function createZip(): bool
 	{
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
 		$files =	array(
 			array(
 				'name' => 'bwp_templates.sql',
@@ -1221,9 +1202,10 @@ class TemplatesModel extends ListModel
 			}
 		}
 
-		$archive = new Archive;
+		$archive  = new Archive;
+		$packager = $archive->getAdapter('zip');
 
-		if (!$packager = $archive->getAdapter('zip'))
+		if (!$packager)
 		{
 			$errormsg = Text::_('COM_BWPOSTMAN_TPL_ERROR_ZIP_ADAPTER');
 			$this->errRedirect($errormsg);
@@ -1264,14 +1246,14 @@ class TemplatesModel extends ListModel
 	/**
 	 * Method to redirect the raw view on errors
 	 *
-	 * @param string    $errormsg
-	 * @param string    $type
+	 * @param string $errormsg
+	 * @param string $type
 	 *
 	 * @throws Exception
 	 *
 	 * @since	2.1.0
 	 */
-	protected function errRedirect($errormsg, $type = 'error')
+	protected function errRedirect(string $errormsg, string $type = 'error')
 	{
 		// Delete thumbnail in tmp folder
 		Folder::delete($this->tmp_path . 'images');

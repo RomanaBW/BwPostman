@@ -110,13 +110,13 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): HtmlView
 	{
 		$app		= Factory::getApplication();
 
@@ -164,11 +164,11 @@ class HtmlView extends BaseHtmlView
 	{
 		$app    = Factory::getApplication();
 		$app->input->set('hidemainmenu', true);
-		$uri		= Uri::getInstance('SERVER');
+		$uri		= Uri::getInstance();
 		$userId		= $app->getIdentity()->get('id');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance();
 
 		// Get document object, set document title and add css
 		$document = $app->getDocument();
@@ -177,7 +177,6 @@ class HtmlView extends BaseHtmlView
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_campaign.js');
 
 		// Get the user browser --> if the user has MS IE load the ie-css to show the tabs in the correct way
-		jimport('joomla.environment.browser');
 		$browser		= Browser::getInstance();
 		$user_browser	= $browser->getBrowser();
 
@@ -240,13 +239,13 @@ class HtmlView extends BaseHtmlView
 				}
 
 				// Rename the cancel button for existing items
-				if ($app->getUserState('bwtimecontrol.cam_data.nl_referrer', null) == 'remove')
+				if ($app->getUserState('bwtimecontrol.cam_data.nl_referrer') == 'remove')
 				{
-					$toolbar->cancel('campaign.save', 'JTOOLBAR_CLOSE');
+					$toolbar->cancel('campaign.save');
 				}
 				else
 				{
-					$toolbar->cancel('campaign.cancel', 'JTOOLBAR_CLOSE');
+					$toolbar->cancel('campaign.cancel');
 				}
 			}
 		}

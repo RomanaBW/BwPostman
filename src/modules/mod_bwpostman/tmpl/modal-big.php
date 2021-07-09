@@ -152,6 +152,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 								<?php echo Text::_('MOD_BWPOSTMANFIRSTNAME'); ?>:
 							</label>
 							<span class="inputs">
+								<label for="a_firstname"></label>
 								<input type="text" name="a_firstname" id="a_firstname"
 										value="<?php echo $sub_firstname; ?>" class="inputbox" maxlength="50" /><?php echo $required; ?>
 							</span>
@@ -170,7 +171,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 							($paramsComponent->get('name_field_obligation'))
 								? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
 								: $required = ''; ?>
-							<label id="namemsg_mod">
+							<label for="a_name" id="namemsg_mod">
 								<?php echo Text::_('MOD_BWPOSTMANNAME'); ?>:
 							</label>
 							<span class="inputs">
@@ -213,7 +214,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 						<p id="bwp_mod_form_specialfield" class="input<?php echo $specialClass; ?>">
 							<?php // Is filling out the additional field obligating
 							?>
-							<label id="specialmsg_mod">
+							<label for="a_special" id="specialmsg_mod">
 								<?php echo $specialLabel; ?>:
 							</label>
 							<span class="inputs">
@@ -227,7 +228,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 
 					<?php isset($subscriber->email) ? $sub_email = $subscriber->email : $sub_email = ''; ?>
 					<p id="bwp_mod_form_emailfield" class="input-append">
-						<label id="specialmsg_mod">
+						<label for="a_email" id="specialmsg_mod">
 							<?php echo Text::_('MOD_BWPOSTMANEMAIL'); ?>:
 						</label>
 						<span class="inputs">
@@ -298,7 +299,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 							foreach ($mailinglists AS $i => $mailinglist)
 							{ ?>
 								<div class="a_mailinglist_item_<?php echo $i; ?>">
-									<span class="mailinglist-title hasTooltip" title="<?php echo HTMLHelper::tooltipText($mailinglists[$i]->title, Text::_($mailinglists[$i]->description)); ?>">
+									<span class="mailinglist-title hasTooltip" title="<?php echo HTMLHelper::tooltipText($mailinglist->title, Text::_($mailinglist->description)); ?>">
 									<input type="checkbox" id="a_<?php echo "mailinglists$i"; ?>" name="<?php echo "mailinglists[]"; ?>"
 											title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglist->id; ?>" />
 										<?php
@@ -336,7 +337,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 							<p class="security_question_entry"><?php echo Text::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
 							<p class="security_question_lbl"><?php echo Text::_($paramsComponent->get('security_question')); ?></p>
 							<p class="question_result input-append">
-								<label id="questionmsg_mod">
+								<label for="a_stringQuestion" id="questionmsg_mod">
 									<?php echo Text::_('MOD_BWPOSTMANCAPTCHA_LABEL'); ?>:
 								</label>
 								<span class="inputs">
@@ -359,7 +360,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 								<img src="<?php echo Uri::base(); ?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
 							</p>
 							<p class="captcha_result input-append">
-								<label id="captchamsg_mod">
+								<label for="a_stringCaptcha" id="captchamsg_mod">
 									<?php echo Text::_('MOD_BWPOSTMANCAPTCHA_LABEL'); ?>:
 								</label>
 								<span class="inputs">
@@ -415,7 +416,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 									if ($paramsComponent->get('disclaimer_target') == 0)
 									{
 										echo ' target="_blank"';
-									};
+									}
 								}
 								echo '>' . Text::_('MOD_BWPOSTMAN_DISCLAIMER') . '</a> <sup><i class="bwp_icon-star"></i></sup>'; ?>
 							</span>
@@ -465,7 +466,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 		</div>
 	</div>
 	<?php
-	}; // End: Show registration form
+	} // End: Show registration form
 	// The Modal
 	?>
 	<input type="hidden" id="bwp_mod_Modalhref" value="<?php echo $disclaimer_link; ?>" />

@@ -39,7 +39,6 @@ use Joomla\CMS\Language\Text;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\WebAsset\WebAssetRegistry;
 
 /**
  * BwPostman General View
@@ -111,15 +110,15 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): HtmlView
 	{
-		$uri		= Uri::getInstance('SERVER');
+		$uri		= Uri::getInstance();
 		$uri_string	= $uri->toString();
 
 		//check for queue entries
@@ -152,7 +151,7 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar()
 	{
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance();
 
 		// Get document object, set document title and add css
 		$document = Factory::getApplication()->getDocument();

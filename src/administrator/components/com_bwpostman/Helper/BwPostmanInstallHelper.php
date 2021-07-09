@@ -29,9 +29,11 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 defined('JPATH_PLATFORM') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\LogEntry;
+use PDO;
 use RuntimeException;
 
 /**
@@ -46,22 +48,18 @@ class BwPostmanInstallHelper
 	 *
 	 * This is a copy of /administrator/components/com_admin/script.php
 	 *
-	 * @param   string  $format  The type of database connection.
+	 * @param string $format The type of database connection.
 	 *
 	 * @return  boolean
 	 *
 	 * @since   2.0.0
 	 */
-	public static function serverClaimsUtf8mb4Support($format)
+	public static function serverClaimsUtf8mb4Support(string $format): bool
 	{
 		$_db = Factory::getDbo();
 
 		switch ($format)
 		{
-			case 'mysql':
-				$client_version = mysql_get_client_info();
-				$server_version = $_db->getVersion();
-				break;
 			case 'mysqli':
 				$client_version = mysqli_get_client_info();
 				$server_version = $_db->getVersion();
@@ -96,8 +94,8 @@ class BwPostmanInstallHelper
 	 *
 	 * This is a modified copy of /administrator/components/com_admin/script.php
 	 *
-	 * @param   string $reference_table     the table to check conversion for
-	 * @param   string $conversion_file     name of conversion file
+	 * @param string $reference_table the table to check conversion for
+	 * @param string $conversion_file name of conversion file
 	 *
 	 * @return void
 	 *
@@ -105,7 +103,7 @@ class BwPostmanInstallHelper
 	 *
 	 * @since   2.0.0
 	 */
-	public static function convertToUtf8Mb4($reference_table = '', $conversion_file = '')
+	public static function convertToUtf8Mb4(string $reference_table = '', string $conversion_file = '')
 	{
 		$_db       = Factory::getDbo();
 		$converted = false;
@@ -167,7 +165,7 @@ class BwPostmanInstallHelper
 	/**
 	 * Are the tables already converted?
 	 *
-	 * @param   string  $test_table     the table to check conversion for
+	 * @param string $test_table the table to check conversion for
 	 *
 	 * @return  boolean
 	 *
@@ -175,7 +173,7 @@ class BwPostmanInstallHelper
 	 *
 	 * @since   2.0.0
 	 */
-	public static function tablesAreConverted($test_table = '')
+	public static function tablesAreConverted(string $test_table = ''): bool
 	{
 		//get database name
 		$config     = Factory::getApplication()->getConfig();
@@ -217,7 +215,7 @@ class BwPostmanInstallHelper
 	 * @since    3.0.0 here, before at install script since 1.0.1
 	 *
 	 */
-	public static function adjustMLAccess()
+	public static function adjustMLAccess(): bool
 	{
 		$logOptions   = array();
 		$logger = BwLogger::getInstance($logOptions);

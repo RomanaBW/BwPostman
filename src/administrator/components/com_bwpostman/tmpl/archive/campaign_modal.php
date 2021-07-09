@@ -33,7 +33,7 @@ use Joomla\CMS\Uri\Uri;
 
 <table class="admintable">
 	<tr>
-		<td><img src="<?php echo Uri::base() . 'components/com_bwpostman/assets/images/icon-48-campaigns.png'; ?>" /></td>
+		<td><img src="<?php echo Uri::base() . 'components/com_bwpostman/assets/images/icon-48-campaigns.png'; ?>" alt="Campaigns Icon" /></td>
 		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_CAM') ?></strong></td>
 	</tr>
 </table>
@@ -76,11 +76,11 @@ use Joomla\CMS\Uri\Uri;
 
 				foreach ($newsletters AS $newsletter) {
 					if ($newsletter->archive_flag == 0) {
-						echo "<li><strong>{$newsletter->subject}</strong> (ID: {$newsletter->id})</li>";
+						echo "<li><strong>$newsletter->subject</strong> (ID: $newsletter->id)</li>";
 					}
 					else
 					{
-						echo "<li><strong>{$newsletter->subject}</strong> (ID: {$newsletter->id}, " . Text::_('COM_BWPOSTMAN_ARC_NL') . ")</li>";
+						echo "<li><strong>$newsletter->subject</strong> (ID: $newsletter->id, " . Text::_('COM_BWPOSTMAN_ARC_NL') . ")</li>";
 					}
 				}
 

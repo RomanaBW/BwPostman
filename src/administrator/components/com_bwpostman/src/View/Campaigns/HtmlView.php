@@ -130,13 +130,13 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): HtmlView
 	{
 		$app	= Factory::getApplication();
 
@@ -183,7 +183,7 @@ class HtmlView extends BaseHtmlView
 		PluginHelper::importPlugin('bwpostman');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance();
 
 		// Get document object, set document title and add css
 		$document	= Factory::getApplication()->getDocument();
@@ -200,7 +200,7 @@ class HtmlView extends BaseHtmlView
 			ToolbarHelper::addNew('campaign.add');
 		}
 
-		if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign', 0) || BwPostmanHelper::canArchive('campaign'))
+		if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign') || BwPostmanHelper::canArchive('campaign'))
 		{
 			$dropdown = $toolbar->dropdownButton('status-group')
 				->text('JTOOLBAR_CHANGE_STATUS')
@@ -216,7 +216,7 @@ class HtmlView extends BaseHtmlView
 				$childBar->edit('campaign.edit')->listCheck(true);
 			}
 
-			if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign', 0))
+			if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign'))
 			{
 				$childBar->checkin('campaigns.checkin')->listCheck(true);
 			}

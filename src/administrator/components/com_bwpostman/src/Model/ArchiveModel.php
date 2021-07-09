@@ -33,6 +33,7 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Database\QueryInterface;
 use RuntimeException;
 
 /**
@@ -282,7 +283,7 @@ class ArchiveModel extends ListModel
 	 *
 	 * @since    1.0.1
 	 */
-	protected function getStoreId($id = '')
+	protected function getStoreId($id = ''): string
 	{
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
@@ -307,7 +308,7 @@ class ArchiveModel extends ListModel
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @return    string Query
+	 * @return    false|QueryInterface Query
 	 *
 	 * @throws Exception
 	 *
@@ -357,7 +358,7 @@ class ArchiveModel extends ListModel
 				// Build sub query which counts all subscribed mailinglists of each subscriber
 				$sub_query2->select($pef_tbl_d . '.' . $db->quoteName('id'));
 				$sub_query2->from($db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $pef_tbl_d);
-				$sub_query2->where($pef_tbl_d . '.' . $db->quoteName('archive_flag') . " = " . (int) 0);
+				$sub_query2->where($pef_tbl_d . '.' . $db->quoteName('archive_flag') . " = " . 0);
 
 				$sub_query->select(
 					'COUNT(' . $pef_tbl_b . '.' . $db->quoteName('mailinglist_id') . ') AS ' . $db->quoteName('mailinglists')
@@ -398,7 +399,7 @@ class ArchiveModel extends ListModel
 				// Build sub query which counts all subscribers of each mailinglist
 				$sub_query2->select($pef_tbl_d . '.' . $db->quoteName('id'));
 				$sub_query2->from($db->quoteName('#__bwpostman_subscribers') . ' AS ' . $pef_tbl_d);
-				$sub_query2->where($pef_tbl_d . '.' . $db->quoteName('archive_flag') . " = " . (int) 0);
+				$sub_query2->where($pef_tbl_d . '.' . $db->quoteName('archive_flag') . " = " . 0);
 
 				$sub_query->select(
 					'COUNT(' . $pef_tbl_b . '.' . $db->quoteName('subscriber_id') . ') AS ' . $db->quoteName('subscribers')
@@ -494,11 +495,9 @@ class ArchiveModel extends ListModel
 	 * @param string     $layout selected layout
 	 * @param object    &$query  query to inject the where clause
 	 *
-	 * @return    string Query
-	 *
 	 * @since       0.9.1
 	 */
-	protected function buildQueryWhere($layout, &$query)
+	protected function buildQueryWhere(string $layout, object &$query)
 	{
 		$db = $this->_db;
 		$pef_tbl_a = $db->quoteName('a');
@@ -745,7 +744,5 @@ class ArchiveModel extends ListModel
 					break;
 			}
 		}
-
-		return;
 	}
 }

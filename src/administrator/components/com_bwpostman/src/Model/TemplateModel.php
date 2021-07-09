@@ -29,13 +29,12 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Import MODEL and Helper object class
-jimport('joomla.application.component.modeladmin');
-
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -98,9 +97,9 @@ class TemplateModel extends AdminModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	string  $type	    The table type to instantiate
-	 * @param	string	$prefix     A prefix for the table class name. Optional.
-	 * @param	array	$config     Configuration array for model. Optional.
+	 * @param	string $name    The table type to instantiate
+	 * @param	string $prefix  A prefix for the table class name. Optional.
+	 * @param	array  $options Configuration array for model. Optional.
 	 *
 	 * @return	bool|Table	A database object
 	 *
@@ -108,19 +107,19 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since  1.1.0
 	 */
-	public function getTable($type = 'Template', $prefix = 'Administrator', $config = array())
+	public function getTable($name = 'Template', $prefix = 'Administrator', $options = array())
 	{
-		return parent::getTable($type, $prefix, $config);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
 	 * Method to reset the template ID and template data
 	 *
-	 * @param	int $id     template ID
+	 * @param int $id template ID
 	 *
 	 * @since 1.1.0
 	 */
-	private function setId($id)
+	private function setId(int $id)
 	{
 		$this->id   = $id;
 		$this->data = null;
@@ -138,11 +137,9 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since    1.1.0
 	 */
-	protected function canEditState($record)
+	protected function canEditState($record): bool
 	{
-		$permission = BwPostmanHelper::canEditState('template', (int) $record->id);
-
-		return $permission;
+		return BwPostmanHelper::canEditState('template', (int) $record->id);
 	}
 
 	/**
@@ -150,7 +147,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  mixed    Object on success, false on failure.
+	 * @return  bool|CMSObject|stdClass    Object on success, false on failure.
 	 *
 	 * @throws Exception
 	 *
@@ -160,7 +157,7 @@ class TemplateModel extends AdminModel
 	{
 		$app       = Factory::getApplication();
 		$cid       = $app->getUserState('com_bwpostman.edit.template.id', 0);
-		$data      = $app->getUserState('com_bwpostman.edit.template.data', null);
+		$data      = $app->getUserState('com_bwpostman.edit.template.data');
 		$jinput    = $app->input;
 		$form_data = $jinput->get('jform', '', 'array');
 
@@ -232,7 +229,6 @@ class TemplateModel extends AdminModel
 		{
 			// if $form_data - only when click to button preview
 			$item = new stdClass();
-
 			foreach ($form_data as $key => $value)
 			{
 				$item->$key = $value;
@@ -368,7 +364,7 @@ class TemplateModel extends AdminModel
 	 * @param	array	$data		Data for the form.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return	mixed	A JForm object on success, false on failure
+	 * @return    false|Form    A JForm object on success, false on failure
 	 *
 	 * @throws Exception
 	 *
@@ -477,8 +473,8 @@ class TemplateModel extends AdminModel
 	 * Method to (un)archive a template
 	 * --> when unarchiving it is called by the archive-controller
 	 *
-	 * @param	array $cid      template IDs
-	 * @param	int $archive    Task --> 1 = archive, 0 = unarchive
+	 * @param array $cid     template IDs
+	 * @param int   $archive Task --> 1 = archive, 0 = unarchive
 	 *
 	 * @return	boolean
 	 *
@@ -486,7 +482,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	public function archive($cid = array(), $archive = 1)
+	public function archive(array $cid = array(), int $archive = 1): bool
 	{
 		$db   = $this->_db;
 		$app  = Factory::getApplication();
@@ -527,7 +523,7 @@ class TemplateModel extends AdminModel
 			$query = $db->getQuery(true);
 
 			$query->update($db->quoteName('#__bwpostman_templates'));
-			$query->set($db->quoteName('archive_flag') . " = " . $db->quote((int) $archive));
+			$query->set($db->quoteName('archive_flag') . " = " . $db->quote($archive));
 			$query->set($db->quoteName('archive_date') . " = " . $db->quote($time, false));
 			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
@@ -558,7 +554,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	public function delete(&$pks)
+	public function delete(&$pks): bool
 	{
 		$app = Factory::getApplication();
 		$pks  = ArrayHelper::toInteger($pks);
@@ -602,7 +598,7 @@ class TemplateModel extends AdminModel
 	/**
 	 * Method to set a template as default.
 	 *
-	 * @param   integer  $id  The primary key ID for the style.
+	 * @param integer $id The primary key ID for the style.
 	 *
 	 * @return  boolean  True if successful.
 	 *
@@ -610,7 +606,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	public function setDefaultTemplate($id = 0)
+	public function setDefaultTemplate(int $id = 0): bool
 	{
 		$user = Factory::getApplication()->getIdentity();
 
@@ -620,7 +616,7 @@ class TemplateModel extends AdminModel
 			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 		}
 
-		$this->getTable('Template')->setDefaultTpl((int)$id);
+		$this->getTable()->setDefaultTpl($id);
 
 		return true;
 	}
@@ -628,14 +624,14 @@ class TemplateModel extends AdminModel
 	/**
 	 * Method to make the template
 	 *
-	 * @param   object  $item
-	 * @param   object  $tpl
+	 * @param object $item
+	 * @param object $tpl
 	 *
 	 * @return 	string  $content
 	 *
 	 * @since 1.1.0
 	 */
-	public function makeTemplate($item, $tpl)
+	public function makeTemplate(object $item, object $tpl)
 	{
 		$header = '';
 		// replace placeholders
@@ -749,22 +745,21 @@ class TemplateModel extends AdminModel
 			str_replace('[%button_headline%]', '', $footer);
 
 		$content = $header . $intro . '[%content%]' . $footer;
-		$content = $this->replaceZoomPaddingBasics($item, $content);
 
-		return $content;
+		return $this->replaceZoomPaddingBasics($item, $content);
 	}
 
 	/**
 	 * Method to make the text template
 	 *
-	 * @param   object  $item
-	 * @param   object  $tpl
+	 * @param object $item
+	 * @param object $tpl
 	 *
 	 * @return 	string  $content
 	 *
 	 * @since 1.1.0
 	 */
-	public function makeTexttemplate($item, $tpl)
+	public function makeTexttemplate(object $item, object $tpl): string
 	{
 		$header = $tpl->header_tpl['logo_with_text'];
 		$header = str_replace('[%header_firstline%]', $item->header['firstline'], $header);
@@ -811,24 +806,23 @@ class TemplateModel extends AdminModel
 			str_replace('[%button_headline%]', $item->footer['button_headline'], $footer) :
 			str_replace('[%button_headline%]', '', $footer);
 
-		$content = $header . $intro . '[%content%]' . $footer;
-
-		return $content;
+		return $header . $intro . '[%content%]' . $footer;
 	}
 
 	/**
 	 * Method to make button readon template
 	 *
-	 * @param   object  $tpl
-	 * @param   object  $item
+	 * @param string $tpl
+	 * @param object $item
 	 *
-	 * @return 	object  $tpl
+	 * @return string $tpl
 	 *
 	 * @since 1.1.0
 	 */
-	public function makeButton(&$tpl, &$item)
+	public function makeButton(string &$tpl, object $item): string
 	{
 		$tpl = $this->replaceZooms($tpl, $item);
+
 		$tpl = str_replace('[%readon_color%]', $item->article['readon_color'], $tpl);
 		$tpl = str_replace('[%readon_bg%]', $item->article['readon_bg'], $tpl);
 		$tpl = str_replace('[%readon_shadow%]', $item->article['readon_shadow'], $tpl);
@@ -839,22 +833,23 @@ class TemplateModel extends AdminModel
 	/**
 	 * Method to add the HTML-Tags and the css for template preview
 	 *
-	 * @param   string  $text
-	 * @param   string  $css
-	 * @param   array   $basics
-	 * @param   string  $head_tag
-	 * @param   string  $body_tag
-	 * @param   string  $legal_tag_b
-	 * @param   string  $legal_tag_e
+	 * @param string             $text
+	 * @param string             $css
+	 * @param array|string|null  $basics
+	 * @param string             $head_tag
+	 * @param string             $body_tag
+	 * @param string             $legal_tag_b
+	 * @param string             $legal_tag_e
 	 *
-	 * @return 	string  $text
+	 * @return    string  $text
 	 *
 	 * @since 1.1.0
 	 */
-	public function addHtmlTags($text, &$css, &$basics, $head_tag = '', $body_tag = '', $legal_tag_b = '', $legal_tag_e = '')
+	public function addHtmlTags(string $text, string $css, $basics, string $head_tag = '', string $body_tag = '', string $legal_tag_b = '', string $legal_tag_e = ''): string
 	{
 		// Get Standard Doctype and Head-Tag
 		$newtext = $head_tag == '' ? BwPostmanTplHelper::getHeadTag() : $head_tag;
+		// @ToDo: deprecated html attribute 'type', defaults to text/css
 		$newtext .= '   <style type="text/css">' . "\n";
 		$newtext .= '   ' . $css . "\n";
 
@@ -902,22 +897,20 @@ class TemplateModel extends AdminModel
 		$newtext .= ' </body>' . "\n";
 		$newtext .= '</html>' . "\n";
 
-		$text = $newtext;
-
-		return $text;
+		return $newtext;
 	}
 
 	/**
 	 * Method to add sample article for template preview
 	 *
-	 * @param   string  $article
-	 * @param   array   $item
+	 * @param string $article
+	 * @param array  $item
 	 *
 	 * @return 	string  $article
 	 *
 	 * @since 1.1.0
 	 */
-	private function sampleArticle($article, $item)
+	private function sampleArticle(string $article, array $item): string
 	{
 		$article = isset($item['show_title']) && $item['show_title'] == 0 ?
 			str_replace('[%content_title%]', '', $article) :
@@ -952,36 +945,34 @@ class TemplateModel extends AdminModel
 		}
 
 		$article = str_replace('[%content_text%]', $sample_content, $article);
-		$article = str_replace('[%readon_text%]', Text::_('READ_MORE'), $article);
 
-		return $article;
+		return str_replace('[%readon_text%]', Text::_('READ_MORE'), $article);
 	}
 
 	/**
 	 * Method to replace zoom and zoom_padding and basics
 	 *
-	 * @param   string  $text
-	 * @param   object  $item
+	 * @param string $text
+	 * @param object $item
 	 *
 	 * @return 	string  $text
 	 *
 	 * @since 1.1.0
 	 */
-	public function replaceZooms($text, $item)
+	public function replaceZooms(string $text, object $item): string
 	{
 		$text = $this->replaceZoomPaddingBasics($item, $text);
 
 		$text = str_replace('[%readon_bg%]', $item->article['readon_bg'], $text);
 		$text = str_replace('[%readon_shadow%]', $item->article['readon_shadow'], $text);
-		$text = str_replace('[%readon_color%]', $item->article['readon_color'], $text);
 
-		return $text;
+		return str_replace('[%readon_color%]', $item->article['readon_color'], $text);
 	}
 
 	/**
 	 * Method to make template preview for pre-installed html template
 	 *
-* @param   object  $item
+* @param object $item
 	 *
 	 * @return void
 	 *
@@ -989,7 +980,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	private function makePreview($item)
+	private function makePreview(object $item)
 	{
 		// make preview
 		// first get templates tpls
@@ -1038,13 +1029,12 @@ class TemplateModel extends AdminModel
 		$preview = str_replace('[%content%]', $sample_article, $preview);
 		Factory::getApplication()->setUserState('com_bwpostman.edit.template.tpldata', $preview);
 		// end make preview
-		return;
 	}
 
 	/**
 	 * Method to make template preview for user-made html template
 	 *
-	 * @param   object  $item
+	 * @param object $item
 	 *
 	 * @return void
 	 *
@@ -1052,7 +1042,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	private function makePreviewHtml($item)
+	private function makePreviewHtml(object $item)
 	{
 		// make preview
 
@@ -1065,6 +1055,7 @@ class TemplateModel extends AdminModel
 
 		// trim leading and last <style>-tag
 		$preview_css = trim($preview_css);
+		// @ToDo: deprecated html attribute 'type', defaults to text/css
 		$preview_css = ltrim($preview_css, '<style type="text/css">');
 		$preview_css = rtrim($preview_css, '</style>');
 
@@ -1096,18 +1087,17 @@ class TemplateModel extends AdminModel
 			BwPostmanTplHelper::getArticleTagEnd();
 		$sample_article = $sample_article . $sample_article;
 
-		stripslashes($sample_article);
+		$sample_article = stripslashes($sample_article);
 
 		$preview = str_replace('[%content%]', $sample_article, $preview);
 		Factory::getApplication()->setUserState('com_bwpostman.edit.template.tpldata', $preview);
 		// end make preview
-		return;
 	}
 
 	/**
 	 * Method to make text template preview for own templates
 	 *
-	 * @param   object  $item
+	 * @param object $item
 	 *
 	 * @return  void
 	 *
@@ -1115,7 +1105,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	private function makePreviewText($item)
+	private function makePreviewText(object $item)
 	{
 		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
 		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
@@ -1152,7 +1142,7 @@ class TemplateModel extends AdminModel
 		{
 			$readon          = '[%readon_text%]' . "\n" . '[%readon_href%]' . "\n";
 			$preview_article = str_replace('[%readon_button%]', $readon, $article);
-			$preview_article = str_replace('[%readon_href%]', 'http://www.mysite/sample_article.html', $preview_article);
+			$preview_article = str_replace('[%readon_href%]', 'https://www.mysite/sample_article.html', $preview_article);
 		}
 		else
 		{
@@ -1169,13 +1159,12 @@ class TemplateModel extends AdminModel
 		$preview = str_replace('[%content%]', $sample_article, $preview);
 		Factory::getApplication()->setUserState('com_bwpostman.edit.template.tpldata', $preview);
 		// end make preview
-		return;
 	}
 
 	/**
 	 * Method to make text template preview for standard templates
 	 *
-	 * @param   object  $item
+	 * @param object $item
 	 *
 	 * @return  void
 	 *
@@ -1183,7 +1172,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	private function makePreviewTextStd($item)
+	private function makePreviewTextStd(object $item)
 	{
 		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
 		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
@@ -1227,7 +1216,7 @@ class TemplateModel extends AdminModel
 		{
 			$readon = $tpl->readon_tpl . "\n";
 			$preview_article = str_replace('[%readon_button%]', $readon, $article);
-			$preview_article = str_replace('[%readon_href%]', 'http://www.mysite/sample_article.html', $preview_article);
+			$preview_article = str_replace('[%readon_href%]', 'https://www.mysite/sample_article.html', $preview_article);
 		}
 		else
 		{
@@ -1247,7 +1236,6 @@ class TemplateModel extends AdminModel
 		$preview = str_replace('[%content%]', $sample_article, $preview);
 		Factory::getApplication()->setUserState('com_bwpostman.edit.template.tpldata', $preview);
 		// end make preview
-		return;
 	}
 
 	/**
@@ -1277,7 +1265,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since   2.0.0
 	 */
-	public function save($data)
+	public function save($data): bool
 	{
 		// save to #__bwpostman_templates
 		$res = parent::save($data);
@@ -1299,7 +1287,7 @@ class TemplateModel extends AdminModel
 	 * Method to save template tags for user-made html templates
 	 *
 	 *
-	 * @param   array  $data  The form data.
+	 * @param array $data The form data.
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -1307,7 +1295,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function saveTemplateTags($data)
+	private function saveTemplateTags(array $data): bool
 	{
 		// unset templates_table_id if task is save2copy
 		$jinput = Factory::getApplication()->input;
@@ -1339,8 +1327,10 @@ class TemplateModel extends AdminModel
 	private function replaceZoomPaddingBasics($item, $content)
 	{
 		$zp      = $item->basics['zoom_padding'];
+		//@ToDo: redundant character escapes \% and ] in RegExp
 		$content = preg_replace_callback(
 			'/\[\%zoom_padding[1-2]?[0-9]?[0-9]\%\]/',
+			//@ToDo: redundant character escapes \% and ] in RegExp
 			function ($treffer) use ($zp) {
 				preg_match('/\[\%zoom_padding([1-2]?[0-9]?[0-9])\%\]/', $treffer[0], $px);
 				$treffer[0] = ceil($zp * $px[1]);
@@ -1351,8 +1341,10 @@ class TemplateModel extends AdminModel
 		);
 		// replace [%zoom%]
 		$z       = $item->basics['zoom'];
+		//@ToDo: redundant character escapes \% and ] in RegExp
 		$content = preg_replace_callback(
 			'/\[\%zoom[1-2]?[0-9]?[0-9]\%\]/',
+			//@ToDo: redundant character escapes \% and ] in RegExp
 			function ($treffer) use ($z) {
 				preg_match('/\[\%zoom([1-2]?[0-9]?[0-9])\%\]/', $treffer[0], $px);
 				$treffer[0] = ceil($z * $px[1]);
@@ -1383,22 +1375,21 @@ class TemplateModel extends AdminModel
 
 		$content = str_replace('[%footer_bg%]', $item->footer['footer_bg'], $content);
 		$content = str_replace('[%footer_shadow%]', $item->footer['footer_shadow'], $content);
-		$content = str_replace('[%footer_color%]', $item->footer['footer_color'], $content);
 
-		return $content;
+		return str_replace('[%footer_color%]', $item->footer['footer_color'], $content);
 	}
 
 	/**
 	 * Method to replace edit link and unsubscribe link
 	 *
-	 * @param string  $itemid_edit
-	 * @param string  $preview_text
+	 * @param string|null $itemid_edit
+	 * @param string $preview_text
 	 *
 	 * @return string|string[]
 	 *
 	 * @since 3.0.0
 	 */
-	private function replaceEditAndUnsubscribeLink($itemid_edit, $preview_text)
+	private function replaceEditAndUnsubscribeLink(?string $itemid_edit, string $preview_text)
 	{
 		$replace1 = '+ ' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . ' +<br />&nbsp;&nbsp;' .
 			Uri::root(true) . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;task=unsub&amp;editlink=[EDITLINK]';
@@ -1408,9 +1399,7 @@ class TemplateModel extends AdminModel
 		$replace2     = '+ ' . Text::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . ' +<br />&nbsp;&nbsp;' .
 			Uri::root(true) . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;editlink=[EDITLINK]';
 
-		$preview_text = str_replace('[%edit_link%]', $replace2, $preview_text);
-
-		return $preview_text;
+		return str_replace('[%edit_link%]', $replace2, $preview_text);
 	}
 
 	/**
@@ -1422,11 +1411,13 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 3.0.0
 	 */
-	private function buildHtmlSkeleton($preview_text)
+	private function buildHtmlSkeleton(string $preview_text): string
 	{
-		$newtext = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+		$newtext = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 		$newtext .= "\n";
+		//@ToDo: missing required lang attribute
 		$newtext .= '<html>' . "\n";
+		//@ToDo: missing required title element
 		$newtext .= ' <head>' . "\n";
 		$newtext .= '   <title>Newsletter</title>' . "\n";
 		$newtext .= '   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' . "\n";
@@ -1436,8 +1427,7 @@ class TemplateModel extends AdminModel
 		$newtext .= $preview_text . "\n";
 		$newtext .= ' </body>' . "\n";
 		$newtext .= '</html>' . "\n";
-		$preview = $newtext;
 
-		return $preview;
+		return $newtext;
 	}
 }

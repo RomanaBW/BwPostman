@@ -42,7 +42,7 @@ abstract class BwPostmanNewsletterHelper {
 	/**
 	 * @param array $usergroup
 	 *
-	 * @return mixed
+	 * @return string|null
 	 *
 	 * @throws Exception
 	 *
@@ -64,7 +64,7 @@ abstract class BwPostmanNewsletterHelper {
 		$query     = $db->getQuery(true);
 		$query->select('COUNT(' . $db->quoteName('u') . '.' . $db->quoteName('id') . ')');
 		$query->from($db->quoteName('#__users') . ' AS ' . $db->quoteName('u'));
-		$query->where($db->quoteName('u') . '.' . $db->quoteName('block') . ' = ' . (int) 0);
+		$query->where($db->quoteName('u') . '.' . $db->quoteName('block') . ' = ' .  0);
 		$query->where($db->quoteName('u') . '.' . $db->quoteName('activation') . ' = ' . $db->quote(''));
 		$query->where($db->quoteName('u') . '.' . $db->quoteName('id') . ' IN (' . $sub_query . ')');
 
@@ -83,9 +83,9 @@ abstract class BwPostmanNewsletterHelper {
 	}
 
 	/**
-	 * @param array    $associatedMailinglists
-	 * @param string   $status
-	 * @param boolean  $allSubscribers
+	 * @param array   $associatedMailinglists
+	 * @param string  $status
+	 * @param boolean $allSubscribers
 	 *
 	 * @return integer
 	 *
@@ -94,7 +94,7 @@ abstract class BwPostmanNewsletterHelper {
 	 *
 	 * @since 2.3.0 (since 3.0.0 here, before at BE newsletter model)
 	 */
-	public static function countSubscribersOfNewsletter(array $associatedMailinglists, $status, $allSubscribers)
+	public static function countSubscribersOfNewsletter(array $associatedMailinglists, string $status, bool $allSubscribers): int
 	{
 		$count_subscribers      = 0;
 		$associatedMailinglists = ArrayHelper::toInteger($associatedMailinglists);
@@ -115,7 +115,7 @@ abstract class BwPostmanNewsletterHelper {
 		}
 
 		$query->where($db->quoteName('status') . ' IN (' . $status . ')');
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->where($db->quoteName('archive_flag') . ' = ' .  0);
 
 		try
 		{
@@ -140,7 +140,7 @@ abstract class BwPostmanNewsletterHelper {
 	 *
 	 * @since 4.0.0
 	 */
-	public static function decodeAttachments(string $attachmentString)
+	public static function decodeAttachments($attachmentString): array
 	{
 		$attachments = array();
 

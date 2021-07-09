@@ -30,8 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\LogEntry;
-use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
-use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 
 /**
  * Email verification class
@@ -124,15 +122,6 @@ class BwEmailValidation
 	protected $logger;
 
 	/**
-	 * class debug output mode
-	 *
-	 * @type boolean
-	 *
-	 * @since 3.0.0
-	 */
-	public $doDebug = false;
-
-	/**
 	 * SMTP RFC standard line ending
 	 *
 	 * @since 3.0.0
@@ -167,7 +156,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public function setEmailFrom($email)
+	public function setEmailFrom(string $email)
 	{
 		if (!self::validate($email))
 		{
@@ -184,11 +173,11 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public function setConnectionTimeout($seconds)
+	public function setConnectionTimeout(int $seconds)
 	{
 		if ($seconds > 0)
 		{
-			$this->maxConnectionTimeout = (int) $seconds;
+			$this->maxConnectionTimeout = $seconds;
 		}
 	}
 
@@ -199,11 +188,11 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public function setStreamTimeout($seconds)
+	public function setStreamTimeout(int $seconds)
 	{
 		if ($seconds > 0)
 		{
-			$this->streamTimeout = (int) $seconds;
+			$this->streamTimeout = $seconds;
 		}
 	}
 
@@ -214,11 +203,11 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public function setStreamTimeoutWait($seconds)
+	public function setStreamTimeoutWait(int $seconds)
 	{
 		if ($seconds >= 0)
 		{
-			$this->streamTimeoutWait = (int) $seconds;
+			$this->streamTimeoutWait = $seconds;
 		}
 	}
 
@@ -231,7 +220,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public static function validate($email)
+	public static function validate(string $email): bool
 	{
 		return (boolean) filter_var($email, FILTER_VALIDATE_EMAIL);
 	}
@@ -245,7 +234,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public function getMxRecords($hostname)
+	public function getMxRecords(string $hostname): array
 	{
 		$mxHosts   = array();
 		$mxWeights = array();
@@ -283,7 +272,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public static function parseEmail($email, $domainOnly = true)
+	public static function parseEmail(string $email, bool $domainOnly = true)
 	{
 		sscanf($email, "%[^@]@%s", $user, $domain);
 
@@ -304,7 +293,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected function setError($msg)
+	protected function setError(string $msg)
 	{
 		$this->errorCounter++;
 		$this->recentError = $msg;
@@ -315,11 +304,11 @@ class BwEmailValidation
 	 *
 	 * @param string $email Email address
 	 *
-	 * @return boolean|string   True if the valid email also exist, else error message
+	 * @return boolean   True if the valid email also exist, else error message
 	 *
 	 * @since 3.0.0
 	 */
-	public function check($email)
+	public function check(string $email): bool
 	{
 		if (!self::validate($email))
 		{
@@ -389,17 +378,15 @@ class BwEmailValidation
 		$response = $this->streamResponse();
 		$response .= "\n";
 
-		$this->streamQuery("MAIL FROM:<{$this->from}>");
+		$this->streamQuery("MAIL FROM:<$this->from>");
 		$response .= $this->streamResponse();
 		$response .= "\n";
 
 		$message = Text::sprintf('Current return code after MAIL FROM: %s', $response);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
 
-		$this->streamQuery("RCPT TO:<{$email}>");
+		$this->streamQuery("RCPT TO:<$email>");
 		$code = $this->streamCode($this->streamResponse());
-		$response .= $code;
-		$response .= "\n";
 
 		$message = Text::sprintf('Current return code after RCPT TO : %s', $code);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
@@ -407,8 +394,6 @@ class BwEmailValidation
 		$this->streamQuery("RSET");
 
 		$code2 = $this->streamCode($this->streamResponse());
-		$response .= $code2;
-		$response .= "\n";
 
 		$message = Text::sprintf('Current return code after RSET : %s', $code2);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
@@ -452,11 +437,11 @@ class BwEmailValidation
 	 *
 	 * @param string $query The string that is to be written
 	 *
-	 * @return string|boolean Returns a result code as an integer, false on failure
+	 * @return boolean Returns a result code as an integer, false on failure
 	 *
 	 * @since 3.0.0
 	 */
-	protected function streamQuery($query)
+	protected function streamQuery(string $query): bool
 	{
 		$message = Text::sprintf('COM_BWPOSTMAN_SUB_VALIDATING_CURRENT_QUERY', $query);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
@@ -473,7 +458,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected function streamResponse($timed = 0)
+	protected function streamResponse(int $timed = 0)
 	{
 		$reply = stream_get_line($this->stream, 1);
 		$status = stream_get_meta_data($this->stream);
@@ -503,11 +488,11 @@ class BwEmailValidation
 	 *
 	 * @param string $str
 	 *
-	 * @return string
+	 * @return string|bool
 	 *
 	 * @since 3.0.0
 	 */
-	protected function streamCode($str)
+	protected function streamCode(string $str)
 	{
 		preg_match('/^(?<code>[0-9]{3})(\s|-)(.*)$/ims', $str, $matches);
 

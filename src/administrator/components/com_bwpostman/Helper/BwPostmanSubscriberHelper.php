@@ -30,7 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Exception;
-use Joomla\CMS\Event\AbstractEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -42,6 +41,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use RuntimeException;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwEmailValidation;
+use UnexpectedValueException;
 
 /**
  * Class BwPostmanSubscriberHelper
@@ -54,14 +54,16 @@ class BwPostmanSubscriberHelper
 	 * Method to store the subscriber ID into a session object
 	 * --> only if a guest comes from an editlink-uri
 	 *
-	 * @param       int $subscriberid subscriber ID
-	 * @param       int $itemid       menu item ID
+	 * @param int      $subscriberid subscriber ID
+	 * @param int|null $itemid       menu item ID
 	 *
 	 * @return      string  $link
 	 *
+	 * @throws Exception
+	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function loginGuest($subscriberid = 0, $itemid = null)
+	public static function loginGuest(int $subscriberid = 0, int $itemid = null): string
 	{
 		$session = Factory::getApplication()->getSession();
 
@@ -81,15 +83,15 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to process invalid subscriber data
 	 *
-	 * @param    object $err          associative array of error data
-	 * @param    int    $subscriberid subscriber ID
-	 * @param    string $email        subscriber email
+	 * @param object      $err          associative array of error data
+	 * @param int|null    $subscriberid subscriber ID
+	 * @param string|null $email        subscriber email
 	 *
 	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function errorSubscriberData($err, &$subscriberid = null, $email = null)
+	public static function errorSubscriberData(object $err, int $subscriberid = null, string $email = null)
 	{
 		$jinput        = Factory::getApplication()->input;
 		$session       = Factory::getApplication()->getSession();
@@ -218,14 +220,14 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to process errors which occur if an email could not been send
 	 *
-	 * @param    string $err_msg error message
-	 * @param    string $email   email error
+	 * @param string $err_msg error message
+	 * @param string $email   email error
 	 *
 	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function errorSendingEmail($err_msg, $email = '')
+	public static function errorSendingEmail(string $err_msg, string $email = '')
 	{
 		$jinput        = Factory::getApplication()->input;
 		$session       = Factory::getApplication()->getSession();
@@ -243,15 +245,15 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to process successfully performed actions
 	 *
-	 * @param    string $success_msg success message
-	 * @param    string $editlink    editlink
-	 * @param    int    $itemid      menu item ID
+	 * @param string      $success_msg success message
+	 * @param string|null $editlink    editlink
+	 * @param int|null    $itemid      menu item ID
 	 *
 	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function success($success_msg, $editlink = null, $itemid = null)
+	public static function success(string $success_msg, string $editlink = null, int $itemid = null)
 	{
 		$jinput          = Factory::getApplication()->input;
 		$session         = Factory::getApplication()->getSession();
@@ -270,17 +272,17 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to send an email
 	 *
-	 * @param    object $subscriber
-	 * @param    int    $type   emailtype    --> 0 = send registration email, 1 = send editlink, 2 = send activation reminder
-	 * @param    int    $itemid menu item ID
+	 * @param object   $subscriber
+	 * @param int      $type   emailtype    --> 0 = send registration email, 1 = send editlink, 2 = send activation reminder
+	 * @param int|null $itemid menu item ID
 	 *
-	 * @return    boolean|Exception True on success | error object
+	 * @return    boolean True on success | error object
 	 *
 	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function sendMail(&$subscriber, $type, $itemid = null)
+	public static function sendMail(object $subscriber, int $type, int $itemid = null): bool
 	{
 		$app    = Factory::getApplication();
 		$params = ComponentHelper::getParams('com_bwpostman');
@@ -321,12 +323,12 @@ class BwPostmanSubscriberHelper
 
 				if (is_null($itemid))
 				{
-					$link = $siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}";
+					$link = $siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber=$subscriber->activation";
 				}
 				else
 				{
 					$link = $siteURL
-						. "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}";
+						. "index.php?option=com_bwpostman&Itemid=$itemid&view=register&task=activate&subscriber=$subscriber->activation";
 				}
 
 				$body = $active_msg . Text::_('COM_BWPOSTMAN_ACTIVATION_CODE_MSG') . " " . $link . "\n\n" . $permission_text;
@@ -341,7 +343,7 @@ class BwPostmanSubscriberHelper
 						'COM_BWPOSTMAN_SEND_EDITLINK_MSG',
 						$name,
 						$sitename,
-						$siteURL . "index.php?option=com_bwpostman&view=edit&editlink={$editlink}"
+						$siteURL . "index.php?option=com_bwpostman&view=edit&editlink=$editlink"
 					);
 				}
 				else
@@ -350,7 +352,7 @@ class BwPostmanSubscriberHelper
 						'COM_BWPOSTMAN_SEND_EDITLINK_MSG',
 						$name,
 						$sitename,
-						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=edit&editlink={$editlink}"
+						$siteURL . "index.php?option=com_bwpostman&Itemid=$itemid&view=edit&editlink=$editlink"
 					);
 				}
 				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
@@ -363,7 +365,7 @@ class BwPostmanSubscriberHelper
 						'COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG',
 						$activationSalutation,
 						$sitename,
-						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
+						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber=$subscriber->activation"
 					);
 				}
 				else
@@ -372,7 +374,7 @@ class BwPostmanSubscriberHelper
 						'COM_BWPOSTMAN_SEND_ACTVIATIONCODE_MSG',
 						$activationSalutation,
 						$sitename,
-						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
+						$siteURL . "index.php?option=com_bwpostman&Itemid=$itemid&view=register&task=activate&subscriber=$subscriber->activation"
 					);
 				}
 				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
@@ -384,7 +386,7 @@ class BwPostmanSubscriberHelper
 					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG',
 						$activationSalutation,
-						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
+						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber=$subscriber->activation"
 					);
 				}
 				else
@@ -392,7 +394,7 @@ class BwPostmanSubscriberHelper
 					$body = Text::sprintf(
 						'COM_BWPOSTMAN_SEND_CONFIRMEMAIL_MSG',
 						$activationSalutation,
-						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
+						$siteURL . "index.php?option=com_bwpostman&Itemid=$itemid&view=register&task=activate&subscriber=$subscriber->activation"
 					);
 				}
 				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
@@ -406,7 +408,7 @@ class BwPostmanSubscriberHelper
 						'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
 						$name,
 						$siteURL,
-						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber={$subscriber->activation}"
+						$siteURL . "index.php?option=com_bwpostman&view=register&task=activate&subscriber=$subscriber->activation"
 					);
 				}
 				else
@@ -415,7 +417,7 @@ class BwPostmanSubscriberHelper
 					$body .= Text::sprintf(
 						'COM_BWPOSTMAN_SUB_SEND_REGISTRATION_MSG',
 						$siteURL,
-						$siteURL . "index.php?option=com_bwpostman&Itemid={$itemid}&view=register&task=activate&subscriber={$subscriber->activation}"
+						$siteURL . "index.php?option=com_bwpostman&Itemid=$itemid&view=register&task=activate&subscriber=$subscriber->activation"
 					);
 				}
 		}
@@ -428,7 +430,7 @@ class BwPostmanSubscriberHelper
 
 			if (PluginHelper::isEnabled('bwpostman', 'personalize'))
 			{
-				$arguments = array('com_bwpostman.send', &$body, $subscriber_id);
+//				$arguments = array('com_bwpostman.send', &$body, $subscriber_id);
 //				$event = AbstractEvent::create('onBwPostmanPersonalize', $arguments);
 //
 //				$app->getDispatcher()->dispatch('onBwPostmanPersonalize', $event);
@@ -456,7 +458,7 @@ class BwPostmanSubscriberHelper
 
 			$res = $mailer->Send();
 		}
-		catch (\UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
+		catch (UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
 		{
 			$logOptions = array();
 			$logger     = BwLogger::getInstance($logOptions);
@@ -481,7 +483,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function buildGenderList($gender_selected = '2', $name = 'gender', $class = '', $idPrefix = '')
+	public static function buildGenderList(string $gender_selected = '2', string $name = 'gender', string $class = '', string $idPrefix = ''): string
 	{
 
 		if ($class != '')
@@ -529,7 +531,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since   2.0.0
 	 */
-	public static function buildMailformatSelectList($mailformat_selected)
+	public static function buildMailformatSelectList(bool $mailformat_selected): string
 	{
 		$emailformat = '<fieldset id="edit_mailformat" class="radio btn-group">';
 		$emailformat .= '<input type="radio" name="emailformat" id="formatText" class="rounded-left" value="0"';
@@ -557,11 +559,13 @@ class BwPostmanSubscriberHelper
 	 * Method to fill void data
 	 * --> the subscriber data filled with default values
 	 *
-	 * @return 	object  $subscriber     subscriber object
+	 * @return    object  $subscriber     subscriber object
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function fillVoidSubscriber()
+	public static function fillVoidSubscriber(): object
 	{
 		// Load an empty subscriber
 		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
@@ -576,7 +580,7 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to get params from mod_bwpostman
 	 *
-	 * @param	int	    $id     module ID
+	 * @param int $id module ID
 	 *
 	 * @return 	object	$params params object
 	 *
@@ -584,7 +588,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since	2.2.0
 	 */
-	public static function getModParams($id = 0)
+	public static function getModParams(int $id = 0): ?object
 	{
 		$params = null;
 		$db     = Factory::getDbo();
@@ -592,7 +596,7 @@ class BwPostmanSubscriberHelper
 
 		$query->select('params');
 		$query->from('#__modules');
-		$query->where('id = ' . $db->quote((int)$id));
+		$query->where('id = ' . $db->quote($id));
 
 		try
 		{
@@ -611,11 +615,11 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to check if a subscriber has a subscription to a specific mailinglist
 	 *
-	 * @param Form $form   subscriber form
+	 * @param Form $form subscriber form
 	 *
 	 * @since 2.4.0 here
 	 */
-	static public function customizeSubscriberDataFields(&$form)
+	static public function customizeSubscriberDataFields(Form $form)
 	{
 		// Check to show confirmation data or checkbox
 		$c_date	= strtotime($form->getValue('confirmation_date'));
@@ -653,13 +657,15 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to get the Joomla UID by email
 	 *
-	 * @param   string      $email
+	 * @param string $email
 	 *
 	 * @return  integer     $user_id
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.4.0 (here)
 	 */
-	public static function getJoomlaUserIdByEmail($email)
+	public static function getJoomlaUserIdByEmail(string $email): ?int
 	{
 		$user_id = null;
 
@@ -687,13 +693,15 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to get the menu item ID which will be needed for some links
 	 *
-	 * @param   string  $view
+	 * @param string $view
 	 *
-	 * @return 	int     $itemid     menu item ID
+	 * @return    int     $itemid     menu item ID
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public static function getMenuItemid($view)
+	public static function getMenuItemid(string $view): ?int
 	{
 		$itemid = null;
 
@@ -743,7 +751,7 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to create the registered_by value
 	 *
-	 * @param   object $subscriber
+	 * @param object $subscriber
 	 *
 	 * @return 	void
 	 *
@@ -751,7 +759,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since    2.4.0
 	 */
-	public static function createSubscriberRegisteredBy(&$subscriber)
+	public static function createSubscriberRegisteredBy(object $subscriber)
 	{
 		if ($subscriber->registered_by == 0)
 		{
@@ -793,7 +801,7 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to create the confirmed_by value
 	 *
-	 * @param   object $subscriber
+	 * @param object $subscriber
 	 *
 	 * @return 	void
 	 *
@@ -801,7 +809,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since    2.4.0
 	 */
-	public static function createSubscriberConfirmedBy(&$subscriber)
+	public static function createSubscriberConfirmedBy(object $subscriber)
 	{
 		if ($subscriber->confirmed_by == 0)
 		{
@@ -882,13 +890,15 @@ class BwPostmanSubscriberHelper
 	 * - First only syntax of entered value is checked. This is done always
 	 * - Second mail address is checked, if it is reachable. This is only done, if parameter at options of BwPostman is set
 	 *
+	 * @param array $data
+	 *
 	 * @return boolean	false, if link is present or mail address could not be verified
 	 *
 	 * @throws Exception
 	 *
 	 * @since 3.0.0
 	 */
-	static public function checkSubscriberInputFields($data)
+	static public function checkSubscriberInputFields(array $data): bool
 	{
 		$app    = Factory::getApplication();
 		$params = ComponentHelper::getParams('com_bwpostman', true);
@@ -977,7 +987,7 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to validate one email address
 	 *
-	 * @param	string   $email            Subscriber/Test-recipient email address
+	 * @param string $email Subscriber/Test-recipient email address
 	 *
 	 * @return	boolean  true if email address is valid and reachable
 	 *
@@ -985,7 +995,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since 3.0.0
 	 */
-	public static function validateEmail($email)
+	public static function validateEmail(string $email): bool
 	{
 		$config     = Factory::getApplication()->getConfig();
 		$logOptions = array();
@@ -1012,6 +1022,8 @@ class BwPostmanSubscriberHelper
 	 * Method to get sender name and mail address from config
 	 *
 	 * @return array
+	 *
+	 * @throws Exception
 	 *
 	 * @since 4.0.0
 	 */
@@ -1041,6 +1053,8 @@ class BwPostmanSubscriberHelper
 	 * Method to get reply to name and mail address from config
 	 *
 	 * @return array
+	 *
+	 * @throws Exception
 	 *
 	 * @since 4.0.0
 	 */

@@ -32,6 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -42,9 +43,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Mail\MailHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use RuntimeException;
-
-// Import MODEL object class
-jimport('joomla.application.component.modeladmin');
+use UnexpectedValueException;
 
 /**
  * Class BwPostmanModelRegister
@@ -68,9 +67,9 @@ class RegisterModel extends AdminModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	string  $type   	The table type to instantiate
-	 * @param	string	$prefix     A prefix for the table class name. Optional.
-	 * @param	array	$config     Configuration array for model. Optional.
+	 * @param	string $name    The table type to instantiate
+	 * @param	string $prefix  A prefix for the table class name. Optional.
+	 * @param	array  $options Configuration array for model. Optional.
 	 *
 	 * @return	Table	A database object
 	 *
@@ -78,9 +77,9 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($type = 'Subscriber', $prefix = 'Administrator', $config = array())
+	public function getTable($name = 'Subscriber', $prefix = 'Administrator', $options = array()): Table
 	{
-		return parent::getTable($type, $prefix, $config);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
@@ -117,17 +116,20 @@ class RegisterModel extends AdminModel
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+	 * @param array   $data     Data for the form.
+	 * @param boolean $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return	mixed	A JForm object on success, false on failure
+	 * @return    false|Form    A JForm object on success, false on failure
 	 *
-	 * @since	1.0.1
+	 * @throws Exception
+	 *
+	 * @since    1.0.1
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		$form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));
 
+		// @ToDo: $this->loadForm throws RuntimeException, if form or file not found => there is never an empty form
 		if (empty($form))
 		{
 			return false;
@@ -139,13 +141,15 @@ class RegisterModel extends AdminModel
 	/**
 	 * Method to check by an input email address if a user has a newsletter account (user = no guest)
 	 *
-	 * @param 	string $email   user email
+	 * @param string $email user email
 	 *
-	 * @return 	int     $uid    user ID
+	 * @return    int     $uid    user ID
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function isRegUser($email)
+	public function isRegUser(string $email): int
 	{
 		$uid = BwPostmanSubscriberHelper::getJoomlaUserIdByEmail($email);
 
@@ -160,7 +164,7 @@ class RegisterModel extends AdminModel
 	/**
 	 * Method to check if an email address exists in the subscribers-table
 	 *
-	 * @param 	string  $email  subscriber email
+	 * @param string $email subscriber email
 	 *
 	 * @return 	int     $id     subscriber ID
 	 *
@@ -168,7 +172,7 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function isRegSubscriber($email)
+	public function isRegSubscriber(string $email): int
 	{
 		return $this->getTable()->getSubscriberIdByEmail($email);
 	}
@@ -185,10 +189,8 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	public function save($data)
+	public function save($data): bool
 	{
-		jimport('joomla.user.helper');
-
 		$app	= Factory::getApplication();
 
 		// Check input values
@@ -240,7 +242,7 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function delete(&$pks = null)
+	public function delete(&$pks = null): bool
 	{
 		$params 	= ComponentHelper::getParams('com_bwpostman');
 		$send_mail	= $params->get('deactivation_to_webmaster');
@@ -281,10 +283,10 @@ class RegisterModel extends AdminModel
 	/**
 	 * Method to activate the newsletter account of a subscriber
 	 *
-	 * @param 	string  $activation     activation code for the newsletter account
-	 * @param 	string $ret_err_msg     error message
-	 * @param 	string $ret_editlink    editlink for editing the subscriber data
-	 * @param 	string $activation_ip   IP used for activation
+	 * @param string $activation    activation code for the newsletter account
+	 * @param string $ret_err_msg   error message
+	 * @param string $ret_editlink  editlink for editing the subscriber data
+	 * @param string $activation_ip IP used for activation
 	 *
 	 * @return 	integer|Boolean
 	 *
@@ -292,11 +294,9 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function activateSubscriber($activation, &$ret_err_msg, &$ret_editlink, $activation_ip)
+	public function activateSubscriber(string $activation, string &$ret_err_msg, string &$ret_editlink, string $activation_ip)
 	{
-//		$this->addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/models');
-		$subsTable = $this->getTable();
-
+		$subsTable  = $this->getTable();
 		$subscriber = $subsTable->getSubscriberActivationData($activation);
 
 		if (isset($subscriber->editlink))
@@ -328,9 +328,9 @@ class RegisterModel extends AdminModel
 	 * Method to unsubscribe
 	 * --> the subscriber data will be deleted
 	 *
-	 * @param 	string $editlink
-	 * @param 	string $email
-	 * @param 	string $ret_err_msg     error message
+	 * @param string $editlink
+	 * @param string $email
+	 * @param string $ret_err_msg error message
 	 *
 	 * @return 	Boolean
 	 *
@@ -338,7 +338,7 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function unsubscribe($editlink, $email, &$ret_err_msg)
+	public function unsubscribe(string $editlink, string $email, string &$ret_err_msg): bool
 	{
 		$id = $this->getTable()->validateSubscriberEditlink($email, $editlink);
 
@@ -364,7 +364,7 @@ class RegisterModel extends AdminModel
 	/**
 	 * Method to send an information to webmaster, when a subscriber delete the account
 	 *
-	 * @param 	object		$subscriber      subscriber
+	 * @param object $subscriber subscriber
 	 *
 	 * @return 	void
 	 *
@@ -372,7 +372,7 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since       2.0.3
 	 */
-	public function sendDeactivationNotification($subscriber)
+	public function sendDeactivationNotification(object $subscriber)
 	{
 		// set subject
 		$subject = Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION');
@@ -395,7 +395,7 @@ class RegisterModel extends AdminModel
 			// Send the email
 			$mailer->Send();
 		}
-		catch (\UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
+		catch (UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
 		{
 			$logOptions = array();
 			$logger     = BwLogger::getInstance($logOptions);
@@ -408,7 +408,7 @@ class RegisterModel extends AdminModel
 	/**
 	 * Method to send an information to webmaster, when a new subscriber activated the account
 	 *
-	 * @param 	int		$subscriber_id      subscriber id
+	 * @param int $subscriber_id subscriber id
 	 *
 	 * @return 	void
 	 *
@@ -416,15 +416,13 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function sendActivationNotification($subscriber_id)
+	public function sendActivationNotification(int $subscriber_id)
 	{
-		$subscriber = null;
-
 		// set subject
 		$subject = Text::_('COM_BWPOSTMAN_NEW_ACTIVATION');
 
 		// get body-data for mail and set body
-		$subscriber = $this->getTable()->getSingleSubscriberData((int) $subscriber_id);
+		$subscriber = $this->getTable()->getSingleSubscriberData($subscriber_id);
 
 		// Set registered by name
 		BwPostmanSubscriberHelper::createSubscriberRegisteredBy($subscriber);
@@ -446,14 +444,14 @@ class RegisterModel extends AdminModel
 
 		try
 		{
-			$mailer = $this->setNotificationAddresses('activation');
+			$mailer = $this->setNotificationAddresses();
 			$mailer->setSubject($subject);
 			$mailer->setBody($body);
 
 			// Send the email
 			$mailer->Send();
 		}
-		catch (\UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
+		catch (UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
 		{
 			$logOptions = array();
 			$logger     = BwLogger::getInstance($logOptions);
@@ -466,7 +464,7 @@ class RegisterModel extends AdminModel
 	/**
 	 * Method to set the sender, the reply to and the recipient for activation notification mail
 	 *
-	 * @param string   $mode    activation or deactivation of subscription
+	 * @param string $mode activation or deactivation of subscription
 	 *
 	 * @return object   $mailer  The mailer object
 	 *
@@ -474,7 +472,7 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since 3.0.0
 	 */
-	private function setNotificationAddresses($mode = 'activation')
+	private function setNotificationAddresses(string $mode = 'activation'): object
 	{
 		$mailer	    = Factory::getMailer();
 		$params     = ComponentHelper::getParams('com_bwpostman');

@@ -24,6 +24,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Site\Helpers;
+
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
@@ -40,13 +42,13 @@ class BwPostmanHelperQuery
 	/**
 	 * Translate an order code to a field for primary category ordering.
 	 *
-	 * @param	string	$orderby	The ordering code.
+	 * @param string $orderby The ordering code.
 	 *
 	 * @return	string	The SQL field(s) to order by.
 	 *
 	 * @since	1.2.0
 	 */
-	public static function orderbyPrimary($orderby)
+	public static function orderbyPrimary(string $orderby): string
 	{
 		switch ($orderby)
 		{
@@ -73,14 +75,14 @@ class BwPostmanHelperQuery
 	/**
 	 * Translate an order code to a field for secondary category ordering.
 	 *
-	 * @param	string	$orderby	The ordering code.
-	 * @param	string	$orderDate	The ordering code for the date.
+	 * @param string $orderby   The ordering code.
+	 * @param string $orderDate The ordering code for the date.
 	 *
 	 * @return  string  The SQL field(s) to order by.
 	 *
 	 * @since	1.2.0
 	 */
-	public static function orderbySecondary($orderby, $orderDate = 'mailing_date')
+	public static function orderbySecondary(string $orderby, string $orderDate = 'mailing_date'): string
 	{
 		$queryDate = self::getQueryDate($orderDate);
 
@@ -134,13 +136,13 @@ class BwPostmanHelperQuery
 	/**
 	 * Translate an order code to a field for primary category ordering.
 	 *
-	 * @param	string	$orderDate	The ordering code.
+	 * @param string $orderDate The ordering code.
 	 *
 	 * @return	string	The SQL field(s) to order by.
 	 *
 	 * @since	1.2.0
 	 */
-	public static function getQueryDate($orderDate)
+	public static function getQueryDate(string $orderDate): string
 	{
 		$db = Factory::getDbo();
 
@@ -170,13 +172,13 @@ class BwPostmanHelperQuery
 	/**
 	 * Get join information for the voting query.
 	 *
-	 * @param	Registry	$params		An options object for the newsletter.
+	 * @param Registry|null $params An options object for the newsletter.
 	 *
 	 * @return	array  A named array with "select" and "join" keys.
 	 *
 	 * @since	1.2.0
 	 */
-	public static function buildVotingQuery($params = null)
+	public static function buildVotingQuery(Registry $params = null): array
 	{
 		if (!$params)
 		{
@@ -197,8 +199,6 @@ class BwPostmanHelperQuery
 			$join = '';
 		}
 
-		$results = array ('select' => $select, 'join' => $join);
-
-		return $results;
+		return array ('select' => $select, 'join' => $join);
 	}
 }

@@ -57,7 +57,7 @@ class JFormFieldBwpSpacer extends JFormField
 	 *
 	 * @since   2.0.0
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		$plugin = PluginHelper::getPlugin('system', 'bwpm_user2subscriber');
 		$params = new Registry($plugin->params);
@@ -81,7 +81,7 @@ class JFormFieldBwpSpacer extends JFormField
 	 *
 	 * @since   2.0.0
 	 */
-	protected function getLabel()
+	protected function getLabel(): string
 	{
 		return ' <label class="spacer-lbl" style="display:none;"></label> ';
 	}
@@ -94,7 +94,7 @@ class JFormFieldBwpSpacer extends JFormField
 	 *
 	 * @since   2.0.0
 	 */
-	protected function getTitle()
+	protected function getTitle(): string
 	{
 		return ' ';
 	}

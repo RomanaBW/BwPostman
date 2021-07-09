@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
@@ -47,7 +48,7 @@ abstract class BwPostmanMaintenanceHelper
 	/**
 	 * Base compress method
 	 *
-	 * @param    string    $fileName    name of the file to compress
+	 * @param string $fileName name of the file to compress
 	 *
 	 * @return   string    $compressedFile
 	 *
@@ -55,10 +56,8 @@ abstract class BwPostmanMaintenanceHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function compressBackupFile($fileName)
+	public static function compressBackupFile(string $fileName): string
 	{
-		jimport('joomla.filesystem.file');
-
 		$params = ComponentHelper::getParams('com_bwpostman');
 
 		$compressMethod = $params->get('compress_method', 'zip');
@@ -93,9 +92,9 @@ abstract class BwPostmanMaintenanceHelper
 	/**
 	 * Base compress method
 	 *
-	 * @param    string    $compressedFile   name of the compressed file
-	 * @param    string    $fileName         name of the file to compress
-	 * @param    string    $fileData         data to compress
+	 * @param string $compressedFile name of the compressed file
+	 * @param string $fileName       name of the file to compress
+	 * @param string $fileData       data to compress
 	 *
 	 * @return   boolean  success or not
 	 *
@@ -103,7 +102,7 @@ abstract class BwPostmanMaintenanceHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function compressByZip($compressedFile, $fileName, $fileData)
+	public static function compressByZip(string $compressedFile, string $fileName, string $fileData): bool
 	{
 		$files = array(
 			'track' => array(
@@ -114,9 +113,10 @@ abstract class BwPostmanMaintenanceHelper
 		);
 
 		// Run the packager
-		$archive = new Archive();
+		$archive  = new Archive();
+		$packager = $archive->getAdapter('zip');
 
-		if (!$packager = $archive->getAdapter('zip'))
+		if (!$packager)
 		{
 			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_ERR_ZIP_ADAPTER_FAILURE'));
 
@@ -137,8 +137,8 @@ abstract class BwPostmanMaintenanceHelper
 	/**
 	 * Method to decompress backup file
 	 *
-	 * @param    string    $srcFileName    name of the file to decompress
-	 * @param    string    $packName       name of the packed file
+	 * @param string $srcFileName name of the file to decompress
+	 * @param string $packName    name of the packed file
 	 *
 	 * @return   string    $decompressedFile
 	 *
@@ -146,11 +146,8 @@ abstract class BwPostmanMaintenanceHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function decompressBackupFile($srcFileName, $packName)
+	public static function decompressBackupFile(string $srcFileName, string $packName)
 	{
-		jimport('joomla.filesystem.file');
-		jimport('joomla.archive.archive');
-
 		$destPath	= Factory::getApplication()->getConfig()->get('tmp_path') . "/bwpm_unzipped";
 
 		if (Folder::exists($destPath))
@@ -160,8 +157,9 @@ abstract class BwPostmanMaintenanceHelper
 
 		// Run the packager
 		$archive = new Archive;
+		$packager = $archive->getAdapter('zip');
 
-		if (!$packager = $archive->getAdapter('zip'))
+		if (!$packager)
 		{
 			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_ERR_ZIP_ADAPTER_FAILURE'));
 

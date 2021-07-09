@@ -34,11 +34,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Pagination\Pagination;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use Joomla\Database\QueryInterface;
 use RuntimeException;
-
-// Import MODEL object class
-jimport('joomla.application.component.modellist');
 
 /**
  * BwPostman newsletters model
@@ -184,7 +181,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function getStoreId($id = '')
+	protected function getStoreId($id = ''): string
 	{
 		// Compile the store id.
 		$id	.= ':' . $this->getState('filter.search');
@@ -205,7 +202,7 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @return 	string Query
+	 * @return    false|QueryInterface|object Query
 	 *
 	 * @throws Exception
 	 *
@@ -274,13 +271,13 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to get the joins this query needs
 	 *
-	 * @param   string  $tab
+	 * @param string $tab
 	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryJoins($tab)
+	private function getQueryJoins(string $tab)
 	{
 		$db = $this->_db;
 
@@ -330,15 +327,15 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to build the MySQL query 'where' part
 	 *
-	 * @param   string     $tab
-	 *
-	 * @throws Exception
+	 * @param string $tab
 	 *
 	 * @return 	void
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryWhere($tab)
+	private function getQueryWhere(string $tab)
 	{
 		$this->getFilterByAccessLevelFilter();
 		$this->getFilterByViewLevel();
@@ -361,13 +358,13 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to build the MySQL query 'order' part
 	 *
-	 * @param   string  $tab
+	 * @param string $tab
 	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryOrder($tab)
+	private function getQueryOrder(string $tab)
 	{
 		$db        = $this->_db;
 		$orderCol  = $this->state->get('list.ordering', 'a.subject');
@@ -393,10 +390,7 @@ class NewslettersModel extends ListModel
 		}
 		elseif ($tab == 'queue')
 		{
-			if ($orderCol == 'a.subject')
-			{
-				$orderCol = 'sc.subject';
-			}
+			$orderCol = str_replace('a.', 'sc.', $orderCol);
 		}
 
 		$this->query->order($db->quoteName($db->escape($orderCol)) . ' ' . $db->escape($orderDirn));
@@ -460,28 +454,28 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since     2.0.0
 	 */
-	private function getFilterByComponentPermissions()
-	{
-		$db            = $this->_db;
-		$allowed_items = BwPostmanHelper::getAllowedRecords('newsletter');
-
-		if ($allowed_items != 'all')
-		{
-			$allowed_ids = implode(',', $allowed_items);
-			$this->query->where($db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
-		}
-	}
+//	private function getFilterByComponentPermissions()
+//	{
+//		$db            = $this->_db;
+//		$allowed_items = BwPostmanHelper::getAllowedRecords('newsletter');
+//
+//		if ($allowed_items != 'all')
+//		{
+//			$allowed_ids = implode(',', $allowed_items);
+//			$this->query->where($db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
+//		}
+//	}
 
 	/**
 	 * Method to get the filter by selected campaign
 	 *
-	 * @param   string  $tab
+	 * @param string $tab
 	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByCampaign($tab)
+	private function getFilterByCampaign(string $tab)
 	{
 		$campaign = $this->getState('filter.campaign_id');
 
@@ -501,13 +495,13 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to get the filter by selected campaign
 	 *
-	 * @param   string  $tab
+	 * @param string $tab
 	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByIsTemplate($tab)
+	private function getFilterByIsTemplate(string $tab)
 	{
 		$isTemplate = $this->getState('filter.is_template');
 
@@ -523,13 +517,13 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to get the filter by selected author
 	 *
-	 * @param   string  $tab
+	 * @param string $tab
 	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByAuthor($tab)
+	private function getFilterByAuthor(string $tab)
 	{
 		$authors = $this->getState('filter.authors');
 
@@ -549,13 +543,13 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to get the filter by search word
 	 *
-	 * @param   string  $tab
+	 * @param string $tab
 	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterBySearchword($tab)
+	private function getFilterBySearchword(string $tab)
 	{
 		$db           = $this->_db;
 		$filtersearch = $this->getState('filter.search_filter');
@@ -732,13 +726,13 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to get the filter by mailingdate
 	 *
-	 * @param   string  $tab
+	 * @param string $tab
 	 *
 	 * @return 	void
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByMailingDate($tab)
+	private function getFilterByMailingDate(string $tab)
 	{
 		switch ($tab)
 		{
@@ -764,7 +758,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   1.6
 	 */
-	public function getQueuePagination()
+	public function getQueuePagination(): Pagination
 	{
 		// Get a storage key.
 		$store = $this->getStoreId('getPaginationQueue');
@@ -793,7 +787,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since  0.9.1
 	 */
-	public function getCountQueue()
+	public function getCountQueue(): int
 	{
 		$count_queue = 0;
 		$db          = $this->_db;

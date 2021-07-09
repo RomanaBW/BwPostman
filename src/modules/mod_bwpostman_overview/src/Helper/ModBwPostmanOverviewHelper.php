@@ -30,8 +30,9 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 defined('_JEXEC') or die('Restricted access');
 
+use DateInterval;
+use DateTime;
 use Exception;
-use http\Exception\RuntimeException;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
@@ -39,6 +40,7 @@ use Joomla\CMS\Log\LogEntry;
 use Joomla\Registry\Registry;
 use Joomla\CMS\HTML\HTMLHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use RuntimeException;
 use stdClass;
 
 /**
@@ -51,8 +53,8 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Retrieve list of newsletters
 	 *
-	 * @param   Registry  &$params      module parameters
-	 * @param   int       $module_id    id of this module
+	 * @param Registry  $params     module parameters
+	 * @param int       $module_id  id of this module
 	 *
 	 * @return  array     $lists        array of newsletter objects
 	 *
@@ -60,7 +62,7 @@ class ModBwPostmanOverviewHelper
 	 *
 	 * @since   1.2.0
 	 */
-	public static function getList(&$params, $module_id	= 0)
+	public static function getList(Registry $params, int $module_id = 0): array
 	{
 		$item   = $params->get('menu_item');
 		$itemid = (!empty($item)) ? '&Itemid=' . $item : '';
@@ -99,15 +101,15 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Gets the items depending on Module or Menuitem params
 	 *
-	 * @param   Registry  &$params    module parameters
+	 * @param Registry  $params module parameters
 	 *
-	 * @return  array     $rows       array of newsletter objects
+	 * @return  array   $rows   array of newsletter objects
 	 *
 	 * @throws Exception
 	 *
 	 * @since   1.2.0
 	 */
-	private static function getItems(&$params)
+	private static function getItems(Registry $params): array
 	{
 		// Get conditions
 		$menuItemId = $params->get('menu_item');
@@ -150,7 +152,7 @@ class ModBwPostmanOverviewHelper
 		// get count list
 		if (count($nls) > 0)
 		{
-			return self::getNlCountList((array)$nls);
+			return self::getNlCountList($nls);
 		}
 
 		return array();
@@ -159,7 +161,7 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Method to get the menu item params.
 	 *
-	 * @param   int     $id     id of menu item
+	 * @param int $id id of menu item
 	 *
 	 * @return  Registry  The field option objects.
 	 *
@@ -167,18 +169,17 @@ class ModBwPostmanOverviewHelper
 	 *
 	 * @since   1.2.0
 	 */
-	protected static function getMenuItemParams($id = 0)
+	protected static function getMenuItemParams(int $id = 0): Registry
 	{
-		$menu   = Factory::getApplication()->getMenu();
-		$params = $menu->getParams($id);
+		$menu = Factory::getApplication()->getMenu();
 
-		return $params;
+		return $menu->getParams($id);
 	}
 
 	/**
 	 * Method to get all published mailing lists which the user is authorized to see and which are selected in menu
 	 *
-	 * @param Registry  &$params module parameters
+	 * @param Registry  $params module parameters
 	 *
 	 * @return    array    $mailinglists       ID and title of allowed mailinglists
 	 *
@@ -186,7 +187,7 @@ class ModBwPostmanOverviewHelper
 	 *
 	 * @since     1.2.0
 	 */
-	private static function getAccessibleMailinglists(Registry $params)
+	private static function getAccessibleMailinglists(Registry $params): array
 	{
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
@@ -197,24 +198,31 @@ class ModBwPostmanOverviewHelper
 
 		// fetch only from mailinglists, which are selected, if so
 		$all_mls = $params->get('ml_selected_all');
-		$sel_mls = $params->get('ml_available');
+		$sel_mls = $params->get('ml_available', array());
+		$mls     = array();
 
-		if ($all_mls)
+		if ($all_mls === "yes")
 		{
 			$query->select('id');
 			$query->from($db->quoteName('#__bwpostman_mailinglists'));
-			$query->where($db->quoteName('published') . ' = ' . (int) 1);
+			$query->where($db->quoteName('published') . ' = ' . 1);
 
 			try
 			{
 				$db->setQuery($query);
 
 				$res_mls = $db->loadAssocList();
+
+				if ($res_mls === null)
+				{
+					$res_mls = array();
+				}
+
 				$mls     = array_column($res_mls, 'id');
 			}
-			catch (\RuntimeException $e)
+			catch (RuntimeException $e)
 			{
-				$message = 'Query 1: ' . $e->getMessage();
+				$message = 'Query 1: ' . $e->getMessage() . ' ' . $query;
 				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
 			}
 		}
@@ -240,18 +248,24 @@ class ModBwPostmanOverviewHelper
 			$query->from($db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', (array)$mls) . ')');
-			$query->where($db->quoteName('published') . ' = ' . (int) 1);
+			$query->where($db->quoteName('published') . ' = ' . 1);
 
 			try
 			{
 				$db->setQuery($query);
 
 				$res_mls = $db->loadAssocList();
+
+				if ($res_mls === null)
+				{
+					$res_mls = array();
+				}
+
 				$mls = array_column($res_mls, 'id');
 			}
-			catch (\RuntimeException $e)
+			catch (RuntimeException $e)
 			{
-				$message = 'Query 2: ' . $e->getMessage();
+				$message = 'Query 2: ' . $e->getMessage() . ' ' . $query;
 				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
 			}
 		}
@@ -262,7 +276,7 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Method to get all campaigns which the user is authorized to see
 	 *
-	 * @param Registry  &$params module parameters
+	 * @param Registry  $params module parameters
 	 *
 	 * @return    array    $campaigns     array of ids of allowed campaigns
 	 *
@@ -270,7 +284,7 @@ class ModBwPostmanOverviewHelper
 	 *
 	 * @since     1.2.0
 	 */
-	private static function getAccessibleCampaigns(Registry $params)
+	private static function getAccessibleCampaigns(Registry $params): array
 	{
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
@@ -281,7 +295,8 @@ class ModBwPostmanOverviewHelper
 
 		// fetch only from campaigns, which are selected, if so
 		$all_cams = $params->get('cam_selected_all');
-		$sel_cams = $params->get('cam_available');
+		$sel_cams = $params->get('cam_available', array());
+		$cams     = array();
 
 		if (!is_array($sel_cams) && $all_cams === 'no')
 		{
@@ -298,11 +313,17 @@ class ModBwPostmanOverviewHelper
 				$db->setQuery($query);
 
 				$res_cams = $db->loadAssocList();
-				$cams     = array_column($res_cams, 'id');
+
+				if ($res_cams === null)
+				{
+					$res_cams = array();
+				}
+
+				$cams = array_column($res_cams, 'id');
 			}
-			catch (\RuntimeException $e)
+			catch (RuntimeException $e)
 			{
-				$message = 'Query 3: ' . $e->getMessage();
+				$message = 'Query 3: ' . $e->getMessage() . ' ' . $query;
 				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
 			}
 		}
@@ -316,6 +337,8 @@ class ModBwPostmanOverviewHelper
 			return array();
 		}
 
+		$acc_mls = array();
+
 		// Check permission, if desired
 		if ($all_cams === 'yes' || $check === 'yes')
 		{
@@ -326,18 +349,24 @@ class ModBwPostmanOverviewHelper
 			$query->select('id');
 			$query->from($db->quoteName('#__bwpostman_mailinglists'));
 			$query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
-			$query->where($db->quoteName('published') . ' = ' . (int) 1);
+			$query->where($db->quoteName('published') . ' = ' . 1);
 
 			try
 			{
 				$db->setQuery($query);
 
 				$res_mls = $db->loadAssocList();
+
+				if ($res_mls === null)
+				{
+					$res_mls = array();
+				}
+
 				$acc_mls = array_column($res_mls, 'id');
 			}
-			catch (\RuntimeException $e)
+			catch (RuntimeException $e)
 			{
-				$message = 'Query 4: ' . $e->getMessage();
+				$message = 'Query 4: ' . $e->getMessage() . ' ' . $query;
 				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
 			}
 
@@ -353,12 +382,18 @@ class ModBwPostmanOverviewHelper
 				$db->setQuery($query);
 
 				$acc_cams = $db->loadAssocList();
-				$cams     = array_column($acc_cams, 'campaign_id');
+
+				if ($acc_cams === null)
+				{
+					$acc_cams = array();
+				}
+
+				$cams = array_column($acc_cams, 'campaign_id');
 
 			}
-			catch (\RuntimeException $e)
+			catch (RuntimeException $e)
 			{
-				$message = 'Query 5: ' . $e->getMessage();
+				$message = 'Query 5: ' . $e->getMessage() . ' ' . $query;
 				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
 			}
 		}
@@ -369,7 +404,7 @@ class ModBwPostmanOverviewHelper
 	/**
 	 * Method to get all user groups which the user is authorized to see
 	 *
-	 * @param Registry  &$params module parameters
+	 * @param Registry  $params module parameters
 	 *
 	 * @return    array    $groups             array of ids of user groups
 	 *
@@ -377,7 +412,7 @@ class ModBwPostmanOverviewHelper
 	 *
 	 * @since    1.2.0
 	 */
-	private static function getAccessibleUsergroups(Registry $params)
+	private static function getAccessibleUsergroups(Registry $params): array
 	{
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
@@ -385,12 +420,14 @@ class ModBwPostmanOverviewHelper
 
 		// fetch only from usergroups, which are selected, if so
 		$all_groups	= $params->get('groups_selected_all');
-		$sel_groups	= $params->get('groups_available');
+		$sel_groups	= $params->get('groups_available', array());
 
 		if (!is_array($sel_groups) && $all_groups === 'no')
 		{
 			return array();
 		}
+
+		$groups = array();
 
 		if ($all_groups === 'yes')
 		{
@@ -402,9 +439,15 @@ class ModBwPostmanOverviewHelper
 				$db->setQuery($query);
 
 				$res_groups = $db->loadAssocList();
-				$groups     = array_column($res_groups, 'id');
+
+				if ($res_groups === null)
+				{
+					$res_groups = array();
+				}
+
+				$groups = array_column($res_groups, 'id');
 			}
-			catch (\RuntimeException $e)
+			catch (RuntimeException $e)
 			{
 				$logOptions = array();
 				$logger     = BwLogger::getInstance($logOptions);
@@ -448,24 +491,27 @@ class ModBwPostmanOverviewHelper
 				$a_groups[]	= '-' . $value;
 			}
 
-			$sel_groups	= array_intersect((array)$a_groups, (array)$c_groups);
+			$sel_groups	= array_intersect($a_groups, (array)$c_groups);
 		}
 
 		return (array)$sel_groups;
 	}
 
 	/**
-	 * Method to get the list of newsletters of the provided mailinglists and campaigns and filtered by provided show type
+	 * Method to get the list of newsletters of the provided mailinglists and campaigns and filtered by provided show
+	 * type
 	 *
 	 * @param array    $mls
 	 * @param array    $cams
 	 * @param Registry $params
 	 *
-	 * @return mixed
+	 * @return array
+	 *
+	 * @throws Exception
 	 *
 	 * @since 4.0.0
 	 */
-	private static function getUniqueNlIds(array $mls, array $cams, Registry $params)
+	private static function getUniqueNlIds(array $mls, array $cams, Registry $params): array
 	{
 		// Get database
 		$db    = Factory::getDbo();
@@ -476,12 +522,15 @@ class ModBwPostmanOverviewHelper
 		$nowDate  = $db->quote(Factory::getDate()->toSql());
 
 		$sinceDateString = ' != ' . $nullDate;
+		$count = (int)$params->get('count');
 
-		if ((int)$params->get('count') > 0)
+		if ($count > 0)
 		{
-			$sinceMonth = Factory::getDate('now')->sub(new \DateInterval('P' . ((int)$params->get('count') - 1) . 'M'))->format('Y-m');
-			$sinceDate = $db->quote(Factory::getDate($sinceMonth)->toSql());
-			$sinceDateString = ' >= ' . $sinceDate;
+			$backCountString = 'first day of -' . ($count - 1) . ' month';
+			$firstOfMonthObject  = new DateTime($backCountString);
+			$sinceDate = $firstOfMonthObject->format('Y-m-d') . ' 0000:00:00';
+
+			$sinceDateString = ' >= ' . $db->quote($sinceDate);
 		}
 
 		$query->select(
@@ -555,13 +604,20 @@ class ModBwPostmanOverviewHelper
 		{
 			$db->setQuery($query);
 
-			return $db->loadAssocList();
+			$result = $db->loadAssocList();
+
+			if ($result === null)
+			{
+				$result = array();
+			}
+
+			return $result;
 		}
-		catch (\RuntimeException $e)
+		catch (RuntimeException $e)
 		{
 			$logOptions   = array();
 			$logger  = BwLogger::getInstance($logOptions);
-			$message = 'Query 7: ' . $e->getMessage();
+			$message = 'Query 7: ' . $e->getMessage() . ' ' . $query;
 
 			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
 			return array();
@@ -573,11 +629,11 @@ class ModBwPostmanOverviewHelper
 	 *
 	 * @param array $nls
 	 *
-	 * @return array|null
+	 * @return array
 	 *
 	 * @since 4.0.0
 	 */
-	private static function getNlCountList(array $nls)
+	private static function getNlCountList(array $nls): array
 	{
 		// Get database
 		$db = Factory::getDbo();
@@ -599,13 +655,20 @@ class ModBwPostmanOverviewHelper
 		{
 			$db->setQuery($query);
 
-			return $db->loadObjectList();
+			$result = $db->loadObjectList();
+
+			if ($result === null)
+			{
+				$result = array();
+			}
+
+			return $result;
 		}
-		catch (\RuntimeException $e)
+		catch (RuntimeException $e)
 		{
 			$logOptions   = array();
 			$logger  = BwLogger::getInstance($logOptions);
-			$message = 'Query 8: ' . $e->getMessage();
+			$message = 'Query 8: ' . $e->getMessage() . ' ' . $query;
 
 			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
 			return array();

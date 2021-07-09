@@ -65,7 +65,7 @@ class JFormFieldDisclaimer extends JFormFieldCheckbox
 	 *
 	 * @since   2.1.1
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		// Extends the checkbox with the disclaimer link and modalbox
 		$ext	=	"\n\t" . '<a id="bwp_plg_open">' . Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a>';
@@ -95,7 +95,7 @@ class JFormFieldDisclaimer extends JFormFieldCheckbox
 
 		$html = '<label class="disclaimer">';
 		$html .="\n\t" . '<input type="checkbox" name="' . $this->name . '" id="' . $this->id . '" value="'
-			. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" ' . $class . $checked . $disabled . $onclick . $onchange
+			. htmlspecialchars($value, ENT_COMPAT) . '" ' . $class . $checked . $disabled . $onclick . $onchange
 			. $required . $autofocus . ' />' . $ext;
 
 		return $html;

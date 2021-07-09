@@ -73,7 +73,7 @@ foreach ($fieldset as $fieldName => $field)
 					<?php echo $filters['filter_search']->input; ?>
 					<?php if ($filters['filter_search']->description) : ?>
 						<div role="tooltip" id="<?php echo $filters['filter_search']->name . '-desc'; ?>">
-							<?php echo htmlspecialchars(Text::_($filters['filter_search']->description), ENT_COMPAT, 'UTF-8'); ?>
+							<?php echo htmlspecialchars(Text::_($filters['filter_search']->description), ENT_COMPAT); ?>
 						</div>
 					<?php endif; ?>
 					<span class="input-group-append">

@@ -29,13 +29,12 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die ('Restricted access');
 
+use Exception;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
-
-// Import MODEL object class
-jimport('joomla.application.component.modeladmin');
-jimport('joomla.application.component.helper');
 
 /**
  * BwPostman campaign model
@@ -52,6 +51,8 @@ class TemplatesTplModel extends AdminModel
 	/**
 	 * Alias Constructor
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.1.0
 	 */
 	public function __construct()
@@ -62,19 +63,19 @@ class TemplatesTplModel extends AdminModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	string  $type	    The table type to instantiate
-	 * @param	string	$prefix     A prefix for the table class name. Optional.
-	 * @param	array	$config     Configuration array for model. Optional.
+	 * @param	string $name    The table type to instantiate
+	 * @param	string $prefix  A prefix for the table class name. Optional.
+	 * @param	array  $options Configuration array for model. Optional.
 	 *
 	 * @return	boolean|Table	A database object
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since  1.1.0
 	 */
-	public function getTable($type = 'TemplatesTpl', $prefix = 'Administrator', $config = array())
+	public function getTable($name = 'TemplatesTpl', $prefix = 'Administrator', $options = array())
 	{
-		return parent::getTable($type, $prefix, $config);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
@@ -82,7 +83,7 @@ class TemplatesTplModel extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  mixed    Object on success, false on failure.
+	 * @return  bool|CMSObject    Object on success, false on failure.
 	 *
 	 * @since   1.1.0
 	 */
@@ -105,17 +106,18 @@ class TemplatesTplModel extends AdminModel
 	/**
 	 * Alias Method
 	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+	 * @param array   $data     Data for the form.
+	 * @param boolean $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.1.0
+	 * @return    Form    A JForm object on success, false on failure
+	 *
+	 * @throws Exception
+	 *
+	 * @since    1.1.0
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = array(), $loadData = true): Form
 	{
 		// Get the form.
-		$form = $this->loadForm('com_bwpostman.template', 'Template', array('control' => 'jform', 'load_data' => $loadData));
-
-		return $form;
+		return $this->loadForm('com_bwpostman.template', 'Template', array('control' => 'jform', 'load_data' => $loadData));
 	}
 }

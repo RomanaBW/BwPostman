@@ -52,7 +52,7 @@ abstract class BwPostmanCampaignHelper
 	 *
 	 * @since 3.0.0 here
 	 */
-	public static function getSingleCampaign($cam_id = null)
+	public static function getSingleCampaign(int $cam_id = null): ?object
 	{
 		$campaign = null;
 
@@ -112,7 +112,7 @@ abstract class BwPostmanCampaignHelper
 	 *
 	 * @since 3.0.0 here
 	 */
-	public static function getSelectedNewslettersOfCampaign($camId, $sent, $all)
+	public static function getSelectedNewslettersOfCampaign(int $camId, bool $sent, bool $all): array
 	{
 		$newsletters = array();
 		$archiveFlag = 0;
@@ -138,7 +138,7 @@ abstract class BwPostmanCampaignHelper
 			$db->quoteName('#__users') . ' AS ' . $db->quoteName('v')
 			. ' ON ' . $db->quoteName('v') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('created_by')
 		);
-		$query->where($db->quoteName('campaign_id') . ' = ' . $db->quote((int) $camId));
+		$query->where($db->quoteName('campaign_id') . ' = ' . $db->quote($camId));
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
 		if (!$archiveFlag)
@@ -166,15 +166,15 @@ abstract class BwPostmanCampaignHelper
 	 * @param boolean $hasMailingdate
 	 * @param boolean $archiveMatters
 	 *
-	 * @return 	object
+	 * @return 	array
 	 *
 	 * @throws Exception
 	 *
 	 * @since 3.0.0
 	 */
-	public static function getCampaignsFieldlistOptions($hasMailingdate = false, $archiveMatters = false)
+	public static function getCampaignsFieldlistOptions(bool $hasMailingdate = false, bool $archiveMatters = false): array
 	{
-		$options   = null;
+		$options   = array();
 		$db        = Factory::getDbo();
 		$nullDate  = $db->getNullDate();
 		$query     = $db->getQuery(true);
@@ -221,7 +221,7 @@ abstract class BwPostmanCampaignHelper
 		{
 			$db->setQuery($query);
 
-			$options = $db->loadObjectList();
+			$options = (array)$db->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

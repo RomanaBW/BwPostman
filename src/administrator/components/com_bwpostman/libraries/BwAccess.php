@@ -174,7 +174,6 @@ class BwAccess
 	 * @param string         $action   The name of the action to authorise.
 	 * @param integer|string $assetKey The asset key (asset id or asset name). null fallback to root asset.
 	 * @param boolean        $preload  Indicates whether preloading should be used.
-	 * @param integer        $recordId the id of the record to check for, if given
 	 *
 	 * @return  boolean|null  True if allowed, false for an explicit deny, null for an implicit deny.
 	 *
@@ -182,7 +181,7 @@ class BwAccess
 	 *
 	 * @since   11.1
 	 */
-	public static function check(int $userId, string $action, $assetKey = null, $preload = false, $recordId = 0): ?bool
+	public static function check(int $userId, string $action, $assetKey = null, bool $preload = false): ?bool
 	{
 		// Sanitise inputs.
 		$action = strtolower(preg_replace('#[\s\-]+#', '.', trim($action)));
@@ -228,13 +227,11 @@ class BwAccess
 		self::inheritRules($userId);
 
 		// Check for permission
-		$allow = self::ruleAllow($identities);
-
-		return $allow;
+		return self::ruleAllow($identities);
 	}
 
 	/**
-	 * @param $assetName
+	 * @param string $assetName
 	 *
 	 * @return string
 	 *
@@ -242,7 +239,7 @@ class BwAccess
 	 *
 	 * @since 2.0.0
 	 */
-	protected static function getSectionAsset($assetName): ?string
+	protected static function getSectionAsset(string $assetName): ?string
 	{
 		$sectionRules = null;
 
@@ -287,14 +284,14 @@ class BwAccess
 	}
 
 	/**
-	 * @param $userId
+	 * @param integer $userId
 	 *
 	 *
 	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	protected static function inheritRules($userId)
+	protected static function inheritRules(int $userId)
 	{
 		$parentIdentities = self::getParentIdentities(self::$identities[$userId]);
 
@@ -327,7 +324,7 @@ class BwAccess
 	 * The identity is an integer where +ve represents a user group,
 	 * and -ve represents a user.
 	 *
-	 * @param mixed $identities An integer representing the identity, or an array of identities
+	 * @param array|integer $identities An integer representing the identity, or an array of identities
 	 *
 	 * @return  array   parent identities, oldest last
 	 *
@@ -371,13 +368,13 @@ class BwAccess
 	 * The identity is an integer where +ve represents a user group,
 	 * and -ve represents a user.
 	 *
-	 * @param   mixed  $identities  An integer or array of integers representing the identities to check.
+	 * @param   array|integer  $identities  An integer or array of integers representing the identities to check.
 	 *
-	 * @return  mixed  True if allowed, false for an explicit deny, null for an implicit deny.
+	 * @return  bool|null  True if allowed, false for an explicit deny, null for an implicit deny.
 	 *
 	 * @since   11.1
 	 */
-	public static function ruleAllow($identities)
+	public static function ruleAllow($identities): ?bool
 	{
 		// Implicit null by default.
 		$result = null;
@@ -429,7 +426,7 @@ class BwAccess
 	 *
 	 * @note    This method will return void in 4.0.
 	 */
-	public static function preload($assetTypes = 'components', $reload = false): bool
+	public static function preload($assetTypes = 'components', bool $reload = false): bool
 	{
 		// If sent an asset id, we first get the asset type for that asset id.
 		if (is_numeric($assetTypes))
@@ -568,7 +565,7 @@ class BwAccess
 	 *
 	 * @note    This function will return void in 4.0.
 	 */
-	protected static function preloadPermissions(string $assetType, $reload = false): bool
+	protected static function preloadPermissions(string $assetType, bool $reload = false): bool
 	{
 		// Get the extension name from the $assetType provided
 		$extensionName = self::getExtensionNameFromAsset($assetType);
@@ -724,7 +721,7 @@ class BwAccess
 	 *
 	 * @since   11.1
 	 */
-	public static function checkGroup(int $groupId, string $action, $assetKey = null, $preload = true): ?bool
+	public static function checkGroup(int $groupId, string $action, $assetKey = null, bool $preload = true): ?bool
 	{
 		// Sanitize input.
 		$action  = strtolower(preg_replace('#[\s\-]+#', '.', trim($action)));
@@ -736,7 +733,7 @@ class BwAccess
 	 * Gets the parent groups that a leaf group belongs to in its branch back to the root of the tree
 	 * (including the leaf group id).
 	 *
-	 * @param   mixed  $groupId  An integer or array of integers representing the identities to check.
+	 * @param   array|integer  $groupId  An integer or array of integers representing the identities to check.
 	 *
 	 * @return  mixed  True if allowed, false for an explicit deny, null for an implicit deny.
 	 *
@@ -747,6 +744,7 @@ class BwAccess
 		// Load all the groups to improve performance on intensive groups checks
 		$groups = UserGroupsHelper::getInstance()->getAll();
 
+//		@ToDo: Correct return type?
 		if (!isset($groups[$groupId]))
 		{
 			return array();
@@ -774,7 +772,7 @@ class BwAccess
 	 *
 	 * @note    The non preloading code will be removed in 4.0. All asset rules should use asset preloading.
 	 */
-	public static function getAssetRules($assetKey, $recursive = false, $recursiveParentAsset = false, $preload = true): Rules
+	public static function getAssetRules($assetKey, bool $recursive = false, bool $recursiveParentAsset = false, bool $preload = true): Rules
 	{
 		$logOptions = array();
 		$logger     = BwLogger::getInstance($logOptions);
@@ -782,7 +780,7 @@ class BwAccess
 		// Auto preload the components assets and root asset (if chosen).
 		if ($preload)
 		{
-			self::preload('components');
+			self::preload();
 		}
 
 		// When asset key is null fallback to root asset.
@@ -1093,7 +1091,7 @@ class BwAccess
 	 *
 	 * @since   3.7.0
 	 */
-	protected static function getAssetName($assetKey)
+	protected static function getAssetName($assetKey): string
 	{
 		static $loaded = array();
 
@@ -1136,7 +1134,7 @@ class BwAccess
 	 *
 	 * @since    1.6
 	 */
-	public static function getExtensionNameFromAsset($assetKey)
+	public static function getExtensionNameFromAsset($assetKey): string
 	{
 		static $loaded = array();
 
@@ -1222,7 +1220,7 @@ class BwAccess
 	 *
 	 * @since   11.1
 	 */
-	public static function getGroupsByUser(int $userId, $recursive = true): array
+	public static function getGroupsByUser(int $userId, bool $recursive = true): array
 	{
 		// Creates a simple unique string for each parameter combination:
 		$storeId = $userId . ':' . (int) $recursive;
@@ -1444,54 +1442,18 @@ class BwAccess
 	}
 
 	/**
-	 * Method to return a list of actions for which permissions can be set given a component and section.
-	 *
-	 * @param string   $component The component from which to retrieve the actions.
-	 * @param   string $section   The name of the section within the component from which to retrieve the actions.
-	 *
-	 * @return  array  List of actions available for the given component and section.
-	 *
-	 * @since       11.1
-	 *
-	 * @deprecated  12.3 (Platform) & 4.0 (CMS)  Use Access::getActionsFromFile or Access::getActionsFromData instead.
-	 *
-	 * @codeCoverageIgnore
-	 */
-	public static function getActions(string $component, $section = 'component')
-	{
-		$logOptions   = array();
-		$logger = BwLogger::getInstance($logOptions);
-
-		$message = __METHOD__ . ' is deprecated. Use Access::getActionsFromFile or Access::getActionsFromData instead.';
-		$logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'assets'));
-
-		$actions = self::getActionsFromFile(
-			JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml',
-			"/access/section[@name='" . $section . "']/"
-		);
-
-		if (empty($actions))
-		{
-			return array();
-		}
-		else
-		{
-			return $actions;
-		}
-	}
-
-	/**
 	 * Method to return a list of actions from a file for which permissions can be set.
 	 *
-	 * @param string   $file  The path to the XML file.
-	 * @param   string $xpath An optional xpath to search for the fields.
+	 * @param string $file  The path to the XML file.
+	 * @param string $xpath An optional xpath to search for the fields.
 	 *
 	 * @return  boolean|array   False if case of error or the list of actions available.
 	 *
 	 * @since   12.1
 	 */
-	public static function getActionsFromFile(string $file, $xpath = "/access/section[@name='component']/")
+	public static function getActionsFromFile(string $file, string $xpath = "/access/section[@name='component']/")
 	{
+//		JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml', "/access/section[@name='" . $section . "']/"
 		if (!is_file($file) || !is_readable($file))
 		{
 			// If unable to find the file return false.
@@ -1509,14 +1471,14 @@ class BwAccess
 	/**
 	 * Method to return a list of actions from a string or from an xml for which permissions can be set.
 	 *
-	 * @param   string|SimpleXMLElement  $data   The XML string or an XML element.
-	 * @param   string                    $xpath  An optional xpath to search for the fields.
+	 * @param   string|SimpleXMLElement $data  The XML string or an XML element.
+	 * @param string                    $xpath An optional xpath to search for the fields.
 	 *
 	 * @return  boolean|array   False if case of error or the list of actions available.
 	 *
 	 * @since   12.1
 	 */
-	public static function getActionsFromData($data, $xpath = "/access/section[@name='component']/")
+	public static function getActionsFromData($data, string $xpath = "/access/section[@name='component']/")
 	{
 		// If the data to load isn't already an XML element or string return false.
 		if ((!($data instanceof SimpleXMLElement)) && (!is_string($data)))

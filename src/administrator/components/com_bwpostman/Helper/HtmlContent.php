@@ -46,14 +46,14 @@ class HtmlContent
 	/**
 	 * Writes Title
 	 *
-	 * @param   object $row
-	 * @param   object $params
+	 * @param object $row
+	 * @param object $params
 	 *
 	 * @return  void
 	 *
 	 * @since       0.9.1
 	 */
-	public function Title(&$row, &$params)
+	public function Title(object $row, object $params)
 	{
 		if ($params->get('item_title'))
 		{
@@ -79,13 +79,13 @@ class HtmlContent
 	/**
 	 * Writes Category
 	 *
-	 * @param   object $row
+	 * @param object $row
 	 *
 	 * @return  void
 	 *
 	 * @since       0.9.1
 	 */
-	public function Category(&$row)
+	public function Category(object $row)
 	{
 		?>
 		<span class="sc_category"><small> <?php
@@ -125,19 +125,19 @@ class HtmlContent
 	/**
 	 * Writes Author name
 	 *
-	 * @param   object $row
+	 * @param object $row
 	 *
 	 * @return  void
 	 *
 	 * @since       0.9.1
 	 */
-	public function Author(&$row)
+	public function Author(object $row)
 	{
 		?>
 		<span class="created_by">
 			<small>
 				<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY',
-					($row->created_by_alias ? $row->created_by_alias : $row->author)); ?>
+					($row->created_by_alias ?: $row->author)); ?>
 			</small>
 		</span>
 		<?php
@@ -146,13 +146,13 @@ class HtmlContent
 	/**
 	 * Writes Create Date
 	 *
-	 * @param   object $row
+	 * @param object $row
 	 *
 	 * @return  void
 	 *
 	 * @since       0.9.1
 	 */
-	public function CreateDate(&$row)
+	public function CreateDate(object $row)
 	{
 		$create_date = null;
 
@@ -172,14 +172,14 @@ class HtmlContent
 	/**
 	 * Writes URL's
 	 *
-	 * @param   object $row
-	 * @param   object $params
+	 * @param object $row
+	 * @param object $params
 	 *
 	 * @return  void
 	 *
 	 * @since       0.9.1
 	 */
-	public function URL(&$row, &$params)
+	public function URL(object $row, object $params)
 	{
 		if ($params->get('url') && $row->urls)
 		{
@@ -194,14 +194,14 @@ class HtmlContent
 	/**
 	 * Writes Modified Date
 	 *
-	 * @param   object $row
-	 * @param   object $params
+	 * @param object $row
+	 * @param object $params
 	 *
 	 * @return  void
 	 *
 	 * @since       0.9.1
 	 */
-	public function ModifiedDate(&$row, &$params)
+	public function ModifiedDate(object $row, object $params)
 	{
 		$mod_date = null;
 
@@ -224,14 +224,14 @@ class HtmlContent
 	/**
 	 * Writes read more button
 	 *
-	 * @param   object $row
-	 * @param   object $params
+	 * @param object $row
+	 * @param object $params
 	 *
 	 * @return  void
 	 *
 	 * @since       0.9.1
 	 */
-	public function ReadMore(&$row, &$params)
+	public function ReadMore(object $row, object $params)
 	{
 		if ($params->get('readmore'))
 		{

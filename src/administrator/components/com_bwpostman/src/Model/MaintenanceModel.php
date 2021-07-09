@@ -30,6 +30,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 defined('_JEXEC') or die('Restricted access');
 
 use DOMDocument;
+use DOMElement;
 use Exception;
 use Joomla\CMS\Access\Rules;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -238,7 +239,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since       1.0.1
 	 */
-	public function saveTables($fileName, $update = false)
+	public function saveTables(string $fileName, bool $update = false)
 	{
 		// Access check.
 		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
@@ -329,72 +330,68 @@ class MaintenanceModel extends BaseDatabaseModel
 
 			foreach ($this->tableNames as $table)
 			{
-				// do not save the table "bwpostman_templates_tpl"
-//				if (strpos($table['tableNameRaw'], 'templates_tpl') === false)
-//				{
-					$databaseXml = $this->databaseXml;
+				$databaseXml = $this->databaseXml;
 
-					$tablesXml = $this->xml->createElement('tables');
+				$tablesXml = $this->xml->createElement('tables');
 
-					$tableName = $table['tableNameGeneric'];
+				$tableName = $table['tableNameGeneric'];
 
-					// Build table description XML
-					$tableStructure = $this->buildXmlStructure($tableName, $tablesXml);
-					$databaseXml->appendChild($tablesXml);
+				// Build table description XML
+				$tableStructure = $this->buildXmlStructure($tableName, $tablesXml);
+				$databaseXml->appendChild($tablesXml);
 
-					if ($tableStructure === false)
+				if ($tableStructure === false)
+				{
+					$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+					if ($update)
 					{
-						$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
-						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-						if ($update)
-						{
-							echo '<p class="text-danger">' . $message . '</p>';
-
-							return false;
-						}
-					}
-					else
-					{
-						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_TABLE_SUCCESS', $tableName);
-						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
-
-						if ($update)
-						{
-							echo '<p class="text-success">'	. $message . '</p>';
-						}
-					}
-
-					// Build table data XML
-					if (!$this->buildXmlData($tableName, $tablesXml))
-					{
-						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
-						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-						if ($update)
-						{
-							echo '<p class="text-danger">' . $ $message . '</p>';
-						}
+						echo '<p class="text-danger">' . $message . '</p>';
 
 						return false;
 					}
+				}
+				else
+				{
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_TABLE_SUCCESS', $tableName);
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-					// Build table assets XML
-					$xmlAssets = $this->buildXmlAssets($tableName, $tablesXml);
-
-					if ($xmlAssets === false)
+					if ($update)
 					{
-						$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $fileName);
-						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-						if ($update)
-						{
-							echo '<p class="text-danger">' . $message . '</p>';
-						}
-
-						return false;
+						echo '<p class="text-success">'	. $message . '</p>';
 					}
-//				}
+				}
+
+				// Build table data XML
+				if (!$this->buildXmlData($tableName, $tablesXml))
+				{
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+					if ($update)
+					{
+						echo '<p class="text-danger">' . $ $message . '</p>';
+					}
+
+					return false;
+				}
+
+				// Build table assets XML
+				$xmlAssets = $this->buildXmlAssets($tableName, $tablesXml);
+
+				if ($xmlAssets === false)
+				{
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $fileName);
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+					if ($update)
+					{
+						echo '<p class="text-danger">' . $message . '</p>';
+					}
+
+					return false;
+				}
 			}
 
 			// Reformat XML string with new lines and indents for each entry
@@ -461,19 +458,21 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * Also sets a list as property of all BwPostman tables with different variations of names
 	 *
-	 * @param boolean $restore   are we at restore mode?
+	 * @param boolean $restore are we at restore mode?
 	 *
 	 * @return   array|boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.0.1
 	 */
-	public function getTableNamesFromDB($restore = false)
+	public function getTableNamesFromDB(bool $restore = false)
 	{
 		// Get database name
 		$dbname = self::getDBName();
 
 		//build query to get all names of installed BwPostman tables
-		$query = "SHOW TABLES WHERE `Tables_in_{$dbname}` LIKE '%bwpostman%'";
+		$query = "SHOW TABLES WHERE `Tables_in_$dbname` LIKE '%bwpostman%'";
 
 		try
 		{
@@ -540,14 +539,16 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @return    boolean    true on success, false on failure
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.0.1
 	 */
-	private function buildXmlHeader()
+	private function buildXmlHeader(): bool
 	{
 		// Get version of BwPostman
 		$version = $this->getBwPostmanVersion();
 
-		if ($version === false)
+		if ($version === '')
 		{
 			return false;
 		}
@@ -560,7 +561,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		$dumpXml            = $this->xml->createElement('mysqldump');
 		$dumpXmlAttr        = $this->xml->createAttribute('xmlns:xsi');
-		$dumpXmlAttr->value = "http://www.w3.org/TR/xmlschema-1";
+		$dumpXmlAttr->value = "https://www.w3.org/TR/xmlschema-1";
 
 		$dumpXml->appendChild($dumpXmlAttr);
 		$this->xml->appendChild($dumpXml);
@@ -745,7 +746,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 			if (is_array($tree))
 			{
-				foreach ($tree as $key => $value)
+				foreach ($tree as $value)
 				{
 					$res_tree[] = $value['id'];
 				}
@@ -805,16 +806,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to get the needed tables and its properties from sql install file(s)
 	 *
-	 * @return    mixed array|bool   array of tables with its properties, false on failure
+	 * @return    array|false   array of tables with its properties, false on failure
 	 *
 	 * @since    1.0.1
 	 */
 	public function getNeededTables()
 	{
 		// Import filesystem libraries. Perhaps not necessary, but does not hurt
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
 		// get path to sql install file of component
 		$paths   = array();
 		$paths[] = JPATH_ADMINISTRATOR . '/components/com_bwpostman/sql/';
@@ -880,7 +878,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$string  = '';
 				$i       = 0;
 
-				foreach ($txt_array as $key => $value)
+				foreach ($txt_array as $value)
 				{
 					$pos = strpos($value, 'CREATE');
 
@@ -1093,15 +1091,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * @since    1.0.1
 	 */
 
-	public static function getGenericTableName($table)
+	public static function getGenericTableName(string $table): string
 	{
 		// get db prefix
 		$prefix = Factory::getDbo()->getPrefix();
 
 		// Replace the magic prefix if found.
-		$table = preg_replace("|^$prefix|", '#__', $table);
-
-		return $table;
+		return preg_replace("|^$prefix|", '#__', $table);
 	}
 
 	/**
@@ -1115,7 +1111,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.0.1
 	 */
-	public function checkTableNames($neededTables, $genericTableNames, $mode = 'check')
+	public function checkTableNames(array $neededTables, array $genericTableNames, string $mode = 'check'): bool
 	{
 		if (!is_array($neededTables) && !is_array($genericTableNames))
 		{
@@ -1167,7 +1163,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.4.0
 	 */
-	private function handleNeededTables(array $neededTableNames, array $genericTableNames, array $neededTables)
+	private function handleNeededTables(array $neededTableNames, array $genericTableNames, array $neededTables): bool
 	{
 		$diff_1 = array_diff($neededTableNames, $genericTableNames);
 
@@ -1238,7 +1234,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.4.0
 	 */
-	private function handleObsoleteTables(array $genericTableNames, array $neededTableNames)
+	private function handleObsoleteTables(array $genericTableNames, array $neededTableNames): bool
 	{
 		$diff_2 = array_diff($genericTableNames, $neededTableNames);
 
@@ -1296,7 +1292,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.4.0
 	 */
-	private function handleTableProperties(array $neededTables)
+	private function handleTableProperties(array $neededTables): bool
 	{
 		if(!$this->checkEngineAndCharset($neededTables))
 		{
@@ -1325,7 +1321,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.4.0
 	 */
-	private function checkEngineAndCharset(array $neededTables)
+	private function checkEngineAndCharset(array $neededTables): bool
 	{
 		foreach ($neededTables as $table)
 		{
@@ -1455,7 +1451,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.4.0
 	 */
-	private function checkPrimaryAndIncrement(array $neededTables)
+	private function checkPrimaryAndIncrement(array $neededTables): bool
 	{
 		foreach ($neededTables as $table)
 		{
@@ -1514,13 +1510,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Get primary key of installed table
 	 *
-	 * @param $table
+	 * @param object $table
 	 *
 	 * @return string|boolean
 	 *
 	 * @since 2.4.0
 	 */
-	private function getInstalledPrimaryKey($table)
+	private function getInstalledPrimaryKey(object $table)
 	{
 		try
 		{
@@ -1558,14 +1554,14 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Drop wrong primary key of installed table
 	 *
-	 * @param $table
-	 * @param $installed_key
+	 * @param object $table
+	 * @param string $installed_key
 	 *
 	 * @return bool
 	 *
 	 * @since 2.4.0
 	 */
-	private function dropWrongPrimaryKey($table, $installed_key)
+	private function dropWrongPrimaryKey(object $table, string $installed_key): bool
 	{
 		$type = '';
 		foreach ($table->columns as $column)
@@ -1599,13 +1595,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Write correct primary key to installed table
 	 *
-	 * @param $table
+	 * @param object $table
 	 *
 	 * @return bool
 	 *
 	 * @since 2.4.0
 	 */
-	private function writeCorrectPrimaryKey($table)
+	private function writeCorrectPrimaryKey(object $table): bool
 	{
 		$query = 'ALTER TABLE ' . $this->db->quoteName($table->name) . ' ADD PRIMARY KEY (' . $this->db->quoteName($table->primary_key) . ')';
 
@@ -1646,13 +1642,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Get auto increment from installed table
 	 *
-	 * @param $table
+	 * @param object $table
 	 *
 	 * @return string|bool
 	 *
 	 * @since 2.4.0
 	 */
-	private function getAutoIncrement($table)
+	private function getAutoIncrement(object $table)
 	{
 		$query = 'SHOW columns FROM ' . $this->db->quoteName($table->name) . ' WHERE extra = "auto_increment"';
 
@@ -1676,13 +1672,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Set correct auto increment to installed table
 	 *
-	 * @param $table
+	 * @param object $table
 	 *
 	 * @return bool
 	 *
 	 * @since 2.4.0
 	 */
-	private function setCorrectAutoIncrement($table)
+	private function setCorrectAutoIncrement(object $table): bool
 	{
 		$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_WRONG', $table->name);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
@@ -1732,11 +1728,11 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @param object $checkTable object of table from installation file, that must be installed
 	 *
-	 * @return    boolean|integer
+	 * @return    integer|string
 	 *
 	 * @since    1.0.1
 	 */
-	public function checkTableColumns($checkTable)
+	public function checkTableColumns(object $checkTable)
 	{
 		if (!is_object($checkTable))
 		{
@@ -1816,7 +1812,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		$attributesResult = $this->handleColumnAttributes($neededColumns, $installedColumns, $checkTable);
 		if($attributesResult !== true)
 		{
-			return 'Handle attributes error: ' . $attributesResult;
+			return 'Handle attributes error: ' . false;
 		}
 
 		$message = str_pad(strip_tags(Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_ATTRIBUTES_OK', $checkTable->name)), 4096);
@@ -1831,16 +1827,16 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Check for missing columns and install them, if needed
 	 *
-	 * @param array   $neededColumns  columns which are named at installation file
+	 * @param array   $neededColumns columns which are named at installation file
 	 * @param         $i
-	 * @param array   $search_cols_1  columns which are installed
-	 * @param object  $checkTable     object of table from installation file, that must be installed
+	 * @param array   $search_cols_1 columns which are installed
+	 * @param object  $checkTable    object of table from installation file, that must be installed
 	 *
 	 * @return boolean|integer
 	 *
 	 * @since 2.4.0
 	 */
-	private function handleNeededColumns(array $neededColumns, $i, array $search_cols_1, $checkTable)
+	private function handleNeededColumns(array $neededColumns, $i, array $search_cols_1, object $checkTable)
 	{
 		if (array_search($neededColumns[$i]['Column'], $search_cols_1) === false)
 		{
@@ -1903,15 +1899,16 @@ class MaintenanceModel extends BaseDatabaseModel
 
 	/**
 	 * Check for obsolete columns and remove them, if needed
-	 * @param array   $installedColumns  columns which are installed
-	 * @param array   $search_cols_2     columns which are named at installation file
-	 * @param object  $checkTable     object of table from installation file, that must be installed
+	 *
+	 * @param array  $installedColumns columns which are installed
+	 * @param array  $search_cols_2    columns which are named at installation file
+	 * @param object $checkTable       object of table from installation file, that must be installed
 	 *
 	 * @return boolean|integer
 	 *
 	 * @since 2.4.0
 	 */
-	private function handleObsoleteColumns($installedColumns, array $search_cols_2, $checkTable)
+	private function handleObsoleteColumns(array $installedColumns, array $search_cols_2, object $checkTable)
 	{
 		if (array_search($installedColumns['Field'], $search_cols_2) === false)
 		{
@@ -1972,15 +1969,15 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Check for column attributes and correct them, if needed
 	 *
-	 * @param array   $neededColumns     array of columns which are named at installation file containing an array of all column attributes
-	 * @param array   $installedColumns  array of columns which are installed containing an array of all column attributes
-	 * @param object  $checkTable        object of table from installation file, that must be installed
+	 * @param array  $neededColumns    array of columns which are named at installation file containing an array of all column attributes
+	 * @param array  $installedColumns array of columns which are installed containing an array of all column attributes
+	 * @param object $checkTable       object of table from installation file, that must be installed
 	 *
 	 * @return bool
 	 *
 	 * @since 2.4.0
 	 */
-	private function handleColumnAttributes(array $neededColumns, array $installedColumns, $checkTable)
+	private function handleColumnAttributes(array $neededColumns, array $installedColumns, object $checkTable): bool
 	{
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
@@ -2133,7 +2130,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					else
 					{
 						// Else check if asset_id exists at assets table
-						$assetExists = $this->checkAssetIdExists($item->asset_id);
+						$assetExists = $this->checkAssetIdExists((int)$item->asset_id);
 
 						if ($assetExists === -1)
 						{
@@ -2253,7 +2250,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * @since    1.0.1
 	 *
 	 */
-	public function checkAssetParentId()
+	public function checkAssetParentId(): bool
 	{
 		// Set tables that has column asset_id
 		if($this->getTableNamesFromDB() === false)
@@ -2319,7 +2316,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.0.1
 	 */
-	public function checkUserIds()
+	public function checkUserIds(): bool
 	{
 		$query = $this->db->getQuery(true);
 
@@ -2370,14 +2367,14 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Builds the XML structure to export. Based on Joomla JDatabaseExporter
 	 *
-	 * @param string        $tableName name of table to build structure for
-	 * @param DOMDocument   $tablesXml
+	 * @param string     $tableName name of table to build structure for
+	 * @param DOMElement $tablesXml
 	 *
 	 * @return    boolean    true on success, false on database exception.
 	 *
 	 * @since    1.0.1
 	 */
-	private function buildXmlStructure($tableName, $tablesXml)
+	private function buildXmlStructure(string $tableName, DOMElement $tablesXml): bool
 	{
 		// Get the details columns information and install query.
 		try
@@ -2491,14 +2488,14 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Builds the XML data to export
 	 *
-	 * @param string           $tableName name of table
-	 * @param DOMDocument      $tablesXml    XML element tables
+	 * @param string     $tableName name of table
+	 * @param DOMElement $tablesXml XML element tables
 	 *
 	 * @return   bool        True on success
 	 *
 	 * @since    1.0.1
 	 */
-	private function buildXmlData($tableName, $tablesXml)
+	private function buildXmlData(string $tableName, DOMElement $tablesXml): bool
 	{
 		$data = $this->getTableDataToSave($tableName);
 
@@ -2558,14 +2555,14 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Builds the XML assets to export
 	 *
-	 * @param string         $tableName name of table
-	 * @param DOMDocument    $tablesXml
+	 * @param string     $tableName name of table
+	 * @param DOMElement $tablesXml
 	 *
 	 * @return boolean true on success, false on failure
 	 *
 	 * @since    1.0.1
 	 */
-	private function buildXmlAssets($tableName, $tablesXml)
+	private function buildXmlAssets(string $tableName, DOMElement $tablesXml): bool
 	{
 		$table_name_raw = $this->getRawTableName($tableName);
 
@@ -2607,25 +2604,6 @@ class MaintenanceModel extends BaseDatabaseModel
 	}
 
 	/**
-	 * Builds the XML data footer for the tables to export
-	 *
-	 * @return    string    An XML string
-	 *
-	 * @since    1.0.1
-	 *
-	 * @deprecated since 2.4.0
-	 */
-	private function buildXmlFooter()
-	{
-		$buffer = array();
-
-		$buffer[] = "\t</database>";
-		$buffer[] = '</mysqldump>';
-
-		return implode("\n", $buffer);
-	}
-
-	/**
 	 * Method to output general information
 	 *
 	 * @throws Exception
@@ -2635,7 +2613,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	public function outputGeneralInformation()
 	{
 		// Output general information
-		$generals = Factory::getApplication()->getUserState('com_bwpostman.maintenance.generals', null);
+		$generals = Factory::getApplication()->getUserState('com_bwpostman.maintenance.generals');
 
 		if (key_exists('BwPostmanVersion', $generals) || key_exists('SaveDate', $generals))
 		{
@@ -2667,14 +2645,14 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	public function healAssetUserGroups($table_names)
+	public function healAssetUserGroups(array $table_names): bool
 	{
 		$app = Factory::getApplication();
 
 		// process user groups, if they exists in backup
 		$com_assets = $app->getUserState('com_bwpostman.maintenance.com_assets', array());
 		$usergroups = $app->getUserState('com_bwpostman.maintenance.usergroups', array());
-		$tmp_file   = $app->getUserState('com_bwpostman.maintenance.tmp_file', null);
+		$tmp_file   = $app->getUserState('com_bwpostman.maintenance.tmp_file');
 		$fp         = fopen($tmp_file, 'r');
 		$tables     = unserialize(fread($fp, filesize($tmp_file)));
 		$modifiedAssets = array();
@@ -2732,17 +2710,15 @@ class MaintenanceModel extends BaseDatabaseModel
 			$app->setUserState('com_bwpostman.maintenance.usergroups', '');
 
 			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_PROCESSED');
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-			echo '<p class="text-success">' . $message . '</p>';
 		}
 		else
 		{
 			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_MESSAGE');
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-			echo '<p class="text-success">' . $message . '</p>';
 		}
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+		echo '<p class="text-success">' . $message . '</p>';
 
 		return  true;
 	}
@@ -2758,10 +2734,10 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    2.0.0
 	 */
-	public function anewBwPostmanTables($tables)
+	public function anewBwPostmanTables(array $tables)
 	{
 		// @ToDo: Check for process of plugin tables
-		$tmp_file      = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
+		$tmp_file      = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file');
 		$fp            = fopen($tmp_file, 'r');
 		$tablesQueries = unserialize(fread($fp, filesize($tmp_file)));
 
@@ -2778,7 +2754,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					$table = 'unknown';
 				}
 
-				return Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_ERROR', $table, $tableDeleteResult);
+				return Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_ERROR', $table, false);
 			}
 
 			$tableCreateResult = $this->createBwPostmanTableAnew($table, $tablesQueries);
@@ -2801,9 +2777,9 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to the rewrite tables content one by one from backup file
 	 *
-	 * @param string  $table           generic name of table to rewrite
-	 * @param string  $currentContent  current output content
-	 * @param boolean $lastTable       is this the last table?
+	 * @param string  $table          generic name of table to rewrite
+	 * @param string  $currentContent current output content
+	 * @param boolean $lastTable      is this the last table?
 	 *
 	 * @return    boolean
 	 *
@@ -2811,9 +2787,9 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	public function reWriteTables($table, &$currentContent, $lastTable = false)
+	public function reWriteTables(string $table, string &$currentContent, bool $lastTable = false): bool
 	{
-		$tmp_file        = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', null);
+		$tmp_file        = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file');
 		$tmpFileExists   = file_exists($tmp_file);
 		$dest            = Factory::getApplication()->getUserState('com_bwpostman.maintenance.dest', '');
 		$assetsFromState = Factory::getApplication()->getUserState('com_bwpostman.maintenance.modifiedAssets', array());
@@ -3044,7 +3020,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.0.8
 	 */
-	public function getBwPostmanVersion()
+	public function getBwPostmanVersion(): string
 	{
 		$query  = $this->db->getQuery(true);
 		$result = '';
@@ -3076,9 +3052,11 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @return    string    database name
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.0.1
 	 */
-	protected static function getDBName()
+	protected static function getDBName(): string
 	{
 		$config = Factory::getApplication()->getConfig();
 
@@ -3099,7 +3077,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	public function parseTablesData($file)
+	public function parseTablesData(string $file)
 	{
 		$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 		$message =  sprintf('Memory   consumption before parsing:  %01.3f MB', $memoryConsumption);
@@ -3278,9 +3256,10 @@ class MaintenanceModel extends BaseDatabaseModel
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
 
 		// paraphrase tables array per table for better handling and convert simple xml objects to strings
-		$i = 0;
+		$i         = 0;
+		$tmp_table = array_shift($x_tables);
 
-		while (null !== $tmp_table = array_shift($x_tables))
+		while (null !== $tmp_table)
 		{
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing at very beginning loop: %01.3f MB', $memoryConsumption);
@@ -3408,6 +3387,8 @@ class MaintenanceModel extends BaseDatabaseModel
 			$memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
 			$message =  sprintf('Memory consumption while parsing of table %s: %01.3f MB', $table_names[$i - 1],$memoryConsumption);
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
+
+			$tmp_table = array_shift($x_tables);
 		}
 
 		$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_SUCCESS');
@@ -3428,7 +3409,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	public function deleteSubAssets()
+	public function deleteSubAssets(): bool
 	{
 		$query = $this->db->getQuery(true);
 		$query->delete($this->db->quoteName('#__assets'));
@@ -3479,7 +3460,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	public function healAssetsTable()
+	public function healAssetsTable(): bool
 	{
 		try
 		{
@@ -3577,7 +3558,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	protected function getBaseAsset($table = 'component', $onlyHeal = false)
+	protected function getBaseAsset(string $table = 'component', bool $onlyHeal = false)
 	{
 		$stateAssetsRaw = '';
 
@@ -3620,7 +3601,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	public function insertBaseAsset($table, $showMessage = true)
+	public function insertBaseAsset(array $table, bool $showMessage = true)
 	{
 		// Get asset rules
 		$asset     = $this->getBaseAssetItem($table);
@@ -3700,7 +3681,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	public function updateSectionAsset($sectionName, $sectionRules)
+	public function updateSectionAsset(string $sectionName, array $sectionRules): bool
 	{
 		$assetName = 'com_bwpostman.' . $sectionName;
 
@@ -3740,7 +3721,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	protected function updateBaseAsset($asset = array())
+	protected function updateBaseAsset(array $asset = array()): bool
 	{
 		if (empty($asset))
 		{
@@ -3791,7 +3772,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	protected function getDefaultAsset($sectionAsset, $currentSection)
+	protected function getDefaultAsset(array $sectionAsset, string $currentSection): array
 	{
 		$default_asset  = $sectionAsset;
 
@@ -3809,14 +3790,14 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to get the minimized rules for a dataset
 	 *
-	 * @param array  $defaultRules
+	 * @param string $defaultRules
 	 * @param string $currentSection
 	 *
 	 * @return  string   $optimizedRules  optimized rules for a dataset
 	 *
 	 * @since    3.0.0
 	 */
-	protected function getOptimizedRules($defaultRules, $currentSection)
+	protected function getOptimizedRules(string $defaultRules, string $currentSection): string
 	{
 		$optimizedRules = array();
 		$allRules       = json_decode($defaultRules, true);
@@ -3847,7 +3828,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	protected function writeLoopAssets($dataset, $assetLoopCounter, $base_asset, &$mapOldAssetIdsToNew)
+	protected function writeLoopAssets(array $dataset, int $assetLoopCounter, array $base_asset, array &$mapOldAssetIdsToNew): bool
 	{
 		// Prepare insert data (convert to string, remove last bracket)
 		$insert_data = implode(',', $dataset);
@@ -3862,7 +3843,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		{
 			$this->db->setQuery($query);
 
-			$this->logger->addEntry(new LogEntry('Write Loop Assets Query 1: ' . (string) $query, BwLogger::BW_DEVELOPMENT,
+			$this->logger->addEntry(new LogEntry('Write Loop Assets Query 1: ' . $query, BwLogger::BW_DEVELOPMENT,
 				'maintenance'));
 
 			$this->db->execute();
@@ -3927,7 +3908,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	protected function writeLoopDatasets($dataset, $table)
+	protected function writeLoopDatasets(array $dataset, string $table): bool
 	{
 		try
 		{
@@ -3963,7 +3944,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	protected function getDataLoopMax($table)
+	protected function getDataLoopMax(string $table): int
 	{
 		switch ($table)
 		{
@@ -3996,7 +3977,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	private function getCurrentUserGroups($usergroups)
+	private function getCurrentUserGroups(array $usergroups)
 	{
 		$groups              = array();
 		$defaultJoomlaGroups = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
@@ -4109,7 +4090,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	private function rewriteAssetUserGroups($table, &$assets, $groupsToReplace)
+	private function rewriteAssetUserGroups(string $table, array &$assets, array $groupsToReplace): bool
 	{
 		$modifiedAssets  = Factory::getApplication()->getUserState('com_bwpostman.maintenance.modifiedAssets', array());
 		$old_ids         = array();
@@ -4198,7 +4179,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 */
-	public function createRestorePoint()
+	public function createRestorePoint(): bool
 	{
 		$tables = $this->getAffectedTables();
 
@@ -4366,16 +4347,18 @@ class MaintenanceModel extends BaseDatabaseModel
 	}
 
 	/**
-	 * Method to get the affected tables for restore point, but without temporary tables. Affected tables are not only all
-	 * tables with bwpostman in their name, but also assets and usergroups
+	 * Method to get the affected tables for restore point, but without temporary tables. Affected tables are not only
+	 * all tables with bwpostman in their name, but also assets and usergroups
 	 *
-	 * @param boolean $restore  are we at restore mode
+	 * @param boolean $restore are we at restore mode
 	 *
 	 * @return  array|boolean   $tableNames     array of affected tables
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.3.0
 	 */
-	protected function getAffectedTables($restore = false)
+	protected function getAffectedTables(bool $restore = false)
 	{
 		// get db prefix
 		$prefix = $this->db->getPrefix();
@@ -4416,7 +4399,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function getTableAssetData($table_name_raw, $dot = '.')
+	private function getTableAssetData(string $table_name_raw, string $dot = '.')
 	{
 		$endString = $dot;
 
@@ -4463,7 +4446,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @deprecated since 2.4.0
 	 */
-	protected function getBwpmTableName($table)
+	protected function getBwpmTableName(string $table): string
 	{
 		$start = strpos($table, '_', 3);
 
@@ -4483,7 +4466,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function getRawTableName($tableName)
+	private function getRawTableName(string $tableName): string
 	{
 		return str_replace('#__bwpostman_', '', $tableName);
 	}
@@ -4497,7 +4480,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function getBwPostmanUsergroups($table)
+	private function getBwPostmanUsergroups(string $table)
 	{
 		$searchValues = array("'BwPostmanAdmin'", "'BwPostmanManager'", "'BwPostmanPublisher'", "'BwPostmanEditor'");
 
@@ -4551,7 +4534,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function getBaseAssetItem($table)
+	private function getBaseAssetItem(array $table)
 	{
 		// If state is set, use this
 		$stateAssetsRaw = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
@@ -4627,7 +4610,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	public function checkForAsset($table)
+	public function checkForAsset(string $table)
 	{
 		$hasAsset = false;
 
@@ -4660,7 +4643,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function presetSectionRules($table)
+	private function presetSectionRules(array $table)
 	{
 		$tableName      = substr($table['tableNameRaw'], 0, -1) . '.';
 		$tableNameUC    = $table['tableNameUC'];
@@ -4828,7 +4811,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	public function createBaseAssets($updateComponent = false)
+	public function createBaseAssets(bool $updateComponent = false): bool
 	{
 		if ($this->getTableNamesFromDB() === false)
 		{
@@ -4925,7 +4908,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function updateComponentRules($rules)
+	private function updateComponentRules(Rules $rules): bool
 	{
 		$query = $this->db->getQuery(true);
 
@@ -4958,7 +4941,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function initializeComponentAssets()
+	private function initializeComponentAssets(): bool
 	{
 		$rules = array();
 
@@ -5238,7 +5221,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function initializeSectionAssets()
+	private function initializeSectionAssets(): bool
 	{
 		// Set all actions possible in and with sections
 		$actions = array('create', 'edit', 'edit.own', 'edit.state', 'archive', 'restore', 'delete', 'send');
@@ -5562,7 +5545,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function reduceRightsForInstalledGroups($actionRules)
+	private function reduceRightsForInstalledGroups(array $actionRules): array
 	{
 		$groups = $this->usedGroups;
 
@@ -5736,7 +5719,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function shiftRightAssets($com_asset)
+	private function shiftRightAssets($com_asset): bool
 	{
 		$query = $this->db->getQuery(true);
 
@@ -5771,7 +5754,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function shiftLeftAssets($com_asset)
+	private function shiftLeftAssets($com_asset): bool
 	{
 		$query = $this->db->getQuery(true);
 
@@ -5799,14 +5782,14 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to insert new asset at space provided by shiftRightAsset() and shiftLeftAsset()
 	 *
-	 * @param $com_asset
-	 * @param $asset
+	 * @param array $com_asset
+	 * @param array $asset
 	 *
 	 * @return boolean
 	 *
 	 * @since 2.0.0
 	 */
-	private function insertAssetToTable($com_asset, $asset)
+	private function insertAssetToTable(array $com_asset, array $asset): bool
 	{
 		$query = $this->db->getQuery(true);
 
@@ -5855,13 +5838,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Get complete asset from assets table by asset name
 	 *
-	 * @param $assetName
+	 * @param string $assetName
 	 *
 	 * @return string|boolean
 	 *
 	 * @since 2.0.0
 	 */
-	private function getAssetFromAssetsTableByName($assetName)
+	private function getAssetFromAssetsTableByName(string $assetName)
 	{
 		$query = $this->db->getQuery(true);
 
@@ -5890,13 +5873,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * Extracts base asset from provided array. Used for getting asset from state array.
 	 *
 	 * @param array $table
-	 * @param       $stateAssetsRaw
+	 * @param array $stateAssetsRaw
 	 *
 	 * @return mixed array|boolean
 	 *
 	 * @since 2.0.0
 	 */
-	protected function extractBaseAssetFromState($table, $stateAssetsRaw)
+	protected function extractBaseAssetFromState(array $table, array $stateAssetsRaw)
 	{
 		$assetName = 'com_bwpostman';
 
@@ -5919,13 +5902,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to get section asset from table by provided raw table name. Also usable for component asset
 	 *
-	 * @param $table
+	 * @param string $table
 	 *
 	 * @return mixed array|boolean
 	 *
 	 * @since 2.0.0
 	 */
-	protected function getBaseAssetFromTable($table)
+	protected function getBaseAssetFromTable(string $table)
 	{
 		$searchValue = 'com_bwpostman';
 
@@ -5960,13 +5943,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to get asset title for a specific table (hard coded)
 	 *
-	 * @param $table
+	 * @param string|array $table
 	 *
 	 * @return string
 	 *
 	 * @since 2,0.0
 	 */
-	protected function getAssetTitle($table)
+	protected function getAssetTitle($table): string
 	{
 		$switchValue = $table;
 
@@ -6101,14 +6084,14 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to get all ids and asset_ids of a table with assets of BwPostman
 	 *
-	 * @param $tableNameGeneric
+	 * @param string $tableNameGeneric
 	 *
 	 * @return array|boolean
 	 *
 	 * @since 2.4.0
 	 *
 	 */
-	private function getItemAssetList($tableNameGeneric)
+	private function getItemAssetList(string $tableNameGeneric)
 	{
 		$query = $this->db->getQuery(true);
 		$query->select('id');
@@ -6135,21 +6118,19 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to check if an asset_id exists at assets table
 	 *
-	 * @param $assetId
+	 * @param integer $assetId
 	 *
 	 * @return boolean|integer
 	 *
 	 * @since 2.4.0
 	 *
 	 */
-	private function checkAssetIdExists($assetId)
+	private function checkAssetIdExists(int $assetId)
 	{
-		$res = null;
-
 		$query = $this->db->getQuery(true);
 		$query->select('id');
 		$query->from($this->db->quoteName('#__assets'));
-		$query->where($this->db->quoteName('id') . ' = ' . (int) $assetId);
+		$query->where($this->db->quoteName('id') . ' = ' . $assetId);
 
 		try
 		{
@@ -6177,22 +6158,20 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * Method to get all Items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
 	 * but not present at asset table.
 	 *
-	 * @param $assetId
-	 * @param $assetName
+	 * @param integer $assetId
+	 * @param string  $assetName
 	 *
-	 * @return boolean
+	 * @return boolean|integer
 	 *
 	 * @since 2.4.0
 	 *
 	 */
-	private function checkAssetNameFits($assetId, $assetName)
+	private function checkAssetNameFits(int $assetId, string $assetName)
 	{
-		$res = null;
-
 		$query = $this->db->getQuery(true);
 		$query->select('name');
 		$query->from($this->db->quoteName('#__assets'));
-		$query->where($this->db->quoteName('id') . ' = ' . (int) $assetId);
+		$query->where($this->db->quoteName('id') . ' = ' . $assetId);
 
 		try
 		{
@@ -6219,17 +6198,15 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to get an asset id by an asset name. If the name exists returns the asset id, else false
 	 *
-	 * @param $assetName
+	 * @param string $assetName
 	 *
 	 * @return integer|boolean
 	 *
 	 * @since 2.4.0
 	 *
 	 */
-	private function getAssetIdByAssetName($assetName)
+	private function getAssetIdByAssetName(string $assetName)
 	{
-		$assetId = null;
-
 		$query = $this->db->getQuery(true);
 		$query->select('id');
 		$query->from($this->db->quoteName('#__assets'));
@@ -6268,7 +6245,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * @since 2.4.0
 	 *
 	 */
-	private function healAssetsAtItemsTable($tableNameGeneric, $assetIdsByName)
+	private function healAssetsAtItemsTable(string $tableNameGeneric, array $assetIdsByName): bool
 	{
 		// @ToDo: Here a simple foreach loop is used because it is expected, that there are less entries at the array. Perhaps
 		// a more speed-friendly version with a bunch of updates at the same time is needed
@@ -6307,7 +6284,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * @since 2.4.0
 	 *
 	 */
-	private function getCompleteItemsWithoutAssetId($tableNameGeneric, $itemIds)
+	private function getCompleteItemsWithoutAssetId(string $tableNameGeneric, array $itemIds)
 	{
 		$query = $this->db->getQuery(true);
 		$query->select('*');
@@ -6334,15 +6311,15 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to prepare collected values (array) to a string used by insert query for multiple inserts
 	 *
-	 * @param array $default_asset asset that holds current preset for new asset
-	 * @param       $item
-	 * @param       $title
+	 * @param array  $default_asset asset that holds current preset for new asset
+	 * @param array  $item
+	 * @param string $title
 	 *
 	 * @return string
 	 *
 	 * @since 2.0.0
 	 */
-	private function writeInsertStringFromCurrentItem(&$default_asset, $item, $title)
+	private function writeInsertStringFromCurrentItem(array &$default_asset, array $item, string $title): string
 	{
 		$curr_asset          = $default_asset;
 		$curr_asset['lft']   = $default_asset['lft'];
@@ -6360,21 +6337,19 @@ class MaintenanceModel extends BaseDatabaseModel
 			$dataset .= "'" . $curr_asset[$colName] . "',";
 		}
 
-		$dataset = substr($dataset, 0, -1) . ')';
-
-		return $dataset;
+		return substr($dataset, 0, -1) . ')';
 	}
 
 	/**
 	 * Method to quote the values of an array for use as strings with database
 	 *
-	 * @param $arrayData
+	 * @param array $arrayData
 	 *
 	 * @return array
 	 *
 	 * @since 2.0.0
 	 */
-	private function dbQuoteArray($arrayData)
+	private function dbQuoteArray(array $arrayData): array
 	{
 		$values = array();
 
@@ -6392,8 +6367,8 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * Also there is a mapping created to hold the newly created asset ids to update items. Remember: asset_id was 0 at item,
 	 * now there is an asset_id which the item should know about
 	 *
-	 * @param $itemsWithoutAsset
-	 * @param $table
+	 * @param array $itemsWithoutAsset
+	 * @param array $table
 	 *
 	 * @return array|boolean
 	 *
@@ -6401,7 +6376,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function insertAssets($itemsWithoutAsset, $table)
+	private function insertAssets(array $itemsWithoutAsset, array $table)
 	{
 		$sectionAsset = $this->getBaseAsset($table['tableNameRaw'], true);
 
@@ -6465,16 +6440,16 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * Method to write items with newly created asset_ids
 	 * This method could be used for newly created items (e.g. at installation) as well as while restoring tables
 	 *
-	 * @param $itemsWithoutAsset
-	 * @param $tableNameGeneric
-	 * @param $mapOldAssetIdsToNew
+	 * @param array      $itemsWithoutAsset
+	 * @param string     $tableNameGeneric
+	 * @param array|bool $mapOldAssetIdsToNew
 	 *
 	 * @return boolean
 	 *
 	 * @since 2.0.0
 	 *
 	 */
-	private function insertItems($itemsWithoutAsset, $tableNameGeneric, $mapOldAssetIdsToNew)
+	private function insertItems(array $itemsWithoutAsset, string $tableNameGeneric, $mapOldAssetIdsToNew): bool
 	{
 		/*
 		 * Import item data (can't use table bind/store, because we have IDs and Joomla sets mode to update,
@@ -6548,14 +6523,14 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to delete a specific BwPostman table
 	 *
-	 * @param $table
+	 * @param string $table
 	 *
 	 * @return boolean
 	 *
 	 * @since 2.0.0
 	 *
 	 */
-	protected function deleteBwPostmanTable($table)
+	protected function deleteBwPostmanTable(string $table): bool
 	{
 		try
 		{
@@ -6600,7 +6575,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * @since 2.0.0
 	 *
 	 */
-	protected function createBwPostmanTableAnew($table, $tablesQueries)
+	protected function createBwPostmanTableAnew(string $table, array $tablesQueries)
 	{
 		if ($table != 'component')
 		{
@@ -6670,7 +6645,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	protected function prepareAssetValues($asset, &$asset_transform, $s, $base_asset, &$asset_siblings)
+	protected function prepareAssetValues(array $asset, array &$asset_transform, int $s, array $base_asset, int &$asset_siblings): string
 	{
 		$values = array();
 
@@ -6704,13 +6679,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to get the table data of a BwPostman table for saving
 	 *
-	 * @param string  $tableName     the name of the table to save
+	 * @param string $tableName the name of the table to save
 	 *
 	 * @return array|boolean false on failure
 	 *
 	 * @since 2.4.0
 	 */
-	private function getTableDataToSave($tableName)
+	private function getTableDataToSave(string $tableName)
 	{
 		$query = $this->db->getQuery(true);
 
@@ -6771,8 +6746,6 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		if ($start !== false)
 		{
-			$stop             = stripos($query, ';', $start);
-//			$length           = $stop - $start - 8;
 			$table->collation = substr($query, $start + 8);
 			$table->collation = str_replace(';', '', $table->collation);
 		}

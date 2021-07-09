@@ -36,6 +36,7 @@ use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Table\Table;
+use Joomla\Database\QueryInterface;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Component\ComponentHelper;
@@ -161,9 +162,9 @@ class NewslettersModel extends ListModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	string  $type	    The table type to instantiate
-	 * @param	string	$prefix     A prefix for the table class name. Optional.
-	 * @param	array	$config     Configuration array for model. Optional.
+	 * @param	string $name    The table type to instantiate
+	 * @param	string $prefix  A prefix for the table class name. Optional.
+	 * @param	array  $options Configuration array for model. Optional.
 	 *
 	 * @return	Table	A database object
 	 *
@@ -171,9 +172,9 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($type = 'Newsletter', $prefix = 'Administrator', $config = array())
+	public function getTable($name = 'Newsletter', $prefix = 'Administrator', $options = array()): Table
 	{
-		return parent::getTable($type, $prefix, $config);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
@@ -272,7 +273,7 @@ class NewslettersModel extends ListModel
 
 	 * @since	1.0.1
 	 */
-	protected function getStoreId($id = '')
+	protected function getStoreId($id = ''): string
 	{
 		// Compile the store id.
 		$id .= ':' . serialize($this->getState('filter.published'));
@@ -293,11 +294,11 @@ class NewslettersModel extends ListModel
 	 *
 	 * @access	public
 	 *
-	 * @param	int	$id     Newsletter ID
+	 * @param int $id Newsletter ID
 	 *
 	 * @since       0.9.1
 	 */
-	public function setId($id = 0)
+	public function setId(int $id = 0)
 	{
 		// Set new venue ID and wipe data
 		$this->id   = $id;
@@ -316,7 +317,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since	1.2.0
 	 */
-	protected function _getListCount($query)
+	protected function _getListCount($query): int
 	{
 		// fall back to inefficient way of counting all results.
 		$result = 0;
@@ -348,13 +349,13 @@ class NewslettersModel extends ListModel
 	 *
 	 * Overridden to inject convert the attributes field into a Parameter object.
 	 *
-	 * @return	mixed	An array of objects on success, false on failure.
+	 * @return	array|null	An array of objects on success, false on failure.
 	 *
 	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
-	public function getItems()
+	public function getItems(): ?array
 	{
 		$items	= parent::getItems();
 		$user	= Factory::getApplication()->getIdentity();
@@ -437,7 +438,7 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @return string Query
+	 * @return false|QueryInterface Query
 	 *
 	 * @throws Exception
 	 *
@@ -455,9 +456,9 @@ class NewslettersModel extends ListModel
 		$params      = $this->getAppropriateParams();
 
 		// get accessible mailing lists
-		$mls	= $this->getAccessibleMailinglists('false');
+		$mls	= $this->getAccessibleMailinglists(false);
 
-		$groups	= $this->getAccessibleUsergroups('false');
+		$groups	= $this->getAccessibleUsergroups(false);
 
 		if (is_array($groups) && count($groups) > 0)
 		{
@@ -467,7 +468,7 @@ class NewslettersModel extends ListModel
 		}
 
 		// get accessible campaigns
-		$cams	= $this->getAccessibleCampaigns('false');
+		$cams	= $this->getAccessibleCampaigns(false);
 
 		// Filter by mailing list
 		$mailinglist = $this->getState('filter.mailinglist');
@@ -524,7 +525,7 @@ class NewslettersModel extends ListModel
 
 		$query->from($db->quoteName('#__bwpostman_newsletters') . ' AS ' . $db->quoteName('a'));
 		// in front end only sent and published newsletters are shown!
-		$query->where($db->quoteName('a') . '.' . $db->quoteName('published') . ' = ' . (int) 1);
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('published') . ' = ' . 1);
 		$query->where($db->quoteName('a') . '.' . $db->quoteName('mailing_date') . ' != ' . $db->quote($db->getNullDate()));
 
 		// Filter by mailing lists, user groups and campaigns
@@ -636,12 +637,11 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since       3.0.0
 	 */
-	public function getParamsFromSelectedMenuEntry($menuItem)
+	public function getParamsFromSelectedMenuEntry(int $menuItem): Registry
 	{
 		$menu	= Factory::getApplication()->getMenu();
-		$params	= $menu->getParams($menuItem);
 
-		return $params;
+		return $menu->getParams($menuItem);
 	}
 
 	/**
@@ -653,10 +653,10 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since       3.0.0
 	 */
-	public function getMenuItemid()
+	public function getMenuItemid(): int
 	{
 		$app    = Factory::getApplication();
-		$itemid = $app->getUserState('com_bwpostman.newsletters.itemid', null);
+		$itemid = $app->getUserState('com_bwpostman.newsletters.itemid');
 
 		if ($itemid === null)
 		{
@@ -666,7 +666,7 @@ class NewslettersModel extends ListModel
 			$query->select($db->quoteName('id'));
 			$query->from($db->quoteName('#__menu'));
 			$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=newsletters'));
-			$query->where($db->quoteName('client_id') . ' = ' . (int) 0);
+			$query->where($db->quoteName('client_id') . ' = ' . 0);
 
 			try
 			{
@@ -692,22 +692,20 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since	1.0.1
 	 */
-	public function getAllowedMailinglists()
+	public function getAllowedMailinglists(): array
 	{
 		$user = Factory::getApplication()->getIdentity();
 
 		// get authorized viewlevels
 		$viewLevels	= Access::getAuthorisedViewLevels($user->id);
 
-		$allowedMailinglists = $this->getTable('_Mailinglist')->getAllowedMailinglists($viewLevels);
-
-		return $allowedMailinglists;
+		return $this->getTable('_Mailinglist')->getAllowedMailinglists($viewLevels);
 	}
 
 	/**
 	 * Method to get all published mailing lists which the user is authorized to see and which are selected in menu
 	 *
-	 * @param	boolean	$title          with title
+	 * @param boolean $title with title
 	 *
 	 * @return 	array	$mailinglists   ID and title of allowed mailinglists
 	 *
@@ -715,7 +713,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since	1.2.0
 	 */
-	public function getAccessibleMailinglists($title = true)
+	public function getAccessibleMailinglists(bool $title = true): array
 	{
 		$params        = $this->getAppropriateParams();
 		$check         = $params->get('access-check');
@@ -766,7 +764,7 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to get all campaigns which the user is authorized to see
 	 *
-	 * @param boolean	$title      with title
+	 * @param boolean $title with title
 	 *
 	 * @return array
 	 *
@@ -774,10 +772,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since	1.2.0
 	 */
-	public function getAccessibleCampaigns($title = true)
+	public function getAccessibleCampaigns(bool $title = true): array
 	{
-		$mailinglists = null;
-		$campaigns    = null;
 		$params       = $this->getAppropriateParams();
 		$check        = $params->get('access-check');
 
@@ -825,7 +821,7 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to get all user groups which the user is authorized to see
 	 *
-	 * @param	boolean	$title      with title
+	 * @param boolean $title with title
 	 *
 	 * @return 	array	$groups     ID of allowed campaigns
 	 *
@@ -833,12 +829,11 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since	1.2.0
 	 */
-	public function getAccessibleUsergroups($title = true)
+	public function getAccessibleUsergroups(bool $title = true): ?array
 	{
 		$app       = Factory::getApplication();
 		$db		= $this->_db;
 		$query		= $db->getQuery(true);
-		$res_groups = null;
 		$groups     = null;
 		$params      = $this->getAppropriateParams();
 
@@ -942,7 +937,7 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to get all user groups which the user is authorized to see
 	 *
-	 * @param	int	    $id     module ID
+	 * @param int $id module ID
 	 *
 	 * @return 	object	$module module object
 	 *
@@ -950,7 +945,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since	1.2.0
 	 */
-	private function getModuleById($id = 0)
+	private function getModuleById(int $id = 0): ?object
 	{
 		$module = null;
 		$db	= $this->getDbo();
@@ -985,10 +980,10 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since 3.0.0
 	 */
-	protected function getAppropriateParams()
+	protected function getAppropriateParams(): Registry
 	{
 		$params = $this->state->params;
-		$mod_id = $this->getState('module.id', null);
+		$mod_id = $this->getState('module.id');
 
 		if (!is_null($mod_id))
 		{
@@ -1015,7 +1010,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since 3.0.0
  */
-	private function getMailinglistsByViewlevel()
+	private function getMailinglistsByViewlevel(): array
 	{
 		$viewLevelKeys = null;
 
@@ -1034,8 +1029,6 @@ class NewslettersModel extends ListModel
 			$viewLevelKeys[] = 0;
 		}
 
-		$mailinglists = $this->getTable('Mailinglist')->getAllowedMailinglists($viewLevels);
-
-		return $mailinglists;
+		return $this->getTable('Mailinglist')->getAllowedMailinglists($viewLevels);
 	}
 }

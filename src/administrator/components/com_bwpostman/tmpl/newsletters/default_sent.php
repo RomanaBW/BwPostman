@@ -40,8 +40,6 @@ HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
 HtmlHelper::_('behavior.multiselect');
 HTMLHelper::_('bootstrap.tooltip');
-// @Todo: Requires adminform to be present!!!!
-//HTMLHelper::_('behavior.tabstate');
 
 $user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');

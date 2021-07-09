@@ -25,6 +25,8 @@
  */
 
 use Joomla\CMS\Factory;
+use Joomla\Event\DispatcherInterface;
+
 /**
  * Class MediaOverride
  *
@@ -34,7 +36,7 @@ class plgSystemBWPM_MediaOverride extends JPlugin {
 	/**
 	 * plgSystemBWPM_MediaOverride constructor.
 	 *
-	 * @param object $subject
+	 * @param DispatcherInterface $subject
 	 * @param array  $config
 	 *
 	 * @since   2.3.0
@@ -48,15 +50,15 @@ class plgSystemBWPM_MediaOverride extends JPlugin {
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
 	public function onAfterRoute() {
-		$app = Factory::getApplication();
-		$jinput	= $app->input;
+		$app     = Factory::getApplication();
+		$jinput  = $app->input;
 
-		if($jinput->get('option') == 'com_media' && $jinput->get('asset') == 'com_bwpostman_nl' && $app->isAdmin())
+		if($jinput->get('option') == 'com_media' && $jinput->get('asset') == 'com_bwpostman_nl' && $app->isClient('administrator'))
 		{
 			require_once(dirname(__FILE__) . '/code/com_media/views/imageslist/view.html.php');
 		}

@@ -96,40 +96,43 @@ $new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.ne
 							</div>
 							<div class="col-lg-6">
 								<?php
-								$title = Text::_('COM_BWPOSTMAN_PRINT_SUB_DAT');
-								$modalParams['title'] = $title;
-								$printLayout = LayoutHelper::render('print', array('form' => $this->form, 'subscriberId' => $this->item->id), JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/subscriber/');
-								?>
-								<div class="control-group">
-									<div class="control-label">
+								if ($this->item->id > 0)
+								{
+									$title = Text::_('COM_BWPOSTMAN_PRINT_SUB_DAT');
+									$modalParams['title'] = $title;
+									$printLayout = LayoutHelper::render('print', array('form' => $this->form, 'subscriberId' => $this->item->id), JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/subscriber/');
+									?>
+									<div class="control-group">
+										<div class="control-label">
+										</div>
+										<div class="controls">
+											<button type="button" data-bs-target="#subsData" class="btn btn-primary" data-bs-toggle="modal">
+												<?php echo Text::_('COM_BWPOSTMAN_PRINT_SUB_DAT');?>
+											</button>
+										</div>
 									</div>
-									<div class="controls">
-										<button type="button" data-bs-target="#subsData" class="btn btn-primary" data-bs-toggle="modal">
-											<?php echo Text::_('COM_BWPOSTMAN_PRINT_SUB_DAT');?>
-										</button>
-									</div>
-								</div>
 
-								<!-- Modal -->
-								<div id="subsData" class="modal" tabindex="-1">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title"><?php echo $title; ?></h5>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<p><?php echo $printLayout; ?></p>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary btn-danger" data-bs-dismiss="modal"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
+									<!-- Modal -->
+									<div id="subsData" class="modal" tabindex="-1">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title"><?php echo $title; ?></h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													<p><?php echo $printLayout; ?></p>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary btn-danger" data-bs-dismiss="modal"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
 
 
-								<?php echo HTMLHelper::_('bootstrap.renderModal','subsData', $modalParams); ?>
+									<?php echo HTMLHelper::_('bootstrap.renderModal','subsData', $modalParams);
+								}?>
 
 								<div class="control-group">
 									<div class="control-label">

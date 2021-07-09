@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 
 defined ('_JEXEC') or die ();
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
@@ -41,13 +42,13 @@ class BwPostmanMailinglistHelper {
 	/**
 	 * Method to get the mailinglist ids for a single campaign
 	 *
-	 * @param array $mailinglists      list of mailinglists
+	 * @param array $mailinglists list of mailinglists
 	 *
 	 * @return array
 	 *
 	 * @since 3.0.0
 	 */
-	public static function extractAssociatedUsergroups($mailinglists = array())
+	public static function extractAssociatedUsergroups(array $mailinglists = array()): array
 	{
 		$usergroups	= array();
 
@@ -65,15 +66,15 @@ class BwPostmanMailinglistHelper {
 	/**
 	 * Method to merge the parts of the mailinglists (available, unavailable, internal, usergroups)
 	 *
-	 * @param array $data      list of mailinglists
+	 * @param array $data list of mailinglists
 	 *
 	 * @since 3.0.0
 	 */
-	public static function mergeMailinglists(&$data = array())
+	public static function mergeMailinglists(array &$data = array())
 	{
 		if (isset($data['ml_available']))
 		{
-			foreach ($data['ml_available'] as $key => $value)
+			foreach ($data['ml_available'] as $value)
 			{
 				$data['mailinglists'][] 	= $value;
 			}
@@ -81,7 +82,7 @@ class BwPostmanMailinglistHelper {
 
 		if (isset($data['ml_unavailable']))
 		{
-			foreach ($data['ml_unavailable'] as $key => $value)
+			foreach ($data['ml_unavailable'] as $value)
 			{
 				$data['mailinglists'][] 	= $value;
 			}
@@ -89,7 +90,7 @@ class BwPostmanMailinglistHelper {
 
 		if (isset($data['ml_intern']))
 		{
-			foreach ($data['ml_intern'] as $key => $value)
+			foreach ($data['ml_intern'] as $value)
 			{
 				$data['mailinglists'][] 	= $value;
 			}
@@ -98,7 +99,7 @@ class BwPostmanMailinglistHelper {
 		// merge usergroups into mailinglists, single array may not exist, therefore array_merge would not give a result
 		if (isset($data['usergroups']) && !empty($data['usergroups']))
 		{
-			foreach ($data['usergroups'] as $key => $value)
+			foreach ($data['usergroups'] as $value)
 			{
 				$data['mailinglists'][] = '-' . $value;
 			}
@@ -108,19 +109,19 @@ class BwPostmanMailinglistHelper {
 	/**
 	 * Method to merge the parts of the mailinglists (available, unavailable, internal) to one single array
 	 *
-	 * @param array $data      list of mailinglists
+	 * @param array $data list of mailinglists
 	 *
 	 * @return array
 	 *
 	 * @since 3.0.0
 	 */
-	public static function mergeMailinglistsOnly($data = array())
+	public static function mergeMailinglistsOnly(array $data = array()): array
 	{
 		$mailinglists = array();
 
 		if (isset($data['ml_available']))
 		{
-			foreach ($data['ml_available'] as $key => $value)
+			foreach ($data['ml_available'] as $value)
 			{
 				$mailinglists[] 	= $value;
 			}
@@ -128,7 +129,7 @@ class BwPostmanMailinglistHelper {
 
 		if (isset($data['ml_unavailable']))
 		{
-			foreach ($data['ml_unavailable'] as $key => $value)
+			foreach ($data['ml_unavailable'] as $value)
 			{
 				$mailinglists[] 	= $value;
 			}
@@ -136,7 +137,7 @@ class BwPostmanMailinglistHelper {
 
 		if (isset($data['ml_intern']))
 		{
-			foreach ($data['ml_intern'] as $key => $value)
+			foreach ($data['ml_intern'] as $value)
 			{
 				$mailinglists[] 	= $value;
 			}
@@ -148,7 +149,7 @@ class BwPostmanMailinglistHelper {
 	/**
 	 * Method to get the data of a single Mailinglist for raw view
 	 *
-	 * @param 	int $ml_id      Mailinglist ID
+	 * @param int|null $ml_id Mailinglist ID
 	 *
 	 * @return 	object Mailinglist
 	 *
@@ -156,7 +157,7 @@ class BwPostmanMailinglistHelper {
 	 *
 	 * @since 3.0.0 here
 	 */
-	public static function getSingleMailinglist($ml_id = null)
+	public static function getSingleMailinglist(int $ml_id = null): ?object
 	{
 		$mailinglist = null;
 
@@ -193,13 +194,13 @@ class BwPostmanMailinglistHelper {
 	 *
 	 * @param boolean $archiveMatters
 	 *
-	 * @return 	object
+	 * @return 	array
 	 *
 	 * @throws Exception
 	 *
 	 * @since 3.0.0
 	 */
-	public static function getMailinglistsFieldlistOptions($archiveMatters = false)
+	public static function getMailinglistsFieldlistOptions(bool $archiveMatters = false): ?array
 	{
 		$options   = null;
 		$db        = Factory::getDbo();

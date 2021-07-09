@@ -73,9 +73,9 @@ class BwpostmanModel extends BaseDatabaseModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param string $type   The table type to instantiate
-	 * @param string $prefix A prefix for the table class name. Optional.
-	 * @param array  $config Configuration array for model. Optional.
+	 * @param string $name    The table type to instantiate
+	 * @param string $prefix  A prefix for the table class name. Optional.
+	 * @param array  $options Configuration array for model. Optional.
 	 *
 	 * @return    boolean|Table    A database object
 	 *
@@ -83,9 +83,9 @@ class BwpostmanModel extends BaseDatabaseModel
 	 *
 	 * @since  3.0.0
 	 */
-	public function getTable($type = 'Newsletter', $prefix = 'Administrator', $config = array())
+	public function getTable($name = 'Newsletter', $prefix = 'Administrator', $options = array())
 	{
-		return parent::getTable($type, $prefix, $config);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
@@ -97,33 +97,33 @@ class BwpostmanModel extends BaseDatabaseModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function getGeneraldata()
+	public function getGeneraldata(): array
 	{
 		try
 		{
 			$general = array();
 
 		// Get # of all unsent newsletters
-		$nlTable = $this->getTable('Newsletter', 'Administrator');
+		$nlTable = $this->getTable();
 		$general['nl_unsent'] = $nlTable->getNbrOfNewsletters(false, false);
 
 		// Get # of all sent newsletters
 		$general['nl_sent'] = $nlTable->getNbrOfNewsletters(true, false);
 
 		// Get # of all subscribers
-		$subsTable = $this->getTable('Subscriber', 'Administrator');
+		$subsTable = $this->getTable('Subscriber');
 		$general['sub'] = $subsTable->getNbrOfSubscribers(false, false);
 
 		// Get # of all test-recipients
 		$general['test'] = $subsTable->getNbrOfSubscribers(true, false);
 
 		// Get # of all campaigns
-		$camTable = $this->getTable('Campaign', 'Administrator');
+		$camTable = $this->getTable('Campaign');
 		$general['cam'] = $camTable->getNbrOfCampaigns(false);
 
 		// Get # of all published mailinglists
 		// get available mailinglists to predefine for state
-		$mlTable = $this->getTable('Mailinglist', 'Administrator');
+		$mlTable = $this->getTable('Mailinglist');
 		$ml_available = $mlTable->getMailinglistsByRestriction(array(), 'available', 0, false);
 
 		// get unavailable mailinglists to predefine for state
@@ -138,7 +138,7 @@ class BwpostmanModel extends BaseDatabaseModel
 		$general['ml_unpublished'] = count($ml_intern);
 
 		// Get # of all html templates
-		$tplTable = $this->getTable('Template', 'Administrator');
+		$tplTable = $this->getTable('Template');
 		$general['html_templates'] = $tplTable->getNbrOfTemplates('html', false);
 
 		// Get # of all text templates
@@ -165,33 +165,33 @@ class BwpostmanModel extends BaseDatabaseModel
 	 *
 	 * @since
 	 */
-	public function getArchivedata()
+	public function getArchivedata(): array
 	{
 		try
 		{
 			$archive	= array();
 
 		// Get # of all archived newsletters
-		$nlTable = $this->getTable('Newsletter', 'Administrator');
+		$nlTable = $this->getTable();
 		$archive['arc_nl'] = $nlTable->getNbrOfNewsletters(false, true);
 
 		// Get # of all archived subscribers
-		$subsTable = $this->getTable('Subscriber', 'Administrator');
+		$subsTable = $this->getTable('Subscriber');
 		$archive['arc_sub'] = $subsTable->getNbrOfSubscribers(false, true);
 
 		// Get # of all archived campaigns
-		$camTable = $this->getTable('Campaign', 'Administrator');
+		$camTable = $this->getTable('Campaign');
 		$archive['arc_cam'] = $camTable->getNbrOfCampaigns(true);
 
 		// Get # of all archived mailinglists
 		// get available mailinglists to predefine for state
-		$mlTable = $this->getTable('Mailinglist', 'Administrator');
+		$mlTable = $this->getTable('Mailinglist');
 		$ml_archived = $mlTable->getMailinglistsByRestriction(array(), 'available', 1, false);
 
 		$archive['arc_ml'] = count($ml_archived);
 
 		// Get # of all html templates
-		$tplTable = $this->getTable('Template', 'Administrator');
+		$tplTable = $this->getTable('Template');
 		$archive['arc_html_templates'] = $tplTable->getNbrOfTemplates('html', true);
 
 		// Get # of all text templates
@@ -217,7 +217,7 @@ class BwpostmanModel extends BaseDatabaseModel
 	 *
 	 * This method is derived from Joomla com_config/model/application.php
 	 *
-	 * @param   string  $permission  Need an array with Permissions (component, rule, value and title)
+	 * @param string|null $permission Need an array with Permissions (component, rule, value and title)
 	 *
 	 * @return  array|boolean  A list of result data or false
 	 *
@@ -225,7 +225,7 @@ class BwpostmanModel extends BaseDatabaseModel
 	 *
 	 * @since   2.0
 	 */
-	public function storePermissions($permission = null)
+	public function storePermissions(string $permission = null)
 	{
 		$app  = Factory::getApplication();
 		$db   = $this->_db;
@@ -281,7 +281,7 @@ class BwpostmanModel extends BaseDatabaseModel
 		$isSuperUserGroupBefore = Access::checkGroup($permission['rule'], 'core.admin');
 
 		// Check if current user belongs to changed group.
-		$currentUserBelongsToGroup = in_array((int) $permission['rule'], $user->groups) ? true : false;
+		$currentUserBelongsToGroup = in_array((int) $permission['rule'], $user->groups);
 
 		// Get current user groups tree.
 		$currentUserGroupsTree = Access::getGroupsByUser($user->id, true);
@@ -323,7 +323,7 @@ class BwpostmanModel extends BaseDatabaseModel
 
 		try
 		{
-			$asset  = Table::getInstance('asset');
+			$asset  = $this->getTable('Asset');
 //			$asset  = $this->factory->createTable('asset');
 			$result = $asset->loadByName($permission['component']);
 
@@ -338,7 +338,7 @@ class BwpostmanModel extends BaseDatabaseModel
 				$asset->title = (string) $permission['title'];
 
 				// Get the parent asset id so we have a correct tree.
-				$parentAsset  = Table::getInstance('asset');
+				$parentAsset  = $this->getTable('Asset');
 //				$parentAsset = $this->factory->createTable('asset');
 
 				if (strpos($asset->name, '.') !== false)
@@ -568,7 +568,7 @@ class BwpostmanModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0
 	 */
-	private function getSectionNameFromPermissions($permission)
+	private function getSectionNameFromPermissions($permission): string
 	{
 		$parts = explode('.', $permission['component']);
 

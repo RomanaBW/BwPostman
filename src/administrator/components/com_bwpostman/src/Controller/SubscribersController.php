@@ -106,7 +106,7 @@ class SubscribersController extends AdminController
 	 *
 	 * @since   2.0.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array()): SubscribersController
 	{
 		if (!$this->permissions['view']['subscriber'])
 		{
@@ -131,11 +131,9 @@ class SubscribersController extends AdminController
 
 	 * @since	1.0.1
 	 */
-	public function getModel($name = 'Subscriber', $prefix = 'Administrator', $config = array('ignore_request' => true))
+	public function getModel($name = 'Subscriber', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
@@ -147,7 +145,7 @@ class SubscribersController extends AdminController
 	 *
 	 * @since       0.9.1
 	 */
-	public function importSubscribers()
+	public function importSubscribers(): bool
 	{
 		$jinput = Factory::getApplication()->input;
 		$user   = Factory::getApplication()->getIdentity();
@@ -186,7 +184,7 @@ class SubscribersController extends AdminController
 	 *
 	 * @since       0.9.1
 	 */
-	public function prepareImport()
+	public function prepareImport(): bool
 	{
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
@@ -203,9 +201,6 @@ class SubscribersController extends AdminController
 
 		// Retrieve file details from uploaded file, sent from upload form
 		$file = $jinput->files->get('importfile');
-
-		// Import filesystem libraries.
-		jimport('joomla.filesystem.file');
 
 		// Clean up filename to get rid of strange characters like spaces etc
 		$filename = File::makeSafe($file['name']);
@@ -340,7 +335,9 @@ class SubscribersController extends AdminController
 						if ($ext == 'csv')
 						{ // CSV file
 							$delimiter = stripcslashes($delimiter);
-							if (($data = fgetcsv($fh, 1000, $delimiter)) !== false)
+							$data      = fgetcsv($fh, 1000, $delimiter);
+
+							if ($data !== false)
 							{
 								$import_fields	= array();
 
@@ -351,7 +348,7 @@ class SubscribersController extends AdminController
 										$import_fields[] = HtmlHelper::_(
 											'select.option',
 											"column_$i",
-											Text::_('COM_BWPOSTMAN_SUB_IMPORT_COLUMN') . "$i ({$data[$i]})"
+											Text::_('COM_BWPOSTMAN_SUB_IMPORT_COLUMN') . "$i ($data[$i])"
 										);
 									}
 								}
@@ -385,7 +382,7 @@ class SubscribersController extends AdminController
 
 							if ($parser->getName() != "subscribers")
 							{
-								// TODO: es ist kein bwpostman xml file! koennen trotzdem fortfahren, falls geeignete felder drin sind
+								// TODO: es ist kein bwpostman xml file! können trotzdem fortfahren, falls geeignete felder drin sind
 								return false;
 							}
 
@@ -406,7 +403,7 @@ class SubscribersController extends AdminController
 								$import_fields[] = HtmlHelper::_(
 									'select.option',
 									"$elementNames[$i]",
-									Text::_('COM_BWPOSTMAN_SUB_IMPORT_FIELD') . "$i ({$elementNames[$i]})"
+									Text::_('COM_BWPOSTMAN_SUB_IMPORT_FIELD') . "$i ($elementNames[$i])"
 								);
 							}
 
@@ -461,9 +458,10 @@ class SubscribersController extends AdminController
 		$model      = $this->getModel('subscriber');
 		$subscriber = new stdClass();
 		$maildata   = array();
+		$session    = Factory::getApplication()->getSession();
 
 		$model->import($post, $maildata);
-		$import_result = Factory::getApplication()->getSession()->set('com_bwpostman.subscriber.import.messages', array());
+		$import_result = $session->set('com_bwpostman.subscriber.import.messages', array());
 
 		// Send emails to subscribers if they weren't confirmed
 		if (count($maildata))
@@ -487,7 +485,6 @@ class SubscribersController extends AdminController
 		}
 
 		//Get session object and store the result-array into the session
-		$session = Factory::getApplication()->getSession();
 		$session->set('com_bwpostman.subscriber.import.messages', $import_result);
 
 		$link = Route::_('index.php?option=com_bwpostman&view=subscriber&layout=import2', false);
@@ -503,7 +500,7 @@ class SubscribersController extends AdminController
 	 *
 	 * @since       0.9.1
 	 */
-	public function exportSubscribers()
+	public function exportSubscribers(): bool
 	{
 		$jinput = Factory::getApplication()->input;
 		$user   = Factory::getApplication()->getIdentity();

@@ -98,7 +98,7 @@ class TemplateController extends FormController
 	 *
 	 * @since   2.0.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array()): TemplateController
 	{
 		if (!$this->permissions['view']['template'])
 		{
@@ -161,7 +161,7 @@ class TemplateController extends FormController
 	 *
 	 * @since	1.1.0
 	 */
-	protected function allowAdd($data = array())
+	protected function allowAdd($data = array()): bool
 	{
 		return $this->permissions['template']['create'];
 	}
@@ -178,7 +178,7 @@ class TemplateController extends FormController
 	 *
 	 * @since	1.1.0
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = array(), $key = 'id'): bool
 	{
 		return BwPostmanHelper::canEdit('template', $data);
 	}
@@ -186,7 +186,7 @@ class TemplateController extends FormController
 	/**
 	 * Method to check if you can archive records
 	 *
-	 * @param	array 	$recordIds		an array of items to check permission for
+	 * @param array $recordIds an array of items to check permission for
 	 *
 	 * @return	boolean
 	 *
@@ -194,7 +194,7 @@ class TemplateController extends FormController
 	 *
 	 * @since	2.0.0
 	 */
-	protected function allowArchive($recordIds = array())
+	protected function allowArchive(array $recordIds = array()): bool
 	{
 		foreach ($recordIds as $recordId)
 		{
@@ -223,7 +223,7 @@ class TemplateController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	public function edit($key = null, $urlVar = null)
+	public function edit($key = null, $urlVar = null): bool
 	{
 		// Initialise variables.
 		$jinput    = Factory::getApplication()->input;
@@ -257,7 +257,7 @@ class TemplateController extends FormController
 		}
 		else
 		{
-			$allowed = $this->allowEdit(array('id' => $recordId, 'created_by' => $createdBy), 'id');
+			$allowed = $this->allowEdit(array('id' => $recordId, 'created_by' => $createdBy));
 		}
 
 		if (!$allowed)
@@ -355,7 +355,7 @@ class TemplateController extends FormController
 	 *
 	 * @since	1.1.0
 	 */
-	public function archive()
+	public function archive(): bool
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -439,11 +439,9 @@ class TemplateController extends FormController
 	 *
 	 * @since	1.1.0
 	 */
-	public function getModel($name = 'Template', $prefix = 'Administrator', $config = array())
+	public function getModel($name = 'Template', $prefix = 'Administrator', $config = array()): BaseDatabaseModel
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**

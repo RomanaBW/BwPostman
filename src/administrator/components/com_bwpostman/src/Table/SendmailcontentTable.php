@@ -343,13 +343,13 @@ class SendmailcontentTable extends Table
 	 *
 	 * @param int $id id of the content
 	 *
-	 * @return	mixed	string on success, null on failure.
+	 * @return	string|null string on success, null on failure.
 	 *
 	 * @throws Exception
 	 *
 	 * @since	2.4.0
 	 */
-	public function getContent(int $id)
+	public function getContent(int $id): ?string
 	{
 		$newsletter = null;
 

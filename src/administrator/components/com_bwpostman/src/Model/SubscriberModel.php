@@ -29,9 +29,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Import MODEL and Helper object class
-jimport('joomla.application.component.modeladmin');
-
 use DOMDocument;
 use Exception;
 use Joomla\CMS\Factory;
@@ -46,10 +43,10 @@ use Joomla\CMS\Filter\InputFilter;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use RuntimeException;
 use SimpleXMLElement;
 use stdClass;
+use Joomla\CMS\Object\CMSObject;
 
 /**
  * BwPostman subscriber model
@@ -91,6 +88,16 @@ class SubscriberModel extends AdminModel
 	public $permissions;
 
 	/**
+	 * property to hold array of mailinglist ids
+	 *
+	 * @var array $list_id_values
+	 *
+	 * @since       4.0.0
+	 */
+	public $list_id_values;
+
+
+	/**
 	 * Constructor
 	 * Determines the subscriber/test-recipient ID
 	 *
@@ -112,9 +119,9 @@ class SubscriberModel extends AdminModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	string  $type	    The table type to instantiate
-	 * @param	string	$prefix     A prefix for the table class name. Optional.
-	 * @param	array	$config     Configuration array for model. Optional.
+	 * @param	string $name    The table type to instantiate
+	 * @param	string $prefix  A prefix for the table class name. Optional.
+	 * @param	array  $options Configuration array for model. Optional.
 	 *
 	 * @return	boolean|Table	A database object
 	 *
@@ -122,19 +129,19 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($type = 'Subscriber', $prefix = 'Administrator', $config = array())
+	public function getTable($name = 'Subscriber', $prefix = 'Administrator', $options = array())
 	{
-		return parent::getTable($type, $prefix, $config);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
 	 * Method to reset the subscriber/test-recipient ID and subscriber/test-recipient data
 	 *
-	 * @param	int     $id     Subscriber ID
+	 * @param int $id Subscriber ID
 	 *
 	 * @since       0.9.1
 	 */
-	public function setId($id)
+	public function setId(int $id)
 	{
 		$this->id   = $id;
 		$this->data = null;
@@ -152,17 +159,15 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since    2.0.0
 	 */
-	protected function canEditState($record)
+	protected function canEditState($record): bool
 	{
-		$permission = BwPostmanHelper::canEditState('subscriber', (int) $record->id);
-
-		return $permission;
+		return BwPostmanHelper::canEditState('subscriber', (int) $record->id);
 	}
 
 	/**
 	 * Method to get the data of a single subscriber for raw view
 	 *
-	 * @param 	int $sub_id     Subscriber ID
+	 * @param int|null $sub_id Subscriber ID
 	 *
 	 * @return 	object Subscriber
 	 *
@@ -170,9 +175,9 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function getSubscriberData($sub_id = null)
+	public function getSubscriberData(int $sub_id = null)
 	{
-		$subscriber = array();
+		$subscriber = new stdClass();
 		$db         = $this->_db;
 		$pre_tbl_u  = $db->quoteName('u');
 		$pre_tbl_s  = $db->quoteName('s');
@@ -228,7 +233,7 @@ class SubscriberModel extends AdminModel
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		$mailinglist_ids = $this->getTable('SubscribersMailinglists')->getMailinglistIdsOfSubscriber($sub_id);
+		$mailinglist_ids = $this->getTable('SubscribersMailinglists')->getMailinglistIdsOfSubscriber((int)$sub_id);
 
 		$subscriber->lists = $this->getTable('Mailinglist')->getCompleteMailinglistsOfSubscriber($mailinglist_ids);
 
@@ -240,7 +245,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @param	integer	$pk	The id of the primary key.
 	 *
-	 * @return	mixed	Object on success, false on failure.
+	 * @return    bool|CMSObject|object    Object on success, false on failure.
 	 *
 	 * @throws Exception
 	 *
@@ -249,8 +254,8 @@ class SubscriberModel extends AdminModel
 	public function getItem($pk = null)
 	{
 		$app          = Factory::getApplication();
-		$data         = $app->getUserState('com_bwpostman.edit.subscriber.data', null);
-		$mailinglists = $app->getUserState('com_bwpostman.edit.subscriber.mailinglists', null);
+		$data         = $app->getUserState('com_bwpostman.edit.subscriber.data');
+		$mailinglists = $app->getUserState('com_bwpostman.edit.subscriber.mailinglists');
 
 //		if (!empty($pk))
 //		{
@@ -324,7 +329,7 @@ class SubscriberModel extends AdminModel
 	 * @param	array	$data		Data for the form.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return	mixed	A JForm object on success, false on failure
+	 * @return    false|Form    A JForm object on success, false on failure
 	 *
 	 * @throws Exception
 	 *
@@ -373,7 +378,7 @@ class SubscriberModel extends AdminModel
 	}
 
 	/**
-	/**
+	* /**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return	mixed	The data for the form.
@@ -408,7 +413,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function save($data)
+	public function save($data): bool
 	{
 		//initialize variables
 		$app        = Factory::getApplication();
@@ -434,7 +439,7 @@ class SubscriberModel extends AdminModel
 			// Admin creates a new subscriber?
 			if (!$data['id'])
 			{
-				$subsTable        = $this->getTable('Subscriber');
+				$subsTable        = $this->getTable();
 				$data['editlink'] = $subsTable->getEditlink();
 
 				// Admin doesn't confirm the subscriber?
@@ -541,8 +546,8 @@ class SubscriberModel extends AdminModel
 	 * Method to (un)archive a subscriber/test-recipient
 	 * --> when unarchiving it is called by the archive-controller
 	 *
-	 * @param	array   $cid        Subscriber/Test-recipient IDs
-	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
+	 * @param array $cid     Subscriber/Test-recipient IDs
+	 * @param int   $archive Task --> 1 = archive, 0 = unarchive
 	 *
 	 * @return	boolean
 	 *
@@ -550,7 +555,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function archive($cid = array(), $archive = 1)
+	public function archive(array $cid = array(), int $archive = 1): bool
 	{
 		$app  = Factory::getApplication();
 		$date = Factory::getDate();
@@ -590,7 +595,7 @@ class SubscriberModel extends AdminModel
 			$query	= $db->getQuery(true);
 
 			$query->update($db->quoteName('#__bwpostman_subscribers'));
-			$query->set($db->quoteName('archive_flag') . " = " . (int) $archive);
+			$query->set($db->quoteName('archive_flag') . " = " . $archive);
 			$query->set($db->quoteName('archive_date') . " = " . $db->quote($date));
 			$query->set($db->quoteName('archived_by') . " = " . $userid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
@@ -621,7 +626,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function delete(&$pks)
+	public function delete(&$pks): bool
 	{
 		$pks = ArrayHelper::toInteger($pks);
 
@@ -660,8 +665,8 @@ class SubscriberModel extends AdminModel
 	/**
 	 * Method to get the import data from the import file
 	 *
-	 * @param 	array   $data           associative array of data which we need to prepare the storing to store
-	 * @param 	array   $ret_maildata   associative array of subscriber email data --> we need this if the admin didn't confirm the accounts
+	 * @param array $data         associative array of data which we need to prepare the storing to store
+	 * @param array $ret_maildata associative array of subscriber email data --> we need this if the admin didn't confirm the accounts
 	 *
 	 * @return 	boolean true on success
 	 *
@@ -669,7 +674,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function import($data, &$ret_maildata)
+	public function import(array $data, array &$ret_maildata): bool
 	{
 		// Access check
 		if (!$this->permissions['subscriber']['create'])
@@ -783,14 +788,14 @@ class SubscriberModel extends AdminModel
 		{ // Format = csv
 			$delimiter = '';
 			$enclosure = '"';
-			$caption   = '';
+			$caption   = false;
 
 			// Load the session data which are needed for csv import operation
 			if(isset($import_general_data) && is_array($import_general_data))
 			{
 				if (isset($import_general_data['caption']))
 				{
-					$caption = stripcslashes($import_general_data['caption']);
+					$caption = $import_general_data['caption'];
 				}
 
 				if (isset($import_general_data['delimiter']))
@@ -807,7 +812,9 @@ class SubscriberModel extends AdminModel
 			$app->setUserState('com_bwpostman.subscriber.fileformat', 'csv');
 
 			// Get data from the file and store them into an array
-			while(($row = fgetcsv($fh, '', $delimiter, $enclosure)) !== false)
+			$row = fgetcsv($fh, '', $delimiter, $enclosure);
+
+			while(is_array($row))
 			{
 				$intKeys = array(
 					'emailformat',
@@ -837,17 +844,20 @@ class SubscriberModel extends AdminModel
 				// If caption is set, don't read the first line of the csv-file
 				if ($caption)
 				{
-					$caption = 0;
+					$caption = false;
+					$row     = fgetcsv($fh, '', $delimiter, $enclosure);
 					continue;
 				}
 
 				// Save the row
 				$this->save_import($values, $confirm, $doValidation, $row_nbr, $mailinglists, $ret_maildata);
 
-				if ($ret_maildata)
+				if (count($ret_maildata))
 				{
-					$mail[] = $ret_maildata;
+					$mail = $ret_maildata;
 				}
+
+				$row = fgetcsv($fh, '', $delimiter, $enclosure);
 			} // Endif format == csv
 		}
 		else
@@ -911,12 +921,12 @@ class SubscriberModel extends AdminModel
 	/**
 	 * Method to save single import data set
 	 *
-	 * @param 	array   $values       associative array of data to store
-	 * @param 	boolean $confirm      Confirm --> 0 = do not confirm, 1 = confirm
-	 * @param 	boolean $doValidation Validate email address --> 0 = do not validate, 1 = validate
-	 * @param 	int     $row          CSV row --> we will use this only if the format is csv
-	 * @param	array   $mailinglists array of mailinglist IDs
-	 * @param	array   $ret_maildata associative object of subscriber email data
+	 * @param array   $values       associative array of data to store
+	 * @param boolean $confirm      Confirm --> 0 = do not confirm, 1 = confirm
+	 * @param boolean $doValidation Validate email address --> 0 = do not validate, 1 = validate
+	 * @param int     $row          CSV row --> we will use this only if the format is csv
+	 * @param array   $mailinglists array of mailinglist IDs
+	 * @param array   $ret_maildata associative object of subscriber email data
 	 *
 	 * @return	Boolean true on success
 	 *
@@ -924,7 +934,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function save_import($values, $confirm, $doValidation, $row, $mailinglists, &$ret_maildata)
+	public function save_import(array $values, bool $confirm, bool $doValidation, int $row, array $mailinglists, array &$ret_maildata): bool
 	{
 		// Access check
 		if (!$this->permissions['subscriber']['create'])
@@ -961,7 +971,7 @@ class SubscriberModel extends AdminModel
 				$err['row']   = $row;
 				$err['email'] = $values['email'];
 				$err['msg']   = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL', $values['email']);
-				$err['msg']  .= $emailValidationResult;
+				$err['msg']  .= false;
 				$err['type']  = 'error';
 
 				$importMessages['import_err'][] = $err;
@@ -974,7 +984,6 @@ class SubscriberModel extends AdminModel
 		$date         = Factory::getDate();
 		$time         = $date->toSql();
 		$user         = Factory::getApplication()->getIdentity();
-		$ret_maildata = '';
 
 		// We may set confirmation data if the confirm-box is checked and the import value does not stand against
 		// @ToDo: What if a migration is done and all fields BwPostman uses, are exported? Values like confirmation or
@@ -988,7 +997,7 @@ class SubscriberModel extends AdminModel
 			$values["confirmation_ip"]   = $remote_ip;
 		}
 
-		$subsTable = $this->getTable('Subscriber');
+		$subsTable = $this->getTable();
 
 		try
 		{
@@ -1134,11 +1143,9 @@ class SubscriberModel extends AdminModel
 
 		if (isset($subscriber_emaildata))
 		{
-			$ret_maildata = null;
-
 			if ($subscriber_emaildata)
 			{
-				$ret_maildata = $subscriber_emaildata;
+				$ret_maildata[] = $subscriber_emaildata;
 			}
 		}
 
@@ -1148,7 +1155,7 @@ class SubscriberModel extends AdminModel
 	/**
 	 * Method to export selected data
 	 *
-	 * @param 	array   $data       associative array of export option data
+	 * @param array $data associative array of export option data
 	 *
 	 * @return 	string  $output     File content
 	 *
@@ -1156,7 +1163,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function export($data)
+	public function export(array $data)
 	{
 		// Access check
 		if (!$this->permissions['com']['admin'])
@@ -1219,11 +1226,11 @@ class SubscriberModel extends AdminModel
 	/**
 	 * Method to build the WHERE-clause for the export function
 	 *
-	 * @param 	integer     $status0    Status = 0 --> account is not confirmed
-	 * @param 	integer     $status1    Status = 1 --> account is confirmed
-	 * @param 	integer     $status9    Status = 9 --> subscriber is test-recipient
-	 * @param 	integer     $archive0   Archive_flag = 0 --> subscriber is not archived
-	 * @param 	integer     $archive1   Archive_flag = 1 --> subscriber is archived
+	 * @param integer $status0  Status = 0 --> account is not confirmed
+	 * @param integer $status1  Status = 1 --> account is confirmed
+	 * @param integer $status9  Status = 9 --> subscriber is test-recipient
+	 * @param integer $archive0 Archive_flag = 0 --> subscriber is not archived
+	 * @param integer $archive1 Archive_flag = 1 --> subscriber is archived
 	 *
 	 * @return 	String  $subQuery   WHERE-clause
 	 *
@@ -1231,7 +1238,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	private function buildExportSubQuery($status0 = 0, $status1 = 0, $status9 = 0, $archive0 = 0, $archive1 = 0)
+	private function buildExportSubQuery(int $status0 = 0, int $status1 = 0, int $status9 = 0, int $archive0 = 0, int $archive1 = 0): string
 	{
 		$db       = $this->_db;
 		$subQuery = '';
@@ -1278,24 +1285,24 @@ class SubscriberModel extends AdminModel
 		{
 			if ($where)
 			{
-				$subQuery .= " AND {$db->quoteName('archive_flag')} = " . (int) 0;
+				$subQuery .= " AND {$db->quoteName('archive_flag')} = " . 0;
 				$where = true;
 			}
 			else
 			{
-				$subQuery = " WHERE {$db->quoteName('archive_flag')} = " . (int) 0;
+				$subQuery = " WHERE {$db->quoteName('archive_flag')} = " . 0;
 			}
 		}
 		elseif ($archive1)
 		{
 			if ($where)
 			{
-				$subQuery .= " AND {$db->quoteName('archive_flag')} = " . (int) 1;
+				$subQuery .= " AND {$db->quoteName('archive_flag')} = " . 1;
 				$where = true;
 			}
 			else
 			{
-				$subQuery = " WHERE {$db->quoteName('archive_flag')} = " . (int) 1;
+				$subQuery = " WHERE {$db->quoteName('archive_flag')} = " . 1;
 			}
 		}
 
@@ -1322,13 +1329,13 @@ class SubscriberModel extends AdminModel
 	/**
 	 * Method to create the XML file content
 	 *
-	 * @param array $subscribers   the subscribers to export
+	 * @param array $subscribers the subscribers to export
 	 *
 	 * @return string
 	 *
 	 * @since       3.0.0
 	 */
-	private function processXmlExport($subscribers)
+	private function processXmlExport(array $subscribers): string
 	{
 		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"  standalone="yes"?><subscribers></subscribers>');
 
@@ -1361,7 +1368,7 @@ class SubscriberModel extends AdminModel
 	 * @param   array  $pks       		An array of item ids.
 	 * @param   array  $contexts		An array of contexts.
 	 *
-	 * @return  mixed  Returns array on success, false on failure.
+	 * @return  array|false|int  Returns array on success, false on failure.
 	 *
 	 * @throws Exception
 	 *
@@ -1464,16 +1471,16 @@ class SubscriberModel extends AdminModel
 	/**
 	 * Batch add subscribers to a new mailinglist.
 	 *
-	 * @param   integer  $mailinglist   The new mailinglist.
-	 * @param   array    $pks       	An array of row IDs.
+	 * @param integer $mailinglist The new mailinglist.
+	 * @param array   $pks         An array of row IDs.
 	 *
-	 * @return  mixed  An array of result values on success, boolean false on failure.
+	 * @return  array|false  An array of result values on success, boolean false on failure.
 	 *
 	 * @throws Exception
 	 *
 	 * @since	1.0.8
 	 */
-	protected function batchAdd($mailinglist, $pks)
+	protected function batchAdd(int $mailinglist, array $pks)
 	{
 		// Access check
 		if (!BwPostmanHelper::canEdit('subscriber', $pks))
@@ -1484,7 +1491,6 @@ class SubscriberModel extends AdminModel
 		$result_set  = array();
 		$subscribed  = 0;
 		$skipped     = 0;
-		$mailinglist = (int)$mailinglist;
 		$subsMlTable = $this->getTable('SubscribersMailinglists');
 
 		// Subscribers exists so let's proceed
@@ -1516,8 +1522,8 @@ class SubscriberModel extends AdminModel
 	/**
 	 * Batch unsubscribe subscribers from a mailinglist.
 	 *
-	 * @param   integer  $mailinglist	The mailinglist ID.
-	 * @param   array    $pks       	An array of row IDs.
+	 * @param integer $mailinglist The mailinglist ID.
+	 * @param array   $pks         An array of row IDs.
 	 *
 	 * @return  array|bool
 	 *
@@ -1525,7 +1531,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since   1.0.8
 	 */
-	protected function batchRemove($mailinglist, $pks)
+	protected function batchRemove(int $mailinglist, array $pks)
 	{
 		// Access check
 		if (!BwPostmanHelper::canEdit('subscriber', $pks))
@@ -1536,7 +1542,6 @@ class SubscriberModel extends AdminModel
 		$result_set   = array();
 		$unsubscribed = 0;
 		$skipped      = 0;
-		$mailinglist  = (int)$mailinglist;
 		$subsMlTable  = $this->getTable('SubscribersMailinglists');
 
 		// Subscribers exists so let's proceed
@@ -1585,7 +1590,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since 3.0.0
 	 */
-	private function getSubscribersToExport($data)
+	private function getSubscribersToExport(array $data)
 	{
 		$db            = $this->_db;
 		$export_fields = $data['export_fields'];

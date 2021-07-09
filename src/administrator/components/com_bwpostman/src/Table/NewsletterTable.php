@@ -585,7 +585,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	/**
 	 * Function markAsSent
 	 *
-	 * @param $id
+	 * @param integer|null $id
 	 *
 	 * @return boolean True on success
 	 *
@@ -593,7 +593,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public function markAsSent($id = null): bool
+	public function markAsSent(int $id = null): bool
 	{
 		if ($id)
 		{
@@ -635,7 +635,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	/**
 	 * Function change isTemplate
 	 *
-	 * @param $id
+	 * @param integer|null $id
 	 *
 	 * @return boolean | int false on failure, on success set value
 	 *
@@ -643,7 +643,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       2.2.0
 	 */
-	public function changeIsTemplate($id = null)
+	public function changeIsTemplate(int $id = null)
 	{
 		if ($id)
 		{
@@ -974,7 +974,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to remove the campaign newsletters from the newsletters table
 	 *
-	 * @param $id
+	 * @param integer $id
 	 *
 	 * @return bool
 	 *
@@ -982,13 +982,13 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  3.0.0 (here, before since 2.0.0 at campaign model)
 	 */
-	public function deleteCampaignsNewsletters($id): bool
+	public function deleteCampaignsNewsletters(int $id): bool
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote((int)$id));
+		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote($id));
 
 		try
 		{

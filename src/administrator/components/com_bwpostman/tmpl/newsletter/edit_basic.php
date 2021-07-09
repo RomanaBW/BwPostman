@@ -384,7 +384,7 @@ $currentTab = 'edit_basic';
 								<div class="h3" id="bw_nl_edit_rules">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_FIELDSET_RULES'); ?>
 								</div>
-								<section id="rules" name="Newsletters permissions" aria-labelledby="tab-rules" role="tabpanel" active="">
+								<section id="rules" aria-labelledby="tab-rules" role="tabpanel">
 									<?php echo $this->form->getInput('rules'); ?>
 								</section>
 							</div>

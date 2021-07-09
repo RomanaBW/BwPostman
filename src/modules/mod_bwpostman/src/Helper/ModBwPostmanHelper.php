@@ -34,6 +34,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use RuntimeException;
+use stdClass;
 
 /**
  * Class ModBwPostmanHelper
@@ -43,7 +44,7 @@ use RuntimeException;
 class ModBwPostmanHelper
 {
 	/**
-	 * Method to get the subscriber ID of the user
+	 * Method to get the subscriber ID of the current user
 	 *
 	 * @return    int     $subscriberid   id of the subscriber
 	 *
@@ -51,7 +52,7 @@ class ModBwPostmanHelper
 	 *
 	 * @since       0.9.1
 	 */
-	public static function getSubscriberID()
+	public static function getSubscriberID(): int
 	{
 		$app  = Factory::getApplication();
 		$user = $app->getIdentity();
@@ -63,7 +64,7 @@ class ModBwPostmanHelper
 
 			if(isset($session_subscriberid) && is_array($session_subscriberid))
 			{ // A session_subscriber id exists
-				$subscriberid = $session_subscriberid['id'];
+				$subscriberid = (int)$session_subscriberid['id'];
 			}
 			else
 			{ // No session_subscriber id exists
@@ -93,7 +94,7 @@ class ModBwPostmanHelper
 	 *
 	 * @since       0.9.1
 	 */
-	public static function getMailinglists(array $accessTypes, array $mod_mls)
+	public static function getMailinglists(array $accessTypes, array $mod_mls): array
 	{
 		$mailinglists = array();
 
@@ -112,8 +113,8 @@ class ModBwPostmanHelper
 		{
 			// else restrict by access level, state and archive state
 			$query->where($db->quoteName('access') . ' IN (' . implode(',', $accessTypes) . ')');
-			$query->where($db->quoteName('published') . ' = ' . (int) 1);
-			$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+			$query->where($db->quoteName('published') . ' = ' . 1);
+			$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 		}
 
 		$query->order($db->quoteName('title') . 'ASC');
@@ -123,6 +124,11 @@ class ModBwPostmanHelper
 			$db->setQuery($query);
 
 			$mailinglists = $db->loadObjectList();
+
+			if ($mailinglists === null)
+			{
+				$mailinglists = array();
+			}
 		}
 		catch (RuntimeException $e)
 		{
@@ -140,25 +146,32 @@ class ModBwPostmanHelper
 	 *
 	 * @return    int     $subscriberid   id of subscriber
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.1
 	 */
-	public static function getSubscriberIdFromUserID(int $userid)
+	public static function getSubscriberIdFromUserID(int $userid): int
 	{
-		$subscriberid = null;
+		$subscriberid = 0;
 
 		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__bwpostman_subscribers'));
-		$query->where($db->quoteName('user_id') . ' = ' . (int) $userid);
-		$query->where($db->quoteName('status') . ' = ' . (int) 9);
+		$query->where($db->quoteName('user_id') . ' = ' . $userid);
+		$query->where($db->quoteName('status') . ' = ' . 9);
 
 		try
 		{
 			$db->setQuery($query);
 
 			$subscriberid = $db->loadResult();
+
+			if ($subscriberid === null)
+			{
+				$subscriberid = 0;
+			}
 		}
 		catch (RuntimeException $e)
 		{
@@ -171,31 +184,38 @@ class ModBwPostmanHelper
 	/**
 	 * Method to get the data of a user who has no newsletter account
 	 *
-	 * @access      public
+	 * @access           public
 	 *
 	 * @param int $userid Joomla! user id
 	 *
 	 * @return    object  $user       user data
 	 *
-	 * @since       0.9.1
+	 * @throws Exception
+	 *
+	 * @since            0.9.1
 	 */
-	public static function getUserData(int $userid)
+	public static function getUserData(int $userid): ?object
 	{
-		$db	= Factory::getDbo();
-		$id		= 0;
-		$user   = null;
-		$query	= $db->getQuery(true);
+		$id	   = 0;
+		$user  = new stdClass;
+		$db	   = Factory::getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('name'));
 		$query->select($db->quoteName('email'));
 		$query->from($db->quoteName('#__users'));
-		$query->where($db->quoteName('id') . ' = ' . (int) $userid);
+		$query->where($db->quoteName('id') . ' = ' . $userid);
 
 		try
 		{
 			$db->setQuery($query);
 
 			$user = $db->loadObject();
+
+			if ($user === null)
+			{
+				$user = new stdClass;
+			}
 		}
 		catch (RuntimeException $e)
 		{

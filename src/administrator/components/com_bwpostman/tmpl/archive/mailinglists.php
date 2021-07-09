@@ -74,7 +74,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'maili
 					<div class="bwp-archive">
 						<ul class="nav nav-tabs bwp-tabs">
 							<?php
-							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('newsletter', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('newsletter', 1))
 							{
 							?>
 								<li class="nav-item"><!-- We need to use the setAttribute-function because of the IE -->
@@ -85,7 +85,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'maili
 								<?php
 							}
 
-							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('subscriber', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('subscriber', 1))
 							{
 							?>
 								<li class="nav-item">
@@ -96,7 +96,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'maili
 								<?php
 							}
 
-							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('campaign', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('campaign', 1))
 							{
 							?>
 								<li class="nav-item">
@@ -107,7 +107,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'maili
 								<?php
 							}
 
-							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('mailinglist', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('mailinglist', 1))
 							{
 							?>
 								<li class="nav-item">
@@ -118,7 +118,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'maili
 								<?php
 							}
 
-							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('template', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('template', 10))
 							{
 							?>
 								<li class="nav-item">

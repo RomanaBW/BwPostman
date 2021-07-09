@@ -207,11 +207,11 @@ $subscriber	= $model->getSubscriberData((int) $subsId);
 					<strong><?php echo Text::_('COM_BWPOSTMAN_SUBS_FIELD_REGISTRATION_DATE_LABEL'); ?></strong>
 				</td>
 				<td>
-					<?php echo $subscriber->registration_date; ?>
+					<?php if (property_exists($subscriber, 'registration_date')) echo $subscriber->registration_date; ?>
 				</td>
 			</tr>
 			<?php
-			if ($subscriber->registered_by != '')
+			if (property_exists($subscriber, 'registered_by') && $subscriber->registered_by != '')
 			{
 				?>
 				<tr>
@@ -230,7 +230,7 @@ $subscriber	= $model->getSubscriberData((int) $subsId);
 					<strong><?php echo Text::_('COM_BWPOSTMAN_SUBS_FIELD_REGISTRATION_IP_LABEL'); ?></strong>
 				</td>
 				<td>
-					<?php echo $subscriber->registration_ip; ?>
+					<?php if (property_exists($subscriber, 'registration_ip')) echo $subscriber->registration_ip; ?>
 				</td>
 			</tr>
 			<tr>
@@ -251,7 +251,7 @@ $subscriber	= $model->getSubscriberData((int) $subsId);
 				</td>
 			</tr>
 			<?php
-			if ($subscriber->status === 1)
+			if (property_exists($subscriber, 'status') && $subscriber->status === 1)
 			{
 				if ($subscriber->confirmed_by != '')
 				{
@@ -277,7 +277,7 @@ $subscriber	= $model->getSubscriberData((int) $subsId);
 				</tr>
 				<?php
 			}
-			if ($subscriber->modified_by != '')
+			if (property_exists($subscriber, 'modified_by') && $subscriber->modified_by != '')
 			{
 				?>
 				<tr>
@@ -298,7 +298,7 @@ $subscriber	= $model->getSubscriberData((int) $subsId);
 				</tr>
 				<?php
 			}
-			if ($subscriber->archive_flag !== 0)
+			if (property_exists($subscriber, 'archive_flag') && $subscriber->archive_flag !== 0)
 			{
 				?>
 				<tr>
@@ -306,7 +306,7 @@ $subscriber	= $model->getSubscriberData((int) $subsId);
 						<strong><?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVE_DATE'); ?></strong>
 					</td>
 					<td>
-						<?php echo $subscriber->archive_date; ?>
+						<?php if (property_exists($subscriber, 'archive_date')) echo $subscriber->archive_date; ?>
 					</td>
 				</tr>
 				<tr>
@@ -314,7 +314,7 @@ $subscriber	= $model->getSubscriberData((int) $subsId);
 						<strong><?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVED_BY'); ?></strong>
 					</td>
 					<td>
-						<?php echo $subscriber->archived_by; ?>
+						<?php if (property_exists($subscriber, 'archived_by')) echo $subscriber->archived_by; ?>
 					</td>
 				</tr>
 				<?php

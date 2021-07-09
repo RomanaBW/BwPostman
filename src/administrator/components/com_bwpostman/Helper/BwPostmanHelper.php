@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -38,9 +39,8 @@ use Joomla\CMS\Access\Access;
 use JHtmlSidebar;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwAccess;
 use RuntimeException;
-
-//require_once JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/access/BwAccess.php';
-
+use stdClass;
+use Throwable;
 
 /**
  * Class BwPostmanHelper
@@ -61,15 +61,15 @@ class BwPostmanHelper
 	/**
 	 * Configure the Link bar.
 	 *
-	 * @param    string $vName The name of the task view.
+	 * @param string $vName The name of the task view.
 	 *
 	 * @return    void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function addSubmenu($vName)
+	public static function addSubmenu(string $vName)
 	{
 		if (!is_array(self::$permissions))
 		{
@@ -171,7 +171,7 @@ class BwPostmanHelper
 	 *
 	 * @since
 	 */
-	public static function installed()
+	public static function installed(): bool
 	{
 		return true;
 	}
@@ -181,13 +181,13 @@ class BwPostmanHelper
 	 *
 	 * @access    public
 	 *
-	 * @param    string $text HTML-/Text-version
+	 * @param string $text HTML-/Text-version
 	 *
 	 * @return    boolean
 	 *
 	 * @since
 	 */
-	public static function replaceLinks(&$text)
+	public static function replaceLinks(string &$text): bool
 	{
 		$search_str = '/\s+(href|src)\s*=\s*["\']?\s*(?!http|mailto|#)([\w\s&%=?#\/\.;:_-]+)\s*["\']?/i';
 		$text       = preg_replace($search_str, ' ${1}="' . Uri::root() . '${2}"', $text);
@@ -201,27 +201,26 @@ class BwPostmanHelper
 	 * @return string
 	 *
 	 * @since   0.9.1
-	 *
-	 * @throws \Exception
 	 */
 	static public function getInstalledBwPostmanVersion()
 	{
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select($db->quoteName('manifest_cache'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
-
 		try
 		{
+			$app   = Factory::getApplication();
+			$db    = Factory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select($db->quoteName('manifest_cache'));
+			$query->from($db->quoteName('#__extensions'));
+			$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
+
 			$db->setQuery($query);
 
 			$manifest = json_decode($db->loadResult(), true);
 		}
-		catch (RuntimeException $e)
+		catch (Throwable $e)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($e->getMessage(), 'error');
 			return false;
 		}
 
@@ -233,17 +232,17 @@ class BwPostmanHelper
 	 * Breaks and returns false, if the item to check has explicit no permission
 	 * Also returns false, if no permission is found
 	 *
-	 * @param    string     $view       The view to test.
-	 * @param    string     $action     The action to check
-	 * @param    int        $recordId   The record(s) to test.
+	 * @param string $view     The view to test.
+	 * @param string $action   The action to check
+	 * @param int    $recordId The record(s) to test.
 	 *
 	 * @return bool
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private static function checkActionPermission($view, $action, $recordId = 0)
+	private static function checkActionPermission(string $view, string $action, int $recordId = 0): bool
 	{
 		if (!is_array(self::$permissions))
 		{
@@ -255,9 +254,6 @@ class BwPostmanHelper
 		{
 			return true;
 		}
-
-		// Cast recordId
-		$recordId = (int) $recordId;
 
 		/*
 		 * Real permission checks
@@ -304,13 +300,13 @@ class BwPostmanHelper
 	/**
 	 * Method to get admin permissions for all sections
 	 *
-	 * @return mixed
+	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	protected static function getAdminPermissionsForAllSections()
+	protected static function getAdminPermissionsForAllSections(): array
 	{
 		$permissions = array();
 
@@ -333,13 +329,13 @@ class BwPostmanHelper
 	/**
 	 * Method to get view permissions for all views
 	 *
-	 * @return mixed
+	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	protected static function getViewPermissionsForAllViews()
+	protected static function getViewPermissionsForAllViews(): array
 	{
 		$permissions = array();
 
@@ -365,58 +361,61 @@ class BwPostmanHelper
 	/**
 	 * Method to get permissions for all views
 	 *
-	 * @param string $view		the section to get the rights for
+	 * @param string $view the section to get the rights for
 	 *
-	 * @return mixed
+	 * @return array
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	protected static function getPermissionsForSingleViews($view)
+	protected static function getPermissionsForSingleViews(string $view): array
 	{
 		$permissions	= array();
 
 		if (strtolower($view) !== 'archive' && strtolower($view) !== 'maintenance')
 		{
-			$permissions['create']     = self::authorise('bwpm.' . $view . '.create', 'com_bwpostman.' . $view, 0);
-			$permissions['edit']       = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view, 0);
-			$permissions['edit.own']   = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view, 0);
-			$permissions['edit.state'] = self::authorise('bwpm.' . $view . '.edit.state', 'com_bwpostman.' . $view, 0);
-			$permissions['archive']    = self::authorise('bwpm.' . $view . '.archive', 'com_bwpostman.' . $view, 0);
+			$permissions['create']     = self::authorise('bwpm.' . $view . '.create', 'com_bwpostman.' . $view);
+			$permissions['edit']       = self::authorise('bwpm.' . $view . '.edit', 'com_bwpostman.' . $view);
+			$permissions['edit.own']   = self::authorise('bwpm.' . $view . '.edit.own', 'com_bwpostman.' . $view);
+			$permissions['edit.state'] = self::authorise('bwpm.' . $view . '.edit.state', 'com_bwpostman.' . $view);
+			$permissions['archive']    = self::authorise('bwpm.' . $view . '.archive', 'com_bwpostman.' . $view);
 		}
 
 		if (strtolower($view) === 'newsletter')
 		{
-			$permissions['send']  = self::authorise('bwpm.' . $view . '.send', 'com_bwpostman.' . $view, 0);
+			$permissions['send']  = self::authorise('bwpm.' . $view . '.send', 'com_bwpostman.' . $view);
 		}
 
-		$permissions['restore']   = self::authorise('bwpm.' . $view . '.restore', 'com_bwpostman.' . $view, 0);
+		$permissions['restore']   = self::authorise('bwpm.' . $view . '.restore', 'com_bwpostman.' . $view);
 
 		if (strtolower($view) !== 'maintenance')
 		{
-			$permissions['delete'] = self::authorise('bwpm.' . $view . '.delete', 'com_bwpostman.' . $view, 0);
+			$permissions['delete'] = self::authorise('bwpm.' . $view . '.delete', 'com_bwpostman.' . $view);
 		}
 
 		if (strtolower($view) === 'maintenance')
 		{
-			$permissions['check'] = self::authorise('bwpm.' . $view . '.check', 'com_bwpostman.' . $view, 0);
-			$permissions['save']  = self::authorise('bwpm.' . $view . '.save', 'com_bwpostman.' . $view, 0);
+			$permissions['check'] = self::authorise('bwpm.' . $view . '.check', 'com_bwpostman.' . $view);
+			$permissions['save']  = self::authorise('bwpm.' . $view . '.save', 'com_bwpostman.' . $view);
 		}
 
 		return $permissions;
 	}
 
 	/**
-	 * @param   string  $view
-	 * @param   string  $action            may be edit/edit.own, archive, restore or delete
-	 * @param   integer $itemsFromArchive  Do we want items from archive?
+	 * @param string  $view
+	 * @param string  $action           may be edit/edit.own, archive, restore or delete
+	 * @param integer $itemsFromArchive Do we want items from archive?
 	 *
 	 * @return bool
 	 *
-	 * @since version
+	 * @throws Exception
 	 *
-	 * @throws \Exception
+	 *@since
+	 *
 	 */
-	private static function displayButton($view, $action, $itemsFromArchive)
+	private static function displayButton(string $view, string $action, int $itemsFromArchive): bool
 	{
 		if (isset(self::$permissions['com'][$action]) && self::$permissions['com'][$action])
 		{
@@ -452,15 +451,14 @@ class BwPostmanHelper
 	 *
 	 * @access    public
 	 *
-	 * @param    string $date      sort of date --> day, hour, minute
-	 * @param    int    $length    length of list array
-	 * @param    array  $selectval selected values
+	 * @param array  $selectval selected values
+	 * @param string $date      sort of date --> day, hour, minute
 	 *
-	 * @return    array                selectlist
+	 * @return array selectlist
 	 *
 	 * @since
 	 */
-	public function getDateList($selectval, $date = 'minute', $length = 10)
+	public function getDateList(array $selectval, string $date = 'minute'): array
 	{
 		$options    = array();
 		$selectlist = array();
@@ -528,22 +526,24 @@ class BwPostmanHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param    integer $id      The item ID.
-	 * @param    string  $section The access section name.
+	 * @param integer $id      The item ID.
+	 * @param string  $section The access section name.
 	 *
-	 * @return    \JObject
+	 * @return stdClass
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */
 
-	public static function getActions($id = 0, $section = '')
+	public static function getActions(int $id = 0, string $section = ''): stdClass
 	{
 		$path   = JPATH_ADMINISTRATOR . '/components/com_bwpostman/access.xml';
-		$result = new \stdClass();
+		$result = new stdClass();
 
 		if (($section != '') && $id)
 		{
-			$assetName = 'com_bwpostman.' . $section . '.' . (int) $id;
+			$assetName = 'com_bwpostman.' . $section . '.' . $id;
 		}
 		elseif ($section != '')
 		{
@@ -554,7 +554,7 @@ class BwPostmanHelper
 			$assetName = 'com_bwpostman';
 		}
 
-		$com_actions = Access::getActionsFromFile($path, "/access/section[@name='component']/");
+		$com_actions = Access::getActionsFromFile($path);
 
 		if ($section != '')
 		{
@@ -568,7 +568,7 @@ class BwPostmanHelper
 
 		foreach ($actions as $action)
 		{
-			$result->set($action->name, self::authorise($action->name, $assetName, $id));
+			$result->$action->name = self::authorise($action->name, $assetName, $id);
 		}
 
 		return $result;
@@ -579,7 +579,7 @@ class BwPostmanHelper
 	 *
 	 * @return    void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    2.0.0
 	 */
@@ -595,9 +595,9 @@ class BwPostmanHelper
 			return;
 		}
 
-		if (!is_null($app->getUserState('com_bwpm.permissions', null)) && !$reload)
+		if (!is_null($app->getUserState('com_bwpm.permissions')) && !$reload)
 		{
-			self::$permissions = $app->getUserState('com_bwpm.permissions', null);
+			self::$permissions = $app->getUserState('com_bwpm.permissions');
 
 			return;
 		}
@@ -648,15 +648,15 @@ class BwPostmanHelper
 	/**
 	 * Method to check if you can administer BwPostman
 	 *
-	 * @param 	string	$section
+	 * @param string $section
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canAdmin($section)
+	public static function canAdmin(string $section): bool
 	{
 		if (!is_array(self::$permissions))
 		{
@@ -674,7 +674,7 @@ class BwPostmanHelper
 
 		if ($section != 'archive' && $section != 'manage' & $section != 'maintenance')
 		{
-			if (self::authorise($authAction, $assetName, 0))
+			if (self::authorise($authAction, $assetName))
 			{
 				return true;
 			}
@@ -688,11 +688,11 @@ class BwPostmanHelper
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canManage()
+	public static function canManage(): bool
 	{
 		if (!is_array(self::$permissions))
 		{
@@ -705,15 +705,15 @@ class BwPostmanHelper
 	/**
 	 * Method to check if you can view a specific view.
 	 *
-	 * @param    string     $view       The view to test.
+	 * @param string $view The view to test.
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canView($view = '')
+	public static function canView(string $view = ''): bool
 	{
 		// Check general component permission first.
 		if (self::canAdmin($view))
@@ -730,7 +730,7 @@ class BwPostmanHelper
 			$assetName = 'com_bwpostman';
 		}
 
-		if (self::authorise($authAction, $assetName, 0))
+		if (self::authorise($authAction, $assetName))
 		{
 			return true;
 		}
@@ -741,39 +741,37 @@ class BwPostmanHelper
 	/**
 	 * Method to check if you can add a record.
 	 *
-	 * @param    string $view The view to test. Has to be the list mode name.
+	 * @param string $view The view to test. Has to be the list mode name.
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canAdd($view = '')
+	public static function canAdd(string $view = ''): bool
 	{
 		if (!is_array(self::$permissions))
 		{
 			self::setPermissionsState();
 		}
 
-		$allowed = self::$permissions['com']['create'] || self::$permissions[$view]['create'];
-
-		return $allowed;
+		return self::$permissions['com']['create'] || self::$permissions[$view]['create'];
 	}
 
 	/**
 	 * Method to check if you can check in an item
 	 *
-	 * @param    string	   $section
-	 * @param    int       $checkedOut      user id, who checked out this item
+	 * @param string $section
+	 * @param int    $checkedOut user id, who checked out this item
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canCheckin($section, $checkedOut = 0)
+	public static function canCheckin(string $section, int $checkedOut = 0): bool
 	{
 		// If nothing is checked out, there is nothing to test
 		if ($checkedOut == 0)
@@ -785,7 +783,7 @@ class BwPostmanHelper
 		$userId = (int)$user->get('id');
 
 		// If current user checked out, he may check in.
-		if ((int)$checkedOut === $userId)
+		if ($checkedOut === $userId)
 		{
 			return true;
 		}
@@ -813,16 +811,16 @@ class BwPostmanHelper
 	/**
 	 * Method to check if you can edit a record.
 	 *
-	 * @param    string         $view       The view to test. Has to be the single mode name.
-	 * @param    array|object   $data       An array of input data.
+	 * @param string       $view The view to test. Has to be the single mode name.
+	 * @param array|object $data An array of input data.
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canEdit($view = '', $data = array())
+	public static function canEdit(string $view = '', $data = array()): bool
 	{
 		/*
 		 * To enable item based deny to someone, who normally has the permission to edit (or vice versa), first check on item level.
@@ -875,9 +873,7 @@ class BwPostmanHelper
 				return true;
 			}
 
-			$display = self::displayButton($view, 'edit.own', $itemsFromArchive);
-
-			return $display;
+			return self::displayButton($view, 'edit.own', $itemsFromArchive);
 		}
 
 		// Now lets check for a specific record
@@ -887,15 +883,12 @@ class BwPostmanHelper
 
 		if ($editOwnItem !== false)
 		{
-			if ($editOwnItem)
-			{
-				$ownerId = self::getCreatorId($view, $recordId, $createdBy);
+			$ownerId = self::getCreatorId($view, $recordId, $createdBy);
 
-				// Now test the owner is the user. If the owner matches 'me' then allow access.
-				if ($ownerId === $userId)
-				{
-					return true;
-				}
+			// Now test the owner is the user. If the owner matches 'me' then allow access.
+			if ($ownerId === $userId)
+			{
+				return true;
 			}
 		}
 
@@ -904,7 +897,7 @@ class BwPostmanHelper
 
 		if ($editItem !== false)
 		{
-			return $editItem;
+			return true;
 		}
 
 		// Third check for general or view edit.own permission
@@ -943,16 +936,16 @@ class BwPostmanHelper
 	/**
 	 * Method to check if you can edit the state of a record or a set of records.
 	 *
-	 * @param    string $view      The view to test.
-	 * @param    int    $recordId  The record ids to test.
+	 * @param string $view     The view to test.
+	 * @param int    $recordId The record ids to test.
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canEditState($view = '', $recordId = 0)
+	public static function canEditState(string $view = '', int $recordId = 0): bool
 	{
 		$action = 'edit.state';
 		$itemsFromArchive = 0;
@@ -960,9 +953,7 @@ class BwPostmanHelper
 		// This part is needed for displaying the button
 		if ($recordId === 0)
 		{
-			$allowed = self::displayButton($view, $action, $itemsFromArchive);
-
-			return $allowed;
+			return self::displayButton($view, $action, $itemsFromArchive);
 		}
 
 		// Check permission for submitted record
@@ -970,7 +961,7 @@ class BwPostmanHelper
 
 		if ($allowed !== false)
 		{
-			return $allowed;
+			return true;
 		}
 
 		// Check section permission edit state
@@ -1003,28 +994,26 @@ class BwPostmanHelper
 	/**
 	 * Method to check if you can send a newsletter.
 	 *
-	 * @param    int     $recordId   The record to test.
+	 * @param int $recordId The record to test.
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canSend($recordId = 0)
+	public static function canSend(int $recordId = 0): bool
 	{
 		$action = 'send';
 
-		if (is_array($recordId))
-		{
-			$id       = $recordId[0];
-			$recordId = $id;
-		}
+//		if (is_array($recordId))
+//		{
+//			$id       = $recordId[0];
+//			$recordId = $id;
+//		}
 
 		// Check permission
-		$res = self::checkActionPermission('newsletter', $action, $recordId);
-
-		return $res;
+		return self::checkActionPermission('newsletter', $action, $recordId);
 	}
 
 	/**
@@ -1032,18 +1021,16 @@ class BwPostmanHelper
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    2.0.0
 	 */
-	public static function canClearQueue()
+	public static function canClearQueue(): bool
 	{
 		$action = 'send';
 
 		// Check permission
-		$res = self::checkActionPermission('newsletter', $action);
-
-		return $res;
+		return self::checkActionPermission('newsletter', $action);
 	}
 
 	/**
@@ -1051,18 +1038,16 @@ class BwPostmanHelper
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    2.0.0
 	 */
-	public static function canResetQueue()
+	public static function canResetQueue(): bool
 	{
 		$action = 'send';
 
 		// Check permission
-		$res = self::checkActionPermission('newsletter', $action);
-
-		return $res;
+		return self::checkActionPermission('newsletter', $action);
 	}
 
 	/**
@@ -1070,34 +1055,32 @@ class BwPostmanHelper
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    2.0.0
 	 */
-	public static function canContinueQueue()
+	public static function canContinueQueue(): bool
 	{
 		$action = 'send';
 
 		// Check permission
-		$res = self::checkActionPermission('newsletter', $action);
-
-		return $res;
+		return self::checkActionPermission('newsletter', $action);
 	}
 
 	/**
 	 * Method to check if you can archive an existing record.
 	 *
-	 * @param    string  $view             The name of the context.
-	 * @param    integer $itemsFromArchive Do we want items from archive?
-	 * @param    int     $recordId         The records to test.
+	 * @param string  $view             The name of the context.
+	 * @param integer $itemsFromArchive Do we want items from archive?
+	 * @param int     $recordId         The records to test.
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canArchive($view = '', $itemsFromArchive = 0, $recordId = 0)
+	public static function canArchive(string $view = '', int $itemsFromArchive = 0, int $recordId = 0): bool
 	{
 		// Initialise variables.
 		$action = 'archive';
@@ -1105,9 +1088,7 @@ class BwPostmanHelper
 		// This part is needed for displaying the button
 		if ($recordId === 0)
 		{
-			$allowed = self::displayButton($view, $action, $itemsFromArchive);
-
-			return $allowed;
+			return self::displayButton($view, $action, $itemsFromArchive);
 		}
 
 		// Check permission for submitted record
@@ -1115,7 +1096,7 @@ class BwPostmanHelper
 
 		if ($allowed !== false)
 		{
-			return $allowed;
+			return true;
 		}
 
 		// Check section permission
@@ -1136,16 +1117,16 @@ class BwPostmanHelper
 	/**
 	 * Method to check if you can delete an archived record.
 	 *
-	 * @param    string $view     The name of the context.
-	 * @param    int    $recordId The record to test.
+	 * @param string $view     The name of the context.
+	 * @param int    $recordId The record to test.
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canDelete($view = '', $recordId = 0)
+	public static function canDelete(string $view = '', int $recordId = 0): bool
 	{
 		// Initialise variables.
 		$action           = 'delete';
@@ -1154,9 +1135,7 @@ class BwPostmanHelper
 		// This part is needed for displaying the button
 		if ($recordId === 0)
 		{
-			$allowed = self::displayButton($view, $action, $itemsFromArchive);
-
-			return $allowed;
+			return self::displayButton($view, $action, $itemsFromArchive);
 		}
 
 		// Check permission for submitted record
@@ -1164,7 +1143,7 @@ class BwPostmanHelper
 
 		if ($allowed !== false)
 		{
-			return $allowed;
+			return true;
 		}
 
 		// Check section permission
@@ -1187,16 +1166,16 @@ class BwPostmanHelper
 	/**
 	 * Method to check if you can restore an archived record.
 	 *
-	 * @param    string    $view     The name of the context.
-	 * @param    int       $recordId The record to test.
+	 * @param string $view     The name of the context.
+	 * @param int    $recordId The record to test.
 	 *
 	 * @return    boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canRestore($view = '', $recordId = 0)
+	public static function canRestore(string $view = '', int $recordId = 0): bool
 	{
 		// Initialise variables.
 		$action           = 'restore';
@@ -1205,9 +1184,7 @@ class BwPostmanHelper
 		// This part is needed for displaying the button
 		if ($recordId === 0)
 		{
-			$allowed = self::displayButton($view, $action, $itemsFromArchive);
-
-			return $allowed;
+			return self::displayButton($view, $action, $itemsFromArchive);
 		}
 
 		// Check permission for submitted record
@@ -1215,7 +1192,7 @@ class BwPostmanHelper
 
 		if ($allowed !== false)
 		{
-			return $allowed;
+			return true;
 		}
 
 		// Check section permission
@@ -1240,11 +1217,11 @@ class BwPostmanHelper
 	 *
 	 * @return    bool  true if warning should be displayed
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since    0.9.8
 	 */
-	public static function getMailinglistsWarning()
+	public static function getMailinglistsWarning(): bool
 	{
 		$_db          = Factory::getDbo();
 		$query        = $_db->getQuery(true);
@@ -1270,10 +1247,12 @@ class BwPostmanHelper
 		if ($ml_published < 1)
 		{
 			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_WARNING_NO_PUBLISHED_MAILINGLIST'), 'warning');
+
 			return true;
 		}
 
 		unset($ml_published);
+
 		return false;
 	}
 
@@ -1282,9 +1261,11 @@ class BwPostmanHelper
 	 *
 	 * @return    bool    true if there are unable to send entries in the queue, otherwise false
 	 *
+	 * @throws Exception
+	 *
 	 * @since    1.0.3
 	 */
-	public static function checkQueueEntries()
+	public static function checkQueueEntries(): bool
 	{
 		$queueEntriesAtLimit = array();
 
@@ -1327,7 +1308,7 @@ class BwPostmanHelper
 	 *
 	 * @since    0.9.8
 	 */
-	public static function getCaptcha($mode = 1)
+	public static function getCaptcha(int $mode = 1): string
 	{
 		$zahl    = 1960;
 		$no_spam = '';
@@ -1375,6 +1356,8 @@ class BwPostmanHelper
 	 *
 	 * @return    void
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
 
@@ -1391,7 +1374,7 @@ class BwPostmanHelper
 		 *
 		 * @since
 		 */
-		function mathCaptcha($im, $size, $fileTTF)
+		function mathCaptcha($im, $size, $fileTTF): string
 		{
 			$math = range(0, 9);
 			shuffle($math);
@@ -1432,7 +1415,7 @@ class BwPostmanHelper
 		or die("GD! Initialisierung fehlgeschlagen");
 		$color = imagecolorallocate($im, 255, 255, 255);
 		imagefill($im, 0, $imgWidth, $color);
-		$fileName = mathCaptcha($im, $sizeMath, $fileTTF, $imgHeight);
+		$fileName = mathCaptcha($im, $sizeMath, $fileTTF);
 
 		$codeCaptcha = Factory::getApplication()->input->get('codeCaptcha');
 
@@ -1466,22 +1449,22 @@ class BwPostmanHelper
 	 *    it under the terms of the GNU General Public License version 2,
 	 *    as published by the Free Software Foundation.
 	 *
+	 * @param        string $codeCaptcha   Hash-Wert
+	 * @param string        $stringCaptcha Eingabe durch den User
+	 * @param string        $dir           Das Verzeichnis mit den Captcha-Bilder
+	 * @param integer       $delFile       Die Zeit in Minuten, nachdem ein Captcha-Bild gelöscht wird
+	 *
+	 * @return        bool        TRUE/FALSE
+	 *
 	 * @category      Captcha
 	 * @author        Damir Enseleit <info@selfphp.de>
 	 * @copyright     2001-2006 SELFPHP
 	 * @version       $Id: captcha_check.php,v 0.10 2006/04/07 13:15:30 des1 Exp $
 	 * @link          http://www.selfphp.de
 	 *
-	 * @param        string  $codeCaptcha   Hash-Wert
-	 * @param        string  $stringCaptcha Eingabe durch den User
-	 * @param        string  $dir           Das Verzeichnis mit den Captcha-Bilder
-	 * @param        integer $delFile       Die Zeit in Minuten, nachdem ein Captcha-Bild gelöscht wird
-	 *
-	 * @return        bool        TRUE/FALSE
-	 *
 	 * @since
 	 */
-	public static function CheckCaptcha($codeCaptcha, $stringCaptcha, $dir, $delFile = 5)
+	public static function CheckCaptcha(string $codeCaptcha, string $stringCaptcha, string $dir, int $delFile = 5): bool
 	{
 		// Setzt den Check erst einmal auf FALSE
 		$captchaTrue = false;
@@ -1499,8 +1482,9 @@ class BwPostmanHelper
 		}
 
 		$handle = @opendir($dir);
+		$file   = readdir($handle);
 
-		while (false !== ($file = readdir($handle)))
+		while (false !== $file)
 		{
 			if (preg_match("=^\.{1,2}$=", $file))
 			{
@@ -1656,19 +1640,19 @@ class BwPostmanHelper
 	/**
 	 * Method to get creator id
 	 *
-	 * @param    string $view       The name of the context.
-	 * @param    int    $recordId   The record to test.
-	 * @param    int    $createdBy  The user to test against.
+	 * @param string $view      The name of the context.
+	 * @param int    $recordId  The record to test.
+	 * @param int    $createdBy The user to test against.
 	 *
 	 * @return  int     $ownerId
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since
 	 */
-	private static function getCreatorId($view, $recordId, $createdBy)
+	private static function getCreatorId(string $view, int $recordId, int $createdBy): int
 	{
-		$creatorId = (int)$createdBy;
+		$creatorId = $createdBy;
 
 		$createdPropertyName = 'created_by';
 
@@ -1684,7 +1668,7 @@ class BwPostmanHelper
 
 			$query->select($db->quoteName($createdPropertyName));
 			$query->from($db->quoteName('#__bwpostman_' . $db->escape($view) . 's'));
-			$query->where($db->quoteName('id') . ' = ' . (int)$recordId);
+			$query->where($db->quoteName('id') . ' = ' . $recordId);
 
 			try
 			{
@@ -1704,17 +1688,17 @@ class BwPostmanHelper
 	/**
 	 * Method to get the allowed records
 	 *
-	 * @param   string    $view          The name of the context.
-	 * @param   string    $action        The action to check
-	 * @param   integer   $fromArchive   Do we want items from archive?
+	 * @param string  $view        The name of the context.
+	 * @param string  $action      The action to check
+	 * @param integer $fromArchive Do we want items from archive?
 	 *
 	 * @return  array|string  $allowed_items or string 'all'
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public static function getAllowedRecords($view, $action, $fromArchive = 0)
+	public static function getAllowedRecords(string $view, string $action, int $fromArchive = 0)
 	{
 		// check for general permissions
 		if (self::canAdmin($view))
@@ -1752,25 +1736,23 @@ class BwPostmanHelper
 			}
 		}
 
-		$allowed_items  = array_unique($allowed_items);
-
-		return $allowed_items;
+		return array_unique($allowed_items);
 	}
 
 	/**
 	 * Method to get only archived or only not archived records
 	 *
-	 * @param   string  $view           The name of the context.
-	 * @param   integer $fromArchive    Do we come from archive?
-	 * @param   array   $itemRecords    items to check for
+	 * @param string  $view        The name of the context.
+	 * @param integer $fromArchive Do we come from archive?
+	 * @param array   $itemRecords items to check for
 	 *
 	 * @return  array|string  $allowed_items or string 'all'
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public static function getItemsSeparatedByArchive($view, $fromArchive, $itemRecords)
+	public static function getItemsSeparatedByArchive(string $view, int $fromArchive, array $itemRecords)
 	{
 		$itemsToCheck = array();
 		$reducedItems = null;
@@ -1809,13 +1791,13 @@ class BwPostmanHelper
 	 * Method to get an array of strings of all asset names of the component section
 	 * The array items are of the form 'component.section.id', where the part with id may be empty (section-wide permission)
 	 *
-	 * @param   string  $view           The name of the context.
+	 * @param string $view The name of the context.
 	 *
 	 * @return  array   $asset_records  section names of assets
 	 *
 	 * @since   2.0.0
 	 */
-	private static function getSectionAssetNames($view)
+	private static function getSectionAssetNames(string $view): array
 	{
 		$asset_records  = array();
 		$_db            = Factory::getDbo();
@@ -1849,13 +1831,13 @@ class BwPostmanHelper
 	/**
 	 * Method to extract the ID from asset name and inject it in the array
 	 *
-	 * @param   array    $asset_records
+	 * @param array $asset_records
 	 *
 	 * @return  array    $items
 	 *
 	 * @since   2.0.0
 	 */
-	private static function extractIdFromAssetName($asset_records)
+	private static function extractIdFromAssetName(array $asset_records): array
 	{
 		$items = array();
 
@@ -1882,17 +1864,17 @@ class BwPostmanHelper
 	 * Method to check for item specific permission
 	 * items without permission will be removed
 	 *
-	 * @param   string   $view      The name of the context.
-	 * @param   string   $action    The action to check
-	 * @param   array    $items     The Items to check for
+	 * @param string $view   The name of the context.
+	 * @param string $action The action to check
+	 * @param array  $items  The Items to check for
 	 *
 	 * @return  array           $allowed_ids
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	private static function checkRecordsForPermission($view, $action, $items)
+	private static function checkRecordsForPermission(string $view, string $action, array $items): array
 	{
 		$allowed_ids = array();
 
@@ -1923,15 +1905,15 @@ class BwPostmanHelper
 	 * Method to check for item campaign specific permissions
 	 * items without permission will be removed
 	 *
-	 * @param   string $view    The name of the context.
+	 * @param string $view The name of the context.
 	 *
 	 * @return  array           $allowed_ids
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	private static function getMailinglistSpecificRecords($view)
+	private static function getMailinglistSpecificRecords(string $view): array
 	{
 		$allowed_ids    = array();
 		$result         = array();
@@ -2007,31 +1989,33 @@ class BwPostmanHelper
 	 * Method to check User object authorisation against an access control
 	 * object and optionally an access extension object
 	 *
-	 * @param   string  $action     The name of the action to check for permission.
-	 * @param   string  $assetName  The name of the asset on which to perform the action.
-	 * @param   integer $recordId   The id of the record
+	 * @param string      $action    The name of the action to check for permission.
+	 * @param string|null $assetName The name of the asset on which to perform the action.
+	 * @param integer     $recordId  The id of the record
 	 *
 	 * @return  boolean|null  True if permission is set, null otherwise
 	 *
+	 * @throws Exception
+	 *
 	 * @since   11.1
 	 */
-	public static function authorise($action, $assetName = null, $recordId = 0)
+	public static function authorise(string $action, string $assetName = null, int $recordId = 0): ?bool
 	{
 		$userId = Factory::getApplication()->getIdentity()->id;
 
-		return BwAccess::check($userId, $action, $assetName, false, $recordId);
+		return BwAccess::check($userId, $action, $assetName, false);
 	}
 
 	/**
 	 * Method to get query where part for mailinglists
 	 *
-	 * @param $mls
+	 * @param array $mls
 	 *
 	 * @return string
 	 *
 	 * @since 2.1.1
 	 */
-	public static function getWhereMlsClause($mls)
+	public static function getWhereMlsClause(array $mls): string
 	{
 		$whereMlsClause = '';
 
@@ -2046,13 +2030,13 @@ class BwPostmanHelper
 	/**
 	 * Method to get query where part for campaigns
 	 *
-	 * @param $cams
+	 * @param array $cams
 	 *
 	 * @return string
 	 *
 	 * @since 2.1.1
 	 */
-	public static function getWhereCamsClause($cams)
+	public static function getWhereCamsClause(array $cams): string
 	{
 		$whereCamsClause = '';
 
@@ -2067,14 +2051,14 @@ class BwPostmanHelper
 	/**
 	 * Method to get query where part for campaigns and mailinglists
 	 *
-	 * @param $mls
-	 * @param $cams
+	 * @param array $mls
+	 * @param array $cams
 	 *
 	 * @return string
 	 *
 	 * @since 2.1.1
 	 */
-	public static function getWhereMlsCamsClause($mls, $cams)
+	public static function getWhereMlsCamsClause(array $mls, array $cams): string
 	{
 		$whereMlsCamsClause = '';
 		$whereMlsClause     = self::getWhereMlsClause($mls);

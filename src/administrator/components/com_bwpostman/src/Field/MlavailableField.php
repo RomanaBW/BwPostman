@@ -62,10 +62,9 @@ class MlavailableField extends RadioField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getLabel()
+	public function getLabel(): string
 	{
-		$return = Text::_($this->element['label']);
-		return $return;
+		return Text::_($this->element['label']);
 	}
 
 	/**
@@ -77,7 +76,7 @@ class MlavailableField extends RadioField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getInput()
+	public function getInput(): string
 	{
 		$app       = Factory::getApplication();
 		$db        = Factory::getDbo();
@@ -87,8 +86,8 @@ class MlavailableField extends RadioField
 
 		// Get item and selected mailinglists
 		$item    = $app->getUserState('com_bwpostman.edit.newsletter.data');
-		$nl_id   = $app->getUserState('com_bwpostman.edit.newsletter.id', null);
-		$subs_id = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
+		$nl_id   = $app->getUserState('com_bwpostman.edit.newsletter.id');
+		$subs_id = $app->getUserState('com_bwpostman.edit.subscriber.id');
 
 		$disabled   = $this->element['disabled'] == 'true' ? true : false;
 		$readonly   = $this->element['readonly'] == 'true' ? true : false;
@@ -128,7 +127,7 @@ class MlavailableField extends RadioField
 			$attributes .= 'disabled="disabled"';
 		}
 
-		$options = (array) $this->getOptions();
+		$options = $this->getOptions();
 
 		if (is_object($item))
 		{
@@ -201,7 +200,7 @@ class MlavailableField extends RadioField
 	 *
 	 * @since	1.0.1
 	 */
-	public function getOptions()
+	public function getOptions(): array
 	{
 		$app	= Factory::getApplication();
 
@@ -209,7 +208,7 @@ class MlavailableField extends RadioField
 		$user_id      = null;
 		$accesslevels = array();
 		$options      = array();
-		$subs_id      = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
+		$subs_id      = $app->getUserState('com_bwpostman.edit.subscriber.id');
 
 		// prepare query
 		$db         = Factory::getDbo();
@@ -255,7 +254,7 @@ class MlavailableField extends RadioField
 			$query->where($db->quoteName('access') . ' = ' . 1);
 		}
 
-		$query->order('title ASC');
+		$query->order('title');
 
 		try
 		{
@@ -269,8 +268,6 @@ class MlavailableField extends RadioField
 		}
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }

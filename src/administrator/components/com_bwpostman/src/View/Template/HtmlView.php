@@ -170,13 +170,13 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since   1.1.0
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): HtmlView
 	{
 		HTMLHelper::_('jquery.framework');
 		$app		= Factory::getApplication();
@@ -237,7 +237,7 @@ class HtmlView extends BaseHtmlView
 		// Call parent display
 		parent::display($tpl);
 
-		return;
+		return $this;
 	}
 
 	/**
@@ -255,7 +255,7 @@ class HtmlView extends BaseHtmlView
 		$userId		= $app->getIdentity()->get('id');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance();
 
 		// Get document object, set document title and add css
 		$document = $app->getDocument();
@@ -263,7 +263,6 @@ class HtmlView extends BaseHtmlView
 		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
 
 		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
-		jimport('joomla.environment.browser');
 		$browser = Browser::getInstance();
 		$user_browser = $browser->getBrowser();
 
@@ -327,7 +326,7 @@ class HtmlView extends BaseHtmlView
 						}
 					);
 
-					$toolbar->cancel('template.cancel', 'JTOOLBAR_CLOSE');
+					$toolbar->cancel('template.cancel');
 				}
 			}
 		}

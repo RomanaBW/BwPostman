@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_PLATFORM') or die;
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\RulesField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -81,10 +82,12 @@ class BwrulesField extends RulesField
 	 *
 	 * @return  string  The field input markup.
 	 *
+	 * @throws Exception
+	 *
+	 * @todo    :   Add access check.
 	 * @since   11.1
-	 * @todo:   Add access check.
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		HtmlHelper::_('bootstrap.tooltip');
 
@@ -118,7 +121,8 @@ class BwrulesField extends RulesField
 		$isGlobalConfig = $component === 'root.1';
 
 		// Get the actions for the asset.
-		$actions = BwAccess::getActions($component, $section);
+		$actions = BwAccess::getActionsFromFile(JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml',
+			"/access/section[@name='" . $section . "']/");
 
 		// Iterate over the children and add to the actions.
 		foreach ($this->element->children() as $el)
@@ -148,7 +152,6 @@ class BwrulesField extends RulesField
 		// Note that for global configuration, com_config injects asset_id = 1 into the form.
 		$assetId       = $this->form->getValue($assetField);
 		$newItem       = empty($assetId) && $isGlobalConfig === false && $section !== 'component';
-		$parentAssetId = null;
 
 		$assetId = $this->checkAssetId($assetId);
 
@@ -198,8 +201,6 @@ class BwrulesField extends RulesField
 			try
 			{
 				$db->setQuery($query);
-
-				$parentAssetId = (int) $db->loadResult();
 			}
 			catch (RuntimeException $e)
 			{
@@ -257,6 +258,8 @@ class BwrulesField extends RulesField
 	 *
 	 * @return array
 	 *
+	 * @throws Exception
+	 *
 	 * @since 3.0.0
 	 */
 	protected function getTabs(
@@ -268,7 +271,7 @@ class BwrulesField extends RulesField
 		Rules $assetRules,
 		$isGlobalConfig,
 		$assetId
-	) {
+	): array {
 		$html[] = '<joomla-field-permissions class="row mb-2" data-uri="' . $ajaxUri . '">';
 		$html[] = '	<joomla-tab orientation="vertical" id="permissions-sliders">';
 		// Initial Active Pane
@@ -448,14 +451,18 @@ class BwrulesField extends RulesField
 	/**
 	 *
 	 * Method to check, if current asset id exists in asset table
-	 * @param integer          $assetId
+	 *
+	 * @param integer|null $assetId
 	 *
 	 * @return integer|null
 	 *
+	 * @throws Exception
+	 *
 	 * @since 3.0.0
 	 */
-	private function checkAssetId($assetId)
+	private function checkAssetId(int $assetId = null): ?int
 	{
+		$res   = null;
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 

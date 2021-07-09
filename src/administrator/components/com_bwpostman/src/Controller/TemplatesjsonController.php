@@ -176,14 +176,7 @@ class TemplatesjsonController extends AdminController
 			echo json_encode($res);
 			$app->close();
 		}
-		catch (RuntimeException $e)
-		{
-			echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '<br />';
-			echo $e->getMessage();
-			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
-			exit;
-		}
-		catch (Exception $e)
+		catch (RuntimeException | Exception $e)
 		{
 			echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '<br />';
 			echo $e->getMessage();

@@ -142,13 +142,13 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param	string $tpl Template
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       1.0.1
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): HtmlView
 	{
 		$app	= Factory::getApplication();
 		HTMLHelper::_('bootstrap.framework');
@@ -247,12 +247,12 @@ class HtmlView extends BaseHtmlView
 		$layout = $app->input->getCmd('layout', '');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance();
 
 		// Get document object, set document title and add css
 		$document = $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN'));
-		/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+		// @var \Joomla\CMS\WebAsset\WebAssetManager $wa
 		$wa = $document->getWebAssetManager();
 //		$wa->useStyle('com_bwpostman.admin-bwpostman');
 		$wa->registerAndUseStyle('com_bwpostman.bwpostman_backend', 'com_bwpostman/bwpostman_backend.css');

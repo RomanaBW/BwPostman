@@ -30,7 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Session\Session;
 use Joomla\CMS\Installer\InstallerAdapter;
 
 /**
@@ -66,6 +65,8 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since     0.9.8
 	 */
 	public function install()
@@ -92,6 +93,8 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since     0.9.8
 	 */
 	public function update()
@@ -102,8 +105,8 @@ class Mod_BwPostmanInstallerScript
 	/**
 	 * Method to run before an install/update/uninstall method
 	 *
-	 * @param string             $type       is the type of change (install, update or discover_install)
-	 * @param InstallerAdapter   $parent     is the class calling this method
+	 * @param string           $type   is the type of change (install, update or discover_install)
+	 * @param InstallerAdapter $parent is the class calling this method
 	 *
 	 * @return boolean            false if error occurs
 	 *
@@ -111,7 +114,7 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @since     0.9.8
 	 */
-	public function preflight($type, InstallerAdapter $parent)
+	public function preflight(string $type, InstallerAdapter $parent): bool
 	{
 		$app 		= Factory::getApplication();
 
@@ -158,6 +161,8 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @return  string      $manifest the manifest for this module
 	 *
+	 * @throws Exception
+	 *
 	 * @since     0.9.8
 	 */
 	private function getManifestVar(string $name): string
@@ -188,27 +193,29 @@ class Mod_BwPostmanInstallerScript
 	/**
 	 * Method to run after an install/update/uninstall method
 	 *
-	 * @param string  $type       is the type of change (install, update or discover_install)
-	 * @param object  $parent     is the class calling this method
+	 * @param string $type   is the type of change (install, update or discover_install)
+	 * @param object $parent is the class calling this method
 	 *
 	 * @return void
 	 *
 	 * @since     0.9.8
 	 */
-	public function postflight($type, $parent)
+	public function postflight(string $type, object $parent)
 	{
 	}
 
 	/**
 	 * shows the HTML after installation/update
 	 *
-	 * @param boolean    $update     true if update
+	 * @param boolean $update true if update
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since     0.9.8
 	 */
-	public function showFinished($update)
+	public function showFinished(bool $update)
 	{
 		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
@@ -266,7 +273,7 @@ class Mod_BwPostmanInstallerScript
 
 <div id="mod_bwp_install_header">
 	<a href="https://www.boldt-webservice.de" target="_blank">
-		<img border="0" align="center" src="<?php echo Route::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
+		<img src="<?php echo Route::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
 	</a>
 </div>
 <div class="top_line"></div>
@@ -392,10 +399,12 @@ class Mod_BwPostmanInstallerScript
 		<?php
 		}
 		else
-		{ ?>
+		{
+			$session = Factory::getApplication()->getSession();
+			?>
 			<div class="cpanel">
 				<div class="icon" >
-					<a href="<?php echo Route::_('index.php?option=com_modules&amp;filter_search=bw&amp;token=' . Session::getToken()); ?>">
+					<a href="<?php echo Route::_('index.php?option=com_modules&amp;filter_search=bw&amp;token=' . $session->getToken()); ?>">
 			<img alt="<?php echo Text::_('MOD_BWPOSTMAN_INSTALL_GO_MODULES'); ?>"
 					src="<?php echo Route::_($asset_path . '/images/icon-48-bwpostman.png'); ?>">
 						<span><?php echo Text::_('MOD_BWPOSTMAN_INSTALL_GO_MODULES'); ?></span>

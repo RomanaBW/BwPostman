@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
@@ -53,7 +54,7 @@ class CustomscriptField extends FormField
 	 *
 	 * @since   2.2.0
 	 */
-	protected function getLabel()
+	protected function getLabel(): string
 	{
 		return ' ';
 	}
@@ -61,7 +62,9 @@ class CustomscriptField extends FormField
 	/**
 	 * Method to get the field input markup.
 	 *
-	 * @return  string  The field input markup.
+	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.2.0
 	 */
@@ -72,7 +75,6 @@ class CustomscriptField extends FormField
 		$doc  = Factory::getApplication()->getDocument();
 		$text = Text::_('COM_BWPOSTMAN_FIELD_OBLIGATION');
 		// Hide spacers on joomla 4
-		$hide_spacer = "";
 		$hide_spacer = "				jQuery('#wrapper.wrapper #config [id^=\"com_bwpostman_\"] .field-spacer').css('display', 'none');";
 
 		$js = "
@@ -122,9 +124,6 @@ class CustomscriptField extends FormField
 		";
 
 		$doc->addScriptDeclaration($js);
-
-
-		return;
 	}
 
 	/**
@@ -134,7 +133,7 @@ class CustomscriptField extends FormField
 	 *
 	 * @since   3.0.0
 	 */
-	public function renderField($options = array())
+	public function renderField($options = array()): string
 	{
 		$options['class'] = empty($options['class']) ? 'hidden' : $options['class'] . ' hidden';
 

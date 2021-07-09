@@ -51,7 +51,7 @@ $option	= $jinput->getCmd('option');
 			<div class="row-fluid">
 				<table class="admintable bwptable restore">
 					<tr>
-						<td align="right" class="key">
+						<td class="key">
 							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE'); ?>:</span>
 							<span class="editlinktip mr-2" aria-labelledby="tip-desc">
 								<?php echo $image; ?>&nbsp;&nbsp;
@@ -63,7 +63,7 @@ $option	= $jinput->getCmd('option');
 						</td>
 					</tr>
 					<tr>
-						<td width="250" align="center" class="key">
+						<td class="key">
 							<input type="button" class="btn btn-success mt-3" name="submitbutton"
 									onclick="Joomla.submitbutton('maintenance.doRestore');
 										document.getElementById('loading').style.display = 'block';"

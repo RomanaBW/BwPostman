@@ -44,9 +44,9 @@ abstract class BwPostmanTplHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function getHeadTag()
+	public static function getHeadTag(): string
 	{
-		$head_tag  = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+		$head_tag  = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 		$head_tag .= "\n";
 		$head_tag .= '<html>' . "\n";
 		$head_tag .= '	<head>' . "\n";
@@ -65,11 +65,9 @@ abstract class BwPostmanTplHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function getBodyTag()
+	public static function getBodyTag(): string
 	{
-		$body_tag = ' <body bgcolor="#ffffff" emb-default-bgcolor="#ffffff">' . "\n";
-
-		return $body_tag;
+		return ' <body bgcolor="#ffffff" emb-default-bgcolor="#ffffff">' . "\n";
 	}
 
 	/**
@@ -79,11 +77,9 @@ abstract class BwPostmanTplHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function getArticleTagBegin()
+	public static function getArticleTagBegin(): string
 	{
-		$article_tag_begin = ' <div class="article">' . "\n";
-
-		return $article_tag_begin;
+		return ' <div class="article">' . "\n";
 	}
 
 	/**
@@ -93,11 +89,9 @@ abstract class BwPostmanTplHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function getArticleTagEnd()
+	public static function getArticleTagEnd(): string
 	{
-		$article_tag_end = ' </div>' . "\n";
-
-		return $article_tag_end;
+		return ' </div>' . "\n";
 	}
 
 	/**
@@ -107,7 +101,7 @@ abstract class BwPostmanTplHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function getReadonTag()
+	public static function getReadonTag(): string
 	{
 		$readon_tag  = '<div class="read_on">' . "\n";
 		$readon_tag .= '	<p>' . "\n";
@@ -126,7 +120,7 @@ abstract class BwPostmanTplHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function getLegalTagBegin()
+	public static function getLegalTagBegin(): string
 	{
 		$legal_tag_begin  = '   <table id="legal" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed; width: 100%;"><tbody>';
 		$legal_tag_begin .= '     <tr>' . "\n";
@@ -145,7 +139,7 @@ abstract class BwPostmanTplHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function getLegalTagEnd()
+	public static function getLegalTagEnd(): string
 	{
 		$legal_tag_end  = '           </td>' . "\n";
 		$legal_tag_end .= '          </tr>' . "\n";

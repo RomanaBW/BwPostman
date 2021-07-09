@@ -188,13 +188,13 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl=null)
+	public function display($tpl=null): HtmlView
 	{
 		// Initialize variables
 		$app = Factory::getApplication();
@@ -229,16 +229,18 @@ class HtmlView extends BaseHtmlView
 		{
 			$this->buildDelayMessage();
 		}
+		else
+		{
+			$this->form     = $this->get('Form');
+			$this->item     = $this->get('Item');
+			$this->state    = $this->get('State');
+			$this->template = $app->getTemplate();
+			$this->params   = ComponentHelper::getParams('com_bwpostman');
 
-		$this->form     = $this->get('Form');
-		$this->item     = $this->get('Item');
-		$this->state    = $this->get('State');
-		$this->template = $app->getTemplate();
-		$this->params   = ComponentHelper::getParams('com_bwpostman');
+			$app->triggerEvent('onBwPostmanBeforeNewsletterEdit', array(&$this->item, $referrer));
 
-		$app->triggerEvent('onBwPostmanBeforeNewsletterEdit', array(&$this->item, $referrer));
-
-		$this->setContentFlags();
+			$this->setContentFlags();
+		}
 
 		$this->addToolbar();
 
@@ -265,7 +267,7 @@ class HtmlView extends BaseHtmlView
 		$layout		= $app->input->get('layout', '');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance();
 
 		// Get document object, set document title and add css
 		$document	= $app->getDocument();
@@ -275,10 +277,6 @@ class HtmlView extends BaseHtmlView
 		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_nl.js');
 
 		// Set toolbar title and items
-		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-
-		$isNew = ($this->item->id == 0);
-
 		if ($layout == 'nl_send')
 		{
 			$options['text'] = "COM_BWPOSTMAN_BACK";
@@ -306,10 +304,15 @@ class HtmlView extends BaseHtmlView
 		}
 		else
 		{
+			$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+
+			$isNew = ($this->item->id == 0);
+
 			// For new records, check the create permission.
+			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
+
 			if ($isNew && $this->permissions['newsletter']['create'])
 			{
-				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
 
 				$toolbar->apply('newsletter.apply');
 
@@ -336,7 +339,6 @@ class HtmlView extends BaseHtmlView
 			}
 			else
 			{
-				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
 				// Can't save the record if it's checked out.
 				if (!$checkedOut)
 				{

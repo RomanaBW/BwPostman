@@ -30,8 +30,6 @@ namespace BoldtWebservice\Component\BwPostman\Site\Classes;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
-use Joomla\CMS\Event\AbstractEvent;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 
 /**
@@ -44,14 +42,14 @@ class BwPostmanSite
 	/**
 	 * Method to write the BwPostman footer
 	 *
+	 * @return string
+	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public static function footer()
+	public static function footer(): string
 	{
-
-		$app = Factory::getApplication();
 
 		PluginHelper::importPlugin('bwpostman', 'copyright');
 

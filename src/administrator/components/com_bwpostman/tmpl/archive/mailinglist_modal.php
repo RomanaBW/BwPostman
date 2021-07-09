@@ -33,7 +33,7 @@ use Joomla\CMS\Uri\Uri;
 ?>
 <table>
 	<tr>
-		<td><img src="<?php echo Uri::base() . 'components/com_bwpostman/assets/images/icon-48-mailinglists.png'; ?>" /></td>
+		<td><img src="<?php echo Uri::base() . 'components/com_bwpostman/assets/images/icon-48-mailinglists.png'; ?>" alt="Mailinglists Icon" /></td>
 		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_ML') ?></strong></td>
 	</tr>
 </table>

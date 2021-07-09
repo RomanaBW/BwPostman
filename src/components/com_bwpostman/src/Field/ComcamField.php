@@ -73,14 +73,14 @@ class ComcamField extends CheckboxesField
 	 *
 	 * @since   11.1
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		// Initialize variables.
 		$html	= array();
 		$stub	= "'cb'";
 
 		// Initialize some field attributes.
-		$class = $this->element['class'] ? ' class="checkboxes ' . (string) $this->element['class'] . '"' : ' class="checkboxes"';
+		$class = $this->element['class'] ? ' class="checkboxes ' . $this->element['class'] . '"' : ' class="checkboxes"';
 
 		// Start the checkbox field output.
 		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
@@ -119,7 +119,7 @@ class ComcamField extends CheckboxesField
 				$html[] = '							<tr class="row' . $i % 2 . '">';
 				$html[] = '								<td class="text-center">' . Text::_($option->value) . '</td>';
 				$html[] = '								<td class="text-center"><input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
-					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
+					. htmlspecialchars($option->value, ENT_COMPAT) . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
 				$html[] = '								<td class="text-center"><span class="tbody-icon">' . $archived . '</span></td>';
 				$html[] = '								<td>' . Text::_($option->text) . '</td>';
 				$html[] = '								<td class="d-none d-lg-table-cell">' . Text::_($option->description) . '</td>';
@@ -153,15 +153,11 @@ class ComcamField extends CheckboxesField
 	 *
 	 * @since   11.1
 	 */
-	protected function getOptions()
+	protected function getOptions(): array
 	{
-		$options  = null;
-
 		$options = BwPostmanCampaignHelper::getCampaignsFieldlistOptions(true, false);
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }

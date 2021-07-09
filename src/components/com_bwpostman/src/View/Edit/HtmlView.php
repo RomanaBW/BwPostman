@@ -76,13 +76,13 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): HtmlView
 	{
 		$app        = Factory::getApplication();
 		$session    = $app->getSession();
@@ -134,7 +134,7 @@ class HtmlView extends BaseHtmlView
 		$model = $this->getModel();
 		$mlTable = $model->getTable('Mailinglist', 'Administrator');
 		$subsTable = $model->getTable('Subscriber');
-		$userId  = $subsTable->getUserIdOfSubscriber((int)$subscriber->id);
+		$userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
 		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists((int)$userId);
 
 		// Build the email format select list

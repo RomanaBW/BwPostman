@@ -58,7 +58,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $id = null;
+	public $id = 0;
 
 	/**
 	 * @var int asset_id
@@ -286,9 +286,6 @@ class CampaignTable extends Table implements VersionableTableInterface
 		{
 			throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 		}
-
-		// Cast properties
-		$this->id	= (int) $this->id;
 
 		return parent::bind($src, $ignore);
 	}

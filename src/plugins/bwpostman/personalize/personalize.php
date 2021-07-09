@@ -26,8 +26,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseDriver;
@@ -58,36 +56,32 @@ class PlgBwPostmanPersonalize extends JPlugin
 	protected $db;
 
 	/**
-	 * Application object
-	 *
-	 * @var    JApplication
-	 *
-	 * @since       2.0.0
-	 */
-	protected $app;
-
-	/**
 	 * Method to write enhanced personalization in the body of the newsletter
 	 *
 	 * Inserts male or female string depending on gender of subscriber. If no gender is available, male string is used.
-	 * At incomplete plugin parameters an empty string is inserted. We don't want incomplete plugin characters in newsletter.
+	 * At incomplete plugin parameters an empty string is inserted. We don't want incomplete plugin characters in
+	 * newsletter.
 	 *
-	 * @param string    $context    context of the newsletter to display
-	 * @param string    $body       the body of the newsletter
-	 * @param int       $id         subscriber ID or user ID, depends on the context
+	 * @param string $context context of the newsletter to display
+	 * @param string $body    the body of the newsletter
+	 * @param int    $id      subscriber ID or user ID, depends on the context
 	 *
 	 * @return bool
 	 *
+	 * @throws Exception
 	 * @since       2.0.0
 	 */
-	public function onBwPostmanPersonalize($context= 'com_bwpostman.view', &$body = '', $id = 0)
+	public function onBwPostmanPersonalize(string $context= 'com_bwpostman.view', string &$body = '', int $id = 0): bool
 	{
-		$gender = null;
+		$gender = 2;
+
 		// get gender
-		if ($context == 'com_bwpostman.send') {
+		if ($context === 'com_bwpostman.send')
+		{
 			$gender = $this->getGenderFromSubscriberId($id);
 		}
-		elseif ($context == 'com_bwpostman.view') {
+		elseif ($context === 'com_bwpostman.view')
+		{
 			if ($id > 0)
 			{
 				$gender = $this->getGenderFromUserId($id);
@@ -108,12 +102,6 @@ class PlgBwPostmanPersonalize extends JPlugin
 
 			$gender_strings = $this->extractGenderStrings($bwpm_personalize_parts);
 
-			// if gender not set replace with last parameter
-			if ($gender === null)
-			{
-				$gender = 2;
-			}
-
 			// set replace value depending on gender
 			$replace_value = $gender_strings[$gender];
 
@@ -127,27 +115,34 @@ class PlgBwPostmanPersonalize extends JPlugin
 	/**
 	 * Method to get the gender of the subscriber by subscriber_id
 	 *
-	 * @param int   $id     subscriber ID
+	 * @param int $id subscriber ID
 	 *
-	 * @return int  $gender gender of subscriber
+	 * @return int  $gender gender of subscriber, 0 = male, 1 = female, 2 = n.a.
+	 *
+	 * @throws Exception
 	 *
 	 * @since       2.0.0
 	 */
-	protected function getGenderFromSubscriberId($id)
+	protected function getGenderFromSubscriberId(int $id): int
 	{
-		$gender = null;
+		$gender = 2;
 		$_db 	= $this->db;
 		$query  = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('gender'));
 		$query->from('#__bwpostman_subscribers');
-		$query->where($_db->quoteName('id') . ' = ' . (int) $id);
+		$query->where($_db->quoteName('id') . ' = ' . $id);
 
 		try
 		{
 			$_db->setQuery($query);
 
 			$gender = $_db->loadResult();
+
+			if ($gender === null)
+			{
+				$gender = 2;
+			}
 		}
 		catch (RuntimeException $e)
 		{
@@ -160,28 +155,35 @@ class PlgBwPostmanPersonalize extends JPlugin
 	/**
 	 * Method to get the gender of the subscriber by user_id
 	 *
-	 * @param int   $id     user ID
+	 * @param int $id user ID
 	 *
 	 * @return int  $gender gender of subscriber
 	 *
+	 * @throws Exception
+	 *
 	 * @since       2.0.0
 	 */
-	protected function getGenderFromUserId($id)
+	protected function getGenderFromUserId(int $id): int
 	{
-		$gender = null;
+		$gender = 2;
 
 		$_db   = $this->db;
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('gender'));
 		$query->from('#__bwpostman_subscribers');
-		$query->where($_db->quoteName('user_id') . ' = ' . (int) $id);
+		$query->where($_db->quoteName('user_id') . ' = ' . $id);
 
 		try
 		{
 			$_db->setQuery($query);
 
 			$gender = $_db->loadResult();
+
+			if ($gender === null)
+			{
+				$gender = 2;
+			}
 		}
 		catch (RuntimeException $e)
 		{
@@ -200,7 +202,7 @@ class PlgBwPostmanPersonalize extends JPlugin
 	 *
 	 * @since       2.0.0
 	 */
-	protected function extractGenderStrings($bwpm_personalize_parts)
+	protected function extractGenderStrings(array $bwpm_personalize_parts): array
 	{
 		$parts = explode("|", $bwpm_personalize_parts[2]);
 		array_shift($parts);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * BwPostman Newsletter Component
  *
@@ -36,7 +37,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -175,9 +175,9 @@ class NewsletterModel extends AdminModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	string  $type	    The table type to instantiate
-	 * @param	string	$prefix     A prefix for the table class name. Optional.
-	 * @param	array	$config     Configuration array for model. Optional.
+	 * @param	string $name    The table type to instantiate
+	 * @param	string $prefix  A prefix for the table class name. Optional.
+	 * @param	array  $options Configuration array for model. Optional.
 	 *
 	 * @return	object  JTable	A database object
 	 *
@@ -185,19 +185,19 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($type = 'Newsletter', $prefix = 'Administrator', $config = array())
+	public function getTable($name = 'Newsletter', $prefix = 'Administrator', $options = array()): object
 	{
-		return parent::getTable($type, $prefix, $config);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
 	 * Method to reset the newsletter ID and data
 	 *
-	 * @param	int $id     Newsletter ID
+	 * @param int $id Newsletter ID
 	 *
 	 * @since       0.9.1
 	 */
-	public function setId($id)
+	public function setId(int $id)
 	{
 		$this->id   = $id;
 		$this->data = null;
@@ -214,11 +214,9 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function canEditState($record)
+	protected function canEditState($record): bool
 	{
-		$permission = BwPostmanHelper::canEditState('newsletter', (int) $record->id);
-
-		return $permission;
+		return BwPostmanHelper::canEditState('newsletter', (int) $record->id);
 	}
 
 	/**
@@ -226,7 +224,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  mixed    Object on success, false on failure.
+	 * @return  object|bool    Object on success, false on failure.
 	 *
 	 * @throws Exception
 	 *
@@ -360,7 +358,7 @@ class NewsletterModel extends AdminModel
 	 * @param	array	$data		Data for the form.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return	mixed	A JForm object on success, false on failure
+	 * @return	object|bool	A JForm object on success, false on failure
 	 *
 	 * @throws Exception
 	 *
@@ -368,8 +366,6 @@ class NewsletterModel extends AdminModel
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-//		Form::addFieldPath('JPATH_ADMINISTRATOR/components/com_bwpostman/fields');
-
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$config = Factory::getApplication()->getConfig();
 		$user   = Factory::getApplication()->getIdentity();
@@ -485,7 +481,7 @@ class NewsletterModel extends AdminModel
 		$recordId = Factory::getApplication()->getUserState('com_bwpostman.newsletter.id');
 
 		// Check the session for previously entered form data for this record id.
-		$data = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
+		$data = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data');
 
 		if (empty($data) || (is_object($data) && $recordId != $data->id))
 		{
@@ -498,7 +494,7 @@ class NewsletterModel extends AdminModel
 	/**
 	 * Method check if newsletter is content template
 	 *
-	 * @param   integer  $id        ID of newsletter
+	 * @param integer $id ID of newsletter
 	 *
 	 * @return	boolean           state of is_template
 	 *
@@ -506,13 +502,11 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since	2.2.0
 	 */
-	public function isTemplate($id)
+	public function isTemplate(int $id): bool
 	{
 		$table = $this->getTable();
 
-		$isTemplate = $table->isTemplate($id);
-
-		return $isTemplate;
+		return $table->isTemplate($id);
 	}
 
 	/**
@@ -523,8 +517,8 @@ class NewsletterModel extends AdminModel
 	 * @throws Exception
 	 *
 	 * @since
-	 */
-	public function getSingleNewsletter()
+	 *       */
+	public function getSingleNewsletter(): object
 	{
 		$app  = Factory::getApplication();
 		$item = $app->getUserState('com_bwpostman.edit.newsletter.data');
@@ -545,9 +539,6 @@ class NewsletterModel extends AdminModel
 		{
 			$item->text_template_id = -2;
 		}
-
-		$item->template_id      = (int)$item->template_id;
-		$item->text_template_id = (int)$item->text_template_id;
 
 		$renderer = new contentRenderer();
 
@@ -631,7 +622,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function getSelectedContentItems()
+	public function getSelectedContentItems(): array
 	{
 		$nlId = (int) $this->getState($this->getName() . '.id');
 		$db   = $this->_db;
@@ -716,9 +707,7 @@ class NewsletterModel extends AdminModel
 			$data['attachment'] = array();
 		}
 
-		$validData = parent::validate($form, $data, $group);
-
-		return $validData;
+		return parent::validate($form, $data, $group);
 	}
 
 	/**
@@ -732,7 +721,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function save($data)
+	public function save($data): bool
 	{
 		$app      = Factory::getApplication();
 		$jinput   = $app->input;
@@ -753,7 +742,7 @@ class NewsletterModel extends AdminModel
 		BwPostmanMailinglistHelper::mergeMailinglists($data);
 
 		// convert attachment array to JSON, to be able to save
-		if (isset($data['attachment']) && is_array($data['attachment']) && $data['attachment'] !== '')
+		if (isset($data['attachment']) && is_array($data['attachment']) && !empty($data['attachment']))
 		{
 			if (count($data['attachment']))
 			{
@@ -824,8 +813,8 @@ class NewsletterModel extends AdminModel
 	 * Method to (un)archive a newsletter from the newsletters-table
 	 * --> when unarchiving it is called by the archive-controller
 	 *
-	 * @param	array $cid          Newsletter IDs
-	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
+	 * @param array $cid     Newsletter IDs
+	 * @param int   $archive Task --> 1 = archive, 0 = unarchive
 	 *
 	 * @return	boolean
 	 *
@@ -833,7 +822,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function archive($cid = array(), $archive = 1)
+	public function archive(array $cid = array(), int $archive = 1): bool
 	{
 		$app        = Factory::getApplication();
 		$state_data = $app->getUserState('com_bwpostman.edit.newsletter.data');
@@ -871,7 +860,7 @@ class NewsletterModel extends AdminModel
 	 * Method to copy one or more newsletters
 	 * --> the assigned mailing lists will be copied, too
 	 *
-	 * @param 	integer   $id        Newsletter-ID
+	 * @param integer $id Newsletter-ID
 	 *
 	 * @return 	boolean
 	 *
@@ -879,7 +868,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function copy($id)
+	public function copy(int $id): bool
 	{
 		if (!$this->permissions['newsletter']['create'])
 		{
@@ -946,7 +935,7 @@ class NewsletterModel extends AdminModel
 
 		$crossTable = $this->getTable('NewslettersMailinglists');
 
-		$newsletters_data_copy->mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter((int) $id);
+		$newsletters_data_copy->mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter($id);
 
 		if (!$this->save(ArrayHelper::fromObject($newsletters_data_copy, false)))
 		{
@@ -973,7 +962,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function delete(&$pks)
+	public function delete(&$pks): bool
 	{
 		if (count($pks))
 		{
@@ -1013,7 +1002,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function delete_queue()
+	public function delete_queue(): bool
 	{
 		// Access check
 		if (!BwPostmanHelper::canClearQueue())
@@ -1038,19 +1027,18 @@ class NewsletterModel extends AdminModel
 	/**
 	 * Changes the state of isTemplate
 	 *
-	 * @param   array    $id      A list of the primary keys to change.
+	 * @param integer $id the primary key to change.
 	 *
-	 * @return  boolean  True on success.
+	 * @return  boolean | int false on failure, on success set value
 	 *
 	 * @throws Exception
 	 *
 	 * @since   1.6
 	 */
-	public function changeIsTemplate($id)
+	public function changeIsTemplate(int $id)
 	{
 		$user  = Factory::getApplication()->getIdentity();
 		$table = $this->getTable();
-		$id    = (int) $id;
 
 		// Access checks.
 		if ($table->load($id))
@@ -1090,20 +1078,18 @@ class NewsletterModel extends AdminModel
 	/**
 	 * Method to do checks before sending
 	 *
-	 * @param	array	$error          errors
-	 * @param 	int		$recordId       Newsletter ID
-	 * @param   boolean $automation     do we come from plugin?
+	 * @param array   $error      errors
+	 * @param int     $recordId   Newsletter ID
+	 * @param boolean $automation do we come from plugin?
 	 *
-	 * @return	mixed
+	 * @return	array|bool
 	 *
 	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
-	public function preSendChecks( &$error, $recordId = 0, $automation = false)
+	public function preSendChecks(array &$error, int $recordId = 0, bool $automation = false)
 	{
-		$recordId = (int)$recordId;
-
 		// Access check.
 		if (!BwPostmanHelper::canSend($recordId))
 		{
@@ -1137,21 +1123,18 @@ class NewsletterModel extends AdminModel
 	/**
 	 * Method to check and clean the input fields
 	 *
-	 * @param	array	$err            errors
-	 * @param 	int		$recordId       Newsletter ID
-	 * @param   boolean $automation     do we come from plugin?
+	 * @param array   $err        errors
+	 * @param int     $recordId   Newsletter ID
+	 * @param boolean $automation do we come from plugin?
 	 *
-	 * @return	mixed
+	 * @return    array
 	 *
 	 * @throws Exception
 	 *
 	 * @since
 	 */
-	public function checkForm( &$err, $recordId = 0, $automation = false)
+	public function checkForm( array &$err, int $recordId = 0, bool $automation = false): array
 	{
-		jimport('joomla.mail.helper');
-		$recordId = (int)$recordId;
-
 		if (!$automation)
 		{
 			// heal form data and get them
@@ -1241,10 +1224,10 @@ class NewsletterModel extends AdminModel
 	/**
 	 * Method to check if there are selected mailinglists and/or usergroups and if they contain recipients
 	 *
-	 * @param	string	$ret_msg                Error message
-	 * @param	int		$nl_id                  newsletter id
-	 * @param	boolean	$send_to_unconfirmed    Status --> 0 = do not send to unconfirmed, 1 = sent also to unconfirmed
-	 * @param	int		$cam_id                 campaign id
+	 * @param string  $ret_msg             Error message
+	 * @param int     $nl_id               newsletter id
+	 * @param boolean $send_to_unconfirmed Status --> 0 = do not send to unconfirmed, 1 = sent also to unconfirmed
+	 * @param int     $cam_id              campaign id
 	 *
 	 * @return 	boolean
 	 *
@@ -1252,7 +1235,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function checkForRecipients(&$ret_msg, $nl_id, $send_to_unconfirmed, $cam_id)
+	public function checkForRecipients(string &$ret_msg, int $nl_id, bool $send_to_unconfirmed, int $cam_id): bool
 	{
 		try
 		{
@@ -1260,7 +1243,7 @@ class NewsletterModel extends AdminModel
 			$check_allsubscribers = 0;
 			$usergroups           = array();
 
-			$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, (int)$cam_id);
+			$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, $cam_id);
 
 			if (!$associatedMailinglists)
 			{
@@ -1311,19 +1294,7 @@ class NewsletterModel extends AdminModel
 			// We return only false, if no subscribers AND no joomla users are selected.
 			if (!$count_users && !$count_subscribers)
 			{
-				if (!$count_users)
-				{
-					$ret_msg = Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_USERS');
-
-					return false;
-				}
-
-				if (!$count_subscribers)
-				{
-					$ret_msg = Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_SUBSCRIBERS');
-
-					return false;
-				}
+				$ret_msg = Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_SUBSCRIBERS');
 			}
 		}
 		catch (RuntimeException $e)
@@ -1343,12 +1314,11 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function checkForTestrecipients()
+	public function checkForTestrecipients(): bool
 	{
 		$subsTable      = $this->getTable('Subscriber');
-		$testrecipients = $subsTable->checkForTestrecipients();
 
-		return $testrecipients;
+		return $subsTable->checkForTestrecipients();
 	}
 
 	/**
@@ -1360,7 +1330,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function composeNl()
+	public function composeNl(): array
 	{
 		$jinput	= Factory::getApplication()->input;
 
@@ -1368,9 +1338,8 @@ class NewsletterModel extends AdminModel
 		$template_id      = $jinput->get('template_id');
 		$text_template_id = $jinput->get('text_template_id');
 		$renderer         = new contentRenderer();
-		$content          = $renderer->getContent($nl_content, $template_id, $text_template_id);
 
-		return $content;
+		return $renderer->getContent($nl_content, $template_id, $text_template_id);
 	}
 
 	/**
@@ -1431,7 +1400,7 @@ class NewsletterModel extends AdminModel
 				break;
 			case 'edit_basic':
 				// convert attachment array to JSON, to be able to save and show as hidden field
-				if (isset($form_data['attachment']) && is_array($form_data['attachment']) && $form_data['attachment'] !== '')
+				if (isset($form_data['attachment']) && is_array($form_data['attachment']) && !empty($form_data['attachment']))
 				{
 					$form_data['attachment'] = json_encode($form_data['attachment']);
 				}
@@ -1525,11 +1494,11 @@ class NewsletterModel extends AdminModel
 	/**
 	 * Method to prepare the sending of a newsletter
 	 *
-	 * @param	string	$ret_msg        Error message
-	 * @param 	string	$recipients     Recipient --> either recipients or test-recipients
-	 * @param 	int		$nl_id          Newsletter ID
-	 * @param 	boolean	$unconfirmed    Send to unconfirmed or not
-	 * @param	int		$cam_id         campaign id
+	 * @param string  $ret_msg     Error message
+	 * @param string  $recipients  Recipient --> either recipients or test-recipients
+	 * @param int     $nl_id       Newsletter ID
+	 * @param boolean $unconfirmed Send to unconfirmed or not
+	 * @param int     $cam_id      campaign id
 	 *
 	 * @return	boolean	                False if there occurred an error
 	 *
@@ -1537,10 +1506,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function sendNewsletter(&$ret_msg, $recipients, $nl_id, $unconfirmed, $cam_id)
+	public function sendNewsletter(string &$ret_msg, string $recipients, int $nl_id, bool $unconfirmed, int $cam_id): bool
 	{
-		$nl_id = (int)$nl_id;
-
 		// Access check
 		if (!BwPostmanHelper::canSend($nl_id))
 		{
@@ -1565,7 +1532,7 @@ class NewsletterModel extends AdminModel
 		// Update the newsletters table, to prevent repeated sending of the newsletter
 		if ($recipients == 'recipients')
 		{
-			$tblNewsletters = $this->getTable('Newsletter');
+			$tblNewsletters = $this->getTable();
 			$tblNewsletters->markAsSent($nl_id);
 		}
 
@@ -1584,7 +1551,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function resetSendAttempts()
+	public function resetSendAttempts(): bool
 	{
 		// Access check
 		if (!BwPostmanHelper::canResetQueue())
@@ -1602,7 +1569,7 @@ class NewsletterModel extends AdminModel
 	 * as a manner of archive and process method completely with content,
 	 * subject & Co. in
 	 *
-	 * @param 	int		        $nl_id          Newsletter ID
+	 * @param int $nl_id Newsletter ID
 	 *
 	 * @return 	int|boolean 	                int content ID, if everything went fine, else boolean false
 	 *
@@ -1610,14 +1577,14 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	private function addSendMailContent($nl_id)
+	private function addSendMailContent(int $nl_id)
 	{
 		if (!$nl_id)
 		{
 			return false;
 		}
 
-		$newsletters_data = $this->getTable()->getNewsletterData((int)$nl_id);
+		$newsletters_data = $this->getTable()->getNewsletterData($nl_id);
 
 		if (!$newsletters_data)
 		{
@@ -1685,20 +1652,18 @@ class NewsletterModel extends AdminModel
 			}
 		}
 
-		$id = (int)$sendMailContent->id;
-
-		return $id;
+		return (int)$sendMailContent->id;
 	}
 
 	/**
 	 * Method to push the recipients into a queue
 	 *
-	 * @param	string	$ret_msg                Error message
-	 * @param 	int		$content_id             Content ID -->  --> from the sendmailcontent-Table
-	 * @param 	string	$recipients             Recipient --> either subscribers or test-recipients
-	 * @param 	int		$nl_id                  Newsletter ID
-	 * @param	boolean	$send_to_unconfirmed    Status --> 0 = do not send to unconfirmed, 1 = sent also to unconfirmed
-	 * @param	int		$cam_id                 campaign id
+	 * @param string  $ret_msg             Error message
+	 * @param int     $content_id          Content ID -->  --> from the sendmailcontent-Table
+	 * @param string  $recipients          Recipient --> either subscribers or test-recipients
+	 * @param int     $nl_id               Newsletter ID
+	 * @param boolean $send_to_unconfirmed Status --> 0 = do not send to unconfirmed, 1 = sent also to unconfirmed
+	 * @param int     $cam_id              campaign id
 	 *
 	 * @return 	boolean False if there occurred an error
 	 *
@@ -1706,7 +1671,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	private function addSendMailQueue(&$ret_msg, $content_id, $recipients, $nl_id, $send_to_unconfirmed, $cam_id)
+	private function addSendMailQueue(string &$ret_msg, int $content_id, string $recipients, int $nl_id, bool $send_to_unconfirmed, int $cam_id): bool
 	{
 		if (!$content_id)
 		{
@@ -1729,7 +1694,7 @@ class NewsletterModel extends AdminModel
 				$check_allsubscribers = 0;
 				$usergroups           = array();
 
-				$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, (int)$cam_id);
+				$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, $cam_id);
 
 				if (!$associatedMailinglists)
 				{
@@ -1819,8 +1784,8 @@ class NewsletterModel extends AdminModel
 	/**
 	 * Check number of trials
 	 *
-	 * @param	int		$trial
-	 * @param   int     $count
+	 * @param int $trial
+	 * @param int $count
 	 *
 	 * @return	bool|int	true if no entries or there are entries with number trials less than 2, otherwise false
 	 *
@@ -1828,24 +1793,22 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 1.0.3
 	 */
-	public function checkTrials($trial = 2, $count = 0)
+	public function checkTrials(int $trial = 2, int $count = 0)
 	{
 		PluginHelper::importPlugin('bwpostman');
 		Factory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
 
 		$tblSendmailQueue = $this->getTable('Sendmailqueue');
 
-		$result = $tblSendmailQueue->checkTrials($trial, $count);
-
-		return $result;
+		return $tblSendmailQueue->checkTrials($trial, $count);
 	}
 
 	/**
 	 * Make partial send. Send only, say like 50 newsletters and the next 50 in a next call.
 	 *
-	 * @param integer   $mailsPerStep     number mails to send
-	 * @param boolean   $fromComponent    do we come from component or from plugin?
-	 * @param int       $mailsPerStepDone number of mails of current step sent
+	 * @param integer $mailsPerStep     number mails to send
+	 * @param boolean $fromComponent    do we come from component or from plugin?
+	 * @param int     $mailsPerStepDone number of mails of current step sent
 	 *
 	 * @return int	0 -> queue is empty, 1 -> maximum reached, 2 -> fatal error
 	 *
@@ -1853,19 +1816,19 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function sendMailsFromQueue($mailsPerStep = 100, $fromComponent = true, $mailsPerStepDone = 0)
+	public function sendMailsFromQueue(int $mailsPerStep = 100, bool $fromComponent = true, int $mailsPerStepDone = 0): int
 	{
 		$this->logger->addEntry(new LogEntry('Model sendMailsFromQueue mails per Step: ' . $mailsPerStep, BwLogger::BW_INFO, 'send'));
 		$this->sendmessage = '';
 
 		try
 		{
-			$sendMailCounter = (int)$mailsPerStepDone;
+			$sendMailCounter = $mailsPerStepDone;
 			$counter = 0;
 
 			while(1)
 			{
-				$ret = $this->sendMail((bool)$fromComponent);
+				$ret = $this->sendMail($fromComponent);
 				echo $this->sendmessage;
 				$this->sendmessage = '';
 
@@ -1875,7 +1838,7 @@ class NewsletterModel extends AdminModel
 				}
 
 				$sendMailCounter++;
-				if ($sendMailCounter >= (int)$mailsPerStep)
+				if ($sendMailCounter >= $mailsPerStep)
 				{     // Maximum is reached.
 					return 1;
 				}
@@ -1886,11 +1849,14 @@ class NewsletterModel extends AdminModel
 					return $sendMailCounter;
 				}
 			}
-
-			return 0;
 		}
 		catch (Throwable $e)
 		{
+			$message = 'Exception' . $e->getMessage();
+			$message .= ' in file ' . $e->getFile();
+			$message .= ' at line ' . $e->getLine();
+			$this->logger->addEntry(new LogEntry('Model sendMailsFromQueue throwable exception: ' . $message, BwLogger::BW_DEBUG, 'send'));
+
 			return 2;
 		}
 	}
@@ -1908,7 +1874,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function sendMail($fromComponent = true)
+	public function sendMail($fromComponent = true): int
 	{
 		// initialize
 		$renderer           = new contentRenderer();
@@ -2040,7 +2006,7 @@ class NewsletterModel extends AdminModel
 		// show queue working only wanted if sending newsletters from component backend directly, not in time controlled sending
 		if ($fromComponent)
 		{
-			$this->sendmessage .= "\n<br>{$tblSendMailQueue->recipient} (" .
+			$this->sendmessage .= "\n<br>$tblSendMailQueue->recipient (" .
 				Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_TRIAL') . ($tblSendMailQueue->trial + 1) . ") ... ";
 		}
 
@@ -2111,7 +2077,7 @@ class NewsletterModel extends AdminModel
 		}
 		else
 		{
-			$app->enqueueMessage(sprintf('Error while sending: $s'), $res);
+			$app->enqueueMessage(sprintf('Error while sending: %s', $res));
 			// Sendmail was not successful, we need to add the recipient to the queue again.
 			if ($fromComponent)
 			{
@@ -2162,8 +2128,9 @@ class NewsletterModel extends AdminModel
 
 	/**
 	 * Method to preset HTML-Template for old newsletters
+ *
 
-	 * @param                 $item
+	 * @param object $item
 	 *
 	 * @return void
 	 *
@@ -2171,7 +2138,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 2.3.0
 	 */
-	private function presetOldHTMLTemplate(&$item)
+	private function presetOldHTMLTemplate(object &$item)
 	{
 		$html_tpl = null;
 		$db       = $this->_db;
@@ -2209,8 +2176,9 @@ class NewsletterModel extends AdminModel
 
 	/**
 	 * Method to preset Text-Template for old newsletters
+ *
 
-	 * @param                 $item
+	 * @param object $item
 	 *
 	 * @return void
 	 *
@@ -2218,7 +2186,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 2.3.0
 	 */
-	private function presetOldTextTemplate(&$item)
+	private function presetOldTextTemplate(object &$item)
 	{
 		$text_tpl = null;
 		$db       = $this->_db;
@@ -2259,13 +2227,13 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @param object $newsletters_data
 	 *
-	 * @return mixed
+	 * @return bool
 	 *
 	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
-	private function preprocessHtmlVersion($newsletters_data)
+	private function preprocessHtmlVersion(object $newsletters_data): bool
 	{
 		$renderer = new contentRenderer();
 
@@ -2329,13 +2297,13 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @param object $newsletters_data
 	 *
-	 * @return mixed
+	 * @return bool
 	 *
 	 * @throws Exception
 	 *
 	 * @since 2.3.0
 	 */
-	private function preprocessTextVersion($newsletters_data)
+	private function preprocessTextVersion(object $newsletters_data): bool
 	{
 		$renderer = new contentRenderer();
 
@@ -2391,8 +2359,9 @@ class NewsletterModel extends AdminModel
 
 	/**
 	 * Method to get the associated mailinglists of a newsletter
-	 * @param integer  $nl_id
-	 * @param integer  $cam_id
+	 *
+	 * @param integer $nl_id
+	 * @param integer $cam_id
 	 *
 	 * @return array
 	 *
@@ -2400,19 +2369,19 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 2.3.0
 	 */
-	private function getAssociatedMailinglists($nl_id, $cam_id)
+	private function getAssociatedMailinglists(int $nl_id, int $cam_id): array
 	{
 		if ($cam_id !== -1)
 		{
 			// Check if there are assigned mailinglists or usergroups
 			$crossTable = $this->getTable('CampaignsMailinglists');
-			$mailinglists = $crossTable->getAssociatedMailinglistsByCampaign((int) $cam_id);
+			$mailinglists = $crossTable->getAssociatedMailinglistsByCampaign($cam_id);
 		}
 		else
 		{
 			// Check if there are assigned mailinglists or usergroups of the campaign
 			$crossTable = $this->getTable('NewslettersMailinglists');
-			$mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter((int) $nl_id);
+			$mailinglists = $crossTable->getAssociatedMailinglistsByNewsletter($nl_id);
 		}
 
 		return ArrayHelper::toInteger($mailinglists);
@@ -2422,16 +2391,14 @@ class NewsletterModel extends AdminModel
 	/**
 	 * Method to get the needed subscriber checks
 	 *
-	 * @param array    $mailinglists
-	 * @param boolean  $check_subscribers
-	 * @param boolean  $check_allsubscribers
-	 * @param array    $usergroups
-	 *
-	 * @return string|boolean
+	 * @param array   $mailinglists
+	 * @param boolean $check_subscribers
+	 * @param boolean $check_allsubscribers
+	 * @param array   $usergroups
 	 *
 	 * @since 2.3.0
 	 */
-	private function getSubscriberChecks($mailinglists, &$check_subscribers, &$check_allsubscribers, &$usergroups)
+	private function getSubscriberChecks(array $mailinglists, bool &$check_subscribers, bool &$check_allsubscribers, array &$usergroups)
 	{
 		foreach ($mailinglists as $mailinglist)
 		{
@@ -2455,16 +2422,14 @@ class NewsletterModel extends AdminModel
 				}
 			}
 		}
-
-		return true;
 	}
 
 	/**
 	 * Method to adjust newsletter content if content or template has changed
 	 *
-	 * @param       $form_data
-	 * @param       $add_content
-	 * @param array $nl_content
+	 * @param array  $form_data
+	 * @param string $add_content
+	 * @param array  $nl_content
 	 *
 	 * @return array
 	 *
@@ -2472,7 +2437,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 3.0.0
 	 */
-	private function processChangedContent($form_data, $add_content, $nl_content)
+	private function processChangedContent(array $form_data, string $add_content, array $nl_content): array
 	{
 		$jinput            = Factory::getApplication()->input;
 		$sel_content       = $jinput->get('selected_content_old', '', 'string');
@@ -2484,7 +2449,7 @@ class NewsletterModel extends AdminModel
 			|| ($old_template != $form_data['template_id'])
 			|| ($old_text_template != $form_data['text_template_id']))
 		{
-			if ($add_content == '-1' && (count($nl_content) === 0))
+			if ($add_content === '-1' && (count($nl_content) === 0))
 			{
 				$nl_content = array(-1);
 			}
@@ -2545,14 +2510,14 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 3.0.0
 	 */
-	private function getDiffDataKeys($state_data, $form_data)
-	{
-		$diffKeys = array_diff_key((array) $state_data, $form_data);
-
-		unset($diffKeys["\u0000*\u0000_errors"]);
-
-		return $diffKeys;
-	}
+//	private function getDiffDataKeys($state_data, $form_data) :array
+//	{
+//		$diffKeys = array_diff_key((array) $state_data, $form_data);
+//
+//		unset($diffKeys["\u0000*\u0000_errors"]);
+//
+//		return $diffKeys;
+//	}
 
 	/**
 	 * Method to get the differences between form data and state data
@@ -2565,10 +2530,10 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 3.0.0
 	 */
-	private function getDiffDataValues($state_data, $form_data)
-	{
-		$diffData = array_diff((array) $state_data, $form_data);
-
-		return $diffData;
-	}
+//	private function getDiffDataValues($state_data, $form_data) :array
+//	{
+//		$diffData = array_diff((array) $state_data, $form_data);
+//
+//		return $diffData;
+//	}
 }

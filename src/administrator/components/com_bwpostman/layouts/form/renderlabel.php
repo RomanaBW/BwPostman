@@ -20,8 +20,6 @@ extract($displayData);
  * 	$classes      : (array)   A list of classes
  */
 
-$classes = array_filter((array) $classes);
-
 $id    = $for . '-lbl';
 $forAttr = '';
 

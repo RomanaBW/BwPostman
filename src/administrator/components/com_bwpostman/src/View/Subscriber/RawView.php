@@ -49,6 +49,42 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 class RawView extends BaseHtmlView
 {
 	/**
+	 * property to hold form data
+	 *
+	 * @var array   $form
+	 *
+	 * @since       4.0.0
+	 */
+	protected $form;
+
+	/**
+	 * property to hold selected item
+	 *
+	 * @var object   $item
+	 *
+	 * @since       4.0.0
+	 */
+	protected $item;
+
+	/**
+	 * property to hold subscriber data
+	 *
+	 * @var object   $sub
+	 *
+	 * @since       4.0.0
+	 */
+	protected $sub;
+
+	/**
+	 * property to hold row object
+	 *
+	 * @var object   $row
+	 *
+	 * @since       0.9.1
+	 */
+	protected $row;
+
+	/**
 	 * property to hold permissions as array
 	 *
 	 * @var array $permissions
@@ -62,13 +98,13 @@ class RawView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  RawView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): RawView
 	{
 		$app 	= Factory::getApplication();
 		$jinput	= $app->input;
@@ -115,7 +151,6 @@ class RawView extends BaseHtmlView
 			$filename = "BackupList_BwPostman_from_" . $date->format("Y-m-d");
 
 			// Maybe we need other headers depending on browser type...
-			jimport('joomla.environment.browser');
 			$browser      = Browser::getInstance();
 			$user_browser = $browser->getBrowser();
 			$appWeb       = new BwWebApp();

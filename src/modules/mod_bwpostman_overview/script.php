@@ -114,7 +114,7 @@ class Mod_BwPostman_OverviewInstallerScript
 	 * @throws Exception
 	 * @since       1.2.0
 	 */
-	public function preflight(string $type, InstallerAdapter $parent)
+	public function preflight(string $type, InstallerAdapter $parent): bool
 	{
 		$app 		= Factory::getApplication();
 
@@ -163,6 +163,8 @@ class Mod_BwPostman_OverviewInstallerScript
 	 * @param string $name name of the manifest to get
 	 *
 	 * @return  string      $manifest the manifest for this module
+	 *
+	 * @throws Exception
 	 *
 	 * @since       1.2.0
 	 */
@@ -273,7 +275,7 @@ class Mod_BwPostman_OverviewInstallerScript
 
 <div id="mod_bwp_install_header">
 	<a href="https://www.boldt-webservice.de" target="_blank">
-		<img border="0" align="center" src="<?php echo Route::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
+		<img src="<?php echo Route::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
 	</a>
 </div>
 <div class="top_line"></div>

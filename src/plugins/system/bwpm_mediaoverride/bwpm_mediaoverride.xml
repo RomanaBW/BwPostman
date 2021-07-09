@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension group="system" method="upgrade" type="plugin" version="3.4">
+<extension group="system" method="upgrade" type="plugin" version="4.0">
     <name>PLG_SYSTEM_BWPM_MEDIAOVERRIDE</name>
 	<version>%%version_number%%</version>
 	<creationDate>%%creation_date%%</creationDate>

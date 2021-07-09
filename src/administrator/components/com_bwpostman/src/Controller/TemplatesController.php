@@ -110,11 +110,9 @@ class TemplatesController extends AdminController
 
 	 * @since	1.1.0
 	 */
-	public function getModel($name = 'Template', $prefix = 'Administrator', $config = array('ignore_request' => true))
+	public function getModel($name = 'Template', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
@@ -129,7 +127,7 @@ class TemplatesController extends AdminController
 	 *
 	 * @since	1.1.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array()): TemplatesController
 	{
 		if (!$this->permissions['view']['template'])
 		{
@@ -157,7 +155,7 @@ class TemplatesController extends AdminController
 	/**
 	 * Method to check if you can publish/unpublish records
 	 *
-	 * @param	array 	$recordIds		an array of items to check permission for
+	 * @param array $recordIds an array of items to check permission for
 	 *
 	 * @return	boolean
 	 *
@@ -165,7 +163,7 @@ class TemplatesController extends AdminController
 	 *
 	 * @since	2.0.0
 	 */
-	protected function allowPublish($recordIds = array())
+	protected function allowPublish(array $recordIds = array()): bool
 	{
 		foreach ($recordIds as $recordId)
 		{
@@ -192,7 +190,7 @@ class TemplatesController extends AdminController
 	 *
 	 * @since	1.1.0
 	 */
-	public function publish()
+	public function publish(): bool
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -241,7 +239,7 @@ class TemplatesController extends AdminController
 	 *
 	 * @since       1.1.0
 	 */
-	public function uploadtpl()
+	public function uploadtpl(): bool
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())

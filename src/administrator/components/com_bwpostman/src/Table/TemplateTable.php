@@ -645,6 +645,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 
 		// trim leading and last <style>-tag
 		$this->tpl_css = trim($this->tpl_css);
+		// @ToDo: Deprecated HTML attribute
 		$this->tpl_css = ltrim($this->tpl_css, '<style type="text/css">');
 		$this->tpl_css = rtrim($this->tpl_css, '</style>');
 
@@ -674,11 +675,9 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @param object $data
 	 *
-	 * @return object   $data
-	 *
 	 * @since 1.1.0
 	 */
-	private function converttostr(object $data): object
+	private function converttostr(object $data)
 	{
 		// array to string
 		if (isset($data->basics) && is_array($data->basics))
@@ -751,13 +750,13 @@ class TemplateTable extends Table implements VersionableTableInterface
 			$data->button5 = (string) $registry;
 		}
 
-		return $data;
+//		return $data;
 	}
 
 	/**
 	 * Method to get the number of standard templates
 	 *
-	 * @param $cid
+	 * @param array $cid
 	 *
 	 * @return int
 	 *
@@ -765,7 +764,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0
 	 */
-	public function getNumberOfStdTemplates($cid): int
+	public function getNumberOfStdTemplates(array $cid): int
 	{
 		$count_std = 0;
 
@@ -799,7 +798,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @param string  $mode
 	 * @param boolean $archived
-	 * @param string  $title
+	 * @param string|null  $title
 	 *
 	 * @return 	integer|boolean number of templates or false
 	 *
@@ -807,7 +806,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0 (here, before since 2.3.0 at template helper)
 	 */
-	public function getNbrOfTemplates(string $mode, bool $archived, $title = '')
+	public function getNbrOfTemplates(string $mode, bool $archived, ?string $title = '')
 	{
 		$archiveFlag = 0;
 
@@ -933,13 +932,13 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @param int $template_id template id
 	 *
-	 * @return	object
+	 * @return	object|null
 	 *
 	 * @throws Exception
 	 *
 	 * @since	3.0.0 (here, since 2.3.0 at ContentRenderer, since 1.1.0 at newsletter model)
 	 */
-	public function getTemplate(int $template_id)
+	public function getTemplate(int $template_id): ?object
 	{
 		$tpl    = new stdClass();
 		$db   = $this->_db;
@@ -973,17 +972,17 @@ class TemplateTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get the ID of the standard template for HTML or text mode
 	 *
-	 * @param   string  $mode       HTML or text
+	 * @param string $mode HTML or text
 	 *
-	 * @return	string	            ID of standard template
+	 * @return	string|null	            ID of standard template
 	 *
 	 * @throws Exception
 	 *
 	 * @since	3.0.0 (here, since 1.2.0 at model newsletter)
 	 */
-	public function getStandardTpl($mode = 'html')
+	public function getStandardTpl(string $mode = 'html'): ?string
 	{
-		$tpl   = new stdClass();
+		$tpl   = null;
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
@@ -1023,7 +1022,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to set a template as default.
 	 *
-	 * @param   integer  $id  The primary key ID for the style.
+	 * @param integer $id The primary key ID for the style.
 	 *
 	 * @return  boolean  True if successful.
 	 *
@@ -1031,9 +1030,9 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 1.1.0
 	 */
-	public function setDefaultTpl($id = 0): bool
+	public function setDefaultTpl(int $id = 0): bool
 	{
-		if (!$this->load((int) $id))
+		if (!$this->load($id))
 		{
 			throw new Exception(Text::_('COM_BWPOSTMAN_ERROR_TEMPLATE_NOT_FOUND'));
 		}
@@ -1071,7 +1070,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 		$query->update($db->quoteName($this->_tbl));
 		$query->set($db->quoteName('standard') . " = " . $db->Quote(1));
 		$query->set($db->quoteName('published') . " = " . $db->Quote(1));
-		$query->where($db->quoteName('id') . ' = ' . $db->Quote((int)$id));
+		$query->where($db->quoteName('id') . ' = ' . $db->Quote($id));
 
 		try
 		{

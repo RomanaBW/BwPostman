@@ -177,7 +177,7 @@ if ($moduleId !== null && $moduleId !== '')
 								echo $date; ?>
 							</td>
 							<td class="subject">
-								<a href="<?php echo Route::_("index.php?option=com_bwpostman&amp;view=newsletter&amp;id={$item->id}");
+								<a href="<?php echo Route::_("index.php?option=com_bwpostman&amp;view=newsletter&amp;id=$item->id");
 								?>">
 									<?php echo $item->subject; ?>
 								</a>
@@ -236,7 +236,7 @@ if ($moduleId !== null && $moduleId !== '')
 
 <script type="text/javascript">
 /* <![CDATA[ */
-var $j	= jQuery.noConflict();
+const $j = jQuery.noConflict();
 
 $j(".filter-mailinglist").on("change", function()
 {

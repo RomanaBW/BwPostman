@@ -298,7 +298,7 @@ $lists      = $displayData['lists'];
 							{
 								echo '... ';
 								echo HtmlHelper::tooltip(Text::_($lists['available_mailinglists'][0]->description),
-									$lists['available_mailinglists'][0]->title, 'tooltip.png', '', '');
+									$lists['available_mailinglists'][0]->title);
 							} ?>
 						</p>
 						<?php
@@ -333,7 +333,7 @@ $lists      = $displayData['lists'];
 								if (strlen(Text::_($item->description)) > $descLength)
 								{
 									echo '... ';
-									echo HtmlHelper::tooltip(Text::_($item->description), $item->title, 'tooltip.png', '', '');
+									echo HtmlHelper::tooltip(Text::_($item->description), $item->title);
 								} ?>
 							</span>
 							<?php

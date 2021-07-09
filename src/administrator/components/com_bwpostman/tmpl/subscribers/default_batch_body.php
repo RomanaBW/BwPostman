@@ -40,7 +40,7 @@ if ($filter_id)
 
 			<label id="batch-choose-action-lbl" for="batch-choose-action"><?php echo Text::_('COM_BWPOSTMAN_SUB_BATCH_MENU_LABEL'); ?></label>
 			<div id="batch-choose-action" class="control-group">
-				<select name="batch[mailinglist_id]" class="custom-select" id="batch-mailinglist-id">
+				<label for="batch-mailinglist-id"></label><select name="batch[mailinglist_id]" class="custom-select" id="batch-mailinglist-id">
 					<?php echo HTMLHelper::_('select.options', $this->mailinglists, 'value', 'text', '', '', ''); ?>
 				</select>
 			</div>

@@ -9,18 +9,17 @@
 
 namespace BoldtWebservice\Component\BwPostman\Site\Controller;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
-use http\Url;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
-use Joomla\CMS\Uri\Uri;
 use JResponseJson;
+use function defined;
 
 /**
  * Banners master display controller.
@@ -42,6 +41,8 @@ class DisplayController extends BaseController
 	 *
 	 * @param 	array	$config		An optional associative array of configuration settings.
 	 *
+	 * @return void
+	 *
 	 * @throws Exception
 	 *
 	 * @since	1.0.1
@@ -62,13 +63,13 @@ class DisplayController extends BaseController
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe URL parameters and their variable types, for valid values see {@link \JFilterInput::clean()}.
 	 *
-	 * @return  BaseController|bool  This object to support chaining.
+	 * @return  DisplayController  This object to support chaining.
 	 *
 	 * @throws Exception
 	 *
 	 * @since   4.0.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array()): DisplayController
 	{
 		// Get the user object
 		$app   = Factory::getApplication();
@@ -87,6 +88,8 @@ class DisplayController extends BaseController
 	/**
 	 * Method to call the start layout for the add text template
 	 *
+	 * @return void
+	 *
 	 * @throws Exception
 	 *
 	 * @since	1.1.0
@@ -104,6 +107,8 @@ class DisplayController extends BaseController
 
 	/**
 	 * Method to call the start layout for the add html template
+	 *
+	 * @return void
 	 *
 	 * @throws Exception
 	 *
@@ -135,6 +140,9 @@ class DisplayController extends BaseController
 
 		// Send json mime type.
 		$app->mimeType = 'application/json';
+//		@ToDo: $app has no property charSet
+//		@ToDo: $app has no method setHeader
+//		@ToDo: $app has no method sendHeaders
 		$app->setHeader('Content-Type', $app->mimeType . '; charset=' . $app->charSet);
 		$app->sendHeaders();
 

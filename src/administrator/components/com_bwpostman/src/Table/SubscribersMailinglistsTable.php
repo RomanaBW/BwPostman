@@ -255,7 +255,7 @@ class SubscribersMailinglistsTable extends Table
 	 * @param integer $subscriberId  ID of subscriber to check
 	 * @param integer $mailinglistId ID of mailinglist to check
 	 *
-	 * @return boolean
+	 * @return boolean|integer
 	 *
 	 * @throws Exception
 	 *
@@ -296,7 +296,7 @@ class SubscribersMailinglistsTable extends Table
 	/**
 	 * Method to remove the mailinglist from the cross table #__bwpostman_subscribers_mailinglists
 	 *
-	 * @param $id
+	 * @param integer $id
 	 *
 	 * @return bool
 	 *
@@ -304,13 +304,13 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
 	 */
-	public function deleteMailinglistSubscribers($id): bool
+	public function deleteMailinglistSubscribers(int $id): bool
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote((int)$id));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
 
 		try
 		{
@@ -329,7 +329,7 @@ class SubscribersMailinglistsTable extends Table
 	/**
 	 * Method to get the mailinglist ids which a subscriber is subscribed to
 	 *
-	 * @param $sub_id
+	 * @param integer $sub_id
 	 *
 	 * @return array
 	 *
@@ -337,7 +337,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since 3.0.0
 	 */
-	public function getMailinglistIdsOfSubscriber($sub_id): array
+	public function getMailinglistIdsOfSubscriber(int $sub_id): array
 	{
 		$mailinglist_ids = array();
 
@@ -346,7 +346,7 @@ class SubscribersMailinglistsTable extends Table
 
 		$query->select($db->quoteName('mailinglist_id'));
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('subscriber_id') . ' = ' . (int) $sub_id);
+		$query->where($db->quoteName('subscriber_id') . ' = ' . $sub_id);
 
 		try
 		{

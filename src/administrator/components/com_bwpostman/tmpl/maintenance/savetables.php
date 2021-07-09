@@ -32,7 +32,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 <table>
 	<tr>
-		<td valign="top">
+		<td>
 		<table class="adminlist">
 			<tr>
 				<td>

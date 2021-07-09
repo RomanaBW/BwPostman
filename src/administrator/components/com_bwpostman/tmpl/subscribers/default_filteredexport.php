@@ -47,16 +47,15 @@ use Joomla\CMS\Language\Text;
 		.btn-success {
 			color:#fff;
 			background-color:#2f7d32;
-			border-color:#2f7d32
+			border-color:#2f7d32;
 		}
 		.btn-success:hover {
 			color:#fff;
 			background-color:#256127;
-			border-color:#215823
+			border-color:#215823;
 		}
-		.btn-success.focus,
 		.btn-success:focus {
-			box-shadow:0 0 0 .2rem rgba(78,145,81,.5)
+			box-shadow:0 0 0 .2rem rgba(78,145,81,.5);
 		}
 		p {
 			text-align:center;
@@ -66,11 +65,12 @@ use Joomla\CMS\Language\Text;
 			font-size:1.2rem;
 		}
 	</style>
+	<title></title>
 </head>
 <body>
 <form name="popupForm" action="#" method="get">
 	<fieldset>
-		<div width="100%" id="modal-upload">
+		<div id="modal-upload">
 			<p class="text"><?php echo Text::_("COM_BWPOSTMAN_SUB_CONFIRM_EXPORT_FILTERED"); ?></p>
 			<p>
 				<input class="btn btn-success" type="button" name="submitbutton" onClick="window.parent.OnlyFiltered('1')" value="<?php echo Text::_("COM_BWPOSTMAN_YES");?>" />

@@ -49,7 +49,7 @@ $token      = Session::getFormToken();
 				<div class="h2"><?php echo Text::_('JSTATUS'); ?></div>
 				<div class="progress mb-3" style="height: 2rem; font-size: 1rem;">
 					<div id="nl_bar" class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-						role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%
+						role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">0%
 					</div>
 				</div>
 				<div id="nl_to_send_message" class="mb-4">&nbsp;</div>

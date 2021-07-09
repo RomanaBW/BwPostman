@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
@@ -58,9 +59,11 @@ class ButtonsField extends FormField
 	 *
 	 * @return  string  The field input markup.
 	 *
+	 * @throws Exception
+	 *
 	 * @since   1.0.8
 	 */
-	protected function getinput()
+	protected function getinput(): string
 	{
 		$doc       = Factory::getApplication()->getDocument();
 		$fieldName = $this->name;

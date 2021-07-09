@@ -104,16 +104,15 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl=null)
+	public function display($tpl=null): HtmlView
 	{
 		$app      = Factory::getApplication();
-		$document = $app->getDocument();
 		$layout   = $this->getLayout();
 		$params   = ComponentHelper::getParams('com_bwpostman', true);
 
@@ -129,7 +128,7 @@ class HtmlView extends BaseHtmlView
 		$params->merge($mergedParams);
 
 		$this->params  = $params;
-		$this->captcha = BwPostmanHelper::getCaptcha(1);
+		$this->captcha = BwPostmanHelper::getCaptcha();
 
 		switch ($layout)
 		{
@@ -155,6 +154,8 @@ class HtmlView extends BaseHtmlView
 
 	/**
 	 * View Error Display
+	 *
+	 * @return void
 	 *
 	 * @throws Exception
 	 *
@@ -183,9 +184,11 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * View Success Display
 	 *
-	 * @access	private
+	 * @return void
 	 *
-	 * @since       0.9.1
+	 * @throws Exception
+	 *
+	 * @since          0.9.1
 	 */
 	private function displaySuccess()
 	{
@@ -206,9 +209,11 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * View Default Display
 	 *
-	 * @access	private
+	 * @return void
 	 *
-	 * @since       0.9.1
+	 * @throws Exception
+	 *
+	 * @since          0.9.1
 	 */
 	private function displayDefault()
 	{
@@ -245,7 +250,7 @@ class HtmlView extends BaseHtmlView
 		$model = $this->getModel();
 		$mlTable = $model->getTable('Mailinglist');
 		$subsTable = $model->getTable('Subscriber');
-		$userId  = $subsTable->getUserIdOfSubscriber((int)$subscriber->id);
+		$userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
 		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists((int)$userId);
 
 		// Build the email format select list

@@ -37,8 +37,8 @@ $data['options'] = !empty($data['options']) ? $data['options'] : array();
 
 // Set some basic options
 $customOptions = array(
-	'filtersHidden'       => isset($data['options']['filtersHidden']) ? $data['options']['filtersHidden'] : empty($data['view']->activeFilters),
-	'defaultLimit'        => isset($data['options']['defaultLimit']) ? $data['options']['defaultLimit'] : Factory::getApplication()->get('list_limit', 20),
+	'filtersHidden'       => $data['options']['filtersHidden'] ?? empty($data['view']->activeFilters),
+	'defaultLimit'        => $data['options']['defaultLimit'] ?? Factory::getApplication()->get('list_limit', 20),
 	'searchFieldSelector' => '#filter_search',
 	'orderFieldSelector'  => '#list_fullordering'
 );

@@ -87,8 +87,8 @@ else
 			<table class="adminlist table table-bordered">
 				<thead>
 					<tr class="error">
-						<th width="40"><?php echo $row_text; ?></th>
-						<th width="200"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
+						<th><?php echo $row_text; ?></th>
+						<th><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
 						<th><?php echo Text::_('COM_BWPOSTMAN_ERROR_MSG'); ?></th>
 					</tr>
 				</thead>
@@ -96,7 +96,7 @@ else
 				<?php
 				foreach ($mail_err AS $mailing){ ?>
 					<tr>
-						<td align="center"><?php echo $mailing['row']; ?></td>
+						<td><?php echo $mailing['row']; ?></td>
 						<td><?php echo $mailing['email']; ?></td>
 						<td><?php echo $mailing['msg']; ?></td>
 					</tr>
@@ -117,8 +117,8 @@ else
 			<table class="adminlist table table-bordered">
 				<thead>
 					<tr>
-						<th width="40"><?php echo $row_text; ?></th>
-						<th width="200"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
+						<th><?php echo $row_text; ?></th>
+						<th><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
 						<th><?php echo Text::_('COM_BWPOSTMAN_ERROR_MSG'); ?></th>
 					</tr>
 				</thead>
@@ -126,7 +126,7 @@ else
 				<?php
 				foreach ($import_err AS $error){ ?>
 					<tr class="error">
-						<td align="center"><?php echo $error['row']; ?></td>
+						<td><?php echo $error['row']; ?></td>
 						<td><?php echo $error['email']; ?></td>
 						<td>
 							<?php
@@ -143,7 +143,7 @@ else
 			</table>
 		</fieldset>
 	<?php
-	};
+	}
 
 	// Import warning
 	if (!empty($import_warn))
@@ -153,8 +153,8 @@ else
 			<table class="adminlist table table-bordered">
 				<thead>
 					<tr>
-						<th width="40"><?php echo $row_text; ?></th>
-						<th width="200"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
+						<th><?php echo $row_text; ?></th>
+						<th><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
 						<th><?php echo Text::_('COM_BWPOSTMAN_NOTES'); ?></th>
 					</tr>
 				</thead>
@@ -162,7 +162,7 @@ else
 				<?php
 				foreach ($import_warn AS $warning){ ?>
 					<tr class="warning">
-						<td align="center"><?php echo $warning['row']; ?></td>
+						<td><?php echo $warning['row']; ?></td>
 						<td><?php echo $warning['email']; ?></td>
 						<td><?php echo $warning['msg'];  ?></td>
 					</tr>
@@ -183,8 +183,8 @@ else
 			<table class="adminlist table table-bordered">
 				<thead>
 				<tr>
-					<th width="40"><?php echo $row_text; ?></th>
-					<th width="200"><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
+					<th><?php echo $row_text; ?></th>
+					<th><?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?></th>
 					<th><?php echo Text::_('COM_BWPOSTMAN_NOTES'); ?></th>
 				</tr>
 				</thead>
@@ -192,7 +192,7 @@ else
 				<?php
 				foreach ($import_success AS $success){ ?>
 					<tr class="success">
-						<td align="center"><?php echo $success['row']; ?></td>
+						<td><?php echo $success['row']; ?></td>
 						<td><?php echo $success['email']; ?></td>
 						<td><?php echo $success['msg'];  ?></td>
 					</tr>

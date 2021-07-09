@@ -57,7 +57,7 @@ if ($this->queueEntries) {
 				{
 					$link = 'index.php?option=' . $option . '&view=newsletters';
 					BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-newsletters.png',
-						Text::_("COM_BWPOSTMAN_NLS"), 0, 0);
+						Text::_("COM_BWPOSTMAN_NLS"));
 
 					if ($this->permissions['newsletter']['create'])
 					{
@@ -65,9 +65,7 @@ if ($this->queueEntries) {
 						BwPostmanHTMLHelper::quickiconButton(
 							$link,
 							'icon-48-newsletteradd.png',
-							Text::_("COM_BWPOSTMAN_NL_ADD"),
-							0,
-							0
+							Text::_("COM_BWPOSTMAN_NL_ADD")
 						);
 					}
 				}
@@ -76,7 +74,7 @@ if ($this->queueEntries) {
 			if ($this->permissions['view']['subscriber'])
 			{
 				$link = 'index.php?option=' . $option . '&view=subscribers';
-				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-subscribers.png', Text::_("COM_BWPOSTMAN_SUB"), 0, 0);
+				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-subscribers.png', Text::_("COM_BWPOSTMAN_SUB"));
 
 				if ($this->permissions['subscriber']['create'])
 				{
@@ -84,18 +82,14 @@ if ($this->queueEntries) {
 					BwPostmanHTMLHelper::quickiconButton(
 						$link,
 						'icon-48-subscriberadd.png',
-						Text::_("COM_BWPOSTMAN_SUB_ADD"),
-						0,
-						0
+						Text::_("COM_BWPOSTMAN_SUB_ADD")
 					);
 
 					$link = 'index.php?option=' . $option . '&view=subscriber&task=subscriber.add_test&layout=edit';
 					BwPostmanHTMLHelper::quickiconButton(
 						$link,
 						'icon-48-testrecipientadd.png',
-						Text::_("COM_BWPOSTMAN_TEST_ADD"),
-						0,
-						0
+						Text::_("COM_BWPOSTMAN_TEST_ADD")
 					);
 				}
 			}
@@ -103,7 +97,7 @@ if ($this->queueEntries) {
 			if ($this->permissions['view']['campaign'])
 			{
 				$link = 'index.php?option=' . $option . '&view=campaigns';
-				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-campaigns.png', Text::_("COM_BWPOSTMAN_CAMS"), 0, 0);
+				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-campaigns.png', Text::_("COM_BWPOSTMAN_CAMS"));
 
 				if ($this->permissions['campaign']['create'])
 				{
@@ -111,17 +105,14 @@ if ($this->queueEntries) {
 					BwPostmanHTMLHelper::quickiconButton(
 						$link,
 						'icon-48-campaignadd.png',
-						Text::_("COM_BWPOSTMAN_CAM_ADD"),
-						0,
-						0
-					);
+						Text::_("COM_BWPOSTMAN_CAM_ADD")					);
 				}
 			}
 
 			if ($this->permissions['view']['mailinglist'])
 			{
 				$link = 'index.php?option=' . $option . '&view=mailinglists';
-				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-mailinglists.png', Text::_("COM_BWPOSTMAN_MLS"), 0, 0);
+				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-mailinglists.png', Text::_("COM_BWPOSTMAN_MLS"));
 
 				if ($this->permissions['mailinglist']['create'])
 				{
@@ -129,9 +120,7 @@ if ($this->queueEntries) {
 					BwPostmanHTMLHelper::quickiconButton(
 						$link,
 						'icon-48-mailinglistadd.png',
-						Text::_("COM_BWPOSTMAN_ML_ADD"),
-						0,
-						0
+						Text::_("COM_BWPOSTMAN_ML_ADD")
 					);
 				}
 			}
@@ -139,7 +128,7 @@ if ($this->queueEntries) {
 			if ($this->permissions['view']['template'])
 			{
 				$link = 'index.php?option=' . $option . '&view=templates';
-				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-templates.png', Text::_("COM_BWPOSTMAN_TPLS"), 0, 0);
+				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-templates.png', Text::_("COM_BWPOSTMAN_TPLS"));
 
 				if ($this->permissions['template']['create'])
 				{
@@ -147,18 +136,14 @@ if ($this->queueEntries) {
 					BwPostmanHTMLHelper::quickiconButton(
 						$link,
 						'icon-48-templateadd.png',
-						Text::_("COM_BWPOSTMAN_TPL_ADDHTML"),
-						0,
-						0
+						Text::_("COM_BWPOSTMAN_TPL_ADDHTML")
 					);
 
 					$link = 'index.php?option=' . $option . '&view=template&task=addtext';
 					BwPostmanHTMLHelper::quickiconButton(
 						$link,
 						'icon-48-text_templateadd.png',
-						Text::_("COM_BWPOSTMAN_TPL_ADDTEXT"),
-						0,
-						0
+						Text::_("COM_BWPOSTMAN_TPL_ADDTEXT")
 					);
 				}
 			}
@@ -166,13 +151,13 @@ if ($this->queueEntries) {
 			if ($this->permissions['view']['archive'])
 			{
 				$link = 'index.php?option=' . $option . '&view=archive&layout=newsletters';
-				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-archive.png', Text::_("COM_BWPOSTMAN_ARC"), 0, 0);
+				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-archive.png', Text::_("COM_BWPOSTMAN_ARC"));
 			}
 
 			if ($this->permissions['com']['admin'] || $this->permissions['view']['manage'])
 			{
 				$link	= 'index.php?option=com_config&amp;view=component&amp;component=' . $option . '&amp;path=';
-				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', Text::_("COM_BWPOSTMAN_SETTINGS"), '', '');
+				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', Text::_("COM_BWPOSTMAN_SETTINGS"));
 			}
 
 			if ($this->permissions['view']['maintenance'])
@@ -181,9 +166,7 @@ if ($this->queueEntries) {
 				BwPostmanHTMLHelper::quickiconButton(
 					$link,
 					'icon-48-maintenance.png',
-					Text::_("COM_BWPOSTMAN_MAINTENANCE"),
-					0,
-					0
+					Text::_("COM_BWPOSTMAN_MAINTENANCE")
 				);
 			}
 

@@ -58,14 +58,14 @@ class RawView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  RawView  A string if successful, otherwise a JError object.
 	 *
 	 * @since       1.0.1
 	 *
 	 * @throws Exception
 	 *
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): RawView
 	{
 		$app 	= Factory::getApplication();
 		$jinput	= $app->input;
@@ -81,8 +81,6 @@ class RawView extends BaseHtmlView
 
 		if ($layout == 'saveTables')
 		{
-			jimport('joomla.filesystem.file');
-
 			$compressed     = ComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
 			$dottedVersion  = BwPostmanHelper::getInstalledBwPostmanVersion();
 			$version	    = str_replace('.', '_', $dottedVersion);
@@ -98,7 +96,6 @@ class RawView extends BaseHtmlView
 			}
 
 			// Maybe we need other headers depending on browser type...
-			jimport('joomla.environment.browser');
 			$browser		= Browser::getInstance();
 			$user_browser	= $browser->getBrowser();
 			$appWeb         = new BwWebApp();

@@ -123,7 +123,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since   2.0.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array()): NewsletterController
 	{
 		if (!$this->permissions['view']['newsletter'])
 		{
@@ -146,7 +146,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	protected function allowAdd($data = array())
+	protected function allowAdd($data = array()): bool
 	{
 		return $this->permissions['newsletter']['create'];
 	}
@@ -163,7 +163,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = array(), $key = 'id'): bool
 	{
 		return BwPostmanHelper::canEdit('newsletter', $data);
 	}
@@ -171,7 +171,7 @@ class NewsletterController extends FormController
 	/**
 	 * Method to check if you can send a newsletter.
 	 *
-	 * @param	array	$data	An array of input data.
+	 * @param array $data An array of input data.
 	 *
 	 * @return	boolean
 	 *
@@ -179,7 +179,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since	2.0.0
 	 */
-	public static function allowSend($data = array())
+	public static function allowSend(array $data = array()): bool
 	{
 		return BwPostmanHelper::canSend($data['id']);
 	}
@@ -187,7 +187,7 @@ class NewsletterController extends FormController
 	/**
 	 * Method to check if you can archive records
 	 *
-	 * @param	array 	$recordIds		an array of items to check permission for
+	 * @param array $recordIds an array of items to check permission for
 	 *
 	 * @return	boolean
 	 *
@@ -195,7 +195,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since	2.0.0
 	 */
-	protected function allowArchive($recordIds = array())
+	protected function allowArchive(array $recordIds = array()): bool
 	{
 		foreach ($recordIds as $recordId)
 		{
@@ -225,9 +225,7 @@ class NewsletterController extends FormController
 	 */
 	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
@@ -244,11 +242,11 @@ class NewsletterController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	public function edit($key = null, $urlVar = null)
+	public function edit($key = null, $urlVar = null): bool
 	{
 		// Initialise variables.
 		$app     = Factory::getApplication();
-		$model   = $this->getModel('Newsletter');
+		$model   = $this->getModel();
 
 		$table   = $model->getTable();
 		$cid     = $this->input->post->get('cid', array(), 'array');
@@ -279,7 +277,7 @@ class NewsletterController extends FormController
 		}
 		else
 		{
-			$allowed = $this->allowEdit(array('id' => $recordId), 'id');
+			$allowed = $this->allowEdit(array('id' => $recordId));
 		}
 
 		if (!$allowed)
@@ -340,7 +338,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since	1.1.0
 	 */
-	public function cancel($key = null)
+	public function cancel($key = null): bool
 	{
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
@@ -410,7 +408,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since	1.1.0
 	 */
-	public function save($key = null, $urlVar = null)
+	public function save($key = null, $urlVar = null): bool
 	{
 		// Check for request forgeries.
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
@@ -439,7 +437,7 @@ class NewsletterController extends FormController
 		}
 		else
 		{
-			$allowed = $this->allowEdit(array('id' => $recordId), 'id');
+			$allowed = $this->allowEdit(array('id' => $recordId));
 		}
 
 		$app = Factory::getApplication();
@@ -459,7 +457,7 @@ class NewsletterController extends FormController
 		$lang    = $app->getLanguage();
 		$checkin = property_exists($table, 'checked_out');
 		$context = "$this->option.edit.$this->context";
-		$task    = (string)$this->getTask();
+		$task    = $this->getTask();
 
 		if (($task === 'save') || ($task === 'apply') || ($task === 'save2new')  || ($task === 'save2copy') || ($task === 'publish_save') || ($task === 'publish_apply'))
 		{
@@ -691,7 +689,7 @@ class NewsletterController extends FormController
 
 		$this->getModel('newsletter')->changeTab();
 
-		if ((string)$this->getTask() === 'changeTab')
+		if ($this->getTask() === 'changeTab')
 		{
 			$this->setRedirect(
 				Route::_(
@@ -733,7 +731,7 @@ class NewsletterController extends FormController
 		}
 
 		// check for is_template
-		$model	= $this->getModel('Newsletter');
+		$model	= $this->getModel();
 
 		foreach ($cids as $cid)
 		{
@@ -769,7 +767,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since       0.9.1
 	 */
-	public function sendmail()
+	public function sendmail(): bool
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -785,9 +783,9 @@ class NewsletterController extends FormController
 
 		// Get record ID from list view
 		$ids = $this->input->get('cid', 0, '');
-		$ids = ArrayHelper::toInteger($ids);
+//		$ids = ArrayHelper::toInteger($ids);
 
-		$recordId = $ids[0];
+		$recordId = $ids;
 
 		// If we come from single view, record ID is 0 at new newsletter
 		if ($recordId === 0 || $recordId === null)
@@ -808,7 +806,7 @@ class NewsletterController extends FormController
 
 			$link = Route::_(
 				'index.php?option=' . $this->option . '&view=' . $this->view_item
-				. $this->getRedirectToItemAppend($recordId, 'id'),
+				. $this->getRedirectToItemAppend($recordId),
 				false
 			);
 
@@ -839,7 +837,6 @@ class NewsletterController extends FormController
 					if (!$model->checkForRecipients($ret_msg, $recordId, $unconfirmed, $data['campaign_id']))
 					{
 						$app->enqueueMessage($ret_msg, 'error');
-						$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 					}
 					else
 					{
@@ -847,23 +844,23 @@ class NewsletterController extends FormController
 							$data['campaign_id']))
 						{
 							$app->enqueueMessage($ret_msg, 'error');
-							$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 						}
 						else
 						{
 							$startsending = 1;
 							$model->checkin($recordId);
 							// set start tab 'basic'
-							$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 						}
+
 					}
-					break;
+
+				$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
+				break;
 				case "sendtestmail":
 					// Check if there are test-recipients
 					if (!$model->checkForTestrecipients())
 					{
 						$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_TESTRECIPIENTS'), 'error');
-						$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 					}
 					else
 					{
@@ -871,16 +868,17 @@ class NewsletterController extends FormController
 							$data['campaign_id']))
 						{
 							$app->enqueueMessage($ret_msg, 'error');
-							$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 						}
 						else
 						{
 							$startsending = 1;
 							$model->checkin($recordId);
 							// set start tab 'basic'
-							$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 						}
+
 					}
+
+					$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 					break;
 			}
 
@@ -903,7 +901,7 @@ class NewsletterController extends FormController
 				$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 				$link = Route::_(
 					'index.php?option=' . $this->option . '&view=' . $this->view_item
-					. $this->getRedirectToItemAppend($recordId, 'id'),
+					. $this->getRedirectToItemAppend($recordId),
 					false
 				);
 			}
@@ -944,7 +942,7 @@ class NewsletterController extends FormController
 
 		// Get the newsletter IDs to copy
 		$cid   = ArrayHelper::toInteger($this->input->get('cid', array(), 'array'));
-		$model = $this->getModel('Newsletter');
+		$model = $this->getModel();
 
 		foreach ($cid as $id)
 		{
@@ -979,7 +977,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since       0.9.1
 	 */
-	public function archive()
+	public function archive(): bool
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -1059,8 +1057,6 @@ class NewsletterController extends FormController
 	/**
 	 * Changes the state of isTemplate switch
 	 *
-	 * @return	string		The arguments to append to the redirect URL.
-	 *
 	 * @return 	void
 	 *
 	 * @throws Exception
@@ -1092,21 +1088,20 @@ class NewsletterController extends FormController
 			// Publish the items.
 			try
 			{
-				$result = $model->changeIsTemplate($cid[0]);
-				$ntext = null;
+				$result = $model->changeIsTemplate((int)$cid[0]);
 
 				if ($result === 0)
 				{
-					$ntext = 'COM_BWPOSTMAN_NLS_N_ITEMS_IS_TEMPLATE_0';
+					$nText = 'COM_BWPOSTMAN_NLS_N_ITEMS_IS_TEMPLATE_0';
 				}
 				else
 				{
-					$ntext = 'COM_BWPOSTMAN_NLS_N_ITEMS_IS_TEMPLATE_1';
+					$nText = 'COM_BWPOSTMAN_NLS_N_ITEMS_IS_TEMPLATE_1';
 				}
 
-				if ($ntext !== null)
+				if ($nText !== null)
 				{
-					$this->setMessage(Text::_($ntext));
+					$this->setMessage(Text::_($nText));
 				}
 			}
 			catch (Exception $e)
@@ -1118,8 +1113,6 @@ class NewsletterController extends FormController
 		$extension = $this->input->get('extension');
 		$extensionURL = $extension ? '&extension=' . $extension : '';
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $extensionURL, false));
-
-		return;
 	}
 
 	/**
@@ -1132,7 +1125,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since	1.2.0
 	 */
-	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
+	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id'): string
 	{
 		$layout	= $this->input->getWord('layout', 'edit_basic');
 

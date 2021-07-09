@@ -60,11 +60,9 @@ class CammlinternField extends RadioField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getLabel()
+	public function getLabel(): string
 	{
-		  $return = Text::_($this->element['label']);
-
-		  return $return;
+		return Text::_($this->element['label']);
 	}
 
 	/**
@@ -76,19 +74,13 @@ class CammlinternField extends RadioField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getInput()
+	public function getInput(): string
 	{
 		$app       = Factory::getApplication();
 
 		// Get item and selected mailinglists
-		$item    = $app->getUserState('com_bwpostman.edit.campaign.data');
-		$cam_id  = $app->getUserState('com_bwpostman.edit.campaign.id', null);
-		$options = (array) $this->getOptions();
-
-		if (is_object($item))
-		{
-			(property_exists($item, 'ml_intern')) ? $ml_select	= $item->ml_intern : $ml_select = '';
-		}
+		$cam_id  = $app->getUserState('com_bwpostman.edit.campaign.id');
+		$options = $this->getOptions();
 
 		$db        = Factory::getDbo();
 		$query     = $db->getQuery(true);
@@ -177,10 +169,9 @@ class CammlinternField extends RadioField
 	 *
 	 * @since	1.0.1
 	 */
-	public function getOptions()
+	public function getOptions(): array
 	{
 		// Initialize variables.
-		$user_id		= null;
 		$options        = array();
 
 		// prepare query
@@ -191,7 +182,7 @@ class CammlinternField extends RadioField
 		$query->from($db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($db->quoteName('published') . ' = ' . 0);
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
-		$query->order('title ASC');
+		$query->order('title');
 
 		try
 		{
@@ -205,8 +196,6 @@ class CammlinternField extends RadioField
 		}
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }

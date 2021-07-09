@@ -33,15 +33,15 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <table>
 	<tr>
-		<td><img src="<?php echo Uri::base() . 'components/com_bwpostman/assets/images/icon-48-subscribers.png'; ?>" /></td>
+		<td><img src="<?php echo Uri::base() . 'components/com_bwpostman/assets/images/icon-48-subscribers.png'; ?>" alt="Subscribers Icon" /></td>
 		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_SUB') ?></strong></td>
 	</tr>
 </table>
 
 <fieldset class="adminform">
-	<table border="0" class="admintable">
+	<table class="admintable">
 		<tr>
-			<td align="right">
+			<td>
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_NAME');
 					echo ':'; ?>
@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->sub->name;?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td>
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_EMAIL');
 					echo ':'; ?>
@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->sub->email;?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td>
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT');
 					echo ':'; ?>
@@ -68,7 +68,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->sub->emailformat;?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td>
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_SUB_REGISTRATION_DATE');
 					echo ':'; ?>
@@ -77,7 +77,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->sub->registration_date;?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td>
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_SUB_REGISTERED_BY');
 					echo ':'; ?>
@@ -86,7 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->sub->registered_by;?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td>
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRMATION_DATE');
 					echo ':'; ?>
@@ -95,7 +95,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->sub->confirmation_date;?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td>
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRMED_BY');
 					echo ':'; ?>
@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->sub->confirmed_by;?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td>
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVE_DATE');
 					echo ':'; ?>
@@ -113,7 +113,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->sub->archive_date;?></td>
 		</tr>
 		<tr>
-			<td align="right">
+			<td>
 				<strong>
 					<?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVED_BY');
 					echo ':'; ?>
@@ -125,7 +125,7 @@ defined('_JEXEC') or die('Restricted access');
 </fieldset>
 
 <fieldset class="adminform">
-	<table width="100%" border="0">
+	<table>
 		<tr>
 			<td><strong><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_SUBSCRIBED'); ?></strong></td>
 		</tr>
@@ -138,7 +138,7 @@ defined('_JEXEC') or die('Restricted access');
 				{
 					echo "<ul>";
 					foreach ($lists AS $list) {
-						echo "<li><strong>{$list->title}:</strong> {$list->description}</li>";
+						echo "<li><strong>$list->title:</strong> $list->description</li>";
 					}
 
 					echo "</ul>";

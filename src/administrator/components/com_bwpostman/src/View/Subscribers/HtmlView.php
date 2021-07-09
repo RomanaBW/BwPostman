@@ -192,13 +192,13 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): HtmlView
 	{
 		$app = Factory::getApplication();
 
@@ -253,7 +253,7 @@ class HtmlView extends BaseHtmlView
 		$tab = $app->input->get('tab', 'confirmed');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance();
 
 		// Get document object, set document title and add css
 		$document = $app->getDocument();
@@ -275,7 +275,7 @@ class HtmlView extends BaseHtmlView
 					$toolbar->addNew('subscriber.add');
 				}
 
-				if (BwPostmanHelper::canArchive('subscriber') || $this->permissions['subscriber']['create'] || BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber', 0))
+				if (BwPostmanHelper::canArchive('subscriber') || $this->permissions['subscriber']['create'] || BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber'))
 				{
 					$dropdown = $toolbar->dropdownButton('status-group')
 						->text('JTOOLBAR_CHANGE_STATUS')
@@ -296,7 +296,7 @@ class HtmlView extends BaseHtmlView
 						$childBar->archive('subscriber.archive')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber', 0))
+					if (BwPostmanHelper::canEdit('subscriber') || BwPostmanHelper::canEditState('subscriber'))
 					{
 						$childBar->checkin('subscribers.checkin')->listCheck(true);
 					}

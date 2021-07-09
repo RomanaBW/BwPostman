@@ -35,7 +35,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\QueryInterface;
 use Joomla\Utilities\ArrayHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use RuntimeException;
 
 /**
@@ -146,7 +145,7 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function getStoreId($id = '')
+	protected function getStoreId($id = ''): string
 	{
 		// Compile the store id.
 		$id	.= ':' . $this->getState('filter.search');
@@ -162,7 +161,7 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @access 	protected
 	 *
-	 * @return 	string Query
+	 * @return    false|object|QueryInterface Query
 	 *
 	 * @throws Exception
 	 *
@@ -209,7 +208,7 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getSubQuery()
+	private function getSubQuery(): QueryInterface
 	{
 		$db         = $this->_db;
 		$sub_query  = $db->getQuery(true);
@@ -355,17 +354,17 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByComponentPermissions()
-	{
-		$db            = $this->_db;
-		$allowed_items = BwPostmanHelper::getAllowedRecords('mailinglist', 'edit');
-
-		if ($allowed_items != 'all')
-		{
-			$allowed_ids = implode(',', ArrayHelper::toInteger($allowed_items));
-			$this->query->where($db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
-		}
-	}
+//	private function getFilterByComponentPermissions()
+//	{
+//		$db            = $this->_db;
+//		$allowed_items = BwPostmanHelper::getAllowedRecords('mailinglist', 'edit');
+//
+//		if ($allowed_items != 'all')
+//		{
+//			$allowed_ids = implode(',', ArrayHelper::toInteger($allowed_items));
+//			$this->query->where($db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
+//		}
+//	}
 
 	/**
 	 * Method to get the filter by published state
@@ -401,7 +400,7 @@ class MailinglistsModel extends ListModel
 	private function getFilterByArchiveState()
 	{
 		$db = $this->_db;
-		$this->query->where($db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+		$this->query->where($db->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
 	/**

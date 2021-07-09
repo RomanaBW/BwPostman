@@ -120,7 +120,7 @@ class EditController extends FormController
 
 		// Check if the variable editlink exists in the uri
 		$uri		= Uri::getInstance();
-		$editlink	= $uri->getVar("editlink", null);
+		$editlink	= $uri->getVar("editlink");
 
 		// Get subscriber id from session, clear session if necessary
 		$session_subscriberid = $session->get('session_subscriberid');
@@ -193,7 +193,7 @@ class EditController extends FormController
 				}
 				else
 				{
-					$subscriberdata	= $subsTable->getSubscriberState((int) $subscriberid);
+					$subscriberdata	= $subsTable->getSubscriberState($subscriberid);
 
 					if (!$this->checkActiveSubscription($subscriberdata, $err))
 					{
@@ -204,14 +204,14 @@ class EditController extends FormController
 					{
 						$itemid	= (int) BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
 
-						$link   = BwPostmanSubscriberHelper::loginGuest((int) $subscriberid, (int) $itemid);
+						$link   = BwPostmanSubscriberHelper::loginGuest($subscriberid, $itemid);
 						$this->setRedirect($link, false);
 					}
 				}
 			}
 		}
 
-		$this->setData((int) $subscriberid, (int) $userid);
+		$this->setData((int) $subscriberid, $userid);
 	}
 
 	/**
@@ -221,36 +221,36 @@ class EditController extends FormController
 	 * @param string $prefix The prefix for the PHP class name.
 	 * @param array  $config An optional associative array of configuration settings.
 	 *
-	 * @return bool|BaseDatabaseModel
+	 * @return BaseDatabaseModel
 	 *
 	 * @throws Exception
 	 *
 	 * @since    4.0.0
 	 */
-	public function getModel($name = 'Edit', $prefix = 'Site', $config = array('ignore_request' => true))
+	public function getModel($name = 'Edit', $prefix = 'Site', $config = array('ignore_request' => true)): BaseDatabaseModel
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
 	 * Method to reset the subscriber ID and userid
 	 *
-	 * @param	int $subscriberid   subscriber ID
-	 * @param 	int $userid         user ID
+	 * @param int $subscriberid subscriber ID
+	 * @param int $userid       user ID
+	 *
+	 * @return void
 	 *
 	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function setData($subscriberid = 0, $userid = 0)
+	public function setData(int $subscriberid = 0, int $userid = 0)
 	{
 		$app	= Factory::getApplication();
 		$app->setUserState('subscriber.id', $subscriberid);
 
-		$this->subscriberid = (int)$subscriberid;
-		$this->userid       = (int)$userid;
+		$this->subscriberid = $subscriberid;
+		$this->userid       = $userid;
 	}
 
 	/**
@@ -299,8 +299,10 @@ class EditController extends FormController
 	/**
 	 * Method to save changes from the edit-view
 	 *
-	 * @param   string|null  $key     The name of the primary key of the URL variable.
-	 * @param   string|null  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 * @param   string  $key     The name of the primary key of the URL variable.
+	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 *
+	 * @return void
 	 *
 	 * @throws Exception
 	 *
@@ -470,13 +472,15 @@ class EditController extends FormController
 	 * --> through an unsubscribe-link
 	 * --> through the edit view
 	 *
-	 * @param 	int|null $id     Subscriber ID
+	 * @param int $id Subscriber ID
+	 *
+	 * @return void
 	 *
 	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function unsubscribe($id = null)
+	public function unsubscribe(int $id = 0)
 	{
 		// Initialize some variables
 		$app    = Factory::getApplication();
@@ -486,14 +490,14 @@ class EditController extends FormController
 
 		// Check if the variable editlink exists in the uri
 		$uri		= Uri::getInstance();
-		$email		= $uri->getVar("email", null);
-		$editlink	= $uri->getVar("code", null);
+		$email		= $uri->getVar("email");
+		$editlink	= $uri->getVar("code");
 
 		// We come from the edit view
 		if ($id)
 		{
 			$subsTable       = $this->getModel('subscriber', 'Administrator')->getTable('Subscriber');
-			$unsubscribedata = $subsTable->getSubscriberState((int)$id);
+			$unsubscribedata = $subsTable->getSubscriberState($id);
 			$email           = $unsubscribedata->email;
 			$editlink        = $unsubscribedata->editlink;
 
@@ -544,6 +548,8 @@ class EditController extends FormController
 	/**
 	 * Method to send the editlink
 	 * --> is needed to get access to the edit form
+	 *
+	 * @return void
 	 *
 	 * @throws Exception
 	 *
@@ -656,7 +662,7 @@ class EditController extends FormController
 	 *
 	 * @since   2.0.0
 	 */
-	protected function checkActiveSubscription(object $subscriberdata, object &$err)
+	protected function checkActiveSubscription(object $subscriberdata, object &$err): bool
 	{
 		$result = true;
 

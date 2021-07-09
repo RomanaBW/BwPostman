@@ -10,10 +10,10 @@
 defined('_JEXEC') or die;
 
 // BwPostman Administration Component
-define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
+const BWPM_ADMINISTRATOR = JPATH_ADMINISTRATOR . '/components/com_bwpostman';
 
 // BwPostman Site Component
-define('BWPM_SITE', JPATH_SITE.'/components/com_bwpostman');
+const BWPM_SITE = JPATH_SITE . '/components/com_bwpostman';
 
 use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;
 use Joomla\CMS\Extension\ComponentInterface;

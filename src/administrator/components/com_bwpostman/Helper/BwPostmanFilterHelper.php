@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 
 defined('JPATH_PLATFORM') or die;
 
+use Exception;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Access\Access;
@@ -42,13 +43,15 @@ class BwPostmanFilterHelper
 	/**
 	 * Applies the global text filters to arbitrary text as per settings for current user groups
 	 *
-	 * @param   string  $text  The string to filter
+	 * @param string $text The string to filter
 	 *
 	 * @return  string  The filtered string
 	 *
+	 * @throws Exception
+	 *
 	 * @since   2.5
 	 */
-	public static function filterContent($text)
+	public static function filterContent(string $text): string
 	{
 		// Filter settings
 		$config     = ComponentHelper::getParams('com_config', true);
@@ -223,13 +226,13 @@ class BwPostmanFilterHelper
 	/**
 	 * Method to check, if value contains a link
 	 *
-	 * @param   string $value The string to check
+	 * @param string $value The string to check
 	 *
 	 * @return  boolean  true if value contains link
 	 *
 	 * @since   3.0.0
 	 */
-	public static function containsLink($value)
+	public static function containsLink(string $value): bool
 	{
 		$patterns = array(
 			"/(http|https|ftp):\/\//i",

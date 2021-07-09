@@ -61,10 +61,9 @@ class MlinternField extends RadioField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getLabel()
+	public function getLabel(): string
 	{
-		$return = Text::_($this->element['label']);
-		return $return;
+		return Text::_($this->element['label']);
 	}
 
 	/**
@@ -76,7 +75,7 @@ class MlinternField extends RadioField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getInput()
+	public function getInput(): string
 	{
 		$app       = Factory::getApplication();
 		$db        = Factory::getDbo();
@@ -86,8 +85,8 @@ class MlinternField extends RadioField
 
 		// Get item and selected mailinglists
 		$item    = $app->getUserState('com_bwpostman.edit.newsletter.data');
-		$nl_id   = $app->getUserState('com_bwpostman.edit.newsletter.id', null);
-		$subs_id = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
+		$nl_id   = $app->getUserState('com_bwpostman.edit.newsletter.id');
+		$subs_id = $app->getUserState('com_bwpostman.edit.subscriber.id');
 
 		$disabled	= $this->element['disabled'] == 'true' ? true : false;
 		$readonly	= $this->element['readonly'] == 'true' ? true : false;
@@ -126,7 +125,7 @@ class MlinternField extends RadioField
 			$attributes .= 'disabled="disabled"';
 		}
 
-		$options = (array) $this->getOptions();
+		$options = $this->getOptions();
 
 		if (is_object($item))
 		{
@@ -199,44 +198,22 @@ class MlinternField extends RadioField
 	 *
 	 * @since	1.0.1
 	 */
-	public function getOptions()
+	public function getOptions(): array
 	{
 		$app = Factory::getApplication();
 
 		// Initialize variables.
-		$user_id = null;
 		$options = array();
-		$subs_id = $app->getUserState('com_bwpostman.edit.subscriber.id', null);
 
 		// prepare query
 		$db         = Factory::getDbo();
 		$query      = $db->getQuery(true);
-		$query_user = $db->getQuery(true);
-
-		// get user_ids if exists
-		if (is_array($subs_id) && !empty($subs_id))
-		{
-			$query_user->select($db->quoteName('user_id'));
-			$query_user->from($db->quoteName('#__bwpostman_subscribers'));
-			$query_user->where($db->quoteName('id') . ' = ' . (int) $subs_id[0]);
-
-			try
-			{
-				$db->setQuery($query_user);
-
-				$user_id = $db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				$app->enqueueMessage($e->getMessage(), 'error');
-			}
-		}
 
 		$query->select("id AS value, title, description AS text");
 		$query->from($db->quoteName('#__bwpostman_mailinglists'));
 		$query->where($db->quoteName('published') . ' = ' . 0);
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
-		$query->order('title ASC');
+		$query->order('title');
 
 		try
 		{
@@ -250,8 +227,6 @@ class MlinternField extends RadioField
 		}
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }

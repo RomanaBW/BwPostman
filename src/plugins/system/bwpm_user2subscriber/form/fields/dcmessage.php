@@ -56,7 +56,7 @@ class JFormFieldDcMessage extends JFormField
 	 *
 	 * @since   2.0.0
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 
 		$com_params = ComponentHelper::getParams('com_bwpostman');
@@ -78,7 +78,7 @@ class JFormFieldDcMessage extends JFormField
 	 *
 	 * @since   2.0.0
 	 */
-	protected function getLabel()
+	protected function getLabel(): string
 	{
 		return ' ';
 	}
@@ -91,7 +91,7 @@ class JFormFieldDcMessage extends JFormField
 	 *
 	 * @since   2.0.0
 	 */
-	protected function getTitle()
+	protected function getTitle(): string
 	{
 		return ' ';
 	}

@@ -70,13 +70,13 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 	 *
 	 * @since
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		// Initialize variables.
 		$html = array();
 
 		// Initialize some field attributes.
-		$class = $this->element['class'] ? ' class="checkboxes ' . (string) $this->element['class'] . '"' : ' class="checkboxes"';
+		$class = $this->element['class'] ? ' class="checkboxes ' . $this->element['class'] . '"' : ' class="checkboxes"';
 
 		// Start the checkbox field output.
 		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
@@ -89,15 +89,15 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 		$html[] = '			<table class="adminlist table">';
 		$html[] = '				<thead>';
 		$html[] = '					<tr>';
-		$html[] = '						<th width="30" nowrap="nowrap">' . Text::_('JGRID_HEADING_ID') . '</th>';
-		$html[] = '						<th width="30" nowrap="nowrap">
+		$html[] = '						<th nowrap="nowrap">' . Text::_('JGRID_HEADING_ID') . '</th>';
+		$html[] = '						<th nowrap="nowrap">
 						<input type="checkbox" name="checkall-toggle" value="" title="'
 							. Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this)" />
 						</th>';
-		$html[] = '						<th width="200" nowrap="nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
+		$html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
 		$html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_DESCRIPTION') . '</th>';
-		$html[] = '						<th width="80" nowrap="nowrap">' . Text::_('MOD_BWPOSTMAN_PUBLISHED') . '</th>';
-		$html[] = '						<th width="80" nowrap="nowrap">' . Text::_('JFIELD_ACCESS_LABEL') . '</th>';
+		$html[] = '						<th nowrap="nowrap">' . Text::_('MOD_BWPOSTMAN_PUBLISHED') . '</th>';
+		$html[] = '						<th nowrap="nowrap">' . Text::_('JFIELD_ACCESS_LABEL') . '</th>';
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
 		$html[] = '				<tbody>';
@@ -115,13 +115,13 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
-				$html[] = '							 <td align="center">' . Text::_($option->value) . '</td>';
+				$html[] = '							 <td>' . Text::_($option->value) . '</td>';
 				$html[] = '			<td>
 										<input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
-					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
+					. htmlspecialchars($option->value, ENT_COMPAT) . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
 				$html[] = '							 <td>' . Text::_($option->text) . '</td>';
 				$html[] = '							 <td>' . Text::_($option->description) . '</td>';
-				$html[] = '							 <td align="center">'
+				$html[] = '							 <td>'
 					. HtmlHelper::_('jgrid.published', $option->published, $i, 'mailinglists.', '', '') . '</td>';
 				$html[] = '							 <td>' . Text::_($option->access_level) . '</td>';
 				$html[] = '						  </tr>';
@@ -154,7 +154,7 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 	 *
 	 * @since
 	 */
-	protected function getOptions()
+	protected function getOptions(): array
 	{
 		$options = null;
 
@@ -164,7 +164,7 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 
 		$query->select("a.id AS value, a.title AS text, a.description as description, a.access AS access, a.published AS published");
 		$query->from('#__bwpostman_mailinglists AS a');
-		$query->where($_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+		$query->where($_db->quoteName('a.archive_flag') . ' = ' . 0);
 
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
@@ -183,8 +183,6 @@ class JFormFieldModMl extends JFormFieldCheckboxes
 		}
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }

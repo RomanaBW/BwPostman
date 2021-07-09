@@ -31,8 +31,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
 use BoldtWebservice\Module\BwPostmanOverview\Site\Helper\ModBwPostmanOverviewHelper;
 
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', false, false, 'psr4');
-JLoader::registerNamespace('BoldtWebservice\\Module\\BwPostmanOverview\\Site\\Helper', JPATH_SITE . '/modules/mod_bwpostman_overview/src/Helper', false, false, 'psr4');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+JLoader::registerNamespace('BoldtWebservice\\Module\\BwPostmanOverview\\Site\\Helper', JPATH_SITE . '/modules/mod_bwpostman_overview/src/Helper');
 
 $app      = Factory::getApplication();
 $document = $app->getDocument();

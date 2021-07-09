@@ -131,12 +131,12 @@ HTMLHelper::_('behavior.multiselect');
 												<a href="<?php
 												echo Route::_('index.php?option=com_bwpostman&task=template.edit&id=' . $item->id);
 												?>">
-												<img src="<?php echo Uri::root(true) . '/' . $item->thumbnail; ?>" style="width: 100px;" />
+												<img src="<?php echo Uri::root(true) . '/' . $item->thumbnail; ?>" style="width: 100px;" alt="Template Thumbnail" />
 												</a><?php
 											}
 											else
 											{ ?>
-												<img src="<?php echo Uri::root(true) . '/' . $item->thumbnail; ?>" style="width: 100px;" /><?php
+												<img src="<?php echo Uri::root(true) . '/' . $item->thumbnail; ?>" style="width: 100px;" alt="Template Thumbnail" /><?php
 											}
 										} ?>
 									</td>

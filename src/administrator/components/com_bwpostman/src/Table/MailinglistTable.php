@@ -441,7 +441,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 2.4.0 (here, before since 2.3.0 at mailinglist helper)
 	 */
-	public function getMailinglistsByRestriction(array $mailinglists, $condition = 'available', $archived = 0, $restricted = true): ?array
+	public function getMailinglistsByRestriction(array $mailinglists, string $condition = 'available', int $archived = 0, bool $restricted = true): ?array
 	{
 		$mls = null;
 		$restrictedMls = array();
@@ -451,11 +451,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 		$query->select('id');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) $archived);
+		$query->where($db->quoteName('archive_flag') . ' = ' . $archived);
 
-		if ((int)$archived === 0)
+		if ($archived === 0)
 		{
-			switch ((string)$condition)
+			switch ($condition)
 			{
 				case 'available':
 					$query->where($db->quoteName('published') . ' = ' . 1);
@@ -591,13 +591,13 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @param array $mailinglist_ids
 	 *
-	 * @return array|mixed
+	 * @return array|null
 	 *
 	 * @throws Exception
 	 *
 	 * @since 2.4.0
 	 */
-	public function getCompleteMailinglistsOfSubscriber(array $mailinglist_ids)
+	public function getCompleteMailinglistsOfSubscriber(array $mailinglist_ids): ?array
 	{
 		$lists = array();
 
@@ -640,13 +640,13 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @param array $mls ids of mailinglists to get the title for
 	 *
-	 * @return 	array mailinglists
+	 * @return 	array|null mailinglists
 	 *
 	 * @throws Exception
 	 *
 	 * @since  2.4.0
 	 */
-	public function getMailinglistsIdTitle(array $mls): array
+	public function getMailinglistsIdTitle(array $mls): ?array
 	{
 		$mailinglists = array();
 		$db     = $this->_db;
@@ -674,13 +674,13 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get id as value and title as text of all mailinglists
 	 *
-	 * @return 	array mailinglists
+	 * @return 	array|null mailinglists
 	 *
 	 * @throws Exception
 	 *
 	 * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
 	 */
-	public function getMailinglistsValueText(): array
+	public function getMailinglistsValueText(): ?array
 	{
 		$mailinglists = array();
 		$db     = $this->_db;
@@ -690,7 +690,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		$query->select($db->quoteName('title') . ' AS text');
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
-		$query->order('title ASC');
+		$query->order('title');
 
 		try
 		{
@@ -711,13 +711,13 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @access 	public
 	 *
-	 * @return 	array mailinglists
+	 * @return 	array|null mailinglists
 	 *
 	 * @throws Exception
 	 *
 	 * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
 	 */
-	public function getPublishedMailinglistsIds(): array
+	public function getPublishedMailinglistsIds(): ?array
 	{
 		$mailinglists = array();
 		$db     = $this->_db;
@@ -746,13 +746,13 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @param array $viewLevels the access levels to search for
 	 *
-	 * @return 	array	ID and title of allowed mailinglists
+	 * @return 	array|null	ID and title of allowed mailinglists
 	 *
 	 * @throws Exception
 	 *
 	 * @since  2.4.0 (here, before since 1.0.1 at FE newsletters model)
 	 */
-	public function getAllowedMailinglists(array $viewLevels): array
+	public function getAllowedMailinglists(array $viewLevels): ?array
 	{
 		$mailinglists   = null;
 		$db    = $this->_db;
@@ -787,7 +787,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	/**
 	 * Returns the identity (primary key) value of this record
 	 *
-	 * @return  mixed
+	 * @return  array|string
 	 *
 	 * @since  2.4.0
 	 */

@@ -73,13 +73,13 @@ class ComcamnoarcField extends CheckboxesField
 	 *
 	 * @since   11.1
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		// Initialize variables.
 		$html = array();
 
 		// Initialize some field attributes.
-		$class = $this->element['class'] ? ' class="checkboxes ' . (string) $this->element['class'] . '"' : ' class="checkboxes"';
+		$class = $this->element['class'] ? ' class="checkboxes ' . $this->element['class'] . '"' : ' class="checkboxes"';
 
 		// Start the checkbox field output.
 		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
@@ -92,12 +92,12 @@ class ComcamnoarcField extends CheckboxesField
 		$html[] = '			<table class="adminlist table">';
 		$html[] = '				<thead>';
 		$html[] = '					<tr>';
-		$html[] = '						<th width="30" nowrap="nowrap">' . Text::_('JGRID_HEADING_ID') . '</th>';
-		$html[] = '						<th width="30" nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value=""
+		$html[] = '						<th nowrap="nowrap">' . Text::_('JGRID_HEADING_ID') . '</th>';
+		$html[] = '						<th nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value=""
 						 title="' . Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this)" /></th>';
-		$html[] = '						<th width="200" nowrap="nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
+		$html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
 		$html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_DESCRIPTION') . '</th>';
-		$html[] = '						<th width="80" nowrap="nowrap">' . Text::_('COM_BWPOSTMAN_CAM_NL_NUM') . '</th>';
+		$html[] = '						<th nowrap="nowrap">' . Text::_('COM_BWPOSTMAN_CAM_NL_NUM') . '</th>';
 		$html[] = '					</tr>';
 		$html[] = '				</thead>';
 		$html[] = '				<tbody>';
@@ -113,9 +113,9 @@ class ComcamnoarcField extends CheckboxesField
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
-				$html[] = '								<td align="center">' . Text::_($option->value) . '</td>';
+				$html[] = '								<td>' . Text::_($option->value) . '</td>';
 				$html[] = '								<td><input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
-					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
+					. htmlspecialchars($option->value, ENT_COMPAT) . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
 				$html[] = '								<td>' . Text::_($option->text) . '</td>';
 				$html[] = '								<td>' . Text::_($option->description) . '</td>';
 				$html[] = '								<td>' . Text::_($option->newsletters) . '</td>';
@@ -148,15 +148,11 @@ class ComcamnoarcField extends CheckboxesField
 	 *
 	 * @since   11.1
 	 */
-	protected function getOptions()
+	protected function getOptions(): array
 	{
-		$options  = null;
-
 		$options = BwPostmanCampaignHelper::getCampaignsFieldlistOptions(false, true);
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }

@@ -49,13 +49,15 @@ class Pkg_BwPostmanInstallerScript
 	 */
 	private $release = null;
 
-  /**
+	/**
 	 * Called on installation
-  *
-  * @return void
-   *
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
 	 * @since       2.2.1
-  */
+	 */
 
 	public function install($parent)
   {
@@ -70,13 +72,15 @@ class Pkg_BwPostmanInstallerScript
 		$this->showFinished(false);
   }
 
-  /**
+	/**
 	 * Called on update
-  *
-  * @return void
-  *
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
 	 * @since   2.2.1
-  */
+	 */
 
 	public function update($parent)
   {
@@ -93,7 +97,7 @@ class Pkg_BwPostmanInstallerScript
 	/**
 	 * Called after any type of action
 	 *
-	 * @param   string  			$type		Which action is happening (install|uninstall|discover_install)
+	 * @param string $type Which action is happening (install|uninstall|discover_install)
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -102,7 +106,7 @@ class Pkg_BwPostmanInstallerScript
 	 * @since       2.2.1
 	 */
 
-	public function postflight($type)
+	public function postflight(string $type): bool
 	{
 	if ($type == 'update')
 	{
@@ -121,13 +125,15 @@ class Pkg_BwPostmanInstallerScript
 	/**
 	 * shows the HTML after installation/update
 	 *
-	 * @param   boolean $update
+	 * @param boolean $update
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	public function showFinished($update)
+	public function showFinished(bool $update)
 		{
 		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
@@ -347,7 +353,7 @@ class Pkg_BwPostmanInstallerScript
 	 *
 	 * @since	2.2.0 (since 3.1.4 here)
 	 */
-	private function getModal()
+	private function getModal(): string
 	{
 		$url = Uri::root() . 'administrator/index.php?option=com_bwpostman&view=maintenance&tmpl=component&layout=updateCheckSave';
 
@@ -363,7 +369,7 @@ class Pkg_BwPostmanInstallerScript
 		$percent = 0.10;
 
 		$js = "
-			var css = '{$css}',
+			var css = '$css',
 				head = document.head || document.getElementsByTagName('head')[0],
 				style = document.createElement('style');
 
@@ -396,7 +402,7 @@ class Pkg_BwPostmanInstallerScript
 						viewportheight = document.getElementsByTagName('body')[0].clientHeight
 				}
 				var modalcontent = document.getElementById('bwp_modal-content');
-				modalcontent.style.height = viewportheight-(viewportheight*{$percent})+'px';
+				modalcontent.style.height = viewportheight-(viewportheight*$percent)+'px';
 				";
 
 		$js .= "
@@ -410,7 +416,7 @@ class Pkg_BwPostmanInstallerScript
 
 				// Get the Iframe-Wrapper and set Iframe
 				var wrapper = document.getElementById('bwp_wrapper');
-				var html = '<iframe id=\"iFrame\" name=\"iFrame\" src=\"{$url}\" frameborder=\"0\" style=\"width:100%; height:100%;\"></iframe>';
+				var html = '<iframe id=\"iFrame\" name=\"iFrame\" src=\"$url\" style=\"width:100%; height:100%;\"></iframe>';
 
 				// Open the modal
 					wrapper.innerHTML = html;
@@ -421,10 +427,9 @@ class Pkg_BwPostmanInstallerScript
 
 		";
 
-		$modal = <<<EOS
-		<div id="bwpostman">{$html}</div><script>{$js}</script>
+		return <<<EOS
+		<div id="bwpostman">$html</div><script>$js</script>
 EOS;
-		return $modal;
 	}
 
 }

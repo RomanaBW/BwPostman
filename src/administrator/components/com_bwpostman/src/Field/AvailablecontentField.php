@@ -33,8 +33,8 @@ use JHtmlSelect;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
-use \Joomla\CMS\Component\ComponentHelper;
-use \Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
 
 /**
@@ -62,11 +62,9 @@ class AvailablecontentField extends ListField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getLabel()
+	public function getLabel(): string
 	{
-		$return = '<label for="' . $this->id . '" class="available_content_label">' . Text::_($this->element['label']) . '</label>';
-
-		return $return;
+		return '<label for="' . $this->id . '" class="available_content_label">' . Text::_($this->element['label']) . '</label>';
 	}
 
 	/**
@@ -78,14 +76,14 @@ class AvailablecontentField extends ListField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getInput()
+	public function getInput(): string
 	{
 		// Initialize variables.
 		$html = array();
 		$attr = '';
 
 		// Initialize some field attributes.
-		$attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+		$attr .= $this->element['class'] ? ' class="' . $this->element['class'] . '"' : '';
 
 		// To avoid user's confusion, readonly="true" should imply disabled="true".
 		if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true')
@@ -97,17 +95,17 @@ class AvailablecontentField extends ListField
 		$attr .= $this->multiple ? ' multiple="multiple"' : '';
 
 		// Initialize JavaScript field attributes.
-		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
-		$attr .= $this->element['ondblclick'] ? ' ondblclick="' . (string) $this->element['ondblclick'] . '"' : '';
+		$attr .= $this->element['onchange'] ? ' onchange="' . $this->element['onchange'] . '"' : '';
+		$attr .= $this->element['ondblclick'] ? ' ondblclick="' . $this->element['ondblclick'] . '"' : '';
 
 		// Get the field options.
-		$options = (array) $this->getOptions();
+		$options = $this->getOptions();
 
 		// Create a read-only list (no name) with a hidden input to store the value.
 		if ((string) $this->element['readonly'] == 'true')
 		{
 			$html[] = JHtmlSelect::genericlist($options, '', trim($attr), 'value', 'text', $this->value, $this->id);
-			$html[] = '<input type="hidden" name="' . $this->name . '" value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"/>';
+			$html[] = '<input type="hidden" name="' . $this->name . '" value="' . htmlspecialchars($this->value, ENT_COMPAT) . '"/>';
 		}
 		// Create a regular list.
 		else
@@ -128,11 +126,8 @@ class AvailablecontentField extends ListField
 	 *
 	 * @since	1.0.1
 	 */
-	public function getOptions()
+	public function getOptions(): array
 	{
-		// Initialize variables.
-		$user_id = null;
-
 		// prepare query
 		$db         = Factory::getDbo();
 		$query_user = $db->getQuery(true);
@@ -156,9 +151,7 @@ class AvailablecontentField extends ListField
 		$options = $this->getAvailableContent();
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 	/**
 	 * Method to get the available content items which can be used to compose a newsletter
@@ -169,7 +162,7 @@ class AvailablecontentField extends ListField
 	 *
 	 * @since       1.0.1
 	 */
-	private function getAvailableContent()
+	private function getAvailableContent(): array
 	{
 		$app        = Factory::getApplication();
 		$db         = Factory::getDbo();

@@ -102,9 +102,7 @@ class MailinglistsController extends AdminController
 	 */
 	public function getModel($name = 'Mailinglist', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
@@ -119,7 +117,7 @@ class MailinglistsController extends AdminController
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = false): MailinglistsController
 	{
 		if (!$this->permissions['view']['mailinglist'])
 		{
@@ -153,7 +151,7 @@ class MailinglistsController extends AdminController
 	/**
 	 * Method to check if you can publish/unpublish records
 	 *
-	 * @param	array 	$recordIds		an array of items to check permission for
+	 * @param array $recordIds an array of items to check permission for
 	 *
 	 * @return	boolean
 	 *
@@ -161,7 +159,7 @@ class MailinglistsController extends AdminController
 	 *
 	 * @since	2.0.0
 	 */
-	protected function allowPublish($recordIds = array())
+	protected function allowPublish(array $recordIds = array()): bool
 	{
 		foreach ($recordIds as $recordId)
 		{
@@ -190,7 +188,7 @@ class MailinglistsController extends AdminController
 	 *
 	 * @since	1.1.0
 	 */
-	public function publish()
+	public function publish(): bool
 	{
 		$jinput	= Factory::getApplication()->input;
 

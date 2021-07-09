@@ -29,9 +29,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Import MODEL object class
-jimport('joomla.application.component.model');
-
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -95,7 +92,7 @@ class NewsletterelementModel extends BaseDatabaseModel
 	 *
 	 * @since
 	 */
-	private $key = null;
+	private $key;
 
 	/**
 	 * Constructor
@@ -130,7 +127,7 @@ class NewsletterelementModel extends BaseDatabaseModel
 	 *
 	 * @since
 	 */
-	public function getData()
+	public function getData(): array
 	{
 		if (empty($this->data))
 		{
@@ -150,7 +147,7 @@ class NewsletterelementModel extends BaseDatabaseModel
 	 *
 	 * @since
 	 */
-	public function getTotal()
+	public function getTotal(): int
 	{
 		// Load the content if it doesn't already exist
 		if (!$this->total)
@@ -176,7 +173,6 @@ class NewsletterelementModel extends BaseDatabaseModel
 		// Load the content if it doesn't already exist
 		if (empty($this->pagination))
 		{
-			jimport('joomla.html.pagination');
 			$this->pagination = new Pagination($this->getTotal(), (int) $this->getState('limitstart'), (int) $this->getState('limit'));
 		}
 
@@ -192,7 +188,7 @@ class NewsletterelementModel extends BaseDatabaseModel
 	 *
 	 * @since
 	 */
-	private function buildQuery()
+	private function buildQuery(): string
 	{
 		$app   = Factory::getApplication();
 		$db    = $this->_db;
@@ -248,7 +244,7 @@ class NewsletterelementModel extends BaseDatabaseModel
 	 *
 	 * @since
 	 */
-	private function getSearch()
+	private function getSearch(): string
 	{
 		if (!$this->search)
 		{

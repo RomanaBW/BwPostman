@@ -30,8 +30,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.form.formfield');
-
 /**
  * Class JFormFieldAsset
  *
@@ -52,6 +50,8 @@ class JFormFieldAsset extends JFormField
 	 * Method to get asset input field
 	 *
 	 * @return null
+	 *
+	 * @throws Exception
 	 *
 	 * @since
 	 */

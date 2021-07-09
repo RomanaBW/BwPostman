@@ -33,8 +33,6 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Service\Provider\Database;
-use Joomla\Database\DatabaseDriver;
 use RuntimeException;
 use stdClass;
 
@@ -63,7 +61,7 @@ class AuthorsField extends ListField
 	 *
 	 * @since   1.0.8
 	 */
-	protected function getOptions()
+	protected function getOptions(): array
 	{
 		// Get a db connection.
 		$db        = Factory::getDbo();
@@ -98,8 +96,6 @@ class AuthorsField extends ListField
 		array_unshift($options, $parent);
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }

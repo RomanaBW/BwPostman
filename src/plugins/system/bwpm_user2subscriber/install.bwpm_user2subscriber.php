@@ -29,7 +29,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Installer\InstallerAdapter;
+use Joomla\CMS\Language\Text;
 
 /**
  * Installation script for the plugin
@@ -48,8 +48,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	/**
 	 * Called before any type of action
 	 *
-	 * @param   string              $type		Which action is happening (install|uninstall|discover_install|update)
-	 * @param   InstallerAdapter	$parent		The object responsible for running this script
+	 * @param string $type Which action is happening (install|uninstall|discover_install|update)
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -58,7 +57,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 * @since       0.9.6.3
 	 */
 
-	public function preflight($type, InstallerAdapter $parent)
+	public function preflight(string $type): bool
 	{
 		if ($type == 'install')
 		{
@@ -68,7 +67,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 			if (version_compare($BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
 			{
 				Factory::getApplication()->enqueueMessage(
-					sprintf('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_COMPONENT_BWPOSTMAN_NEEDED', $this->min_bwpostman_version),
+					Text::sprintf('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_COMPONENT_BWPOSTMAN_NEEDED', $this->min_bwpostman_version),
 					'error'
 				);
 				return false;
@@ -87,7 +86,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 *
 	 * @since 2.0.0
 	 */
-	protected function getComponentVersion()
+	protected function getComponentVersion(): string
 	{
 		$version    = '0.0.0';
 		$_db        = Factory::getDbo();
@@ -100,7 +99,14 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 
 		try
 		{
-			$manifest   = json_decode($_db->loadResult(), true);
+			$result = $_db->loadResult();
+
+			if ($result === null)
+			{
+				$result = '';
+			}
+
+			$manifest   = json_decode($result, true);
 			$version    = $manifest['version'];
 		}
 		catch (Exception $e)

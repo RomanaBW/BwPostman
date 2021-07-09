@@ -193,33 +193,34 @@ window.onload = function() {
 	}
 };
 
-var formatExists = document.body.contains(document.getElementsByName('fileformat')[0]);
+document.addEventListener("DOMContentLoaded", function() {
+	var formatExists = document.body.contains(document.getElementsByName('fileformat')[0]);
 
-document.addEventListener('readystatechange', (event) => {
+	document.addEventListener('readystatechange', (event) => {
 
-	if (formatExists)
-	{
-		var format = getRadioChecked('fileformat');
-		var importfile = document.getElementById("importfile");
+		if (formatExists) {
+			var format = getRadioChecked('fileformat');
+			var importfile = document.getElementById("importfile");
 
-		switchCsvFieldsVisibility('none');
-		document.getElementById("further").parentNode.parentNode.style.display = "none";
+			switchCsvFieldsVisibility('none');
+			document.getElementById("further").parentNode.parentNode.style.display = "none";
 
-		if (typeof (format) === 'undefined') {
-			importfile.parentNode.parentNode.style.display = "none";
-		} else {
-			importfile.parentNode.parentNode.style.display = "flex";
+			if (typeof (format) === 'undefined') {
+				importfile.parentNode.parentNode.style.display = "none";
+			} else {
+				importfile.parentNode.parentNode.style.display = "flex";
 
-			if (importfile.value !== '') {
-				extCheck();
+				if (importfile.value !== '') {
+					extCheck();
+				}
 			}
 		}
+	});
+
+	if (formatExists) {
+		document.getElementById("importfile").addEventListener('change', extCheck);
 	}
 });
-
-if (formatExists) {
-	document.getElementById("importfile").addEventListener('change', extCheck);
-}
 
 
 //-----------------------------------------------------------------------------

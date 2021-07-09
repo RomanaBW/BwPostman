@@ -398,8 +398,6 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	public function check(): bool
 	{
 		//Initialize
-		jimport('joomla.mail.helper');
-
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$app    = Factory::getApplication();
 		$import = $app->getUserState('com_bwpostman.subscriber.import', false);
@@ -541,7 +539,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			// Spamcheck 2
 			// Set error message if check of a dynamic time variable failed
-			if(!isset($data['bwp-' . BwPostmanHelper::getCaptcha(1)]) && !isset($data['bwp-' . BwPostmanHelper::getCaptcha(2)]))
+			if(!isset($data['bwp-' . BwPostmanHelper::getCaptcha()]) && !isset($data['bwp-' . BwPostmanHelper::getCaptcha(2)]))
 			{
 				// input wrong - set error
 				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_SPAMCHECK2'), 'error');
@@ -759,7 +757,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if (!count($testrecipients))
+		if (!$testrecipients)
 		{
 			return false;
 		}
@@ -772,13 +770,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @access	public
 
-	 * @return 	array
+	 * @return 	array|null
 	 *
 	 * @throws Exception
 	 *
 	 * @since
 	 */
-	public function loadTestrecipients(): array
+	public function loadTestrecipients(): ?array
 	{
 		$result = array();
 		$this->reset();
@@ -899,13 +897,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @param integer $subsId ID of the subscriber to check
 	 *
-	 * @return 	object|false
+	 * @return 	object|null
 	 *
 	 * @throws Exception
 	 *
 	 * @since 3.0.0
 	 */
-	public function getSubscriberNewsletterData(int $subsId)
+	public function getSubscriberNewsletterData(int $subsId): ?object
 	{
 		$result = false;
 		$this->reset();
@@ -990,7 +988,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public function getSubscriberIdByEmail(string $email, $isTester = false): int
+	public function getSubscriberIdByEmail(string $email, bool $isTester = false): int
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -1035,7 +1033,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @param int $id subscriber ID
 	 *
-	 * @return    object  $subscriber subscriber object
+	 * @return    object|null  $subscriber subscriber object
 	 *
 	 * @throws Exception
 	 *
@@ -1072,7 +1070,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @param int $id subscriber ID
 	 *
-	 * @return 	int user ID
+	 * @return 	int|null user ID
 	 *
 	 * @throws Exception
 	 *
@@ -1114,13 +1112,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 * @param boolean $tester
 	 * @param boolean $archived
 	 *
-	 * @return 	integer|boolean number of subscribers or false
+	 * @return 	integer|null number of subscribers or false
 	 *
 	 * @throws Exception
 	 *
 	 * @since       3.0.0 (here, before since 2.3.0 at subscriber helper)
 	 */
-	public function getNbrOfSubscribers(bool $tester, bool $archived)
+	public function getNbrOfSubscribers(bool $tester, bool $archived): ?int
 	{
 		$archiveFlag    = 0;
 		$statusOperator = "!=";
@@ -1164,13 +1162,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to create the editlink and check if the string does not exist twice or more
 	 *
-	 * @return string   $editlink
+	 * @return string|null   $editlink
 	 *
 	 * @throws Exception
 	 *
 	 * @since 3.0.0 here
 	 */
-	public function getEditlink()
+	public function getEditlink(): ?string
 	{
 		$db              = $this->_db;
 		$newEditlink     = "";
@@ -1293,13 +1291,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @param array $values
 	 *
-	 * @return  object|boolean
+	 * @return  object|boolean|null
 	 *
 	 * @throws Exception
 	 *
 	 * @since   3.0.0 (here)
 	 */
-	public function getSubscriberDataByEmail(array $values)
+	public function getSubscriberDataByEmail(array $values): ?object
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -1340,7 +1338,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @param string $activation activation code for the newsletter account
 	 *
-	 * @return  object
+	 * @return  object|null
 	 *
 	 * @throws Exception
 	 *
@@ -1431,7 +1429,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   3.0.0
 	 */
-	public function validateSubscriberEditlink(string $email, string $editlink)
+	public function validateSubscriberEditlink(string $email, string $editlink): ?int
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);

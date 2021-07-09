@@ -69,13 +69,13 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	/**
 	 * Method to install the extension
 	 *
-	 * @param object  $parent is the class calling this method
+	 * @param object $parent is the class calling this method
 	 *
 	 * @return void
 	 *
 	 * @since       2.3.0
 	 */
-	public function install($parent)
+	public function install(object $parent)
 	{
 	}
 
@@ -96,29 +96,29 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	/**
 	 * Method to update the extension
 	 *
-	 * @param object  $parent is the class calling this method
+	 * @param object $parent is the class calling this method
 	 *
 	 * @return void
 	 *
 	 * @since       2.3.0
 	 */
-	public function update($parent)
+	public function update(object $parent)
 	{
 	}
 
 	/**
 	 * Method to run before an install/update/uninstall method
 	 *
-	 * @param  string             $type       is the type of change (install, update or discover_install)
-	 * @param  InstallerAdapter   $parent     is the class calling this method
+	 * @param string            $type   is the type of change (install, update or discover_install)
+	 * @param  InstallerAdapter $parent is the class calling this method
 	 *
 	 * @return     bool    true on success
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       2.3.0
 	 */
-	function preflight($type, InstallerAdapter $parent)
+	function preflight(string $type, InstallerAdapter $parent): bool
 	{
 		$app 		= Factory::getApplication ();
 
@@ -175,13 +175,15 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	/**
 	 * Method to run after an install/update/uninstall method
 	 *
-	 * @param string  $type       is the type of change (install, update or discover_install)
+	 * @param string $type is the type of change (install, update or discover_install)
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since       2.3.0
 	 */
-	public function postflight($type)
+	public function postflight(string $type)
 	{
 		// We only need to perform this if the extension is being installed, not updated
 		if ($type == 'install')
@@ -190,8 +192,8 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 			$query = $db->getQuery(true);
 
 			$fields = array(
-				$db->quoteName('enabled') . ' = ' . (int) 1,
-				$db->quoteName('ordering') . ' = ' . (int) 9998
+				$db->quoteName('enabled') . ' = ' . 1,
+				$db->quoteName('ordering') . ' = ' . 9998
 			);
 
 			$conditions = array(
@@ -217,14 +219,14 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	/**
 	 * Method to get a variable from the manifest file (actually, from the manifest cache).
 	 *
-	 * @param  string      $name
-	 * @param  string      $extension
+	 * @param string $name
+	 * @param string $extension
 	 *
 	 * @return  bool|string
 	 *
 	 * @since       2.3.0
 	 */
-	private function getManifestVar($name, $extension)
+	private function getManifestVar(string $name, string $extension)
 	{
 		$db		= Factory::getDbo();
 		$query	= $db->getQuery(true);

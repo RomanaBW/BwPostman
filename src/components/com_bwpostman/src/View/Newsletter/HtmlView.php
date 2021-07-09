@@ -37,9 +37,6 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
-// Import VIEW object class
-jimport('joomla.application.component.view');
-
 /**
  * Class BwPostmanViewNewsletter
  *
@@ -97,13 +94,13 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): HtmlView
 	{
 		$app        = Factory::getApplication();
 		$id         = $app->input->getInt('id', 0);

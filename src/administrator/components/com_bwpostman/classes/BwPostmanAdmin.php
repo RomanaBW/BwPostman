@@ -50,7 +50,7 @@ class BwPostmanAdmin {
 	 *
 	 * @throws Exception
 	 */
-	static public function footer()
+	static public function footer(): string
 	{
 		$version = BwPostmanHelper::getInstalledBwPostmanVersion();
 

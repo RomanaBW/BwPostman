@@ -32,7 +32,7 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CheckboxesField;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Form\FormHelper;
+use RuntimeException;
 
 /**
  * Form Field class for the Joomla Platform.
@@ -79,14 +79,14 @@ class UsergroupsField extends CheckboxesField
 	 *
 	 * @since   1.2.0
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		// Initialize variables.
 		$html	= array();
 		$stub	= "'ub'";
 
 		// Initialize some field attributes.
-		$class = $this->element['class'] ? ' class="checkboxes ' . (string) $this->element['class'] . '"' : ' class="checkboxes"';
+		$class = $this->element['class'] ? ' class="checkboxes ' . $this->element['class'] . '"' : ' class="checkboxes"';
 
 		// Start the checkbox field output.
 		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
@@ -119,9 +119,9 @@ class UsergroupsField extends CheckboxesField
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
-				$html[] = '							 <td style="align:center">' . Text::_($option->value) . '</td>';
+				$html[] = '							 <td style="text-align:center;">' . Text::_($option->value) . '</td>';
 				$html[] = '              <td><input type="checkbox" id="ub' . $i . '" name="' . $this->name . '" value="'
-					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
+					. htmlspecialchars($option->value, ENT_COMPAT) . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
 				$html[] = '							 <td class="text-nowrap">' . Text::_($option->text) . '</td>';
 				$html[] = '						  </tr>';
 			}
@@ -152,7 +152,7 @@ class UsergroupsField extends CheckboxesField
 	 *
 	 * @since   1.2.0
 	 */
-	protected function getOptions()
+	protected function getOptions(): array
 	{
 		// Hash for caching
 		$hash = md5($this->element);
@@ -178,7 +178,7 @@ class UsergroupsField extends CheckboxesField
 			$query->group($db->quoteName('a') . '.' . $db->quoteName('title'));
 			$query->group($db->quoteName('a') . '.' . $db->quoteName('lft'));
 			$query->group($db->quoteName('a') . '.' . $db->quoteName('rgt'));
-			$query->order('a.lft ASC');
+			$query->order('a.lft');
 			try
 			{
 				$db->setQuery($query);

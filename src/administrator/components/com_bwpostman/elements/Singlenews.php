@@ -24,12 +24,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator\Elements;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
+use JFormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 
@@ -42,7 +45,7 @@ use Joomla\CMS\Language\Text;
  * @since       1.0.8
  */
 
-class JFormFieldsinglenews extends JFormField
+class Singlenews extends JFormField
 {
 	/**
 	 * Element name
@@ -59,9 +62,11 @@ class JFormFieldsinglenews extends JFormField
 	 *
 	 * @return string
 	 *
+	 * @throws Exception
+	 *
 	 * @since       1.0.8
 	 */
-	protected function getinput()
+	protected function getinput(): string
 	{
 		$doc        = Factory::getApplication()->getDocument();
 		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
@@ -102,10 +107,9 @@ class JFormFieldsinglenews extends JFormField
 				};
 				";
 
-		$title = empty($newsletter->subject) ? Text::_('COM_CONTENT_SELECT_AN_ARTICLE') : htmlspecialchars($newsletter->subject, ENT_QUOTES, 'UTF-8');
+		$title = empty($newsletter->subject) ? Text::_('COM_CONTENT_SELECT_AN_ARTICLE') : htmlspecialchars($newsletter->subject, ENT_QUOTES);
 
-		$html = '';
-		$html .= '<span class="input-group">';
+		$html  = '<span class="input-group">';
 		$html .= '<input class="form-control" id="' . $this->id . '_name" type="text" value="' . $title . '" readonly size="35">';
 		$html  .= '<span class="input-group-append">';
 
@@ -150,7 +154,7 @@ class JFormFieldsinglenews extends JFormField
 		$class = $this->required ? ' class="required modal-value"' : '';
 
 		$html .= '<input type="hidden" id="' . $this->id . '_id" ' . $class . ' data-required="' . (int) $this->required . '" name="' . $this->name
-			. '" data-text="' . htmlspecialchars(Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER', true), ENT_COMPAT, 'UTF-8') . '" value="' . $value . '">';
+			. '" data-text="' . htmlspecialchars(Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER', true), ENT_COMPAT) . '" value="' . $value . '">';
 
 		$doc->addScriptDeclaration($js);
 

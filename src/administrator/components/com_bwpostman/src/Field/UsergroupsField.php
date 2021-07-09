@@ -58,7 +58,7 @@ class UsergroupsField extends RadioField
 	 *
 	 * @since   1.0.2
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		$options = array();
 		$attr    = '';

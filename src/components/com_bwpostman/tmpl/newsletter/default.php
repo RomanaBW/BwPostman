@@ -38,13 +38,13 @@ use Joomla\CMS\HTML\HTMLHelper;
 /* <![CDATA[ */
 	window.onload = function()
 	{
-		var framefenster = document.getElementById("myIframe");
+		const framefenster = document.getElementById("myIframe");
 
 		if(framefenster.contentWindow.document.body)
 		{
-			var legal = framefenster.contentWindow.document.getElementById('legal');
+			const legal = framefenster.contentWindow.document.getElementById('legal');
 			legal.remove();
-			var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
+			let framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
 			if(document.all && !window.opera)
 			{
 				framefenster_size = framefenster.contentWindow.document.body.scrollHeight;

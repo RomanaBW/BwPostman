@@ -83,7 +83,7 @@ class NewsletterjsonController extends BaseController
 			}
 
 			$model = $this->getModel('newsletter');
-			$nl_id = $jinput->getInt('nl_id');
+			$nl_id = $jinput->getInt('nl_id', 0);
 			$app->setUserState('com_bwpostman.viewraw.newsletter.id', $nl_id);
 
 			// Access check
@@ -103,7 +103,7 @@ class NewsletterjsonController extends BaseController
 			$delay_msg   = "secondary";
 			$complete    = "secondary";
 			$published   = "secondary";
-			$nopublished = "secondary";
+			$noPublished = "secondary";
 			$ready       = "0";
 			$error       = "secondary";
 
@@ -111,11 +111,11 @@ class NewsletterjsonController extends BaseController
 			ob_start();
 
 			// set number of queue entries before start sending
-			$sumentries	= is_null($app->getUserState('com_bwpostman.newsletters.entries', null))
+			$sumentries	= is_null($app->getUserState('com_bwpostman.newsletters.entries'))
 				? $app->setUserState('com_bwpostman.newsletters.entries', $model->checkTrials(2, 1))
-				: $app->getUserState('com_bwpostman.newsletters.entries', null);
+				: $app->getUserState('com_bwpostman.newsletters.entries');
 
-			if ($model->checkTrials(2))
+			if ($model->checkTrials())
 			{
 				// start sending process
 				$ret = $model->sendMailsFromQueue($mails_per_step, true, $mailsThisStepDone);
@@ -149,13 +149,13 @@ class NewsletterjsonController extends BaseController
 					{
 						$cid = array($id);
 
-						if ($model->publish($cid, 1) === true)
+						if ($model->publish($cid) === true)
 						{
 							$published = 'success';
 						}
 						else
 						{
-							$nopublished = 'error';
+							$noPublished = 'error';
 						}
 					}
 
@@ -198,7 +198,7 @@ class NewsletterjsonController extends BaseController
 				"delay_msg"		=> $delay_msg,
 				"complete"		=> $complete,
 				"published"		=> $published,
-				"nopublished"	=> $nopublished,
+				"noPublished"	=> $noPublished,
 				"ready"			=> $ready,
 				"result"		=> $result,
 				"error"			=> $error

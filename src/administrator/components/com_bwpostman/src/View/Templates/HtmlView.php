@@ -131,13 +131,13 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since   1.1.0
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): HtmlView
 	{
 		$app		= Factory::getApplication();
 
@@ -151,16 +151,19 @@ class HtmlView extends BaseHtmlView
 
 		// Template export
 		$jinput	= $app->input;
-		$task = $jinput->get('task', NULL);
+		$task = $jinput->get('task');
 		if ($task == 'export')
 		{
-			$basename		= $this->get('BaseName');
-			$zip_created	= $this->get('ExportTpl');
-		}
-		if (isset($zip_created))
-		{
-			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_TPL_EXPORTTPL_OK', Route::_(Uri::root() . 'images/com_bwpostman/templates/' . $basename) , Text::_('COM_BWPOSTMAN_TPL_DOWNLOAD'), Text::_('JCANCEL')), 'message');
-			$app->redirect('index.php?option=com_bwpostman&view=templates', false);
+			$basename    = $this->get('BaseName');
+			$zip_created = $this->get('ExportTpl');
+
+			if (isset($zip_created))
+			{
+				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_TPL_EXPORTTPL_OK',
+					Route::_(Uri::root() . 'images/com_bwpostman/templates/' . $basename),
+					Text::_('COM_BWPOSTMAN_TPL_DOWNLOAD'), Text::_('JCANCEL')), 'message');
+				$app->redirect('index.php?option=com_bwpostman&view=templates', false);
+			}
 		}
 
 		// Get data from the model
@@ -194,7 +197,7 @@ class HtmlView extends BaseHtmlView
 		$layout	= $jinput->getCmd('layout', '');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance();
 
 		// Get document object, set document title and add css
 		$document = Factory::getApplication()->getDocument();
@@ -241,7 +244,7 @@ class HtmlView extends BaseHtmlView
 					ToolbarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
 				}
 
-				if (BwPostmanHelper::canEdit('template', 0) || BwPostmanHelper::canEditState('template', 0) || BwPostmanHelper::canArchive('template'))
+				if (BwPostmanHelper::canEdit('template', 0) || BwPostmanHelper::canEditState('template') || BwPostmanHelper::canArchive('template'))
 				{
 					$dropdown = $toolbar->dropdownButton('status-group')
 						->text('JTOOLBAR_CHANGE_STATUS')
@@ -257,7 +260,7 @@ class HtmlView extends BaseHtmlView
 						$childBar->edit('template.edit')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEditState('template', 0))
+					if (BwPostmanHelper::canEditState('template'))
 					{
 						$childBar->publish('templates.publish')->listCheck(true);
 						$childBar->unpublish('templates.unpublish')->listCheck(true);
@@ -269,7 +272,7 @@ class HtmlView extends BaseHtmlView
 						$childBar->archive('template.archive')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEdit('template', 0) || BwPostmanHelper::canEditState('template', 0))
+					if (BwPostmanHelper::canEdit('template', 0) || BwPostmanHelper::canEditState('template'))
 					{
 						$childBar->checkin('templates.checkin')->listCheck(true);
 					}

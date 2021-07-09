@@ -35,7 +35,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\QueryInterface;
 use Joomla\Utilities\ArrayHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use RuntimeException;
 
 /**
@@ -63,6 +62,8 @@ class CampaignsModel extends ListModel
 	/**
 	 * Constructor
 	 * --> handles the pagination and set the campaigns key
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -145,7 +146,7 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function getStoreId($id = '')
+	protected function getStoreId($id = ''): string
 	{
 		// Compile the store id.
 		$id	.= ':' . $this->getState('filter.search');
@@ -162,7 +163,7 @@ class CampaignsModel extends ListModel
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @return 	string      query
+	 * @return    false|object|QueryInterface      query
 	 *
 	 * @throws Exception
 	 *
@@ -179,7 +180,7 @@ class CampaignsModel extends ListModel
 				'list.select',
 				'a.id, a.title, a.description, a.checked_out, a.checked_out_time' .
 				', a.published, a.access, a.created_date, a.created_by'
-			) . ', (' . (string)$sub_query . ') AS newsletters'
+			) . ', (' . $sub_query . ') AS newsletters'
 		);
 		$this->query->from($this->_db->quoteName('#__bwpostman_campaigns', 'a'));
 
@@ -208,7 +209,7 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getSubQuery()
+	private function getSubQuery(): QueryInterface
 	{
 		$sub_query = $this->_db->getQuery(true);
 
@@ -346,16 +347,16 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since     2.0.0
 	 */
-	private function getFilterByComponentPermissions()
-	{
-		$allowed_items  = BwPostmanHelper::getAllowedRecords('campaign');
-
-		if ($allowed_items != 'all')
-		{
-			$allowed_ids = implode(',', ArrayHelper::toInteger($allowed_items));
-			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
-		}
-	}
+//	private function getFilterByComponentPermissions()
+//	{
+//		$allowed_items  = BwPostmanHelper::getAllowedRecords('campaign');
+//
+//		if ($allowed_items != 'all')
+//		{
+//			$allowed_ids = implode(',', ArrayHelper::toInteger($allowed_items));
+//			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
+//		}
+//	}
 
 	/**
 	 * Method to get the filter by published state

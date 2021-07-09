@@ -30,8 +30,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Component\ComponentHelper;
-
-jimport('joomla.plugin.plugin');
+use Joomla\Event\DispatcherInterface;
 
 if (!ComponentHelper::isEnabled('com_bwpostman')) {
 	Factory::getApplication()->enqueueMessage(
@@ -58,18 +57,9 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	protected $db;
 
 	/**
-	 * Application object
-	 *
-	 * @var    JApplication
-	 *
-	 * @since       2.3.0
-	 */
-	protected $app;
-
-	/**
 	 * PlgBwPostmanFooterUsedMailinglists constructor.
 	 *
-	 * @param object $subject
+	 * @param DispatcherInterface $subject
 	 * @param array  $config
 	 *
 	 * @since       2.3.0
@@ -96,11 +86,11 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 *
 	 * @return bool
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       2.3.0
 	 */
-	public function onBwPostmanBeforeObligatoryFooterHtml(&$text)
+	public function onBwPostmanBeforeObligatoryFooterHtml(string &$text): bool
 	{
 		$app       = Factory::getApplication();
 		$usedUgIds = $app->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
@@ -140,7 +130,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 		if ($insertText !== '')
 		{
-			$additionalFooter = "\n\t\t" . '<table class="show-subscribers" style="table-layout: fixed; width: 100%;" border="0" cellspacing="0" cellpadding="0">' . "\n";
+			$additionalFooter = "\n\t\t" . '<table class="show-subscribers" style="table-layout: fixed; width: 100%;">' . "\n";
 			$additionalFooter .= "\t\t\t" . "<tr>" . "\n";
 			$additionalFooter .= "\t\t\t\t" . "<td>";
 			$additionalFooter .= $insertText;
@@ -161,11 +151,11 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 *
 	 * @return bool
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       2.3.0
 	 */
-	public function onBwPostmanBeforeObligatoryFooterText(&$text)
+	public function onBwPostmanBeforeObligatoryFooterText(string &$text): bool
 	{
 		$app       = Factory::getApplication();
 		$usedUgIds = $app->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
@@ -206,15 +196,15 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	/**
 	 * Method to get the names of the used mailinglists by newsletter or campaign id
 	 *
-	 * @param array $usedMlIds     array of mailinglist ids
+	 * @param array $usedMlIds array of mailinglist ids
 	 *
 	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       2.3.0
 	 */
-	protected function getUsedMailinglists($usedMlIds)
+	protected function getUsedMailinglists(array $usedMlIds): array
 	{
 		$mailinglists = $this->getUsedMailinglistsFromDb($usedMlIds);
 
@@ -232,15 +222,15 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	/**
 	 * Method to get the names of the used mailinglists by newsletter or campaign id
 	 *
-	 * @param array   $usedUgIds  array of usergroup ids
+	 * @param array $usedUgIds array of usergroup ids
 	 *
 	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       2.3.0
 	 */
-	protected function getUsedUsergroups($usedUgIds)
+	protected function getUsedUsergroups(array $usedUgIds): array
 	{
 		$usergroups = $this->getUsedUsergroupsFromDb($usedUgIds);
 
@@ -258,16 +248,16 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	/**
 	 * Method to get the used mailinglists or usergroups by newsletter id
 	 *
-	 * @param int   $id                 newsletter  id
-	 * @param int   $checkUsergroups    deliver mailinglists -> false or usergroups ->true
+	 * @param int $id              newsletter  id
+	 * @param int $checkUsergroups deliver mailinglists -> false or usergroups ->true
 	 *
 	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       2.3.0
 	 */
-	protected function getUsedRecipientsByNewsletter($id, $checkUsergroups)
+	protected function getUsedRecipientsByNewsletter(int $id, int $checkUsergroups): array
 	{
 		$recipients = array();
 		$db 	= $this->db;
@@ -291,6 +281,11 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$db->setQuery($query);
 
 			$recipients = $db->loadColumn();
+
+			if ($recipients === null)
+			{
+				$recipients = array();
+			}
 		}
 		catch (RuntimeException $e)
 		{
@@ -303,16 +298,16 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	/**
 	 * Method to get the used mailinglists or usergroups by campaigns
 	 *
-	 * @param int   $id                 newsletter  id
-	 * @param int   $checkUsergroups    deliver mailinglists -> false or usergroups ->true
+	 * @param int $id              newsletter  id
+	 * @param int $checkUsergroups deliver mailinglists -> false or usergroups ->true
 	 *
 	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       2.3.0
 	 */
-	protected function getUsedRecipientsByCampaign($id, $checkUsergroups)
+	protected function getUsedRecipientsByCampaign(int $id, int $checkUsergroups): array
 	{
 		$recipients = array();
 		$db 	= $this->db;
@@ -336,6 +331,11 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$db->setQuery($query);
 
 			$recipients = $db->loadColumn();
+
+			if ($recipients === null)
+			{
+				$recipients = array();
+			}
 		}
 		catch (RuntimeException $e)
 		{
@@ -348,17 +348,16 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	/**
 	 * Method to get the campaign id for newsletter if exists
 	 *
-	 * @param int   $id                 newsletter  id
+	 * @param int $id newsletter  id
 	 *
 	 * @return integer
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       2.3.0
 	 */
-	protected function getCampaignIdByNewsletterId($id)
+	protected function getCampaignIdByNewsletterId(int $id): int
 	{
-		$camId = null;
 		$db 	= $this->db;
 		$query  = $this->db->getQuery(true);
 
@@ -375,6 +374,8 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+			return 0;
 		}
 
 		return $camId;
@@ -389,7 +390,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 *
 	 * @since 2.3.0
 	 */
-	private function insertMailinglistsAtHtmlFooter(array $usedMailinglists)
+	private function insertMailinglistsAtHtmlFooter(array $usedMailinglists): string
 	{
 		$insertText = '';
 
@@ -435,7 +436,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 *
 	 * @since 2.3.0
 	 */
-	private function insertMailinglistsAtTextFooter(array $usedMailinglists)
+	private function insertMailinglistsAtTextFooter(array $usedMailinglists): string
 	{
 		$insertText = '';
 
@@ -471,7 +472,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 *
 	 * @since 2.3.0
 	 */
-	private function insertUsergroupsAtHtmlFooter(array $usedUsergroups)
+	private function insertUsergroupsAtHtmlFooter(array $usedUsergroups): string
 	{
 		$insertText = '';
 
@@ -516,7 +517,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 *
 	 * @since 2.3.0
 	 */
-	private function insertUsergroupsAtTextFooter(array $usedUsergroups)
+	private function insertUsergroupsAtTextFooter(array $usedUsergroups): string
 	{
 		$insertText = '';
 
@@ -548,13 +549,13 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 *
 	 * @param array $usedMlIds
 	 *
-	 * @return array|mixed
+	 * @return array
 	 *
 	 * @since 2.3.0
 	 *
 	 * @throws Exception
 	 */
-	protected function getUsedMailinglistsFromDb(array $usedMlIds)
+	protected function getUsedMailinglistsFromDb(array $usedMlIds): array
 	{
 		$mailinglists = array();
 
@@ -573,6 +574,11 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 				$db->setQuery($query);
 
 				$mailinglists = $db->loadAssocList();
+
+				if ($mailinglists === null)
+				{
+					$mailinglists = array();
+				}
 			}
 			catch (RuntimeException $e)
 			{
@@ -588,13 +594,13 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 *
 	 * @param string $mlId
 	 *
-	 * @return string|mixed
-	 *
-	 * @since 2.3.0
+	 * @return integer
 	 *
 	 * @throws Exception
+	 *@since 2.3.0
+	 *
 	 */
-	protected function getNumberOfRecipientsByMailinglist($mlId)
+	protected function getNumberOfRecipientsByMailinglist(string $mlId): int
 	{
 		$nbrRecipients = 0;
 
@@ -614,7 +620,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			{
 				$db->setQuery($query);
 
-				$nbrRecipients = $db->loadResult();
+				$nbrRecipients = (int)$db->loadResult();
 			}
 			catch (RuntimeException $e)
 			{
@@ -628,13 +634,13 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	/**
 	 * @param array $usedUgIds
 	 *
-	 * @return array|mixed
+	 * @return array
 	 *
 	 * @since 2.3.0
 	 *
 	 * @throws Exception
 	 */
-	protected function getUsedUsergroupsFromDb(array $usedUgIds)
+	protected function getUsedUsergroupsFromDb(array $usedUgIds): array
 	{
 		$usergroups = array();
 
@@ -653,6 +659,11 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 				$db->setQuery($query);
 
 				$usergroups = $db->loadAssocList();
+
+				if ($usergroups === null)
+				{
+					$usergroups = array();
+				}
 			}
 			catch (RuntimeException $e)
 			{
@@ -668,13 +679,13 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 *
 	 * @param string $gid
 	 *
-	 * @return string|mixed
-	 *
-	 * @since 2.3.0
+	 * @return integer
 	 *
 	 * @throws Exception
+	 *@since 2.3.0
+	 *
 	 */
-	protected function getNumberOfRecipientsByUsergroup($gid)
+	protected function getNumberOfRecipientsByUsergroup(string $gid): int
 	{
 		$nbrRecipients = 0;
 
@@ -689,7 +700,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		{
 			$db->setQuery($query);
 
-			$nbrRecipients = $db->loadResult();
+			$nbrRecipients = (int)$db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -709,7 +720,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 *
 	 * @throws Exception
 	 */
-	protected function getNbrAllRecipients(array $usedMailinglists, array $usedUsergroups)
+	protected function getNbrAllRecipients(array $usedMailinglists, array $usedUsergroups): int
 	{
 		$sumRecipients = 0;
 
@@ -739,7 +750,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 * @since version
 	 * @throws Exception
 	 */
-	protected function getActiveRecipients()
+	protected function getActiveRecipients(): array
 	{
 		$activeRecipients = array();
 		$addWhere = '';
@@ -771,6 +782,11 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			$db->setQuery($query);
 
 			$activeRecipients = $db->loadColumn();
+
+			if ($activeRecipients === null)
+			{
+				$activeRecipients = array();
+			}
 		}
 		catch (RuntimeException $e)
 		{
@@ -783,15 +799,15 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	/**
 	 * Method to insert default css for the additional messages in the footer of the HTML newsletter
 	 *
-	 * @param string $text      html of the newsletter
+	 * @param string $text html of the newsletter
 	 *
 	 * @return bool
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since       2.3.0
 	 */
-	public function onBwPostmanBeforeCustomCss(&$text)
+	public function onBwPostmanBeforeCustomCss(string &$text): bool
 	{
 		$cssFile        = JPATH_PLUGINS . '/bwpostman/footerusedmailinglists/assets/css/default.css';
 		$fileContent    = array();

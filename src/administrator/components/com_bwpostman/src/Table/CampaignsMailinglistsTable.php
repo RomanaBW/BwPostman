@@ -238,7 +238,7 @@ class CampaignsMailinglistsTable extends Table
 	/**
 	 * Method to remove the campaign from the cross table #__bwpostman_campaigns_mailinglists
 	 *
-	 * @param $id
+	 * @param integer $id
 	 *
 	 * @return bool
 	 *
@@ -246,13 +246,13 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since   3.0.0 (here, before since 2.0.0 at campaign model)
 	 */
-	public function deleteCampaignsMailinglistsEntry($id): bool
+	public function deleteCampaignsMailinglistsEntry(int $id): bool
 	{
 		$db   = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote((int)$id));
+		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote($id));
 
 		try
 		{
@@ -271,7 +271,7 @@ class CampaignsMailinglistsTable extends Table
 	/**
 	 * Method to remove the mailinglist from the cross table #__bwpostman_campaigns_mailinglists
 	 *
-	 * @param $id
+	 * @param integer $id
 	 *
 	 * @return bool
 	 *
@@ -279,13 +279,13 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
 	 */
-	public function deleteMailinglistsCampaignsEntry($id): bool
+	public function deleteMailinglistsCampaignsEntry(int $id): bool
 	{
 		$db            = $this->_db;
 		$query          = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote((int)$id));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
 
 		try
 		{

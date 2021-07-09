@@ -29,9 +29,7 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CheckboxesField;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 FormHelper::loadFieldClass('checkboxes');
 
@@ -72,64 +70,13 @@ class JFormFieldU2sMls extends CheckboxesField
 	 *
 	 * @since 4.0.0
 	 */
-//	protected function getInput()
-//	{
-//		// Initialize variables.
-//		$session	= Factory::getApplication()->getSession();
-//
-//		// Initialize some field attributes.
-//		$class = $this->element['class'] ? ' class="checkboxes ' . (string) $this->element['class'] . '"' : ' class="checkboxes"';
-//
-//		// Start the checkbox field output.
-//		$html = '<fieldset id="' . $this->id . '"' . $class . '>';
-//
-//		// Get the field options.
-//		$options = $this->getOptions();
-//
-//		// Prepare needed options properties test and checked
-//		$show_desc  = $session->get('plg_bwpm_user2subscriber.show_desc', 'true');
-//		$descLength = $session->get('plg_bwpm_user2subscriber.desc_length', '150');
-//
-//		foreach ($options as $i => $option)
-//		{
-//			$class = !empty($option->class) ? ' class="' . $option->class . '"' : '';
-//
-//			$html .= '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '[] " value="'
-//				. $option->value . '" ' .  $class . '/>';
-//
-//			$html .= '<span class="plg-u2s-ml-title">';
-//			$html .= $option->text;
-//			$html .= '</span>';
-//
-//			if ($show_desc)
-//			{
-//				$html .= '<br />';
-//				$html .= '<span class="plg-u2s-ml-description">';
-//				$html .= substr(Text::_($option->description), 0, $descLength);
-//
-//				if (strlen(Text::_($option->description)) > $descLength)
-//				{
-//					$html .= '... ';
-//					$html .= HTMLHelper::tooltip(Text::_($option->description), $option->title, 'tooltip.png', '', '');
-//				}
-//				$html .= '</span>';
-//				$html .= '<br />';
-//			}
-//		}
-//
-////		 End the checkbox field output.
-//		$html .= '</fieldset>';
-//
-//		return $html;
-//	}
-
-	protected function getInput()
+	protected function getInput(): string
 	{
 		// Initialize variables.
 		$html	= array();
 
 		// Initialize some field attributes.
-		$class = $this->element['class'] ? ' class="checkboxes ' . (string) $this->element['class'] . '"' : ' class="checkboxes"';
+		$class = $this->element['class'] ? ' class="checkboxes ' . $this->element['class'] . '"' : ' class="checkboxes"';
 
 		// Start the checkbox field output.
 		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
@@ -150,15 +97,13 @@ class JFormFieldU2sMls extends CheckboxesField
 				$checked	= (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
 				$class		= !empty($option->class) ? ' class="' . $option->class . '"' : '';
 				$disabled	= !empty($option->disable) ? ' disabled="disabled"' : '';
-//				$archived	= ($option->archived) ? '<i class="icon-archive"></i>' : '';
-//				$published	= ($option->published) ? '<i class="icon-publish"></i>' : '<i class="icon-unpublish"></i>';
 
 				// Initialize some JavaScript option attributes.
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
 				$html[] = '							<tr class="row' . $i % 2 . '">';
 				$html[] = '								<td class="text-center"><input type="checkbox" id="mb' . $i . '" name="' . $this->name . '" value="'
-					. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
+					. htmlspecialchars($option->value, ENT_COMPAT) . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';
 				$html[] = '								<td>' . Text::_($option->text) . '</td>';
 				$html[] = '								<td class="d-none d-lg-table-cell">' . Text::_($option->description) . '</td>';
 				$html[] = '						  </tr>';
@@ -191,7 +136,7 @@ class JFormFieldU2sMls extends CheckboxesField
 	 *
 	 * @since
 	 */
-	protected function getOptions()
+	protected function getOptions(): array
 	{
 		// Initialize variables.
 		$session	= Factory::getApplication()->getSession();
@@ -213,7 +158,7 @@ class JFormFieldU2sMls extends CheckboxesField
 
 		$query->select("a.id AS value, a.title AS text, a.description");
 		$query->from('#__bwpostman_mailinglists AS a');
-		$query->where($_db->quoteName('a.archive_flag') . ' = ' . (int) 0);
+		$query->where($_db->quoteName('a.archive_flag') . ' = ' . 0);
 
 		if (count($availableMailinglists))
 		{
@@ -234,8 +179,6 @@ class JFormFieldU2sMls extends CheckboxesField
 		}
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }

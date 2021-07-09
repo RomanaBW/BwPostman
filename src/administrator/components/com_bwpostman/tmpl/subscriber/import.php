@@ -98,7 +98,7 @@ $option	= $jinput->getCmd('option');
 							<?php echo $this->lists['enclosure'];?>
 						</div>
 					</div>
-					<div d="caption_tr" class="caption form-group row">
+					<div class="caption form-group row">
 						<label class="key col-md-6 text-md-right">
 							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?>
 							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>">

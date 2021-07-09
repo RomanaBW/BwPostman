@@ -54,7 +54,9 @@ class ArchiveController extends AdminController
 	/**
 	 * Constructor
 	 *
-	 * @param array $config     configuration params
+	 * @param array $config configuration params
+	 *
+	 * @throws Exception
 	 *
 	 * @since   0.9.1
 	 */
@@ -77,7 +79,7 @@ class ArchiveController extends AdminController
 	 *
 	 * @since   2.0.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array()): ArchiveController
 	{
 		if (!BwPostmanHelper::canView('archive'))
 		{
@@ -93,8 +95,8 @@ class ArchiveController extends AdminController
 	/**
 	 * Method to check if you can restore records
 	 *
-	 * @param   string      $view           The view to check if restore is allowed
-	 * @param	array 	    $recordIds		The item to check if restore is allowed
+	 * @param string $view      The view to check if restore is allowed
+	 * @param array  $recordIds The item to check if restore is allowed
 	 *
 	 * @return	boolean
 	 *
@@ -102,7 +104,7 @@ class ArchiveController extends AdminController
 	 *
 	 * @since	2.0.0
 	 */
-	protected function allowRestore($view = 'newsletter', $recordIds = array())
+	protected function allowRestore(string $view = 'newsletter', array $recordIds = array()): bool
 	{
 		foreach ($recordIds as $recordId)
 		{
@@ -120,8 +122,8 @@ class ArchiveController extends AdminController
 	/**
 	 * Method to check if you can delete records
 	 *
-	 * @param   string      $view           The view to check if delete is allowed
-	 * @param	array 	    $recordIds		The item to check if delete is allowed
+	 * @param string $view      The view to check if delete is allowed
+	 * @param array  $recordIds The item to check if delete is allowed
 	 *
 	 * @return	boolean
 	 *
@@ -129,7 +131,7 @@ class ArchiveController extends AdminController
 	 *
 	 * @since	2.0.0
 	 */
-	protected function allowDelete($view = 'newsletter', $recordIds = array())
+	protected function allowDelete(string $view = 'newsletter', array $recordIds = array()): bool
 	{
 		foreach ($recordIds as $recordId)
 		{
@@ -155,11 +157,9 @@ class ArchiveController extends AdminController
 
 	 * @since	4.0.0
 	 */
-	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true))
+	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
@@ -208,7 +208,7 @@ class ArchiveController extends AdminController
 			// We are in the newsletters_tab
 			default:
 			case "newsletters":
-				$model = $this->getModel('Newsletter');
+				$model = $this->getModel();
 
 				if(!$model->archive($cid, 0))
 				{
@@ -292,7 +292,6 @@ class ArchiveController extends AdminController
 							$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAMS', true);
 						}
 
-						echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
 					}
 					else
 					{
@@ -305,8 +304,8 @@ class ArchiveController extends AdminController
 							$alert = Text::_('COM_BWPOSTMAN_ARC_ERROR_UNARCHIVING_CAM', true);
 						}
 
-						echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
 					}
+					echo "<script> alert ('" . $alert . "'); window.history.go(-1); </script>\n";
 				}
 				else {
 					if ($n > 1)
@@ -454,7 +453,7 @@ class ArchiveController extends AdminController
 			// We are in the newsletters_tab
 			default:
 			case "newsletters":
-				$model = $this->getModel('Newsletter');
+				$model = $this->getModel();
 
 				if(!$model->delete($cid))
 				{
@@ -516,7 +515,7 @@ class ArchiveController extends AdminController
 				$remove_nl = $jinput->get('remove_nl');
 				$model     = $this->getModel('Campaign');
 
-				if(!$model->delete($cid, $remove_nl))
+				if(!$model->delete($cid))
 				{
 					$type	= 'error';
 					if ($n > 1) {

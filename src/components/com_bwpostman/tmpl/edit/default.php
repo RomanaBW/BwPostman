@@ -50,19 +50,19 @@ HTMLHelper::_('bootstrap.tooltip');
 /* <![CDATA[ */
 	function submitbutton(pressbutton)
 	{
-		var form	= document.bwp_com_form;
-		var fault	= false;
+		const form = document.bwp_com_form;
+		let fault = false;
 
 		form.edit.value = pressbutton;
 
 		// Validate input fields only, if unsubscribe is not selected
-		if (form.unsubscribe.checked == false)
+		if (form.unsubscribe.checked === false)
 		{
 			if (document.bwp_com_form.name)
 			{
-				if (form.name_field_obligation.value == 1)
+				if (form.name_field_obligation.value === 1)
 				{
-					if (form.name.value == "")
+					if (form.name.value === "")
 					{
 						alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>");
 						fault = true;
@@ -72,9 +72,9 @@ HTMLHelper::_('bootstrap.tooltip');
 
 			if (document.bwp_com_form.firstname)
 			{
-				if (form.firstname_field_obligation.value == 1)
+				if (form.firstname_field_obligation.value === 1)
 				{
-					if (form.firstname.value == "")
+					if (form.firstname.value === "")
 					{
 						alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>");
 						fault = true;
@@ -83,41 +83,41 @@ HTMLHelper::_('bootstrap.tooltip');
 			}
 			if (document.bwp_com_form.special)
 			{
-				if (form.special_field_obligation.value == 1)
+				if (form.special_field_obligation.value === 1)
 				{
-					if (form.special.value == "")
+					if (form.special.value === "")
 					{
 						alert('<?php echo Text::sprintf("COM_BWPOSTMAN_SUB_ERROR_SPECIAL", Text::_($this->params->get("special_label"))); ?>');
 						fault = true;
 					}
 				}
 			}
-			if (form.email.value== "")
+			if (form.email.value=== "")
 			{
 				alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_EMAIL', true); ?>");
 				fault	= true;
 			}
-			if (checkNlBoxes()== false)
+			if (checkNlBoxes()=== false)
 			{
 				alert ("<?php echo Text::_('COM_BWPOSTMAN_ERROR_NL_CHECK', true); ?>");
 				fault	= true;
 			}
 		}
-		if (fault == false)
+		if (fault === false)
 		{
 			form.submit();
 		}
 		function checkNlBoxes()
 		{
-			var arrCB = form.elements['mailinglists[]'];
-			var n =	arrCB.length;
-			var check = 0;
-			var i = 0;
+			const arrCB = form.elements['mailinglists[]'];
+			const n = arrCB.length;
+			let check = 0;
+			let i = 0;
 			if (n > 1)
 			{
 				for (i = 0; i < n; i++)
 				{
-					if (arrCB[i].checked == true)
+					if (arrCB[i].checked === true)
 					{
 						check++;
 					}
@@ -127,7 +127,7 @@ HTMLHelper::_('bootstrap.tooltip');
 			{
 				check++;
 			}
-			if (check == 0)
+			if (check === 0)
 			{
 				return false;
 			}
@@ -218,17 +218,17 @@ HTMLHelper::_('bootstrap.tooltip');
 		jQuery('.radio.btn-group label').addClass('btn');
 		jQuery(".btn-group label:not(.active)").click(function()
 		{
-			var label = jQuery(this);
-			var input = jQuery('#' + label.attr('for'));
+			const label = jQuery(this);
+			const input = jQuery('#' + label.attr('for'));
 
 			if (!input.prop('checked'))
 			{
 				label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-				if (input.val() == '')
+				if (input.val() === '')
 				{
 					label.addClass('active btn-primary');
 				}
-				else if (input.val() == 0)
+				else if (input.val() === 0)
 				{
 					label.addClass('active btn-danger');
 				}
@@ -241,11 +241,11 @@ HTMLHelper::_('bootstrap.tooltip');
 		});
 		jQuery(".btn-group input[checked=checked]").each(function()
 		{
-			if (jQuery(this).val() == '')
+			if (jQuery(this).val() === '')
 			{
 				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
 			}
-			else if (jQuery(this).val() == 0)
+			else if (jQuery(this).val() === 0)
 			{
 				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-danger');
 			}

@@ -185,8 +185,8 @@ class SendmailqueueTable extends Table
 	/**
 	 * Method to get the first entry of this table and remove it
 	 *
-	 * @param   integer     $trial           Only pop entries with < trial
-	 * @param   boolean     $fromComponent   do we come from component or from plugin
+	 * @param integer $trial         Only pop entries with < trial
+	 * @param boolean $fromComponent do we come from component or from plugin
 	 *
 	 * @return    bool --> 0 if nothing was selected
 	 *
@@ -194,7 +194,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function pop($trial = 2, $fromComponent = true): bool
+	public function pop(int $trial = 2, bool $fromComponent = true): bool
 	{
 		$this->reset();
 		$result = array();
@@ -204,7 +204,7 @@ class SendmailqueueTable extends Table
 
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('trial') . ' < ' . (int) $trial);
+		$query->where($db->quoteName('trial') . ' < ' . $trial);
 		$query->order($db->quoteName($this->_tbl_key) . ' ASC LIMIT 0,1');
 
 		PluginHelper::importPlugin('bwpostman');
@@ -247,7 +247,7 @@ class SendmailqueueTable extends Table
 	 * @param string $name          Recipient name
 	 * @param string $firstname     Recipient first name
 	 * @param int    $subscriber_id Subscriber ID
-	 * @param   int  $trial         Number of delivery attempts
+	 * @param int    $trial         Number of delivery attempts
 	 *
 	 * @return 	boolean
 	 *
@@ -255,7 +255,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function push(int $content_id, int $emailformat, string $email, string $name, string $firstname, int $subscriber_id, $trial = 0): bool
+	public function push(int $content_id, int $emailformat, string $email, string $name, string $firstname, int $subscriber_id, int $trial = 0): bool
 	{
 		$db	= $this->_db;
 		$query	= $db->getQuery(true);
@@ -279,7 +279,7 @@ class SendmailqueueTable extends Table
 			$db->quote($name) . ',' .
 			$db->quote($firstname) . ',' .
 			$subscriber_id . ',' .
-			(int) $trial
+			$trial
 		);
 
 		try
@@ -394,9 +394,9 @@ class SendmailqueueTable extends Table
 	 *
 	 * @access	public
 	 *
-	 * @param int    $content_id Content ID --> from the sendmailcontent-Table
-	 * @param array  $usergroups Usergroups
-	 * @param 	int $format     Emailformat --> standard email format defined by BwPostman preferences
+	 * @param int   $content_id Content ID --> from the sendmailcontent-Table
+	 * @param array $usergroups Usergroups
+	 * @param int   $format     Emailformat --> standard email format defined by BwPostman preferences
 	 *
 	 * @return 	boolean
 	 *
@@ -404,7 +404,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function pushJoomlaUser(int $content_id, array $usergroups, $format = 0): bool
+	public function pushJoomlaUser(int $content_id, array $usergroups, int $format = 0): bool
 	{
 		if (!$content_id)
 		{
@@ -556,8 +556,8 @@ class SendmailqueueTable extends Table
 	/**
 	 * Method to check if there are entries. Depending on $count the result is true or a number of entries
 	 *
-	 * @param integer $trial  number of sending trials
-	 * @param integer $count  1: only count, 0: check for number of trials
+	 * @param integer $trial number of sending trials
+	 * @param integer $count 1: only count, 0: check for number of trials
 	 *
 	 * @return	bool|int	true if no entries or there are entries with number trials less than 2, otherwise false
 	 *
@@ -565,7 +565,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       3.0.0
 	 */
-	public function checkTrials($trial = 2, $count = 0)
+	public function checkTrials(int $trial = 2, int $count = 0)
 	{
 		$db	= $this->_db;
 		$query	= $db->getQuery(true);
@@ -595,7 +595,7 @@ class SendmailqueueTable extends Table
 		// queue not empty
 		if ($result != 0)
 		{
-			$query->where($db->quoteName('trial') . ' < ' . (int) $trial);
+			$query->where($db->quoteName('trial') . ' < ' . $trial);
 
 			// all queue entries have trial number 2
 			try

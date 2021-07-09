@@ -112,6 +112,9 @@ class MaintenancejsonController extends AdminController
 		$app     = Factory::getApplication();
 		$session = $app->getSession();
 		$model   = new MaintenanceModel();
+		$jinput  = $app->input;
+
+		$step = $jinput->get('step', 0);
 
 		try
 		{
@@ -120,9 +123,6 @@ class MaintenancejsonController extends AdminController
 				throw new Exception((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
 			}
 
-			$jinput  = $app->input;
-
-			$step = $jinput->get('step', 0);
 			$this->alertClass = 'success';
 			$this->ready = "0";
 
@@ -181,7 +181,7 @@ class MaintenancejsonController extends AdminController
 
 				case 'step5':
 					// check table columns
-					$this->checkTableColumns($session, 1350, null);
+					$this->checkTableColumns($session, 1350);
 					$step = "6";
 					break;
 
@@ -192,7 +192,7 @@ class MaintenancejsonController extends AdminController
 						$sessionContent = $session->get('tcheck_content', '');
 
 						// check asset IDs (necessary because asset_id = 0 prevents deleting) and user IDs in subscriber table
-						$this->checkAssetAndUserIds($sessionContent, 'assets');
+						$this->checkAssetAndUserIds($sessionContent);
 						$this->checkAssetAndUserIds($sessionContent, 'users');
 
 						$session->set('tcheck_content', $sessionContent);
@@ -237,15 +237,14 @@ class MaintenancejsonController extends AdminController
 			// use session to store result while $this->ready != "1"
 			$storedContent = $session->get('tcheck_content', '');
 			$content = $content . $storedContent;
+			$result  = $content;
 
 			if ($this->ready != "1")
 			{
-				$result = $content;
 				$session->set('tcheck_content', $content);
 			}
 			else
 			{
-				$result = $content;
 
 				$successMessage  = '<p class="alert alert-success mb-2">';
 				$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
@@ -284,14 +283,7 @@ class MaintenancejsonController extends AdminController
 			$this->handleBwException($errorCode, $result, $error, $step);
 		}
 
-		catch (RuntimeException $e)
-		{
-			echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
-			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
-			exit;
-		}
-
-		catch (Exception $e)
+		catch (RuntimeException | Exception $e)
 		{
 			echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
 			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
@@ -302,7 +294,9 @@ class MaintenancejsonController extends AdminController
 	/**
 	 * Method to call restoreTables tables process via ajax
 	 *
-	 * @return 	void
+	 * @return    void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   1.3.0
 	 */
@@ -311,6 +305,9 @@ class MaintenancejsonController extends AdminController
 		$app     = Factory::getApplication();
 		$session = $app->getSession();
 		$model   = new MaintenanceModel();
+		$jinput  = $app->input;
+
+		$step = $jinput->get('step', 'step1');
 
 		try
 		{
@@ -326,7 +323,6 @@ class MaintenancejsonController extends AdminController
 			}
 
 			// Initialize variables
-			$jinput = $app->input;
 			$error  = '';
 
 			$logOptions = array();
@@ -334,7 +330,6 @@ class MaintenancejsonController extends AdminController
 
 			$file = $app->getUserState('com_bwpostman.maintenance.dest', '');
 
-			$step = $jinput->get('step', 'step1');
 			$this->alertClass = 'success';
 			$this->ready      = "0";
 
@@ -629,7 +624,7 @@ class MaintenancejsonController extends AdminController
 
 				case 'step10':
 					// check table columns
-					$versionOfBackup = $app->getUserState('com_bwpostman.maintenance.generals', null)['BwPostmanVersion'];
+					$versionOfBackup = $app->getUserState('com_bwpostman.maintenance.generals')['BwPostmanVersion'];
 
 					try
 					{
@@ -650,7 +645,7 @@ class MaintenancejsonController extends AdminController
 						$sessionContent = $session->get('trestore_content', '');
 
 						// check asset IDs (necessary because asset_id = 0 prevents deleting) and user IDs in subscriber table
-						$this->checkAssetAndUserIds($sessionContent, 'assets');
+						$this->checkAssetAndUserIds($sessionContent);
 						$this->checkAssetAndUserIds($sessionContent, 'users');
 
 						$session->set('trestore_content', $sessionContent);
@@ -687,16 +682,14 @@ class MaintenancejsonController extends AdminController
 			// use session to store result while $this->ready != "1"
 			$storedContent = $session->get('trestore_content', '');
 			$content       = $content . $storedContent;
+			$result        = $content;
 
 			if ($this->ready != "1")
 			{
-				$result = $content;
 				$session->set('trestore_content', $content);
 			}
 			else
 			{
-				$result = $content;
-
 				$successMessage = '<p class="alert alert-success mb-2">';
 				$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
 				$successMessage .= '</p>';
@@ -742,14 +735,7 @@ class MaintenancejsonController extends AdminController
 			$app->setUserState('com_bwpostman.maintenance.generals', null);
 		}
 
-		catch (RuntimeException $e)
-		{
-			echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
-			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
-			exit;
-		}
-
-		catch (Exception $e)
+		catch (RuntimeException | Exception $e)
 		{
 			echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
 			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
@@ -760,8 +746,8 @@ class MaintenancejsonController extends AdminController
 	/**
 	 * Method to get needed tables from installation file
 	 *
-	 * @param   $session    $session    The session of this task
-	 * @param   integer    $errorCode  Needed, because we come from check and also from restore
+	 * @param   $session         $session    The session of this task
+	 * @param integer $errorCode Needed, because we come from check and also from restore
 	 *
 	 * @return array
 	 *
@@ -770,7 +756,7 @@ class MaintenancejsonController extends AdminController
 	 * @since   1.3.0
 	 */
 
-	protected function getNeededTables($session, $errorCode)
+	protected function getNeededTables($session, int $errorCode): array
 	{
 		$model        = new MaintenanceModel();
 		$neededTables = $model->getNeededTables();
@@ -802,12 +788,13 @@ class MaintenancejsonController extends AdminController
 	/**
 	 * Method to get installed table names
 	 *
-	 * @param   $session    $session    The session of this task
-	 * @param   integer    $errorCode  Needed, because we come from check and also from restore
+	 * @param         $session   $session    The session of this task
+	 * @param integer $errorCode Needed, because we come from check and also from restore
 	 *
 	 * @return void
 	 *
 	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @since   1.3.0
 	 */
@@ -842,8 +829,8 @@ class MaintenancejsonController extends AdminController
 	/**
 	 * Method to convert to generic table names
 	 *
-	 * @param   session    $session    The session of this task
-	 * @param   integer    $errorCode  Needed, because we come from check and also from restore
+	 * @param session $session   The session of this task
+	 * @param integer $errorCode Needed, because we come from check and also from restore
 	 *
 	 * @return void
 	 *
@@ -852,7 +839,7 @@ class MaintenancejsonController extends AdminController
 	 * @since   1.3.0
 	 */
 
-	protected function convertTableNames($session, $errorCode)
+	protected function convertTableNames(Session $session, int $errorCode)
 	{
 		$model             = new MaintenanceModel();
 		$genericTableNames = $session->get('tcheck_inTaNa');
@@ -861,7 +848,7 @@ class MaintenancejsonController extends AdminController
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_TABLE_GENERALS') . '</h4>';
 
 		// check table names
-		if ($model->checkTableNames($neededTables, $genericTableNames, 'check') === false)
+		if ($model->checkTableNames($neededTables, $genericTableNames) === false)
 		{
 			$errorMessage = '<p class="text-danger">';
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_NAMES_ERROR');
@@ -876,9 +863,9 @@ class MaintenancejsonController extends AdminController
 	/**
 	 * Method to convert to generic table names
 	 *
-	 * @param   $session   $session          The session of this task
-	 * @param   integer    $errorCode        Needed, because we come from check and also from restore
-	 * @param   string     $versionOfBackup  The version of the backup
+	 * @param   $session                   $session          The session of this task
+	 * @param integer $errorCode           Needed, because we come from check and also from restore
+	 * @param string|null $versionOfBackup The version of the backup
 	 *
 	 * @return void
 	 *
@@ -887,7 +874,7 @@ class MaintenancejsonController extends AdminController
 	 * @since   1.3.0
 	 */
 
-	protected function checkTableColumns($session, $errorCode, $versionOfBackup = null)
+	protected function checkTableColumns($session, int $errorCode, string $versionOfBackup = null)
 	{
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_TABLE_COLUMNS') . '</h4>';
 
@@ -940,8 +927,8 @@ class MaintenancejsonController extends AdminController
 	/**
 	 * Method to check Assets and User IDs
 	 *
-	 * @param  string $sessionContent  Content for output
-	 * @param  string $mode            Shall we check for assets or user ids?
+	 * @param string $sessionContent Content for output
+	 * @param string $mode           Shall we check for assets or user ids?
 	 *
 	 * @return void
 	 *
@@ -949,7 +936,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @since   1.3.0
 	 */
-	protected function checkAssetAndUserIds(&$sessionContent, $mode = 'assets')
+	protected function checkAssetAndUserIds(string &$sessionContent, string $mode = 'assets')
 	{
 		$model        = new MaintenanceModel();
 		$errorMessage = '';
@@ -1012,15 +999,18 @@ class MaintenancejsonController extends AdminController
 	/**
 	 * Method to create the restore point
 	 *
-	 * @param  string $sessionContent  Content for output
-	 * @param   integer    $errorCode  Needed, because we come from check and also from restore
+	 * @param string  $sessionContent Content for output
+	 * @param integer $errorCode      Needed, because we come from check and also from restore
 	 *
 	 * @return void
+	 *
+	 * @throws BwException
+	 * @throws Exception
 	 *
 	 * @since   3.1.3
 	 */
 
-	protected function createRestorePoint(&$sessionContent, $errorCode)
+	protected function createRestorePoint(string &$sessionContent, int $errorCode)
 	{
 		$model        = new MaintenanceModel();
 		$errorMessage = '';
@@ -1033,7 +1023,7 @@ class MaintenancejsonController extends AdminController
 		{
 			$errorMessage = '<p class="alert alert-danger">';
 			$errorMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
-			$errorMessage .= '<br />' . $createRestore;
+			$errorMessage .= '<br />' . false;
 			$errorMessage .= '</p>';
 
 			$this->alertClass = 'error';
@@ -1049,14 +1039,16 @@ class MaintenancejsonController extends AdminController
 	/**
 	 * Method to delete the restore point
 	 *
-	 * @param  string $sessionContent  Content for output
+	 * @param string $sessionContent Content for output
 	 *
 	 * @return void
+	 *
+	 * @throws Exception
 	 *
 	 * @since   3.1.3
 	 */
 
-	protected function deleteRestorePoint(&$sessionContent)
+	protected function deleteRestorePoint(string &$sessionContent)
 	{
 		$model        = new MaintenanceModel();
 		$errorMessage = '';
@@ -1082,10 +1074,10 @@ class MaintenancejsonController extends AdminController
 	/**
 	 * Method to handle BwException for table check and restore the same way
 	 *
-	 * @param integer   $errorCode
-	 * @param string    $result
-	 * @param string    $error
-	 * @param string    $step
+	 * @param integer $errorCode
+	 * @param string  $result
+	 * @param string  $error
+	 * @param string  $step
 	 *
 	 * @return void
 	 *
@@ -1093,7 +1085,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @since 3.0.0
 	 */
-	private function handleBwException($errorCode, $result, $error, $step)
+	private function handleBwException(int $errorCode, string $result, string $error, string $step)
 	{
 		$app   = Factory::getApplication();
 		$model = new MaintenanceModel();

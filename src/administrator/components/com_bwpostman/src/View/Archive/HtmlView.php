@@ -34,7 +34,6 @@ use JHtmlSidebar;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\CMS\Language\Text;
@@ -195,7 +194,7 @@ class HtmlView extends BaseHtmlView
 		$jinput	= $app->input;
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance();
 
 		// Get document object, set document title and add css
 		$document = $app->getDocument();
@@ -210,12 +209,12 @@ class HtmlView extends BaseHtmlView
 		switch ($layout)
 		{ // Which tab are we in?
 			case "newsletters":
-				if (BwPostmanHelper::canRestore('newsletter', 0))
+				if (BwPostmanHelper::canRestore('newsletter'))
 				{
 					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
 				}
 
-				if (BwPostmanHelper::canDelete('newsletter', 0))
+				if (BwPostmanHelper::canDelete('newsletter'))
 				{
 					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
 					//@ToDo: This one does not create a confirmation popup
@@ -223,12 +222,12 @@ class HtmlView extends BaseHtmlView
 				}
 				break;
 			case "subscribers":
-				if (BwPostmanHelper::canRestore('subscriber', 0))
+				if (BwPostmanHelper::canRestore('subscriber'))
 				{
 					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
 				}
 
-				if (BwPostmanHelper::canDelete('subscriber', 0))
+				if (BwPostmanHelper::canDelete('subscriber'))
 				{
 					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
 					//@ToDo: This one does not create a confirmation popup
@@ -237,7 +236,7 @@ class HtmlView extends BaseHtmlView
 				break;
 			case "campaigns":
 				// Special unarchive and delete button because we need a confirm dialog with 3 options
-				if (BwPostmanHelper::canRestore('campaign', 0))
+				if (BwPostmanHelper::canRestore('campaign'))
 				{
 					$options['url'] = "index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive";
 					$options['icon'] = "icon-unarchive";
@@ -252,7 +251,7 @@ class HtmlView extends BaseHtmlView
 					$toolbar->AppendButton($button);
 				}
 
-				if (BwPostmanHelper::canDelete('campaign', 0))
+				if (BwPostmanHelper::canDelete('campaign'))
 				{
 					$options['url'] = "index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmdelete";
 					$options['icon'] = "icon-delete";
@@ -268,12 +267,12 @@ class HtmlView extends BaseHtmlView
 				}
 				break;
 			case "mailinglists":
-				if (BwPostmanHelper::canRestore('mailinglist', 0))
+				if (BwPostmanHelper::canRestore('mailinglist'))
 				{
 					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
 				}
 
-				if (BwPostmanHelper::canDelete('mailinglist', 0))
+				if (BwPostmanHelper::canDelete('mailinglist'))
 				{
 					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
 					//@ToDo: This one does not create a confirmation popup
@@ -281,12 +280,12 @@ class HtmlView extends BaseHtmlView
 				}
 				break;
 			case "templates":
-				if (BwPostmanHelper::canRestore('template', 0))
+				if (BwPostmanHelper::canRestore('template'))
 				{
 					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
 				}
 
-				if (BwPostmanHelper::canDelete('template', 0))
+				if (BwPostmanHelper::canDelete('template'))
 				{
 					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
 					//@ToDo: This one does not create a confirmation popup
@@ -310,7 +309,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	private function checkForAllowedTabs()
 	{
-		$uri        = Uri::getInstance('SERVER');
+		$uri        = Uri::getInstance();
 		$uriString = $uri->toString();
 		$uriShort  = substr($uriString, strrpos($uriString, '/') + 1, strlen($uriString));
 
@@ -340,13 +339,13 @@ class HtmlView extends BaseHtmlView
 
 	/**
 	 *
-	 * @param   string      $uri_string
+	 * @param string $uri_string
 	 *
 	 * @return string|bool $layout  requested layout or false on error
 	 *
 	 * @since 1.3.2
 	 */
-	private function extractLayout($uri_string)
+	private function extractLayout(string $uri_string)
 	{
 		$uri_array = explode('&', $uri_string);
 
@@ -362,9 +361,7 @@ class HtmlView extends BaseHtmlView
 			return false;
 		}
 
-		$layout = $layout_arr[1];
-
-		return $layout;
+		return $layout_arr[1];
 	}
 
 	/**
@@ -373,7 +370,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since 1.3.2
 	 */
-	private function getAllowedLayouts()
+	private function getAllowedLayouts(): array
 	{
 		$allowedLayouts = array();
 

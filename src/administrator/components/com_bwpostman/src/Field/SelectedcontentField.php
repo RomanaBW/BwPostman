@@ -60,11 +60,9 @@ class SelectedcontentField extends ListField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getLabel()
+	public function getLabel(): string
 	{
-		$return = '<label for="' . $this->id . '" class="selected_content_label">' . Text::_($this->element['label']) . '</label>';
-
-		return $return;
+		return '<label for="' . $this->id . '" class="selected_content_label">' . Text::_($this->element['label']) . '</label>';
 	}
 
 	/**
@@ -76,14 +74,14 @@ class SelectedcontentField extends ListField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getInput()
+	public function getInput(): string
 	{
 		// Initialize variables.
 		$html = array();
 		$attr = '';
 
 		// Initialize some field attributes.
-		$attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+		$attr .= $this->element['class'] ? ' class="' . $this->element['class'] . '"' : '';
 
 		// To avoid user's confusion, readonly="true" should imply disabled="true".
 		if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true')
@@ -95,11 +93,11 @@ class SelectedcontentField extends ListField
 		$attr .= $this->multiple ? ' multiple="multiple"' : '';
 
 		// Initialize JavaScript field attributes.
-		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
-		$attr .= $this->element['ondblclick'] ? ' ondblclick="' . (string) $this->element['ondblclick'] . '"' : '';
+		$attr .= $this->element['onchange'] ? ' onchange="' . $this->element['onchange'] . '"' : '';
+		$attr .= $this->element['ondblclick'] ? ' ondblclick="' . $this->element['ondblclick'] . '"' : '';
 
 		// Get the field options.
-		$options = (array) $this->getOptions();
+		$options = $this->getOptions();
 
 		// Create a regular list.
 		$html[] = HTMLHelper::_('select.genericlist', $options, $this->name, trim($attr), 'value', 'text', '', $this->id);
@@ -116,38 +114,12 @@ class SelectedcontentField extends ListField
 	 *
 	 * @since	1.0.1
 	 */
-	public function getOptions()
+	public function getOptions(): array
 	{
-		// Initialize variables.
-		$user_id = null;
-
-		// prepare query
-		$db         = Factory::getDbo();
-		$query_user = $db->getQuery(true);
-
-		// get user_ids if exists
-		// @Todo: Why this query?
-		$query_user->select($db->quoteName('user_id'));
-		$query_user->from($db->quoteName('#__bwpostman_subscribers'));
-		$query_user->where($db->quoteName('id') . ' = ' . (int) $this->_id);
-
-		try
-		{
-			$db->setQuery($query_user);
-
-			$user_id = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
 		$options = $this->getSelectedContent();
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 
 	/**
@@ -159,7 +131,7 @@ class SelectedcontentField extends ListField
 	 *
 	 * @since       1.0.1
 	 */
-	private function getSelectedContent()
+	private function getSelectedContent(): array
 	{
 		$app              = Factory::getApplication();
 		$db               = Factory::getDbo();

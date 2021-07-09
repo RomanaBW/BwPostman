@@ -137,7 +137,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 						? $required = '<div class="input-group-append add-on"><div class="input-group-text"><i class="icon-star"></i></div></div>'
 						: $required = '';
 					?>
-					<input type="text" name="a_firstname" id="a_firstname"
+					<label for="a_firstname"></label><input type="text" name="a_firstname" id="a_firstname"
 						placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANFIRSTNAME')); ?>"
 						value="<?php echo $sub_firstname; ?>" class="form-control" maxlength="50" />
 					<?php echo $required; ?>
@@ -155,7 +155,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 					($paramsComponent->get('name_field_obligation'))
 						? $required = '<div class="input-group-append add-on"><div class="input-group-text"><i class="icon-star"></i></div></div>'
 						: $required = ''; ?>
-					<input type="text" name="a_name" id="a_name" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANNAME')); ?>"
+					<label for="a_name"></label><input type="text" name="a_name" id="a_name" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANNAME')); ?>"
 						value="<?php echo $sub_name; ?>" class="form-control" maxlength="50" />
 					<?php echo $required; ?>
 				</div>
@@ -174,7 +174,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 					($paramsComponent->get('special_field_obligation'))
 						? $required = '<div class="input-group-append add-on"><div class="input-group-text"><i class="icon-star"></i></div></div>'
 						: $required = ''; ?>
-					<input type="text" name="a_special" id="a_special"
+					<label for="a_special"></label><input type="text" name="a_special" id="a_special"
 						placeholder="<?php echo addslashes(Text::_($paramsComponent->get('special_label') != '' ? Text::_($paramsComponent->get('special_label')) : Text::_('MOD_BWPOSTMAN_SPECIAL'))); ?>"
 						value="<?php echo $sub_special; ?>" class="form-control" maxlength="50" />
 					<?php echo $required; ?>
@@ -185,7 +185,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 
 			<?php isset($subscriber->email) ? $sub_email = $subscriber->email : $sub_email = ''; ?>
 			<div id="bwp_mod_form_emailfield" class="form-group input-group input-group-sm <?php echo $inputClass; ?>-append">
-				<input type="text" id="a_email" name="email" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANEMAIL')); ?>"
+				<label for="a_email"></label><input type="text" id="a_email" name="email" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANEMAIL')); ?>"
 					value="<?php echo $sub_email; ?>" class="form-control" maxlength="100" />
 				<div class="input-group-append add-on"><div class="input-group-text"><i class="icon-star"></i></div></div>
 			</div>
@@ -252,7 +252,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 					foreach ($mailinglists AS $i => $mailinglist)
 					{ ?>
 						<div class="a_mailinglist_item_<?php echo $i; ?> form-check">
-							<label class="checkbox mailinglist-title hasTooltip" for="a_<?php echo "mailinglists$i"; ?>" title="<?php echo HTMLHelper::tooltipText($mailinglists[$i]->title, Text::_($mailinglists[$i]->description)); ?>">
+							<label class="checkbox mailinglist-title hasTooltip" for="a_<?php echo "mailinglists$i"; ?>" title="<?php echo HTMLHelper::tooltipText($mailinglist->title, Text::_($mailinglist->description)); ?>">
 								<input type="checkbox" id="a_<?php echo "mailinglists$i"; ?>" class="form-check-input" name="<?php echo "mailinglists[]"; ?>"
 									title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglist->id; ?>" />
 								<?php
@@ -322,7 +322,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 						if ($paramsComponent->get('disclaimer_target') == 0)
 						{
 							echo ' target="_blank"';
-						};
+						}
 					}
 					echo '>' . Text::_('MOD_BWPOSTMAN_DISCLAIMER') . '</a> <sup><i class="small icon-star"></i></sup>'; ?>
 				</span>
@@ -338,7 +338,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 						<p class="security_question_entry small"><?php echo Text::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
 						<p class="security_question_lbl"><?php echo Text::_($paramsComponent->get('security_question')); ?></p>
 						<div class="captcha form-group input-group input-group-sm <?php echo $inputClass; ?>-append">
-							<input type="text" name="stringQuestion" id="a_stringQuestion"
+							<label for="a_stringQuestion"></label><input type="text" name="stringQuestion" id="a_stringQuestion"
 								placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="form-control" />
 							<div class="input-group-append add-on"><div class="input-group-text"><i class="icon-star"></i></div></div>
 						</div>
@@ -357,7 +357,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 							<img src="<?php echo Uri::base(); ?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
 						</p>
 						<div class="captcha form-group input-group input-group-sm <?php echo $inputClass; ?>-append">
-							<input type="text" name="stringCaptcha" id="a_stringCaptcha"
+							<label for="a_stringCaptcha"></label><input type="text" name="stringCaptcha" id="a_stringCaptcha"
 								placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>"
 								maxlength="50" class="form-control" />
 							<div class="input-group-append add-on"><div class="input-group-text"><i class="icon-star"></i></div></div>
@@ -407,7 +407,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 			</button>
 		</p>
 		<?php
-	}; // End: Show registration form
+	} // End: Show registration form
 	// The Modal
 	if ($paramsComponent->get('showinmodal') == 1)
 	{

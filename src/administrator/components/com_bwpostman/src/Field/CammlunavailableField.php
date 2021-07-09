@@ -61,11 +61,9 @@ class CammlunavailableField extends RadioField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getLabel()
+	public function getLabel(): string
 	{
-		  $return = Text::_($this->element['label']);
-
-		  return $return;
+		return Text::_($this->element['label']);
 	}
 
 	/**
@@ -77,18 +75,12 @@ class CammlunavailableField extends RadioField
 	 *
 	 * @since   1.0.1
 	 */
-	public function getInput()
+	public function getInput(): string
 	{
 		$app       = Factory::getApplication();
 
 		// Get item and selected mailinglists
-		$item		= $app->getUserState('com_bwpostman.edit.campaign.data');
-		$cam_id		= $app->getUserState('com_bwpostman.edit.campaign.id', null);
-
-		if (is_object($item))
-		{
-			(property_exists($item, 'ml_unavailable')) ? $ml_select	= $item->ml_unavailable : $ml_select = '';
-		}
+		$cam_id		= $app->getUserState('com_bwpostman.edit.campaign.id');
 
 		$db        = Factory::getDbo();
 		$query     = $db->getQuery(true);
@@ -133,7 +125,7 @@ class CammlunavailableField extends RadioField
 			$attributes .= 'disabled="disabled"';
 		}
 
-		$options = (array) $this->getOptions();
+		$options = $this->getOptions();
 
 		$query->select("m.mailinglist_id AS selected");
 		$query->from($db->quoteName('#__bwpostman_campaigns_mailinglists') . ' AS m');
@@ -178,7 +170,7 @@ class CammlunavailableField extends RadioField
 	 *
 	 * @since	1.0.1
 	 */
-	public function getOptions()
+	public function getOptions(): array
 	{
 		$app	= Factory::getApplication();
 
@@ -186,7 +178,7 @@ class CammlunavailableField extends RadioField
 		$user_id		= null;
 		$accesslevels	= array();
 		$options        = array();
-		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id', null);
+		$subs_id		= $app->getUserState('com_bwpostman.edit.subscriber.id');
 
 		// prepare query
 		$db		= Factory::getDbo();
@@ -220,18 +212,18 @@ class CammlunavailableField extends RadioField
 
 		$query->select("id AS value, title, description AS text");
 		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('published') . ' = ' . (int) 1);
-		$query->where($db->quoteName('archive_flag') . ' = ' . (int) 0);
+		$query->where($db->quoteName('published') . ' = ' . 1);
+		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 		if (is_array($accesslevels) && !empty($accesslevels))
 		{
 			$query->where($db->quoteName('access') . ' NOT IN (' . implode(',', $accesslevels) . ')');
 		}
 		else
 		{
-			$query->where($db->quoteName('access') . ' > ' . (int) 1);
+			$query->where($db->quoteName('access') . ' > ' . 1);
 		}
 
-		$query->order('title ASC');
+		$query->order('title');
 
 		try
 		{
@@ -245,8 +237,6 @@ class CammlunavailableField extends RadioField
 		}
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }

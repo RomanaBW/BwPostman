@@ -60,6 +60,7 @@ HtmlHelper::_('stylesheet', $css_filename, array('version' => 'auto'));
 		}
 
 		echo '<p class="bwp-error">' . Text::_('COM_BWPOSTMAN_ERROR') . '</p>';
+		$msg = '';
 
 		if (is_null($this->error->err_code))
 		{

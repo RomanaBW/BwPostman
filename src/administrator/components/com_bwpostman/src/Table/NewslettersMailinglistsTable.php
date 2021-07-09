@@ -166,7 +166,7 @@ class NewslettersMailinglistsTable extends Table
 	/**
 	 * Returns the identity (primary key) value of this record
 	 *
-	 * @return  mixed
+	 * @return  array|string
 	 *
 	 * @since  3.0.0
 	 */
@@ -302,7 +302,7 @@ class NewslettersMailinglistsTable extends Table
 	/**
 	 * Method to remove the mailinglist from the cross table #__bwpostman_newsletters_mailinglists
 	 *
-	 * @param $id
+	 * @param integer $id
 	 *
 	 * @return bool
 	 *
@@ -310,13 +310,13 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
 	 */
-	public function deleteMailinglistNewsletters($id): bool
+	public function deleteMailinglistNewsletters(int $id): bool
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote((int)$id));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
 
 		try
 		{

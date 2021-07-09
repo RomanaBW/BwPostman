@@ -152,6 +152,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 								? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
 								: $required = '';
 							?>
+							<label for="a_firstname"></label>
 							<input type="text" name="a_firstname" id="a_firstname"
 									placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANFIRSTNAME')); ?>"
 									value="<?php echo $sub_firstname; ?>" class="inputbox input-small" maxlength="50" /><?php echo $required; ?>
@@ -170,6 +171,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 							($paramsComponent->get('name_field_obligation'))
 								? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
 								: $required = ''; ?>
+							<label for="a_name"></label>
 							<input type="text" name="a_name" id="a_name" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANNAME')); ?>"
 									value="<?php echo $sub_name; ?>" class="inputbox input-small" maxlength="50" /><?php echo $required; ?>
 						</p>
@@ -208,6 +210,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 						<p id="bwp_mod_form_specialfield" class="input<?php echo $specialClass; ?>">
 							<?php // Is filling out the additional field obligating
 							?>
+							<label for="a_special"></label>
 							<input type="text" name="a_special" id="a_special"
 									placeholder="<?php echo addslashes($specialLabel); ?>"
 									value="<?php echo $sub_special; ?>" class="inputbox input-small" maxlength="50" /><?php echo $required; ?>
@@ -218,6 +221,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 
 					<?php isset($subscriber->email) ? $sub_email = $subscriber->email : $sub_email = ''; ?>
 					<p id="bwp_mod_form_emailfield" class="input-append">
+						<label for="a_email"></label>
 						<input type="text" id="a_email" name="email" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANEMAIL')); ?>"
 								value="<?php echo $sub_email; ?>" class="inputbox input-small" maxlength="100" /><span class="append-area"><i class="bwp_icon-star"></i></span>
 					</p>
@@ -286,7 +290,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 							foreach ($mailinglists AS $i => $mailinglist)
 							{ ?>
 								<div class="a_mailinglist_item_<?php echo $i; ?>">
-									<label class="mailinglist-title hasTooltip" title="<?php echo HTMLHelper::tooltipText($mailinglists[$i]->title, Text::_($mailinglists[$i]->description)); ?>">
+									<label class="mailinglist-title hasTooltip" title="<?php echo HTMLHelper::tooltipText($mailinglist->title, Text::_($mailinglist->description)); ?>">
 									<input type="checkbox" id="a_<?php echo "mailinglists$i"; ?>" name="<?php echo "mailinglists[]"; ?>"
 											title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglist->id; ?>" />
 										<?php
@@ -361,7 +365,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 									if ($paramsComponent->get('disclaimer_target') == 0)
 									{
 										echo ' target="_blank"';
-									};
+									}
 								}
 								echo '>' . Text::_('MOD_BWPOSTMAN_DISCLAIMER') . '</a> <sup><i class="bwp_icon-star"></i></sup>'; ?>
 							</span>
@@ -377,6 +381,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 							<p class="security_question_entry"><?php echo Text::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
 							<p class="security_question_lbl"><?php echo Text::_($paramsComponent->get('security_question')); ?></p>
 							<p class="question input-append">
+								<label for="a_stringQuestion"></label>
 								<input type="text" name="stringQuestion" id="a_stringQuestion"
 										placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" class="input-small" />
 								<span class="append-area"><i class="bwp_icon-star"></i></span>
@@ -396,6 +401,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 								<img src="<?php echo Uri::base(); ?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
 							</p>
 							<p class="captcha input-append">
+								<label for="a_stringCaptcha"></label>
 								<input type="text" name="stringCaptcha" id="a_stringCaptcha"
 										placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>"
 										maxlength="50" class="input-small" />
@@ -449,7 +455,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 		</div>
 	</div>
 	<?php
-	}; // End: Show registration form
+	} // End: Show registration form
 	// The Modal
 	?>
 	<input type="hidden" id="bwp_mod_Modalhref" value="<?php echo $disclaimer_link; ?>" />

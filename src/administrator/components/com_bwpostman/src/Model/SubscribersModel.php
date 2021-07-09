@@ -33,13 +33,9 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\QueryInterface;
 use RuntimeException;
-
-// Import MODEL object class
-jimport('joomla.application.component.modellist');
 
 /**
  * BwPostman subscribers model
@@ -65,6 +61,8 @@ class SubscribersModel extends ListModel
 	/**
 	 * Constructor
 	 * --> handles the pagination of the single tabs
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
@@ -151,7 +149,7 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since    1.0.1
 	 */
-	protected function getStoreId($id = '')
+	protected function getStoreId($id = ''): string
 	{
 		// Compile the store id.
 		$id	.= ':' . $this->getState('filter.search');
@@ -168,7 +166,7 @@ class SubscribersModel extends ListModel
 	 *
 	 * @access 	private
 	 *
-	 * @return 	string Query
+	 * @return    false|object|QueryInterface Query
 	 *
 	 * @throws Exception
 	 *
@@ -186,7 +184,7 @@ class SubscribersModel extends ListModel
 				'list.select',
 				'a.id, a.name, a.firstname, a.gender, a.email, a.checked_out, a.checked_out_time' .
 				', a.emailformat, a.user_id, a.status, a.registered_by'
-			) . ', (' . (string)$sub_query . ') AS mailinglists'
+			) . ', (' . $sub_query . ') AS mailinglists'
 		);
 		$this->query->from($this->_db->quoteName('#__bwpostman_subscribers', 'a'));
 
@@ -215,7 +213,7 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getSubQuery()
+	private function getSubQuery(): QueryInterface
 	{
 		$db = $this->_db;
 		$sub_query  = $db->getQuery(true);
@@ -353,16 +351,16 @@ class SubscribersModel extends ListModel
 	 *
 	 * @throws Exception
 	 */
-	private function getFilterByComponentPermissions()
-	{
-		$allowed_items  = BwPostmanHelper::getAllowedRecords('subscriber');
-
-		if ($allowed_items != 'all')
-		{
-			$allowed_ids = implode(',', $allowed_items);
-			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
-		}
-	}
+//	private function getFilterByComponentPermissions()
+//	{
+//		$allowed_items  = BwPostmanHelper::getAllowedRecords('subscriber');
+//
+//		if ($allowed_items != 'all')
+//		{
+//			$allowed_ids = implode(',', $allowed_items);
+//			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
+//		}
+//	}
 
 	/**
 	 * Method to get the filter by subscriber state (confirmed, unconfirmed, testrecipient)
@@ -399,7 +397,7 @@ class SubscribersModel extends ListModel
 				break;
 		}
 
-		$this->query->where("a.status = '" . (int) $tab_int . "'");
+		$this->query->where("a.status = '" . $tab_int . "'");
 	}
 
 	/**
@@ -517,14 +515,13 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since	1.0.8
 	 */
-	public function getMailinglists()
+	public function getMailinglists(): array
 	{
 		$mailinglistsFromTable = $this->getTable('Mailinglist')->getMailinglistsValueText();
 
 		$mlSelectList   = array ();
 		$mlSelectList[] = HtmlHelper::_('select.option',  '', '- ' . Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') . ' -');
-		$mlSelectList   = array_merge($mlSelectList, $mailinglistsFromTable);
 
-		return $mlSelectList;
+		return array_merge($mlSelectList, $mailinglistsFromTable);
 	}
 }

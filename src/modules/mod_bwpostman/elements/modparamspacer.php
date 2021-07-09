@@ -26,8 +26,6 @@
 
 defined('JPATH_PLATFORM') or die;
 
-jimport('joomla.form.formfield');
-
 /**
  * Class JFormFieldAsset
  *
@@ -52,7 +50,7 @@ class JFormFieldModparamspacer extends JFormField
 	 *
 	 * @since   2.4.0
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		return '';
 	}
@@ -65,7 +63,7 @@ class JFormFieldModparamspacer extends JFormField
 	 *
 	 * @since   2.4.0
 	 */
-	protected function getLabel()
+	protected function getLabel(): string
 	{
 		return '';
 	}
@@ -78,7 +76,7 @@ class JFormFieldModparamspacer extends JFormField
 	 *
 	 * @since   2.4.0
 	 */
-	protected function getTitle()
+	protected function getTitle(): string
 	{
 		return '';
 	}
@@ -92,7 +90,7 @@ class JFormFieldModparamspacer extends JFormField
 	 *
 	 * @since   2.4.0
 	 */
-	public function renderField($options = array())
+	public function renderField($options = array()): string
 	{
 		$options['class'] = 'bwpmod field-spacer';
 

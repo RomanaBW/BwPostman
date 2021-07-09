@@ -32,16 +32,16 @@ class JButtonExtlink extends ToolbarButton
 	/**
 	 * Fetch the HTML for the button
 	 *
-	 * @param   string  $type  Unused string.
-	 * @param   string  $name  Name to be used as apart of the id
-	 * @param   string  $text  Button text
-	 * @param   string  $url   The link url
+	 * @param string      $type Unused string.
+	 * @param string      $name Name to be used as apart of the id
+	 * @param string      $text Button text
+	 * @param string|null $url  The link url
 	 *
 	 * @return  string  HTML string for the button
 	 *
 	 * @since   2.2.0
 	 */
-	public function fetchButton($type = 'Extlink', $name = 'back', $text = '', $url = null)
+	public function fetchButton(string $type = 'Extlink', string $name = 'back', string $text = '', string $url = null): string
 	{
 		// Store all data to the options array for use with JLayout
 		$options = array();
@@ -59,14 +59,14 @@ class JButtonExtlink extends ToolbarButton
 	/**
 	 * Get the button CSS Id
 	 *
-	 * @param   string  $type  The button type.
-	 * @param   string  $name  The name of the button.
+	 * @param string $type The button type.
+	 * @param string $name The name of the button.
 	 *
 	 * @return  string  Button CSS Id
 	 *
 	 * @since   2.2.0
 	 */
-	public function fetchId($type = 'Extlink', $name = '')
+	public function fetchId(string $type = 'Extlink', string $name = ''): string
 	{
 		return $this->parent->getName() . '-' . $name;
 	}
@@ -74,13 +74,13 @@ class JButtonExtlink extends ToolbarButton
 	/**
 	 * Get the JavaScript command for the button
 	 *
-	 * @param   string  $url  Button definition
+	 * @param string $url Button definition
 	 *
 	 * @return  string  JavaScript command string
 	 *
 	 * @since   2.2.0
 	 */
-	protected function _getCommand($url)
+	protected function _getCommand(string $url): string
 	{
 		return $url;
 	}
@@ -105,14 +105,14 @@ class JButtonExtlink extends ToolbarButton
 		{
 			$options['tagName'] = 'button';
 			$options['btnClass'] = ($options['button_class'] ?? '') . ' dropdown-item';
-			$options['attributes']['type'] = 'button';
 		}
 		else
 		{
 			$options['tagName'] = 'button';
 			$options['btnClass'] = ($options['button_class'] ?? 'btn btn-primary');
-			$options['attributes']['type'] = 'button';
 		}
+
+		$options['attributes']['type'] = 'button';
 	}
 
 	/**
@@ -124,9 +124,9 @@ class JButtonExtlink extends ToolbarButton
 	 *
 	 * @since   2.4.0
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function render(&$definition = null)
+	public function render(&$definition = null): string
 	{
 		if ($definition === null)
 		{
@@ -139,7 +139,7 @@ class JButtonExtlink extends ToolbarButton
 		}
 		else
 		{
-			throw new \InvalidArgumentException('Wrong argument: $definition, should be NULL or array.');
+			throw new InvalidArgumentException('Wrong argument: $definition, should be NULL or array.');
 		}
 
 		// Build the HTML Button
@@ -164,7 +164,7 @@ class JButtonExtlink extends ToolbarButton
 	 *
 	 * @since   2.4.0
 	 */
-	public function fetchIconClass($identifier)
+	public function fetchIconClass($identifier): string
 	{
 		// It's an ugly hack, but this allows templates to define the icon classes for the toolbar
 		$layout = new FileLayout('joomla.toolbar.iconclass');

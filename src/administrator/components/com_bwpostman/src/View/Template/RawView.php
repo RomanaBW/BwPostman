@@ -68,13 +68,14 @@ class RawView extends BaseHtmlView
 	 *
 	 * @param	string $tpl Template
 	 *
+	 * @return RawView
+	 *
+	 *@throws Exception
+	 *
 	 * @since	1.1.0
 	 *
-	 * @throws Exception
-	 *
-	 * @return void
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): RawView
 	{
 		$app		= Factory::getApplication();
 
@@ -96,5 +97,7 @@ class RawView extends BaseHtmlView
 
 		// Call parent display
 		parent::display($tpl);
+
+		return $this;
 	}
 }

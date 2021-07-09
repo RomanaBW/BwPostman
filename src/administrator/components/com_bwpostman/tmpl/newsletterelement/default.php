@@ -97,11 +97,11 @@ HTMLHelper::_('bootstrap.tooltip');
 				foreach ($this->items as $i => $item) : ?>
 				<tr class="row<?php echo $i % 2; ?>">
 					<td class="small text-center"><?php echo $item->id; ?></td>
-					<td scope="row">
+					<td>
 						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');?>
 								<?php echo "<br /><br /><strong>" . $item->subject . ":</strong><br />" . $item->description; ?>">
 							<a class="" href="#" style="cursor:pointer;" onclick="window.parent.SelectNewsletter('<?php echo $item->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $item->subject ); ?>');">
-								<?php echo htmlspecialchars($item->subject, ENT_QUOTES, 'UTF-8'); ?>
+								<?php echo htmlspecialchars($item->subject, ENT_QUOTES); ?>
 							</a>
 						</span>
 					</td>

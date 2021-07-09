@@ -103,7 +103,7 @@ class NewslettersController extends AdminController
 	 *
 	 * @since   2.0.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array()): NewslettersController
 	{
 		if (!$this->permissions['view']['newsletter'])
 		{
@@ -128,11 +128,9 @@ class NewslettersController extends AdminController
 
 	 * @since	1.0.1
 	 */
-	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true))
+	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
@@ -144,7 +142,7 @@ class NewslettersController extends AdminController
 	 *
 	 * @since       0.9.1
 	 */
-	public function copy()
+	public function copy(): bool
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -202,7 +200,7 @@ class NewslettersController extends AdminController
 	/**
 	 * Method to check if you can publish/unpublish records
 	 *
-	 * @param	array 	$recordIds		an array of items to check permission for
+	 * @param array $recordIds an array of items to check permission for
 	 *
 	 * @return	boolean
 	 *
@@ -210,7 +208,7 @@ class NewslettersController extends AdminController
 	 *
 	 * @since	2.0.0
 	 */
-	protected function allowPublish($recordIds = array())
+	protected function allowPublish(array $recordIds = array()): bool
 	{
 		foreach ($recordIds as $recordId)
 		{
@@ -237,7 +235,7 @@ class NewslettersController extends AdminController
 	 *
 	 * @since	1.0.1
 	 */
-	public function publish()
+	public function publish(): bool
 	{
 		$jinput	= Factory::getApplication()->input;
 
@@ -287,7 +285,7 @@ class NewslettersController extends AdminController
 	 *
 	 * @since	1.0.1
 	 */
-	public function checkin()
+	public function checkin(): bool
 	{
 		// Check for request forgeries.
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
@@ -345,7 +343,7 @@ class NewslettersController extends AdminController
 	 *
 	 * @since       0.9.1
 	 */
-	public function addContent()
+	public function addContent(): string
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -356,9 +354,7 @@ class NewslettersController extends AdminController
 		$model = $this->getModel('newsletter');
 
 		// Insert the contents into the newsletter
-		$insert_contents = $model->composeNl();
-
-		return $insert_contents;
+		return $model->composeNl();
 	}
 
 	/**
@@ -370,7 +366,7 @@ class NewslettersController extends AdminController
 	 *
 	 * @since       0.9.1
 	 */
-	public function clear_queue()
+	public function clear_queue(): bool
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -409,7 +405,7 @@ class NewslettersController extends AdminController
 	 *
 	 * @since       0.9.1
 	 */
-	public function resetSendAttempts()
+	public function resetSendAttempts(): bool
 	{
 		// Access check
 		if (!BwPostmanHelper::canResetQueue())

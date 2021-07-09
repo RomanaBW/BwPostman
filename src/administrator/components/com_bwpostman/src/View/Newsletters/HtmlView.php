@@ -164,13 +164,13 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): HtmlView
 	{
 		$app	= Factory::getApplication();
 
@@ -236,7 +236,7 @@ class HtmlView extends BaseHtmlView
 		$tab	= $this->state->get('tab', 'unsent');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance();
 
 		// Get document object, set document title and add css
 		$document = Factory::getApplication()->getDocument();
@@ -259,7 +259,7 @@ class HtmlView extends BaseHtmlView
 		switch ($tab)
 		{ // The layout-variable tells us which tab we are in
 			case "sent":
-				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter', 0))
+				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter'))
 				{
 					$dropdown = $toolbar->dropdownButton('status-group')
 						->text('JTOOLBAR_CHANGE_STATUS')
@@ -275,13 +275,13 @@ class HtmlView extends BaseHtmlView
 						$childBar->edit('newsletter.edit')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEditState('newsletter', 0))
+					if (BwPostmanHelper::canEditState('newsletter'))
 					{
 						$childBar->publish('newsletters.publish')->listCheck(true);
 						$childBar->unpublish('newsletters.unpublish')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter', 0))
+					if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter'))
 					{
 						$childBar->checkin('newsletters.checkin')->listCheck(true);
 					}
@@ -323,7 +323,7 @@ class HtmlView extends BaseHtmlView
 					ToolbarHelper::addNew('newsletter.add');
 				}
 
-				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter', 0))
+				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter'))
 				{
 					$dropdown = $toolbar->dropdownButton('status-group')
 						->text('JTOOLBAR_CHANGE_STATUS')
@@ -339,7 +339,7 @@ class HtmlView extends BaseHtmlView
 						$childBar->edit('newsletter.edit')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter', 0))
+					if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter'))
 					{
 						$childBar->checkin('newsletters.checkin')->listCheck(true);
 					}

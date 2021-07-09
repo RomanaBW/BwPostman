@@ -45,17 +45,16 @@ class NewsletterModel extends BaseDatabaseModel
 	/**
 	 * Method to get  newsletter content
 	 *
-	 * @return	mixed	string on success, null on failure.
+	 * @return	string|null	string on success, null on failure.
 	 *
 	 * @throws Exception
 	 *
 	 * @since	1.2.0
 	 */
-	public function getContent()
+	public function getContent(): ?string
 	{
 		$app        = Factory::getApplication();
-		$id         = (int) $app->input->getInt('id', 0);
-		$newsletter = null;
+		$id         = $app->input->getInt('id', 0);
 		$user       = $app->getIdentity();
 
 		$newsletter = $this->getTable('Sendmailcontent')->getContent($id);
@@ -71,7 +70,7 @@ class NewsletterModel extends BaseDatabaseModel
 	/**
 	 * Method to get an item.
 	 *
-	 * @param   integer|null  $pk  The id of the item
+	 * @param integer|null $pk The id of the item
 	 *
 	 * @return  object
 	 *
@@ -79,12 +78,10 @@ class NewsletterModel extends BaseDatabaseModel
 	 *
 	 * @since 4.0.0
 	 */
-	public function getItem($pk = null)
+	public function getItem(?int $pk = null): object
 	{
 		$model = new AdminNewsletterModel();
 
-		$item = $model->getItem((int)$pk);
-
-		return $item;
+		return $model->getItem((int)$pk);
 	}
 }

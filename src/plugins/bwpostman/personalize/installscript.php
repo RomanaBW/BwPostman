@@ -40,13 +40,13 @@ class PlgBwPostmanPersonalizeInstallerScript
 	/**
 	 * Method to install the extension
 	 *
-	 * @param object  $parent is the class calling this method
+	 * @param object $parent is the class calling this method
 	 *
 	 * @return void
 	 *
 	 * @since       2.0.0
 	 */
-	public function install($parent)
+	public function install(object $parent)
 	{
 	}
 
@@ -67,26 +67,28 @@ class PlgBwPostmanPersonalizeInstallerScript
 	/**
 	 * Method to update the extension
 	 *
-	 * @param object  $parent is the class calling this method
+	 * @param object $parent is the class calling this method
 	 *
 	 * @return void
 	 *
 	 * @since       2.0.0
 	 */
-	public function update($parent)
+	public function update(object $parent)
 	{
 	}
 
 	/**
 	 * Method to run after an install/update/uninstall method
 	 *
-	 * @param string  $type       is the type of change (install, update or discover_install)
+	 * @param string $type is the type of change (install, update or discover_install)
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since       2.0.0
 	 */
-	public function postflight($type)
+	public function postflight(string $type)
 	{
 		// We only need to perform this if the extension is being installed, not update
 		if ($type == 'install')
@@ -95,8 +97,8 @@ class PlgBwPostmanPersonalizeInstallerScript
 			$query = $db->getQuery(true);
 
 			$fields = array(
-				$db->quoteName('enabled') . ' = ' . (int) 1,
-				$db->quoteName('ordering') . ' = ' . (int) 9999
+				$db->quoteName('enabled') . ' = ' . 1,
+				$db->quoteName('ordering') . ' = ' . 9999
 			);
 
 			$conditions = array(

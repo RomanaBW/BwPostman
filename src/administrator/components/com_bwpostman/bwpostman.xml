@@ -30,9 +30,7 @@
 	</update>
 
 	<files folder="site">
-		<filename>controller.php</filename>
 		<filename>index.html</filename>
-		<filename>bwpostman.php</filename>
 		<folder>assets</folder>
 		<folder>classes</folder>
 		<folder>forms</folder>

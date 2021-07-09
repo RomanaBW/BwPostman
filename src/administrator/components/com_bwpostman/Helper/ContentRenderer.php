@@ -39,7 +39,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Multilanguage;
-use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Registry\Registry;
 use RuntimeException;
@@ -60,9 +59,9 @@ class ContentRenderer
 	/**
 	 * This is the main function to render the content from an ID to HTML
 	 *
-	 * @param array  $nl_content          List of IDs of the selected content
-	 * @param int    $template_id         ID of the template used
-	 * @param int    $text_template_id    ID of the text template used
+	 * @param array $nl_content       List of IDs of the selected content
+	 * @param int   $template_id      ID of the template used
+	 * @param int   $text_template_id ID of the text template used
 	 *
 	 * @return array    content
 	 *
@@ -70,7 +69,7 @@ class ContentRenderer
 	 *
 	 * @since       0.9.1
 	 */
-	public function getContent($nl_content, $template_id, $text_template_id)
+	public function getContent(array $nl_content, int $template_id, int $text_template_id): array
 	{
 		PluginHelper::importPlugin('bwpostman');
 		$app = Factory::getApplication();
@@ -78,13 +77,13 @@ class ContentRenderer
 		$param = ComponentHelper::getParams('com_bwpostman');
 		$content = array();
 
-		$tpl      = $this->getTemplate((int)$template_id);
-		$text_tpl = $this->getTemplate((int)$text_template_id);
+		$tpl      = $this->getTemplate($template_id);
+		$text_tpl = $this->getTemplate($text_template_id);
 
 		// add template assets only for user-made templates
 		if ($tpl->tpl_id == '0')
 		{
-			$tpl_assets = $this->getTemplateAssets((int)$template_id);
+			$tpl_assets = $this->getTemplateAssets($template_id);
 
 			if (!empty($tpl_assets))
 			{
@@ -172,13 +171,13 @@ class ContentRenderer
 	 *
 	 * @param int $id
 	 *
-	 * @return mixed
+	 * @return object|null
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function retrieveContent($id)
+	public function retrieveContent(int $id)
 	{
 		$row   = new stdClass();
 		$app   = Factory::getApplication();
@@ -226,7 +225,7 @@ class ContentRenderer
 			' AS ' . $_db->quoteName('g') .
 			' ON ' . $_db->quoteName('a') . '.' . $_db->quoteName('access') . ' = ' . $_db->quoteName('g') . '.' . $_db->quoteName('id')
 		);
-		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('id') . ' = ' . (int) $id);
+		$query->where($_db->quoteName('a') . '.' . $_db->quoteName('id') . ' = ' .  $id);
 
 		try
 		{
@@ -234,7 +233,7 @@ class ContentRenderer
 
 			$row = $_db->loadObject();
 		}
-		catch (\RuntimeException $e)
+		catch (RuntimeException $e)
 		{
 			$app->enqueueMessage($e->getMessage(), 'error');
 		}
@@ -242,7 +241,7 @@ class ContentRenderer
 		if ($row)
 		{
 			$params = new Registry();
-			$params->loadString($row->attribs, 'JSON');
+			$params->loadString($row->attribs);
 
 			$params->def('link_titles', $app->get('link_titles'));
 			$params->def('author', $params->get('newsletter_show_author'));
@@ -281,7 +280,7 @@ class ContentRenderer
 	 *
 	 * @since       0.9.1
 	 */
-	public function replaceContentHtml($id, $tpl)
+	public function replaceContentHtml(int $id, object $tpl): string
 	{
 		$app  = Factory::getApplication();
 		$lang = $app->getLanguage();
@@ -407,8 +406,8 @@ class ContentRenderer
 	/**
 	 * Method to replace HTML content (new)
 	 *
-	 * @param $id
-	 * @param $tpl
+	 * @param int    $id
+	 * @param object $tpl
 	 *
 	 * @return string
 	 *
@@ -416,7 +415,7 @@ class ContentRenderer
 	 *
 	 * @since       1.1.0
 	 */
-	public function replaceContentHtmlNew($id, $tpl)
+	public function replaceContentHtmlNew(int $id, object $tpl): string
 	{
 		$app  = Factory::getApplication();
 		$lang = $app->getLanguage();
@@ -489,7 +488,7 @@ class ContentRenderer
 						$content_text .= '<span class="created_by"><small>';
 						$content_text .= Text::sprintf(
 							'COM_CONTENT_WRITTEN_BY',
-							($row->created_by_alias ? $row->created_by_alias : $row->author)
+							($row->created_by_alias ?: $row->author)
 						);
 						$content_text .= '</small></span>';
 					}
@@ -529,7 +528,7 @@ class ContentRenderer
 	 *
 	 * @since       1.1.0
 	 */
-	public function replaceContentTextNew($id, $text_tpl)
+	public function replaceContentTextNew(int $id, object $text_tpl): string
 	{
 		$create_date = '';
 
@@ -591,7 +590,7 @@ class ContentRenderer
 	 *
 	 * @since       0.9.1
 	 */
-	public function replaceContentText($id, $text_tpl)
+	public function replaceContentText(int $id, object $text_tpl): string
 	{
 		$app  = Factory::getApplication();
 		$lang = $app->getLanguage();
@@ -647,15 +646,15 @@ class ContentRenderer
 	/**
 	 * Method to get the language of an article
 	 *
-	 * @param	int		$id     article ID
+	 * @param int $id article ID
 	 *
-	 * @return 	mixed	language string or 0
+	 * @return 	int|mixed|null	language string or 0
 	 *
 	 * @throws Exception
 	 *
 	 * @since	2.3.0 (here, since 1.0.7 at newsletter model)
 	 */
-	private function getArticleLanguage($id)
+	private function getArticleLanguage(int $id)
 	{
 		if (Multilanguage::isEnabled())
 		{
@@ -665,7 +664,7 @@ class ContentRenderer
 
 			$query->select($_db->quoteName('language'));
 			$query->from($_db->quoteName('#__content'));
-			$query->where($_db->quoteName('id') . ' = ' . (int) $id);
+			$query->where($_db->quoteName('id') . ' = ' . $id);
 
 			try
 			{
@@ -689,7 +688,7 @@ class ContentRenderer
 	/**
 	 * Method to get the template settings which are used to compose a newsletter
 	 *
-	 * @param   int    $template_id     template id
+	 * @param int $template_id template id
 	 *
 	 * @return	object
 	 *
@@ -697,7 +696,7 @@ class ContentRenderer
 	 *
 	 * @since	2.3.0 (here, since 1.1.0 at newsletter model)
 	 */
-	public function getTemplate($template_id)
+	public function getTemplate(int $template_id): object
 	{
 		$params     = ComponentHelper::getParams('com_bwpostman');
 		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
@@ -708,7 +707,7 @@ class ContentRenderer
 			$template_id = 1;
 		}
 
-		$tpl = $tplTable->getTemplate((int)$template_id);
+		$tpl = $tplTable->getTemplate($template_id);
 
 		if (is_string($tpl->basics))
 		{
@@ -745,7 +744,7 @@ class ContentRenderer
 	/**
 	 * Method to get the template assets which are used to compose a newsletter
 	 *
-	 * @param   int    $template_id     template id
+	 * @param int $template_id template id
 	 *
 	 * @return	array
 	 *
@@ -753,26 +752,26 @@ class ContentRenderer
 	 *
 	 * @since	2.3.0 (here, since 2.0.0 at newsletter model)
 	 */
-	public function getTemplateAssets($template_id)
+	public function getTemplateAssets(int $template_id): array
 	{
 		$MvcFactory   = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 		$tplTagsTable = $MvcFactory->createTable('TemplatesTags', 'Administrator');
 
-		$tpl_assets = $tplTagsTable->getTemplateAssets((int)$template_id);
-
-		return $tpl_assets;
+		return $tplTagsTable->getTemplateAssets($template_id);
 	}
 
 	/**
 	 * Method to replace edit and unsubscribe link
 	 *
-	 * @param   string  $text
+	 * @param string $text
 	 *
-	 * @return 	boolean
+	 * @return    boolean
 	 *
-	 * @since	2.3.0 (here, moved from newsletter model)
+	 * @throws Exception
+	 *
+	 * @since    2.3.0 (here, moved from newsletter model)
 	 */
-	public function replaceTplLinks(&$text)
+	public function replaceTplLinks(string &$text): bool
 	{
 		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, 'en_GB', true);
@@ -808,7 +807,7 @@ class ContentRenderer
 	 *
 	 * @since	3.0.0 (here, moved from newsletter model)
 	 */
-	public function replaceAllFooterLinks(&$body, $subscriberId, $mode)
+	public function replaceAllFooterLinks(string &$body, int $subscriberId, int $mode)
 	{
 		$footerid = 0;
 
@@ -834,8 +833,8 @@ class ContentRenderer
 	/**
 	 * Method to add the HTML-Tags and the css to the HTML-Newsletter
 	 *
-	 * @param 	string  $text      HTML newsletter
-	 * @param   int     $id
+	 * @param string $text HTML newsletter
+	 * @param int    $id
 	 *
 	 * @return 	boolean
 	 *
@@ -843,7 +842,7 @@ class ContentRenderer
 	 *
 	 * @since 2.3.0 (here, moved from newsletter model)
 	 */
-	public function addHtmlTags(&$text, $id)
+	public function addHtmlTags(string &$text, int $id): bool
 	{
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$tpl    = $this->getTemplate($id);
@@ -914,8 +913,8 @@ class ContentRenderer
 	/**
 	 * Method to add the HTML-footer to the HTML-Newsletter
 	 *
-	 * @param 	string $text        HTML newsletter
-	 * @param   integer $templateId template id
+	 * @param string  $text       HTML newsletter
+	 * @param integer $templateId template id
 	 *
 	 * @return 	boolean
 	 *
@@ -923,7 +922,7 @@ class ContentRenderer
 	 *
 	 * @since 2.3.0 (here, moved from newsletter model)
 	 */
-	public function addHTMLFooter(&$text, $templateId)
+	public function addHTMLFooter(string &$text, int $templateId): bool
 	{
 		$app  = Factory::getApplication();
 		$lang = $app->getLanguage();
@@ -986,7 +985,7 @@ class ContentRenderer
 			{
 				$replace = Text::_('COM_BWPOSTMAN_NL_FOOTER_HTML_LINE') . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML_ONE_CLICK', $sitelink) . $impressum;
 			}
-			$text = str_replace("[dummy]", "<div class=\"footer-outer\"><p class=\"footer-inner\">{$replace}</p></div>", $text);
+			$text = str_replace("[dummy]", "<div class=\"footer-outer\"><p class=\"footer-inner\">$replace</p></div>", $text);
 		}
 
 		$app->triggerEvent('onBwPostmanAfterObligatoryFooter', array(&$text, $templateId));
@@ -997,7 +996,7 @@ class ContentRenderer
 	/**
 	 * Method to replace edit and unsubscribe link
 	 *
-	 * @param   string  $text
+	 * @param string $text
 	 *
 	 * @return 	boolean
 	 *
@@ -1005,7 +1004,7 @@ class ContentRenderer
 	 *
 	 * @since	2.3.0 (here, since 1.1.0 at newsletter model)
 	 */
-	public function replaceTextTplLinks(&$text)
+	public function replaceTextTplLinks(string &$text): bool
 	{
 		$app  = Factory::getApplication();
 		$lang = $app->getLanguage();
@@ -1051,8 +1050,8 @@ class ContentRenderer
 	/**
 	 * Method to add the footer Text-Newsletter
 	 *
-	 * @param 	string  $text   Text newsletter
-	 * @param   int     $id     template id
+	 * @param string $text Text newsletter
+	 * @param int    $id   template id
 	 *
 	 * @return 	boolean
 	 *
@@ -1060,7 +1059,7 @@ class ContentRenderer
 	 *
 	 * @since 2.3.0 (here, moved from newsletter model)
 	 */
-	public function addTextFooter(&$text, $id)
+	public function addTextFooter(string &$text, int $id): bool
 	{
 		$app  = Factory::getApplication();
 		$lang = $app->getLanguage();
@@ -1125,11 +1124,11 @@ class ContentRenderer
 	/**
 	 * Method to add the HTML-footer to the HTML-Newsletter
 	 *
-	 * @param string $body        the newsletter content
+	 * @param string $body the newsletter content
 	 *
 	 * @since 3.0.0 (here, moved from newsletter model)
 	 */
-	public function addTestrecipientsFooter(&$body)
+	public function addTestrecipientsFooter(string &$body)
 	{
 		$body = str_replace("[%edit_link%]", "", $body);
 		$body = str_replace("[%unsubscribe_link%]", "", $body);
@@ -1140,18 +1139,18 @@ class ContentRenderer
 	/**
 	 * Method to add the HTML-footer to the HTML-Newsletter
 	 *
-	 * @param string  $body             the newsletter content
-	 * @param object  $tblSendMailQueue
-	 * @param string  $itemid_edit
-	 * @param string  $itemid_unsubscribe
-	 * @param string  $editlink
-	 * @param integer $substituteLinks
+	 * @param string      $body the newsletter content
+	 * @param object      $tblSendMailQueue
+	 * @param string|null $itemid_edit
+	 * @param string|null $itemid_unsubscribe
+	 * @param string      $editlink
+	 * @param integer     $substituteLinks
 	 *
 	 * @throws Exception
 	 *
 	 * @since 3.0.0 (here, moved from newsletter model)
 	 */
-	public function replaceContentPlaceholders(&$body, $tblSendMailQueue, $itemid_edit, $itemid_unsubscribe, $editlink, $substituteLinks)
+	public function replaceContentPlaceholders(string &$body, object $tblSendMailQueue, ?string $itemid_edit, ?string $itemid_unsubscribe, string $editlink, int $substituteLinks)
 	{
 		$app = Factory::getApplication();
 		$uri = Uri::getInstance();
@@ -1179,7 +1178,7 @@ class ContentRenderer
 		if ($editlink !== '')
 		{
 			// Trigger Plugin "substitutelinks"
-			if ((integer)$app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') === 1 || (integer)$substituteLinks === 1)
+			if ((integer)$app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') === 1 || $substituteLinks === 1)
 			{
 				$app->triggerEvent('onBwPostmanSubstituteBody', array(&$body, &$itemid_edit, &$itemid_unsubscribe));
 			}
@@ -1206,7 +1205,7 @@ class ContentRenderer
 	/**
 	 * Provides a URL for one-click unsubscription
 	 *
-	 * @param integer $itemid_unsubscribe
+	 * @param string|null $itemid_unsubscribe
 	 * @param string  $recipient
 	 * @param string  $editlink
 	 *
@@ -1214,7 +1213,7 @@ class ContentRenderer
 	 *
 	 * @since 3.0.3
 	 */
-	public function generateUnsubscribeUrl($itemid_unsubscribe, $recipient, $editlink)
+	public function generateUnsubscribeUrl(?string $itemid_unsubscribe, string $recipient, string $editlink): string
 	{
 		if ($editlink === '')
 		{
@@ -1223,9 +1222,8 @@ class ContentRenderer
 
 		$link = Text::sprintf('COM_BWPOSTMAN_NL_UNSUBSCRIBE_HREF', Uri::getInstance()->root(), $itemid_unsubscribe);
 		$link = str_replace("[UNSUBSCRIBE_EMAIL]", $recipient, $link);
-		$link = str_replace("[UNSUBSCRIBE_CODE]", $editlink, $link);
 
-		return $link;
+		return str_replace("[UNSUBSCRIBE_CODE]", $editlink, $link);
 	}
 
 	/**
@@ -1237,8 +1235,8 @@ class ContentRenderer
 	 * - newsletter read more div (concerns every single read mor button)
 	 * - newsletter legal info (implemented as table by default)
 	 *
-	 * @param   string  $text
-	 * @param   int     $id
+	 * @param string $text
+	 * @param int    $id
 	 *
 	 * @return 	boolean
 	 *
@@ -1246,7 +1244,7 @@ class ContentRenderer
 	 *
 	 * @since	2.3.0 (here, since 1.1.0 at newsletter model)
 	 */
-	public function addTplTags(&$text, $id)
+	public function addTplTags(string &$text, int $id): bool
 	{
 		$tpl = $this->getTemplate($id);
 
@@ -1261,8 +1259,8 @@ class ContentRenderer
 	/**
 	 * Method to add the TEXT to the TEXT-Newsletter
 	 *
-	 * @param 	string  $text   Text newsletter
-	 * @param   int     $id     template id
+	 * @param string $text Text newsletter
+	 * @param int    $id   template id
 	 *
 	 * @return 	boolean
 	 *
@@ -1270,7 +1268,7 @@ class ContentRenderer
 	 *
 	 * @since	2.3.0 (here, since 1.1.0 at newsletter model)
 	 */
-	public function addTextTpl(&$text, $id)
+	public function addTextTpl(string &$text, int $id): bool
 	{
 		$tpl = $this->getTemplate($id);
 
@@ -1282,17 +1280,15 @@ class ContentRenderer
 	/**
 	 * Method to process special characters
 	 *
-	 * @param $text
+	 * @param string $text
 	 *
-	 * @return mixed
+	 * @return string
 	 *
 	 * @since       0.9.1
 	 */
-	private function unHTMLSpecialCharsAll($text)
+	private function unHTMLSpecialCharsAll(string $text): string
 	{
-		$text = $this->deHTMLEntities($text);
-
-		return $text;
+		return $this->deHTMLEntities($text);
 	}
 
 	/**
@@ -1304,7 +1300,7 @@ class ContentRenderer
 	 *
 	 * @since       0.9.1
 	 */
-	private function deHTMLEntities($text)
+	private function deHTMLEntities(string $text): string
 	{
 		$search  = array(
 			"'&(quot|#34);'i",
@@ -1511,7 +1507,7 @@ class ContentRenderer
 			chr(255)
 		);
 
-		return $text = preg_replace($search, $replace, $text);
+		return preg_replace($search, $replace, $text);
 	}
 
 	/**
@@ -1523,7 +1519,7 @@ class ContentRenderer
  *
  * @since 3.0.0
  */
-	private function getIntroText(stdClass $row)
+	private function getIntroText(stdClass $row): array
 	{
 		$lang    = self::getArticleLanguage($row->id);
 		$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
@@ -1543,16 +1539,16 @@ class ContentRenderer
 	}
 
 	/**
-	 * @param          $text_tpl
-	 * @param          $create_date
-	 * @param          $content_text
+	 * @param object   $text_tpl
+	 * @param string   $create_date
+	 * @param string   $content_text
 	 * @param stdClass $row
 	 *
 	 * @return string
 	 *
 	 * @since 3.0.0
 	 */
-	private function getAuthorAndDate($text_tpl, $create_date, $content_text, stdClass $row)
+	private function getAuthorAndDate(object $text_tpl, string $create_date, string $content_text, stdClass $row): string
 	{
 		if ($text_tpl->article['show_createdate'] == 1)
 		{
@@ -1564,7 +1560,7 @@ class ContentRenderer
 		{
 			$content_text .= Text::sprintf(
 				'COM_CONTENT_WRITTEN_BY',
-				($row->created_by_alias ? $row->created_by_alias : $row->author)
+				($row->created_by_alias ?: $row->author)
 			);
 		}
 

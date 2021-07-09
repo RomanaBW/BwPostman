@@ -42,7 +42,7 @@ $id    = $name . '-desc';
 	<?php if (!empty($description)) : ?>
 		<div id="<?php echo $id; ?>">
 			<small class="form-text text-muted">
-				<?php echo htmlspecialchars(($description), ENT_COMPAT, 'UTF-8'); ?>
+				<?php echo htmlspecialchars(($description), ENT_COMPAT); ?>
 			</small>
 		</div>
 	<?php endif; ?>

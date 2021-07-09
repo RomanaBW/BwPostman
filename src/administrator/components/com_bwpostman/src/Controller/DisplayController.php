@@ -9,7 +9,7 @@
 
 namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
@@ -19,6 +19,7 @@ use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use JResponseJson;
+use function defined;
 
 /**
  * Banners master display controller.
@@ -119,6 +120,9 @@ class DisplayController extends BaseController
 
 		// Send json mime type.
 		$app->mimeType = 'application/json';
+//		@ToDo: $app has no property charSet
+//		@ToDo: $app has no method setHeader
+//		@ToDo: $app has no method sendHeaders
 		$app->setHeader('Content-Type', $app->mimeType . '; charset=' . $app->charSet);
 		$app->sendHeaders();
 

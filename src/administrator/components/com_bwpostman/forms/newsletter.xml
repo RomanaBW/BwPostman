@@ -61,7 +61,7 @@
 <!--			<form>-->
 <!--				<field name="single_attachment"-->
 <!--				       label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL"-->
-<!--				       labelclass="control-label"-->
+<!--				       labelclass="control-label joomla-modal"-->
 <!--				       size="30"-->
 <!--				       type="media" />-->
 <!--			</form>-->

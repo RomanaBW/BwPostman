@@ -31,6 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Uri\Uri;
 
 /**
@@ -38,7 +39,7 @@ use Joomla\CMS\Uri\Uri;
  *
  * @since  2.3.0
  */
-class MediaViewImagesList extends JViewLegacy
+class HtmlView extends BaseHtmlView
 {
 	/**
 	 * Property to hold base URL
@@ -99,22 +100,24 @@ class MediaViewImagesList extends JViewLegacy
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise an Error object.
+	 * @return  HtmlView  A string if successful, otherwise an Error object.
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.3.0
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): HtmlView
 	{
-		// Do not allow cache
-		Factory::getApplication()->allowCache(false);
+		// Do not allow cache,
+		// @ToDo: Not more (or otherwise?) supported at J4
+//		Factory::getApplication()->allowCache(false);
 
-        $list = $this->get('list');
+		$mediaUrl = JUri::root() . JComponentHelper::getParams('com_media')->get('image_path', 'images');
+        $list     = $this->get('list');
 
         $images = array();
         foreach($list['images'] as $i) {
-            $i->thumb = COM_MEDIA_BASEURL . '/' . $i->path_relative;
+            $i->thumb = $mediaUrl . '/' . $i->path_relative;
             $images[] = $i;
         }
         foreach($list['docs'] as $d) {
@@ -132,7 +135,7 @@ class MediaViewImagesList extends JViewLegacy
 		$folders = $this->get('folders');
 		$state   = $this->get('state');
 
-		$this->baseURL = COM_MEDIA_BASEURL;
+		$this->baseURL = $mediaUrl;
 		$this->images  = &$images;
 		$this->folders = &$folders;
 		$this->state   = &$state;
@@ -150,19 +153,21 @@ class MediaViewImagesList extends JViewLegacy
 		// set path to template on first place
         array_unshift($this->_path['template'], dirname(__FILE__) . $tpl_path);
 
-		return parent::display($tpl);
+		parent::display($tpl);
+
+		return $this;
 	}
 
 	/**
 	 * Set the active folder
 	 *
-	 * @param   integer  $index  Folder position
+	 * @param integer $index Folder position
 	 *
 	 * @return  void
 	 *
 	 * @since   1.0
 	 */
-	public function setFolder($index = 0)
+	public function setFolder(int $index = 0)
 	{
 		if (isset($this->folders[$index]))
 		{
@@ -177,13 +182,13 @@ class MediaViewImagesList extends JViewLegacy
 	/**
 	 * Set the active image
 	 *
-	 * @param   integer  $index  Image position
+	 * @param integer $index Image position
 	 *
 	 * @return  void
 	 *
 	 * @since   1.0
 	 */
-	public function setImage($index = 0)
+	public function setImage(int $index = 0)
 	{
 		if (isset($this->images[$index]))
 		{

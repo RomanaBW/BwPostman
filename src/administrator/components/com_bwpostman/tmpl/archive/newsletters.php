@@ -75,7 +75,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 					<div class="bwp-archive">
 						<ul class="nav nav-tabs bwp-tabs">
 							<?php
-							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('newsletter', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('newsletter', 1))
 							{
 							?>
 								<!-- We need to use the setAttribute-function because of the IE -->
@@ -87,7 +87,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 								<?php
 							}
 
-							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('subscriber', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('subscriber', 1))
 							{
 							?>
 								<li class="nav-item">
@@ -98,7 +98,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 								<?php
 							}
 
-							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('campaign', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('campaign', 1))
 							{
 							?>
 								<li class="nav-item">
@@ -109,7 +109,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 								<?php
 							}
 
-							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('mailinglist', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('mailinglist', 1))
 							{
 							?>
 								<li class="nav-item">
@@ -120,7 +120,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 								<?php
 							}
 
-							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('template', 1, 0))
+							if ($this->permissions['view']['archive'] && BwPostmanHelper::canArchive('template', 1))
 							{
 							?>
 								<li class="nav-item">
@@ -169,7 +169,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 										<th class="d-none d-xl-table-cell" style="width: 7%;" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'Author', 'author', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" width="100" nowrap="nowrap">
+										<th class="d-none d-lg-table-cell" nowrap="nowrap">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_CAM_NAME',
@@ -234,7 +234,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsl
 										$titleText = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 										?>
 										<tr class="row<?php echo $i % 2; ?>">
-											<td align="center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+											<td><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 											<td>
 												<?php
 												echo $item->subject;

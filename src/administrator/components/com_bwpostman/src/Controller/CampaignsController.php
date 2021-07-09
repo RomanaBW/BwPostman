@@ -102,9 +102,7 @@ class CampaignsController extends AdminController
 	 */
 	public function getModel($name = 'Campaign', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
@@ -119,7 +117,7 @@ class CampaignsController extends AdminController
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array()): CampaignsController
 	{
 		if (!$this->permissions['view']['campaign'])
 		{
@@ -157,7 +155,7 @@ class CampaignsController extends AdminController
 	 *
 	 * @since	1.0.1
 	 */
-	public function checkin()
+	public function checkin(): bool
 	{
 		// Check for request forgeries.
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));

@@ -61,7 +61,7 @@ class MenuitemsField extends ListField
 	 *
 	 * @since   1.2.0
 	 */
-	protected function getOptions()
+	protected function getOptions(): array
 	{
 		$options    = null;
 		$db	    = Factory::getDbo();
@@ -89,8 +89,6 @@ class MenuitemsField extends ListField
 		}
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }

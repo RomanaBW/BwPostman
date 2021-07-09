@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\Router\RouterView;
 
 /**
- * Routing class of com_content
+ * Routing class of com_bwpostman
  *
  * @since  4.0.0
  */
@@ -42,32 +42,24 @@ class Router extends RouterView
 	 *
 	 * Method to build sef route
 	 *
-	 * @param $query
-	 *
 	 * @return array
 	 *
 	 * @since
 	 */
-	function BwPostmanBuildRoute(&$query)
+	function BwPostmanBuildRoute(): array
 	{
-		$segments = array();
-
-		return $segments;
+		return array();
 	}
 
 	/**
 	 * Method to decode SEF URI segments for BwPostman
 	 *
-	 * @access    public
-	 *
-	 * @param array $segments SEF URI segments array
-	 *
 	 * @return    array $vars         associative array
 	 *
 	 * @since
 	 */
-	function BwPostmanParseRoute(&$segments)
+	function BwPostmanParseRoute(): array
 	{
-		return $vars;
+		return array();
 	}
 }

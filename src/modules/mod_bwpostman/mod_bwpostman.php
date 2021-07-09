@@ -37,8 +37,8 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use BoldtWebservice\Module\BwPostman\Site\Helper\ModBwPostmanHelper;
 
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', false, false, 'psr4');
-JLoader::registerNamespace('BoldtWebservice\\Module\\BwPostman\\Site\\Helper', JPATH_SITE . '/modules/mod_bwpostman/src/Helper', false, false, 'psr4');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+JLoader::registerNamespace('BoldtWebservice\\Module\\BwPostman\\Site\\Helper', JPATH_SITE . '/modules/mod_bwpostman/src/Helper');
 
 $app      = Factory::getApplication();
 
@@ -67,7 +67,7 @@ $module = ModuleHelper::getModule('mod_bwpostman');
 $userid = (int)$app->getIdentity()->get('id');
 
 $subscriberid = ModBwPostmanHelper::getSubscriberID();
-$captcha      = BwPostmanHelper::getCaptcha(1);
+$captcha      = BwPostmanHelper::getCaptcha();
 
 // use module or component parameters
 if ($params->get('com_params') == 0)

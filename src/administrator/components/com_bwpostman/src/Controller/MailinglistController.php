@@ -97,7 +97,7 @@ class MailinglistController extends FormController
 	 *
 	 * @since   2.0.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array()): MailinglistController
 	{
 		if (!$this->permissions['view']['mailinglist'])
 		{
@@ -125,9 +125,7 @@ class MailinglistController extends FormController
 	 */
 	public function getModel($name = 'Mailinglist', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
@@ -139,7 +137,7 @@ class MailinglistController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	protected function allowAdd($data = array())
+	protected function allowAdd($data = array()): bool
 	{
 		return $this->permissions['mailinglist']['create'];
 	}
@@ -152,11 +150,11 @@ class MailinglistController extends FormController
 	 *
 	 * @return	boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = array(), $key = 'id'): bool
 	{
 		return BwPostmanHelper::canEdit('mailinglist', $data);
 	}
@@ -164,15 +162,15 @@ class MailinglistController extends FormController
 	/**
 	 * Method to check if you can archive records
 	 *
-	 * @param	array 	$recordIds		an array of items to check permission for
+	 * @param array $recordIds an array of items to check permission for
 	 *
 	 * @return	boolean
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since	2.0.0
 	 */
-	protected function allowArchive($recordIds = array())
+	protected function allowArchive(array $recordIds = array()): bool
 	{
 		foreach ($recordIds as $recordId)
 		{
@@ -201,7 +199,7 @@ class MailinglistController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	public function edit($key = null, $urlVar = null)
+	public function edit($key = null, $urlVar = null): bool
 	{
 		// Initialise variables.
 		$jinput  = Factory::getApplication()->input;
@@ -233,7 +231,7 @@ class MailinglistController extends FormController
 		}
 		else
 		{
-			$allowed = $this->allowEdit(array('id' => $recordId), 'id');
+			$allowed = $this->allowEdit(array('id' => $recordId));
 		}
 
 		if (!$allowed)
@@ -293,7 +291,7 @@ class MailinglistController extends FormController
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since	1.0.1
 	 *

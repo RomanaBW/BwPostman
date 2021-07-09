@@ -105,7 +105,7 @@ HTMLHelper::_('behavior.keepalive');
 						<div>
 							<div class="clearfix mb-3">
 								<textarea id="jform_tpl_html" rows="20" cols="50" name="jform[tpl_html]" title="jform[tpl_html]"
-									style="width: 95%;"><?php echo htmlspecialchars($this->item->tpl_html, ENT_COMPAT, 'UTF-8'); ?></textarea>
+									style="width: 95%;"><?php echo htmlspecialchars($this->item->tpl_html, ENT_COMPAT); ?></textarea>
 							</div>
 							<?php
 							$link = Uri::base() . '#';

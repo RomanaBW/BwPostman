@@ -97,11 +97,9 @@ class MaintenanceController extends BaseController
 	 *
 	 * @since	1.0.1
 	 */
-	public function getModel($name = 'Maintenance', $prefix = 'Administrator', $config = array('ignore_request' => true))
+	public function getModel($name = 'Maintenance', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
@@ -116,7 +114,7 @@ class MaintenanceController extends BaseController
 	 *
 	 * @since   1.0.1
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = array()): MaintenanceController
 	{
 		if (!BwPostmanHelper::canView('maintenance'))
 		{
@@ -134,9 +132,11 @@ class MaintenanceController extends BaseController
 	 * Method to call the view for the save tables process
 	 * --> we will take the raw-view which calls the saveTables-function in the model
 	 *
-	 * @return 	void
+	 * @return    void
 	 *
-	 * @since	1.3.0
+	 * @throws Exception
+	 *
+	 * @since    1.3.0
 	 */
 	public function updateCheckSave()
 	{
@@ -172,7 +172,7 @@ class MaintenanceController extends BaseController
 	 *
 	 * @since       1.0.1
 	 */
-	public function saveTables()
+	public function saveTables(): bool
 	{
 		// Access check.
 		if (!BwPostmanHelper::canAdmin('maintenance'))
@@ -204,7 +204,7 @@ class MaintenanceController extends BaseController
 	 *
 	 * @since       1.0.1
 	 */
-	public function checkTables()
+	public function checkTables(): bool
 	{
 		// Access check.
 		if (!BwPostmanHelper::canAdmin('maintenance'))
@@ -229,7 +229,7 @@ class MaintenanceController extends BaseController
 	 *
 	 * @since       1.0.1
 	 */
-	public function restoreTables()
+	public function restoreTables(): bool
 	{
 		// Access check.
 		if (!BwPostmanHelper::canAdmin('maintenance'))
@@ -254,7 +254,7 @@ class MaintenanceController extends BaseController
 	 *
 	 * @since       1.0.1
 	 */
-	public function doRestore()
+	public function doRestore(): bool
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -275,8 +275,6 @@ class MaintenanceController extends BaseController
 
 		// Retrieve file details from uploaded file, sent from upload form
 		$file = $jinput->files->get('restorefile');
-
-		jimport('joomla.filesystem.file');
 
 		// Clean up filename to get rid of strange characters like spaces etc
 		$filename = File::makeSafe($file['name']);
@@ -359,7 +357,7 @@ class MaintenanceController extends BaseController
 	 *
 	 * @since       2.3.0
 	 */
-	public function startCron()
+	public function startCron(): bool
 	{
 		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_PLUGINS . '/bwpostman/bwtimecontrol');
@@ -369,8 +367,8 @@ class MaintenanceController extends BaseController
 		$pluginParams = new Registry();
 		$pluginParams->loadString($plugin->params);
 
-		$pluginUser = $pluginParams->get('bwtimecontrol_username',null);
-		$pluginPw   = $pluginParams->get('bwtimecontrol_passwd', null);
+		$pluginUser = $pluginParams->get('bwtimecontrol_username');
+		$pluginPw   = $pluginParams->get('bwtimecontrol_passwd');
 
 		if ($pluginUser === null || $pluginPw === null)
 		{
@@ -414,7 +412,7 @@ class MaintenanceController extends BaseController
 	 *
 	 * @since       2.3.0
 	 */
-	public function stopCron()
+	public function stopCron(): bool
 	{
 		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);

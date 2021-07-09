@@ -29,13 +29,12 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Import MODEL and Helper object class
-jimport('joomla.application.component.modeladmin');
-
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -141,9 +140,9 @@ class CampaignModel extends AdminModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	string  $type   	The table type to instantiate
-	 * @param	string	$prefix     A prefix for the table class name. Optional.
-	 * @param	array	$config     Configuration array for model. Optional.
+	 * @param	string $name    The table type to instantiate
+	 * @param	string $prefix  A prefix for the table class name. Optional.
+	 * @param	array  $options Configuration array for model. Optional.
 	 *
 	 * @return	Table|boolean   A Table object if found or boolean false on failure.
 	 *
@@ -151,19 +150,19 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($type = 'Campaign', $prefix = 'Administrator', $config = array())
+	public function getTable($name = 'Campaign', $prefix = 'Administrator', $options = array())
 	{
-		return parent::getTable($type, $prefix, $config);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
 	 * Method to reset the campaign ID and campaign data
 	 *
-	 * @param	int $id     Campaign ID
+	 * @param int $id Campaign ID
 	 *
 	 * @since       0.9.1
 	 */
-	public function setId($id)
+	public function setId(int $id)
 	{
 		$this->id   = $id;
 		$this->data = null;
@@ -180,11 +179,9 @@ class CampaignModel extends AdminModel
 	 *
 	 * @throws Exception
 	 */
-	protected function canEditState($record)
+	protected function canEditState($record): bool
 	{
-		$permission = BwPostmanHelper::canEditState('campaign', (int) $record->id);
-
-		return $permission;
+		return BwPostmanHelper::canEditState('campaign', (int) $record->id);
 	}
 
 	/**
@@ -192,7 +189,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  mixed    Data object on success, false on failure.
+	 * @return  bool|CMSObject|stdClass    Data object on success, false on failure.
 	 *
 	 * @throws Exception
 	 *
@@ -201,7 +198,7 @@ class CampaignModel extends AdminModel
 	public function getItem($pk = null)
 	{
 		$app	= Factory::getApplication();
-		$data	= $app->getUserState('com_bwpostman.edit.campaign.data', null);
+		$data	= $app->getUserState('com_bwpostman.edit.campaign.data');
 		$id     = 0;
 
 		$pk = (int)(!empty($pk)) ? $pk : $this->getState($this->getName() . '.id');
@@ -227,7 +224,7 @@ class CampaignModel extends AdminModel
 
 			//get associated mailinglists
 			$camMlTable = $this->getTable('CampaignsMailinglists');
-			$item->mailinglists = $camMlTable->getAssociatedMailinglistsByCampaign((int)$item->id);
+			$item->mailinglists = $camMlTable->getAssociatedMailinglistsByCampaign($item->id);
 
 			//extract associated usergroups
 			$item->usergroups	= BwPostmanMailinglistHelper::extractAssociatedUsergroups($item->mailinglists);
@@ -264,11 +261,12 @@ class CampaignModel extends AdminModel
 	 * @param	array	$data		Data for the form.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return	mixed	A JForm object on success, false on failure
-	 *
-	 * @since	1.6
+	 * @return    Form|false    A JForm object on success, false on failure
 	 *
 	 * @throws Exception
+	 *
+	 *@since	1.6
+	 *
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -335,7 +333,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function getNewslettersOfCampaign()
+	public function getNewslettersOfCampaign(): object
 	{
 		$newsletters = new stdClass();
 		$camId       = (int)$this->getState('campaign.id');
@@ -351,17 +349,17 @@ class CampaignModel extends AdminModel
 	 * Method to (un)archive a campaign and if the user want also the assigned newsletters
 	 * --> when unarchiving it is called by the archive-controller
 	 *
-	 * @param	array   $cid        Campaign IDs
-	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
-	 * @param	int     $archive_nl Archive/Unarchive assigned newsletters (0 = No, 1 = Yes)
-	 *
-	 * @throws Exception
+	 * @param array $cid        Campaign IDs
+	 * @param int   $archive    Task --> 1 = archive, 0 = unarchive
+	 * @param int   $archive_nl Archive/Unarchive assigned newsletters (0 = No, 1 = Yes)
 	 *
 	 * @return	boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	public function archive($cid = array(0), $archive = 1, $archive_nl = 1)
+	public function archive(array $cid = array(0), int $archive = 1, int $archive_nl = 1): bool
 	{
 		$date     = Factory::getDate();
 		$uid      = Factory::getApplication()->getIdentity()->get('id');
@@ -402,7 +400,7 @@ class CampaignModel extends AdminModel
 		if (count($cid))
 		{
 			$query->update($db->quoteName('#__bwpostman_campaigns'));
-			$query->set($db->quoteName('archive_flag') . ' = ' . (int) $archive);
+			$query->set($db->quoteName('archive_flag') . ' = ' . $archive);
 			$query->set($db->quoteName('archive_date') . ' = ' . $db->quote($time, false));
 			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
@@ -423,7 +421,7 @@ class CampaignModel extends AdminModel
 			{
 				$query->clear();
 				$query->update($db->quoteName('#__bwpostman_newsletters'));
-				$query->set($db->quoteName('archive_flag') . ' = ' . (int) $archive);
+				$query->set($db->quoteName('archive_flag') . ' = ' . $archive);
 				$query->set($db->quoteName('archive_date') . ' = ' . $db->quote($time, false));
 				$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 				$query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', $cid) . ')');
@@ -455,7 +453,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	public function save($data)
+	public function save($data): bool
 	{
 		$app = Factory::getApplication();
 
@@ -471,7 +469,7 @@ class CampaignModel extends AdminModel
 				// Delete all entries of the newsletter from newsletters_mailinglists table
 				if ($data['id'])
 				{
-					$this->getTable('CampaignsMailinglists')->deleteCampaignsMailinglistsEntry($data['id']);
+					$this->getTable('CampaignsMailinglists')->deleteCampaignsMailinglistsEntry((int)$data['id']);
 				}
 				else
 				{
@@ -516,7 +514,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function delete(&$pks)
+	public function delete(&$pks): bool
 	{
 		$jinput	   = Factory::getApplication()->input;
 		$remove_nl = $jinput->get('remove_nl', false);
@@ -536,7 +534,7 @@ class CampaignModel extends AdminModel
 			}
 
 			// Delete campaigns from campaigns table
-			$camsTable = $this->getTable('Campaign');
+			$camsTable = $this->getTable();
 
 			foreach ($pks as $id)
 			{
@@ -547,7 +545,7 @@ class CampaignModel extends AdminModel
 				}
 
 				// Remove campaigns mailinglists entries
-				if (!$this->getTable('CampaignsMailinglists')->deleteCampaignsMailinglistsEntry($id))
+				if (!$this->getTable('CampaignsMailinglists')->deleteCampaignsMailinglistsEntry((int)$id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_CAMS_NO_ML_DELETED', $id), 'error');
 					return false;
@@ -556,7 +554,7 @@ class CampaignModel extends AdminModel
 				// Remove_nl = 1 if the user want to delete the assigned newsletters
 				if ($remove_nl)
 				{
-					if (!$this->getTable('Newsletter')->deleteCampaignsNewsletters($id))
+					if (!$this->getTable('Newsletter')->deleteCampaignsNewsletters((int)$id))
 					{
 						$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_NLS_DELETED', $id), 'error');
 						return false;

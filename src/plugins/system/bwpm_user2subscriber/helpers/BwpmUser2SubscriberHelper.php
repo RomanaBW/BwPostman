@@ -38,7 +38,7 @@ use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
 use stdClass;
 
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Table', JPATH_ADMINISTRATOR.'/components/com_bwpostman/src/Table', false, false, 'psr4');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Table', JPATH_ADMINISTRATOR.'/components/com_bwpostman/src/Table');
 
 
 /**
@@ -53,17 +53,19 @@ abstract class BwpmUser2SubscriberHelper
 	 *
 	 * @param string $user_mail
 	 *
-	 * @return  mixed   $subscriber_id|false   subscription data or false
+	 * @return  integer   $subscriber_id   ID of subscription or 0
+	 *
+	 * @throws Exception
 	 *
 	 * @since  2.0.0
 	 */
-	public static function hasSubscription(string $user_mail)
+	public static function hasSubscription(string $user_mail): int
 	{
-		$subscriber_id = null;
+		$subscriber_id = 0;
 
 		if ($user_mail == '')
 		{
-			return false;
+			return 0;
 		}
 
 		$_db	= Factory::getDbo();
@@ -77,7 +79,7 @@ abstract class BwpmUser2SubscriberHelper
 		{
 			$_db->setQuery($query);
 
-			$subscriber_id  = $_db->loadResult();
+			$subscriber_id  = (int)$_db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -90,20 +92,22 @@ abstract class BwpmUser2SubscriberHelper
 	/**
 	 * Method to check if user has a subscription
 	 *
-	 * @param   string  $user_mail
+	 * @param string $user_mail
 	 *
 	 * @return  bool    subscriber is to activate or not
 	 *
+	 * @throws Exception
+	 *
 	 * @since  2.0.0
 	 */
-	public static function isToActivate($user_mail)
+	public static function isToActivate(string $user_mail): bool
 	{
 		if ($user_mail == '')
 		{
 			return false;
 		}
 
-		$result = null;
+		$result = array();
 		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
@@ -134,21 +138,23 @@ abstract class BwpmUser2SubscriberHelper
 	/**
 	 * Method to update user ID in table subscribers
 	 *
-	 * @param   string  $user_mail
-	 * @param   int     $user_id
+	 * @param string $user_mail
+	 * @param int    $user_id
 	 *
 	 * @return  bool                true if subscription present and update okay
 	 *
+	 * @throws Exception
+	 *
 	 * @since  2.0.0
 	 */
-	public static function updateUserIdAtSubscriber($user_mail, $user_id)
+	public static function updateUserIdAtSubscriber(string $user_mail, int $user_id): bool
 	{
 		if ($user_id == 0)
 		{
 			return false;
 		}
 
-		$result = null;
+		$result = false;
 		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
 
@@ -160,34 +166,29 @@ abstract class BwpmUser2SubscriberHelper
 		{
 			$_db->setQuery($query);
 
-			$result  = $_db->loadAssoc();
+			$result  = $_db->execute();
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if ($result)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return $result;
 	}
 
 	/**
 	 * Method to update user ID in table subscribers
 	 *
-	 * @param   int     $subscriber_id
-	 * @param   array   $subscriber_data
+	 * @param int   $subscriber_id
+	 * @param array $subscriber_data
 	 *
 	 * @return  bool                true if subscription present and update okay
 	 *
+	 * @throws Exception
+	 *
 	 * @since  2.0.0
 	 */
-	public static function updateSubscriberData($subscriber_id, $subscriber_data)
+	public static function updateSubscriberData(int $subscriber_id, array $subscriber_data): bool
 	{
 		if ($subscriber_id == 0)
 		{
@@ -239,27 +240,22 @@ abstract class BwpmUser2SubscriberHelper
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if ($result)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return $result;
 	}
 
 	/**
 	 * Method to update subscribed mailinglists in table
 	 *
-	 * @param   int     $subscriber_id
-	 * @param   array   $new_mailinglists
+	 * @param int   $subscriber_id
+	 * @param array $new_mailinglists
 	 *
 	 * @return  bool    true if subscription present and update okay
 	 *
+	 * @throws Exception
+	 *
 	 * @since  2.0.0
 	 */
-	public static function updateSubscribedMailinglists($subscriber_id, $new_mailinglists)
+	public static function updateSubscribedMailinglists(int $subscriber_id, array $new_mailinglists): bool
 	{
 		$subscribed_mailinglists    = self::getSubscribedMailinglists($subscriber_id);
 
@@ -287,9 +283,7 @@ abstract class BwpmUser2SubscriberHelper
 
 		if (count($mailinglists_to_add))
 		{
-			$save_mailinglists_result   = self::saveSubscribersMailinglists($subscriber_id, $mailinglists_to_add);
-
-			return $save_mailinglists_result;
+			return self::saveSubscribersMailinglists($subscriber_id, $mailinglists_to_add);
 		}
 
 		return true;
@@ -298,15 +292,17 @@ abstract class BwpmUser2SubscriberHelper
 	/**
 	 * Method to get subscribed mailinglists
 	 *
-	 * @param   int     $subscriber_id
+	 * @param int $subscriber_id
 	 *
 	 * @return  array   $subscribed_mailinglists
 	 *
+	 * @throws Exception
+	 *
 	 * @since       2.0.0
 	 */
-	public static function getSubscribedMailinglists($subscriber_id)
+	public static function getSubscribedMailinglists(int $subscriber_id): array
 	{
-		$subscribed_mailinglists = null;
+		$subscribed_mailinglists = array();
 
 		// @Todo: As from version 2.0.0 helper class of component may be used
 		$_db = Factory::getDbo();
@@ -321,6 +317,11 @@ abstract class BwpmUser2SubscriberHelper
 			$_db->setQuery($query);
 
 			$subscribed_mailinglists = $_db->loadColumn();
+
+			if ($subscribed_mailinglists === null)
+			{
+				$subscribed_mailinglists = array();
+			}
 		}
 		catch (RuntimeException $e)
 		{
@@ -333,20 +334,22 @@ abstract class BwpmUser2SubscriberHelper
 	/**
 	 * Method to get subscription email from BwPostman
 	 *
-	 * @param   int  $user_id
+	 * @param int $user_id
 	 *
-	 * @return  array|bool     subscriber mailaddress and id, or false on error
+	 * @return  array     subscriber mailaddress and id, or false on error
+	 *
+	 * @throws Exception
 	 *
 	 * @since  2.0.0
 	 */
-	public static  function getSubscriptionData($user_id)
+	public static  function getSubscriptionData(int $user_id): array
 	{
+		$subscriber = array();
+
 		if ($user_id == 0)
 		{
-			return false;
+			return $subscriber;
 		}
-
-		$subscriber = null;
 
 		$_db	= Factory::getDbo();
 		$query	= $_db->getQuery(true);
@@ -361,27 +364,27 @@ abstract class BwpmUser2SubscriberHelper
 			$_db->setQuery($query);
 
 			$subscriber  = $_db->loadAssoc();
+
+			if ($subscriber === null)
+			{
+				$subscriber = array();
+			}
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if (is_array($subscriber))
-		{
-			return $subscriber;
-		}
-
-		return false;
+		return $subscriber;
 	}
 
 	/**
 	 * Method to create user data array
 	 *
-	 * @param string        $user_mail
-	 * @param int           $user_id
-	 * @param array         $subscriber_data
-	 * @param array         $mailinglist_ids
+	 * @param string $user_mail
+	 * @param int    $user_id
+	 * @param array  $subscriber_data
+	 * @param array  $mailinglist_ids
 	 *
 	 * @return object       $subscriber
 	 *
@@ -389,14 +392,14 @@ abstract class BwpmUser2SubscriberHelper
 	 *
 	 * @since 2.0.0
 	 */
-	public static function createSubscriberData($user_mail, $user_id, $subscriber_data, $mailinglist_ids)
+	public static function createSubscriberData(string $user_mail, int $user_id, array $subscriber_data, array $mailinglist_ids): object
 	{
 		$date   = Factory::getDate();
 		$time   = $date->toSql();
 
 		$remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
-		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha(1);
+		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha();
 
 		$db         = Factory::getDbo();
 		$subsTable  = new SubscriberTable($db);
@@ -428,15 +431,15 @@ abstract class BwpmUser2SubscriberHelper
 	/**
 	 * Method to save subscriber data into table
 	 *
-	 * @param   object   $data              subscriber data
+	 * @param object $data subscriber data
 	 *
-	 * @return  int      $subscriber_id     id of saved subscriber
+	 * @return  int      $subscriber_id     id of saved subscriber or 0
 	 *
 	 * @throws Exception
 	 *
 	 * @since       2.0.0
 	 */
-	public static function saveSubscriber($data)
+	public static function saveSubscriber(object $data): int
 	{
 		// @Todo: As from version 2.0.0 BwPostmanModelRegister->save() may be used, depends on spam check solution
 		$db    = Factory::getDbo();
@@ -445,7 +448,7 @@ abstract class BwpmUser2SubscriberHelper
 		// Bind the data.
 		if (!$table->bind($data))
 		{
-			return false;
+			return 0;
 		}
 
 		// Check the data.
@@ -470,25 +473,26 @@ abstract class BwpmUser2SubscriberHelper
 			throw  new Exception($table->getError());
 		}
 
-		$subscriber_id = self::getSubscriberIdByEmail($data->email);
-
-		return $subscriber_id;
+		return self::getSubscriberIdByEmail($data->email);
 	}
 
 	/**
 	 * Method to save subscribed mailinglists
 	 *
-	 * @param   int     $subscriber_id
-	 * @param   array   $mailinglist_ids
+	 * @param int   $subscriber_id
+	 * @param array $mailinglist_ids
 	 *
 	 * @return bool     true on success
 	 *
+	 * @throws Exception
+	 *
 	 * @since       2.0.0
 	 */
-	public static function saveSubscribersMailinglists($subscriber_id, $mailinglist_ids)
+	public static function saveSubscribersMailinglists(int $subscriber_id, array $mailinglist_ids): bool
 	{
 		// @Todo: As from version 2.0.0 helper class of component may be used
-		$_db   = Factory::getDbo();
+		$result = false;
+		$_db    = Factory::getDbo();
 
 		foreach ($mailinglist_ids as $mailinglist_id)
 		{
@@ -509,7 +513,8 @@ abstract class BwpmUser2SubscriberHelper
 			try
 			{
 				$_db->setQuery($query);
-				$_db->execute();
+
+				$result = $_db->execute();
 			}
 			catch (RuntimeException $e)
 			{
@@ -517,21 +522,23 @@ abstract class BwpmUser2SubscriberHelper
 			}
 		}
 
-		return true;
+		return $result;
 	}
 
 	/**
 	 * Method to get the subscriber id by email address
 	 *
-	 * @param   string  $email
+	 * @param string $email
 	 *
 	 * @return  int     $id
 	 *
+	 * @throws Exception
+	 *
 	 * @since       2.0.0
 	 */
-	public static function getSubscriberIdByEmail($email)
+	public static function getSubscriberIdByEmail(string $email): int
 	{
-		$id     = null;
+		$id     = 0;
 		$_db    = Factory::getDbo();
 		$query = $_db->getQuery(true);
 
@@ -543,7 +550,7 @@ abstract class BwpmUser2SubscriberHelper
 		{
 			$_db->setQuery($query);
 
-			$id = $_db->loadResult();
+			$id = (int)$_db->loadResult();
 		}
 		catch (RuntimeException $e)
 		{

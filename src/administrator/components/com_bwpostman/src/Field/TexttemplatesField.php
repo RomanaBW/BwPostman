@@ -64,9 +64,9 @@ class TexttemplatesField extends RadioField
 	 *
 	 * @since   1.2.0
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
-		$item     = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', null);
+		$item     = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data');
 		$html     = array();
 		$selected = '';
 
@@ -108,7 +108,7 @@ class TexttemplatesField extends RadioField
 
 				$html[] = '<label for="' . $this->id . $i . '"' . $lblclass . ' >';
 				$html[] = '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="'
-							. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $inputclass . $onclick
+							. htmlspecialchars($option->value, ENT_COMPAT) . '"' . $checked . $inputclass . $onclick
 							. $onchange . $disabled . ' />';
 
 				$html[] = '<span class="media-preview add-on fltlft">';
@@ -141,12 +141,12 @@ class TexttemplatesField extends RadioField
 	 *
 	 * @since	1.2.0
 	 */
-	public function getOptions()
+	public function getOptions(): array
 	{
 		$app = Factory::getApplication();
 
 		// Initialize variables.
-		$item    = $app->getUserState('com_bwpostman.edit.newsletter.data', null);
+		$item    = $app->getUserState('com_bwpostman.edit.newsletter.data');
 		$options = array();
 
 		// prepare query
@@ -190,8 +190,6 @@ class TexttemplatesField extends RadioField
 		}
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }

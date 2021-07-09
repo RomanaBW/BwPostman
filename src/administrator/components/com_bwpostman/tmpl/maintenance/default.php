@@ -52,31 +52,25 @@ if ($this->queueEntries)
 				BwPostmanHTMLHelper::quickiconButton(
 					$link,
 					'icon-48-tablecheck.png',
-					Text::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES"),
-					'',
-					''
+					Text::_("COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES")
 				);
 
 				$link = 'index.php?option=' . $option . '&view=maintenance&task=maintenance.saveTables';
 				BwPostmanHTMLHelper::quickiconButton(
 					$link,
 					'icon-48-tablestore.png',
-					Text::_("COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES"),
-					0,
-					0
+					Text::_("COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES")
 				);
 
 				$link = 'index.php?option=' . $option . '&view=maintenance&task=maintenance.restoreTables';
 				BwPostmanHTMLHelper::quickiconButton(
 					$link,
 					'icon-48-tablerestore.png',
-					Text::_("COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES"),
-					0,
-					0
+					Text::_("COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES")
 				);
 
 				$link	= 'index.php?option=com_config&amp;view=component&amp;component=' . $option . '&amp;path=';
-				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', Text::_("COM_BWPOSTMAN_SETTINGS"), '', '');
+				BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-config.png', Text::_("COM_BWPOSTMAN_SETTINGS"));
 			}
 
 			// trigger BwTimeControl event

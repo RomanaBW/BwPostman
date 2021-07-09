@@ -31,7 +31,9 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
@@ -89,9 +91,9 @@ class MailinglistModel extends AdminModel
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param	string  $type	    The table type to instantiate
-	 * @param	string	$prefix     A prefix for the table class name. Optional.
-	 * @param	array	$config     Configuration array for model. Optional.
+	 * @param	string $name    The table type to instantiate
+	 * @param	string $prefix  A prefix for the table class name. Optional.
+	 * @param	array  $options Configuration array for model. Optional.
 	 *
 	 * @return	boolean|Table	A database object
 	 *
@@ -99,9 +101,9 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($type = 'Mailinglist', $prefix = 'Administrator', $config = array())
+	public function getTable($name = 'Mailinglist', $prefix = 'Administrator', $options = array())
 	{
-		return parent::getTable($type, $prefix, $config);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
@@ -109,11 +111,11 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @access	public
 	 *
-	 * @param	int $id     Mailinglist ID
+	 * @param int $id Mailinglist ID
 	 *
 	 * @since       0.9.1
 	 */
-	public function setId($id)
+	public function setId(int $id)
 	{
 		$this->id   = $id;
 		$this->data = null;
@@ -130,11 +132,9 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @since    1.0.1
 	 */
-	protected function canEditState($record)
+	protected function canEditState($record): bool
 	{
-		$permission = BwPostmanHelper::canEditState('mailinglist', (int) $record->id);
-
-		return $permission;
+		return BwPostmanHelper::canEditState('mailinglist', (int) $record->id);
 	}
 
 	/**
@@ -142,7 +142,7 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  mixed    Object on success, false on failure.
+	 * @return  bool|CMSObject|stdClass    Object on success, false on failure.
 	 *
 	 * @throws Exception
 	 *
@@ -151,7 +151,7 @@ class MailinglistModel extends AdminModel
 	public function getItem($pk = null)
 	{
 		$app  = Factory::getApplication();
-		$data = $app->getUserState('com_bwpostman.edit.mailinglist.data', null);
+		$data = $app->getUserState('com_bwpostman.edit.mailinglist.data');
 
 		$pk = (int)(!empty($pk)) ? $pk : $this->getState($this->getName() . '.id');
 
@@ -178,7 +178,7 @@ class MailinglistModel extends AdminModel
 	 * @param	array	$data		Data for the form.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return	mixed	A JForm object on success, false on failure
+	 * @return    false|Form    A JForm object on success, false on failure
 	 *
 	 * @throws Exception
 	 *
@@ -294,8 +294,8 @@ class MailinglistModel extends AdminModel
 	 * Method to (un)archive a mailinglist
 	 * --> when unarchiving it is called by the archive-controller
 	 *
-	 * @param	array   $cid        Mailinglist IDs
-	 * @param	int     $archive    Task --> 1 = archive, 0 = unarchive
+	 * @param array $cid     Mailinglist IDs
+	 * @param int   $archive Task --> 1 = archive, 0 = unarchive
 	 *
 	 * @return	boolean
 	 *
@@ -303,7 +303,7 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function archive($cid = array(0), $archive = 1)
+	public function archive(array $cid = array(0), int $archive = 1): bool
 	{
 		$db   = $this->_db;
 		$date = Factory::getDate();
@@ -344,7 +344,7 @@ class MailinglistModel extends AdminModel
 			$query	= $db->getQuery(true);
 
 			$query->update($db->quoteName('#__bwpostman_mailinglists'));
-			$query->set($db->quoteName('archive_flag') . " = " . $db->quote((int) $archive));
+			$query->set($db->quoteName('archive_flag') . " = " . $db->quote($archive));
 			$query->set($db->quoteName('archive_date') . " = " . $db->quote($time, false));
 			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
@@ -375,7 +375,7 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function delete(&$pks)
+	public function delete(&$pks): bool
 	{
 		$app = Factory::getApplication();
 		$pks = ArrayHelper::toInteger($pks);
@@ -391,7 +391,7 @@ class MailinglistModel extends AdminModel
 				}
 			}
 
-			$mlTable = $this->getTable('Mailinglist');
+			$mlTable = $this->getTable();
 
 			// Delete all entries from the mailinglists-table
 			foreach ($pks as $id)
@@ -402,20 +402,20 @@ class MailinglistModel extends AdminModel
 					return false;
 				}
 
-				if (!$this->getTable('CampaignsMailinglists')->deleteMailinglistsCampaignsEntry($id))
+				if (!$this->getTable('CampaignsMailinglists')->deleteMailinglistsCampaignsEntry((int)$id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_ML_CAM_DELETED', $id), 'error');
 					return false;
 				}
 
-				if (!$this->getTable('SubscribersMailinglists')->deleteMailinglistSubscribers($id))
+				if (!$this->getTable('SubscribersMailinglists')->deleteMailinglistSubscribers((int)$id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_SUBS_DELETED', $id), 'error');
 					return false;
 				}
 
 				// Delete all entries from the newsletters_mailinglists-table
-				if (!$this->getTable('NewslettersMailinglists')->deleteMailinglistNewsletters($id))
+				if (!$this->getTable('NewslettersMailinglists')->deleteMailinglistNewsletters((int)$id))
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ARC_ERROR_REMOVING_MLS_NO_NLS_DELETED', $id), 'error');
 					return false;
@@ -436,7 +436,7 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function publish(&$pks, $value = 1)
+	public function publish(&$pks, $value = 1): bool
 	{
 		if (parent::publish($pks, $value))
 		{

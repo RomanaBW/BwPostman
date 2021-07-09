@@ -43,15 +43,12 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Site\Model\RegisterModel;
 use BoldtWebservice\Plugin\BwPostman\System\U2S\Helper\BwpmUser2SubscriberHelper;
 
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', false, false, 'psr4');
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries', false, false, 'psr4');
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Model', JPATH_SITE.'/components/com_bwpostman/src/Model', false, false, 'psr4');
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Field', JPATH_SITE.'/components/com_bwpostman/src/Field', false, false, 'psr4');
-JLoader::registerNamespace('BoldtWebservice\\Plugin\\BwPostman\\System\\U2S\\Field', JPATH_PLUGINS . '/system/bwpm_user2subscriber/form/fields', false, false, 'psr4');
-JLoader::registerNamespace('BoldtWebservice\\Plugin\\BwPostman\\System\\U2S\\Helper', JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers', false, false, 'psr4');
-
-// constants and autoload
-//require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/includes/includes.php');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Model', JPATH_SITE.'/components/com_bwpostman/src/Model');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Field', JPATH_SITE.'/components/com_bwpostman/src/Field');
+JLoader::registerNamespace('BoldtWebservice\\Plugin\\BwPostman\\System\\U2S\\Field', JPATH_PLUGINS . '/system/bwpm_user2subscriber/form/fields');
+JLoader::registerNamespace('BoldtWebservice\\Plugin\\BwPostman\\System\\U2S\\Helper', JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers');
 
 /**
  * Class User2Subscriber
@@ -176,7 +173,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	private $debug    = false;
+	private $debug;
 
 	/**
 	 * PlgSystemBWPM_User2Subscriber constructor.
@@ -221,7 +218,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			$_db->setQuery($query);
 
-			$enabled                = $_db->loadResult();
+			$enabled                = (bool)$_db->loadResult();
 			$this->BwPostmanComponentEnabled = $enabled;
 
 			if ($this->debug)
@@ -257,7 +254,16 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			$_db->setQuery($query);
 
-			$manifest               = json_decode($_db->loadResult(), true);
+
+			$result   = $_db->loadResult();
+
+			if ($result === null)
+			{
+				$result = '';
+			}
+
+			$manifest = json_decode($result, true);
+
 			$this->BwPostmanComponentVersion = $manifest['version'];
 
 			if ($this->debug)
@@ -308,9 +314,9 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 * @throws Exception
 	 * @since  2.0.0
 	 */
-	public function onContentPrepareForm($form, $data)
+	public function onContentPrepareForm($form, $data): bool
 	{
-		$this->logger->addEntry(new LogEntry('onContentPrepareForm reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+//		$this->logger->addEntry(new LogEntry('onContentPrepareForm reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 
 		if (!$this->prerequisitesFulfilled())
 		{
@@ -429,7 +435,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since   2.0.0
 	 */
-	protected function prerequisitesFulfilled()
+	protected function prerequisitesFulfilled(): bool
 	{
 		if (!$this->BwPostmanComponentEnabled)
 		{
@@ -440,7 +446,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('Component version not met!'), BwLogger::BW_ERROR, $this->log_cat));
+				$this->logger->addEntry(new LogEntry('Component version not met!', BwLogger::BW_ERROR, $this->log_cat));
 			}
 
 			return false;
@@ -584,7 +590,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function processCaptchaField()
 	{
-		$captcha = BwPostmanHelper::getCaptcha(1);
+		$captcha = BwPostmanHelper::getCaptcha();
 		$this->form->setFieldAttribute('bw_captcha', 'name', 'bwp-' . $captcha, $this->group);
 
 		$session = $this->app->getSession();
@@ -596,9 +602,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @return  string
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.1.0
 	 */
-	protected function getDisclaimerLink()
+	protected function getDisclaimerLink(): string
 	{
 		$com_params = ComponentHelper::getParams('com_bwpostman');
 		$disclaimer_link = '';
@@ -610,7 +618,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			// Disclaimer article and target_blank or not
 			if ($com_params->get('disclaimer_selection') == 1 && $com_params->get('article_id') > 0)
 			{
-				$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($com_params->get('article_id') . $tpl_com, 0));
+				$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($com_params->get('article_id') . $tpl_com));
 			}
 			// Disclaimer menu item and target_blank or not
 			elseif ($com_params->get('disclaimer_selection') == 2 && $com_params->get('disclaimer_menuitem') > 0)
@@ -654,7 +662,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	public function onUserBeforeSave(array $oldUser, bool $isNew, array $newUser)
+	public function onUserBeforeSave(array $oldUser, bool $isNew, array $newUser): bool
 	{
 		if ($this->debug)
 		{
@@ -766,9 +774,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		if ($isNew)
 		{
-			$newUser_result = $this->processNewUser($user_mail, $user_id, $subscriber_data);
-
-			return $newUser_result;
+			return $this->processNewUser($user_mail, $user_id, $subscriber_data);
 		}
 
 		$activation     = $session->get('plg_bwpm_user2subscriber.activation');
@@ -785,9 +791,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 			if ($subscriber_is_to_activate)
 			{
-				$activate_result = $this->activateSubscription($user_mail);
-
-				return $activate_result;
+				return $this->activateSubscription($user_mail);
 			}
 		}
 
@@ -795,7 +799,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 //			$new_mailinglists       = json_decode($subscriber_data['mailinglists']);
 			$new_mailinglists           = $this->params->get('ml_available', array());
-			$updateMailinglists_result  = BwpmUser2SubscriberHelper::updateSubscribedMailinglists((int)$subscriber_id, $new_mailinglists);
+			$updateMailinglists_result  = BwpmUser2SubscriberHelper::updateSubscribedMailinglists($subscriber_id, $new_mailinglists);
 
 			if (!$updateMailinglists_result)
 			{
@@ -805,9 +809,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		if ($this->params->get('auto_update_email_option') && $changeMail)
 		{
-			$email_update_result  = $this->updateMailaddress($user_mail);
-
-			return $email_update_result;
+			return $this->updateMailaddress($user_mail);
 		}
 
 		return true;
@@ -822,7 +824,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since 2.0.0
 	 */
-	protected function processNewUser(string $user_mail, int $user_id, array $subscriber_data)
+	protected function processNewUser(string $user_mail, int $user_id, array $subscriber_data): bool
 	{
 		if ($this->debug)
 		{
@@ -849,8 +851,6 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 					$update_userid_result = BwpmUser2SubscriberHelper::updateUserIdAtSubscriber($user_mail, $user_id);
 				}
 
-				$update_subscriberdata_result = BwpmUser2SubscriberHelper::updateSubscriberData($subscriber_id, $subscriber_data);
-
 				$new_mailinglists       = $subscriber_data['mailinglists'];
 				$update_mailinglists    = BwpmUser2SubscriberHelper::updateSubscribedMailinglists($subscriber_id, $new_mailinglists);
 
@@ -864,9 +864,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return false;
 		}
 
-		$create_result = $this->subscribeToBwPostman($user_mail, $user_id, $subscriber_data);
-
-		return $create_result;
+		return $this->subscribeToBwPostman($user_mail, $user_id, $subscriber_data);
 	}
 
 	/**
@@ -880,7 +878,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected function subscribeToBwPostman(string $user_mail, int $user_id, array $subscriber_data)
+	protected function subscribeToBwPostman(string $user_mail, int $user_id, array $subscriber_data): bool
 	{
 		if ($this->debug)
 		{
@@ -904,17 +902,13 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$subscriber     = BwpmUser2SubscriberHelper::createSubscriberData($user_mail, $user_id, $subscriber_data, $mailinglist_ids);
 
 			$subscriber_id  = BwpmUser2SubscriberHelper::saveSubscriber($subscriber);
+
 			if (!$subscriber_id)
 			{
 				return false;
 			}
 
 			$ml_save_result     = BwpmUser2SubscriberHelper::saveSubscribersMailinglists($subscriber_id, $mailinglist_ids);
-
-			if (!$ml_save_result)
-			{
-				return false;
-			}
 		}
 		catch (Exception $e)
 		{
@@ -922,7 +916,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return false;
 		}
 
-		return true;
+		return $ml_save_result;
 	}
 
 	/**
@@ -935,7 +929,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 * @throws Exception
 	 * @since  2.0.0
 	 */
-	protected function activateSubscription(string $user_mail)
+	protected function activateSubscription(string $user_mail): bool
 	{
 		if ($this->debug)
 		{
@@ -957,12 +951,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$time   = $date->toSql();
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
-		$query->set($_db->quoteName('status') . ' = ' . (int) 1);
+		$query->set($_db->quoteName('status') . ' = ' . 1);
 		$query->set($_db->quoteName('activation') . ' = ' . $_db->quote(''));
 		$query->set($_db->quoteName('confirmation_date') . ' = ' . $_db->quote($time, false));
 		$query->set($_db->quoteName('confirmed_by') . ' = ' . 0);
 		$query->set($_db->quoteName('confirmation_ip') . ' = ' . $_db->quote($activation_ip));
-		$query->where($_db->quoteName('email') . ' = "' . (string) $user_mail . '"');
+		$query->where($_db->quoteName('email') . ' = "' . $user_mail . '"');
 
 		try
 		{
@@ -987,17 +981,17 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			return false;
 		}
 
-		return true;
+		return $res;
 	}
 
 	/**
-	 * @param $user_mail
+	 * @param string $user_mail
 	 *
 	 * @return bool
 	 *
 	 * @since 2.0.0
 	 */
-	protected function updateMailaddress($user_mail)
+	protected function updateMailaddress(string $user_mail): bool
 	{
 		if ($this->debug)
 		{
@@ -1029,9 +1023,11 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @return  bool        True on success
 	 *
+	 * @throws Exception
+	 *
 	 * @since  2.0.0
 	 */
-	protected function updateEmailOfSubscription()
+	protected function updateEmailOfSubscription(): bool
 	{
 		$result = false;
 
@@ -1061,15 +1057,14 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @param array  $data    Data that was being deleted
 	 * @param bool   $success Flag to indicate whether deletion was successful
-	 * @param string $msg     Message after deletion
 	 *
-	 * @return  null
+	 * @return  boolean
 	 *
 	 * @throws Exception
 	 *
 	 * @since  2.0.0
 	 */
-	public function onUserAfterDelete(array $data, bool $success, string $msg)
+	public function onUserAfterDelete(array $data, bool $success): bool
 	{
 		if ($this->debug)
 		{
@@ -1109,7 +1104,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected function deleteSubscription()
+	protected function deleteSubscription(): bool
 	{
 		if ($this->debug)
 		{
@@ -1154,7 +1149,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected function deleteSubscriber()
+	protected function deleteSubscriber(): bool
 	{
 		if ($this->debug)
 		{
@@ -1189,7 +1184,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 *
 	 * @since  2.0.0
 	 */
-	protected function deleteSubscribedMailinglists()
+	protected function deleteSubscribedMailinglists(): bool
 	{
 		if ($this->debug)
 		{
@@ -1227,7 +1222,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 * @throws Exception
 	 * @since  2.0.0
 	 */
-	protected function removeUseridFromSubscription(int $user_id)
+	protected function removeUseridFromSubscription(int $user_id): bool
 	{
 		if ($this->debug)
 		{
@@ -1249,7 +1244,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 				$query	= $_db->getQuery(true);
 
 				$query->update($_db->quoteName('#__bwpostman_subscribers'));
-				$query->set($_db->quoteName('user_id') . " = " . (int) 0);
+				$query->set($_db->quoteName('user_id') . " = " . 0);
 				$query->where($_db->quoteName('user_id') . ' = ' . $_db->quote($user_id));
 
 				$_db->setQuery($query);

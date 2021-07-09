@@ -59,13 +59,13 @@ class RawView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @return  RawView  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): RawView
 	{
 		$app 	= Factory::getApplication();
 		$jinput	= $app->input;
@@ -85,13 +85,9 @@ class RawView extends BaseHtmlView
 		{
 			// Get the newsletter
 			$this->item	= $model->getItem($nl_id);
-			$this->item	= $model->getSingleNewsletter();
 		}
-		else
-		{
-			// Get the newsletter
-			$this->item	= $model->getSingleNewsletter();
-		}
+
+		$this->item = $model->getSingleNewsletter();
 
 		// Call parent display
 		parent::display($tpl);

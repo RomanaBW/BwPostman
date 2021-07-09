@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension group="system" method="upgrade" type="plugin" version="3.4">
+<extension group="system" method="upgrade" type="plugin" version="4.0">
 	<name>PLG_BWPOSTMAN_PLUGIN_LIBREGISTER</name>
 	<version>%%version_number%%</version>
 	<creationDate>%%creation_date%%</creationDate>
@@ -28,7 +28,7 @@
 	</languages>
 
 	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/libraries/bw_libregister.xml</server>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_update.xml</server>
 	</updateservers>
 
 </extension>

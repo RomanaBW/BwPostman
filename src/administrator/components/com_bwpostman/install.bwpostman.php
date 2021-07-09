@@ -24,13 +24,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Component\BwPostman\Administrator;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use BoldtWebservice\Component\BwPostman\Administrator\Service\Html\BwPostman;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Session\Session;
 use Joomla\Database\UTF8MB4SupportInterface;
 use Joomla\CMS\Filesystem\Folder;
@@ -48,7 +48,6 @@ use Joomla\Component\Users\Administrator\Model\LevelModel;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanInstallHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
-use BoldtWebservice\Component\BwPostman\Administrator\Model\MaintenanceModel;
 
 /**
  * Class Com_BwPostmanInstallerScript
@@ -199,8 +198,8 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * Called before any type of action
 	 *
-	 * @param   string              $type		Which action is happening (install|uninstall|discover_install|update)
-	 * @param   InstallerAdapter	$parent		The object responsible for running this script
+	 * @param string             $type   Which action is happening (install|uninstall|discover_install|update)
+	 * @param   InstallerAdapter $parent The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -209,7 +208,7 @@ class Com_BwPostmanInstallerScript
 	 * @since       0.9.6.3
 	 */
 
-	public function preflight($type, InstallerAdapter $parent)
+	public function preflight(string $type, InstallerAdapter $parent): bool
 	{
 		$app     = Factory::getApplication();
 		$session = $app->getSession();
@@ -224,7 +223,7 @@ class Com_BwPostmanInstallerScript
 
 		// Get component manifest file version
 		$this->release	= $manifest->version;
-		$session->set('release', $this->release->__toString(), 'bwpostman');
+		$session->set('release', $this->release, 'bwpostman');
 
 		// Manifest file minimum Joomla version
 //		$this->minimum_joomla_release = $manifest->attributes()->version;
@@ -253,9 +252,6 @@ class Com_BwPostmanInstallerScript
 				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_INSTALL_ERROR_INCORRECT_VERSION_SEQUENCE', $oldRelease, $this->release), 'error');
 				return false;
 			}
-
-			// delete existing files in frontend and backend to prevent conflicts with previous relicts
-			jimport('joomla.filesystem.folder');
 		}
 
 		$db    = Factory::getDbo();
@@ -280,7 +276,6 @@ class Com_BwPostmanInstallerScript
 		if ($type !== 'uninstall')
 		{
 			// Check if utf8mb4 is supported; if so, copy utf8mb4 file as sql installation file
-			jimport('joomla.filesystem.file');
 			$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 
 			require_once($tmp_path . '/Helper/BwPostmanInstallHelper.php');
@@ -300,7 +295,8 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * Called after any type of action
 	 *
-	 * @param   string  			$type		Which action is happening (install|uninstall|discover_install)
+	 * @param string $type Which action is happening (install|uninstall|discover_install)
+	 * @param   InstallerAdapter $parent The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -309,8 +305,9 @@ class Com_BwPostmanInstallerScript
 	 * @since       0.9.6.3
 	 */
 
-	public function postflight($type)
+	public function postflight(string $type, InstallerAdapter $parent): bool
 	{
+		$this->parentInstaller = $parent->getParent();
 		$m_params = ComponentHelper::getParams('com_media');
 		$this->copyTemplateImagesToMedia($m_params);
 
@@ -322,7 +319,6 @@ class Com_BwPostmanInstallerScript
 
 		if ($type == 'install' || $type == 'update')
 		{
-			jimport('joomla.filesystem.file');
 			$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 
 			require_once($tmp_path . '/libraries/BwLogger.php');
@@ -429,6 +425,8 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since       0.9.6.3
 	 */
 
@@ -444,6 +442,8 @@ class Com_BwPostmanInstallerScript
 	 * Called on update
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 *
 	 * @since       0.9.6.3
 	 */
@@ -499,7 +499,7 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * get a variable from the manifest file (actually, from the manifest cache).
 	 *
-	 * @param   string  $name
+	 * @param string $name
 	 *
 	 * @return  mixed  $manifest
 	 *
@@ -507,7 +507,7 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @since       0.9.6.3
 	 */
-	private function getManifestVar($name)
+	private function getManifestVar(string $name)
 	{
 		$manifest = array();
 		$db       = Factory::getDbo();
@@ -535,8 +535,6 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * Correct campaign_id in newsletters because of an error previous version
 	 *
-	 * @return  boolean  True on success
-	 *
 	 * @throws Exception
 	 *
 	 * @since
@@ -559,14 +557,10 @@ class Com_BwPostmanInstallerScript
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
-
-		return true;
 	}
 
 	/**
 	 * Fill cross table campaigns mailinglists with values from all newsletters of the specific campaign
-	 *
-	 * @return  boolean  True on success
 	 *
 	 * @throws Exception
 	 *
@@ -647,20 +641,18 @@ class Com_BwPostmanInstallerScript
 				}
 			}
 		}
-
-		return true;
 	}
 
 	/**
 	 * Method to copy the provided template thumbnails to media folder
 	 *
-	 * @param object    $m_params   params of com_media
+	 * @param object $m_params params of com_media
 	 *
 	 * @return void
 	 *
 	 * @since   2.0.0
 	 */
-	private function copyTemplateImagesToMedia($m_params)
+	private function copyTemplateImagesToMedia(object $m_params)
 	{
 		$image_path = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/com_bwpostman/';
 		$media_path = JPATH_ROOT . '/media/com_bwpostman/images/';
@@ -804,8 +796,6 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * Method to create sample user groups and access levels
 	 *
-	 * @return boolean  true on success
-	 *
 	 * @throws Exception
 	 *
 	 * @since   2.0.0
@@ -828,9 +818,9 @@ class Com_BwPostmanInstallerScript
 
 				if (!$ret)
 				{
-					echo Text::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
+					echo Text::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', false);
 					throw new Exception(Text::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
-						$ret));
+						false));
 				}
 			}
 
@@ -849,9 +839,9 @@ class Com_BwPostmanInstallerScript
 
 			if (!$ret)
 			{
-				echo Text::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', $ret);
+				echo Text::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s', false);
 				throw new Exception(Text::sprintf('COM_BWPOSTMAN_INSTALLATION_ERROR_CREATING_USERGROUPS: %s',
-					$ret));
+					false));
 			}
 
 			$manager_groupId = $this->getGroupId('BwPostmanManager');
@@ -880,20 +870,15 @@ class Com_BwPostmanInstallerScript
 					$parent_id = $this->getGroupId($item);
 				}
 			}
-
-			return true;
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			return false;
 		}
 	}
 
 	/**
 	 * Method to add BwPostmanAdmin to view level special
-	 *
-	 * @return boolean  true on success
 	 *
 	 * @throws Exception
 	 *
@@ -905,7 +890,7 @@ class Com_BwPostmanInstallerScript
 		{
 			if (!(int) $this->adminUsergroup)
 			{
-				return false;
+				return;
 			}
 
 			// get the model for viewlevels
@@ -920,21 +905,15 @@ class Com_BwPostmanInstallerScript
 
 			// Save viewlevel special
 			$viewlevelModel->save($specialLevelArray);
-
-			return true;
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-
-			return false;
 		}
 	}
 
 	/**
 	 * Method to add BwPostmanAdmin to root asset
-	 *
-	 * @return boolean  true on success
 	 *
 	 * @throws Exception
 	 *
@@ -954,7 +933,7 @@ class Com_BwPostmanInstallerScript
 
 			if (!$adminGroup || !$campaignAdminGroup || !$mailinglistAdminGroup || !$newsletterAdminGroup || !$subscriberAdminGroup || !$templateAdminGroup)
 			{
-				return false;
+				return;
 			}
 
 			// Get root asset
@@ -985,21 +964,15 @@ class Com_BwPostmanInstallerScript
 
 			// Save root asset
 			$this->saveRootAsset($newRootRules);
-
-			return true;
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-
-			return false;
 		}
 	}
 
 	/**
 	 * Method to delete sample user groups and access levels
-	 *
-	 * @return boolean  true on success
 	 *
 	 * @throws Exception
 	 *
@@ -1094,25 +1067,15 @@ class Com_BwPostmanInstallerScript
 			{
 				throw new BwException(Text::_('COM_BWPOSTMAN_DEINSTALLATION_ERROR_REMOVE_USERGROUPS'));
 			}
-
-			return true;
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException | BwException $e)
 		{
 			echo $e->getMessage();
-			return false;
-		}
-		catch (BwException $e)
-		{
-			echo $e->getMessage();
-			return false;
 		}
 	}
 
 	/**
 	 * Method to add BwPostmanAdmin to view level special
-	 *
-	 * @return boolean  true on success
 	 *
 	 * @throws Exception
 	 *
@@ -1146,17 +1109,12 @@ class Com_BwPostmanInstallerScript
 			catch (RuntimeException $e)
 			{
 				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-				return false;
 			}
 		}
-
-		return true;
 	}
 
 	/**
 	 * Method to add BwPostmanAdmin to view level special
-	 *
-	 * @return boolean  true on success
 	 *
 	 * @throws Exception
 	 *
@@ -1187,14 +1145,10 @@ class Com_BwPostmanInstallerScript
 
 			// Save root asset
 			$this->saveRootAsset($newRootRules);
-
-			return true;
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-
-			return false;
 		}
 	}
 
@@ -1228,16 +1182,16 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * Gets the group Id of the selected group name
 	 *
-	 * @param   string  $name  The name of the group
+	 * @param string $name The name of the group
 	 *
-	 * @return  int|bool  the ID of the group or false, if group not exists
+	 * @return  int  the ID of the group or false, if group not exists
 	 *
 	 * @throws Exception
 	 *
 	 * @since
 	 */
 
-	private function getGroupId($name)
+	private function getGroupId(string $name): int
 	{
 		$result = false;
 		$db     = Factory::getDbo();
@@ -1427,8 +1381,8 @@ class Com_BwPostmanInstallerScript
 		// BwPostman Administration Component
 		define('BWPM_ADMINISTRATOR', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
 
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension', BWPM_ADMINISTRATOR . '/src/Extension', false, false);
-		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service\\Html', BWPM_ADMINISTRATOR . '/src/Service/Html', false, false);
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension', BWPM_ADMINISTRATOR . '/src/Extension');
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service\\Html', BWPM_ADMINISTRATOR . '/src/Service/Html');
 
 		$component = Factory::getApplication()->bootComponent('com_bwpostman');
 		$componentFactory = $component->getMVCFactory();
@@ -1459,15 +1413,15 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * ensure SQL update files are processed
 	 *
-	 * @param string    $oldVersion
+	 * @param string $oldVersion
 	 *
-	 * @return  mixed  Number of queries processed or False on error
+	 * @return  false|int  Number of queries processed or False on error
 	 *
 	 * @throws Exception
 	 *
 	 * @since 3.0.0
 	 */
-	protected function processSqlUpdate($oldVersion)
+	protected function processSqlUpdate(string $oldVersion)
 	{
 		$update_count = 0;
 		$db           = Factory::getDbo();
@@ -1521,7 +1475,7 @@ class Com_BwPostmanInstallerScript
 
 						$db->setQuery($query);
 
-						$queryMessage = "Query to process: " . (string)$query;
+						$queryMessage = "Query to process: " . $query;
 						$this->logger->addEntry(new LogEntry($queryMessage, BwLogger::BW_DEBUG, $this->log_cat));
 
 						$db->execute();
@@ -1584,13 +1538,15 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * shows the HTML after installation/update
 	 *
-	 * @param   boolean $update
+	 * @param boolean $update
 	 *
 	 * @return  void
 	 *
+	 * @throws Exception
+	 *
 	 * @since
 	 */
-	public function showFinished($update)
+	public function showFinished(bool $update)
 	{
 		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
@@ -1603,11 +1559,9 @@ class Com_BwPostmanInstallerScript
 
 		$show_update = false;
 		$show_right  = false;
-		$release     = str_replace('.', '-', $this->release);
 		$lang_ver    = substr($lang->getTag(), 0, 2);
 		if ($lang_ver != 'de')
 		{
-			$lang_ver = 'en';
 			$forum    = "https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html";
 			$manual = "https://www.boldt-webservice.de/index.php/en/forum-en/manuals/bwpostman-manual.html";
 		}
@@ -1647,7 +1601,7 @@ class Com_BwPostmanInstallerScript
 
 		<div id="com_bwp_install_header">
 			<a href="https://www.boldt-webservice.de" target="_blank">
-				<img border="0" align="center" src="<?php echo Route::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
+				<img src="<?php echo Route::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
 			</a>
 		</div>
 		<div class="top_line"></div>
@@ -1802,7 +1756,7 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * Method to install sample templates
 	 *
-	 * @param string    $sql
+	 * @param string $sql
 	 *
 	 * @return  void
 	 *
@@ -1811,7 +1765,7 @@ class Com_BwPostmanInstallerScript
 	 * @since
 	 */
 
-	private function installdata(&$sql)
+	private function installdata(string $sql)
 	{
 		$app = Factory::getApplication();
 		$db  = Factory::getDbo();
@@ -1899,7 +1853,7 @@ class Com_BwPostmanInstallerScript
 		$params_default['disclaimer_target']               = "0";
 		$params_default['showinmodal']	                   = "1";
 		$params_default['use_captcha']                     = "0";
-		$params_default['security_question']               = "Wieviele Beine hat ein Pferd? (1, 2, ...)";
+		$params_default['security_question']               = "Wie viele Beine hat ein Pferd? (1, 2, ...)";
 		$params_default['security_answer']                 = "4";
 		$params_default['activation_salutation_text']      = "Hello";
 		$params_default['activation_text']                 = "text for activation";
@@ -2024,6 +1978,8 @@ class Com_BwPostmanInstallerScript
 	 *
 	 * @return mixed
 	 *
+	 * @throws Exception
+	 *
 	 * @since version
 	 */
 	private function getRootAsset()
@@ -2054,6 +2010,7 @@ class Com_BwPostmanInstallerScript
 	/**
 	 * @param $newRootRules
 	 *
+	 * @throws Exception
 	 *
 	 * @since version
 	 */
@@ -2078,16 +2035,17 @@ class Com_BwPostmanInstallerScript
 		$db->execute();
 	}
 
-/**
- *
- * @param  integer $clientId
- *
- * @return string
- *
- * @throws Exception
- * @since version
- */
-	private function getExtensionId($clientId)
+	/**
+	 *
+	 * @param integer $clientId
+	 *
+	 * @return string
+	 *
+	 * @throws Exception
+	 *
+	 * @since version
+	 */
+	private function getExtensionId(int $clientId)
 	{
 		$db    = Factory::getDbo();
 		$result = 0;
@@ -2096,7 +2054,7 @@ class Com_BwPostmanInstallerScript
 		$query->select($db->quoteName('extension_id'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_bwpostman'));
-		$query->where($db->quoteName('client_id') . ' = ' . $db->quote((int)$clientId));
+		$query->where($db->quoteName('client_id') . ' = ' . $db->quote($clientId));
 
 		try
 		{

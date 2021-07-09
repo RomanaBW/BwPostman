@@ -116,6 +116,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php // Show Disclaimer only if enabled in basic parameters
 					$disclaimer_link = '';
+					$title = '';
 
 					if ($this->params->get('disclaimer')) :
 						?>
@@ -127,7 +128,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							// Disclaimer article and target_blank or not
 							if ($this->params->get('disclaimer_selection') == 1 && $this->params->get('article_id') > 0)
 							{
-								$disclaimer_link = Route::_(Uri::base() . RouteHelper::getArticleRoute($this->params->get('article_id') . $tpl_com, 0));
+								$disclaimer_link = Route::_(Uri::base() . RouteHelper::getArticleRoute($this->params->get('article_id') . $tpl_com));
 							}
 							// Disclaimer menu item and target_blank or not
 							elseif ($this->params->get('disclaimer_selection') == 2 && $this->params->get('disclaimer_menuitem') > 0)
@@ -156,7 +157,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 									if ($this->params->get('disclaimer_target') == 0)
 									{
 										echo ' target="_blank"';
-									};
+									}
 								}
 								echo '>' . Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
 							</span>
@@ -242,8 +243,8 @@ jQuery(document).ready(function()
 	jQuery('.radio.btn-group label').addClass('btn');
 	jQuery(".btn-group label:not(.active)").click(function()
 	{
-		var label = jQuery(this);
-		var input = jQuery('#' + label.attr('for'));
+		const label = jQuery(this);
+		const input = jQuery('#' + label.attr('for'));
 
 		if (!input.prop('checked'))
 		{

@@ -60,7 +60,7 @@ class MycolorField extends ColorField
 	 *
 	 * @since   11.3
 	 */
-	protected function getInput()
+	protected function getInput(): string
 	{
 		// Initialize some field attributes.
 		$size     = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
@@ -80,12 +80,12 @@ class MycolorField extends ColorField
 		}
 
 		// Initialize JavaScript field attributes.
-		$onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
-		$onblur   = $this->element['onblur'] ? ' onblur="' . (string) $this->element['onblur'] . '"' : '';
+		$onchange = $this->element['onchange'] ? ' onchange="' . $this->element['onchange'] . '"' : '';
+		$onblur   = $this->element['onblur'] ? ' onblur="' . $this->element['onblur'] . '"' : '';
 
 		$class = $classes ? ' class="' . trim($classes) . '"' : '';
 
 		return '<input type="text" name="' . $this->name . '" id="' . $this->id . '" value="'
-			. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $class . $size . $disabled . $onchange . $onblur . '/>';
+			. htmlspecialchars($this->value, ENT_COMPAT) . '"' . $class . $size . $disabled . $onchange . $onblur . '/>';
 	}
 }

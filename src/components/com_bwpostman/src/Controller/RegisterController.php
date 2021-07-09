@@ -111,24 +111,24 @@ class RegisterController extends FormController
 	 * @param string $prefix The prefix for the PHP class name.
 	 * @param array  $config An optional associative array of configuration settings.
 	 *
-	 * @return bool|BaseDatabaseModel
+	 * @return BaseDatabaseModel
 	 *
 	 * @throws Exception
 	 *
 	 * @since    4.0.0
 	 */
-	public function getModel($name = 'register', $prefix = 'Site', $config = array('ignore_request' => true))
+	public function getModel($name = 'register', $prefix = 'Site', $config = array('ignore_request' => true)): BaseDatabaseModel
 	{
-		$model = $this->factory->createModel($name, $prefix, $config);
-
-		return $model;
+		return $this->factory->createModel($name, $prefix, $config);
 	}
 
 	/**
 	 * Method to save the registration
 	 *
-	 * @param   string|null  $key     The name of the primary key of the URL variable.
-	 * @param   string|null  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 * @param   string  $key     The name of the primary key of the URL variable.
+	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 *
+	 * @return void
 	 *
 	 * @throws Exception
 	 *
@@ -145,7 +145,7 @@ class RegisterController extends FormController
 			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
-		$model   = $this->getModel('register');
+		$model   = $this->getModel();
 		$session = $app->getSession();
 
 		// process input data, which will be stored in state
@@ -171,7 +171,7 @@ class RegisterController extends FormController
 				'stringQuestion' => 'string',
 				'stringCaptcha' => 'string',
 				'codeCaptcha' => 'string',
-				'bwp-' . BwPostmanHelper::getCaptcha(1) => 'string',
+				'bwp-' . BwPostmanHelper::getCaptcha() => 'string',
 				'bwp-' . BwPostmanHelper::getCaptcha(2) => 'string',
 				'task' => 'string',
 				'mod_id' => 'string'
@@ -242,7 +242,7 @@ class RegisterController extends FormController
 		}
 		else
 		{
-			$post['user_id'] = (int)$this->userid;
+			$post['user_id'] = $this->userid;
 		}
 
 		// process input data, which will *not* be stored in state
@@ -269,7 +269,7 @@ class RegisterController extends FormController
 			);
 			$session->set('subscriber_data', $subscriber_data);
 
-			$err = $app->getUserState('com_bwpostman.subscriber.register.error', null);
+			$err = $app->getUserState('com_bwpostman.subscriber.register.error');
 
 			if (is_array($err))
 			{
@@ -309,6 +309,8 @@ class RegisterController extends FormController
 	/**
 	 * Method to activate an account via the activation link
 	 *
+	 * @return void
+	 *
 	 * @throws Exception
 	 *
 	 * @since       2.0.0
@@ -334,7 +336,7 @@ class RegisterController extends FormController
 		}
 		else
 		{
-			$model = $this->getModel('register');
+			$model = $this->getModel();
 
 			// An error occurred while activate the subscriber account
 			$err_msg    = '';
@@ -368,6 +370,8 @@ class RegisterController extends FormController
 	 * Method to send the activation link
 	 * --> is needed if someone forgot the activation link
 	 *
+	 * @return void
+	 *
 	 * @throws Exception
 	 *
 	 * @since       2.0.0
@@ -384,7 +388,7 @@ class RegisterController extends FormController
 		}
 
 		// Get required system objects
-		$model			= $this->getModel('register');
+		$model			= $this->getModel();
 		$err			= new stdClass();
 		$err->err_code	= 0;
 		$post			= $jinput->getArray(
@@ -464,7 +468,11 @@ class RegisterController extends FormController
 	/**
 	 * Method to show a captcha
 	 *
-	 * @since	1.0.1
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since    1.0.1
 	 */
 	public function showCaptcha()
 	{

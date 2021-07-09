@@ -12,7 +12,7 @@
   echo "Display {{ display }}"
   /usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
 
-java -jar -Dwebdriver.chrome.driver=/opt/selenium/chromedriver -Dwebdriver.chrome.logfile=/data/logs/chromedriver_log.txt -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone-3.5.3.jar -port 4445 >/data/logs/selenium_log.txt 2>/data/logs/selenium_log.txt &
+java -jar -Dwebdriver.chrome.driver=/opt/selenium/chromedriver-91.0.4472.19 -Dwebdriver.chrome.logfile=/data/logs/chromedriver_log.txt -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone.jar -port 4445 >/data/logs/selenium_log.txt 2>/data/logs/selenium_log.txt &
 
 # Loop until selenium server is available
 until $(curl --output /dev/null --silent --head --fail http://localhost:4445/wd/hub); do

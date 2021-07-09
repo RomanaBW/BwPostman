@@ -1,17 +1,19 @@
 ---
 # Fast changing variables
 #joomla_version_4a: "4.0.0a12"
-joomla_version_4b: "4.0.0b1-7"
+joomla_version_4b: "4.0.0rc-3"
 
 # this one has to be adjusted to the desired Joomla version
 joomla_version: "{{ joomla_version_4b }}"
 
 #j_version_short: "j4a"
-j_version_short: "j4b"
+#j_version_short: "j4b"
+j_version_short: "j4rc"
 
 bwpm_version: "4.0.0"
 #j_alpha_version: "alpha12"
 j_beta_dev_version: "beta7"
+j_rc_version: "rc3"
 
 vm_version: "3.4.2.9966"
 tcpdf_version: "1.0.5"
@@ -24,12 +26,14 @@ j_master_version: "{{ j_version_short[1] }}"
 j_package_name:
 #  j4a: "Joomla_4.0.0-{{ j_alpha_version }}-Alpha-Full_Package.tar.bz2"
   j4b: "Joomla_4.0.0-{{ j_beta_dev_version }}-Beta-Full_Package.zip"
+  j4rc: "Joomla_4.0.0-{{ j_rc_version }}-Release_Candidate-Full_Package.zip"
 
 j_main_version: "{{ joomla_version[0] }}"
 
+
 joomla_packages:
-  - src: "https://github.com/joomla/joomla-cms/releases/download/4.0.0-{{ j_beta_dev_version }}/{{ j_package_name.j4b }}"
-    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j4b }}"
+  - src: "https://github.com/joomla/joomla-cms/releases/download/4.0.0-{{ j_rc_version }}/{{ j_package_name.j4rc }}"
+    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j4rc }}"
 #  - src: "https://github.com/joomla/joomla-cms/releases/download/4.0.0-{{ j_alpha_version }}/{{ j_package_name.j4a }}"
 #    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j4a }}"
 
@@ -107,8 +111,8 @@ official_mariadb: bitnami/mariadb:10.3-debian-10
 official_mariadb_short: mariadb:10.3-debian-10
 official_apache: php:apache
 official_apache_short: php-apache
-official_tester: romana/os-chromium-tester:latest
-official_tester_short: os-phantomjs-tester:latest
+official_tester: romana/selenium-standalone-chrome-debug-ffmpeg:latest
+official_tester_short: selenium-standalone-chrome-debug-ffmpeg:latest
 
 base_source:
   db_container_name: mariadb_build
@@ -131,7 +135,7 @@ bare_source:
   web_container_name: joomla_bare_web
   web_image_tag_source: "{{ base_target.web_image_tag_target }}"
   tester_container_name: bwpm_bare_tester
-  tester_image_tag_source: "romana/os-chromium-tester:latest"
+  tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
 
   tester_network_name: "bwpm_network-{{ test_suite }}"
 
@@ -150,7 +154,7 @@ required_source:
   web_container_name: joomla_jce_web
   web_image_tag_source: "romana/joomla-bare-files:{{ joomla_version }}"
   tester_container_name: bwpm_jce_tester
-  tester_image_tag_source: "romana/os-chromium-tester:latest"
+  tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
 
   tester_network_name: "bwpm_network-{{ test_suite }}"
 
@@ -161,7 +165,7 @@ required_target:
   web_image_tag_target: "romana/joomla-jce-files:{{ joomla_version }}"
   tester_image: "{{ private_docker_repo }}/{{ required_source.tester_image_tag_source }}"
 #   At this point there is no need to push the tester!
-#  tester_image_tag_target: "romana/os-chromium-tester"
+#  tester_image_tag_target: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
 
 
 # Settings for creating joomla containers with installed VirtueMart
@@ -171,7 +175,7 @@ virtuemart_source:
   web_container_name: joomla_vm_web
   web_image_tag_source: "romana/joomla-jce-files:{{ joomla_version }}"
   tester_container_name: bwpm_vm_tester
-  tester_image_tag_source: "romana/os-chromium-tester:latest"
+  tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
 
   tester_network_name: "bwpm_network-{{ test_suite }}"
 
@@ -182,7 +186,7 @@ virtuemart_target:
   web_image_tag_target: "romana/joomla-vm-files:{{ joomla_version }}"
   tester_image: "{{ private_docker_repo }}/{{ virtuemart_source.tester_image_tag_source }}"
 #   At this point there is no need to push the tester!
-#  tester_image_tag_target: "romana/os-chromium-tester"
+#  tester_image_tag_target: "romana/selenium-standalone-chrome-debug-ffmpeg"
 
 
 # Settings for creating smoke tests container

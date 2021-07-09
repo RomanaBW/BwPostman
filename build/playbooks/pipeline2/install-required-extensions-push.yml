@@ -149,14 +149,25 @@
         db_host: "{{ required_source.db_container_name }}"
 
     - name: create tests folder
-      file:
-        path: "/data/tests"
-        state: directory
-        mode: 0777
-
-    - name: copy codeception files
       become: true
-      become_user: root
+      file:
+        path: "{{ item }}"
+        state: directory
+        group: users
+        owner: "1200"
+        mode: 0777
+      with_items:
+        - /data
+        - /data/tests
+
+#    - name: rename .bashrc
+#      become: true
+#      command: mv /root/.bashrc /root/.bashrc_sav
+
+
+
+# See https://bobcares.com/blog/rsync-error-protocol-incompatibility/
+    - name: copy codeception files
       synchronize:
         src: "{{ test_files_source_local }}"
         dest: "/data/tests"
@@ -166,8 +177,6 @@
           - "--exclude=_output"
 
     - name: remove AcceptanceTesterActions.php
-      become: true
-      become_user: root
       file:
         path: "/data/tests/_support/_generated/AcceptanceTesterActions.php"
         state: absent
@@ -178,8 +187,6 @@
         dest: "/data/codeception.yml"
 
     - name: Prepare manifest for acceptance tests
-      become: true
-      become_user: root
       template:
         src: "acceptance.suite.yml.j2"
         dest: "/data/tests/acceptance.suite.yml"

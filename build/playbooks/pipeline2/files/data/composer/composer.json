@@ -1,0 +1,25 @@
+{
+    "require": {
+        "phpunit/phpunit": "8.*",
+        "phpunit/php-invoker": "3.1.*",
+        "codeception/codeception": "4.1.*",
+        "codeception/module-webdriver": "1.2.*",
+        "codeception/module-db": "1.1.*",
+        "codeception/module-asserts": "1.*",
+        "codeception/module-filesystem": "1.*",
+        "symfony/dependency-injection": "5.3.*",
+        "symfony/http-kernel": "5.3.*",
+        "symfony/process": "5.1.*",
+        "symfony/phpunit-bridge": "5.3.*",
+        "phpdocumentor/phpdocumentor": "3.0.*",
+        "codeception/specify": "1.4.*",
+        "codeception/verify": "1.*",
+        "phpseclib/phpseclib": "3.0.*"
+    },
+    "require-dev": {
+        "captbaritone/mailcatcher-codeception-module": "2.3.*"
+    },
+    "config": {
+        "bin-dir": "/usr/bin/"
+    }
+}

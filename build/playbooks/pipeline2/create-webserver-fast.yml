@@ -1,0 +1,116 @@
+---
+# Attention: This playbook has to be run at the target machine, where the container runs!
+# This playbook only works correctly at server. Other machines as host for this playbook don't get internet connection!
+
+- hosts: localhost
+  gather_facts: no
+
+  vars_files:
+    - /repositories/systemscripts/Ansible/general_vars/general_bw_vars.yml
+    - /repositories/systemscripts/Ansible/general_vars/general_bw_ssl_vars.yml
+    - vars/tester-container-vars.yml
+
+  tasks:
+    - name: Make the base image available locally
+      docker_image:
+        name: "php:7.4.20-apache-buster"
+        source: pull
+        force_source: yes
+
+    - name: Create the container
+      docker_container:
+        image: "php:7.4.20-apache-buster"
+        name: "{{ bw_webserver_fast }}"
+        hostname: ""
+        command: "apache2-foreground"
+        detach: yes
+        stop_signal: SIGRTMIN+3
+        volumes:
+          - "/repositories:/repositories"
+#        networks:
+#          - name: "{{ bw_web_network_name }}"
+#            ipv4_address: "192.168.1.99"
+#        etc_hosts: >
+#          {
+#            "universe3.bet2.nil" : "192.168.2.100",
+#          }
+
+    - name: Update apt at container
+      shell: "docker exec -t {{ bw_webserver_fast }} apt-get update"
+      become: yes
+
+    - name: Install mc, sudo and python at container
+      shell: "docker exec -t {{ bw_webserver_fast }} apt-get install -y mc sudo python3 python3-docker python3-coverage python3-jmespath python3-passlib python3-ply python3-pycryptodome python3-simplejson"
+      become: yes
+#      ignore_errors: true
+
+    - name: Update-alternatives python version 3 to default
+      become: true
+      shell: "docker exec -t {{ bw_webserver_fast }} update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2"
+
+- hosts: "{{ bw_webserver_fast }}"
+  connection: docker
+  gather_facts: no
+  vars_files:
+    - /repositories/systemscripts/Ansible/general_vars/general_bw_vars.yml
+    - vars/tester-container-vars.yml
+
+  tasks:
+    - name: Install basic packages
+      apt:
+        pkg:
+          - "{{ item }}"
+        install_recommends: no
+      loop: "{{ webserver_fast_packages }}"
+
+    - name: Update pecl channel
+      command: "pecl channel-update pecl.php.net"
+
+    - name: Install pecl mcrypt
+      command: "pecl install mcrypt"
+
+    - name: Install php extensions
+      shell: "docker-php-ext-install -j$(nproc) mysqli iconv curl"
+
+    - name: Configure php
+#      shell: "docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/"
+      shell: "docker-php-ext-configure gd"
+
+    - name: Install php gd
+      shell: "docker-php-ext-install -j$(nproc) gd"
+
+    - name: Chmod to apache log file
+      file:
+        path: "/var/log/apache2"
+        mode: 0777
+
+    - name: Copy apache config files to container
+      copy:
+        src: files/config/apache2
+        dest: /etc/apache2
+
+    - name: Add server name to apache config
+      shell: "echo 'ServerName localhost' >> /etc/apache2/sites-enabled/000-default.conf"
+
+    - name: Copy php config file to container
+      copy:
+        src: files/config/php.ini
+        dest: /usr/local/etc/php/
+
+
+
+- hosts: localhost
+  vars_files:
+    - /repositories/systemscripts/Ansible/general_vars/general_bw_vars.yml
+    - vars/tester-container-vars.yml
+    - vars/fast-test-vars.yml
+
+  tasks:
+    - name: Stop container
+      shell: "docker stop {{ bw_webserver_fast }}"
+
+    - name: Commit the base tester container
+      command: 'docker commit -a "{{ docker_author }}" {{ bw_webserver_fast }} {{ private_docker_repo }}/romana/webserver_fast_{{ php_version }}'
+
+    - name: Push base tester container image to private registry
+      shell: "docker push {{ private_docker_repo }}/romana/webserver_fast_{{ php_version }}"

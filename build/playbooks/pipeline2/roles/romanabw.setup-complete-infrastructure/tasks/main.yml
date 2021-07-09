@@ -44,17 +44,22 @@
         "localhost {{ source.web_container_name }}": "127.0.0.1"
       }
 
+- name: Show tester container image name
+  debug:
+    msg: "{{ target.tester_image }}"
+
 - name: Create the tester container
   docker_container:
-    image: '{{ target.tester_image }}'
+    image: "{{ target.tester_image }}"
     name: "{{ source.tester_container_name }}"
-    hostname: '{{ source.tester_container_name }}'
+    hostname: "{{ source.tester_container_name }}"
     detach: yes
     command: sleep infinity
     networks:
       - name: "{{ source.tester_network_name }}"
     volumes:
       - /repositories:/repositories
+      - /dev/shm:/dev/shm
 
 - name: Get IP of webserver
   shell: "docker inspect -f '{''{ .NetworkSettings.IPAddress }''}' {{ source.web_container_name }}"

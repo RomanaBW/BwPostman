@@ -14,12 +14,12 @@ paths:
 modules:
   enabled:
     - \Helper\Acceptance
-    #      - \Helper\MailCatcher
     - WebDriver
     - Db
     - Asserts
     - Filesystem
   #      - MailCatcher
+  #      - \Helper\MailCatcher
 
   # Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
   config:
@@ -39,7 +39,7 @@ modules:
       port: 4445
       capabilities:
         chromeOptions:
-          args: ["--no-sandbox", "--window-size=1920,1080"]
+          args: ["--window-size=1920,1080"]
           prefs:
             download.default_directory: "/tests/tests/_output"
 

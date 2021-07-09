@@ -8,7 +8,6 @@
     - name: Import transmitted parameters
       set_fact:
         joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('400b1-3', true) }}"
-#        joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('3916', true) }}"
         bwpm_version: "{{ lookup('env','BW_TEST_BWPM_VERSION') | d('300', true) }}"
         test_cat: "{{ lookup('env','BW_TEST_CAT') | d('details_nl', true) }}"
         test_debug: "{{ lookup('env','BW_TEST_DEBUG') | d('--debug', true) }}"
@@ -65,6 +64,18 @@
         - "{{ container_dir }}"
         - "{{ container_dir }}/infrastructure"
         - "{{ container_dir }}/testers"
+        - "{{ test_dir }}/_output/{{ project_name }}/videos"
+        - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
+
+    - name: Ensure output path is writable
+      become: true
+      file:
+        path: "{{ item }}"
+        state: directory
+        recurse: yes
+        mode: 0777
+      loop:
+        - "{{ test_dir }}"
         - "{{ test_dir }}/_output/{{ project_name }}/videos"
         - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
 

@@ -140,20 +140,6 @@
       set_fact:
         db_host: "{{ smoke_source.db_container_name }}"
 
-    - name: create data folder
-      file:
-        path: "/data"
-        state: directory
-        mode: 0777
-
-    - name: Set project dir variable
-      set_fact:
-        bw_project_base_dir: "{{ project_base_dir }}"
-
-    - name: Show test source path
-      debug:
-        msg: "{{ test_files_source }}"
-
     - name: create tests folder
       become: true
       file:
@@ -166,6 +152,14 @@
         - /data
         - /data/tests
 
+    - name: Set project dir variable
+      set_fact:
+        bw_project_base_dir: "{{ project_base_dir }}"
+
+    - name: Show test source path
+      debug:
+        msg: "{{ test_files_source }}"
+
     - name: copy tests
       become: true
       become_user: root
@@ -176,6 +170,11 @@
         recursive: yes
         rsync_opts:
           - "--exclude=_output"
+
+    - name: Set permissions for tests
+      become: true
+      become_user: root
+      shell: "chmod -R 0777 /data/tests"
 
 # Following is same as at run-acceptance-tests and could be moved to a role
     - name: remove AcceptanceTesterActions.php

@@ -142,6 +142,11 @@
           - "--exclude=_output"
       when: test_suite == 'acceptB2S' or test_suite == 'acceptTC'
 
+    - name: Set permissions for tests
+      become: true
+      become_user: root
+      shell: "chmod -R 0777 /data/tests"
+
 # Following is same as at run-smoke-tests and could be moved to a role
     - name: remove AcceptanceTesterActions.php
       become: true

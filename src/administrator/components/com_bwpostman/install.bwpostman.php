@@ -29,6 +29,8 @@ namespace BoldtWebservice\Component\BwPostman\Administrator;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
+use JLoader;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
@@ -48,13 +50,14 @@ use Joomla\Component\Users\Administrator\Model\LevelModel;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanInstallHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
+use RuntimeException;
 
 /**
  * Class Com_BwPostmanInstallerScript
  *
  * @since       0.9.6.3
  */
-class Com_BwPostmanInstallerScript
+class com_bwpostmanInstallerScript
 {
 	/**
 	 * @var InstallerAdapter $parentInstaller

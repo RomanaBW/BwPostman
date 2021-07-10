@@ -608,6 +608,8 @@ class MaintenancePage
 			$filename = self::calculateFilename($compressed);
 		}
 
+		codecept_debug('Filename for restore: ' . $filename);
+
 		$I->attachFile(self::$buttonGetFile, $filename);
 
 		$I->click(self::$buttonStartRestore);

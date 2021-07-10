@@ -73,20 +73,20 @@ class InstallUsersPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $accountDetailsTab              = '/html/body/div[2]/section/div/div/form/fieldset/ul/li[1]/a';
+	public static $accountDetailsTab              = "//*/a[@id='tab-details']";
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $usergroupTab              = 'html/body/div[2]/section/div/div/form/fieldset/ul/li[2]/a';
+	public static $usergroupTab              = "//*/a[@id='tab-groups']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.1.0
 	 */
-	public static $publicGroup      = 'html/body/div[2]/section/div/div/form/fieldset/div/div[2]/div[1]/div/label';
+	public static $publicGroup      = "//*/section[@id='groups']/fieldset/div/div[1]/div/label";
 
 	/**
 	 * @var string

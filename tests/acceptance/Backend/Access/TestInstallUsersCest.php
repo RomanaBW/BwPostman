@@ -65,8 +65,8 @@ class TestInstallUsersCest
 	 */
 	public function installNeededUsers(\AcceptanceTester $I)
 	{
-		$I->wantTo("install needed users and assign to appropriate usergroups");
-		$I->expectTo("have users in database");
+		$I->wantTo("install needed users");
+		$I->expectTo("have needed users in database");
 
 		$loginPage = new LoginPage($I);
 		$this->_login($loginPage, Generals::$admin);
@@ -78,63 +78,30 @@ class TestInstallUsersCest
 			codecept_debug('User:');
 			codecept_debug($user);
 
-			# Check for usergroup. If not exists, throw exception
 			$userName = $user['user'];
-			try
-			{
-				$groupId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'usergroups', 'id', array('title' => $userName));
-				codecept_debug('Group ID Try: ');
-				codecept_debug($groupId);
 
-				if (!$groupId[0])
-				{
-					$e = new \Exception();
-					throwException($e);
-				}
-			}
-			catch (\RuntimeException $e)
-			{
-				codecept_debug('Exception Group ID: ');
-				codecept_debug($e);
+			# Check if user exists and set user ID variable
+			codecept_debug('Check if user exists and set user ID variable');
+			$userId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'users', 'id', array('name' => $userName));
+			codecept_debug('User ID from table:');
+			codecept_debug($userId);
 
-				codecept_debug('Error while grabbing group ID!');
-				codecept_debug('Group ID Catch: ');
-				codecept_debug($groupId);
+			if (empty($userId))
+			{
+				$userId = 0;
 			}
 
-			# Check for user. If exists, ensure checkbox is checked
-			try
+			if (array_key_exists(0, $userId))
 			{
-				$userId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'users', 'id', array('name' => $userName));
-
-				codecept_debug('Show user ID complete:');
-				codecept_debug($userId);
-				codecept_debug('Show only first user ID:');
-				codecept_debug($userId[0]);
-
-				if (array_key_exists(0, $userId))
-				{
-					$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
-
-					// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
-					$groupMap = $I->grabFromDatabase(Generals::$db_prefix . 'user_usergroup_map', 'group_id', array('user_id' => $userId[0]));
-
-					if (!$groupMap)
-					{
-						$I->insertRecordToTable('user_usergroup_map', "$userId[0], $groupId[0]");
-					}
-				}
+				$userId = (int)$userId[0];
 			}
-			catch (\RuntimeException $e)
+
+			codecept_debug('Show resulting user ID: ');
+			codecept_debug($userId);
+
+			// User doesn't exist, so create it
+			if ($userId === 0)
 			{
-				codecept_debug('Exception User ID: ');
-				codecept_debug($e);
-
-				codecept_debug('Error while grabbing user ID!');
-				codecept_debug('User ID: ');
-				codecept_debug($userId);
-
-				// Create user, if not exists
 				$I->click(Generals::$toolbar['New']);
 				$I->waitForElement(UsersPage::$registerName);
 				$I->click(UsersPage::$accountDetailsTab);
@@ -146,13 +113,13 @@ class TestInstallUsersCest
 				$I->fillField(UsersPage::$registerPassword2, $user['password']);
 				$I->fillField(UsersPage::$registerEmail, $user['user'] . "@tester-net.nil");
 
-				$I->clickAndWait(UsersPage::$usergroupTab, 1);
-				$I->waitForElementVisible(UsersPage::$publicGroup, 2);
-
-				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
-				$I->scrollTo($checkbox, 0, -100);
-				$I->wait(1);
-				$I->click($checkbox);
+//				$I->clickAndWait(UsersPage::$usergroupTab, 1);
+//				$I->waitForElementVisible(UsersPage::$publicGroup, 2);
+//
+//				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId);
+//				$I->scrollTo($checkbox, 0, -100);
+//				$I->wait(1);
+//				$I->click($checkbox);
 
 				$I->click(Generals::$toolbar['Save & Close']);
 				$I->waitForElement(Generals::$alert_success, 10);

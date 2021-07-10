@@ -135,8 +135,8 @@ class TestInstallUsersCest
 				$I->fillField(UsersPage::$registerPassword2, $user['password']);
 				$I->fillField(UsersPage::$registerEmail, $user['user'] . "@tester-net.nil");
 
-				$I->click(UsersPage::$usergroupTab);
-				$I->waitForElement(UsersPage::$publicGroup);
+				$I->clickAndWait(UsersPage::$usergroupTab, 1);
+				$I->waitForElementVisible(UsersPage::$publicGroup, 2);
 
 				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
 				$I->scrollTo($checkbox, 0, -100);

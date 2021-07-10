@@ -86,7 +86,7 @@
 			<filename>import_demo.xml</filename>
 			<filename>index.html</filename>
 			<filename>LICENSE.txt</filename>
-			<filename>install.bwpostman.php</filename>
+			<filename>com_bwpostmanInstallerScript.php</filename>
 			<folder>assets</folder>
 			<folder>classes</folder>
 			<folder>elements</folder>
@@ -109,7 +109,7 @@
 
 	</administration>
 
-	<scriptfile>install.bwpostman.php</scriptfile>
+	<scriptfile>com_bwpostmanInstallerScript.php</scriptfile>
 
 	<updateservers>
 		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_update.xml</server>

@@ -94,6 +94,9 @@ class TestInstallUsersCest
 			}
 			catch (\RuntimeException $e)
 			{
+				codecept_debug('Exception Group ID: ');
+				codecept_debug($e);
+
 				codecept_debug('Error while grabbing group ID!');
 				codecept_debug('Group ID Catch: ');
 				codecept_debug($groupId);
@@ -124,6 +127,9 @@ class TestInstallUsersCest
 			}
 			catch (\RuntimeException $e)
 			{
+				codecept_debug('Exception User ID: ');
+				codecept_debug($e);
+
 				codecept_debug('Error while grabbing user ID!');
 				codecept_debug('User ID: ');
 				codecept_debug($userId);

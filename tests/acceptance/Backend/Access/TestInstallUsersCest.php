@@ -104,7 +104,12 @@ class TestInstallUsersCest
 			{
 				$userId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'users', 'id', array('name' => $userName));
 
-				if ($userId[0])
+				codecept_debug('Show user ID complete:');
+				codecept_debug($userId);
+				codecept_debug('Show only first user ID:');
+				codecept_debug($userId[0]);
+
+				if (array_key_exists(0, $userId))
 				{
 					$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
 
@@ -136,8 +141,7 @@ class TestInstallUsersCest
 				$I->fillField(UsersPage::$registerEmail, $user['user'] . "@tester-net.nil");
 
 				$I->clickAndWait(UsersPage::$usergroupTab, 1);
-				$I->waitForText('Public', 2);
-//				$I->waitForElementVisible(UsersPage::$publicGroup, 2);
+				$I->waitForElementVisible(UsersPage::$publicGroup, 2);
 
 				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
 				$I->scrollTo($checkbox, 0, -100);

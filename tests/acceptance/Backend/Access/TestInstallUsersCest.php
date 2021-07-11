@@ -120,7 +120,7 @@ class TestInstallUsersCest
 				// Check, if user is mapped to appropriate group
 				codecept_debug('Check, if existing user is mapped to appropriate group');
 
-				if (array_key_exists(0, $userId))
+				if (is_array($userId) && array_key_exists(0, $userId))
 				{
 					$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId);
 

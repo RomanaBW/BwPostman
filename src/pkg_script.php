@@ -68,8 +68,6 @@ class Pkg_BwPostmanInstallerScript
 		// Get component manifest file version
 		$manifest = $parent->getManifest();
 		$this->release = $manifest->version;
-
-		$this->showFinished(false);
   }
 
 	/**
@@ -90,8 +88,6 @@ class Pkg_BwPostmanInstallerScript
 		// Get component manifest file version
 		$manifest = $parent->getManifest();
 		$this->release = $manifest->version;
-
-		$this->showFinished(true);
   }
 
 	/**
@@ -108,8 +104,11 @@ class Pkg_BwPostmanInstallerScript
 
 	public function postflight(string $type): bool
 	{
-	if ($type == 'update')
-	{
+		$update = false;
+
+		if ($type == 'update')
+		{
+			$update = true;
 			$oldRelease	= Factory::getApplication()->getUserState('com_bwpostman.update.oldRelease', '');
 
 			if (version_compare($oldRelease, '2.2.1', 'lt'))
@@ -117,10 +116,13 @@ class Pkg_BwPostmanInstallerScript
 				// rebuild update servers
 				$installerModel = new UpdatesitesModel();
 				$installerModel->rebuild();
+			}
 		}
+
+		$this->showFinished($update);
+
+		return true;
 	}
-	return true;
-  }
 
 	/**
 	 * shows the HTML after installation/update

@@ -124,9 +124,9 @@ class Pkg_BwPostmanInstallerScript
 
 		$this->showFinished($update);
 
-//		// Clean and close the output buffer
-//		ob_end_clean();
-//
+		// Send the output buffer
+		ob_flush();
+
 //		// Append to the message object
 //		$this->extensionMessage .= ob_get_clean();
 

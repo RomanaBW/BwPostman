@@ -106,7 +106,7 @@ class TestInstallUsersCest
 				$userId = 0;
 			}
 
-			if (array_key_exists(0, $userId))
+			if (is_array($userId) && array_key_exists(0, $userId))
 			{
 				$userId = (int)$userId[0];
 			}

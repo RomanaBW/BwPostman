@@ -120,12 +120,12 @@ class Pkg_BwPostmanInstallerScript
 		}
 
 		ob_start();
-		ob_implicit_flush(false);
+//		ob_implicit_flush(false);
 
 		$this->showFinished($update);
 
 		// Send the output buffer
-		ob_flush();
+//		ob_flush();
 
 //		// Append to the message object
 //		$this->extensionMessage .= ob_get_clean();

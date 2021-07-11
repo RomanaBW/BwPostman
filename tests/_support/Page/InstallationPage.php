@@ -759,22 +759,22 @@ class InstallationPage
 
 		self::doInstallation($I);
 
-		$heading = $I->grabTextFrom(Generals::$alert_heading4);
-
-		if ($heading == "Warning")
-		{
-			// @ToDo: Insert workaround for too fast container installation
-			self::unInstallation($I);
-
-			$I->amOnPage(self::$install_url);
-			$I->waitForElement(Generals::$pageTitle, 30);
-			$I->see(self::$headingInstall);
-
-			self::doInstallation($I);
-		}
-
-		$I->waitForElement(Generals::$alert_success4, 30);
-		$I->see(self::$installSuccessMsg, Generals::$alert_success4);
+//		$heading = $I->grabTextFrom(Generals::$alert_heading4);
+//
+//		if ($heading == "Warning")
+//		{
+//			// @ToDo: Insert workaround for too fast container installation
+//			self::unInstallation($I);
+//
+//			$I->amOnPage(self::$install_url);
+//			$I->waitForElement(Generals::$pageTitle, 30);
+//			$I->see(self::$headingInstall);
+//
+//			self::doInstallation($I);
+//		}
+//
+//		$I->waitForElement(Generals::$alert_success4, 30);
+//		$I->see(self::$installSuccessMsg, Generals::$alert_success4);
 		$I->dontSee("Error", Generals::$alert_heading4);
 		$I->dontSee("Warning", Generals::$alert_heading4);
 	}

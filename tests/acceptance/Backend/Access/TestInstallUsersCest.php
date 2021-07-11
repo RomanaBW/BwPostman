@@ -80,6 +80,21 @@ class TestInstallUsersCest
 
 			$userName = $user['user'];
 
+			$groupId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'usergroups', 'id', array('title' => $userName));
+
+			if (empty($groupId))
+			{
+				$groupId = 0;
+			}
+
+			if (array_key_exists(0, $groupId))
+			{
+				$groupId = (int)$groupId[0];
+			}
+
+			codecept_debug('Show resulting group ID: ');
+			codecept_debug($groupId);
+
 			# Check if user exists and set user ID variable
 			codecept_debug('Check if user exists and set user ID variable');
 			$userId = $I->grabColumnFromDatabase(Generals::$db_prefix . 'users', 'id', array('name' => $userName));
@@ -98,6 +113,32 @@ class TestInstallUsersCest
 
 			codecept_debug('Show resulting user ID: ');
 			codecept_debug($userId);
+
+			// If user exists and appropriate group exists
+			if ($userId !== 0 && $groupId !== 0)
+			{
+				// Check, if user is mapped to appropriate group
+				codecept_debug('Check, if existing user is mapped to appropriate group');
+
+				if (array_key_exists(0, $userId))
+				{
+					$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId);
+
+					// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
+					$groupMap = $I->grabFromDatabase(Generals::$db_prefix . 'user_usergroup_map', 'group_id', array('user_id' => $userId));
+
+					codecept_debug('Show group map from table: ');
+					codecept_debug($groupMap);
+
+					// Is user is not mapped, insert it
+					if (!$groupMap)
+					{
+						$I->insertRecordToTable('user_usergroup_map', "$userId, $groupId");
+					}
+				}
+			}
+
+
 
 			// User doesn't exist, so create it
 			if ($userId === 0)

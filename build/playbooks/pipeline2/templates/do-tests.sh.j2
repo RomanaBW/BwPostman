@@ -52,7 +52,7 @@ failed_check=0
 # Start x-server anew, if recording no is selected
 if [ {{ do_record }} != "true" ]; then
   if [ -e "/tmp/.X45-lock" ]; then
-    rm /tmp/.X45-lock
+    rm -f /tmp/.X45-lock
   fi
   /usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
   echo "PID of Xvfb before test: $(pidof Xvfb)"

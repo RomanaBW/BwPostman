@@ -11,6 +11,16 @@
   docker_network:
     name: "{{ source.tester_network_name }}"
 
+- name: Enure container images are current (force download)
+  docker_image:
+    name: "{{ item }}"
+    source: pull
+    force_source: yes
+  with_items:
+    - "{{ target.db_image }}"
+    - "{{ target.web_image }}"
+    - "{{ target.tester_image }}"
+
 - name: Create the database container
   docker_container:
     image: '{{ target.db_image }}'

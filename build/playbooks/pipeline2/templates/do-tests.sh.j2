@@ -4,6 +4,9 @@ whoami
 # delete old failure file
 rm -f {{ codecept_failed_file }}
 
+# delete old X-server lock file
+rm -f /tmp/X45-lock
+
 # export sudo user
 export BW_TESTER_USER="jenkins"
 export BWPM_VERSION_TO_TEST="${1}"
@@ -93,5 +96,8 @@ if [ -z "$PIDOF_XVFB" ]; then
   echo "Xvfb is to kill"
   kill $PIDOF_XVFB
 fi
+
+# Ensure X-server lock file is removed
+rm -f /tmp/X45-lock
 
   exit ${failed_check}

@@ -575,7 +575,7 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $disclaimer_menuitem_text    = "Your home page is set to display the four most recent articles from the blog category in a column.";
+	public static $disclaimer_menuitem_text    = "This tells you a bit about this blog and the person who writes it.";
 
 	/**
 	 * @var string

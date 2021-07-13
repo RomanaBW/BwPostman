@@ -643,6 +643,8 @@ class TemplateEditPage
 		{
 			self::selectThumbnail($I, $user);
 		}
+
+		$I->wait(1);
 	}
 
 	/**

@@ -892,6 +892,8 @@ class TestTemplatesDetailsCest
 		TplEdit::fillRequired($I, 'HTML');
 
 		TplEdit::selectThumbnail($I, 'AdminTester');
+
+		$I->wait(1);
 	}
 
 	/**

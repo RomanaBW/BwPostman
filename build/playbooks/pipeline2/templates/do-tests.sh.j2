@@ -51,9 +51,7 @@ failed_check=0
 
 # Start x-server anew, if recording no is selected
 if [ {{ do_record }} != "true" ]; then
-  if [ -e "/tmp/.X45-lock" ]; then
-    rm -f /tmp/.X45-lock
-  fi
+  rm -f /tmp/.X45-lock
   /usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
   echo "PID of Xvfb before test: $(pidof Xvfb)"
   PIDOF_XVFB="$(pidof Xvfb)"
@@ -67,11 +65,12 @@ fi
 echo "PID of Xvfb after test: ${PIDOF_XVFB}"
 # Kill Xvfb
 if [ {{ do_record }} != "true" ]; then
-  echo "PID of Xvfb after test 2: ${PIDOF_XVFB}"
+  echo "PID of Xvfb after test Point 2: ${PIDOF_XVFB}"
   if [ ! -z "${PIDOF_XVFB}" ]; then
-    echo "Xvfb is to kill"
+    echo "Xvfb is to kill Point 1"
     echo $PIDOF_XVFB | xargs kill -9
     echo "PID of Xvfb after kill: $(pidof Xvfb)"
+    sleep 2
   fi
 fi
 
@@ -93,7 +92,7 @@ fi
 
 # Kill Xvfb
 if [ -z "$PIDOF_XVFB" ]; then
-  echo "Xvfb is to kill"
+  echo "Xvfb is to kill Point 2"
   kill $PIDOF_XVFB
 fi
 

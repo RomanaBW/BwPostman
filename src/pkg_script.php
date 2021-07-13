@@ -119,8 +119,6 @@ class Pkg_BwPostmanInstallerScript
 			}
 		}
 
-//		ob_start();
-
 		$this->showFinished($update);
 
 		return true;

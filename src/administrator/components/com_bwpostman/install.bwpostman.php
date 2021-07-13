@@ -1847,7 +1847,7 @@ class com_bwpostmanInstallerScript
 		$params_default['disclaimer_selection']            = "1";
 		$params_default['disclaimer_link']                 = "http:\/\/www.disclaimer.de\/disclaimer.htm";
 		$params_default['article_id']                      = "70";
-		$params_default['disclaimer_menuitem']             = "457";
+		$params_default['disclaimer_menuitem']             = "108";
 		$params_default['disclaimer_target']               = "0";
 		$params_default['showinmodal']	                   = "1";
 		$params_default['use_captcha']                     = "0";

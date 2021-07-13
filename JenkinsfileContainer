@@ -106,7 +106,7 @@ pipeline {
 						}
 					}
 				}
-				stage('4-4: Mod Reg + FUM + P1 + U2S') {
+				stage('4-4: FUM + U2S + Mod Reg + P1') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_4}'"

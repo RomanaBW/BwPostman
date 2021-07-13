@@ -482,7 +482,7 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_disclaimer_menuitem_text    = "Your home page is set to display the four most recent articles from the blog category in a column.";
+	public static $mod_disclaimer_menuitem_text    = "This tells you a bit about this blog and the person who writes it.";
 
 	/**
 	 * @var string
@@ -594,7 +594,7 @@ class RegistrationModulePage
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '1');
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
 		$I->setManifestOption('mod_bwpostman', 'article_id', '6');
-		$I->setManifestOption('mod_bwpostman', 'disclaimer_menuitem', '124');
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_menuitem', '108');
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_target', '0');
 		$I->setManifestOption('mod_bwpostman', 'showinmodal', '1');
 		$I->setManifestOption('mod_bwpostman', 'use_captcha', '0');

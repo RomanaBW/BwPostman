@@ -338,6 +338,7 @@ class TestTemplatesDetailsCest
 		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
+		$I->wait(1);
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
@@ -350,6 +351,7 @@ class TestTemplatesDetailsCest
 		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
+		$I->wait(1);
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 

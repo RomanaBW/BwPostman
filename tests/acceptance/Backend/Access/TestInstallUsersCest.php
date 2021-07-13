@@ -111,38 +111,11 @@ class TestInstallUsersCest
 				$userId = (int)$userId[0];
 			}
 
-			codecept_debug('Show resulting user ID: ');
-			codecept_debug($userId);
-
-			// If user exists and appropriate group exists
-			if ($userId !== 0 && $groupId !== 0)
-			{
-				// Check, if user is mapped to appropriate group
-				codecept_debug('Check, if existing user is mapped to appropriate group');
-
-				if (is_array($userId) && array_key_exists(0, $userId))
-				{
-					$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId);
-
-					// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
-					$groupMap = $I->grabFromDatabase(Generals::$db_prefix . 'user_usergroup_map', 'group_id', array('user_id' => $userId));
-
-					codecept_debug('Show group map from table: ');
-					codecept_debug($groupMap);
-
-					// Is user is not mapped, insert it
-					if (!$groupMap)
-					{
-						$I->insertRecordToTable('user_usergroup_map', "$userId, $groupId");
-					}
-				}
-			}
-
-
-
 			// User doesn't exist, so create it
 			if ($userId === 0)
 			{
+				codecept_debug('User does not exist, so create it');
+
 				$I->click(Generals::$toolbar['New']);
 				$I->waitForElement(UsersPage::$registerName);
 				$I->click(UsersPage::$accountDetailsTab);
@@ -166,6 +139,34 @@ class TestInstallUsersCest
 				$I->waitForElement(Generals::$alert_success, 10);
 				$I->see(UsersPage::$createSuccessMsg, Generals::$alert_success);
 			}
+
+			codecept_debug('Show resulting user ID: ');
+			codecept_debug($userId);
+
+			// If user exists and appropriate group exists
+			if ($userId !== 0 && $groupId !== 0)
+			{
+				// Check, if user is mapped to appropriate group
+				codecept_debug('Check, if existing user is mapped to appropriate group');
+
+//				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId);
+
+				// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
+				$groupMap = $I->grabFromDatabase(Generals::$db_prefix . 'user_usergroup_map', 'group_id', array('user_id' => $userId));
+
+				codecept_debug('Show group map from table: ');
+				codecept_debug($groupMap);
+
+				// Is user is not mapped, insert it
+				if (!$groupMap)
+				{
+					codecept_debug('User is not mapped to appropriate group');
+
+					$I->insertRecordToTable('user_usergroup_map', "$userId, $groupId");
+				}
+			}
+
+
 		}
 		$this->_logout($I, $loginPage);
 	}

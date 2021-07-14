@@ -882,7 +882,13 @@ class Acceptance extends Codeception\Module
 			$I->scrollTo(Generals::$first_list_entry, 0, -250);
 			$I->wait(1);
 			$I->click(Generals::$first_list_entry);
+
+			$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+			$I->wait(1);
 			$I->clickAndWait(Generals::$toolbarActions, 1);
+
+			$I->scrollTo(Generals::$first_list_entry, 0, -250);
+			$I->wait(1);
 			$I->dontSeeElement(Generals::$toolbar4['Publish']);
 			$I->dontSeeElement(Generals::$toolbar4['Unpublish']);
 			return;
@@ -891,9 +897,14 @@ class Acceptance extends Codeception\Module
 		$I->scrollTo($publish_by_toolbar['publish_button'], 0, -250);
 		$I->wait(1);
 		$I->click($publish_by_toolbar['publish_button']);
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Publish'], 1);
 
+		$I->scrollTo($publish_by_toolbar['publish_button'], 0, -250);
+		$I->wait(1);
 		$I->see("One " . $item . " published!");
 
 		// Confirm success message

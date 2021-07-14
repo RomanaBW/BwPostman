@@ -107,40 +107,6 @@ class Pkg_BwPostmanInstallerScript
   }
 
 	/**
-	 * Called after any type of action
-	 *
-	 * @param string $type Which action is happening (install|uninstall|discover_install)
-	 *
-	 * @return  boolean  True on success
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.2.1
-	 */
-
-	public function postflight(string $type): bool
-	{
-		$update = false;
-
-		if ($type == 'update')
-		{
-			$update = true;
-			$oldRelease	= Factory::getApplication()->getUserState('com_bwpostman.update.oldRelease', '');
-
-			if (version_compare($oldRelease, '2.2.1', 'lt'))
-			{
-				// rebuild update servers
-				$installerModel = new UpdatesitesModel();
-				$installerModel->rebuild();
-			}
-		}
-
-		$this->showFinished($update);
-
-		return true;
-	}
-
-	/**
 	 * shows the HTML after installation/update
 	 *
 	 * @param boolean $update

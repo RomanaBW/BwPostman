@@ -59,15 +59,23 @@ class Pkg_BwPostmanInstallerScript
 	 * @since       2.2.1
 	 */
 
-	public function install($parent)
-  {
+	public function install($installer)
+	{
 		sleep(5);
 		$session = Factory::getApplication()->getSession();
 		$session->set('update', false, 'bwpostman');
 
 		// Get component manifest file version
+		$parent = $installer->getParent();
+
 		$manifest = $parent->getManifest();
 		$this->release = $manifest->version;
+
+		// override existing message
+		ob_start();
+		$this->showFinished(false);
+		$message = ob_get_contents();
+		$parent->set('message', $message);
   }
 
 	/**
@@ -80,14 +88,22 @@ class Pkg_BwPostmanInstallerScript
 	 * @since   2.2.1
 	 */
 
-	public function update($parent)
-  {
+	public function update($installer)
+	{
 		$session = Factory::getApplication()->getSession();
 		$session->set('update', true, 'bwpostman');
 
 		// Get component manifest file version
+		$parent = $installer->getParent();
+
 		$manifest = $parent->getManifest();
 		$this->release = $manifest->version;
+
+		// override existing message
+		ob_start();
+		$this->showFinished(true);
+		$message = ob_get_contents();
+		$parent->set('message', $message);
   }
 
 	/**

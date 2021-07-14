@@ -709,6 +709,9 @@ class TestSubscribersDetailsCest
 		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);
 		$I->wait(1);
 		$I->click(sprintf(SubEdit::$mls_internal, 4));
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 	}
 
 	/**

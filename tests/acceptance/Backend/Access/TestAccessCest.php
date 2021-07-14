@@ -713,6 +713,8 @@ class TestAccessCest
 		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 
 		$I->click($checkbox);
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbarActions);
 		$I->waitForElementVisible(Generals::$toolbar4['Edit'], 3);
 		$I->click(Generals::$toolbar4['Edit']);

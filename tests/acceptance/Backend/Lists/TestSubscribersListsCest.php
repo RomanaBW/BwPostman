@@ -810,6 +810,8 @@ class TestSubscribersListsCest
 		$I->waitForElement(SubsManage::$import_success_container, 60);
 		$I->see(SubsManage::$import_msg_success, SubsManage::$import_success_container);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		$this->cleanupImportedSubscribers($I, SubsManage::$import_csv_subscribers);
@@ -871,6 +873,8 @@ class TestSubscribersListsCest
 		$I->waitForElement(SubsManage::$import_success_container, 60);
 		$I->see(SubsManage::$import_msg_success, SubsManage::$import_success_container);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 		$this->cleanupImportedSubscribers($I, SubsManage::$import_xml_subscribers);
 	}
@@ -940,6 +944,8 @@ class TestSubscribersListsCest
 		$I->dontSeeInThisFile(SubsManage::$subs_u_a);
 		$I->deleteFile($downloadPath);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 	}
 
@@ -1010,6 +1016,8 @@ class TestSubscribersListsCest
 		$I->seeInThisFile(SubsManage::$subs_u_a);
 		$I->deleteFile($downloadPath);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 	}
 
@@ -1080,6 +1088,8 @@ class TestSubscribersListsCest
 		$I->seeInThisFile(SubsManage::$subs_u_a);
 		$I->deleteFile($downloadPath);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 	}
 
@@ -1165,6 +1175,8 @@ class TestSubscribersListsCest
 		$I->dontSeeInThisFile(SubsManage::$subs_u_a);
 		$I->deleteFile($downloadPath);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 	}
 
@@ -1250,6 +1262,8 @@ class TestSubscribersListsCest
 		$I->dontSeeInThisFile(SubsManage::$subs_u_a);
 		$I->deleteFile($downloadPath);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 	}
 
@@ -1305,6 +1319,8 @@ class TestSubscribersListsCest
 		$I->seeFileFound($filename, $exportPath);
 		$I->deleteFile($downloadPath);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 	}
 

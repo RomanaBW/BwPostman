@@ -522,7 +522,8 @@ class SubscriberEditPage
 		$I->scrollTo(self::$mls_internal_label, 0, -100);
 		$I->wait(1);
 		$I->click(sprintf(self::$mls_internal, 4));
-		$I->scrollTo(Generals::$sys_message_container, 0, -100);
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
 	}
 

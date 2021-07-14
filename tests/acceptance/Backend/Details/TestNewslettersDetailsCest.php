@@ -1119,6 +1119,9 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$add_content);
 		$I->see($content_1, NlEdit::$selected_content_list);
 		$I->dontSee($content_1, NlEdit::$available_content_list);
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 	}
 
 	/**
@@ -1237,6 +1240,9 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$remove_content);
 		// …by double click
 		$I->doubleClick(sprintf(NlEdit::$selected_content, 1));
+		$I->wait(1);
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
 	}
 }

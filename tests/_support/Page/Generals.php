@@ -497,6 +497,13 @@ class Generals
 	public static $submenu_toggle_button  = "//*[@id='j-toggle-sidebar-icon']";
 
 	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $joomlaHeader  = "//*[@id='header']";
+
+	/**
 	 * Array of toolbar id values for list page
 	 *
 	 * @var    array

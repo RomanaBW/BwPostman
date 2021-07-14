@@ -1823,6 +1823,8 @@ class TestOptionsCest
 			}
 
 			// apply
+			$I->scrollTo(Generals::$joomlaHeader);
+			$I->waitForElementVisible(Generals::$joomlaHeader, 5);
 			$I->click(Generals::$toolbar['Save']);
 			$I->waitForElementVisible(Generals::$alert_header, 5);
 			$I->click(Generals::$systemMessageClose);

@@ -10,6 +10,7 @@
       docker_image:
         name: '{{ private_docker_repo }}/{{ bare_source.db_image_tag_source }}'
         source: pull
+        force_source: yes
 
     - name: Create the container
       docker_container:

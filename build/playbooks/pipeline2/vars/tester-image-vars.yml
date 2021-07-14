@@ -107,8 +107,8 @@ phantom_dir: "/opt/phantomJS"
 phantom_version: "2.1.1"
 
 # Settings for creating base LAMP containers
-official_mariadb: bitnami/mariadb:10.3-debian-10
-official_mariadb_short: mariadb:10.3-debian-10
+official_mariadb: bitnami/mariadb:10.5-debian-10
+official_mariadb_short: mariadb:10.5-debian-10
 official_apache: php:apache
 official_apache_short: php-apache
 official_tester: romana/selenium-standalone-chrome-debug-ffmpeg:latest

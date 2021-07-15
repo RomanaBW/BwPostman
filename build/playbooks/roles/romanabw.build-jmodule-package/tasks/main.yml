@@ -1,0 +1,54 @@
+---
+- name: ensure old zip file is removed
+  file:
+    path: "{{ bw_target_ext_path }}/{{ bw_module_name }}.zip"
+    state: absent
+
+- name: Ensure folders for site language files (and with this all upper folders)
+  file:
+    path: "{{ bw_target_ext_path }}/files/site/language/{{ item }}"
+    state: directory
+  with_items: "{{ bw_languages }}"
+
+- name: Copy module files
+  synchronize:
+    src: "{{ bw_workspace }}/modules/{{ bw_module_name }}/"
+    dest: "{{ bw_target_ext_path }}/files/site"
+
+- name: Copy media files
+  synchronize:
+    src: "{{ bw_workspace }}/media/{{ bw_media_folder }}/"
+    dest: "{{ bw_target_ext_path }}/files/site"
+
+- name: Copy site language file
+  synchronize:
+    src: "{{ bw_workspace }}/language/{{ item }}/{{ item }}.{{ bw_module_name }}.ini"
+    dest: "{{ bw_target_ext_path }}/files/site/language/{{ item }}/{{ item }}.{{ bw_module_name }}.ini"
+  with_items: "{{ bw_languages }}"
+  ignore_errors: yes
+
+- name: Copy site sys language file
+  synchronize:
+    src: "{{ bw_workspace }}/language/{{ item }}/{{ item }}.{{ bw_module_name }}.sys.ini"
+    dest: "{{ bw_target_ext_path }}/files/site/language/{{ item }}/{{ item }}.{{ bw_module_name }}.sys.ini"
+  with_items: "{{ bw_languages }}"
+  ignore_errors: yes
+
+- name: Copy licence file in place
+  synchronize:
+    src: "/repositories/BwCommons/docs/gnu_gpl_v3.txt"
+    dest: "{{ bw_target_ext_path }}/files/site/LICENSE.txt"
+
+- name: Pack installation package
+  archive:
+    path: "{{ bw_target_ext_path }}/files/"
+    dest: "{{ bw_target_ext_path }}/{{ bw_module_name }}.zip"
+    mode: 0664
+    owner: romana
+    group: users
+    format: zip
+
+- name: Remove folder files, now no more needed
+  file:
+    path: "{{ bw_target_ext_path }}/files/"
+    state: absent

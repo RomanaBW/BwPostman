@@ -1,0 +1,44 @@
+---
+- name: get source files list with version number inside
+  find:
+    paths: "{{ bw_workspace }}/src"
+    patterns:
+      - "*.js"
+      - "*.php"
+      - "*.ini"
+      - "*.css"
+    recurse: yes
+  register: files_list
+
+#- name: number of files found
+#  debug:
+#    msg: "Number of files found: {{ files_list.matched }}"
+
+- name: replace version number
+  replace:
+    path: "{{ item.path }}"
+    regexp: "%%version_number%%"
+    replace: "{{ bw_version }}"
+#    replace: "{{ bw_version }} build {{ bw_build }}"
+  with_items: "{{ files_list.files }}"
+
+- name: replace copyright year
+  replace:
+    path: "{{ item.path }}"
+    regexp: "%%copyright_year%%"
+    replace: "{{ ansible_date_time.year }}"
+  with_items: "{{ files_list.files }}"
+
+- name: replace manifest version
+  replace:
+    path: "{{ bw_workspace }}/{{ item }}"
+    regexp: "%%version_number%%"
+    replace: "{{ bw_version }}"
+  with_items: "{{ bw_manifest_list }}"
+
+- name: replace manifest date
+  replace:
+    path: "{{ bw_workspace }}/{{ item }}"
+    regexp: "%%creation_date%%"
+    replace: "{{ ansible_date_time.date }}"
+  with_items: "{{ bw_manifest_list }}"

@@ -206,7 +206,7 @@ class User2SubscriberCest
 
 		$I->click(RegPage::$plugin_edit_identifier);
 		$I->waitForElement(Generals::$pageTitle, 30);
-		$I->see(InstallPage::$headingPlugins . ": " . Generals::$plugin_u2s);
+		$I->see(Generals::$plugin_u2s);
 
 		// set mailinglist
 		$I->click(RegPage::$plugin_tab_mailinglists);
@@ -220,6 +220,9 @@ class User2SubscriberCest
 		{
 			$I->click(sprintf(RegPage::$plugin_checkbox_mailinglist, 6));
 		}
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 
 		$I->click(Generals::$toolbar['Save & Close']);
 		$I->waitForElement(Generals::$alert_success, 30);
@@ -1076,6 +1079,8 @@ class User2SubscriberCest
 		);
 		$user->leave();
 
+		$I->scrollTo(Generals::$joomlaHeader,0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
 		LoginPage::logoutFromBackend($I, false);
@@ -1110,6 +1115,8 @@ class User2SubscriberCest
 		$com_options = $I->getManifestOptions('com_bwpostman');
 		$I->assertEquals("0", $com_options->default_emailformat);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
 		// look at FE
@@ -1156,6 +1163,8 @@ class User2SubscriberCest
 		);
 		$user->leave();
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
 		LoginPage::logoutFromBackend($I, false);
@@ -1187,6 +1196,9 @@ class User2SubscriberCest
 		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 0), 0, -100);
 		$I->wait(1);
 		$I->click(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->see(Generals::$plugin_saved_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -1206,6 +1218,9 @@ class User2SubscriberCest
 		$I->wait(1);
 		$I->click(sprintf(RegPage::$plugin_checkbox_mailinglist, 0));
 		$I->dontSeeCheckboxIsChecked(sprintf(RegPage::$plugin_checkbox_mailinglist_input, 0));
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 		$I->see(Generals::$plugin_saved_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -1219,6 +1234,8 @@ class User2SubscriberCest
 		codecept_debug($options->ml_available);
 		$I->assertEquals("4", $options->ml_available[0]);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
 		LoginPage::logoutFromBackend($I, false);
@@ -1987,6 +2004,8 @@ class User2SubscriberCest
 					$I->dontSeeCheckboxIsChecked($ml);
 				}
 
+				$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+				$I->wait(1);
 				$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 				LoginPage::logoutFromBackend($I, false);
@@ -2120,6 +2139,9 @@ class User2SubscriberCest
 		$I->scrollTo(sprintf($button, 0), 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(sprintf($button, $format), 1);
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_success4, 30);
@@ -2154,6 +2176,9 @@ class User2SubscriberCest
 		$I->scrollTo(sprintf($button, 0), 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(sprintf($button, $format), 1);
+
+		$I->scrollTo(Generals::$joomlaHeader,0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_success4, 30);

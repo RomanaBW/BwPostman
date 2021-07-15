@@ -1,7 +1,7 @@
 <?php
 namespace Page;
 
-use Mockery\Exception;
+use Exception;
 use Page\NewsletterManagerPage as NlManage;
 use Page\Generals as Generals;
 
@@ -1081,6 +1081,9 @@ class NewsletterEditPage
 			$I->seeElement("//*/table[@id='main-table']/tbody/tr[1]/td[8]/button[contains(@class, 'data-state-1')]");
 		}
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
+
 		$I->click(Generals::$first_list_entry);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Duplicate'], 1);
@@ -1305,10 +1308,14 @@ class NewsletterEditPage
 		$I->wantTo("Create Newsletter without cleanup");
 		$I->amOnPage(NlManage::$url);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['New']);
 
 		self::fillFormSimple($I, $toUsergroup, $withAttachment);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar4['Save & Close']);
 //		$I->waitForElementVisible(Generals::$alert_header, 5);
 		self::checkSuccess($I, $username);

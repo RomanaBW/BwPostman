@@ -154,6 +154,9 @@ class FooterUsedMailinglistsCest
 		$I->dontSee(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Remove newsletter
@@ -248,6 +251,8 @@ class FooterUsedMailinglistsCest
 		$I->dontSee(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option
@@ -345,6 +350,8 @@ class FooterUsedMailinglistsCest
 		$I->dontSee(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option
@@ -442,6 +449,8 @@ class FooterUsedMailinglistsCest
 		$I->dontSee(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option
@@ -538,6 +547,8 @@ class FooterUsedMailinglistsCest
 		$I->dontSee(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option
@@ -637,6 +648,8 @@ class FooterUsedMailinglistsCest
 		$I->dontSee(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option
@@ -736,6 +749,8 @@ class FooterUsedMailinglistsCest
 		$I->dontSee(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option
@@ -835,6 +850,8 @@ class FooterUsedMailinglistsCest
 		$I->dontSee(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option
@@ -934,6 +951,8 @@ class FooterUsedMailinglistsCest
 		$I->dontSee(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option
@@ -1038,6 +1057,8 @@ class FooterUsedMailinglistsCest
 		$I->dontSee(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option
@@ -1143,6 +1164,8 @@ class FooterUsedMailinglistsCest
 		$I->see(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option
@@ -1246,6 +1269,8 @@ class FooterUsedMailinglistsCest
 		$I->see(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option
@@ -1347,6 +1372,8 @@ class FooterUsedMailinglistsCest
 		$I->see(sprintf(FooterPage::$text_preview_add_footer_all, $nbrRecipients));
 
 		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['Cancel']);
 
 		// Reset option

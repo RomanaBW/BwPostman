@@ -187,6 +187,10 @@ class CampaignEditPage
 	{
 		$I->wantTo("Create campaign without cleanup");
 		$I->amOnPage(CamManage::$url);
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, 100);
+		$I->wait(1);
+
 		$I->click(Generals::$toolbar['New']);
 
 		self::fillFormSimple($I);

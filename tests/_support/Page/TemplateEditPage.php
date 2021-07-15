@@ -609,6 +609,10 @@ class TemplateEditPage
 	{
 		$I->wantTo("Create Text template");
 		$I->amOnPage(TplManage::$url);
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, 100);
+		$I->wait(1);
+
 		$I->waitForElement(Generals::$pageTitle, 30);
 
 		$I->click(Generals::$toolbar['Add Text-Template']);

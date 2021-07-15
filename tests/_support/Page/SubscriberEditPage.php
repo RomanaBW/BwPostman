@@ -452,6 +452,8 @@ class SubscriberEditPage
 		$I->wantTo("Create Subscriber without cleanup");
 		$I->amOnPage(SubManage::$url);
 
+		$I->scrollTo(Generals::$joomlaHeader, 0, 100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['New']);
 
 		self::fillFormSimple($I);

@@ -282,6 +282,9 @@ class MailinglistEditPage
 	{
 		$I->wantTo("Create mailinglist without cleanup");
 		$I->amOnPage(MlManage::$url);
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, 100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar['New']);
 
 		self::fillFormSimple($I);

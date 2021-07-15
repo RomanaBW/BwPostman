@@ -875,6 +875,8 @@ class TestAccessCest
 
 		if (!$archive_allowed)
 		{
+			$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+			$I->wait(1);
 			$I->clickAndWait(Generals::$toolbarActions, 1);
 			$I->dontSeeElement(Generals::$toolbar4['Archive']);
 			return;
@@ -888,6 +890,8 @@ class TestAccessCest
 		if (!$restore_allowed)
 		{
 			// @ToDo: Check for visibility of tabs
+			$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+			$I->wait(1);
 			$I->clickAndWait(Generals::$toolbarActions, 1);
 			$I->switchToArchive($I, $edit_data['archive_tab']);
 			$I->dontSeeElement(Generals::$toolbar4['Restore']);
@@ -995,6 +999,9 @@ class TestAccessCest
 		// by toolbar
 		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 		$I->click($checkbox);
+
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(Generals::$toolbar4['Check-In']);
 		$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);

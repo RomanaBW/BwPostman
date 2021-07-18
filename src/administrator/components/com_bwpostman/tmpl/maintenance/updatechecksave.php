@@ -89,7 +89,7 @@ if ($show_update || $string_special != '')
 
 <div id="com_bwp_install_header">
 	<a href="https://www.boldt-webservice.de" target="_blank">
-		<img class="img-fluid" src="administrator/components/com_bwpostman/assets/images/bw_header.png" alt="Boldt Webservice" />
+		<img class="img-fluid" src="/administrator/components/com_bwpostman/assets/images/bw_header.png" alt="Boldt Webservice" />
 	</a>
 </div>
 <div class="top_line"></div>

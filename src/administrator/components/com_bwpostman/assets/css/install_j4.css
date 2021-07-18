@@ -25,7 +25,7 @@
 
 #com_bwp_install_header {
 	background: #FFF440;
-	margin: -5px -16px 0 -16px;
+	margin: -1rem -16px 0 -16px;
 }
 
 div.top_line {
@@ -35,7 +35,7 @@ div.top_line {
 }
 
 #com_bwp_install_outer {
-	margin: 0 -16px 15px -16px;
+	margin: 0 -16px -1rem -16px;
 	background: url(../images/verlauf_gelb_2.png) repeat;
 }
 

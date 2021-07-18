@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="package" version="3.2" method="upgrade">
+<extension type="package" version="3.8" method="upgrade">
 	<name>BwPostman Complete Package</name>
 	<creationDate>%%creation_date%%</creationDate>
 	<author>Boldt Webservice</author>
@@ -15,10 +15,6 @@
 	<packagerurl>https://www.boldt-webservice.de</packagerurl>
 	<blockChildUninstall>true</blockChildUninstall>
 
-	<description>
-		<b>BwPostman component, modules and  plugins installed successfully</b>
-	</description>
-
 	<scriptfile>pkg_script.php</scriptfile>
 
 	<files folder="packages">
@@ -31,4 +27,9 @@
 		<file type="plugin" id="bwpm_user2subscriber" group="system" client="site">plg_system_bwpm_user2subscriber.zip</file>
 		<file type="plugin" id="footerusedmailinglists" group="bwpostman" client="site">plg_bwpostman_footerusedmailinglists.zip</file>
 	</files>
+
+	<compatibility>
+		<version>4</version>
+	</compatibility>
+
 </extension>

@@ -135,7 +135,7 @@ class MaintenancejsonController extends AdminController
 				case 'step0':
 					// save tables
 					echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES') . '</h4>';
-					$savedTables = $model->saveTables(null, true);
+					$savedTables = $model->saveTables('', true);
 					echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h4>';
 
 					if ($savedTables !== true)

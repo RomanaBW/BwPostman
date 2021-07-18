@@ -61,7 +61,7 @@ class PlgBwPostmanPersonalizeInstallerScript
 	 */
 	public function uninstall()
 	{
-		Factory::getApplication()->enqueueMessage(Text::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_UNINSTALL_THANKYOU'), 'message');
+//		Factory::getApplication()->enqueueMessage(Text::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_UNINSTALL_THANKYOU'), 'message');
 	}
 
 	/**

@@ -90,7 +90,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 */
 	public function uninstall()
 	{
-		Factory::getApplication()->enqueueMessage(Text::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_UNINSTALL_THANKYOU'), 'message');
+//		Factory::getApplication()->enqueueMessage(Text::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_UNINSTALL_THANKYOU'), 'message');
 	}
 
 	/**

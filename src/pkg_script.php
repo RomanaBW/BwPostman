@@ -69,13 +69,10 @@ class Pkg_BwPostmanInstallerScript
 		$parent = $installer->getParent();
 
 		$manifest = $parent->getManifest();
-		$this->release = $manifest->version;
+		$this->release = (string)$manifest->version;
 
 		// override existing message
-		ob_start();
 		$this->showFinished(false);
-		$message = ob_get_contents();
-		$parent->set('message', $message);
   }
 
 	/**
@@ -97,13 +94,50 @@ class Pkg_BwPostmanInstallerScript
 		$parent = $installer->getParent();
 
 		$manifest = $parent->getManifest();
-		$this->release = $manifest->version;
+		$this->release = (string)$manifest->version;
 
 		// override existing message
-		ob_start();
 		$this->showFinished(true);
-		$message = ob_get_contents();
-		$parent->set('message', $message);
+	}
+
+	/**
+	 * Called after any type of action
+	 *
+	 * @param string $type Which action is happening (install|uninstall|discover_install)
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.2.1
+	 */
+
+	public function postflight(string $type, $installer): bool
+	{
+		$update = false;
+
+		if ($type == 'update')
+		{
+			$oldRelease	= Factory::getApplication()->getUserState('com_bwpostman.update.oldRelease', '');
+
+			if (version_compare($oldRelease, '2.2.1', 'lt'))
+			{
+				// rebuild update servers
+				$installerModel = new UpdatesitesModel();
+				$installerModel->rebuild();
+			}
+		}
+
+		$parent = $installer->getParent();
+
+		$manifest = $parent->getManifest();
+
+		if (is_object($manifest))
+		{
+			$this->release = $manifest->version;
+		}
+
+		return true;
   }
 
 	/**
@@ -166,7 +200,8 @@ class Pkg_BwPostmanInstallerScript
 			$show_right = true;
 		}
 
-		$asset_path = 'components/com_bwpostman/assets';
+		$asset_path = '/administrator/components/com_bwpostman/assets';
+		$image_path = 'administrator/components/com_bwpostman/assets/images';
 		?>
 
 		<link rel="stylesheet" href="<?php echo Route::_($asset_path . '/css/install_j4.css'); ?>" type="text/css" />
@@ -208,7 +243,7 @@ class Pkg_BwPostmanInstallerScript
 							<a href="<?php echo Route::_('index.php?option=com_bwpostman'); ?>">
 								<?php echo HTMLHelper::_(
 									'image',
-									'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+									$image_path . '/icon-48-bwpostman.png',
 									Text::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN')
 								); ?>
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
@@ -218,7 +253,7 @@ class Pkg_BwPostmanInstallerScript
 							<a href="<?php echo $manual; ?>" target="_blank">
 								<?php echo HTMLHelper::_(
 									'image',
-									'administrator/components/com_bwpostman/assets/images/icon-48-manual.png',
+									$image_path . '/icon-48-manual.png',
 									Text::_('COM_BWPOSTMAN_INSTALL_MANUAL')
 								); ?>
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
@@ -228,7 +263,7 @@ class Pkg_BwPostmanInstallerScript
 							<a href="<?php echo $forum; ?>" target="_blank">
 								<?php echo HTMLHelper::_(
 									'image',
-									'administrator/components/com_bwpostman/assets/images/icon-48-forum.png',
+									$image_path . '/icon-48-forum.png',
 									Text::_('COM_BWPOSTMAN_INSTALL_FORUM')
 								); ?>
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_FORUM'); ?></span>
@@ -281,7 +316,7 @@ class Pkg_BwPostmanInstallerScript
 							<a href="<?php echo Route::_('index.php?option=com_bwpostman&token=' . Session::getFormToken()); ?>">
 								<?php echo HTMLHelper::_(
 									'image',
-									'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+									$image_path . '/icon-48-bwpostman.png',
 									Text::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN')
 								); ?>
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
@@ -291,7 +326,7 @@ class Pkg_BwPostmanInstallerScript
 							<a href="<?php echo $manual; ?>" target="_blank">
 								<?php echo HTMLHelper::_(
 									'image',
-									'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+									$image_path . '/icon-48-bwpostman.png',
 									Text::_('COM_BWPOSTMAN_INSTALL_MANUAL')
 								); ?>
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
@@ -301,7 +336,7 @@ class Pkg_BwPostmanInstallerScript
 							<a href="<?php echo $forum; ?>" target="_blank">
 								<?php echo HTMLHelper::_(
 									'image',
-									'administrator/components/com_bwpostman/assets/images/icon-48-bwpostman.png',
+									$image_path . '/icon-48-bwpostman.png',
 									Text::_('COM_BWPOSTMAN_INSTALL_FORUM')
 								); ?>
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_FORUM'); ?></span>
@@ -339,7 +374,7 @@ class Pkg_BwPostmanInstallerScript
 	 */
 	private function getModal(): string
 	{
-		$url = Uri::root() . 'administrator/index.php?option=com_bwpostman&view=maintenance&tmpl=component&layout=updateCheckSave';
+		$url = Uri::root() . '/administrator/index.php?option=com_bwpostman&view=maintenance&tmpl=component&layout=updateCheckSave';
 
 		$html    = '
 		<div id="bwp_Modal" class="bwp_modal">

@@ -251,7 +251,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		$fileName = File::makeSafe($fileName);
 
-		if (is_null($fileName) || $fileName == "")
+		if ($fileName == "")
 		{
 			$dottedVersion = BwPostmanHelper::getInstalledBwPostmanVersion();
 
@@ -652,12 +652,15 @@ class MaintenanceModel extends BaseDatabaseModel
 				$userGroupXml = $this->xml->createElement('usergroup');
 				$userGroupsXml->appendChild($userGroupXml);
 
-				foreach ($item as $key => $value)
+				if (!is_null($item))
 				{
-					$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
+					foreach ($item as $key => $value)
+					{
+						$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
 
-					$dataXml = $this->xml->createElement($key, $insert_string);
-					$userGroupXml->appendChild($dataXml);
+						$dataXml = $this->xml->createElement($key, $insert_string);
+						$userGroupXml->appendChild($dataXml);
+					}
 				}
 			}
 		}

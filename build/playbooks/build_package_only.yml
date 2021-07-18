@@ -5,15 +5,21 @@
     - pipeline2/vars/tester-image-vars.yml
 
   vars:
-    target_ext_path: "{{ target_base_path }}/{{ extension_name }}4"
     project_source_dir: "/home/romana/PhpstormProjects/BwPostman_J4"
-    project_base_dir: "/repositories/BwPostman4/workdir"
+    project_base_dir: "/home/romana/Zwischenlager/BwPostman4/workdir"
+    target_ext_path: "{{ target_base_path }}/{{ extension_name }}4"
     version_number: "{{ bwpm_version }}"
     build: "tmp"
     mb4_support: true
-    replace_vars: true
+    replace_vars: "{{ repl_vars | default(true) }}"
 
   tasks:
+    - name: Show switch for variable replacement
+      debug:
+        msg: "Replace vars: {{ replace_vars }}"
+
+# @ToDo: Use synchronisation instead of copying
+
     - name: Ensure project working folder and sub folders exists part 1
       file:
         path: "{{ project_base_dir }}/src/{{ item.path }}"
@@ -34,11 +40,6 @@
         mode: 0777
         owner: romana
         group: users
-#      with_filetree:
-#        - "{{ project_source_dir }}/build/manifests"
-#      when: item.state == 'directory'
-#      loop_control:
-#        label: "{{ item.path }}"
 
     - name: Copy source files to working dir
       copy:
@@ -90,7 +91,7 @@
       vars:
         bw_workspace: "{{ project_base_dir }}/src"
         bw_extension: "{{ extension_name }}"
-        bw_target_ext_path: "{{ target_ext_path }}"
+        bw_target_ext_path: "{{ project_base_dir }}"
         bw_languages: "{{ languages }}"
         bw_mb4_support: "{{ mb4_support }}"
         bw_media_folder: "com_bwpostman"
@@ -100,7 +101,7 @@
         name: romanabw.build-jmodule-package
       vars:
         bw_workspace: "{{ project_base_dir }}/src"
-        bw_target_ext_path: "{{ target_ext_path }}"
+        bw_target_ext_path: "{{ project_base_dir }}"
         bw_languages: "{{ languages }}"
         bw_module_name: "mod_bwpostman"
         bw_media_folder: "mod_bwpostman"
@@ -110,7 +111,7 @@
         name: romanabw.build-jmodule-package
       vars:
         bw_workspace: "{{ project_base_dir }}/src"
-        bw_target_ext_path: "{{ target_ext_path }}"
+        bw_target_ext_path: "{{ project_base_dir }}"
         bw_languages: "{{ languages }}"
         bw_module_name: "mod_bwpostman_overview"
         bw_external_lang: true
@@ -121,7 +122,7 @@
         name: romanabw.build-jplugin-package
       vars:
         bw_workspace: "{{ project_base_dir }}/src"
-        bw_target_ext_path: "{{ target_ext_path }}"
+        bw_target_ext_path: "{{ project_base_dir }}"
         bw_languages: "{{ languages }}"
         bw_plugin_name: "personalize"
         bw_plugin_group: "bwpostman"
@@ -133,7 +134,7 @@
         name: romanabw.build-jplugin-package
       vars:
         bw_workspace: "{{ project_base_dir }}/src"
-        bw_target_ext_path: "{{ target_ext_path }}"
+        bw_target_ext_path: "{{ project_base_dir }}"
         bw_languages: "{{ languages }}"
         bw_plugin_name: "bw_libregister"
         bw_plugin_group: "system"
@@ -145,7 +146,7 @@
         name: romanabw.build-jplugin-package
       vars:
         bw_workspace: "{{ project_base_dir }}/src"
-        bw_target_ext_path: "{{ target_ext_path }}"
+        bw_target_ext_path: "{{ project_base_dir }}"
         bw_languages: "{{ languages }}"
         bw_plugin_name: "bwpm_user2subscriber"
         bw_plugin_group: "system"
@@ -157,7 +158,7 @@
         name: romanabw.build-jplugin-package
       vars:
         bw_workspace: "{{ project_base_dir }}/src"
-        bw_target_ext_path: "{{ target_ext_path }}"
+        bw_target_ext_path: "{{ project_base_dir }}"
         bw_languages: "{{ languages }}"
         bw_plugin_name: "bwpm_mediaoverride"
         bw_plugin_group: "system"
@@ -169,7 +170,7 @@
         name: romanabw.build-jplugin-package
       vars:
         bw_workspace: "{{ project_base_dir }}/src"
-        bw_target_ext_path: "{{ target_ext_path }}"
+        bw_target_ext_path: "{{ project_base_dir }}"
         bw_languages: "{{ languages }}"
         bw_plugin_name: "footerusedmailinglists"
         bw_plugin_group: "bwpostman"
@@ -181,7 +182,7 @@
         name: romanabw.build-jpackage-package
       vars:
         bw_workspace: "{{ project_base_dir }}"
-        bw_target_ext_path: "{{ target_ext_path }}"
+        bw_target_ext_path: "{{ project_base_dir }}"
         bw_extension: "{{ extension_name }}"
         bw_package_parts: "{{ package_parts }}"
         bw_with_script: "true"
@@ -189,7 +190,7 @@
 
     - name: copy package to test data folder with build and version number
       copy:
-        src: "{{ target_base_path }}/{{ extension_name }}4/pkg_{{ extension_name }}.zip"
+        src: "{{ project_base_dir }}/pkg_{{ extension_name }}.zip"
         dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}-{{ version_number }}.{{ build }}.zip"
 #      when: not replace_vars|bool
 
@@ -197,10 +198,10 @@
       debug:
         msg: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
 
-    - name: copy package to test data folder without build and version number
-      copy:
-        src: "{{ target_base_path }}/{{ extension_name }}4/pkg_{{ extension_name }}.zip"
-        dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
+#    - name: copy package to test data folder without build and version number
+#      copy:
+#        src: "{{ project_base_dir }}/pkg_{{ extension_name }}.zip"
+#        dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
 
     - name: copy changelog to test data folder
       copy:

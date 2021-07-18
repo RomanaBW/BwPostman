@@ -475,7 +475,7 @@ class com_bwpostmanInstallerScript
 		$m_params   = ComponentHelper::getParams('com_media');
 		$image_path = $m_params->get('image_path', 'images');
 
-		Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_UNINSTALL_FOLDER_BWPOSTMAN', $image_path), 'notice');
+		Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_UNINSTALL_FOLDER_BWPOSTMAN', $image_path), 'warning');
 
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);

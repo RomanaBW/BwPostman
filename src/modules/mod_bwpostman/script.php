@@ -266,7 +266,7 @@ class Mod_BwPostmanInstallerScript
 			$show_right	= true;
 		}
 
-		$asset_path = 'media/mod_bwpostman';
+		$asset_path = '/media/mod_bwpostman';
 		?>
 
 <link rel="stylesheet" href="<?php echo Route::_($asset_path . '/css/install.css'); ?>" type="text/css" />

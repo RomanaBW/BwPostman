@@ -192,7 +192,7 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 											<td class="d-none d-xl-table-cell"><?php echo $item->authors; ?></td>
 											<td class="d-none d-lg-table-cell text-center"><?php echo $item->campaign_id; ?></td>
 											<td class="text-center">
-												<?php echo $isTemplateButton->render($item->is_template, $i, ['disabled' => !$canEdit]); ?>
+												<?php echo $isTemplateButton->render($item->is_template, $i, array('disabled' => !$canEdit, 'id' => $item->id)); ?>
 											</td>
 											<td class="text-center"><?php echo $item->id; ?></td>
 										</tr><?php

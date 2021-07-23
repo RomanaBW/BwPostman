@@ -56,17 +56,9 @@
 		       min="0"
 		       max="20"
 		       formsource="administrator/components/com_bwpostman/forms/attachments.xml"
+		       repeatable=" true"
 		       layout="joomla.form.field.subform.repeatable-table"
 		>
-<!--			<form>-->
-<!--				<field name="single_attachment"-->
-<!--				       label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL"-->
-<!--				       labelclass="control-label joomla-modal"-->
-<!--				       size="30"-->
-<!--				       type="media" />-->
-<!--			</form>-->
-<!--			role="dialog"-->
-			<!--				       link="index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=com_bwpostman_nl&amp;author="-->
 		</field>
 
 		<field

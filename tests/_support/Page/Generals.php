@@ -141,7 +141,14 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $media_frame              = "Change Image";
+	public static $media_frame1             = "Change Image";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $media_frame2              = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div/div/div/div[2]/iframe";
 
 	/**
 	 * @var string

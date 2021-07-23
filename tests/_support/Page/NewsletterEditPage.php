@@ -2,6 +2,7 @@
 namespace Page;
 
 use Exception;
+use Page\NewsletterEditPage as NlEdit;
 use Page\NewsletterManagerPage as NlManage;
 use Page\Generals as Generals;
 
@@ -407,7 +408,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment                   = "//*[@id='jform_attachment__attachment0__single_attachment']";
+	public static $attachment                   = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div[2]/img[contains(@src, 'boldt-webservice.png')]";
 
 	/**
 	 * @var string
@@ -422,35 +423,35 @@ class NewsletterEditPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachments_add_button     = "//*/joomla-field-subform[@name='jform\[attachment\]']/div/div/a";
+	public static $attachments_add_button     = "//*/joomla-field-subform[@name='jform[attachment]']/div/table/thead/tr/td/div/button";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_new_button1      = "//*/div[@data-group='attachment0']/div[1]/div/a[1]";
+	public static $attachment_new_button1      = "//*/tr[@data-group='__field30']/td[2]/div/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.4.0
 	 */
-	public static $attachment_new_button2      = "//*/div[@data-group='attachment1']/div[1]/div/a[1]";
+	public static $attachment_new_button2      = "//*/tr[@data-group='attachment1']/div[1]/div/a[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select_button1     = "//*/div[@data-group='attachment0']/div[2]/div[2]/joomla-field-media/div[3]/div/button[1]";
+	public static $attachment_select_button1     = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div[3]/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select_button2     = "//*/div[@data-group='attachment1']/div[2]/div[2]/joomla-field-media/div[3]/div/button[1]";
+	public static $attachment_select_button2     = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div[3]/button[1]";
 
 	/**
 	 * @var string
@@ -471,42 +472,119 @@ class NewsletterEditPage
 	 *
 	 * @since   2.3.0
 	 */
-	public static $attachment_upload_success     = "Upload Complete: /";
+	public static $attachment_upload_success     = "Item uploaded.";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_select1            = "html/body/ul/li/a[contains(@href,'joomla_black.png')]";
+	public static $attachment_select1            = "//*/div[contains(@style,'joomla_black.png')]/parent::div/parent::div";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.0.0
+	 */
+	public static $attachment_scrollto_select1            = "//*/div[contains(@style,'joomla_black.png')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.0.0
+	 */
+	public static $attachment_selected1            = "//*/input[contains(@value,'joomla_black.png')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.0.0
+	 */
+	public static $attachment1                   = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div[2]/img[contains(@src, 'joomla_black.png')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select2            = "html/body/ul/li/a[contains(@href,'powered_by.png')]";
+	public static $attachment_select2            = "//*/div[contains(@style,'powered_by.png')]/parent::div/parent::div";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.0.0
+	 */
+	public static $attachment_scrollto_select2            = "//*/div[contains(@style,'powered_by.png')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.0.0
+	 */
+	public static $attachment_selected2            = "//*/input[contains(@value,'powered_by.png')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.0.0
+	 */
+	public static $attachment2                   = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div[2]/img[contains(@src, 'powered_by.png')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.0.0
+	 */
+	public static $attachment_listview_icon            = "//*/table[@id='main-table']/tbody/tr[1]/td[2]/span[@class='icon_attachment']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_upload_file       = "html/body/ul/li/a[contains(@href,'boldt-webservice.png')]";
+	public static $attachment_upload_file       = "//*/div[contains(text(),'boldt-webservice.png')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.2.0
+	 */
+	public static $attachment_upload_select            = "//*/div[contains(text(),'boldt-webservice.png')]/parent::div/parent::div";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.0.0
+	 */
+	public static $attachment_upload_delete            = "//*/button[@id='mediaDelete']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.0.0
+	 */
+	public static $attachment_media_delete_confirm            = "//*/button[@id='media-delete-item']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_insert            = "//*[@id='imageForm']/div[2]/div/div[2]/button[1]";
+	public static $attachment_insert1            = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div/div/div/div[3]/button[1]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.0.0
+	 */
+	public static $attachment_insert2            = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div/div/div/div[3]/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_cancel            = "//*[@id='imageForm']/div[2]/div/div[2]/button[2]";
+	public static $attachment_cancel            = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div/div/div/div[3]/button[2]";
 
 	/**
 	 * @var string
@@ -1163,7 +1241,7 @@ class NewsletterEditPage
 		//select attachment if desired
 		if ($withAttachment)
 		{
-//			self::selectAttachment($I);
+			self::selectAttachment($I);
 		}
 
 		// fill publish and unpublish
@@ -1203,43 +1281,43 @@ class NewsletterEditPage
 	 */
 	public static function selectAttachment(\AcceptanceTester $I)
 	{
+		$I->wait(1);
 		$I->clickAndWait(self::$attachments_add_button, 1);
 
 		//Select first attachment
-		$I->clickAndWait(self::$attachment_new_button1, 1);
 		$I->clickAndWait(self::$attachment_select_button1, 1);
 
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->waitForElementVisible("iframe#imageframe", 5);
+		$I->switchToIFrame(Generals::$media_frame1);
+		$I->waitForElementVisible("div.media-browser-grid", 5);
+		$I->wait(1);
 
-		$I->switchToIFrame(Generals::$image_frame);
-		$I->waitForElementVisible("ul.manager", 5);
-		$I->scrollTo(self::$attachment_select1, 0, -100);
+		$I->scrollTo(self::$attachment_scrollto_select1, 0, 0);
 		$I->wait(1);
 		$I->clickAndWait(self::$attachment_select1, 1);
+		$I->switchToIFrame();
+		$I->clickAndWait(self::$attachment_insert1, 1);
 
-		$I->switchToIFrame();
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->clickAndWait(self::$attachment_insert, 1);
-		$I->switchToIFrame();
+		// See image at attachment at details page/frame
+		$I->waitForElementVisible(self::$attachment1, 20);
 
 		//Select second attachment
-		$I->clickAndWait(self::$attachment_new_button2, 1);
+		$I->scrollTo(self::$attachment_new_button1, 0, -100);
+		$I->wait(1);
+		$I->clickAndWait(self::$attachment_new_button1, 1);
 		$I->clickAndWait(self::$attachment_select_button2, 1);
 
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->waitForElementVisible("iframe#imageframe", 5);
+		$I->switchToIFrame(Generals::$media_frame2);
+		$I->waitForElementVisible("div.media-browser-grid", 5);
 
-		$I->switchToIFrame(Generals::$image_frame);
-		$I->waitForElementVisible("ul.manager", 5);
-		$I->scrollTo(self::$attachment_select2, 0, -100);
-		$I->wait(1);
+
+		$I->scrollTo(self::$attachment_scrollto_select2, 0, 0);
+		$I->wait(2);
 		$I->clickAndWait(self::$attachment_select2, 1);
+		$I->switchToIFrame();
+		$I->clickAndWait(self::$attachment_insert2, 2);
 
-		$I->switchToIFrame();
-		$I->switchToIFrame(Generals::$media_frame);
-		$I->clickAndWait(self::$attachment_insert, 1);
-		$I->switchToIFrame();
+		// See image at attachment at details page/frame
+		$I->waitForElementVisible(self::$attachment2, 20);
 	}
 
 	/**

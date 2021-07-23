@@ -103,10 +103,28 @@ class TestNewslettersDetailsCest
 		$I->click(MainView::$addNewsletterButton);
 
 		$this->fillFormSimpleWithCampaign($I);
+		$I->click(Generals::$toolbar4['Save']);
 
+		// Check details attachment 1
+		$I->scrollTo(NlEdit::$attachment_selected1, 0, -100);
+		$I->wait(1);
+		$I->seeElement(NlEdit::$attachment_selected1);
+
+		// Check details attachment 2
+		$I->scrollTo(NlEdit::$attachment_selected2, 0, -100);
+		$I->wait(1);
+		$I->seeElement(NlEdit::$attachment_selected2);
+
+		$I->scrollTo(Generals::$toolbar4['Save & Close'],0, -100);
+		$I->wait(1);
 		$I->click(Generals::$toolbar4['Save & Close']);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
+
+		// Check list view attachment
+//		$I->scrollTo(NlEdit::$attachment_listview, 0, -100);
+//		$I->wait(1);
+		$I->seeElement(NlEdit::$attachment_listview_icon);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -411,50 +429,70 @@ class TestNewslettersDetailsCest
 	 */
 	public function CreateOneNewsletterWithFileUpload(\AcceptanceTester $I)
 	{
-//		$I->wantTo("Create one Newsletter and upload a file for attachment");
-//		$I->amOnPage(NlManage::$url);
-//
-//		$I->click(Generals::$toolbar['New']);
-//
-//		// Ensure upload file doesn't exists
-//		try
-//		{
-//			$I->deleteFile(NlEdit::$attachment_upload_path . NlEdit::$attachment_upload_file_raw);
-//		}
-//		catch (\Exception $e)
-//		{
-//			codecept_debug("No file to delete or not accessible");
-//		}
-//
-//		$I->clickAndWait(NlEdit::$attachments_add_button, 1);
-//		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
-//		$I->waitForElementVisible("#imageModal_jform_attachment__attachmentX__single_attachment", 10);
-//		$I->switchToIFrame(Generals::$media_frame);
-//		$I->waitForElementVisible("//*[@id='uploadForm']", 5);
-//		$I->scrollTo(".//*[@id='uploadForm']", 0, -80);
-//		$I->waitForElementVisible("#upload-file", 5);
-//
-//		// Upload file
-//		$I->attachFile(".//*[@id='upload-file']", NlEdit::$attachment_upload_file_raw);
-//		$I->click("html/body/div[2]/form[2]/div/fieldset/div/div[2]/button");
-//		$I->waitForElementVisible(Generals::$alert_success, 30);
-//		$I->see(NlEdit::$attachment_upload_success . NlEdit::$attachment_upload_file_raw, Generals::$alert_success);
-//
-//		$I->wait(2);
-//		$I->switchToIFrame(Generals::$image_frame);
-//		$I->waitForElementVisible("ul.manager", 5);
-//		$I->scrollTo(NlEdit::$attachment_upload_file, 0, -100);
-//		$I->clickAndWait(NlEdit::$attachment_upload_file, 1);
-//
-//		$I->switchToIFrame();
-//		$I->switchToIFrame(Generals::$media_frame);
-//		$I->clickAndWait(NlEdit::$attachment_insert, 1);
-//		$I->switchToIFrame();
-//
-//		$I->waitForElementVisible(NlEdit::$attachment, 20);
-//
-//		$I->click(NlEdit::$toolbar['Cancel']);
-//		$I->see("Newsletters", Generals::$pageTitle);
+		$I->setManifestOption('com_media', 'restrict_uploads', 0);
+
+		$I->wantTo("Create one Newsletter and upload a file for attachment");
+		$I->amOnPage(NlManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		// Ensure upload file doesn't exists
+		try
+		{
+			$I->deleteFile(NlEdit::$attachment_upload_path . NlEdit::$attachment_upload_file_raw);
+		}
+		catch (\Exception $e)
+		{
+			codecept_debug("No file to delete or not accessible");
+		}
+
+		$I->clickAndWait(NlEdit::$attachments_add_button, 1);
+		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
+		$I->switchToIFrame(Generals::$media_frame1);
+		$I->waitForElementVisible("//*[@id='toolbar']", 5);
+
+		// Show file input field
+		$I->executeJS("document.querySelector('input.hidden').className = 'visible';");
+
+		// Upload file
+		$I->attachFile("//*/input[@type='file']", NlEdit::$attachment_upload_file_raw);
+
+		// Hide file input field
+		$I->executeJS("document.querySelector('input.visible').className = 'hidden';");
+
+		// Check upload success
+		$I->waitForElementVisible(Generals::$alert_success, 30);
+		$I->see(NlEdit::$attachment_upload_success, Generals::$alert_success);
+
+		// Insert uploaded image
+		$I->scrollTo(NlEdit::$attachment_upload_file, 0, -250);
+		$I->wait(1);
+
+		$I->clickAndWait(NlEdit::$attachment_upload_select, 1);
+		$I->switchToIFrame();
+		$I->clickAndWait(NlEdit::$attachment_insert1, 2);
+
+		// See image at attachment at details page/frame
+		$I->waitForElementVisible(NlEdit::$attachment, 20);
+
+		// Delete currently uploaded file
+		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
+		$I->switchToIFrame(Generals::$media_frame1);
+		$I->waitForElementVisible("//*[@id='toolbar']", 5);
+
+		$I->scrollTo(NlEdit::$attachment_upload_file, 0, -250);
+		$I->wait(1);
+
+		$I->clickAndWait(NlEdit::$attachment_upload_select, 1);
+		$I->clickAndWait(NlEdit::$attachment_upload_delete, 1);
+		$I->clickAndWait(NlEdit::$attachment_media_delete_confirm, 1);
+		$I->switchToIFrame();
+		$I->clickAndWait(NlEdit::$attachment_cancel, 1);
+
+		$I->click(NlEdit::$toolbar['Cancel']);
+		$I->see("Newsletters", Generals::$pageTitle);
+
+		$I->setManifestOption('com_media', 'restrict_uploads', 1);
 	}
 
 	/**
@@ -1104,7 +1142,7 @@ class TestNewslettersDetailsCest
 		$I->dontSeeElement(NlEdit::$legend_recipients);
 
 		//select attachment
-//		NlEdit::selectAttachment($I);
+		NlEdit::selectAttachment($I);
 
 		// fill publish and unpublish
 		NlEdit::fillPublishedDate($I);
@@ -1212,7 +1250,7 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(NlEdit::$description, 1);
 
 		//select attachment
-//		NlEdit::selectAttachment($I);
+		NlEdit::selectAttachment($I);
 
 		// fill publish and unpublish
 		NlEdit::fillPublishedDate($I);

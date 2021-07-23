@@ -462,6 +462,22 @@ class NewsletterModel extends AdminModel
 			$form->setFieldAttribute('published', 'type', 'hidden');
 		}
 
+// @ToDo: Urgent: Move to Model->prepareForm
+		// Convert attachment string or JSON to array, if present
+		$attachments = $form->getValue('attachment');
+		if (is_string($attachments))
+		{
+			$attachments = BwPostmanNewsletterHelper::decodeAttachments($attachments);
+		}
+
+		// Insert first tier to attachments array if only one tier exists
+		if (is_array($attachments) && !is_array($attachments[array_key_first($attachments)]))
+		{
+			$attachments = BwPostmanNewsletterHelper::makeTwoTierAttachment($attachments);
+		}
+
+		$form->setValue('attachment', '', $attachments);
+
 		$form->setValue('title', '', $form->getValue('subject'));
 
 		return $form;
@@ -742,9 +758,9 @@ class NewsletterModel extends AdminModel
 		BwPostmanMailinglistHelper::mergeMailinglists($data);
 
 		// convert attachment array to JSON, to be able to save
-		if (isset($data['attachment']) && is_array($data['attachment']) && !empty($data['attachment']))
+		if (isset($data['attachment']) && is_array($data['attachment']))
 		{
-			if (count($data['attachment']))
+			if (!empty($data['attachment']))
 			{
 				$data['attachment'] = json_encode($data['attachment']);
 			}
@@ -1928,8 +1944,16 @@ class NewsletterModel extends AdminModel
 		$tblSendMailContent->load($tblSendMailQueue->content_id);
 
 		// Convert attachment string or JSON to array, if present
-		$attachments = BwPostmanNewsletterHelper::decodeAttachments($tblSendMailContent->attachment);
+		if (is_string($tblSendMailContent->attachment))
+		{
+			$attachments = BwPostmanNewsletterHelper::decodeAttachments($tblSendMailContent->attachment);
+		}
 
+		// Insert first tier to attachments array if only one tier exists
+		if (is_array($tblSendMailContent->attachment) && !is_array($tblSendMailContent->attachment[array_key_first($tblSendMailContent->attachment)]))
+		{
+			$tblSendMailContent->attachment = BwPostmanNewsletterHelper::makeTwoTierAttachment($tblSendMailContent->attachment);
+		}
 		// Add base path to attachments
 		$fullAttachments = array();
 

@@ -169,7 +169,16 @@ if ($moduleId !== null && $moduleId !== '')
 					foreach ($this->items as $i => $item)
 					{
 						// Convert attachment string or JSON to array, if present
-						$attachments = BwPostmanNewsletterHelper::decodeAttachments($item->attachment);
+						if (is_string($item->attachment))
+						{
+							$attachments = BwPostmanNewsletterHelper::decodeAttachments($item->attachment);
+						}
+
+						// Insert first tier to attachments array if only one tier exists
+						if (is_array($item->attachment) && !is_array($item->attachment[array_key_first($item->attachment)]))
+						{
+							$attachments = BwPostmanNewsletterHelper::makeTwoTierAttachment($item->attachment);
+						}
 						?>
 						<tr class="row<?php echo $i % 2; ?>">
 							<td class="date">

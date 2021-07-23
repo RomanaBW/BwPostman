@@ -140,16 +140,28 @@ abstract class BwPostmanNewsletterHelper {
 	 *
 	 * @since 4.0.0
 	 */
-	public static function decodeAttachments($attachmentString): array
+	public static function decodeAttachments(string $attachmentString): array
 	{
 		$attachments = array();
 
-		if (!empty($attachmentString) && gettype($attachmentString) === 'string')
+		if (!empty($attachmentString))
 		{
+//			If attachment is simple string (no JSON), convert it this way
 			if (strpos($attachmentString, '{') === false)
 			{
-				$attachments = explode(';', $attachmentString);
+				$tmpAttach = explode(';', $attachmentString);
+
+//				If array has only one tier, insert first tier and move existing to second tier
+				if (!is_array($tmpAttach[0]))
+				{
+					$attachments = self::makeTwoTierAttachment($tmpAttach);
+				}
+				else
+				{
+					$attachments = $tmpAttach;
+				}
 			}
+//			If attachment is JSON, convert it that way
 			else
 			{
 				$attachments = json_decode($attachmentString, true);
@@ -157,5 +169,27 @@ abstract class BwPostmanNewsletterHelper {
 		}
 
 		return $attachments;
+	}
+
+	/**
+	 * Method to convert one tier attachment array to two tier attachment array
+	 *
+	 * @param array $oneTierAttachments
+	 *
+	 * @return array   Array of attachments with two tiers
+	 *
+	 * @since 4.0.0
+	 */
+	public static function makeTwoTierAttachment(array $oneTierAttachments): array
+	{
+		$twoTierAttachments = array();
+
+		for ($i = 0; $i < count($oneTierAttachments); $i++)
+		{
+			$keyField                      = '__field' . ($i + 31);
+			$twoTierAttachments[$keyField] = array('single_attachment' => $oneTierAttachments[$i]);
+		}
+
+		return $twoTierAttachments;
 	}
 }

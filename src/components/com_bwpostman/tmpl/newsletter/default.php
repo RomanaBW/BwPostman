@@ -98,7 +98,16 @@ use Joomla\CMS\HTML\HTMLHelper;
 			if (!empty($this->newsletter->attachment) && $this->attachment_enabled != 'hide')
 			{
 				// Convert attachment string or JSON to array, if present
-				$attachments = BwPostmanNewsletterHelper::decodeAttachments($this->newsletter->attachment);
+				if (is_string($this->newsletter->attachment))
+				{
+					$attachments = BwPostmanNewsletterHelper::decodeAttachments($this->newsletter->attachment);
+				}
+
+				// Insert first tier to attachments array if only one tier exists
+				if (is_array($this->newsletter->attachment) && !is_array($this->newsletter->attachment[array_key_first($this->newsletter->attachment)]))
+				{
+					$this->newsletter->attachment = BwPostmanNewsletterHelper::makeTwoTierAttachment($this->newsletter->attachment);
+				}
 
 				foreach ($attachments as $attachment)
 				{

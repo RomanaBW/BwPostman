@@ -1066,6 +1066,7 @@ class TemplateModel extends AdminModel
 		$legal_tag_e = isset($item->tpl_tags_legal) && $item->tpl_tags_legal == 0 ? $item->tpl_tags_legal_advanced_e : '';
 		$preview     = $this->addHtmlTags($text, $preview_css, $item->basics, $head_tag, $body_tag, $legal_tag_b, $legal_tag_e);
 
+
 		// make article preview data
 		$preview_article = isset($item->article['show_title']) && $item->article['show_title'] == 0 ?
 			'<div class="intro_text">[%content_text%]</div>' :

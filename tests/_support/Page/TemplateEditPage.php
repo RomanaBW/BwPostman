@@ -683,7 +683,7 @@ class TemplateEditPage
 
 		$I->clickAndWait(self::$thumb_select_button, 1);
 
-		$I->switchToIFrame(Generals::$media_frame);
+		$I->switchToIFrame(Generals::$media_frame1);
 		$I->wait(1);
 
 		$I->waitForElementVisible(".//*[@id='browser-list']", 5);

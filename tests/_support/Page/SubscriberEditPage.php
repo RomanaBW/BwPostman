@@ -366,7 +366,7 @@ class SubscriberEditPage
 	 *
 	 * @since 2.4.0
 	 */
-	public static $printSubsDataClose   = "//*/div[@id='subsData']/div/div/div/button[@aria-label='Close']";
+	public static $printSubsDataClose   = "//*/div[@id='subsData']/div/div/div/button[@class='btn-close']";
 
 
 	/**

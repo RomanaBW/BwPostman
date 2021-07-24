@@ -1069,13 +1069,13 @@ class TestTemplatesDetailsCest
 
 		//don't show readon button
 		// @ToDo: Take care that no php notices are displayed, then the next two lines are obsolete
-		$I->scrollTo(TplEdit::$show_readon_no, 0, -50);
-		$I->wait(1);
+		$I->scrollTo(TplEdit::$show_readon_no, 0, -150);
+		$I->wait(2);
 
 		$I->click(TplEdit::$show_readon_no);
 
 		// @ToDo: Take care that no php notices are displayed, then the next two lines are obsolete
-		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -50);
+		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
 		$I->wait(1);
 
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
@@ -1093,6 +1093,10 @@ class TestTemplatesDetailsCest
 		$I->switchToIFrame();
 
 		// show readon button
+		// @ToDo: Take care that no php notices are displayed, then the next two lines are obsolete
+		$I->scrollTo(TplEdit::$show_readon_yes, 0, -150);
+		$I->wait(2);
+
 		$I->click(TplEdit::$show_readon_yes);
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
 		$I->switchToIFrame($iFrame);
@@ -1100,8 +1104,8 @@ class TestTemplatesDetailsCest
 		$I->switchToIFrame();
 
 		// @ToDo: Take care that no php notices are displayed, then the next two lines are obsolete
-		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
-		$I->wait(1);
+		$I->scrollTo(Generals::$joomlaHeader, 0, -150);
+		$I->wait(2);
 	}
 
 	/**

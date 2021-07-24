@@ -1437,6 +1437,10 @@ class NewsletterEditPage
 		codecept_debug("iFrame time: $iframeTime");
 		codecept_debug("Publish: $publish");
 
+		// Reset build queue switch
+		$I->setExtensionStatus('bwtestmode', 0);
+		$I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
+
 		$I->click(self::$mark_to_send);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(Generals::$toolbar4['Send']);
@@ -1459,6 +1463,10 @@ class NewsletterEditPage
 		$remainsToSend  = '0';
 		if ($buildQueue)
 		{
+			// Set build queue switch
+			$I->setExtensionStatus('bwtestmode', 1);
+			$I->setManifestOption('bwtestmode', 'arise_queue_option', '1');
+
 			$remainsToSend = $nbrToSend;
 		}
 

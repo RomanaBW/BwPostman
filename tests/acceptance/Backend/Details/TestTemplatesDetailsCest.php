@@ -1098,6 +1098,11 @@ class TestTemplatesDetailsCest
 		$I->wait(2);
 
 		$I->click(TplEdit::$show_readon_yes);
+
+		// @ToDo: Take care that no php notices are displayed, then the next two lines are obsolete
+		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
+		$I->wait(1);
+
 		$I->clickAndWait(TplEdit::$button_refresh_preview, 2);
 		$I->switchToIFrame($iFrame);
 		$I->see('read more', $readonIdentifier);
@@ -1127,7 +1132,7 @@ class TestTemplatesDetailsCest
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(TplEdit::$button_editor_toggle, 1);
-		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 

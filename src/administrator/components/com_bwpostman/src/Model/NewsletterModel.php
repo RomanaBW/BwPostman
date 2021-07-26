@@ -379,6 +379,7 @@ class NewsletterModel extends AdminModel
 
 		$jinput = Factory::getApplication()->input;
 		$id     = $jinput->get('id', 0);
+		$layout = Factory::getApplication()->getUserState('newsletter.tab' . $id, 'edit_basic');
 
 		// predefine some values
 		if (!$form->getValue('from_name'))
@@ -463,20 +464,23 @@ class NewsletterModel extends AdminModel
 		}
 
 // @ToDo: Urgent: Move to Model->prepareForm
-		// Convert attachment string or JSON to array, if present
-		$attachments = $form->getValue('attachment');
-		if (is_string($attachments))
+		// Convert attachment string or JSON to array, if present, on tab edit_basic
+		if ($layout === 'edit_basic')
 		{
-			$attachments = BwPostmanNewsletterHelper::decodeAttachments($attachments);
-		}
+			$attachments = $form->getValue('attachment');
+			if (is_string($attachments))
+			{
+				$attachments = BwPostmanNewsletterHelper::decodeAttachments($attachments);
+			}
 
-		// Insert first tier to attachments array if only one tier exists
-		if (is_array($attachments) && !is_array($attachments[array_key_first($attachments)]))
-		{
-			$attachments = BwPostmanNewsletterHelper::makeTwoTierAttachment($attachments);
-		}
+			// Insert first tier to attachments array if only one tier exists
+			if (is_array($attachments) && !is_array($attachments[array_key_first($attachments)]))
+			{
+				$attachments = BwPostmanNewsletterHelper::makeTwoTierAttachment($attachments);
+			}
 
-		$form->setValue('attachment', '', $attachments);
+			$form->setValue('attachment', '', $attachments);
+		}
 
 		$form->setValue('title', '', $form->getValue('subject'));
 
@@ -1959,7 +1963,12 @@ class NewsletterModel extends AdminModel
 
 		foreach ($attachments as $attachment)
 		{
-			$fullAttachments[] = JPATH_SITE . '/' .$attachment['single_attachment'];
+			// Remove metadata from attachment
+			$pos1              = strpos($attachment['single_attachment'], '#');
+			$rawFilename       = substr($attachment['single_attachment'], 0, $pos1);
+
+			// Create filepath
+			$fullAttachments[] = JPATH_SITE . '/' .$rawFilename;
 		}
 
 		$tblSendMailContent->attachment = $fullAttachments;

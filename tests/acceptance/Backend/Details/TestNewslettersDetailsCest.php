@@ -461,7 +461,7 @@ class TestNewslettersDetailsCest
 		$I->executeJS("document.querySelector('input.visible').className = 'hidden';");
 
 		// Check upload success
-		$I->waitForElementVisible(Generals::$alert_success, 30);
+		$I->waitForElementVisible(Generals::$alert_success, 10);
 		$I->see(NlEdit::$attachment_upload_success, Generals::$alert_success);
 
 		// Insert uploaded image
@@ -473,7 +473,7 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(NlEdit::$attachment_insert1, 2);
 
 		// See image at attachment at details page/frame
-		$I->waitForElementVisible(NlEdit::$attachment, 20);
+		$I->waitForElementVisible(NlEdit::$attachment, 10);
 
 		// Delete currently uploaded file
 		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);

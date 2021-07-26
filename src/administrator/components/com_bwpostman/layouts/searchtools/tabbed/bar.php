@@ -61,7 +61,7 @@ foreach ($fieldset as $fieldName => $field)
 <?php if (!empty($filters['filter_search'])) : ?>
 	<?php if ($searchButton) : ?>
 		<div class="btn-toolbar">
-			<div class="btn-group mr-2">
+			<div class="btn-group me-2">
 				<div class="input-group">
 					<label for="filter_search" class="sr-only">
 						<?php if (isset($filters['filter_search']->label)) : ?>
@@ -88,7 +88,7 @@ foreach ($fieldset as $fieldName => $field)
 					<?php echo Text::_('JFILTER_OPTIONS'); ?>
 					<span class="fa icon-caret-down" aria-hidden="true"></span>
 				</button>
-				<button type="button" class="btn btn-primary js-stools-btn-clear mr-2">
+				<button type="button" class="btn btn-primary js-stools-btn-clear me-2">
 					<?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
 				</button>
 			</div>

@@ -53,7 +53,7 @@ $option	= $jinput->getCmd('option');
 					<tr>
 						<td class="key">
 							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE'); ?>:</span>
-							<span class="editlinktip mr-2" aria-labelledby="tip-desc">
+							<span class="editlinktip me-2" aria-labelledby="tip-desc">
 								<?php echo $image; ?>&nbsp;&nbsp;
 							</span>
                             <div role="tooltip" id="tip-desc"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE_NOTE'); ?></div>

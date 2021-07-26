@@ -48,6 +48,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $this->context	= 'Archive.templates';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'templates');
 
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = $this->document->getWebAssetManager();
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostman/admin-bwpm_tabshelper.js');
+
 //
 /**
  * BwPostman Archived Templates Layout
@@ -248,6 +252,3 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'templ
 		</div>
 	</form>
 </div>
-<?php
-Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_tabshelper.js');
-?>

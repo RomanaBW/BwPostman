@@ -45,13 +45,13 @@ $uri    = Uri::root();
 	<div class="col-lg-6">
 		<div class="card card-body">
 			<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
-			<p id="step1" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
-			<p id="step2" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
-			<p id="step3" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
-			<p id="step4" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
-			<p id="step5" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
-			<p id="step6" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_6'); ?></p>
-			<p id="step7" class="alert alert-secondary mt-0"><span class="fa fa-pulse"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_7'); ?></p>
+			<p id="step1" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
+			<p id="step2" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
+			<p id="step3" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
+			<p id="step4" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
+			<p id="step5" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
+			<p id="step6" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_6'); ?></p>
+			<p id="step7" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_7'); ?></p>
 		</div>
 	</div>
 	<div class="col-lg-6">

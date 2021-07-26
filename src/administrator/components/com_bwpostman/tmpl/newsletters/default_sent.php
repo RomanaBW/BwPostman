@@ -49,6 +49,10 @@ $nullDate   = Factory::getDbo()->getNullDate();
 
 $iconImage = Uri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png';
 
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = $this->document->getWebAssetManager();
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostman/admin-bwpm_tabshelper.js');
+
 Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 ?>
 
@@ -183,21 +187,24 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 													<?php echo $this->escape($item->subject); ?>
 												<?php endif; ?>
 												<div class="bw-btn">
-													<span class="iframe btn btn-info btn-sm hasTooltip mt-1"
-															title="<?php echo $titleHtml;?>
-														<?php echo '<br />'.$this->escape($item->subject); ?>"
+													<a class="iframe btn btn-info btn-sm hasTooltip text-decoration-none mt-1" href="javascript:void(0);"
+															aria-describedby="tip-html-<?php echo $i; ?>"
 															data-title="<?php echo $titleHtml;?>" data-bs-title="<?php echo $titleHtml;?>" data-bs-frame="myIframeHtml" data-bs-src="<?php echo $linkHtml;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
 														<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
 														<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
-													</span>
-
-													<span class="iframe btn btn-info btn-sm hasTooltip mt-1"
-															title="<?php echo $titleText;?>
-														<?php echo '<br />'.$this->escape($item->subject); ?>"
+													</a>
+													<div role="tooltip" id="tip-html-<?php echo $i; ?>">
+														<?php echo $titleHtml . '<br />' . $this->escape($item->subject); ?>
+													</div>
+													<a class="iframe btn btn-info btn-sm hasTooltip text-decoration-none mt-1" href="javascript:void(0);"
+															aria-describedby="tip-text-<?php echo $i; ?>"
 															data-title="<?php echo $titleText;?>" data-bs-title="<?php echo $titleText;?>" data-bs-frame="myIframeText" data-bs-src="<?php echo $linkText;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
 														<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
 														<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
-													</span>
+													</a>
+													<div role="tooltip" id="tip-text-<?php echo $i; ?>">
+														<?php echo $titleText . '<br />' . $this->escape($item->subject); ?>
+													</div>
 												</div>
 											</td>
 											<td class="d-none d-lg-table-cell"><?php echo $this->escape($item->description); ?></td>
@@ -267,7 +274,7 @@ $item->published,
 				<h4 class="modal-title text-center">&nbsp;</h4>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"></button>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body p-3">
 				<iframe class="modal-frame" width="100%"></iframe>
 			</div>
 			<div class="modal-footer">
@@ -276,7 +283,3 @@ $item->published,
 		</div>
 	</div>
 </div>
-
-<?php
-Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_tabshelper.js');
-?>

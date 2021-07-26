@@ -246,7 +246,7 @@ class MaintenancejsonController extends AdminController
 			else
 			{
 
-				$successMessage  = '<p class="alert alert-success mb-2">';
+				$successMessage  = '<p class="alert alert-success fw-bold mb-2">';
 				$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
 				$successMessage .= '</p>';
 
@@ -690,7 +690,7 @@ class MaintenancejsonController extends AdminController
 			}
 			else
 			{
-				$successMessage = '<p class="alert alert-success mb-2">';
+				$successMessage = '<p class="alert alert-success fw-bold mb-2">';
 				$successMessage .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OK');
 				$successMessage .= '</p>';
 

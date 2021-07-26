@@ -48,6 +48,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $this->context	= 'Archive.subscribers';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'subscribers');
 
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = $this->document->getWebAssetManager();
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostman/admin-bwpm_tabshelper.js');
+
 //
 /**
  * BwPostman Archived Subscribers Layout
@@ -218,9 +222,8 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'subsc
 											<tr class="row<?php echo $i % 2; ?>">
 												<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 												<td>
-													<span class="iframe btn btn-outline-info btn-sm hasTooltip"
-															title="<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_SUB');?>:
-														<?php echo '<br />'.$this->escape($item->firstname).'&nbsp;'.$this->escape($item->name).'<br />'.$this->escape($item->email); ?>"
+													<a class="iframe btn btn-outline-info btn-sm hasTooltip text-decoration-none" href="javascript:void(0);"
+															aria-describedby="tip-sub-<?php echo $i; ?>"
 															data-title="<?php echo $titleSub;?>" data-bs-title="<?php echo $titleSub;?>" data-bs-frame="myIframeSub" data-bs-src="<?php echo $linkSub;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
 														<?php
 														$itemName = Text::_('COM_BWPOSTMAN_SUB_NONAME');
@@ -232,7 +235,10 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'subsc
 														echo $itemName;
 														?>
 														<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
-													</span>
+													</a>
+													<div role="tooltip" id="tip-sub-<?php echo $i; ?>">
+														<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_SUB') . '<br />' . $this->escape($item->firstname) . '&nbsp;' . $this->escape($item->name) . '<br />' . $this->escape($item->email); ?>
+													</div>
 												</td>
 												<td><?php echo $item->firstname; ?></td>
 												<td><?php echo $item->email; ?></td>
@@ -284,7 +290,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'subsc
 				<h4 class="modal-title text-center">&nbsp;</h4>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"></button>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body p-3">
 				<iframe class="modal-frame" width="100%"></iframe>
 			</div>
 			<div class="modal-footer">
@@ -293,7 +299,3 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'subsc
 		</div>
 	</div>
 </div>
-
-<?php
-Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_tabshelper.js');
-?>

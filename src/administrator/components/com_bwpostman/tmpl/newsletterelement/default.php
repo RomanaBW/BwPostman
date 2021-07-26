@@ -40,18 +40,18 @@ HTMLHelper::_('bootstrap.tooltip');
 	<div class="js-stools" role="search" tabindex="-1" id="ui-skip-2">
 		<div class="js-stools-container-bar">
 			<div class="btn-toolbar">
-				<div class="lead mr-2"><?php echo Text::_('JSEARCH_FILTER_LABEL'); ?></div>
-				<div class="input-group mr-2">
+				<div class="lead me-2"><?php echo Text::_('JSEARCH_FILTER_LABEL'); ?></div>
+				<div class="input-group me-2">
 					<input type="text" name="search" title="search" id="search"
 							value="<?php echo $this->lists['search']; ?>" class="form-control" onChange="document.adminForm.submit();" />
 					<button onclick="this.form.submit();" class="btn btn-primary input-group-append" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"
 							aria-label="<?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>">
-						<span class="fa fa-search mr-2" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>
+						<span class="fa fa-search me-2" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>
 					</button>
 				</div>
 				<button type="button" class="btn btn-outline-primary" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_CLEAR'); ?>"
 						aria-label="<?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.getElementById('search').setAttribute('value', '');this.form.submit();">
-					<span class="fa icon-unpublish mr-2" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
+					<span class="fa icon-unpublish me-2" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
 				</button>
 			</div>
 		</div>

@@ -48,6 +48,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $this->context	= 'Archive.campaigns';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campaigns');
 
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = $this->document->getWebAssetManager();
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostman/admin-bwpm_tabshelper.js');
+
 //
 /**
  * BwPostman Archived Campaigns Layout
@@ -202,13 +206,15 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 												<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 											</td>
 											<td>
-												<span class="iframe btn btn-outline-info btn-sm hasTooltip"
-														title="<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_CAM');?>:
-													<?php echo '<br />'.$this->escape($item->title); ?>"
+												<a class="iframe btn btn-outline-info btn-sm hasTooltip text-decoration-none" href="javascript:void(0);"
+														aria-describedby="tip-cam-<?php echo $i; ?>"
 														data-title="<?php echo $titleCam;?>" data-bs-title="<?php echo $titleCam;?>" data-bs-frame="myIframeCam" data-bs-src="<?php echo $linkCam;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
 													<?php echo $item->title;?>
 													<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
-												</span>
+												</a>
+												<div role="tooltip" id="tip-cam-<?php echo $i; ?>">
+													<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_CAM') . '<br />' . $this->escape($item->title); ?>
+												</div>
 											</td>
 											<td><?php echo $item->description; ?>
 											</td>
@@ -258,7 +264,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 				<h4 class="modal-title text-center">&nbsp;</h4>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"></button>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body p-3">
 				<iframe class="modal-frame" width="100%"></iframe>
 			</div>
 			<div class="modal-footer">
@@ -267,7 +273,3 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campa
 		</div>
 	</div>
 </div>
-
-<?php
-Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_tabshelper.js');
-?>

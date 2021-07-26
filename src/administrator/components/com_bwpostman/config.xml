@@ -127,9 +127,10 @@
 		</field>
 	</fieldset>
 
-	<fieldset name="com_bwpostman_registration_settings" label="COM_BWPOSTMAN_REG_SETTINGS" description="COM_BWPOSTMAN_REG_SETTINGS_DESCRIPTION" addfieldpath="/administrator/components/com_bwpostman/models/fields">
+	<fieldset name="com_bwpostman_registration_settings" label="COM_BWPOSTMAN_REG_SETTINGS" description="COM_BWPOSTMAN_REG_SETTINGS_DESCRIPTION">
 		<field name="customscript"
 		       type="customscript"
+               addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field"
 		/>
 		<field name="pretext"
 			type="textarea"
@@ -157,7 +158,7 @@
 
 		<field name="show_firstname_field"
 		       type="radio"
-		       class="bwpcheck"
+		       onchange="bwpcheck(0, 0);"
 		       layout="joomla.form.field.radio.switcher"
 		       default="1"
 		       label="COM_BWPOSTMAN_SHOW_FIRSTNAME_FIELD"
@@ -169,7 +170,7 @@
 
 		<field name="firstname_field_obligation"
 		       type="radio"
-		       class="bwpcheck"
+		       onchange="bwpcheck(0, 0);"
 		       layout="joomla.form.field.radio.switcher"
 		       default="1"
 		       label="COM_BWPOSTMAN_FIRSTNAME_FIELD_OBLIGATION"
@@ -183,7 +184,7 @@
 
 		<field name="show_name_field"
 		       type="radio"
-		       class="bwpcheck"
+		       onchange="bwpcheck(1, 0);"
 		       layout="joomla.form.field.radio.switcher"
 		       default="1"
 		       label="COM_BWPOSTMAN_SHOW_NAME_FIELD"
@@ -195,7 +196,7 @@
 
 		<field name="name_field_obligation"
 		       type="radio"
-		       class="bwpcheck"
+		       onchange="bwpcheck(1, 0);"
 		       layout="joomla.form.field.radio.switcher"
 		       default="1"
 		       label="COM_BWPOSTMAN_NAME_FIELD_OBLIGATION"
@@ -209,7 +210,7 @@
 
 		<field name="show_special"
 		       type="radio"
-		       class="bwpcheck"
+		       onchange="bwpcheck(2, 0);"
 		       layout="joomla.form.field.radio.switcher"
 		       default="0"
 		       label="COM_BWPOSTMAN_SHOW_SPECIAL"
@@ -221,7 +222,7 @@
 
 		<field name="special_field_obligation"
 		       type="radio"
-		       class="bwpcheck"
+		       onchange="bwpcheck(2, 0);"
 		       layout="joomla.form.field.radio.switcher"
 		       default="0"
 		       label="COM_BWPOSTMAN_SPECIAL_FIELD_OBLIGATION"

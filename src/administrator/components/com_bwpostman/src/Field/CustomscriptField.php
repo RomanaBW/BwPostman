@@ -70,56 +70,111 @@ class CustomscriptField extends FormField
 	 */
 	protected function getinput()
 	{
-		HTMLHelper::_('jquery.framework');
-
 		$doc  = Factory::getApplication()->getDocument();
 		$text = Text::_('COM_BWPOSTMAN_FIELD_OBLIGATION');
-		// Hide spacers on joomla 4
-		$hide_spacer = "				jQuery('#wrapper.wrapper #config [id^=\"com_bwpostman_\"] .field-spacer').css('display', 'none');";
+
+		$css = "
+			.obligation {
+				color: red;
+				opacity: 0;
+				line-height: 0px;
+				transition: all 0.5s linear;
+			}
+			.obligation.down {
+				opacity: 1;
+				line-height: 20px;
+				transition: all 0.5s linear;
+			}
+		";
+		$doc->addStyleDeclaration($css);
 
 		$js = "
-			jQuery(document).ready(function()
-			{
-				$hide_spacer;
-				// monitors obligation fields
-				jQuery('#com_bwpostman_registration_settings').on('change', '.bwpcheck :radio', function(){
-					var ind = jQuery(this).index('.bwpcheck :radio');
-					var a = Math.floor(ind/4);
-					bwpcheck(a);
-				});
 
-				// Displays a tip
-				function bwpcheck(a){
-					var click_fields    = [
-						'show_firstname_field',
-						'show_name_field',
-						'show_special'
-					];
-					var check_fields    = [
-						'firstname_field_obligation',
-						'name_field_obligation',
-						'special_field_obligation'
-					];
-					var value1 = jQuery('input[name=\"jform['+click_fields[a]+']\"]:checked').val();
-					var value2 = jQuery('input[name=\"jform['+check_fields[a]+']\"]:checked').val();
+			// Displays a tip
+			function bwpcheck(a, init){
+				var click_fields    = [
+					'show_firstname_field',
+					'show_name_field',
+					'show_special'
+				];
+				var check_fields    = [
+					'firstname_field_obligation',
+					'name_field_obligation',
+					'special_field_obligation'
+				];
+				var value1 = document.querySelector('input[name=\"jform['+click_fields[a]+']\"]:checked').value;
+				var value2 = document.querySelector('input[name=\"jform['+check_fields[a]+']\"]:checked').value;
+				var elem = document.getElementById('jform_'+click_fields[a]);
+
+				if (init == 1)
+				{
 					var text = '$text';
-
-					if (value1 == 0 && value2 == 1)
-					{
-						jQuery('#jform_'+click_fields[a]).after(text);
-						jQuery('#jform_'+click_fields[a]).next('.obligation').slideDown(800);
-					}
-					else
-					{
-						jQuery('#jform_'+click_fields[a]).next('.obligation').slideUp(800);
-					}
+					elem.insertAdjacentHTML('afterend',text);
 				}
 
+				if (value1 == 0 && value2 == 1)
+				{
+					upOrDown(elem, 'down');
+				}
+				else
+				{
+					upOrDown(elem, 'up');
+				}
+			}
+
+			function upOrDown(elem, slide) {
+				// Get the next sibling element
+				var sibling = elem.nextElementSibling;
+
+				// If the sibling matches our selector, use it
+				// If not, jump to the next sibling and continue the loop
+				while (sibling)
+				{
+					if (sibling.matches('.obligation'))
+					{
+						if (slide == 'up')
+						{
+							sibling.classList.remove('down');
+						}
+						else
+						{
+							sibling.classList.add('down');
+						}
+						return;
+					}
+					sibling = sibling.nextElementSibling
+				}
+			}
+
+			function ready(callbackFunc) {
+				if (document.readyState !== 'loading')
+				{
+					// Document is already ready, call the callback directly
+					callbackFunc();
+				}
+				else if (document.addEventListener)
+				{
+					// All modern browsers to register DOMContentLoaded
+					document.addEventListener('DOMContentLoaded', callbackFunc);
+				}
+				else
+				{
+					// Old IE browsers
+					document.attachEvent('onreadystatechange', function() {
+						if (document.readyState === 'complete')
+						{
+							callbackFunc();
+						}
+					});
+				}
+			}
+
+			ready(function() {
 				// check obligation fields after page rendering
 				for (a = 0; a < 3; a++)
-      			{
-					bwpcheck(a);
-      			}
+	      		{
+					bwpcheck(a, 1);
+	      		}
 			});
 		";
 

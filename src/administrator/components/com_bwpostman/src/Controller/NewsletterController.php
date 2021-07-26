@@ -783,7 +783,6 @@ class NewsletterController extends FormController
 
 		// Get record ID from list view
 		$ids = $this->input->get('cid', 0, '');
-//		$ids = ArrayHelper::toInteger($ids);
 
 		$recordId = $ids;
 

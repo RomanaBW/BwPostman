@@ -1060,11 +1060,12 @@ class TemplateModel extends AdminModel
 		$preview_css = rtrim($preview_css, '</style>');
 
 		$text        = $preview_html;
+		$basics      = $item->basics ?? '';
 		$head_tag    = isset($item->tpl_tags_head) && $item->tpl_tags_head == 0 ? $item->tpl_tags_head_advanced : '';
 		$body_tag    = isset($item->tpl_tags_body) && $item->tpl_tags_body == 0 ? $item->tpl_tags_body_advanced : '';
 		$legal_tag_b = isset($item->tpl_tags_legal) && $item->tpl_tags_legal == 0 ? $item->tpl_tags_legal_advanced_b : '';
 		$legal_tag_e = isset($item->tpl_tags_legal) && $item->tpl_tags_legal == 0 ? $item->tpl_tags_legal_advanced_e : '';
-		$preview     = $this->addHtmlTags($text, $preview_css, $item->basics, $head_tag, $body_tag, $legal_tag_b, $legal_tag_e);
+		$preview     = $this->addHtmlTags($text, $preview_css, $basics, $head_tag, $body_tag, $legal_tag_b, $legal_tag_e);
 
 
 		// make article preview data

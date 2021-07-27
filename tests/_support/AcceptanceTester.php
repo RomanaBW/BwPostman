@@ -247,6 +247,35 @@ class AcceptanceTester extends \Codeception\Actor
 	}
 
 	/**
+	 * Method to search for item to edit
+	 *
+	 * @param string $search_value
+	 * @param string $tableId
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+
+	public function filterForItemToEdit(string $search_value, string $tableId = 'main-table'): bool
+	{
+		$this->fillField(Generals::$search_field, $search_value);
+		$this->clickAndWait(Generals::$search_button_direct, 2);
+
+		$firstLine = $this->grabTextFrom("//*[@id='" . $tableId . "']/tbody/tr[1]/td[1]");
+		codecept_debug('First line: ' . $firstLine);
+
+		if (strpos($firstLine, 'There are no data available') === false)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Method to
 	 *
 	 * @param string            $button

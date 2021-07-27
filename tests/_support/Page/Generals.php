@@ -696,6 +696,13 @@ class Generals
 	 *
 	 * @since 4.0.0
 	 */
+	public static $search_button_direct        = "//*/button[@aria-label='Search']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
 	public static $search_button_span        = "//*[@class='js-stools-container-bar']/div[1]/div[1]/div[1]/span/button";
 
 	// Filter bar

@@ -598,7 +598,7 @@ class TestAccessCest
 		$allowed    = $permission_array[$button]['permissions']['Create'];
 
 		$I->click(Generals::$toolbar['New']);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElement(Generals::$pageTitle, 5);
 
 		if ($allowed)
 		{
@@ -620,7 +620,7 @@ class TestAccessCest
 				}
 			}
 
-			$I->waitForElement(Generals::$pageTitle, 30);
+			$I->waitForElement(Generals::$pageTitle, 5);
 			$I->see('BwPostman');
 		}
 		else
@@ -687,8 +687,8 @@ class TestAccessCest
 		{
 			$tableId = 'main-table-bw-confirmed';
 		}
-		$item_found  = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
-		$I->assertEquals(true, $item_found);
+
+		$I->filterForItemToEdit($check_content, $tableId);
 
 		// by link
 		if ($allowed)
@@ -704,11 +704,6 @@ class TestAccessCest
 			$I->dontSeeLink($check_content);
 		}
 
-		// find page and row for desired item
-		$item_found  = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
-
-		$I->assertEquals(true, $item_found);
-
 		// by checkbox
 		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 
@@ -719,16 +714,9 @@ class TestAccessCest
 		$I->waitForElementVisible(Generals::$toolbar4['Edit'], 3);
 		$I->click(Generals::$toolbar4['Edit']);
 
-//		if ($allowed)
-//		{
-			$this->checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
-//		}
-//		else
-//		{
-//			$I->waitForElementVisible(Generals::$alert_heading4, 30);
-//			$I->see(Generals::$alert_msg_txt, Generals::$alert_heading4);
-//			$I->see($button, Generals::$pageTitle);
-//		}
+		$this->checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
+
+		$I->clickAndWait(Generals::$clear_button, 1);
 	}
 
 	/**
@@ -853,6 +841,8 @@ class TestAccessCest
 				$I->click(NewsletterManagerPage::$tab1);// switch to tab unsent newsletters to finish
 				$I->waitForElement(".//*[@id='main-table']/thead/tr/th[5]/a", 20);
 			}
+
+			$I->clickAndWait(Generals::$clear_button, 1);
 		}
 	}
 
@@ -1021,9 +1011,7 @@ class TestAccessCest
 	 */
 	private function openItemAndGoBackToListView(\AcceptanceTester $I, $button, $link, $check_content, $item_link, $tableId)
 	{
-		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
-
-		$I->assertEquals(true, $item_found);
+		$I->filterForItemToEdit($check_content, $tableId);
 
 		$I->click($item_link);
 		$I->waitForElement(Generals::$pageTitle, 30);
@@ -1038,9 +1026,7 @@ class TestAccessCest
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see($button, Generals::$pageTitle);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
-
-		$I->assertEquals(true, $item_found);
+		$I->filterForItemToEdit($check_content, $tableId);
 	}
 
 	/**
@@ -1068,11 +1054,15 @@ class TestAccessCest
 
 		$I->see(sprintf(AccessPage::$checkin_success_text, $item), Generals::$alert_success);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
+//		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
+//
+//		$I->assertEquals(true, $item_found);
 
-		$I->assertEquals(true, $item_found);
+		$I->filterForItemToEdit($check_content, $tableId);
 
 		$I->dontSeeElement($lock_icon);
+
+		$I->clickAndWait(Generals::$clear_button, 1);
 	}
 
 	/**
@@ -1119,7 +1109,8 @@ class TestAccessCest
 
 		$this->switchLoggedInUser($I, $current_user);
 
-		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
+//		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
+		$item_found = $I->filterForItemToEdit($check_content, $tableId);
 
 		if ($item_found !== true)
 		{

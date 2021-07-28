@@ -1882,14 +1882,22 @@ class TestOptionsCest
 	protected function checkSetPermissionsSuccess(AcceptanceTester $I, $rule, $group_id, $groupname)
 	{
 		$value      = OptionsPage::$bwpm_group_permissions[$groupname][$rule];
+		$rulesToScroll = array(
+			'core.admin',
+			'bwpm.send',
+			'bwpm.admin.newsletter'
+		);
 
 		$scrollPos = "//*[@id='jform_rules_" . $rule . "_" . $group_id . "']";
 		$identifier = $scrollPos . "/../../../td[3]/output/span";
 //		codecept_debug("Identifier: $identifier");
 //		codecept_debug("Value: $value");
 
-		$I->scrollTo($scrollPos, 0, -150);
-		$I->wait(1);
+		if (array_search($rule, $rulesToScroll) !== false)
+		{
+			$I->scrollTo($scrollPos, 0, -100);
+			$I->wait(1);
+		}
 		$I->waitForElementVisible($scrollPos);
 
 		$I->see($value, $identifier);
@@ -1913,33 +1921,26 @@ class TestOptionsCest
 	{
 		$identifier = "//*[@id='jform_rules_" . $rules[$i] . "_" . $group_id . "']";
 		$value      = $actions[$rules[$i]];
+		$rulesToScroll = array(
+			'core.admin',
+			'bwpm.send',
+			'bwpm.admin.newsletter'
+		);
 
 //		codecept_debug('Identifier:' . $identifier);
 //		codecept_debug('Value: ' . $value);
 
-		$I->scrollTo($identifier, 0, -150);
-		$I->wait(1);
+		if (array_search($rules[$i], $rulesToScroll) !== false)
+		{
+//			codecept_debug('ScrollTo identifier needed');
+			$I->scrollTo($identifier, 0, -100);
+			$I->wait(1);
+		}
+
 		$I->waitForElementVisible($identifier, 30);
 
 		$I->click($identifier);
 		$I->selectOption($identifier, $value);
-
-//		if (array_key_exists($groupname, OptionsPage::$noticeToClose))
-//		{
-//			if (OptionsPage::$noticeToClose[$groupname] === $rules[$i])
-//			{
-//				try
-//				{
-//					$I->waitForElementVisible(Generals::$alertNoticeClose, 3);
-//					$I->click(Generals::$alertNoticeClose);
-//					$I->waitForElementNotVisible(Generals::$alertNoticeClose, 3);
-//				}
-//				catch(\RuntimeException $e)
-//				{
-//					codecept_debug("No notice to close");
-//				}
-//			}
-//		}
 	}
 
 	/**
@@ -1957,7 +1958,7 @@ class TestOptionsCest
 	protected function selectPermissionsSliderForUsergroup(AcceptanceTester $I, $group_id)
 	{
 		$slider = sprintf(OptionsPage::$perm_slider, $group_id);
-		$I->scrollTo($slider, 0, -100);
+		$I->scrollTo($slider, 0, -150);
 		$I->wait(1);
 
 		$I->click($slider);

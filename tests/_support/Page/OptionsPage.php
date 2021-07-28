@@ -40,28 +40,28 @@ class OptionsPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_basics       = ".//*[@id='configTabs']/li[1]/a";
+	public static $tab_basics       = ".//*[@id='configTabs']/div/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_registration = ".//*[@id='configTabs']/li[2]/a";
+	public static $tab_registration = ".//*[@id='configTabs']/div/button[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_activation   = ".//*[@id='configTabs']/li[3]/a";
+	public static $tab_activation   = ".//*[@id='configTabs']/div/button[3]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.2.1
 	 */
-	public static $tab_unsubscription   = ".//*[@id='configTabs']/li[4]/a";
+	public static $tab_unsubscription   = ".//*[@id='configTabs']/div/button[4]";
 
 	/**
 	 * @var string

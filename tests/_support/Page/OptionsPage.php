@@ -68,21 +68,21 @@ class OptionsPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_lists_view   = ".//*[@id='configTabs']/li[5]/a";
+	public static $tab_lists_view   = ".//*[@id='configTabs']/div/button[5]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_single_view  = ".//*[@id='configTabs']/li[6]/a";
+	public static $tab_single_view  = ".//*[@id='configTabs']/div/button[6]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tab_permissions  = "//*[@id='configTabs']/ul/li[7]/a";
+	public static $tab_permissions  = "//*[@id='configTabs']/div/button[7]";
 
 	/**
 	 * @var string

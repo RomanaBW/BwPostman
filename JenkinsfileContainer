@@ -58,7 +58,7 @@ pipeline {
 
 		stage('Run acceptance Joomla 4') {
 			parallel {
-				stage('4-1: Lists + P2') {
+				stage('4-1: Maintenance + Lists + P2') {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_4}'"
@@ -90,7 +90,7 @@ pipeline {
 						}
 					}
 				}
-				stage('4-3: Maintenance + P4           ') {
+				stage('4-3: P4') {
 					steps {
 //						echo "Dummy 3"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_4}'"

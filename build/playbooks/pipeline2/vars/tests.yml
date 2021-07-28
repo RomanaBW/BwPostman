@@ -119,6 +119,7 @@ test_suites:
 
   - name: accept1
     tests:
+      - maintenance
       - lists
       - access2
 
@@ -128,7 +129,6 @@ test_suites:
 
   - name: accept3
     tests:
-      - maintenance
       - access4
 
   - name: accept4

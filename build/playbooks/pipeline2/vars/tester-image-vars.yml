@@ -1,7 +1,7 @@
 ---
 # Fast changing variables
 #joomla_version_4a: "4.0.0a12"
-joomla_version_4b: "4.0.0rc-4"
+joomla_version_4b: "4.0.0rc-5"
 
 # this one has to be adjusted to the desired Joomla version
 joomla_version: "{{ joomla_version_4b }}"
@@ -13,7 +13,7 @@ j_version_short: "j4rc"
 bwpm_version: "4.0.0"
 #j_alpha_version: "alpha12"
 j_beta_dev_version: "beta7"
-j_rc_version: "rc4"
+j_rc_version: "rc5"
 
 vm_version: "3.4.2.9966"
 tcpdf_version: "1.0.5"

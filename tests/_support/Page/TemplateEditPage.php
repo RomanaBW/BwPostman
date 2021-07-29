@@ -709,6 +709,7 @@ class TemplateEditPage
 	{
 		$text_style_content   = self::getFileContent('tests/_data/text-newsletter.txt');
 
+		$I->wait(1);
 		$I->click(self::$tpl_tab2);
 		$I->fillField(self::$text_style, $text_style_content);
 		$I->scrollTo(self::$button_refresh_preview, 0, -100);

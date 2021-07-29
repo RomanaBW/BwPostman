@@ -1811,7 +1811,8 @@ class TestOptionsCest
 		{
 			$actions  = $values['permissions'];
 			$group_id = $I->getGroupIdByName($groupname);
-			$slider   = $this->selectPermissionsSliderForUsergroup($I, $group_id);
+
+			$slider   = $this->selectPermissionsSliderForUsergroup($I, $groupname);
 
 //			codecept_debug("Groupname: $groupname");
 //			codecept_debug("Group ID: $group_id");
@@ -1947,7 +1948,7 @@ class TestOptionsCest
 	 * Method to select permissions slider for a given usergroup
 	 *
 	 * @param AcceptanceTester $I
-	 * @param                  $group_id
+	 * @param                  $groupname
 	 *
 	 * @return string
 	 *
@@ -1955,15 +1956,17 @@ class TestOptionsCest
 	 *
 	 * @throws Exception
 	 */
-	protected function selectPermissionsSliderForUsergroup(AcceptanceTester $I, $group_id)
+	protected function selectPermissionsSliderForUsergroup(AcceptanceTester $I, $groupname)
 	{
-		$slider = sprintf(OptionsPage::$perm_slider, $group_id);
-		$I->scrollTo($slider, 0, -150);
+		$slider = 'perm_slider_' . $groupname;
+		codecept_debug('PermSlider variable name: ' . $slider);
+		codecept_debug('PermSlider variable value: ' . OptionsPage::$$slider);
+		$I->scrollTo(OptionsPage::${$slider}, 0, -150);
 		$I->wait(1);
 
-		$I->click($slider);
-		$I->waitForElement($slider, 30);
+		$I->click(OptionsPage::${$slider});
+		$I->waitForElement(OptionsPage::${$slider}, 30);
 
-		return $slider;
+		return OptionsPage::${$slider};
 	}
 }

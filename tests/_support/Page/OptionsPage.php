@@ -899,7 +899,7 @@ class OptionsPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $perm_slider = ".//*/a[contains(@href, '#permission-%s')]";
+	public static $perm_slider = "//*/span[contains(text(), '%s')]/parent::button";
 
 
 	/**
@@ -907,52 +907,29 @@ class OptionsPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $perm_slider_BwPostmanAdmin = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanAdmin')]";
+	public static $perm_slider_BwPostmanAdmin = "//*/joomla-field-permissions/joomla-tab/div/button[10]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $perm_slider_BwPostmanPublisher = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanPublisher')]";
+	public static $perm_slider_BwPostmanManager = "//*/joomla-field-permissions/joomla-tab/div/button[11]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $perm_slider_BwPostmanEditor = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanEditor')]";
-
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $perm_slider_BwPostmanManager = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanManager')]";
-
+	public static $perm_slider_BwPostmanPublisher = "//*/joomla-field-permissions/joomla-tab/div/button[12]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $perm_slider_BwPostmanCampaignAdmin = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanCampaignAdmin')]";
+	public static $perm_slider_BwPostmanEditor = "//*/joomla-field-permissions/joomla-tab/div/button[13]";
 
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $perm_slider_BwPostmanCampaignPublisher
-		= ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanCampaignPublisher')]";
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $perm_slider_BwPostmanCampaignEditor = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanCampaignEditor')]";
 
 	/**
 	 * @var string
@@ -960,7 +937,7 @@ class OptionsPage
 	 * @since 2.0.0
 	 */
 	public static $perm_slider_BwPostmanMailinglistAdmin
-		= ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanMailinglistAdmin')]";
+		= "//*/joomla-field-permissions/joomla-tab/div/button[14]";
 
 	/**
 	 * @var string
@@ -968,7 +945,7 @@ class OptionsPage
 	 * @since 2.0.0
 	 */
 	public static $perm_slider_BwPostmanMailinglistPublisher
-		= ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanMailinglistPublisher')]";
+		= "//*/joomla-field-permissions/joomla-tab/div/button[15]";
 
 	/**
 	 * @var string
@@ -976,7 +953,7 @@ class OptionsPage
 	 * @since 2.0.0
 	 */
 	public static $perm_slider_BwPostmanMailinglistEditor
-		= ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanMailinglistEditor')]";
+		= "//*/joomla-field-permissions/joomla-tab/div/button[16]";
 
 
 	/**
@@ -984,31 +961,7 @@ class OptionsPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $perm_slider_BwPostmanNewsletterAdmin = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanNewsletterAdmin')]";
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $perm_slider_BwPostmanNewsletterPublisher
-		= ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanNewsletterPublisher')]";
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $perm_slider_BwPostmanNewsletterEditor
-		= ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanNewsletterEditor')]";
-
-
-	/**
-	 * @var string
-	 *
-	 * @since 2.0.0
-	 */
-	public static $perm_slider_BwPostmanSubscriberAdmin = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanSubscriberAdmin')]";
+	public static $perm_slider_BwPostmanSubscriberAdmin = "//*/joomla-field-permissions/joomla-tab/div/button[17]";
 
 	/**
 	 * @var string
@@ -1016,7 +969,7 @@ class OptionsPage
 	 * @since 2.0.0
 	 */
 	public static $perm_slider_BwPostmanSubscriberPublisher
-		= ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanSubscriberPublisher')]";
+		= "//*/joomla-field-permissions/joomla-tab/div/button[18]";
 
 	/**
 	 * @var string
@@ -1024,7 +977,52 @@ class OptionsPage
 	 * @since 2.0.0
 	 */
 	public static $perm_slider_BwPostmanSubscriberEditor
-		= ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanSubscriberEditor')]";
+		= "//*/joomla-field-permissions/joomla-tab/div/button[19]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $perm_slider_BwPostmanNewsletterAdmin = "//*/joomla-field-permissions/joomla-tab/div/button[20]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $perm_slider_BwPostmanNewsletterPublisher
+		= "//*/joomla-field-permissions/joomla-tab/div/button[21]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $perm_slider_BwPostmanNewsletterEditor
+		= "//*/joomla-field-permissions/joomla-tab/div/button[22]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $perm_slider_BwPostmanCampaignAdmin = "//*/joomla-field-permissions/joomla-tab/div/button[23]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $perm_slider_BwPostmanCampaignPublisher
+		= "//*/joomla-field-permissions/joomla-tab/div/button[24]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $perm_slider_BwPostmanCampaignEditor = "//*/joomla-field-permissions/joomla-tab/div/button[25]";
 
 
 	/**
@@ -1032,7 +1030,7 @@ class OptionsPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $perm_slider_BwPostmanTemplateAdmin = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanTemplateAdmin')]";
+	public static $perm_slider_BwPostmanTemplateAdmin = "//*/joomla-field-permissions/joomla-tab/div/button[26]";
 
 	/**
 	 * @var string
@@ -1040,14 +1038,14 @@ class OptionsPage
 	 * @since 2.0.0
 	 */
 	public static $perm_slider_BwPostmanTemplatePublisher
-		= ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanTemplatePublisher')]";
+		= "//*/joomla-field-permissions/joomla-tab/div/button[27]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $perm_slider_BwPostmanTemplateEditor = ".//*[@id='permissions-sliders']/ul/li[*]/a[contains(text(), 'BwPostmanTemplateEditor')]";
+	public static $perm_slider_BwPostmanTemplateEditor = "//*/joomla-field-permissions/joomla-tab/div/button[28]";
 
 
 	/**

@@ -511,7 +511,7 @@ class SubscribeComponentCest
 
 		$I->scrollTo(SubsView::$button_register);
 		$I->wait(1);
-		$I->click(SubsView::$button_register);
+		$I->clickAndWait(SubsView::$button_register, 1);
 
 		// Check error message first name
 		$I->see('danger', SubsView::$errorContainerHeader);
@@ -525,7 +525,7 @@ class SubscribeComponentCest
 
 		$I->scrollTo(SubsView::$button_register);
 		$I->wait(1);
-		$I->click(SubsView::$button_register);
+		$I->clickAndWait(SubsView::$button_register, 1);
 
 		// Check error message last name
 		$I->see('danger', SubsView::$errorContainerHeader);
@@ -539,7 +539,7 @@ class SubscribeComponentCest
 
 		$I->scrollTo(SubsView::$button_register);
 		$I->wait(1);
-		$I->click(SubsView::$button_register);
+		$I->clickAndWait(SubsView::$button_register, 1);
 
 		// Check error message special
 		if ($options->special_label === '')

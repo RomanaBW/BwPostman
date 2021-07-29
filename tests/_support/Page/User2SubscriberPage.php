@@ -740,7 +740,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_tab_options               = "//*[@id='myTab']/ul/li[2]/a";
+	public static $plugin_tab_options               = "//*/button[@aria-controls='attrib-option'][@role='tab']";
 
 	/**
 	 * @var string
@@ -828,7 +828,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $plugin_tab_mailinglists          = "//*/a[@id='tab-attrib-mailinglists']";
+	public static $plugin_tab_mailinglists          = "//*/button[@aria-controls='attrib-mailinglists'][@role='tab']";
 
 	/**
 	 * @var string
@@ -909,7 +909,7 @@ class User2SubscriberPage
 	 *
 	 * @since 2..0
 	 */
-	public static $bwpm_com_options_regTab  = "//*[@id='configTabs']/ul/li[2]/a";
+	public static $bwpm_com_options_regTab  = "//*[@id='configTabs']/div/button[2]";
 
 
 	/**

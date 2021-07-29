@@ -1301,7 +1301,7 @@ class NewsletterEditPage
 		$I->waitForElementVisible(self::$attachment1, 20);
 
 		//Select second attachment
-		$I->scrollTo(self::$attachment_new_button1, 0, -100);
+		$I->scrollTo(self::$attachment_new_button1 . '/parent::div/parent::td/parent::tr', 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(self::$attachment_new_button1, 1);
 		$I->clickAndWait(self::$attachment_select_button2, 1);

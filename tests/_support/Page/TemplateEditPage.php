@@ -46,21 +46,21 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tpl_tab1     = "//*/a[@id='tab-panel1']";
+	public static $tpl_tab1     = "//*[@id='template_tabs']/div/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tpl_tab2     = "//*/a[@id='tab-panel2']";
+	public static $tpl_tab2     = "//*[@id='template_tabs']/div/button[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $tpl_tab3     = "//*/a[@id='tab-panel3']";
+	public static $tpl_tab3     = "//*[@id='template_tabs']/div/button[3]";
 
 
 	/**

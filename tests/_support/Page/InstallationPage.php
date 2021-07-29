@@ -668,12 +668,12 @@ class InstallationPage
 	 * @since 4.0.0
 	 */
 	public static $registrationTabs    = array(
-		'Module' => "//*[@id='tab-general']",
-		'Menu Assignment' => "//*[@id='tab-assignment']",
-		'Mailing list selection' => "//*[@id='tab-attrib-ml_available']",
-		'Settings for the registration form' => "//*[@id='tab-attrib-reg_settings']",
-		'Advanced' => "//*[@id='tab-attrib-advanced']",
-		'Permissions' => "//*[@id='tab-permissions']",
+		'Module' => "//*/button[@aria-controls='general'][@role='tab']",
+		'Menu Assignment' => "//*/button[@aria-controls='assignment'][@role='tab']",
+		'Mailing list selection' => "//*/button[@aria-controls='attrib-ml_available'][@role='tab']",
+		'Settings for the registration form' => "//*/button[@aria-controls='attrib-reg_settings'][@role='tab']",
+		'Advanced' => "//*/button[@aria-controls='attrib-advanced'][@role='tab']",
+		'Permissions' => "//*/button[@aria-controls='permissions'][@role='tab']",
 	);
 
 	/**
@@ -682,12 +682,12 @@ class InstallationPage
 	 * @since 4.0.0
 	 */
 	public static $overviewTabs    = array(
-		'Module' => "//*[@id='tab-general']",
-		'Menu Assignment' => "//*[@id='tab-assignment']",
-		'Mailing list selection' => "//*[@id='tab-attrib-ml_available']",
-		'Campaign selection' => "//*[@id='tab-attrib-cam_available']",
-		'Advanced' => "//*[@id='tab-attrib-advanced']",
-		'Permissions' => "//*[@id='tab-permissions']",
+		'Module' => "//*/button[@aria-controls='general'][@role='tab']",
+		'Menu Assignment' => "//*/button[@aria-controls='assignment'][@role='tab']",
+		'Mailing list selection' => "//*/button[@aria-controls='attrib-ml_available'][@role='tab']",
+		'Campaign selection' => "//*/button[@aria-controls='attrib-cam_available'][@role='tab']",
+		'Advanced' => "//*/button[@aria-controls='attrib-advanced'][@role='tab']",
+		'Permissions' => "//*/button[@aria-controls='permissions'][@role='tab']",
 	);
 
 	/**

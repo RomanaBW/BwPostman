@@ -1958,15 +1958,13 @@ class TestOptionsCest
 	 */
 	protected function selectPermissionsSliderForUsergroup(AcceptanceTester $I, $groupname)
 	{
-		$slider = 'perm_slider_' . $groupname;
-		codecept_debug('PermSlider variable name: ' . $slider);
-		codecept_debug('PermSlider variable value: ' . OptionsPage::$$slider);
-		$I->scrollTo(OptionsPage::${$slider}, 0, -150);
+		$slider = sprintf(OptionsPage::$perm_slider, $groupname);
+		$I->scrollTo($slider, 0, -100);
 		$I->wait(1);
 
-		$I->click(OptionsPage::${$slider});
-		$I->waitForElement(OptionsPage::${$slider}, 30);
+		$I->clickAndWait($slider, 1);
+		$I->waitForElementVisible($slider, 30);
 
-		return OptionsPage::${$slider};
+		return $slider;
 	}
 }

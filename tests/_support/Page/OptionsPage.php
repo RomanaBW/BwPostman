@@ -899,7 +899,7 @@ class OptionsPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $perm_slider = "//*/span[contains(text(), '%s')]/parent::button";
+	public static $perm_slider = "//*/joomla-field-permissions/joomla-tab/div/button[contains(text(), '%s')]";
 
 
 	/**

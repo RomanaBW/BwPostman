@@ -12,12 +12,11 @@ test_runner: "bwpm_test_runner.sh"
 test_dir: "{{ base_dir }}/tests"
 test_src_dir: "tests"
 
-test_project_base_dir_3: "/home/romana/PhpstormProjects/BwPostman"
-test_project_base_dir_4: "/home/romana/PhpstormProjects/BwPostman_J4"
+test_project_base_dir: "/home/romana/PhpstormProjects/BwPostman"
 
 web_dir: "{{ container_base }}/global_data/test_data"
 
-php_version: "73"
+php_version: "7.4.20"
 
 bwpm_install: ""
 

@@ -58,7 +58,7 @@ apache_image:
   pi: "{{ private_docker_repo }}romana/debian-apache_71"
 
 tester_image:
-  suse: "{{ private_docker_repo }}romana/os-chromium-tester"
+  suse: "{{ private_docker_repo }}romana/selenium-standalone-chrome-debug-ffmpeg"
   pi: "{{ private_docker_repo }}romana/debian-chromium-tester"
 
 db:

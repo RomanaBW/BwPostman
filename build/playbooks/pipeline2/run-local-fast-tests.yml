@@ -8,7 +8,6 @@
     - name: Import transmitted parameters
       set_fact:
         joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('400b1-3', true) }}"
-#        joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('3916', true) }}"
         bwpm_version: "{{ lookup('env','BW_TEST_BWPM_VERSION') | d('300', true) }}"
         test_cat: "{{ lookup('env','BW_TEST_CAT') | d('details_nl', true) }}"
         test_debug: "{{ lookup('env','BW_TEST_DEBUG') | d('--debug', true) }}"
@@ -17,12 +16,9 @@
         vm_project_part: ""
         test_runner: "bwpm_test_runner.sh"
 
-    - name: Set test source dir depending on joomla main version
+    - name: Set base source dir depending on joomla main version
       set_fact:
-        test_src_dir: "tests3"
-        src_dir: "/vhosts/dev/joomla-cms"
-        base_dir: "/vhosts/dev/joomla-cms"
-      when: joomla_version[0] == '3'
+        base_src_dir: "/vhosts/dev/joomla-cms"
 
     - name: VM part of project name
       set_fact:
@@ -71,6 +67,18 @@
         - "{{ test_dir }}/_output/{{ project_name }}/videos"
         - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
 
+    - name: Ensure output path is writable
+      become: true
+      file:
+        path: "{{ item }}"
+        state: directory
+        recurse: yes
+        mode: 0777
+      loop:
+        - "{{ test_dir }}"
+        - "{{ test_dir }}/_output/{{ project_name }}/videos"
+        - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
+
     - name: Create infrastructure compose file
       template:
         src: "run-bwpm-fast.yml.j2"
@@ -86,13 +94,8 @@
     - name: Synchronize files
       command: "{{ test_dir }}/job_scripts/bwpm_rsync_build.sh {{ src_dir }} {{ web_dir }}/{{ project_name }}/files"
 
-    - name: Set test synchronization command J3
-      set_fact:
-        sync_test_command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir_3 }}/tests3 {{ src_dir }}/tests3"
-      when: joomla_version[0] == '3'
-
     - name: Synchronize tests
-      command: "{{ sync_test_command }}"
+      command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir }}/tests3 {{ src_dir }}/tests3"
 
     - name: Set rebase command
       set_fact:

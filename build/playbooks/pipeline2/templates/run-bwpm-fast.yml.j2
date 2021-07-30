@@ -60,5 +60,5 @@ services:
     ports:
       - "8002:80"
     volumes:
-      -  {{ container_dir }}/infrastructure/apache/data/logs:/var/log/apache2/
-      -  {{ web_dir }}/{{ project_name }}/files:/var/www/html
+      -  "{{ container_dir }}/infrastructure/apache/data/logs:/var/log/apache2/"
+      -  "{{ web_dir }}/{{ project_name }}/files:/var/www/html"

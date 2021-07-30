@@ -215,9 +215,6 @@
       set_fact:
         sql_base_cmd: "mysql -u {{ mariadb_user }} -p{{ mariadb_password }} {{ mariadb_database }}"
 
-    - name: disable some top modules
-      shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/disable-top-modules.sql"
-
 
 - hosts: localhost
   pre_tasks:

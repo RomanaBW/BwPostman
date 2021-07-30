@@ -118,6 +118,17 @@
       set_fact:
         db_host: "{{ acceptance_source.db_container_name }}"
 
+    - name: create tests folder
+      become: true
+      file:
+        path: "{{ item }}"
+        state: directory
+        group: users
+        owner: "1200"
+        mode: 0777
+      with_items:
+        - /data
+        - /data/tests
 
     - name: copy tests
       become: true
@@ -130,6 +141,11 @@
         rsync_opts:
           - "--exclude=_output"
       when: test_suite == 'acceptB2S' or test_suite == 'acceptTC'
+
+    - name: Set permissions for tests
+      become: true
+      become_user: root
+      shell: "chmod -R 0777 /data/tests"
 
 # Following is same as at run-smoke-tests and could be moved to a role
     - name: remove AcceptanceTesterActions.php

@@ -140,11 +140,17 @@
       set_fact:
         db_host: "{{ smoke_source.db_container_name }}"
 
-    - name: create data folder
+    - name: create tests folder
+      become: true
       file:
-        path: "/data"
+        path: "{{ item }}"
         state: directory
+        group: users
+        owner: "1200"
         mode: 0777
+      with_items:
+        - /data
+        - /data/tests
 
     - name: Set project dir variable
       set_fact:
@@ -164,6 +170,11 @@
         recursive: yes
         rsync_opts:
           - "--exclude=_output"
+
+    - name: Set permissions for tests
+      become: true
+      become_user: root
+      shell: "chmod -R 0777 /data/tests"
 
 # Following is same as at run-acceptance-tests and could be moved to a role
     - name: remove AcceptanceTesterActions.php

@@ -113,8 +113,8 @@ official_mariadb: bitnami/mariadb:10.5-debian-10
 official_mariadb_short: mariadb:10.5-debian-10
 official_apache: php:apache
 official_apache_short: php-apache
-official_tester: romana/os-chromium-tester:latest
-official_tester_short: os-phantomjs-tester:latest
+official_tester: romana/selenium-standalone-chrome-debug-ffmpeg:latest
+official_tester_short: selenium-standalone-chrome-debug-ffmpeg:latest
 
 base_source:
   db_container_name: mariadb_build
@@ -137,7 +137,7 @@ bare_source:
   web_container_name: joomla_bare_web
   web_image_tag_source: "{{ base_target.web_image_tag_target }}"
   tester_container_name: bwpm_bare_tester
-  tester_image_tag_source: "romana/os-chromium-tester:latest"
+  tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
 
   tester_network_name: "bwpm_network-{{ test_suite }}"
 
@@ -156,7 +156,7 @@ required_source:
   web_container_name: joomla_jce_web
   web_image_tag_source: "romana/joomla-bare-files:{{ joomla_version }}"
   tester_container_name: bwpm_jce_tester
-  tester_image_tag_source: "romana/os-chromium-tester:latest"
+  tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
 
   tester_network_name: "bwpm_network-{{ test_suite }}"
 
@@ -167,7 +167,7 @@ required_target:
   web_image_tag_target: "romana/joomla-jce-files:{{ joomla_version }}"
   tester_image: "{{ private_docker_repo }}/{{ required_source.tester_image_tag_source }}"
 #   At this point there is no need to push the tester!
-#  tester_image_tag_target: "romana/os-chromium-tester"
+#  tester_image_tag_target: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
 
 
 # Settings for creating joomla containers with installed VirtueMart
@@ -177,7 +177,7 @@ virtuemart_source:
   web_container_name: joomla_vm_web
   web_image_tag_source: "romana/joomla-jce-files:{{ joomla_version }}"
   tester_container_name: bwpm_vm_tester
-  tester_image_tag_source: "romana/os-chromium-tester:latest"
+  tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
 
   tester_network_name: "bwpm_network-{{ test_suite }}"
 
@@ -188,7 +188,7 @@ virtuemart_target:
   web_image_tag_target: "romana/joomla-vm-files:{{ joomla_version }}"
   tester_image: "{{ private_docker_repo }}/{{ virtuemart_source.tester_image_tag_source }}"
 #   At this point there is no need to push the tester!
-#  tester_image_tag_target: "romana/os-chromium-tester"
+#  tester_image_tag_target: "romana/selenium-standalone-chrome-debug-ffmpeg"
 
 
 # Settings for creating smoke tests container

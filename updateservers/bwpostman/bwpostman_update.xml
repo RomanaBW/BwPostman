@@ -2,6 +2,27 @@
 <updates>
 	<update>
 		<name>BwPostman</name>
+		<description>Boldt Webservice's Newsletter-Component BwPostman for Joomla! 4.0+</description>
+		<element>pkg_bwpostman</element>
+		<type>package</type>
+		<client>0</client>
+
+		<version>4.0.0</version>
+		<infourl title="Boldt Webservice">https://www.boldt-webservice.de/</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.4.0.0.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Romana Boldt</maintainer>
+		<maintainerurl>https://www.boldt-webservice.de</maintainerurl>
+
+		<targetplatform name="joomla" version="4.0" min_dev_level="0" php_minimum="7.4" />
+	</update>
+
+	<update>
+		<name>BwPostman</name>
 		<description>Boldt Webservice's Newsletter-Component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>

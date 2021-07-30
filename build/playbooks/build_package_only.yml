@@ -1,0 +1,209 @@
+---
+- hosts: localhost
+  vars_files:
+    - vars/vars.yml
+    - pipeline2/vars/tester-image-vars.yml
+
+  vars:
+    project_source_dir: "/home/romana/PhpstormProjects/BwPostman_J4"
+    project_base_dir: "/home/romana/Zwischenlager/BwPostman4/workdir"
+    target_ext_path: "{{ target_base_path }}/{{ extension_name }}4"
+    version_number: "{{ bwpm_version }}"
+    build: "tmp"
+    mb4_support: true
+    replace_vars: "{{ repl_vars | default(true) }}"
+
+  tasks:
+    - name: Show switch for variable replacement
+      debug:
+        msg: "Replace vars: {{ replace_vars }}"
+
+# @ToDo: Use synchronisation instead of copying
+
+    - name: Ensure project working folder and sub folders exists part 1
+      file:
+        path: "{{ project_base_dir }}/src/{{ item.path }}"
+        state: directory
+        mode: 0777
+        owner: romana
+        group: users
+      with_filetree:
+        - "{{ project_source_dir }}/src"
+      when: item.state == 'directory'
+      loop_control:
+        label: "{{ item.path }}"
+
+    - name: Ensure project working folder and sub folders exists part 2
+      file:
+        path: "{{ project_base_dir }}/build/manifests"
+        state: directory
+        mode: 0777
+        owner: romana
+        group: users
+
+    - name: Copy source files to working dir
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ project_base_dir }}/src/{{ item.path }}"
+        mode: 0777
+        owner: romana
+        group: users
+      with_filetree:
+        - "{{ project_source_dir }}/src"
+      when: item.state == 'file'
+      loop_control:
+        label: "{{ item.path }}"
+
+    - name: Copy manifest files to working dir
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ project_base_dir }}/build/manifests/{{ item.path }}"
+        mode: 0777
+        owner: romana
+        group: users
+      with_filetree:
+        - "{{ project_source_dir }}/build/manifests"
+      when: item.state == 'file'
+      loop_control:
+        label: "{{ item.path }}"
+
+
+    - name: Remove folders which are not needed
+      file:
+        path: "{{ project_base_dir }}/src/{{ item }}"
+        state: absent
+      with_items: "{{ to_delete }}"
+      ignore_errors: yes
+
+#   inject current variable values (version, build, copyright year)
+    - include_role:
+        name: romanabw.inject-current-build-variables
+      vars:
+        bw_version: "{{ version_number }}"
+        bw_build: "{{ build }}"
+        bw_workspace: "{{ project_base_dir }}"
+        bw_manifest_list: "{{ manifest_list }}"
+      when: replace_vars|bool
+
+#   build component package
+    - include_role:
+        name: romanabw.build-jcomponent-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_extension: "{{ extension_name }}"
+        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_languages: "{{ languages }}"
+        bw_mb4_support: "{{ mb4_support }}"
+        bw_media_folder: "com_bwpostman"
+
+#   build registration module package
+    - include_role:
+        name: romanabw.build-jmodule-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_languages: "{{ languages }}"
+        bw_module_name: "mod_bwpostman"
+        bw_media_folder: "mod_bwpostman"
+
+#   build overview module package
+    - include_role:
+        name: romanabw.build-jmodule-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_languages: "{{ languages }}"
+        bw_module_name: "mod_bwpostman_overview"
+        bw_external_lang: true
+        bw_media_folder: "mod_bwpostman_overview"
+
+#    - name: build personalize plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "personalize"
+        bw_plugin_group: "bwpostman"
+        bw_external_lang: true
+        bw_media_folder: ""
+
+#    - name: build libregister plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "bw_libregister"
+        bw_plugin_group: "system"
+        bw_external_lang: true
+        bw_media_folder: ""
+
+#    - name: build u2s plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "bwpm_user2subscriber"
+        bw_plugin_group: "system"
+        bw_external_lang: true
+        bw_media_folder: ""
+
+#    - name: build mediaOverride plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "bwpm_mediaoverride"
+        bw_plugin_group: "system"
+        bw_external_lang: true
+        bw_media_folder: ""
+
+#    - name: build footerusedmailinglists plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "footerusedmailinglists"
+        bw_plugin_group: "bwpostman"
+        bw_external_lang: true
+        bw_media_folder: ""
+
+    #    - name: pack complete package
+    - include_role:
+        name: romanabw.build-jpackage-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}"
+        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_extension: "{{ extension_name }}"
+        bw_package_parts: "{{ package_parts }}"
+        bw_with_script: "true"
+        bw_script_name: "pkg_script.php"
+
+    - name: copy package to test data folder with build and version number
+      copy:
+        src: "{{ project_base_dir }}/pkg_{{ extension_name }}.zip"
+        dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}-{{ version_number }}.{{ build }}.zip"
+#      when: not replace_vars|bool
+
+    - name: Show package target path
+      debug:
+        msg: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
+
+#    - name: copy package to test data folder without build and version number
+#      copy:
+#        src: "{{ project_base_dir }}/pkg_{{ extension_name }}.zip"
+#        dest: "{{ artifact_path }}/data/pkg_{{ extension_name }}.zip"
+
+    - name: copy changelog to test data folder
+      copy:
+        src: "{{ project_base_dir }}/src/administrator/components/com_bwpostman/CHANGELOG.txt"
+        dest: "{{ artifact_path }}/data/CHANGELOG"

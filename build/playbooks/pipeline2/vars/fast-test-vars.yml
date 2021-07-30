@@ -1,16 +1,13 @@
 ---
-base_dir_3: "/vhosts/dev/joomla-cms"
-src_dir_3: "/vhosts/dev/joomla-cms"
-
-base_dir: "/vhosts/dev4"
-src_dir: "/vhosts/dev4"
+base_dir: "/vhosts/dev/joomla-cms"
+src_dir: "/vhosts/dev/joomla-cms"
 
 container_base: "/vms/dockers"
 container_dir: "{{ container_base }}/containers"
 
 test_runner: "bwpm_test_runner.sh"
-test_dir: "{{ base_dir }}/tests"
-test_src_dir: "tests"
+test_dir: "{{ base_dir }}/tests3"
+test_src_dir: "tests3"
 
 test_project_base_dir: "/home/romana/PhpstormProjects/BwPostman"
 

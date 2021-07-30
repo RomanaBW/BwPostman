@@ -217,8 +217,8 @@ class Com_BwPostmanInstallerScript
 		$manifest              = $parent->getManifest();
 
 		// Get component manifest file version
-		$this->release	= $manifest->version;
-		$session->set('release', $this->release->__toString(), 'bwpostman');
+		$this->release	= (string)$manifest->version;
+		$session->set('release', $this->release, 'bwpostman');
 
 		// Manifest file minimum Joomla version
 //		$this->minimum_joomla_release = $manifest->attributes()->version;

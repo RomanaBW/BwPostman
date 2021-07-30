@@ -65,7 +65,7 @@ class Pkg_BwPostmanInstallerScript
 
 		// Get component manifest file version
 		$manifest      = $parent->getManifest();
-		$this->release = $manifest->version;
+		$this->release = (string)$manifest->version;
 
 		$this->showFinished(false);
   }
@@ -85,7 +85,7 @@ class Pkg_BwPostmanInstallerScript
 
 		// Get component manifest file version
 		$manifest      = $parent->getManifest();
-		$this->release = $manifest->version;
+		$this->release = (string)$manifest->version;
 
 		$this->showFinished(true);
   }

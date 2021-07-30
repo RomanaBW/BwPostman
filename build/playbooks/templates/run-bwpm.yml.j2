@@ -30,16 +30,16 @@ services:
       MYSQL_USER: tester
       MYSQL_PASSWORD: barbamama
 
-  {{ mailer.service }}-{{ suite_vars.suite_number }}:
-    container_name: {{ mailer.container_name }}-{{ suite_vars.suite_number }}
-    image: {{ suite_vars.mailer_docker_image }}
-    hostname: {{ mailer.host_name }}.{{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
-    domainname: {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
-    expose:
-      - "25"
-    networks:
-      {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
-        ipv4_address: {{ suite_vars.mailer_ip }}
+#  {{ mailer.service }}-{{ suite_vars.suite_number }}:
+#    container_name: {{ mailer.container_name }}-{{ suite_vars.suite_number }}
+#    image: {{ suite_vars.mailer_docker_image }}
+#    hostname: {{ mailer.host_name }}.{{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
+#    domainname: {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}
+#    expose:
+#      - "25"
+#    networks:
+#      {{ network }}-{{ suite_vars.suite_number }}{{ network_suffix }}:
+#        ipv4_address: {{ suite_vars.mailer_ip }}
 
   {{ webserver.service }}-{{ suite_vars.suite_number }}:
     container_name: {{ webserver.container_name }}-{{ suite_vars.suite_number }}

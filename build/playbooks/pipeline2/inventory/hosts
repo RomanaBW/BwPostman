@@ -125,3 +125,8 @@ arbeitspferd
 
 [server]
 universe3
+
+[Containertesters]
+bw-tester-base-1 ansible_connection=docker
+bw-tester-acceptance ansible_connection=docker
+bw_webserver_fast ansible_connection=docker

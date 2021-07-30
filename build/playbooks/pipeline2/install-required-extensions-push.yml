@@ -1,9 +1,8 @@
 ---
-- hosts: tester
+- hosts: localhost
   pre_tasks:
     - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: local
-  gather_facts: yes
   vars_files:
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
@@ -86,7 +85,6 @@
   pre_tasks:
     - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: docker
-  gather_facts: yes
   vars_files:
     - vars/tests.yml
     - vars/tester-image-vars.yml
@@ -140,7 +138,7 @@
   tasks:
     - name: Set ip of webserver
       set_fact:
-        web_container_ip: "{{ hostvars['tester-j1']['web_container_ip'] }}"
+        web_container_ip: "{{ hostvars['localhost']['web_container_ip'] }}"
 
     - name: Set test suite
       set_fact:
@@ -151,14 +149,18 @@
         db_host: "{{ required_source.db_container_name }}"
 
     - name: create tests folder
+      become: true
       file:
-        path: "/data/tests"
+        path: "{{ item }}"
         state: directory
+        group: users
+        owner: "1200"
         mode: 0777
+      with_items:
+        - /data
+        - /data/tests
 
     - name: copy codeception files
-      become: true
-      become_user: root
       synchronize:
         src: "{{ test_files_source_local }}"
         dest: "/data/tests"
@@ -168,8 +170,6 @@
           - "--exclude=_output"
 
     - name: remove AcceptanceTesterActions.php
-      become: true
-      become_user: root
       file:
         path: "/data/tests/_support/_generated/AcceptanceTesterActions.php"
         state: absent
@@ -180,8 +180,6 @@
         dest: "/data/codeception.yml"
 
     - name: Prepare manifest for acceptance tests
-      become: true
-      become_user: root
       template:
         src: "acceptance.suite.yml.j2"
         dest: "/data/tests/acceptance.suite.yml"
@@ -196,18 +194,32 @@
       shell: "/data/do-installation.sh"
       args:
         chdir: "/data/tests"
-
-#    - name: remove tests folder
-#      file:
-#        path: "/data/tests"
-#        state: absent
+      ignore_errors: yes
 
     - name: Show IP of webserver
       debug:
         msg: "{{ web_container_ip }}"
 
 
-- hosts: tester
+- hosts: "{{ required_source.db_container_name }}"
+  pre_tasks:
+    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
+  connection: docker
+  vars_files:
+    - vars/tests.yml
+    - vars/tester-image-vars.yml
+    - vars/tester-test-vars.yml
+
+  tasks:
+    - name: set base sql command
+      set_fact:
+        sql_base_cmd: "mysql -u {{ mariadb_user }} -p{{ mariadb_password }} {{ mariadb_database }}"
+
+    - name: disable some top modules
+      shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/disable-top-modules.sql"
+
+
+- hosts: localhost
   pre_tasks:
     - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
   connection: local

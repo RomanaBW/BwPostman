@@ -1,7 +1,11 @@
 #! /bin/bash
+whoami
 
 # delete old failure file
 rm -f {{ codecept_failed_file }}
+
+# delete old X-server lock file
+rm -f /tmp/X45-lock
 
 # export sudo user
 export BW_TESTER_USER="jenkins"
@@ -12,7 +16,7 @@ export ADDITIONAL_EXTENSIONS="{{ additional_extensions |join(' ') }}"
 /usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
 export DISPLAY=:{{ display }}
 
-java -jar -Dwebdriver.chrome.driver=/usr/lib64/chromium/chromedriver -Dwebdriver.chrome.logfile={{ test_log_path }}/chromedriver.log -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone-3.5.3.jar -port 4445 >{{ test_log_path }}/selenium.log 2>{{ test_log_path }}/selenium.log &
+java -jar -Dwebdriver.chrome.driver=/opt/selenium/chromedriver-91.0.4472.19 -Dwebdriver.chrome.logfile={{ test_log_path }}/chromedriver.log -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone.jar -port 4445 >{{ test_log_path }}/selenium.log 2>{{ test_log_path }}/selenium.log &
 
 # Loop until selenium server is available
 until $(curl --output /dev/null --silent --head --fail http://localhost:4445/wd/hub); do
@@ -27,7 +31,7 @@ tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -
 # run tests
 cd /data
 
-/usr/local/bin/codecept build
+codecept build
 
 # initialize failed check variable
 failed_check=0
@@ -38,7 +42,7 @@ failed_check=0
 {% for item in selected_suite %}
 {% for selected_file in test_file if selected_file.suite == item %}
 if [ ${failed_check} = 0 ]; then
-  /usr/local/bin/codecept run acceptance {{ selected_file.testsuite_file }} -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
+  codecept run acceptance {{ selected_file.testsuite_file }} -vvv --xml xmlreports/report_{{ item }}.xml --html htmlreports/report_{{ item }}.html
 fi
 if [ -f {{ codecept_failed_file }} ]; then
   echo "Current test {{ item }} failed!"
@@ -53,5 +57,8 @@ sleep 1
 
 # Stop recording
 tmux send-keys -t BwPostmanRecording1 q
+
+# Ensure X-server lock file is removed
+rm -f /tmp/X45-lock
 
 exit ${failed_check}

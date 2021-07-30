@@ -16,6 +16,7 @@
 		<filename plugin="bw_libregister">bw_libregister.php</filename>
 		<filename>installscript.php</filename>
 		<filename>index.html</filename>
+		<folder>language</folder>
 		<folder>libraries</folder>
 	</files>
 
@@ -27,7 +28,7 @@
 	</languages>
 
 	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/libraries/bw_libregister.xml</server>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_update.xml</server>
 	</updateservers>
 
 </extension>

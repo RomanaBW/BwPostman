@@ -1,0 +1,104 @@
+---
+- name: ensure old zip file is removed
+  file:
+    path: "{{ bw_target_ext_path }}/com_{{ bw_extension }}.zip"
+    state: absent
+
+- name: Ensure folders for admin language files exists (and with this all upper folders)
+  file:
+    path: "{{ bw_target_ext_path }}/files/admin/language/{{ item }}"
+    state: directory
+  with_items: "{{ bw_languages }}"
+
+- name: Copy admin files
+  synchronize:
+    src: "{{ bw_workspace }}/administrator/components/com_{{ bw_extension }}/"
+    dest: "{{ bw_target_ext_path }}/files/admin"
+#  copy:
+#    src: "{{ bw_workspace }}/administrator/components/com_{{ bw_extension }}/"
+#    dest: "{{ bw_target_ext_path }}/files/admin"
+#    owner: romana
+#    group: users
+#    mode: 0644
+
+- name: Copy changelog to admin folder
+  synchronize:
+    src: "{{ bw_workspace }}/administrator/components/com_{{ bw_extension }}/CHANGELOG.txt"
+    dest: "{{ bw_target_ext_path }}/files/admin/CHANGELOG.txt"
+#    owner: romana
+#    group: users
+#    mode: 0644
+
+- name: Copy admin language file
+  synchronize:
+    src: "{{ bw_workspace }}/administrator/language/{{ item }}/{{ item }}.com_{{ bw_extension }}.ini"
+    dest: "{{ bw_target_ext_path }}/files/admin/language/{{ item }}/{{ item }}.com_{{ bw_extension }}.ini"
+  with_items: "{{ bw_languages }}"
+  ignore_errors: yes
+
+- name: Copy admin sys language file
+  synchronize:
+    src: "{{ bw_workspace }}/administrator/language/{{ item }}/{{ item }}.com_{{ bw_extension }}.sys.ini"
+    dest: "{{ bw_target_ext_path }}/files/admin/language/{{ item }}/{{ item }}.com_{{ bw_extension }}.sys.ini"
+  with_items: "{{ bw_languages }}"
+  ignore_errors: yes
+
+- name: Ensure folders for site language files exists (and with this all upper folders)
+  file:
+    path: "{{ bw_target_ext_path }}/files/site/language/{{ item }}"
+    state: directory
+  with_items: "{{ bw_languages }}"
+
+- name: Copy site files
+  synchronize:
+    src: "{{ bw_workspace }}/components/com_{{ bw_extension }}/"
+    dest: "{{ bw_target_ext_path }}/files/site"
+
+- name: Copy site language file
+  synchronize:
+    src: "{{ bw_workspace }}/language/{{ item }}/{{ item }}.com_{{ bw_extension }}.ini"
+    dest: "{{ bw_target_ext_path }}/files/site/language/{{ item }}/{{ item }}.com_{{ bw_extension }}.ini"
+  with_items: "{{ bw_languages }}"
+  ignore_errors: yes
+
+- name: Copy media files
+  synchronize:
+    src: "{{ bw_workspace }}/media/{{ bw_media_folder }}/"
+    dest: "{{ bw_target_ext_path }}/files/media"
+
+- name: Copy licence file in place
+  synchronize:
+    src: "/repositories/BwCommons/docs/gnu_gpl_v3.txt"
+    dest: "{{ bw_target_ext_path }}/files/admin/LICENSE.txt"
+
+- name: Copy install file in place
+  synchronize:
+    src: "{{ bw_workspace }}/administrator/components/com_{{ bw_extension }}/install.{{ bw_extension }}.php"
+    dest: "{{ bw_target_ext_path }}/files/install.{{ bw_extension }}.php"
+
+- name: Move manifest file in place
+  command: "mv {{ bw_target_ext_path }}/files/admin/bwpostman.xml {{ bw_target_ext_path }}/files/{{ bw_extension }}.xml"
+
+- name: Remove SQL file without UTF8
+  file:
+    path: "{{ bw_target_ext_path }}/files/admin/sql/install.sql"
+    state: absent
+  when: mb4_support == "true"
+
+- name: Rename SQL file with UTF8
+  command: "mv {{ bw_target_ext_path }}/files/admin/sql/install-utf8.sql {{ bw_target_ext_path }}/files/admin/sql/install.sql"
+  when: mb4_support == "true"
+
+- name: Pack installation package
+  archive:
+    path: "{{ bw_target_ext_path }}/files/"
+    dest: "{{ bw_target_ext_path }}/com_{{ bw_extension }}.zip"
+    mode: 0664
+    owner: romana
+    group: users
+    format: zip
+
+- name: Remove folder files, now no more needed
+  file:
+    path: "{{ bw_target_ext_path }}/files/"
+    state: absent

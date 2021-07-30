@@ -1,0 +1,41 @@
+---
+- name: ensure old zip file is removed
+  file:
+    path: "{{ bw_target_ext_path }}/pkg_{{ bw_extension }}.zip"
+    state: absent
+
+- name: Create folder for package files
+  file:
+    path: "{{ bw_target_ext_path }}/package/packages"
+    state: directory
+
+- name: Copy plugin files
+  synchronize:
+    src: "{{ bw_target_ext_path }}/{{ item }}.zip"
+    dest: "{{ bw_target_ext_path }}/package/packages/{{ item }}.zip"
+  with_items: "{{ bw_package_parts }}"
+
+- name: Copy package manifest file in place
+  synchronize:
+    src: "{{ bw_workspace }}/build/manifests/pkg_{{ bw_extension }}.xml"
+    dest: "{{ bw_target_ext_path }}/package/"
+
+- name: Copy installation script file in place
+  synchronize:
+    src: "{{ bw_workspace }}/src/{{ bw_script_name }}"
+    dest: "{{ bw_target_ext_path }}/package/"
+  when: bw_with_script == 'true'
+
+- name: Pack installation package
+  archive:
+    path: "{{ bw_target_ext_path }}/package/"
+    dest: "{{ bw_target_ext_path }}/pkg_{{ bw_extension }}.zip"
+    mode: 0664
+    owner: romana
+    group: users
+    format: zip
+
+- name: Remove folder files, now not more needed
+  file:
+    path: "{{ bw_target_ext_path }}/package"
+    state: absent

@@ -5,6 +5,8 @@
     - vars/container-basics.yml
     - vars/tester-test-vars.yml
     - vars/tester-image-vars.yml
+  vars:
+    ansible_remote_tmp: "/tmp"
 
   tasks:
     - name: Show name of bare source web container
@@ -34,6 +36,7 @@
       docker_image:
         name: '{{ private_docker_repo }}/{{ bare_source.web_image_tag_source }}'
         source: pull
+        force_source: yes
 
     - name: ensure joomla sub folder exists
       become: true

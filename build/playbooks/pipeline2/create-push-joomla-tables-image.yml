@@ -10,6 +10,7 @@
       docker_image:
         name: '{{ private_docker_repo }}/{{ bare_source.db_image_tag_source }}'
         source: pull
+        force_source: yes
 
     - name: Create the container
       docker_container:
@@ -20,6 +21,7 @@
 - hosts: "{{ bare_source.db_container_name }}"
   connection: docker
   gather_facts: no
+
   vars_files:
     - vars/tester-test-vars.yml
     - vars/tester-image-vars.yml
@@ -49,6 +51,7 @@
 
     - name: Push container image to private registry
       shell: "docker push {{ private_docker_repo }}/{{ bare_target.db_image_tag_target }}"
+      ignore_errors: true
 
     - name: Remove the container
       docker_container:

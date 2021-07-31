@@ -1006,7 +1006,7 @@ class TestTemplatesDetailsCest
 	{
 		$html_style_content   = TplEdit::getFileContent('tests/_data/html-newsletter.txt');
 
-		$I->clickAndWait(TplEdit::$tpl_tab3, 1);
+		$I->clickAndWait(TplEdit::$tpl_tab3, 2);
 		$I->scrollTo(TplEdit::$button_editor_toggle, 0, -100);
 		$I->clickAndWait(TplEdit::$button_editor_toggle, 1);
 

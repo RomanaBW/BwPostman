@@ -37,6 +37,7 @@ use Page\Generals as Generals;
 class AcceptanceTester extends \Codeception\Actor
 {
 	use _generated\AcceptanceTesterActions;
+	use \Codeception\Lib\Actor\Shared\Friend;
 
 	/**
 	 * Define custom actions here

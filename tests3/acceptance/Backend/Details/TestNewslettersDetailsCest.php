@@ -660,7 +660,10 @@ class TestNewslettersDetailsCest
 		// change to tab 2
 		$I->scrollTo(Generals::$sys_message_container, 0, -100);
 		$I->clickAndWait(NlEdit::$tab2, 3);
+
+		$I->executeJS("document.getElementById('jform_html_version_ifr').setAttribute('name', 'jform_html_version_ifr');");
 		$I->switchToIFrame(NlEdit::$tab2_iframe);
+
 		$I->waitForElement(NlEdit::$tab2_editor);
 		$I->waitForText($content_title, 30);
 		$I->see($content_title, NlEdit::$tab2_editor);
@@ -987,10 +990,10 @@ class TestNewslettersDetailsCest
 			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_published, NlEdit::$published_list_id);
 
 			$I->fillField(NlEdit::$publish_up, NlEdit::$field_edit_publish_up);
-			$I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
+			$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
 
 			$I->fillField(NlEdit::$publish_down, NlEdit::$field_edit_publish_down);
-			$I->pressKey(NlEdit::$publish_down, \WebDriverKeys::TAB);
+			$I->pressKey(NlEdit::$publish_down, \Facebook\WebDriver\WebDriverKeys::TAB);
 
 			$I->fillField(NlEdit::$description, NlEdit::$field_edit_description);
 
@@ -1031,10 +1034,10 @@ class TestNewslettersDetailsCest
 			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_unpublished, NlEdit::$published_list_id);
 
 			$I->fillField(NlEdit::$publish_up, NlEdit::$field_publish_up);
-			$I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
+			$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
 
 			$I->fillField(NlEdit::$publish_down, NlEdit::$field_publish_down);
-			$I->pressKey(NlEdit::$publish_up, \WebDriverKeys::TAB);
+			$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
 
 			$I->fillField(NlEdit::$description, NlEdit::$field_description);
 

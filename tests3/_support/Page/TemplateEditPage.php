@@ -281,7 +281,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_editor_toggle     = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/div/div[1]/ul/li[2]/a";
+	public static $button_editor_toggle     = ".//*[@id='adminForm']/fieldset/div/div[1]/div[1]/dd[3]/fieldset/ul/li/div[2]/div/div[1]/joomla-tab/ul/li[2]/a";
 
 	/**
 	 * @var string

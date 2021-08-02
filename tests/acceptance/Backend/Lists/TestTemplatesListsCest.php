@@ -107,12 +107,6 @@ class TestTemplatesListsCest
 		$I->amOnPage(TplManage::$url);
 		$I->wait(1);
 
-//		$sidebarToggle = $I->grabAttributeFrom(".//div[@id='j-sidebar-container']", 'class');
-//		if (strpos($sidebarToggle, 'j-sidebar-hidden') !== false)
-//		{
-//			$I->click(Generals::$submenu_toggle_button);
-//		}
-
 		// loop over sorting criterion
 		$columns    = implode(', ', TplManage::$query_criteria);
 		$columns    = str_replace('subscribers', $I->getQueryNumberOfSubscribers(), $columns);
@@ -194,18 +188,12 @@ class TestTemplatesListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(TplManage::$format_list_id);
 		$I->selectOption(TplManage::$format_list_id, TplManage::$format_text);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(TplManage::$format_text_text, TplManage::$format_text_column);
 		$I->dontSee(TplManage::$format_text_html, TplManage::$format_text_column);
 
 		// select unpublished
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->click(TplManage::$format_list_id);
 		$I->selectOption(TplManage::$format_list_id, TplManage::$format_html);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->see(TplManage::$format_text_html, TplManage::$format_text_column);
 		$I->dontSee(TplManage::$format_text_text, TplManage::$format_text_column);

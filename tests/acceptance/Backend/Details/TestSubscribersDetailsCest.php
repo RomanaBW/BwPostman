@@ -120,7 +120,6 @@ class TestSubscribersDetailsCest
 
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$this->checkSavedValues($I, '0', '0');
@@ -205,7 +204,6 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$this->checkSavedValues($I, '1', '1');
@@ -247,7 +245,6 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & New'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->see('', SubEdit::$name);
 
@@ -287,7 +284,6 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -302,7 +298,6 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -363,7 +358,6 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$this->checkSavedValues($I, '1', '2');
@@ -411,7 +405,6 @@ class TestSubscribersDetailsCest
 
 		$I->click(Generals::$toolbar4['Save & Close']);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Subscribers', Generals::$pageTitle);

@@ -227,13 +227,11 @@ class DbHelper extends Module
 		if (strpos($extension, 'mod_') !== false)
 		{
 			$table_name = Generals::$db_prefix . 'modules';
-//			$criteria[] = "WHERE `module` = '$extension'";
 			$where      = " WHERE `module` = '$extension'";
 		}
 	else
 		{
 			$table_name = Generals::$db_prefix . 'extensions';
-//			$criteria[] = "WHERE `element` = '$extension'";
 			$where      = " WHERE `element` = '$extension'";
 		}
 

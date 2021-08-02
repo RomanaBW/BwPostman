@@ -63,10 +63,8 @@ class TestSubscribersListsCest
 	{
 		// @Todo: ensure UTF-8 characters are recognized; only testing problem
 		$I->wantTo("Sort confirmed subscribers by table header");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
-//		$I->click(Generals::$joomlaMenuCollapse);
 
 		$sort_array     = $this->prepareSortArray($I);
 		$loop_counts    = 10;
@@ -82,8 +80,6 @@ class TestSubscribersListsCest
 		$columns    = implode(', ', SubsManage::$query_criteria);
 		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
 		$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '1', $loop_counts, 1);
-
-//		$I->click(Generals::$joomlaMenuCollapse);
 	}
 
 	/**
@@ -105,7 +101,6 @@ class TestSubscribersListsCest
 	{
 		// @Todo: ensure UTF-8 characters are recognized
 		$I->wantTo("Sort confirmed subscribers by select list");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
@@ -143,24 +138,17 @@ class TestSubscribersListsCest
 	public function FilterSubscribersByMailformat(AcceptanceTester $I)
 	{
 		$I->wantTo("Filter confirmed subscribers by email format");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 
 		// select Text
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(SubsManage::$format_list_id);
 		$I->selectOption(SubsManage::$format_list_id, SubsManage::$format_text);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee(SubsManage::$format_text_html, SubsManage::$format_text_column);
 
 		// select HTML
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->click(SubsManage::$format_list_id);
 		$I->selectOption(SubsManage::$format_list_id, SubsManage::$format_html);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
 	}
@@ -190,8 +178,6 @@ class TestSubscribersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(SubsManage::$format_list_id);
 		$I->selectOption(SubsManage::$ml_list_id, SubsManage::$ml_select);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(SubsManage::$filter_subs_result, SubsManage::$confirmedMainTable);
 	}
@@ -214,7 +200,6 @@ class TestSubscribersListsCest
 	public function SearchSubscribers(AcceptanceTester $I)
 	{
 		$I->wantTo("Search confirmed Subscribers");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 
 		$I->searchLoop($I, SubsManage::$search_data_array, true, true, SubsManage::$confirmedMainTable);
@@ -291,37 +276,32 @@ class TestSubscribersListsCest
 	 * @since   2.0.0
 	 */
 	public function SortUnconfirmedSubscribersByTableHeader(AcceptanceTester $I)
+	{
+		// @Todo: ensure UTF-8 characters are recognized; only testing problem
+		$I->wantTo("Sort unconfirmed subscribers by table header");
+		$I->amOnPage(SubsManage::$url);
+		$I->wait(1);
+
+		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
+
+		$sort_array     = $this->prepareSortArray($I);
+		$loop_counts    = 10;
+
+		$options    = $I->getManifestOptions('com_bwpostman');
+
+		if (!$options->show_gender)
 		{
-			// @Todo: ensure UTF-8 characters are recognized; only testing problem
-			$I->wantTo("Sort unconfirmed subscribers by table header");
-			SubsManage::$wait_db;
-			$I->amOnPage(SubsManage::$url);
-			$I->wait(1);
-
-			$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
-
-//			$I->click(Generals::$joomlaMenuCollapse);
-
-			$sort_array     = $this->prepareSortArray($I);
-			$loop_counts    = 10;
-
-			$options    = $I->getManifestOptions('com_bwpostman');
-
-			if (!$options->show_gender)
-			{
-				$loop_counts    = 9;
-			}
-
-
-			// loop over sorting criterion
-			// @ToDo: Codeception catches first appearance of element, but that is at confirmed subscribers and not visible!
-			// Conclusion: Needs an specific identifier for tables!
-			$columns    = implode(', ', SubsManage::$query_criteria);
-			$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
-			$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '0', $loop_counts, 2);
-
-//			$I->click(Generals::$joomlaMenuCollapse);
+			$loop_counts    = 9;
 		}
+
+
+		// loop over sorting criterion
+		// @ToDo: Codeception catches first appearance of element, but that is at confirmed subscribers and not visible!
+		// Conclusion: Needs an specific identifier for tables!
+		$columns    = implode(', ', SubsManage::$query_criteria);
+		$columns    = str_replace('mailinglists', $I->getQueryNumberOfMailinglists(), $columns);
+		$I->loopFilterList($I, $sort_array, 'header', $columns, 'subscribers AS `a`', 0, '0', $loop_counts, 2);
+	}
 
 	/**
 	 * Test method sorting subscribers by selection at select list
@@ -342,13 +322,10 @@ class TestSubscribersListsCest
 	{
 		// @Todo: ensure UTF-8 characters are recognized
 		$I->wantTo("Sort unconfirmed subscribers by select list");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
 		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
-
-//		$I->click(Generals::$submenu_toggle_button);
 
 		$sort_array = $this->prepareSortArray($I);
 		$loop_counts    = 10;
@@ -384,7 +361,6 @@ class TestSubscribersListsCest
 	public function FilterUnconfirmedSubscribersByMailformat(AcceptanceTester $I)
 	{
 		$I->wantTo("Filter unconfirmed subscribers by email format");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
 
@@ -392,17 +368,11 @@ class TestSubscribersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(SubsManage::$format_list_id);
 		$I->selectOption(SubsManage::$format_list_id, SubsManage::$format_text);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee(SubsManage::$format_text_html, SubsManage::$format_text_column);
 
 		// select HTML
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->click(SubsManage::$format_list_id);
 		$I->selectOption(SubsManage::$format_list_id, SubsManage::$format_html);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee(SubsManage::$format_text_text, SubsManage::$format_text_column);
 
@@ -457,7 +427,6 @@ class TestSubscribersListsCest
 	public function SearchUnconfirmedSubscribers(AcceptanceTester $I)
 	{
 		$I->wantTo("Search unconfirmed Subscribers");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 
 		$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
@@ -769,7 +738,6 @@ class TestSubscribersListsCest
 	public function ImportSubscribersByCSV(AcceptanceTester $I)
 	{
 		$I->wantTo("import subscribers by CSV file");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
@@ -835,7 +803,6 @@ class TestSubscribersListsCest
 	public function ImportSubscribersByXML(AcceptanceTester $I)
 	{
 		$I->wantTo("import subscribers by XML file");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
@@ -897,7 +864,6 @@ class TestSubscribersListsCest
 	public function ExportSubscribersToCSVCA(AcceptanceTester $I)
 	{
 		$I->wantTo("export confirmed, unarchived subscribers to CSV file");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
@@ -969,7 +935,6 @@ class TestSubscribersListsCest
 	public function ExportSubscribersToCSVUA(AcceptanceTester $I)
 	{
 		$I->wantTo("export unconfirmed archived subscribers to CSV file");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
@@ -1039,7 +1004,6 @@ class TestSubscribersListsCest
 	public function ExportSubscribersToCSVAll(AcceptanceTester $I)
 	{
 		$I->wantTo("export all archived and unarchived subscribers to CSV file");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
@@ -1111,15 +1075,12 @@ class TestSubscribersListsCest
 	public function ExportSubscribersToCSVFilteredYes(AcceptanceTester $I)
 	{
 		$I->wantTo("export only filtered subscribers to CSV file");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(SubsManage::$ml_list_id);
 		$I->selectOption(SubsManage::$ml_list_id, SubsManage::$ml_select);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(SubsManage::$filter_subs_result, SubsManage::$confirmedMainTable);
 
@@ -1128,7 +1089,6 @@ class TestSubscribersListsCest
 		$I->setIframeName('popup_export_iframe');
 		$I->switchToIFrame('popup_export_iframe');
 		$I->waitForText("Shall only the subscribers of the mailing list be exported, for which currently is filtered?");
-//		$I->waitForElement(SubsManage::$export_popup_yes, 5);
 		$I->see("Shall only the subscribers of the mailing list be exported, for which currently is filtered?");
 		$I->clickAndWait(SubsManage::$export_popup_yes, 3);
 
@@ -1198,15 +1158,12 @@ class TestSubscribersListsCest
 	public function ExportSubscribersToCSVFilteredNo(AcceptanceTester $I)
 	{
 		$I->wantTo("export all subscribers to CSV file when filtered by mailinglist");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(SubsManage::$ml_list_id);
 		$I->selectOption(SubsManage::$ml_list_id, SubsManage::$ml_select);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->assertFilterResult(SubsManage::$filter_subs_result, SubsManage::$confirmedMainTable);
 
@@ -1215,7 +1172,6 @@ class TestSubscribersListsCest
 		$I->setIframeName('popup_export_iframe');
 		$I->switchToIFrame('popup_export_iframe');
 		$I->waitForText("Shall only the subscribers of the mailing list be exported, for which currently is filtered?");
-//		$I->waitForElement(SubsManage::$export_popup_yes, 5);
 		$I->see("Shall only the subscribers of the mailing list be exported, for which currently is filtered?");
 		$I->clickAndWait(SubsManage::$export_popup_no, 3);
 
@@ -1285,7 +1241,6 @@ class TestSubscribersListsCest
 	public function ExportSubscribersToXML(AcceptanceTester $I)
 	{
 		$I->wantTo("export subscribers to XML file");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
@@ -1343,7 +1298,6 @@ class TestSubscribersListsCest
 	{
 		// Subscribe to new mailinglist
 		$I->wantTo("subscribe by batch all okay");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
@@ -1363,7 +1317,6 @@ class TestSubscribersListsCest
 
 		// Select mailinglist to subscribe
 		$I->selectOption(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew);
-//		$I->clickSelectList(SubsManage::$batchMlList, SubsManage::$batchMlSelectNew, SubsManage::$batchMlListId);
 
 		// Check subscribe button
 		$I->click(sprintf(SubsManage::$batchModalTask, '1'));
@@ -1437,7 +1390,6 @@ class TestSubscribersListsCest
 	{
 		// Subscribe to new mailinglist
 		$I->wantTo("subscribe by batch one already subscribed");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
@@ -1528,7 +1480,6 @@ class TestSubscribersListsCest
 	{
 		// Subscribe to new mailinglist
 		$I->wantTo("subscribe by batch");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
@@ -1623,7 +1574,6 @@ class TestSubscribersListsCest
 	{
 		// Move to other mailinglist
 		$I->wantTo("subscribe by batch");
-		SubsManage::$wait_db;
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 

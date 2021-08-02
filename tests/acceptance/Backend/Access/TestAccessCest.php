@@ -1054,11 +1054,8 @@ class TestAccessCest
 
 		$I->see(sprintf(AccessPage::$checkin_success_text, $item), Generals::$alert_success);
 
-//		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
-//
-//		$I->assertEquals(true, $item_found);
-
-		$I->filterForItemToEdit($check_content, $tableId);
+		$item_found = $I->filterForItemToEdit($check_content, $tableId);
+		$I->assertEquals(true, $item_found);
 
 		$I->dontSeeElement($lock_icon);
 
@@ -1109,7 +1106,6 @@ class TestAccessCest
 
 		$this->switchLoggedInUser($I, $current_user);
 
-//		$item_found = $I->findPageWithItemAndScrollToItem($button, $check_content, $tableId);
 		$item_found = $I->filterForItemToEdit($check_content, $tableId);
 
 		if ($item_found !== true)

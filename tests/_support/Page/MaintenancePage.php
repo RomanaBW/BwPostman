@@ -927,7 +927,7 @@ class MaintenancePage
 			$found = in_array(sprintf(self::$repairTextEngine, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}
-codecept_debug('TP');
+//codecept_debug('TP');
 
 		$found = in_array(self::$warningTextVersion, $resultsWarnVersion);
 		$I->assertEquals($found, true);

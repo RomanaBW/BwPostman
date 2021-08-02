@@ -100,10 +100,6 @@ class TestMailinglistsDetailsCest
 		$this->fillFormExtended($I);
 
 		$I->click(Generals::$toolbar4['Save & Close']);
-//		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_header);
-//		$I->see(MlEdit::$success_save, Generals::$alert_success);
-//		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
@@ -158,10 +154,6 @@ class TestMailinglistsDetailsCest
 		$this->fillFormExtended($I);
 
 		$I->click(Generals::$toolbar4['Save & Close']);
-//		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_header);
-//		$I->see(MlEdit::$success_save, Generals::$alert_success);
-//		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);
 		$I->see('Mailinglists', Generals::$pageTitle);
@@ -193,7 +185,7 @@ class TestMailinglistsDetailsCest
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->click(Generals::$toolbar4['Save & New']);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_header);
+
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
 		$I->see('', MlEdit::$title);
 
@@ -228,10 +220,6 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 
 		$I->click(Generals::$toolbar4['Save']);
-//		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_header);
-//		$I->see(MlEdit::$success_save, Generals::$alert_success);
-//		$I->seeInField(MlEdit::$title, MlEdit::$field_title);
 
 		// Grab ID of first mailinglist
 		$id1 = $I->grabColumnFromDatabase(Generals::$db_prefix . 'bwpostman_mailinglists', 'id', array('title' => MlEdit::$field_title));
@@ -242,7 +230,6 @@ class TestMailinglistsDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 30);
-//		$I->see("Message", Generals::$alert_header);
 		$I->see(MlEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(MlEdit::$title, MlEdit::$field_title2);
 
@@ -282,11 +269,6 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 		$I->click(Generals::$toolbar4['Save & Close']);
 
-//		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
-//		$I->see(MlEdit::$success_save, Generals::$alert_success);
-//		$I->clickAndWait(Generals::$systemMessageClose, 1);
-
 		$I->HelperArchiveItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array);
 
 		$I->switchToArchive($I, MlEdit::$arc_del_array['archive_tab']);
@@ -323,10 +305,6 @@ class TestMailinglistsDetailsCest
 		MlEdit::fillFormSimple($I);
 
 		$I->click(Generals::$toolbar4['Save & Close']);
-//		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see(Generals::$alert_msg_txt, Generals::$alert_heading);
-//		$I->see(MlEdit::$success_save, Generals::$alert_success);
-//		$I->see('Mailinglists', Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['New']);
 

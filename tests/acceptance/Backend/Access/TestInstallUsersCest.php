@@ -127,14 +127,6 @@ class TestInstallUsersCest
 				$I->fillField(UsersPage::$registerPassword2, $user['password']);
 				$I->fillField(UsersPage::$registerEmail, $user['user'] . "@tester-net.nil");
 
-//				$I->clickAndWait(UsersPage::$usergroupTab, 1);
-//				$I->waitForElementVisible(UsersPage::$publicGroup, 2);
-//
-//				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId);
-//				$I->scrollTo($checkbox, 0, -100);
-//				$I->wait(1);
-//				$I->click($checkbox);
-
 				$I->click(Generals::$toolbar['Save & Close']);
 				$I->waitForElement(Generals::$alert_success, 10);
 				$I->see(UsersPage::$createSuccessMsg, Generals::$alert_success);
@@ -148,8 +140,6 @@ class TestInstallUsersCest
 			{
 				// Check, if user is mapped to appropriate group
 				codecept_debug('Check, if existing user is mapped to appropriate group');
-
-//				$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId);
 
 				// @ToDo: Check if checkbox for appropriate usergroup is checked. If so, continue, else check checkbox.
 				$groupMap = $I->grabFromDatabase(Generals::$db_prefix . 'user_usergroup_map', 'group_id', array('user_id' => $userId));

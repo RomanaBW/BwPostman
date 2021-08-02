@@ -673,7 +673,6 @@ class ModuleOverviewCest
 		$I->wait(1);
 		$I->dontSeeInSource(Generals::$warningMessage);
 		$I->dontSeeInSource(Generals::$noticeMessage);
-//		$I->see(Helper::$mod_count_0_message, Helper::$mod_content_position);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 20));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 21));
 

@@ -1928,12 +1928,8 @@ class TestOptionsCest
 			'bwpm.admin.newsletter'
 		);
 
-//		codecept_debug('Identifier:' . $identifier);
-//		codecept_debug('Value: ' . $value);
-
 		if (array_search($rules[$i], $rulesToScroll) !== false)
 		{
-//			codecept_debug('ScrollTo identifier needed');
 			$I->scrollTo($identifier, 0, -100);
 			$I->wait(1);
 		}

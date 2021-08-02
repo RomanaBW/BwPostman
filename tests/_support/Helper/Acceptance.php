@@ -790,18 +790,12 @@ class Acceptance extends Codeception\Module
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(Generals::$status_list_id);
 		$I->selectOption(Generals::$status_list_id, Generals::$status_published);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSeeElement(Generals::$icon_unpublished);
 		$I->wait(1);
 
 		// select unpublished
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->click(Generals::$status_list_id);
 		$I->selectOption(Generals::$status_list_id, Generals::$status_unpublished);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSeeElement(Generals::$icon_published);
 	}
@@ -1087,8 +1081,6 @@ class Acceptance extends Codeception\Module
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(Generals::$access_list_id);
 		$I->selectOption(Generals::$access_list_id, Generals::$access_public);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee("Guest", Generals::$access_column);
 		$I->dontSee("Registered", Generals::$access_column);
@@ -1096,11 +1088,7 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select guest
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->click(Generals::$access_list_id);
 		$I->selectOption(Generals::$access_list_id, Generals::$access_guest);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Registered", Generals::$access_column);
@@ -1108,11 +1096,7 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select registered
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->click(Generals::$access_list_id);
 		$I->selectOption(Generals::$access_list_id, Generals::$access_registered);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Guest", Generals::$access_column);
@@ -1120,11 +1104,7 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select special
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->click(Generals::$access_list_id);
 		$I->selectOption(Generals::$access_list_id, Generals::$access_special);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Guest", Generals::$access_column);
@@ -1132,11 +1112,7 @@ class Acceptance extends Codeception\Module
 		$I->dontSee("Super Users", Generals::$access_column);
 
 		// select super users
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->click(Generals::$access_list_id);
 		$I->selectOption(Generals::$access_list_id, Generals::$access_super);
-//		$I->click(Generals::$filterOptionsSwitcher);
-//		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 
 		$I->dontSee("Public", Generals::$access_column);
 		$I->dontSee("Guest", Generals::$access_column);
@@ -1265,10 +1241,6 @@ class Acceptance extends Codeception\Module
 
 		// archive items
 		$archive_button = Generals::$toolbar4['Archive'];
-//		if ($manage_data['section'] == 'campaigns')
-//		{
-//			$archive_button = $edit_data['archive_button'];
-//		}
 
 		$I->checkOption(Generals::$check_all_button);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
@@ -1285,7 +1257,6 @@ class Acceptance extends Codeception\Module
 			// process newsletter popup
 			$I->setIframeName($manage_data['popup_archive_iframe']);
 			$I->switchToIFrame($manage_data['popup_archive_iframe']);
-//			$I->waitForElement(".//*[@id='confirm-archive']", 20);
 			$I->waitForText($manage_data['popup_archive_newsletters']);
 			$I->see($manage_data['popup_archive_newsletters']);
 			$I->clickAndWait($manage_data['popup_button_no'], 1);
@@ -1404,9 +1375,7 @@ class Acceptance extends Codeception\Module
 
 		if ($manage_data['section'] == 'campaigns')
 		{
-//			$I->setIframeName($manage_data['popup_restore_iframe']);
 			$I->switchToIFrame($manage_data['popup_restore_iframe']);
-//			$I->waitForElement(".//*[@id='confirm-unarchive']", 20);
 			$I->waitForText($manage_data['popup_restore_newsletters']);
 			$I->see($manage_data['popup_restore_newsletters']);
 			$I->clickAndWait($manage_data['popup_button_delete_no'], 1);
@@ -1691,30 +1660,6 @@ class Acceptance extends Codeception\Module
 	 */
 	public function getRuleNamesByComponentAsset($extension)
 	{
-//		$credentials    = $this->getDbCredentials();
-//		$criteria       = array();
-//
-//		$rules_string = DbHelper::getRuleNamesByComponentAsset($extension, $criteria, $credentials);
-//
-//		$rules_raw  = json_decode($rules_string);
-//
-//		$rules  = array();
-//		foreach ($rules_raw as $rule_name => $value)
-//		{
-//			if ($rule_name != 'bwpm.admin')
-//			{
-//				$rules[]   = $rule_name;
-//			}
-//		}
-//
-//		// @ToDo: resolve this workaround
-//		//reorder core rules
-//		if (($rules[0] == 'core.manage') && ($rules[1] == 'core.admin'))
-//		{
-//			$rules[0] = 'core.admin';
-//			$rules[1] = 'core.manage';
-//		}
-
 		$rules = array(
 			"core.admin",
 			"core.login.admin",
@@ -1808,7 +1753,7 @@ class Acceptance extends Codeception\Module
 		$query      = "DELETE FROM " . Generals::$db_prefix . $table . $where_clause;
 
 		$sth = $driver->executeQuery($query, $criteria);
-		$res = $sth->rowCount();
+		$sth->rowCount();
 	}
 
 	/**

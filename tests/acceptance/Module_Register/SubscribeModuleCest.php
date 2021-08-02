@@ -1060,7 +1060,7 @@ class SubscribeModuleCest
 				$grabField = Helper::$module_item_text_identifier . "/span/span";
 				$itemText = $I->grabTextFrom($grabField);
 			}
-//			codecept_debug($itemText);
+
 			$I->assertEquals("01 Mailingliste 5 weiterer Lauf A", $itemText);
 		}
 

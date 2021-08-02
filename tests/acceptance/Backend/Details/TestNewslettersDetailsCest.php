@@ -122,8 +122,6 @@ class TestNewslettersDetailsCest
 		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
 		// Check list view attachment
-//		$I->scrollTo(NlEdit::$attachment_listview, 0, -100);
-//		$I->wait(1);
 		$I->seeElement(NlEdit::$attachment_listview_icon);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
@@ -255,13 +253,11 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$toolbar4['Save & New']);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->wait(1);
 		$I->click(Generals::$systemMessageClose);
 
 		$I->see('', NlEdit::$subject);
-//		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
@@ -295,7 +291,6 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$toolbar4['Save']);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -310,7 +305,6 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject2);
@@ -354,7 +348,6 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$toolbar4['Save']);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
@@ -390,7 +383,6 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
-//		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->seeInField(NlEdit::$subject, NlEdit::$field_subject2);
@@ -1041,7 +1033,6 @@ class TestNewslettersDetailsCest
 			$I->click(Generals::$toolbar['Save']);
 			Generals::dontSeeAnyWarning($I);
 
-//			$I->see("Message", Generals::$alert_heading);
 			$I->see(NlEdit::$success_saved, Generals::$alert_success);
 
 			// check changes

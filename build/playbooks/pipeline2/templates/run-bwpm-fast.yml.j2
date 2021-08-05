@@ -30,19 +30,6 @@ services:
       MYSQL_USER: tester
       MYSQL_PASSWORD: barbamama
 
-#  postfixbwpm:
-#    container_name: "mail3.tester-net.nil"
-#    image: romana/os-postfix
-#    hostname: mail-bwpm
-#    domainname: tester-net.nil
-#    expose:
-#      - "25"
-#    volumes:
-#      -  {{ container_dir }}/infrastructure/os_base/os_data:/outerworld
-#    networks:
-#      tester-net.nil:
-#        ipv4_address: 172.18.0.18
-
   webserverbwpm:
     container_name: webserverbwpm
     image: universe3:5000/romana/webserver_fast_{{ php_version }}

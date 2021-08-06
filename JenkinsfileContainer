@@ -6,9 +6,9 @@ pipeline {
         stage('Set variables') {
 			steps {
 				script {
-					BWPM_VERSION = "3.1.6"
+					BWPM_VERSION = "3.1.5"
 
-					JOOMLA_VERSION = "3.9.28"
+					JOOMLA_VERSION = "3.10.0"
 
 					GIT_MESSAGE = "not specified"
 

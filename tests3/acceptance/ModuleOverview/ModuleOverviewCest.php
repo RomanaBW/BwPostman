@@ -126,10 +126,10 @@ class ModuleOverviewCest
 
 		// Call page with 12 months
 		$I->amOnPage(SubsView::$register_url);
-		$I->scrollTo(Helper::$mod_title_position, 0, -100);
-		$I->wait(1);
 		$I->dontSeeInSource(Generals::$warningMessage);
 		$I->dontSeeInSource(Generals::$noticeMessage);
+		$I->scrollTo(Helper::$mod_title_position, 0, -100);
+		$I->wait(1);
 		$I->seeElement(sprintf(Helper::$mod_count_n, 11));
 		$I->dontSeeElement(sprintf(Helper::$mod_count_n, 12));
 

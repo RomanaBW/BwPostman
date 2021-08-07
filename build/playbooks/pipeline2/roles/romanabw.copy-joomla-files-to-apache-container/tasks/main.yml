@@ -5,7 +5,7 @@
 
 - name: Debug archive source
   debug:
-    msg: "{{ bw_artifacts_base }}/data/j_install"
+    msg: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name[j_version_short] }}"
 
 - name: unpack Joomla files to document root
   unarchive:

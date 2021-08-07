@@ -20,7 +20,7 @@ Step 1 is a simple Jenkinsfile task.
 
 Step 2 uses an ansible playbook.
 
-Steps 3 to 5 also use ansible playbooks. The tests need selenium and codeception, so they have to run at a complete 
+Steps 3 to 5 also use ansible playbooks. The tests needs selenium and codeception, so they have to run at a complete 
 infrastructure containing web server, database and tester. To get this infrastructure, I use containers. The efforts with 
 virtual machines, which I used so far were not satisfying, too much false positives, too much dependencies on environmental
 facts. Getting this infrastructure from scratch is described below.
@@ -35,12 +35,11 @@ All manually changing variables should be kept (beneath other variables) at the 
 Changing variables sounds crazy, I know, but most variables are build on some manually entered values. These are automated 
 changing variables, in opposite to the manual changing variables. Normally I would prefer to name them parameters, but 
 ansible makes no difference…  
-**!!Attention: Joomla version now has also be changed at vars/codecept_paths_Jn.yml!!!!!!**
 
 There are some containers, which have to be build successively:
 1. Create base images for web server and database and store them at local docker registry
-	1. **create-push-apache-image.yml**, currently based on php:7.3.4-apache-stretch and locally stored at **universe3:5000/romana/php:7.3.4-apache-stretch**.
-	2. **create-push-mariadb-image.yml**, currently based on bitnami/mariadb:10.2-debian-9 and locally stored at **universe3:5000/romana/mariadb:10.2-debian-9**
+	1. **create-push-apache-image.yml**, currently based on php:apache and locally stored at **universe3:5000/romana/php:apache**.
+	2. **create-push-mariadb-image.yml**, currently based on bitnami/mariadb:10.5-debian-10 and locally stored at **universe3:5000/romana/mariadb:10.5-debian-10**
 2. Install Joomla to previously created images. The playbooks and the images are
 	1. **create-push-joomla-files-image.yml**, image is **universe3:5000/romana/joomla-bare-files:{{ joomla_version }}**
 	2. **create-push-joomla-tables-image.yml**, image is **universe3:5000/romana/joomla-bare-tables:{{ joomla_version }}**

@@ -1,0 +1,177 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars_files:
+    - vars/tester-image-vars.yml
+    - vars/tester-test-vars.yml
+
+  tasks:
+    - name: ensure log folder for test results exists
+      become: true
+      become_user: root
+      file:
+        path: "{{ test_log_path }}/joomla_logs"
+        state: directory
+        mode: 0777
+        owner: romana
+        group: users
+
+    - name: remove previous webserver files from local migration folder
+      become: true
+      become_user: root
+      shell: "rm -rf /joomla-files/migration"
+
+    - name: copy webserver files from pipeline folder of tester-j1 to local migration folder
+      shell: "rsync -avP romana@tester-j1:/joomla-files/accept1_j3/ /joomla-files/migration"
+
+    - name: set owner of webserver files
+      become: true
+      shell: "chown -R www-data /joomla-files/migration"
+
+    - name: set group for webserver files
+      become: true
+      shell: "chgrp -R users /joomla-files/migration"
+
+    - name: set permissions for webserver files
+      become: true
+      shell: "chmod -R 0777 /joomla-files/migration"
+
+    - name: Set variable for network name
+      set_fact:
+        network_name: "bwpm_network-migration"
+
+    - name: Set variable Image tag
+      set_fact:
+        image_tag: "3.10.0-3.1.5"
+
+    - name: Set variable for webserver image name
+      set_fact:
+        webserver_image_name: "{{ private_docker_repo }}/romana/joomla_mig_web-3:{{ image_tag }}"
+
+    - name: Set variable for database image name
+      set_fact:
+        database_image_name: "{{ private_docker_repo }}/romana/joomla_mig_db-3:{{ image_tag }}"
+
+    - name: Set variable for webserver name
+      set_fact:
+        webserver_name: "bwpm_migration_web"
+
+    - name: Set variable for database name
+      set_fact:
+        database_name: "bwpm_migration_db"
+
+#    Start: Create network and start db and webserver containers
+    - name: Show tester web root
+      debug:
+        msg: "tester web root {{ tester_web_root }}"
+
+    - name: Show network name
+      debug:
+        msg: "network name {{ network_name }}"
+
+    - name: Show db image name
+      debug:
+        msg: "db image name {{ database_image_name }}"
+
+    - name: Show webserver image name
+      debug:
+        msg: "webserver image name {{ webserver_image_name }}"
+
+
+    - name: Show db name
+      debug:
+        msg: "db name {{ database_name }}"
+
+    - name: Show webserver name
+      debug:
+        msg: "db name {{ webserver_name }}"
+
+    - name: Create network
+      docker_network:
+        name: "{{ network_name }}"
+        attachable: yes
+        ipam_config:
+          - subnet: 172.18.0.32/29
+
+    - name: Enure container images are current (force download)
+      docker_image:
+        name: "{{ item }}"
+        source: pull
+        force_source: yes
+      with_items:
+        - "{{ database_image_name }}"
+        - "{{ webserver_image_name }}"
+
+    - name: Create the database container
+      docker_container:
+        image: '{{ database_image_name }}'
+        name: '{{ database_name }}'
+        hostname: '{{ database_name }}'
+        detach: yes
+        networks:
+          - name: "{{ network_name }}"
+            ipv4_address: 172.18.0.35
+
+    - name: Create the webserver container
+      docker_container:
+        image: '{{ webserver_image_name }}'
+        ignore_image: true
+        name: '{{ webserver_name }}'
+        hostname: '{{ webserver_name }}'
+        working_dir: "{{ tester_web_root }}"
+        command: "apache2-foreground"
+        detach: yes
+        exposed_ports:
+          - "80"
+        published_ports:
+          - "80"
+        networks:
+          - name: "{{ network_name }}"
+            ipv4_address: 172.18.0.36
+        volumes:
+          - /repositories:/repositories
+          - "{{ main_base_folder }}/migration:{{ tester_web_root }}"
+    #      - "/{{ test_log_path }}/joomla_logs:{{ tester_web_root }}/administrator/logs/"
+        etc_hosts: >
+          {
+            "localhost {{ webserver_name }}": "127.0.0.1"
+          }
+
+##    End: Create network and start db and webserver containers
+
+- hosts: bwpm_migration_web
+  gather_facts: no
+  connection: docker
+  vars_files:
+    - vars/tests.yml
+    - vars/tester-image-vars.yml
+    - vars/tester-test-vars.yml
+
+  tasks:
+    - name: Set db host name
+      set_fact:
+        db_host: "bwpm_migration_db"
+
+    - name: copy joomla configuration in place
+      template:
+        src: "configuration.php.j2"
+        dest: "{{ tester_web_root }}configuration.php"
+        owner: "www-data"
+        group: "www-data"
+
+    - name: set webserver error log file
+      lineinfile:
+        path: "/etc/apache2/sites-available/joomla_web.nil.conf"
+        regexp: '^    ErrorLog'
+        line: "    ErrorLog {{ test_log_path }}/joomla_web-error.log"
+
+    - name: set webserver access log file
+      lineinfile:
+        path: "/etc/apache2/sites-available/joomla_web.nil.conf"
+        regexp: '^    CustomLog'
+        line: "    CustomLog {{ test_log_path }}/joomla_web-access.log combined"
+
+    - name: restart webserver
+      command: "/etc/init.d/apache2 reload"
+

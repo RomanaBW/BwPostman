@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: Stop the webserver container
+      docker_container:
+        name: 'bwpm_migration_web'
+        state: absent
+
+    - name: Stop the database container
+      docker_container:
+        name: 'bwpm_migration_db'
+        state: absent
+
+    - name: Stop network
+      docker_network:
+        name: "bwpm_network-migration"
+        state: absent
+        force: yes
+

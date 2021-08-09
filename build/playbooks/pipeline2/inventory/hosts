@@ -130,3 +130,5 @@ universe3
 bw-tester-base-1 ansible_connection=docker
 bw-tester-acceptance ansible_connection=docker
 bw_webserver_fast ansible_connection=docker
+
+bwpm_migration_web ansible_connection=docker

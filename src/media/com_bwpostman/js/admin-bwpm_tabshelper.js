@@ -42,25 +42,50 @@ document.addEventListener('readystatechange', (event) => {
 	}
 });
 
-var bwpModal = document.getElementById('bwp-modal');
+function ready(callbackFunc) {
+	if (document.readyState !== 'loading')
+	{
+		// Document is already ready, call the callback directly
+		callbackFunc();
+	}
+	else if (document.addEventListener)
+	{
+		// All modern browsers to register DOMContentLoaded
+		document.addEventListener('DOMContentLoaded', callbackFunc);
+	}
+	else
+	{
+		// Old IE browsers
+		document.attachEvent('onreadystatechange', function() {
+			if (document.readyState === 'complete')
+			{
+				callbackFunc();
+			}
+		});
+	}
+}
 
-bwpModal.addEventListener('show.bs.modal', function (event) {
-	// Button that triggered the modal
-	var button = event.relatedTarget;
-	var windowheight = window.innerHeight - 225;
+ready(function() {
+	var bwpModal = document.getElementById('bwp-modal');
 
-	// Extract info from data-bs-* attributes
-	var title      = button.getAttribute('data-bs-title');
-	var contentSrc = button.getAttribute('data-bs-src');
-	var frameName  = button.getAttribute('data-bs-frame');
+	bwpModal.addEventListener('show.bs.modal', function (event) {
+		// Button that triggered the modal
+		var button = event.relatedTarget;
+		var windowheight = window.innerHeight - 225;
 
-	// Update the modal's content.
-	var modalTitle   = bwpModal.querySelector('.modal-title');
-	var modalFrame   = bwpModal.querySelector('.modal-frame');
+		// Extract info from data-bs-* attributes
+		var title      = button.getAttribute('data-bs-title');
+		var contentSrc = button.getAttribute('data-bs-src');
+		var frameName  = button.getAttribute('data-bs-frame');
 
-	modalTitle.textContent   = title;
+		// Update the modal's content.
+		var modalTitle   = bwpModal.querySelector('.modal-title');
+		var modalFrame   = bwpModal.querySelector('.modal-frame');
 
-	modalFrame.src    = contentSrc;
-	modalFrame.name   = frameName;
-	modalFrame.height = windowheight;
+		modalTitle.textContent   = title;
+
+		modalFrame.src    = contentSrc;
+		modalFrame.name   = frameName;
+		modalFrame.height = windowheight;
+	});
 });

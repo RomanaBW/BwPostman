@@ -163,18 +163,11 @@ class TemplateController extends FormController
 	 */
 	protected function allowAdd($data = array()): bool
 	{
-		$permission = $this->permissions['template']['create'];
-
-		if (gettype($permission) === NULL)
-		{
-			$permission = false;
-		}
-
-		return $permission;
+		return BwPostmanHelper::canAdd('template');
 	}
 
 	/**
-	 * Method override to check if you can edit a record.
+	 * Method overrides to check if you can edit a record.
 	 *
 	 * @param	array	$data	An array of input data.
 	 * @param	string	$key	The name of the key for the primary key.

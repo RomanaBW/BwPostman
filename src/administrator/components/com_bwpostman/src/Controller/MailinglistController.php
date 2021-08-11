@@ -139,14 +139,7 @@ class MailinglistController extends FormController
 	 */
 	protected function allowAdd($data = array()): bool
 	{
-		$permission = $this->permissions['mailinglist']['create'];
-
-		if (gettype($permission) === NULL)
-		{
-			$permission = false;
-		}
-
-		return $permission;
+		return BwPostmanHelper::canAdd('mailinglist');
 	}
 
 	/**

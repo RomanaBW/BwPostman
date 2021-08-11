@@ -148,14 +148,7 @@ class NewsletterController extends FormController
 	 */
 	protected function allowAdd($data = array()): bool
 	{
-		$permission = $this->permissions['newsletter']['create'];
-
-		if (gettype($permission) === NULL)
-		{
-			$permission = false;
-		}
-
-		return $permission;
+		return BwPostmanHelper::canAdd('newsletter');
 	}
 
 	/**

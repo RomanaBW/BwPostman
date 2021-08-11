@@ -148,7 +148,14 @@ class NewsletterController extends FormController
 	 */
 	protected function allowAdd($data = array()): bool
 	{
-		return $this->permissions['newsletter']['create'];
+		$permission = $this->permissions['newsletter']['create'];
+
+		if (gettype($permission) === NULL)
+		{
+			$permission = false;
+		}
+
+		return $permission;
 	}
 
 	/**

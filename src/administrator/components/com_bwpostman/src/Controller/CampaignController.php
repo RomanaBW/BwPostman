@@ -140,9 +140,16 @@ class CampaignController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	protected function allowAdd($data = array()): ?bool
+	protected function allowAdd($data = array()): bool
 	{
-		return $this->permissions['campaign']['create'];
+		$permission = $this->permissions['campaign']['create'];
+
+		if (gettype($permission) === NULL)
+		{
+			$permission = false;
+		}
+
+		return $permission;
 	}
 
 	/**

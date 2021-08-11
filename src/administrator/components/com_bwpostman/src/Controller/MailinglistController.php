@@ -139,7 +139,14 @@ class MailinglistController extends FormController
 	 */
 	protected function allowAdd($data = array()): bool
 	{
-		return $this->permissions['mailinglist']['create'];
+		$permission = $this->permissions['mailinglist']['create'];
+
+		if (gettype($permission) === NULL)
+		{
+			$permission = false;
+		}
+
+		return $permission;
 	}
 
 	/**

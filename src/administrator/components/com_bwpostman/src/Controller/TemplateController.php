@@ -163,7 +163,14 @@ class TemplateController extends FormController
 	 */
 	protected function allowAdd($data = array()): bool
 	{
-		return $this->permissions['template']['create'];
+		$permission = $this->permissions['template']['create'];
+
+		if (gettype($permission) === NULL)
+		{
+			$permission = false;
+		}
+
+		return $permission;
 	}
 
 	/**

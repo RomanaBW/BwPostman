@@ -7,8 +7,8 @@ joomla_version: "{{ joomla_version_3 }}"
 
 j_version_short: "j3"
 
-bwpm_version: "3.1.5"
-bwpm_version_previous: "3.1.4"
+bwpm_version: "3.1.6"
+bwpm_version_previous: "3.1.5"
 
 vm_version: "3.4.2.9966"
 tcpdf_version: "1.0.5"

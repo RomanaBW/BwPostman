@@ -31,4 +31,12 @@
 		<file type="plugin" id="bwpm_user2subscriber" group="system" client="site">plg_system_bwpm_user2subscriber.zip</file>
 		<file type="plugin" id="footerusedmailinglists" group="bwpostman" client="site">plg_bwpostman_footerusedmailinglists.zip</file>
 	</files>
+
+	<updateservers>
+		<server type="extension" priority="1" name="BwPostman Updates"><![CDATA[https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_update.xml]]></server>
+	</updateservers>
+
+	<compatibility>
+		<version>3</version>
+	</compatibility>
 </extension>

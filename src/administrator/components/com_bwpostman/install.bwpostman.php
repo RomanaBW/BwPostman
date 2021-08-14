@@ -66,7 +66,7 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since       2.0.0
 	 */
-	private $minimum_joomla_release = "4.0.0-beta";
+	private $minimum_joomla_release = "4.0.0-rc5";
 
 	/**
 	 * @var string release
@@ -1354,6 +1354,65 @@ class com_bwpostmanInstallerScript
 //				File::delete(JPATH_ROOT . '/images/com_bwpostman/' . $file);
 //			}
 //		}
+
+//		Remove files from J3 and sql update files
+		$obsoleteJ3 = array(
+			'/administrator/components/com_bwpostman/sql/updates/mysql',
+			'/administrator/components/com_bwpostman/controllers',
+			'/administrator/components/com_bwpostman/helpers',
+			'/administrator/components/com_bwpostman/models',
+			'/administrator/components/com_bwpostman/tables',
+			'/administrator/components/com_bwpostman/views',
+			'/administrator/components/com_bwpostman/bwpostman.php',
+			'/administrator/components/com_bwpostman/controller.php',
+			'/components/com_bwpostman/controllers',
+			'/components/com_bwpostman/models',
+			'/components/com_bwpostman/views',
+			'/components/com_bwpostman/bwpostman.php',
+			'/components/com_bwpostman/controller.php',
+			'/components/com_bwpostman/router.php',
+		);
+
+		foreach ($obsoleteJ3 as $folder)
+		{
+			$this->removeFilesAndFoldersRecursive(JPATH_ROOT . $folder);
+		}
+	}
+
+	/**
+	 * Method to remove obsolete files and folders
+	 *
+	 * @param string $path
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	private function removeFilesAndFoldersRecursive(string $path): bool
+	{
+		if (is_dir($path) === true)
+		{
+			$files = array_diff(scandir($path), array('.', '..'));
+
+			foreach ($files as $file)
+			{
+				if ($file !== 'index.html')
+				{
+					$this->removeFilesAndFoldersRecursive(realpath($path) . '/' . $file);
+				}
+			}
+
+			return rmdir($path);
+		}
+
+		else if (is_file($path) === true)
+		{
+			return unlink($path);
+		}
+
+		return false;
 	}
 
 	/**

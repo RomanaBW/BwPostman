@@ -5,9 +5,9 @@
     - pipeline2/vars/tester-image-vars.yml
 
   vars:
-    project_source_dir: "/home/romana/PhpstormProjects/BwPostman_J4"
-    project_base_dir: "/home/romana/Zwischenlager/BwPostman4/workdir"
-    target_ext_path: "{{ target_base_path }}/{{ extension_name }}4"
+    project_source_dir: "/home/romana/PhpstormProjects/BwPostman"
+    project_base_dir: "/home/romana/Zwischenlager/BwPostman/workdir"
+    target_ext_path: "{{ target_base_path }}/{{ extension_name }}"
     version_number: "{{ bwpm_version }}"
     build: "tmp"
     mb4_support: true

@@ -402,7 +402,7 @@ class Com_BwPostmanInstallerScript
 			$this->logger->addEntry(new LogEntry("Postflight removeObsoleteFilesAndFolders passed", BwLogger::BW_DEBUG, $this->log_cat));
 
 			// ensure SQL update files are processed
-			if (!$this->processSqlUpdate($oldRelease))
+			if ($this->processSqlUpdate($oldRelease) === false)
 			{
 				$this->logger->addEntry(new LogEntry("Postflight processSqlUpdate error", BwLogger::BW_ERROR, $this->log_cat));
 			}
@@ -1453,6 +1453,8 @@ class Com_BwPostmanInstallerScript
 
 		if (empty($files))
 		{
+			$this->logger->addEntry(new LogEntry(Text::_('No SQL update files to process found'), BwLogger::BW_INFO, $this->log_cat));
+
 			return $update_count;
 		}
 

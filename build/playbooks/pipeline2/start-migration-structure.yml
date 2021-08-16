@@ -43,7 +43,7 @@
 
     - name: Set variable Image tag
       set_fact:
-        image_tag: "3.10.0-3.1.5"
+        image_tag: "3.10.0-3.1.6"
 
     - name: Set variable for webserver image name
       set_fact:
@@ -135,7 +135,8 @@
     #      - "/{{ test_log_path }}/joomla_logs:{{ tester_web_root }}/administrator/logs/"
         etc_hosts: >
           {
-            "localhost {{ webserver_name }}": "127.0.0.1"
+            "localhost {{ webserver_name }}": "127.0.0.1",
+            "universe3.bet2.nil" : "192.168.2.100",
           }
 
 ##    End: Create network and start db and webserver containers

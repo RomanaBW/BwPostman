@@ -1482,18 +1482,12 @@ class Com_BwPostmanInstallerScript
 					continue;
 				}
 
-				$isUtf8mb4Db = $db instanceof UTF8MB4SupportInterface;
-
 				// Process each query in the $queries array (split out of sql file).
 				foreach ($queries as $query)
 				{
 					try
 					{
-						if ($isUtf8mb4Db)
-						{
-							$query = $db->convertUtf8mb4QueryToUtf8($query);
-						}
-
+						$query = $db->convertUtf8mb4QueryToUtf8($query);
 						$db->setQuery($query);
 
 						$queryMessage = "Query to process: " . (string)$query;

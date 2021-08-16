@@ -3673,7 +3673,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		}
 
 		$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_SUCCESS', $writeTableName);
-		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 		if ($showMessage)
 		{

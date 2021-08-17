@@ -1264,12 +1264,9 @@ class com_bwpostmanInstallerScript
 			'helpers/subscriberhelper.php',
 			'layouts/subscriber/bootstrap2.php',
 			'layouts/subscriber/bootstrap4.php',
-			'layouts/subscriber/default.php',
 			'layouts/subscriber/emailformat_bs2.php',
 			'layouts/subscriber/emailformat_bs4.php',
 			'layouts/subscriber/gender_bs4.php',
-			'layouts/subscriber/index.html',
-			'layouts/index.html',
 		);
 
 		foreach ($feFilesArray as $file)
@@ -1281,8 +1278,7 @@ class com_bwpostmanInstallerScript
 		}
 
 		$feFoldersArray = array(
-			'layouts/subscriber',
-			'layouts',
+//			'',
 		);
 
 		foreach ($feFoldersArray as $folder)
@@ -1298,12 +1294,16 @@ class com_bwpostmanInstallerScript
 			'controllers/file.json.php_x',
 			'controllers/file.php',
 			'controllers/file.php_x',
-			'assets/js/bwpm_nl_modal.js',
-			'assets/js/bwpm_nl_send.js',
+			'assets/js/bwpm_j3_nl_send.js',
 			'assets/js/bwpm_tabshelper.js',
-			'assets/js/bwpm_template_checkValues.js',
-			'assets/js/bwpm_template_text_buttonClick.js',
-			'assets/js/bwpm_template_text.js',
+			'assets/js/bwpm_checktables.js',
+			'assets/js/bwpm_do_restore.js',
+			'assets/js/bwpm_maintenance_doAjax.js',
+			'assets/js/bwpm_update_checksave.js',
+//			'assets/js/bwpm_.js',
+//			'assets/js/bwpm_tabshelper.js',
+//			'assets/js/bwpm_tabshelper.js',
+//			'assets/js/bwpm_tabshelper.js',
 		);
 
 		foreach ($beFilesArray as $file)
@@ -1363,26 +1363,40 @@ class com_bwpostmanInstallerScript
 			'/administrator/components/com_bwpostman/models',
 			'/administrator/components/com_bwpostman/tables',
 			'/administrator/components/com_bwpostman/views',
+			'/administrator/components/com_bwpostman/libraries/access',
+			'/administrator/components/com_bwpostman/libraries/exceptions',
+			'/administrator/components/com_bwpostman/libraries/logging',
+			'/administrator/components/com_bwpostman/libraries/mailverification',
+			'/administrator/components/com_bwpostman/libraries/webapp',
+			'/administrator/components/com_bwpostman/classes/admin.class.php',
+			'/administrator/components/com_bwpostman/elements/singlenews.php',
 			'/administrator/components/com_bwpostman/bwpostman.php',
 			'/administrator/components/com_bwpostman/controller.php',
 			'/components/com_bwpostman/controllers',
 			'/components/com_bwpostman/models',
 			'/components/com_bwpostman/views',
+			'/components/com_bwpostman/assets/images',
+			'/components/com_bwpostman/classes/bwpostman.class.php',
+			'/components/com_bwpostman/helpers/query.php',
 			'/components/com_bwpostman/bwpostman.php',
 			'/components/com_bwpostman/controller.php',
 			'/components/com_bwpostman/router.php',
+			'/media/com_bwpostman/css/bwpostman_bs2.css',
+			'/media/com_bwpostman/css/bwpostman_bs3.css',
+			'/media/com_bwpostman/css/bwpostman_bs4.css',
+			'/media/com_bwpostman/images/images',
 		);
 
-		foreach ($obsoleteJ3 as $folder)
+		foreach ($obsoleteJ3 as $path)
 		{
-			$this->removeFilesAndFoldersRecursive(JPATH_ROOT . $folder);
+			$this->removeFilesAndFoldersRecursive(JPATH_ROOT . $path);
 		}
 	}
 
 	/**
 	 * Method to remove obsolete files and folders
 	 *
-	 * @param string $path
+	 * @param string $path  can be file or folder
 	 *
 	 * @return bool
 	 *
@@ -1398,18 +1412,18 @@ class com_bwpostmanInstallerScript
 
 			foreach ($files as $file)
 			{
-				if ($file !== 'index.html')
-				{
-					$this->removeFilesAndFoldersRecursive(realpath($path) . '/' . $file);
-				}
+				$this->removeFilesAndFoldersRecursive(realpath($path) . '/' . $file);
 			}
 
 			return rmdir($path);
 		}
-
-		else if (is_file($path) === true)
+		elseif (is_file($path) === true || is_file(realpath($path)))
 		{
-			return unlink($path);
+			if (!str_contains($path, '/administrator/components/com_bwpostman/sql/updates/mysql/4.0.0.sql')
+				&& !str_contains($path, '/administrator/components/com_bwpostman/sql/updates/mysql/index.html'))
+			{
+				return unlink($path);
+			}
 		}
 
 		return false;

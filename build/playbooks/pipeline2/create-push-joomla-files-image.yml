@@ -54,6 +54,7 @@
         detach: yes
         volumes:
           - "{{ joomla_base_folders[sub_path] }}:{{ tester_web_root }}"
+          - "/repositories:/repositories"
 
 - hosts: "{{ bare_source.web_container_name }}"
   connection: docker

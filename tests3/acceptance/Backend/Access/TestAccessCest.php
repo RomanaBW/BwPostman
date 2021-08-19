@@ -436,7 +436,7 @@ class TestAccessCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function TestAccessRightsForActionsInListsByButtons(\AcceptanceTester $I, $users)
+	protected function TestAccessRightsForActionsInListsByButtons(\AcceptanceTester $I, $users)
 	{
 		$I->wantTo("check permissions for single list by buttons");
 		$I->expectTo("see appropriate messages");

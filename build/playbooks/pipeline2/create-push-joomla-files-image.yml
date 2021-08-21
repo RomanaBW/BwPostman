@@ -100,18 +100,7 @@
         name: '{{ bare_source.web_container_name }}'
         state: absent
 
-    - name: Replace table prefix at Joomla 4
-      replace:
-        path: "{{ playbook_dir }}/files/joomla/{{ item }}"
-        regexp: '`#__'
-        replace: "`{{ tester_db_prefix }}"
-      with_items:
-        - "base.sql"
-        - "supports.sql"
-        - "extensions.sql"
-      when: j_master_version == '4'
-
-    - name: Replace table prefix at Joomla 3
+    - name: Replace table prefix
       replace:
         path: "{{ playbook_dir }}/files/joomla/{{ item }}"
         regexp: '`#__'
@@ -119,4 +108,3 @@
       with_items:
         - "joomla.sql"
         - "sample_learn.sql"
-      when: j_master_version == '3'

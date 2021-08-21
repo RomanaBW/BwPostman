@@ -9,12 +9,3 @@
     dest: "{{ codecept_path_data }}/pkg_jce.zip"
     force: yes
 
-#- name: Find downloaded file name
-#  find:
-#    paths: "{{ codecept_path_data }}"
-#    patterns: "pkg_jce_*.zip"
-#  register: files_matched
-#
-#- name: rename downloaded package to general name
-#  command: "mv {{ files_matched['files'][0]['path']|quote }} {{ codecept_path_data }}/pkg_jce.zip"
-

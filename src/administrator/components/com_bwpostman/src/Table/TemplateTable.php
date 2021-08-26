@@ -455,7 +455,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 		$this->standard            = trim($filter->clean($this->standard, 'UINT'));
 		$this->title               = trim($filter->clean($this->title));
 		$this->description         = $filter->clean($this->description);
-		$this->thumbnail           = trim($filter->clean($this->thumbnail, 'PATH'));
+		$this->thumbnail           = trim($filter->clean($this->thumbnail));
 		$this->tpl_html            = $filter->clean($this->tpl_html, 'RAW');
 		$this->tpl_css             = $filter->clean($this->tpl_css, 'RAW');
 		$this->tpl_article         = $filter->clean($this->tpl_article, 'RAW');

@@ -202,8 +202,10 @@ class HtmlView extends BaseHtmlView
 		// Get document object, set document title and add css
 		$document = Factory::getApplication()->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_TPLS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_templates.js');
+//		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+		$wa = $this->document->getWebAssetManager();
+		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_templates', 'com_bwpostman/admin-bwpm_templates.js');
 
 		$options['name'] = 'back';
 		$options['url'] = 'index.php?option=com_bwpostman&view=templates';

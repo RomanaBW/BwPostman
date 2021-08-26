@@ -192,8 +192,7 @@
 			</field>
 			<field
 				name="alignment"
-				type="radio"
-				layout="joomla.form.field.radio.switcher"
+				type="list"
 				default="left"
 				label="COM_BWPOSTMAN_ALIGNMENT_LABEL"
 				description="COM_BWPOSTMAN_ALIGNMENT_NOTE"

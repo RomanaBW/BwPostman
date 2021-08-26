@@ -56,12 +56,12 @@ $option	= $jinput->getCmd('option');
 				<div class="row">
 					<div class="admintable bwptable uploadtpl col-12">
 						<div class="form-group row">
-							<label class="key col-md-6 text-md-right">
-								<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE'); ?>
-								<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?>">
-									<?php echo $image; ?>
+							<div class="key col-md-6 text-md-right">
+								<span class="editlinktip me-2" aria-labelledby="tip-desc">
+									<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE'); ?>&nbsp;&nbsp;<?php echo $image; ?>
 								</span>
-							</label>
+	                            <div role="tooltip" id="tip-desc"><?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?></div>
+							</div>
 							<div class="col-md-6">
 								<input type="file" class="form-control-file" name="uploadfile" id="uploadfile" />
 							</div>

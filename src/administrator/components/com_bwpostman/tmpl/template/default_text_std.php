@@ -35,6 +35,11 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
 HTMLHelper::_('behavior.keepalive');
+
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = $this->document->getWebAssetManager();
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_template', 'com_bwpostman/admin-bwpm_template.js');
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_template_base', 'com_bwpostman/admin-bwpm_template_base.js');
 ?>
 
 <div id="bwp_view_lists">
@@ -184,8 +189,8 @@ HTMLHelper::_('behavior.keepalive');
 					<div class="alert alert-danger"><?php echo Text::_('COM_BWPOSTMAN_TPL_USER_NOTE'); ?></div>
 				</div>
 				<div id="email_preview" class="col-xl-6">
-					<p>
-						<button class="btn btn-large btn-block btn-primary"
+					<p class="d-grid">
+						<button class="btn btn-large btn-primary"
 								type="submit"><?php echo Text::_('COM_BWPOSTMAN_TPL_REFRESH_PREVIEW'); ?></button>&nbsp;
 					</p>
 					<iframe id="myIframe" class="bg-white" name="myIframeHtml"
@@ -212,7 +217,3 @@ HTMLHelper::_('behavior.keepalive');
 		<input type="hidden" id="descriptionErrorText" value="<?php echo Text::_('COM_BWPOSTMAN_TPL_ERROR_DESCRIPTION', true); ?>" />
 	</form>
 </div>
-
-<?php
-Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template.js');
-Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_template_base.js');

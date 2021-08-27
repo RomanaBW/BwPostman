@@ -35,6 +35,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Asset;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Access\Rules;
 
@@ -239,15 +240,15 @@ class BwpostmanModel extends BaseDatabaseModel
 			$input = $app->input->Json;
 
 			$permission = array(
-				'component' => $input->getWord('comp'),
-				'action'    => $input->getCmd('action'),
+				'component' => $input->get('comp'),
+				'action'    => $input->get('action'),
 				'rule'      => $input->get('rule'),
 				'value'     => $input->get('value'),
 				'title'     => $input->get('title', '', 'RAW')
 			);
 		}
 
-		// We are creating a new item so we don't have an item id so don't allow.
+		// We are creating a new item, so we don't have an item id so don't allow.
 		if (substr($permission['component'], -6) === '.false')
 		{
 			$app->enqueueMessage(Text::_('JLIB_RULES_SAVE_BEFORE_CHANGE_PERMISSIONS'), 'error');
@@ -323,8 +324,7 @@ class BwpostmanModel extends BaseDatabaseModel
 
 		try
 		{
-			$asset  = $this->getTable('Asset');
-//			$asset  = $this->factory->createTable('asset');
+			$asset = new Asset($db);
 			$result = $asset->loadByName($permission['component']);
 
 			if ($result === false)
@@ -337,9 +337,8 @@ class BwpostmanModel extends BaseDatabaseModel
 				$asset->name  = (string) $permission['component'];
 				$asset->title = (string) $permission['title'];
 
-				// Get the parent asset id so we have a correct tree.
-				$parentAsset  = $this->getTable('Asset');
-//				$parentAsset = $this->factory->createTable('asset');
+				// Get the parent asset id, so we have a correct tree.
+				$parentAsset  = new Asset($db);
 
 				if (strpos($asset->name, '.') !== false)
 				{
@@ -494,10 +493,10 @@ class BwpostmanModel extends BaseDatabaseModel
 		// Current group is a Super User group, so calculated setting is "Allowed (Super User)".
 		if ($isSuperUserGroupAfter)
 		{
-			$result['class'] = 'label label-success';
+			$result['class'] = 'badge bg-success';
 			$result['text'] = '<span class="icon-lock icon-white" aria-hidden="true"></span>' . Text::_('JLIB_RULES_ALLOWED_ADMIN');
 		}
-		// Not super user.
+		// Not superuser.
 		else
 		{
 			// First get the real recursive calculated setting and add (Inherited) to it.
@@ -505,34 +504,34 @@ class BwpostmanModel extends BaseDatabaseModel
 			// If recursive calculated setting is "Denied" or null. Calculated permission is "Not Allowed (Inherited)".
 			if ($inheritedGroupRule === null || $inheritedGroupRule === false)
 			{
-				$result['class'] = 'label label-important';
+				$result['class'] = 'badge bg-danger';
 				$result['text']  = Text::_('JLIB_RULES_NOT_ALLOWED_INHERITED');
 			}
 			// If recursive calculated setting is "Allowed". Calculated permission is "Allowed (Inherited)".
 			else
 			{
-				$result['class'] = 'label label-success';
+				$result['class'] = 'badge bg-success';
 				$result['text']  = Text::_('JLIB_RULES_ALLOWED_INHERITED');
 			}
 
-			// Second part: Overwrite the calculated permissions labels if there is an explicitly permission in the current group.
+			// Second part: Overwrite the calculated permissions labels if there is an explicit permission in the current group.
 
 			/**
 			 * @to do: incorrect info
-			 * If a component has a permission that doesn't exists in global config (ex: frontend editing in com_modules) by default
+			 * If a component has a permission that doesn't exist in global config (ex: frontend editing in com_modules) by default
 			 * we get "Not Allowed (Inherited)" when we should get "Not Allowed (Default)".
 			 */
 
-			// If there is an explicitly permission "Not Allowed". Calculated permission is "Not Allowed".
+			// If there is an explicit permission "Not Allowed". Calculated permission is "Not Allowed".
 			if ($assetRule === false)
 			{
-				$result['class'] = 'label label-important';
+				$result['class'] = 'badge bg-danger';
 				$result['text']  = Text::_('JLIB_RULES_NOT_ALLOWED');
 			}
-			// If there is an explicitly permission is "Allowed". Calculated permission is "Allowed".
+			// If there is an explicit permission is "Allowed". Calculated permission is "Allowed".
 			elseif ($assetRule === true)
 			{
-				$result['class'] = 'label label-success';
+				$result['class'] = 'badge bg-success';
 				$result['text']  = Text::_('JLIB_RULES_ALLOWED');
 			}
 
@@ -541,12 +540,12 @@ class BwpostmanModel extends BaseDatabaseModel
 			// Global configuration with "Not Set" permission. Calculated permission is "Not Allowed (Default)".
 			if (empty($parentGroupId) && $isGlobalConfig === true && $assetRule === null)
 			{
-				$result['class'] = 'label label-important';
+				$result['class'] = 'badge bg-danger';
 				$result['text']  = Text::_('JLIB_RULES_NOT_ALLOWED_DEFAULT');
 			}
 		}
 
-		// If removed or added super user from group, we need to refresh the page to recalculate all settings.
+		// If removed or added superuser from group, we need to refresh the page to recalculate all settings.
 		if ($isSuperUserGroupBefore != $isSuperUserGroupAfter)
 		{
 			$app->enqueueMessage(Text::_('JLIB_RULES_NOTICE_RECALCULATE_GROUP_PERMISSIONS'), 'notice');

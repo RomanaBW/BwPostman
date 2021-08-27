@@ -1816,7 +1816,18 @@ class NewsletterModel extends AdminModel
 	public function checkTrials(int $trial = 2, int $count = 0)
 	{
 		PluginHelper::importPlugin('bwpostman');
-		Factory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
+		$app = Factory::getApplication();
+		$table = '#__sendmailqueue';
+
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+		$query->from($db->quoteName($table));
+		$query->where($db->quoteName('trial') . ' < ' . $trial);
+		$query->order($db->quoteName($table) . ' ASC LIMIT 0,1');
+
+		$app->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
 
 		$tblSendmailQueue = $this->getTable('Sendmailqueue');
 

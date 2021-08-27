@@ -154,7 +154,7 @@ class DisplayController extends BaseController
 			$app->close();
 		}
 
-		$model = $this->getModel('BwPostman');
+		$model = new BwpostmanModel();
 		echo new JResponseJson($model->storePermissions());
 		$app->close();
 	}

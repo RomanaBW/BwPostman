@@ -12,6 +12,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
 defined('_JEXEC') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Model\BwpostmanModel;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -134,7 +135,7 @@ class DisplayController extends BaseController
 			$app->close();
 		}
 
-		$model = $this->getModel('BwPostman');
+		$model = new BwpostmanModel();
 		echo new JResponseJson($model->storePermissions());
 		$app->close();
 	}

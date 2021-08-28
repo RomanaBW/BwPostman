@@ -49,87 +49,84 @@ HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom')
 	?>
 	<form action="<?php echo Route::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
 			method="post" name="adminForm" id="item-form" class="form-validate">
-		<div id="mailinglist_tabs">
-			<ul class="nav nav-tabs bwp-tabs">
-				<li class="nav-item">
-					<a class="nav-link active" id="tab-details" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">
-						<?php echo $this->item->id ? Text::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id) : Text::_('COM_BWPOSTMAN_NEW_ML'); ?>
-					</a>
-				</li>
-				<?php if ($this->permissions['com']['admin'] || $this->permissions['admin']['mailinglist'])
-				{ ?>
-					<li class="nav-item">
-						<a class="nav-link" id="tab-rules" data-toggle="tab" href="#rules" role="tab" aria-controls="rules" aria-selected="true">
-							<?php echo Text::_('COM_BWPOSTMAN_ML_FIELDSET_RULES'); ?>
-						</a>
-					</li>
-				<?php } ?>
-			</ul>
-			<div class="tab-content" id="mailinglistTabContent" role="tabpanel" aria-labelledby="details-tab">
-				<div class="tab-pane fade show active" id="details">
-					<div class="card card-body mb-3">
-						<div class="row">
-							<div class="col-lg-6">
-								<?php echo $this->form->renderField('title'); ?>
-								<?php echo $this->form->renderField('description'); ?>
-								<?php echo $this->form->renderField('access'); ?>
-								<?php echo $this->form->renderField('published'); ?>
+		<div class="main-card">
+			<?php
+			$detailText = $this->item->id ? Text::sprintf('COM_BWPOSTMAN_EDIT_ML', $this->item->id) : Text::_('COM_BWPOSTMAN_NEW_ML');
+			echo HTMLHelper::_('uitab.startTabSet', 'mailinglist_tabs', ['active' => 'details', 'recall' => true, 'breakpoint' => 768]);
+
+			echo HTMLHelper::_('uitab.addTab', 'mailinglist_tabs', 'details', $detailText);
+			?>
+			<div class="card card-body mb-3">
+				<div class="row">
+					<div class="col-lg-6">
+						<?php echo $this->form->renderField('title'); ?>
+						<?php echo $this->form->renderField('description'); ?>
+						<?php echo $this->form->renderField('access'); ?>
+						<?php echo $this->form->renderField('published'); ?>
+					</div>
+					<div class="col-lg-6">
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('campaign_id'); ?>
 							</div>
-							<div class="col-lg-6">
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $this->form->getLabel('campaign_id'); ?>
-									</div>
-									<div class="controls">
-										<?php echo $this->form->getInput('campaign_id'); ?>
-									</div>
-								</div>
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $this->form->getLabel('created_date'); ?>
-									</div>
-									<div class="controls">
-										<?php echo $this->form->getInput('created_date'); ?>
-									</div>
-								</div>
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $this->form->getLabel('created_by'); ?>
-									</div>
-									<div class="controls">
-										<?php echo $this->form->getInput('created_by'); ?>
-									</div>
-								</div>
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $this->form->getLabel('modified_by'); ?>
-									</div>
-									<div class="controls">
-										<?php echo $this->form->getInput('modified_by'); ?>
-									</div>
-								</div>
-								<div class="control-group">
-									<div class="control-label">
-										<?php echo $this->form->getLabel('modified_time'); ?>
-									</div>
-									<div class="controls">
-										<?php echo $this->form->getInput('modified_time'); ?>
-									</div>
-								</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('campaign_id'); ?>
 							</div>
 						</div>
-						<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('created_date'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('created_date'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('created_by'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('created_by'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('modified_by'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('modified_by'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('modified_time'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('modified_time'); ?>
+							</div>
+						</div>
 					</div>
 				</div>
-				<?php if ($this->permissions['com']['admin'] || $this->permissions['admin']['mailinglist'])
-				{ ?>
-					<div class="tab-pane fade" id="rules">
-						<div class="card card-body mb-3 com_config">
-							<?php echo $this->form->getInput('rules'); ?>
-						</div>
-					</div>
-				<?php } ?>
-			</div>
+			<p><span class="required_description"><?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?></span></p>
+		</div>
+		<?php
+			echo HTMLHelper::_('uitab.endTab');
+
+			if ($this->permissions['com']['admin'] || $this->permissions['admin']['mailinglist'])
+			{
+				echo HTMLHelper::_('uitab.addTab', 'mailinglist_tabs', 'rules', Text::_('COM_BWPOSTMAN_ML_FIELDSET_RULES'));
+				?>
+				<div class="card card-body mb-3 com_config">
+					<?php echo $this->form->getInput('rules'); ?>
+				</div>
+			<?php
+				echo HTMLHelper::_('uitab.endTab');
+			}
+			echo HTMLHelper::_('uitab.endTabSet');
+			?>
+
+
+
 		</div>
 
 		<input type="hidden" name="task" value="" />

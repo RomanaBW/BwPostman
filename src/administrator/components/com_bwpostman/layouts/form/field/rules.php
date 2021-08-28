@@ -137,7 +137,7 @@ $ajaxUri = Route::_('index.php?option=com_bwpostman&view=bwpostman&task=storePer
 					</thead>
 					<tbody>
 
-						<?php // Check if this group has super user permissions ?>
+						<?php // Check if this group has superuser permissions ?>
 						<?php $isSuperUserGroup = Access::checkGroup($group->value, 'core.admin'); ?>
 						<?php foreach ($actions as $action) : ?>
 							<tr>

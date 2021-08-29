@@ -55,51 +55,47 @@ HTMLHelper::_('behavior.formvalidator');
 	<div id="bwp_view_single">
 		<form action="<?php echo Route::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
 				method="post" name="adminForm" id="item-form">
-			<div>
-				<div id="campaign_tabs">
-					<ul class="nav nav-tabs bwp-tabs">
-						<li class="nav-item">
-							<a class="nav-link active" id="tab-basic" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">
-								<?php echo $this->item->id ? Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id) : Text::_('COM_BWPOSTMAN_NEW_CAM'); ?>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" id="tab-unsent" data-toggle="tab" href="#unsent" role="tab" aria-controls="unsent" aria-selected="true">
-								<?php echo Text::_('COM_BWPOSTMAN_CAM_UNSENT_NLS'); ?>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" id="tab-sent" data-toggle="tab" href="#sent" role="tab" aria-controls="sent" aria-selected="true">
-								<?php echo Text::_('COM_BWPOSTMAN_NL_SENT'); ?>
-							</a>
-						</li>
-						<?php if ($this->permissions['com']['admin'] || $this->permissions['admin']['campaign'])
-						{ ?>
-							<li class="nav-item">
-								<a class="nav-link" id="tab-permissions" data-toggle="tab" href="#permissions" role="tab" aria-controls="permissions" aria-selected="true">
-									<?php echo Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'); ?>
-								</a>
-							</li>
-						<?php } ?>
-					</ul>
-					<div class="tab-content" id="campaignTabContent" role="tabpanel" aria-labelledby="basic-tab">
-						<div class="tab-pane fade show active" id="basic">
-							<?php echo $this->loadTemplate('basic'); ?>
-						</div>
-						<div class="tab-pane fade" id="unsent">
-							<?php echo $this->loadTemplate('unsent'); ?>
-						</div>
-						<div class="tab-pane fade" id="sent">
-							<?php echo $this->loadTemplate('sent'); ?>
-						</div>
-						<?php if ($this->permissions['com']['admin'] || $this->permissions['admin']['campaign'])
-						{ ?>
-							<div class="tab-pane fade" id="permissions">
-								<?php echo $this->loadTemplate('rules'); ?>
-							</div>
-						<?php } ?>
-					</div>
+			<div class="main-card">
+				<?php
+				$detailText = $this->item->id ? Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id) : Text::_('COM_BWPOSTMAN_NEW_CAM');
+				echo HTMLHelper::_('uitab.startTabSet', 'campaign_tabs', ['active' => 'details', 'recall' => true, 'breakpoint' => 768]);
+
+				echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'details', $detailText);
+				?>
+				<div class="card card-body mb-3">
+					<?php echo $this->loadTemplate('basic'); ?>
 				</div>
+					<?php
+					echo HTMLHelper::_('uitab.endTab');
+
+					echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'unsent', Text::_('COM_BWPOSTMAN_CAM_UNSENT_NLS'));
+					?>
+				<div class="card card-body mb-3 com_config">
+					<?php echo $this->loadTemplate('unsent'); ?>
+				</div>
+				<?php
+				echo HTMLHelper::_('uitab.endTab');
+
+				echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'sent', Text::_('COM_BWPOSTMAN_NL_SENT'));
+				?>
+				<div class="card card-body mb-3 com_config">
+					<?php echo $this->loadTemplate('sent'); ?>
+				</div>
+				<?php
+				echo HTMLHelper::_('uitab.endTab');
+
+				if ($this->permissions['com']['admin'] || $this->permissions['admin']['mailinglist'])
+				{
+					echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'rules', Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'));
+					?>
+					<div class="card card-body mb-3 com_config">
+						<?php echo $this->form->getInput('rules'); ?>
+					</div>
+					<?php
+					echo HTMLHelper::_('uitab.endTab');
+				}
+				echo HTMLHelper::_('uitab.endTabSet');
+				?>
 				<input type="hidden" name="task" value="" />
 
 				<?php echo $this->form->getInput('id'); ?>

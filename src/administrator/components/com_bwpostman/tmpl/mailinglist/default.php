@@ -124,9 +124,6 @@ HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom')
 			}
 			echo HTMLHelper::_('uitab.endTabSet');
 			?>
-
-
-
 		</div>
 
 		<input type="hidden" name="task" value="" />

@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BoldtWebservice\Component\BwPostman\Administrator\Elements;
+namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -45,8 +45,17 @@ use Joomla\CMS\Language\Text;
  * @since       1.0.8
  */
 
-class Singlenews extends JFormField
+class SinglenewsField extends JFormField
 {
+	/**
+	 * The form field type.
+	 *
+	 * @var    string
+	 *
+	 * @since  1.2.0
+	 */
+	protected $type = 'Singlenews';
+
 	/**
 	 * Element name
 	 *

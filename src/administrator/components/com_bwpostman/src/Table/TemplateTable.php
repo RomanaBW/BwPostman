@@ -780,6 +780,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 		try
 		{
 			$db->setQuery($query);
+			$db->execute();
 
 			$count_std = $db->getNumRows();
 		}

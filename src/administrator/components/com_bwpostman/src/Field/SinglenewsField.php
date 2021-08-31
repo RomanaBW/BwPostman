@@ -30,41 +30,31 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
-use JFormField;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
+use function defined;
 
 /**
  * Renders a newsletter element
  *
- * @version %%version_number%%
+ * @version 4.0.0
  * @package BwPostman-Admin
  *
  * @since       1.0.8
  */
 
-class SinglenewsField extends JFormField
+class SinglenewsField extends FormField
 {
 	/**
 	 * The form field type.
 	 *
 	 * @var    string
-	 *
-	 * @since  1.2.0
+	 * @since  4.0
 	 */
-	protected $type = 'Singlenews';
-
-	/**
-	 * Element name
-	 *
-	 * @access	protected
-	 * @var		string
-	 *
-	 * @since       1.0.8
-	*/
-	var	$_name = 'Subject';
+	protected $type = 'SingleNews';
 
 	/**
 	 * Method to get form input field
@@ -77,7 +67,6 @@ class SinglenewsField extends JFormField
 	 */
 	protected function getinput(): string
 	{
-		$doc        = Factory::getApplication()->getDocument();
 		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
 		$newsletter = $MvcFactory->createTable('Newsletter', 'Administrator');
@@ -104,23 +93,27 @@ class SinglenewsField extends JFormField
 		$modalId = 'Newsletter_' . $this->id;
 		$modalTitle = Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');
 
+		/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+		$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+
 		// Add the modal field script to the document head.
-		HTMLHelper::_('script', 'system/fields/modal-fields.min.js', array('version' => 'auto', 'relative' => true));
+		$wa->useScript('field.modal-fields');
 
 		$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component&amp' . Session::getFormToken() . '=1';
 		$urlSelect = $link . '&amp;function=jSelectNewsletter_' . $this->id;
 
-		$js = "
-				window.SelectNewsletter = function (id, subject) {
+		$wa->addInlineScript("
+			window.SelectNewsletter = function (id, subject) {
 				window.processModalSelect('Newsletter', '" . $this->id . "', id, subject, '', '', '', '')
-				};
-				";
+			}",
+			[],
+			['type' => 'module']
+		);
 
 		$title = empty($newsletter->subject) ? Text::_('COM_CONTENT_SELECT_AN_ARTICLE') : htmlspecialchars($newsletter->subject, ENT_QUOTES);
 
-		$html  = '<span class="input-group">';
+		$html = '<span class="input-group">';
 		$html .= '<input class="form-control" id="' . $this->id . '_name" type="text" value="' . $title . '" readonly size="35">';
-		$html  .= '<span class="input-group-append">';
 
 		// Select newsletter button
 		$html .= '<button'
@@ -141,7 +134,7 @@ class SinglenewsField extends JFormField
 			. '<span class="icon-remove" aria-hidden="true"></span> ' . Text::_('JCLEAR')
 			. '</button>';
 
-		$html .= '</span></span>';
+		$html .= '</span>';
 
 		// Select newsletter modal
 		$html .= HTMLHelper::_(
@@ -155,7 +148,7 @@ class SinglenewsField extends JFormField
 				'bodyHeight'  => 70,
 				'modalWidth'  => 80,
 				'footer'      => '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">'
-					. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>',
+									. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>',
 			)
 		);
 
@@ -164,8 +157,6 @@ class SinglenewsField extends JFormField
 
 		$html .= '<input type="hidden" id="' . $this->id . '_id" ' . $class . ' data-required="' . (int) $this->required . '" name="' . $this->name
 			. '" data-text="' . htmlspecialchars(Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER', true), ENT_COMPAT) . '" value="' . $value . '">';
-
-		$doc->addScriptDeclaration($js);
 
 		return $html;
 	}

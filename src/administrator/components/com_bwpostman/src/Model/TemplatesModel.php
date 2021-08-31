@@ -1160,6 +1160,13 @@ class TemplatesModel extends ListModel
 			)
 		);
 
+		// Joomla 4 support
+		$imgPath = explode("#", $this->imgPath);
+		if (is_array($imgPath))
+		{
+			$this->imgPath = $imgPath[0];
+		}
+
 		// We need thumbnail in tmp_path
 		$thumbnail = JPATH_ROOT . '/' . $this->imgPath;
 
@@ -1167,7 +1174,6 @@ class TemplatesModel extends ListModel
 		{
 			$lastSlash = strrpos($thumbnail, '/');
 			$img       = substr($thumbnail, $lastSlash + 1);
-//			$img = File::getName($thumbnail);
 
 			if (!Folder::exists($this->tmp_path . 'images'))
 			{

@@ -132,6 +132,18 @@
 		       type="customscript"
                addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field"
 		/>
+
+		<field name="fe_layout" type="list"
+		       default=""
+		       description="JGLOBAL_FIELD_LAYOUT_LABEL"
+		       label="Frontend Layout"
+		>
+			<option value="">JDEFAULT</option>
+			<option value="bootstrap2">Bootstrap 2</option>
+			<option value="bootstrap3">Bootstrap 3</option>
+			<option value="bootstrap4">Bootstrap 4</option>
+		</field>
+
 		<field name="pretext"
 			type="textarea"
 			cols="50"
@@ -500,6 +512,17 @@
 	</fieldset>
 
 	<fieldset name="com_bwpostman_lists_settings" label="COM_BWPOSTMAN_LISTS_SETTINGS" description="COM_BWPOSTMAN_LISTS_SETTINGS_DESCRIPTION">
+		<field name="fe_layout_list" type="list"
+		       default=""
+		       description="JGLOBAL_FIELD_LAYOUT_LABEL"
+		       label="Frontend Layout"
+		>
+			<option value="">JDEFAULT</option>
+			<option value="bootstrap2">Bootstrap 2</option>
+			<option value="bootstrap3">Bootstrap 3</option>
+			<option value="bootstrap4">Bootstrap 4</option>
+		</field>
+
 		<field
 			name="filter_field"
 			type="radio"
@@ -614,6 +637,17 @@
 	</fieldset>
 
 	<fieldset name="com_bwpostman_details_settings" label="COM_BWPOSTMAN_DETAILS_SETTINGS" description="COM_BWPOSTMAN_DETAILS_SETTINGS_DESCRIPTION">
+		<field name="fe_layout_detail" type="list"
+		       default=""
+		       description="JGLOBAL_FIELD_LAYOUT_LABEL"
+		       label="Frontend Layout"
+		>
+			<option value="">JDEFAULT</option>
+			<option value="bootstrap2">Bootstrap 2</option>
+			<option value="bootstrap3">Bootstrap 3</option>
+			<option value="bootstrap4">Bootstrap 4</option>
+		</field>
+
 		<field
 			name="attachment_single_enable"
 			type="radio"

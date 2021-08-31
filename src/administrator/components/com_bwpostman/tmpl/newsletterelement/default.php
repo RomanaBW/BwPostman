@@ -98,12 +98,13 @@ HTMLHelper::_('bootstrap.tooltip');
 				<tr class="row<?php echo $i % 2; ?>">
 					<td class="small text-center"><?php echo $item->id; ?></td>
 					<td>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');?>
-								<?php echo "<br /><br /><strong>" . $item->subject . ":</strong><br />" . $item->description; ?>">
+						<span class="hasTooltip"  aria-labelledby="tip-desc<?php echo $item->id; ?>">
 							<a class="" href="#" style="cursor:pointer;" onclick="window.parent.SelectNewsletter('<?php echo $item->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $item->subject ); ?>');">
 								<?php echo htmlspecialchars($item->subject, ENT_QUOTES); ?>
 							</a>
 						</span>
+						<div role="tooltip" id="tip-desc<?php echo $item->id; ?>"><?php echo Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');?>
+						<?php echo "<br /><strong>" . $item->subject . ":</strong><br />" . $item->description; ?></div>
 					</td>
 					<td class="small text-center d-none d-sm-table-cell"><?php echo $item->mailing_date; ?></td>
 					<td class="small text-center d-none d-md-table-cell text-success"><span class="fa fa-check-circle"></span></td>

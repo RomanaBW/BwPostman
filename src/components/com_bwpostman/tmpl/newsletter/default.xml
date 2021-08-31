@@ -5,15 +5,11 @@
 			<![CDATA[COM_BWPOSTMAN_MENU_NEWSLETTERSSINGLE_NOTE]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_BWPOSTMAN_MENU_NEWSLETTERSSINGLE</name>
-		<description>COM_BWPOSTMAN_MENU_NEWSLETTERSSINGLE_NOTE</description>
-		<fields name="request" addfieldpath="/administrator/components/com_bwpostman/elements">
-			<fieldset name="request">
-				<field name="id" type="singlenews" required="true" default="0" label="COM_BWPOSTMAN_SELECT_NEWSLETTER" description="COM_BWPOSTMAN_SELECT_NEWSLETTER_DESC" />
-			</fieldset>
-		</fields>
-	</state>
+	<fields name="request">
+		<fieldset name="request">
+			<field name="id" type="singlenews" required="true" default="0" label="COM_BWPOSTMAN_SELECT_NEWSLETTER" description="COM_BWPOSTMAN_SELECT_NEWSLETTER_DESC" addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field" />
+		</fieldset>
+	</fields>
 
 	<fields name="params">
 		<fieldset name="basic" label="COM_BWPOSTMAN_NEWSLETTER_BASIC_OPTIONS">

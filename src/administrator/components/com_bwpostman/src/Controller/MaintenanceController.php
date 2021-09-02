@@ -30,6 +30,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
 defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Model\MaintenanceModel;
+use BwPostmanPhpCron;
 use Exception;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -381,7 +382,7 @@ class MaintenanceController extends BaseController
 		}
 		else
 		{
-//			PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+			PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 			$results = Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceStartCron', array());
 
 			if ($results[0] !== true)

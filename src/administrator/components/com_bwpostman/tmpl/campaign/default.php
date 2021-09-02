@@ -36,6 +36,11 @@ use Joomla\CMS\Router\Route;
 // Load the tooltip behavior for the notes
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('bootstrap.modal');
+
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = $this->document->getWebAssetManager();
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostman/admin-bwpm_tabshelper.js');
 
 /**
  * BwPostman Single Campaign Layout
@@ -62,7 +67,7 @@ HTMLHelper::_('behavior.formvalidator');
 
 				echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'details', $detailText);
 				?>
-				<div class="card card-body mb-3">
+				<div class="mb-3">
 					<?php echo $this->loadTemplate('basic'); ?>
 				</div>
 					<?php
@@ -112,3 +117,19 @@ HTMLHelper::_('behavior.formvalidator');
 	</div>
 
 	<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
+<div id="bwp-modal" class="joomla-modal modal fade" role="dialog" tabindex="-1">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title text-center">&nbsp;</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"></button>
+			</div>
+			<div class="modal-body p-3">
+				<iframe class="modal-frame" width="100%"></iframe>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-dark btn-sm" data-bs-dismiss="modal" type="button" title="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -60,29 +60,28 @@ HTMLHelper::_('behavior.multiselect');
 					</caption>
 					<thead>
 						<tr>
-							<th style="width: 1%;" class="text-center">
-								<input type="checkbox" name="checkall-toggle" value=""
-										title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+							<th class="text-center w-1">
+								<?php echo HTMLHelper::_('grid.checkall'); ?>
 							</th>
-							<th style="min-width: 250px;" scope="col">
+							<th class="w-20" scope="col">
 								<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 							</th>
-							<th class="d-none d-lg-table-cell" style="min-width: 10%;" scope="col">
+							<th class="d-none d-lg-table-cell w-10" scope="col">
 								<?php echo Text::_('COM_BWPOSTMAN_TPL_THUMBNAIL'); ?>
 							</th>
-							<th style="width: 7%;" scope="col">
+							<th class="w-5" scope="col">
 								<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_FORMAT', 'a.tpl_id', $listDirn, $listOrder); ?>
 								</th>
-							<th style="width: 7%;" scope="col">
+							<th class="w-5" scope="col">
 								<?php echo Text::_('COM_BWPOSTMAN_TPL_SET_DEFAULT'); ?>
 							</th>
-							<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
+							<th class="d-none d-lg-table-cell w-5" scope="col">
 								<?php echo HTMLHelper::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?>
 							</th>
-							<th class="d-none d-lg-table-cell" style="min-width: 250px;" scope="col" aria-sort="ascending">
+							<th class="d-none d-lg-table-cell w-20" scope="col">
 								<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_TPL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 							</th>
-							<th style="width: 3%;" scope="col" aria-sort="ascending">
+							<th class="w-1" scope="col" aria-sort="ascending">
 								<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 							</th>
 						</tr>

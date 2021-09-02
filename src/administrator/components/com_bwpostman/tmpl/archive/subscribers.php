@@ -38,6 +38,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 // Load the bootstrap tooltip for the notes
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
+HTMLHelper::_('bootstrap.modal');
 
 $user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
@@ -142,11 +143,10 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 								</caption>
 								<thead>
 									<tr>
-										<th class="text-center" style="width: 1%;">
-											<input type="checkbox" name="checkall-toggle" value=""
-													title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+										<th class="text-center w-1">
+											<?php echo HTMLHelper::_('grid.checkall'); ?>
 										</th>
-										<th style="min-width: 100px;" scope="col">
+										<th class="w-10" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_SUB_NAME',
@@ -155,7 +155,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th style="min-width: 80px;" scope="col">
+										<th class="w-10" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_SUB_FIRSTNAME',
@@ -164,7 +164,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th style="min-width: 150px;" scope="col">
+										<th scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_EMAIL',
@@ -173,9 +173,9 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-xl-table-cell" style="width: 5%;" scope="col">
+										<th class="d-none d-xl-table-cell w-5" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'JSTATUS', 'a.status', $listDirn, $listOrder); ?></th>
-										<th class="d-none d-xl-table-cell" style="width: 7%;" scope="col">
+										<th class="d-none d-xl-table-cell w-5" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_EMAILFORMAT',
@@ -184,7 +184,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-xl-table-cell" style="width: 7%;" scope="col">
+										<th class="d-none d-xl-table-cell w-5" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_SUB_ML_NUM',
@@ -193,7 +193,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-xl-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-xl-table-cell w-10" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_ARC_ARCHIVE_DATE',
@@ -202,16 +202,11 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-xl-table-cell" style="width: 3%;" scope="col">
+										<th class="d-none d-xl-table-cell w-1" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 										</th>
 									</tr>
 								</thead>
-								<tfoot>
-									<tr>
-										<td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td>
-									</tr>
-								</tfoot>
 								<tbody>
 									<?php
 									if (count($this->items) > 0) {
@@ -234,7 +229,6 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 														}
 														echo $itemName;
 														?>
-														<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
 													</a>
 													<div role="tooltip" id="tip-sub-<?php echo $i; ?>">
 														<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_SUB') . '<br />' . $this->escape($item->firstname) . '&nbsp;' . $this->escape($item->name) . '<br />' . $this->escape($item->email); ?>
@@ -268,6 +262,11 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 									}
 								?>
 								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td>
+									</tr>
+								</tfoot>
 							</table>
 						</div>
 					</div>

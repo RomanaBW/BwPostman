@@ -38,6 +38,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 // Load the bootstrap tooltip for the notes
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
+HTMLHelper::_('bootstrap.modal');
 
 $user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
@@ -144,15 +145,13 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 								</caption>
 								<thead>
 									<tr>
-										<th style="width: 1%;" class="text-center">
-											<input type="checkbox" name="checkall-toggle" value=""
-													title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>"
-													onclick="Joomla.checkAll(this)" />
+										<th class="text-center w-1">
+											<?php echo HTMLHelper::_('grid.checkall'); ?>
 										</th>
-										<th>
+										<th scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'Subject', 'a.subject', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="min-width: 100px;" scope="col">
+										<th class="d-none d-lg-table-cell w-10" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_NL_DESCRIPTION',
@@ -161,7 +160,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-xl-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-xl-table-cell w10" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_NL_MAILING_DATE',
@@ -170,7 +169,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-xl-table-cell" style="width: 7%;" scope="col">
+										<th class="d-none d-xl-table-cell w-10" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'Author', 'author', $listDirn, $listOrder); ?>
 										</th>
 										<th class="d-none d-lg-table-cell" nowrap="nowrap">
@@ -182,7 +181,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="width: 5%;" scope="col">
+										<th class="d-none d-lg-table-cell w-5" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_PUBLISHED',
@@ -191,7 +190,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-lg-table-cell w-10" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_NL_PUBLISH_UP',
@@ -208,7 +207,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-xl-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-xl-table-cell w-10" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_ARC_ARCHIVE_DATE',
@@ -217,16 +216,11 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th style="width: 3%;" scope="col">
+										<th class="w-1" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 										</th>
 									</tr>
 								</thead>
-								<tfoot>
-									<tr>
-										<td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td>
-									</tr>
-								</tfoot>
 								<tbody>
 								<?php
 								if (count($this->items) > 0) {
@@ -249,7 +243,6 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 																aria-describedby="tip-html-<?php echo $i; ?>"
 																data-title="<?php echo $titleHtml;?>" data-bs-title="<?php echo $titleHtml;?>" data-bs-frame="myIframeHtml" data-bs-src="<?php echo $linkHtml;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
 															<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
-															<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
 														</a>
 														<div role="tooltip" id="tip-html-<?php echo $i; ?>">
 															<?php echo $titleHtml . '<br />' . $this->escape($item->subject); ?>
@@ -258,7 +251,6 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 																aria-describedby="tip-text-<?php echo $i; ?>"
 																data-title="<?php echo $titleText;?>" data-bs-title="<?php echo $titleText;?>" data-bs-frame="myIframeText" data-bs-src="<?php echo $linkText;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
 															<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
-															<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
 														</a>
 														<div role="tooltip" id="tip-text-<?php echo $i; ?>">
 															<?php echo $titleText . '<br />' . $this->escape($item->subject); ?>
@@ -320,6 +312,11 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 								}
 								?>
 								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td>
+									</tr>
+								</tfoot>
 							</table>
 						</div>
 					</div>
@@ -335,7 +332,8 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 		</div>
 	</form>
 </div>
-<div id="bwp-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+
+<div id="bwp-modal" class="joomla-modal modal fade" role="dialog" tabindex="-1">
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">

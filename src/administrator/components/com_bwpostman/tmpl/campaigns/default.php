@@ -67,19 +67,18 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						</caption>
 						<thead>
 							<tr>
-								<th scope="col" style="width: 1%;" class="text-center">
-									<input type="checkbox" name="checkall-toggle" value=""
-											title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+								<th class="text-center w-1">
+									<?php echo HTMLHelper::_('grid.checkall'); ?>
 								</th>
-								<th scope="col" style="min-width: 150px;" scope="col">
+								<th scope="col" class="w-30">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-								<th scope="col" style="min-width: 150px;" scope="col">
+								<th scope="col">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 								</th>
-								<th scope="col" class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
+								<th scope="col" class="d-none d-lg-table-cell w-10">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?>
 								</th>
-								<th scope="col" style="width: 3%;" scope="col" aria-sort="ascending">
+								<th scope="col" class="w-1" aria-sort="ascending">
 									<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 								</th>
 							</tr>

@@ -38,6 +38,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 // Load the bootstrap tooltip for the notes
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
+HTMLHelper::_('bootstrap.modal');
 
 $user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
@@ -142,12 +143,10 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 								</caption>
 								<thead>
 									<tr>
-										<th style="width: 1%;" class="text-center">
-											<input type="checkbox" name="checkall-toggle" value=""
-													title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>"
-													onclick="Joomla.checkAll(this)" />
+										<th class="text-center w-1">
+											<?php echo HTMLHelper::_('grid.checkall'); ?>
 										</th>
-										<th style="min-width: 150px;" scope="col">
+										<th scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_ARC_CAM_TITLE',
@@ -156,7 +155,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th style="min-width: 150px;" scope="col">
+										<th class="w-30" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_ARC_CAM_DESCRIPTION',
@@ -165,7 +164,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-lg-table-cell w-10" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_CAM_NL_NUM',
@@ -174,7 +173,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-lg-table-cell w-10" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_ARC_ARCHIVE_DATE',
@@ -183,16 +182,11 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 												$listOrder
 											); ?>
 										</th>
-										<th style="width: 3%;" scope="col">
+										<th class="w-1" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 										</th>
 									</tr>
 								</thead>
-								<tfoot>
-									<tr>
-										<td colspan="6"><?php echo $this->pagination->getListFooter(); ?></td>
-									</tr>
-								</tfoot>
 								<tbody>
 								<?php
 								if (count($this->items) > 0)
@@ -210,7 +204,6 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 														aria-describedby="tip-cam-<?php echo $i; ?>"
 														data-title="<?php echo $titleCam;?>" data-bs-title="<?php echo $titleCam;?>" data-bs-frame="myIframeCam" data-bs-src="<?php echo $linkCam;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
 													<?php echo $item->title;?>
-													<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
 												</a>
 												<div role="tooltip" id="tip-cam-<?php echo $i; ?>">
 													<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_CAM') . '<br />' . $this->escape($item->title); ?>
@@ -238,6 +231,11 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 								}
 								?>
 								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="6"><?php echo $this->pagination->getListFooter(); ?></td>
+									</tr>
+								</tfoot>
 							</table>
 						</div>
 					</div>

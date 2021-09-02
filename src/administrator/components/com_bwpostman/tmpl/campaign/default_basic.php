@@ -111,68 +111,56 @@ $image = '<i class="fa fa-lg fa-info-circle"></i>';
 			</div>
 		</div>
 		<div class="col-xl-8 nl-mailinglists">
-			<div class="card-header">
-				<h4>
-					<span class="hasTooltip"
-							title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
-						<?php echo $image; ?>
-						<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
-					</span>
-				</h4>
-				<div class="row">
-					<?php foreach($this->form->getFieldset('mailinglists') as $field): ?>
-						<?php if ($field->hidden): ?>
-							<?php echo $field->input; ?>
-						<?php else: ?>
-							<div class="col-lg-4 nl-mailinglists mb-3">
-								<div class="card card-body">
-									<fieldset>
-										<h5>
-											<span class="hasTooltip"
-													title="<?php echo Text::_($field->description); ?>">
-												<?php echo $image; ?>
-												<?php echo $field->label; ?>
-											</span>
-										</h5>
-										<div class="row-fluid clearfix">
-											<?php
-											$input_field	= trim($field->input);
-											if (!empty($input_field))
-											{
-												echo $field->input;
-											}
-											else
-											{
-												echo '<div class="">' . Text::_('COM_BWPOSTMAN_NO_DATA') . '</div>';
-											}
-											?>
-										</div>
-									</fieldset>
-								</div>
-							</div>
-						<?php endif; ?>
-					<?php endforeach; ?>
+			<div class="h4">
+				<div aria-describedby="tip-desc-mls">
+					<?php echo $image; ?>
+					<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
 				</div>
+				<div role="tooltip" id="tip-desc-mls"><?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?></div>
+			</div>
+			<div class="row">
+				<?php foreach($this->form->getFieldset('mailinglists') as $k => $field): ?>
+					<?php if ($field->hidden): ?>
+						<?php echo $field->input; ?>
+					<?php else: ?>
+						<div class="col-lg-4 nl-mailinglists my-2 mb-3">
+							<div class="h5">
+								<div aria-describedby="tip-desc<?php echo $k; ?>">
+									<?php echo $image; ?>
+									<?php echo $field->label; ?>
+								</div>
+								<div role="tooltip" id="tip-desc<?php echo $k; ?>"><?php echo Text::_($field->description); ?></div>
+							</div>
+							<div class="clearfix">
+								<?php
+								$input_field	= trim($field->input);
+								if (!empty($input_field))
+								{
+									echo $field->input;
+								}
+								else
+								{
+									echo '<div class="">' . Text::_('COM_BWPOSTMAN_NO_DATA') . '</div>';
+								}
+								?>
+							</div>
+						</div>
+					<?php endif; ?>
+				<?php endforeach; ?>
 			</div>
 		</div>
 
-		<div class="col-xl-4 cam-usergroups">
-			<div class="card-header break-word">
-				<h4>
-				<span class="hasTooltip"
-						title="<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
+		<div class="col-xl-4 cam-usergroups break-word">
+			<div class="h4">
+				<div aria-describedby="tip-desc-groups">
 					<?php echo $image; ?>
 					<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?>
-				</span>
-			</h4>
-				<div class="card card-body">
-				<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
-					<?php echo $field->input; ?>
-				<?php endforeach; ?>
 				</div>
+				<div role="tooltip" id="tip-desc-groups"><?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?></div>
 			</div>
+			<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
+				<?php echo $field->input; ?>
+			<?php endforeach; ?>
 		</div>
 	</div>
 </div>
-
-

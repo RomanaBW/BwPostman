@@ -30,10 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-$modalParams = array();
-$modalParams['modalWidth'] = 80;
-$modalParams['bodyHeight'] = 70;
-
 $title_html = Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');
 $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 ?>
@@ -52,19 +48,19 @@ $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 			<table class="table">
 				<thead>
 					<tr>
-						<th style="width: 2%;">
+						<th  class="w-1">
 							<?php echo Text::_('NUM'); ?>
 						</th>
-						<th style="min-width: 200px;">
+						<th>
 							<?php echo Text::_('SUBJECT'); ?>
 						</th>
-						<th class="d-none d-sm-table-cell text-center" style="width: 13%;">
+						<th class="d-none d-sm-table-cell text-center w-20">
 							<?php echo Text::_('COM_BWPOSTMAN_NL_MAILING_DATE'); ?>
 						</th>
-						<th class="d-none d-lg-table-cell text-center" style="width: 13%;">
+						<th class="d-none d-lg-table-cell text-center w-10">
 							<?php echo Text::_('AUTHOR'); ?>
 						</th>
-						<th class="d-none d-lg-table-cell text-center" style="width: 7%;">
+						<th class="d-none d-lg-table-cell text-center w-10">
 							<?php echo Text::_('PUBLISHED'); ?>
 						</th>
 					</tr>
@@ -98,28 +94,22 @@ $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 						</td>
 						<td><?php echo $item->subject; ?>&nbsp;&nbsp;
 							<div class="bw-btn">
-								<span class="hasTooltip"
-									title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');?>::<?php echo $this->escape($item->subject); ?>">
-									<?php
-									$modalParams['url'] = $link_html;
-									$modalParams['title'] = $title_html;
-									?>
-									<button type="button" data-target="#<?php echo $frameHtml; ?>" class="btn btn-info btn-sm" data-toggle="modal">
-										<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
-									</button>
-									</span>
-								<?php echo HTMLHelper::_('bootstrap.renderModal',$frameHtml, $modalParams); ?>
-								<span class="hasTooltip"
-									title="<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?>::<?php echo $this->escape($item->subject); ?>">
-									<?php
-									$modalParams['url'] = $link_text;
-									$modalParams['title'] = $title_text;
-									?>
-									<button type="button" data-target="#<?php echo $frameText; ?>" class="btn btn-info btn-sm" data-toggle="modal">
-										<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
-									</button>
-								</span>
-								<?php echo HTMLHelper::_('bootstrap.renderModal',$frameText, $modalParams); ?>
+								<a class="iframe btn btn-info btn-sm hasTooltip text-decoration-none mt-1" href="javascript:void(0);"
+										aria-describedby="tip-html-<?php echo $i; ?>"
+										data-title="<?php echo $title_html;?>" data-bs-title="<?php echo $title_html;?>" data-bs-frame="myIframeHtml" data-bs-src="<?php echo $link_html;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
+									<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
+								</a>
+								<div role="tooltip" id="tip-html-<?php echo $i; ?>">
+									<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');?><br /><?php echo $this->escape($item->subject); ?>
+								</div>
+								<a class="iframe btn btn-info btn-sm hasTooltip text-decoration-none mt-1" href="javascript:void(0);"
+										aria-describedby="tip-text-<?php echo $i; ?>"
+										data-title="<?php echo $title_text;?>" data-bs-title="<?php echo $title_text;?>" data-bs-frame="myIframeText" data-bs-src="<?php echo $link_text;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
+									<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
+								</a>
+								<div role="tooltip" id="tip-text-<?php echo $i; ?>">
+									<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?><br /><?php echo $this->escape($item->subject); ?>
+								</div>
 							</div>
 						</td>
 						<td class="d-none d-sm-table-cell text-center"><?php echo HTMLHelper::date($item->mailing_date, Text::_('BW_DATE_FORMAT_LC5')); ?></td>

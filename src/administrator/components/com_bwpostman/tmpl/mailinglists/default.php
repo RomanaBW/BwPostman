@@ -34,8 +34,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
-HTMLHelper::_('bootstrap.tooltip');
-//HTMLHelper::_('formbehavior.chosen', 'select');
 HTMLHelper::_('behavior.multiselect');
 
 $user		= Factory::getApplication()->getIdentity();
@@ -62,26 +60,25 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						</caption>
 						<thead>
 							<tr>
-								<th scope="col" style="width: 1%;" class="text-center">
-									<input class="hasTooltip" type="checkbox" name="checkall-toggle" value=""
-											title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+								<th class="text-center w-1">
+									<?php echo HTMLHelper::_('grid.checkall'); ?>
 								</th>
-								<th style="min-width: 100px;" scope="col">
+								<th scope="col" class="w-20">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_ML_TITLE', 'a.title', $listDirn, $listOrder); ?>
 								</th>
-								<th class="d-none d-lg-table-cell" style="min-width: 250px;" scope="col">
+								<th scope="col" class="d-none d-lg-table-cell">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_ML_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 								</th>
-								<th style="width: 10%;" scope="col">
+								<th scope="col" class="w-10">
 									<?php echo HTMLHelper::_('searchtools.sort',  'PUBLISHED', 'a.published', $listDirn, $listOrder); ?>
 								</th>
-								<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
+								<th scope="col" class="d-none d-lg-table-cell w-10">
 									<?php echo HTMLHelper::_('searchtools.sort',  'ACCESS_LEVEL', 'a.access', $listDirn, $listOrder); ?>
 								</th>
-								<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
+								<th scope="col" class="d-none d-lg-table-cell w-10">
 									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_ML_SUB_NUM', 'subscribers', $listDirn, $listOrder); ?>
 								</th>
-								<th class="d-none d-lg-table-cell" style="width: 3%;" scope="col" aria-sort="ascending">
+								<th scope="col" class="d-none d-lg-table-cell w-1" aria-sort="ascending">
 									<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 								</th>
 							</tr>

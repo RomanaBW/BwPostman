@@ -139,15 +139,15 @@ $ajaxUri = Route::_('index.php?option=com_bwpostman&view=bwpostman&task=storePer
 
 						<?php // Check if this group has superuser permissions ?>
 						<?php $isSuperUserGroup = Access::checkGroup($group->value, 'core.admin'); ?>
-						<?php foreach ($actions as $action) : ?>
+						<?php foreach ($actions as $k => $action) : ?>
 							<tr>
 								<td class="oddCol" data-label="<?php echo Text::_('JLIB_RULES_ACTION'); ?>" headers="actions-th<?php echo $group->value; ?>">
-									<label for="<?php echo $id; ?>_<?php echo $action->name; ?>_<?php echo $group->value; ?>">
+									<label for="<?php echo $id; ?>_<?php echo $action->name; ?>_<?php echo $group->value; ?>" aria-describedby="tip-<?php echo $group->id; ?>-<?php echo $k; ?>">
 										<?php echo Text::_($action->title); ?>
 									</label>
 									<?php if (!empty($action->description)) : ?>
-										<div role="tooltip" id="tip-<?php echo $id; ?>">
-											<?php echo htmlspecialchars(Text::_($action->description)); ?>
+										<div role="tooltip" id="tip-<?php echo $group->id; ?>-<?php echo $k; ?>">
+											<?php echo Text::_($action->description); ?>
 										</div>
 									<?php endif; ?>
 								</td>

@@ -173,9 +173,9 @@ class HtmlView extends BaseHtmlView
 
 		if (PluginHelper::isEnabled('bwpostman', 'bwtimecontrol'))
 		{
+			require_once JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php';
 			$cron = new BwPostmanPhpCron;
 
-			// Check for start file
 			// Check for start file
 			if (property_exists($cron, 'startFile') && File::exists(JPATH_PLUGINS . $cron->startFile))
 			{

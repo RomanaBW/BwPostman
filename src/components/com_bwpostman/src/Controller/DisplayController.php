@@ -12,12 +12,16 @@ namespace BoldtWebservice\Component\BwPostman\Site\Controller;
 defined('_JEXEC') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Model\BwpostmanModel;
+use BwPostmanPhpCron;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\Registry\Registry;
 use JResponseJson;
 use function defined;
 
@@ -157,5 +161,35 @@ class DisplayController extends BaseController
 		$model = new BwpostmanModel();
 		echo new JResponseJson($model->storePermissions());
 		$app->close();
+	}
+
+	/**
+	 * Method to do the cron loop
+	 *
+	 * @return boolean
+	 *
+	 * @throws  Exception
+	 *
+	 * @since       2.3.0
+	 */
+	public function doCron(): bool
+	{
+		$plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
+		$pluginParams = new Registry();
+		$pluginParams->loadString($plugin->params);
+		$pluginPw   = (string) $pluginParams->get('bwtimecontrol_passwd');
+		$pluginUser = (string) $pluginParams->get('bwtimecontrol_username');
+
+		if ($pluginUser === "" || $pluginPw === "")
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_TC_NO_CREDENTIALS'), 'error');
+		}
+
+		require_once JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php';
+		$bwpostmancron = new BwPostmanPhpCron();
+
+		$bwpostmancron->doCronJob();
+
+		return true;
 	}
 }

@@ -2542,6 +2542,12 @@ class MaintenanceModel extends BaseDatabaseModel
 							$insert_string = substr_replace($insert_string, '', $pos, strlen(']]>'));
 						}
 
+						// Check if value has to be base64 encoded, i.e. keys of tc settings
+						if ($key === 'priv'|| $key === 'pub')
+						{
+							$insert_string = base64_encode($insert_string);
+						}
+
 						$dataXml = $this->xml->createElement($key);
 						$cdata   = $this->xml->createCDATASection($insert_string);
 						$dataXml->appendChild($cdata);
@@ -2969,6 +2975,12 @@ class MaintenanceModel extends BaseDatabaseModel
 
 					// collect data sets until loop max
 					$values = $this->dbQuoteArray($item);
+
+					if (key_exists('priv', $values) || key_exists('pub', $values))
+					{
+						$values['priv'] = "'" . base64_decode($values['priv']) . "'";
+						$values['pub'] = "'" . base64_decode($values['pub']) . "'";
+					}
 
 					$dataset[] = '(' . implode(',', $values) . ')';
 					$s++;
@@ -3419,7 +3431,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	}
 
 	/**
-	 * Method delete all sub assets of component
+	 * Method to delete all sub assets of component
 	 *
 	 * @return boolean
 	 *

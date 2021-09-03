@@ -160,7 +160,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 */
 	protected $cdataTables = array(
 		'#__bwpostman_sendmailcontent',
-		'#__bwpostman_tc_sendmailcontent',
+		'#__bwpostman_tc_settings',
 		'#__bwpostman_newsletters',
 		'#__bwpostman_templates',
 		'#__bwpostman_templates_tpl',
@@ -176,7 +176,11 @@ class MaintenanceModel extends BaseDatabaseModel
 	 */
 	protected $cdataColumns = array(
 		'#__bwpostman_sendmailcontent' => array('body'),
-		'#__bwpostman_tc_sendmailcontent' => array('body'),
+		'#__bwpostman_tc_settings' => array(
+			'nonce',
+			'priv',
+			'pub',
+			),
 		'#__bwpostman_newsletters' => array('html_version'),
 		'#__bwpostman_templates' => array(
 			'tpl_html',
@@ -3347,7 +3351,16 @@ class MaintenanceModel extends BaseDatabaseModel
 					}
 					else
 					{
-						$items[] = get_object_vars($table_data['dataset']);
+						$ds    = array();
+						$props = get_object_vars($table_data['dataset']);
+
+						foreach ($props as $k => $v)
+						{
+							$xy     = (string) $v;
+							$ds[$k] = $xy;
+						}
+
+						$items[] = $ds;
 					}
 				}
 			}

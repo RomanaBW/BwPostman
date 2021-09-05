@@ -2072,6 +2072,8 @@ class NewsletterModel extends AdminModel
 
 		try
 		{
+			$this->logger->addEntry(new LogEntry('Model sendMail recipient to send: ' . $tblSendMailQueue->recipient, BwLogger::BW_DEBUG, 'send'));
+
 			$mailer->setSender($sender);
 
 			if ($unsubscribe_url !== '')
@@ -2104,7 +2106,7 @@ class NewsletterModel extends AdminModel
 				$this->logger->addEntry(new LogEntry(sprintf('Sending result: %s', $res), BwLogger::BW_INFO, 'send'));
 			}
 		}
-		catch (UnexpectedValueException | InvalidArgumentException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
+		catch (UnexpectedValueException | InvalidArgumentException | MailDisabledException | \PHPMailer\PHPMailer\Exception  | \Exception $exception)
 		{
 			$message    = $exception->getMessage();
 			$res        = false;

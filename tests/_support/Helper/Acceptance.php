@@ -1247,7 +1247,7 @@ class Acceptance extends Codeception\Module
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->clickAndWait($archive_button, 1);
 
-		if ($manage_data['section'] == 'template' || $manage_data['section'] == 'subscriber' || $manage_data['section'] == 'newsletter')
+		if ($manage_data['section'] == 'template' || $manage_data['section'] == 'subscriber' || $manage_data['section'] == 'newsletter'|| $manage_data['section'] == 'mailinglist')
 		{
 			// process confirmation popup
 			$I->seeInPopup($edit_data['archive_confirm']);

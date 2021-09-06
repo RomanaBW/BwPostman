@@ -224,6 +224,7 @@ class MailinglistEditPage
 		'field_title'          => "001 General mailing list",
 		'archive_tab'          => "//*/ul[contains(@class, 'bwp-tabs')]/li/a[contains(text(),'Archived mailinglists')]",
 		'archive_identifier'   => "Title",
+		'archive_confirm'      => 'Do you wish to archive the selected mailinglist(s)?',
 		'archive_title_col'    => "//*[@id='main-table']/tbody/*/td[2]",
 		'archive_success_msg'  => 'The selected mailing list has been archived.',
 		'archive_success2_msg' => 'The selected mailing lists have been archived.',

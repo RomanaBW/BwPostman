@@ -412,21 +412,21 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_accessible       = "//*[@id='ml_available']/fieldset/p[%s]/label";
+	public static $mls_accessible       = "//*[@id='ml_available']/fieldset/div[%s]/input";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_nonaccessible    = "//*[@id='ml_unavailable']/fieldset/p[%s]/label";
+	public static $mls_nonaccessible    = "//*[@id='ml_unavailable']/fieldset/div[%s]/input";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_internal         = "//*[@id='ml_intern']/fieldset/p[%s]/label";
+	public static $mls_internal         = "//*[@id='ml_intern']/fieldset/div[%s]/input";
 
 
 	/**
@@ -519,11 +519,11 @@ class SubscriberEditPage
 
 		$I->scrollTo(self::$mls_label, 0, -100);
 		$I->wait(1);
-		$I->click(sprintf(self::$mls_accessible, 2));
-		$I->click(sprintf(self::$mls_nonaccessible, 3));
+		$I->click(sprintf(self::$mls_accessible, 3));
+		$I->click(sprintf(self::$mls_nonaccessible, 5));
 		$I->scrollTo(self::$mls_internal_label, 0, -100);
 		$I->wait(1);
-		$I->click(sprintf(self::$mls_internal, 4));
+		$I->click(sprintf(self::$mls_internal, 7));
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);

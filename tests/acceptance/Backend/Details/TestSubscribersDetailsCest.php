@@ -507,11 +507,11 @@ class TestSubscribersDetailsCest
 
 		$I->scrollTo(SubEdit::$mls_label, 0, -100);
 		$I->wait(1);
-		$I->click(sprintf(SubEdit::$mls_accessible, 2));
-		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
+		$I->click(sprintf(SubEdit::$mls_accessible, 3));
+		$I->click(sprintf(SubEdit::$mls_nonaccessible, 5));
 		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);
 		$I->wait(1);
-		$I->click(sprintf(SubEdit::$mls_internal, 4));
+		$I->click(sprintf(SubEdit::$mls_internal, 7));
 		$I->scrollTo(Generals::$sys_message_container, 0, -100);
 		$I->wait(1);
 
@@ -697,11 +697,11 @@ class TestSubscribersDetailsCest
 
 		$I->scrollTo(SubEdit::$mls_label, 0, -100);
 		$I->wait(1);
-		$I->click(sprintf(SubEdit::$mls_accessible, 2));
-		$I->click(sprintf(SubEdit::$mls_nonaccessible, 3));
+		$I->click(sprintf(SubEdit::$mls_accessible, 3));
+		$I->click(sprintf(SubEdit::$mls_nonaccessible, 5));
 		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);
 		$I->wait(1);
-		$I->click(sprintf(SubEdit::$mls_internal, 4));
+		$I->click(sprintf(SubEdit::$mls_internal, 7));
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);

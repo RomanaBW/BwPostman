@@ -194,7 +194,7 @@ class MailinglistManagerPage
 	 * @since 2.0.0
 	 */
 	public static $arc_del_array    = array(
-		'section'   => 'Mailinglists',
+		'section'   => 'mailinglist',
 		'url'   => '/administrator/index.php?option=com_bwpostman&view=mailinglists',
 	);
 }

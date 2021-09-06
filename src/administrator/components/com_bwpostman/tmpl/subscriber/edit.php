@@ -34,15 +34,12 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
-$modalParams = array();
-$modalParams['modalWidth'] = 80;
-$modalParams['bodyHeight'] = 70;
-
 // declare image for tooltip
 $image = '';
 
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('bootstrap.modal');
 
 $image = '<i class="fa fa-info-circle fa-lg"></i>';
 
@@ -50,6 +47,10 @@ $image = '<i class="fa fa-info-circle fa-lg"></i>';
 HTMLHelper::_('behavior.keepalive');
 
 $new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $this->item->status);
+
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = $this->document->getWebAssetManager();
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostman/admin-bwpm_tabshelper.js');
 ?>
 
 <div id="bwp_editform">
@@ -87,40 +88,40 @@ $new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.ne
 						<?php
 						if ($this->item->id > 0)
 						{
-							$title = Text::_('COM_BWPOSTMAN_PRINT_SUB_DAT');
-							$modalParams['title'] = $title;
-							$printLayout = LayoutHelper::render('print', array('form' => $this->form, 'subscriberId' => $this->item->id), JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/subscriber/');
+							$linkSub = Route::_('index.php?option=com_bwpostman&view=subscriber&layout=print&format=raw&task=insideModal&id=' . $this->item->id);
+							$titleSub = Text::_('COM_BWPOSTMAN_PRINT_SUB_DAT');
 							?>
 							<div class="control-group">
 								<div class="control-label">
 								</div>
 								<div class="controls">
-									<button type="button" data-bs-target="#subsData" class="btn btn-primary" data-bs-toggle="modal">
+									<a class="iframe btn btn-primary" href="javascript:void(0);"
+											data-title="<?php echo $titleSub;?>" data-bs-title="<?php echo $titleSub;?>" data-bs-frame="myIframeSub" data-bs-src="<?php echo $linkSub;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
 										<?php echo Text::_('COM_BWPOSTMAN_PRINT_SUB_DAT');?>
-									</button>
+									</a>
 								</div>
 							</div>
 
 							<!-- Modal -->
-							<div id="subsData" class="modal" tabindex="-1">
-								<div class="modal-dialog">
+							<div id="bwp-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+								<div class="modal-dialog modal-xl">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title"><?php echo $title; ?></h5>
-											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											<h4 class="modal-title text-center">&nbsp;</h4>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"></button>
 										</div>
-										<div class="modal-body">
-											<p><?php echo $printLayout; ?></p>
+										<div class="modal-body p-3">
+											<iframe class="modal-frame" width="100%"></iframe>
 										</div>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary btn-danger" data-bs-dismiss="modal"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
+											<button class="btn btn-dark btn-sm" data-bs-dismiss="modal" type="button" title="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
 										</div>
 									</div>
 								</div>
 							</div>
 
 
-							<?php echo HTMLHelper::_('bootstrap.renderModal','subsData', $modalParams);
+							<?php
 						}?>
 
 						<div class="control-group">

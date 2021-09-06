@@ -250,27 +250,24 @@
 			name="ml_available"
 			type="mlavailable"
 			label="COM_BWPOSTMAN_SUBS_FIELD_ML_AVAILABLE_LABEL"
-			labelclass="control-label"
 			description="COM_BWPOSTMAN_SUBS_FIELD_ML_AVAILABLE_DESC"
-			class="inputbox mailinglists"
+			class="form-check-input mailinglists"
 		/>
 
 		<field
 			name="ml_unavailable"
 			type="mlunavailable"
 			label="COM_BWPOSTMAN_SUBS_FIELD_ML_UNAVAILABLE_LABEL"
-			labelclass="control-label"
 			description="COM_BWPOSTMAN_SUBS_FIELD_ML_UNAVAILABLE_DESC"
-			class="inputbox mailinglists"
+			class="form-check-input mailinglists"
 		/>
 
 		<field
 			name="ml_intern"
 			type="mlintern"
 			label="COM_BWPOSTMAN_SUBS_FIELD_ML_INTERN_LABEL"
-			labelclass="control-label"
 			description="COM_BWPOSTMAN_SUBS_FIELD_ML_INTERN_DESC"
-			class="inputbox mailinglists"
+			class="form-check-input mailinglists"
 		/>
 
 		<field

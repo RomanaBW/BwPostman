@@ -13,7 +13,7 @@ use Joomla\CMS\Language\Text;
 
 HTMLHelper::_('script', 'com_bwpostman/admin-subscribers-default-batch-footer.es6.js', ['version' => 'auto', 'relative' => true]);
 ?>
-<button type="button" class="btn btn-secondary" data-dismiss="modal">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
 	<?php echo Text::_('JCANCEL'); ?>
 </button>
 <button type="submit" class="btn btn-success" onclick="Joomla.submitbutton('subscriber.batch');">

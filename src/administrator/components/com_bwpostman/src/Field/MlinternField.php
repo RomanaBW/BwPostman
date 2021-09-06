@@ -179,10 +179,12 @@ class MlinternField extends RadioField
 			}
 
 			$i++;
-			$return .= '<p class="mllabel"><label for="' . $this->id . '_' . $i . '" class="mailinglist_label noclear checkbox">';
-			$return .= '<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]" ';
+			$return .= '<div class="mllabel mb-1 form-check" aria-describedby="tip-sub-' . $this->id . '_' . $i . '">';
+			$return .= '	<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]" ';
 			$return .= 'value="' . $option->value . '"' . $attributes . $selected . ' />';
-			$return .= '<span class="editlinktip hasTip hasTooltip" title="' . $option->text . '">' . $option->title . '</span></label></p>';
+			$return .= '	<label class="form-check-label" for="' . $this->id . '_' . $i . '">' . $option->title . '</label>';
+			$return .= '</div>';
+			$return .= '<div role="tooltip" id="tip-sub-' . $this->id . '_' . $i . '">' . $option->text . '</div>';
 		}
 
 		return $return;

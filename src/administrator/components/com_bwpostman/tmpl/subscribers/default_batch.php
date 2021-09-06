@@ -50,7 +50,7 @@ if ($filter_id)
 }
 
 // Create the batch selector to change select the mailinglist by which to add or remove.
-$batch_lists = '<label id="batch-choose-action-lbl" for="batch-choose-action">' . Text::_('COM_BWPOSTMAN_SUB_BATCH_MENU_LABEL') . '</label>'
+$batch_lists = '<label id="batch-choose-action-lbl">' . Text::_('COM_BWPOSTMAN_SUB_BATCH_MENU_LABEL') . '</label>'
 				. '<div class="clr"></div>'
 				. '<div id="batch-choose-action" class="control-group">'
 				. '<select name="batch[mailinglist_id]" class="inputbox" id="batch-mailinglist-id">'
@@ -64,7 +64,7 @@ $batch_lists = '<label id="batch-choose-action-lbl" for="batch-choose-action">' 
 
 <div class="modal hide fade" id="collapseModal">
 	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&#215;</button>
+		<button type="button" class="close" data-bs-dismiss="modal">&#215;</button>
 		<div class="h3"><?php echo Text::_('COM_BWPOSTMAN_SUB_BATCH_OPTIONS'); ?></div>
 	</div>
 	<div class="modal-body modal-batch">
@@ -80,7 +80,7 @@ $batch_lists = '<label id="batch-choose-action-lbl" for="batch-choose-action">' 
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn" type="button" onclick="document.getElementById('batch-mailinglist-id').value='';" data-dismiss="modal">
+		<button class="btn" type="button" onclick="document.getElementById('batch-mailinglist-id').value='';" data-bs-dismiss="modal">
 			<?php echo Text::_('JCANCEL'); ?>
 		</button>
 		<button class="btn btn-primary" type="submit" onclick="Joomla.submitbutton('subscriber.batch');">

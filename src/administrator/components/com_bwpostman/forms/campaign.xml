@@ -131,27 +131,24 @@
 			name="ml_available"
 			type="cammlavailable"
 			label="COM_BWPOSTMAN_NL_FIELD_ML_AVAILABLE_LABEL"
-			labelclass="control-label"
 			description="COM_BWPOSTMAN_NL_FIELD_ML_AVAILABLE_DESC"
-			class="inputbox mailinglists"
+			class="form-check-input mailinglists"
 		/>
 
 		<field
 			name="ml_unavailable"
 			type="cammlunavailable"
 			label="COM_BWPOSTMAN_NL_FIELD_ML_UNAVAILABLE_LABEL"
-			labelclass="control-label"
 			description="COM_BWPOSTMAN_NL_FIELD_ML_UNAVAILABLE_DESC"
-			class="inputbox mailinglists"
+			class="form-check-input mailinglists"
 		/>
 
 		<field
 			name="ml_intern"
 			type="cammlintern"
 			label="COM_BWPOSTMAN_NL_FIELD_ML_INTERN_LABEL"
-			labelclass="control-label"
 			description="COM_BWPOSTMAN_NL_FIELD_ML_INTERN_DESC"
-			class="inputbox mailinglists"
+			class="form-check-input mailinglists"
 		/>
 	</fieldset>
 

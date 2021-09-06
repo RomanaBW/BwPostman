@@ -85,37 +85,36 @@ $colNum = 8;
 								</caption>
 								<thead>
 								<tr>
-									<th style="width: 1%;" class="text-center">
-										<input type="checkbox" name="checkall-toggle" value=""
-												title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+									<th class="text-center w-1">
+										<?php echo HTMLHelper::_('grid.checkall'); ?>
 									</th>
-									<th style="min-width: 100px;" scope="col">
+									<th class="w-10" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_NAME', 'a.name', $listDirn, $listOrder); ?>
 									</th>
-									<th class="d-none d-lg-table-cell" style="min-width: 80px;" scope="col">
+									<th class="d-none d-lg-table-cell w-10" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_FIRSTNAME', 'a.firstname', $listDirn, $listOrder); ?>
 									</th>
 									<?php
 									if($this->params->get('show_gender'))
 									{ ?>
-										<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
+										<th class="d-none d-lg-table-cell w-5" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_GENDER', 'a.gender', $listDirn, $listOrder); ?>
 										</th>
 										<?php
 									} ?>
-									<th style="min-width: 150px;" scope="col">
+									<th scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_EMAIL', 'a.email', $listDirn, $listOrder); ?>
 									</th>
-									<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
+									<th class="d-none d-lg-table-cell w-5" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_EMAILFORMAT', 'a.emailformat', $listDirn, $listOrder); ?>
 									</th>
-									<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
+									<th class="d-none d-lg-table-cell w-5" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_JOOMLA_USERID', 'a.user_id', $listDirn, $listOrder); ?>
 									</th>
-									<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
+									<th class="d-none d-lg-table-cell w-5" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_ML_NUM', 'mailinglists', $listDirn, $listOrder); ?>
 									</th>
-									<th class="d-none d-lg-table-cell" style="width: 3%;" scope="col">
+									<th class="d-none d-lg-table-cell w-1" scope="col">
 										<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 									</th>
 								</tr>

@@ -178,20 +178,9 @@ class HtmlView extends BaseHtmlView
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance();
 
-		// Get document object, set document title and add css
-		$document = $app->getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_ML_DETAILS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_mailinglist.js');
-
-		// Get the user browser --> if the user has msie load the ie-css to show the tabs in the correct way
-		$browser = Browser::getInstance();
-		$user_browser = $browser->getBrowser();
-
-		if ($user_browser == 'msie')
-		{
-			$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend_ie.css');
-		}
+		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+		$wa = $this->document->getWebAssetManager();
+		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_mailinglist.js', 'com_bwpostman/admin-bwpm_mailinglist.js');
 
 		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
 		$isNew = ($this->item->id < 1);

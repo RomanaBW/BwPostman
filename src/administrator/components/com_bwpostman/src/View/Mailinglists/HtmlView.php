@@ -176,11 +176,9 @@ class HtmlView extends BaseHtmlView
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance();
 
-		// Get document object, set document title and add css
-		$document = Factory::getApplication()->getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_MLS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_confirm_archive.js');
+		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+		$wa = $this->document->getWebAssetManager();
+		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_confirm_archive.js', 'com_bwpostman/admin-bwpm_confirm_archive.js');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MLS'), 'list');

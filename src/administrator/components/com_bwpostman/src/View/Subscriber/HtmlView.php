@@ -460,17 +460,13 @@ class HtmlView extends BaseHtmlView
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance();
 
-		// Get document object, set document title and add css
-		$document	= $app->getDocument();
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber.js');
+		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+		$wa = $this->document->getWebAssetManager();
+		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_subscriber.js', 'com_bwpostman/admin-bwpm_subscriber.js');
 
 		switch ($layout)
 		{
 			case 'export':
-				// Get document object, set document title and add css
-				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'));
-
 				// Set toolbar items
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'), 'upload');
 
@@ -478,17 +474,12 @@ class HtmlView extends BaseHtmlView
 				break;
 
 			case 'import':
-				// Set toolbar items
-				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
-
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
 
 				$toolbar->cancel('subscriber.cancel');
 				break;
 
 			case 'import1':
-				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'));
-
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
 
 				$options['text'] = "COM_BWPOSTMAN_BACK";
@@ -504,8 +495,6 @@ class HtmlView extends BaseHtmlView
 				break;
 
 			case 'import2':
-				$document->setTitle(Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'));
-
 				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'), 'info');
 
 				$toolbar->cancel('subscriber.cancel');
@@ -519,8 +508,6 @@ class HtmlView extends BaseHtmlView
 				else {
 					$title	= (Text::_('COM_BWPOSTMAN_SUB_DETAILS'));
 				}
-
-				$document->setTitle($title);
 
 				// Set toolbar title and items
 				$checkedOut = 0;

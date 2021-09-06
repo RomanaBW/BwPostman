@@ -106,9 +106,10 @@ class RawView extends BaseHtmlView
 	 */
 	public function display($tpl = null): RawView
 	{
-		$app 	= Factory::getApplication();
-		$jinput	= $app->input;
-		$task	= $jinput->get('task', 'export');
+		$app 	  = Factory::getApplication();
+		$jinput	  = $app->input;
+		$task	  = $jinput->get('task', 'export');
+		$document = $app->getDocument();
 
 		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = $this->document->getWebAssetManager();

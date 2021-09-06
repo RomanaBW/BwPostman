@@ -453,7 +453,9 @@ class TestSubscribersDetailsCest
 
 		$I->clickAndWait(sprintf(SubEdit::$printSubsDataButton, SubEdit::$printSubsDataText), 3);
 
+		$I->switchToIFrame(SubEdit::$printSubsIframe);
 		$I->see(" l.abbott@tester-net.nil ", SubEdit::$printSubsDataMail);
+		$I->switchToIFrame();
 
 		$I->clickAndWait(SubEdit::$printSubsDataClose, 2);
 		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);

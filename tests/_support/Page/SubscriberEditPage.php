@@ -352,21 +352,28 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $printSubsDataButton   = "//*/button[contains(text(), '%s')]";
+	public static $printSubsDataButton   = "//*/a[contains(text(), '%s')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $printSubsDataMail   = "//*/div[@id='subsData']/div/div/div[@class='modal-body']/table/tbody/tr[4]/td[2]";
+	public static $printSubsIframe   = "myIframeSub";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $printSubsDataMail   = "//*[@id='preview_html']/table[1]/tbody/tr[4]/td[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.4.0
 	 */
-	public static $printSubsDataClose   = "//*/div[@id='subsData']/div/div/div/button[@class='btn-close']";
+	public static $printSubsDataClose   = "//*/div[@id='bwp-modal']/div/div/div/button[@class='btn-close']";
 
 
 	/**

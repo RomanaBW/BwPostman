@@ -1146,6 +1146,7 @@ class Acceptance extends Codeception\Module
 				$I->click(Generals::$filterOptionsSwitcher);
 				$I->click(Generals::$search_list);
 				$I->selectOption(Generals::$search_list, $search_data_array['search_by'][$i]);
+				$I->wait(1);
 
 				// click search button
 				$searchButton = Generals::$search_button;
@@ -1221,10 +1222,10 @@ class Acceptance extends Codeception\Module
 
 		$searchButton = Generals::$search_button;
 
-		if ($manage_data['section'] == 'archive' || $manage_data['section'] == 'subscriber' || $manage_data['section'] == 'newsletter')
-		{
-			$searchButton = Generals::$search_button_span;
-		}
+//		if ($manage_data['section'] == 'archive' || $manage_data['section'] == 'subscriber' || $manage_data['section'] == 'newsletter')
+//		{
+//			$searchButton = Generals::$search_button_span;
+//		}
 
 		$I->click($searchButton);
 
@@ -1294,7 +1295,7 @@ class Acceptance extends Codeception\Module
 		$I->clickAndWait(Generals::$search_list, 1);
 		$I->selectOption(Generals::$search_list, $edit_data['delete_identifier']);
 
-		$I->click(Generals::$search_button_span);
+		$I->click(Generals::$search_button);
 
 		$I->waitForElement(Generals::$main_table);
 
@@ -1356,7 +1357,7 @@ class Acceptance extends Codeception\Module
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
 		$I->clickAndWait(Generals::$filterbar_button, 2);
 		$I->clickSelectList(Generals::$search_list, $edit_data['delete_identifier'], Generals::$search_list_id);
-		$I->clickAndWait(Generals::$search_button_span, 1);
+		$I->clickAndWait(Generals::$search_button, 1);
 		$I->see($edit_data['field_title']);
 
 		//count items

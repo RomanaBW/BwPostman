@@ -270,7 +270,7 @@ class TestNewslettersListsCest
 		$I->wantTo("Search unsent Newsletters");
 		$I->amOnPage(NlManage::$url);
 
-		$I->searchLoop($I, NlManage::$search_data_array, false, true);
+		$I->searchLoop($I, NlManage::$search_data_array, false, false);
 
 		$I->click(Generals::$clear_button);
 		$I->see(NlManage::$search_clear_val);
@@ -560,7 +560,7 @@ class TestNewslettersListsCest
 		$I->amOnPage(NlManage::$url);
 		$I->clickAndWait(NlManage::$tab2, 1);
 
-		$I->searchLoop($I, NlManage::$search_sent_data_array, false, true);
+		$I->searchLoop($I, NlManage::$search_sent_data_array, false, false);
 
 		$I->click(Generals::$clear_button);
 		$I->see(NlManage::$search_sent_clear_val);

@@ -743,7 +743,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $import_mls_target    = "//*[@id='adminForm']/fieldset[2]/div/div[2]/fieldset/div[1]/fieldset/p[2]/label/span";
+	public static $import_mls_target    = "//*[@id='adminForm']/fieldset[2]/div/div[2]/fieldset/div[1]/fieldset/div[1]/input";
 
 
 	/**

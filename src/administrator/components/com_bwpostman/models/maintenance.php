@@ -154,7 +154,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	protected $cdataTables = array(
 		'#__bwpostman_sendmailcontent',
-		'#__bwpostman_tc_sendmailcontent',
+		'#__bwpostman_tc_settings',
 		'#__bwpostman_newsletters',
 		'#__bwpostman_templates',
 		'#__bwpostman_templates_tpl',
@@ -170,7 +170,11 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	protected $cdataColumns = array(
 		'#__bwpostman_sendmailcontent' => array('body'),
-		'#__bwpostman_tc_sendmailcontent' => array('body'),
+		'#__bwpostman_tc_settings' => array(
+			'nonce',
+			'priv',
+			'pub',
+			),
 		'#__bwpostman_newsletters' => array('html_version'),
 		'#__bwpostman_templates' => array(
 			'tpl_html',
@@ -2534,6 +2538,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 							$insert_string = substr_replace($insert_string, '', $pos, strlen(']]>'));
 						}
 
+						// Check if value has to be base64 encoded, i.e. keys of tc settings
+						if ($key === 'priv'|| $key === 'pub')
+						{
+							$insert_string = base64_encode($insert_string);
+						}
+
 						$dataXml = $this->xml->createElement($key);
 						$cdata   = $this->xml->createCDATASection($insert_string);
 						$dataXml->appendChild($cdata);
@@ -2981,6 +2991,12 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					// collect data sets until loop max
 					$values = $this->dbQuoteArray($item);
 
+					if (key_exists('priv', $values) || key_exists('pub', $values))
+					{
+						$values['priv'] = "'" . base64_decode($values['priv']) . "'";
+						$values['pub'] = "'" . base64_decode($values['pub']) . "'";
+					}
+
 					$dataset[] = '(' . implode(',', $values) . ')';
 					$s++;
 
@@ -3358,7 +3374,16 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					}
 					else
 					{
-						$items[] = get_object_vars($table_data['dataset']);
+						$ds    = array();
+						$props = get_object_vars($table_data['dataset']);
+
+						foreach ($props as $k => $v)
+						{
+							$xy     = (string) $v;
+							$ds[$k] = $xy;
+						}
+
+						$items[] = $ds;
 					}
 				}
 			}
@@ -6138,8 +6163,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function checkAssetIdExists($assetId)
 	{
-		$res = null;
-
 		$query = $this->db->getQuery(true);
 		$query->select('id');
 		$query->from($this->db->quoteName('#__assets'));
@@ -6181,8 +6204,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function checkAssetNameFits($assetId, $assetName)
 	{
-		$res = null;
-
 		$query = $this->db->getQuery(true);
 		$query->select('name');
 		$query->from($this->db->quoteName('#__assets'));
@@ -6222,8 +6243,6 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	 */
 	private function getAssetIdByAssetName($assetName)
 	{
-		$assetId = null;
-
 		$query = $this->db->getQuery(true);
 		$query->select('id');
 		$query->from($this->db->quoteName('#__assets'));

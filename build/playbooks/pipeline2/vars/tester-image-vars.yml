@@ -1,19 +1,13 @@
 ---
 # Fast changing variables
-#joomla_version_4a: "4.0.0a12"
-joomla_version_4: "4.0.2"
+joomla_version_4: "4.0.3"
 
 # this one has to be adjusted to the desired Joomla version
 joomla_version: "{{ joomla_version_4 }}"
 
-#j_version_short: "j4a"
-#j_version_short: "j4b"
 j_version_short: "j4"
 
 bwpm_version: "4.0.0"
-#j_alpha_version: "alpha12"
-j_beta_dev_version: "beta7"
-j_rc_version: "rc6"
 
 vm_version: "3.4.2.9966"
 tcpdf_version: "1.0.5"
@@ -21,23 +15,16 @@ tcpdf_version: "1.0.5"
 j_version_hyphen: "{{ joomla_version_4 | replace('.', '-') }}"
 
 # Default value: Joomla4, if Joomla3 is wanted, --extra-vars is needed
-#j_master_version: "4"
-j_master_version: "{{ j_version_short[1] }}"
+j_master_version: "4"
 j_package_name:
   j4: "Joomla_{{ j_version_hyphen }}-Stable-Full_Package.zip"
-#  j4a: "Joomla_4.0.0-{{ j_alpha_version }}-Alpha-Full_Package.tar.bz2"
-#  j4b: "Joomla_4.0.0-{{ j_beta_dev_version }}-Beta-Full_Package.zip"
-#  j4rc: "Joomla_4.0.0-{{ j_rc_version }}-Release_Candidate-Full_Package.zip"
 
 j_main_version: "{{ joomla_version[0] }}"
 
 
 joomla_packages:
   - src: "https://downloads.joomla.org/cms/Joomla4/{{ j_version_hyphen }}/{{ j_package_name.j4 }}"
-#  - src: "https://github.com/joomla/joomla-cms/releases/download/4.0.0-{{ j_rc_version }}/{{ j_package_name.j4rc }}"
     dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j4 }}"
-#  - src: "https://github.com/joomla/joomla-cms/releases/download/4.0.0-{{ j_alpha_version }}/{{ j_package_name.j4a }}"
-#    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j4a }}"
 
 
 

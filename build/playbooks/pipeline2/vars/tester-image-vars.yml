@@ -1,6 +1,6 @@
 ---
 # Fast changing variables
-joomla_version: "3.10.0"
+joomla_version: "3.10.2"
 
 j_version_short: "j3"
 
@@ -16,13 +16,11 @@ j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 j_master_version: "{{ j_version_short[1] }}"
 j_package_name:
   j3: "Joomla_{{ j_version_hyphen }}-Stable-Full_Package.zip"
-#  j3: "Joomla_3.10.0-rc2-Release_Candidate-Full_Package.tar.bz2"
 
 j_main_version: "{{ joomla_version[0] }}"
 
 joomla_packages:
   - src: "https://downloads.joomla.org/cms/Joomla3/{{ j_version_hyphen }}/{{ j_package_name.j3 }}"
-#  - src: "https://github.com/joomla/joomla-cms/releases/tag/3.10.0-rc2/{{ j_package_name.j3 }}"
     dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j3 }}"
 
 

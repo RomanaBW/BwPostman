@@ -37,7 +37,6 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 // declare image for tooltip
 $image = '';
 
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('bootstrap.modal');
 
@@ -196,23 +195,24 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 			{
 				?>
 				<div id="subs_mailinglists" class="card subs-mailinglists mb-3">
-					<h4 class="card-header">
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE_NOTE'); ?>">
+					<div class="h4">
+						<div aria-describedby="tip-desc-mls">
 							<?php echo $image; ?>
-						</span>
-						<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE'); ?></span>
-					</h4>
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE'); ?>
+						</div>
+						<div role="tooltip" id="tip-desc-mls"><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_AVAILABLE_NOTE'); ?></div>
+					</div>
 					<div class="row">
 						<div class="col-lg-4 subs-mailinglists mb-3">
 							<div class="card-body" id="ml_available">
 								<fieldset class="adminform">
-									<legend>
-										<span class="hasTooltip"
-												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
+									<div class="h5">
+										<div aria-describedby="tip-desc-mla">
 											<?php echo $image; ?>
-										</span>
-										<span>&nbsp;<?php echo $this->form->getLabel('ml_available'); ?></span>
-									</legend>
+											<?php echo $this->form->getLabel('ml_available'); ?>
+										</div>
+										<div role="tooltip" id="tip-desc-mla"><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?></div>
+									</div>
 									<?php
 									$ml_available = $this->form->getInput('ml_available');
 
@@ -223,7 +223,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 									else
 									{ ?>
 										<label class="mailinglist_label noclear checkbox">
-											<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
+											<?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?>
 										</label>
 										<?php
 									}
@@ -235,13 +235,13 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 						<div class="col-lg-4 subs-mailinglists mb-3">
 							<div class="card-body" id="ml_unavailable">
 								<fieldset class="adminform">
-									<legend>
-										<span class="hasTooltip"
-												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
+									<div class="h5">
+										<div aria-describedby="tip-desc-mlu">
 											<?php echo $image; ?>
-										</span>
-										<span>&nbsp;<?php echo $this->form->getLabel('ml_unavailable'); ?></span>
-									</legend>
+											<?php echo $this->form->getLabel('ml_unavailable'); ?>
+										</div>
+										<div role="tooltip" id="tip-desc-mlu"><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?></div>
+									</div>
 									<?php
 									$ml_unavailable = $this->form->getInput('ml_unavailable');
 
@@ -252,7 +252,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 									else
 									{ ?>
 										<label class="mailinglist_label noclear checkbox">
-											<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
+											<?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?>
 										</label>
 										<?php
 									}
@@ -264,13 +264,13 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 						<div class="col-lg-4 subs-mailinglists mb-3">
 							<div class="card-body" id="ml_intern">
 								<fieldset class="adminform">
-									<legend>
-										<span class="hasTooltip"
-												title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
+									<div class="h5">
+										<div aria-describedby="tip-desc-mli">
 											<?php echo $image; ?>
-										</span>
-										<span>&nbsp;<?php echo $this->form->getLabel('ml_intern'); ?></span>
-									</legend>
+											<?php echo $this->form->getLabel('ml_intern'); ?>
+										</div>
+										<div role="tooltip" id="tip-desc-mli"><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?></div>
+									</div>
 									<?php
 									$ml_intern = $this->form->getInput('ml_intern');
 
@@ -281,7 +281,7 @@ $wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostm
 									else
 									{ ?>
 										<label class="mailinglist_label noclear checkbox">
-											<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
+											<?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?>
 										</label>
 										<?php
 									}

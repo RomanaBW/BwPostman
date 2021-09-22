@@ -92,7 +92,7 @@ class BwPostmanHTMLHelper {
 			$export_fields[] = HtmlHelper::_('select.option', $column->Field, $column->Field);
 		}
 
-		return HtmlHelper::_('select.genericlist', $export_fields, 'export_fields[]', 'class="inputbox" size="20" multiple="multiple" style="padding: 6px; width: 260px;"', 'value', 'text');
+		return HtmlHelper::_('select.genericlist', $export_fields, 'export_fields[]', 'class="form-select" size="20" multiple multiple="multiple" style="padding: 6px; width: 260px;"', 'value', 'text');
 	}
 
 	/**
@@ -111,7 +111,7 @@ class BwPostmanHTMLHelper {
 		$fileformat[] 	= HtmlHelper::_('select.option', 'csv', Text::_('COM_BWPOSTMAN_CSV'));
 		$fileformat[] 	= HtmlHelper::_('select.option', 'xml', Text::_('COM_BWPOSTMAN_XML'));
 
-		return HtmlHelper::_('select.radiolist', $fileformat, 'fileformat', 'class="inputbox"', 'value', 'text', $selected);
+		return HtmlHelper::_('select.radiolist', $fileformat, 'fileformat', '', 'value', 'text', $selected);
 	}
 
 	/**
@@ -132,7 +132,7 @@ class BwPostmanHTMLHelper {
 		$delimiter[] = HtmlHelper::_('select.option', '\t', Text::_('COM_BWPOSTMAN_SUB_DELIMITER_TABULATOR'));
 		$delimiter[] = HtmlHelper::_('select.option', ' ', Text::_('COM_BWPOSTMAN_SUB_DELIMITER_WHITESPACE'));
 
-		return HtmlHelper::_('select.genericlist', $delimiter, 'delimiter', 'class="custom-select inputbox w-auto" size="1"', 'value', 'text', $selected);
+		return HtmlHelper::_('select.genericlist', $delimiter, 'delimiter', 'class="custom-select w-auto" size="1"', 'value', 'text', $selected);
 	}
 
 	/**
@@ -152,7 +152,7 @@ class BwPostmanHTMLHelper {
 		$enclosure[] = HtmlHelper::_('select.option', "'", Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_QUOTE'));
 		$enclosure[] = HtmlHelper::_('select.option', '"', Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_DOUBLEQUOTE'));
 
-		return HtmlHelper::_('select.genericlist', $enclosure, 'enclosure', 'class="custom-select inputbox w-auto" size="1"', 'value', 'text', $selected);
+		return HtmlHelper::_('select.genericlist', $enclosure, 'enclosure', 'class="custom-select w-auto" size="1"', 'value', 'text', $selected);
 	}
 
 	/**
@@ -171,7 +171,7 @@ class BwPostmanHTMLHelper {
 		$emailformat[] 	= HtmlHelper::_('select.option', '0', Text::_('COM_BWPOSTMAN_TEXT'));
 		$emailformat[] 	= HtmlHelper::_('select.option', '1', Text::_('COM_BWPOSTMAN_HTML'));
 
-		return HtmlHelper::_('select.radiolist', $emailformat, 'emailformat', 'class="form-check-input inputbox" ', 'value', 'text', $selected);
+		return HtmlHelper::_('select.radiolist', $emailformat, 'emailformat', 'class="form-check-input" ', 'value', 'text', $selected);
 	}
 
 	/**
@@ -197,7 +197,7 @@ class BwPostmanHTMLHelper {
 			$db_fields[] = HtmlHelper::_('select.option', $column, $column);
 		}
 
-		return HtmlHelper::_('select.genericlist', $db_fields, 'db_fields[]', 'class="custom-select inputbox w-auto" size="10" multiple="multiple" style="padding: 6px; width: 240px;"', 'value', 'text');
+		return HtmlHelper::_('select.genericlist', $db_fields, 'db_fields[]', 'class="custom-select w-auto" size="10" multiple multiple="multiple"', 'value', 'text');
 	}
 
 	/**
@@ -246,7 +246,7 @@ class BwPostmanHTMLHelper {
 //				$import_mailinglists[] = HtmlHelper::_('select.option', $mailinglist['id'], $mailinglist['title'] .': '.$mailinglist['description']);
 //			}
 //		}
-//		$import_mailinglists	= HtmlHelper::_('select.genericlist', $import_mailinglists, 'import_mailinglists[]', 'class="inputbox" size="10" multiple="multiple" style="padding: 6px; width: 250px;"', 'value', 'text', $bwp_mailinglist_values);
+//		$import_mailinglists	= HtmlHelper::_('select.genericlist', $import_mailinglists, 'import_mailinglists[]', 'class="w-auto" size="10" multiple multiple="multiple" ', 'value', 'text', $bwp_mailinglist_values);
 //
 //		return str_replace('>-', ' disabled="disabled">-', $import_mailinglists);
 //	}

@@ -17,7 +17,6 @@
 			label="COM_BWPOSTMAN_ML_FIELD_TITLE_LABEL"
 			labelclass="control-label hasPopover"
 			description="COM_BWPOSTMAN_ML_FIELD_TITLE_DESC"
-			class="inputbox"
 			required="true"
 		/>
 
@@ -27,7 +26,6 @@
 			label="COM_BWPOSTMAN_ML_FIELD_DESCRIPTION_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_ML_FIELD_DESCRIPTION_DESC"
-			class="inputbox"
 			required="true"
 		/>
 
@@ -47,7 +45,6 @@
 			label="COM_BWPOSTMAN_ML_FIELD_ACCESS_LABEL"
 			labelclass="control-label hasPopover"
 			description="COM_BWPOSTMAN_ML_FIELD_ACCESS_DESC"
-			class="inputbox"
 		/>
 
 		<field
@@ -56,7 +53,6 @@
 			label="COM_BWPOSTMAN_ML_FIELD_GROUPNAME_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_ML_FIELD_GROUPNAME_DESC"
-			class="inputbox"
 		/>
 
 		<field

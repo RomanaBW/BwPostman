@@ -21,7 +21,6 @@
 			label="COM_BWPOSTMAN_TPL_FIELD_TITLE_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_TPL_FIELD_TITLE_DESC"
-			class="inputbox"
 			required="true"
 		/>
 		<field
@@ -30,7 +29,6 @@
 			label="COM_BWPOSTMAN_TPL_FIELD_DESCRIPTION_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_TPL_FIELD_DESCRIPTION_DESC"
-			class="inputbox"
 			rows="3"
 			cols="50"
 			required="true"
@@ -38,7 +36,6 @@
 		<field
 			name="thumbnail"
 			type="media"
-			class="inputbox"
 			label="COM_BWPOSTMAN_TPL_THUMBNAIL_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_TPL_THUMBNAIL_DESC"
@@ -60,7 +57,6 @@
 				type="bwrules"
 				label=""
 				translate_label="false"
-				class="inputbox"
 				filter="rules"
 				component="com_bwpostman"
 				section="template">
@@ -77,14 +73,12 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_NL_WIDTH_DESC"
 				default="600"
-				class="inputbox"
 				size="4"
 				filter="integer"
 			/>
 			<field
 				name="zoom"
 				type="list"
-				class="inputbox chzn-state"
 				label="COM_BWPOSTMAN_TPL_ZOOM_LABEL"
 				labelclass="control-label"
 				description ="COM_BWPOSTMAN_TPL_ZOOM_DESC"
@@ -103,7 +97,6 @@
 			<field
 				name="zoom_padding"
 				type="list"
-				class="inputbox chzn-state"
 				label="COM_BWPOSTMAN_TPL_ZOOM_PADDING_LABEL"
 				labelclass="control-label"
 				description ="COM_BWPOSTMAN_TPL_ZOOM_PADDING_DESC"
@@ -123,7 +116,6 @@
 			<field
 				name="paper_bg"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_PAPER_BG_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_PAPER_BG_DESC"
@@ -131,7 +123,6 @@
 			<field
 				name="article_bg"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_ARTICLE_BG_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_ARTICLE_BG_DESC"
@@ -139,7 +130,6 @@
 			<field
 				name="headline_color"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_HEADLINE_COLOR_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_HEADLINE_COLOR_DESC"
@@ -147,7 +137,6 @@
 			<field
 				name="content_color"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_CONTENT_COLOR_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_CONTENT_COLOR_DESC"
@@ -155,7 +144,6 @@
 			<field
 				name="legal_color"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_LEGAL_COLOR_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_LEGAL_COLOR_DESC"
@@ -167,7 +155,6 @@
 				label="COM_BWPOSTMAN_TPL_FIELD_CUSTOM_CSS_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_FIELD_CUSTOM_CSS_DESC"
-				class="inputbox"
 				rows="3"
 				cols="50"
 			/>
@@ -179,7 +166,6 @@
 			<field
 				name="header_style"
 				type="list"
-				class="inputbox chzn-color-state"
 				label="COM_BWPOSTMAN_TPL_THEME_HEADER_LABEL"
 				labelclass="control-label"
 				description ="COM_BWPOSTMAN_TPL_THEME_HEADER_DESC"
@@ -205,7 +191,6 @@
 			<field
 				name="logo_src"
 				type="media"
-				class="inputbox"
 				label="COM_BWPOSTMAN_LOGO_FIELD_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_LOGO_FIELD_DESC"
@@ -216,7 +201,6 @@
 				label="COM_BWPOSTMAN_TPL_LOGO_WIDTH_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_LOGO_WIDTH_DESC"
-				class="inputbox"
 				size="4"
 				filter="integer"
 			/>
@@ -226,7 +210,6 @@
 				label="COM_BWPOSTMAN_TPL_FIRSTLINE_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_FIRSTLINE_DESC"
-				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -236,7 +219,6 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_SIZE_FIRSTLINE_DESC"
 				   default="36"
-				class="inputbox"
 				size="2"
 			/>
 			<field
@@ -245,7 +227,6 @@
 				label="COM_BWPOSTMAN_TPL_SECONDLINE_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_SECONDLINE_DESC"
-				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -255,13 +236,11 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_SIZE_SECONDLINE_DESC"
 				default="16"
-				class="inputbox"
 				size="2"
 			/>
 			<field
 				name="header_bg"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_HEADER_BG_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_HEADER_BG_DESC"
@@ -269,7 +248,6 @@
 			<field
 				name="header_shadow"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_HEADER_SHADOW_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_HEADER_SHADOW_DESC"
@@ -277,7 +255,6 @@
 			<field
 				name="header_color"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_HEADER_COLOR_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_HEADER_COLOR_DESC"
@@ -305,7 +282,6 @@
 				label="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_DESC"
-				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -315,7 +291,6 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_INTROTEXT_DESC"
 				default="Lorem ipsum dolor sit amet consectetuer sem venenatis eros id lacus. Consequat dolor urna justo pede Phasellus justo est Lorem nunc et."
-				class="inputbox"
 				rows="3"
 				cols="50"
 				filter="raw"
@@ -340,7 +315,6 @@
 			<field
 				name="divider_color"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_DIVIDER_COLOR_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_DIVIDER_COLOR_DESC"
@@ -397,7 +371,6 @@
 			<field
 				name="readon_bg"
 				type="color"
-				class="inputbox"
 				default="#78b424"
 				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
 				labelclass="control-label"
@@ -406,7 +379,6 @@
 			<field
 				name="readon_shadow"
 				type="color"
-				class="inputbox"
 				default="#66952a"
 				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
 				labelclass="control-label"
@@ -415,7 +387,6 @@
 			<field
 				name="readon_color"
 				type="color"
-				class="inputbox"
 				default="#ffffff"
 				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
 				labelclass="control-label"
@@ -429,7 +400,6 @@
 			<field
 				name="footer_bg"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_FOOTER_BG_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_FOOTER_BG_DESC"
@@ -437,7 +407,6 @@
 			<field
 				name="footer_shadow"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_FOOTER_SHADOW_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_FOOTER_SHADOW_DESC"
@@ -445,7 +414,6 @@
 			<field
 				name="footer_color"
 				type="color"
-				class="inputbox"
 				label="COM_BWPOSTMAN_TPL_FOOTER_COLOR_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_FOOTER_COLOR_DESC"
@@ -483,7 +451,6 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_ADDRESSTEXT_DESC"
 				default="Name&#13;&#10;Address&#13;&#10;..."
-				class="inputbox"
 				rows="3"
 				cols="50"
 			/>
@@ -493,7 +460,6 @@
 				label="COM_BWPOSTMAN_TPL_BUTTON_HEADLINE_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_HEADLINE_DESC"
-				class="inputbox"
 				size="30"
 			/>
 		</fieldset>
@@ -520,7 +486,6 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC"
 				default="Website"
-				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -530,13 +495,11 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
 				default="http://www.mywebsite.com"
-				class="inputbox"
 				size="30"
 			/>
 			<field
 				name="button_bg"
 				type="color"
-				class="inputbox"
 				default="#78b424"
 				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
 				labelclass="control-label"
@@ -545,7 +508,6 @@
 			<field
 				name="button_shadow"
 				type="color"
-				class="inputbox"
 				default="#66952a"
 				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
 				labelclass="control-label"
@@ -554,7 +516,6 @@
 			<field
 				name="button_color"
 				type="color"
-				class="inputbox"
 				default="#ffffff"
 				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
 				labelclass="control-label"
@@ -584,7 +545,6 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC"
 				default="Facebook"
-				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -594,13 +554,11 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
 				default="http://www.facebook.com"
-				class="inputbox"
 				size="30"
 			/>
 			<field
 				name="button_bg"
 				type="color"
-				class="inputbox"
 				default="#3b5998"
 				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
 				labelclass="control-label"
@@ -609,7 +567,6 @@
 			<field
 				name="button_shadow"
 				type="color"
-				class="inputbox"
 				default="##2e3066"
 				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
 				labelclass="control-label"
@@ -618,7 +575,6 @@
 			<field
 				name="button_color"
 				type="color"
-				class="inputbox"
 				default="#ffffff"
 				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
 				labelclass="control-label"
@@ -648,7 +604,6 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC"
 				default="Twitter"
-				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -658,13 +613,11 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
 				default="http://www.twitter.com/"
-				class="inputbox"
 				size="30"
 			/>
 			<field
 				name="button_bg"
 				type="color"
-				class="inputbox"
 				default="#3b5998"
 				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
 				labelclass="control-label"
@@ -673,7 +626,6 @@
 			<field
 				name="button_shadow"
 				type="color"
-				class="inputbox"
 				default="#2e3066"
 				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
 				labelclass="control-label"
@@ -682,7 +634,6 @@
 			<field
 				name="button_color"
 				type="color"
-				class="inputbox"
 				default="#ffffff"
 				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
 				labelclass="control-label"
@@ -712,7 +663,6 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC"
 				default="Google+"
-				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -722,13 +672,11 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
 				default="https://plus.google.com/"
-				class="inputbox"
 				size="30"
 			/>
 			<field
 				name="button_bg"
 				type="color"
-				class="inputbox"
 				default="#ff4444"
 				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
 				labelclass="control-label"
@@ -737,7 +685,6 @@
 			<field
 				name="button_shadow"
 				type="color"
-				class="inputbox"
 				default="#66952a"
 				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
 				labelclass="control-label"
@@ -746,7 +693,6 @@
 			<field
 				name="button_color"
 				type="color"
-				class="inputbox"
 				default="#ffffff"
 				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
 				labelclass="control-label"
@@ -776,7 +722,6 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_TEXT_DESC"
 				default="Linkedin"
-				class="inputbox"
 				size="30"
 			/>
 			<field
@@ -786,13 +731,11 @@
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
 				default="https://www.linkedin.com/"
-				class="inputbox"
 				size="30"
 			/>
 			<field
 				name="button_bg"
 				type="color"
-				class="inputbox"
 				default="#2855d1"
 				label="COM_BWPOSTMAN_TPL_BUTTON_BG_LABEL"
 				labelclass="control-label"
@@ -801,7 +744,6 @@
 			<field
 				name="button_shadow"
 				type="color"
-				class="inputbox"
 				default="#19158a"
 				label="COM_BWPOSTMAN_TPL_BUTTON_SHADOW_LABEL"
 				labelclass="control-label"
@@ -810,7 +752,6 @@
 			<field
 				name="button_color"
 				type="color"
-				class="inputbox"
 				default="#ffffff"
 				label="COM_BWPOSTMAN_TPL_BUTTON_COLOR_LABEL"
 				labelclass="control-label"
@@ -861,7 +802,6 @@
 			label="COM_BWPOSTMAN_TPL_ARTICLE_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_TPL_ARTICLE_DESC"
-			class="inputbox"
 			rows="3"
 			cols="50"
 			filter="JComponentHelper::filterText"
@@ -872,7 +812,6 @@
 			label="COM_BWPOSTMAN_TPL_DIVIDER_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_TPL_DIVIDER_DESC"
-			class="inputbox"
 			rows="3"
 			cols="50"
 			filter="JComponentHelper::filterText"
@@ -897,7 +836,6 @@
 				name="tpl_tags_head_advanced"
 				type="textarea"
 				label="COM_BWPOSTMAN_TPL_TAGS_ADVANCED_LABEL"
-				class="inputbox"
 				rows="3"
 				cols="50"
 				filter="raw"
@@ -918,7 +856,6 @@
 				name="tpl_tags_body_advanced"
 				type="textarea"
 				label="COM_BWPOSTMAN_TPL_TAGS_ADVANCED_LABEL"
-				class="inputbox"
 				rows="3"
 				cols="50"
 				filter="raw"
@@ -939,7 +876,6 @@
 				name="tpl_tags_article_advanced_b"
 				type="textarea"
 				label="COM_BWPOSTMAN_TPL_TAGS_ADVANCED_LABEL"
-				class="inputbox"
 				rows="3"
 				cols="50"
 				filter="raw"
@@ -947,7 +883,6 @@
 		<field
 				name="tpl_tags_article_advanced_e"
 				type="textarea"
-				class="inputbox"
 				rows="3"
 				cols="50"
 				filter="raw"
@@ -968,7 +903,6 @@
 				name="tpl_tags_readon_advanced"
 				type="textarea"
 				label="COM_BWPOSTMAN_TPL_TAGS_ADVANCED_LABEL"
-				class="inputbox"
 				rows="3"
 				cols="50"
 				filter="raw"
@@ -989,7 +923,6 @@
 				name="tpl_tags_legal_advanced_b"
 				type="textarea"
 				label="COM_BWPOSTMAN_TPL_TAGS_ADVANCED_LABEL"
-				class="inputbox"
 				rows="3"
 				cols="50"
 				filter="raw"
@@ -997,7 +930,6 @@
 		<field
 				name="tpl_tags_legal_advanced_e"
 				type="textarea"
-				class="inputbox"
 				rows="3"
 				cols="50"
 				filter="raw"

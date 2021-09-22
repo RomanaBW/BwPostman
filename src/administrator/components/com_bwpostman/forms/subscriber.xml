@@ -38,7 +38,6 @@
 			label="COM_BWPOSTMAN_SUBS_FIELD_FIRSTNAME_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_SUBS_FIELD_FIRSTNAME_DESC"
-			class="inputbox"
 			size="30"
 		/>
 
@@ -48,7 +47,6 @@
 				label="COM_BWPOSTMAN_SUBS_FIELD_NAME_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_SUBS_FIELD_NAME_DESC"
-				class="inputbox"
 				size="30"
 		/>
 
@@ -58,14 +56,12 @@
 				label="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_DESC"
-				class="inputbox"
 				size="30"
 		/>
 
 		<field
 				name="email"
 				type="email"
-				class="inputbox"
 				size="30"
 				label="COM_BWPOSTMAN_SUBS_FIELD_EMAIL_LABEL"
 				labelclass="control-label"
@@ -290,7 +286,6 @@
 			type="bwrules"
 			label=""
 			translate_label="false"
-			class="inputbox"
 			filter="rules"
 			component="com_bwpostman"
 			section="subscriber">
@@ -303,7 +298,6 @@
 			label="COM_BWPOSTMAN_SUB_IMPORT_FILE"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_SUB_IMPORT_FILE_NOTE"
-			class="inputbox"
 			size="30"
 			directory=""
 		/>

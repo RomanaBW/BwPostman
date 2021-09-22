@@ -23,7 +23,6 @@
 			label="COM_BWPOSTMAN_CAM_FIELD_TITLE_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_CAM_FIELD_TITLE_DESC"
-			class="inputbox"
 			required="true"
 		/>
 
@@ -33,7 +32,6 @@
 			label="COM_BWPOSTMAN_CAM_FIELD_DESCRIPTION_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_CAM_FIELD_DESCRIPTION_DESC"
-			class="inputbox"
 		/>
 
 		<field
@@ -119,7 +117,6 @@
 				type="bwrules"
 				label=""
 				translate_label="false"
-				class="inputbox"
 				filter="rules"
 				component="com_bwpostman"
 				section="campaign"
@@ -159,7 +156,6 @@
 			label="COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC"
-			class="inputbox"
 			size="1"
 		/>
 	</fieldset>

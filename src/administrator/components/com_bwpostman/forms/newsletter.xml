@@ -7,7 +7,6 @@
 			label="COM_BWPOSTMAN_NL_FIELD_FROM_NAME_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_NL_FIELD_FROM_NAME_DESC"
-			class="inputbox"
 			size="30"
 			required="true"
 		/>
@@ -18,7 +17,6 @@
 			label="COM_BWPOSTMAN_NL_FIELD_FROM_EMAIL_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_NL_FIELD_FROM_EMAIL_DESC"
-			class="inputbox"
 			size="30"
 			validate="email"
 			required="true"
@@ -30,7 +28,6 @@
 			label="COM_BWPOSTMAN_NL_FIELD_REPLY_EMAIL_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_NL_FIELD_REPLY_EMAIL_DESC"
-			class="inputbox"
 			size="30"
 			validate="email"
 			required="true"
@@ -42,7 +39,6 @@
 			label="COM_BWPOSTMAN_NL_FIELD_SUBJECT_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_NL_FIELD_SUBJECT_DESC"
-			class="inputbox"
 			size="30"
 			required="true"
 		/>
@@ -74,7 +70,6 @@
 			label="COM_BWPOSTMAN_NL_FIELD_DESCRIPTION_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_NL_FIELD_DESCRIPTION_DESC"
-			class="inputbox"
 		/>
 
 		<field
@@ -197,7 +192,6 @@
 		<field
 			name="hits"
 			type="hidden"
-			class="inputbox"
 			label="COM_BWPOSTMAN_NL_FIELD_HITS_ID_LABEL"
 			labelclass="control-label"
 			description ="COM_BWPOSTMAN_NL_FIELD_HITS_ID_DESC"
@@ -214,7 +208,7 @@
 			label="COM_BWPOSTMAN_NL_FIELD_TEMPLATE_ID_LABEL"
 			labelclass="control-label control-label4"
 			description="COM_BWPOSTMAN_NL_FIELD_TEMPLATE_ID_DESC"
-			class="inputbox mailinglists"
+			class="mailinglists"
 			required="true"
 			default="9"
 		/>
@@ -230,7 +224,7 @@
 			label="COM_BWPOSTMAN_NL_FIELD_TEXT_TEMPLATE_ID_LABEL"
 			labelclass="control-label control-label4"
 			description="COM_BWPOSTMAN_NL_FIELD_TEXT_TEMPLATE_ID_DESC"
-			class="inputbox mailinglists"
+			class="mailinglists"
 			required="true"
 			default="5"
 		/>
@@ -286,7 +280,6 @@
 			label="COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC"
-			class="inputbox"
 			size="1"
 		/>
 	</fieldset>
@@ -297,7 +290,7 @@
 			type="selectedcontent"
 			label="COM_BWPOSTMAN_NL_FIELD_SELECTED_CONTENT_LABEL"
 			description="COM_BWPOSTMAN_NL_FIELD_SELECTED_CONTENT_DESC"
-			class="inputbox w-100"
+			class="w-100"
 			size="20"
 			multiple="true"
 			ondblclick="moveSelectedOptions(document.adminForm['jform_selected_content'], document.adminForm['jform_available_content'])"
@@ -310,7 +303,7 @@
 			type="availablecontent"
 			label="COM_BWPOSTMAN_NL_FIELD_AVAILABLE_CONTENT_LABEL"
 			description="COM_BWPOSTMAN_NL_FIELD_AVAILABLE_CONTENT_DESC"
-			class="inputbox w-100"
+			class="w-100"
 			size="20"
 			multiple="true"
 			ondblclick="moveSelectedOptions(document.adminForm['jform_available_content'], document.adminForm['jform_selected_content'])"
@@ -324,7 +317,6 @@
 			label="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_DESC"
-			class="inputbox"
 			size="30"
 		/>
 
@@ -334,7 +326,6 @@
 			label="COM_BWPOSTMAN_TPL_INTROTEXT_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_TPL_INTROTEXT_DESC"
-			class="inputbox"
 			rows="3"
 			cols="50"
 		/>
@@ -342,7 +333,6 @@
 		<field
 			name="html_version"
 			type="editor"
-			class="inputbox"
 			label="COM_BWPOSTMAN_NL_FIELD_HTML_VERSION_ID_LABEL"
 			description ="COM_BWPOSTMAN_NL_FIELD_HTML_VERSION_ID_DESC"
 			filter="raw"
@@ -357,7 +347,6 @@
 			label="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_TPL_INTRO_HEADLINE_DESC"
-			class="inputbox"
 			size="30"
 		/>
 
@@ -367,7 +356,6 @@
 			label="COM_BWPOSTMAN_TPL_INTROTEXT_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_TPL_INTROTEXT_DESC"
-			class="inputbox"
 			rows="3"
 			cols="50"
 		/>
@@ -375,7 +363,6 @@
 		<field
 			name="text_version"
 			type="textarea"
-			class="inputbox span10"
 			label="COM_BWPOSTMAN_NL_FIELD_TEXT_VERSION_ID_LABEL"
 			description ="COM_BWPOSTMAN_NL_FIELD_TEXT_VERSION_ID_DESC"
 			filter="BwPostmanFilterHelper::filterContent"
@@ -424,7 +411,6 @@
 			format="%Y-%m-%d %H:%M:%S"
 			size="22"
 			filter="user_utc"
-			class="inputbox"
 		/>
 
 		<field
@@ -436,7 +422,6 @@
 			format="%Y-%m-%d %H:%M:%S"
 			size="22"
 			filter="user_utc"
-			class="inputbox"
 		/>
 
 		<field

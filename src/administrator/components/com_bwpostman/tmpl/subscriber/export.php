@@ -36,7 +36,8 @@ use Joomla\CMS\Uri\Uri;
 // Load the tooltip behavior for the notes
 HTMLHelper::_('bootstrap.tooltip');
 
-Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/media/com_bwpostman/js/admin-bwpm_subscriber_export.js');
+$wa = $this->document->getWebAssetManager();
+$wa->registerAndUseScript('com_bwpostman.admin-bwpm_subscriber_export.js', 'com_bwpostman/admin-bwpm_subscriber_export.js');
 
 $jinput	= Factory::getApplication()->input;
 $image	= '<i class="fa fa-info-circle fa-lg"></i>';

@@ -100,10 +100,6 @@ class MlinternField extends RadioField
 		{
 			$attributes .= 'class="' . $v . '" ';
 		}
-		else
-		{
-			$attributes .= 'class="inputbox" ';
-		}
 
 		$m = $this->element['multiple'];
 

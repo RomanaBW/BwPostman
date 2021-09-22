@@ -95,8 +95,8 @@ class HtmltemplatesField extends RadioField
 			{
 				// Initialize some option attributes.
 				$checked    = ((string) $option->value == (string) $selected) ? ' checked="checked"' : '';
-				$lblclass   = ' class="inputbox mailinglists radio"';
-				$inputclass = ' class="inputbox mailinglists radio"';
+				$lblclass   = ' class="mailinglists radio"';
+				$inputclass = ' class="mailinglists radio"';
 
 				$disabled   = !empty($option->disable) || ($readonly && !$checked);
 

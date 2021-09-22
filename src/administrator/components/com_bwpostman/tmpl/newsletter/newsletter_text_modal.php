@@ -82,7 +82,7 @@ use Joomla\CMS\Language\Text;
 		<fieldset>
 			<table width="100%" border="0">
 				<tr>
-					<td><textarea readonly="readonly" class="inputbox" name="text_version"  title="text_version"
+					<td><textarea readonly="readonly" name="text_version"  title="text_version"
 						cols="80" rows="13"
 						style="width: 100%; border: 0; margin: 0; padding: 0;"><?php echo $this->item->text_formatted; ?></textarea>
 					</td>

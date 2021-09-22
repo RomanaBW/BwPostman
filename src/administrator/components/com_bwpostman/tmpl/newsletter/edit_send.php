@@ -117,7 +117,7 @@ $currentTab = 'edit_send';
 									<label class="form-check-label form-control-plaintext" for="send_to_unconfirmed"><?php echo Text::_('COM_BWPOSTMAN_NL_SEND_TO_UNCONFIRMED');?></label>
 								</div>
 								<div class="form-inline mb-3">
-									<input type="text" class="form-control inputbox me-2" name="mails_per_pageload" id="mails_per_pageload" title="mails_per_pageload"
+									<input type="text" class="form-control me-2" name="mails_per_pageload" id="mails_per_pageload" title="mails_per_pageload"
 											size="4" maxlength="10" value="<?php echo $this->params->get('default_mails_per_pageload');?>" />
 									<span class="hasTooltip"
 											title="<?php echo Text::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD_NOTE'); ?>">

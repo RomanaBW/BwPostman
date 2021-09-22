@@ -53,7 +53,7 @@ if ($filter_id)
 $batch_lists = '<label id="batch-choose-action-lbl">' . Text::_('COM_BWPOSTMAN_SUB_BATCH_MENU_LABEL') . '</label>'
 				. '<div class="clr"></div>'
 				. '<div id="batch-choose-action" class="control-group">'
-				. '<select name="batch[mailinglist_id]" class="inputbox" id="batch-mailinglist-id">'
+				. '<select name="batch[mailinglist_id]" id="batch-mailinglist-id">'
 				. HTMLHelper::_('select.options', $this->mailinglists, 'value', 'text', '', '', '')
 				. '</select>'
 				. '</div>'

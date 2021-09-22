@@ -41,7 +41,7 @@ echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag1', Text::_('COM_BWPOSTMA
 		<label>
 			<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
 		</label>
-		<div class="textarea inputbox form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->headTag)); ?></div>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->headTag)); ?></div>
 	</div>
 
 	<div class="control-group">
@@ -62,7 +62,7 @@ echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag2', Text::_('COM_BWPOSTMA
 			<label>
 				<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
 			</label>
-		<div class="textarea inputbox form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->bodyTag)); ?></div>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->bodyTag)); ?></div>
 	</div>
 
 	<div class="control-group">
@@ -83,9 +83,9 @@ echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag3', Text::_('COM_BWPOSTMA
 		<label>
 			<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
 		</label>
-		<div class="textarea inputbox form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->articleTagBegin)); ?></div>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->articleTagBegin)); ?></div>
 		<div class="my-2"><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></div>
-		<div class="textarea inputbox form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->articleTagEnd)); ?></div>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->articleTagEnd)); ?></div>
 	</div>
 
 	<div class="control-group">
@@ -108,7 +108,7 @@ echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag4', Text::_('COM_BWPOSTMA
 		<label>
 			<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
 		</label>
-		<div class="textarea inputbox form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->readonTag)); ?></div>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->readonTag)); ?></div>
 	</div>
 
 	<div class="control-group">
@@ -129,9 +129,9 @@ echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag5', Text::_('COM_BWPOSTMA
 		<label>
 			<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
 		</label>
-		<div class="textarea inputbox form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->legalTagBegin)); ?></div>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->legalTagBegin)); ?></div>
 		<div class="my-2"><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></div>
-		<div class="textarea inputbox form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->legalTagEnd)); ?></div>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->legalTagEnd)); ?></div>
 	</div>
 
 	<div class="control-group">

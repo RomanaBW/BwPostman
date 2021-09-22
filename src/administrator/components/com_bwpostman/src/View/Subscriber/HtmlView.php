@@ -363,7 +363,7 @@ class HtmlView extends BaseHtmlView
 				'select.genericlist',
 				$import_fields,
 				'import_fields[]',
-				'class="custom-select inputbox" size="10" multiple="multiple" style="padding: 6px; width: 260px;"',
+				'class="custom-select w-auto" size="10" multiple multiple="multiple"',
 				'value',
 				'text'
 			);

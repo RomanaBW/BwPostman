@@ -879,8 +879,8 @@ class TestSubscribersListsCest
 
 		$this->removeAssetIdFromFields($I);
 
-		$I->scrollTo(SubsManage::$export_legend_fields);
-		$I->wait(1);
+		$I->scrollTo(SubsManage::$subs_footer_div);
+		$I->wait(2);
 
 		$user = getenv('BW_TESTER_USER');
 
@@ -950,7 +950,7 @@ class TestSubscribersListsCest
 
 		$this->removeAssetIdFromFields($I);
 
-		$I->scrollTo(SubsManage::$export_legend_fields);
+		$I->scrollTo(SubsManage::$subs_footer_div);
 		$I->wait(1);
 
 		$user = getenv('BW_TESTER_USER');
@@ -1021,7 +1021,7 @@ class TestSubscribersListsCest
 
 		$this->removeAssetIdFromFields($I);
 
-		$I->scrollTo(SubsManage::$export_legend_fields);
+		$I->scrollTo(SubsManage::$subs_footer_div);
 		$I->wait(1);
 
 		$user = getenv('BW_TESTER_USER');
@@ -1103,7 +1103,7 @@ class TestSubscribersListsCest
 
 		$this->removeAssetIdFromFields($I);
 
-		$I->scrollTo(SubsManage::$export_legend_fields);
+		$I->scrollTo(SubsManage::$subs_footer_div);
 		$I->wait(1);
 
 		// Determine download path depending on user, which process the tests
@@ -1186,7 +1186,7 @@ class TestSubscribersListsCest
 
 		$this->removeAssetIdFromFields($I);
 
-		$I->scrollTo(SubsManage::$export_legend_fields);
+		$I->scrollTo(SubsManage::$subs_footer_div);
 		$I->wait(1);
 
 		// Determine download path depending on user, which process the tests
@@ -1255,7 +1255,7 @@ class TestSubscribersListsCest
 
 		$this->removeAssetIdFromFields($I);
 
-		$I->scrollTo(SubsManage::$export_legend_fields);
+		$I->scrollTo(SubsManage::$subs_footer_div);
 		$I->wait(1);
 
 		$user = getenv('BW_TESTER_USER');

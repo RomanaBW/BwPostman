@@ -805,6 +805,13 @@ class SubscriberManagerPage
 	 */
 	public static $export_legend_fields = "//*[@id='adminForm']/fieldset/div/div/div[5]/label";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $subs_footer_div = "//*/div[contains(@class, 'bwpm-footer')]";
+
 
 	/**
 	 * @var string

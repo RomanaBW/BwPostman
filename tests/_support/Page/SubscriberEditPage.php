@@ -419,21 +419,21 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_accessible       = "//*[@id='ml_available']/fieldset/div[%s]/input";
+	public static $mls_accessible       = "//*[@id='jform_ml_available_%s']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_nonaccessible    = "//*[@id='ml_unavailable']/fieldset/div[%s]/input";
+	public static $mls_nonaccessible    = "//*[@id='jform_ml_unavailable_%s']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_internal         = "//*[@id='ml_intern']/fieldset/div[%s]/input";
+	public static $mls_internal         = "//*[@id='jform_ml_intern_%s']";
 
 
 	/**
@@ -441,7 +441,7 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_internal_label   = "//*[@id='ml_intern']/fieldset/legend";
+	public static $mls_internal_label   = "//*[@id='ml_intern']";
 
 	/**
 	 * Test method to create single Subscriber without cleanup for testing restore permission

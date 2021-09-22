@@ -124,8 +124,6 @@ window.onload = function() {
 				document.getElementById('exportfields_tr').style.display = '';
 				document.getElementById('delimiter_tr').style.display = '';
 				document.getElementById('enclosure_tr').style.display = '';
-// Romana, ich glaube .caption gibt es nur beim Import
-//				$j(".caption").show();
 				break;
 		}
 	}
@@ -150,8 +148,6 @@ window.onload = function() {
 	ready(function() {
 		document.getElementById('delimiter_tr').style.display = 'none';
 		document.getElementById('enclosure_tr').style.display = 'none';
-// siehe oben
-//		$j(".caption").hide();
 		document.getElementById('exportgroups_tr').style.display = 'none';
 		document.getElementById('exportfields_tr').style.display = 'none';
 		document.getElementById('button_tr').style.display = 'none';

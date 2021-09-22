@@ -247,7 +247,7 @@ function removeOptions(selectbox) // Method to get all items in the selectbox wh
 		if(selectbox.options[i].selected){
 			if (selectbox.options[i].text === 'email')
 			{
-				alert (document.getElementById('importAlertEmail'));
+				alert (document.getElementById('importAlertEmail').value);
 			} else
 			{
 				selectbox.remove(i);

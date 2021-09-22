@@ -133,7 +133,6 @@
 						multiple="true"
 						size="5"
 						default="0"
-						class="inputbox"
 				/>
 			</fieldset>
 

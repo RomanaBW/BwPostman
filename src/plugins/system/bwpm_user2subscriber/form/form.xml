@@ -54,7 +54,7 @@
 			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_LABEL"
 			labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
 			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_DESC"
-			class="inputbox bwpm-u2s-fields-toggle"
+			class="bwpm-u2s-fields-toggle"
 			size="30"
 			required="false"
 		/>
@@ -66,7 +66,7 @@
 			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_FIRSTNAME_LABEL"
 			labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
 			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_FIRSTNAME_DESC"
-			class="inputbox bwpm-u2s-fields-toggle"
+			class="bwpm-u2s-fields-toggle"
 			required="false"
 			size="30"
 		/>
@@ -78,7 +78,7 @@
 			label="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_LABEL"
 			labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
 			description="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_DESC"
-			class="inputbox bwpm-u2s-fields-toggle"
+			class="bwpm-u2s-fields-toggle"
 			required="false"
 			size="30"
 		/>

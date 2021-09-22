@@ -1122,7 +1122,7 @@
 
 }
 
-#bwp_com_register .user_mailformat .controls label input.inputbox {
+#bwp_com_register .user_mailformat .controls label input {
 
 }
 
@@ -1393,7 +1393,7 @@ cursor: pointer;
 
 }
 
-#bwp_com_edit_subscription .controls label input.inputbox {
+#bwp_com_edit_subscription .controls label input {
 
 }
 

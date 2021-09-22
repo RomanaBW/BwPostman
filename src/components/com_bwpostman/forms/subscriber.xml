@@ -40,7 +40,6 @@
 			label="COM_BWPOSTMAN_SUBS_FIELD_NAME_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_SUBS_FIELD_NAME_DESC"
-			class="inputbox"
 			size="30"
 			required="true"
 		/>
@@ -51,7 +50,6 @@
 			label="COM_BWPOSTMAN_SUBS_FIELD_FIRSTNAME_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_SUBS_FIELD_FIRSTNAME_DESC"
-			class="inputbox"
 			size="30"
 		/>
 
@@ -61,7 +59,6 @@
 				label="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_SUBS_FIELD_SPECIAL_DESC"
-				class="inputbox"
 				required="false"
 				size="30"
 		/>
@@ -69,7 +66,6 @@
 		<field
 				name="email"
 				type="email"
-				class="inputbox"
 				size="30"
 				label="COM_BWPOSTMAN_SUBS_FIELD_EMAIL_LABEL"
 				labelclass="control-label"
@@ -195,7 +191,7 @@
 			label="COM_BWPOSTMAN_SUBS_FIELD_ML_AVAILABLE_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_SUBS_FIELD_ML_AVAILABLE_DESC"
-			class="inputbox mailinglists"
+			class="mailinglists"
 		/>
 
 		<field
@@ -204,7 +200,7 @@
 			label="COM_BWPOSTMAN_SUBS_FIELD_ML_UNAVAILABLE_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_SUBS_FIELD_ML_UNAVAILABLE_DESC"
-			class="inputbox mailinglists"
+			class="mailinglists"
 		/>
 
 		<field
@@ -213,7 +209,7 @@
 			label="COM_BWPOSTMAN_SUBS_FIELD_ML_INTERN_LABEL"
 			labelclass="control-label"
 			description="COM_BWPOSTMAN_SUBS_FIELD_ML_INTERN_DESC"
-			class="inputbox mailinglists"
+			class="mailinglists"
 		/>
 
 		<field

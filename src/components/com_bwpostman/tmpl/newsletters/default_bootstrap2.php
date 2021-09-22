@@ -80,7 +80,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 								<?php echo Text::_('JSEARCH_FILTER'); ?>
 							</label>
 							<div class="btn-wrapper input-append">
-								<input type="text" name="filter_search" id="filter_search" class="inputbox go"
+								<input type="text" name="filter_search" id="filter_search" class="go"
 										value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
 										title="<?php echo Text::_('COM_BWPOSTMAN_FILTER_SEARCH_DESC'); ?>"
 										placeholder="<?php echo Text::_('COM_BWPOSTMAN_SEARCH'); ?> " />
@@ -113,7 +113,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 										'select.genericlist',
 										$this->mailinglists,
 										'filter.mailinglist',
-										'class="mb-2 inputbox input-medium filter-mailinglist"',
+										'class="mb-2 filter-mailinglist"',
 										'id',
 										'title',
 										$this->state->get('filter.mailinglist'),
@@ -130,7 +130,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 										'select.genericlist',
 										$this->usergroups,
 										'filter.usergroup',
-										'class="mb-2 inputbox input-medium filter-usergroup"',
+										'class="mb-2 filter-usergroup"',
 										'id',
 										'title',
 										$this->state->get('filter.usergroup'),
@@ -142,7 +142,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 										'select.genericlist',
 										$this->campaigns,
 										'filter.campaign',
-										'class="mb-2 inputbox input-medium filter-campaign"',
+										'class="mb-2 filter-campaign"',
 										'id',
 										'title',
 										$this->state->get('filter.campaign'),

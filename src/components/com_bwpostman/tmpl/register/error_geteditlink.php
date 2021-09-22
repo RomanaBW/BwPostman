@@ -67,7 +67,7 @@ HtmlHelper::_('stylesheet', $css_filename, array('version' => 'auto'));
 			<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<p class="getlink">
 					<label id="emailmsg" for="email"> <?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:</label>
-					<input type="text" id="email" name="email" size="40" value="" class="inputbox required validate-email" maxlength="100" />
+					<input type="text" id="email" name="email" size="40" value="" class="required validate-email" maxlength="100" />
 				</p>
 			</div>
 

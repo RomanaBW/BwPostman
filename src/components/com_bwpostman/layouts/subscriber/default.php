@@ -100,10 +100,6 @@ $lists      = $displayData['lists'];
 						if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
 						{
 							echo "invalid";
-						}
-						else
-						{
-							echo "inputbox";
 						} ?>"
 						maxlength="50" />
 			<?php
@@ -143,10 +139,6 @@ $lists      = $displayData['lists'];
 					class="<?php
 					if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1)) {
 						echo "invalid";
-					}
-					else
-					{
-						echo "inputbox";
 					} ?>"
 					maxlength="50" /> <?php
 			}
@@ -196,10 +188,6 @@ $lists      = $displayData['lists'];
 						if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
 						{
 							echo "invalid";
-						}
-						else
-						{
-							echo "inputbox";
 						} ?>"
 						maxlength="50" /><span class="append-area"><i class="icon-star"></i></span><?php
 			}
@@ -209,10 +197,6 @@ $lists      = $displayData['lists'];
 						if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
 						{
 							echo "invalid";
-						}
-						else
-						{
-							echo "inputbox";
 						} ?>"
 						maxlength="50" /> <?php
 			}
@@ -239,7 +223,7 @@ $lists      = $displayData['lists'];
 			}
 			else
 			{
-				echo "inputbox validate-email";
+				echo "validate-email";
 			} ?>"
 			maxlength="100" /><span class="append-area"><i class="icon-star"></i></span>
 	</p>

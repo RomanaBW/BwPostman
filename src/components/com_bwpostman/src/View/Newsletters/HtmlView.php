@@ -187,7 +187,7 @@ class HtmlView extends BaseHtmlView
 			$months,
 			'month',
 			array(
-				'list.attr' => 'size="1" class="inputbox input-small" onchange="document.getElementById(\'adminForm\').submit();"',
+				'list.attr' => 'size="1" onchange="document.getElementById(\'adminForm\').submit();"',
 				'list.select' => $state->get('filter.month'),
 				'option.key' => null
 			)
@@ -207,7 +207,7 @@ class HtmlView extends BaseHtmlView
 			$years,
 			'year',
 			array(
-				'list.attr' => 'size="1" class="inputbox input-small" onchange="document.getElementById(\'adminForm\').submit();"',
+				'list.attr' => 'size="1" onchange="document.getElementById(\'adminForm\').submit();"',
 				'list.select' => $state->get('filter.year')
 			)
 		);

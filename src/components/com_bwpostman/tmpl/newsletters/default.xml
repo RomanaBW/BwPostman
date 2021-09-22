@@ -150,7 +150,6 @@
 				multiple="true"
 				size="5"
 				default="0"
-				class="inputbox"
 				addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field"
 			/>
 
@@ -174,7 +173,6 @@
 				multiple="true"
 				size="1"
 				default="0"
-				class="inputbox"
 				addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field"
 			/>
 		</fieldset>
@@ -200,7 +198,7 @@
 				multiple="true"
 				size="5"
 				default=""
-				class="inputbox mailinglists"
+				class="mailinglists"
 				addfieldprefix="BoldtWebservice\Component\BwPostman\Site\Field"
 			/>
 		</fieldset>

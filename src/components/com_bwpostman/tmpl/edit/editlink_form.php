@@ -64,7 +64,7 @@ HtmlHelper::_('behavior.formvalidator');
 					<span><label id="emailmsg" for="email"> <?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:</label></span>
 					<span>
 						<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
-								class="inputbox required validate-email" maxlength="100" />
+								class="required validate-email" maxlength="100" />
 					</span>
 				</p>
 			</div>

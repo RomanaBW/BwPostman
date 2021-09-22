@@ -74,7 +74,7 @@ if ($moduleId !== null && $moduleId !== '')
 								<?php echo Text::_('JSEARCH_FILTER'); ?>
 							</label>
 							<div class="btn-wrapper input-append">
-								<input type="text" name="filter_search" id="filter_search" class="inputbox go"
+								<input type="text" name="filter_search" id="filter_search" class="go"
 										value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
 										title="<?php echo Text::_('COM_BWPOSTMAN_FILTER_SEARCH_DESC'); ?>"
 										placeholder="<?php echo Text::_('COM_BWPOSTMAN_SEARCH');
@@ -103,7 +103,7 @@ if ($moduleId !== null && $moduleId !== '')
 									'select.genericlist',
 									$this->mailinglists,
 									'filter.mailinglist',
-									'class="inputbox input-medium filter-mailinglist"',
+									'class="filter-mailinglist"',
 									'id',
 									'title',
 									$this->state->get('filter.mailinglist'),
@@ -122,7 +122,7 @@ if ($moduleId !== null && $moduleId !== '')
 									'select.genericlist',
 									$this->usergroups,
 									'filter.usergroup',
-									'class="inputbox input-medium filter-usergroup"',
+									'class="filter-usergroup"',
 									'id',
 									'title',
 									$this->state->get('filter.usergroup'),
@@ -136,7 +136,7 @@ if ($moduleId !== null && $moduleId !== '')
 									'select.genericlist',
 									$this->campaigns,
 									'filter.campaign',
-									'class="inputbox input-medium filter-campaign"',
+									'class="filter-campaign"',
 									'id',
 									'title',
 									$this->state->get('filter.campaign'),

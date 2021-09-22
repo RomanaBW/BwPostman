@@ -38,7 +38,7 @@ HTMLHelper::_('behavior.keepalive');
 //HTMLHelper::_('formbehavior.chosen', 'select');
 HTMLHelper::_('bootstrap.tooltip');
 
-$document = Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_subscriber_import.js');
+$document = Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/media/com_bwpostman/js/admin-bwpm_subscriber_import.js');
 
 $jinput	= Factory::getApplication()->input;
 $image	= '<i class="fa fa-info-circle fa-lg"></i>';

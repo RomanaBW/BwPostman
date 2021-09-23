@@ -16,7 +16,7 @@
         vm_project_part: ""
         test_runner: "bwpm_test_runner.sh"
 
-    - name: Set base source dir depending on joomla main version
+    - name: Set base source dir
       set_fact:
         base_src_dir: "/vhosts/dev/joomla-cms"
 

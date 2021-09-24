@@ -272,9 +272,10 @@ class HtmlView extends BaseHtmlView
 		// Get document object, set document title and add css
 		$document	= $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$wa = $this->document->getWebAssetManager();
+		$wa->registerAndUseStyle('com_bwpostman.admin-bwpostman_backend.css', 'com_bwpostman/admin-bwpostman_backend.css');
+		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_nl.js', 'com_bwpostman/admin-bwpm_nl.js');
 		HTMLHelper::_('jquery.framework');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_nl.js');
 
 		// Set toolbar title and items
 		if ($layout == 'nl_send')

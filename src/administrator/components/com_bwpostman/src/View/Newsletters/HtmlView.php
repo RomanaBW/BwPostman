@@ -241,11 +241,13 @@ class HtmlView extends BaseHtmlView
 		// Get document object, set document title and add css
 		$document = Factory::getApplication()->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NLS'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
-		$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_nls.js');
+
+		$wa = $this->document->getWebAssetManager();
+		$wa->registerAndUseStyle('com_bwpostman.admin-bwpostman_backend.css', 'com_bwpostman/admin-bwpostman_backend.css');
+		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_nls.js', 'com_bwpostman/admin-bwpm_nls.js');
 
 		// Add Javascript to make squeezebox close-button invisible
-		$document->addScriptDeclaration('
+		$wa->addInlineScript('
 			window.dispButton = function() {
 				document.getElementById("sbox-btn-close").style.display = "none";
 			}

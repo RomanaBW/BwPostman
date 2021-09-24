@@ -312,7 +312,7 @@ class HtmlView extends BaseHtmlView
 				. '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
 				. 'body {padding-top:0;}';
 			$document->addStyleDeclaration($style);
-			$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/install.css');
+			$document->addStyleSheet(Uri::root(true) . '/media/com_bwpostman/css/install.css');
 		}
 
 		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');

@@ -119,7 +119,8 @@ class HtmlView extends BaseHtmlView
 		// Get document object, set document title and add css
 		$document = $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_SELECTNEWSLETTER'));
-		$document->addStyleSheet(Uri::root(true) . '/administrator/components/com_bwpostman/assets/css/bwpostman_backend.css');
+		$wa = $this->document->getWebAssetManager();
+		$wa->registerAndUseStyle('com_bwpostman.admin-bwpostman_backend.css', 'com_bwpostman/admin-bwpostman_backend.css');
 
 		// Get data from the model
 		$items 		= $this->get('data');

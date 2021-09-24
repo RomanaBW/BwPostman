@@ -95,5 +95,5 @@ $token      = Session::getFormToken();
 	<input type="hidden" id="delay" value="<?php echo $this->delay; ?>" />
 
 <?php
-Factory::getApplication()->getDocument()->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_nl_send.js');
+$this->document->getWebAssetManager()->registerAndUseScript('com_bwpostman.admin-bwpm_nls.js', 'com_bwpostman/admin-bwpm_nls.js');
 

@@ -200,11 +200,14 @@ class Pkg_BwPostmanInstallerScript
 			$show_right = true;
 		}
 
-		$asset_path = '/media/com_bwpostman';
+			Factory::getApplication()->getDocument()->getWebAssetManager()->useStyle('com_bwpostman.install_j4');
+
+
+		$asset_path = JPATH_SITE . '/media/com_bwpostman';
 		$image_path = 'media/com_bwpostman/images';
 		?>
 
-		<link rel="stylesheet" href="<?php echo Route::_($asset_path . '/css/install_j4.css'); ?>" type="text/css" />
+<!--		<link rel="stylesheet" href="--><?php //echo Route::_($asset_path . '/css/install_j4.css'); ?><!--" type="text/css" />-->
 
 		<div id="com_bwp_install_header" class="text-center">
 			<a href="https://www.boldt-webservice.de" target="_blank">

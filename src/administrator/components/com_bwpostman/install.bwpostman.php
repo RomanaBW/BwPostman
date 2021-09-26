@@ -1664,7 +1664,7 @@ class com_bwpostmanInstallerScript
 			$show_right = true;
 		}
 
-		$asset_path = JPATH_SITE . '/media/com_bwpostman';
+		$asset_path = '/media/com_bwpostman';
 		$image_path = 'media/com_bwpostman/images';
 		?>
 

@@ -1664,7 +1664,7 @@ class com_bwpostmanInstallerScript
 			$show_right = true;
 		}
 
-		$asset_path = '/media/com_bwpostman';
+		$asset_path = JPATH_SITE . '/media/com_bwpostman';
 		$image_path = 'media/com_bwpostman/images';
 		?>
 
@@ -1672,7 +1672,7 @@ class com_bwpostmanInstallerScript
 
 		<div id="com_bwp_install_header">
 			<a href="https://www.boldt-webservice.de" target="_blank">
-				<img src="<?php echo Route::_('/' . $image_path . '/bw_header.png'); ?>" alt="Boldt Webservice" />
+				<img src="<?php echo Route::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
 			</a>
 		</div>
 		<div class="top_line"></div>

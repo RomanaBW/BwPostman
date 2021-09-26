@@ -208,7 +208,7 @@ class Pkg_BwPostmanInstallerScript
 
 		<div id="com_bwp_install_header" class="text-center">
 			<a href="https://www.boldt-webservice.de" target="_blank">
-				<img class="img-fluid border-0" src="<?php echo Route::_('/' . $image_path . '/bw_header.png'); ?>" alt="Boldt Webservice" />
+				<img class="img-fluid border-0" src="<?php echo Route::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
 			</a>
 		</div>
 		<div class="top_line"></div>

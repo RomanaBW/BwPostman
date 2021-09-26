@@ -76,11 +76,6 @@
     src: "{{ bw_workspace }}/administrator/components/com_{{ bw_extension }}/install.{{ bw_extension }}.php"
     dest: "{{ bw_target_ext_path }}/files/install.{{ bw_extension }}.php"
 
-- name: Copy index file to package root folder
-  synchronize:
-    src: "{{ bw_workspace }}/administrator/components/com_{{ bw_extension }}/index.html"
-    dest: "{{ bw_target_ext_path }}/files/index.html"
-
 - name: Move manifest file in place
   command: "mv {{ bw_target_ext_path }}/files/admin/bwpostman.xml {{ bw_target_ext_path }}/files/{{ bw_extension }}.xml"
 

@@ -34,8 +34,8 @@ use Joomla\CMS\Uri\Uri;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_maintenance_doAjax', 'com_bwpostman/admin-bwpm_maintenance_doAjax.js');
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_checktables', 'com_bwpostman/admin-bwpm_checktables.js');
+$wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
+$wa->useScript('com_bwpostman.admin-bwpm_checktables');
 
 $model	= $this->getModel();
 $uri    = Uri::root();

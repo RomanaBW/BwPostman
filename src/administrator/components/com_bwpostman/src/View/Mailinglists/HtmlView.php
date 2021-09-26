@@ -178,7 +178,7 @@ class HtmlView extends BaseHtmlView
 
 		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = $this->document->getWebAssetManager();
-		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_confirm_archive.js', 'com_bwpostman/admin-bwpm_confirm_archive.js');
+		$wa->useScript('com_bwpostman.admin-bwpm_confirm_archive');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MLS'), 'list');

@@ -86,7 +86,7 @@ class CustomscriptField extends FormField
 				transition: all 0.5s linear;
 			}
 		";
-		$doc->addStyleDeclaration($css);
+		$doc->getWebassetManager()->addInlineStyle($css);
 
 		$js = "
 
@@ -178,7 +178,7 @@ class CustomscriptField extends FormField
 			});
 		";
 
-		$doc->addScriptDeclaration($js);
+		$doc->getWebAssetManager()->addInlineScript($js);
 	}
 
 	/**

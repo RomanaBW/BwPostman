@@ -116,7 +116,7 @@ class RawView extends BaseHtmlView
 			// Joomla overwrites content-type, we can't use $appWeb->setHeader()
 			$document = $app->getDocument();
 			$document->setMimeEncoding($mimeType);
-			$document->addScript(Uri::root(true) . '/administrator/components/com_bwpostman/assets/js/bwpm_checktables.js');
+			$document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_checktables');
 
 			@ob_end_clean();
 			ob_start();

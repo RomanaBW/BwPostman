@@ -64,7 +64,7 @@ class BwPostmanHTMLHelper {
 		<div class="col">
 			<div class="card btn h-100">
 				<a  class="card-body" href="<?php echo $link; ?>" <?php if ($target != '') echo 'target="' . $target . '"'; ?> <?php if ($onclick != '') echo 'onclick="' . $onclick . '"'; ?> <?php echo $modal_text; ?>>
-					<span class="icon d-block mb-3"><?php echo HtmlHelper::_('image', 'administrator/components/com_bwpostman/assets/images/'.$image, $text); ?></span>
+					<span class="icon d-block mb-3"><?php echo HtmlHelper::_('image', 'media/com_bwpostman/images/'.$image, $text); ?></span>
 					<span class="linktext"><?php echo $text; ?></span>
 				</a>
 			</div>

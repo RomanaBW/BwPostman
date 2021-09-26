@@ -37,7 +37,7 @@ use Joomla\CMS\Uri\Uri;
 HTMLHelper::_('behavior.keepalive');
 
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_subscriber_import.js', 'com_bwpostman/admin-bwpm_subscriber_import.js');
+$wa->useScript('com_bwpostman.admin-bwpm_subscriber_import');
 
 HTMLHelper::_('bootstrap.tooltip');
 $jinput	= Factory::getApplication()->input;

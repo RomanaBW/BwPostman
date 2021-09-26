@@ -388,7 +388,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$doc = $this->app->getDocument();
 
 		$css_file   = Uri::base(true) . '/plugins/system/bwpm_user2subscriber/assets/css/bwpm_user2subscriber.css';
-		$doc->addStyleSheet($css_file);
+		$doc->getWebAssetManager()->registerAndUseStyle(Uri::root(true) . $css_file);
 
 		// makes sure that jQuery is loaded first
 		HTMLHelper::_('jquery.framework');

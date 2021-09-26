@@ -201,7 +201,7 @@ class HtmlView extends BaseHtmlView
 
 		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = $this->document->getWebAssetManager();
-		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_templates', 'com_bwpostman/admin-bwpm_templates.js');
+		$wa->useScript('com_bwpostman.admin-bwpm_templates');
 
 		$options['name'] = 'back';
 		$options['url'] = 'index.php?option=com_bwpostman&view=templates';

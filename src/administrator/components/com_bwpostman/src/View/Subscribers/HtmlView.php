@@ -257,7 +257,7 @@ class HtmlView extends BaseHtmlView
 
 		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = $this->document->getWebAssetManager();
-		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_subscribers.js', 'com_bwpostman/admin-bwpm_subscribers.js');
+		$wa->useScript('com_bwpostman.admin-bwpm_subscribers');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB'), 'users');

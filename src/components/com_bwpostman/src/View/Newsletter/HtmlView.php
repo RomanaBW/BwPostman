@@ -126,7 +126,7 @@ class HtmlView extends BaseHtmlView
 			$document->setTitle($newsletter->subject);
 		}
 
-		$document->addStyleSheet(Uri::root(true) . '/components/com_bwpostman/assets/css/bwpostman.css');
+		$document->addStyleSheet(Uri::root(true) . '/media/com_bwpostman/css/bwpostman.css');
 		if (file_exists(JPATH_BASE . $css_filename))
 		{
 			$document->addStyleSheet(Uri::root(true) . $css_filename);

@@ -35,8 +35,8 @@ use Joomla\CMS\Session\Session;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_maintenance_doAjax', 'com_bwpostman/admin-bwpm_maintenance_doAjax.js');
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_template_import', 'com_bwpostman/admin-bwpm_template_import.js');
+$wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
+$wa->useScript('com_bwpostman.admin-bwpm_template_import');
 
 ?>
 <div id="checkResult" class="row">

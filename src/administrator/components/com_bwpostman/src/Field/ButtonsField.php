@@ -90,7 +90,7 @@ class ButtonsField extends FormField
 			}";
 
 		$link = 'index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component&amp;field=' . $fieldName;
-		$doc->addScriptDeclaration($js);
+		$doc->getWebAssetManager()->addInlineScript($js);
 
 		// The active newsletter id field.
 		if (0 == (int) $this->value)

@@ -39,8 +39,8 @@ HTMLHelper::_('behavior.keepalive');
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_template', 'com_bwpostman/admin-bwpm_template.js');
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_template_base', 'com_bwpostman/admin-bwpm_template_base.js');
+$wa->useScript('com_bwpostman.admin-bwpm_template');
+$wa->useScript('com_bwpostman.admin-bwpm_template_base');
 ?>
 
 <div id="bwp_view_lists">

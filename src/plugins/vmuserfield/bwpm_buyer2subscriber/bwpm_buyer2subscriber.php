@@ -390,7 +390,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$doc = Factory::getApplication()->getDocument();
 
 		$css_file   = Uri::base(true) . '/plugins/vmuserfield/bwpm_buyer2subscriber/assets/css/bwpm_buyer2subscriber.css';
-		$doc->addStyleSheet($css_file);
+		$doc->getWebAssetManager()->registerAndUseStyle(Uri::root(true) . $css_file);
 	}
 
 	/**

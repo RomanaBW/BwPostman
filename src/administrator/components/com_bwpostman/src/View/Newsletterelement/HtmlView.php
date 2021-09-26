@@ -120,7 +120,7 @@ class HtmlView extends BaseHtmlView
 		$document = $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_SELECTNEWSLETTER'));
 		$wa = $this->document->getWebAssetManager();
-		$wa->registerAndUseStyle('com_bwpostman.admin-bwpostman_backend.css', 'com_bwpostman/admin-bwpostman_backend.css');
+		$wa->useStyle('com_bwpostman.admin-bwpostman_backend');
 
 		// Get data from the model
 		$items 		= $this->get('data');

@@ -2,7 +2,7 @@
   "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
   "name": "com_bwpostman",
   "version": "4.0.0",
-  "description": "Joomla CMS",
+  "description": "BwPostman Package",
   "license": "GPL-2.0-or-later",
   "assets": [
     {
@@ -14,48 +14,169 @@
       ]
     },
     {
-      "name": "com_bwpostman.admin-bwpm_maintenance_doAjax",
-      "type": "script",
-      "uri": "com_bwpostman/admin-bwpm_maintenance_doAjax.js",
-      "dependencies": [
-        "jquery"
-      ],
-      "attributes": {
-        "defer": true
-      }
+      "name": "com_bwpostman.admin-bwpostman_backend",
+      "type": "style",
+      "uri": "com_bwpostman/admin-bwpostman_backend.css"
     },
     {
-      "name": "com_bwpostman.admin-bwpm_do_restore",
-      "type": "script",
-      "uri": "com_bwpostman/admin-bwpm_do_restore.js",
-      "dependencies": [
-        "jquery"
-      ],
-      "attributes": {
-        "defer": true
-      }
+      "name": "com_bwpostman.bwpostman",
+      "type": "style",
+      "uri": "com_bwpostman/bwpostman.css"
     },
     {
-      "name": "com_bwpostman.admin-bwpm_update_checksave",
+      "name": "com_bwpostman.iconfonts",
+      "type": "style",
+      "uri": "com_bwpostman/iconfonts.css"
+    },
+    {
+      "name": "com_bwpostman.install",
+      "type": "style",
+      "uri": "com_bwpostman/install.css"
+    },
+    {
+      "name": "com_bwpostman.install_J4",
+      "type": "style",
+      "uri": "com_bwpostman/install_J4.css"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_campaign",
       "type": "script",
-      "uri": "com_bwpostman/admin-bwpm_update_checksave.js",
-      "dependencies": [
-        "jquery"
-      ],
-      "attributes": {
-        "defer": true
-      }
+      "uri": "com_bwpostman/admin-bwpm_campaign.js"
     },
     {
       "name": "com_bwpostman.admin-bwpm_checktables",
       "type": "script",
-      "uri": "com_bwpostman/admin-bwpm_checktables.js",
-      "dependencies": [
-        "jquery"
-      ],
-      "attributes": {
-        "defer": true
-      }
+      "uri": "com_bwpostman/admin-bwpm_checktables.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_confirm_archive",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_confirm_archive.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_confirm_archive_cam_nls",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_confirm_archive_cam_nls.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_confirm_delete_cam_nls",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_confirm_delete_cam_nls.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_confirm_unarchive",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_confirm_unarchive.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_do_restore",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_do_restore.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_mailinglist",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_mailinglist.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_maintenance_doAjax",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_maintenance_doAjax.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_nl",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_nl.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_nls",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_nls.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_restore_tables",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_restore_tables.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_subscriber",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_subscriber.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_subscriber_export",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_subscriber_export.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_subscriber_import",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_subscriber_import.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_subscribers",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_subscribers.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_tabshelper",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_tabshelper.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_template",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_template.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_template_base",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_template_base.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_template_checkValues",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_template_checkValues.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_template_html",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_template_html.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_template_import",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_template_import.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_template_text",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_template_text.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_template_text_buttonClick",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_template_text_buttonClick.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_templates",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_templates.js"
+    },
+    {
+      "name": "com_bwpostman.admin-bwpm_update_checksave",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_update_checksave.js"
+    },
+    {
+      "name": "com_bwpostman.admin-subscribers-default-batch-footer.es6",
+      "type": "script",
+      "uri": "com_bwpostman/admin-subscribers-default-batch-footer.es6.js"
+    },
+    {
+      "name": "com_bwpostman.menuhelper",
+      "type": "script",
+      "uri": "com_bwpostman/menuhelper.js"
     }
   ]
 }

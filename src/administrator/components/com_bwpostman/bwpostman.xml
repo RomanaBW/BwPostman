@@ -45,11 +45,13 @@
 		<language tag="de-DE">de-DE/de-DE.com_bwpostman.ini</language>
 	</languages>
 
-	<media destination="com_bwpostman" folder="media">
+<!-- See https://docs.joomla.org/J4.x:Web_Assets and https://joomla.stackexchange.com/questions/29044/how-to-use-joomla-asset-json-correctly -->
+	<media destination="com_bwpostman" folder="com_bwpostman">
 		<filename>index.html</filename>
 		<folder>css</folder>
 		<folder>images</folder>
 		<folder>js</folder>
+		<filename>joomla.asset.json</filename>
 	</media>
 
 	<administration>
@@ -60,21 +62,21 @@
 				Note that all & must be escaped to &amp; for the file to be valid
 				XML and be parsed by the installer
 			-->
-			<menu link="option=com_bwpostman&amp;view=bwpostman" view="bwpostman" img="../administrator/components/com_bwpostman/assets/images/logo-bwpostman.png"
+			<menu link="option=com_bwpostman&amp;view=bwpostman" view="bwpostman" img="../media/com_bwpostman/images/logo-bwpostman.png"
 			      alt="BwPostman/Dashboard">COM_BWPOSTMAN_MENU_MAIN_ENTRY_DASH</menu>
-			<menu link="option=com_bwpostman&amp;view=newsletters" view="newsletters" img="../administrator/components/com_bwpostman/assets/images/icon-16-newsletters.png"
+			<menu link="option=com_bwpostman&amp;view=newsletters" view="newsletters" img="../media/com_bwpostman/images/icon-16-newsletters.png"
 				alt="BwPostman/Newsletters">COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS</menu>
-			<menu link="option=com_bwpostman&amp;view=subscribers" view="subscribers" img="../administrator/components/com_bwpostman/assets/images/icon-16-subscribers.png"
+			<menu link="option=com_bwpostman&amp;view=subscribers" view="subscribers" img="../media/com_bwpostman/images/icon-16-subscribers.png"
 				alt="BwPostman/Subscribers">COM_BWPOSTMAN_MENU_MAIN_ENTRY_SUBS</menu>
-			<menu link="option=com_bwpostman&amp;view=campaigns" view="campaigns" img="../administrator/components/com_bwpostman/assets/images/icon-16-campaigns.png"
+			<menu link="option=com_bwpostman&amp;view=campaigns" view="campaigns" img="../media/com_bwpostman/images/icon-16-campaigns.png"
 				alt="BwPostman/Campaigns">COM_BWPOSTMAN_MENU_MAIN_ENTRY_CAMS</menu>
-			<menu link="option=com_bwpostman&amp;view=mailinglists" view="mailinglists" img="../administrator/components/com_bwpostman/assets/images/icon-16-mailinglists.png"
+			<menu link="option=com_bwpostman&amp;view=mailinglists" view="mailinglists" img="../media/com_bwpostman/images/icon-16-mailinglists.png"
 				alt="BwPostman/Mailinglists">COM_BWPOSTMAN_MENU_MAIN_ENTRY_MLS</menu>
-			<menu link="option=com_bwpostman&amp;view=templates" view="templates" img="../administrator/components/com_bwpostman/assets/images/icon-16-templates.png"
+			<menu link="option=com_bwpostman&amp;view=templates" view="templates" img="../media/com_bwpostman/images/icon-16-templates.png"
 				alt="BwPostman/Mailinglists">COM_BWPOSTMAN_MENU_MAIN_ENTRY_TPLS</menu>
-			<menu link="option=com_bwpostman&amp;view=archive&amp;layout=newsletters" view="archive" img="../administrator/components/com_bwpostman/assets/images/icon-16-archive.png"
+			<menu link="option=com_bwpostman&amp;view=archive&amp;layout=newsletters" view="archive" img="../media/com_bwpostman/images/icon-16-archive.png"
 				alt="BwPostman/Archive">COM_BWPOSTMAN_MENU_MAIN_ENTRY_ARC</menu>
-			<menu link="option=com_bwpostman&amp;view=maintenance" view="maintenance" img="../administrator/components/com_bwpostman/assets/images/icon-16-maintenance.png"
+			<menu link="option=com_bwpostman&amp;view=maintenance" view="maintenance" img="../media/com_bwpostman/images/icon-16-maintenance.png"
 				alt="BwPostman/Maintenance">COM_BWPOSTMAN_MENU_MAIN_ENTRY_MAINTENANCE</menu>
 		</submenu>
 

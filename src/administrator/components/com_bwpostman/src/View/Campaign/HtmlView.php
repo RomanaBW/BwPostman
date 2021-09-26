@@ -172,7 +172,7 @@ class HtmlView extends BaseHtmlView
 
 		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = $this->document->getWebAssetManager();
-		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_campaign.js', 'com_bwpostman/admin-bwpm_campaign.js');
+		$wa->useScript('com_bwpostman.admin-bwpm_campaign');
 
 		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
 		$isNew = ($this->item->id < 1);

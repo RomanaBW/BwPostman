@@ -175,8 +175,8 @@ class HtmlView extends BaseHtmlView
 
 		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = $this->document->getWebAssetManager();
-		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_confirm_unarchive.js', 'com_bwpostman/admin-bwpm_confirm_unarchive.js');
-		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_confirm_delete_cam_nls.js', 'com_bwpostman/admin-bwpm_confirm_delete_cam_nls.js');
+		$wa->useScript('com_bwpostman.admin-bwpm_confirm_unarchive');
+		$wa->useScript('com_bwpostman.admin-bwpm_confirm_delete_cam_nls');
 
 		// Call parent display
 		parent::display($tpl);

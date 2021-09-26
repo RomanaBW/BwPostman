@@ -1429,7 +1429,6 @@ class BwPostmanHelper
 		imagepng($im, $captchaDir . '/' . $codeCaptcha . '_' . $fileName . '.png');
 		imagedestroy($im);
 		// Bild ausgeben
-//		readfile(Uri::base() . 'components/com_bwpostman/assets/capimgdir/' .$codeCaptcha . '_' . $fileName . '.png');
 		readfile($captchaDir . '/' . $codeCaptcha . '_' . $fileName . '.png');
 	}
 

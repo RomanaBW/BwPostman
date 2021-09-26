@@ -243,8 +243,8 @@ class HtmlView extends BaseHtmlView
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NLS'));
 
 		$wa = $this->document->getWebAssetManager();
-		$wa->registerAndUseStyle('com_bwpostman.admin-bwpostman_backend.css', 'com_bwpostman/admin-bwpostman_backend.css');
-		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_nls.js', 'com_bwpostman/admin-bwpm_nls.js');
+		$wa->useStyle('com_bwpostman.admin-bwpostman_backend');
+		$wa->useScript('com_bwpostman.admin-bwpm_nls');
 
 		// Add Javascript to make squeezebox close-button invisible
 		$wa->addInlineScript('

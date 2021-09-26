@@ -39,7 +39,7 @@ HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('bootstrap.tooltip');
 
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_subscriber_import.js', 'com_bwpostman/admin-bwpm_subscriber_import.js');
+$wa->useScript('com_bwpostman.admin-bwpm_subscriber_import');
 
 $jinput	= Factory::getApplication()->input;
 $image	= '<i class="fa fa-info-circle fa-lg"></i>';

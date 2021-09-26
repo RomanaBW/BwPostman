@@ -273,8 +273,8 @@ class HtmlView extends BaseHtmlView
 		$document	= $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
 		$wa = $this->document->getWebAssetManager();
-		$wa->registerAndUseStyle('com_bwpostman.admin-bwpostman_backend.css', 'com_bwpostman/admin-bwpostman_backend.css');
-		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_nl.js', 'com_bwpostman/admin-bwpm_nl.js');
+		$wa->useStyle('com_bwpostman.admin-bwpostman_backend');
+		$wa->useScript('com_bwpostman.admin-bwpm_nl');
 		HTMLHelper::_('jquery.framework');
 
 		// Set toolbar title and items

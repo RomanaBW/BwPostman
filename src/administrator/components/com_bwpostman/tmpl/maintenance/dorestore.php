@@ -33,7 +33,7 @@ use Joomla\CMS\Session\Session;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_do_restore', 'com_bwpostman/admin-bwpm_do_restore.js');
+$wa->useScript('com_bwpostman.admin-bwpm_do_restore');
 //$wa->useScript('com_bwpostman.admin-bwpm_do_restore');
 
 $model		= $this->getModel();

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <table>
 	<tr>
-		<td><img src="<?php echo Uri::base() . 'components/com_bwpostman/assets/images/icon-48-subscribers.png'; ?>" alt="Subscribers Icon" /></td>
+		<td><img src="<?php echo Uri::base() . 'media/com_bwpostman/images/icon-48-subscribers.png'; ?>" alt="Subscribers Icon" /></td>
 		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_SUB') ?></strong></td>
 	</tr>
 </table>

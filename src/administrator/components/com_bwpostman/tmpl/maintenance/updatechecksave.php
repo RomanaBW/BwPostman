@@ -36,8 +36,8 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_maintenance_doAjax', 'com_bwpostman/admin-bwpm_maintenance_doAjax.js');
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_update_checksave', 'com_bwpostman/admin-bwpm_update_checksave.js');
+$wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
+$wa->useScript('com_bwpostman.admin-bwpm_update_checksave');
 
 $uncompressed = Factory::getApplication()->getConfig()->get('debug') ? '-uncompressed' : '';
 HTMLHelper::_('script', 'system/modal' . $uncompressed . '.js', array('relative' => true, 'detectBrowser' => true));
@@ -89,7 +89,7 @@ if ($show_update || $string_special != '')
 
 <div id="com_bwp_install_header">
 	<a href="https://www.boldt-webservice.de" target="_blank">
-		<img class="img-fluid" src="/administrator/components/com_bwpostman/assets/images/bw_header.png" alt="Boldt Webservice" />
+		<img class="img-fluid" src="/media/com_bwpostman/images/bw_header.png" alt="Boldt Webservice" />
 	</a>
 </div>
 <div class="top_line"></div>

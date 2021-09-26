@@ -37,7 +37,7 @@ use Joomla\CMS\Uri\Uri;
 HTMLHelper::_('bootstrap.tooltip');
 
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_subscriber_export.js', 'com_bwpostman/admin-bwpm_subscriber_export.js');
+$wa->useScript('com_bwpostman.admin-bwpm_subscriber_export');
 
 $jinput	= Factory::getApplication()->input;
 $image	= '<i class="fa fa-info-circle fa-lg"></i>';

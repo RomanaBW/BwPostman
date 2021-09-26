@@ -33,7 +33,7 @@ use Joomla\CMS\Uri\Uri;
 
 <table class="admintable">
 	<tr>
-		<td><img src="<?php echo Uri::base() . 'components/com_bwpostman/assets/images/icon-48-campaigns.png'; ?>" alt="Campaigns Icon" /></td>
+		<td><img src="<?php echo Uri::base() . 'media/com_bwpostman/images/icon-48-campaigns.png'; ?>" alt="Campaigns Icon" /></td>
 		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_CAM') ?></strong></td>
 	</tr>
 </table>

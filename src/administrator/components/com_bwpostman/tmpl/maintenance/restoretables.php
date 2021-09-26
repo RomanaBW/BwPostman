@@ -84,4 +84,4 @@ $option	= $jinput->getCmd('option');
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer');
 
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_restore_tables.js', 'com_bwpostman/admin-bwpm_restore_tables.js');
+$wa->useScript('com_bwpostman.admin-bwpm_restore_tables');

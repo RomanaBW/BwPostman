@@ -43,12 +43,12 @@ $image = '<i class="fa fa-lg fa-info-circle"></i>';
 
 $image_testrecipients	= HTMLHelper::_(
 	'image',
-	'administrator/components/com_bwpostman/assets/images/send.png',
+	'media/com_bwpostman/images/send.png',
 	Text::_('COM_BWPOSTMAN_NL_SEND_TO_TESTRECIPIENTS')
 );
 $image_newsletter		= HTMLHelper::_(
 	'image',
-	'administrator/components/com_bwpostman/assets/images/send_f2.png',
+	'media/com_bwpostman/images/send_f2.png',
 	Text::_('COM_BWPOSTMAN_NL_SENDMAIL')
 );
 

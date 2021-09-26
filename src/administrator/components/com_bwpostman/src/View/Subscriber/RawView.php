@@ -113,7 +113,7 @@ class RawView extends BaseHtmlView
 
 		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = $this->document->getWebAssetManager();
-		$wa->registerAndUseScript('com_bwpostman.admin-bwpm_subscriber.js', 'com_bwpostman/admin-bwpm_subscriber.js');
+		$wa->useScript('com_bwpostman.admin-bwpm_subscriber');
 
 		if ($task == 'insideModal')
 		{

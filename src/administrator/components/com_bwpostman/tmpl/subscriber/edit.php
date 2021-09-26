@@ -49,7 +49,7 @@ $new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.ne
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostman/admin-bwpm_tabshelper.js');
+$wa->useScript('com_bwpostman.admin-bwpm_tabshelper');
 ?>
 
 <div id="bwp_editform">

@@ -47,11 +47,11 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $nullDate   = Factory::getDbo()->getNullDate();
 
-$iconImage = Uri::getInstance()->base() . 'components/com_bwpostman/assets/images/icon-48-newsletters.png';
+$iconImage = Uri::getInstance()->base() . 'media/com_bwpostman/images/icon-48-newsletters.png';
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostman/admin-bwpm_tabshelper.js');
+$wa->useScript('com_bwpostman.admin-bwpm_tabshelper');
 
 Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 ?>

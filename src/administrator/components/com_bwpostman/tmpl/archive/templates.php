@@ -50,7 +50,7 @@ $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'templ
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->registerAndUseScript('com_bwpostman.admin-bwpm_tabshelper.js', 'com_bwpostman/admin-bwpm_tabshelper.js');
+$wa->useScript('com_bwpostman.admin-bwpm_tabshelper');
 
 //
 /**

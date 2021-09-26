@@ -46,7 +46,7 @@
 	</languages>
 
 <!-- See https://docs.joomla.org/J4.x:Web_Assets and https://joomla.stackexchange.com/questions/29044/how-to-use-joomla-asset-json-correctly -->
-	<media destination="com_bwpostman" folder="com_bwpostman">
+	<media destination="com_bwpostman" folder="media">
 		<filename>index.html</filename>
 		<folder>css</folder>
 		<folder>images</folder>

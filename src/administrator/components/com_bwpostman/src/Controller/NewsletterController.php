@@ -800,7 +800,7 @@ class NewsletterController extends FormController
 		{
 			for ($i = 0; $i <= count($error); $i++)
 			{
-				$app->enqueueMessage($error[$i]['err_msg'], 'error');
+				$app->enqueueMessage($error[$i], 'error');
 			}
 
 			$link = Route::_(

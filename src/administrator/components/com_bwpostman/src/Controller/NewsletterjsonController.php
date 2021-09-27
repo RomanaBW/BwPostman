@@ -163,12 +163,21 @@ class NewsletterjsonController extends BaseController
 					$app->setUserState('com_bwpostman.newsletters.sendmailandpublish', null);
 					$app->setUserState('com_bwpostman.newsletters.publish_id', null);
 
+					// get trial error
+	                $trialError = $app->getUserState('com_bwpostman.newsletter.trial.error', false);
+					if ($trialError === true)
+					{
+						echo "<br /><br /><span id='nl_modal_to_send_message_error' class='text-danger'>" . Text::sprintf('COM_BWPOSTMAN_NL_ERROR_TRIALS') . "</span>";
+						$complete = 'warning';
+						$error   = 'error';
+					}
+
 					$ready = "1";
 				}
 
 				if ($ret === 2)
 				{   // There are fatal errors.
-					echo "<br /><span id='nl_modal_to_send_message_error' style='color: #ff0000;'>" . Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '10') . "</span>";
+					echo "<br /><span id='nl_modal_to_send_message_error' class='text-danger'>" . Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '10') . "</span>";
 					$sending = "secondary";
 					$error   = 'error';
 					$ready   = "1";

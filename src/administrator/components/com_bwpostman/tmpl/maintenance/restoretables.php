@@ -35,8 +35,9 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
 // Load the tooltip behavior for the notes
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.keepalive');
+
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_restore_tables');
 
 $jinput	= Factory::getApplication()->input;
 $image = '<i class="fa fa-lg fa-info-circle"></i>';
@@ -52,10 +53,10 @@ $option	= $jinput->getCmd('option');
 				<table class="admintable bwptable restore">
 					<tr>
 						<td class="key">
-							<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE'); ?>:</span>
-							<span class="editlinktip me-2" aria-labelledby="tip-desc">
+							<div class="editlinktip me-2" aria-labelledby="tip-desc">
+								<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE'); ?>:</span>
 								<?php echo $image; ?>&nbsp;&nbsp;
-							</span>
+							</div>
                             <div role="tooltip" id="tip-desc"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE_NOTE'); ?></div>
 						</td>
 						<td>
@@ -82,6 +83,3 @@ $option	= $jinput->getCmd('option');
 <div id="loading" style="display: none;"></div>
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer');
-
-$wa = $this->document->getWebAssetManager();
-$wa->useScript('com_bwpostman.admin-bwpm_restore_tables');

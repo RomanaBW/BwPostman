@@ -62,7 +62,7 @@ class SelectedcontentField extends ListField
 	 */
 	public function getLabel(): string
 	{
-		return '<label for="' . $this->id . '" class="selected_content_label">' . Text::_($this->element['label']) . '</label>';
+		return '<label for="' . $this->id . '" class="form-label selected_content_label">' . Text::_($this->element['label']) . '</label>';
 	}
 
 	/**
@@ -90,7 +90,7 @@ class SelectedcontentField extends ListField
 		}
 
 		$attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-		$attr .= $this->multiple ? ' multiple="multiple"' : '';
+		$attr .= $this->multiple ? ' multiple multiple="multiple"' : '';
 
 		// Initialize JavaScript field attributes.
 		$attr .= $this->element['onchange'] ? ' onchange="' . $this->element['onchange'] . '"' : '';

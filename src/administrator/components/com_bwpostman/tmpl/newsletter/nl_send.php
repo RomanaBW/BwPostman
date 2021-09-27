@@ -30,8 +30,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Session\Session;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
+
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nls');
 
 $model		= $this->getModel();
 $token      = Session::getFormToken();
@@ -93,7 +93,4 @@ $token      = Session::getFormToken();
 
 	<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=newsletterjson.startsending&tmpl=nl_send&format=json&<?php echo Session::getFormToken(); ?>=1" />
 	<input type="hidden" id="delay" value="<?php echo $this->delay; ?>" />
-
-<?php
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nls');
 

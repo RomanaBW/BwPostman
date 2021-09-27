@@ -117,48 +117,45 @@ $option	= $jinput->getCmd('option');
 		<legend><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_STP2'); ?></legend>
 		<div>
 			<div class="admintable import card card-body mb-2">
-				<h4 class="key"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS'); ?>
-					<span class="hasTooltip"
-							title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_NOTE'); ?>">
+				<div class="h4 key">
+					<div aria-describedby="tip-import">
+						<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS'); ?>
 						<?php echo $image; ?>
-					</span>
-				</h4>
+					</div>
+					<div role="tooltip" id="tip-import"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_NOTE'); ?></div>
+				</div>
 				<div class="row">
-					<div class="col-sm-6 text-sm-right mb-2"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS'); ?>
-						&nbsp;
-						<span class="hasTooltip"
-								title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS_NOTE'); ?>">
+					<div class="col-sm-6 text-sm-right mb-2">
+						<div aria-describedby="tip-db_fields">
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS'); ?>
 							<?php echo $image; ?>
-						</span>
+						</div>
+						<div role="tooltip" id="tip-db_fields"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DB_FIELDS_NOTE'); ?></div>
 						<div class="my-2">
 							<?php echo $this->lists['db_fields']; ?>
 						</div>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
-							<input class="btn btn-danger btn-sm mb-2" type="button" onclick="removeOptions(db_fields);"
-									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
-						</span>
+						<input class="btn btn-danger btn-sm mb-2" type="button" onclick="removeOptions(db_fields);"
+								value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" aria-describedby="tip-removeOption" />
+						<div role="tooltip" id="tip-removeOption"><?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE'); ?></div>
 					</div>
-					<div class="col-sm-6 mb-2"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS'); ?>
-						&nbsp;
-						<span class="hasTooltip"
-								title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS_NOTE'); ?>">
+					<div class="col-sm-6 mb-2">
+						<div aria-describedby="tip-import_fields">
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS'); ?>
 							<?php echo $image; ?>
-						</span>
+						</div>
+						<div role="tooltip" id="tip-import_fields"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_FIELDS_NOTE'); ?></div>
 						<div class="my-2">
 							<?php echo $this->lists['import_fields']; ?>
 						</div>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE');?>">
-							<input class="btn btn-outline-primary btn-sm mb-2" type="button" onclick="moveUp(document.getElementById('import_fields'));"
-									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" />
-						</span>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE');?>">
-							<input class="btn btn-outline-success btn-sm mb-2" type="button" onclick="moveDown(document.getElementById('import_fields'));"
-									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" />
-						</span>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
-							<input class="btn btn-danger btn-sm mb-2" type="button" onclick="removeOptions(import_fields);"
-									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
-						</span>
+						<input class="btn btn-outline-primary btn-sm mb-2" type="button" onclick="moveUp(document.getElementById('import_fields'));"
+								value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" aria-describedby="tip-moveUp" />
+						<div role="tooltip" id="tip-moveUp"><?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE'); ?></div>
+						<input class="btn btn-outline-success btn-sm mb-2" type="button" onclick="moveDown(document.getElementById('import_fields'));"
+								value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" aria-describedby="tip-moveDown" />
+						<div role="tooltip" id="tip-moveDown"><?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE'); ?></div>
+						<input class="btn btn-danger btn-sm mb-2" type="button" onclick="removeOptions(import_fields);"
+								value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" aria-describedby="tip-removeOptions" />
+						<div role="tooltip" id="tip-removeOptions"><?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE'); ?></div>
 					</div>
 				</div>
 				<div><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_MATCH_FIELDS_ANNOTATION'); ?></div>
@@ -168,13 +165,13 @@ $option	= $jinput->getCmd('option');
 				<fieldset class="adminform row">
 					<div class="col-lg-4 mb-2">
 						<fieldset class="adminform">
-							<legend>
-								<span class="hasTooltip"
-										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?>">
+							<div class="h5">
+								<div aria-describedby="tip-desc-mla">
 									<?php echo $image; ?>
-								</span>
-								<span>&nbsp;<?php echo $this->form->getLabel('ml_available'); ?></span>
-							</legend>
+									<?php echo $this->form->getLabel('ml_available'); ?>
+								</div>
+								<div role="tooltip" id="tip-desc-mla"><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_AVAILABLE_NOTE'); ?></div>
+							</div>
 							<?php
 							$ml_available	= $this->form->getInput('ml_available');
 							if (!empty($ml_available))
@@ -184,7 +181,7 @@ $option	= $jinput->getCmd('option');
 							else
 							{ ?>
 								<label class="mailinglist_label noclear checkbox">
-									<?php Text::_('COM_BWPOSTMAN_NO_DATA') ?>
+									<?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?>
 								</label>
 								<?php
 							}
@@ -194,13 +191,13 @@ $option	= $jinput->getCmd('option');
 
 					<div class="col-lg-4 mb-2">
 						<fieldset class="adminform">
-							<legend>
-								<span class="hasTooltip"
-										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?>">
+							<div class="h5">
+								<div aria-describedby="tip-desc-mlu">
 									<?php echo $image; ?>
-								</span>
-								<span>&nbsp;<?php echo $this->form->getLabel('ml_unavailable'); ?></span>
-							</legend>
+									<?php echo $this->form->getLabel('ml_unavailable'); ?>
+								</div>
+								<div role="tooltip" id="tip-desc-mlu"><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_PUBLISHED_UNAVAILABLE_NOTE'); ?></div>
+							</div>
 							<?php
 							$ml_unavailable	= $this->form->getInput('ml_unavailable');
 							if (!empty($ml_unavailable))
@@ -220,13 +217,13 @@ $option	= $jinput->getCmd('option');
 
 					<div class="col-lg-4 mb-2">
 						<fieldset class="adminform">
-							<legend>
-								<span class="hasTooltip"
-										title="<?php echo Text::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?>">
+							<div class="h5">
+								<div aria-describedby="tip-desc-mli">
 									<?php echo $image; ?>
-								</span>
-								<span>&nbsp;<?php echo $this->form->getLabel('ml_intern'); ?></span>
-							</legend>
+									<?php echo $this->form->getLabel('ml_intern'); ?>
+								</div>
+								<div role="tooltip" id="tip-desc-mli"><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_INTERNAL_NOTE'); ?></div>
+							</div>
 							<?php
 							$ml_intern	= $this->form->getInput('ml_intern');
 							if (!empty($ml_intern))
@@ -249,40 +246,43 @@ $option	= $jinput->getCmd('option');
 			<div class="card card-body mb-2">
 				<div class="admintable bwptable import">
 					<div class="row">
-						<div class="key col-8 col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT'); ?>
-							<span class="hasTooltip"
-									title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT_NOTE');?>">
+						<div class="key col-8 col-md-6 text-md-right">
+							<div aria-describedby="tip-emailformat">
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT'); ?>
 								<?php echo $image; ?>
-							</span>
+							</div>
+							<div role="tooltip" id="tip-emailformat"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_EMAILFORMAT_NOTE'); ?></div>
 						</div>
 						<div class="col-4 col-md-6"><?php echo $this->lists['emailformat']; ?></div>
 					</div>
 				</div>
 				<div class="admintable bwptable import">
 					<div class="row">
-						<div class="key col-8 col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM'); ?>
-							<span class="hasTooltip"
-									title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM_NOTE');?>">
+						<div class="key col-8 col-md-6 text-md-right">
+							<div aria-describedby="tip-confirm">
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM'); ?>
 								<?php echo $image; ?>
-							</span>
+							</div>
+							<div role="tooltip" id="tip-confirm"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CONFIRM_NOTE'); ?></div>
 						</div>
-						<div class="col-4 col-md-6"><input type="checkbox" id="confirm" name="confirm" title="confirm" value="1" /></div>
+						<div class="col-4 col-md-6"><input type="checkbox" id="confirm" class="form-check-input" name="confirm" title="confirm" value="1" /></div>
 					</div>
 					<div class="row">
-						<div class="key col-8 col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_VALIDATE_EMAIL'); ?>
-							<span class="hasTooltip"
-									title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_VALIDATE_EMAIL_NOTE');?>">
+						<div class="key col-8 col-md-6 text-md-right">
+							<div aria-describedby="tip-validate">
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_VALIDATE_EMAIL'); ?>
 								<?php echo $image; ?>
-							</span>
+							</div>
+							<div role="tooltip" id="tip-validate"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_VALIDATE_EMAIL_NOTE'); ?></div>
 						</div>
-						<div class="col-4 col-md-6"><input type="checkbox" id="validate" name="validate" title="validate" value="1" /></div>
+						<div class="col-4 col-md-6"><input type="checkbox" id="validate" class="form-check-input" name="validate" title="validate" value="1" /></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</fieldset>
 
-	<div class="admintable bwptable import mb-3">
+	<div class="admintable bwptable import my-3">
 		<div class="row">
 			<div class="key col-12 text-center"><input type="button" class="btn btn-success"
 						onclick="if(check())

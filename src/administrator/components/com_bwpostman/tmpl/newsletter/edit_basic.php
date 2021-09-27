@@ -35,7 +35,6 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('behavior.keepalive');
 
@@ -123,10 +122,11 @@ $currentTab = 'edit_basic';
 									<?php echo $field->input; ?>
 								<?php else: ?>
 									<div class="control-group">
-										<div class="control-label">
-											<span class="hasTooltip" title="<?php echo Text::_($field->description); ?>">
-												<?php echo $field->label; ?>
-											</span>
+										<div aria-describedby="<?php echo $field->name; ?>-desc">
+											<?php echo $field->label; ?>
+										</div>
+										<div role="tooltip" id="<?php echo $field->name; ?>-desc">
+											<?php echo Text::_($field->description); ?>
 										</div>
 										<div class="controls">
 											<?php echo $field->input; ?>
@@ -142,10 +142,11 @@ $currentTab = 'edit_basic';
 										<?php echo $field->input; ?>
 									<?php else: ?>
 										<div class="control-group">
-											<div class="control-label">
-												<span class="hasTooltip" title="<?php echo Text::_($field->description); ?>">
-													<?php echo $field->label; ?>
-												</span>
+											<div aria-describedby="<?php echo $field->name; ?>-desc">
+												<?php echo $field->label; ?>
+											</div>
+											<div role="tooltip" id="<?php echo $field->name; ?>-desc">
+												<?php echo Text::_($field->description); ?>
 											</div>
 											<div class="controls">
 												<?php echo $field->input; ?>
@@ -160,10 +161,11 @@ $currentTab = 'edit_basic';
 									<?php echo $field->input; ?>
 								<?php else: ?>
 									<div class="control-group">
-										<div class="control-label">
-											<span class="hasTooltip" title="<?php echo Text::_($field->description); ?>">
-												<?php echo $field->label; ?>
-											</span>
+										<div aria-describedby="<?php echo $field->name; ?>-desc">
+											<?php echo $field->label; ?>
+										</div>
+										<div role="tooltip" id="<?php echo $field->name; ?>-desc">
+											<?php echo Text::_($field->description); ?>
 										</div>
 										<div class="controls">
 											<?php echo $field->input; ?>
@@ -177,10 +179,11 @@ $currentTab = 'edit_basic';
 									<?php echo $field->input; ?>
 								<?php else: ?>
 									<div class="control-group">
-										<div class="control-label">
-											<span class="hasTooltip" title="<?php echo Text::_($field->description); ?>">
-												<?php echo $field->label; ?>
-											</span>
+										<div aria-describedby="<?php echo $field->name; ?>-desc">
+											<?php echo $field->label; ?>
+										</div>
+										<div role="tooltip" id="<?php echo $field->name; ?>-desc">
+											<?php echo Text::_($field->description); ?>
 										</div>
 										<div class="controls">
 											<?php echo $field->input; ?>
@@ -195,10 +198,11 @@ $currentTab = 'edit_basic';
 									<?php echo $field->input; ?>
 								<?php else: ?>
 									<div class="control-group">
-										<div class="control-label">
-											<span class="hasTooltip" title="<?php echo Text::_($field->description); ?>">
-												<?php echo $field->label; ?>
-											</span>
+										<div aria-describedby="<?php echo $field->name; ?>-desc">
+											<?php echo $field->label; ?>
+										</div>
+										<div role="tooltip" id="<?php echo $field->name; ?>-desc">
+											<?php echo Text::_($field->description); ?>
 										</div>
 										<div class="controls">
 											<?php echo $field->input; ?>
@@ -220,11 +224,12 @@ $currentTab = 'edit_basic';
 				<div class="card card-body mb-2">
 					<div class="row nl-template">
 						<div class="col-12 mb-2">
-							<div class="h3" id="bw_nl_edit_tpl">
-								<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_TEMPLATES_NOTE'); ?>">
+							<div class="h4" id="bw_nl_edit_tpl">
+								<div aria-describedby="tip-nl-tpl">
 									<?php echo $image; ?>
-									&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_TEMPLATES'); ?>
-								</span>
+									<?php echo Text::_('COM_BWPOSTMAN_NL_TEMPLATES'); ?>
+								</div>
+								<div role="tooltip" id="tip-nl-tpl"><?php echo Text::_('COM_BWPOSTMAN_NL_TEMPLATES_NOTE'); ?></div>
 							</div>
 						</div>
 						<?php foreach($this->form->getFieldset('templates') as $field): ?>
@@ -233,10 +238,11 @@ $currentTab = 'edit_basic';
 							<?php else: ?>
 								<div class="col-md-6" id="<?php echo $field->title ?>">
 									<div class="border p-3">
-										<div class="control-label mb-2">
-												<span class="hasTooltip" title="<?php echo Text::_($field->description); ?>">
-													<?php echo $field->label; ?>
-												</span>
+										<div aria-describedby="<?php echo $field->name; ?>-desc">
+											<?php echo $field->label; ?>
+										</div>
+										<div role="tooltip" id="<?php echo $field->name; ?>-desc">
+											<?php echo Text::_($field->description); ?>
 										</div>
 										<div class="controls">
 											<?php echo $field->input; ?>
@@ -256,66 +262,56 @@ $currentTab = 'edit_basic';
 							</div>
 						</div>
 						<div class="col-xl-8 nl-mailinglists">
-							<div class="card-header">
-								<h4>
-									<span class="hasTooltip"
-											title="<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?>">
-										<?php echo $image; ?>
-										<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
-									</span>
-								</h4>
-								<div class="row">
-									<?php foreach($this->form->getFieldset('mailinglists') as $field): ?>
-										<?php if ($field->hidden): ?>
-											<?php echo $field->input; ?>
-										<?php else: ?>
-											<div class="col-lg-4 nl-mailinglists mb-3">
-												<div class="card card-body">
-													<fieldset>
-														<h5>
-														<span class="hasTooltip"
-																title="<?php echo Text::_($field->description); ?>">
-															<?php echo $image; ?>
-															<?php echo $field->label; ?>
-														</span>
-														</h5>
-														<div class="row-fluid clearfix">
-															<?php
-															$input_field	= trim($field->input);
-															if (!empty($input_field))
-															{
-																echo $field->input;
-															}
-															else
-															{
-																echo '<div class="">' . Text::_('COM_BWPOSTMAN_NO_DATA') . '</div>';
-															}
-															?>
-														</div>
-													</fieldset>
-												</div>
-											</div>
-										<?php endif; ?>
-									<?php endforeach; ?>
+							<div class="h4 mb-3">
+								<div aria-describedby="tip-nl-subs">
+									<?php echo $image; ?>
+									<?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS'); ?>
 								</div>
+								<div role="tooltip" id="tip-nl-subs"><?php echo Text::_('COM_BWPOSTMAN_NL_COM_BWPOSTMAN_MAILINGLISTS_NOTE'); ?></div>
+							</div>
+							<div class="row">
+								<?php foreach($this->form->getFieldset('mailinglists') as $field): ?>
+									<?php if ($field->hidden): ?>
+										<?php echo $field->input; ?>
+									<?php else: ?>
+										<div class="col-lg-4 nl-mailinglists mb-3">
+											<div class="h5">
+												<div aria-describedby="tip-<?php echo Text::_($field->fieldname); ?>">
+													<?php echo $image; ?>
+													<?php echo $field->label; ?>
+												</div>
+												<div role="tooltip" id="tip-<?php echo Text::_($field->fieldname); ?>"><?php echo Text::_($field->description); ?></div>
+											</div>
+											<div class="clearfix">
+												<?php
+												$input_field	= trim($field->input);
+												if (!empty($input_field))
+												{
+													echo $field->input;
+												}
+												else
+												{
+													echo '<div>' . Text::_('COM_BWPOSTMAN_NO_DATA') . '</div>';
+												}
+												?>
+											</div>
+										</div>
+									<?php endif; ?>
+								<?php endforeach; ?>
 							</div>
 						</div>
 
-						<div class="col-xl-4 nl-usergroups">
-							<div class="card-header break-word">
-								<h4>
-									<span class="hasTooltip"
-											title="<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?>">
-										<?php echo $image; ?>
-										<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?>
-									</span>
-								</h4>
-								<div class="card card-body">
-									<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
-										<?php echo $field->input; ?>
-									<?php endforeach; ?>
+						<div class="col-xl-4 nl-usergroups break-word">
+							<div class="h4 mb-3">
+								<div aria-describedby="tip-nl-usergroups">
+									<?php echo $image; ?>
+									<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_LABEL'); ?>
 								</div>
+								<div role="tooltip" id="tip-nl-usergroups"><?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_USERGROUPS_DESC'); ?></div>
 							</div>
+							<?php foreach($this->form->getFieldset('usergroups') as $field): ?>
+								<?php echo $field->input; ?>
+							<?php endforeach; ?>
 						</div>
 					</div>
 				</div>
@@ -323,11 +319,12 @@ $currentTab = 'edit_basic';
 				<div class="card card-body mb-2">
 					<div class="row nl-content">
 						<div class="col-12 mb-2">
-							<div class="h3" id="bw_nl_edit_content">
-								<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?>">
+							<div id="bw_nl_edit_content" class="h4 mb-3">
+								<div aria-describedby="tip-nl-content">
 									<?php echo $image; ?>
-									&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?>
-								</span>
+									<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?>
+								</div>
+								<div role="tooltip" id="tip-nl-content"><?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?></div>
 							</div>
 						</div>
 						<div class="col-lg-5">
@@ -416,8 +413,12 @@ $currentTab = 'edit_basic';
 			<input type="hidden" id="content_exists" name="content_exists" value="<?php echo $this->content_exists; ?>" />
 			<?php echo HTMLHelper::_('form.token'); ?>
 
-			<input type="hidden" id="checkContentArgs" value="<?php echo $checkContentArgs; ?>" />
-			<input type="hidden" id="checkRecipientArgs" value="<?php echo $checkRecipientArgs; ?>" />
+			<input type="hidden" id="checkContentArgs1" value="<?php echo Text::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true); ?>" />
+			<input type="hidden" id="checkContentArgs2" value="<?php echo Text::_('COM_BWPOSTMAN_NL_CONFIRM_TEMPLATE_ID', true); ?>" />
+			<input type="hidden" id="checkContentArgs3" value="<?php echo Text::_('COM_BWPOSTMAN_NL_CONFIRM_TEXT_TEMPLATE_ID', true); ?>" />
+			<input type="hidden" id="checkContentArgs4" value="<?php echo Text::_('COM_BWPOSTMAN_NO_HTML_TEMPLATE_SELECTED', true); ?>" />
+			<input type="hidden" id="checkContentArgs5" value="<?php echo Text::_('COM_BWPOSTMAN_NO_TEXT_TEMPLATE_SELECTED', true); ?>" />
+			<input type="hidden" id="checkRecipientArgs" value="<?php echo Text::_('COM_BWPOSTMAN_NL_ERROR_NO_RECIPIENTS_SELECTED', true); ?>" />
 			<input type="hidden" id="substituteLinks" value="<?php echo $substitute; ?>" />
 			<input type="hidden" id="currentTab" value="<?php echo $currentTab; ?>" />
 		</div>

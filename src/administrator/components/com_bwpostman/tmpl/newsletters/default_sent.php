@@ -39,7 +39,7 @@ HTMLHelper::_('behavior.core');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
 HtmlHelper::_('behavior.multiselect');
-HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('bootstrap.modal');
 
 $user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
@@ -49,9 +49,7 @@ $nullDate   = Factory::getDbo()->getNullDate();
 
 $iconImage = Uri::getInstance()->base() . 'media/com_bwpostman/images/icon-48-newsletters.png';
 
-/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-$wa = $this->document->getWebAssetManager();
-$wa->useScript('com_bwpostman.admin-bwpm_tabshelper');
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
 
 Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 ?>
@@ -105,37 +103,36 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 								</caption>
 								<thead>
 									<tr>
-										<th style="width: 1%;" class="text-center">
-											<input type="checkbox" name="checkall-toggle" value=""
-													title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+										<th class="text-center w-1">
+											<?php echo HTMLHelper::_('grid.checkall'); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
+										<th class="d-none d-lg-table-cell w-7" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?>
 										</th>
-										<th style="min-width: 100px;" scope="col">
+										<th scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="min-width: 100px;" scope="col">
+										<th class="d-none d-lg-table-cell w-20" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-xl-table-cell w-7" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_MAILING_DATE', 'a.mailing_date', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-xl-table-cell" style="width: 7%;" scope="col">
+										<th class="d-none d-xxl-table-cell w-7" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-lg-table-cell w-10" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?>
 										</th>
-										<th style="width: 5%;" scope="col">
+										<th class="w-5" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'Published', 'a.published', $listDirn, $listOrder); ?>
 										</th>
-										<th style="width: 10%;" scope="col">
+										<th class="w-5" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_UP', 'a.publish_up', $listDirn, $listOrder); ?>
 											<br />
 											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_PUBLISH_DOWN', 'a.publish_down', $listDirn, $listOrder); ?>
 										</th>
-										<th style="width: 3%;" scope="col">
+										<th class="w-1" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'NUM', 'a.id', $listDirn, $listOrder); ?>
 										</th>
 									</tr>
@@ -160,7 +157,7 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 													<span class="icon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
 												<?php } ?>
 											</td>
-											<td nowrap="nowrap">
+											<td>
 												<?php
 												if ($item->checked_out)
 												{
@@ -187,34 +184,34 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 													<?php echo $this->escape($item->subject); ?>
 												<?php endif; ?>
 												<div class="bw-btn">
-													<a class="iframe btn btn-info btn-sm hasTooltip text-decoration-none mt-1" href="javascript:void(0);"
-															aria-describedby="tip-html-<?php echo $i; ?>"
-															data-title="<?php echo $titleHtml;?>" data-bs-title="<?php echo $titleHtml;?>" data-bs-frame="myIframeHtml" data-bs-src="<?php echo $linkHtml;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
-														<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
-														<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
-													</a>
+													<div class="d-inline-block" aria-describedby="tip-html-<?php echo $i; ?>">
+														<a class="iframe btn btn-info btn-sm text-decoration-none mt-1" href="javascript:void(0);"
+																data-title="<?php echo $titleHtml;?>" data-bs-title="<?php echo $titleHtml;?>" data-bs-frame="myIframeHtml" data-bs-src="<?php echo $linkHtml;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
+															<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
+														</a>
+													</div>
 													<div role="tooltip" id="tip-html-<?php echo $i; ?>">
 														<?php echo $titleHtml . '<br />' . $this->escape($item->subject); ?>
 													</div>
-													<a class="iframe btn btn-info btn-sm hasTooltip text-decoration-none mt-1" href="javascript:void(0);"
-															aria-describedby="tip-text-<?php echo $i; ?>"
-															data-title="<?php echo $titleText;?>" data-bs-title="<?php echo $titleText;?>" data-bs-frame="myIframeText" data-bs-src="<?php echo $linkText;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
-														<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
-														<?php echo HTMLHelper::_('bootstrap.renderModal','modal');?>
-													</a>
+													<div class="d-inline-block" aria-describedby="tip-text-<?php echo $i; ?>">
+														<a class="iframe btn btn-info btn-sm text-decoration-none mt-1" href="javascript:void(0);"
+																data-title="<?php echo $titleText;?>" data-bs-title="<?php echo $titleText;?>" data-bs-frame="myIframeText" data-bs-src="<?php echo $linkText;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
+															<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
+														</a>
+													</div>
 													<div role="tooltip" id="tip-text-<?php echo $i; ?>">
 														<?php echo $titleText . '<br />' . $this->escape($item->subject); ?>
 													</div>
 												</div>
 											</td>
 											<td class="d-none d-lg-table-cell"><?php echo $this->escape($item->description); ?></td>
-											<td class="d-none d-lg-table-cell"><?php echo HTMLHelper::date($item->mailing_date, Text::_('BW_DATE_FORMAT_LC5')); ?></td>
-											<td class="d-none d-xl-table-cell"><?php echo $item->authors; ?></td>
+											<td class="d-none d-xl-table-cell"><?php echo HTMLHelper::date($item->mailing_date, Text::_('BW_DATE_FORMAT_LC5')); ?></td>
+											<td class="d-none d-xxl-table-cell"><?php echo $item->authors; ?></td>
 											<td class="d-none d-lg-table-cell text-center"><?php echo $item->campaign_id; ?></td>
 											<td class="text-center">
 												<?php echo HTMLHelper::_(
 													'jgrid.published',
-$item->published,
+													$item->published,
 													$i,
 													'newsletters.',
 													$canEditState

@@ -5,6 +5,7 @@
 		       type="media"
 		       label="COM_BWPOSTMAN_ATTACHMENT_FIELD_LABEL"
 		       labelclass="control-label"
+			   types="images,audios,videos,documents"
 		/>
 	</fieldset>
 </form>

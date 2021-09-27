@@ -36,7 +36,6 @@ use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Load the bootstrap tooltip for the notes
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 
 $user		= Factory::getApplication()->getIdentity();

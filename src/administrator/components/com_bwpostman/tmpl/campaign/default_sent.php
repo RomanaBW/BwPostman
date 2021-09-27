@@ -94,19 +94,21 @@ $title_text = Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');
 						</td>
 						<td><?php echo $item->subject; ?>&nbsp;&nbsp;
 							<div class="bw-btn">
-								<a class="iframe btn btn-info btn-sm hasTooltip text-decoration-none mt-1" href="javascript:void(0);"
-										aria-describedby="tip-html-<?php echo $i; ?>"
-										data-title="<?php echo $title_html;?>" data-bs-title="<?php echo $title_html;?>" data-bs-frame="myIframeHtml" data-bs-src="<?php echo $link_html;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
-									<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
-								</a>
+								<div class="d-inline-block" aria-describedby="tip-html-<?php echo $i; ?>">
+									<a class="iframe btn btn-info btn-sm text-decoration-none mt-1" href="javascript:void(0);"
+											data-title="<?php echo $title_html;?>" data-bs-title="<?php echo $title_html;?>" data-bs-frame="myIframeHtml" data-bs-src="<?php echo $link_html;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
+										<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
+									</a>
+								</div>
 								<div role="tooltip" id="tip-html-<?php echo $i; ?>">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_HTML');?><br /><?php echo $this->escape($item->subject); ?>
 								</div>
-								<a class="iframe btn btn-info btn-sm hasTooltip text-decoration-none mt-1" href="javascript:void(0);"
-										aria-describedby="tip-text-<?php echo $i; ?>"
-										data-title="<?php echo $title_text;?>" data-bs-title="<?php echo $title_text;?>" data-bs-frame="myIframeText" data-bs-src="<?php echo $link_text;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
-									<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
-								</a>
+								<div class="d-inline-block" aria-describedby="tip-text-<?php echo $i; ?>">
+									<a class="iframe btn btn-info btn-sm text-decoration-none mt-1" href="javascript:void(0);"
+											data-title="<?php echo $title_text;?>" data-bs-title="<?php echo $title_text;?>" data-bs-frame="myIframeText" data-bs-src="<?php echo $link_text;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
+										<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
+									</a>
+								</div>
 								<div role="tooltip" id="tip-text-<?php echo $i; ?>">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_SHOW_TEXT');?><br /><?php echo $this->escape($item->subject); ?>
 								</div>

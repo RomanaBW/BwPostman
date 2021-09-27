@@ -145,7 +145,7 @@ $wa->useScript('com_bwpostman.admin-bwpm_template');
 								foreach ($linktexts as $key => $linktext) {
 									echo "                    <div class=\"clearfix mb-2\">";
 									echo "                    <a class=\"btn btn-info btn-sm\"
-										onclick=\"buttonClick4('" . $linktext . "','jform_tpl_html');
+										onclick=\"buttonClick('" . $linktext . "','jform_tpl_html');
 										return false;\" href=\"" . $link . "\">" . $linktext . "</a>";
 									echo '                     <span>' . Text::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</span>';
 									echo '                     </div>';

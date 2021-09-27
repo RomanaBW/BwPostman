@@ -31,10 +31,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
-use Joomla\CMS\Uri\Uri;
-
-// Load the tooltip behavior for the notes
-HTMLHelper::_('bootstrap.tooltip');
 
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('com_bwpostman.admin-bwpm_subscriber_export');
@@ -50,84 +46,86 @@ $option	= $jinput->getCmd('option');
 		<div class="card card-body">
 			<div class="admintable export">
 				<div class="bwptable fileformat row">
-					<label class="key col-form-label col-md-6 text-md-right">
-						<?php echo Text::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FILEFORMAT_NOTE'); ?>">
+					<div class="key col-form-label col-md-6 text-md-right">
+						<div aria-describedby="tip-fileformat">
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?>
 							<?php echo $image; ?>
-						</span>
-					</label>
+						</div>
+						<div role="tooltip" id="tip-fileformat"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FILEFORMAT_NOTE'); ?></div>
+					</div>
 					<div class="col-md-6"><?php echo $this->lists['fileformat']; ?></div>
 				</div>
 				<div id="delimiter_tr" class="delimiter form-group row">
-					<label class="key col-md-6 text-md-right">
-						<?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_DELIMITER_NOTE'); ?>">
+					<div class="key col-md-6 text-md-right">
+						<div aria-describedby="tip-delimiter">
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?>
 							<?php echo $image; ?>
-						</span>
-					</label>
+						</div>
+						<div role="tooltip" id="tip-delimiter"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_DELIMITER_NOTE'); ?></div>
+					</div>
 					<div class="col-md-6"><?php echo $this->lists['delimiter'];?></div>
 				</div>
 				<div id="enclosure_tr" class="enclosure form-group row">
-					<label class="key col-md-6 text-md-right">
-						<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE'); ?>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOTE'); ?>">
+					<div class="key col-md-6 text-md-right">
+						<div aria-describedby="tip-enclosure">
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE'); ?>
 							<?php echo $image; ?>
-						</span>
-					</label>
+						</div>
+						<div role="tooltip" id="tip-enclosure"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ENCLOSURE_NOTE'); ?></div>
+					</div>
 					<div class="col-md-6"><?php echo $this->lists['enclosure'];?></div>
 				</div>
 				<div id="exportgroups_tr" class="exportgroups form-group row">
-					<label class="key col-md-6 text-md-right">
-						<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS'); ?>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS_NOTE'); ?>">
+					<div class="key col-md-6 text-md-right">
+						<div aria-describedby="tip-exportgroups">
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS'); ?>
 							<?php echo $image; ?>
-						</span>
-					</label>
+						</div>
+						<div role="tooltip" id="tip-exportgroups"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_GROUPS_NOTE'); ?></div>
+					</div>
 					<div class="col-md-6 mailformat">
 						<div class="bwpmailformat">
 							<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_STATUS'); ?>
-							<p class="state"><label><input type="checkbox" id="status1" name="status1" title="status" value="1" />
-								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_CONFIRMED'); ?></label>
+							<p class="state form-check"><input type="checkbox" id="status1" class="form-check-input" name="status1" title="status" value="1" />
+								<label class="form-check-label" for="status1"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_CONFIRMED'); ?></label>
 							</p>
-							<p class="state"><label><input type="checkbox" id="status0" name="status0" title="status" value="1" />
-								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_UNCONFIRMED'); ?></label>
+							<p class="state form-check"><input type="checkbox" id="status0" class="form-check-input" name="status0" title="status" value="1" />
+								<label class="form-check-label" for="status0"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_UNCONFIRMED'); ?></label>
 							</p>
-							<p class="state"><label><input type="checkbox" id="status9" name="status9" title="status" value="1" />
-								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_TEST'); ?></label>
+							<p class="state form-check"><input type="checkbox" id="status9" class="form-check-input" name="status9" title="status" value="1" />
+								<label class="form-check-label" for="status9"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_TEST'); ?></label>
 							</p>
 							<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ARCHIVE'); ?><br />
-							<p class="archive"><label><input type="checkbox" id="archive0" name="archive0" title="archive" value="1" />
-								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_UNARCHIVED'); ?></label>
+							<p class="archive form-check"><input type="checkbox" id="archive0" class="form-check-input" name="archive0" title="archive" value="1" />
+								<label class="form-check-label" for="archive0"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_UNARCHIVED'); ?></label>
 							</p>
-							<p class="archive"><label><input type="checkbox" id="archive1" name="archive1" title="archive" value="1" />
-								<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ARCHIVED'); ?></label>
+							<p class="archive form-check"><input type="checkbox" id="archive1" class="form-check-input" name="archive1" title="archive" value="1" />
+								<label class="form-check-label" for="archive1"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_ARCHIVED'); ?></label>
 							</p>
 						</div>
 					</div>
 				</div>
 				<div id="exportfields_tr" class="exportfields form-group row">
-					<label class="key col-md-6 text-md-right">
-						<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS'); ?>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS_NOTE'); ?>">
+					<div class="key col-md-6 text-md-right">
+						<div aria-describedby="tip-exportfields">
+							<?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS'); ?>
 							<?php echo $image; ?>
-						</span>
-					</label>
+						</div>
+						<div role="tooltip" id="tip-exportfields"><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS_NOTE'); ?></div>
+					</div>
 					<div class="col-md-6">
 						<div class="mb-2">
 							<?php echo $this->lists['export_fields']; ?>
 						</div>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE');?>">
-							<input class="btn btn-outline-primary btn-sm mb-2" type="button" name="upbutton" onclick="moveUp(document.getElementById('export_fields'));"
-									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" />
-						</span>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE');?>">
-							<input class="btn btn-outline-success btn-sm mb-2" type="button" name="downbutton" onclick="moveDown(document.getElementById('export_fields'));"
-									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" />
-						</span>
-						<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE');?>">
-							<input class="btn btn-outline-danger btn-sm mb-2" type="button" name="removebutton" onclick="removeOptions(export_fields);"
-									value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" />
-						</span>
+						<input class="btn btn-outline-primary btn-sm mb-2" type="button" name="upbutton" onclick="moveUp(document.getElementById('export_fields'));"
+								value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP'); ?>" aria-describedby="tip-moveUp" />
+						<div role="tooltip" id="tip-moveUp"><?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_UP_NOTE'); ?></div>
+						<input class="btn btn-outline-success btn-sm mb-2" type="button" name="downbutton" onclick="moveDown(document.getElementById('export_fields'));"
+								value="<?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN'); ?>" aria-describedby="tip-moveDown" />
+						<div role="tooltip" id="tip-moveDown"><?php echo Text::_('COM_BWPOSTMAN_SUB_MOVE_DOWN_NOTE'); ?></div>
+						<input class="btn btn-outline-danger btn-sm mb-2" type="button" name="removebutton" onclick="removeOptions(export_fields);"
+								value="<?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED'); ?>" aria-describedby="tip-removeOptions" />
+						<div role="tooltip" id="tip-removeOptions"><?php echo Text::_('COM_BWPOSTMAN_SUB_REMOVE_SELECTED_NOTE'); ?></div>
 					</div>
 					<div><?php echo Text::_('COM_BWPOSTMAN_SUB_EXPORT_FIELDS_ANNOTATION'); ?></div>
 				</div>

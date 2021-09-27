@@ -64,7 +64,7 @@ class AvailablecontentField extends ListField
 	 */
 	public function getLabel(): string
 	{
-		return '<label for="' . $this->id . '" class="available_content_label">' . Text::_($this->element['label']) . '</label>';
+		return '<label for="' . $this->id . '" class="form-label available_content_label">' . Text::_($this->element['label']) . '</label>';
 	}
 
 	/**
@@ -92,7 +92,7 @@ class AvailablecontentField extends ListField
 		}
 
 		$attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-		$attr .= $this->multiple ? ' multiple="multiple"' : '';
+		$attr .= $this->multiple ? ' multiple multiple="multiple"' : '';
 
 		// Initialize JavaScript field attributes.
 		$attr .= $this->element['onchange'] ? ' onchange="' . $this->element['onchange'] . '"' : '';

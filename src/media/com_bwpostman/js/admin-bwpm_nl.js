@@ -206,22 +206,16 @@ function checkSelectedRecipients (message) { // Method to check if some recipien
 }
 
 
-//insert placeholder Joomla 3
+//insert placeholder
 function buttonClick(text, editor) {
-	jInsertEditorText(text, editor);
-}
-
-//insert placeholder Joomla 4
-function buttonClick4(text, editor) {
-	// jInsertEditorText(text, editor);
-
-	var content = window.Joomla.editors.instances[editor].getValue();
-
-	if (content) {
+	var x = document.getElementById("jform_html_version");
+	if (window.getComputedStyle(x).display === "none") {
 		Joomla.editors.instances[editor].replaceSelection(text);
 	}
-
-	return true;
+	else
+	{
+        InsertAtCaret(text);
+	}
 }
 
 //-------------------------------------------------------------------
@@ -295,35 +289,41 @@ function switchRecipients() {
 }
 
 function InsertAtCaret(myValue) {
-	jQuery(".insertatcaretactive").each(function(i) {
+	var ele = document.getElementsByClassName("insertatcaretactive");
+	for (var i = 0; i<ele.length; i++) {
 		if (document.selection) {
 			//For browsers like Internet Explorer
-			this.focus();
+			ele[i].focus();
 			var sel = document.selection.createRange();
 			sel.text = myValue;
-			this.focus();
+			ele[i].focus();
 		}
-		else if (this.selectionStart || this.selectionStart === 0) {
+		else if (ele[i].selectionStart || ele[i].selectionStart === 0) {
 			//For browsers like Firefox and Webkit based
-			var startPos = this.selectionStart;
-			var endPos = this.selectionEnd;
-			var scrollTop = this.scrollTop;
-			this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos, this.value.length);
-			this.focus();
-			this.selectionStart = startPos + myValue.length;
-			this.selectionEnd = startPos + myValue.length;
-			this.scrollTop = scrollTop;
+			var startPos = ele[i].selectionStart;
+			var endPos = ele[i].selectionEnd;
+			var scrollTop = ele[i].scrollTop;
+			ele[i].value = ele[i].value.substring(0, startPos) + myValue + ele[i].value.substring(endPos, ele[i].value.length);
+			ele[i].focus();
+			ele[i].selectionStart = startPos + myValue.length;
+			ele[i].selectionEnd = startPos + myValue.length;
+			ele[i].scrollTop = scrollTop;
 		}
 		else {
-			this.value += myValue;
-			this.focus();
+			ele[i].value += myValue;
+			ele[i].focus();
 		}
-	})
+	}
+}
+
+function addEventHandler(elem, eventType, handler) {
+	if (elem.addEventListener)
+		elem.addEventListener (eventType, handler, false);
+	else if (elem.attachEvent)
+		elem.attachEvent ('on' + eventType, handler);
 }
 
 window.onload = function() {
-	var $j	= jQuery.noConflict();
-
 	var Joomla = window.Joomla || {};
 
 	if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
@@ -332,6 +332,7 @@ window.onload = function() {
 	}
 
 	Joomla.submitbutton = function (pressbutton) {
+
 		var form = document.adminForm;
 
 		if (form.task.value === 'newsletter.changeTab') {
@@ -390,19 +391,26 @@ window.onload = function() {
 
 			if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic')
 			{
+				var Args1 = document.getElementById('checkContentArgs1').value;
+				var Args2 = document.getElementById('checkContentArgs2').value;
+				var Args3 = document.getElementById('checkContentArgs3').value;
+				var Args4 = document.getElementById('checkContentArgs4').value;
+				var Args5 = document.getElementById('checkContentArgs5').value;
 				var selectedCampaign = document.getElementById("jform_campaign_id");
 				var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
 
-				if (checkSelectedContent(document.getElementById('checkContentArgs').value !== ''))
+				var res = checkSelectedContent(Args1, Args2, Args3, Args4, Args5)
+				if (res === false)
 				{
-					form.task.setAttribute('value',pressbutton);
-					if (selectedCampaignValue === '-1')
+					return false;
+				}
+
+				if (selectedCampaignValue === '-1')
+				{
+					var res = checkSelectedRecipients(document.getElementById('checkRecipientArgs').value);
+					if (res === false)
 					{
-						var res = checkSelectedRecipients(document.getElementById('checkRecipientArgs').value);
-						if (res === false)
-						{
-							return false;
-						}
+						return false;
 					}
 				}
 			}
@@ -428,27 +436,48 @@ window.onload = function() {
 			};
 		}
 	}
-
-	// insert placeholder at cursor position
-	jQuery(function($){
-		$.fn.EnableInsertAtCaret = function() {
-			$(this).on("focus", function() {
-				$(".insertatcaretactive").removeClass("insertatcaretactive");
-				$(this).addClass("insertatcaretactive");
-			});
-		};
-		$("#jform_intro_text_text,#jform_intro_text_headline,#jform_text_version,#jform_html_version").EnableInsertAtCaret();
-	});
-
-	$j("#jform_campaign_id").on("change", function()
-	{
-		if (document.getElementById('currentTab').value === 'edit_basic') {
-			if ($j("#jform_campaign_id option:selected").val() !== '-1') {
-				$j("#recipients").hide();
-			} else {
-				$j("#recipients").show();
-			}
-		}
-	});
 };
+
+function ready(callbackFunc) {
+	if (document.readyState !== 'loading') {
+		// Document is already ready, call the callback directly
+		callbackFunc();
+	} else if (document.addEventListener) {
+		// All modern browsers to register DOMContentLoaded
+		document.addEventListener('DOMContentLoaded', callbackFunc);
+	} else {
+		// Old IE browsers
+		document.attachEvent('onreadystatechange', function() {
+			if (document.readyState === 'complete') {
+				callbackFunc();
+			}
+		});
+	}
+}
+
+ready(function() {
+	// enable InsertAtCaret
+	var elms = document.querySelectorAll("#jform_intro_text_text,#jform_intro_text_headline,#jform_text_version,#jform_intro_headline,#jform_intro_text,#jform_html_version");
+	for(var i = 0; i < elms.length; i++) {
+		addEventHandler(elms[i], 'focus', function() {
+			var actives = document.getElementsByClassName('insertatcaretactive');
+			for (var z = 0; z < actives.length; z++) {
+				actives[z].classList.remove('insertatcaretactive');
+			}
+			this.classList.add('insertatcaretactive');
+		});
+	}
+
+	var jform_campaign_id = document.getElementById('jform_campaign_id');
+	if (jform_campaign_id) {
+		addEventHandler(jform_campaign_id, 'change', function() {
+			var recipients = document.getElementById('recipients');
+			if (this.value !== '-1') {
+				recipients.style.display = 'none';
+			} else {
+				recipients.style.display = '';
+			}
+		});
+	}
+});
 

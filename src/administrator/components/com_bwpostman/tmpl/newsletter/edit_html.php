@@ -35,7 +35,6 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
@@ -130,7 +129,7 @@ $currentTab = 'edit_html';
 											foreach ($linktexts as $key => $linktext)
 											{
 												echo "                    <div class=\"clearfix mb-2\"><a class=\"btn btn-info btn-sm\"
-												onclick=\"buttonClick4('" . $linktext . "','jform_html_version');return false;\"
+												onclick=\"buttonClick('" . $linktext . "','jform_html_version');return false;\"
 												href=\"" . $link . "\">" . $linktext . "</a>";
 												echo '                     <span>&nbsp;' . Text::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</span></div>';
 											}

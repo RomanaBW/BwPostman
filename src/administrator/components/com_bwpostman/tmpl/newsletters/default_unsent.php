@@ -35,7 +35,6 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 
 $user		= Factory::getApplication()->getIdentity();
@@ -44,9 +43,9 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
 // Configure featured button renderer.
-$isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE']))
-	->addState(0, 'newsletter.changeIsTemplate', 'unpublish', 'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_SET_TITLE')
-	->addState(1, 'newsletter.changeIsTemplate', 'publish', 'COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_UNSET_TITLE');
+$isTemplateButton = (new ActionButton(['tip_title' => Text::_('COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE')]))
+	->addState(0, 'newsletter.changeIsTemplate', 'unpublish', Text::_('COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_SET_TITLE'))
+	->addState(1, 'newsletter.changeIsTemplate', 'publish', Text::_('COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_UNSET_TITLE'));
 ?>
 
 <div id="bwp_view_lists">
@@ -105,20 +104,19 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 								</caption>
 								<thead>
 									<tr>
-										<th style="width: 1%;" class="text-center">
-											<input type="checkbox" name="checkall-toggle" value=""
-													title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+										<th class="text-center w-1">
+											<?php echo HTMLHelper::_('grid.checkall'); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="width: 7%;" scope="col">
+										<th class="d-none d-lg-table-cell w-7" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_ATTACHMENT', 'a.attachment', $listDirn, $listOrder); ?>
 										</th>
-										<th style="min-width: 100px;" scope="col">
+										<th scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="min-width: 100px;" scope="col">
+										<th class="d-none d-lg-table-cell w-20" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-xl-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-xxl-table-cell w-7" scope="col">
 											<?php echo HTMLHelper::_(
 												'searchtools.sort',
 												'COM_BWPOSTMAN_NL_LAST_MODIFICATION_DATE',
@@ -127,16 +125,16 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-xl-table-cell" style="width: 7%;" scope="col">
+										<th class="d-none d-xxl-table-cell w-7" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="width: 10%;" scope="col">
+										<th class="d-none d-lg-table-cell w-10" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NAME', 'campaign_id', $listDirn, $listOrder); ?>
 										</th>
-										<th style="width: 10%;" scope="col">
+										<th class="w-5" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_NL_IS_TEMPLATE', 'is_template', $listDirn, $listOrder); ?>
 										</th>
-										<th style="width: 3%;" scope="col">
+										<th class="w-1" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 										</th>
 									</tr>
@@ -182,14 +180,14 @@ $isTemplateButton = (new ActionButton(['tip_title' => 'COM_BWPOSTMAN_NL_FILTER_I
 													<?php endif; ?>
 												</td>
 											<td class="d-none d-lg-table-cell"><?php echo $this->escape($item->description); ?></td>
-											<td class="d-none d-xl-table-cell">
+											<td class="d-none d-xxl-table-cell">
 												<?php
 												if ($item->modified_time !== Factory::getDbo()->getNullDate())
 												{
 													echo HTMLHelper::date($item->modified_time, Text::_('BW_DATE_FORMAT_LC5'));
 												} ?>
 											</td>
-											<td class="d-none d-xl-table-cell"><?php echo $item->authors; ?></td>
+											<td class="d-none d-xxl-table-cell"><?php echo $item->authors; ?></td>
 											<td class="d-none d-lg-table-cell text-center"><?php echo $item->campaign_id; ?></td>
 											<td class="text-center">
 												<?php echo $isTemplateButton->render($item->is_template, $i, array('disabled' => !$canEdit, 'id' => $item->id)); ?>

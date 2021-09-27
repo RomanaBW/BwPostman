@@ -32,7 +32,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-HTMLHelper::_('bootstrap.tooltip');
 ?>
 
 <form id="adminForm" action="<?php Route::_('index.php?option=com_bwpostman&amp;view=newsletterelement&amp;tmpl=component'); ?>"
@@ -44,12 +43,12 @@ HTMLHelper::_('bootstrap.tooltip');
 				<div class="input-group me-2">
 					<input type="text" name="search" title="search" id="search"
 							value="<?php echo $this->lists['search']; ?>" class="form-control" onChange="document.adminForm.submit();" />
-					<button onclick="this.form.submit();" class="btn btn-primary input-group-append" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"
+					<button onclick="this.form.submit();" class="btn btn-primary input-group-append" title="<?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>"
 							aria-label="<?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>">
 						<span class="fa fa-search me-2" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>
 					</button>
 				</div>
-				<button type="button" class="btn btn-outline-primary" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_CLEAR'); ?>"
+				<button type="button" class="btn btn-outline-primary" title="<?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>"
 						aria-label="<?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.getElementById('search').setAttribute('value', '');this.form.submit();">
 					<span class="fa icon-unpublish me-2" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
 				</button>

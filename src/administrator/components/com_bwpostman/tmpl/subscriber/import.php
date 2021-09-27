@@ -35,8 +35,6 @@ use Joomla\CMS\Uri\Uri;
 
 // Keep session alive while importing
 HTMLHelper::_('behavior.keepalive');
-//HTMLHelper::_('formbehavior.chosen', 'select');
-HTMLHelper::_('bootstrap.tooltip');
 
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('com_bwpostman.admin-bwpm_subscriber_import');
@@ -55,57 +53,63 @@ $option	= $jinput->getCmd('option');
 				<div class="admintable bwptable import col-12">
 					<fieldset class="bwptable form-group">
 						<div class="key row">
-							<label class="col-form-label col-md-6 text-md-right"><?php echo Text::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?>
-								<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILEFORMAT_NOTE'); ?>">
+							<div class="col-form-label col-md-6 text-md-right">
+								<div aria-describedby="tip-fileformat">
+									<?php echo Text::_('COM_BWPOSTMAN_SUB_FILEFORMAT'); ?>
 									<?php echo $image; ?>
-								</span>
-							</label>
+								</div>
+								<div role="tooltip" id="tip-fileformat"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILEFORMAT_NOTE'); ?></div>
+							</div>
 							<div class="col-md-6">
 								<?php echo $this->lists['fileformat']; ?>
 							</div>
 						</div>
 					</fieldset>
 					<div id="importfile_tr" class="importfile form-group row">
-						<label class="key col-md-6 text-md-right">
-							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?>
-							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_NOTE'); ?>">
+						<div class="key col-md-6 text-md-right">
+							<div aria-describedby="tip-importfile">
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE'); ?>
 								<?php echo $image; ?>
-							</span>
-						</label>
+							</div>
+							<div role="tooltip" id="tip-importfile"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_FILE_NOTE'); ?></div>
+						</div>
 						<div class="col-md-6">
 							<input type="file" class="form-control-file" name="importfile" id="importfile"
 								<?php //if (empty($this->import['fileformat'])) echo ' disabled="disabled"'; ?> />
 						</div>
 					</div>
 					<div id="delimiter_tr" class="delimiter form-group row">
-						<label class="key col-md-6 text-md-right">
-							<?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?>
-							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DELIMITER_NOTE'); ?>">
+						<div class="key col-md-6 text-md-right">
+							<div aria-describedby="tip-delimiter">
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_DELIMITER'); ?>
 								<?php echo $image; ?>
-							</span>
-						</label>
+							</div>
+							<div role="tooltip" id="tip-delimiter"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_DELIMITER_NOTE'); ?></div>
+						</div>
 						<div class="col-md-6">
 							<?php echo $this->lists['delimiter'];?>
 						</div>
 					</div>
 					<div id="enclosure_tr" class="enclosure form-group row">
-						<label class="key col-md-6 text-md-right">
-							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?>
-							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE_NOTE'); ?>">
+						<div class="key col-md-6 text-md-right">
+							<div aria-describedby="tip-enclosure">
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE'); ?>
 								<?php echo $image; ?>
-							</span>
-						</label>
+							</div>
+							<div role="tooltip" id="tip-enclosure"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_ENCLOSURE_NOTE'); ?></div>
+						</div>
 						<div class="col-md-6">
 							<?php echo $this->lists['enclosure'];?>
 						</div>
 					</div>
 					<div class="caption form-group row">
-						<label class="key col-md-6 text-md-right">
-							<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?>
-							<span class="hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?>">
+						<div class="key col-md-6 text-md-right">
+							<div aria-describedby="tip-caption">
+								<?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION'); ?>
 								<?php echo $image; ?>
-							</span>
-						</label>
+							</div>
+							<div role="tooltip" id="tip-caption"><?php echo Text::_('COM_BWPOSTMAN_SUB_IMPORT_CAPTION_NOTE'); ?></div>
+						</div>
 						<div class="col-md-6">
 							<div class="form-check">
 								<input type="checkbox" class="form-check-input" id="caption" name="caption" title="caption"

@@ -34,9 +34,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.keepalive');
-HTMLHelper::_('formbehavior.chosen', 'select');
 
 //$image = HTMLHelper::_('image', 'administrator/templates/' . $this->template . '/images/menu/icon-16-info.png', Text::_('COM_BWPOSTMAN_NOTES'));
 
@@ -91,9 +89,9 @@ $currentTab = 'edit_preview';
 								<?php echo Text::_('COM_BWPOSTMAN_NL_HEADER'); ?>
 							</div>
 							<div class="table-responsive w-auto">
-								<table class="table table-borderless shadow-none w-auto">
+								<table class="table table-borderless table-sm shadow-none w-auto">
 									<tr>
-										<td class="text-right">
+										<td class="text-end">
 											<strong><?php
 												echo Text::_('COM_BWPOSTMAN_NL_FROM_NAME');
 												echo ':'; ?>
@@ -101,7 +99,7 @@ $currentTab = 'edit_preview';
 										</td>
 										<td><?php echo $this->item->from_name;?></td></tr>
 									<tr>
-										<td class="text-right">
+										<td class="text-end">
 											<strong><?php
 												echo Text::_('COM_BWPOSTMAN_NL_FROM_EMAIL');
 												echo ':'; ?>
@@ -110,7 +108,7 @@ $currentTab = 'edit_preview';
 										<td><?php echo $this->item->from_email;?></td>
 									</tr>
 									<tr>
-										<td class="text-right">
+										<td class="text-end">
 											<strong><?php
 												echo Text::_('COM_BWPOSTMAN_NL_REPLY_EMAIL');
 												echo ':'; ?>
@@ -119,7 +117,7 @@ $currentTab = 'edit_preview';
 										<td><?php echo $this->item->reply_email;?></td>
 									</tr>
 									<tr>
-										<td class="text-right">
+										<td class="text-end">
 											<strong><?php
 												echo Text::_('COM_BWPOSTMAN_NL_SUBJECT');
 												echo ':'; ?>

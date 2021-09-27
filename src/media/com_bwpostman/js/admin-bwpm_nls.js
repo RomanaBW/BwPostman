@@ -22,6 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+Joomla = window.Joomla || {};
 
 function changeTab(newTab, currentTab)
 {
@@ -31,7 +32,7 @@ function changeTab(newTab, currentTab)
 	}
 }
 
-(function() {
+window.onload = function() {
 	Joomla = window.Joomla || {};
 
 	Joomla.submitbutton = function (pressbutton)
@@ -51,4 +52,4 @@ function changeTab(newTab, currentTab)
 		}
 	};
 
-})();
+};

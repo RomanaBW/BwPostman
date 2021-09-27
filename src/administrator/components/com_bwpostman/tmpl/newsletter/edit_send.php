@@ -34,10 +34,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
-HTMLHelper::_('bootstrap.tooltip');
-HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('behavior.keepalive');
-HTMLHelper::_('formbehavior.chosen', 'select');
 
 $image = '<i class="fa fa-lg fa-info-circle"></i>';
 
@@ -112,22 +109,23 @@ $currentTab = 'edit_send';
 									<?php echo Text::_('COM_BWPOSTMAN_NL_SEND_TO_RECIPIENTS_NOTE'); ?>
 									<?php echo Text::_('COM_BWPOSTMAN_NL_SEND_OPTIONS');?>
 								</div>
-								<div class="form-check form-check-inline clearfix mb-3">
+								<div class="form-check clearfix mb-3">
 									<input type="checkbox" id="send_to_unconfirmed" class="form-check-input" name="send_to_unconfirmed" />&nbsp;
-									<label class="form-check-label form-control-plaintext" for="send_to_unconfirmed"><?php echo Text::_('COM_BWPOSTMAN_NL_SEND_TO_UNCONFIRMED');?></label>
+									<label class="form-check-label" for="send_to_unconfirmed"><?php echo Text::_('COM_BWPOSTMAN_NL_SEND_TO_UNCONFIRMED');?></label>
 								</div>
 								<div class="form-inline mb-3">
 									<input type="text" class="form-control me-2" name="mails_per_pageload" id="mails_per_pageload" title="mails_per_pageload"
 											size="4" maxlength="10" value="<?php echo $this->params->get('default_mails_per_pageload');?>" />
-									<span class="hasTooltip"
-											title="<?php echo Text::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD_NOTE'); ?>">
+									<span aria-describedby="tip-mails_per_pageload">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD'); ?>&nbsp;
 									<?php echo $image; ?>
-								</span>
+									</span>
+									<div role="tooltip" id="tip-mails_per_pageload"><?php echo Text::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD_NOTE'); ?></div>
 								</div>
 								<?php if (BwPostmanHelper::canSend((int) $this->item->id)) : ?>
 									<input class="btn btn-info" type="button" onclick="Joomla.submitbutton('newsletter.sendmail');"
-											value="<?php echo Text::_('COM_BWPOSTMAN_NL_SENDMAIL_BUTTON'); ?>" />
+											value="<?php echo Text::_('COM_BWPOSTMAN_NL_SENDMAIL_BUTTON'); ?>"
+											title="<?php echo Text::_('COM_BWPOSTMAN_NL_SENDMAIL_BUTTON'); ?>" />
 									<input class="btn btn-info" type="button" onclick="Joomla.submitbutton('newsletter.sendmailandpublish');"
 											value="<?php echo Text::_('COM_BWPOSTMAN_NL_SENDMAIL_AND_PUBLISH_BUTTON'); ?>"
 											title="<?php echo Text::_('COM_BWPOSTMAN_NL_SENDMAIL_AND_PUBLISH_BUTTON'); ?>" />
@@ -152,7 +150,8 @@ $currentTab = 'edit_send';
 							</div>
 							<?php if (BwPostmanHelper::canSend((int) $this->item->id)) : ?>
 								<input class="btn btn-info" type="button" onclick="Joomla.submitbutton('newsletter.sendtestmail');"
-										value="<?php echo Text::_('COM_BWPOSTMAN_NL_SENDTESTMAIL_BUTTON'); ?>" />
+										value="<?php echo Text::_('COM_BWPOSTMAN_NL_SENDTESTMAIL_BUTTON'); ?>"
+										title="<?php echo Text::_('COM_BWPOSTMAN_NL_SENDTESTMAIL_BUTTON'); ?>" />
 							<?php endif; ?>
 						</div>
 					</div>

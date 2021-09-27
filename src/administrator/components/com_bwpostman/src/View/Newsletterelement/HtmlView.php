@@ -33,6 +33,7 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\String\StringHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
@@ -116,11 +117,8 @@ class HtmlView extends BaseHtmlView
 		$search				= $app->getUserStateFromRequest($key . '_search', 'search', '', 'string');
 		$search				= StringHelper::strtolower($search);
 
-		// Get document object, set document title and add css
-		$document = $app->getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_SELECTNEWSLETTER'));
-		$wa = $this->document->getWebAssetManager();
-		$wa->useStyle('com_bwpostman.admin-bwpostman_backend');
+		// Set toolbar title
+		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NLS'), 'envelope');
 
 		// Get data from the model
 		$items 		= $this->get('data');

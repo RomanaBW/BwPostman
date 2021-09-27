@@ -36,7 +36,6 @@ use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Load the bootstrap tooltip for the notes
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('bootstrap.modal');
 
@@ -239,19 +238,21 @@ $wa->useScript('com_bwpostman.admin-bwpm_tabshelper');
 												if ($item->mailing_date != Factory::getDbo()->getNullDate())
 												{ ?>&nbsp;&nbsp;
 													<div class="bw-btn">
-														<a class="iframe btn btn-info btn-sm hasTooltip text-decoration-none mt-1" href="javascript:void(0);"
-																aria-describedby="tip-html-<?php echo $i; ?>"
-																data-title="<?php echo $titleHtml;?>" data-bs-title="<?php echo $titleHtml;?>" data-bs-frame="myIframeHtml" data-bs-src="<?php echo $linkHtml;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
-															<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
-														</a>
+														<div class="d-inline-block" aria-describedby="tip-html-<?php echo $i; ?>">
+															<a class="iframe btn btn-info btn-sm text-decoration-none mt-1" href="javascript:void(0);"
+																	data-title="<?php echo $titleHtml;?>" data-bs-title="<?php echo $titleHtml;?>" data-bs-frame="myIframeHtml" data-bs-src="<?php echo $linkHtml;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
+																<?php echo Text::_('COM_BWPOSTMAN_HTML_NL');?>
+															</a>
+														</div>
 														<div role="tooltip" id="tip-html-<?php echo $i; ?>">
 															<?php echo $titleHtml . '<br />' . $this->escape($item->subject); ?>
 														</div>
-														<a class="iframe btn btn-info btn-sm hasTooltip text-decoration-none mt-1" href="javascript:void(0);"
-																aria-describedby="tip-text-<?php echo $i; ?>"
-																data-title="<?php echo $titleText;?>" data-bs-title="<?php echo $titleText;?>" data-bs-frame="myIframeText" data-bs-src="<?php echo $linkText;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
-															<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
-														</a>
+														<div class="d-inline-block" aria-describedby="tip-text-<?php echo $i; ?>">
+															<a class="iframe btn btn-info btn-sm text-decoration-none mt-1" href="javascript:void(0);"
+																	data-title="<?php echo $titleText;?>" data-bs-title="<?php echo $titleText;?>" data-bs-frame="myIframeText" data-bs-src="<?php echo $linkText;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
+																<?php echo Text::_('COM_BWPOSTMAN_TEXT_NL');?>
+															</a>
+														</div>
 														<div role="tooltip" id="tip-text-<?php echo $i; ?>">
 															<?php echo $titleText . '<br />' . $this->escape($item->subject); ?>
 														</div>

@@ -178,7 +178,6 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null): HtmlView
 	{
-		HTMLHelper::_('jquery.framework');
 		$app		= Factory::getApplication();
 		$template	= $app->getTemplate();
 		$uri		= Uri::getInstance();

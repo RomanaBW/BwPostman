@@ -151,7 +151,6 @@ class HtmlView extends BaseHtmlView
 	{
 		$app	= Factory::getApplication();
 		HTMLHelper::_('bootstrap.framework');
-		HTMLHelper::_('jquery.framework');
 
 		PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 

@@ -36,7 +36,6 @@ use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Load the bootstrap tooltip for the notes
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('bootstrap.modal');
 
@@ -217,19 +216,20 @@ $wa->useScript('com_bwpostman.admin-bwpm_tabshelper');
 											<tr class="row<?php echo $i % 2; ?>">
 												<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 												<td>
-													<a class="iframe btn btn-outline-info btn-sm hasTooltip text-decoration-none" href="javascript:void(0);"
-															aria-describedby="tip-sub-<?php echo $i; ?>"
-															data-title="<?php echo $titleSub;?>" data-bs-title="<?php echo $titleSub;?>" data-bs-frame="myIframeSub" data-bs-src="<?php echo $linkSub;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
-														<?php
-														$itemName = Text::_('COM_BWPOSTMAN_SUB_NONAME');
+													<div class="d-inline-block" aria-describedby="tip-sub-<?php echo $i; ?>">
+														<a class="iframe btn btn-outline-info btn-sm text-decoration-none" href="javascript:void(0);"
+																data-title="<?php echo $titleSub;?>" data-bs-title="<?php echo $titleSub;?>" data-bs-frame="myIframeSub" data-bs-src="<?php echo $linkSub;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
+															<?php
+															$itemName = Text::_('COM_BWPOSTMAN_SUB_NONAME');
 
-														if ($item->name)
-														{
-															$itemName = $item->name;
-														}
-														echo $itemName;
-														?>
-													</a>
+															if ($item->name)
+															{
+																$itemName = $item->name;
+															}
+															echo $itemName;
+															?>
+														</a>
+													</div>
 													<div role="tooltip" id="tip-sub-<?php echo $i; ?>">
 														<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_SUB') . '<br />' . $this->escape($item->firstname) . '&nbsp;' . $this->escape($item->name) . '<br />' . $this->escape($item->email); ?>
 													</div>

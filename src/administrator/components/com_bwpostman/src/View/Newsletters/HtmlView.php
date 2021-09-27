@@ -238,20 +238,7 @@ class HtmlView extends BaseHtmlView
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance();
 
-		// Get document object, set document title and add css
-		$document = Factory::getApplication()->getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_NLS'));
-
-		$wa = $this->document->getWebAssetManager();
-		$wa->useStyle('com_bwpostman.admin-bwpostman_backend');
-		$wa->useScript('com_bwpostman.admin-bwpm_nls');
-
-		// Add Javascript to make squeezebox close-button invisible
-		$wa->addInlineScript('
-			window.dispButton = function() {
-				document.getElementById("sbox-btn-close").style.display = "none";
-			}
-		');
+		$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nls');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NLS'), 'envelope');

@@ -95,8 +95,8 @@ class TexttemplatesField extends RadioField
 			{
 				// Initialize some option attributes.
 				$checked    = ((string) $option->value == (string) $selected) ? ' checked="checked"' : '';
-				$lblclass   = ' class="mailinglists radio"';
-				$inputclass = ' class="mailinglists radio"';
+				$lblclass   = ' class="mailinglists form-check-label"';
+				$inputclass = ' class="mailinglists form-check-input"';
 
 				$disabled   = !empty($option->disable) || ($readonly && !$checked);
 
@@ -106,19 +106,18 @@ class TexttemplatesField extends RadioField
 				$onclick    = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 				$onchange   = !empty($option->onchange) ? ' onchange="' . $option->onchange . '"' : '';
 
-				$html[] = '<label for="' . $this->id . $i . '"' . $lblclass . ' >';
+				$html[] = '<div class="form-check" aria-describedby="tip-' . $this->id . $i . '">';
 				$html[] = '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="'
 							. htmlspecialchars($option->value, ENT_COMPAT) . '"' . $checked . $inputclass . $onclick
 							. $onchange . $disabled . ' />';
+				$html[] = '<label for="' . $this->id . $i . '"' . $lblclass . ' >';
+				$html[] = $option->title . '</label>';
 
-				$html[] = '<span class="media-preview add-on fltlft">';
-				$html[] = '<span class="hasTooltip hasTipPreview" title="&lt;strong&gt;' . $option->description . '&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;'
-					. '&lt;div id=&quot;jform_[template_id]' . $option->value . '_preview_img&quot;&gt;&lt;img id=&quot;jform_[template_id]'
-					. $option->value . '_preview_img&quot; src=&quot;' . Uri::root() . $option->thumbnail . '&quot; alt=&quot;' . $option->title
-					. '&quot; class=&quot;media-preview&quot; style=&quot;max-width:160px; max-height:100px;&quot; /&gt;&lt;/div&gt;">'
-					. $option->title . '</span>';
-				$html[] = '</span>';
-				$html[] = '</label>';
+				$tooltip = '<strong>' . $option->description . '</strong><br /><br />'
+					. '<div><img src="' . Uri::root() . $option->thumbnail . '" alt="' . $option->title . '"'
+					.'style="max-width:160px; max-height:100px;" /></div>';
+				$html[] = '<div role="tooltip" id="tip-' . $this->id . $i . '">'.$tooltip.'</div>';
+				$html[] = '</div>';
 			}
 		}
 		else

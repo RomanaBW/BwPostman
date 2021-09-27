@@ -33,9 +33,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-HTMLHelper::_('bootstrap.tooltip');
-HTMLHelper::_('behavior.multiselect');
-
 $user	= Factory::getApplication()->getIdentity();
 $userId	= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -92,22 +89,22 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								</caption>
 								<thead>
 									<tr>
-										<th style="min-width: 100px;" scope="col">
+										<th scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_SUBJECT', 'sc.subject', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-lg-table-cell" style="min-width: 100px;" scope="col">
+										<th class="d-none d-lg-table-cell w-20" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_DESCRIPTION', 'n.description', $listDirn, $listOrder); ?>
 										</th>
-										<th class="d-none d-xl-table-cell" style="width: 7%;" scope="col">
+										<th class="d-none d-xl-table-cell w-7" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_AUTHOR', 'authors', $listDirn, $listOrder); ?>
 										</th>
-										<th style="min-width: 150px;" scope="col">
+										<th class="w-20" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_RECIPIENT', 'q.recipient', $listDirn, $listOrder); ?>
 										</th>
-										<th style="width: 7%;" scope="col">
+										<th class="w-7" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'COM_BWPOSTMAN_NL_TRIAL', 'q.trial', $listDirn, $listOrder); ?>
 										</th>
-										<th style="width: 3%;" scope="col">
+										<th class="w-1" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort', 'NUM', 'q.id', $listDirn, $listOrder); ?>
 										</th>
 									</tr>

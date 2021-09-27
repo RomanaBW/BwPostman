@@ -36,7 +36,6 @@ use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Load the bootstrap tooltip for the notes
-HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('bootstrap.modal');
 
@@ -209,11 +208,12 @@ $wa->useScript('com_bwpostman.admin-bwpm_tabshelper');
 											<tr class="row<?php echo $i % 2; ?>">
 												<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 												<td>
-													<a class="iframe btn btn-outline-info btn-sm hasTooltip text-decoration-none" href="javascript:void(0);"
-															aria-describedby="tip-ml-<?php echo $i; ?>"
-															data-title="<?php echo $titleMl;?>" data-bs-title="<?php echo $titleMl;?>" data-bs-frame="myIframeMl" data-bs-src="<?php echo $linkMl;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
-														<?php echo $item->title;?>
-													</a>
+													<div class="d-inline-block" aria-describedby="tip-ml-<?php echo $i; ?>">
+														<a class="iframe btn btn-outline-info btn-sm text-decoration-none" href="javascript:void(0);"
+																data-title="<?php echo $titleMl;?>" data-bs-title="<?php echo $titleMl;?>" data-bs-frame="myIframeMl" data-bs-src="<?php echo $linkMl;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
+															<?php echo $item->title;?>
+														</a>
+													</div>
 													<div role="tooltip" id="tip-ml-<?php echo $i; ?>">
 														<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_ML') . '<br />' . $this->escape($item->title); ?>
 													</div>

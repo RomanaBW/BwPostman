@@ -36,8 +36,7 @@ use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 // Load the bootstrap tooltip for the notes
-HTMLHelper::_('bootstrap.tooltip');
-HTMLHelper::_('behavior.multiselect');
+TMLHelper::_('behavior.multiselect');
 HTMLHelper::_('bootstrap.modal');
 
 $user		= Factory::getApplication()->getIdentity();
@@ -200,11 +199,12 @@ $wa->useScript('com_bwpostman.admin-bwpm_tabshelper');
 												<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 											</td>
 											<td>
-												<a class="iframe btn btn-outline-info btn-sm hasTooltip text-decoration-none" href="javascript:void(0);"
-														aria-describedby="tip-cam-<?php echo $i; ?>"
-														data-title="<?php echo $titleCam;?>" data-bs-title="<?php echo $titleCam;?>" data-bs-frame="myIframeCam" data-bs-src="<?php echo $linkCam;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
-													<?php echo $item->title;?>
-												</a>
+												<div class="d-inline-block" aria-describedby="tip-cam-<?php echo $i; ?>">
+													<a class="iframe btn btn-outline-info btn-sm text-decoration-none" href="javascript:void(0);"
+															data-title="<?php echo $titleCam;?>" data-bs-title="<?php echo $titleCam;?>" data-bs-frame="myIframeCam" data-bs-src="<?php echo $linkCam;?>" data-bs-toggle="modal" data-bs-target="#bwp-modal">
+														<?php echo $item->title;?>
+													</a>
+												</div>
 												<div role="tooltip" id="tip-cam-<?php echo $i; ?>">
 													<?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_CAM') . '<br />' . $this->escape($item->title); ?>
 												</div>

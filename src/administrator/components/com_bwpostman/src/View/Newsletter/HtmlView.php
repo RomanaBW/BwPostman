@@ -45,8 +45,6 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
-HTMLHelper::_('jquery.framework');
-
 /**
  * BwPostman Newsletter View
  *
@@ -199,6 +197,8 @@ class HtmlView extends BaseHtmlView
 		// Initialize variables
 		$app = Factory::getApplication();
 		$app->setUserState('bwpostman.send.alsoUnconfirmed', false);
+		// reset trial error
+		$app->setUserState('com_bwpostman.newsletter.trial.error', false);
 
 		$log_options  = array();
 		$this->logger = BwLogger::getInstance($log_options);
@@ -272,10 +272,7 @@ class HtmlView extends BaseHtmlView
 		// Get document object, set document title and add css
 		$document	= $app->getDocument();
 		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
-		$wa = $this->document->getWebAssetManager();
-		$wa->useStyle('com_bwpostman.admin-bwpostman_backend');
-		$wa->useScript('com_bwpostman.admin-bwpm_nl');
-		HTMLHelper::_('jquery.framework');
+		$document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nl');
 
 		// Set toolbar title and items
 		if ($layout == 'nl_send')
@@ -286,7 +283,7 @@ class HtmlView extends BaseHtmlView
 			$options['icon'] = "icon-arrow-left";
 
 			$button = new LinkButton('back');
-			$document->setTitle(Text::_('COM_BWPOSTMAN_ACTION_SEND'));
+
 			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ACTION_SEND'), 'envelope');
 
 			$button->setOptions($options);

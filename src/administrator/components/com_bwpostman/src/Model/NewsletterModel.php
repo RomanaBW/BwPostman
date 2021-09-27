@@ -34,6 +34,7 @@ use Exception;
 use InvalidArgumentException;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -1218,6 +1219,26 @@ class NewsletterModel extends AdminModel
 			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_SUBJECT');
 		}
 
+		// We need to check if attachment exists
+		// Convert attachment string or JSON to array, if present
+		if (is_string($data['attachment']))
+		{
+			$attachments = BwPostmanNewsletterHelper::decodeAttachments($data['attachment']);
+		}
+		$counter = 1;
+		foreach ($attachments as $attachment)
+		{
+			// Remove metadata from attachment
+			$pos1              = strpos($attachment['single_attachment'], '#');
+			$rawFilename       = $pos1 === false ? $attachment['single_attachment'] : substr($attachment['single_attachment'], 0, $pos1);
+
+			if (!File::exists(JPATH_SITE . '/' .$rawFilename))
+			{
+				$err[] = Text::sprintf("COM_BWPOSTMAN_NL_ERROR_SAVE_NO_ATTACHMENTFILE", $counter);
+			}
+            $counter++;
+		}
+
 		// Check for valid html or text version
 		if ((trim($data['html_version']) === '') && (trim($data['text_version']) === ''))
 		{
@@ -1976,7 +1997,7 @@ class NewsletterModel extends AdminModel
 		{
 			// Remove metadata from attachment
 			$pos1              = strpos($attachment['single_attachment'], '#');
-			$rawFilename       = substr($attachment['single_attachment'], 0, $pos1);
+			$rawFilename       = $pos1 === false ? $attachment['single_attachment'] : substr($attachment['single_attachment'], 0, $pos1);
 
 			// Create filepath
 			$fullAttachments[] = JPATH_SITE . '/' .$rawFilename;
@@ -2129,6 +2150,11 @@ class NewsletterModel extends AdminModel
 			{
 				// show message only wanted if sending newsletters from component backend directly, not in time controlled sending
 				$this->sendmessage .= Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING');
+				// set trial error
+				if ($tblSendMailQueue->trial === 1)
+				{
+					$app->setUserState('com_bwpostman.newsletter.trial.error', true);
+				}
 			}
 
 			$tblSendMailQueue->push(

@@ -1334,13 +1334,13 @@ class NewsletterEditPage
 	{
 		if (!$toUsergroup)
 		{
-			$I->scrollTo(self::$legend_recipients, 0, -100);
+			$I->scrollTo(self::$legend_recipients, 0, -150);
 			$I->wait(1);
 			$I->click(sprintf(Generals::$mls_accessible, 2));
 		}
 		else
 		{
-			$I->scrollTo(self::$usergroup_recipients, 0, -100);
+			$I->scrollTo(self::$usergroup_recipients, 0, -150);
 			$I->wait(2);
 			$I->click(Generals::$mls_usergroup);
 		}

@@ -1460,22 +1460,22 @@ class FooterUsedMailinglistsCest
 		switch ($recipients)
 		{
 			case 'available':
-				$I->scrollTo(NlEdit::$legend_recipients);
+				$I->scrollTo(NlEdit::$legend_recipients, 0, -100);
 				$I->wait(1);
 				$I->click(sprintf(Generals::$mls_accessible, 2));
 				break;
 			case 'unavailable':
-				$I->scrollTo(NlEdit::$legend_recipients);
+				$I->scrollTo(NlEdit::$legend_recipients, 0, -100);
 				$I->wait(1);
 				$I->click(sprintf(Generals::$mls_nonaccessible, 3));
 				break;
 			case 'internal':
-				$I->scrollTo(NlEdit::$legend_recipients);
+				$I->scrollTo(NlEdit::$legend_recipients, 0, -100);
 				$I->wait(1);
 				$I->click(sprintf(Generals::$mls_internal, 4));
 				break;
 			case 'usergroups':
-				$I->scrollTo(NlEdit::$usergroup_recipients, 0, -100);
+				$I->scrollTo(NlEdit::$usergroup_recipients, 0, -150);
 				$I->wait(2);
 				$I->click(Generals::$mls_usergroup);
 				break;

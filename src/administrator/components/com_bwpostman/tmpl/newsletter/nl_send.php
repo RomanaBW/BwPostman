@@ -31,7 +31,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Session\Session;
 
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nls');
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nl_send');
 
 $model		= $this->getModel();
 $token      = Session::getFormToken();
@@ -91,6 +91,5 @@ $token      = Session::getFormToken();
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
-	<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=newsletterjson.startsending&tmpl=nl_send&format=json&<?php echo Session::getFormToken(); ?>=1" />
+	<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=newsletterjson.startsending&format=json&<?php echo Session::getFormToken(); ?>=1" />
 	<input type="hidden" id="delay" value="<?php echo $this->delay; ?>" />
-

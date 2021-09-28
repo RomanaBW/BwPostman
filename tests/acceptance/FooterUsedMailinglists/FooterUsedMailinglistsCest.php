@@ -1418,10 +1418,11 @@ class FooterUsedMailinglistsCest
 		$I->fillField(NlEdit::$subject, NlEdit::$field_subject);
 		$I->fillField(NlEdit::$description, NlEdit::$field_description);
 
-		$I->scrollTo(NlEdit::$legend_templates);
-		$I->wait(1);
+		$I->scrollTo(NlEdit::$legend_templates, 0, -100);
+		$I->wait(2);
 		$I->click(NlEdit::$template_html);
 		$I->click(NlEdit::$template_text);
+		$I->wait(1);
 
 		foreach ($recipients as $recipient)
 		{
@@ -1429,8 +1430,8 @@ class FooterUsedMailinglistsCest
 		}
 
 		// add content
-		$I->scrollTo(NlEdit::$legend_content);
-		$I->wait(1);
+		$I->scrollTo(NlEdit::$legend_content, 0, -100);
+		$I->wait(2);
 		$I->doubleClick(sprintf(NlEdit::$available_content, 2));
 		$I->wait(2);
 

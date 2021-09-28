@@ -1475,7 +1475,10 @@ class FooterUsedMailinglistsCest
 				$I->click(sprintf(Generals::$mls_internal, 4));
 				break;
 			case 'usergroups':
+				codecept_debug("scrollto usergroup 1: ");
+				codecept_debug($recipients);
 				$I->scrollTo(NlEdit::$usergroup_recipients, 0, -150);
+				codecept_debug("scrollto usergroup 2");
 				$I->wait(2);
 				$I->click(Generals::$mls_usergroup);
 				break;

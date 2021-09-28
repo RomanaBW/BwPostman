@@ -1340,6 +1340,9 @@ class NewsletterEditPage
 		}
 		else
 		{
+			codecept_debug("scrollto usergroup 1: " . $toUsergroup);
+			$I->scrollTo(self::$usergroup_recipients, 0, -150);
+			codecept_debug("scrollto usergroup 2 ");
 			$I->scrollTo(self::$usergroup_recipients, 0, -150);
 			$I->wait(2);
 			$I->click(Generals::$mls_usergroup);

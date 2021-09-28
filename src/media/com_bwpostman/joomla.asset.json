@@ -89,6 +89,11 @@
       "uri": "com_bwpostman/admin-bwpm_nl.js"
     },
     {
+      "name": "com_bwpostman.admin-bwpm_nl_send",
+      "type": "script",
+      "uri": "com_bwpostman/admin-bwpm_nl_send.js"
+    },
+    {
       "name": "com_bwpostman.admin-bwpm_nls",
       "type": "script",
       "uri": "com_bwpostman/admin-bwpm_nls.js"

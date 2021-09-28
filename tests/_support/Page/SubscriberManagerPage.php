@@ -539,7 +539,7 @@ class SubscriberManagerPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $import_legend_mls    = "//*[@id='adminForm']/fieldset[2]/div/div[2]/fieldset/div[1]/fieldset/legend/span[2]";
+	public static $import_legend_mls    = "//*[@id='adminForm']/fieldset[2]/div/div[2]/fieldset/div[1]/fieldset";
 
 	/**
 	 * @var string

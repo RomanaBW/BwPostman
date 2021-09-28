@@ -1020,7 +1020,8 @@ class TestNewslettersDetailsCest
 			$I->see('Newsletter Publishing Details', Generals::$pageTitle);
 
 			// make changes
-			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_published, NlEdit::$published_list_id);
+			$I->selectOption(NlEdit::$published, 'published');
+//			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_published, NlEdit::$published_list_id);
 
 			$I->fillField(NlEdit::$publish_up, NlEdit::$field_edit_publish_up);
 			$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
@@ -1036,7 +1037,7 @@ class TestNewslettersDetailsCest
 			$I->see(NlEdit::$success_saved, Generals::$alert_success);
 
 			// check changes
-			$I->see("published", NlEdit::$published_list_text);
+//			$I->see("published", NlEdit::$published_list_text);
 
 			$publish_up = $I->grabValueFrom(NlEdit::$publish_up);
 			$I->assertEquals(NlEdit::$field_edit_publish_up, $publish_up);
@@ -1063,7 +1064,8 @@ class TestNewslettersDetailsCest
 			$I->see('Newsletter Publishing Details', Generals::$pageTitle);
 
 			// make changes
-			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_unpublished, NlEdit::$published_list_id);
+//			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_unpublished, NlEdit::$published_list_id);
+			$I->selectOption(NlEdit::$published, 'unpublished');
 
 			$I->fillField(NlEdit::$publish_up, NlEdit::$field_publish_up);
 			$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);

@@ -655,14 +655,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $template_html    = "//*/span[starts-with(normalize-space(text()),'Standard Basic')]/parent::span/parent::label/input[1]";// Template Standard Basic [3]
+	public static $template_html    = "//*/input[@id='jform_template_id0']";// Template Standard Basic [3]
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $template_text		= "//*/span[starts-with(normalize-space(text()),'Standard TEXT Template 3')]/parent::span/parent::label/input[1]";
+	public static $template_text		= "//*/input[@id='jform_text_template_id3']";
 
 
 	/**
@@ -804,28 +804,28 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_templates     = "//*/div[contains(@class, 'nl-template')]/div/div[contains(@class, 'h3')]";
+	public static $legend_templates     = "//*/div[@id='bw_nl_edit_tpl']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_recipients    = "//*/div[contains(@class, 'nl-mailinglists')]/div/h4";
+	public static $legend_recipients    = "//*/div[@id='recipients']/div/div[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $usergroup_recipients = "//*/div[contains(@class, 'nl-usergroups')]/div/h4";
+	public static $usergroup_recipients = "//*/div[@id='recipients']/div/div[3]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_content       = "//*/div[contains(@class, 'nl-content')]/div/div[contains(@class, 'h3')]";
+	public static $legend_content       = "//*[@id='jform_available_content']";
 
 
 	/**
@@ -1205,6 +1205,7 @@ class NewsletterEditPage
 	 */
 	public static function checkSuccess(\AcceptanceTester $I, $username)
 	{
+		$I->wait(1);
 		$I->waitForElementVisible(Generals::$systemMessageClose, 5);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see(self::$success_saved, Generals::$alert_success);
@@ -1255,7 +1256,7 @@ class NewsletterEditPage
 		self::selectRecipients($I, $toUsergroup);
 
 		// add content
-		$I->scrollTo(self::$legend_content);
+		$I->scrollTo(self::$legend_content, 0, -100);
 		$I->wait(2);
 		$I->doubleClick(sprintf(self::$available_content, 2));
 		$I->wait(2);

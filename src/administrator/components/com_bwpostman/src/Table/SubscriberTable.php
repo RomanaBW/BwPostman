@@ -1021,6 +1021,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+// Romana wenn ich einen Tester anlegen möchte, kommt diese Meldung
+// loadColumn() liefert ein Array
+//     Return value of BoldtWebservice\Component\BwPostman\Administrator\Table\SubscriberTable::getSubscriberIdByEmail() must be of the type int, array returned
+
 
 		return $id;
 	}

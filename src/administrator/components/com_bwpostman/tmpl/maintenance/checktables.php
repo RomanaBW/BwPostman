@@ -32,7 +32,6 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 
-/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
 $wa->useScript('com_bwpostman.admin-bwpm_checktables');

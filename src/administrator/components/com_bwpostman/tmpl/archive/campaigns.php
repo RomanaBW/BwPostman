@@ -48,9 +48,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $this->context	= 'Archive.campaigns';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'campaigns');
 
-/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-$wa = $this->document->getWebAssetManager();
-$wa->useScript('com_bwpostman.admin-bwpm_tabshelper');
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
 
 //
 /**

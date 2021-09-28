@@ -93,7 +93,6 @@ class SinglenewsField extends FormField
 		$modalId = 'Newsletter_' . $this->id;
 		$modalTitle = Text::_('COM_BWPOSTMAN_SELECT_NEWSLETTER');
 
-		/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
 
 		// Add the modal field script to the document head.

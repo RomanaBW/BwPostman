@@ -31,10 +31,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Session\Session;
 
-/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-$wa = $this->document->getWebAssetManager();
-$wa->useScript('com_bwpostman.admin-bwpm_do_restore');
-//$wa->useScript('com_bwpostman.admin-bwpm_do_restore');
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_do_restore');
 
 $model		= $this->getModel();
 $token      = Session::getFormToken();

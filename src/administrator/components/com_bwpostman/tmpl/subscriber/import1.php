@@ -36,8 +36,7 @@ use Joomla\CMS\Uri\Uri;
 // Keep session alive while editing
 HTMLHelper::_('behavior.keepalive');
 
-$wa = $this->document->getWebAssetManager();
-$wa->useScript('com_bwpostman.admin-bwpm_subscriber_import');
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber_import');
 
 HTMLHelper::_('bootstrap.tooltip');
 $jinput	= Factory::getApplication()->input;

@@ -32,8 +32,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 
-$wa = $this->document->getWebAssetManager();
-$wa->useScript('com_bwpostman.admin-bwpm_subscriber_export');
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber_export');
 
 $jinput	= Factory::getApplication()->input;
 $image	= '<i class="fa fa-info-circle fa-lg"></i>';

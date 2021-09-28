@@ -33,7 +33,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Session\Session;
 
-/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
 $wa->useScript('com_bwpostman.admin-bwpm_template_import');

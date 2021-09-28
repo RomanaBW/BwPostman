@@ -178,9 +178,7 @@ class HtmlView extends BaseHtmlView
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance();
 
-		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-		$wa = $this->document->getWebAssetManager();
-		$wa->useScript('com_bwpostman.admin-bwpm_mailinglist');
+		$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_mailinglist');
 
 		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
 		$isNew = ($this->item->id < 1);

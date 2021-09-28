@@ -49,9 +49,7 @@ $nullDate   = Factory::getDbo()->getNullDate();
 $this->context	= 'Archive.newsletters';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsletters');
 
-/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-$wa = $this->document->getWebAssetManager();
-$wa->useScript('com_bwpostman.admin-bwpm_tabshelper');
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
 
 //
 /**

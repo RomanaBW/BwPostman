@@ -38,9 +38,7 @@ HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('bootstrap.modal');
 
-/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-$wa = $this->document->getWebAssetManager();
-$wa->useScript('com_bwpostman.admin-bwpm_tabshelper');
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
 
 /**
  * BwPostman Single Campaign Layout

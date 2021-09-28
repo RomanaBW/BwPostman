@@ -460,9 +460,7 @@ class HtmlView extends BaseHtmlView
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance();
 
-		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-		$wa = $this->document->getWebAssetManager();
-		$wa->useScript('com_bwpostman.admin-bwpm_subscriber');
+		$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber');
 
 		switch ($layout)
 		{

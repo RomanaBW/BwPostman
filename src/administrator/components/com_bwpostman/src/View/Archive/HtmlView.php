@@ -173,7 +173,6 @@ class HtmlView extends BaseHtmlView
 
 		$this->sidebar = JHtmlSidebar::render();
 
-		/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 		$wa = $this->document->getWebAssetManager();
 		$wa->useScript('com_bwpostman.admin-bwpm_confirm_unarchive');
 		$wa->useScript('com_bwpostman.admin-bwpm_confirm_delete_cam_nls');

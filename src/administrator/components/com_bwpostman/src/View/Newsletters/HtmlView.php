@@ -238,7 +238,9 @@ class HtmlView extends BaseHtmlView
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance();
 
-		$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nls');
+		$wa = $this->document->getWebAssetManager();
+		$wa->useStyle('com_bwpostman.admin-bwpostman_backend');
+		$wa->useScript('com_bwpostman.admin-bwpm_nls');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NLS'), 'envelope');

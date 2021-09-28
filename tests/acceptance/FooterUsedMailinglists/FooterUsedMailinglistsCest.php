@@ -1476,7 +1476,7 @@ class FooterUsedMailinglistsCest
 				break;
 			case 'usergroups':
 				$I->scrollTo(NlEdit::$usergroup_recipients, 0, -100);
-				$I->wait(1);
+				$I->wait(2);
 				$I->click(Generals::$mls_usergroup);
 				break;
 		}

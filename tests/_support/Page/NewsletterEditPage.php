@@ -1341,7 +1341,7 @@ class NewsletterEditPage
 		else
 		{
 			$I->scrollTo(self::$usergroup_recipients, 0, -100);
-			$I->wait(1);
+			$I->wait(2);
 			$I->click(Generals::$mls_usergroup);
 		}
 		$I->wait(2);

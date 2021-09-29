@@ -1216,8 +1216,8 @@ class Acceptance extends Codeception\Module
 		$I->see($manage_data['section'], Generals::$pageTitle);
 		// select items to archive
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$search_list);
+		$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
+		$I->clickAndWait(Generals::$search_list, 1);
 		$I->selectOption(Generals::$search_list, $edit_data['archive_identifier']);
 
 		$searchButton = Generals::$search_button;

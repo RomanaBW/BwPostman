@@ -18,6 +18,7 @@
     {
       "name": "mod_bwpostman_overview.mod_archive",
       "type": "script",
-      "uri": "mod_bwpostman_overview/mod_archive.js",
+      "uri": "mod_bwpostman_overview/mod_archive.js"
     }
+  ]
 }

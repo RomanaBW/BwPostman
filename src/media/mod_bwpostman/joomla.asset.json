@@ -48,9 +48,7 @@
     {
       "name": "mod_bwpostman.bwpm_register",
       "type": "script",
-      "uri": "mod_bwpostman/bwpm_register.js",
-      "defer": [true
-      ],
+      "uri": "mod_bwpostman/bwpm_register.js"
     },
     {
       "name": "mod_bwpostman.bwpm_register_bs",
@@ -62,4 +60,5 @@
       "type": "script",
       "uri": "mod_bwpostman/bwpm_register_modal.js"
     }
+  ]
 }

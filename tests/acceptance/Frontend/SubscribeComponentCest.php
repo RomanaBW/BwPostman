@@ -50,7 +50,8 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElementVisible(SubsView::$registration_complete, 30);
+		$I->wait(1);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		SubsView::activate($I, SubsView::$mail_fill_1);
@@ -79,7 +80,8 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElementVisible(SubsView::$registration_complete, 30);
+		$I->wait(1);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 		$I->wait(5);
 
@@ -158,7 +160,8 @@ class SubscribeComponentCest
 
 		$I->scrollTo(SubsView::$registration_complete);
 		$I->wait(1);
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElementVisible(SubsView::$registration_complete, 30);
+		$I->wait(1);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		SubsView::activate($I, SubsView::$mail_fill_1);
@@ -372,7 +375,8 @@ class SubscribeComponentCest
 
 		$I->scrollTo(SubsView::$registration_complete);
 		$I->wait(1);
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElementVisible(SubsView::$registration_complete, 30);
+		$I->wait(1);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		SubsView::activate($I, SubsView::$mail_fill_1);

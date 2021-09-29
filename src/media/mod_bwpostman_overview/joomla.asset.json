@@ -6,9 +6,9 @@
   "license": "GPL-2.0-or-later",
   "assets": [
     {
-      "name": "mod_bwpostman_overview.bwpm_overview",
+      "name": "mod_bwpostman_overview.bwpostman_overview",
       "type": "style",
-      "uri": "mod_bwpostman_overview/bwpm_overview.css"
+      "uri": "mod_bwpostman_overview/bwpostman_overview.css"
     },
     {
       "name": "mod_bwpostman_overview.install",

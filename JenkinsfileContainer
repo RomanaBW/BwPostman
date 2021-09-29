@@ -15,7 +15,7 @@ pipeline {
 					VERSIONS_EXTRA_VAR_4 = "joomla_version=${JOOMLA_VERSION} bwpm_version=${BWPM_VERSION}";
 					DO_RECORD_SMOKE = "true";
 					DO_RECORD_1 = "false";
-					DO_RECORD_2 = "true";
+					DO_RECORD_2 = "false";
 					DO_RECORD_3 = "false";
 					DO_RECORD_4 = "true";
 					DO_RECORD_5 = "false";

@@ -55,7 +55,8 @@ $script = "
 	}
 ";
 // Add the script to the document head
-Factory::getApplication()->getDocument()->addScriptDeclaration($script);
+$wa->addInlineScript($script);
+
 ?>
 <div id="mod_bwpostman_overview">
 	<?php if (count($list) > 0) { ?>

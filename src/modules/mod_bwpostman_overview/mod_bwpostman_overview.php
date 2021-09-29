@@ -41,10 +41,13 @@ $document = $app->getDocument();
 $templateName = $app->getTemplate();
 $css_filename = '/templates/' . $templateName . '/css/mod_bwpostman_overview.css';
 
-$document->addStyleSheet(Uri::root(true) . '/media/mod_bwpostman_overview/css/bwpostman_overview.css');
+$wa = $document->getWebAssetManager();
+$document->getWebAssetManager()->registerAndUseStyle('mod_bwpostman_overview.bwpostman_overview');
+
 if (file_exists(JPATH_BASE . $css_filename))
 {
-	$document->addStyleSheet(Uri::root(true) . $css_filename);
+	$wa->registerAndUseStyle('mod_bwpostman.bwpm_register', Uri::root(true) . $css_filename);
+//	$document->addStyleSheet(Uri::root(true) . $css_filename);
 }
 
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));

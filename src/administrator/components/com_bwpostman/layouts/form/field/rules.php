@@ -71,7 +71,7 @@ $document = Factory::getDocument();
 
 // Add Javascript for permission change
 HTMLHelper::_('form.csrf');
-Factory::getDocument()->getWebAssetManager()
+Factory::getApplication()->getDocument()->getWebAssetManager()
 	->useStyle('webcomponent.field-permissions')
 	->useScript('webcomponent.field-permissions')
 	->useStyle('webcomponent.joomla-tab')

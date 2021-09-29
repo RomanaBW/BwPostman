@@ -1,0 +1,65 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "mod_bwpostman",
+  "version": "4.0.0",
+  "description": "BwPostman Package",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+    {
+      "name": "mod_bwpostman.bwpm_register",
+      "type": "style",
+      "uri": "mod_bwpostman/bwpm_register.css"
+    },
+    {
+      "name": "mod_bwpostman.bwpm_register_bs",
+      "type": "style",
+      "uri": "mod_bwpostman/bwpm_register_bs.css"
+    },
+    {
+      "name": "mod_bwpostman.bwpm_register_bs2",
+      "type": "style",
+      "uri": "mod_bwpostman/bwpm_register_bs2.css"
+    },
+    {
+      "name": "mod_bwpostman.bwpm_register_bs4",
+      "type": "style",
+      "uri": "mod_bwpostman/bwpm_register_bs4.css"
+    },
+    {
+      "name": "mod_bwpostman.bwpm_register_modal",
+      "type": "style",
+      "uri": "mod_bwpostman/bwpm_register_modal.css"
+    },
+    {
+      "name": "mod_bwpostman.bwpostman",
+      "type": "style",
+      "uri": "mod_bwpostman/bwpostman.css"
+    },
+    {
+      "name": "mod_bwpostman.iconfonts",
+      "type": "style",
+      "uri": "mod_bwpostman/iconfonts.css"
+    },
+    {
+      "name": "mod_bwpostman.install",
+      "type": "style",
+      "uri": "mod_bwpostman/install.css"
+    },
+    {
+      "name": "mod_bwpostman.bwpm_register",
+      "type": "script",
+      "uri": "mod_bwpostman/bwpm_register.js",
+      "defer": [true
+      ],
+    },
+    {
+      "name": "mod_bwpostman.bwpm_register_bs",
+      "type": "script",
+      "uri": "mod_bwpostman/bwpm_register_bs.js"
+    },
+    {
+      "name": "mod_bwpostman.bwpm_register_modal",
+      "type": "script",
+      "uri": "mod_bwpostman/bwpm_register_modal.js"
+    }
+}

@@ -42,12 +42,14 @@ $n	= count($mailinglists);
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
-JHtml::_('stylesheet', 'mod_bwpostman/bwpm_register_bs4.css', array('version' => 'auto', 'relative' => true));
-JHtml::_('script', 'mod_bwpostman/bwpm_register.js', array('version' => 'auto', 'relative' => true));
+$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+$wa->registerAndUseStyle('mod_bwpostman.bwpm_register_bs4');
+$wa->registerAndUseScript('mod_bwpostman.bwpm_register');
 
 if (file_exists(JPATH_BASE . $css_filename))
 {
-	$document->addStyleSheet(Uri::root(true) . $css_filename);
+	$wa->registerAndUseStyle('mod_bwpostman.bwpm_register', Uri::root(true) . $css_filename);
+//	$document->addStyleSheet(Uri::root(true) . $css_filename);
 }
 
 Text::script('MOD_BWPOSTMANERROR_FIRSTNAME');

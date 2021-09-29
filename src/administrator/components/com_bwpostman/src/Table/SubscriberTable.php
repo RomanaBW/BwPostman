@@ -988,7 +988,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public function getSubscriberIdByEmail(string $email, bool $isTester = false): int
+	public function getSubscriberIdByEmail(string $email, bool $isTester = false)
 	{
 		$db    = $this->_db;
 		$query = $db->getQuery(true);

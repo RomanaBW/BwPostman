@@ -45,15 +45,14 @@ $n	= count($mailinglists);
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
-$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
-$wa->registerAndUseStyle('mod_bwpostman.bwpm_register_modal');
-$wa->registerAndUseScript('mod_bwpostman.bwpm_register_modal');
+$wa->useStyle('mod_bwpostman.bwpm_register_modal');
+$wa->useScript('mod_bwpostman.bwpm_register_modal');
 
 $inputClass = 'input';
 
 if (file_exists(JPATH_BASE . $css_filename))
 {
-	$wa->registerAndUseStyle('mod_bwpostman.bwpm_register', Uri::root(true) . $css_filename);
+	$wa->registerAndUseStyle('mod_bwpostman.bwpm_register_modal_custom', Uri::root(true) . $css_filename);
 //	$document->addStyleSheet(Uri::root(true) . $css_filename);
 }
 

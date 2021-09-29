@@ -63,6 +63,11 @@ $document     = $app->getDocument();
 $templateName = $app->getTemplate();
 $css_filename = '/templates/' . $templateName . '/css/mod_bwpostman.css';
 
+$wa = $document->getWebAssetManager();
+$wr = $wa->getRegistry();
+$wr->addRegistryFile('media/mod_bwpostman/joomla.asset.json');
+
+
 $module = ModuleHelper::getModule('mod_bwpostman');
 $userid = (int)$app->getIdentity()->get('id');
 

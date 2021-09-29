@@ -46,7 +46,7 @@ $document->getWebAssetManager()->registerAndUseStyle('mod_bwpostman_overview.bwp
 
 if (file_exists(JPATH_BASE . $css_filename))
 {
-	$wa->registerAndUseStyle('mod_bwpostman.bwpm_register', Uri::root(true) . $css_filename);
+	$wa->registerAndUseStyle('mod_bwpostman.bwpostman_overview_custom', Uri::root(true) . $css_filename);
 //	$document->addStyleSheet(Uri::root(true) . $css_filename);
 }
 

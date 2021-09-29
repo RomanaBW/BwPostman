@@ -42,13 +42,12 @@ $n	= count($mailinglists);
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
-$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
-$wa->registerAndUseStyle('mod_bwpostman.bwpm_register_bs4');
-$wa->registerAndUseScript('mod_bwpostman.bwpm_register');
+$wa->useStyle('mod_bwpostman.bwpm_register_bs4');
+$wa->useScript('mosd_bwpostman.bwpm_register');
 
 if (file_exists(JPATH_BASE . $css_filename))
 {
-	$wa->registerAndUseStyle('mod_bwpostman.bwpm_register', Uri::root(true) . $css_filename);
+	$wa->registerAndUseStyle('mod_bwpostman.bwpm_register_bs4_custom', Uri::root(true) . $css_filename);
 //	$document->addStyleSheet(Uri::root(true) . $css_filename);
 }
 

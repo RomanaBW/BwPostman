@@ -31,6 +31,7 @@
 
 	<media destination="mod_bwpostman_overview" folder="media">
 		<filename>index.html</filename>
+		<filename>joomla.asset.json</filename>
 		<folder>css</folder>
 		<folder>images</folder>
 		<folder>js</folder>

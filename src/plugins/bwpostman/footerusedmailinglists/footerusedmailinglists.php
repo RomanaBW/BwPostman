@@ -809,7 +809,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 */
 	public function onBwPostmanBeforeCustomCss(string &$text): bool
 	{
-		$cssFile        = JPATH_PLUGINS . '/bwpostman/footerusedmailinglists/assets/css/default.css';
+		$cssFile        = JPATH_ROOT . '/media/plg_bwpostman_footerusedmailinglists/css/default.css';
 		$fileContent    = array();
 		$cleanedContent = array();
 		$fh             = fopen($cssFile, 'r');

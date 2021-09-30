@@ -63,7 +63,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab3             = "//*[@id='tab-edit_text-form']";
+	public static $tab3             = "//*[@id='tab-edit_text']";
 
 	/**
 	 * @var string

@@ -77,7 +77,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab5             = "//*[@id='item-tab-edit_send']";
+	public static $tab5             = "//*[@id='tab-edit_send']";
 
 	/**
 	 * @var string

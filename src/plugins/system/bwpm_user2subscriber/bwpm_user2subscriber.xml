@@ -28,6 +28,14 @@
 		<language tag="en-GB">en-GB/en-GB.plg_system_bwpm_user2subscriber.sys.ini</language>
 	</languages>
 
+	<media destination="plg_system_bwpm_user2subscriber" folder="media">
+		<filename>index.html</filename>
+		<filename>joomla.asset.json</filename>
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+	</media>
+
 	<config>
 		<fields name="params">
 			<fieldset name="option" addfieldpath="/plugins/system/bwpm_user2subscriber/form/fields">
@@ -41,16 +49,16 @@
 						cols="50"
 						rows="10"
 						default=""
-					/>
+				/>
 
 				<field name="spacer1_4" type="spacer" hr="true" />
 
 				<field name="disclaimer"
-			       type="radio"
-		           layout="joomla.form.field.radio.switcher"
-			       default="0"
-			       label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ENABLE_DISCLAIMER"
-			       description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ENABLE_DISCLAIMER_NOTE"
+				       type="radio"
+				       layout="joomla.form.field.radio.switcher"
+				       default="0"
+				       label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ENABLE_DISCLAIMER"
+				       description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_OPTION_ENABLE_DISCLAIMER_NOTE"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>

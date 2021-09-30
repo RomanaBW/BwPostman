@@ -386,15 +386,16 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		// Add CSS and JS for the radio fields
 		$doc = $this->app->getDocument();
+		$wa = $doc->getWebAssetManager();
+		$wr = $wa->getRegistry();
+		$wr->addRegistryFile('media/plg_system_bwpm_user2subscriber/joomla.asset.json');
 
-		$css_file   = Uri::base(true) . '/plugins/system/bwpm_user2subscriber/assets/css/bwpm_user2subscriber.css';
-		$doc->getWebAssetManager()->registerAndUseStyle(Uri::root(true) . $css_file);
+		$wa->useStyle('plg_system_bwpm_user2subscriber.bwpm_user2subscriber');
 
 		// makes sure that jQuery is loaded first
 		HTMLHelper::_('jquery.framework');
-		$js_file = Uri::base(true) . '/plugins/system/bwpm_user2subscriber/assets/js/bwpm_user2subscriber.js';
 
-		$doc->addScript($js_file);
+		$wa->useScript('plg_system_bwpm_user2subscriber.bwpm_user2subscriber');
 
 		// Get disclaimer link if disclaimer enabled at component and plugin
 		$disclaimer_link = $this->getDisclaimerLink();
@@ -407,7 +408,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$disclaimer_script .=	'		setPlgModal()' . "\n";
 			$disclaimer_script .=	'	});' . "\n";
 
-			$doc->addScriptDeclaration($disclaimer_script);
+			$wa->addInlineScript($disclaimer_script);
 			$this->form->setValue('bwpdisclaimer_required', $this->group, 1);
 		}
 		else

@@ -49,35 +49,35 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab1             = "//*[@id='item-form']/div[1]/ul/li[1]/a";
+	public static $tab1             = "//*[@id='tab-edit_basic']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab2             = "//*[@id='item-form']/div[1]/ul/li[2]/a";
+	public static $tab2             = "//*[@id='tab-edit_html']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab3             = "//*[@id='item-form']/div[1]/ul/li[3]/a";
+	public static $tab3             = "//*[@id='tab-edit_text-form']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab4             = "//*[@id='item-form']/div[1]/ul/li[4]/a";
+	public static $tab4             = "//*[@id='tab-edit_preview']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab5             = "//*[@id='item-form']/div[1]/ul/li[5]/a";
+	public static $tab5             = "//*[@id='item-tab-edit_send']";
 
 	/**
 	 * @var string

@@ -298,23 +298,23 @@ fi
 if [[ "${BW_TEST_CAT}" == details_tpl ]]
 then
 # single tests for templates
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateCancelMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_cancel_main.xml --html htmlreports/report_templates_html_cancel_main.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateCompleteMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_complete_main.xml --html htmlreports/report_templates_html_complete_main.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateCancelMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_cancel_main.xml --html htmlreports/report_templates_html_cancel_main.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateCompleteMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_complete_main.xml --html htmlreports/report_templates_html_complete_main.html
 codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateCancelListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_cancel_list.xml --html htmlreports/report_templates_html_cancel_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_complete_list.xml --html htmlreports/report_templates_html_complete_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateSaveNewListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_save_new_list.xml --html htmlreports/report_templates_html_save_new_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateSaveCopyListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_save_copy_list.xml --html htmlreports/report_templates_html_save_copy_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateHtmlTemplateTwiceListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_twice_list.xml --html htmlreports/report_templates_html_twice_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCancelMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_cancel_main.xml --html htmlreports/report_templates_text_cancel_main.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCompleteMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_complete_main.xml --html htmlreports/report_templates_text_complete_main.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCancelListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_cancel_list.xml --html htmlreports/report_templates_text_cancel_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCompleteListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_complete_list.xml --html htmlreports/report_templates_text_complete_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateSaveNewListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_save_new_list.xml --html htmlreports/report_templates_text_save_new_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateSaveCopyListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_save_copy_list.xml --html htmlreports/report_templates_text_save_copy_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateRestoreListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_restore_list.xml --html htmlreports/report_templates_text_restore_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateTextTemplateTwiceListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_twice_list.xml --html htmlreports/report_templates_text_twice_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::DefaultTemplateSaveNewListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_default_save_new_list.xml --html htmlreports/report_templates_default_save_new_list.html
-codecept run acceptance Backend/Details/TestTemplatesDetailsCest::DefaultTemplateSaveCopyListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_default_save_copy_list.xml --html htmlreports/report_templates_default_save_copy_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_complete_list.xml --html htmlreports/report_templates_html_complete_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateSaveNewListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_save_new_list.xml --html htmlreports/report_templates_html_save_new_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateSaveCopyListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_save_copy_list.xml --html htmlreports/report_templates_html_save_copy_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateHtmlTemplateTwiceListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_html_twice_list.xml --html htmlreports/report_templates_html_twice_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCancelMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_cancel_main.xml --html htmlreports/report_templates_text_cancel_main.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCompleteMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_complete_main.xml --html htmlreports/report_templates_text_complete_main.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCancelListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_cancel_list.xml --html htmlreports/report_templates_text_cancel_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateCompleteListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_complete_list.xml --html htmlreports/report_templates_text_complete_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateSaveNewListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_save_new_list.xml --html htmlreports/report_templates_text_save_new_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateSaveCopyListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_save_copy_list.xml --html htmlreports/report_templates_text_save_copy_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateOneTextTemplateRestoreListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_restore_list.xml --html htmlreports/report_templates_text_restore_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::CreateTextTemplateTwiceListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_text_twice_list.xml --html htmlreports/report_templates_text_twice_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::DefaultTemplateSaveNewListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_default_save_new_list.xml --html htmlreports/report_templates_default_save_new_list.html
+#codecept run acceptance Backend/Details/TestTemplatesDetailsCest::DefaultTemplateSaveCopyListView "${BW_TEST_DEBUG}" --xml xmlreports/report_templates_default_save_copy_list.xml --html htmlreports/report_templates_default_save_copy_list.html
 fi
 
 ###########################
@@ -411,15 +411,13 @@ codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunc
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithTwoMailinglists "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_two_mailinglists.xml --html htmlreports/report_u2s_two_mailinglists.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutMailinglists "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_no_mailinglists.xml --html htmlreports/report_u2s_no_mailinglists.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithMailChangeYes "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_with_mail_change.xml --html htmlreports/report_u2s_with_mail_change.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutActivationWithMailChangeYes "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_.xml --html htmlreports/report_u2s_.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithMailChangeNo "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_no_activation_mail_change.xml --html htmlreports/report_u2s_no_activation_mail_change.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithoutActivationWithMailChangeYes "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_no_activation_mail_change.xml --html htmlreports/report_u2s_no_activation_mail_change.html
+codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithMailChangeNo "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_without_mail_change.xml --html htmlreports/report_u2s_without_mail_change.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberFunctionWithDeleteNo "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_delete_no.xml --html htmlreports/report_u2s_delete_no.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsPluginDeactivated "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_plugin_deactivated.xml --html htmlreports/report_u2s_plugin_deactivated.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsMessage "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_options_message.xml --html htmlreports/report_u2s_options_message.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsSwitchShowFormat "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_switch_show_format.xml --html htmlreports/report_u2s_switch_show_format.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberPredefinedFormat "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_predefined_format.xml --html htmlreports/report_u2s_predefined_format.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoUpdate "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_auto_update.xml --html htmlreports/report_u2s_auto_update.html
-codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsAutoDelete "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_auto_delete.xml --html htmlreports/report_u2s_auto_delete.html
 codecept run acceptance User2Subscriber/User2SubscriberCest::User2SubscriberOptionsMailinglists "${BW_TEST_DEBUG}" --xml xmlreports/report_u2s_options_mailinglists.xml --html htmlreports/report_u2s_options_mailinglists.html
 fi
 
@@ -490,6 +488,13 @@ codecept run acceptance Backend/TestOptionsCest::setPermissions "${BW_TEST_DEBUG
 #codecept run acceptance Backend/TestOptionsCest::checkSingleOptionShowSubjectAsPageTitle "${BW_TEST_DEBUG}" --xml xmlreports/report_options_ShowSubjectAsPageTitle.xml --html htmlreports/report_options_ShowSubjectAsPageTitle.html
 fi
 
+
+if [[ "${BW_TEST_CAT}" == access_all ]]
+then
+# all tests options of BwPostman
+codecept run acceptance Backend/Access "${BW_TEST_DEBUG}" --xml xmlreports/report_access.xml --html htmlreports/report_access.html
+fi
+
 if [[ "${BW_TEST_CAT}" == access_single ]]
 then
 # single tests for permissions
@@ -558,13 +563,16 @@ codecept run acceptance ModuleOverview/ModuleOverviewCest::setupOverviewModule "
 
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsAll "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_all.xml --html htmlreports/report_modOverview_check_number_of_months_all.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsRestricted "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_restricted.xml --html htmlreports/report_modOverview_check_number_of_months_restricted.html
-codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchived "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_archived.xml --html htmlreports/report_modOverview_check_number_of_months_not_archived.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyNotArchived "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_archived.xml --html htmlreports/report_modOverview_check_number_of_months_not_archived.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchivedNotExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_archived_not_expired.xml --html htmlreports/report_modOverview_check_number_of_months_not_archived_not_expired.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsNotArchivedButExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_not_expored.xml --html htmlreports/report_modOverview_check_number_of_months_not_expored.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyArchived "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_only_archived.xml --html htmlreports/report_modOverview_check_number_of_months_only_archived.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_only_expired.xml --html htmlreports/report_modOverview_check_number_of_months_only_expired.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsArchivedAndExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_archived_and_expired.xml --html htmlreports/report_modOverview_check_number_of_months_archived_and_expired.html
 codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsArchivedOrExpired "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_archived_or_expired.xml --html htmlreports/report_modOverview_check_number_of_months_archived_or_expired.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyAllMailinglists "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_mailinglists.xml --html htmlreports/report_modOverview_check_number_of_months_mailinglists.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyAllUsergroups "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_usergroups.xml --html htmlreports/report_modOverview_check_number_of_months_usergroups.html
+codecept run acceptance ModuleOverview/ModuleOverviewCest::OverviewModuleCheckNumberOfMonthsOnlyAllCampaigns "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview_check_number_of_months_campaigns.xml --html htmlreports/report_modOverview_check_number_of_months_campaigns.html
 fi
 
 if [[ "${BW_TEST_CAT}" == all ]]
@@ -577,4 +585,8 @@ codecept run acceptance Backend/TestMaintenanceCest "${BW_TEST_DEBUG}" --xml xml
 codecept run acceptance User2Subscriber "${BW_TEST_DEBUG}" --xml xmlreports/report_user2Subscriber.xml --html htmlreports/report_user2Subscriber.html
 codecept run acceptance Backend/Options "${BW_TEST_DEBUG}" --xml xmlreports/report_options.xml --html htmlreports/report_options.html
 codecept run acceptance Backend/Access "${BW_TEST_DEBUG}" --xml xmlreports/report_access.xml --html htmlreports/report_access.html
+
+codecept run acceptance FooterUsedMailinglists "${BW_TEST_DEBUG}" --xml xmlreports/report_footerUsedMailinglists.xml --html htmlreports/report_footerUsedMailinglists.html
+codecept run acceptance Module_Register "${BW_TEST_DEBUG}" --xml xmlreports/report_modRegister.xml --html htmlreports/report_modRegister.html
+codecept run acceptance ModuleOverview "${BW_TEST_DEBUG}" --xml xmlreports/report_modOverview.xml --html htmlreports/report_modOverview.html
 fi

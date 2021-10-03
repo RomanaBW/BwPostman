@@ -31,11 +31,22 @@ use BoldtWebservice\Component\BwPostman\Site\Classes\BwPostmanSite;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
-HtmlHelper::_('stylesheet', 'com_bwpostman/bwpostman.css', array('version' => 'auto', 'relative' => true));
-$templateName	= Factory::getApplication()->getTemplate();
-$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
-HtmlHelper::_('stylesheet', $css_filename, array('version' => 'auto'));
+// Get provided style file
+$app = Factory::getApplication();
+$wa  = $app->getDocument()->getWebAssetManager();
+
+$wa->useStyle('com_bwpostman.bwpostman');
+
+// Get user defined style file
+$templateName = $app->getTemplate();
+$css_filename = '/templates/' . $templateName . '/css/com_bwpostman.css';
+
+if (file_exists(JPATH_BASE . $css_filename))
+{
+	$wa->registerAndUseStyle('customCss', Uri::root(true) . $css_filename);
+}
 
 // Displays an error message and a mailto-link of the admin email address
 // Will be shown if

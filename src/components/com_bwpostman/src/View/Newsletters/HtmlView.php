@@ -256,18 +256,6 @@ class HtmlView extends BaseHtmlView
 			$this->params->set('page_heading',	Text::_('COM_BWPOSTMAN_NLS'));
 		}
 
-		// Get document object and add css
-		$templateName	= $app->getTemplate();
-		$css_filename	= '/templates/' . $templateName . '/css/com_bwpostman.css';
-
-		$document = $app->getDocument();
-
-		$document->addStyleSheet(Uri::root(true) . '/media/com_bwpostman/css/bwpostman.css');
-		if (file_exists(JPATH_BASE . $css_filename))
-		{
-			$document->addStyleSheet(Uri::root(true) . $css_filename);
-		}
-
 		// Set parent display
 		parent::display($tpl);
 

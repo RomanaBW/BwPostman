@@ -29,11 +29,27 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
 use BoldtWebservice\Component\BwPostman\Site\Classes\BwPostmanSite;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 
+// Get provided style file
+$app = Factory::getApplication();
+$wa  = $app->getDocument()->getWebAssetManager();
+
+$wa->useStyle('com_bwpostman.bwpostman');
+
+// Get user defined style file
+$templateName = $app->getTemplate();
+$css_filename = '/templates/' . $templateName . '/css/com_bwpostman.css';
+
+if (file_exists(JPATH_BASE . $css_filename))
+{
+	$wa->registerAndUseStyle('customCss', Uri::root(true) . $css_filename);
+}
 ?>
+
 <script type="text/javascript">
 /* <![CDATA[ */
 	window.onload = function()

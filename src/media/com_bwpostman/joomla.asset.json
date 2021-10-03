@@ -24,6 +24,21 @@
       "uri": "com_bwpostman/bwpostman.css"
     },
     {
+      "name": "com_bwpostman.bwpostman_bs2",
+      "type": "style",
+      "uri": "com_bwpostman/bwpostman_bs2.css"
+    },
+    {
+      "name": "com_bwpostman.bwpostman_bs3",
+      "type": "style",
+      "uri": "com_bwpostman/bwpostman_bs3.css"
+    },
+    {
+      "name": "com_bwpostman.bwpostman_bs4",
+      "type": "style",
+      "uri": "com_bwpostman/bwpostman_bs4.css"
+    },
+    {
       "name": "com_bwpostman.iconfonts",
       "type": "style",
       "uri": "com_bwpostman/iconfonts.css"

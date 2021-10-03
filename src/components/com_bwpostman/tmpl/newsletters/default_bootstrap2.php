@@ -35,6 +35,21 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
 
+// Get provided style file
+$app = Factory::getApplication();
+$wa  = $app->getDocument()->getWebAssetManager();
+
+$wa->useStyle('com_bwpostman.bwpostman_bs2');
+
+// Get user defined style file
+$templateName = $app->getTemplate();
+$css_filename = '/templates/' . $templateName . '/css/com_bwpostman.css';
+
+if (file_exists(JPATH_BASE . $css_filename))
+{
+	$wa->registerAndUseStyle('customCss', Uri::root(true) . $css_filename);
+}
+
 HtmlHelper::_('jquery.ui', array('searchtools'));
 
 /**

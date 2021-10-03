@@ -38,10 +38,20 @@ JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/he
 
 HTMLHelper::_('bootstrap.tooltip');
 
-JHtml::_('stylesheet', 'com_bwpostman/bwpostman_bs3.css', array('version' => 'auto', 'relative' => true));
-$templateName	= Factory::getApplication()->getTemplate();
-$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
-JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
+// Get provided style file
+$app = Factory::getApplication();
+$wa  = $app->getDocument()->getWebAssetManager();
+
+$wa->useStyle('com_bwpostman.bwpostman_bs3');
+
+// Get user defined style file
+$templateName = $app->getTemplate();
+$css_filename = '/templates/' . $templateName . '/css/com_bwpostman.css';
+
+if (file_exists(JPATH_BASE . $css_filename))
+{
+	$wa->registerAndUseStyle('customCss', Uri::root(true) . $css_filename);
+}
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 

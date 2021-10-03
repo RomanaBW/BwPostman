@@ -49,11 +49,6 @@
       "uri": "com_bwpostman/install.css"
     },
     {
-      "name": "com_bwpostman.install_J4",
-      "type": "style",
-      "uri": "com_bwpostman/install_J4.css"
-    },
-    {
       "name": "com_bwpostman.admin-bwpm_campaign",
       "type": "script",
       "uri": "com_bwpostman/admin-bwpm_campaign.js"

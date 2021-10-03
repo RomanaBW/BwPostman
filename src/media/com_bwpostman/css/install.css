@@ -23,35 +23,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#j-main-container {
-	margin: 0;
-	padding: 0;
-	color : #333;
-	background-color : #FFF;
-	font-size : 13px;
-	font-family : Arial, Helvetica, sans-serif;
-}
-
 #com_bwp_install_header {
 	background: #FFF440;
+	margin: -1rem -16px 0 -16px;
 	text-align: center;
-	margin: -5px -5px 0 -5px;
-}
-
-#com_bwp_install_header img{
-	vertical-align: middle;
-	border: 0;
 }
 
 div.top_line {
-    background-color: #005A00;
-    height: 5px;
-	margin: 0 -5px;
+	background-color: #005A00;
+	height: 5px;
+	margin: 0 -16px;
 }
 
 #com_bwp_install_outer {
-	margin: 0 -5px 15px -5px;
-	padding: 1em 2em;
+	margin: 0 -16px -1rem -16px;
 	background: url(../images/verlauf_gelb_2.png) repeat;
 }
 
@@ -62,25 +47,19 @@ div.top_line {
 }
 
 #com_bwp_install_left {
-	float: left;
-	width: 48%;
 }
 
 
 #com_bwp_install_right {
-	float: right;
-	width: 48%;
 }
 
 #com_bwp_install_outer p {
-	margin: 0;
 }
 
 .com_bwp_install_welcome {
 }
 
 .com_bwp_install_finished {
-	text-align: center;
 }
 
 .com_bwp_install_finished h2 {
@@ -88,7 +67,7 @@ div.top_line {
 }
 
 .com_bwp_install_specialnote {
-/*	background: rgba(180, 90, 0, 0.2);*/
+	/*	background: rgba(180, 90, 0, 0.2);*/
 	border-radius: 5px;
 	border: rgba(180, 90, 0, 1) 3px solid;
 	margin: 0 0 2em 0;
@@ -97,30 +76,22 @@ div.top_line {
 }
 
 .com_bwp_install_updateinfo {
-/*	background: rgba(0, 90, 0, 0.2);*/
+	/*	background: rgba(0, 90, 0, 0.2);*/
 	border-radius: 5px;
-	border: rgba(00, 90, 0, 1) 1px solid;
-	margin: 0 0 2em 0;
-	padding: 1em;
+	border: rgba(0, 90, 0, 1) 1px solid;
 	color: #2B5741;
-	}
+}
 
 .com_bwp_install_updateinfo h2, .com_bwp_install_specialnote h2 {
-	margin: 0 0 1em 0;
 }
 
 .com_bwp_install_updateinfo h3, .com_bwp_install_specialnote h3 {
-	margin: 0 0 1em 0;
 }
 
 .cpanel {
-	text-align: center;
-	margin: 3em auto;
 }
 
 .cpanel div.icon {
-	float: none;
-	display: inline-block;
 }
 
 .clr {
@@ -128,7 +99,6 @@ div.top_line {
 }
 
 .com_bwp_install_footer, .com_bwp_install_footer p {
-	text-align: center;
 }
 
 .com_bwp_install_footer p a img {
@@ -137,8 +107,6 @@ div.top_line {
 }
 
 .small {
-	color : #333;
-	font-size : 10px;
 }
 
 .error {
@@ -168,12 +136,12 @@ div.top_line {
 .bw_maintenance_result {
 	font-weight: bold;
 	font-size: 1.2em;
-    background-color: #fcf8e3;
-    border: 1px solid #fbeed5;
-    border-radius: 4px;
-    margin-bottom: 18px;
-    padding: 8px 35px 8px 14px;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	background-color: #fcf8e3;
+	border: 1px solid #fbeed5;
+	border-radius: 4px;
+	margin-bottom: 18px;
+	padding: 8px 35px 8px 14px;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .bw_tablecheck_ok {
@@ -181,19 +149,20 @@ div.top_line {
 }
 
 .bw_tablecheck_ok.ok {
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
+	background-color: #dff0d8;
+	border-color: #d6e9c6;
 }
 
 .bw_tablecheck_warn {
-  color: #c09853;
+	color: #c09853;
 }
 
 .bw_tablecheck_error.err {
-    background-color: #f2dede;
-    border-color: #eed3d7;
+	background-color: #f2dede;
+	border-color: #eed3d7;
 }
 
 .bw_tablecheck_error {
 	color: #880000;
 }
+

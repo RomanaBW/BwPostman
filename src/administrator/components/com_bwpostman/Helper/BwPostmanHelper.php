@@ -1487,6 +1487,7 @@ class BwPostmanHelper
 		{
 			if (preg_match("=^\.{1,2}$=", $file))
 			{
+				$file   = readdir($handle);
 				continue;
 			}
 
@@ -1521,6 +1522,7 @@ class BwPostmanHelper
 					}
 				}
 			}
+			$file   = readdir($handle);
 		}
 
 		@closedir($handle);

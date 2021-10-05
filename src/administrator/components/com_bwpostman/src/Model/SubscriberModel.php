@@ -513,7 +513,7 @@ class SubscriberModel extends AdminModel
 					$subscriber->activation = $data['activation'];
 
 					// Send registration confirmation mail
-					$itemid = '';//BwPostmanSubscriberHelper::getMenuItemid();
+					$itemid = BwPostmanSubscriberHelper::getMenuItemid('subscriber');
 					$res    = BwPostmanSubscriberHelper::sendMail($subscriber, 4, $itemid);
 
 					if (!$res)

@@ -257,7 +257,7 @@ class SubscriberController extends FormController
 			return false;
 		}
 
-		// Attempt to check-out the new record for editing and redirect.
+		// Attempt to check out the new record for editing and redirect.
 		if ($checkin && !$model->checkout($recordId))
 		{
 			// Check-out failed, display a notice…

@@ -150,7 +150,6 @@ $isTemplateButton = (new ActionButton(['tip_title' => Text::_('COM_BWPOSTMAN_NL_
 											<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 											<td class="d-none d-lg-table-cell">
 													<?php if (!empty($item->attachment)) { ?>
-														<img src="../media/com_bwpostman/images/icon-16-attachment.png" alt="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>" />
 														<i class="fa fa-paperclip fa-lg"></i>
 													<?php } ?>
 												</td>

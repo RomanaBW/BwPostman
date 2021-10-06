@@ -239,7 +239,6 @@ class HtmlView extends BaseHtmlView
 		$toolbar = Toolbar::getInstance();
 
 		$wa = $this->document->getWebAssetManager();
-		$wa->useStyle('com_bwpostman.admin-bwpostman_backend');
 		$wa->useScript('com_bwpostman.admin-bwpm_nls');
 
 		// Set toolbar title

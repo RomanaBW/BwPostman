@@ -624,7 +624,8 @@ class BwPostmanSubscriberHelper
 		// Check to show confirmation data or checkbox
 		$c_date	= strtotime($form->getValue('confirmation_date'));
 
-		if (empty($c_date))
+		// check if conformation date is '0000-00-00 00:00:00'
+		if (empty($c_date) || $form->getValue('confirmation_date') == 0)
 		{
 			$form->setFieldAttribute('confirmation_date', 'type', 'hidden');
 			$form->setFieldAttribute('confirmed_by', 'type', 'hidden');

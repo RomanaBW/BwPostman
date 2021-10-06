@@ -36,7 +36,7 @@ use RuntimeException;
 
 /**
  * Form Field class for the Joomla Platform.
- * Displays options as a list of check boxes.
+ * Display options as a list of check boxes.
  * Multiselect may be forced to be true.
  *
  * @package     Joomla.Platform
@@ -81,6 +81,10 @@ class UsergroupsField extends CheckboxesField
 	 */
 	protected function getInput(): string
 	{
+		$doc = Factory::getApplication()->getDocument();
+		$wa  = $doc->getWebAssetManager();
+		$wa->registerAndUseScript('com_bwpostman.bwpm_menuhelper', 'com_bwpostman/bwpm_menuhelper.js');
+
 		// Initialize variables.
 		$html	= array();
 		$stub	= "'ub'";
@@ -118,7 +122,7 @@ class UsergroupsField extends CheckboxesField
 				// Initialize some JavaScript option attributes.
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
-				$html[] = '							<tr class="row' . $i % 2 . '">';
+				$html[] = '							<tr class="row' . $i % 2 . '" onclick="bwpSelectTr(\'ub' . $i . '\')">';
 				$html[] = '							 <td style="text-align:center;">' . Text::_($option->value) . '</td>';
 				$html[] = '              <td><input type="checkbox" id="ub' . $i . '" name="' . $this->name . '" value="'
 					. htmlspecialchars($option->value, ENT_COMPAT) . '" ' . $checked . $class . $onclick . $disabled . '/></td>';

@@ -30,6 +30,7 @@ defined('JPATH_PLATFORM') or die;
 
 use Exception;
 use JLoader;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CheckboxesField;
 use Joomla\CMS\Language\Text;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanCampaignHelper;
@@ -38,7 +39,7 @@ JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator
 
 /**
  * Form Field class for the Joomla Platform.
- * Displays options as a list of check boxes.
+ * Display options as a list of check boxes.
  * Multiselect may be forced to be true.
  *
  * @package     Joomla.Platform
@@ -75,6 +76,10 @@ class ComcamField extends CheckboxesField
 	 */
 	protected function getInput(): string
 	{
+		$doc = Factory::getApplication()->getDocument();
+		$wa  = $doc->getWebAssetManager();
+		$wa->registerAndUseScript('com_bwpostman.bwpm_menuhelper', 'com_bwpostman/bwpm_menuhelper.js');
+
 		// Initialize variables.
 		$html	= array();
 		$stub	= "'cb'";
@@ -116,7 +121,7 @@ class ComcamField extends CheckboxesField
 				// Initialize some JavaScript option attributes.
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
-				$html[] = '							<tr class="row' . $i % 2 . '">';
+				$html[] = '							<tr class="row' . $i % 2 . '" onclick="bwpSelectTr(\'cb' . $i . '\')">';
 				$html[] = '								<td class="text-center">' . Text::_($option->value) . '</td>';
 				$html[] = '								<td class="text-center"><input type="checkbox" id="cb' . $i . '" name="' . $this->name . '" value="'
 					. htmlspecialchars($option->value, ENT_COMPAT) . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';

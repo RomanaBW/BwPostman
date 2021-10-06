@@ -30,15 +30,13 @@ defined('JPATH_PLATFORM') or die;
 
 use Exception;
 use JLoader;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CheckboxesField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use \BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
 
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', false, false);
-
-HTMLHelper::_('jquery.framework');
-HTMLHelper::_('script', 'com_bwpostman/bwpm_menuhelper.js', array('version' => 'auto', 'relative' => true));
 
 /**
  * Form Field class.
@@ -79,6 +77,10 @@ class CommlField extends CheckboxesField
 	 */
 	protected function getInput(): string
 	{
+
+		$doc = Factory::getApplication()->getDocument();
+		$wa  = $doc->getWebAssetManager();
+		$wa->registerAndUseScript('com_bwpostman.bwpm_menuhelper', 'com_bwpostman/bwpm_menuhelper.js');
 
 		// Initialize variables.
 		$html	= array();
@@ -124,7 +126,7 @@ class CommlField extends CheckboxesField
 				// Initialize some JavaScript option attributes.
 				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
-				$html[] = '							<tr class="row' . $i % 2 . '">';
+				$html[] = '							<tr class="row' . $i % 2 . '" onclick="bwpSelectTr(\'mb' . $i . '\')">';
 				$html[] = '								<td class="text-center">' . Text::_($option->value) . '</td>';
 				$html[] = '								<td class="text-center"><input type="checkbox" id="mb' . $i . '" name="' . $this->name . '" value="'
 					. htmlspecialchars($option->value, ENT_COMPAT) . '" ' . $checked . $class . $onclick . $disabled . ' /></td>';

@@ -73,7 +73,6 @@ function InsertAtCaret(myValue) {
 			ele[i].value += myValue;
 			ele[i].focus();
 		}
-		ele[i].classList.remove('insertatcaretactive');
 	}
 }
 

@@ -35,11 +35,19 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
 
+Text::script('COM_BWPOSTMAN_ERROR_NAME');
+Text::script('COM_BWPOSTMAN_ERROR_FIRSTNAME');
+Text::script("COM_BWPOSTMAN_SUB_ERROR_SPECIAL");
+Text::script('COM_BWPOSTMAN_ERROR_EMAIL');
+Text::script('COM_BWPOSTMAN_ERROR_NL_CHECK');
+
 // Get provided style file
 $app = Factory::getApplication();
 $wa  = $app->getDocument()->getWebAssetManager();
 
 $wa->useStyle('com_bwpostman.bwpostman');
+$wa->useScript('com_bwpostman.bwpm_register_btn_group');
+$wa->useScript('com_bwpostman.bwpm_register_validate');
 
 // Get user defined style file
 $templateName = $app->getTemplate();
@@ -50,115 +58,11 @@ if (file_exists(JPATH_BASE . $css_filename))
 	$wa->registerAndUseStyle('customCss', Uri::root(true) . $css_filename);
 }
 
-HtmlHelper::_('formbehavior.chosen', 'select');
 HtmlHelper::_('behavior.formvalidator');
-
-HTMLHelper::_('bootstrap.tooltip');
 
 ?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
-	function submitbutton(pressbutton)
-	{
-		const form = document.bwp_com_form;
-		let fault = false;
-
-		form.edit.value = pressbutton;
-
-		// Validate input fields only, if unsubscribe is not selected
-		if (form.unsubscribe.checked === false)
-		{
-			if (document.bwp_com_form.name)
-			{
-				if (form.name_field_obligation.value === 1)
-				{
-					if (form.name.value === "")
-					{
-						alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>");
-						fault = true;
-					}
-				}
-			}
-
-			if (document.bwp_com_form.firstname)
-			{
-				if (form.firstname_field_obligation.value === 1)
-				{
-					if (form.firstname.value === "")
-					{
-						alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>");
-						fault = true;
-					}
-				}
-			}
-			if (document.bwp_com_form.special)
-			{
-				if (form.special_field_obligation.value === 1)
-				{
-					if (form.special.value === "")
-					{
-						alert('<?php echo Text::sprintf("COM_BWPOSTMAN_SUB_ERROR_SPECIAL", Text::_($this->params->get("special_label"))); ?>');
-						fault = true;
-					}
-				}
-			}
-			if (form.email.value=== "")
-			{
-				alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_EMAIL', true); ?>");
-				fault	= true;
-			}
-			if (checkNlBoxes()=== false)
-			{
-				alert ("<?php echo Text::_('COM_BWPOSTMAN_ERROR_NL_CHECK', true); ?>");
-				fault	= true;
-			}
-		}
-		if (fault === false)
-		{
-			form.submit();
-		}
-		function checkNlBoxes()
-		{
-			const arrCB = form.elements['mailinglists[]'];
-			const n = arrCB.length;
-			let check = 0;
-			let i = 0;
-			if (n > 1)
-			{
-				for (i = 0; i < n; i++)
-				{
-					if (arrCB[i].checked === true)
-					{
-						check++;
-					}
-				}
-			}
-			else
-			{
-				check++;
-			}
-			if (check === 0)
-			{
-				return false;
-			}
-		}
-	}
-/* ]]> */
-</script>
-
-<noscript>
-	<div id="system-message">
-		<div class="alert alert-warning">
-			<h4 class="alert-heading"><?php echo Text::_('WARNING'); ?></h4>
-			<div>
-				<p><?php echo Text::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
-			</div>
-		</div>
-	</div>
-</noscript>
-
-<div id="bwpostman">
+<div id="bwpostman" class="mt">
 	<div id="bwp_com_edit_subscription">
 		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
 			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
@@ -169,13 +73,299 @@ HTMLHelper::_('bootstrap.tooltip');
 		<div class="content_inner">
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
 					name="bwp_com_form" class="form-validate form-inline">
-				<?php
-				echo LayoutHelper::render(
-					'default',
-					array('subscriber' => $this->subscriber, 'params' => $this->params, 'lists' => $this->lists),
-					$basePath = JPATH_COMPONENT . '/layouts/subscriber'
-				);
-				?>
+
+				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+
+					<?php // Show pretext only if set in basic parameters
+					if ($this->params->get('pretext'))
+					{
+						$preText = Text::_($this->params->get('pretext'));
+						?>
+						<p class="pre_text"><?php echo $preText; ?></p>
+						<?php
+					} // End: Show pretext only if set in basic parameters ?>
+
+					<?php // Show formfield gender only if enabled in basic parameters
+					if ($this->params->get('show_gender') == 1)
+					{ ?>
+						<p class="edit_gender">
+							<label id="gendermsg"> <?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
+							<?php echo $this->lists['gender']; ?>
+						</p> <?php
+					} // End gender ?>
+
+					<?php // Show first name-field only if set in basic parameters
+					if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation'))
+					{ ?>
+						<p class="user_firstname input<?php echo ($this->params->get('firstname_field_obligation')) ? '-append' : '' ?>">
+							<label id="firstnamemsg" for="firstname">
+								<?php echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label>
+							<?php // Is filling out the firstname field obligating
+							if ($this->params->get('firstname_field_obligation'))
+							{ ?>
+								<input type="text" name="firstname" id="firstname" size="40"
+										value="<?php
+										if (!empty($this->subscriber->firstname))
+										{
+											echo $this->subscriber->firstname;
+										} ?>"
+										class="<?php
+										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+										{
+											echo "invalid";
+										} ?>"
+										maxlength="50" /><span class="append-area"><i class="bwpicon-star"></i></span>
+							<?php
+							}
+							else
+							{ ?>
+								<input type="text" name="firstname" id="firstname" size="40"
+										value="<?php echo $this->subscriber->firstname; ?>"
+										class="<?php
+										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+										{
+											echo "invalid";
+										} ?>"
+										maxlength="50" />
+							<?php
+							}
+
+							// End: Is filling out the firstname field obligating
+							?>
+						</p> <?php
+					}
+
+					// End: Show first name-field only if set in basic parameters ?>
+
+					<?php // Show name-field only if set in basic parameters
+					if ($this->params->get('show_name_field') || $this->params->get('name_field_obligation'))
+					{ ?>
+						<p class="user_name edit_name input<?php echo ($this->params->get('name_field_obligation')) ? '-append' : '' ?>">
+							<label id="namemsg" for="name"
+								<?php
+								if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+								{
+									echo "class=\"invalid\"";
+								} ?>>
+								<?php echo Text::_('COM_BWPOSTMAN_NAME'); ?>: </label>
+							<?php // Is filling out the name field obligating
+							if ($this->params->get('name_field_obligation'))
+							{
+								?>
+								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
+										class="<?php
+										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+										{
+											echo "invalid";
+										} ?>"
+										maxlength="50" /><span class="append-area"><i class="bwpicon-star"></i></span> <?php
+							}
+							else
+							{ ?>
+								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
+									class="<?php
+									if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) {
+										echo "invalid";
+									} ?>"
+									maxlength="50" /> <?php
+							}
+
+							// End: Is filling out the name field obligating
+							?>
+						</p> <?php
+					}
+
+					// End: Show name-fields only if set in basic parameters ?>
+
+					<?php // Show special only if set in basic parameters or required
+					if ($this->params->get('show_special') || $this->params->get('special_field_obligation'))
+					{
+						if ($this->params->get('special_desc') != '')
+						{
+							$tip = Text::_($this->params->get('special_desc'));
+						}
+						else
+						{
+							$tip = Text::_('COM_BWPOSTMAN_SPECIAL');
+						} ?>
+
+						<p class="edit_special input<?php echo ($this->params->get('special_field_obligation')) ? '-append' : '' ?>">
+							<label id="specialmsg" class="hasTooltip" title="<?php echo $tip; ?>" for="special"
+								<?php
+								if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+								{
+									echo " class=\"invalid\"";
+								}
+								echo ">";
+								if ($this->params->get('special_label') != '')
+								{
+									echo Text::_($this->params->get('special_label'));
+								}
+								else
+								{
+									echo Text::_('COM_BWPOSTMAN_SPECIAL');
+								}
+								?>:
+							</label>
+							<?php // Is filling out the special field obligating
+							if ($this->params->get('special_field_obligation'))
+							{ ?>
+								<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
+										class="<?php
+										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+										{
+											echo "invalid";
+										} ?>"
+										maxlength="50" /><span class="append-area"><i class="bwpicon-star"></i></span> <?php
+							}
+							else
+							{ ?>
+								<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
+										class="<?php
+										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+										{
+											echo "invalid";
+										} ?>"
+										maxlength="50" /> <?php
+							}
+
+							// End: Is filling out the special field obligating
+							?>
+						</p> <?php
+					} // End: Show special field only if set in basic parameters ?>
+
+					<p class="user_email edit_email input-append">
+						<label id="emailmsg" for="email"
+							<?php
+							if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1))
+							{
+								echo "class=\"invalid\"";
+							} ?>>
+							<?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:
+						</label>
+						<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
+							class="<?php
+							if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1))
+							{
+								echo "invalid";
+							}
+							else
+							{
+								echo "validate-email";
+							} ?>"
+							maxlength="100" /><span class="append-area"><i class="bwpicon-star"></i></span>
+					</p>
+
+					<?php
+					// Show formfield email format only if enabled in basic parameters
+					if ($this->params->get('show_emailformat') == 1)
+					{ ?>
+						<div class="user_mailformat edit_emailformat">
+							<label id="emailformatmsg"><?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label>
+							<?php echo $this->lists['emailformat']; ?>
+						</div>
+					<?php
+					}
+					else
+					{
+						// hidden field with the default email format
+						?>
+						<input type="hidden" name="emailformat" value="<?php echo $this->params->get('default_emailformat'); ?>" />
+					<?php
+					}
+
+					// End email format
+					?>
+
+					<?php
+					// Show available mailinglists
+					if ($this->lists['available_mailinglists'])
+					{ ?>
+						<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
+
+						<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+							<?php
+							$n = count($this->lists['available_mailinglists']);
+
+							$descLength = $this->params->get('desc_length');
+
+							if ($this->lists['available_mailinglists'] && ($n > 0))
+							{
+								if ($n == 1)
+								{ ?>
+									<input title="mailinglists_array" type="checkbox" style="display: none;" id="<?php echo "mailinglists0"; ?>"
+											name="<?php echo "mailinglists[]"; ?>" value="<?php echo $this->lists['available_mailinglists'][0]->id; ?>" checked="checked" />
+									<?php
+									if ($this->params->get('show_desc') == 1)
+									{ ?>
+										<p class="mail_available">
+											<?php echo Text::_('COM_BWPOSTMAN_MAILINGLIST'); ?>
+										</p>
+										<p class="mailinglist-description-single">
+											<span class="mail_available_list_title">
+												<?php echo $this->lists['available_mailinglists'][0]->title . ": "; ?>
+											</span>
+											<?php
+											echo substr(Text::_($this->lists['available_mailinglists'][0]->description), 0, $descLength);
+
+											if (strlen(Text::_($this->lists['available_mailinglists'][0]->description)) > $descLength)
+											{
+												echo '... ';
+												echo '<span class="bwptip" title="' . Text::_($this->lists['available_mailinglists'][0]->description) . '"><i class="bwpicon-info-sign"></i></span>';
+											} ?>
+										</p>
+										<?php
+									}
+								}
+								else
+								{ ?>
+									<p class="mail_available">
+										<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="bwpicon-star"></i></sup>'; ?>
+									</p>
+									<?php
+									foreach ($this->lists['available_mailinglists'] as $i => $item)
+									{ ?>
+										<p class="mail_available_list <?php echo "mailinglists$i"; ?>">
+											<input title="mailinglists_array" type="checkbox" id="<?php echo "mailinglists$i"; ?>"
+													name="<?php echo "mailinglists[]"; ?>" value="<?php echo $item->id; ?>"
+											<?php
+											if ((is_array($this->subscriber->mailinglists)) && (in_array((int) $item->id,
+													$this->subscriber->mailinglists)))
+											{
+												echo "checked=\"checked\"";
+											} ?> />
+											<span class="mail_available_list_title">
+												<?php echo $this->params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
+											</span>
+											<?php
+											if ($this->params->get('show_desc') == 1)
+											{ ?>
+											<span>
+												<?php
+												echo substr(Text::_($item->description), 0, $descLength);
+												if (strlen(Text::_($item->description)) > $descLength)
+												{
+													echo '... ';
+													echo '<span class="bwptip" title="' . Text::_($item->description) . '"><i class="bwpicon-info-sign"></i></span>';
+												} ?>
+											</span>
+											<?php
+											} ?>
+										</p>
+										<?php
+									} ?>
+									<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
+									<?php
+								}
+							}?>
+						</div>
+
+						<?php
+					}
+
+					// End Mailinglists ?>
+
+				</div>
 
 				<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 					<p class="edit_unsubscribe">
@@ -210,6 +400,12 @@ HTMLHelper::_('bootstrap.tooltip');
 				<input type="hidden" name="show_name_field" value="<?php echo $this->params->get('show_name_field'); ?>" />
 				<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field'); ?>" />
 				<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special'); ?>" />
+				<?php // Is filling out the special field obligating
+				if ($this->params->get('show_special') || $this->params->get('special_field_obligation'))
+				{ ?>
+					<input type="hidden" name="special_label" value="<?php echo $this->params->get('special_label'); ?>" />
+				<?php
+				} ?>
 				<?php echo HtmlHelper::_('form.token'); ?>
 			</form>
 
@@ -222,48 +418,3 @@ HTMLHelper::_('bootstrap.tooltip');
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-	jQuery(document).ready(function()
-	{
-		// Turn radios into btn-group
-		jQuery('.radio.btn-group label').addClass('btn');
-		jQuery(".btn-group label:not(.active)").click(function()
-		{
-			const label = jQuery(this);
-			const input = jQuery('#' + label.attr('for'));
-
-			if (!input.prop('checked'))
-			{
-				label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-				if (input.val() === '')
-				{
-					label.addClass('active btn-primary');
-				}
-				else if (input.val() === 0)
-				{
-					label.addClass('active btn-danger');
-				}
-				else
-				{
-					label.addClass('active btn-success');
-				}
-				input.prop('checked', true);
-			}
-		});
-		jQuery(".btn-group input[checked=checked]").each(function()
-		{
-			if (jQuery(this).val() === '')
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
-			}
-			else if (jQuery(this).val() === 0)
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-danger');
-			}
-			else
-			{
-				jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-success');
-			}
-		});
-	})
-</script>

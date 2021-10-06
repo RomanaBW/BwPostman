@@ -23,69 +23,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// insert placeholder
-function addEventHandler(elem, eventType, handler) {
-	if (elem.addEventListener)
-		elem.addEventListener (eventType, handler, false);
-	else if (elem.attachEvent)
-		elem.attachEvent ('on' + eventType, handler);
-}
+window.onload = function() {
+	var Joomla = window.Joomla || {};
 
-function ready(callbackFunc) {
-	if (document.readyState !== 'loading') {
-		// Document is already ready, call the callback directly
-		callbackFunc();
-	} else if (document.addEventListener) {
-		// All modern browsers to register DOMContentLoaded
-		document.addEventListener('DOMContentLoaded', callbackFunc);
-	} else {
-		// Old IE browsers
-		document.attachEvent('onreadystatechange', function() {
-			if (document.readyState === 'complete') {
-				callbackFunc();
+	Joomla.submitbutton = function (pressbutton) {
+		if (pressbutton === 'template.archive') {
+			var ConfirmArchive = confirm(document.getElementById('archiveText').value);
+			if (ConfirmArchive === true) {
+				Joomla.submitform(pressbutton, document.adminForm);
 			}
-		});
-	}
-}
-
-function InsertAtCaret(myValue) {
-	var ele = document.getElementsByClassName("insertatcaretactive");
-	for (var i = 0; i<ele.length; i++) {
-		if (document.selection) {
-			//For browsers like Internet Explorer
-			ele[i].focus();
-			var sel = document.selection.createRange();
-			sel.text = myValue;
-			ele[i].focus();
+		} else {
+			Joomla.submitform(pressbutton, document.adminForm);
 		}
-		else if (ele[i].selectionStart || ele[i].selectionStart === 0) {
-			//For browsers like Firefox and Webkit based
-			var startPos = ele[i].selectionStart;
-			var endPos = ele[i].selectionEnd;
-			var scrollTop = ele[i].scrollTop;
-			ele[i].value = ele[i].value.substring(0, startPos) + myValue + ele[i].value.substring(endPos, ele[i].value.length);
-			ele[i].focus();
-			ele[i].selectionStart = startPos + myValue.length;
-			ele[i].selectionEnd = startPos + myValue.length;
-			ele[i].scrollTop = scrollTop;
-		}
-		else {
-			ele[i].value += myValue;
-			ele[i].focus();
-		}
-	}
-}
-
-ready(function() {
-	// enable InsertAtCaret
-	var elms = document.querySelectorAll("#jform_intro_intro_text,#jform_intro_intro_headline,#jform_tpl_html");
-	for(var i = 0; i < elms.length; i++) {
-		addEventHandler(elms[i], 'focus', function() {
-			var actives = document.getElementsByClassName('insertatcaretactive');
-			for (var z = 0; z < actives.length; z++) {
-				actives[z].classList.remove('insertatcaretactive');
-			}
-			this.classList.add('insertatcaretactive');
-		});
-	}
-});
+	};
+};

@@ -58,7 +58,7 @@ if (file_exists(JPATH_BASE . $css_filename))
 
 ?>
 
-<div id="bwpostman">
+<div id="bwpostman" class="mt">
 	<div id="bwp_com_register_success">
 		<?php
 		if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != ''))

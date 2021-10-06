@@ -28,6 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
@@ -37,10 +38,6 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
 $wa->useScript('com_bwpostman.admin-bwpm_update_checksave');
-
-$uncompressed = Factory::getApplication()->getConfig()->get('debug') ? '-uncompressed' : '';
-HTMLHelper::_('script', 'system/modal' . $uncompressed . '.js', array('relative' => true, 'detectBrowser' => true));
-HTMLHelper::_('stylesheet', 'media/system/css/modal.css');
 
 $model		= $this->getModel();
 
@@ -88,7 +85,7 @@ if ($show_update || $string_special != '')
 
 <div id="com_bwp_install_header">
 	<a href="https://www.boldt-webservice.de" target="_blank">
-		<img class="img-fluid" src="/media/com_bwpostman/images/bw_header.png" alt="Boldt Webservice" />
+		<img class="img-fluid" src="<?php echo Uri::root(); ?>media/com_bwpostman/images/bw_header.png" alt="Boldt Webservice" />
 	</a>
 </div>
 <div class="top_line"></div>

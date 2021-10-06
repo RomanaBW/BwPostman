@@ -210,7 +210,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 									foreach ($attachments as $attachment)
 									{ ?>
 										<a class="link-attachment" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
-											<span class="icon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
+											<span class="bwpicon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
 										</a>
 									<?php
 									}

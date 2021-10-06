@@ -57,7 +57,7 @@ HtmlHelper::_('behavior.formvalidator');
 // --> the editlink will be send with email
 ?>
 
-<div id="bwpostman">
+<div id="bwpostman" class="mt">
 	<div id="bwp_com_getedit_link">
 		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) { ?>
 			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">

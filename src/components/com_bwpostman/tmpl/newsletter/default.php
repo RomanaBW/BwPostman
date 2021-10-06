@@ -130,7 +130,7 @@ if (file_exists(JPATH_BASE . $css_filename))
 					?>
 					<span class="btn" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
 						<a class="link-attachment" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
-							<i class="icon_attachment"></i>
+							<i class="bwpicon_attachment"></i>
 						</a>
 					</span>
 					<?php

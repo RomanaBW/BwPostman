@@ -29,6 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Session\Session;
 use Joomla\Database\UTF8MB4SupportInterface;
 use Joomla\CMS\Filesystem\Folder;
@@ -1664,26 +1665,26 @@ class com_bwpostmanInstallerScript
 			$show_right = true;
 		}
 
-		$asset_path = '/media/com_bwpostman';
+		$asset_path = 'media/com_bwpostman';
 		$image_path = 'media/com_bwpostman/images';
 		?>
 
-		<link rel="stylesheet" href="<?php echo Route::_($asset_path . '/css/install.css'); ?>" type="text/css" />
-
-		<div id="com_bwp_install_header">
+		<div id="com_bwp_install_header" class="text-center">
 			<a href="https://www.boldt-webservice.de" target="_blank">
-				<img src="<?php echo Route::_($asset_path . '/images/bw_header.png'); ?>" alt="Boldt Webservice" />
+				<img class="img-fluid border-0" src="<?php echo Uri::root() . $asset_path . '/images/bw_header.png'; ?>" alt="Boldt Webservice" />
 			</a>
 		</div>
 		<div class="top_line"></div>
 
-		<div id="com_bwp_install_outer">
-			<h1><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_WELCOME') ?></h1>
-			<div id="com_bwp_install_left">
+		<div id="com_bwp_install_outer" class="row">
+			<div class="col-lg-12 text-center p-2 mt-2">
+				<h1><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_WELCOME') ?></h1>
+			</div>
+			<div id="com_bwp_install_left" class="col-lg-6 mb-2">
 				<div class="com_bwp_install_welcome">
 					<p><?php echo Text::_('COM_BWPOSTMAN_DESCRIPTION') ?></p>
 				</div>
-				<div class="com_bwp_install_finished">
+				<div class="com_bwp_install_finished text-center">
 					<h2>
 						<?php
 						if ($update)
@@ -1701,8 +1702,8 @@ class com_bwpostmanInstallerScript
 				<?php
 				if ($show_right)
 				{ ?>
-					<div class="cpanel">
-						<div class="icon">
+					<div class="cpanel text-center mb-3">
+						<div class="icon btn" >
 							<a href="<?php echo Route::_('index.php?option=com_bwpostman'); ?>">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1712,7 +1713,7 @@ class com_bwpostmanInstallerScript
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
 							</a>
 						</div>
-						<div class="icon">
+						<div class="icon btn">
 							<a href="<?php echo $manual; ?>" target="_blank">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1722,7 +1723,7 @@ class com_bwpostmanInstallerScript
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
 							</a>
 						</div>
-						<div class="icon">
+						<div class="icon btn">
 							<a href="<?php echo $forum; ?>" target="_blank">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1737,7 +1738,7 @@ class com_bwpostmanInstallerScript
 				} ?>
 			</div>
 
-			<div id="com_bwp_install_right">
+			<div id="com_bwp_install_right" class="col-lg-6">
 				<?php
 				if ($show_right)
 				{
@@ -1753,19 +1754,19 @@ class com_bwpostmanInstallerScript
 					<?php
 					if ($show_update)
 					{ ?>
-						<div class="com_bwp_install_updateinfo">
-							<h2><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
+						<div class="com_bwp_install_updateinfo mb-3 p-3">
+							<h2 class="mb-3"><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATEINFO') ?></h2>
 							<?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_CHANGELOG_INFO'); ?>
 							<?php if ($string_new != '') { ?>
-								<h3><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
+								<h3 class="mb-2"><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_LBL') ?></h3>
 								<p><?php echo $string_new; ?></p>
 							<?php } ?>
 							<?php if ($string_improvement != '') { ?>
-								<h3><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
+								<h3 class="mb-2"><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_LBL') ?></h3>
 								<p><?php echo $string_improvement; ?></p>
 							<?php } ?>
 							<?php if ($string_bugfix != '') { ?>
-								<h3><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
+								<h3 class="mb-2"><?php echo Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_LBL') ?></h3>
 								<p><?php echo $string_bugfix; ?></p>
 							<?php } ?>
 						</div>
@@ -1774,8 +1775,8 @@ class com_bwpostmanInstallerScript
 				}
 				else
 				{ ?>
-					<div class="cpanel">
-						<div class="icon">
+					<div class="cpanel text-center mb-3">
+						<div class="icon btn" >
 							<a href="<?php echo Route::_('index.php?option=com_bwpostman&token=' . Session::getFormToken()); ?>">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1785,7 +1786,7 @@ class com_bwpostmanInstallerScript
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN'); ?></span>
 							</a>
 						</div>
-						<div class="icon">
+						<div class="icon btn">
 							<a href="<?php echo $manual; ?>" target="_blank">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1795,7 +1796,7 @@ class com_bwpostmanInstallerScript
 								<span><?php echo Text::_('COM_BWPOSTMAN_INSTALL_MANUAL'); ?></span>
 							</a>
 						</div>
-						<div class="icon">
+						<div class="icon btn">
 							<a href="<?php echo $forum; ?>" target="_blank">
 								<?php echo HtmlHelper::_(
 									'image',
@@ -1809,9 +1810,9 @@ class com_bwpostmanInstallerScript
 					<?php
 				} ?>
 			</div>
-			<div class="clr"></div>
+			<div class="clr clearfix"></div>
 
-			<div class="com_bwp_install_footer">
+			<div class="com_bwp_install_footer col-12 text-center my-3">
 				<p class="small">
 					<?php echo Text::_('&copy; 2012-');
 					echo date(" Y") ?> by
@@ -1821,8 +1822,100 @@ class com_bwpostmanInstallerScript
 		</div>
 
 		<?php
+		// check all tables of BwPostman
+		// Let Ajax client redirect
+		if ($update)
+		{
+			$modal = $this->getModal();
+			echo $modal;
+		}
 	}
 
+	/**
+	 * Get the HTML-String for popup modal
+	 *
+	 * @return	string
+	 *
+	 * @since	2.2.0 (since 3.1.4 here)
+	 */
+	private function getModal(): string
+	{
+		$url = Uri::root() . '/administrator/index.php?option=com_bwpostman&view=maintenance&tmpl=component&layout=updateCheckSave';
+
+		$html    = '
+		<div id="bwp_Modal" class="bwp_modal">
+			<div id="bwp_modal-content">
+				<div id="bwp_modal-header"><span class="bwp_close" style="display:none;">&times;</span></div>
+				<div id="bwp_wrapper"></div>
+			</div>
+		</div>
+	';
+		$css     = "#bwpostman .bwp_modal{display:none;position:fixed;z-index:99999;padding-top:10px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,0.4)}#bwpostman #bwp_modal-content{position:relative;background-color:#fefefe;margin:auto;border:1px solid #888;border-radius:6px;box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);height:100%;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;pointer-events:auto;outline:0;padding:15px}#bwpostman #bwp_modal-header{height:35px}#bwpostman #bwp_wrapper{position:relative;-ms-flex:1 1 auto;flex:1 1 auto}#bwpostman .bwp_close{color:#aaa;float:right;font-size:28px;font-weight:700;line-height:28px;-webkit-appearance:non}#bwpostman .bwp_close:hover,#bwpostman .bwp_close:focus{color:#000;text-decoration:none;cursor:pointer}";
+		$percent = 0.10;
+
+		$js = "
+			var css = '$css',
+				head = document.head || document.getElementsByTagName('head')[0],
+				style = document.createElement('style');
+
+			style.type = 'text/css';
+			if (style.styleSheet){
+				// This is required for IE8 and below.
+				style.styleSheet.cssText = css;
+			} else {
+				style.appendChild(document.createTextNode(css));
+			}
+			head.appendChild(style);
+
+			function setModal() {
+				// Set the modal height and width 90%
+				if (typeof window.innerWidth != 'undefined')
+				{
+					viewportwidth = window.innerWidth,
+						viewportheight = window.innerHeight
+				}
+				else if (typeof document.documentElement != 'undefined'
+					&& typeof document.documentElement.clientWidth !=
+					'undefined' && document.documentElement.clientWidth != 0)
+				{
+					viewportwidth = document.documentElement.clientWidth,
+						viewportheight = document.documentElement.clientHeight
+				}
+				else
+				{
+					viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
+						viewportheight = document.getElementsByTagName('body')[0].clientHeight
+				}
+				var modalcontent = document.getElementById('bwp_modal-content');
+				modalcontent.style.height = viewportheight-(viewportheight*$percent)+'px';
+				";
+
+		$js .= "
+								modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
+						";
+
+		$js .= "
+
+				// Get the modal
+				var modal = document.getElementById('bwp_Modal');
+
+				// Get the Iframe-Wrapper and set Iframe
+				var wrapper = document.getElementById('bwp_wrapper');
+				var html = '<iframe id=\"iFrame\" name=\"iFrame\" src=\"$url\" style=\"width:100%; height:100%;\"></iframe>';
+
+				// Open the modal
+					wrapper.innerHTML = html;
+					modal.style.display = 'block';
+
+			}
+			setModal();
+
+		";
+
+		return <<<EOS
+		<div id="bwpostman">$html</div><script>$js</script>
+EOS;
+	}
 
 	/**
 	 * Method to install sample templates

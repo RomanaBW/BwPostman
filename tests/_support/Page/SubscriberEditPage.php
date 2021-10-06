@@ -148,14 +148,14 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $field_email        = "sam.sample@test.nil";
+	public static $field_email        = "sam.sample@tester-net.nil";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $field_email2        = "sam.sample2@test.nil";
+	public static $field_email2        = "sam.sample2@tester-net.nil";
 
 	/**
 	 * @var string
@@ -220,7 +220,7 @@ class SubscriberEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $field_title          = "sam.sample@test.nil";
+	public static $field_title          = "sam.sample@tester-net.nil";
 
 	/**
 	 * @var string

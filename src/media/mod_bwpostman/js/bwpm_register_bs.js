@@ -4,7 +4,7 @@
 // BwPostman Javascript to customize the layout of menu params for newsletters frontend view.
 //
 // @version %%version_number%%
-// @package BwPostman-Side
+// @package BwPostman Site
 // @author Romana Boldt, Karl Klostermann
 // @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
 // @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html

@@ -6,19 +6,6 @@
   "license": "GPL-2.0-or-later",
   "assets": [
     {
-      "name": "com_bwpostman.admin-bwpostman",
-      "type": "style",
-      "uri": "com_bwpostman/admin-bwpostman.css",
-      "dependencies": [
-        "fontawesome"
-      ]
-    },
-    {
-      "name": "com_bwpostman.admin-bwpostman_backend",
-      "type": "style",
-      "uri": "com_bwpostman/admin-bwpostman_backend.css"
-    },
-    {
       "name": "com_bwpostman.bwpostman",
       "type": "style",
       "uri": "com_bwpostman/bwpostman.css"
@@ -39,15 +26,25 @@
       "uri": "com_bwpostman/bwpostman_bs4.css"
     },
     {
-      "name": "com_bwpostman.iconfonts",
-      "type": "style",
-      "uri": "com_bwpostman/iconfonts.css"
-    },
-    {
       "name": "com_bwpostman.install",
       "type": "style",
       "uri": "com_bwpostman/install.css"
     },
+    {
+      "name": "com_bwpostman.bwpm_register_btn_group",
+      "type": "script",
+      "uri": "com_bwpostman/bwpm_register_btn_group.js"
+    },
+    {
+      "name": "com_bwpostman.bwpm_register_modal",
+      "type": "script",
+      "uri": "com_bwpostman/bwpm_register_modal.js"
+	},
+    {
+      "name": "com_bwpostman.bwpm_register_validate",
+      "type": "script",
+      "uri": "com_bwpostman/bwpm_register_validate.js"
+	},
     {
       "name": "com_bwpostman.admin-bwpm_campaign",
       "type": "script",
@@ -187,11 +184,6 @@
       "name": "com_bwpostman.admin-subscribers-default-batch-footer.es6",
       "type": "script",
       "uri": "com_bwpostman/admin-subscribers-default-batch-footer.es6.js"
-    },
-    {
-      "name": "com_bwpostman.menuhelper",
-      "type": "script",
-      "uri": "com_bwpostman/menuhelper.js"
     }
   ]
 }

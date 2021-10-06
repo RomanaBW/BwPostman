@@ -535,7 +535,7 @@ class NewsletterEditPage
 	 *
 	 * @since   4.0.0
 	 */
-	public static $attachment_listview_icon            = "//*/table[@id='main-table']/tbody/tr[1]/td[2]/span[@class='icon_attachment']";
+	public static $attachment_listview_icon            = "//*/table[@id='main-table']/tbody/tr[1]/td[2]/i[contains(@class, 'fa-paperclip')]";
 
 	/**
 	 * @var string

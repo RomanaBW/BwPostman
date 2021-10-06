@@ -813,7 +813,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $attachment_row       = "//*[@id='main-table']/tbody/tr[%s]/td[2]/span[contains(@class, 'icon_attachment')]";
+	public static $attachment_row       = "//*[@id='main-table']/tbody/tr[%s]/td[2]/i[contains(@class, 'fa-paperclip')]";
 
 	/**
 	 * @var string

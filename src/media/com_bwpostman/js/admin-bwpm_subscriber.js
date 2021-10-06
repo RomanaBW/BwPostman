@@ -25,7 +25,6 @@
 
 window.onload = function() {
 	var Joomla = window.Joomla || {};
-	// var $j = jQuery.noConflict();
 
 	Joomla.submitbutton = function (pressbutton) {
 		var form = document.adminForm;

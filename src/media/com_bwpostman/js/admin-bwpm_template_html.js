@@ -25,21 +25,12 @@
 
 // insert placeholder
 function buttonClick(text, editor) {
-	jInsertEditorText(text, editor);
-}
-
-//insert placeholder Joomla 4
-function buttonClick4(text, editor) {
-	// jInsertEditorText(text, editor);
-	if (jQuery('#'+editor+':visible').length === 0){
-		var content = window.Joomla.editors.instances[editor].getValue();
-		// Romana - geht sonst bei leerem Editorfeld nicht
+	var x = document.getElementById("jform_tpl_html");
+	if (window.getComputedStyle(x).display === "none") {
 		Joomla.editors.instances[editor].replaceSelection(text);
 	}
 	else
 	{
-		// if editor is disabled
-		InsertAtCaret(text);
+        InsertAtCaret(text);
 	}
-	return true;
 }

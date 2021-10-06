@@ -23,13 +23,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-jQuery(document).ready(function() {
-	jQuery('#fieldset-COM_BWPOSTMAN_ML_AVAILABLE .column-count-md-2').attr('class', 'column-count-1');
-	jQuery('#fieldset-COM_BWPOSTMAN_CAM_AVAILABLE .column-count-md-2').attr('class', 'column-count-1');
-	jQuery('#fieldset-mailinglists .column-count-md-2').attr('class', 'column-count-1');
-	jQuery('.bwp-field tr').click(function(event) {
-		if (event.target.type !== 'checkbox') {
-			jQuery(':checkbox', this).trigger('click');
-		}
-	});
-});
+function bwpSelectTr(selTr) {
+	if (event.target.type !== 'checkbox') {
+		document.getElementById(selTr).click();
+	}
+}

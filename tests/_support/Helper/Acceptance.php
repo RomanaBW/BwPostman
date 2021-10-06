@@ -1230,6 +1230,7 @@ class Acceptance extends Codeception\Module
 		$I->click($searchButton);
 
 		$mainTableId = Generals::$main_table;
+
 		if (isset($edit_data['mainTableId']))
 		{
 			$mainTableId = $edit_data['mainTableId'];

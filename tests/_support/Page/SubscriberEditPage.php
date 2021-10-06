@@ -311,6 +311,7 @@ class SubscriberEditPage
 		'archive_tab'          => "//*/ul[contains(@class, 'bwp-tabs')]/li/a[contains(text(),'Archived subscribers')]",
 		'archive_identifier'   => "Name & Email",
 		'archive_title_col'    => "//*[@id='main-table-bw-confirmed']/tbody/*/td[%s]",
+		'archive_title_col_unconfirmed' => "//*[@id='main-table-bw-unconfirmed']/tbody/*/td[%s]",
 		'archive_confirm'      => 'Do you wish to archive the selected subscriber(s)?',
 		'archive_success_msg'  => 'The selected subscriber has been archived.',
 		'archive_success2_msg' => 'The selected subscribers have been archived.',
@@ -538,6 +539,7 @@ class SubscriberEditPage
 
 	/**
 	 * @param \AcceptanceTester $I
+	 * @param boolean           $confirmed
 	 *
 	 * @return array
 	 *
@@ -545,7 +547,7 @@ class SubscriberEditPage
 	 *
 	 * @since version
 	 */
-	public static function prepareDeleteArray(\AcceptanceTester $I)
+	public static function prepareDeleteArray(\AcceptanceTester $I, bool $confirmed = true)
 	{
 		$edit_arc_del_array = self::$arc_del_array;
 		$title_col = 4;
@@ -557,6 +559,12 @@ class SubscriberEditPage
 			$title_col = 5;
 		}
 		$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], $title_col);
+
+		if (!$confirmed)
+		{
+			$edit_arc_del_array['mainTableId'] = "//*[@id='main-table-bw-unconfirmed']";
+			$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col_unconfirmed'], $title_col);
+		}
 
 		return $edit_arc_del_array;
 	}

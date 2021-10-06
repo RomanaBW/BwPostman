@@ -380,6 +380,69 @@ class TestSubscribersDetailsCest
 	}
 
 	/**
+	 * Test method to create a single unactivated subscriber from list view, save it and go back to list view
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneSubscriberUnactivatedCompleteListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one unactivated subscriber complete list view");
+
+		// Preset all fields to be shown and obligatory if possible
+		Generals::presetComponentOptions($I);
+
+		$I->setManifestOption('com_bwpostman', 'show_gender', '1');
+		$I->setManifestOption('com_bwpostman', 'show_firstname_field', '1');
+		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_name_field', '1');
+		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_special', '1');
+		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'special_label', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'special_desc', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'show_emailformat', '1');
+		$I->setManifestOption('com_bwpostman', 'default_emailformat', '1');
+
+		$I->amOnPage(SubManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		SubEdit::fillFormSimple($I, SubManage::$format_html, SubEdit::$female);
+
+		// Reset confirmation to unconfirmed
+		$I->click(SubEdit::$confirm);
+		$I->selectOption(SubEdit::$confirm, SubEdit::$unconfirmed);
+		$I->wait(1);
+		$I->waitForText("unconfirmed", 5);
+
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
+
+		$I->waitForElementVisible(Generals::$alert_header, 5);
+		$I->see(SubEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+		$I->clickAndWait(SubManage::$tab_unconfirmed, 2);
+		$this->checkSavedValues($I, '1', '1', false);
+
+		$edit_arc_del_array = SubEdit::prepareDeleteArray($I, false);
+
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true);
+		$I->see('Subscribers', Generals::$pageTitle);
+
+		// Reset settings
+		Generals::presetComponentOptions($I);
+	}
+
+	/**
 	 * Test method to create same single Subscriber twice from main view
 	 *
 	 * @param   AcceptanceTester                $I
@@ -715,10 +778,11 @@ class TestSubscribersDetailsCest
 	 * @param AcceptanceTester $I
 	 * @param string $format (0 = text, 1 = HTML)
 	 * @param string $gender (0 = male, 1 = female, 2 = n.a.)
+	 * @param boolean $confirmed
 	 *
 	 * @since 3.0.2
 	 */
-	private function checkSavedValues(AcceptanceTester $I, $format, $gender)
+	private function checkSavedValues(AcceptanceTester $I, $format, $gender, $confirmed = true)
 	{
 		$table_subs     = Generals::$db_prefix . 'bwpostman_subscribers';
 		$valuesExpected = array(
@@ -731,6 +795,11 @@ class TestSubscribersDetailsCest
 			'registered_by' => '757',
 			'confirmed_by'  => '757',
 		);
+
+		if (!$confirmed)
+		{
+			$valuesExpected['confirmed_by']  = '-1';
+		}
 
 		$I->seeInDatabase($table_subs, $valuesExpected);
 	}

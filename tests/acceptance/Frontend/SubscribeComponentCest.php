@@ -323,6 +323,7 @@ class SubscribeComponentCest
 		$I->wait(1);
 		$I->click(SubsView::$button_submit);
 		$I->waitForElement(Generals::$alert_heading, 5);
+		$I->wait(1);
 		$I->see(SubsView::$msg_saved_successfully);
 		$I->waitForElement(SubsView::$view_edit, 5);
 		$I-> seeCheckboxIsChecked(SubsView::$ml2);
@@ -371,7 +372,7 @@ class SubscribeComponentCest
 		Generals::presetComponentOptions($I);
 
 		SubsView::subscribeByComponent($I);
-		$I->click(SubsView::$button_register);
+		$I->clickAndWait(SubsView::$button_register, 2);
 
 		$I->scrollTo(SubsView::$registration_complete);
 		$I->wait(1);
@@ -828,7 +829,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$disclaimer_link_modal);
 		$I->wait(2);
 		$I->waitForElementVisible(SubsView::$disclaimer_modal_identifier, 5);
-		$I->switchToIframe('disclaimerFrame');
+		$I->switchToIframe('BwpFrame');
 		$I->see(SubsView::$disclaimer_url_text);
 		$I->switchToIframe();
 		$I->click(SubsView::$disclaimer_modal_close);
@@ -844,7 +845,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$disclaimer_link_modal);
 		$I->wait(2);
 		$I->waitForElementVisible(SubsView::$disclaimer_modal_identifier, 5);
-		$I->switchToIframe('disclaimerFrame');
+		$I->switchToIframe('BwpFrame');
 		$I->see(SubsView::$disclaimer_article_text);
 		$I->switchToIframe();
 		$I->click(SubsView::$disclaimer_modal_close);
@@ -860,7 +861,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$disclaimer_link_modal);
 		$I->wait(2);
 		$I->waitForElementVisible(SubsView::$disclaimer_modal_identifier, 5);
-		$I->switchToIframe('disclaimerFrame');
+		$I->switchToIframe('BwpFrame');
 		$I->see(SubsView::$disclaimer_menuitem_text);
 		$I->switchToIframe();
 		$I->click(SubsView::$disclaimer_modal_close);

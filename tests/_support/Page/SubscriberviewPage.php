@@ -111,7 +111,7 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $gender       = "//*[@id='gender_chosen']/a";
+	public static $gender       = "//*[@id='gender']";
 
 	/**
 	 * @var string
@@ -533,7 +533,7 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $disclaimer_link_modal    = "//*[@id='bwp_open']";
+	public static $disclaimer_link_modal    = "//*[@id='bwp_com_open']";
 
 	/**
 	 * @var string
@@ -547,14 +547,14 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $disclaimer_modal_identifier    = "//*/div[@id='DisclaimerModal']/div/div/div[contains(@class,'modal-body')]";
+	public static $disclaimer_modal_identifier    = "//*/div[@id='bwp_com_Modal']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $disclaimer_modal_close    = "//*/div[@id='DisclaimerModal']/div/div/div[contains(@class,'modal-header')]/button";
+	public static $disclaimer_modal_close    = "//*/div[@id='bwp_com_Modal']/div/span[contains(@class,'bwp_com_close')]";
 
 	/**
 	 * @var string

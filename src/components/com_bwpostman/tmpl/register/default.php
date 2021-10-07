@@ -442,7 +442,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							// Disclaimer menu item and target_blank or not
 							elseif ($this->params->get('disclaimer_selection') == 2 && $this->params->get('disclaimer_menuitem') > 0)
 							{
-								if ($tpl_com !== '' && Factory::getConfig()->get('sef') === true)
+								if ($tpl_com !== '' && Factory::getConfig()->get('sef') == '1')
 								{
 									$tpl_com = '?tmpl=component';
 								}

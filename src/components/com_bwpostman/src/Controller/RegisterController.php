@@ -128,7 +128,7 @@ class RegisterController extends FormController
 	 * @param   string  $key     The name of the primary key of the URL variable.
 	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
 	 *
-	 * @return void
+	 * @return boolean
 	 *
 	 * @throws Exception
 	 *
@@ -255,6 +255,9 @@ class RegisterController extends FormController
 		$post['confirmed_by'] 		= '-1';
 		$post['archived_by'] 		= '-1';
 
+		$itemid       = BwPostmanSubscriberHelper::getMenuItemid('register');
+		$menuItemPath = BwPostmanSubscriberHelper::getMenuItemPath($itemid);
+
 		if (!$model->save($post))
 		{
 			// process failed save
@@ -276,6 +279,18 @@ class RegisterController extends FormController
 				$err	= ArrayHelper::toObject($err);
 				BwPostmanSubscriberHelper::errorSubscriberData($err, $post['user_id'], $post['email']);
 			}
+
+			$route = Route::_('index.php?option=com_bwpostman&view=register&Itemid=' . $itemid, false);
+
+			if (($app->get('sef') === '1' || $app->get('sef') === true))
+			{
+				$route = 'index.php/' . $menuItemPath . '?view=register';
+			}
+
+			$this->setRedirect($route);
+			$this->redirect();
+
+			return false;
 		}
 		else
 		{
@@ -286,7 +301,6 @@ class RegisterController extends FormController
 			$subscriber->activation = $app->getUserState('com_bwpostman.subscriber.activation', '');
 
 			$type	= 0; // Send Registration email
-			$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
 
 			// Send registration confirmation mail
 			$res = BwPostmanSubscriberHelper::sendMail($subscriber, $type, $itemid);
@@ -304,6 +318,8 @@ class RegisterController extends FormController
 		}
 
 		parent::display();
+
+		return true;
 	}
 
 	/**

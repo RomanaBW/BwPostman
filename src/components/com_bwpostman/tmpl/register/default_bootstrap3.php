@@ -449,7 +449,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 							// Disclaimer menu item and target_blank or not
 							elseif ($this->params->get('disclaimer_selection') == 2 && $this->params->get('disclaimer_menuitem') > 0)
 							{
-								if ($tpl_com !== '' && Factory::getConfig()->get('sef') === '1')
+								if ($tpl_com !== '' && ($app->get('sef') === '1' || $app->get('sef') === true))
 								{
 									$tpl_com = '?tmpl=component';
 								}

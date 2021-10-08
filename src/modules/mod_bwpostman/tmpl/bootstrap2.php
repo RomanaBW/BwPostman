@@ -398,7 +398,7 @@ $required_end .= '</div>';
 				elseif ($paramsComponent->get('disclaimer_selection') == 2 && $paramsComponent->get('disclaimer_menuitem') > 0)
 				{
 					// Disclaimer menu item and target_blank or not
-					if ($tpl_com !== '' && Factory::getConfig()->get('sef') === '1')
+					if ($tpl_com !== '' && (Factory::getApplication()->get('sef') === '1' || Factory::getApplication()->get('sef') === true))
 					{
 						$tpl_com = '?tmpl=component';
 					}

@@ -280,11 +280,18 @@ class RegisterController extends FormController
 				BwPostmanSubscriberHelper::errorSubscriberData($err, $post['user_id'], $post['email']);
 			}
 
-			$route = Route::_('index.php?option=com_bwpostman&view=register&Itemid=' . $itemid, false);
+			$itemPath = '';
 
-			if (($app->get('sef') === '1' || $app->get('sef') === true))
+			if ($itemid > 0)
 			{
-				$route = 'index.php/' . $menuItemPath . '?view=register';
+				$itemPath = '&Itemid=' . $itemid;
+			}
+
+			$route = Route::_('index.php?option=com_bwpostman&view=register' . $itemPath, false);
+
+			if ($menuItemPath!== '' && ($app->get('sef') === '1' || $app->get('sef') === true))
+			{
+				$route = '/index.php/' . $menuItemPath . '?view=register';
 			}
 
 			$this->setRedirect($route);

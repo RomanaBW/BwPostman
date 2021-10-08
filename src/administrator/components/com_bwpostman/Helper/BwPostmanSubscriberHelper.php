@@ -702,9 +702,9 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since       0.9.1
 	 */
-	public static function getMenuItemid(string $view): ?int
+	public static function getMenuItemid(string $view): int
 	{
-		$itemid = null;
+		$itemid = 0;
 
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
@@ -725,25 +725,9 @@ class BwPostmanSubscriberHelper
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if (empty($itemid))
+		if (is_null($itemid))
 		{
-			$query	= $db->getQuery(true);
-
-			$query->select($db->quoteName('id'));
-			$query->from($db->quoteName('#__menu'));
-			$query->where($db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=register'));
-			$query->where($db->quoteName('published') . ' = ' . 1);
-
-			try
-			{
-				$db->setQuery($query);
-
-				$itemid = $db->loadResult();
-			}
-			catch (RuntimeException $e)
-			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+			$itemid = 0;
 		}
 
 		return $itemid;
@@ -782,6 +766,11 @@ class BwPostmanSubscriberHelper
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
+
+		if (is_null($menuItemPath))
+		{
+			$menuItemPath = '';
+		}
 		return $menuItemPath;
 	}
 

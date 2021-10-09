@@ -141,6 +141,11 @@
 	width: auto;
 }
 
+#bwpostman .pagination {
+	display: inline-block;
+	float: none;
+}
+
 #bwpostman .icon_attachment {
 	background-repeat:	no-repeat;
 	display:			inline-block;

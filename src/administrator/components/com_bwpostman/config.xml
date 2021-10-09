@@ -115,7 +115,7 @@
 		</field>
 
 		<field name="loglevel" type="list"
-		       default="ERROR"
+		       default="BW_ERROR"
 		       description="COM_BWPOSTMAN_LOGLEVEL_DESC"
 		       label="COM_BWPOSTMAN_LOGLEVEL_LABEL"
 		>
@@ -142,6 +142,7 @@
 			<option value="bootstrap2">Bootstrap 2</option>
 			<option value="bootstrap3">Bootstrap 3</option>
 			<option value="bootstrap4">Bootstrap 4</option>
+			<option value="cassiopeia">Cassiopeia</option>
 		</field>
 
 		<field name="pretext"
@@ -521,6 +522,7 @@
 			<option value="bootstrap2">Bootstrap 2</option>
 			<option value="bootstrap3">Bootstrap 3</option>
 			<option value="bootstrap4">Bootstrap 4</option>
+			<option value="cassiopeia">Cassiopeia</option>
 		</field>
 
 		<field
@@ -646,6 +648,7 @@
 			<option value="bootstrap2">Bootstrap 2</option>
 			<option value="bootstrap3">Bootstrap 3</option>
 			<option value="bootstrap4">Bootstrap 4</option>
+			<option value="cassiopeia">Cassiopeia</option>
 		</field>
 
 		<field

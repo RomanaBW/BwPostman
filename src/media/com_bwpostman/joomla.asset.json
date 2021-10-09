@@ -26,6 +26,11 @@
       "uri": "com_bwpostman/bwpostman_bs4.css"
     },
     {
+      "name": "com_bwpostman.cassiopeia",
+      "type": "style",
+      "uri": "com_bwpostman/cassiopeia.css"
+    },
+    {
       "name": "com_bwpostman.install",
       "type": "style",
       "uri": "com_bwpostman/install.css"
@@ -44,6 +49,11 @@
       "name": "com_bwpostman.bwpm_register_validate",
       "type": "script",
       "uri": "com_bwpostman/bwpm_register_validate.js"
+	},
+    {
+      "name": "com_bwpostman.bwpm_newsletters_filters",
+      "type": "script",
+      "uri": "com_bwpostman/bwpm_newsletters_filters.js"
 	},
     {
       "name": "com_bwpostman.admin-bwpm_campaign",

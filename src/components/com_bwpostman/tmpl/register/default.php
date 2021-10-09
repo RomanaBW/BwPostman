@@ -135,9 +135,11 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 										class="<?php
 										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
 										{
+// Romana - ich kann nicht nachvollziehen, wann hier ein err_code ankommen soll.
+// In admin/src/Table/SubscriberTable.php wird zwar in Zeile 479 das Feld geprüft, aber kein $err gesetzt.
 											echo "invalid";
 										} ?>"
-										maxlength="50" /><span class="append-area"><i class="bwpicon-star"></i></span>
+										maxlength="50" /><span class="append-area"><i class="icon-star"></i></span>
 							<?php // Romana - vor dem span "append-area" darf kein Leerraum sein
 							}
 							else
@@ -181,7 +183,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 										{
 											echo "invalid";
 										} ?>"
-										maxlength="50" /><span class="append-area"><i class="bwpicon-star"></i></span> <?php
+										maxlength="50" /><span class="append-area"><i class="icon-star"></i></span> <?php
 							}
 							else
 							{ ?>
@@ -239,7 +241,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 										{
 											echo "invalid";
 										} ?>"
-										maxlength="50" /><span class="append-area"><i class="bwpicon-star"></i></span> <?php
+										maxlength="50" /><span class="append-area"><i class="icon-star"></i></span> <?php
 							}
 							else
 							{ ?>
@@ -276,7 +278,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							{
 								echo "validate-email";
 							} ?>"
-							maxlength="100" /><span class="append-area"><i class="bwpicon-star"></i></span>
+							maxlength="100" /><span class="append-area"><i class="icon-star"></i></span>
 					</p>
 
 					<?php
@@ -334,7 +336,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 											if (strlen(Text::_($this->lists['available_mailinglists'][0]->description)) > $descLength)
 											{
 												echo '... ';
-												echo '<span class="bwptip" title="' . Text::_($this->lists['available_mailinglists'][0]->description) . '"><i class="bwpicon-info-sign"></i></span>';
+												echo '<span class="bwptip" title="' . Text::_($this->lists['available_mailinglists'][0]->description) . '"><i class="icon-info-sign"></i></span>';
 											} ?>
 										</p>
 										<?php
@@ -343,7 +345,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								else
 								{ ?>
 									<p class="mail_available">
-										<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="bwpicon-star"></i></sup>'; ?>
+										<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="icon-star"></i></sup>'; ?>
 									</p>
 									<?php
 									foreach ($this->lists['available_mailinglists'] as $i => $item)
@@ -369,7 +371,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 												if (strlen(Text::_($item->description)) > $descLength)
 												{
 													echo '... ';
-													echo '<span class="bwptip" title="' . Text::_($item->description) . '"><i class="bwpicon-info-sign"></i></span>';
+													echo '<span class="bwptip" title="' . Text::_($item->description) . '"><i class="icon-info-sign"></i></span>';
 												} ?>
 											</span>
 											<?php
@@ -398,7 +400,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="question-result input-append">
 							<label id="question" for="stringQuestion"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
 							<input type="text" name="stringQuestion" id="stringQuestion"
-							size="40" maxlength="50" /><span class="append-area"><i class="bwpicon-star"></i></span>
+							size="40" maxlength="50" /><span class="append-area"><i class="icon-star"></i></span>
 						</p>
 					</div>
 				<?php endif; // End question ?>
@@ -416,7 +418,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="captcha-result input-append">
 							<label id="captcha" for="stringCaptcha"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
 							<input type="text" name="stringCaptcha" id="stringCaptcha"
-							size="40" maxlength="50" /><span class="append-area"><i class="bwpicon-star"></i></span>
+							size="40" maxlength="50" /><span class="append-area"><i class="icon-star"></i></span>
 						</p>
 					</div>
 					<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
@@ -472,7 +474,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 										echo ' target="_blank"';
 									}
 								}
-								echo '>' . Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="bwpicon-star"></i>'; ?>
+								echo '>' . Text::_('COM_BWPOSTMAN_DISCLAIMER') . '</a> <i class="icon-star"></i>'; ?>
 							</span>
 						</p>
 

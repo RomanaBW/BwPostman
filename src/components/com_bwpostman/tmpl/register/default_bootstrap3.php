@@ -27,22 +27,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Site\Classes\BwPostmanSite;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Layout\LayoutHelper;
 
-JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+HtmlHelper::_('behavior.keepalive');
+HtmlHelper::_('behavior.formvalidator');
 
-HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('bootstrap.modal');
 
 // Get provided style file
 $app = Factory::getApplication();
 $wa  = $app->getDocument()->getWebAssetManager();
 
 $wa->useStyle('com_bwpostman.bwpostman_bs3');
+$wa->useScript('com_bwpostman.bwpm_register_modal');
 
 // Get user defined style file
 $templateName = $app->getTemplate();
@@ -58,7 +60,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 ?>
 
-<div id="bwpostman">
+<div id="bwpostman" class="mt-3">
 	<div id="bwp_com_register">
 		<?php // displays a message if no availible mailinglist
 		if ($this->lists['available_mailinglists'])
@@ -80,8 +82,10 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					<input type="text" name="falle" id="falle" size="20"
 							title="<?php echo addslashes(Text::_('COM_BWPOSTMAN_SPAMCHECK')); ?>" maxlength="50" />
 				</p>
+				<?php // End Spamcheck ?>
 
-				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="contentpane mb-3<?php echo $this->params->get('pageclass_sfx'); ?>">
+
 					<?php // Show pretext only if set in basic parameters
 					if ($this->params->get('pretext'))
 					{
@@ -213,7 +217,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 						} ?>
 
 						<div class="form-group row edit_special">
-							<label id="specialmsg" class="col-sm-2 control-label hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special">
+							<label id="specialmsg" class="col-sm-2 control-label hasTooltip" title="<?php echo Text::_($tip); ?>" for="special">
 								<?php
 								if ($this->params->get('special_label') != '')
 								{
@@ -331,8 +335,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 											if (strlen(Text::_($this->lists['available_mailinglists'][0]->description)) > $descLength)
 											{
 												echo '... ';
-												echo HtmlHelper::tooltip(Text::_($this->lists['available_mailinglists'][0]->description),
-													$this->lists['available_mailinglists'][0]->title, '', '<i class="fa fa-info-circle fa-lg"></i>', '');
+												echo '<span class="bwptip" title="' . Text::_($this->lists['available_mailinglists'][0]->description) . '"><i class="fa fa-info-circle fa-lg"></i></span>';
 											} ?>
 										</div>
 										<?php
@@ -368,7 +371,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 													if (strlen(Text::_($item->description)) > $descLength)
 													{
 														echo '... ';
-														echo HtmlHelper::tooltip(Text::_($item->description), $item->title, '', '<i class="fa fa-info-circle fa-lg"></i>', '');
+														echo '<span class="bwptip" title="' . Text::_($item->description) . '"><i class="fa fa-info-circle fa-lg"></i></span>';
 													} ?>
 												</span>
 												<?php
@@ -466,7 +469,8 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 								// Show inside modalbox
 								if ($this->params->get('showinmodal') == 1)
 								{
-									echo '<a id="bwp_com_open"';
+									echo '<a id="bwp_com_open" href="javascript:void(0)"';
+									$title = Text::_('COM_BWPOSTMAN_DISCLAIMER_TITLE');
 								}
 								// Show not in modalbox
 								else
@@ -532,80 +536,9 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 
 		if ($this->params->get('show_boldt_link') === '1')
 		{ ?>
-			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+			<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
 		<?php
 		} ?>
 		</div>
 	</div>
 </div>
-<?php
-if ($this->params->get('showinmodal') == 1)
-{ ?>
-<script type="text/javascript">
-jQuery(document).ready(function()
-{
-	function setComModal() {
-		// Set the modal height and width 90%
-		if (typeof window.innerWidth != 'undefined')
-		{
-			viewportwidth = window.innerWidth,
-				viewportheight = window.innerHeight
-		}
-		else if (typeof document.documentElement != 'undefined'
-			&& typeof document.documentElement.clientWidth !=
-			'undefined' && document.documentElement.clientWidth != 0)
-		{
-			viewportwidth = document.documentElement.clientWidth,
-				viewportheight = document.documentElement.clientHeight
-		}
-		else
-		{
-			viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
-				viewportheight = document.getElementsByTagName('body')[0].clientHeight
-		}
-		var modalcontent = document.getElementById('bwp_com_modal-content');
-		modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
-		modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
-
-		// Get the modal
-		var commodal = document.getElementById('bwp_com_Modal');
-		var commodalhref = document.getElementById('bwp_com_Modalhref').value;
-
-		// Get the Iframe-Wrapper and set Iframe
-		var wrapper = document.getElementById('bwp_com_wrapper');
-		var html = '<iframe id="BwpFrame" name="BwpFrame" src="'+commodalhref+'" frameborder="0" style="width:100%; height:100%;"></iframe>';
-
-		// Get the button that opens the modal
-		var btnopen = document.getElementById("bwp_com_open");
-
-		// Get the <span> element that closes the modal
-		var btnclose = document.getElementsByClassName("bwp_com_close")[0];
-
-		// When the user clicks the button, open the modal
-		btnopen.onclick = function() {
-			wrapper.innerHTML = html;
-			// Hack for Beez3 template
-			var iframe = document.getElementById('BwpFrame');
-			iframe.onload = function() {
-				this.contentWindow.document.head.insertAdjacentHTML("beforeend", `<style>.contentpane #all{max-width:unset;}</style>`)
-			}
-			commodal.style.display = "block";
-		}
-
-		// When the user clicks on <span> (x), close the modal
-		btnclose.onclick = function() {
-			commodal.style.display = "none";
-		}
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.addEventListener('click', function(event) {
-			if (event.target == commodal) {
-				commodal.style.display = "none";
-			}
-		});
-	}
-	setComModal();
-})
-</script>
-<?php
-} ?>

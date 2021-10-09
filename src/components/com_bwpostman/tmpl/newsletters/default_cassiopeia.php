@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman newsletter all bootstrap3 template for frontend.
+ * BwPostman newsletter all cassiopeia template for frontend.
  *
  * @version %%version_number%%
  * @package BwPostman-Site
@@ -35,11 +35,13 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
+HTMLHelper::_('bootstrap.tooltip', '.hasTooltip');
+
 // Get provided style file
 $app = Factory::getApplication();
 $wa  = $app->getDocument()->getWebAssetManager();
 
-$wa->useStyle('com_bwpostman.bwpostman_bs3');
+$wa->useStyle('com_bwpostman.cassiopeia');
 $wa->useScript('com_bwpostman.bwpm_newsletters_filters');
 
 // Get user defined style file
@@ -63,6 +65,7 @@ if ($moduleId !== null && $moduleId !== '')
 	$actionSuffix = 'mid=' . $moduleId;
 }
 
+$formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 ?>
 
 <noscript>
@@ -85,51 +88,49 @@ if ($moduleId !== null && $moduleId !== '')
 		<?php endif; ?>
 
 		<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&' . $actionSuffix); ?>" method="post"
-				name="adminForm" id="adminForm" class="form-inline">
+				name="adminForm" id="adminForm">
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="clearfix">
 				<div class="row clearfix">
-					<div class="col-sm-4 search_left mb-2">
+					<div class="col-lg-4 search_left mb-2">
 						<?php if ($this->params->get('filter_field') != "hide") : ?>
 							<label for="filter_search" class="element-invisible">
 								<?php echo Text::_('JSEARCH_FILTER'); ?>
 							</label>
-							<div class="btn-wrapper input-group">
+							<div class="btn-wrapper input-group<?php echo $formclass === "sm" ? '  input-group-sm' : ''; ?>">
 								<input type="text" name="filter_search" id="filter_search" class="form-control go"
 										value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
 										title="<?php echo Text::_('COM_BWPOSTMAN_FILTER_SEARCH_DESC'); ?>"
 										placeholder="<?php echo Text::_('COM_BWPOSTMAN_SEARCH'); ?> " />
-								<div class="input-group-btn">
-									<button type="submit" class="btn btn-default hasTooltip"
+									<button type="submit" class="btn btn-outline-primary hasTooltip"
 											title="<?php echo HtmlHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>">
 										<i class="fa fa-search"></i>
 									</button>
-									<button type="button" class="btn btn-default hasTooltip reset"
+									<button type="button" class="btn btn-outline-primary hasTooltip reset"
 											title="<?php echo HtmlHelper::tooltipText('COM_BWPOSTMAN_RESET'); ?>"
 											onclick="document.getElementById('filter_search').setAttribute('value','');this.form.submit();">
-										<i class="fa fa-remove"></i>
+										<i class="fa fa-times"></i>
 									</button>
-								</div>
 							</div>
 						<?php endif; ?>
 					</div>
-					<div class="col-sm-8 search_right clearfix">
-						<div class="search_right1 text-right clearfix">
+					<div class="col-lg-8 search_right clearfix">
+						<div class="search_right1 d-flex justify-content-end clearfix">
 							<div class="mb-2">
 								<?php if ($this->params->get('date_filter_enable') != 'hide') : ?>
-									<?php echo $this->form->monthField; ?>
-									<?php echo $this->form->yearField; ?>
+									<?php echo $formclass === "sm" ? str_replace('form-select', 'form-select form-select-sm', $this->form->monthField) : $this->form->monthField; ?>
+									<?php echo $formclass === "sm" ? str_replace('form-select', 'form-select form-select-sm', $this->form->yearField) : $this->form->yearField; ?>
 								<?php endif; ?>
-								<?php echo $this->form->limitField; ?>
+								<?php echo $formclass === "sm" ? str_replace('form-select', 'form-select form-select-sm', $this->form->limitField) : $this->form->limitField; ?>
 							</div>
 						</div>
-						<div class="search_right2 text-right clearfix">
+						<div class="search_right2 d-flex justify-content-end clearfix">
 							<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
 							{ ?>
 									<?php echo HtmlHelper::_(
 										'select.genericlist',
 										$this->mailinglists,
 										'filter.mailinglist',
-										'class="mb-2 filter-mailinglist"',
+										$formclass === "sm" ? 'class="form-select form-select-sm mb-2 filter-mailinglist"' : 'class="form-select mb-2 filter-mailinglist"',
 										'id',
 										'title',
 										$this->state->get('filter.mailinglist'),
@@ -146,7 +147,7 @@ if ($moduleId !== null && $moduleId !== '')
 										'select.genericlist',
 										$this->usergroups,
 										'filter.usergroup',
-										'class="mb-2 filter-usergroup"',
+										$formclass === "sm" ? 'class="form-select form-select-sm mb-2 filter-usergroup"' : 'class="form-select mb-2 filter-usergroup"',
 										'id',
 										'title',
 										$this->state->get('filter.usergroup'),
@@ -158,7 +159,7 @@ if ($moduleId !== null && $moduleId !== '')
 										'select.genericlist',
 										$this->campaigns,
 										'filter.campaign',
-										'class="mb-2 filter-campaign"',
+										$formclass === "sm" ? 'class="form-select form-select-sm mb-2 filter-campaign"' : 'class="form-select mb-2 filter-campaign"',
 										'id',
 										'title',
 										$this->state->get('filter.campaign'),
@@ -172,7 +173,7 @@ if ($moduleId !== null && $moduleId !== '')
 			</div>
 			<table id="bwp_newsletters_table" class="table table-striped<?php echo $this->params->get('pageclass_sfx'); ?>">
 				<thead>
-					<tr>
+					<tr class="table-secondary">
 						<th class="date_head">
 							<?php echo HtmlHelper::_('grid.sort',  'COM_BWPOSTMAN_DATE', 'a.mailing_date', $listDirn, $listOrder); ?>
 						</th>
@@ -240,9 +241,10 @@ if ($moduleId !== null && $moduleId !== '')
 			<?php
 			if ($this->pagination->pagesTotal > 1)
 			{ ?>
-				<div class="clearfix text-center">
+				<div class="d-flex justify-content-center">
 					<?php echo $this->pagination->getPagesLinks(); ?>
 				</div>
+				<p class="counter text-center"><?php echo $this->pagination->getPagesCounter(); ?> </p>
 			<?php
 			} ?>
 

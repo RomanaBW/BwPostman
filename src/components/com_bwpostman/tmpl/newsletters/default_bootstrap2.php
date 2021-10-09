@@ -27,19 +27,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
+use BoldtWebservice\Component\BwPostman\Site\Classes\BwPostmanSite;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
-
 // Get provided style file
 $app = Factory::getApplication();
 $wa  = $app->getDocument()->getWebAssetManager();
 
 $wa->useStyle('com_bwpostman.bwpostman_bs2');
+$wa->useScript('com_bwpostman.bwpm_newsletters_filters');
 
 // Get user defined style file
 $templateName = $app->getTemplate();
@@ -49,15 +50,6 @@ if (file_exists(JPATH_BASE . $css_filename))
 {
 	$wa->registerAndUseStyle('customCss', Uri::root(true) . $css_filename);
 }
-
-HtmlHelper::_('jquery.ui', array('searchtools'));
-
-/**
- * BwPostman Newsletter Overview Layout
- *
- * @package 	BwPostman-Site
- * @subpackage 	Newsletters
- */
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -71,13 +63,20 @@ if ($moduleId !== null && $moduleId !== '')
 	$actionSuffix = 'mid=' . $moduleId;
 }
 
-JHtml::_('stylesheet', 'com_bwpostman/bwpostman_bs2.css', array('version' => 'auto', 'relative' => true));
-$templateName	= Factory::getApplication()->getTemplate();
-$css_filename	= 'templates/' . $templateName . '/css/com_bwpostman.css';
-JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 ?>
 
-<div id="bwpostman">
+<noscript>
+	<div id="system-message">
+		<div class="alert alert-warning">
+			<h4 class="alert-heading"><?php echo Text::_('WARNING'); ?></h4>
+			<div>
+				<p><?php echo Text::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
+			</div>
+		</div>
+	</div>
+</noscript>
+
+<div id="bwpostman" class="mt-3">
 	<div id="bwp_com_nl_all">
 		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
 			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
@@ -100,11 +99,11 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 										title="<?php echo Text::_('COM_BWPOSTMAN_FILTER_SEARCH_DESC'); ?>"
 										placeholder="<?php echo Text::_('COM_BWPOSTMAN_SEARCH'); ?> " />
 								<button type="submit" class="btn hasTooltip"
-										title="<?php echo HtmlHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>">
+										title="<?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>">
 									<i class="icon-search"></i>
 								</button>
 								<button type="button" class="btn hasTooltip reset"
-										title="<?php echo HtmlHelper::tooltipText('COM_BWPOSTMAN_RESET'); ?>"
+										title="<?php echo Text::_('COM_BWPOSTMAN_RESET'); ?>"
 										onclick="document.getElementById('filter_search').setAttribute('value','');this.form.submit();">
 									<i class="icon-remove"></i>
 								</button>
@@ -190,7 +189,16 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 					foreach ($this->items as $i => $item)
 					{
 						// Convert attachment string or JSON to array, if present
-						$attachments = BwPostmanNewsletterHelper::decodeAttachments($item->attachment);
+						if (is_string($item->attachment))
+						{
+							$attachments = BwPostmanNewsletterHelper::decodeAttachments($item->attachment);
+						}
+
+						// Insert first tier to attachments array if only one tier exists
+						if (is_array($item->attachment) && !is_array($item->attachment[array_key_first($item->attachment)]))
+						{
+							$attachments = BwPostmanNewsletterHelper::makeTwoTierAttachment($item->attachment);
+						}
 						?>
 						<tr class="row<?php echo $i % 2; ?>">
 							<td class="date">
@@ -198,7 +206,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 								echo $date; ?>
 							</td>
 							<td class="subject">
-								<a href="<?php echo Route::_("index.php?option=com_bwpostman&amp;view=newsletter&amp;id={$item->id}");
+								<a href="<?php echo Route::_("index.php?option=com_bwpostman&amp;view=newsletter&amp;id=$item->id");
 								?>">
 									<?php echo $item->subject; ?>
 								</a>
@@ -207,8 +215,8 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 								{
 									foreach ($attachments as $attachment)
 									{ ?>
-										<a class="link-attachment" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
-											<span class="bwpicon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
+										&nbsp;&nbsp;<a class="link-attachment" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
+											<span class="icon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
 										</a>
 									<?php
 									}
@@ -232,7 +240,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 			{ ?>
 				<div class="pagination text-center">
 					<?php echo $this->pagination->getPagesLinks(); ?>
-					<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?> </p>
+					<p class="counter mt-3"><?php echo $this->pagination->getPagesCounter(); ?> </p>
 				</div>
 			<?php
 			} ?>
@@ -249,48 +257,8 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 		<?php
 		if ($this->params->get('show_boldt_link') === '1')
 		{ ?>
-			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+			<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
 			<?php
 		} ?>
 	</div>
 </div>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-var $j	= jQuery.noConflict();
-
-$j(".filter-mailinglist").on("change", function()
-{
-	$j(".filter-campaign").prop('selectedIndex', 0);
-	$j(".filter-usergroup").prop('selectedIndex', 0);
-	$j('#adminForm').submit();
-});
-
-$j(".filter-usergroup").on("change", function()
-{
-	$j(".filter-mailinglist").prop('selectedIndex', 0);
-	$j(".filter-campaign").prop('selectedIndex', 0);
-	$j('#adminForm').submit();
-});
-
-$j(".filter-campaign").on("change", function()
-{
-	$j(".filter-mailinglist").prop('selectedIndex', 0);
-	$j(".filter-usergroup").prop('selectedIndex', 0);
-	$j('#adminForm').submit();
-});
-
-
-/* ]]> */
-</script>
-
-<noscript>
-	<div id="system-message">
-		<div class="alert alert-warning">
-			<h4 class="alert-heading"><?php echo Text::_('WARNING'); ?></h4>
-			<div>
-				<p><?php echo Text::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
-			</div>
-		</div>
-	</div>
-</noscript>

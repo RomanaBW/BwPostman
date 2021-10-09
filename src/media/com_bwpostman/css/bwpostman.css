@@ -20,13 +20,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#bwpostman [class^="icon-"]::before,
+#bwpostman [class*=" icon-"]::before {
+    font-family: inherit !important;
+    font-style: normal;
+    content: none;
+}
 
-#bwpostman [class^="bwpicon-"],
-#bwpostman [class*=" bwpicon-"] {
+#bwpostman [class^="icon-"],
+#bwpostman [class*=" icon-"] {
 	background-image:		url("../images/glyphicons-halflings.png");
 }
 
-#bwpostman .bwpicon_attachment {
+#bwpostman .icon_attachment {
 	background-image:	url(../images/icon-16-attachment.png) ;
 }
 
@@ -386,66 +392,103 @@
 #bwpostman .pagination {
 	text-align:			center;
 	float:				none;
+	margin: 18px 0;
 }
 
 #bwpostman .pagination ul {
-	margin:				10px auto;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	margin-left: 0;
+	margin-bottom: 0;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-#bwpostman .pagination ul li {
-
+#bwpostman .pagination ul > li {
+	display: inline;
 }
 
-#bwpostman .pagination ul li a.pagenav {
-
+#bwpostman .pagination ul > li > a,
+#bwpostman .pagination ul > li > span {
+	float: left;
+	padding: 4px 12px;
+	line-height: 18px;
+	text-decoration: none;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-left-width: 0;
 }
 
-#bwpostman .pagination ul li.pagination-start {
-
+#bwpostman .pagination ul > li > a:hover,
+#bwpostman .pagination ul > li > a:focus,
+#bwpostman .pagination ul > .active > a,
+#bwpostman .pagination ul > .active > span {
+	background-color: #f5f5f5;
 }
 
-#bwpostman .pagination ul li.pagination-start span.pagenav {
-
+#bwpostman .pagination ul > .active > a,
+#bwpostman .pagination ul > .active > span {
+	color: #999;
+	cursor: default;
 }
 
-#bwpostman .pagination ul li.pagination-start a.pagenav {
-
+#bwpostman .pagination ul > .disabled > span,
+#bwpostman .pagination ul > .disabled > a,
+#bwpostman .pagination ul > .disabled > a:hover,
+#bwpostman .pagination ul > .disabled > a:focus {
+	color: #999;
+	background-color: transparent;
+	cursor: default;
 }
 
-#bwpostman .pagination ul li.pagination-prev {
-
+#bwpostman .pagination ul > li:first-child > a,
+#bwpostman .pagination ul > li:first-child > span {
+	border-left-width: 1px;
+	-webkit-border-top-left-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	border-top-left-radius: 4px;
+	-webkit-border-bottom-left-radius: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-bottom-left-radius: 4px;
 }
 
-#bwpostman .pagination ul li.pagination-prev span.pagenav {
-
+#bwpostman .pagination ul > li:last-child > a,
+#bwpostman .pagination ul > li:last-child > span {
+	-webkit-border-top-right-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	border-top-right-radius: 4px;
+	-webkit-border-bottom-right-radius: 4px;
+	-moz-border-radius-bottomright: 4px;
+	border-bottom-right-radius: 4px;
 }
 
-#bwpostman .pagination ul li.pagination-prev a.pagenav {
 
+#bwpostman .icon-angle-left,
+#bwpostman .icon-angle-double-left,
+#bwpostman .icon-angle-right,
+#bwpostman .icon-angle-double-right {
+	background-image: 	none;
 }
 
-#bwpostman .pagination ul li.pagination-next {
-
+#bwpostman .icon-angle-left:before {
+	content: 	"‹" !important;
 }
 
-#bwpostman .pagination ul li.pagination-next span.pagenav {
-
+#bwpostman .icon-angle-double-left:before {
+	content: 	"«" !important;
 }
 
-#bwpostman .pagination ul li.pagination-next a.pagenav {
-
+#bwpostman .icon-angle-right:before {
+	content: 	"›" !important;
 }
 
-#bwpostman .pagination ul li.pagination-end {
-
-}
-
-#bwpostman .pagination ul li.pagination-end span.pagenav {
-
-}
-
-#bwpostman .pagination ul li.pagination-end a.pagenav {
-
+#bwpostman .icon-angle-double-right:before {
+	content: 	"»" !important;
 }
 
 #bwpostman .pagination p.counter {
@@ -626,7 +669,6 @@
 	margin-bottom:			0;
 	*margin-left:			4px;
 	font-size:				14px;
-	height:					30px;
 	line-height:			20px;
 	color:					#333333;
 	text-align:				center;
@@ -654,6 +696,10 @@
 	-webkit-box-shadow:		inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 	-moz-box-shadow:		inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 	box-shadow:				inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+#bwpostman .btn a {
+	text-decoration: none;
 }
 
 #bwp_com_form .btn {
@@ -812,17 +858,18 @@
 	box-shadow:			none;
 }
 
-#bwpostman [class^="bwpicon-"],
-#bwpostman [class*=" bwpicon-"] {
+#bwpostman [class^="icon-"],
+#bwpostman [class*=" icon-"] {
 	display:				inline-block;
 	height:					14px;
 	line-height:			14px;
 	margin-top:				1px;
+	margin-right:			0;
 	vertical-align:			text-top;
 	width:					14px;
 }
 
-#bwpostman .bwpicon_attachment {
+#bwpostman .icon_attachment {
 	background-repeat:	no-repeat;
 	display:			inline-block;
 	height:				16px;
@@ -833,29 +880,29 @@
 	z-index:			2;
 }
 
-#bwpostman .bwpicon-star {
+#bwpostman .icon-star {
 	background-position:	-144px 0;
 }
 
-#bwpostman .bwpicon-info-sign {
+#bwpostman .icon-info-sign {
 	background-position:	-120px -96px;
 }
 
-#bwpostman .bwpicon-search {
+#bwpostman .icon-search {
 	background-position:	-48px 0;
 }
 
-#bwpostman .bwpicon-remove {
+#bwpostman .icon-remove {
 	background-position: 	-312px 0;
 }
 
-#bwpostman .bwpicon-arrow-up-3 {
+#bwpostman .icon-arrow-up-3 {
 	background-position: 	-288px -96px;
 	opacity:				0.7;
 	filter:					alpha(opacity=70);
 }
 
-#bwpostman .bwpicon-arrow-down-3 {
+#bwpostman .icon-arrow-down-3 {
 	background-position: 	-312px -96px;
 	opacity:				0.7;
 	filter:					alpha(opacity=70);

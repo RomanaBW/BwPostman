@@ -22,66 +22,66 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
+(function() {
 
-function setComModal() {
-	// Set the modal height and width 90%
-	if (typeof window.innerWidth != 'undefined')
-	{
-		viewportwidth = window.innerWidth,
-		viewportheight = window.innerHeight
-	}
-	else if (typeof document.documentElement != 'undefined'
-		&& typeof document.documentElement.clientWidth !=
-		'undefined' && document.documentElement.clientWidth != 0)
-	{
-		viewportwidth = document.documentElement.clientWidth,
-		viewportheight = document.documentElement.clientHeight
-	}
-	else
-	{
-		viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
-		viewportheight = document.getElementsByTagName('body')[0].clientHeight
-	}
-	var modalcontent = document.getElementById('bwp_com_modal-content');
-	modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
-	modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
-
-	// Get the modal
-	var commodal = document.getElementById('bwp_com_Modal');
-	var commodalhref = document.getElementById('bwp_com_Modalhref').value;
-
-	// Get the Iframe-Wrapper and set Iframe
-	var wrapper = document.getElementById('bwp_com_wrapper');
-	var html = '<iframe id="BwpFrame" name="BwpFrame" src="'+commodalhref+'" frameborder="0" style="width:100%; height:100%;"></iframe>';
-
-	// Get the button that opens the modal
-	var btnopen = document.getElementById("bwp_com_open");
-
-	// Get the <span> element that closes the modal
-	var btnclose = document.getElementsByClassName("bwp_com_close")[0];
-
-	// When the user clicks the button, open the modal
-	btnopen.onclick = function() {
-		wrapper.innerHTML = html;
-		// Hack for Beez3 template
-		var iframe = document.getElementById('BwpFrame');
-		iframe.onload = function() {
-			this.contentWindow.document.head.insertAdjacentHTML("beforeend", `<style>.contentpane #all{max-width:unset;}</style>`)
+	function setComModal() {
+		// Set the modal height and width 90%
+		if (typeof window.innerWidth != 'undefined')
+		{
+			viewportwidth = window.innerWidth,
+			viewportheight = window.innerHeight
 		}
-		commodal.style.display = "block";
-	}
+		else if (typeof document.documentElement != 'undefined'
+			&& typeof document.documentElement.clientWidth !=
+			'undefined' && document.documentElement.clientWidth != 0)
+		{
+			viewportwidth = document.documentElement.clientWidth,
+			viewportheight = document.documentElement.clientHeight
+		}
+		else
+		{
+			viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
+			viewportheight = document.getElementsByTagName('body')[0].clientHeight
+		}
+		var modalcontent = document.getElementById('bwp_com_modal-content');
+		modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
+		modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
 
-	// When the user clicks on <span> (x), close the modal
-	btnclose.onclick = function() {
-		commodal.style.display = "none";
-	}
+		// Get the modal
+		var commodal = document.getElementById('bwp_com_Modal');
+		var commodalhref = document.getElementById('bwp_com_Modalhref').value;
 
-	// When the user clicks anywhere outside of the modal, close it
-	window.addEventListener('click', function(event) {
-		if (event.target == commodal) {
+		// Get the Iframe-Wrapper and set Iframe
+		var wrapper = document.getElementById('bwp_com_wrapper');
+		var html = '<iframe id="BwpFrame" name="BwpFrame" src="'+commodalhref+'" frameborder="0" style="width:100%; height:100%;"></iframe>';
+
+		// Get the button that opens the modal
+		var btnopen = document.getElementById("bwp_com_open");
+
+		// Get the <span> element that closes the modal
+		var btnclose = document.getElementsByClassName("bwp_com_close")[0];
+
+		// When the user clicks the button, open the modal
+		btnopen.onclick = function() {
+			wrapper.innerHTML = html;
+			commodal.style.display = "block";
+		}
+
+		// When the user clicks on <span> (x), close the modal
+		btnclose.onclick = function() {
 			commodal.style.display = "none";
 		}
-	});
-}
 
-window.onload = setComModal;
+		// When the user clicks anywhere outside of the modal, close it
+		window.addEventListener('click', function(event) {
+			if (event.target == commodal) {
+				commodal.style.display = "none";
+			}
+		});
+	}
+
+	document.addEventListener('DOMContentLoaded', function() {
+		setComModal();
+	});
+
+})();

@@ -180,6 +180,9 @@ class HtmlView extends BaseHtmlView
 		$this->newsletter = $newsletter;
 		$this->params = $params;
 
+		// switch frontend layout
+		$tpl = $this->params->get('fe_layout_detail');
+
 		// Set parent display
 		parent::display($tpl);
 

@@ -187,7 +187,7 @@ class HtmlView extends BaseHtmlView
 			$months,
 			'month',
 			array(
-				'list.attr' => 'size="1" onchange="document.getElementById(\'adminForm\').submit();"',
+				'list.attr' => 'class="form-select" size="1" onchange="document.getElementById(\'adminForm\').submit();"',
 				'list.select' => $state->get('filter.month'),
 				'option.key' => null
 			)
@@ -207,7 +207,7 @@ class HtmlView extends BaseHtmlView
 			$years,
 			'year',
 			array(
-				'list.attr' => 'size="1" onchange="document.getElementById(\'adminForm\').submit();"',
+				'list.attr' => 'class="form-select" size="1" onchange="document.getElementById(\'adminForm\').submit();"',
 				'list.select' => $state->get('filter.year')
 			)
 		);
@@ -255,6 +255,9 @@ class HtmlView extends BaseHtmlView
 		{
 			$this->params->set('page_heading',	Text::_('COM_BWPOSTMAN_NLS'));
 		}
+
+		// switch frontend layout
+		$tpl = $this->params->get('fe_layout_list');
 
 		// Set parent display
 		parent::display($tpl);

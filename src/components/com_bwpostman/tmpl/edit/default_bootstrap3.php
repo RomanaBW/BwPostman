@@ -27,17 +27,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Site\Classes\BwPostmanSite;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
+Text::script('COM_BWPOSTMAN_ERROR_NAME');
+Text::script('COM_BWPOSTMAN_ERROR_FIRSTNAME');
+Text::script("COM_BWPOSTMAN_SUB_ERROR_SPECIAL");
+Text::script('COM_BWPOSTMAN_ERROR_EMAIL');
+Text::script('COM_BWPOSTMAN_ERROR_NL_CHECK');
+
 // Get provided style file
 $app = Factory::getApplication();
 $wa  = $app->getDocument()->getWebAssetManager();
 
 $wa->useStyle('com_bwpostman.bwpostman_bs3');
+$wa->useScript('com_bwpostman.bwpm_register_validate');
 
 // Get user defined style file
 $templateName = $app->getTemplate();
@@ -48,100 +56,10 @@ if (file_exists(JPATH_BASE . $css_filename))
 	$wa->registerAndUseStyle('customCss', Uri::root(true) . $css_filename);
 }
 
-HTMLHelper::_('bootstrap.tooltip');
+HtmlHelper::_('behavior.formvalidator');
 
 $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 ?>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-	function submitbutton(pressbutton)
-	{
-		var form	= document.bwp_com_form;
-		var fault	= false;
-
-		form.edit.value = pressbutton;
-
-		// Validate input fields only, if unsubscribe is not selected
-		if (form.unsubscribe.checked == false)
-		{
-			if (document.bwp_com_form.name)
-			{
-				if (form.name_field_obligation.value == 1)
-				{
-					if (form.name.value == "")
-					{
-						alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_NAME', true); ?>");
-						fault = true;
-					}
-				}
-			}
-
-			if (document.bwp_com_form.firstname)
-			{
-				if (form.firstname_field_obligation.value == 1)
-				{
-					if (form.firstname.value == "")
-					{
-						alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_FIRSTNAME', true); ?>");
-						fault = true;
-					}
-				}
-			}
-			if (document.bwp_com_form.special)
-			{
-				if (form.special_field_obligation.value == 1)
-				{
-					if (form.special.value == "")
-					{
-						alert('<?php echo Text::sprintf("COM_BWPOSTMAN_SUB_ERROR_SPECIAL", Text::_($this->params->get("special_label"))); ?>');
-						fault = true;
-					}
-				}
-			}
-			if (form.email.value== "")
-			{
-				alert("<?php echo Text::_('COM_BWPOSTMAN_ERROR_EMAIL', true); ?>");
-				fault	= true;
-			}
-			if (checkNlBoxes()== false)
-			{
-				alert ("<?php echo Text::_('COM_BWPOSTMAN_ERROR_NL_CHECK', true); ?>");
-				fault	= true;
-			}
-		}
-		if (fault == false)
-		{
-			form.submit();
-		}
-		function checkNlBoxes()
-		{
-			var arrCB = form.elements['mailinglists[]'];
-			var n =	arrCB.length;
-			var check = 0;
-			var i = 0;
-			if (n > 1)
-			{
-				for (i = 0; i < n; i++)
-				{
-					if (arrCB[i].checked == true)
-					{
-						check++;
-					}
-				}
-			}
-			else
-			{
-				check++;
-			}
-			if (check == 0)
-			{
-				return false;
-			}
-		}
-	}
-/* ]]> */
-</script>
 
 <noscript>
 	<div id="system-message">
@@ -154,7 +72,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 	</div>
 </noscript>
 
-<div id="bwpostman">
+<div id="bwpostman" class="mt-3">
 	<div id="bwp_com_edit_subscription">
 		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
 			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
@@ -166,7 +84,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
 					name="bwp_com_form" class="form-validate">
 
-				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="contentpane mb-3<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php // Show pretext only if set in basic parameters
 					if ($this->params->get('pretext'))
 					{
@@ -405,8 +323,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 											if (strlen(Text::_($this->lists['available_mailinglists'][0]->description)) > $descLength)
 											{
 												echo '... ';
-												echo HtmlHelper::tooltip(Text::_($this->lists['available_mailinglists'][0]->description),
-													$this->lists['available_mailinglists'][0]->title, '', '<i class="fa fa-info-circle fa-lg"></i>', '');
+												echo '<span class="bwptip" title="' . Text::_($this->lists['available_mailinglists'][0]->description) . '"><i class="fa fa-info-circle fa-lg"></i></span>';
 											} ?>
 										</div>
 										<?php
@@ -442,7 +359,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 													if (strlen(Text::_($item->description)) > $descLength)
 													{
 														echo '... ';
-														echo HtmlHelper::tooltip(Text::_($item->description), $item->title, '', '<i class="fa fa-info-circle fa-lg"></i>', '');
+														echo '<span class="bwptip" title="' . Text::_($item->description) . '"><i class="fa fa-info-circle fa-lg"></i>';
 													} ?>
 												</span>
 												<?php
@@ -495,13 +412,19 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 				<input type="hidden" name="show_name_field" value="<?php echo $this->params->get('show_name_field'); ?>" />
 				<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field'); ?>" />
 				<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special'); ?>" />
+				<?php // Is filling out the special field obligating
+				if ($this->params->get('show_special') || $this->params->get('special_field_obligation'))
+				{ ?>
+					<input type="hidden" name="special_label" value="<?php echo $this->params->get('special_label'); ?>" />
+				<?php
+				} ?>
 				<?php echo HtmlHelper::_('form.token'); ?>
 			</form>
 
 			<?php
 			if ($this->params->get('show_boldt_link') === '1')
 			{ ?>
-				<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
+				<p class="bwpm_copyright text-center my-3"><?php echo BwPostmanSite::footer(); ?></p>
 			<?php
 			} ?>
 		</div>

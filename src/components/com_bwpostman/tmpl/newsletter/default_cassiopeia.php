@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman newsletter single bootstrap4 template for frontend.
+ * BwPostman newsletter single cassiopeia template for frontend.
  *
  * @version %%version_number%%
  * @package BwPostman-Site
@@ -38,7 +38,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 $app = Factory::getApplication();
 $wa  = $app->getDocument()->getWebAssetManager();
 
-$wa->useStyle('com_bwpostman.bwpostman_bs4');
+$wa->useStyle('com_bwpostman.cassiopeia');
 
 // Get user defined style file
 $templateName = $app->getTemplate();

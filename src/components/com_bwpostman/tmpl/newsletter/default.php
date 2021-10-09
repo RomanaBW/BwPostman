@@ -48,18 +48,19 @@ if (file_exists(JPATH_BASE . $css_filename))
 {
 	$wa->registerAndUseStyle('customCss', Uri::root(true) . $css_filename);
 }
-?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
+$js = "
 	window.onload = function()
 	{
-		const framefenster = document.getElementById("myIframe");
+		const framefenster = document.getElementById('myIframe');
 
 		if(framefenster.contentWindow.document.body)
 		{
 			const legal = framefenster.contentWindow.document.getElementById('legal');
-			legal.remove();
+			if(legal)
+			{
+				legal.remove();
+			}
 			let framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
 			if(document.all && !window.opera)
 			{
@@ -68,8 +69,10 @@ if (file_exists(JPATH_BASE . $css_filename))
 			framefenster.style.height = framefenster_size + 2 +'px';
 		}
 	};
-/* ]]> */
-</script>
+";
+$wa->addInlineScript($js);
+
+?>
 
 <noscript>
 	<div id="system-message">
@@ -82,7 +85,7 @@ if (file_exists(JPATH_BASE . $css_filename))
 	</div>
 </noscript>
 
-<div id="bwpostman">
+<div id="bwpostman" class="mt">
 	<div id="bwp_com_nl_single">
 	<?php // if newsletter unpublished - only backlink
 	if ($this->newsletter->published != 0)
@@ -128,9 +131,9 @@ if (file_exists(JPATH_BASE . $css_filename))
 				foreach ($attachments as $attachment)
 				{
 					?>
-					<span class="btn" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
+					<span class="btn" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">&nbsp;&nbsp;
 						<a class="link-attachment" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
-							<i class="bwpicon_attachment"></i>
+							<i class="icon_attachment"></i>
 						</a>
 					</span>
 					<?php

@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Component
  *
- * BwPostman register bootstrap 4 template for frontend.
+ * BwPostman register cassiopeia template for frontend.
  *
  * @version %%version_number%%
  * @package BwPostman-Site
@@ -33,18 +33,18 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 HtmlHelper::_('behavior.keepalive');
-HtmlHelper::_('behavior.formvalidator');
 
 HTMLHelper::_('bootstrap.tooltip', '.hasTooltip');
-//HTMLHelper::_('bootstrap.modal');
 
 // Get provided style file
 $app = Factory::getApplication();
 $wa  = $app->getDocument()->getWebAssetManager();
 
-$wa->useStyle('com_bwpostman.bwpostman_bs4');
+$wa->useStyle('com_bwpostman.cassiopeia');
 $wa->useScript('com_bwpostman.bwpm_register_modal');
 
 // Get user defined style file
@@ -111,10 +111,10 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					if ($this->params->get('show_gender') == 1)
 					{
 				        $gender_selected = isset($this->subscriber->gender) ? $this->subscriber->gender : '2';
-						$class = $formclass === 'sm' ? ' class="form-control form-control-sm"' : ' class="form-control"';
+						$class = $formclass === 'sm' ? ' class="form-select form-select-sm"' : ' class="form-select"';
 				    ?>
-						<div class="form-group row">
-							<label id="gendermsg" class="col-sm-3 col-form-label" for="gender"> <?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
+						<div class="control-group row">
+							<label id="gendermsg" class="col-sm-3 col-form-label<?php echo $formclass === "sm" ? ' col-form-label-sm' : ''; ?>" for="gender"> <?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
 				            <div class="col-sm-9">
 					            <div class="controls">
 									<select id="gender"<?php echo $class; ?> name="gender">
@@ -137,8 +137,8 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					<?php // Show first name-field only if set in basic parameters
 					if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation'))
 					{ ?>
-						<div class="form-group row user_firstname">
-							<label id="firstnamemsg" class="col-sm-3 col-form-label" for="firstname">
+						<div class="control-group row user_firstname">
+							<label id="firstnamemsg" class="col-sm-3 col-form-label<?php echo $formclass === "sm" ? ' col-form-label-sm' : ''; ?>" for="firstname">
 								<?php echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label>
 							<?php // Is filling out the firstname field obligating
 							if ($this->params->get('firstname_field_obligation'))
@@ -148,9 +148,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 										<input type="text" name="firstname" id="firstname" size="40"
 											value="<?php echo $this->subscriber->firstname; ?>"
 											class="form-control" maxlength="50" />
-										<div class="input-group-append">
-											<span class="input-group-text"><i class="fa fa-star"></i></span>
-										</div>
+										<span class="input-group-text"><i class="fa fa-star"></i></span>
 									</div>
 					            </div>
 							<?php
@@ -176,8 +174,8 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					<?php // Show name-field only if set in basic parameters
 					if ($this->params->get('show_name_field') || $this->params->get('name_field_obligation'))
 					{ ?>
-						<div class="form-group row user_name edit_name">
-							<label id="namemsg" class="col-sm-3 col-form-label" for="name">
+						<div class="control-group row user_name edit_name">
+							<label id="namemsg" class="col-sm-3 col-form-label<?php echo $formclass === "sm" ? ' col-form-label-sm' : ''; ?>" for="name">
 								<?php echo Text::_('COM_BWPOSTMAN_NAME'); ?>: </label>
 							<?php // Is filling out the name field obligating
 							if ($this->params->get('name_field_obligation'))
@@ -187,9 +185,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 										<input type="text" name="name" id="name" size="40"
 											value="<?php echo $this->subscriber->name; ?>"
 											class="form-control" maxlength="50" />
-										<div class="input-group-append">
-											<span class="input-group-text"><i class="fa fa-star"></i></span>
-										</div>
+										<span class="input-group-text"><i class="fa fa-star"></i></span>
 									</div>
 					            </div>
 							<?php
@@ -223,8 +219,8 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 							$tip = Text::_('COM_BWPOSTMAN_SPECIAL');
 						} ?>
 
-						<div class="form-group row edit_special">
-							<label id="specialmsg" class="col-sm-3 col-form-label hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special">
+						<div class="control-group row edit_special">
+							<label id="specialmsg" class="col-sm-3 col-form-label<?php echo $formclass === "sm" ? ' col-form-label-sm' : ''; ?> hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special">
 								<?php
 								if ($this->params->get('special_label') != '')
 								{
@@ -243,9 +239,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					                <div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
 										<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
 											class="form-control" maxlength="50" />
-										<div class="input-group-append">
-											<span class="input-group-text"><i class="fa fa-star"></i></span>
-										</div>
+										<span class="input-group-text"><i class="fa fa-star"></i></span>
 									</div>
 					            </div>
 							<?php
@@ -266,17 +260,15 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					} // End: Show special field only if set in basic parameters ?>
 
 
-					<div class="form-group row user_email edit_email">
-						<label id="emailmsg" class="col-sm-3 col-form-label" for="email">
+					<div class="control-group row user_email edit_email">
+						<label id="emailmsg" class="col-sm-3 col-form-label<?php echo $formclass === "sm" ? ' col-form-label-sm' : ''; ?>" for="email">
 							<?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:
 						</label>
 					    <div class="col-sm-9">
 							<div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
 								<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
 									class="form-control" maxlength="50" />
-								<div class="input-group-append">
-									<span class="input-group-text"><i class="fa fa-star"></i></span>
-								</div>
+								<span class="input-group-text"><i class="fa fa-star"></i></span>
 							</div>
 						</div>
 					</div>
@@ -286,16 +278,16 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					{
 				        $mailformat_selected = isset($this->subscriber->emailformat) ? $this->subscriber->emailformat : $this->params->get('default_emailformat');
 					?>
-						<div class="form-group row user_mailformat edit_emailformat">
-							<label id="emailformatmsg" class="col-sm-6 col-md-4 col-form-label"> <?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label>
+						<div class="control-group row user_mailformat edit_emailformat">
+							<label id="emailformatmsg" class="col-sm-6 col-md-4 col-form-label<?php echo $formclass === "sm" ? ' col-form-label-sm' : ''; ?>"> <?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label>
 						    <div class="col-sm-6">
-								<div id="edit_mailformat" class="btn-group btn-group-toggle<?php echo $formclass === "sm" ? ' btn-group-sm' : ''; ?>" data-toggle="buttons">
-									<label class="btn btn-outline-primary<?php echo (!$mailformat_selected ? ' active' : ''); ?>" for="formatText">
-										<input type="radio" name="emailformat" id="formatText" value="0"<?php echo (!$mailformat_selected ? ' checked="checked"' : ''); ?> />
+								<div id="edit_mailformat" class="btn-group <?php echo $formclass === "sm" ? ' btn-group-sm' : ''; ?>" role="group">
+									<input type="radio" class="btn-check" name="emailformat" id="formatText" value="0"<?php echo (!$mailformat_selected ? ' checked="checked" checked' : ''); ?> />
+									<label class="btn btn-outline-primary" for="formatText">
 										<span>&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_BWPOSTMAN_TEXT'); ?>&nbsp;&nbsp;&nbsp;</span>
 									</label>
-									<label class="btn btn-outline-primary<?php echo ($mailformat_selected ? ' active' : ''); ?>" for="formatHtml">
-										<input type="radio" name="emailformat" id="formatHtml" value="1"<?php echo ($mailformat_selected ? ' checked="checked"' : ''); ?> />
+									<input type="radio" class="btn-check" name="emailformat" id="formatHtml" value="1"<?php echo ($mailformat_selected ? ' checked="checked" checked' : ''); ?> />
+									<label class="btn btn-outline-primary" for="formatHtml">
 										<span>&nbsp;&nbsp;<?php echo Text::_('COM_BWPOSTMAN_HTML'); ?>&nbsp;&nbsp;</span>
 									</label>
 								</div>
@@ -318,7 +310,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					// Show available mailinglists
 					if ($this->lists['available_mailinglists'])
 					{ ?>
-						<div class="lists my-4<?php echo $this->params->get('pageclass_sfx'); ?>">
+						<div class="lists<?php echo $formclass === "sm" ? ' small' : ''; ?><?php echo $this->params->get('pageclass_sfx'); ?>">
 							<?php
 							$n = count($this->lists['available_mailinglists']);
 
@@ -328,7 +320,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 							{
 								if ($n == 1)
 								{ ?>
-									<input title="mailinglists_array" type="checkbox" style="display: none;" id="<?php echo "mailinglists0"; ?>"
+									<input class="form-check-input d-none" title="mailinglists_array" type="checkbox" id="<?php echo "mailinglists0"; ?>"
 											name="<?php echo "mailinglists[]"; ?>" value="<?php echo $this->lists['available_mailinglists'][0]->id; ?>" checked="checked" />
 									<?php
 									if ($this->params->get('show_desc') == 1)
@@ -370,7 +362,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 											{
 												echo "checked=\"checked\"";
 											} ?> />
-				                            <label class="form-check-label" for="<?php echo "mailinglists$i"; ?>">
+				                            <label class="form-check-label form-check-label-sm" for="<?php echo "mailinglists$i"; ?>">
 												<span class="mail_available_list_title strong">
 													<?php echo $this->params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
 												</span><br />
@@ -407,15 +399,15 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 				if ($this->params->get('use_captcha') == 1) : ?>
 					<div class="question card card-body">
 						<div class="question-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></div>
-						<div class="security_question_lbl col-sm-9 offset-sm-3 my-3"><?php echo Text::_($this->params->get('security_question')); ?></div>
-						<div class="form-group row question-result">
-							<label id="question" class="col-sm-3 col-form-label" for="stringQuestion"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+						<div class="row">
+							<div class="security_question_lbl col-sm-9 offset-sm-3 mt-3"><?php echo Text::_($this->params->get('security_question')); ?></div>
+						</div>
+						<div class="control-group row question-result">
+							<label id="question" class="col-sm-3 col-form-label<?php echo $formclass === "sm" ? ' col-form-label-sm' : ''; ?>" for="stringQuestion"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
 				            <div class="col-sm-9">
 				                <div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
 									<input type="text" name="stringQuestion" id="stringQuestion" class="form-control" size="40" maxlength="50" />
-									<div class="input-group-append">
-										<span class="input-group-text"><i class="fa fa-star"></i></span>
-									</div>
+									<span class="input-group-text"><i class="fa fa-star"></i></span>
 								</div>
 							</div>
 						</div>
@@ -429,17 +421,17 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 
 					<div class="captcha card card-body">
 						<div class="captcha-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></div>
-						<div class="security_question_lbl col-sm-9 offset-sm-3 my-3">
-							<img src="<?php echo Uri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
+						<div class="row">
+							<div class="security_question_lbl col-sm-9 offset-sm-3 mt-3">
+								<img src="<?php echo Uri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
+							</div>
 						</div>
-						<div class="form-group row captcha-result">
-							<label id="captcha" class="col-sm-3 col-form-label" for="stringCaptcha"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+						<div class="control-group row captcha-result">
+							<label id="captcha" class="col-sm-3 col-form-label<?php echo $formclass === "sm" ? ' col-form-label-sm' : ''; ?>" for="stringCaptcha"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
 				            <div class="col-sm-9">
 				                <div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
 									<input type="text" name="stringCaptcha" id="stringCaptcha" class="form-control" size="40" maxlength="50" />
-									<div class="input-group-append">
-										<span class="input-group-text"><i class="fa fa-star"></i></span>
-									</div>
+									<span class="input-group-text"><i class="fa fa-star"></i></span>
 								</div>
 				            </div>
 						</div>
@@ -476,7 +468,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 								$disclaimer_link = $this->params->get('disclaimer_link');
 							}
 							?>
-							<label class="form-check-label">
+							<label class="form-check-label" for="agreecheck">
 								<?php
 								// Show inside modalbox
 								if ($this->params->get('showinmodal') == 1)

@@ -35,13 +35,12 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HtmlHelper::_('formbehavior.chosen', 'select');
-
 // Get provided style file
 $app = Factory::getApplication();
 $wa  = $app->getDocument()->getWebAssetManager();
 
 $wa->useStyle('com_bwpostman.bwpostman');
+$wa->useScript('com_bwpostman.bwpm_newsletters_filters');
 
 // Get user defined style file
 $templateName = $app->getTemplate();
@@ -66,7 +65,18 @@ if ($moduleId !== null && $moduleId !== '')
 
 ?>
 
-<div id="bwpostman">
+<noscript>
+	<div id="system-message">
+		<div class="alert alert-warning">
+			<h4 class="alert-heading"><?php echo Text::_('WARNING'); ?></h4>
+			<div>
+				<p><?php echo Text::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
+			</div>
+		</div>
+	</div>
+</noscript>
+
+<div id="bwpostman" class="mt">
 	<div id="bwp_com_nl_all">
 		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
 			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
@@ -75,7 +85,7 @@ if ($moduleId !== null && $moduleId !== '')
 		<?php endif; ?>
 
 		<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&' . $actionSuffix); ?>" method="post"
-				name="adminForm" id="adminForm" class="form-inline form-horizontal">
+				name="adminForm" id="adminForm">
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="js-tools clearfix">
 				<div class="clearfix">
 					<div class="search_left">
@@ -89,26 +99,26 @@ if ($moduleId !== null && $moduleId !== '')
 										title="<?php echo Text::_('COM_BWPOSTMAN_FILTER_SEARCH_DESC'); ?>"
 										placeholder="<?php echo Text::_('COM_BWPOSTMAN_SEARCH');
 										?> " /><button type="submit" class="append-area hasTooltip"
-										title="<?php echo HtmlHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>">
+										title="<?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>">
 									<i class="icon-search"></i>
 								</button><button
-										type="button" class="append-area hasTooltip js-stools-btn-clear reset"
-										title="<?php echo HtmlHelper::tooltipText('COM_BWPOSTMAN_RESET'); ?>"
+										type="button" class="append-area hasTooltip reset"
+										title="<?php echo Text::_('COM_BWPOSTMAN_RESET'); ?>"
 										onclick="document.getElementById('filter_search').setAttribute('value','');this.form.submit();">
 									<i class="icon-remove"></i>
 								</button>
 							</div>
 						<?php endif; ?>
 					</div>
-					<div class="js-stools-container-list search_right">
+					<div class="search_right">
 						<?php if ($this->params->get('date_filter_enable') != 'hide') : ?>
-							<div class="js-stools-field-filter filter_month"><?php echo $this->form->monthField; ?></div>
-							<div class="js-stools-field-filter filter_year"><?php echo $this->form->yearField; ?></div>
+							<div class="filter_month"><?php echo $this->form->monthField; ?></div>
+							<div class="filter_year"><?php echo $this->form->yearField; ?></div>
 						<?php endif; ?>
-						<div class="js-stools-field-filter filter_list"><?php echo $this->form->limitField; ?></div><br />
+						<div class="filter_list"><?php echo $this->form->limitField; ?></div><br />
 						<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
 						{ ?>
-							<div class="js-stools-field-filter filter_mls">
+							<div class="filter_mls">
 								<?php echo HtmlHelper::_(
 									'select.genericlist',
 									$this->mailinglists,
@@ -127,7 +137,7 @@ if ($moduleId !== null && $moduleId !== '')
 //							$this->state->set('filter.mailinglist', '');
 						} ?>
 						<?php if ($this->params->get('groups_filter_enable') != 'hide' && is_array($this->usergroups) && count($this->usergroups) > 2) : ?>
-							<div class="js-stools-field-filter filter_groups">
+							<div class="filter_groups">
 								<?php echo HtmlHelper::_(
 									'select.genericlist',
 									$this->usergroups,
@@ -141,7 +151,7 @@ if ($moduleId !== null && $moduleId !== '')
 							</div>
 						<?php endif; ?>
 						<?php if ($this->params->get('cam_filter_enable') != 'hide' && is_array($this->campaigns) && count($this->campaigns) > 2) : ?>
-							<div class="js-stools-field-filter filter_cams">
+							<div class="filter_cams">
 								<?php echo HtmlHelper::_(
 									'select.genericlist',
 									$this->campaigns,
@@ -205,8 +215,8 @@ if ($moduleId !== null && $moduleId !== '')
 								{
 									foreach ($attachments as $attachment)
 									{ ?>
-										<a class="link-attachment" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
-											<span class="bwpicon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
+										&nbsp;&nbsp;<a class="link-attachment" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
+											<span class="icon_attachment" title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>"></span>
 										</a>
 									<?php
 									}
@@ -252,43 +262,3 @@ if ($moduleId !== null && $moduleId !== '')
 		} ?>
 	</div>
 </div>
-
-<script type="text/javascript">
-/* <![CDATA[ */
-const $j = jQuery.noConflict();
-
-$j(".filter-mailinglist").on("change", function()
-{
-	$j(".filter-campaign").prop('selectedIndex', 0);
-	$j(".filter-usergroup").prop('selectedIndex', 0);
-	$j('#adminForm').submit();
-});
-
-$j(".filter-usergroup").on("change", function()
-{
-	$j(".filter-mailinglist").prop('selectedIndex', 0);
-	$j(".filter-campaign").prop('selectedIndex', 0);
-	$j('#adminForm').submit();
-});
-
-$j(".filter-campaign").on("change", function()
-{
-	$j(".filter-mailinglist").prop('selectedIndex', 0);
-	$j(".filter-usergroup").prop('selectedIndex', 0);
-	$j('#adminForm').submit();
-});
-
-
-/* ]]> */
-</script>
-
-<noscript>
-	<div id="system-message">
-		<div class="alert alert-warning">
-			<h4 class="alert-heading"><?php echo Text::_('WARNING'); ?></h4>
-			<div>
-				<p><?php echo Text::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
-			</div>
-		</div>
-	</div>
-</noscript>

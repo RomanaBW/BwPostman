@@ -342,7 +342,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 							elseif ($paramsComponent->get('disclaimer_selection') == 2 && $paramsComponent->get('disclaimer_menuitem') > 0)
 							{
 								// Disclaimer menu item and target_blank or not
-								if ($tpl_com !== '' && Factory::getApplication()->getConfig()->get('sef') === '1')
+								if ($tpl_com !== '' && ($app->get('sef') === '1' || $app->get('sef') === true))
 								{
 									$tpl_com = '?tmpl=component';
 								}

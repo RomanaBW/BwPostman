@@ -62,6 +62,17 @@ HtmlHelper::_('behavior.formvalidator');
 
 ?>
 
+<noscript>
+	<div id="system-message">
+		<div class="alert alert-warning">
+			<h4 class="alert-heading"><?php echo Text::_('WARNING'); ?></h4>
+			<div>
+				<p><?php echo Text::_('COM_BWPOSTMAN_JAVASCRIPTWARNING'); ?></p>
+			</div>
+		</div>
+	</div>
+</noscript>
+
 <div id="bwpostman" class="mt">
 	<div id="bwp_com_edit_subscription">
 		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
@@ -114,7 +125,7 @@ HtmlHelper::_('behavior.formvalidator');
 										{
 											echo "invalid";
 										} ?>"
-										maxlength="50" /><span class="append-area"><i class="bwpicon-star"></i></span>
+										maxlength="50" /><span class="append-area"><i class="icon-star"></i></span>
 							<?php
 							}
 							else
@@ -158,7 +169,7 @@ HtmlHelper::_('behavior.formvalidator');
 										{
 											echo "invalid";
 										} ?>"
-										maxlength="50" /><span class="append-area"><i class="bwpicon-star"></i></span> <?php
+										maxlength="50" /><span class="append-area"><i class="icon-star"></i></span> <?php
 							}
 							else
 							{ ?>
@@ -216,7 +227,7 @@ HtmlHelper::_('behavior.formvalidator');
 										{
 											echo "invalid";
 										} ?>"
-										maxlength="50" /><span class="append-area"><i class="bwpicon-star"></i></span> <?php
+										maxlength="50" /><span class="append-area"><i class="icon-star"></i></span> <?php
 							}
 							else
 							{ ?>
@@ -253,7 +264,7 @@ HtmlHelper::_('behavior.formvalidator');
 							{
 								echo "validate-email";
 							} ?>"
-							maxlength="100" /><span class="append-area"><i class="bwpicon-star"></i></span>
+							maxlength="100" /><span class="append-area"><i class="icon-star"></i></span>
 					</p>
 
 					<?php
@@ -311,7 +322,7 @@ HtmlHelper::_('behavior.formvalidator');
 											if (strlen(Text::_($this->lists['available_mailinglists'][0]->description)) > $descLength)
 											{
 												echo '... ';
-												echo '<span class="bwptip" title="' . Text::_($this->lists['available_mailinglists'][0]->description) . '"><i class="bwpicon-info-sign"></i></span>';
+												echo '<span class="bwptip" title="' . Text::_($this->lists['available_mailinglists'][0]->description) . '"><i class="icon-info-sign"></i></span>';
 											} ?>
 										</p>
 										<?php
@@ -320,7 +331,7 @@ HtmlHelper::_('behavior.formvalidator');
 								else
 								{ ?>
 									<p class="mail_available">
-										<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="bwpicon-star"></i></sup>'; ?>
+										<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="icon-star"></i></sup>'; ?>
 									</p>
 									<?php
 									foreach ($this->lists['available_mailinglists'] as $i => $item)
@@ -346,7 +357,7 @@ HtmlHelper::_('behavior.formvalidator');
 												if (strlen(Text::_($item->description)) > $descLength)
 												{
 													echo '... ';
-													echo '<span class="bwptip" title="' . Text::_($item->description) . '"><i class="bwpicon-info-sign"></i></span>';
+													echo '<span class="bwptip" title="' . Text::_($item->description) . '"><i class="icon-info-sign"></i></span>';
 												} ?>
 											</span>
 											<?php

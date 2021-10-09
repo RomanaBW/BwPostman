@@ -115,11 +115,6 @@
 	max-width: 300px;
 }
 
-#bwpostman .btn-group-toggle .btn-secondary.active{
-	background-color: #545b62 !important;
-	border-color: #4e555b !important;
-}
-
 #bwp_com_nl_all .search_right select {
 	display: inline-block;
 	width: auto;
@@ -138,4 +133,10 @@
 
 #bwpostman .icon_attachment {
 	background-image:	url(../images/icon-16-attachment.png) ;
+}
+
+joomla-alert[type=danger] .alert-message {
+ background-color: #f7dddc;
+ border-color: #f4cfce;
+ color: #712b29;
 }

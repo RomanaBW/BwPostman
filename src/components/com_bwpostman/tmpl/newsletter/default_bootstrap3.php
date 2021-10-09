@@ -27,12 +27,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
+use BoldtWebservice\Component\BwPostman\Site\Classes\BwPostmanSite;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
-
-require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/newsletterhelper.php');
 
 // Get provided style file
 $app = Factory::getApplication();
@@ -48,28 +48,31 @@ if (file_exists(JPATH_BASE . $css_filename))
 {
 	$wa->registerAndUseStyle('customCss', Uri::root(true) . $css_filename);
 }
-?>
 
-<script type="text/javascript">
-/* <![CDATA[ */
+$js = "
 	window.onload = function()
 	{
-		var framefenster = document.getElementById("myIframe");
+		const framefenster = document.getElementById('myIframe');
 
 		if(framefenster.contentWindow.document.body)
 		{
-			var legal = framefenster.contentWindow.document.getElementById('legal');
-			legal.remove();
-			var framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
+			const legal = framefenster.contentWindow.document.getElementById('legal');
+			if(legal)
+			{
+				legal.remove();
+			}
+			let framefenster_size = framefenster.contentWindow.document.body.offsetHeight;
 			if(document.all && !window.opera)
 			{
 				framefenster_size = framefenster.contentWindow.document.body.scrollHeight;
 			}
-			framefenster.style.height = framefenster_size + 4 +'px';
+			framefenster.style.height = framefenster_size + 2 +'px';
 		}
 	};
-/* ]]> */
-</script>
+";
+$wa->addInlineScript($js);
+
+?>
 
 <noscript>
 	<div id="system-message">
@@ -82,7 +85,7 @@ if (file_exists(JPATH_BASE . $css_filename))
 	</div>
 </noscript>
 
-<div id="bwpostman">
+<div id="bwpostman" class="mt-3">
 	<div id="bwp_com_nl_single">
 	<?php // if newsletter unpublished - only backlink
 	if ($this->newsletter->published != 0)
@@ -114,12 +117,21 @@ if (file_exists(JPATH_BASE . $css_filename))
 			if (!empty($this->newsletter->attachment) && $this->attachment_enabled != 'hide')
 			{
 				// Convert attachment string or JSON to array, if present
-				$attachments = BwPostmanNewsletterHelper::decodeAttachments($this->newsletter->attachment);
+				if (is_string($this->newsletter->attachment))
+				{
+					$attachments = BwPostmanNewsletterHelper::decodeAttachments($this->newsletter->attachment);
+				}
+
+				// Insert first tier to attachments array if only one tier exists
+				if (is_array($this->newsletter->attachment) && !is_array($this->newsletter->attachment[array_key_first($this->newsletter->attachment)]))
+				{
+					$this->newsletter->attachment = BwPostmanNewsletterHelper::makeTwoTierAttachment($this->newsletter->attachment);
+				}
 
 				foreach ($attachments as $attachment)
 				{
 					?>
-					<span title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">
+					<span title="<?php echo Text::_('COM_BWPOSTMAN_ATTACHMENT'); ?>">&nbsp;&nbsp;
 						<a class="link-attachment btn btn-default" href="<?php echo Uri::base() . $attachment['single_attachment']; ?>" target="_blank">
 							<i class="fa fa-paperclip fa-lg"></i>
 						</a>
@@ -139,7 +151,7 @@ if (file_exists(JPATH_BASE . $css_filename))
 		<?php
 		if ($this->params->get('show_boldt_link') === '1')
 		{ ?>
-		<p class="bwpm_copyright text-center my-3"><?php echo BwPostman::footer(); ?></p>
+		<p class="bwpm_copyright text-center my-3"><?php echo BwPostmanSite::footer(); ?></p>
 		<?php
 		} ?>
 	</div>

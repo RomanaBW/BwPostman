@@ -512,7 +512,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	}
 
 	/**
-	 *
+	 * Method to prepare input field additional
 	 *
 	 * @since 2.0.0
 	 */
@@ -547,7 +547,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	}
 
 	/**
-	 * Method to prepare input field additional
+	 * Method to prepare input field emailformat
 	 *
 	 * @since 2.0.0
 	 */

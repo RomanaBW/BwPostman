@@ -2273,6 +2273,9 @@ class OptionsPage
 
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '0');
 		$I->setManifestOption('com_bwpostman', 'use_captcha', '0');
+		$I->setManifestOption('com_bwpostman', 'fe_layout', '');
+		$I->setManifestOption('com_bwpostman', 'fe_layout_list', '');
+		$I->setManifestOption('com_bwpostman', 'fe_layout_detail', '');
 
 		$I->click(Generals::$toolbar['Save']);
 

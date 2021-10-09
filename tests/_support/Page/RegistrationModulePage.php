@@ -579,6 +579,7 @@ class RegistrationModulePage
 		// Settings for the registration form
 		$I->setManifestOption('mod_bwpostman', 'com_params', '1');
 
+		$I->setManifestOption('mod_bwpostman', 'fe_layout', '');
 		$I->setManifestOption('mod_bwpostman', 'pretext', 'Introtext to registration by module');
 		$I->setManifestOption('mod_bwpostman', 'show_gender', '1');
 		$I->setManifestOption('mod_bwpostman', 'show_firstname_field', '1');

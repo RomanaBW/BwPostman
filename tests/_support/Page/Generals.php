@@ -1235,6 +1235,7 @@ class Generals
 		$I->setManifestOption('com_bwpostman', 'loglevel', 'BW_DEVELOPMENT');
 
 		// Registration form
+		$I->setManifestOption('com_bwpostman', 'fe_layout', '');
 		$I->setManifestOption('com_bwpostman', 'pretext', 'Introtext to registration by component');
 		$I->setManifestOption('com_bwpostman', 'show_gender', '0');
 		$I->setManifestOption('com_bwpostman', 'show_firstname_field', '1');

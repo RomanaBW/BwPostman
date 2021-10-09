@@ -435,21 +435,21 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $firstname_star    = "//*/p[contains(@class, 'user_firstname')]/span/i[@class='bwpicon-star']";
+	public static $firstname_star    = "//*/p[contains(@class, 'user_firstname')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $name_star    = "//*/p[contains(@class, 'user_name')]/span/i[@class='bwpicon-star']";
+	public static $name_star    = "//*/p[contains(@class, 'user_name')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $special_star    = "//*/p[contains(@class, 'edit_special')]/span/i[@class='bwpicon-star']";
+	public static $special_star    = "//*/p[contains(@class, 'edit_special')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
@@ -463,28 +463,28 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mailaddress_star    = "//*/p[contains(@class, 'user_email')]/span/i[@class='bwpicon-star']";
+	public static $mailaddress_star    = "//*/p[contains(@class, 'user_email')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $ml_select_star    = "//*/p[contains(@class, 'mail_available')]/sup/i[@class='bwpicon-star']";
+	public static $ml_select_star    = "//*/p[contains(@class, 'mail_available')]/sup/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $disclaimer_star    = "//*/p[contains(@class, 'agree_check')]/span/i[@class='bwpicon-star']";
+	public static $disclaimer_star    = "//*/p[contains(@class, 'agree_check')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $security_star    = "//*/p[contains(@class, 'question-result')]/span/i[@class='bwpicon-star']";
+	public static $security_star    = "//*/p[contains(@class, 'question-result')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string

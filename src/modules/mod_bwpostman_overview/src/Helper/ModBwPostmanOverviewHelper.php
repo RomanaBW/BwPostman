@@ -30,7 +30,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
 defined('_JEXEC') or die('Restricted access');
 
-use DateInterval;
+use BoldtWebservice\Component\BwPostman\Site\Model\NewslettersModel;
 use DateTime;
 use Exception;
 use Joomla\CMS\Factory;
@@ -64,8 +64,15 @@ class ModBwPostmanOverviewHelper
 	 */
 	public static function getList(Registry $params, int $module_id = 0): array
 	{
-		$item   = $params->get('menu_item');
-		$itemid = (!empty($item)) ? '&Itemid=' . $item : '';
+		$nlModel = new NewslettersModel();
+		$itemid = $nlModel->getMenuItemid();
+
+		$itemPath = '';
+
+		if ($itemid > 0)
+		{
+			$itemPath = '&Itemid=' . $itemid;
+		}
 
 		$i     = 0;
 		$lists = array();
@@ -89,7 +96,7 @@ class ModBwPostmanOverviewHelper
 			$lists[$i] = new stdClass;
 
 			$lists[$i]->link = 'index.php?option=com_bwpostman&view=newsletters&mid=' . $module_id . '&year=' . $sent_year
-				. '&month=' . $sent_month . $itemid;
+				. '&month=' . $sent_month . $itemPath;
 			$lists[$i]->text = Text::sprintf('MOD_BWPOSTMAN_OVERVIEW_DATE', $month_name_cal, $sent_year_cal) . ' (' . $row->count_month . ')';
 
 			$i++;

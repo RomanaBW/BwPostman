@@ -29,6 +29,8 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Extension;
 defined('JPATH_PLATFORM') or die;
 
 use JLoader;
+use Joomla\CMS\Component\Router\RouterServiceInterface;
+use Joomla\CMS\Component\Router\RouterServiceTrait;
 use Joomla\CMS\Extension\BootableExtensionInterface;
 use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
@@ -41,10 +43,12 @@ use Psr\Container\ContainerInterface;
  *
  * @since  4.0.0
  */
-class BwPostmanComponent extends MVCComponent implements BootableExtensionInterface
+class BwPostmanComponent extends MVCComponent implements BootableExtensionInterface, RouterServiceInterface
 {
 	use HTMLRegistryAwareTrait;
 	use DatabaseAwareTrait;
+	use RouterServiceTrait;
+
 
 	/**
 	 * Booting the extension. This is the function to set up the environment of the extension like

@@ -15,10 +15,12 @@ const BWPM_ADMINISTRATOR = JPATH_ADMINISTRATOR . '/components/com_bwpostman';
 // BwPostman Site Component
 const BWPM_SITE = JPATH_SITE . '/components/com_bwpostman';
 
+use Joomla\CMS\Component\Router\RouterFactoryInterface;
 use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;
 use Joomla\CMS\Extension\ComponentInterface;
 use Joomla\CMS\Extension\Service\Provider\ComponentDispatcherFactory;
 use Joomla\CMS\Extension\Service\Provider\MVCFactory;
+use Joomla\CMS\Extension\Service\Provider\RouterFactory;
 use Joomla\CMS\HTML\Registry;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use BoldtWebservice\Component\BwPostman\Administrator\Extension\BwPostmanComponent;
@@ -45,7 +47,8 @@ return new class implements ServiceProviderInterface
 	{
 		$container->registerServiceProvider(new MVCFactory('\\BoldtWebservice\\Component\\BwPostman'));
 		$container->registerServiceProvider(new ComponentDispatcherFactory('\\BoldtWebservice\\Component\\BwPostman'));
-//		$container->registerServiceProvider(new \Joomla\Database\DatabaseFactory());
+		$container->registerServiceProvider(new RouterFactory('\\BoldtWebservice\\Component\\BwPostman'));
+//		$container->registerServiceProvider(new DatabaseFactory('\\BoldtWebservice\\Component\\BwPostman'));
 
 		$container->set(
 			ComponentInterface::class,
@@ -55,6 +58,7 @@ return new class implements ServiceProviderInterface
 
 				$component->setRegistry($container->get(Registry::class));
 				$component->setMVCFactory($container->get(MVCFactoryInterface::class));
+				$component->setRouterFactory($container->get(RouterFactoryInterface::class));
 
 				return $component;
 			}

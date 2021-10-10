@@ -29,37 +29,97 @@ namespace BoldtWebservice\Component\BwPostman\Site\Service;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Component\Router\RouterView;
+use Joomla\CMS\Component\Router\RouterBase;
 
 /**
  * Routing class of com_bwpostman
  *
  * @since  4.0.0
  */
-class Router extends RouterView
+class Router extends RouterBase
 {
 	/**
+	 * Build the route for the com_bwpostman component
 	 *
-	 * Method to build sef route
+	 * @param   array  $query  An array of URL arguments
 	 *
-	 * @return array
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
 	 *
-	 * @since
+	 * @since   4.0.0
 	 */
-	function BwPostmanBuildRoute(): array
+	public function build(&$query)
 	{
-		return array();
+		$segments = array();
+
+		if (isset($query['task']))
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+
+		if (isset($query['id']))
+		{
+			$segments[] = $query['id'];
+			unset($query['id']);
+		}
+
+		$total = \count($segments);
+
+		for ($i = 0; $i < $total; $i++)
+		{
+			$segments[$i] = str_replace(':', '-', $segments[$i]);
+		}
+
+		return $segments;
 	}
 
 	/**
-	 * Method to decode SEF URI segments for BwPostman
+	 * Parse the segments of a URL.
 	 *
-	 * @return    array $vars         associative array
+	 * @param   array  $segments  The segments of the URL to parse.
 	 *
-	 * @since
+	 * @return  array  The URL attributes to be used by the application.
+	 *
+	 * @since   4.0.0
 	 */
-	function BwPostmanParseRoute(): array
+	public function parse(&$segments)
 	{
-		return array();
+		$total = \count($segments);
+		$vars = array();
+
+		for ($i = 0; $i < $total; $i++)
+		{
+			$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
+		}
+
+		// View is always the first element of the array
+		$count = \count($segments);
+
+		if ($count)
+		{
+			$count--;
+			$segment = array_shift($segments);
+
+			if (\is_numeric($segment))
+			{
+				$vars['id'] = $segment;
+			}
+			else
+			{
+				$vars['task'] = $segment;
+			}
+		}
+
+		if ($count)
+		{
+			$segment = array_shift($segments);
+
+			if (\is_numeric($segment))
+			{
+				$vars['id'] = $segment;
+			}
+		}
+
+		return $vars;
 	}
 }

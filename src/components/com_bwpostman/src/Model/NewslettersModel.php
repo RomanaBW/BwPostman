@@ -680,6 +680,11 @@ class NewslettersModel extends ListModel
 			}
 		}
 
+		if (is_null($itemid))
+		{
+			$itemid = 0;
+		}
+
 		return $itemid;
 	}
 

@@ -734,47 +734,6 @@ class BwPostmanSubscriberHelper
 	}
 
 	/**
-	 * Method to get the menu item ID which will be needed for some links
-	 *
-	 * @param int $menuItemId
-	 *
-	 * @return    string     $menuItemPath     menu item Path
-	 *
-	 * @throws Exception
-	 * @since       4.0.0
-	 */
-	public static function getMenuItemPath(int $menuItemId): string
-	{
-		$menuItemPath = '';
-
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select($db->quoteName('path'));
-		$query->from($db->quoteName('#__menu'));
-		$query->where($db->quoteName('id') . ' = ' . $db->quote($menuItemId));
-		$query->where($db->quoteName('published') . ' = ' . 1);
-
-		try
-		{
-			$db->setQuery($query);
-
-			$menuItemPath = $db->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
-
-
-		if (is_null($menuItemPath))
-		{
-			$menuItemPath = '';
-		}
-		return $menuItemPath;
-	}
-
-	/**
 	 * Method to create the registered_by value
 	 *
 	 * @param object $subscriber

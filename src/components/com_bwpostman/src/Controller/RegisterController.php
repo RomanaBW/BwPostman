@@ -255,8 +255,7 @@ class RegisterController extends FormController
 		$post['confirmed_by'] 		= '-1';
 		$post['archived_by'] 		= '-1';
 
-		$itemid       = BwPostmanSubscriberHelper::getMenuItemid('register');
-		$menuItemPath = BwPostmanSubscriberHelper::getMenuItemPath($itemid);
+		$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
 
 		if (!$model->save($post))
 		{
@@ -290,11 +289,6 @@ class RegisterController extends FormController
 				}
 
 				$route = Route::_('index.php?option=com_bwpostman&view=register' . $itemPath, false);
-
-				if ($menuItemPath!== '' && ($app->get('sef') === '1' || $app->get('sef') === true))
-				{
-					$route = '/index.php/' . $menuItemPath . '?view=register';
-				}
 
 				$this->setRedirect($route);
 				$this->redirect();

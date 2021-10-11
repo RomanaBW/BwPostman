@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_BASE') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use JHtmlSelect;
 use Joomla\CMS\Factory;
@@ -129,7 +130,7 @@ class AvailablecontentField extends ListField
 	public function getOptions(): array
 	{
 		// prepare query
-		$db         = Factory::getDbo();
+		$db         = BwPostmanHelper::getDbo();
 		$query_user = $db->getQuery(true);
 
 		// get user_ids if exists
@@ -165,7 +166,7 @@ class AvailablecontentField extends ListField
 	private function getAvailableContent(): array
 	{
 		$app        = Factory::getApplication();
-		$db         = Factory::getDbo();
+		$db         = BwPostmanHelper::getDbo();
 		$query      = $db->getQuery(true);
 		$options    = array();
 		$categories = array();

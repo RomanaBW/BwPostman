@@ -29,7 +29,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
 
 /**
  * Script file of BwPostman module

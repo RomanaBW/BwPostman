@@ -33,9 +33,6 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\RulesField;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Layout\LayoutHelper;
-use Joomla\CMS\Access\Rules;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwAccess;
 use RuntimeException;
 

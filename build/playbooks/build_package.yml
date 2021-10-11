@@ -100,18 +100,6 @@
         bw_external_lang: true
         bw_media_folder: "plg_system_bwpm_user2subscriber"
 
-#    - name: build mediaOverride plugin package
-    - include_role:
-        name: romanabw.build-jplugin-package
-      vars:
-        bw_workspace: "{{ project_base_dir }}/src"
-        bw_target_ext_path: "{{ target_ext_path }}"
-        bw_languages: "{{ languages }}"
-        bw_plugin_name: "bwpm_mediaoverride"
-        bw_plugin_group: "system"
-        bw_external_lang: true
-        bw_media_folder: ""
-
 #    - name: build footerusedmailinglists plugin package
     - include_role:
         name: romanabw.build-jplugin-package

@@ -101,8 +101,8 @@ class TestInstallationCest
 		$I->assertEquals(true, $state, 'Plugin Personalize enabled');
 
 		// Plugin BwMediaOverride has to be enabled
-		$state = $I->getExtensionEnabledState('bwpm_mediaoverride');
-		$I->assertEquals(true, $state, 'Plugin BwMediaOverride enabled');
+//		$state = $I->getExtensionEnabledState('bwpm_mediaoverride');
+//		$I->assertEquals(true, $state, 'Plugin BwMediaOverride enabled');
 
 		// Plugin U2S has to be disabled
 		$state = $I->getExtensionEnabledState('bwpm_user2subscriber');

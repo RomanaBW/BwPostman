@@ -26,6 +26,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CheckboxesField;
 use Joomla\CMS\Language\Text;
@@ -153,7 +154,7 @@ class JFormFieldU2sMls extends CheckboxesField
 		}
 
 		// prepare query
-		$_db		= Factory::getDbo();
+		$_db		= BwPostmanHelper::getDbo();
 		$query		= $_db->getQuery(true);
 
 		$query->select("a.id AS value, a.title AS text, a.description");

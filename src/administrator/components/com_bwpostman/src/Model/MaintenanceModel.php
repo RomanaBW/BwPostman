@@ -1101,7 +1101,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	public static function getGenericTableName(string $table): string
 	{
 		// get db prefix
-		$prefix = Factory::getDbo()->getPrefix();
+		$prefix = BwPostmanHelper::getDbo()->getPrefix();
 
 		// Replace the magic prefix if found.
 		return preg_replace("|^$prefix|", '#__', $table);

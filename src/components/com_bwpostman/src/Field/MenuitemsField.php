@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Site\Field;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
@@ -64,7 +65,7 @@ class MenuitemsField extends ListField
 	protected function getOptions(): array
 	{
 		$options    = null;
-		$db	    = Factory::getDbo();
+		$db	    = BwPostmanHelper::getDbo();
 		$query	    = $db->getQuery(true);
 
 		$query->select($db->quoteName('id') . ' AS value');

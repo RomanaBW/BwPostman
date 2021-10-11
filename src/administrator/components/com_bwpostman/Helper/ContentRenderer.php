@@ -181,7 +181,7 @@ class ContentRenderer
 	{
 		$row   = new stdClass();
 		$app   = Factory::getApplication();
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('a') . '.*');
@@ -659,7 +659,7 @@ class ContentRenderer
 		if (Multilanguage::isEnabled())
 		{
 			$result = '';
-			$_db    = Factory::getDbo();
+			$_db    = BwPostmanHelper::getDbo();
 			$query  = $_db->getQuery(true);
 
 			$query->select($_db->quoteName('language'));

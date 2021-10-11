@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\RadioField;
 use Joomla\CMS\Language\Text;
@@ -149,7 +150,7 @@ class HtmltemplatesField extends RadioField
 		$item		= $app->getUserState('com_bwpostman.edit.newsletter.data');
 
 		// prepare query
-		$db		= Factory::getDbo();
+		$db		= BwPostmanHelper::getDbo();
 
 		// Build the select list for the templates
 		$query = $db->getQuery(true);

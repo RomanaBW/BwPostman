@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_BASE') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Form\Field\RadioField;
 use Joomla\Registry\Registry;
@@ -85,7 +86,7 @@ class CammlavailableField extends RadioField
 		$options = $this->getOptions();
 
 
-		$db        = Factory::getDbo();
+		$db        = BwPostmanHelper::getDbo();
 		$query     = $db->getQuery(true);
 		$ml_select = array();
 		$selected  = '';
@@ -181,7 +182,7 @@ class CammlavailableField extends RadioField
 		$subs_id      = $app->getUserState('com_bwpostman.edit.subscriber.id');
 
 		// prepare query
-		$db         = Factory::getDbo();
+		$db         = BwPostmanHelper::getDbo();
 		$query      = $db->getQuery(true);
 		$query_user = $db->getQuery(true);
 

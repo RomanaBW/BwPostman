@@ -28,7 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Site\Helpers;
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 
@@ -144,7 +144,7 @@ class BwPostmanHelperQuery
 	 */
 	public static function getQueryDate(string $orderDate): string
 	{
-		$db = Factory::getDbo();
+		$db = BwPostmanHelper::getDbo();
 
 		switch ($orderDate)
 		{

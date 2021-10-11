@@ -33,6 +33,7 @@ use Exception;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Access\Access;
@@ -57,6 +58,22 @@ class BwPostmanHelper
 	 * @since 2.0.0
 	 */
 	private static $permissions = null;
+
+	/**
+	 * Get the database object.
+	 *
+	 * @return    DatabaseDriver
+	 *
+	 * @throws Exception
+	 *
+	 * @since    4.0.0
+	 */
+	public static function getDbo(): DatabaseDriver
+	{
+		$component = Factory::getContainer()->get('db');
+
+		return $component;
+	}
 
 	/**
 	 * Configure the Link bar.
@@ -207,7 +224,7 @@ class BwPostmanHelper
 		try
 		{
 			$app   = Factory::getApplication();
-			$db    = Factory::getDbo();
+			$db    = BwPostmanHelper::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName('manifest_cache'));
@@ -1223,7 +1240,7 @@ class BwPostmanHelper
 	 */
 	public static function getMailinglistsWarning(): bool
 	{
-		$_db          = Factory::getDbo();
+		$_db          = BwPostmanHelper::getDbo();
 		$query        = $_db->getQuery(true);
 		$ml_published = '';
 
@@ -1269,7 +1286,7 @@ class BwPostmanHelper
 	{
 		$queueEntriesAtLimit = array();
 
-		$db   = Factory::getDbo();
+		$db   = BwPostmanHelper::getDbo();
 		$query = $db->getQuery(true);
 
 		// Get queue entries, which cannot be sent because sending trials have reached limit
@@ -1664,7 +1681,7 @@ class BwPostmanHelper
 
 		if (!$creatorId)
 		{
-			$db	= Factory::getDbo();
+			$db	= BwPostmanHelper::getDbo();
 			$query	= $db->getQuery(true);
 
 			$query->select($db->quoteName($createdPropertyName));
@@ -1763,7 +1780,7 @@ class BwPostmanHelper
 			$itemsToCheck[] = $itemRecord['id'];
 		}
 
-		$db	= Factory::getDbo();
+		$db	= BwPostmanHelper::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -1801,7 +1818,7 @@ class BwPostmanHelper
 	private static function getSectionAssetNames(string $view): array
 	{
 		$asset_records  = array();
-		$_db            = Factory::getDbo();
+		$_db            = BwPostmanHelper::getDbo();
 
 		try
 		{
@@ -1958,7 +1975,7 @@ class BwPostmanHelper
 		{
 			try
 			{
-				$_db	= Factory::getDbo();
+				$_db	= BwPostmanHelper::getDbo();
 				$query	= $_db->getQuery(true);
 
 				$query->select($_db->quoteName($field));

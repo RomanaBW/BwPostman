@@ -28,6 +28,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -89,7 +90,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	protected function getComponentVersion(): string
 	{
 		$version    = '0.0.0';
-		$_db        = Factory::getDbo();
+		$_db        = BwPostmanHelper::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));

@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_BASE') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
@@ -134,7 +135,7 @@ class SelectedcontentField extends ListField
 	private function getSelectedContent(): array
 	{
 		$app              = Factory::getApplication();
-		$db               = Factory::getDbo();
+		$db               = BwPostmanHelper::getDbo();
 		$options          = array();
 		$selected_content = '';
 

@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_BASE') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Form\Field\RadioField;
 use Joomla\Registry\Registry;
@@ -78,7 +79,7 @@ class MlinternField extends RadioField
 	public function getInput(): string
 	{
 		$app       = Factory::getApplication();
-		$db        = Factory::getDbo();
+		$db        = BwPostmanHelper::getDbo();
 		$query     = $db->getQuery(true);
 		$ml_select = array();
 		$selected  = '';
@@ -204,7 +205,7 @@ class MlinternField extends RadioField
 		$options = array();
 
 		// prepare query
-		$db         = Factory::getDbo();
+		$db         = BwPostmanHelper::getDbo();
 		$query      = $db->getQuery(true);
 
 		$query->select("id AS value, title, description AS text");

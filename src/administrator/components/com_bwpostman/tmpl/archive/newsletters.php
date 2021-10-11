@@ -43,7 +43,7 @@ $user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$nullDate   = Factory::getDbo()->getNullDate();
+$nullDate   = BwPostmanHelper::getDbo()->getNullDate();
 
 //Set context and layout state for filters
 $this->context	= 'Archive.newsletters';
@@ -233,7 +233,7 @@ $this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabsh
 											<td>
 												<?php
 												echo $item->subject;
-												if ($item->mailing_date != Factory::getDbo()->getNullDate())
+												if ($item->mailing_date != BwPostmanHelper::getDbo()->getNullDate())
 												{ ?>&nbsp;&nbsp;
 													<div class="bw-btn">
 														<div class="d-inline-block" aria-describedby="tip-html-<?php echo $i; ?>">

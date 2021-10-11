@@ -29,6 +29,7 @@ namespace BoldtWebservice\Module\BwPostman\Site\Helper;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -98,7 +99,7 @@ class ModBwPostmanHelper
 	{
 		$mailinglists = array();
 
-		$db    = Factory::getDbo();
+		$db    = BwPostmanHelper::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('*');
@@ -154,7 +155,7 @@ class ModBwPostmanHelper
 	{
 		$subscriberid = 0;
 
-		$db	= Factory::getDbo();
+		$db	= BwPostmanHelper::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -198,7 +199,7 @@ class ModBwPostmanHelper
 	{
 		$id	   = 0;
 		$user  = new stdClass;
-		$db	   = Factory::getDbo();
+		$db	   = BwPostmanHelper::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('name'));

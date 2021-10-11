@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_BASE') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
@@ -64,7 +65,7 @@ class AuthorsField extends ListField
 	protected function getOptions(): array
 	{
 		// Get a db connection.
-		$db        = Factory::getDbo();
+		$db        = BwPostmanHelper::getDbo();
 		$query     = $db->getQuery(true);
 		$sub_query = $db->getQuery(true);
 

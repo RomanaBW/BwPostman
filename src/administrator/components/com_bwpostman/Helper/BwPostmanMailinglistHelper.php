@@ -161,7 +161,7 @@ class BwPostmanMailinglistHelper {
 	{
 		$mailinglist = null;
 
-		$db    = Factory::getDbo();
+		$db    = BwPostmanHelper::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('a') . '.*');
@@ -203,7 +203,7 @@ class BwPostmanMailinglistHelper {
 	public static function getMailinglistsFieldlistOptions(bool $archiveMatters = false): ?array
 	{
 		$options   = null;
-		$db        = Factory::getDbo();
+		$db        = BwPostmanHelper::getDbo();
 		$query     = $db->getQuery(true);
 
 		$query->select($db->quoteName('a') . '.' . $db->quoteName('id')  . ' AS value');

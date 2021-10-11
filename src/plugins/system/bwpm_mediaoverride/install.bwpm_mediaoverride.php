@@ -28,6 +28,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 /**
  * Installation script for the plugin
@@ -91,7 +92,7 @@ class PlgSystemBwPm_MediaOverrideInstallerScript
 		// We only need to perform this if the extension is being installed, not update
 		if ($type == 'install')
 		{
-			$db = Factory::getDbo();
+			$db = BwPostmanHelper::getDbo();
 			$query = $db->getQuery(true);
 
 			$fields = array(

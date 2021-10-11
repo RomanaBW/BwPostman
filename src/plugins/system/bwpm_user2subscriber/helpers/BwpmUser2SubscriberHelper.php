@@ -68,7 +68,7 @@ abstract class BwpmUser2SubscriberHelper
 			return 0;
 		}
 
-		$_db	= Factory::getDbo();
+		$_db	= BwPostmanHelper::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
@@ -108,7 +108,7 @@ abstract class BwpmUser2SubscriberHelper
 		}
 
 		$result = array();
-		$_db	= Factory::getDbo();
+		$_db	= BwPostmanHelper::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('status'));
@@ -155,7 +155,7 @@ abstract class BwpmUser2SubscriberHelper
 		}
 
 		$result = false;
-		$_db	= Factory::getDbo();
+		$_db	= BwPostmanHelper::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -195,7 +195,7 @@ abstract class BwpmUser2SubscriberHelper
 			return false;
 		}
 
-		$_db	= Factory::getDbo();
+		$_db	= BwPostmanHelper::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -305,7 +305,7 @@ abstract class BwpmUser2SubscriberHelper
 		$subscribed_mailinglists = array();
 
 		// @Todo: As from version 2.0.0 helper class of component may be used
-		$_db = Factory::getDbo();
+		$_db = BwPostmanHelper::getDbo();
 		$query  = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('mailinglist_id'));
@@ -351,7 +351,7 @@ abstract class BwpmUser2SubscriberHelper
 			return $subscriber;
 		}
 
-		$_db	= Factory::getDbo();
+		$_db	= BwPostmanHelper::getDbo();
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('email'));
@@ -401,7 +401,7 @@ abstract class BwpmUser2SubscriberHelper
 
 		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha();
 
-		$db         = Factory::getDbo();
+		$db         = BwPostmanHelper::getDbo();
 		$subsTable  = new SubscriberTable($db);
 		$subscriber = new stdClass();
 
@@ -442,7 +442,7 @@ abstract class BwpmUser2SubscriberHelper
 	public static function saveSubscriber(object $data): int
 	{
 		// @Todo: As from version 2.0.0 BwPostmanModelRegister->save() may be used, depends on spam check solution
-		$db    = Factory::getDbo();
+		$db    = BwPostmanHelper::getDbo();
 		$table = new SubscriberTable($db);
 
 		// Bind the data.
@@ -492,7 +492,7 @@ abstract class BwpmUser2SubscriberHelper
 	{
 		// @Todo: As from version 2.0.0 helper class of component may be used
 		$result = false;
-		$_db    = Factory::getDbo();
+		$_db    = BwPostmanHelper::getDbo();
 
 		foreach ($mailinglist_ids as $mailinglist_id)
 		{
@@ -539,7 +539,7 @@ abstract class BwpmUser2SubscriberHelper
 	public static function getSubscriberIdByEmail(string $email): int
 	{
 		$id     = 0;
-		$_db    = Factory::getDbo();
+		$_db    = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));

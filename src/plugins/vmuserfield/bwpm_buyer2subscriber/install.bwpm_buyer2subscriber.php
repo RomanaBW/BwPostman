@@ -28,6 +28,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Installer\InstallerAdapter;
@@ -134,7 +135,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	protected function getComponentVersion()
 	{
 		$version    = '0.0.0';
-		$_db        = Factory::getDbo();
+		$_db        = BwPostmanHelper::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -170,7 +171,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 		$plugin_installed  = false;
 		$plugin_id         = null;
 
-		$_db        = Factory::getDbo();
+		$_db        = BwPostmanHelper::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('extension_id'));
@@ -278,7 +279,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$vm_vendor_id   = 0;
 
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('virtuemart_vendor_id'));
@@ -312,7 +313,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function setUserfieldInsertOrderingPosition($field_name)
 	{
-		$_db    = Factory::getDbo();
+		$_db    = BwPostmanHelper::getDbo();
 		$query  = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('ordering'));
@@ -349,7 +350,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$this->freeOrderingPosition();
 
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$nullDate = $_db->getNullDate();
 
 		$userfield_values = array(
@@ -422,7 +423,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$this->freeOrderingPosition();
 
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$nullDate = $_db->getNullDate();
 
 		$userfield_values = array(
@@ -514,7 +515,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$this->freeOrderingPosition();
 
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$nullDate = $_db->getNullDate();
 
 		$userfield_values = array(
@@ -606,7 +607,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$this->freeOrderingPosition();
 
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$nullDate = $_db->getNullDate();
 
 		$userfield_values = array(
@@ -716,7 +717,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$this->freeOrderingPosition();
 
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$nullDate = $_db->getNullDate();
 
 		$userfield_values = array(
@@ -789,7 +790,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$result = null;
 
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('ordering'));
@@ -824,7 +825,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function incrementOrderingColumnAtInstallation()
 	{
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__virtuemart_userfields'));
@@ -855,7 +856,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function writeUserfieldToVmTable($values)
 	{
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->insert($_db->quoteName('#__virtuemart_userfields'));
@@ -924,7 +925,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function writeUserfieldValuesToVmTable($values)
 	{
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->insert($_db->quoteName('#__virtuemart_userfield_values'));
@@ -971,7 +972,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$bw_userfield_ids   = array();
 
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$bw_userfield_names = array(
@@ -1040,7 +1041,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	{
 		$ordering_number = null;
 
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('ordering'));
@@ -1072,7 +1073,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function deleteItemAtUninstall($item)
 	{
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->delete($_db->quoteName('#__virtuemart_userfields'));
@@ -1102,7 +1103,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function decrementOrderingColumnAtUninstall($ordering_number)
 	{
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__virtuemart_userfields'));
@@ -1133,7 +1134,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function deleteBwUserfieldValues($bw_userfield_ids)
 	{
-		$_db   = Factory::getDbo();
+		$_db   = BwPostmanHelper::getDbo();
 		$query = $_db->getQuery(true);
 
 		$query->delete($_db->quoteName('#__virtuemart_userfield_values'));

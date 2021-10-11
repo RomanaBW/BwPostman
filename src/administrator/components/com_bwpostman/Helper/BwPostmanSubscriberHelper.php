@@ -591,7 +591,7 @@ class BwPostmanSubscriberHelper
 	public static function getModParams(int $id = 0): ?object
 	{
 		$params = null;
-		$db     = Factory::getDbo();
+		$db     = BwPostmanHelper::getDbo();
 		$query  = $db->getQuery(true);
 
 		$query->select('params');
@@ -616,6 +616,8 @@ class BwPostmanSubscriberHelper
 	 * Method to check if a subscriber has a subscription to a specific mailinglist
 	 *
 	 * @param Form $form subscriber form
+	 *
+	 * @throws Exception
 	 *
 	 * @since 2.4.0 here
 	 */
@@ -648,7 +650,7 @@ class BwPostmanSubscriberHelper
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
-		if ($m_date == Factory::getDbo()->getNullDate())
+		if ($m_date == BwPostmanHelper::getDbo()->getNullDate())
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
@@ -670,7 +672,7 @@ class BwPostmanSubscriberHelper
 	{
 		$user_id = null;
 
-		$db    = Factory::getDbo();
+		$db    = BwPostmanHelper::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -706,7 +708,7 @@ class BwPostmanSubscriberHelper
 	{
 		$itemid = 0;
 
-		$db    = Factory::getDbo();
+		$db    = BwPostmanHelper::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -763,7 +765,7 @@ class BwPostmanSubscriberHelper
 		}
 		else
 		{
-			$db = Factory::getDbo();
+			$db = BwPostmanHelper::getDbo();
 
 			$query_reg	= $db->getQuery(true);
 			$query_reg->select('name');
@@ -813,7 +815,7 @@ class BwPostmanSubscriberHelper
 		}
 		else
 		{
-			$db = Factory::getDbo();
+			$db = BwPostmanHelper::getDbo();
 
 			$query_conf	= $db->getQuery(true);
 			$query_conf->select('name');
@@ -844,7 +846,7 @@ class BwPostmanSubscriberHelper
 	 */
 	static public function getExportFieldsList()
 	{
-		$db = Factory::getDbo();
+		$db = BwPostmanHelper::getDbo();
 
 		$query = "SHOW COLUMNS FROM {$db->quoteName('#__bwpostman_subscribers')}
 			WHERE {$db->quoteName('Field')} NOT IN (

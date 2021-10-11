@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Site\Field;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CheckboxesField;
@@ -165,7 +166,7 @@ class UsergroupsField extends CheckboxesField
 		{
 			static::$options[$hash] = parent::getOptions();
 
-			$db = Factory::getDbo();
+			$db = BwPostmanHelper::getDbo();
 			$query = $db->getQuery(true);
 			$query->select('CONCAT("-",' . $db->quoteName('a') . '.' . $db->quoteName('id') . ') AS  value');
 			$query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');

@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\RadioField;
@@ -149,7 +150,7 @@ class TexttemplatesField extends RadioField
 		$options = array();
 
 		// prepare query
-		$db = Factory::getDbo();
+		$db = BwPostmanHelper::getDbo();
 
 		// Build the select list for the templates
 		$query = $db->getQuery(true);

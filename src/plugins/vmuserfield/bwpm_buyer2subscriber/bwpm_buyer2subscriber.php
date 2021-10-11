@@ -28,6 +28,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -207,7 +208,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setComponentStatus()
 	{
-		$_db        = Factory::getDbo();
+		$_db        = BwPostmanHelper::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -243,7 +244,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setComponentVersion()
 	{
-		$_db        = Factory::getDbo();
+		$_db        = BwPostmanHelper::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -278,7 +279,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setUser2SubscriberPluginStatus()
 	{
-		$_db        = Factory::getDbo();
+		$_db        = BwPostmanHelper::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -314,7 +315,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setBuyer2SubscriberPluginStatus()
 	{
-		$_db        = Factory::getDbo();
+		$_db        = BwPostmanHelper::getDbo();
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));

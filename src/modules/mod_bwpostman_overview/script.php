@@ -27,6 +27,7 @@
  // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
@@ -172,7 +173,7 @@ class Mod_BwPostman_OverviewInstallerScript
 	{
 		$manifest = null;
 
-		$db		= Factory::getDbo();
+		$db		= BwPostmanHelper::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));

@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\RulesField;
@@ -151,7 +152,7 @@ class BwrulesField extends RulesField
 				$parentAssetName .= '.' . $section;
 			}
 
-			$db    = Factory::getDbo();
+			$db    = BwPostmanHelper::getDbo();
 			$query = $db->getQuery(true);
 			$query->clear();
 
@@ -175,7 +176,7 @@ class BwrulesField extends RulesField
 		if (!$isGlobalConfig)
 		{
 			// In this case we need to get the section rules too.
-			$db = Factory::getDbo();
+			$db = BwPostmanHelper::getDbo();
 
 			$query = $db->getQuery(true)
 				->select($db->quoteName('parent_id'))
@@ -254,7 +255,7 @@ class BwrulesField extends RulesField
 	private function checkAssetId(int $assetId = null): ?int
 	{
 		$res   = null;
-		$db    = Factory::getDbo();
+		$db    = BwPostmanHelper::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));

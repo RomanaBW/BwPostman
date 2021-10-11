@@ -27,6 +27,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Installer\InstallerAdapter;
@@ -188,7 +189,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 		// We only need to perform this if the extension is being installed, not updated
 		if ($type == 'install')
 		{
-			$db = Factory::getDbo();
+			$db = BwPostmanHelper::getDbo();
 			$query = $db->getQuery(true);
 
 			$fields = array(
@@ -228,7 +229,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 */
 	private function getManifestVar(string $name, string $extension)
 	{
-		$db		= Factory::getDbo();
+		$db		= BwPostmanHelper::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));

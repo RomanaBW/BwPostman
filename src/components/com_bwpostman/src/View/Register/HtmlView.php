@@ -270,7 +270,7 @@ class HtmlView extends BaseHtmlView
 		// Build the gender select list
 		if (!isset($subscriber->gender))
 		{
-			$gender_selected = 0;
+			$gender_selected = 2;
 		}
 		else
 		{

@@ -70,6 +70,14 @@ class EditController extends FormController
 	/**
 	 * Constructor
 	 *
+	 * To provide edit data we have to find out the subscriber id
+	 *
+	 * We may come here from:
+	 * - Menu item guest (no user id, no editlink variable)
+	 * - Menu item user (user id, no editlink variable)
+	 * - Newsletter link (no user id, editlink variable)
+	 * - View register with known mail address
+	 *
 	 * @param	array	$config		An optional associative array of configuration settings.
 	 *
 	 * @throws Exception

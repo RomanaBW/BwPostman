@@ -100,7 +100,7 @@ class BwPostmanSubscriberHelper
 		// The error code numbers 4-6 are the same like in the subscribers-table check function
 		switch ($err->err_code)
 		{
-			case 405: // Subscriber account is blocked by the system
+			case 405: // Subscriber account is blocked by the system, i.e. archived
 				$session_error = array(
 					'err_msg'     => $err->err_msg,
 					'err_email'   => $email,
@@ -111,7 +111,7 @@ class BwPostmanSubscriberHelper
 				$jinput->set('view', 'register');
 				$jinput->set('layout', 'error_accountblocked');
 				break;
-			case 406: // Subscriber account is not activated
+			case 406: // Subscriber account is unconfirmed
 				$session_error = array(
 					'err_msg'     => $err->err_msg,
 					'err_id'      => $err->err_id,

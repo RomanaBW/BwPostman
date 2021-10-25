@@ -309,7 +309,7 @@ class EditModel extends AdminModel
 	 *
 	 * @param string $editlink to edit the subscriber data
 	 *
-	 * @return 	int subscriber ID
+	 * @return 	int subscriber ID, 0 means no subscription
 	 *
 	 * @throws Exception
 	 *

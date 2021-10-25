@@ -35,6 +35,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\Utilities\ArrayHelper;
 use stdClass;
 
 /**
@@ -72,6 +73,24 @@ class HtmlView extends BaseHtmlView
 	public $params = null;
 
 	/**
+	 * Success values
+	 *
+	 * @var    object   standard object
+	 *
+	 * @since       4.0.0
+	 */
+	public $success;
+
+	/**
+	 * The current error object
+	 *
+	 * @var    object
+	 *
+	 * @since       4.0.0
+	 */
+	public $error = null;
+
+	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -85,7 +104,6 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null): HtmlView
 	{
 		$app        = Factory::getApplication();
-		$session    = $app->getSession();
 		$params     = ComponentHelper::getParams('com_bwpostman', true);
 		$menuParams = new Registry;
 		$menu       = $app->getMenu()->getActive();
@@ -100,30 +118,8 @@ class HtmlView extends BaseHtmlView
 
 		$this->params = $params;
 
-		// If there occurred an error while storing the data load the data from the session
-		$subscriber_data = $session->get('subscriber_data');
-
-		if(isset($subscriber_data) && is_array($subscriber_data))
-		{
-			$subscriber	= new stdClass();
-
-			foreach ($subscriber_data AS $key => $value)
-			{
-				$subscriber->$key = $value;
-			}
-
-			$subscriber->id	= 0;
-			$session->clear('subscriber_data');
-		}
-		else
-		{
-			$subscriber	= $this->get('Item');
-
-			if(!is_object($subscriber))
-			{
-				$subscriber = BwPostmanSubscriberHelper::fillVoidSubscriber();
-			}
-		}
+		// Get subscriber
+		$subscriber   = $this->getSubscriber();
 
 		if (is_array($subscriber->mailinglists))
 		{
@@ -131,35 +127,13 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// Get the mailinglists which the subscriber is authorized to see
-		$model = $this->getModel();
-		$mlTable = $model->getTable('Mailinglist', 'Administrator');
-		$subsTable = $model->getTable('Subscriber');
-		$userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
-		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists((int)$userId);
+		$lists['available_mailinglists'] = $this->getMailinglistsLists($subscriber);
 
 		// Build the email format select list
-		if (!isset($subscriber->emailformat))
-		{
-			$mailformat_selected = $this->params->get('default_emailformat');
-		}
-		else
-		{
-			$mailformat_selected = $subscriber->emailformat;
-		}
-
-		$lists['emailformat']  = BwPostmanSubscriberHelper::buildMailformatSelectList($mailformat_selected);
+		$lists['emailformat'] = $this->buildFormatSelectList($subscriber);
 
 		// Build the gender select list
-		if (!isset($subscriber->gender))
-		{
-			$gender_selected = '';
-		}
-		else
-		{
-			$gender_selected = $subscriber->gender;
-		}
-
-		$lists['gender']    = BwPostmanSubscriberHelper::buildGenderList($gender_selected);
+		$lists['gender'] = $this->buildGenderSelectList($subscriber);
 
 		// Save a reference into the view
 		$this->lists        = $lists;

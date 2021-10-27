@@ -135,7 +135,7 @@ class SubscriberController extends FormController
 	}
 
 	/**
-	 * Method override to check if you can add a new record.
+	 * Method-override to check if you can add a new record.
 	 *
 	 * @param	array	$data	An array of input data.
 	 *
@@ -151,7 +151,7 @@ class SubscriberController extends FormController
 	}
 
 	/**
-	 * Method override to check if you can edit a record.
+	 * Method-override to check if you can edit a record.
 	 *
 	 * @param	array	$data	An array of input data.
 	 * @param	string	$key	The name of the key for the primary key.
@@ -195,7 +195,7 @@ class SubscriberController extends FormController
 
 	/**
 	 * Override method to edit an existing record, based on Joomla method.
-	 * We need an override, because we want to handle state a bit different than Joomla at this point
+	 * We need an override, because we want to handle state a bit different from Joomla at this point
 	 *
 	 * @param	string	$key		The name of the primary key of the URL variable.
 	 * @param	string	$urlVar		The name of the URL variable if different from the primary key
@@ -378,6 +378,45 @@ class SubscriberController extends FormController
 
 		Factory::getApplication()->setUserState('subscriber.id', null);
 		Factory::getApplication()->setUserState('com_bwpostman.edit.subscriber.mailinglists', null);
+	}
+
+	/**
+	 * Method to send the activation link again
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since       4.0.0
+	 */
+	public function sendconfirmmail()
+	{
+		// Check for request forgeries
+		if (!Session::checkToken())
+		{
+			jexit(Text::_('JINVALID_TOKEN'));
+		}
+
+		$app      = Factory::getApplication();
+		$jinput   = $app->input;
+		$cid      = $jinput->post->get('cid', array(), 'array');
+		$cid      = ArrayHelper::toInteger($cid);
+
+		$model = $this->getModel('subscriber');
+		$res = $model->sendconfirmmail($cid);
+
+		foreach ($res['success'] as $mail)
+		{
+				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_SEND_CONFIRMMAIL_SUCCESS', $mail), 'message');
+		}
+		foreach ($res['error'] as $mail)
+		{
+				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_SEND_CONFIRMMAIL_ERROR', $mail), 'error');
+		}
+
+		$app->setUserState('com_bwpostman.subscribers.layout', 'confirmed');
+		$this->setRedirect(Route::_('index.php?option=com_bwpostman&view=subscribers', false));
+
 	}
 
 	/**

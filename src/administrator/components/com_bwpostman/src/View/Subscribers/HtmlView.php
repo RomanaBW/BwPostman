@@ -32,7 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\PopupButton;
@@ -304,6 +303,15 @@ class HtmlView extends BaseHtmlView
 							->text('JTOOLBAR_BATCH')
 							->selector('collapseModal')
 							->listCheck(true);
+
+							if ($tab === 'unconfirmed')
+							{
+								// Send confirm mail again button
+								$childBar->basicButton('sendconfirmmail')
+									->task('subscriber.sendconfirmmail')
+									->icon('icon-envelope')
+									->text('COM_BWPOSTMAN_SUB_SEND_CONFIRMMAIL');
+							}
 					}
 				}
 

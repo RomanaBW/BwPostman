@@ -241,6 +241,43 @@ class SubscriberModel extends AdminModel
 	}
 
 	/**
+	 * Method to send the activation link again
+	 *
+	 * @param $pks
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since       4.0.0
+	 */
+	public function sendconfirmmail($pks): array
+	{
+		$result = array();
+
+		foreach ($pks as $pk)
+		{
+			$subscriber = $this->getItem($pk);
+			$type = 0; // Send Registration email
+			$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
+
+			// Send registration confirmation mail
+			$res = BwPostmanSubscriberHelper::sendMail($subscriber, $type, $itemid);
+
+			if ($res === true)
+			{ // Email has been sent
+				$result['success'][] = $subscriber->email;
+			}
+			else
+			{ // Email has not been sent
+				$result['error'][] = $subscriber->email;
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Method to get a single record.
 	 *
 	 * @param	integer	$pk	The id of the primary key.
@@ -360,7 +397,7 @@ class SubscriberModel extends AdminModel
 			$form->setFieldAttribute('status', 'disabled', 'true');
 
 			// Disable fields while saving.
-			// The controller has already verified this is an subscriber you can edit.
+			// The controller has already verified this is a subscriber you can edit.
 			$form->setFieldAttribute('state', 'filter', 'unset');
 		}
 
@@ -746,7 +783,7 @@ class SubscriberModel extends AdminModel
 
 		$remote_ip = $app->input->server->get('REMOTE_ADDR', '', '');
 
-		// Add and initialize additional fields, depending of confirm-box value
+		// Add and initialize additional fields, depending on confirm-box value
 		$values["id"]                = 0;
 		$values["user_id"]           = 0;
 		$values["registration_date"] = $time;
@@ -1035,7 +1072,7 @@ class SubscriberModel extends AdminModel
 				}
 				else
 				{ // a test-recipient with same emailformat was found
-					// Check if the test-recipient in the database has the same emailformat like the one who shall be imported
+					// Check if the test-recipient in the database has the same emailformat as the one who shall be imported
 					if ($subscriber->emailformat == $values['emailformat'])
 					{
 						$err['row']   = $row;        // Get CSV row
@@ -1493,7 +1530,7 @@ class SubscriberModel extends AdminModel
 		$skipped     = 0;
 		$subsMlTable = $this->getTable('SubscribersMailinglists');
 
-		// Subscribers exists so let's proceed
+		// Subscribers exist so let's proceed
 		while (!empty($pks))
 		{
 			// Pop the first id off the stack
@@ -1544,7 +1581,7 @@ class SubscriberModel extends AdminModel
 		$skipped      = 0;
 		$subsMlTable  = $this->getTable('SubscribersMailinglists');
 
-		// Subscribers exists so let's proceed
+		// Subscribers exist so let's proceed
 		while (!empty($pks))
 		{
 			// Pop the first id off the stack

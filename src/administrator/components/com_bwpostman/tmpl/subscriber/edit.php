@@ -119,8 +119,9 @@ $this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabsh
 
 
 							<?php
-						}?>
-
+						}
+						if ($this->item->status !== 0)
+						{ ?>
 						<div class="control-group">
 							<div class="control-label">
 								<?php echo $this->form->getLabel('confirmation_date'); ?>
@@ -145,6 +146,8 @@ $this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabsh
 								<?php echo $this->form->getInput('confirmation_ip'); ?>
 							</div>
 						</div>
+						<?php
+						} ?>
 						<div class="control-group">
 							<div class="control-label">
 								<?php echo $this->form->getLabel('registration_date'); ?>

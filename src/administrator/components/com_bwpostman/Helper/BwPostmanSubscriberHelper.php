@@ -97,7 +97,7 @@ class BwPostmanSubscriberHelper
 		$session       = Factory::getApplication()->getSession();
 		$session_error = array();
 
-		// The error code numbers 4-6 are the same like in the subscribers-table check function
+		// The error code numbers 4-6 are the same as in the subscribers-table check function
 		switch ($err->err_code)
 		{
 			case 405: // Subscriber account is blocked by the system, i.e. archived
@@ -218,7 +218,7 @@ class BwPostmanSubscriberHelper
 	}
 
 	/**
-	 * Method to process errors which occur if an email could not been send
+	 * Method to process errors which occur if an email could not be sent
 	 *
 	 * @param string $err_msg error message
 	 * @param string $email   email error

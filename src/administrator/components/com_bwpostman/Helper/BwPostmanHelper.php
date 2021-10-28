@@ -224,7 +224,7 @@ class BwPostmanHelper
 		try
 		{
 			$app   = Factory::getApplication();
-			$db    = BwPostmanHelper::getDbo();
+			$db    = self::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName('manifest_cache'));
@@ -1240,7 +1240,7 @@ class BwPostmanHelper
 	 */
 	public static function getMailinglistsWarning(): bool
 	{
-		$_db          = BwPostmanHelper::getDbo();
+		$_db          = self::getDbo();
 		$query        = $_db->getQuery(true);
 		$ml_published = '';
 
@@ -1286,7 +1286,7 @@ class BwPostmanHelper
 	{
 		$queueEntriesAtLimit = array();
 
-		$db   = BwPostmanHelper::getDbo();
+		$db   = self::getDbo();
 		$query = $db->getQuery(true);
 
 		// Get queue entries, which cannot be sent because sending trials have reached limit
@@ -1681,7 +1681,7 @@ class BwPostmanHelper
 
 		if (!$creatorId)
 		{
-			$db	= BwPostmanHelper::getDbo();
+			$db	= self::getDbo();
 			$query	= $db->getQuery(true);
 
 			$query->select($db->quoteName($createdPropertyName));
@@ -1780,7 +1780,7 @@ class BwPostmanHelper
 			$itemsToCheck[] = $itemRecord['id'];
 		}
 
-		$db	= BwPostmanHelper::getDbo();
+		$db	= self::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -1818,7 +1818,7 @@ class BwPostmanHelper
 	private static function getSectionAssetNames(string $view): array
 	{
 		$asset_records  = array();
-		$_db            = BwPostmanHelper::getDbo();
+		$_db            = self::getDbo();
 
 		try
 		{
@@ -1975,7 +1975,7 @@ class BwPostmanHelper
 		{
 			try
 			{
-				$_db	= BwPostmanHelper::getDbo();
+				$_db	= self::getDbo();
 				$query	= $_db->getQuery(true);
 
 				$query->select($_db->quoteName($field));

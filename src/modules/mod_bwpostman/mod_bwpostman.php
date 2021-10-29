@@ -34,7 +34,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use BoldtWebservice\Module\BwPostman\Site\Helper\ModBwPostmanHelper;
 
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
@@ -99,14 +98,11 @@ else
 
 	if ($userid > 0)
 	{
-		$subscriber = modBwPostmanHelper::getUserData($userid);
+		$subscriber = ModBwPostmanHelper::getUserData($userid);
 	}
 
 	// Build the email format select list
 	$lists['emailformat'] = $emailformat = ModBwPostmanHelper::getMailformatSelectList($paramsComponent);
-
-	// Build the gender select list
-	$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender', 'form-control form-control-sm', 'm_');
 
 	// Get the checked mailinglists from module parameters
 	$mod_mls = (array)$params->get('mod_ml_available');
@@ -117,7 +113,7 @@ else
 	$accessTypes  = array_unique(array_merge($publicAccess, $userAccess));
 
 	// Get the available mailinglists
-	$mailinglists = modBwPostmanHelper::getMailinglists($accessTypes, $mod_mls);
+	$mailinglists = ModBwPostmanHelper::getMailinglists($accessTypes, $mod_mls);
 
 	$n = count($mailinglists);
 
@@ -141,8 +137,6 @@ else
 		'text'
 	);
 }
-
-$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
 
 $path = ModuleHelper::getLayoutPath('mod_bwpostman', $layout);
 

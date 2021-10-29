@@ -67,7 +67,7 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since       2.0.0
 	 */
-	private $minimum_joomla_release = "4.0.0-rc5";
+	private $minimum_joomla_release = "4.0.0";
 
 	/**
 	 * @var string release
@@ -234,9 +234,9 @@ class com_bwpostmanInstallerScript
 			return false;
 		}
 
-		if(version_compare(phpversion(), '5.3.10', 'lt'))
+		if(version_compare(phpversion(), '7.2.5', 'lt'))
 		{
-			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_USES_PHP5'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_USES_PHP7'), 'error');
 			return false;
 		}
 
@@ -1382,9 +1382,6 @@ class com_bwpostmanInstallerScript
 			'/components/com_bwpostman/bwpostman.php',
 			'/components/com_bwpostman/controller.php',
 			'/components/com_bwpostman/router.php',
-			'/media/com_bwpostman/css/bwpostman_bs2.css',
-			'/media/com_bwpostman/css/bwpostman_bs3.css',
-			'/media/com_bwpostman/css/bwpostman_bs4.css',
 			'/media/com_bwpostman/images/images',
 		);
 

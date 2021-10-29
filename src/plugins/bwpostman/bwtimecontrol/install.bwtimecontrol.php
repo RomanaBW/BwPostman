@@ -143,9 +143,9 @@ class plgBwpostmanBwtimecontrolInstallerScript
 		return false;
 	}
 
-	if(version_compare(phpversion(), '5.3.10', 'lt'))
+	if(version_compare(phpversion(), '7.2.5', 'lt'))
 	{
-		$app->enqueueMessage(Text::_('BWPOSTMAN_USES_PHP5'), 'error');
+		$app->enqueueMessage(Text::_('BWPOSTMAN_USES_PHP7'), 'error');
 		return false;
 	}
 

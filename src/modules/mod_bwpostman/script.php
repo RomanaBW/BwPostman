@@ -29,6 +29,8 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Installer\InstallerAdapter;
@@ -133,9 +135,9 @@ class Mod_BwPostmanInstallerScript
 			return false;
 		}
 
-		if(version_compare(phpversion(), '5.3.10', 'lt'))
+		if(version_compare(phpversion(), '7.2.5', 'lt'))
 		{
-			$app->enqueueMessage(Text::_('MOD_BWPOSTMAN_USES_PHP5'), 'error');
+			$app->enqueueMessage(Text::_('MOD_BWPOSTMAN_USES_PHP7'), 'error');
 			return false;
 		}
 
@@ -203,9 +205,49 @@ class Mod_BwPostmanInstallerScript
 	 */
 	public function postflight(string $type, object $parent)
 	{
+		if ($type == 'update')
+		{
+			// remove obsolete files
+			$this->removeObsoleteFilesAndFolders();
+		}
 	}
 
 	/**
+	 * Method to remove obsolete files and folders
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	private function removeObsoleteFilesAndFolders()
+	{
+		$feFilesArray = array(
+			'helper.php',
+		);
+
+		foreach ($feFilesArray as $file)
+		{
+			if (File::exists(JPATH_ROOT . '/modules/mod_bwpostman/' . $file))
+			{
+				File::delete(JPATH_ROOT . '/modules/mod_bwpostman/' . $file);
+			}
+		}
+
+		$feFoldersArray = array(//			'',
+		);
+
+		foreach ($feFoldersArray as $folder)
+		{
+			if (Folder::exists(JPATH_ROOT . '/modules/mod_bwpostman/' . $folder))
+			{
+				Folder::delete(JPATH_ROOT . '/modules/mod_bwpostman/' . $folder);
+			}
+		}
+	}
+
+		/**
 	 * shows the HTML after installation/update
 	 *
 	 * @param boolean $update true if update

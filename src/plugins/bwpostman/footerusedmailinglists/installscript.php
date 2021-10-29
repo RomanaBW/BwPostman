@@ -51,7 +51,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	var $minPhpRelease = '5.3.10';
+	var $minPhpRelease = '7.2.5';
 
 	/**
 	 * @var string minimum version of BwPostman
@@ -139,7 +139,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 
 		if(version_compare(phpversion(), $this->minPhpRelease, 'lt'))
 		{
-			$app->enqueueMessage(Text::_('PLG_BWPOSTMAN_INSTALL_ERROR_PHP5'), 'error');
+			$app->enqueueMessage(Text::_('PLG_BWPOSTMAN_INSTALL_ERROR_PHP7'), 'error');
 			return false;
 		}
 

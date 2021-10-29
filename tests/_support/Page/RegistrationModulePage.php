@@ -35,7 +35,7 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_gender_select_id = ".//*[@id='m_gender_chosen']";
+	public static $mod_gender_select_id = ".//*[@id='m_gender']";
 
 	/**
 	 * @var string

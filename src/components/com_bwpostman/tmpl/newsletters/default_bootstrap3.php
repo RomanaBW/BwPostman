@@ -56,11 +56,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $limitstart	= $this->escape($this->state->get('list.start'));
 $moduleId	= $this->escape($this->state->get('module.id', null));
 
-$actionSuffix = 'Itemid=' . $this->Itemid;
+$actionSuffix = '&Itemid=' . $this->Itemid;
 
 if ($moduleId !== null && $moduleId !== '')
 {
-	$actionSuffix = 'mid=' . $moduleId;
+	$actionSuffix = '&mid=' . $moduleId;
 }
 
 ?>
@@ -84,7 +84,7 @@ if ($moduleId !== null && $moduleId !== '')
 			</h1>
 		<?php endif; ?>
 
-		<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&' . $actionSuffix); ?>" method="post"
+		<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters' . $actionSuffix); ?>" method="post"
 				name="adminForm" id="adminForm" class="form-inline">
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="clearfix">
 				<div class="row clearfix">
@@ -208,7 +208,7 @@ if ($moduleId !== null && $moduleId !== '')
 								echo $date; ?>
 							</td>
 							<td class="subject">
-								<a href="<?php echo Route::_("index.php?option=com_bwpostman&amp;view=newsletter&amp;id=$item->id");
+								<a href="<?php echo Route::_("index.php?option=com_bwpostman&amp;view=newsletter&amp;id=" . $item->id . $actionSuffix);
 								?>">
 									<?php echo $item->subject; ?>
 								</a>

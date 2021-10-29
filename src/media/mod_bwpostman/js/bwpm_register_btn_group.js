@@ -24,8 +24,8 @@
 //
 (function() {
 
-	function bwpBtnGroup() {
-		const form = document.getElementById("bwp_com_form");
+	function bwpBtnGroupMod() {
+		const form = document.getElementById("bwp_mod_form");
 		const matches = form.querySelectorAll(".radio.btn-group label");
 		for (var i = 0; i < matches.length; ++i) {
 			matches[i].classList.add('btn');
@@ -78,7 +78,7 @@
 	}
 
 	document.addEventListener('DOMContentLoaded', function() {
-		bwpBtnGroup();
+		bwpBtnGroupMod();
 	});
 
 })();

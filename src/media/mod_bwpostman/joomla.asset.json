@@ -31,14 +31,14 @@
       "uri": "mod_bwpostman/bwpm_register_modal.css"
     },
     {
+      "name": "mod_bwpostman.bwpm_register_modal_bs4",
+      "type": "style",
+      "uri": "mod_bwpostman/bwpm_register_modal_bs4.css"
+    },
+    {
       "name": "mod_bwpostman.bwpostman",
       "type": "style",
       "uri": "mod_bwpostman/bwpostman.css"
-    },
-    {
-      "name": "mod_bwpostman.iconfonts",
-      "type": "style",
-      "uri": "mod_bwpostman/iconfonts.css"
     },
     {
       "name": "mod_bwpostman.install",
@@ -56,9 +56,19 @@
       "uri": "mod_bwpostman/bwpm_register_bs.js"
     },
     {
+      "name": "mod_bwpostman.bwpm_register_btn_group",
+      "type": "script",
+      "uri": "mod_bwpostman/bwpm_register_btn_group.js"
+    },
+    {
       "name": "mod_bwpostman.bwpm_register_modal",
       "type": "script",
       "uri": "mod_bwpostman/bwpm_register_modal.js"
+    },
+    {
+      "name": "mod_bwpostman.bwpm_register_modal_modal",
+      "type": "script",
+      "uri": "mod_bwpostman/bwpm_register_modal_modal.js"
     }
   ]
 }

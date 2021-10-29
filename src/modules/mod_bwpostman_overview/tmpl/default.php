@@ -30,33 +30,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-
-HtmlHelper::_('script', 'jui/treeselectmenu.jquery.min.js', false, true);
-
-$script = "
-	jQuery(document).ready(function()
-	{
-		menuHide(jQuery('#jform_assignment').val());
-		jQuery('#jform_assignment').change(function()
-		{
-			menuHide(jQuery(this).val());
-		})
-	});
-	function menuHide(val)
-	{
-		if (val == 0 || val == '-')
-		{
-			jQuery('#menuselect-group').hide();
-		}
-		else
-		{
-			jQuery('#menuselect-group').show();
-		}
-	}
-";
-// Add the script to the document head
-$wa->addInlineScript($script);
-
 ?>
 <div id="mod_bwpostman_overview">
 	<?php if (count($list) > 0) { ?>

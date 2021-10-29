@@ -14,11 +14,6 @@
       "name": "mod_bwpostman_overview.install",
       "type": "style",
       "uri": "mod_bwpostman_overview/install.css"
-    },
-    {
-      "name": "mod_bwpostman_overview.mod_archive",
-      "type": "script",
-      "uri": "mod_bwpostman_overview/mod_archive.js"
     }
   ]
 }

@@ -33,13 +33,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Layout\LayoutHelper;
-use Joomla\Component\Content\Site\Helper\RouteHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 HtmlHelper::_('behavior.keepalive');
-HtmlHelper::_('behavior.formvalidator');
-
-HTMLHelper::_('bootstrap.modal');
 
 // Get provided style file
 $app = Factory::getApplication();
@@ -47,7 +43,10 @@ $wa  = $app->getDocument()->getWebAssetManager();
 
 $wa->useStyle('com_bwpostman.bwpostman');
 $wa->useScript('com_bwpostman.bwpm_register_btn_group');
-$wa->useScript('com_bwpostman.bwpm_register_modal');
+if ($this->params->get('disclaimer') && $this->params->get('showinmodal') == 1)
+{
+	$wa->useScript('com_bwpostman.bwpm_register_modal');
+}
 
 // Get user defined style file
 $templateName = $app->getTemplate();
@@ -98,7 +97,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					} // End: Show pretext only if set in basic parameters ?>
 
 					<?php // Show editlink only if the user is not logged in
-					$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
+					$link = Route::_('index.php?option=com_bwpostman&view=edit');
 					?>
 						<p class="user_edit">
 							<a href="<?php echo $link; ?>">
@@ -140,7 +139,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 											echo "invalid";
 										} ?>"
 										maxlength="50" /><span class="append-area"><i class="icon-star"></i></span>
-							<?php // Romana - vor dem span "append-area" darf kein Leerraum sein
+							<?php
 							}
 							else
 							{ ?>
@@ -432,7 +431,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					if ($this->params->get('disclaimer')) :
 						?>
 						<p class="agree_check">
-							<input title="agreecheck" type="checkbox" id="agreecheck" name="agreecheck" />
+							<input title="<?php echo Text::_('COM_BWPOSTMAN_DISCLAIMER'); ?>" type="checkbox" id="agreecheck" name="agreecheck" />
 							<?php
 							// Extends the disclaimer link with '&tmpl=component' to see only the content
 							$tpl_com = $this->params->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
@@ -509,7 +508,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 			<?php
 
 			// The Modal
-			if ($this->params->get('showinmodal') == 1)
+			if ($this->params->get('disclaimer') && $this->params->get('showinmodal') == 1)
 			{ ?>
 				<input type="hidden" id="bwp_com_Modalhref" value="<?php echo $disclaimer_link; ?>" />
 				<div id="bwp_com_Modal" class="bwp_com_modal">

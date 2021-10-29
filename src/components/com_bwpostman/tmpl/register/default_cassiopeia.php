@@ -33,11 +33,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Layout\LayoutHelper;
-use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 HtmlHelper::_('behavior.keepalive');
-
 HTMLHelper::_('bootstrap.tooltip', '.hasTooltip');
 
 // Get provided style file
@@ -45,7 +42,10 @@ $app = Factory::getApplication();
 $wa  = $app->getDocument()->getWebAssetManager();
 
 $wa->useStyle('com_bwpostman.cassiopeia');
-$wa->useScript('com_bwpostman.bwpm_register_modal');
+if ($this->params->get('disclaimer') && $this->params->get('showinmodal') == 1)
+{
+	$wa->useScript('com_bwpostman.bwpm_register_modal');
+}
 
 // Get user defined style file
 $templateName = $app->getTemplate();
@@ -97,7 +97,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					} // End: Show pretext only if set in basic parameters ?>
 
 					<?php // Show editlink only if the user is not logged in
-					$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
+					$link = Route::_('index.php?option=com_bwpostman&view=edit');
 					?>
 						<p class="user_edit">
 							<a href="<?php echo $link; ?>">
@@ -444,7 +444,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					if ($this->params->get('disclaimer')) :
 						?>
 						<div class="form-check agree_check my-3">
-							<input title="agreecheck" type="checkbox" id="agreecheck" class="form-check-input" name="agreecheck" />
+							<input title="<?php echo Text::_('COM_BWPOSTMAN_DISCLAIMER'); ?>" type="checkbox" id="agreecheck" class="form-check-input" name="agreecheck" />
 							<?php
 							// Extends the disclaimer link with '&tmpl=component' to see only the content
 							$tpl_com = $this->params->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
@@ -520,7 +520,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 			<?php
 
 			// The Modal
-			if ($this->params->get('showinmodal') == 1)
+			if ($this->params->get('disclaimer') && $this->params->get('showinmodal') == 1)
 			{ ?>
 				<input type="hidden" id="bwp_com_Modalhref" value="<?php echo $disclaimer_link; ?>" />
 				<div id="bwp_com_Modal" class="bwp_com_modal">

@@ -28,7 +28,6 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * Class JFormFieldAsset
@@ -57,13 +56,27 @@ class JFormFieldAsset extends JFormField
 	 */
 	protected function getInput()
 	{
-		HtmlHelper::_('jquery.framework');
 
 		$text = Text::_('MOD_BWPOSTMAN_FIELD_OBLIGATION');
 
 		$doc 		= Factory::getApplication()->getDocument();
+
+		$css = "
+			.obligation {
+				color: red;
+				opacity: 0;
+				line-height: 0px;
+				transition: all 0.5s linear;
+			}
+			.obligation.down {
+				opacity: 1;
+				line-height: 20px;
+				transition: all 0.5s linear;
+			}
+		";
+		$doc->getWebassetManager()->addInlineStyle($css);
+
 		$js = "
-			window.onload=display_yes_no;
 			function display_yes_no()
 			{
 				var radios = document.getElementsByName('jform[params][com_params]');
@@ -77,68 +90,96 @@ class JFormFieldAsset extends JFormField
 				}
 				if (value == 1) 
 				{
-					css_Style = 'hidden';
-				} 
+					toggleVisibility('visible', 'invisible');
+				}
 				else 
 				{
-					css_Style = 'visible';
+					toggleVisibility('invisible', 'visible');
 				}
-				jQuery( '.bwpmod.field-spacer' ).nextAll().css( 'visibility', css_Style );
 			}
-			jQuery(document).ready(function()
+
+			function toggleVisibility(remove, add)
 			{
-				// monitors obligation fields
-				jQuery('#attrib-reg_settings').on('change', '.bwpcheck :radio', function(){
-					var ind = jQuery(this).index('.bwpcheck :radio');
-					var a = Math.floor(ind/4);
-					bwpcheck(a);
-				});
-
-				// Displays a tip
-				function bwpcheck(a){
-					var click_fields    = [
-						'show_firstname_field',
-						'show_name_field',
-						'show_special'
-					];
-					var check_fields    = [
-						'firstname_field_obligation',
-						'name_field_obligation',
-						'special_field_obligation'
-					];
-					var value1 = jQuery('input[name=\"jform[params]['+click_fields[a]+']\"]:checked').val();
-					var value2 = jQuery('input[name=\"jform[params]['+check_fields[a]+']\"]:checked').val();
-					var text = '$text';
-
-					if (value1 == 0 && value2 == 1)
+				var el = document.querySelector('.bwpmod.field-spacer');
+				while (el = el.nextSibling)
+				{
+					if (typeof el.classList != 'undefined')
 					{
-						jQuery('#jform_params_'+click_fields[a]).after(text);
-						jQuery('#jform_params_'+click_fields[a]).next('.obligation').slideDown(800);
-					}
-					else
-					{
-						jQuery('#jform_params_'+click_fields[a]).next('.obligation').slideUp(800);
+						el.classList.remove(remove);
+						el.classList.add(add);
 					}
 				}
+			}
 
-				// check obligation fields after page rendering
-				for (a = 0; a < 3; a++)
-      			{
-					bwpcheck(a);
-      			}
+			// Displays a tip
+			function bwpcheck(a, init){
+				var click_fields    = [
+					'show_firstname_field',
+					'show_name_field',
+					'show_special'
+				];
+				var check_fields    = [
+					'firstname_field_obligation',
+					'name_field_obligation',
+					'special_field_obligation'
+				];
+				var value1 = document.querySelector('input[name=\"jform[params]['+click_fields[a]+']\"]:checked').value;
+				var value2 = document.querySelector('input[name=\"jform[params]['+check_fields[a]+']\"]:checked').value;
+				var elem = document.getElementById('jform_params_'+click_fields[a]);
 
-				// set view to one column
-				jQuery('#fieldset-ml_available .column-count-md-2').attr('class', 'column-count-1');
+				if (init == 1)
+				{
+					var text = '$text';
+					elem.insertAdjacentHTML('afterend',text);
+				}
+				if (value1 == 0 && value2 == 1)
+				{
+					upOrDown(elem, 'down');
+				}
+				else
+				{
+					upOrDown(elem, 'up');
+				}
+			}
 
-				// trigger click on checkbox
-				jQuery('#jform_params_mod_ml_available tr').click(function(event) {
-					if (event.target.type !== 'checkbox') {
-						jQuery(':checkbox', this).trigger('click');
+			function upOrDown(elem, slide) {
+				// Get the next sibling element
+				var sibling = elem.nextElementSibling;
+
+				// If the sibling matches our selector, use it
+				// If not, jump to the next sibling and continue the loop
+				while (sibling)
+				{
+					if (sibling.matches('.obligation'))
+					{
+						if (slide == 'up')
+						{
+							sibling.classList.remove('down');
+						}
+						else
+						{
+							sibling.classList.add('down');
+						}
+						return;
 					}
+					sibling = sibling.nextElementSibling
+				}
+			}
+
+			(function() {
+
+				document.addEventListener('DOMContentLoaded', function() {
+					display_yes_no();
+					// check obligation fields after page rendering
+					for (a = 0; a < 3; a++)
+	      			{
+						bwpcheck(a, 1);
+	      			}
 				});
-			});
+
+			})();
 		";
-		$doc->addScriptDeclaration($js);
+		$doc->getWebassetManager()->addInlineScript($js);
 
 		return null;
 	}

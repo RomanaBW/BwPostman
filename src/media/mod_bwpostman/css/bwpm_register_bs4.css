@@ -46,7 +46,11 @@
 	margin-bottom: 15px;
 }
 
-#mod_bwpostman .bwp_mod_modal, #mod_bwpostman #bwp_reg_modal {
+#mod_bwpostman .bs3 .form-control {
+	width: 100%;
+}
+
+#mod_bwpostman .bwp_mod_modal {
 	display: none; /* Hidden by default */
 	position: fixed; /* Stay in place */
 	z-index: 99999; /* Sit on top */
@@ -60,19 +64,12 @@
 	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-#mod_bwpostman #bwp_reg_modal {
-	z-index: 99998; /* Sit on top */
-}
 #mod_bwpostman #bwp_mod_modal-content.bwp-err{
 	max-width: 600px;
 	color: red;
 }
 
-#mod_bwpostman #bwp_reg_modal-content {
-	max-width: 600px;
-}
-
-#mod_bwpostman #bwp_mod_modal-content, #mod_bwpostman #bwp_reg_modal-content {
+#mod_bwpostman #bwp_mod_modal-content {
 	position: relative;
 	background-color: #fefefe;
 	margin: auto;
@@ -80,15 +77,12 @@
 	border: 1px solid #888;
 	border-radius: 6px;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+	height: 100%;
 }
 
-#mod_bwpostman #bwp_mod_modal-title, #mod_bwpostman #bwp_reg_title {
+#mod_bwpostman #bwp_mod_modal-title {
     float: left;
     margin: 0;
-}
-
-#mod_bwpostman .bwp_reg_header {
-	height: 35px;
 }
 
 #mod_bwpostman #bwp_mod_wrapper {
@@ -96,7 +90,7 @@
 	height: 100%;
 }
 
-#mod_bwpostman .bwp_mod_close, #mod_bwpostman .bwp_reg_close {
+#mod_bwpostman .bwp_mod_close {
 	color: #aaaaaa;
 	float: right;
 	font-size: 28px;
@@ -105,25 +99,16 @@
 }
 
 #mod_bwpostman .bwp_mod_close:hover,
-#mod_bwpostman .bwp_mod_close:focus,
-#mod_bwpostman .bwp_reg_close:hover,
-#mod_bwpostman .bwp_reg_close:focus {
+#mod_bwpostman .bwp_mod_close:focus {
 	color: #000;
 	text-decoration: none;
 	cursor: pointer;
 }
 
 #bwp_mod_wrapper,
-#bwp_mod_wrapper::before,
-#bwp_mod_wrapper::after,
-#bwp_reg_wrapper,
-#bwp_reg_wrapper::before,
-#bwp_reg_wrapper::after {
+bwp_mod_wrapper::before,
+bwp_mod_wrapper::after {
     box-sizing: border-box;
-}
-
-#mod_bwpostman #bwp_reg_modal #edit_mailformat_m {
-	display: inline-block;
 }
 
 #mod_bwpostman #bwp_mod_form_lists {
@@ -132,29 +117,4 @@
 
 #mod_bwpostman .btn-outline-secondary:hover {
     background-color: #ddd !important;
-}
-
-#mod_bwpostman .security_question_lbl {
-	font-weight:		bold;
-}
-
-#mod_bwpostman .bs3 .question-result .input-group,
-#mod_bwpostman .bs3 .captcha-result .input-group {
-	max-width: 200px;
-}
-
-#mod_bwpostman .bs3 input[type="text"] {
-	width: 100%;
-}
-
-#mod_bwpostman .bs3 #bwp_mod_form_listsfield.small .form-check-input {
-	margin-top: 1px;
-}
-
-@media (min-width: 470px) {
-	#mod_bwpostman .question-result,
-	#mod_bwpostman .captcha-result,
-	#mod_bwpostman .security_question_lbl {
-		margin-left:		145px;
-	}
 }

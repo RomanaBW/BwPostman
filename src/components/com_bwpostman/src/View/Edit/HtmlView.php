@@ -151,4 +151,107 @@ class HtmlView extends BaseHtmlView
 
 		return $this;
 	}
+
+	/**
+	 * Get the mailinglists which the subscriber is authorized to see
+	 *
+	 * @param $subscriber
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 4.0.0
+	 */
+	private function getMailinglistsLists($subscriber): array
+	{
+		$model     = $this->getModel();
+		$mlTable   = $model->getTable('Mailinglist');
+		$subsTable = $model->getTable('Subscriber');
+		$userId    = $subsTable->getUserIdOfSubscriber($subscriber->id);
+
+		return $mlTable->getAuthorizedMailinglists((int) $userId);
+
+	}
+
+	/**
+	 * Build the email format select list
+	 *
+	 * @param       $subscriber
+	 *
+	 * @return string
+	 *
+	 * @since 4.0.0
+	 */
+	private function buildFormatSelectList($subscriber): string
+	{
+		if (!isset($subscriber->emailformat))
+		{
+			$mailformat_selected = $this->params->get('default_emailformat');
+		}
+		else
+		{
+			$mailformat_selected = $subscriber->emailformat;
+		}
+
+		return BwPostmanSubscriberHelper::buildMailformatSelectList($mailformat_selected);
+	}
+
+	/**
+	 * Build the gender select list
+	 *
+	 * @param       $subscriber
+	 *
+	 * @return string
+	 *
+	 * @since 4.0.0
+	 */
+	private function buildGenderSelectList($subscriber): string
+	{
+		if (!isset($subscriber->gender))
+		{
+			$gender_selected = '';
+		}
+		else
+		{
+			$gender_selected = $subscriber->gender;
+		}
+
+		return BwPostmanSubscriberHelper::buildGenderList($gender_selected);
+	}
+
+	/**
+	 * Get subscriber
+	 *
+	 * @return mixed|object
+	 *
+	 * @throws Exception
+	 *
+	 * @since 4.0.0
+	 */
+	private function getSubscriber()
+	{
+		// If there occurred an error while storing the data load the data from the session
+		$session         = Factory::getApplication()->getSession();
+		$subscriber_data = $session->get('subscriber_data');
+
+		if (isset($subscriber_data) && is_array($subscriber_data))
+		{
+			$subscriber = ArrayHelper::toObject($subscriber_data, 'stdClass', false);
+
+			$subscriber->id = 0;
+			$session->clear('subscriber_data');
+		}
+		else
+		{
+			$subscriber = $this->get('Item');
+
+			if (!is_object($subscriber))
+			{
+				$subscriber = BwPostmanSubscriberHelper::fillVoidSubscriber();
+			}
+		}
+
+		return $subscriber;
+	}
 }

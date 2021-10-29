@@ -281,17 +281,9 @@ class RegisterController extends FormController
 
 			if (!is_object($err))
 			{
-				$itemPath = '';
-
-				if ($itemid > 0)
-				{
-					$itemPath = '&Itemid=' . $itemid;
-				}
-
-				$route = Route::_('index.php?option=com_bwpostman&view=register' . $itemPath, false);
+				$route = Route::_('index.php?option=com_bwpostman&view=register&itemid' . $itemid, false);
 
 				$this->setRedirect($route);
-				$this->redirect();
 
 				return false;
 			}

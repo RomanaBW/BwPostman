@@ -199,7 +199,7 @@ $this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabsh
 												$listOrder
 											); ?>
 										</th>
-										<th class="d-none d-xl-table-cell w-1" scope="col">
+										<th class="w-1" scope="col">
 											<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
 										</th>
 									</tr>
@@ -234,7 +234,7 @@ $this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabsh
 												</td>
 												<td><?php echo $item->firstname; ?></td>
 												<td><?php echo $item->email; ?></td>
-												<td class="d-none d-lg-table-cell text-center"><?php
+												<td class="d-none d-xl-table-cell text-center"><?php
 													switch ($item->status) {
 														case "0": echo Text::_('COM_BWPOSTMAN_ARC_SUB_UNCONFIRMED');
 														break;
@@ -244,12 +244,12 @@ $this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabsh
 														break;
 													} ?>
 												</td>
-												<td class="d-none d-lg-table-cell text-center"><?php echo $item->emailformat; ?></td>
-												<td class="d-none d-lg-table-cell text-center"><?php echo $item->mailinglists; ?></td>
-												<td class="d-none d-lg-table-cell text-center">
+												<td class="d-none d-xl-table-cell text-center"><?php echo $item->emailformat; ?></td>
+												<td class="d-none d-xl-table-cell text-center"><?php echo $item->mailinglists; ?></td>
+												<td class="d-none d-xl-table-cell text-center">
 													<?php echo HTMLHelper::date($item->archive_date, Text::_('BW_DATE_FORMAT_LC5')); ?>
 												</td>
-												<td class="d-none d-lg-table-cell text-center"><?php echo $item->id; ?></td>
+												<td class="text-center"><?php echo $item->id; ?></td>
 											</tr>
 										<?php endforeach;
 									}

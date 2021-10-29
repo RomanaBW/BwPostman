@@ -162,7 +162,7 @@ class EditController extends FormController
 		// get subscriber data
 		if ($subscriberid)
 		{
-			// Guest with known subscriber id (stored in the session) or logged in user
+			// Guest with known subscriber id (stored in the session) or logged-in user
 			$subscriberdata	= $subsTable->getSubscriberState((int) $subscriberid);
 
 			if (is_object($subscriberdata))
@@ -210,7 +210,7 @@ class EditController extends FormController
 					}
 					else
 					{
-						$itemid	= (int) BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
+						$itemid	= BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
 
 						$link   = BwPostmanSubscriberHelper::loginGuest($subscriberid, $itemid);
 						$this->setRedirect($link, false);
@@ -283,17 +283,13 @@ class EditController extends FormController
 
 		if(!(isset($session_error) && is_array($session_error)))
 		{
-			if (($this->userid) && ($this->subscriberid))
+			if ($this->subscriberid)
 			{
 				$jinput->set('view', 'edit');
 			}
-			elseif (($this->userid) && (!$this->subscriberid))
+			elseif ($this->userid)
 			{
 				$jinput->set('view', 'register');
-			}
-			elseif ((!$this->userid) && ($this->subscriberid))
-			{
-				$jinput->set('view', 'edit');
 			}
 			else
 			{
@@ -361,7 +357,8 @@ class EditController extends FormController
 		if (isset($post['unsubscribe']))
 		{
 			$this->unsubscribe($post['id']);
-			$link = Uri::base() . 'index.php?option=com_bwpostman&view=register';
+			$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
+			$link   = Route::_('index.php?option=com_bwpostman&view=register&itemid=' . $itemid, false);
 		}
 		else
 		{
@@ -457,7 +454,8 @@ class EditController extends FormController
 
 						$jinput->set('view', 'register');
 						$app->setUserState('subscriber.id', 0);
-						$link   = Uri::base() . 'index.php?option=com_bwpostman&view=register';
+						$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
+						$link = Route::_('index.php?option=com_bwpostman&view=register&itemid=' . $itemid, false);
 					}
 					else
 					{
@@ -550,6 +548,7 @@ class EditController extends FormController
 
 		$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUCCESS_UNSUBSCRIBE'), $msg_type);
 		$jinput->set('view', 'register');
+		$jinput->set('layout', 'success_msg');
 		parent::display();
 	}
 
@@ -674,7 +673,7 @@ class EditController extends FormController
 	{
 		$result = true;
 
-		// The error code numbers are the same like in the subscribers-table check function
+		// The error code numbers are the same as in the subscribers-table check function
 		if ((int)$subscriberdata->archive_flag === 1)
 		{
 			$err->id       = $subscriberdata->id;

@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Module
  *
- * BwPostman bootstrap 4 template for module.
+ * BwPostman cassiopeia template for module.
  *
  * @version %%version_number%%
  * @package BwPostman-Module
@@ -40,6 +40,7 @@ $n	= count($mailinglists);
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
+// we use bs4 css
 $wa->useStyle('mod_bwpostman.bwpm_register_bs4');
 $wa->useScript('mod_bwpostman.bwpm_register');
 $wa->useScript('mod_bwpostman.bwpm_register_modal');
@@ -64,7 +65,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 $formclass = 'sm';
 
 // Build the gender select list
-$class = $formclass === 'sm' ? 'form-control form-control-sm' : 'form-control';
+$class = $formclass === 'sm' ? 'form-select form-select-sm' : 'form-select';
 $lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender', $class, 'm_');
 
 $itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
@@ -75,9 +76,7 @@ $itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
 
 $required_begin = '<div class="input-group' . ($formclass === "sm" ? ' input-group-sm' : '') . '">';
 
-$required_end = '	<div class="input-group-append">';
-$required_end .= '		<span class="input-group-text"><i class="fa fa-star"></i></span>';
-$required_end .= '	</div>';
+$required_end = '	<span class="input-group-text"><i class="fa fa-star"></i></span>';
 $required_end .= '</div>';
 ?>
 
@@ -127,7 +126,7 @@ $required_end .= '</div>';
 		if ($paramsComponent->get('show_gender') == 1)
 		{
 			?>
-			<div class="form-group bwp_mod_form_genderformat">
+			<div class="control-group bwp_mod_form_genderformat">
 				<label id="gendermsg_mod" class="d-block<?php echo $formclass === "sm" ? ' small' : ''; ?>">
 					<?php echo Text::_('MOD_BWPOSTMANGENDER'); ?>:
 				</label>
@@ -245,15 +244,15 @@ $required_end .= '</div>';
 			// Show formfield emailformat only if enabled in basic parameters
 	        $mailformat_selected = isset($subscriber->emailformat) ? $subscriber->emailformat : $paramsComponent->get('default_emailformat');
 			?>
-			<div id="bwp_mod_form_emailformat" class="form-group mb-3">
+			<div id="bwp_mod_form_emailformat">
 				<label id="emailformatmsg_mod" class="d-block<?php echo $formclass === "sm" ? ' small' : ''; ?>"><?php echo Text::_('MOD_BWPOSTMANEMAILFORMAT'); ?>: </label>
-			    <div id="edit_mailformat_m" class="btn-group btn-group-toggle<?php echo $formclass === "sm" ? ' btn-group-sm' : ''; ?>" role="group" data-toggle="buttons">
-					<label class="btn btn-outline-primary<?php echo (!$mailformat_selected ? ' active' : ''); ?>" for="formatTextMod">
-						<input type="radio" name="emailformat" id="formatTextMod" value="0"<?php echo (!$mailformat_selected ? ' checked="checked"' : ''); ?> />
+			    <div id="edit_mailformat_m" class="btn-group<?php echo $formclass === "sm" ? ' btn-group-sm' : ''; ?>" role="group">
+					<input type="radio" class="btn-check" name="emailformat" id="formatTextMod" value="0"<?php echo (!$mailformat_selected ? ' checked="checked"' : ''); ?> />
+					<label class="btn btn-outline-primary" for="formatTextMod">
 						<span>&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_BWPOSTMAN_TEXT'); ?>&nbsp;&nbsp;&nbsp;</span>
 					</label>
-					<label class="btn btn-outline-primary<?php echo ($mailformat_selected ? ' active' : ''); ?>" for="formatHtmlMod">
-						<input type="radio" name="emailformat" id="formatHtmlMod" value="1"<?php echo ($mailformat_selected ? ' checked="checked"' : ''); ?> />
+					<input type="radio" class="btn-check" name="emailformat" id="formatHtmlMod" value="1"<?php echo ($mailformat_selected ? ' checked="checked"' : ''); ?> />
+					<label class="btn btn-outline-primary" for="formatHtmlMod">
 						<span>&nbsp;&nbsp;<?php echo Text::_('COM_BWPOSTMAN_HTML'); ?>&nbsp;&nbsp;</span>
 					</label>
 				</div>
@@ -303,7 +302,7 @@ $required_end .= '</div>';
 			}
 			else
 			{ ?>
-				<div id="bwp_mod_form_lists" class="required mb-2<?php echo $formclass === "sm" ? ' small' : ''; ?>">
+				<div id="bwp_mod_form_lists" class="mb-2<?php echo $formclass === "sm" ? ' small' : ''; ?>">
 					<?php echo Text::_('MOD_BWPOSTMANLISTS') . ' <sup><i class="fa fa-star"></i></sup>'; ?>
 				</div>
 				<div id="bwp_mod_form_listsfield" class="mb-3">
@@ -353,9 +352,7 @@ $required_end .= '</div>';
 					<div class="input-group<?php echo $formclass === "sm" ? ' input-group-sm' : ''; ?>">
 						<input type="text" name="stringQuestion" id="a_stringQuestion" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>"
 								maxlength="50" class="form-control" /><span class="append-area"><i class="bwp_icon-star"></i></span>
-						<div class="input-group-append">
-							<span class="input-group-text"><i class="fa fa-star"></i></span>
-						</div>
+						<span class="input-group-text"><i class="fa fa-star"></i></span>
 					</div>
 				</div>
 			</div>
@@ -377,9 +374,7 @@ $required_end .= '</div>';
 						<input type="text" name="stringCaptcha" id="a_stringCaptcha"
 							placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>"
 							maxlength="50" class="form-control" />
-						<div class="input-group-append">
-							<span class="input-group-text"><i class="fa fa-star"></i></span>
-						</div>
+						<span class="input-group-text"><i class="fa fa-star"></i></span>
 					</div>
 				</div>
 			</div>
@@ -440,7 +435,7 @@ $required_end .= '</div>';
 			<?php
 		} // Show disclaimer ?>
 
-		<div class="mod-button-register text-right">
+		<div class="mod-button-register">
 			<button class="button validate btn btn-secondary<?php echo $formclass === "sm" ? ' btn-sm' : ''; ?>" type="submit"><?php echo Text::_('MOD_BWPOSTMANBUTTON_REGISTER'); ?>
 			</button>
 		</div>
@@ -469,8 +464,8 @@ $required_end .= '</div>';
 		<?php echo HtmlHelper::_('form.token'); ?>
 	</form>
 
-		<p id="bwp_mod_form_required" class="small">(<i class="fa fa-star"></i>) <?php echo Text::_('MOD_BWPOSTMANREQUIRED'); ?></p>
-		<div id="bwp_mod_form_editlink" class="text-right">
+		<p id="bwp_mod_form_required" class="small mt-2">(<i class="fa fa-star"></i>) <?php echo Text::_('MOD_BWPOSTMANREQUIRED'); ?></p>
+		<div id="bwp_mod_form_editlink">
 			<button class="button btn btn-outline-secondary<?php echo $formclass === "sm" ? ' btn-sm' : ''; ?>" onclick="location.href='<?php
 				echo Route::_('index.php?option=com_bwpostman&amp;view=edit&amp;Itemid=' . $itemid);
 				?>'">

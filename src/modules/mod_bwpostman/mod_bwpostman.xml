@@ -74,12 +74,13 @@
 				<field name="com_params"
 				       type="radio"
 				       layout="joomla.form.field.radio.switcher"
+				       onchange="display_yes_no();"
 				       default="1"
 				       label="MOD_BWPOSTMAN_USE_COM_PARAMS"
 				       description="MOD_BWPOSTMAN_USE_COM_PARAMS_NOTE"
 				>
-					<option value="0" onclick="display_yes_no();">JNO</option>
-					<option value="1" onclick="display_yes_no();">JYES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="spacer1_2" type="modparamspacer" />
 				<field name="pretext" type="textarea" class="mod_set" labelclass="mod_set" cols="50" rows="10" default="" label="MOD_BWPOSTMAN_PRETEXT" description="MOD_BWPOSTMAN_PRETEXT_NOTE" />
@@ -99,7 +100,8 @@
 				<field name="spacer1_4" type="spacer" class="mod_set" hr="true" />
 				<field name="show_firstname_field"
 				       type="radio"
-				       class="mod_set bwpcheck"
+				       class="mod_set"
+				       onchange="bwpcheck(0, 0);"
 				       layout="joomla.form.field.radio.switcher"
 				       labelclass="mod_set"
 				       default="1"
@@ -110,7 +112,8 @@
 				</field>
 				<field name="firstname_field_obligation"
 				       type="radio"
-				       class="mod_set bwpcheck"
+				       class="mod_set"
+				       onchange="bwpcheck(0, 0);"
 				       layout="joomla.form.field.radio.switcher"
 				       labelclass="mod_set"
 				       default="1"
@@ -123,7 +126,8 @@
 				<field name="spacer1_5" type="spacer" class="mod_set" hr="true" />
 				<field name="show_name_field"
 				       type="radio"
-				       class="mod_set bwpcheck"
+				       class="mod_set"
+				       onchange="bwpcheck(1, 0);"
 				       layout="joomla.form.field.radio.switcher"
 				       labelclass="mod_set"
 				       default="1"
@@ -135,7 +139,8 @@
 				</field>
 				<field name="name_field_obligation"
 				       type="radio"
-				       class="mod_set bwpcheck"
+				       class="mod_set"
+				       onchange="bwpcheck(1, 0);"
 				       layout="joomla.form.field.radio.switcher"
 				       labelclass="mod_set"
 				       default="1"
@@ -149,7 +154,8 @@
 
 				<field name="show_special"
 				       type="radio"
-				       class="mod_set bwpcheck"
+				       class="mod_set"
+				       onchange="bwpcheck(2, 0);"
 				       layout="joomla.form.field.radio.switcher"
 				       labelclass="mod_set"
 				       default="0"
@@ -162,7 +168,8 @@
 
 				<field name="special_field_obligation"
 				       type="radio"
-				       class="mod_set bwpcheck"
+				       class="mod_set"
+				       onchange="bwpcheck(2, 0);"
 				       layout="joomla.form.field.radio.switcher"
 				       labelclass="mod_set"
 				       default="0"

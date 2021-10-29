@@ -1,14 +1,15 @@
+<?php
 /**
  * BwPostman Newsletter Overview Module
  *
- * BwPostman Javascript for overview module.
+ * BwPostman cassiopeia template for overview module.
  *
  * @version %%version_number%%
- * @package BwPostman-Admin
+ * @package BwPostman-Module
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
- * @license GNU/GPL v3, see LICENSE.txt
+ * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -22,22 +23,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-jQuery(document).ready(function()
-	{
-		menuItemHide(jQuery('#jform_assignment').val());
-		jQuery('#jform_assignment').change(function()
-		{
-			menuItemHide(jQuery(this).val());
-		})
-	});
-	function menuItemHide(val)
-	{
-		if (val == '')
-		{
-			jQuery('#newsletterselect-group').hide();
-		}
-		else
-		{
-			jQuery('#newsletterselect-group').show();
-		}
-	}
+
+defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+
+?>
+<div id="mod_bwpostman_overview">
+	<?php if (count($list) > 0) { ?>
+		<div class="list-group mod-bwpostman-overview-module<?php echo $moduleclass_sfx; ?>">
+			<?php foreach ($list as $item) : ?>
+			<a class="list-group-item list-group-item-action" href="<?php echo $item->link; ?>">
+				<?php echo $item->text; ?>
+			</a>
+			<?php endforeach; ?>
+		</div>
+	<?php }
+	else {
+		echo Text::_('MOD_BWPOSTMAN_OVERVIEW_NO_NEWSLETTERS_FOUND');
+	} ?>
+</div>

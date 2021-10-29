@@ -241,41 +241,23 @@ class ModBwPostmanHelper
 	{
 		$mailformat_selected = $paramsComponent->get('default_emailformat');
 
-		$emailformat = '<div id="edit_mailformat_m" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">';
-		$emailformat .= '<label for="formatTextMod" class="btn btn-outline-secondary rounded-left';
-
-		if (!$mailformat_selected)
-		{
-			$emailformat .= '  active';
-		}
-
-		$emailformat .= '">';
-		$emailformat .= '<input type="radio" name="a_emailformat" id="formatTextMod" value="0"';
-
+		$emailformat = '<div id="edit_mailformat_m" class="radio btn-group">';
+		$emailformat .= '<input type="radio" name="a_emailformat" id="formatTextMod" class="rounded-left" value="0"';
 		if (!$mailformat_selected)
 		{
 			$emailformat .= ' checked="checked"';
 		}
 
-		$emailformat .= '/>';
-		$emailformat .= '<span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
-		$emailformat .= '<label for="formatHtmlMod" class="btn btn-outline-secondary rounded-right';
-
-		if ($mailformat_selected)
-		{
-			$emailformat .= '  active';
-		}
-
-		$emailformat .= '">';
+		$emailformat .= ' />';
+		$emailformat .= '<label for="formatTextMod" class="rounded-left"><span>' . Text::_('COM_BWPOSTMAN_TEXT') . '</span></label>';
 		$emailformat .= '<input type="radio" name="a_emailformat" id="formatHtmlMod" value="1"';
-
 		if ($mailformat_selected)
 		{
 			$emailformat .= ' checked="checked"';
 		}
 
-		$emailformat .= '/>';
-		$emailformat .= '<span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
+		$emailformat .= ' />';
+		$emailformat .= '<label for="formatHtmlMod" class="rounded-right"><span>' . Text::_('COM_BWPOSTMAN_HTML') . '</span></label>';
 		$emailformat .= '</div>';
 
 		return $emailformat;

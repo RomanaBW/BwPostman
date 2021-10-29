@@ -2,7 +2,7 @@
 /**
  * BwPostman Newsletter Module
  *
- * BwPostman large modal template for module.
+ * BwPostman modal default template for module.
  *
  * @version %%version_number%%
  * @package BwPostman-Module
@@ -33,24 +33,28 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 HtmlHelper::_('behavior.keepalive');
-HtmlHelper::_('behavior.formvalidator');
-HTMLHelper::_('bootstrap.tooltip');
-HtmlHelper::_('formbehavior.chosen', 'select');
 
 $n	= count($mailinglists);
+
+// Build the gender select list
+$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList('2', 'a_gender', '', 'm_');
+
+$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
 
 $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '');
 
 $wa->useStyle('mod_bwpostman.bwpm_register_modal');
+$wa->useScript('mod_bwpostman.bwpm_register');
+$wa->useScript('mod_bwpostman.bwpm_register_btn_group');
 $wa->useScript('mod_bwpostman.bwpm_register_modal');
-
-$inputClass = 'input';
+$wa->useScript('mod_bwpostman.bwpm_register_modal_modal');
 
 if (file_exists(JPATH_BASE . $css_filename))
 {
-	$wa->registerAndUseStyle('mod_bwpostman.bwpm_register_modal_custom', Uri::root(true) . $css_filename);
+	$wa->registerAndUseStyle('mod_bwpostman.bwpm_register_custom', Uri::root(true) . $css_filename);
 //	$document->addStyleSheet(Uri::root(true) . $css_filename);
 }
 
@@ -99,15 +103,15 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 		?>
 	</button>
 
-	<div id="bwp_reg_modal" class="big">
+	<div id="bwp_reg_modal">
 		<div id="bwp_reg_modal-content">
 			<div class="bwp_reg_header">
 				<h4 id="bwp_reg_title"><?php echo $module->title; ?></h4>
 				<span class="bwp_reg_close">&times;</span>
 			</div>
 			<div id="bwp_reg_wrapper">
-				<form action="<?php echo Route::_('index.php?option=com_bwpostman&task=register'); ?>" method="post" id="bwp_mod_form"
-						name="bwp_mod_form" class="form-validate form-inline" onsubmit="return checkModRegisterForm();">
+				<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=register'); ?>" method="post" id="bwp_mod_form"
+						name="bwp_mod_form" class="form-validate" onsubmit="return checkModRegisterForm();">
 
 					<?php // Spamcheck 1 - Input-field: class="user_hightlight" style="position: absolute; top: -5000px;"
 					?>
@@ -129,12 +133,12 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 					if ($paramsComponent->get('show_gender') == 1)
 					{
 						?>
-						<div id="bwp_mod_form_genderfield">
-							<label id="gendermsg_mod">
+						<p id="bwp_mod_form_genderfield">
+							<label id="gendermsg_mod" class="bwp-label">
 								<?php echo Text::_('MOD_BWPOSTMANGENDER'); ?>:
 							</label>
 							<?php echo $lists['gender']; ?>
-						</div>
+						</p>
 						<?php
 					} // End show gender
 
@@ -142,22 +146,22 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 					{ // Show firstname-field only if set in basic parameters
 						?>
 						<p id="bwp_mod_form_firstnamefield"
-								class="input<?php echo ($paramsComponent->get('firstname_field_obligation')) ? '-append' : '-xx' ?>">
+								class="bwp input<?php echo ($paramsComponent->get('firstname_field_obligation')) ? '-append' : '-xx' ?>">
 							<?php
 							// Is filling out the firstname field obligating
 							isset($subscriber->firstname) ? $sub_firstname = $subscriber->firstname : $sub_firstname = '';
-							($paramsComponent->get('firstname_field_obligation'))
-								? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
-								: $required = '';
+							$required = '';
+							$append   = '';
+
+							if ($paramsComponent->get('firstname_field_obligation'))
+							{
+								$required = '<span class="add-on"><i class="icon-star"></i></span>';
+								$append   = '';
+							}
 							?>
-							<label id="firstnamemsg_mod">
-								<?php echo Text::_('MOD_BWPOSTMANFIRSTNAME'); ?>:
-							</label>
-							<span class="inputs">
-								<label for="a_firstname"></label>
-								<input type="text" name="a_firstname" id="a_firstname"
-										value="<?php echo $sub_firstname; ?>" class="inputbox" maxlength="50" /><?php echo $required; ?>
-							</span>
+							<label class="bwp-label" for="a_firstname"><?php echo Text::_('MOD_BWPOSTMANFIRSTNAME'); ?>:</label>
+							<input type="text" name="a_firstname" id="a_firstname" <?php echo $append; ?>
+									value="<?php echo $sub_firstname; ?>" maxlength="50" /><?php echo $required; ?>
 						</p>
 						<?php
 					}
@@ -167,19 +171,21 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 						// Show name-field only if set in basic parameters
 						?>
 						<p id="bwp_mod_form_namefield"
-								class="input<?php echo ($paramsComponent->get('name_field_obligation')) ? '-append' : '-xx' ?>">
+								class="bwp input<?php echo ($paramsComponent->get('name_field_obligation')) ? '-append' : '-xx' ?>">
 							<?php // Is filling out the name field obligating
 							isset($subscriber->name) ? $sub_name = $subscriber->name : $sub_name = '';
-							($paramsComponent->get('name_field_obligation'))
-								? $required = '<span class="append-area"><i class="bwp_icon-star"></i></span>'
-								: $required = ''; ?>
-							<label for="a_name" id="namemsg_mod">
-								<?php echo Text::_('MOD_BWPOSTMANNAME'); ?>:
-							</label>
-							<span class="inputs">
-								<input type="text" name="a_name" id="a_name"
-										value="<?php echo $sub_name; ?>" class="inputbox" maxlength="50" /><?php echo $required; ?>
-							</span>
+							$required = '';
+							$append   = '';
+
+							if ($paramsComponent->get('name_field_obligation'))
+							{
+								$required = '<span class="add-on"><i class="icon-star"></i></span>';
+								$append   = '';
+							}
+							?>
+							<label class="bwp-label" for="a_name"><?php echo Text::_('MOD_BWPOSTMANNAME'); ?>:</label>
+							<input type="text" name="a_name" id="a_name" <?php echo $append; ?>
+									value="<?php echo $sub_name; ?>" maxlength="50" /><?php echo $required; ?>
 						</p>
 						<?php
 					} // End: Show name field only if set in basic parameters
@@ -204,47 +210,39 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 
 					if ($showSpecial || $specialObligatory)
 					{
-						$specialClass = '-xx';
-						$required     = '';
+						$required = '';
+						$append   = '';
 
 						if ($specialObligatory)
 						{
-							$specialClass = '-append';
-							$required     = '<span class="append-area"><i class="bwp_icon-star"></i></span>';
+							$required = '<span class="add-on"><i class="icon-star"></i></span>';
+							$append   = '';
 						}
 						?>
-						<p id="bwp_mod_form_specialfield" class="input<?php echo $specialClass; ?>">
+						<p id="bwp_mod_form_specialfield" class="bwp input<?php echo ($specialObligatory) ? '-append' : '-xx' ?>">
 							<?php // Is filling out the additional field obligating
 							?>
-							<label for="a_special" id="specialmsg_mod">
-								<?php echo $specialLabel; ?>:
-							</label>
-							<span class="inputs">
-								<input type="text" name="a_special" id="a_special"
-										value="<?php echo $sub_special; ?>" class="inputbox" maxlength="50" /><?php echo $required; ?>
-							</span>
+							<label class="bwp-label" for="a_special"><?php echo $specialLabel; ?>:</label>
+							<input type="text" name="a_special" id="a_special" <?php echo $append; ?>
+									value="<?php echo $sub_special; ?>" maxlength="50" /><?php echo $required; ?>
 						</p>
 						<?php
 					} // End: Show additional field only if set in basic parameters
 					?>
 
 					<?php isset($subscriber->email) ? $sub_email = $subscriber->email : $sub_email = ''; ?>
-					<p id="bwp_mod_form_emailfield" class="input-append">
-						<label for="a_email" id="specialmsg_mod">
-							<?php echo Text::_('MOD_BWPOSTMANEMAIL'); ?>:
-						</label>
-						<span class="inputs">
-							<input type="text" id="a_email" name="email"
-									value="<?php echo $sub_email; ?>" class="inputbox" maxlength="100" /><span class="append-area"><i class="bwp_icon-star"></i></span>
-						</span>
+					<p id="bwp_mod_form_emailfield" class="bwp input-append">
+						<label class="bwp-label" for="a_email"><?php echo Text::_('MOD_BWPOSTMANEMAIL'); ?>:</label>
+						<input type="text" id="a_email" name="email" value="<?php echo $sub_email; ?>"
+								maxlength="100" /><span class="add-on"><i class="icon-star"></i></span>
 					</p>
 					<?php
 					if ($paramsComponent->get('show_emailformat') == 1)
 					{
 						// Show formfield emailformat only if enabled in basic parameters
 						?>
-						<div id="bwp_mod_form_emailformat">
-							<label id="emailformatmsg_mod">
+						<div id="bwp_mod_form_emailformatfield" class="mb">
+							<label id="emailformatmsg_mod" class="bwp-label">
 								<?php echo Text::_('MOD_BWPOSTMANEMAILFORMAT'); ?>:
 							</label>
 							<?php echo $lists['emailformat']; ?>
@@ -269,22 +267,22 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 					{
 						if ($n == 1)
 						{ ?>
-					<p id="bwp_mod_form_lists" class="mt">
-						<?php echo Text::_('MOD_BWPOSTMANLIST'); ?>
-					</p>
-					<div class="mailinglist-title hasTooltip" title="<?php echo HTMLHelper::tooltipText($mailinglists[0]->title, Text::_($mailinglists[0]->description)); ?>"><?php echo $mailinglist->title; ?>
-							<input type="checkbox" style="display: none;" id="a_<?php echo "mailinglists0"; ?>" name="<?php echo "mailinglists[]"; ?>"
-							title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglists[0]->id; ?>" checked="checked" />
+							<p id="bwp_mod_form_lists">
+								<?php echo Text::_('MOD_BWPOSTMANLIST'); ?>
+							</p>
+							<div class="mailinglist-title mb"><?php echo $mailinglist->title; ?>
+								<input type="checkbox" style="display: none;" id="a_<?php echo "mailinglists0"; ?>" name="<?php echo "mailinglists[]"; ?>"
+									title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglists[0]->id; ?>" checked="checked" />
 							<?php
 							if ($params->get('show_desc') == 1)
 							{ ?>
-								<br /><span class="mailinglist-description-single"><?php
+								<span class="mailinglist-description-single"><?php
 									echo substr(Text::_($mailinglists[0]->description), 0, $descLength);
 
 									if (strlen(Text::_($mailinglists[0]->description)) > $descLength)
 									{
 										echo '... ';
-										echo '<i class="bwp_icon-info"></i>';
+										echo '<span class="bwptip" title="' . Text::_($mailinglists[0]->description) . '"><i class="icon-info-sign"></i></span>';
 									} ?>
 								</span>
 								<?php
@@ -293,15 +291,15 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 						}
 						else
 						{ ?>
-							<p id="bwp_mod_form_lists" class="required">
-								<?php echo Text::_('MOD_BWPOSTMANLISTS') . ' <sup><i class="bwp_icon-star"></i></sup>'; ?>
-							</p>
-							<div id="bwp_mod_form_listsfield">
+							<div id="bwp_mod_form_lists" class="mb">
+								<?php echo Text::_('MOD_BWPOSTMANLISTS') . ' <sup><i class="icon-star"></i></sup>'; ?>
+							</div>
+							<div id="bwp_mod_form_listsfield" class="mb">
 							<?php
 							foreach ($mailinglists AS $i => $mailinglist)
 							{ ?>
 								<div class="a_mailinglist_item_<?php echo $i; ?>">
-									<span class="mailinglist-title hasTooltip" title="<?php echo HTMLHelper::tooltipText($mailinglist->title, Text::_($mailinglist->description)); ?>">
+									<label class="mailinglist-title">
 									<input type="checkbox" id="a_<?php echo "mailinglists$i"; ?>" name="<?php echo "mailinglists[]"; ?>"
 											title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglist->id; ?>" />
 										<?php
@@ -315,10 +313,10 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 												if (strlen(Text::_($mailinglist->description)) > $descLength)
 												{
 													echo '... ';
-													echo '<i class="bwp_icon-info"></i>';
+													echo '<span class="bwptip" title="' . Text::_($mailinglist->description) . '"><i class="icon-info-sign"></i></span>';
 												} ?>
 											</span>
-									</span>
+									</label>
 									<?php
 										}
 										else
@@ -333,19 +331,17 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 						}
 					} // End Mailinglists
 
+					// Question
 					if ($paramsComponent->get('use_captcha') == 1)
 					{ ?>
 						<div class="question">
 							<p class="security_question_entry"><?php echo Text::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
 							<p class="security_question_lbl"><?php echo Text::_($paramsComponent->get('security_question')); ?></p>
-							<p class="question_result input-append">
-								<label for="a_stringQuestion" id="questionmsg_mod">
-									<?php echo Text::_('MOD_BWPOSTMANCAPTCHA_LABEL'); ?>:
-								</label>
-								<span class="inputs">
-									<input type="text" name="stringQuestion" id="a_stringQuestion"
-											maxlength="50" class="inputbox" /><span class="append-area"><i class="bwp_icon-star"></i></span>
-								</span>
+							<p class="question-result input-append">
+								<label for="a_stringQuestion"></label>
+								<input type="text" name="stringQuestion" id="a_stringQuestion"
+										placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>" maxlength="50" /><span
+								class="add-on"><i class="icon-star"></i></span>
 							</p>
 						</div>
 						<?php
@@ -361,27 +357,25 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 							<p class="security_question_lbl">
 								<img src="<?php echo Uri::base(); ?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
 							</p>
-							<p class="captcha_result input-append">
-								<label for="a_stringCaptcha" id="captchamsg_mod">
-									<?php echo Text::_('MOD_BWPOSTMANCAPTCHA_LABEL'); ?>:
-								</label>
-								<span class="inputs">
-									<input type="text" name="stringCaptcha" id="a_stringCaptcha"
-										maxlength="50" class="inputbox" /><span class="append-area"><i class="bwp_icon-star"></i></span>
-								</span>
+							<p class="captcha-result input-append">
+								<label for="a_stringCaptcha"></label>
+								<input type="text" name="stringCaptcha" id="a_stringCaptcha"
+										placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>"
+										maxlength="50" /><span class="add-on"><i class="icon-star"></i></span>
 							</p>
 						</div>
 						<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
 						<?php
 					} // End captcha
-					// End Spamcheck 2
+					?>
+					<?php // End Spamcheck 2
 
 					if ($paramsComponent->get('disclaimer'))
 					{
 						// Show Disclaimer only if enabled in basic parameters
 						?>
 						<p id="bwp_mod_form_disclaimer">
-							<input type="checkbox" id="agreecheck_mod" name="agreecheck_mod" title="agreecheck_mod" />
+							<input type="checkbox" id="agreecheck_mod" name="agreecheck_mod" title="<?php echo Text::_('MOD_BWPOSTMAN_DISCLAIMER'); ?>" />
 							<?php
 							// Extends the disclaimer link with '&tmpl=component' to see only the content
 							$tpl_com = $paramsComponent->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
@@ -393,11 +387,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 							elseif ($paramsComponent->get('disclaimer_selection') == 2 && $paramsComponent->get('disclaimer_menuitem') > 0)
 							{
 								// Disclaimer menu item and target_blank or not
-								if ($tpl_com !== '' && (Factory::getApplication()->get('sef') === '1' || Factory::getApplication()->get('sef') === true))
-								{
-									$tpl_com = '?tmpl=component';
-								}
-								$disclaimer_link = Route::_("index.php?Itemid={$paramsComponent->get('disclaimer_menuitem')}") . $tpl_com;
+								$disclaimer_link = Route::_('index.php?Itemid=' . $paramsComponent->get('disclaimer_menuitem') . $tpl_com);
 							}
 							else
 							{
@@ -409,7 +399,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 								// Show inside modalbox
 								if ($paramsComponent->get('showinmodal') == 1)
 								{
-									echo '<a id="bwp_mod_open"';
+									echo '<a id="bwp_mod_open" href="javascript:void(0);"';
 								}
 								// Show not in modalbox
 								else
@@ -420,14 +410,13 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 										echo ' target="_blank"';
 									}
 								}
-								echo '>' . Text::_('MOD_BWPOSTMAN_DISCLAIMER') . '</a> <sup><i class="bwp_icon-star"></i></sup>'; ?>
+								echo '>' . Text::_('MOD_BWPOSTMAN_DISCLAIMER') . '</a> <sup><i class="icon-star"></i></sup>'; ?>
 							</span>
 						</p>
 						<?php
-					} // Show disclaimer
-					?>
+					} // Show disclaimer ?>
 
-					<div class="mod-button-register text-right">
+					<div class="mod-button-register mb">
 						<button class="button validate btn" type="submit"><?php echo Text::_('MOD_BWPOSTMANBUTTON_REGISTER'); ?>
 						</button>
 					</div>
@@ -456,8 +445,8 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 					<?php echo HtmlHelper::_('form.token'); ?>
 				</form>
 
-				<p id="bwp_mod_form_required"><?php echo Text::_('MOD_BWPOSTMANREQUIRED_BIGMODAL'); ?></p>
-				<div id="bwp_mod_form_editlink" class="text-right">
+				<p id="bwp_mod_form_required">(<i class="icon-star"></i>) <?php echo Text::_('MOD_BWPOSTMANREQUIRED'); ?></p>
+				<div id="bwp_mod_form_editlink">
 					<button class="button btn" onclick="location.href='<?php
 						echo Route::_('index.php?option=com_bwpostman&amp;view=edit&amp;Itemid=' . $itemid);
 						?>'">
@@ -474,7 +463,7 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 	<input type="hidden" id="bwp_mod_Modalhref" value="<?php echo $disclaimer_link; ?>" />
 	<div id="bwp_mod_Modal" class="bwp_mod_modal">
 		<div id="bwp_mod_modal-content">
-			<h4 id="bwp_modal-title">Information</h4>
+			<h4 id="bwp_mod_modal-title">Information</h4>
 			<span class="bwp_mod_close">&times;</span>
 			<div id="bwp_mod_wrapper"></div>
 		</div>

@@ -164,40 +164,37 @@
 					name="layout"
 					type="modulelayout"
 					label="JFIELD_ALT_LAYOUT_LABEL"
-					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+					class="form-select"
+					validate="moduleLayout"
+				/>
 
 				<field
 					name="moduleclass_sfx"
 					type="textarea"
-					rows="3"
 					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+					rows="3"
+					validate="CssIdentifier"
+				/>
 
 				<field
 					name="cache"
 					type="list"
-					default="1"
 					label="COM_MODULES_FIELD_CACHING_LABEL"
-					description="COM_MODULES_FIELD_CACHING_DESC"
-				>
+					default="1"
+					filter="integer"
+					validate="options"
+					>
 					<option value="1">JGLOBAL_USE_GLOBAL</option>
 					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
 				</field>
 
 				<field
 					name="cache_time"
-					type="text"
-					default="900"
+					type="number"
 					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
-					description="MOD_MODULES_FIELD_CACHE_TIME_DESC" />
-
-				<field
-					name="cachemode"
-					type="hidden"
-					default="static">
-					<option
-						value="static"></option>
-				</field>
+					default="900"
+					filter="integer"
+				/>
 			</fieldset>
 		</fields>
 	</config>

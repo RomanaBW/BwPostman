@@ -215,7 +215,7 @@ class SubscribeModuleCest
 
 		Helper::presetModuleOptions($I);
 		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
-		$I->setManifestOption('mod_bwpostman', 'layout', '_:modal-big');
+		$I->setManifestOption('mod_bwpostman', 'layout', '_:modal-cassiopeia');
 		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
 
 		$this->subscribeByModule($I, 'big');

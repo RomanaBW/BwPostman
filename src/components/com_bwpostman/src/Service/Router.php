@@ -29,97 +29,54 @@ namespace BoldtWebservice\Component\BwPostman\Site\Service;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Component\Router\RouterBase;
+use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Component\Router\RouterView;
+use Joomla\CMS\Component\Router\RouterViewConfiguration;
+use Joomla\CMS\Component\Router\Rules\MenuRules;
+use Joomla\CMS\Component\Router\Rules\NomenuRules;
+use Joomla\CMS\Component\Router\Rules\StandardRules;
+use Joomla\CMS\Menu\AbstractMenu;
 
 /**
  * Routing class of com_bwpostman
  *
  * @since  4.0.0
  */
-class Router extends RouterBase
+class Router extends RouterView
 {
-	/**
-	 * Build the route for the com_bwpostman component
-	 *
-	 * @param   array  $query  An array of URL arguments
-	 *
-	 * @return  array  The URL arguments to use to assemble the subsequent URL.
-	 *
-	 * @since   4.0.0
-	 */
-	public function build(&$query)
-	{
-		$segments = array();
-
-		if (isset($query['task']))
-		{
-			$segments[] = $query['task'];
-			unset($query['task']);
-		}
-
-		if (isset($query['id']))
-		{
-			$segments[] = $query['id'];
-			unset($query['id']);
-		}
-
-		$total = \count($segments);
-
-		for ($i = 0; $i < $total; $i++)
-		{
-			$segments[$i] = str_replace(':', '-', $segments[$i]);
-		}
-
-		return $segments;
-	}
 
 	/**
-	 * Parse the segments of a URL.
+	 * BwPostman Component router constructor
 	 *
-	 * @param   array  $segments  The segments of the URL to parse.
+	 * @param   SiteApplication  $app   The application object
+	 * @param   AbstractMenu     $menu  The menu object to work with
 	 *
-	 * @return  array  The URL attributes to be used by the application.
-	 *
-	 * @since   4.0.0
+	 * @since 4.0.0
 	 */
-	public function parse(&$segments)
+	public function __construct(SiteApplication $app, AbstractMenu $menu)
 	{
-		$total = \count($segments);
-		$vars = array();
+		$this->registerView(new RouterViewConfiguration('bwpostman'));
+		$edit = new RouterViewConfiguration('edit');
+		$edit->addLayout('editlink_form');
+		$this->registerView($edit);
+		$newsletter = new RouterViewConfiguration('newsletter');
+		$newsletter->addLayout('nl_preview');
+		$this->registerView($newsletter);
+		$this->registerView(new RouterViewConfiguration('newsletters'));
+		$register = new RouterViewConfiguration('register');
+		$register->addLayout('error_accountblocked');
+		$register->addLayout('error_accountgeneral');
+		$register->addLayout('error_accountnotactivated');
+		$register->addLayout('error_email');
+		$register->addLayout('error_geteditlink');
+		$register->addLayout('success_msg');
+		$this->registerView($register);
 
-		for ($i = 0; $i < $total; $i++)
-		{
-			$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
-		}
+		parent::__construct($app, $menu);
 
-		// View is always the first element of the array
-		$count = \count($segments);
-
-		if ($count)
-		{
-			$count--;
-			$segment = array_shift($segments);
-
-			if (\is_numeric($segment))
-			{
-				$vars['id'] = $segment;
-			}
-			else
-			{
-				$vars['task'] = $segment;
-			}
-		}
-
-		if ($count)
-		{
-			$segment = array_shift($segments);
-
-			if (\is_numeric($segment))
-			{
-				$vars['id'] = $segment;
-			}
-		}
-
-		return $vars;
+		$this->attachRule(new MenuRules($this));
+		$this->attachRule(new StandardRules($this));
+		$this->attachRule(new NomenuRules($this));
 	}
+
 }

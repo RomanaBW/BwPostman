@@ -343,6 +343,7 @@ class SubscribeComponentCest
 		$I->wait(1);
 		$I->click(SubsView::$button_submit);
 		$I->waitForElement(Generals::$alert_info, 5);
+		$I->wait(1);
 		$I->see(SubsView::$msg_changed_mailaddress);
 
 		SubsView::activate($I, SubsView::$mail_fill_2);

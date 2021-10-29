@@ -180,7 +180,7 @@ class SubscribeModuleCest
 
 		Helper::presetModuleOptions($I);
 		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
-		$I->setManifestOption('mod_bwpostman', 'layout', '_:modal');
+		$I->setManifestOption('mod_bwpostman', 'layout', '_:modal-default');
 		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
 
 		$this->subscribeByModule($I, 'small');
@@ -1068,8 +1068,7 @@ class SubscribeModuleCest
 		{
 			$I->scrollTo(Helper::$mod_gender_select_id, 0, -100);
 			$I->wait(1);
-			$I->clickAndWait(Helper::$mod_gender_select_id, 1);
-			$I->click(Helper::$mod_gender_female);
+			$I->selectOption(Helper::$mod_gender_select_id, '1');
 		}
 
 		if ($options->show_firstname_field || $options->firstname_field_obligation)

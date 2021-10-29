@@ -251,7 +251,7 @@ class SubscribeModuleCest
 		Helper::presetModuleOptions($I);
 		$options = $I->getManifestOptions('mod_bwpostman');
 		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
-		$I->setManifestOption('mod_bwpostman', 'layout', '_:modal');
+		$I->setManifestOption('mod_bwpostman', 'layout', '_:modal-default');
 		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
 
 		$I->amOnPage(SubsView::$register_url);
@@ -379,14 +379,14 @@ class SubscribeModuleCest
 		$I->scrollTo(Helper::$mod_button_register, 0, -100);
 		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElementVisible(SubsView::$errorContainerContent, 2);
+		$I->waitForElementVisible(SubsView::$errorContainerContentModal, 2);
 
-		$I->see(Helper::$invalid_select_mailaddress_mod, sprintf(Helper::$errorModulBody, 4));
-		$I->see(Helper::$invalid_select_newsletter_mod, sprintf(Helper::$errorModulBody, 5));
-		$I->see(Helper::$invalid_field_firstname_mod, sprintf(Helper::$errorModulBody, 1));
-		$I->see(Helper::$invalid_field_name_mod, sprintf(Helper::$errorModulBody, 2));
-		$I->see(sprintf(Helper::$invalid_field_special_mod, $options->special_label), sprintf(Helper::$errorModulBody, 3));
-		$I->see(SubsView::$popup_accept_disclaimer, sprintf(Helper::$errorModulBody, 6));
+		$I->see(SubsView::$popup_valid_mailaddress, Helper::$errorModulBody);
+		$I->see(Helper::$invalid_select_newsletter_mod_pop, Helper::$errorModulBody);
+		$I->see(Helper::$invalid_field_firstname_mod_pop, Helper::$errorModulBody);
+		$I->see(Helper::$invalid_field_name_mod_pop, Helper::$errorModulBody);
+		$I->see(sprintf(Helper::$invalid_field_special_mod_pop, $options->special_label), Helper::$errorModulBody);
+		$I->see(SubsView::$popup_accept_disclaimer, Helper::$errorModulBody);
 
 //		$I->wait(1);
 //		$I->click(Helper::$errorModalFooterButton);
@@ -604,7 +604,7 @@ class SubscribeModuleCest
 		$I->click(Helper::$mod_disclaimer_link_modal);
 		$I->wait(2);
 		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
-		$I->switchToIframe('Information');
+		$I->switchToIframe('BwpFrame');
 		$I->see(Helper::$mod_disclaimer_url_text);
 		$I->switchToIframe();
 		$I->click(Helper::$mod_disclaimer_modal_close);
@@ -620,7 +620,7 @@ class SubscribeModuleCest
 		$I->click(Helper::$mod_disclaimer_link_modal);
 		$I->wait(2);
 		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
-		$I->switchToIframe('Information');
+		$I->switchToIframe('BwpFrame');
 		$I->see(Helper::$mod_disclaimer_article_text);
 		$I->switchToIframe();
 		$I->click(Helper::$mod_disclaimer_modal_close);
@@ -636,7 +636,7 @@ class SubscribeModuleCest
 		$I->click(Helper::$mod_disclaimer_link_modal);
 		$I->wait(2);
 		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
-		$I->switchToIframe('Information');
+		$I->switchToIframe('BwpFrame');
 		$I->see(Helper::$mod_disclaimer_menuitem_text);
 		$I->switchToIframe();
 		$I->click(Helper::$mod_disclaimer_modal_close);
@@ -906,11 +906,11 @@ class SubscribeModuleCest
 		$I->scrollTo(Helper::$mod_button_register, 0, -100);
 		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElementVisible(sprintf(Helper::$errorModulBody, 1), 2);
+		$I->waitForElementVisible(sprintf(Helper::$errorModulBodyAlert, 1), 2);
 
 
 		// Check error message first name
-		$I->see(SubsView::$errorAbuseFirstName, sprintf(Helper::$errorModulBody, 1));
+		$I->see(SubsView::$errorAbuseFirstName, sprintf(Helper::$errorModulBodyAlert, 1));
 
 		// Fill needed fields
 		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_1);
@@ -929,10 +929,10 @@ class SubscribeModuleCest
 		$I->scrollTo(Helper::$mod_button_register, 0, -100);
 		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElementVisible(sprintf(Helper::$errorModulBody, 1), 2);
+		$I->waitForElementVisible(sprintf(Helper::$errorModulBodyAlert, 1), 2);
 
 		// Check error message last name
-		$I->see(SubsView::$errorAbuseLastName, sprintf(Helper::$errorModulBody, 1));
+		$I->see(SubsView::$errorAbuseLastName, sprintf(Helper::$errorModulBodyAlert, 1));
 
 		// Fill needed fields
 		$I->fillField(Helper::$mod_mail, SubsView::$mail_fill_1);
@@ -951,7 +951,7 @@ class SubscribeModuleCest
 		$I->scrollTo(Helper::$mod_button_register, 0, -100);
 		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElementVisible(sprintf(Helper::$errorModulBody, 1), 2);
+		$I->waitForElementVisible(sprintf(Helper::$errorModulBodyAlert, 1), 2);
 
 		// Check error message special
 		if ($options->special_label === '')
@@ -960,7 +960,7 @@ class SubscribeModuleCest
 		}
 
 		$I->see('danger', SubsView::$errorContainerHeader);
-		$I->see(sprintf(SubsView::$errorAbuseSpecial, $options->special_label), sprintf(Helper::$errorModulBody, 1));
+		$I->see(sprintf(SubsView::$errorAbuseSpecial, $options->special_label), sprintf(Helper::$errorModulBodyAlert, 1));
 
 		// Reset field options
 		$I->setManifestOption('mod_bwpostman', 'show_name_field', $showName);
@@ -1003,10 +1003,10 @@ class SubscribeModuleCest
 		$I->scrollTo(Helper::$mod_button_register, 0, -100);
 		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElementVisible(sprintf(Helper::$errorModulBody, 1), 2);
+		$I->waitForElementVisible(sprintf(Helper::$errorModulBodyAlert, 1), 2);
 
 		$I->see('danger', SubsView::$errorContainerHeader);
-		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), sprintf(Helper::$errorModulBody, 1));
+		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), sprintf(Helper::$errorModulBodyAlert, 1));
 
 		// Set unreachable mailbox
 		$I->expectTo('see error message invalid email address (mailbox)');
@@ -1015,10 +1015,10 @@ class SubscribeModuleCest
 		$I->scrollTo(Helper::$mod_button_register, 0, -100);
 		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElementVisible(sprintf(Helper::$errorModulBody, 1), 2);
+		$I->waitForElementVisible(sprintf(Helper::$errorModulBodyAlert, 1), 2);
 
 		$I->see('danger', SubsView::$errorContainerHeader);
-		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), sprintf(Helper::$errorModulBody, 1));
+		$I->see(sprintf(SubsView::$errorAbuseEmail, $options->special_label), sprintf(Helper::$errorModulBodyAlert, 1));
 
 		// Reset field options
 		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', $verify);
@@ -1057,7 +1057,7 @@ class SubscribeModuleCest
 			}
 			elseif ($modal === 'big')
 			{
-				$grabField = Helper::$module_item_text_identifier . "/span/span";
+				$grabField = Helper::$module_item_text_identifier . "/label/span";
 				$itemText = $I->grabTextFrom($grabField);
 			}
 

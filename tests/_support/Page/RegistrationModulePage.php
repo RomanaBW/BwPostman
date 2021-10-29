@@ -175,7 +175,13 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $errorModulBody    = "//*/joomla-alert/div/div[%s]";
+	public static $errorModulBody    = "//*/div[@id='bwp_mod_wrapper']";
+
+	/* @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $errorModulBodyAlert    = "//*/joomla-alert/div/div[%s]";
 
 	/**
 	 * @var string
@@ -300,49 +306,49 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_firstname_star    = "//*[@id='bwp_mod_form_firstnamefield']/span/i[@class='bwp_icon-star']";
+	public static $mod_firstname_star    = "//*[@id='bwp_mod_form_firstnamefield']/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_name_star    = "//*[@id='bwp_mod_form_namefield']/span/i[@class='bwp_icon-star']";
+	public static $mod_name_star    = "//*[@id='bwp_mod_form_namefield']/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_special_star    = "//*[@id='bwp_mod_form_specialfield']/span/i[@class='bwp_icon-star']";
+	public static $mod_special_star    = "//*[@id='bwp_mod_form_specialfield']/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_firstname_star_popup    = "//*[@id='bwp_mod_form_firstnamefield']/span/i[@class='bwp_icon-star']";
+	public static $mod_firstname_star_popup    = "//*[@id='bwp_mod_form_firstnamefield']/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_name_star_popup    = "//*[@id='bwp_mod_form_namefield']/span/i[@class='bwp_icon-star']";
+	public static $mod_name_star_popup    = "//*[@id='bwp_mod_form_namefield']/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_special_star_popup    = "//*[@id='bwp_mod_form_specialfield']/span/i[@class='bwp_icon-star']";
+	public static $mod_special_star_popup    = "//*[@id='bwp_mod_form_specialfield']/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_mailaddress_star_popup    = "//*[@id='bwp_mod_form_emailfield']/span/i[@class='bwp_icon-star']";
+	public static $mod_mailaddress_star_popup    = "//*[@id='bwp_mod_form_emailfield']/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
@@ -356,28 +362,28 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_mailaddress_star    = "//*[@id='bwp_mod_form_emailfield']/span/i[@class='bwp_icon-star']";
+	public static $mod_mailaddress_star    = "//*[@id='bwp_mod_form_emailfield']/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_ml_select_star    = "//*[@id='bwp_mod_form_lists']/sup/i[@class='bwp_icon-star']";
+	public static $mod_ml_select_star    = "//*[@id='bwp_mod_form_lists']/sup/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_disclaimer_star    = "//*[@id='bwp_mod_form_disclaimer']/span/sup/i[@class='bwp_icon-star']";
+	public static $mod_disclaimer_star    = "//*[@id='bwp_mod_form_disclaimer']/span/sup/i[@class='icon-star']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_security_star    = "//*/p[contains(@class, 'question')]/span/i[@class='bwp_icon-star']";
+	public static $mod_security_star    = "//*/p[contains(@class, 'question')]/span/i[@class='icon-star']";
 
 	/**
 	 * @var string
@@ -447,14 +453,14 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_disclaimer_modal_identifier    = "//*/div[@id='DisclaimerModModal']/div/div/div[contains(@class,'modal-body')]";
+	public static $mod_disclaimer_modal_identifier    = "//*/div[@id='bwp_mod_modal-content']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_disclaimer_modal_close    = "//*/div[@id='DisclaimerModModal']/div/div/div[contains(@class,'modal-header')]/button";
+	public static $mod_disclaimer_modal_close    = "//*/div[@id='bwp_mod_Modal']/div/span[contains(@class,'bwp_mod_close')]";
 
 	/**
 	 * @var string
@@ -489,7 +495,7 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_security_question_error    = "Spam question: You entered the wrong result!";
+	public static $mod_security_question_error    = "You have to enter the result of the spam question.";
 
 	/**
 	 * @var string
@@ -533,21 +539,21 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $module_item_identifier = "//*[@class='a_mailinglist_item_0']";
+	public static $module_item_identifier = "//*[contains(@class,'a_mailinglist_item_0')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $module_item_text_identifier = "//*[@class='a_mailinglist_item_0']";
+	public static $module_item_text_identifier = "//*[contains(@class,'a_mailinglist_item_0')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $module_item_br = "//*[@class='a_mailinglist_item_0']/span/br";
+	public static $module_item_br = "//*[contains(@class,'a_mailinglist_item_0')]/span/br";
 
 	/**
 	 * @var string

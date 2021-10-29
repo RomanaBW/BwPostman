@@ -435,6 +435,13 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
+	public static $errorContainerContentModal         = "//*[@id='bwp_mod_modal-content'][contains(@class, 'bwp-err')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
 	public static $firstname_star    = "//*/p[contains(@class, 'user_firstname')]/span/i[@class='icon-star']";
 
 	/**

@@ -328,8 +328,8 @@ class SubscribeModuleCest
 		$I->expectTo('see get edit link page');
 		$I->amOnPage(SubsView::$register_url);
 
-		$I->scrollTo(Helper::$mod_button_edit,0, -100);
-		$I->wait(1);
+		$I->scrollTo(Helper::$mod_button_edit,0, -150);
+		$I->wait(2);
 		$I->click(Helper::$mod_button_edit);
 		$I->waitForElement(SubsView::$mail, 3);
 		$I->see(SubsView::$edit_get_text);

@@ -801,7 +801,7 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $popup_select_newsletter          = 'You have to select at least one newsletter for finishing up your registration.';
+	public static $popup_select_newsletter          = 'You have to select at least one mailinglist for finishing up your registration.';
 
 	/**
 	 * @var string

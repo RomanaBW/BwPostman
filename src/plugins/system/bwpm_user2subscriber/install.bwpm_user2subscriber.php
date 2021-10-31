@@ -30,6 +30,8 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -116,5 +118,41 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 		}
 
 		return $version;
+	}
+
+	/**
+	 * Method to remove obsolete files and folders
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	private function removeObsoleteFilesAndFolders()
+	{
+		$plgFilesArray = array(
+			'helpers/bwpm_user2subscriberhelper.php',
+		);
+
+		foreach ($plgFilesArray as $file)
+		{
+			if (File::exists(JPATH_ROOT . '/plugins/system/bwpm_user2subscriber/' . $file))
+			{
+				File::delete(JPATH_ROOT . '/plugins/system/bwpm_user2subscriber/' . $file);
+			}
+		}
+
+		$plgFoldersArray = array(
+		);
+
+		foreach ($plgFoldersArray as $folder)
+		{
+			if (Folder::exists(JPATH_ROOT . '/plugins/system/bwpm_user2subscriber/' . $folder))
+			{
+				Folder::delete(JPATH_ROOT . '/plugins/system/bwpm_user2subscriber/' . $folder);
+			}
+		}
+
 	}
 }

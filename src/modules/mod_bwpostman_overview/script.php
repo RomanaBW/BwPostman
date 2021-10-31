@@ -228,6 +228,16 @@ class Mod_BwPostman_OverviewInstallerScript
 	{
 		$feFilesArray = array(
 			'helper.php',
+			'css/bwpostman_overview.css',
+			'css/install.css',
+			'css/index.html',
+			'images/bw_header.png',
+			'images/icon-48-bwpostman.png',
+			'images/icon-48-forum.png',
+			'images/icon-48-manual.png',
+			'images/verlauf_gelb_2.png',
+			'images/index.html',
+			'js/mod_archive.js',
 		);
 
 		foreach ($feFilesArray as $file)
@@ -238,7 +248,10 @@ class Mod_BwPostman_OverviewInstallerScript
 			}
 		}
 
-		$feFoldersArray = array(//			'',
+		$feFoldersArray = array(
+			'css',
+			'images',
+			'js',
 		);
 
 		foreach ($feFoldersArray as $folder)
@@ -246,6 +259,30 @@ class Mod_BwPostman_OverviewInstallerScript
 			if (Folder::exists(JPATH_ROOT . '/modules/mod_bwpostman_overview/' . $folder))
 			{
 				Folder::delete(JPATH_ROOT . '/modules/mod_bwpostman_overview/' . $folder);
+			}
+		}
+
+		$mediaFilesArray = array(
+			'js/mod_archive.js',
+		);
+
+		foreach ($mediaFilesArray as $file)
+		{
+			if (File::exists(JPATH_ROOT . '/media/mod_bwpostman_overview/' . $file))
+			{
+				File::delete(JPATH_ROOT . '/media/mod_bwpostman_overview/' . $file);
+			}
+		}
+
+		$mediaFoldersArray = array(
+				'js',
+		);
+
+		foreach ($mediaFoldersArray as $folder)
+		{
+			if (Folder::exists(JPATH_ROOT . '/media/mod_bwpostman_overview/' . $folder))
+			{
+				Folder::delete(JPATH_ROOT . '/media/mod_bwpostman_overview/' . $folder);
 			}
 		}
 	}

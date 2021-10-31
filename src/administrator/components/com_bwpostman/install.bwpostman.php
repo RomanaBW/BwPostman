@@ -405,6 +405,11 @@ class com_bwpostmanInstallerScript
 
 			$this->logger->addEntry(new LogEntry("Postflight removeObsoleteFilesAndFolders passed", BwLogger::BW_DEBUG, $this->log_cat));
 
+			// remove obsolete extensions
+			$this->removeObsoleteExtensions($parent);
+
+			$this->logger->addEntry(new LogEntry("Postflight removeObsoleteExtensions passed", BwLogger::BW_DEBUG, $this->log_cat));
+
 			// ensure SQL update files are processed
 			if ($this->processSqlUpdate($oldRelease) === false)
 			{
@@ -1301,10 +1306,6 @@ class com_bwpostmanInstallerScript
 			'assets/js/bwpm_do_restore.js',
 			'assets/js/bwpm_maintenance_doAjax.js',
 			'assets/js/bwpm_update_checksave.js',
-//			'assets/js/bwpm_.js',
-//			'assets/js/bwpm_tabshelper.js',
-//			'assets/js/bwpm_tabshelper.js',
-//			'assets/js/bwpm_tabshelper.js',
 		);
 
 		foreach ($beFilesArray as $file)
@@ -1326,15 +1327,20 @@ class com_bwpostmanInstallerScript
 			}
 		}
 
-//		$mediaFilesArray  = array();
-//
-//		foreach ($mediaFilesArray as $file)
-//		{
-//			if (File::exists(JPATH_ROOT . '/media/com_bwpostman/' . $file))
-//			{
-//				File::delete(JPATH_ROOT . '/media/com_bwpostman/' . $file);
-//			}
-//		}
+		$mediaFilesArray  = array(
+			'css/iconfonts.css',
+			'css/admin-bwpostman.css',
+			'css/admin-bwpostman_backend.css',
+			'css/install_j4.css',
+		);
+
+		foreach ($mediaFilesArray as $file)
+		{
+			if (File::exists(JPATH_ROOT . '/media/com_bwpostman/' . $file))
+			{
+				File::delete(JPATH_ROOT . '/media/com_bwpostman/' . $file);
+			}
+		}
 
 //		$imagesFilesArray = array();
 //
@@ -1389,6 +1395,28 @@ class com_bwpostmanInstallerScript
 		{
 			$this->removeFilesAndFoldersRecursive(JPATH_ROOT . $path);
 		}
+	}
+
+	/**
+	 * Method to remove obsolete extensions
+	 *
+	 * @param InstallerAdapter $parent
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	private function removeObsoleteExtensions(InstallerAdapter $parent)
+	{
+		// Get extension id
+		$extId = $this->getExtensionId(0, 'bwpm_mediaoverride');
+
+		$this->logger->addEntry(new LogEntry(sprintf("Postflight removeObsoleteExtensions ID: %s", $extId), BwLogger::BW_DEBUG, $this->log_cat));
+
+		// Uninstall extension
+		$parent->uninstall($extId);
 	}
 
 	/**
@@ -2202,6 +2230,7 @@ EOS;
 	/**
 	 *
 	 * @param integer $clientId
+	 * @param string  $extensionName
 	 *
 	 * @return string
 	 *
@@ -2209,7 +2238,7 @@ EOS;
 	 *
 	 * @since version
 	 */
-	private function getExtensionId(int $clientId)
+	private function getExtensionId(int $clientId, string $extensionName = 'com_bwpostman')
 	{
 		$db    = Factory::getDbo();
 		$result = 0;
@@ -2217,11 +2246,13 @@ EOS;
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('extension_id'));
 		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_bwpostman'));
+		$query->where($db->quoteName('element') . ' = ' . $db->quote($extensionName));
 		$query->where($db->quoteName('client_id') . ' = ' . $db->quote($clientId));
 
 		try
 		{
+			$this->logger->addEntry(new LogEntry(sprintf("Postflight getExtensionId Query: %s", (string)$query), BwLogger::BW_DEBUG, $this->log_cat));
+
 			$db->setQuery($query);
 
 			$result = $db->loadResult();

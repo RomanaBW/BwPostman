@@ -225,6 +225,26 @@ class Mod_BwPostmanInstallerScript
 	{
 		$feFilesArray = array(
 			'helper.php',
+			'css/bwpm_register.css',
+			'css/bwpm_register_bs.css',
+			'css/bwpm_register_bs2.css',
+			'css/bwpm_register_bs4.css',
+			'css/bwpm_register_modal.css',
+			'css/bwpostman.css',
+			'css/iconfonts.css',
+			'css/install.css',
+			'css/index.html',
+			'images/bw_header.png',
+			'images/glyphicons-halflings-white.png',
+			'images/glyphicons-halflings.png',
+			'images/icon-48-bwpostman.png',
+			'images/icon-48-forum.png',
+			'images/icon-48-manual.png',
+			'images/verlauf_gelb_2.png',
+			'images/index.html',
+			'tmpl/modal.php',
+			'tmpl/modal-big.php',
+			'tmpl/bootstrap.php',
 		);
 
 		foreach ($feFilesArray as $file)
@@ -235,7 +255,9 @@ class Mod_BwPostmanInstallerScript
 			}
 		}
 
-		$feFoldersArray = array(//			'',
+		$feFoldersArray = array(
+			'css',
+			'images',
 		);
 
 		foreach ($feFoldersArray as $folder)
@@ -243,6 +265,30 @@ class Mod_BwPostmanInstallerScript
 			if (Folder::exists(JPATH_ROOT . '/modules/mod_bwpostman/' . $folder))
 			{
 				Folder::delete(JPATH_ROOT . '/modules/mod_bwpostman/' . $folder);
+			}
+		}
+
+		$mediaFilesArray = array(
+			'css/bwpm_register_bs.css',
+			'css/iconfonts.css',
+		);
+
+		foreach ($mediaFilesArray as $file)
+		{
+			if (File::exists(JPATH_ROOT . '/media/mod_bwpostman/' . $file))
+			{
+				File::delete(JPATH_ROOT . '/media/mod_bwpostman/' . $file);
+			}
+		}
+
+		$mediaFoldersArray = array(
+		);
+
+		foreach ($mediaFoldersArray as $folder)
+		{
+			if (Folder::exists(JPATH_ROOT . '/media/mod_bwpostman/' . $folder))
+			{
+				Folder::delete(JPATH_ROOT . '/media/mod_bwpostman/' . $folder);
 			}
 		}
 	}

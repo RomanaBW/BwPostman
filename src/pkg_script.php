@@ -28,6 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -101,6 +102,27 @@ class Pkg_BwPostmanInstallerScript
 	}
 
 	/**
+	 * Called before any type of action
+	 *
+	 * @param string           $type Which action is happening (install|uninstall|discover_install|update)
+	 * @param InstallerAdapter $installer
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.2.1
+	 */
+
+	public function preflight(string $type, InstallerAdapter $installer): bool
+	{
+		// remove obsolete extensions
+//		$this->removeObsoleteExtensions($installer);
+
+		return true;
+	}
+
+	/**
 	 * Called after any type of action
 	 *
 	 * @param string $type Which action is happening (install|uninstall|discover_install)
@@ -114,8 +136,6 @@ class Pkg_BwPostmanInstallerScript
 
 	public function postflight(string $type, $installer): bool
 	{
-		$update = false;
-
 		if ($type == 'update')
 		{
 			$oldRelease	= Factory::getApplication()->getUserState('com_bwpostman.update.oldRelease', '');
@@ -139,6 +159,102 @@ class Pkg_BwPostmanInstallerScript
 
 		return true;
   }
+
+	/**
+	 * Method to remove obsolete extensions
+	 *
+	 * @param InstallerAdapter $parent
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	private function removeObsoleteExtensions(InstallerAdapter $parent)
+	{
+		// Get extension id, unlock extension
+		$extId = $this->getExtensionId(0, 'bwpm_mediaoverride');
+		$this->unlockExtension('bwpm_mediaoverride');
+
+//		$this->logger->addEntry(new LogEntry(sprintf("Postflight removeObsoleteExtensions ID: %s", $extId), BwLogger::BW_DEBUG, $this->log_cat));
+
+		// Uninstall extension
+		$parent->uninstall($extId);
+	}
+
+	/**
+	 * Get id of installed extension
+	 *
+	 * @param integer $clientId
+	 * @param string  $extensionName
+	 *
+	 * @return string
+	 *
+	 * @throws Exception
+	 *
+	 * @since version
+	 */
+	private function getExtensionId(int $clientId, string $extensionName = 'com_bwpostman')
+	{
+		$db    = Factory::getDbo();
+		$result = 0;
+
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('extension_id'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element') . ' = ' . $db->quote($extensionName));
+		$query->where($db->quoteName('client_id') . ' = ' . $db->quote($clientId));
+
+		try
+		{
+//			$this->logger->addEntry(new LogEntry(sprintf("Postflight getExtensionId Query: %s", (string)$query), BwLogger::BW_DEBUG, $this->log_cat));
+
+			$db->setQuery($query);
+
+			$result = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Unlock extension of package
+	 *
+	 * @param string  $extensionName
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 4.0.0
+	 */
+	private function unlockExtension(string $extensionName)
+	{
+		$db = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->update($db->quoteName('#__extensions'));
+		$query->set($db->quoteName('locked') . " = " .  '0');
+		$query->set($db->quoteName('package_id') . " = " .  '0');
+		$query->where($db->quoteName('element') . ' = ' . $db->quote($extensionName));
+
+		try
+		{
+//			$this->logger->addEntry(new LogEntry(sprintf("Postflight unlockExtension Query: %s", (string)$query), BwLogger::BW_DEBUG, $this->log_cat));
+
+			$db->setQuery($query);
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+	}
 
 	/**
 	 * shows the HTML after installation/update

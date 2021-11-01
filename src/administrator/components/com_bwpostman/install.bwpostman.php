@@ -405,11 +405,6 @@ class com_bwpostmanInstallerScript
 
 			$this->logger->addEntry(new LogEntry("Postflight removeObsoleteFilesAndFolders passed", BwLogger::BW_DEBUG, $this->log_cat));
 
-			// remove obsolete extensions
-			$this->removeObsoleteExtensions($parent);
-
-			$this->logger->addEntry(new LogEntry("Postflight removeObsoleteExtensions passed", BwLogger::BW_DEBUG, $this->log_cat));
-
 			// ensure SQL update files are processed
 			if ($this->processSqlUpdate($oldRelease) === false)
 			{
@@ -1398,28 +1393,6 @@ class com_bwpostmanInstallerScript
 	}
 
 	/**
-	 * Method to remove obsolete extensions
-	 *
-	 * @param InstallerAdapter $parent
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   4.0.0
-	 */
-	private function removeObsoleteExtensions(InstallerAdapter $parent)
-	{
-		// Get extension id
-		$extId = $this->getExtensionId(0, 'bwpm_mediaoverride');
-
-		$this->logger->addEntry(new LogEntry(sprintf("Postflight removeObsoleteExtensions ID: %s", $extId), BwLogger::BW_DEBUG, $this->log_cat));
-
-		// Uninstall extension
-		$parent->uninstall($extId);
-	}
-
-	/**
 	 * Method to remove obsolete files and folders
 	 *
 	 * @param string $path  can be file or folder
@@ -2228,6 +2201,7 @@ EOS;
 	}
 
 	/**
+	 * Get id of installed extension
 	 *
 	 * @param integer $clientId
 	 * @param string  $extensionName

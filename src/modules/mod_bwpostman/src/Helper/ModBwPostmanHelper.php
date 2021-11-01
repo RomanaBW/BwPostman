@@ -31,11 +31,14 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
+use JLoader;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use RuntimeException;
 use stdClass;
+
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 
 /**
  * Class ModBwPostmanHelper

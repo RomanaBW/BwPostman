@@ -38,6 +38,8 @@ use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+
 if (!class_exists('vmUserfieldPlugin'))
 {
 	require(JPATH_VM_PLUGINS . '/vmuserfieldtypeplugin.php');

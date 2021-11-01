@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 use BoldtWebservice\Component\BwPostman\Site\Model\NewslettersModel;
 use DateTime;
 use Exception;
+use JLoader;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
@@ -42,6 +43,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use RuntimeException;
 use stdClass;
+
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 
 /**
  * Class ModBwPostmanOverviewHelper

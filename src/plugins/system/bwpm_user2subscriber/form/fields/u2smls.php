@@ -32,6 +32,8 @@ use Joomla\CMS\Form\Field\CheckboxesField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormHelper;
 
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+
 FormHelper::loadFieldClass('checkboxes');
 
 /**

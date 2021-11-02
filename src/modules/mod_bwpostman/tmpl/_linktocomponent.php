@@ -29,16 +29,15 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\HTML\HTMLHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
-// Depends on jQuery UI
-HTMLHelper::_('bootstrap.tooltip');
-
+$itemid = BwPostmanSubscriberHelper::getMenuItemid('register');
 ?>
 
 <div id="bwp_mod_link_to_edit">
 	<p id="linktoeditform">
-		<a href="<?php echo Route::_('index.php?option=com_bwpostman&amp;view=edit&amp;Itemid=' . $itemid); ?>">
+		<a class="btn btn-default btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_bwpostman&amp;view=edit&amp;Itemid=' . $itemid); ?>"
+				title="<?php echo Text::_('MOD_BWPOSTMANLINK_TO_EDITLINKFORM'); ?>">
 			<?php echo Text::_('MOD_BWPOSTMANLINK_TO_EDITLINKFORM'); ?>
 		</a>
 	</p>

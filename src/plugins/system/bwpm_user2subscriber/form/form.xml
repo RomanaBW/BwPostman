@@ -108,7 +108,7 @@
 			labelclass="control-label bwpm-u2s-fields-toggle"
 			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_ML_AVAILABLE_DESC"
 			multiple="true"
-			class="inputbox mailinglists form-validate"
+			class="mailinglists form-validate"
 			required="false"
 		>
 		</field>

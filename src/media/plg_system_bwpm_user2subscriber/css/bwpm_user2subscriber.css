@@ -105,6 +105,10 @@ fieldset.mailinglists label {
 	padding-left: 20px;
 }
 
+#jform_bwpm_user2subscriber_mailinglists div.form-check-inline {
+	display: block;!important;
+}
+
 label.checkbox.disclaimer {
 	padding-left: 20px;
 }

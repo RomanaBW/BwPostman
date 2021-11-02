@@ -35,8 +35,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Installer\InstallerAdapter;
 
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
-
 /**
  * Script file of BwPostman module
  *
@@ -146,6 +144,8 @@ class Mod_BwPostmanInstallerScript
 		// abort if the component being installed is not newer than the currently installed version
 		if ($type == 'update')
 		{
+			JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+
 			$oldRelease = $this->getManifestVar('version');
 			$app->setUserState('mod_bwpostman.update.oldRelease', $oldRelease);
 

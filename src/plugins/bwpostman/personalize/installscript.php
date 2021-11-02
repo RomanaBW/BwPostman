@@ -30,8 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
-
 /**
  * Script file of BwPostman module
  *
@@ -95,6 +93,8 @@ class PlgBwPostmanPersonalizeInstallerScript
 		// We only need to perform this if the extension is being installed, not update
 		if ($type == 'install')
 		{
+			JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+
 			$db = BwPostmanHelper::getDbo();
 			$query = $db->getQuery(true);
 

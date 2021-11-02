@@ -34,8 +34,6 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
 
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
-
 /**
  * Installation script for the plugin
  *
@@ -112,6 +110,8 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 */
 	protected function getComponentVersion(): string
 	{
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+
 		$version    = '0.0.0';
 		$_db        = BwPostmanHelper::getDbo();
 		$query      = $_db->getQuery(true);

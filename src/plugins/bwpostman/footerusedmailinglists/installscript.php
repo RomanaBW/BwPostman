@@ -32,8 +32,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Installer\InstallerAdapter;
 
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
-
 /**
  * Script file of BwPostman module
  *
@@ -148,6 +146,8 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 		// Abort if BwPostman is not installed or not at least version 2.3.0
 		if ($type == 'install')
 		{
+			JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+
 			$bwpmVersion = $this->getManifestVar('version', 'com_bwpostman');
 
 			if ($bwpmVersion === false)
@@ -165,6 +165,8 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 		// Abort if the extension being installed is older than the currently installed version
 		if ($type == 'update')
 		{
+			JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+
 			$oldRelease = $this->getManifestVar('version', 'footerusedmailinglists');
 
 			if (version_compare( $this->release, $oldRelease, 'lt')) {
@@ -191,6 +193,8 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 		// We only need to perform this if the extension is being installed, not updated
 		if ($type == 'install')
 		{
+			JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+
 			$db = BwPostmanHelper::getDbo();
 			$query = $db->getQuery(true);
 

@@ -83,6 +83,25 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	}
 
 	/**
+	 * Method to run after an install/update/uninstall method
+	 *
+	 * @param string $type   is the type of change (install, update or discover_install)
+	 * @param object $parent is the class calling this method
+	 *
+	 * @return void
+	 *
+	 * @since     0.9.8
+	 */
+	public function postflight(string $type, object $parent)
+	{
+		if ($type == 'update')
+		{
+			// remove obsolete files
+			$this->removeObsoleteFilesAndFolders();
+		}
+	}
+
+	/**
 	 * Method to get component version
 	 *
 	 * @return string

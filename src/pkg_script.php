@@ -116,9 +116,6 @@ class Pkg_BwPostmanInstallerScript
 
 	public function preflight(string $type, InstallerAdapter $installer): bool
 	{
-		// remove obsolete extensions
-//		$this->removeObsoleteExtensions($installer);
-
 		return true;
 	}
 
@@ -157,12 +154,16 @@ class Pkg_BwPostmanInstallerScript
 			$this->release = $manifest->version;
 		}
 
+		// remove obsolete
+		$this->removeObsoleteExtensions($type, $installer);
+
 		return true;
   }
 
 	/**
 	 * Method to remove obsolete extensions
 	 *
+	 * @param string           $type Which action is happening (install|uninstall|discover_install|update)
 	 * @param InstallerAdapter $parent
 	 *
 	 * @return void
@@ -171,16 +172,36 @@ class Pkg_BwPostmanInstallerScript
 	 *
 	 * @since   4.0.0
 	 */
-	private function removeObsoleteExtensions(InstallerAdapter $parent)
+	private function removeObsoleteExtensions(string $type, InstallerAdapter $parent)
 	{
-		// Get extension id, unlock extension
-		$extId = $this->getExtensionId(0, 'bwpm_mediaoverride');
-		$this->unlockExtension('bwpm_mediaoverride');
+		if ($type == 'update')
+		{
+			$obsoleteExtensions = array('bwpm_mediaoverride');
+			$obsoleteFolders = array('bwpm_mediaoverride' => array(
+				'/plugins/system/bwpm_mediaoverride',
+			));
+			$oldRelease = Factory::getApplication()->getUserState('com_bwpostman.update.oldRelease', '');
 
-//		$this->logger->addEntry(new LogEntry(sprintf("Postflight removeObsoleteExtensions ID: %s", $extId), BwLogger::BW_DEBUG, $this->log_cat));
+			if (version_compare($oldRelease, '4.0.0', 'lt'))
+			{
+				foreach ($obsoleteExtensions as $obsoleteExtension)
+				{
+					$extId = $this->getExtensionId(0, $obsoleteExtension);
 
-		// Uninstall extension
-		$parent->uninstall($extId);
+					// Remove extension files
+					if ($extId)
+					{
+						// Remove extension from extension table
+						$this->removeFromExtensionsTable($obsoleteExtension);
+
+						foreach ($obsoleteFolders[$obsoleteExtension] as $folder)
+						{
+							$this->removeFilesAndFoldersRecursive(JPATH_ROOT . $folder);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -193,7 +214,7 @@ class Pkg_BwPostmanInstallerScript
 	 *
 	 * @throws Exception
 	 *
-	 * @since version
+	 * @since 4.0.0
 	 */
 	private function getExtensionId(int $clientId, string $extensionName = 'com_bwpostman')
 	{
@@ -208,8 +229,6 @@ class Pkg_BwPostmanInstallerScript
 
 		try
 		{
-//			$this->logger->addEntry(new LogEntry(sprintf("Postflight getExtensionId Query: %s", (string)$query), BwLogger::BW_DEBUG, $this->log_cat));
-
 			$db->setQuery($query);
 
 			$result = $db->loadResult();
@@ -223,37 +242,68 @@ class Pkg_BwPostmanInstallerScript
 	}
 
 	/**
-	 * Unlock extension of package
+	 * Remove extension from extension table
 	 *
 	 * @param string  $extensionName
 	 *
-	 * @return void
+	 * @return boolean
 	 *
 	 * @throws Exception
 	 *
 	 * @since 4.0.0
 	 */
-	private function unlockExtension(string $extensionName)
+	private function removeFromExtensionsTable(string $extensionName): bool
 	{
 		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
+		$result = false;
 
-		$query->update($db->quoteName('#__extensions'));
-		$query->set($db->quoteName('locked') . " = " .  '0');
-		$query->set($db->quoteName('package_id') . " = " .  '0');
+		$query->delete($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . ' = ' . $db->quote($extensionName));
 
 		try
 		{
-//			$this->logger->addEntry(new LogEntry(sprintf("Postflight unlockExtension Query: %s", (string)$query), BwLogger::BW_DEBUG, $this->log_cat));
-
 			$db->setQuery($query);
-			$db->execute();
+			$result = $db->execute();
 		}
 		catch (RuntimeException $e)
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
+
+		return $result;
+	}
+
+	/**
+	 * Method to remove obsolete files and folders
+	 *
+	 * @param string $path  can be file or folder
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	private function removeFilesAndFoldersRecursive(string $path): bool
+	{
+		if (is_dir($path) === true)
+		{
+			$files = array_diff(scandir($path), array('.', '..'));
+
+			foreach ($files as $file)
+			{
+				$this->removeFilesAndFoldersRecursive(realpath($path) . '/' . $file);
+			}
+
+			return rmdir($path);
+		}
+		elseif (is_file($path) === true || is_file(realpath($path)))
+		{
+			return unlink($path);
+		}
+
+		return false;
 	}
 
 	/**

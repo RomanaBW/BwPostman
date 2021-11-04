@@ -2,8 +2,113 @@
 Changelog for BwPostman Component
 *********************************
 
+This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
+Many thanks to all those people who have contributed bug reports and code fixes.
+
+
 This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
+
+Version 4.0.0 released (2021-11-06)----
+
+New
++ Adjustments to run on Joomla!4 native
++ Support for Bootstrap 2, 3, 4 and 5 (cassiopeia) at front end
+
+
+Version 3.1.7 released (2021-10-02)----
+
+Bugfix
+# Ensure BwTimeControl settings are written as CDATA to backup
+# Ensure CDATA parts of backup are parsed correctly, even if there is only one dataset
+# Base64 encode keys of BwTimeControl settings while creating backup and decode at restoring
+
+
+Version 3.1.6 released (2021-08-21)----
+
+Improvement
+~ Smaller changes to manifest files of package and single parts to meet upgrade needs
+
+
+Version 3.1.5 released (2021-06-11)----
+
+New
++ Add option for selecting FE layout to component options
+
+Bugfix
+# Repair pagination at FE
+# Correct calculating of start date (February 29/30 problem) at module overview
+# Correct tooltip for publish at sent newsletter
+# Correct typos at language strings, add missing strings, remove icon of BwLibRegister
+
+Improvement
+~ Install plugin BwLibregister as first element of installation package
+~ Improve filter type at import of subscribers
+~ Improve selecting of table columns to handle with CDATA at saving tables
+
+
+Version 3.1.4 released (2021-03-05)----
+
+Bugfix
+# Check of tables after update did not work with Joomla 3.9.25
+
+
+Version 3.1.3 released (2021-02-26)----
+
+Bugfix
+# In some rare cases tables are lost at check and restore of tables
+# Link to manual at screen after installation/update didn't work correctly
+
+
+Version 3.1.2 released (2021-02-03)----
+
+Bugfix
+# Moving subscribers to another mailing list by batch processing did not work
+
+
+Version 3.1.1 released (2021-01-20)----
+
+Bugfix
+# CSS files of component not copied to media folder
+
+
+Version 3.1.0 released (2021-01-14)----
+
+New
++ Small and large modal layout and bootstrap layouts for registration module added
++ Call of css file moved to layout to enable separated css files for each layout
++ Support for bootstrap 2 + 4 added to front end files
+
+
+Version 3.0.3 released (2020-11-27)----
+
+Bugfix
+# Modal window changes of disclaimer to bootstrap reverted
+
+New
++ Provide custom header List-Unsubscribe for newsletter (email)
+
+
+Version 3.0.2 released (2020-11-17)----
+
+Bugfix
+# Make IDs of edit_mailformat and gender select list of registration module unique
+# Add required star to available mailinglists
+# Repair display of special field
+# Switch to get mailinglists by access level up to user access level (including lower levels)
+# Format gender select list
+# Repair saving of gender male
+
+
+Version 3.0.1 released (2020-09-08)----
+
+Bugfix
+# Correct query for attribute at restoring tables
+# Ignore and report unprocessable user groups at restore tables
+# Catch some exceptions to prevent white screen on dashboard
+
+Improvement
+~ Sending mails by BwPostman without correct sender now nearly impossible
 
 
 Version 3.0.0 released (2020-08-14)----

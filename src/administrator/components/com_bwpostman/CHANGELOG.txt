@@ -9,7 +9,7 @@ Version 4.0.0 released (2021-11-06)----
 
 New
 + Adjustments to run on Joomla!4 native
-+ Support for Bootstrap 2, 3, 4 and 5 (cassiopeia) at front end
++ Support for Bootstrap 2, 3, 4 and Cassiopeia at front end
 + Full support of the new routing for search engine friendly URLs
 
 

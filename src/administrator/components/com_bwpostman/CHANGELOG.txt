@@ -5,15 +5,12 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-
-This is a changelog for the Joomla!3.3.6+ component BwPostman
-Many thanks to all those people who have contributed bug reports and code fixes.
-
 Version 4.0.0 released (2021-11-06)----
 
 New
 + Adjustments to run on Joomla!4 native
 + Support for Bootstrap 2, 3, 4 and 5 (cassiopeia) at front end
++ Full support of the new routing for search engine friendly URLs
 
 
 Version 3.1.7 released (2021-10-02)----

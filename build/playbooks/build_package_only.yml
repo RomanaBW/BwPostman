@@ -18,8 +18,6 @@
       debug:
         msg: "Replace vars: {{ replace_vars }}"
 
-# @ToDo: Use synchronisation instead of copying
-
     - name: Ensure project working folder and sub folders exists part 1
       file:
         path: "{{ project_base_dir }}/src/{{ item.path }}"
@@ -40,19 +38,6 @@
         mode: 0777
         owner: romana
         group: users
-
-    - name: Copy source files to working dir
-      copy:
-        src: "{{ item.src }}"
-        dest: "{{ project_base_dir }}/src/{{ item.path }}"
-        mode: 0777
-        owner: romana
-        group: users
-      with_filetree:
-        - "{{ project_source_dir }}/src"
-      when: item.state == 'file'
-      loop_control:
-        label: "{{ item.path }}"
 
     - name: Copy manifest files to working dir
       copy:

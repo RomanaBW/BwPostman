@@ -246,10 +246,11 @@ class HtmlView extends BaseHtmlView
 		{
 			$subscriber = $this->get('Item');
 
-			if (!is_object($subscriber))
-			{
-				$subscriber = BwPostmanSubscriberHelper::fillVoidSubscriber();
-			}
+//			Remove this, because $this->>get('Item') already loads void subscriber
+//			if (!is_object($subscriber))
+//			{
+//				$subscriber = BwPostmanSubscriberHelper::fillVoidSubscriber();
+//			}
 		}
 
 		return $subscriber;

@@ -7,7 +7,7 @@ joomla_version: "{{ joomla_version_4 }}"
 
 j_version_short: "j4"
 
-bwpm_version: "4.0.0"
+bwpm_version: "4.0.1"
 
 vm_version: "3.4.2.9966"
 tcpdf_version: "1.0.5"

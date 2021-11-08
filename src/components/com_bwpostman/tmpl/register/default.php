@@ -120,7 +120,12 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation'))
 					{ ?>
 						<p class="user_firstname input<?php echo ($this->params->get('firstname_field_obligation')) ? '-append' : '' ?>">
-							<label id="firstnamemsg" for="firstname">
+							<label id="firstnamemsg" for="firstname"
+								<?php
+								if (in_array(411, $this->subscriber->missingValues))
+								{
+									echo "class=\"invalid\"";
+								} ?>>
 								<?php echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>:</label>
 							<?php // Is filling out the firstname field obligating
 							if ($this->params->get('firstname_field_obligation'))
@@ -132,10 +137,8 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 											echo $this->subscriber->firstname;
 										} ?>"
 										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+										if (in_array(411, $this->subscriber->missingValues))
 										{
-// Romana - ich kann nicht nachvollziehen, wann hier ein err_code ankommen soll.
-// In admin/src/Table/SubscriberTable.php wird zwar in Zeile 479 das Feld geprüft, aber kein $err gesetzt.
 											echo "invalid";
 										} ?>"
 										maxlength="50" /><span class="append-area"><i class="icon-star"></i></span>
@@ -146,7 +149,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								<input type="text" name="firstname" id="firstname" size="40"
 										value="<?php echo $this->subscriber->firstname; ?>"
 										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+										if (in_array(411, $this->subscriber->missingValues))
 										{
 											echo "invalid";
 										} ?>"
@@ -167,7 +170,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="user_name edit_name input<?php echo ($this->params->get('name_field_obligation')) ? '-append' : '' ?>">
 							<label id="namemsg" for="name"
 								<?php
-								if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+								if (in_array(412, $this->subscriber->missingValues))
 								{
 									echo "class=\"invalid\"";
 								} ?>>
@@ -178,7 +181,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								?>
 								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
 										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+										if (in_array(412, $this->subscriber->missingValues))
 										{
 											echo "invalid";
 										} ?>"
@@ -188,7 +191,8 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							{ ?>
 								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
 									class="<?php
-									if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1)) {
+									if (in_array(412, $this->subscriber->missingValues))
+									{
 										echo "invalid";
 									} ?>"
 									maxlength="50" /> <?php
@@ -216,7 +220,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="edit_special input<?php echo ($this->params->get('special_field_obligation')) ? '-append' : '' ?>">
 							<label id="specialmsg" class="hasTooltip" title="<?php echo $tip; ?>" for="special"
 								<?php
-								if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+								if (in_array(413, $this->subscriber->missingValues))
 								{
 									echo " class=\"invalid\"";
 								}
@@ -236,7 +240,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							{ ?>
 								<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
 										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+										if (in_array(413, $this->subscriber->missingValues))
 										{
 											echo "invalid";
 										} ?>"
@@ -246,7 +250,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							{ ?>
 								<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
 										class="<?php
-										if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code == 1))
+										if (in_array(413, $this->subscriber->missingValues))
 										{
 											echo "invalid";
 										} ?>"
@@ -261,7 +265,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					<p class="user_email edit_email input-append">
 						<label id="emailmsg" for="email"
 							<?php
-							if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1))
+							if (in_array(414, $this->subscriber->missingValues))
 							{
 								echo "class=\"invalid\"";
 							} ?>>
@@ -269,7 +273,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						</label>
 						<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
 							class="<?php
-							if ((!empty($this->subscriber->err_code)) && ($this->subscriber->err_code != 1))
+							if (in_array(414, $this->subscriber->missingValues))
 							{
 								echo "invalid";
 							}
@@ -343,7 +347,12 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								}
 								else
 								{ ?>
-									<p class="mail_available">
+									<p class="mail_available
+									<?php
+									if (in_array(415, $this->subscriber->missingValues))
+												{
+													echo " invalid";
+											} ?>">
 										<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="icon-star"></i></sup>'; ?>
 									</p>
 									<?php
@@ -358,7 +367,12 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 											{
 												echo "checked=\"checked\"";
 											} ?> />
-											<span class="mail_available_list_title">
+											<span class="mail_available_list_title"
+													<?php
+													if (in_array(415, $this->subscriber->missingValues))
+													{
+														echo "class=\"invalid\"";
+													} ?>>
 												<?php echo $this->params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
 											</span>
 											<?php
@@ -397,9 +411,20 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="question-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
 						<p class="security_question_lbl"><?php echo Text::_($this->params->get('security_question')); ?></p>
 						<p class="question-result input-append">
-							<label id="question" for="stringQuestion"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+							<label id="question" for="stringQuestion"
+								<?php
+								if (in_array(419, $this->subscriber->missingValues))
+								{
+									echo "class=\"invalid\"";
+								} ?>>
+							<?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
 							<input type="text" name="stringQuestion" id="stringQuestion"
-							size="40" maxlength="50" /><span class="append-area"><i class="icon-star"></i></span>
+							size="40" maxlength="50"
+								<?php
+								if (in_array(419, $this->subscriber->missingValues))
+								{
+									echo "class=\"invalid\"";
+								} ?>/><span class="append-area"><i class="icon-star"></i></span>
 						</p>
 					</div>
 				<?php endif; // End question ?>
@@ -415,9 +440,20 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							<img src="<?php echo Uri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
 						</p>
 						<p class="captcha-result input-append">
-							<label id="captcha" for="stringCaptcha"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+							<label id="captcha" for="stringCaptcha"
+								<?php
+								if (in_array(420, $this->subscriber->missingValues))
+								{
+									echo "class=\"invalid\"";
+								} ?>>
+							<?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
 							<input type="text" name="stringCaptcha" id="stringCaptcha"
-							size="40" maxlength="50" /><span class="append-area"><i class="icon-star"></i></span>
+							size="40" maxlength="50"
+								<?php
+								if (in_array(420, $this->subscriber->missingValues))
+								{
+									echo "class=\"invalid\"";
+								} ?>/><span class="append-area"><i class="icon-star"></i></span>
 						</p>
 					</div>
 					<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
@@ -431,7 +467,13 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					if ($this->params->get('disclaimer')) :
 						?>
 						<p class="agree_check">
-							<input title="<?php echo Text::_('COM_BWPOSTMAN_DISCLAIMER'); ?>" type="checkbox" id="agreecheck" name="agreecheck" />
+							<input title="<?php echo Text::_('COM_BWPOSTMAN_DISCLAIMER'); ?>" type="checkbox" id="agreecheck" name="agreecheck"
+								<?php
+								if (in_array(416, $this->subscriber->missingValues))
+								{
+									echo "class=\"invalid\"";
+								} ?>
+							/>
 							<?php
 							// Extends the disclaimer link with '&tmpl=component' to see only the content
 							$tpl_com = $this->params->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
@@ -455,7 +497,12 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								$disclaimer_link = stripslashes($this->params->get('disclaimer_link'));
 							}
 							?>
-							<span>
+							<span
+								<?php
+								if (in_array(416, $this->subscriber->missingValues))
+								{
+									echo "class=\"invalid\"";
+								} ?>>
 								<?php
 								// Show inside modalbox
 								if ($this->params->get('showinmodal') == 1)

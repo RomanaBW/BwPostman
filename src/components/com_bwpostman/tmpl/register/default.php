@@ -122,7 +122,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="user_firstname input<?php echo ($this->params->get('firstname_field_obligation')) ? '-append' : '' ?>">
 							<label id="firstnamemsg" for="firstname"
 								<?php
-								if (in_array(411, $this->subscriber->missingValues))
+								if (is_array($this->subscriber->missingValues) && in_array(411, $this->subscriber->missingValues))
 								{
 									echo "class=\"invalid\"";
 								} ?>>
@@ -137,7 +137,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 											echo $this->subscriber->firstname;
 										} ?>"
 										class="<?php
-										if (in_array(411, $this->subscriber->missingValues))
+										if (is_array($this->subscriber->missingValues) && in_array(411, $this->subscriber->missingValues))
 										{
 											echo "invalid";
 										} ?>"
@@ -149,7 +149,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								<input type="text" name="firstname" id="firstname" size="40"
 										value="<?php echo $this->subscriber->firstname; ?>"
 										class="<?php
-										if (in_array(411, $this->subscriber->missingValues))
+										if (is_array($this->subscriber->missingValues) && in_array(411, $this->subscriber->missingValues))
 										{
 											echo "invalid";
 										} ?>"
@@ -170,7 +170,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="user_name edit_name input<?php echo ($this->params->get('name_field_obligation')) ? '-append' : '' ?>">
 							<label id="namemsg" for="name"
 								<?php
-								if (in_array(412, $this->subscriber->missingValues))
+								if (is_array($this->subscriber->missingValues) && in_array(412, $this->subscriber->missingValues))
 								{
 									echo "class=\"invalid\"";
 								} ?>>
@@ -181,7 +181,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								?>
 								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
 										class="<?php
-										if (in_array(412, $this->subscriber->missingValues))
+										if (is_array($this->subscriber->missingValues) && in_array(412, $this->subscriber->missingValues))
 										{
 											echo "invalid";
 										} ?>"
@@ -191,7 +191,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							{ ?>
 								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
 									class="<?php
-									if (in_array(412, $this->subscriber->missingValues))
+									if (is_array($this->subscriber->missingValues) && in_array(412, $this->subscriber->missingValues))
 									{
 										echo "invalid";
 									} ?>"
@@ -220,7 +220,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="edit_special input<?php echo ($this->params->get('special_field_obligation')) ? '-append' : '' ?>">
 							<label id="specialmsg" class="hasTooltip" title="<?php echo $tip; ?>" for="special"
 								<?php
-								if (in_array(413, $this->subscriber->missingValues))
+								if (is_array($this->subscriber->missingValues) && in_array(413, $this->subscriber->missingValues))
 								{
 									echo " class=\"invalid\"";
 								}
@@ -240,7 +240,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							{ ?>
 								<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
 										class="<?php
-										if (in_array(413, $this->subscriber->missingValues))
+										if (is_array($this->subscriber->missingValues) && in_array(413, $this->subscriber->missingValues))
 										{
 											echo "invalid";
 										} ?>"
@@ -250,7 +250,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							{ ?>
 								<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
 										class="<?php
-										if (in_array(413, $this->subscriber->missingValues))
+										if (is_array($this->subscriber->missingValues) && in_array(413, $this->subscriber->missingValues))
 										{
 											echo "invalid";
 										} ?>"
@@ -265,7 +265,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					<p class="user_email edit_email input-append">
 						<label id="emailmsg" for="email"
 							<?php
-							if (in_array(414, $this->subscriber->missingValues))
+							if (is_array($this->subscriber->missingValues) && in_array(414, $this->subscriber->missingValues))
 							{
 								echo "class=\"invalid\"";
 							} ?>>
@@ -273,7 +273,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						</label>
 						<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
 							class="<?php
-							if (in_array(414, $this->subscriber->missingValues))
+							if (is_array($this->subscriber->missingValues) && in_array(414, $this->subscriber->missingValues))
 							{
 								echo "invalid";
 							}
@@ -349,7 +349,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								{ ?>
 									<p class="mail_available
 									<?php
-									if (in_array(415, $this->subscriber->missingValues))
+									if (is_array($this->subscriber->missingValues) && in_array(415, $this->subscriber->missingValues))
 												{
 													echo " invalid";
 											} ?>">
@@ -369,7 +369,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 											} ?> />
 											<span class="mail_available_list_title"
 													<?php
-													if (in_array(415, $this->subscriber->missingValues))
+													if (is_array($this->subscriber->missingValues) && in_array(415, $this->subscriber->missingValues))
 													{
 														echo "class=\"invalid\"";
 													} ?>>
@@ -413,7 +413,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="question-result input-append">
 							<label id="question" for="stringQuestion"
 								<?php
-								if (in_array(419, $this->subscriber->missingValues))
+								if (is_array($this->subscriber->missingValues) && in_array(419, $this->subscriber->missingValues))
 								{
 									echo "class=\"invalid\"";
 								} ?>>
@@ -421,7 +421,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							<input type="text" name="stringQuestion" id="stringQuestion"
 							size="40" maxlength="50"
 								<?php
-								if (in_array(419, $this->subscriber->missingValues))
+								if (is_array($this->subscriber->missingValues) && in_array(419, $this->subscriber->missingValues))
 								{
 									echo "class=\"invalid\"";
 								} ?>/><span class="append-area"><i class="icon-star"></i></span>
@@ -469,7 +469,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="agree_check">
 							<input title="<?php echo Text::_('COM_BWPOSTMAN_DISCLAIMER'); ?>" type="checkbox" id="agreecheck" name="agreecheck"
 								<?php
-								if (in_array(416, $this->subscriber->missingValues))
+								if (is_array($this->subscriber->missingValues) && in_array(416, $this->subscriber->missingValues))
 								{
 									echo "class=\"invalid\"";
 								} ?>
@@ -499,7 +499,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							?>
 							<span
 								<?php
-								if (in_array(416, $this->subscriber->missingValues))
+								if (is_array($this->subscriber->missingValues) && in_array(416, $this->subscriber->missingValues))
 								{
 									echo "class=\"invalid\"";
 								} ?>>

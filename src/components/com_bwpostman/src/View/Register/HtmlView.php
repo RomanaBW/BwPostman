@@ -282,5 +282,6 @@ class HtmlView extends BaseHtmlView
 		// Save references into view
 		$this->lists        = $lists;
 		$this->subscriber   = $subscriber;
+		$this->subscriber->missingValues = $session->set('subscriber.register.missingValues', array());
 	}
 }

@@ -465,12 +465,14 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 		if (!$import)
 		{
+			$missingValues = array();
 			// Check for valid first name
 			if ($params->get('firstname_field_obligation'))
 			{
 				if (trim($this->firstname) === '')
 				{
 					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_ERROR_FIRSTNAME'), 'error');
+					$missingValues[] = 411;
 					$fault	= true;
 				}
 			}
@@ -481,6 +483,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				if (trim($this->name) === '')
 				{
 					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_ERROR_NAME'), 'error');
+					$missingValues[] = 412;
 					$fault	= true;
 				}
 			}
@@ -491,6 +494,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				if (trim($this->special) === '')
 				{
 					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', $params->get('special_label') != '' ? Text::_($params->get('special_label')) : Text::_('COM_BWPOSTMAN_SPECIAL')), 'error');
+					$missingValues[] = 413;
 					$fault	= true;
 				}
 			}
@@ -500,6 +504,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		if (trim($this->email) === '')
 		{
 			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_ERROR_EMAIL'), 'error');
+			$missingValues[] = 414;
 			$fault	= true;
 		}
 		// If there is a email address check if the address is valid
@@ -515,6 +520,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			if(!$data['mailinglists'])
 			{
 				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_LISTCHECK'), 'error');
+				$missingValues[] = 415;
 				$fault	= true;
 			}
 
@@ -524,6 +530,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				if(!isset($data['agreecheck']) || (isset($data['mod_id']) && $fault))
 				{
 					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_AGREECHECK'), 'error');
+					$missingValues[] = 416;
 					$fault	= true;
 				}
 			}
@@ -534,6 +541,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			{
 				// input wrong - set error
 				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_SPAMCHECK'), 'error');
+				$missingValues[] = 417;
 				$fault	= true;
 			}
 
@@ -543,6 +551,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			{
 				// input wrong - set error
 				$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_SPAMCHECK2'), 'error');
+				$missingValues[] = 418;
 				$fault	= true;
 			}
 
@@ -555,6 +564,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				{
 					// input wrong - set error
 					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');
+					$missingValues[] = 419;
 					$fault	= true;
 				}
 			}
@@ -572,6 +582,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				{
 					// input wrong - set error
 					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');
+					$missingValues[] = 420;
 					$fault	= true;
 				}
 			}
@@ -580,7 +591,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		if ($fault)
 		{
 			$app->setUserState('com_bwpostman.edit.subscriber.data', $data);
-			$session->set('session_error', $err);
+			$session->set('subscriber.register.missingValues', $missingValues);
 			return false;
 		}
 
@@ -610,24 +621,19 @@ class SubscriberTable extends Table implements VersionableTableInterface
 							),
 							'error'
 						);
-						$err['err_code'] = 409;
-						$err['err_msg'] = Text::sprintf(
+						$err_msg = Text::sprintf(
 							'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTEXISTS',
 							$this->email,
 							$format_txt[$this->emailformat],
 							$testrecipient->id
 						);
-						$err['err_id'] = $xid;
-						$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-						$app->enqueueMessage(
-							Text::sprintf(
-								'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTEXISTS',
-								$this->email,
-								$format_txt[$this->emailformat],
-								$testrecipient->id
-							),
-							'error'
+						$err[] = array(
+							'err_code' => 409,
+							'err_msg' => $err_msg,
+							'err_id' => $xid
 						);
+						$app->setUserState('com_bwpostman.subscriber.register.error', $err);
+						$app->enqueueMessage($err_msg,  'error');
 						$session->set('session_error', $err);
 						return false;
 					}
@@ -635,33 +641,19 @@ class SubscriberTable extends Table implements VersionableTableInterface
 					// Account is archived
 					if (($testrecipient->archive_flag === 1) && ($testrecipient->emailformat === $this->emailformat))
 					{
-						$app->enqueueMessage(
-							Text::sprintf(
-								'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTARCHIVED',
-								$this->email,
-								$format_txt[$this->emailformat],
-								$testrecipient->id
-							),
-							'error'
-						);
-						$err['err_code'] = 410;
-						$err['err_msg'] = Text::sprintf(
+						$err_msg = Text::sprintf(
 							'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTARCHIVED',
 							$this->email,
 							$format_txt[$this->emailformat],
 							$testrecipient->id
 						);
-						$err['err_id'] = $xid;
-						$app->setUserState('com_bwpostman.subscriber.register.error', $err);
-						$app->enqueueMessage(
-							Text::sprintf(
-								'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTARCHIVED',
-								$this->email,
-								$format_txt[$this->emailformat],
-								$testrecipient->id
-							),
-							'error'
+						$app->enqueueMessage($err_msg, 'error');
+						$err[] = array(
+							'err_code' => 410,
+							'err_msg' => $err_msg,
+							'err_id' => $xid,
 						);
+						$app->setUserState('com_bwpostman.subscriber.register.error', $err);
 						$session->set('session_error', $err);
 						return false;
 					}
@@ -678,10 +670,12 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				// Account is blocked by system/administrator
 				if (($subscriber->archive_flag === 1) && ($subscriber->archived_by > 0))
 				{
-					$err['err_code']	= 405;
-					$err['err_msg']		= Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xids);
-					$err['err_id']		= $xids;
-					$err['err_email']	= $this->email;
+					$err = array(
+						'err_code' => 405,
+						'err_msg' => Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xids),
+						'err_id' => $xids,
+						'err_email' => $this->email,
+					);
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
 					$session->set('session_error', $err);
 					return false;
@@ -690,10 +684,12 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				// Account is not activated
 				if ($subscriber->status == 0)
 				{
-					$err['err_code'] = 406;
-					$err['err_msg']	= Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xids);
-					$err['err_id'] = $xids;
-					$err['err_email']	= $this->email;
+					$err = array(
+						'err_code' => 406,
+						'err_msg' => Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xids),
+					 	'err_id' => $xids,
+						'err_email' => $this->email,
+					);
 
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
 					$session->set('session_error', $err);
@@ -705,15 +701,14 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				if (($subscriber->status == 1) && ($subscriber->archive_flag != 1))
 				{
 					$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
+					$err_msg = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $this->email, $link);
 					//@ToDo: With the following routing with SEO activated don't work
-					$err['err_code'] = 407;
-					$err['err_msg'] = Text::sprintf(
-						'COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS',
-						$this->email,
-						$link
+					$err = array(
+						'err_code' => 407,
+						'err_msg' => $err_msg,
+						'err_id' => $xids,
+						'err_email' => $this->email,
 					);
-					$err['err_id'] = $xids;
-					$err['err_email']	= $this->email;
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
 					$session->set('session_error', $err);
 					$this->setError(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $this->email,  $xids));

@@ -21,7 +21,6 @@
 			type="radio"
 			layout="joomla.form.field.radio.switcher"
 			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBSCRIPTION_CHECKBOX_LABEL"
-			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBSCRIPTION_CHECKBOX_DESC"
 		    default="0"
 			class="switcher"
 		>
@@ -48,18 +47,6 @@
 		</field>
 
 		<field
-			name="bwpm_name"
-			id="bwpm_user2subscriber_bwpm_name"
-			type="text"
-			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_LABEL"
-			labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
-			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_DESC"
-			class="bwpm-u2s-fields-toggle"
-			size="30"
-			required="false"
-		/>
-
-		<field
 			name="firstname"
 			id="bwpm_user2subscriber_firstname"
 			type="text"
@@ -69,6 +56,18 @@
 			class="bwpm-u2s-fields-toggle"
 			required="false"
 			size="30"
+		/>
+
+		<field
+			name="bwpm_name"
+			id="bwpm_user2subscriber_bwpm_name"
+			type="text"
+			label="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_LABEL"
+			labelclass="control-label bwpm-u2s-fields-toggle spacer-lbl"
+			description="PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_SUBS_FIELD_NAME_DESC"
+			class="bwpm-u2s-fields-toggle"
+			size="30"
+			required="false"
 		/>
 
 		<field
@@ -131,15 +130,15 @@
 		>
 		</field>
 		<field
-			name="name_required"
-			id="bwpm_user2subscriber_name_required"
+			name="firstname_required"
+			id="bwpm_user2subscriber_firstname_required"
 			type="hidden"
 			default="0"
 		>
 		</field>
 		<field
-			name="firstname_required"
-			id="bwpm_user2subscriber_firstname_required"
+			name="name_required"
+			id="bwpm_user2subscriber_name_required"
 			type="hidden"
 			default="0"
 		>

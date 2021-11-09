@@ -396,9 +396,6 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		$wa->useStyle('plg_system_bwpm_user2subscriber.bwpm_user2subscriber');
 
-		// makes sure that jQuery is loaded first
-		HTMLHelper::_('jquery.framework');
-
 		$wa->useScript('plg_system_bwpm_user2subscriber.bwpm_user2subscriber');
 
 		// Get disclaimer link if disclaimer enabled at component and plugin
@@ -408,9 +405,6 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		if ($disclaimer_link)
 		{
 			$disclaimer_script =	'	var dc_src = "' . $disclaimer_link . '";' . "\n";
-			$disclaimer_script .=	'	jQuery(document).ready(function(){' . "\n";
-			$disclaimer_script .=	'		setPlgModal()' . "\n";
-			$disclaimer_script .=	'	});' . "\n";
 
 			$wa->addInlineScript($disclaimer_script);
 			$this->form->setValue('bwpdisclaimer_required', $this->group, 1);

@@ -92,150 +92,20 @@ label.disclaimer a
 	cursor: pointer;
 }
 
-fieldset.mailinglists {
-	height: auto;
-	border-style: solid;
-	border-width: 1px;
-	border-radius: 5px;
-	padding: 15px;
-}
-
-fieldset.mailinglists label {
-	display: block;
-	padding-left: 20px;
-}
-
-#jform_bwpm_user2subscriber_mailinglists div.form-check-inline {
-	display: block;!important;
-}
-
 label.checkbox.disclaimer {
 	padding-left: 20px;
 }
 
-.registerradio.radio.btn-group input[type="radio"] {
-	display: none;
+.registration fieldset .switcher input {
+    width: 62px !important;
 }
 
-.registerradio.radio.btn-group {
-	font-size: 0;white-space: nowrap;
+.mailinglists.invalid .table .form-check-input {
+    border-color: #a51f18;
 }
 
-.registerradio .btn {
-	-moz-border-bottom-colors: none;
-	-moz-border-left-colors: none;
-	-moz-border-right-colors: none;
-	-moz-border-top-colors: none;
-	background:  #a2a2a2 linear-gradient(to bottom, #fff, #e6e6e6) repeat-x;
-	border-image: none;
-	border-radius: 4px;
-	border: solid 1px;
-	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-	color: #333;
-	cursor: pointer;
-	display: inline-block;
-	font-size: 13px;
-	line-height: 18px;
-	margin-bottom: 0;
-	padding: 4px 12px;
-	text-align: center;
-	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-	vertical-align: middle;
-}
-
-.registerradio .btn:hover,
-.registerradio .btn:focus,
-.registerradio .btn:active,
-.registerradio .btn.active,
-.registerradio .btn.disabled,
-.registerradio .btn[disabled] {
-	background-color: #e6e6e6;
-	color: #333;
-}
-
-.registerradio .btn.active,
-.registerradio .btn:active {
-	background-image: none;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);outline: 0 none;
-}
-
-.registerradio .btn-primary.active,
-.registerradio .btn-warning.active,
-.registerradio .btn-danger.active,
-.registerradio .btn-success.active,
-.registerradio .btn-info.active,
-.registerradio .btn-inverse.active {
-	color: rgba(255, 255, 255, 0.75);
-}
-
-.registerradio .btn-success {
-	background: #409740 linear-gradient(to bottom, #46a546, #378137) repeat-x;
-	border-color: #378137 #378137 #204b20;
-	color: #fff;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-}
-
-.registerradio .btn-success:hover,
-.registerradio .btn-success:focus,
-.registerradio .btn-success:active,
-.registerradio .btn-success.active,
-.registerradio .btn-success.disabled,
-.registerradio .btn-success[disabled] {
-	background-color: #378137;
-	color: #fff;
-}
-
-.registerradio .btn-danger:hover,
-.registerradio .btn-danger:focus,
-.registerradio .btn-danger:active,
-.registerradio .btn-danger.active,
-.registerradio .btn-danger.disabled,
-.registerradio .btn-danger[disabled] {
-	background-color: #942a25;
-	color: #fff;
-}
-
-.registerradio.btn-group > .btn {
-	border-radius: 0;
-	position: relative;
-}
-
-.registerradio.btn-group > .btn,
-.registerradio.btn-group > .dropdown-menu,
-.registerradio.btn-group > .popover {
-	font-size: 13px;
-}
-
-.registerradio.btn-group > .btn:last-child,
-.registerradio.btn-group > .dropdown-toggle {
-	border-bottom-right-radius: 4px;
-	border-top-right-radius: 4px;
-}
-
-.registerradio.btn-group > .btn:hover,
-.registerradio.btn-group > .btn:focus,
-.registerradio.btn-group > .btn:active,
-.registerradio.btn-group > .btn.active {
-	z-index: 2;
-}
-
-.registerradio.radio.btn-group > label:first-of-type {
-	border-bottom-left-radius: 4px !important;
-	border-top-left-radius: 4px !important;
-	margin-left: 0;}
-
-
-.registerradio .btn-primary.active,
-.registerradio .btn-warning.active,
-.registerradio .btn-danger.active,
-.registerradio .btn-success.active,
-.registerradio .btn-info.active,
-.registerradio .btn-inverse.active {
-	color: rgba(255, 255, 255, 0.95);
-}
-
-.registerradio.btn-group.btn-group-yesno > .btn {
-	min-width: 84px;
-	padding: 2px 12px;
+fieldset.mailinglists {
+    margin-bottom: 0;
 }
 
 .plg-u2s-ml-title

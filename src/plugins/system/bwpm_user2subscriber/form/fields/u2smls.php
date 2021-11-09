@@ -88,8 +88,8 @@ class JFormFieldU2sMls extends CheckboxesField
 		$options = $this->getOptions();
 
 		// Build the checkbox field output.
-		$html[] = '	    <div class="bwp-field well well-small table-responsive">';
-		$html[] = '			<table class="adminlist table table-striped">';
+		$html[] = '	    <div class="bwp-field table-responsive">';
+		$html[] = '			<table class="adminlist table table-bordered table-striped">';
 		$html[] = '				<tbody>';
 
 		if (count($options) > 0)
@@ -98,7 +98,7 @@ class JFormFieldU2sMls extends CheckboxesField
 			{
 				// Initialize some option attributes.
 				$checked	= (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
-				$class		= !empty($option->class) ? ' class="' . $option->class . '"' : '';
+				$class		= !empty($option->class) ? ' class="form-check-input ' . $option->class . '"' : ' class="form-check-input"';
 				$disabled	= !empty($option->disable) ? ' disabled="disabled"' : '';
 
 				// Initialize some JavaScript option attributes.

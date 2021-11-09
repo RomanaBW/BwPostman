@@ -34,7 +34,6 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 // Keep session alive while editing
 HTMLHelper::_('behavior.keepalive');
-HTMLHelper::_('formbehavior.chosen', 'select');
 
 $jinput	= Factory::getApplication()->input;
 

@@ -320,7 +320,10 @@ class com_bwpostmanInstallerScript
 		{
 			$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 
-			require_once($tmp_path . '/libraries/BwLogger.php');
+			if (!class_exists('\BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger'))
+			{
+				require_once($tmp_path . '/libraries/BwLogger.php');
+			}
 
 			$log_options  = array();
 
@@ -2010,7 +2013,7 @@ EOS;
 		$params_default['desc_length']                     = "150";
 		$params_default['disclaimer']                      = "0";
 		$params_default['disclaimer_selection']            = "1";
-		$params_default['disclaimer_link']                 = "http:\/\/www.disclaimer.de\/disclaimer.htm";
+		$params_default['disclaimer_link']                 = "https:\/\/www.disclaimer.de\/disclaimer.htm";
 		$params_default['article_id']                      = "70";
 		$params_default['disclaimer_menuitem']             = "108";
 		$params_default['disclaimer_target']               = "0";

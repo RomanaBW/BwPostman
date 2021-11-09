@@ -198,6 +198,23 @@
 		    setPlgModal();
 		}
 
+// Only submit, if mailinglist field is required and a checkbox is selected
+		var userForm = document.getElementById('member-registration');
+		userForm.addEventListener("submit", function(evt) {
+			if (document.getElementById('jform_bwpm_user2subscriber_mailinglists').classList.contains('required'))
+			{
+				evt.preventDefault();
+				var checkbox = document.getElementsByName('jform[mailinglists][]');
+				for(var i=0; i< checkbox.length; i++) {
+					if (checkbox[i].checked)
+					{
+						userForm.submit();
+					}
+				}
+				return false;
+			}
+		});
+
 	});
 
 }());

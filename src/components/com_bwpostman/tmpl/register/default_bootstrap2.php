@@ -135,7 +135,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation'))
 					{ ?>
 						<div class="control-group user_firstname">
-							<label id="firstnamemsg" class="control-label" for="firstname">
+							<label id="firstnamemsg" for="firstname" class="control-label
+								<?php
+								if (is_array($this->subscriber->missingValues) && in_array(411, $this->subscriber->missingValues))
+								{
+									echo " invalid";
+								} ?>">
 								<?php echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label>
 							<?php // Is filling out the firstname field obligating
 							if ($this->params->get('firstname_field_obligation'))
@@ -144,7 +149,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					                <div class="input-append">
 										<input type="text" name="firstname" id="firstname" size="40"
 											value="<?php echo $this->subscriber->firstname; ?>"
-											class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
+											class="<?php
+											if (is_array($this->subscriber->missingValues) && in_array(411, $this->subscriber->missingValues))
+											{
+												echo "invalid ";
+											}
+											echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
 										<span class="add-on"><i class="icon-star"></i></span>
 									</div>
 					            </div>
@@ -154,7 +164,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 							{ ?>
 					            <div class="controls">
 									<input type="text" name="firstname" id="firstname" size="40"
-											class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>"
+											class="<?php
+											if (is_array($this->subscriber->missingValues) && in_array(411, $this->subscriber->missingValues))
+											{
+												echo "invalid ";
+											}
+											echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>"
 											value="<?php echo $this->subscriber->firstname; ?>" maxlength="50" />
 					            </div>
 							<?php
@@ -172,7 +187,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					if ($this->params->get('show_name_field') || $this->params->get('name_field_obligation'))
 					{ ?>
 						<div class="control-group user_name edit_name">
-							<label id="namemsg" class="control-label" for="name">
+							<label id="namemsg" for="name" class="control-label
+								<?php
+								if (is_array($this->subscriber->missingValues) && in_array(412, $this->subscriber->missingValues))
+								{
+									echo " invalid";
+								} ?>">
 								<?php echo Text::_('COM_BWPOSTMAN_NAME'); ?>: </label>
 							<?php // Is filling out the name field obligating
 							if ($this->params->get('name_field_obligation'))
@@ -181,7 +201,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					                <div class="input-append">
 										<input type="text" name="name" id="name" size="40"
 											value="<?php echo $this->subscriber->name; ?>"
-											class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
+											class="<?php
+											if (is_array($this->subscriber->missingValues) && in_array(412, $this->subscriber->missingValues))
+											{
+												echo "invalid ";
+											}
+											echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
 										<span class="add-on"><i class="icon-star"></i></span>
 									</div>
 					            </div>
@@ -191,7 +216,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 							{ ?>
 					            <div class="controls">
 									<input type="text" name="name" id="name" size="40"
-										class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>"
+										class="<?php
+										if (is_array($this->subscriber->missingValues) && in_array(412, $this->subscriber->missingValues))
+										{
+											echo "invalid ";
+										}
+										echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>"
 										value="<?php echo $this->subscriber->name; ?>" maxlength="50" />
 					            </div>
 							<?php
@@ -217,8 +247,13 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 						} ?>
 
 						<div class="control-group edit_special">
-							<label id="specialmsg" class="control-label" title="<?php echo $tip; ?>" for="special">
+							<label id="specialmsg" title="<?php echo $tip; ?>" for="special" class="control-label
 								<?php
+								if (is_array($this->subscriber->missingValues) && in_array(413, $this->subscriber->missingValues))
+								{
+									echo " invalid";
+								}
+								echo "\">";
 								if ($this->params->get('special_label') != '')
 								{
 									echo Text::_($this->params->get('special_label'));
@@ -235,7 +270,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					            <div class="controls">
 					                <div class="input-append">
 										<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
-											class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
+											class="<?php
+											if (is_array($this->subscriber->missingValues) && in_array(413, $this->subscriber->missingValues))
+											{
+												echo "invalid ";
+											}
+											echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
 										<span class="add-on"><i class="icon-star"></i></span>
 									</div>
 					            </div>
@@ -245,7 +285,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 							{ ?>
 					            <div class="controls">
 									<input type="text" name="special" id="special" size="40"
-										class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>"
+										class="<?php
+										if (is_array($this->subscriber->missingValues) && in_array(413, $this->subscriber->missingValues))
+										{
+											echo "invalid ";
+										}
+										echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>"
 										value="<?php echo $this->subscriber->special; ?>" maxlength="50" />
 					            </div>
 							<?php
@@ -258,13 +303,27 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 
 
 					<div class="control-group user_email edit_email">
-						<label id="emailmsg" class="control-label" for="email">
+						<label id="emailmsg" for="email" class="control-label
+							<?php
+							if (is_array($this->subscriber->missingValues) && in_array(414, $this->subscriber->missingValues))
+							{
+								echo " invalid";
+							} ?>">
 							<?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:
 						</label>
 					    <div class="controls">
 							<div class="input-append">
 								<input type="text" id="email" name="email" size="40" value="<?php echo $this->subscriber->email; ?>"
-									class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
+									class="<?php
+									if (is_array($this->subscriber->missingValues) && in_array(414, $this->subscriber->missingValues))
+									{
+										echo "invalid ";
+									}
+									else
+									{
+										echo "validate-email ";
+									}
+									echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
 								<span class="add-on"><i class="icon-star"></i></span>
 							</div>
 						</div>
@@ -343,7 +402,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 								}
 								else
 								{ ?>
-									<p class="mail_available strong">
+									<p class="mail_available strong
+										<?php
+										if (is_array($this->subscriber->missingValues) && in_array(415, $this->subscriber->missingValues))
+										{
+											echo " invalid";
+										} ?>">
 										<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="icon-star"></i></sup>'; ?>
 									</p>
 									<?php
@@ -359,7 +423,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 												{
 													echo "checked=\"checked\"";
 												} ?> />
-												<span class="mail_available_list_title strong">
+												<span class="mail_available_list_title strong
+													<?php
+													if (is_array($this->subscriber->missingValues) && in_array(415, $this->subscriber->missingValues))
+													{
+														echo " invalid";
+													} ?>">
 													<?php echo $this->params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
 												</span><br />
 												<?php
@@ -397,11 +466,22 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 						<div class="question-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></div>
 						<div class="security_question_lbl controls strong my-3"><?php echo Text::_($this->params->get('security_question')); ?></div>
 						<div class="control-group question-result">
-							<label id="question" class="control-label" for="stringQuestion"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+							<label id="question" for="stringQuestion" class="control-label
+								<?php
+								if (is_array($this->subscriber->missingValues) && in_array(419, $this->subscriber->missingValues))
+								{
+									echo " invalid";
+								} ?>">
+							<?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
 				            <div class="controls">
 				                <div class="input-append">
 									<input type="text" name="stringQuestion" id="stringQuestion" size="40"
-										class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
+										class="<?php
+										if (is_array($this->subscriber->missingValues) && in_array(419, $this->subscriber->missingValues))
+										{
+											echo "invalid ";
+										}
+										echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
 									<span class="add-on"><i class="icon-star"></i></span>
 								</div>
 							</div>
@@ -420,11 +500,22 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 							<img src="<?php echo Uri::base();?>index.php?option=com_bwpostman&amp;view=register&amp;task=showCaptcha&amp;format=raw&amp;codeCaptcha=<?php echo $codeCaptcha; ?>" alt="captcha" />
 						</div>
 						<div class="control-group captcha-result">
-							<label id="captcha" class="control-label" for="stringCaptcha"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
+							<label id="captcha" for="stringCaptcha" class="control-label
+								<?php
+								if (is_array($this->subscriber->missingValues) && in_array(420, $this->subscriber->missingValues))
+								{
+									echo " invalid";
+								} ?>">
+							<?php echo Text::_('COM_BWPOSTMAN_CAPTCHA_LABEL'); ?>:</label>
 				            <div class="controls">
 				                <div class="input-append">
 									<input type="text" name="stringCaptcha" id="stringCaptcha" size="40"
-										class="<?php echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
+										class="<?php
+										if (is_array($this->subscriber->missingValues) && in_array(420, $this->subscriber->missingValues))
+										{
+											echo "invalid ";
+										}
+										echo $formclass === "sm" ? 'input-small' : 'input-medium'; ?>" maxlength="50" />
 									<span class="add-on"><i class="icon-star"></i></span>
 								</div>
 				            </div>
@@ -438,7 +529,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					if ($this->params->get('disclaimer')) :
 						?>
 						<div class="agree_check mb-3">
-							<input title="<?php echo Text::_('COM_BWPOSTMAN_DISCLAIMER'); ?>" type="checkbox" id="agreecheck" class="pull-left" name="agreecheck" />
+							<input title="<?php echo Text::_('COM_BWPOSTMAN_DISCLAIMER'); ?>" type="checkbox" id="agreecheck" name="agreecheck" class="pull-left
+								<?php
+								if (is_array($this->subscriber->missingValues) && in_array(416, $this->subscriber->missingValues))
+								{
+									echo " invalid";
+								} ?>" />
 							<?php
 							// Extends the disclaimer link with '&tmpl=component' to see only the content
 							$tpl_com = $this->params->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
@@ -462,7 +558,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 								$disclaimer_link = $this->params->get('disclaimer_link');
 							}
 							?>
-							<label class="checkbox">
+							<label class="checkbox
+								<?php
+								if (is_array($this->subscriber->missingValues) && in_array(416, $this->subscriber->missingValues))
+								{
+									echo " invalid";
+								} ?>">
 								<?php
 								// Show inside modalbox
 								if ($this->params->get('showinmodal') == 1)

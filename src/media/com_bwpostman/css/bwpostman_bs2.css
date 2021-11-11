@@ -209,3 +209,10 @@
 #bwpostman .icon_attachment {
 	background-image:	url(../images/icon-16-attachment.png) ;
 }
+
+#bwpostman #agreecheck.invalid {
+	outline: 2px solid #9d261d;
+	-moz-box-shadow: inset 0 0 10px #9d261d;
+	-webkit-box-shadow: inset 0 0 10px #9d261d;
+	box-shadow: inset 0 0 10px #9d261d;
+}

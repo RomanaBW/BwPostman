@@ -218,7 +218,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						} ?>
 
 						<p class="edit_special input<?php echo ($this->params->get('special_field_obligation')) ? '-append' : '' ?>">
-							<label id="specialmsg" class="hasTooltip" title="<?php echo $tip; ?>" for="special"
+							<label id="specialmsg" title="<?php echo $tip; ?>" for="special"
 								<?php
 								if (is_array($this->subscriber->missingValues) && in_array(413, $this->subscriber->missingValues))
 								{
@@ -367,12 +367,12 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 											{
 												echo "checked=\"checked\"";
 											} ?> />
-											<span class="mail_available_list_title"
+											<span class="mail_available_list_title
 													<?php
 													if (is_array($this->subscriber->missingValues) && in_array(415, $this->subscriber->missingValues))
 													{
-														echo "class=\"invalid\"";
-													} ?>>
+														echo " invalid";
+													} ?>">
 												<?php echo $this->params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
 											</span>
 											<?php
@@ -442,7 +442,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="captcha-result input-append">
 							<label id="captcha" for="stringCaptcha"
 								<?php
-								if (in_array(420, $this->subscriber->missingValues))
+								if (is_array($this->subscriber->missingValues) && in_array(420, $this->subscriber->missingValues))
 								{
 									echo "class=\"invalid\"";
 								} ?>>
@@ -450,7 +450,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							<input type="text" name="stringCaptcha" id="stringCaptcha"
 							size="40" maxlength="50"
 								<?php
-								if (in_array(420, $this->subscriber->missingValues))
+								if (is_array($this->subscriber->missingValues) && in_array(420, $this->subscriber->missingValues))
 								{
 									echo "class=\"invalid\"";
 								} ?>/><span class="append-area"><i class="icon-star"></i></span>

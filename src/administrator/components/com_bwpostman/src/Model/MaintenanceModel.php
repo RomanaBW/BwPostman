@@ -3878,7 +3878,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException$exception)
 		{
-			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR') . ': ' . $exception->getMessage();
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR', $dataset) . ': ' . $exception->getMessage();
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;
@@ -3954,7 +3954,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR') . ': ' . $exception->getMessage();
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR', $dataset) . ': ' . $exception->getMessage();
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return false;

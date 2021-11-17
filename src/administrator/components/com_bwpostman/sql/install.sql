@@ -129,6 +129,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_sendmailcontent` (
   `attachment` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `reply_email` VARCHAR(320) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `reply_name` VARCHAR(400) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `substitute_links` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`,`mode`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -215,15 +216,15 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates` (
   `title` VARCHAR(400) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `description` VARCHAR(2000) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `thumbnail` VARCHAR(2000) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tpl_html` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tpl_css` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tpl_article` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tpl_divider` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `tpl_html` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tpl_css` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tpl_article` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tpl_divider` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `tpl_id` INT(11) NOT NULL DEFAULT '0',
   `basics` VARCHAR(400) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `header` VARCHAR(1600) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `intro` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `article` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `intro` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `article` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `footer` VARCHAR(1600) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `button1` VARCHAR(1600) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `button2` VARCHAR(1600) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -254,14 +255,14 @@ DROP TABLE IF EXISTS `#__bwpostman_templates_tpl`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_templates_tpl` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(400) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `css` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `header_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `intro_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `divider_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `article_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `readon_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `footer_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `button_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `css` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `header_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `intro_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `divider_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `article_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `readon_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `footer_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `button_tpl` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -275,17 +276,17 @@ DROP TABLE IF EXISTS `#__bwpostman_templates_tags`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_templates_tags` (
   `templates_table_id` INT(11) NOT NULL,
   `tpl_tags_head` TINYINT(1) NOT NULL,
-  `tpl_tags_head_advanced` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `tpl_tags_head_advanced` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `tpl_tags_body` TINYINT(1) NOT NULL,
-  `tpl_tags_body_advanced` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `tpl_tags_body_advanced` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `tpl_tags_article` TINYINT(1) NOT NULL,
-  `tpl_tags_article_advanced_b` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tpl_tags_article_advanced_e` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `tpl_tags_article_advanced_b` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tpl_tags_article_advanced_e` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `tpl_tags_readon` TINYINT(1) NOT NULL,
-  `tpl_tags_readon_advanced` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `tpl_tags_readon_advanced` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `tpl_tags_legal` TINYINT(1) NOT NULL,
-  `tpl_tags_legal_advanced_b` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tpl_tags_legal_advanced_e` TEXT COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `tpl_tags_legal_advanced_b` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tpl_tags_legal_advanced_e` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`templates_table_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 

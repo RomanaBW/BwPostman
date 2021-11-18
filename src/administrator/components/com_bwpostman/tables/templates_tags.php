@@ -61,7 +61,7 @@ class BwPostmanTableTemplates_Tags extends JTable
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_head_advanced = null;
+	public $tpl_tags_head_advanced = '';
 
 	/**
 	 * @var integer template tag body
@@ -75,7 +75,7 @@ class BwPostmanTableTemplates_Tags extends JTable
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_body_advanced = null;
+	public $tpl_tags_body_advanced = '';
 
 	/**
 	 * @var integer template tag article
@@ -89,14 +89,14 @@ class BwPostmanTableTemplates_Tags extends JTable
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_article_advanced_b = null;
+	public $tpl_tags_article_advanced_b = '';
 
 	/**
 	 * @var string template tag article advanced end
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_article_advanced_e = null;
+	public $tpl_tags_article_advanced_e = '';
 
 	/**
 	 * @var integer template tag readon
@@ -110,7 +110,7 @@ class BwPostmanTableTemplates_Tags extends JTable
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_readon_advanced = null;
+	public $tpl_tags_readon_advanced = '';
 
 	/**
 	 * @var integer template tag legal
@@ -124,14 +124,14 @@ class BwPostmanTableTemplates_Tags extends JTable
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_legal_advanced_b = null;
+	public $tpl_tags_legal_advanced_b = '';
 
 	/**
 	 * @var string template tag legal advanced end
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_legal_advanced_e = null;
+	public $tpl_tags_legal_advanced_e = '';
 
 	/**
 	 * @var integer

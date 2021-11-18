@@ -92,28 +92,28 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_html = null;
+	public $tpl_html = '';
 
 	/**
 	 * @var string tpl_css
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_css = null;
+	public $tpl_css = '';
 
 	/**
 	 * @var string tpl_article
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_article = null;
+	public $tpl_article = '';
 
 	/**
 	 * @var string tpl_divider
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_divider = null;
+	public $tpl_divider = '';
 
 	/**
 	 * @var int tpl_id
@@ -141,14 +141,14 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @since       1.1.0
 	 */
-	public $intro = null;
+	public $intro = '';
 
 	/**
 	 * @var array article
 	 *
 	 * @since       1.1.0
 	 */
-	public $article = null;
+	public $article = '';
 
 	/**
 	 * @var array footer

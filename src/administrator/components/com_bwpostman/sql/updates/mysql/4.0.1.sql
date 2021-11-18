@@ -1,5 +1,3 @@
-/* Placeholder file for database changes for version 4.0.1 to satisfy Joomla!'s extensions installer */
-
 ALTER TABLE `#__bwpostman_newsletters` ALTER `intro_text` DROP DEFAULT;
 ALTER TABLE `#__bwpostman_newsletters` ALTER `intro_text_text` DROP DEFAULT;
 ALTER TABLE `#__bwpostman_newsletters` ALTER `html_version` DROP DEFAULT;

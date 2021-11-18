@@ -98,7 +98,7 @@ class SendmailcontentTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public $body = null;
+	public $body = '';
 
 	/**
 	 * @var string CC email
@@ -119,7 +119,7 @@ class SendmailcontentTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public $attachment = null;
+	public $attachment = '';
 
 	/**
 	 * @var string Reply-to email

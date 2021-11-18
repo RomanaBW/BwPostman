@@ -165,7 +165,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       1.1.0
 	 */
-	public $intro_text = null;
+	public $intro_text = '';
 
 	/**
 	 * @var string TEXT headline
@@ -179,21 +179,21 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       1.1.0
 	 */
-	public $intro_text_text = null;
+	public $intro_text_text = '';
 
 	/**
 	 * @var string HTML-version
 	 *
 	 * @since       0.9.1
 	 */
-	public $html_version = null;
+	public $html_version = '';
 
 	/**
 	 * @var string Text-version
 	 *
 	 * @since       0.9.1
 	 */
-	public $text_version = null;
+	public $text_version = '';
 
 	/**
 	 * @var int $is_template

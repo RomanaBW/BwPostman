@@ -57,7 +57,9 @@ There are some containers, which have to be build successively:
 	1. **install-required-extensions-push.yml**, the images are
 		1. **universe3:5000/romana/joomla-jce-files:{{ joomla_version }}**
 		2. **universe3:5000/romana/joomla-jce-tables:{{ joomla_version }}**
-	2. optionally install VirtueMart with sample products, needed for testing plugin B2S 
+	2. **install-virtuemart-push.yml**, the images are
+		1. **universe3:5000/romana/joomla-vm-files:{{ joomla_version }}**
+		2. **universe3:5000/romana/joomla-vm-tables:{{ joomla_version }}**
 		
 Step 1.ii is only to do, if one want to change web server or database version.
 

@@ -1,11 +1,19 @@
 ---
 - name: Set archive source
   set_fact:
-    archive_source: "http://dev.virtuemart.net/attachments/download/1144"
+    archive_source: "http://dev.virtuemart.net/attachments/download/1279"
 
 - name: Set archive file
   set_fact:
-    archive_file: "com_virtuemart.3.4.2.9966_package_or_extract.zip"
+    archive_file: "com_virtuemart.3.8.8.10472_package_or_extract.zip"
+
+- name: Debug package source url
+  debug:
+    msg: "{{ archive_source }}/{{ archive_file }}"
+
+- name: Debug package target path
+  debug:
+    msg: "{{ codecept_path_data }}"
 
 - name: get Virtuemart overall package
   get_url:

@@ -151,11 +151,11 @@ class InstallVirtuemartCest
 	 */
 	private function configureVirtuemart(AcceptanceTester $I)
 	{
+		$this->addSampleData($I);
 		$this->configureSafePath($I);
 		$this->configureRegisterOnCheckout($I);
 		$this->configureVendor($I);
 		$this->configureShopper($I);
-		$this->addSampleData($I);
 		$this->addShopMenuItem($I);
 	}
 

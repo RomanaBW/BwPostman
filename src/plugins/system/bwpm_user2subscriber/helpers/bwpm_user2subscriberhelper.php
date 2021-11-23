@@ -255,7 +255,7 @@ abstract class BWPM_User2SubscriberHelper
 	{
 		$subscribed_mailinglists    = self::getSubscribedMailinglists($subscriber_id);
 
-		if ((count($new_mailinglists) == 1) && ($new_mailinglists[0] == 0))
+		if (is_countable($new_mailinglists) && count($new_mailinglists) == 1 && ($new_mailinglists[0] == 0))
 		{
 			unset($new_mailinglists[0]);
 		}

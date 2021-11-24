@@ -40,7 +40,7 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/mailinglis
 
 /**
  * Form Field class.
- * Displays options as a list of check boxes.
+ * Display options as a list of check boxes.
  * Multiselect may be forced to be true.
  *
  * @package		BwPostman
@@ -59,7 +59,7 @@ class JFormFieldComMl extends JFormFieldCheckboxes
 	protected $type = 'ComMl';
 
 	/**
-	 * Flag to tell the field to always be in multiple values mode.
+	 * Flag to tell the field to always be in multiple value mode.
 	 *
 	 * @var		boolean
 	 * @since	1.2.0

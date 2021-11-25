@@ -10,6 +10,9 @@ Version 4.0.1 released (2021-12-06)----
 Bugfix
 # Package creation took too much media folders at plugins, package was too big
 
+Improvement
+~ Smaller changes to manifest files of package and single parts to meet upgrade needs
+
 
 Version 4.0.0 released (2021-11-06)----
 

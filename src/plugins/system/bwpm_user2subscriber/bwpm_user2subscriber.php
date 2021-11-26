@@ -798,6 +798,13 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		{
 //			$new_mailinglists       = json_decode($subscriber_data['mailinglists']);
 			$new_mailinglists           = $this->params->get('ml_available', array());
+
+			if (is_string($new_mailinglists) && $new_mailinglists !== '')
+			{
+				$new_mlArray[] = $new_mailinglists;
+				$new_mailinglists = $new_mlArray;
+			}
+
 			$updateMailinglists_result  = BwpmUser2SubscriberHelper::updateSubscribedMailinglists($subscriber_id, $new_mailinglists);
 
 			if (!$updateMailinglists_result)

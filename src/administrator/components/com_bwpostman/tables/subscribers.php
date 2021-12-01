@@ -750,7 +750,7 @@ class BwPostmanTableSubscribers extends JTable
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if (!count($testrecipients))
+		if (!$testrecipients)
 		{
 			return false;
 		}

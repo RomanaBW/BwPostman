@@ -35,12 +35,11 @@ All manually changing variables should be kept (beneath other variables) at the 
 Changing variables sounds crazy, I know, but most variables are build on some manually entered values. These are automated 
 changing variables, in opposite to the manual changing variables. Normally I would prefer to name them parameters, but 
 ansible makes no difference…  
-**!!Attention: Joomla version now has also be changed at vars/codecept_paths_Jn.yml!!!!!!**
 
 There are some containers, which have to be build successively:
 1. Create base images for web server and database and store them at local docker registry
-	1. **create-push-apache-image.yml**, currently based on php:7.3.4-apache-stretch and locally stored at **universe3:5000/romana/php:7.3.4-apache-stretch**.
-	2. **create-push-mariadb-image.yml**, currently based on bitnami/mariadb:10.2-debian-9 and locally stored at **universe3:5000/romana/mariadb:10.2-debian-9**
+	1. **create-push-apache-image.yml**, currently based on php:apache and locally stored at **universe3:5000/romana/php:apache**.
+	2. **create-push-mariadb-image.yml**, currently based on bitnami/mariadb:10.5-debian-10 and locally stored at **universe3:5000/romana/mariadb:10.5-debian-10**
 2. Install Joomla to previously created images. The playbooks and the images are
 	1. **create-push-joomla-files-image.yml**, image is **universe3:5000/romana/joomla-bare-files:{{ joomla_version }}**
 	2. **create-push-joomla-tables-image.yml**, image is **universe3:5000/romana/joomla-bare-tables:{{ joomla_version }}**
@@ -58,7 +57,9 @@ There are some containers, which have to be build successively:
 	1. **install-required-extensions-push.yml**, the images are
 		1. **universe3:5000/romana/joomla-jce-files:{{ joomla_version }}**
 		2. **universe3:5000/romana/joomla-jce-tables:{{ joomla_version }}**
-	2. optionally install VirtueMart with sample products, needed for testing plugin B2S 
+	2. **install-virtuemart-push.yml**, the images are
+		1. **universe3:5000/romana/joomla-vm-files:{{ joomla_version }}**
+		2. **universe3:5000/romana/joomla-vm-tables:{{ joomla_version }}**
 		
 Step 1.ii is only to do, if one want to change web server or database version.
 

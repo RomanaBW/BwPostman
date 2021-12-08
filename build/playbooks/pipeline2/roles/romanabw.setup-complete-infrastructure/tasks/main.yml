@@ -11,7 +11,7 @@
   docker_network:
     name: "{{ source.tester_network_name }}"
 
-- name: Enure container images are current (force download)
+- name: Ensure container images are current (force download)
   docker_image:
     name: "{{ item }}"
     source: pull

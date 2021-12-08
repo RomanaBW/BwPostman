@@ -82,12 +82,14 @@ class InstallVirtuemartCest
 
 		$envInstallFiles = getenv('ADDITIONAL_EXTENSIONS');
 		$installFiles = explode(' ', $envInstallFiles);
+		codecept_debug('Install files');
+		codecept_debug($installFiles);
 
 		foreach ($installFiles as $installFile)
 		{
 			self::doInstallation($I, $installFile);
 
-			$heading = $I->grabTextFrom('#system-message-container div h4');
+			$heading = $I->grabTextFrom(Generals::$alert_success);
 
 			if ($heading == "Warning")
 			{
@@ -135,9 +137,8 @@ class InstallVirtuemartCest
 			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: none');");
 		}
 
-		$I->waitForElement(Generals::$sys_message_container, 150);
-
-		return;
+		$I->waitForElementVisible(Generals::$sys_message_container, 120);
+		$I->wait(1);
 	}
 
 	/**
@@ -151,11 +152,11 @@ class InstallVirtuemartCest
 	 */
 	private function configureVirtuemart(AcceptanceTester $I)
 	{
+		$this->addSampleData($I);
 		$this->configureSafePath($I);
 		$this->configureRegisterOnCheckout($I);
 		$this->configureVendor($I);
 		$this->configureShopper($I);
-		$this->addSampleData($I);
 		$this->addShopMenuItem($I);
 	}
 
@@ -287,11 +288,13 @@ class InstallVirtuemartCest
 
 		$I->clickAndWait(InstallPage::$joomla_topmenu_shop_button, 1);
 		$I->switchToIFrame(InstallPage::$joomla_topmenu_shop_iframe_name);
+		$I->scrollTo(InstallPage::$joomla_topmenu_shop_iframe_virtuemart, 0, -50);
+		$I->wait(1);
 		$I->click(InstallPage::$joomla_topmenu_shop_iframe_virtuemart);
 		$I->clickAndWait(InstallPage::$joomla_topmenu_shop_iframe_virtuemart_category, 1);
 		$I->switchToIFrame();
 
-		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElementVisible(Generals::$alert_success);
 	}
 

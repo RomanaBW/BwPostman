@@ -1,26 +1,23 @@
 ---
 # Fast changing variables
-joomla_version_4: "4.0.4"
-
-# this one has to be adjusted to the desired Joomla version
-joomla_version: "{{ joomla_version_4 }}"
+joomla_version: "4.0.4"
 
 j_version_short: "j4"
 
 bwpm_version: "4.0.1"
+bwpm_version_previous: "4.0.0"
 
-vm_version: "3.4.2.9966"
-tcpdf_version: "1.0.5"
+vm_version: "3.8.9.10560"
+tcpdf_version: "1.0.9"
 
-j_version_hyphen: "{{ joomla_version_4 | replace('.', '-') }}"
+j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 
-# Default value: Joomla4, if Joomla3 is wanted, --extra-vars is needed
-j_master_version: "4"
+
+j_master_version: "{{ j_version_short[1] }}"
 j_package_name:
   j4: "Joomla_{{ j_version_hyphen }}-Stable-Full_Package.zip"
 
 j_main_version: "{{ joomla_version[0] }}"
-
 
 joomla_packages:
   - src: "https://downloads.joomla.org/cms/Joomla4/{{ j_version_hyphen }}/{{ j_package_name.j4 }}"
@@ -35,9 +32,9 @@ additional_extensions:
   - plg_bwtestmode.zip
 
 virtuemart_extensions:
-  - com_tcpdf.zip
   - com_virtuemart.zip
   - com_virtuemart_ext_aio.zip
+  - com_tcpdf.zip
 
 
 # Commit values
@@ -59,6 +56,8 @@ joomla_base_folders:
   smoke_j4: "{{ main_base_folder }}/smoke_j4"
   ext_install_j3: "{{ main_base_folder }}/jbase_j3"
   ext_install_j4: "{{ main_base_folder }}/jbase_j4"
+  vm_install_j3: "{{ main_base_folder }}/jvm_j3"
+  vm_install_j4: "{{ main_base_folder }}/jvm_j4"
 
 acceptance_j3_folders:
   - "{{ main_base_folder }}/accept1_j3"
@@ -66,6 +65,7 @@ acceptance_j3_folders:
   - "{{ main_base_folder }}/accept3_j3"
   - "{{ main_base_folder }}/accept4_j3"
   - "{{ main_base_folder }}/accept5_j3"
+  - "{{ main_base_folder }}/acceptB2S_j3"
 
 acceptance_j4_folders:
   - "{{ main_base_folder }}/accept1_j4"
@@ -73,6 +73,7 @@ acceptance_j4_folders:
   - "{{ main_base_folder }}/accept3_j4"
   - "{{ main_base_folder }}/accept4_j4"
   - "{{ main_base_folder }}/accept5_j4"
+  - "{{ main_base_folder }}/acceptB2S_j4"
 
 # Webserver settings
 apache_host: joomla_web
@@ -126,7 +127,7 @@ bare_source:
   tester_container_name: bwpm_bare_tester
   tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
 
-  tester_network_name: "bwpm_network-{{ test_suite }}"
+  tester_network_name: "bwpm_network_{{ test_suite }}"
 
 bare_target:
   db_image: "{{ private_docker_repo }}/{{ bare_source.db_image_tag_source }}"
@@ -145,7 +146,7 @@ required_source:
   tester_container_name: bwpm_jce_tester
   tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
 
-  tester_network_name: "bwpm_network-{{ test_suite }}"
+  tester_network_name: "bwpm_network_{{ test_suite }}"
 
 required_target:
   db_image: "{{ private_docker_repo }}/{{ required_source.db_image_tag_source }}"
@@ -166,7 +167,7 @@ virtuemart_source:
   tester_container_name: bwpm_vm_tester
   tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
 
-  tester_network_name: "bwpm_network-{{ test_suite }}"
+  tester_network_name: "bwpm_network_{{ test_suite }}"
 
 virtuemart_target:
   db_image: "{{ private_docker_repo }}/{{ virtuemart_source.db_image_tag_source }}"
@@ -186,7 +187,7 @@ smoke_source:
   web_image_tag_source: "{{ private_docker_repo }}/romana/joomla-jce-files:{{ joomla_version }}"
   tester_container_name: "bwpm_enh_tester-{{ j_main_version }}"
   tester_image_tag_source: "{{ private_docker_repo }}/romana/{{ official_tester_short }}"
-  tester_network_name: "bwpm_network-{{ test_suite }}-{{ j_main_version }}"
+  tester_network_name: "bwpm_network_{{ test_suite }}_{{ j_main_version }}"
 
 smoke_target:
   db_image: "{{ smoke_source.db_image_tag_source }}"
@@ -204,7 +205,7 @@ acceptance_source:
   web_image_tag_source: "{{ private_docker_repo }}/romana/{{ smoke_source.web_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
   tester_container_name: "bwpm_{{ test_suite }}_tester-{{ j_main_version }}"
   tester_image_tag_source: "{{ private_docker_repo }}/romana/{{ smoke_source.tester_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
-  tester_network_name: "bwpm_network-{{ test_suite }}-{{ j_main_version }}"
+  tester_network_name: "bwpm_network_{{ test_suite }}_{{ j_main_version }}"
 
 acceptance_target:
   db_image: "{{ acceptance_source.db_image_tag_source }}"
@@ -219,7 +220,7 @@ fast_source:
   web_image_tag_source: "{{ private_docker_repo }}/romana/{{ smoke_source.web_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
   tester_container_name: "bwpm_{{ test_suite }}_tester-{{ j_main_version }}"
   tester_image_tag_source: "{{ private_docker_repo }}/romana/{{ smoke_source.tester_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
-  tester_network_name: "bwpm_network-{{ test_suite }}-{{ j_main_version }}"
+  tester_network_name: "bwpm_network_{{ test_suite }}-{{ j_main_version }}"
 
 fast_target:
   db_image: "{{ acceptance_source.db_image_tag_source }}"

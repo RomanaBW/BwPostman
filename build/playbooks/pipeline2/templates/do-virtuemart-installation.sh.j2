@@ -3,14 +3,17 @@
 # delete old failure file
 rm -f {{ codecept_failed_file }}
 
+# delete old X-server lock file
+rm -f /tmp/X45-lock
+
 # export sudo user
 export BW_TESTER_USER="jenkins"
 export BWPM_VERSION_TO_TEST="${1}"
 export ADDITIONAL_EXTENSIONS="{{ virtuemart_extensions |join(' ') }}"
 
 # start x-server
-/usr/bin/Xvfb {{ display }} -ac -screen 0 {{ screen_size }}x16 &
-export DISPLAY={{ display }}
+/usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
+export DISPLAY=:{{ display }}
 
 java -jar -Dwebdriver.chrome.driver=/opt/selenium/chromedriver-91.0.4472.19 -Dwebdriver.chrome.logfile={{ test_log_path }}/chromedriver.log -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone.jar -port 4445 >{{ test_log_path }}/selenium.log 2>{{ test_log_path }}/selenium.log &
 
@@ -22,7 +25,7 @@ done
 printf '\n'
 
 # Start recording
-tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i {{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ test_suite }}.mp4 2>{{ test_log_path }}/ffmpeg.log"
+tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i :{{ display }}.0 -vcodec libx264 -r 12 {{ record_path }}/{{ test_suite }}.mp4 2>{{ test_log_path }}/ffmpeg.log"
 
 # run tests
 cd /data
@@ -53,5 +56,8 @@ sleep 1
 
 # Stop recording
 tmux send-keys -t BwPostmanRecording1 q
+
+# Ensure X-server lock file is removed
+rm -f /tmp/X45-lock
 
 exit ${failed_check}

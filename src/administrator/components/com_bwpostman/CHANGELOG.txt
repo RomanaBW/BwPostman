@@ -5,13 +5,16 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-Version 4.0.1 released (2021-12-06)----
+Version 4.0.1 released (2021-12-16)----
 
 Bugfix
 # Package creation took too much media folders at plugins, package was too big
+# Plugin User2Subscriber didn't check if mailing list is selected
+# On some rare cases default setting for text columns at tables made installation/update error
 
 Improvement
 ~ Smaller changes to manifest files of package and single parts to meet upgrade needs
+- Errors handling at registration by front end now highlights missing values
 
 
 Version 4.0.0 released (2021-11-06)----

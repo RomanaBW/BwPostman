@@ -390,14 +390,14 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $joomla_topmenu_shop_iframe_virtuemart    = "//*[@id='collapseTypes']/div[10]/h2/button";
+	public static $joomla_topmenu_shop_iframe_virtuemart    = "//*[@id='collapseTypes']/div/h2/button[contains(text(), 'VirtueMart')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $joomla_topmenu_shop_iframe_virtuemart_category    = "//*[@id='collapseTypes']/div[10]/div/div/div/a[2]";
+	public static $joomla_topmenu_shop_iframe_virtuemart_category    = "//*[@id='collapseTypes']/div/div/div/div/a/div[contains(text(), 'Category Layout')]";
 
 
 	/*

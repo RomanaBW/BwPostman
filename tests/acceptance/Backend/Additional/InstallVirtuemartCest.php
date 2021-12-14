@@ -125,6 +125,7 @@ class InstallVirtuemartCest
 			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: visible');");
 		}
 
+		codecept_debug("Install file " . $install_file);
 		$I->attachFile(InstallPage::$installField, $install_file);
 
 		if (!$new_j_installer)
@@ -152,12 +153,12 @@ class InstallVirtuemartCest
 	 */
 	private function configureVirtuemart(AcceptanceTester $I)
 	{
-		$this->addSampleData($I);
-		$this->configureSafePath($I);
-		$this->configureRegisterOnCheckout($I);
-		$this->configureVendor($I);
-		$this->configureShopper($I);
 		$this->addShopMenuItem($I);
+		$this->addSampleData($I);
+//		$this->configureSafePath($I);
+//		$this->configureRegisterOnCheckout($I);
+//		$this->configureVendor($I);
+//		$this->configureShopper($I);
 	}
 
 	/**
@@ -288,9 +289,13 @@ class InstallVirtuemartCest
 
 		$I->clickAndWait(InstallPage::$joomla_topmenu_shop_button, 1);
 		$I->switchToIFrame(InstallPage::$joomla_topmenu_shop_iframe_name);
+
 		$I->scrollTo(InstallPage::$joomla_topmenu_shop_iframe_virtuemart, 0, -50);
 		$I->wait(1);
 		$I->click(InstallPage::$joomla_topmenu_shop_iframe_virtuemart);
+
+		$I->scrollTo(InstallPage::$joomla_topmenu_shop_iframe_virtuemart_category, 0, -50);
+		$I->wait(1);
 		$I->clickAndWait(InstallPage::$joomla_topmenu_shop_iframe_virtuemart_category, 1);
 		$I->switchToIFrame();
 

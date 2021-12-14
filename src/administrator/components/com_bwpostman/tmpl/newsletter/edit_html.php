@@ -37,8 +37,6 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 
 HTMLHelper::_('behavior.keepalive');
 
-//$image = HTMLHelper::_('image', 'administrator/templates/' . $this->template . '/images/menu/icon-16-info.png', Text::_('COM_BWPOSTMAN_NOTES'));
-
 $currentTab = 'edit_html';
 ?>
 

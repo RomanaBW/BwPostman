@@ -470,7 +470,8 @@ class TestNewslettersDetailsCest
 		// Delete currently uploaded file
 		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
 		$I->switchToIFrame(Generals::$media_frame1);
-		$I->waitForElementVisible("//*[@id='toolbar']", 5);
+		$I->waitForElementVisible("//*[@id='com-media']/div/div[2]/div[2]/div/div[2]", 5);
+		$I->wait(1);
 
 		$I->scrollTo(NlEdit::$attachment_upload_file, 0, -250);
 		$I->wait(1);

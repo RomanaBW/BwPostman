@@ -1,0 +1,11 @@
+---
+- hosts: tester
+  gather_facts: no
+
+- include: create-push-apache-image.yml
+- include: create-push-mariadb-image.yml
+  when: update_database is defined
+- include: create-push-joomla-files-image.yml
+- include: create-push-joomla-tables-image.yml
+- include: install-required-extensions-push.yml
+- include: install-virtuemart-push.yml

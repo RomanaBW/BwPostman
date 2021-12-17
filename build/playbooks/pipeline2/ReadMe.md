@@ -66,6 +66,9 @@ Step 1.ii is only to do, if one want to change web server or database version.
 Step 1.i, 2 and 3 are to process every time, Joomla gets an update
 
 Step 3 may be processed without step 2, if version of Joomla does not change but the version of installed extensions.
+
+There is a playbook **create-complete-containers.yml**, that runs all above-mentioned playbooks at one run. There is also 
+the possibility to run Step 1.ii, if extra-vars _update_database _ is set.
 	
 	@ToDo:
 	At step 3 there could also inserted a Joomla check for the database/tables (Extensions->Manage->Database) to be sure.

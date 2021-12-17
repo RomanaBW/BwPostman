@@ -430,7 +430,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_new_button1      = "//*/tr[@data-group='__field30']/td[2]/div/button[1]";
+	public static $attachment_new_button1      = "//*/tr[@data-group='attachment0']/td[2]/div/button[1]";
 
 	/**
 	 * @var string

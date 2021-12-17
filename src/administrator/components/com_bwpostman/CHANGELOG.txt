@@ -5,6 +5,16 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
+Version 3.1.8 released (2021-12-18)----
+
+Bugfix
+# Package creation took too much media folders at plugins, package was too big
+# On some rare cases default setting for text columns at tables made installation/update error
+
+Improvement
+~ Ensure that a variable not countable at U2S don't produce errors
+~ Enhance description of # of months of module overview at back end
+
 Version 3.1.7 released (2021-10-02)----
 
 Bugfix

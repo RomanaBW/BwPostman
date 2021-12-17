@@ -20,7 +20,7 @@ Step 1 is a simple Jenkinsfile task.
 
 Step 2 uses an ansible playbook.
 
-Steps 3 to 5 also use ansible playbooks. The tests needs selenium and codeception, so they have to run at a complete 
+Steps 3 to 5 also use ansible playbooks. The tests need selenium and codeception, so they have to run at a complete 
 infrastructure containing web server, database and tester. To get this infrastructure, I use containers. The efforts with 
 virtual machines, which I used so far were not satisfying, too much false positives, too much dependencies on environmental
 facts. Getting this infrastructure from scratch is described below.

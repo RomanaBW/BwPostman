@@ -4,8 +4,8 @@ joomla_version: "4.0.5"
 
 j_version_short: "j4"
 
-bwpm_version: "4.0.1"
-bwpm_version_previous: "4.0.0"
+bwpm_version: "4.0.2"
+bwpm_version_previous: "4.0.1"
 
 j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 

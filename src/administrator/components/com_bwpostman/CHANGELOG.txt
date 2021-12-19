@@ -9,6 +9,7 @@ Version 4.0.2 released (2021-12-19)----
 
 Bugfix
 # Revert bugfix 'On some rare cases default setting for text columns at tables made installation/update error', made more problems than it solved
+# Sending to testrecipients unable
 
 Version 4.0.1 released (2021-12-18)----
 

@@ -5,6 +5,11 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
+Version 3.1.9 released (2021-12-19)----
+
+Bugfix
+# Revert bugfix 'On some rare cases default setting for text columns at tables made installation/update error', made more problems than it solved
+
 Version 3.1.8 released (2021-12-18)----
 
 Bugfix

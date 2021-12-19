@@ -9,6 +9,7 @@ Version 3.1.9 released (2021-12-19)----
 
 Bugfix
 # Revert bugfix 'On some rare cases default setting for text columns at tables made installation/update error', made more problems than it solved
+# Sending to testrecipients unable
 
 Version 3.1.8 released (2021-12-18)----
 

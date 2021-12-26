@@ -40,7 +40,7 @@ modules:
             chromeOptions:
                 args: ["--no-sandbox", "--window-size=1440,900"]
                 prefs:
-                  download.default_directory: "/tests/tests/_output"
+                  download.default_directory: "/tests/tests3/_output"
 
 
         connection_timeout: 60

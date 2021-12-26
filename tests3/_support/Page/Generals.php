@@ -322,9 +322,9 @@ class Generals
 	 * @since  2.1.0
 	 */
 	public static $downloadFolder = array(
-		'root' => '/tests/tests/_output/',
+		'root' => '/tests/tests3/_output/',
 //		'jenkins' => '/home/jenkins/Downloads/',
-		'user1' => '/tests/tests/_output/',
+		'user1' => '/tests/tests3/_output/',
 		'user2' => '/repositories/artifacts/bwpostman/downloads/',
 		'jenkins' => '/repositories/artifacts/bwpostman/downloads/',
 		);

@@ -89,7 +89,15 @@ class TestMaintenanceCest
 		$I->clickAndWait(MaintenancePage::$saveTablesButton, 15);
 
 		$I->assertTrue(file_exists($downloadPath));
-		unlink($downloadPath);
+
+		$withdraw = getenv('BW_TEST_WITHDRAW');
+		codecept_debug ('ENV withdraw: ' . $withdraw);
+
+		if ($withdraw == false)
+		{
+			codecept_debug ('Unlink downloaded file');
+			unlink($downloadPath);
+		}
 	}
 
 	/**
@@ -136,7 +144,15 @@ class TestMaintenanceCest
 		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
 
 		$I->assertTrue(file_exists($downloadPath));
-		unlink($downloadPath);
+
+		$withdraw = getenv('BW_TEST_WITHDRAW');
+		codecept_debug ('ENV withdraw: ' . $withdraw);
+
+		if ($withdraw == false)
+		{
+			codecept_debug ('Unlink downloaded file');
+			unlink($downloadPath);
+		}
 
 		$I->setManifestOption('com_bwpostman', 'compress_backup', '1');
 	}

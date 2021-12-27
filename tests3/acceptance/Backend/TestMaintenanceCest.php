@@ -90,9 +90,11 @@ class TestMaintenanceCest
 		$I->assertTrue(file_exists($downloadPath));
 
 		$withdraw = getenv('BW_TEST_WITHDRAW');
+		codecept_debug ('ENV withdraw: ' . $withdraw);
 
 		if ($withdraw == false)
 		{
+			codecept_debug ('Unlink downloaded file');
 			unlink($downloadPath);
 		}
 	}
@@ -143,9 +145,11 @@ class TestMaintenanceCest
 		$I->assertTrue(file_exists($downloadPath));
 
 		$withdraw = getenv('BW_TEST_WITHDRAW');
+		codecept_debug ('ENV withdraw: ' . $withdraw);
 
 		if ($withdraw == false)
 		{
+			codecept_debug ('Unlink downloaded file');
 			unlink($downloadPath);
 		}
 

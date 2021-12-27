@@ -1,0 +1,86 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - vars/fast-test-vars.yml
+    - vars/tester-image-vars.yml
+    - vars/codecept_paths_J4.yml
+
+- include: run-local-fast-withdraw.yml
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - vars/fast-test-vars.yml
+    - vars/tester-image-vars.yml
+    - vars/codecept_paths_J4.yml
+
+  tasks:
+    - name: Start tests
+      shell: "docker-compose -f /vms/dockers/containers/testers/bwpm-tester-fast-withdraw.yml up"
+
+    - name: Remove tester
+      shell: "docker rm bwpm-tester"
+
+    - name: Get file name of XML backup file
+      find:
+        paths: "{{ test_dir }}/_output"
+        patterns: "*.xml"
+        recurse: no
+        file_type: file
+      register: found_files
+
+    - name: Show found files
+      debug:
+        msg: "{{ found_files }}"
+
+    - name: Set found XML file
+      set_fact:
+        found_xml: "{{ found_files.files }}"
+
+    - name: Set found XML file name
+      set_fact:
+        found_xml_name: "{{ found_xml[0].path }}"
+
+    - name: Show found XML file name
+      debug:
+        msg: "{{ found_xml_name }}"
+
+    - name: Move XML backup file from tester folder to repository
+      shell: "mv -f {{ found_xml_name }} {{ codecept_path_data }}/BwPostman_{{ bwpm_version  | replace('.', '_') }}_Tables.xml"
+
+    - name: Get file name of ZIP backup file
+      find:
+        paths: "{{ test_dir }}/_output"
+        patterns: "*.xml.zip"
+        recurse: no
+        file_type: file
+      register: found_files
+
+    - name: Set found ZIP file
+      set_fact:
+        found_zip: "{{ found_files.files }}"
+
+    - name: Set found ZIP file name
+      set_fact:
+        found_zip_name: "{{ found_zip[0].path }}"
+
+    - name: Show found ZIP file name
+      debug:
+        msg: "{{ found_zip_name }}"
+
+    - name: Move ZIP backup file from tester folder to repository
+      shell: "mv -f {{ found_zip_name }} {{ codecept_path_data }}/BwPostman_{{ bwpm_version  | replace('.', '_') }}_Tables.xml.zip"
+
+    - name: Set command for new database dump
+      set_fact:
+        sql_dump_command: "mysqldump -h {{ test_db_host_ip }} -u {{ test_db_user }} -p{{ test_db_password }} --opt --extended-insert --complete-insert {{ test_db_dbname }} > {{ web_dir }}/{{ project_name }}/backups/{{ project_name }}.sql"
+
+    - name: Show command for new database dump
+      debug:
+        msg: "{{ sql_dump_command }}"
+
+    - name: Execute command for new database dump
+      shell: "{{ sql_dump_command }}"

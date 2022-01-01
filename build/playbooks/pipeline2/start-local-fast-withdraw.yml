@@ -7,7 +7,7 @@
     - vars/tester-image-vars.yml
     - vars/codecept_paths_J3.yml
 
-- include: run-local-fast-withdraw.yml
+- import_playbook: run-local-fast-withdraw.yml
 
 - hosts: localhost
   connection: local

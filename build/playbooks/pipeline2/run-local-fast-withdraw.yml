@@ -112,6 +112,14 @@
         src: "/vms/dockers/global_data/test_data/{{ project_name }}/backups/{{ project_name }}.sql"
         dest: "/vms/dockers/global_data/test_data/{{ project_name }}/backups/{{ project_name }}_{{ reduced_date }}.sql"
 
+    - name: ensure infrastructure is stopped
+      shell: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm.yml -p {{ project_name }} down"
+      environment:
+        BW_TEST_PROJECT: "{{ project_name }}"
+        BW_TEST_CONTAINER_DIR: "{{ container_dir }}"
+#        BW_TEST_PHP_VERSION: "{{ bw_php_version }}"
+#        BW_TEST_WEB_BASE_DIR: "{{ bw_container_data_base_path }}"
+
     - name: Create infrastructure compose file
       template:
         src: "run-bwpm-fast.yml.j2"

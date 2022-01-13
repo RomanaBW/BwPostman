@@ -1986,6 +1986,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 */
 	private function handleColumnAttributes(array $neededColumns, array $installedColumns, object $checkTable): bool
 	{
+
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
 			$diff = array_udiff($neededColumns[$i], $installedColumns[$i], 'strcasecmp');
@@ -2068,6 +2069,80 @@ class MaintenanceModel extends BaseDatabaseModel
 						return $message;
 					}
 				}
+			}
+
+//			@ToDo: Check at least if default value of installed columns corresponds to needed values!
+			$withoutDefault    = array( 'TINYTEXT', 'TEXT', 'MEDIUMTEXT', 'LONGTEXT', 'TINYBLOB', 'BLOB', 'MEDIUMBLOB', 'LONGBLOB', ' GEOMETRY', 'JSON');
+			$changedAttributes = array();
+			$queries           = array();
+
+			for ($i = 0; $i < count($neededColumns); $i++)
+			{
+				$neededAttributes    = $neededColumns[$i];
+				$installedAttributes = $installedColumns[$i];
+
+				if (strtolower($installedAttributes['Type']) !== strtolower($neededAttributes['Type']))
+				{
+					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Type'];
+				}
+
+				if (strtolower($installedAttributes['Null']) !== strtolower($neededAttributes['Null']))
+				{
+					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Null'];
+				}
+
+				if (key_exists('Collation', $neededAttributes) && strtolower($installedAttributes['Collation']) !== strtolower($neededAttributes['Collation']))
+				{
+					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Collation'];
+				}
+
+				if (key_exists('Extra', $neededAttributes) && strtolower($installedAttributes['Extra']) !== strtolower($neededAttributes['Extra']))
+				{
+					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Extra'];
+				}
+
+				if (key_exists('Default', $neededAttributes) && $installedAttributes['Default'] !== $neededAttributes['Default'])
+				{
+					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Default'];
+				}
+				elseif (in_array($neededAttributes['Type'], $withoutDefault) && $installedAttributes['Default'] !== null)
+				{
+					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' ALTER ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' DROP DEFAULT';
+				}
+			}
+
+			if (count($queries))
+			{
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_ATTRIBUTES_WRONG', $checkTable->name);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
+
+				echo '<p class="text-warning">' . $message . '</p>';
+
+				try
+				{
+					foreach ($queries as $query)
+					{
+						$this->db->setQuery($query);
+						$this->db->execute();
+					}
+				}
+				catch (RuntimeException $exception)
+				{
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_ATTRIBUTES_ERROR', $query);
+					$message .= ': ';
+					$message .= $exception->getMessage();
+
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+					echo '<p class="text-danger">' . $message . '</p>';
+
+					return false;
+				}
+
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_ATTRIBUTES_SUCCESS', $checkTable->name);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+
+				$returnMessage .= '<p class="text-success">' . $message . '</p>';
 			}
 		}
 

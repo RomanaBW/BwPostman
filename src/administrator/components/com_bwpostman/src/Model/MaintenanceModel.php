@@ -2071,7 +2071,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				}
 			}
 
-//			@ToDo: Check at least if default value of installed columns corresponds to needed values!
+//			Check if attributes of installed columns corresponds to needed values!
 			$withoutDefault    = array( 'TINYTEXT', 'TEXT', 'MEDIUMTEXT', 'LONGTEXT', 'TINYBLOB', 'BLOB', 'MEDIUMBLOB', 'LONGBLOB', ' GEOMETRY', 'JSON');
 			$changedAttributes = array();
 			$queries           = array();

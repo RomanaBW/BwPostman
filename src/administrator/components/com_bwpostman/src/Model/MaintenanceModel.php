@@ -2080,7 +2080,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$neededAttributes    = $neededColumns[$i];
 				$installedAttributes = $installedColumns[$i];
 
-				if (strtolower($installedAttributes['Type']) !== strtolower($neededAttributes['Type']))
+				if (key_exists('Type', $neededAttributes) && strtolower($installedAttributes['Type']) !== strtolower($neededAttributes['Type']))
 				{
 					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Type'];
 				}

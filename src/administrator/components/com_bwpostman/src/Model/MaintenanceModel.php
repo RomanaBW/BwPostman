@@ -2073,7 +2073,6 @@ class MaintenanceModel extends BaseDatabaseModel
 
 //			Check if attributes of installed columns corresponds to needed values!
 			$withoutDefault    = array( 'TINYTEXT', 'TEXT', 'MEDIUMTEXT', 'LONGTEXT', 'TINYBLOB', 'BLOB', 'MEDIUMBLOB', 'LONGBLOB', ' GEOMETRY', 'JSON');
-			$changedAttributes = array();
 			$queries           = array();
 
 			for ($i = 0; $i < count($neededColumns); $i++)
@@ -2086,7 +2085,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Type'];
 				}
 
-				if (strtolower($installedAttributes['Null']) !== strtolower($neededAttributes['Null']))
+				if (key_exists('Null', $neededAttributes) && strtolower($installedAttributes['Null']) !== strtolower($neededAttributes['Null']))
 				{
 					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Null'];
 				}

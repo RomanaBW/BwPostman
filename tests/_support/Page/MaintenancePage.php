@@ -569,14 +569,14 @@ class MaintenancePage
 	 *
 	 * @since 4.0.4
 	 */
-	public static $warningTextDefault     = "The default value for column `intro_text` of table `#__bwpostman_newsletters` is wrong. Trying to adjust the correct the value...";
+	public static $warningTextDefault     = "The default value for column `tpl_html` of table `#__bwpostman_templates` is wrong. Trying to adjust the correct the value...";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.4
 	 */
-	public static $repairTextDefault     = "Default value for column `intro_text` of table `#__bwpostman_newsletters` adjusted successfully";
+	public static $repairTextDefault     = "Default value for column `tpl_html` of table `#__bwpostman_templates` adjusted successfully";
 
 	/**
 	 * @var string

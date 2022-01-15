@@ -2088,7 +2088,7 @@ class MaintenanceModel extends BaseDatabaseModel
 //		Check if default value of installed columns is set, where it should not be set
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
-			if (!key_exists('Default', $neededColumns[$i]) && key_exists('Default', $installedColumns[$i]) && in_array($neededColumns[$i]['Type'], $withoutDefault))
+			if (!key_exists('Default', $neededColumns[$i]) && key_exists('Default', $installedColumns[$i]) && !is_null($installedColumns[$i]['Default']) && in_array($neededColumns[$i]['Type'], $withoutDefault))
 			{
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DEFAULT_WRONG',
 					$neededColumns[$i]['Column'], $checkTable->name);

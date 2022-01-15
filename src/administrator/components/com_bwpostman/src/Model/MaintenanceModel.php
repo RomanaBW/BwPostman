@@ -1813,10 +1813,11 @@ class MaintenanceModel extends BaseDatabaseModel
 		$message = str_pad(Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_OK', $checkTable->name), 4096);
 		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-		echo '<p class="text-success">' . $message	 . '</p>';
+		echo '<p class="text-success">' . $message . '</p>';
 
 		// compare table attributes and correct them if needed
 		$attributesResult = $this->handleColumnAttributes($neededColumns, $installedColumns, $checkTable);
+
 		if($attributesResult !== true)
 		{
 			return 'Handle attributes error: ' . false;
@@ -1980,16 +1981,28 @@ class MaintenanceModel extends BaseDatabaseModel
 	 * @param array  $installedColumns array of columns which are installed containing an array of all column attributes
 	 * @param object $checkTable       object of table from installation file, that must be installed
 	 *
-	 * @return bool
+	 * @return    boolean false on error
 	 *
 	 * @since 2.4.0
 	 */
 	private function handleColumnAttributes(array $neededColumns, array $installedColumns, object $checkTable): bool
 	{
-
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
-			$diff = array_udiff($neededColumns[$i], $installedColumns[$i], 'strcasecmp');
+			$diff           = array_udiff($neededColumns[$i], $installedColumns[$i], 'strcasecmp');
+			$withoutDefault = array(
+				'TINYTEXT',
+				'TEXT',
+				'MEDIUMTEXT',
+				'LONGTEXT',
+				'TINYBLOB',
+				'BLOB',
+				'MEDIUMBLOB',
+				'LONGBLOB',
+				' GEOMETRY',
+				'JSON'
+			);
+			$defaultQuery   = '';
 
 			if (!empty($diff))
 			{
@@ -2024,7 +2037,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					}
 
 					$query = "ALTER TABLE " . $this->db->quoteName($checkTable->name);
-					$query .= " MODIFY " . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededColumns[$i]['Type']  . $collation. $null . $default;
+					$query .= " MODIFY " . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededColumns[$i]['Type'] . $collation . $null . $default;
 
 					if (array_key_exists('Extra', $neededColumns[$i]))
 					{
@@ -2070,65 +2083,30 @@ class MaintenanceModel extends BaseDatabaseModel
 					}
 				}
 			}
+		}
 
-//			Check if attributes of installed columns corresponds to needed values!
-			$withoutDefault    = array( 'TINYTEXT', 'TEXT', 'MEDIUMTEXT', 'LONGTEXT', 'TINYBLOB', 'BLOB', 'MEDIUMBLOB', 'LONGBLOB', ' GEOMETRY', 'JSON');
-			$queries           = array();
-
-			for ($i = 0; $i < count($neededColumns); $i++)
+//		Check if default value of installed columns is set, where it should not be set
+		for ($i = 0; $i < count($neededColumns); $i++)
+		{
+			if (!key_exists('Default', $neededColumns[$i]) && key_exists('Default', $installedColumns[$i]) && in_array($neededColumns[$i]['Type'], $withoutDefault))
 			{
-				$neededAttributes    = $neededColumns[$i];
-				$installedAttributes = $installedColumns[$i];
-
-				if (key_exists('Type', $neededAttributes) && strtolower($installedAttributes['Type']) !== strtolower($neededAttributes['Type']))
-				{
-					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Type'];
-				}
-
-				if (key_exists('Null', $neededAttributes) && strtolower($installedAttributes['Null']) !== strtolower($neededAttributes['Null']))
-				{
-					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Null'];
-				}
-
-				if (key_exists('Collation', $neededAttributes) && strtolower($installedAttributes['Collation']) !== strtolower($neededAttributes['Collation']))
-				{
-					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Collation'];
-				}
-
-				if (key_exists('Extra', $neededAttributes) && strtolower($installedAttributes['Extra']) !== strtolower($neededAttributes['Extra']))
-				{
-					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Extra'];
-				}
-
-				if (key_exists('Default', $neededAttributes) && $installedAttributes['Default'] !== $neededAttributes['Default'])
-				{
-					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' MODIFY ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededAttributes['Default'];
-				}
-				elseif (in_array($neededAttributes['Type'], $withoutDefault) && $installedAttributes['Default'] !== null)
-				{
-					$queries[] = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' ALTER ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' DROP DEFAULT';
-				}
-			}
-
-			if (count($queries))
-			{
-				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_ATTRIBUTES_WRONG', $checkTable->name);
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DEFAULT_WRONG',
+					$neededColumns[$i]['Column'], $checkTable->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
 
 				echo '<p class="text-warning">' . $message . '</p>';
 
+				$defaultQuery = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' ALTER ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' DROP DEFAULT';
+
 				try
 				{
-					foreach ($queries as $query)
-					{
-						$this->db->setQuery($query);
-						$this->db->execute();
-					}
+					$this->db->setQuery($defaultQuery);
+					$this->db->execute();
 				}
 				catch (RuntimeException $exception)
 				{
-					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_ATTRIBUTES_ERROR', $query);
-					$message .= ': ';
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DROP_DEFAULT_ERROR',
+						$neededColumns[$i]['Column'], $checkTable->name);
 					$message .= $exception->getMessage();
 
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -2138,19 +2116,20 @@ class MaintenanceModel extends BaseDatabaseModel
 					return false;
 				}
 
-				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_MODIFY_ATTRIBUTES_SUCCESS', $checkTable->name);
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DROP_DEFAULT_SUCCESS',
+					$neededColumns[$i]['Column'], $checkTable->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-				$returnMessage .= '<p class="text-success">' . $message . '</p>';
+				echo '<p class="text-success">' . $message . '</p>';
 			}
 		}
 
-		return true;
+	return true;
 	}
 
 	/**
 	 * Method to check, if column asset_id has a real value. If not, there is no possibility to delete data sets in BwPostman.
-	 * Therefore each dataset without real value for asset_id has to be stored one time, to get this value
+	 * Therefore, each dataset without real value for asset_id has to be stored one time, to get this value
 	 *
 	 * @return    boolean|string false on error, otherwise success message
 	 *

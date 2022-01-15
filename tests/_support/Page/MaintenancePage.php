@@ -567,6 +567,20 @@ class MaintenancePage
 	/**
 	 * @var string
 	 *
+	 * @since 4.0.4
+	 */
+	public static $warningTextDefault     = "The default value for column `intro_text` of table `#__bwpostman_newsletters` is wrong. Trying to adjust the correct the value...";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.4
+	 */
+	public static $repairTextDefault     = "Default value for column `intro_text` of table `#__bwpostman_newsletters` adjusted successfully";
+
+	/**
+	 * @var string
+	 *
 	 * @since 3.1.3
 	 */
 	public static $warningTextVersion     = "Installed version of BwPostman is lower than version of backup. Column check is not performed to prevent data loss. Please Update to backed up version of BwPostman.";
@@ -820,50 +834,73 @@ class MaintenancePage
 			$I->assertEquals($found, true);
 		}
 
+		codecept_debug('Check for increment warnings');
 		$found = in_array(self::$warningTextIncrement, $resultsWarn);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for increment okay');
 		$found = in_array(self::$repairTextIncrement, $resultsOkay);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for collation warnings');
 		$found = in_array(self::$warningTextCollation, $resultsWarn);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for collation okay');
 		$found = in_array(self::$repairTextCollation, $resultsOkay);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for Text warnings');
 		$found = in_array(self::$warningTextColumn, $resultsWarn);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for text okay');
 		$found = in_array(self::$repairTextColumn, $resultsOkay);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for type warnings');
 		$found = in_array(self::$warningTextType, $resultsWarn);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for type okay');
 		$found = in_array(self::$repairTextType, $resultsOkay);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for null warnings');
 		$found = in_array(self::$warningTextNull, $resultsWarn);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for null okay');
 		$found = in_array(self::$repairTextNull, $resultsOkay);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for published warnings');
 		$found = in_array(self::$warningTextPublishe, $resultsWarn);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for published okay');
 		$found = in_array(self::$repairTextPublishe, $resultsOkay);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for text published warnings');
 		$found = in_array(self::$warningTextPublished, $resultsWarn);
 		$I->assertEquals($found, true);
 
+		codecept_debug('Check for text published okay');
 		$found = in_array(self::$repairTextPublished, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		codecept_debug('Check for text default warnings');
+		$found = in_array(self::$warningTextDefault, $resultsWarn);
+		$I->assertEquals($found, true);
+
+		codecept_debug('Check for text default okay');
+		$found = in_array(self::$repairTextDefault, $resultsOkay);
 		$I->assertEquals($found, true);
 
 		foreach (self::$assetTableArray as $table)
 		{
+			codecept_debug('Check for table success okay');
 			$found = in_array(sprintf(self::$successTextAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}

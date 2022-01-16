@@ -147,6 +147,13 @@ class TemplateManagerPage
 	 */
 	public static $no_default_result1   = "//*[@id='main-table']/tbody/tr[4]/td[5]/*/span[contains(@class, '-featured')]";
 
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.0
+	 */
+	public static $no_default_result_import   = "//*[@id='main-table']/tbody/tr[1]/td[5]/*/span[contains(@class, '-featured')]";
+
 
 	/**
 	 * @var string

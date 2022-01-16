@@ -1099,11 +1099,7 @@ class TemplatesModel extends ListModel
 
 					foreach ($res as $key => $value) {
 
-						if ($key === 'standard')	// Reset default template
-						{
-							$values[] = 0;
-						}
-						elseif (!isset($value))	// NULL
+						if (!isset($value))	// NULL
 						{
 							$values[] = 'NULL';
 						}

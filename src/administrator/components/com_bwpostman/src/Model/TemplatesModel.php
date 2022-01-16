@@ -705,6 +705,9 @@ class TemplatesModel extends ListModel
 							// get template title
 							$TplTitle = $tplTable->getTemplateTitle($lastID);
 
+							// reset default value of imported template preventively
+							$tplTable->resetDefaultTpl($lastID);
+
 							// count template titles
 							$CountTitle = $tplTable->getNbrOfTemplates('', '', $TplTitle);
 
@@ -1096,7 +1099,11 @@ class TemplatesModel extends ListModel
 
 					foreach ($res as $key => $value) {
 
-						if (!isset($value))	// NULL
+						if ($key === 'standard')	// Reset default template
+						{
+							$values[] = 0;
+						}
+						elseif (!isset($value))	// NULL
 						{
 							$values[] = 'NULL';
 						}

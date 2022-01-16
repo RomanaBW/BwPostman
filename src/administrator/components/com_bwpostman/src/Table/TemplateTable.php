@@ -1087,6 +1087,46 @@ class TemplateTable extends Table implements VersionableTableInterface
 	}
 
 	/**
+	 * Method to reset default template
+	 *
+	 * @param integer $id
+	 *
+	 * @return 	boolean false
+	 *
+	 * @throws Exception
+	 *
+	 * @since 4.0.3
+	 */
+	public function resetDefaultTpl(int $id)
+	{
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->update($db->quoteName($this->_tbl));
+		$query->set($db->quoteName('standard') . " = " . $db->Quote(0));
+		$query->where($db->quoteName('id') . ' = ' . $db->Quote($id));
+
+		if ($this->tpl_id < 988)
+		{
+			$query->where($db->quoteName('tpl_id') . ' < ' . $db->Quote(988));
+		}
+		else
+		{
+			$query->where($db->quoteName('tpl_id') . ' > ' . $db->Quote(987));
+		}
+
+		try
+		{
+			$db->setQuery($query);
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
+	}
+
+	/**
 	 * Returns the identity (primary key) value of this record
 	 *
 	 * @return  mixed

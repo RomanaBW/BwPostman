@@ -559,6 +559,20 @@ class MaintenancePage
 	/**
 	 * @var string
 	 *
+	 * @since 4.0.4
+	 */
+	public static $warningTextDefault     = "The default value for column `tpl_html` of table `#__bwpostman_templates` is wrong. Trying to adjust the correct the value...";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.0.4
+	 */
+	public static $repairTextDefault     = "Default value for column `tpl_html` of table `#__bwpostman_templates` adjusted successfully";
+
+	/**
+	 * @var string
+	 *
 	 * @since 3.1.3
 	 */
 	public static $warningTextVersion     = "Installed version of BwPostman is lower than version of backup. Column check is not performed to prevent data loss. Please Update to backed up version of BwPostman.";
@@ -844,6 +858,14 @@ class MaintenancePage
 		$I->assertEquals($found, true);
 
 		$found = in_array(self::$repairTextPublished, $resultsOkay);
+		$I->assertEquals($found, true);
+
+		codecept_debug('Check for text default warnings');
+		$found = in_array(self::$warningTextDefault, $resultsWarn);
+		$I->assertEquals($found, true);
+
+		codecept_debug('Check for text default okay');
+		$found = in_array(self::$repairTextDefault, $resultsOkay);
 		$I->assertEquals($found, true);
 
 		foreach (self::$assetTableArray as $table)

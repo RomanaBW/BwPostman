@@ -343,6 +343,9 @@ class TestTemplatesListsCest
 		$I->waitForElementVisible(TplManage::$firstTableTitle, 5);
 		$I->see(TplManage::$importTemplateName, TplManage::$firstTableTitle);
 
+		// Check if default is reset
+		$I->dontSeeElement(TplManage::$no_default_result_import);
+
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplManage::$arc_del_array_import, true);
 		$I->see('Template', Generals::$pageTitle);
 	}
@@ -400,7 +403,7 @@ class TestTemplatesListsCest
 
 		$I->assertTrue(file_exists($downloadPath));
 
-
+		$I->deleteFile($downloadPath);
 	}
 
 	/**

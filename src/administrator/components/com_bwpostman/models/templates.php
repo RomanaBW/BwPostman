@@ -1092,6 +1092,8 @@ class BwPostmanModelTemplates extends JModelList
 					// Set tpl_id, path to thumbnail
 					if ($setting['table'] == 'bwpostman_templates')
 					{
+						// we cannot reinstall a second standard template
+						$res['standard'] = 0;
 						$tpl_id        = $res['tpl_id'];
 						$this->imgPath = $res['thumbnail'];
 					}

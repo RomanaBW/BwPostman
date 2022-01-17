@@ -1814,6 +1814,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		// compare table attributes and correct them if needed
 		$attributesResult = $this->handleColumnAttributes($neededColumns, $installedColumns, $checkTable);
+
 		if($attributesResult !== true)
 		{
 			return 'Handle attributes error: ' . $attributesResult;
@@ -1903,9 +1904,10 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 	/**
 	 * Check for obsolete columns and remove them, if needed
-	 * @param array   $installedColumns  columns which are installed
-	 * @param array   $search_cols_2     columns which are named at installation file
-	 * @param object  $checkTable     object of table from installation file, that must be installed
+	 *
+	 * @param array  $installedColumns columns which are installed
+	 * @param array  $search_cols_2    columns which are named at installation file
+	 * @param object $checkTable       object of table from installation file, that must be installed
 	 *
 	 * @return boolean|integer
 	 *
@@ -1984,7 +1986,19 @@ class BwPostmanModelMaintenance extends JModelLegacy
 	{
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
-			$diff = array_udiff($neededColumns[$i], $installedColumns[$i], 'strcasecmp');
+			$diff           = array_udiff($neededColumns[$i], $installedColumns[$i], 'strcasecmp');
+			$withoutDefault = array(
+				'TINYTEXT',
+				'TEXT',
+				'MEDIUMTEXT',
+				'LONGTEXT',
+				'TINYBLOB',
+				'BLOB',
+				'MEDIUMBLOB',
+				'LONGBLOB',
+				' GEOMETRY',
+				'JSON'
+			);
 
 			if (!empty($diff))
 			{
@@ -2067,7 +2081,46 @@ class BwPostmanModelMaintenance extends JModelLegacy
 			}
 		}
 
-		return true;
+//		Check if default value of installed columns is set, where it should not be set
+		for ($i = 0; $i < count($neededColumns); $i++)
+		{
+			if (!key_exists('Default', $neededColumns[$i]) && key_exists('Default', $installedColumns[$i]) && !is_null($installedColumns[$i]['Default']) && in_array($neededColumns[$i]['Type'], $withoutDefault))
+			{
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DEFAULT_WRONG',
+					$neededColumns[$i]['Column'], $checkTable->name);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
+
+				echo '<p class="text-warning">' . $message . '</p>';
+
+				$defaultQuery = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' ALTER ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' DROP DEFAULT';
+
+				try
+				{
+					$this->db->setQuery($defaultQuery);
+					$this->db->execute();
+				}
+				catch (RuntimeException $exception)
+				{
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DROP_DEFAULT_ERROR',
+						$neededColumns[$i]['Column'], $checkTable->name);
+					$message .= $exception->getMessage();
+
+					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+					echo '<p class="text-danger">' . $message . '</p>';
+
+					return false;
+				}
+
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DROP_DEFAULT_SUCCESS',
+					$neededColumns[$i]['Column'], $checkTable->name);
+				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+
+				echo '<p class="text-success">' . $message . '</p>';
+			}
+		}
+
+	return true;
 	}
 
 	/**

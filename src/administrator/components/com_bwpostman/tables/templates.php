@@ -92,28 +92,28 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_html = '';
+	public $tpl_html = null;
 
 	/**
 	 * @var string tpl_css
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_css = '';
+	public $tpl_css = null;
 
 	/**
 	 * @var string tpl_article
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_article = '';
+	public $tpl_article = null;
 
 	/**
 	 * @var string tpl_divider
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_divider = '';
+	public $tpl_divider = null;
 
 	/**
 	 * @var int tpl_id
@@ -141,14 +141,14 @@ class BwPostmanTableTemplates extends JTable
 	 *
 	 * @since       1.1.0
 	 */
-	public $intro = '';
+	public $intro = null;
 
 	/**
 	 * @var array article
 	 *
 	 * @since       1.1.0
 	 */
-	public $article = '';
+	public $article = null;
 
 	/**
 	 * @var array footer
@@ -1074,6 +1074,46 @@ class BwPostmanTableTemplates extends JTable
 		}
 
 		return true;
+	}
+
+	/**
+	 * Method to reset default template
+	 *
+	 * @param integer $id
+	 *
+	 * @return 	boolean false
+	 *
+	 * @throws Exception
+	 *
+	 * @since 4.0.3
+	 */
+	public function resetDefaultTpl($id)
+	{
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->update($db->quoteName($this->_tbl));
+		$query->set($db->quoteName('standard') . " = " . $db->Quote(0));
+		$query->where($db->quoteName('id') . ' = ' . $db->Quote($id));
+
+		if ($this->tpl_id < 988)
+		{
+			$query->where($db->quoteName('tpl_id') . ' < ' . $db->Quote(988));
+		}
+		else
+		{
+			$query->where($db->quoteName('tpl_id') . ' > ' . $db->Quote(987));
+		}
+
+		try
+		{
+			$db->setQuery($query);
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+		}
 	}
 
 	/**

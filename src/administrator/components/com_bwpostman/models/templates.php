@@ -706,6 +706,9 @@ class BwPostmanModelTemplates extends JModelList
 							// get template title
 							$TplTitle = $tplTable->getTemplateTitle($lastID);
 
+							// reset default value of imported template preventively
+							$tplTable->resetDefaultTpl($lastID);
+
 							// count template titles
 							$CountTitle = $tplTable->getNbrOfTemplates('', '', $TplTitle);
 

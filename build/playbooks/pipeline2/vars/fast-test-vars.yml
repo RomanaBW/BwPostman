@@ -9,6 +9,7 @@ container_dir: "{{ container_base }}/containers"
 test_runner: "bwpm_test_runner.sh"
 test_dir: "{{ base_dir }}/tests3"
 test_src_dir: "tests3"
+codecept_path_data: "/repositories/artifacts/bwpostman/data"
 
 test_project_base_dir: "/home/romana/PhpstormProjects/BwPostman"
 

@@ -3,7 +3,7 @@ actor: Tester
 paths:
   tests: {{ test_src_dir }}
   log: tests3/_output/{{ project_name }}
-  data: tests/_data
+  data: ..{{ codecept_path_data }}
   support: {{ test_src_dir }}/_support
 #    envs: tests/_envs
 settings:

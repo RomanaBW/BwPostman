@@ -669,6 +669,11 @@ class MaintenancePage
 		if (substr_count($bwpm_version, ".") == 0)
 		{
 			$bwpm_version_underline = $bwpm_version[0] . '_' . $bwpm_version[1] . '_' . $bwpm_version[2];
+
+			if (strlen($bwpm_version) === 4)
+			{
+				$bwpm_version_underline .= $bwpm_version[3];
+			}
 		}
 		else
 		{

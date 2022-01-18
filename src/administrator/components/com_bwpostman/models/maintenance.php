@@ -1996,7 +1996,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 				'BLOB',
 				'MEDIUMBLOB',
 				'LONGBLOB',
-				' GEOMETRY',
+				'GEOMETRY',
 				'JSON'
 			);
 
@@ -2084,13 +2084,13 @@ class BwPostmanModelMaintenance extends JModelLegacy
 //		Check if default value of installed columns is set, where it should not be set
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
-			if (!key_exists('Default', $neededColumns[$i]) && key_exists('Default', $installedColumns[$i]) && !is_null($installedColumns[$i]['Default']) && in_array($neededColumns[$i]['Type'], $withoutDefault))
+			if (!key_exists('Default', $neededColumns[$i]) && key_exists('Default', $installedColumns[$i]) && !is_null($installedColumns[$i]['Default']) && in_array(strtoupper($neededColumns[$i]['Type']), $withoutDefault))
 			{
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DEFAULT_WRONG',
 					$neededColumns[$i]['Column'], $checkTable->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
 
-				echo '<p class="text-warning">' . $message . '</p>';
+				echo '<p class="bw_tablecheck_warn">' . $message . '</p>';
 
 				$defaultQuery = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' ALTER ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' DROP DEFAULT';
 
@@ -2107,7 +2107,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
-					echo '<p class="text-danger">' . $message . '</p>';
+					echo '<p class="bw_tablecheck_error">' . $message . '</p>';
 
 					return false;
 				}
@@ -2116,7 +2116,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 					$neededColumns[$i]['Column'], $checkTable->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-				echo '<p class="text-success">' . $message . '</p>';
+				echo '<p class="bw_tablecheck_ok">' . $message . '</p>';
 			}
 		}
 
@@ -2125,7 +2125,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 	/**
 	 * Method to check, if column asset_id has a real value. If not, there is no possibility to delete data sets in BwPostman.
-	 * Therefore each dataset without real value for asset_id has to be stored one time, to get this value
+	 * Therefore, each dataset without real value for asset_id has to be stored one time, to get this value
 	 *
 	 * @return    boolean|string false on error, otherwise success message
 	 *

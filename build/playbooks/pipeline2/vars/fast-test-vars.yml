@@ -1,6 +1,7 @@
 ---
 base_dir: "/vhosts/dev/joomla-cms"
 src_dir: "/vhosts/dev/joomla-cms"
+repo_dir: "/repositories/BwPostman"
 
 container_base: "/vms/dockers"
 container_dir: "{{ container_base }}/containers"

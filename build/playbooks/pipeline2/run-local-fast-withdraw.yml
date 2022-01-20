@@ -117,8 +117,6 @@
       environment:
         BW_TEST_PROJECT: "{{ project_name }}"
         BW_TEST_CONTAINER_DIR: "{{ container_dir }}"
-#        BW_TEST_PHP_VERSION: "{{ bw_php_version }}"
-#        BW_TEST_WEB_BASE_DIR: "{{ bw_container_data_base_path }}"
 
     - name: Create infrastructure compose file
       template:

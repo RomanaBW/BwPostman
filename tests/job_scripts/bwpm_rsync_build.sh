@@ -4,7 +4,7 @@
 # To reach this I have to use sudo, otherwise target permissions have to be set to 0777, which breaks Joomla
 
 #
-# @ToDo: synchronize plugin B2S (dirs[16]), but only if VirtueMart is installed
+# @ToDo: synchronize plugin B2S (dirs[18]), but only if VirtueMart is installed
 
 src_dir="${1}"
 target_dir="${2}"

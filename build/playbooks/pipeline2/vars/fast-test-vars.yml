@@ -1,6 +1,7 @@
 ---
 base_dir: "/vhosts/dev4"
 src_dir: "/vhosts/dev4"
+repo_dir: "/repositories/BwPostman4"
 
 container_base: "/vms/dockers"
 container_dir: "{{ container_base }}/containers"

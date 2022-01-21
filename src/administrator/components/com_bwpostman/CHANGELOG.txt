@@ -5,6 +5,15 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
+Version 4.0.3 released (2022-01-29)----
+
+Bugfix
+# Imported newsletter templates may not have status default, even if the exported template was default template
+
+Improvement
+~ Check and repair default value of table columns two-way at restoring tables and check and repair
+
+
 Version 4.0.2 released (2021-12-19)----
 
 Bugfix
@@ -20,7 +29,7 @@ Bugfix
 
 Improvement
 ~ Smaller changes to manifest files of package and single parts to meet upgrade needs
-- Errors handling at registration by front end now highlights missing values
+~ Errors handling at registration by front end now highlights missing values
 
 
 Version 4.0.0 released (2021-11-06)----

@@ -123,7 +123,7 @@ if ($moduleId !== null && $moduleId !== '')
 									'select.genericlist',
 									$this->mailinglists,
 									'filter.mailinglist',
-									'class="filter-mailinglist"',
+									'class="filter-mailinglist form-select"',
 									'id',
 									'title',
 									$this->state->get('filter.mailinglist'),

@@ -46,7 +46,7 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $register_edit_url    = ".//*[@id='bwp_com_form']/div[1]/p[contains(@class, 'user_edit')]/a";
+	public static $register_edit_url    = "//*[@id='bwp_com_register']/p[contains(@class, 'user_edit')]/a";
 
 
 	/**

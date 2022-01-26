@@ -63,6 +63,26 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 
 <div id="bwpostman" class="mt">
 	<div id="bwp_com_register">
+		<?php // Show pretext only if set in basic parameters
+		if ($this->params->get('pretext'))
+		{
+			$preText = Text::_($this->params->get('pretext'));
+			?>
+			<p class="pre_text"><?php echo $preText; ?></p>
+			<?php
+		} // End: Show pretext only if set in basic parameters ?>
+
+		<?php // Show editlink only if the user is not logged in
+		$link = Route::_('index.php?option=com_bwpostman&view=edit');
+		?>
+		<p class="user_edit">
+			<a href="<?php echo $link; ?>">
+				<?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
+			</a>
+		</p>
+		<?php // End: Show editlink only if the user is not logged in
+		?>
+
 		<?php // displays a message if no availible mailinglist
 		if ($this->lists['available_mailinglists'])
 		{
@@ -86,26 +106,6 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 				<?php // End Spamcheck ?>
 
 				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
-
-					<?php // Show pretext only if set in basic parameters
-					if ($this->params->get('pretext'))
-					{
-						$preText = Text::_($this->params->get('pretext'));
-						?>
-						<p class="pre_text"><?php echo $preText; ?></p>
-						<?php
-					} // End: Show pretext only if set in basic parameters ?>
-
-					<?php // Show editlink only if the user is not logged in
-					$link = Route::_('index.php?option=com_bwpostman&view=edit');
-					?>
-						<p class="user_edit">
-							<a href="<?php echo $link; ?>">
-								<?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
-							</a>
-						</p>
-					<?php // End: Show editlink only if the user is not logged in
-					?>
 
 					<?php // Show formfield gender only if enabled in basic parameters
 					if ($this->params->get('show_gender') == 1)
@@ -565,6 +565,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<div id="bwp_com_wrapper"></div>
 					</div>
 				</div>
+			</div>
 			<?php
 			}
 		}
@@ -578,6 +579,5 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 			<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
 		<?php
 		} ?>
-		</div>
 	</div>
 </div>

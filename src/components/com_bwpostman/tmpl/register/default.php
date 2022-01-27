@@ -42,11 +42,6 @@ $app = Factory::getApplication();
 $wa  = $app->getDocument()->getWebAssetManager();
 
 $wa->useStyle('com_bwpostman.bwpostman');
-$wa->useScript('com_bwpostman.bwpm_register_btn_group');
-if ($this->params->get('disclaimer') && $this->params->get('showinmodal') == 1)
-{
-	$wa->useScript('com_bwpostman.bwpm_register_modal');
-}
 
 // Get user defined style file
 $templateName = $app->getTemplate();
@@ -86,6 +81,12 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 		<?php // displays a message if no availible mailinglist
 		if ($this->lists['available_mailinglists'])
 		{
+			$wa->useScript('com_bwpostman.bwpm_register_btn_group');
+			if ($this->params->get('disclaimer') && $this->params->get('showinmodal') == 1)
+			{
+				$wa->useScript('com_bwpostman.bwpm_register_modal');
+			}
+
 			if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != ''))
 			{ ?>
 				<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">

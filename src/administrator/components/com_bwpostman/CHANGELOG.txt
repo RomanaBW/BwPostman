@@ -9,9 +9,13 @@ Version 4.0.3 released (2022-02-05)----
 
 Bugfix
 # Imported newsletter templates may not have status default, even if the exported template was default template
+# Correct closing of container at register view at front end, if no mailing list is selectable
+# Load some JS files only, if at least one mailing list is selectable
 
 Improvement
 ~ Check and repair default value of table columns two-way at restoring tables and check and repair
+~ Move pre-text and edit subscription up to be always shown
+~ Adjust width of select lists at newsletter list view at front end
 
 
 Version 4.0.2 released (2021-12-19)----

@@ -58,15 +58,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 
 <div id="bwpostman" class="mt">
 	<div id="bwp_com_register">
-		<?php // Show pretext only if set in basic parameters
-		if ($this->params->get('pretext'))
-		{
-			$preText = Text::_($this->params->get('pretext'));
-			?>
-			<p class="pre_text"><?php echo $preText; ?></p>
-			<?php
-		} // End: Show pretext only if set in basic parameters ?>
-
+		<div class="content_inner">
 		<?php // Show editlink only if the user is not logged in
 		$link = Route::_('index.php?option=com_bwpostman&view=edit');
 		?>
@@ -95,7 +87,6 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 			<?php
 			} ?>
 
-		<div class="content_inner">
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post"
 					id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
 				<?php // Spamcheck 1 - Input-field: class="user_highlight" style="position: absolute; top: -5000px;" ?>
@@ -107,6 +98,16 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 				<?php // End Spamcheck ?>
 
 				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+
+					<?php // Show pretext only if set in basic parameters
+					if ($this->params->get('pretext'))
+					{
+						$preText = Text::_($this->params->get('pretext'));
+						?>
+						<p class="pre_text"><?php echo $preText; ?></p>
+						<?php
+					} // End: Show pretext only if set in basic parameters ?>
+
 
 					<?php // Show formfield gender only if enabled in basic parameters
 					if ($this->params->get('show_gender') == 1)
@@ -566,7 +567,6 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<div id="bwp_com_wrapper"></div>
 					</div>
 				</div>
-			</div>
 			<?php
 			}
 		}
@@ -580,5 +580,6 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 			<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
 		<?php
 		} ?>
+		</div>
 	</div>
 </div>

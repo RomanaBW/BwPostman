@@ -127,6 +127,13 @@
     - name: Synchronize tests
       command: "{{ test_dir }}/job_scripts/bwpm_tests_withdraw_rsync_build.sh {{ test_project_base_dir }}/tests {{ src_dir }}/tests"
 
+    - name: Show build synchronization command
+      debug:
+        msg: "{{ test_dir }}/job_scripts/bwpm_build_withdraw_rsync_build.sh {{ test_project_base_dir }}/build {{ repo_dir }}/build"
+
+#    - name: Synchronize builds
+#      command: "{{ test_dir }}/job_scripts/bwpm_build_withdraw_rsync_build.sh {{ test_project_base_dir }}/build {{ repo_src_dir }}/build"
+
     - name: Set rebase command
       set_fact:
          sql_command: "mysql -u {{ test_db_user }} -p{{ test_db_password }} -h {{ test_db_host_ip }} {{ test_db_dbname }} < {{ web_dir }}/{{ project_name }}/backups/{{ project_name }}.sql"
@@ -140,7 +147,7 @@
 
     - name: Pause after rebase
       pause:
-        seconds: 25
+        seconds: 15
 
     - name: Copy sql withdraw file
       copy:

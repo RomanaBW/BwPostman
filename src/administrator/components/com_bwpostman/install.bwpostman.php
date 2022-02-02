@@ -1502,7 +1502,7 @@ class com_bwpostmanInstallerScript
 				$query2  = $db->getQuery(true);
 
 				$query2->update($db->quoteName('#__bwpostman_subscribers'));
-				$query2->set($db->quoteName('user_id')) . " = " . $db->quote($joomlaUserId);
+				$query2->set($db->quoteName('user_id') . " = " . $db->quote($joomlaUserId));
 				$query2->where("`email` = '" . $subscriberWithoutUserId['email'] . "'");
 
 				try

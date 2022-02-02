@@ -210,6 +210,8 @@ class EditController extends FormController
 					}
 					else
 					{
+						$session->set('session_subscriberid', $subscriberid);
+
 						$itemid	= BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
 
 						$link   = BwPostmanSubscriberHelper::loginGuest($subscriberid, $itemid);

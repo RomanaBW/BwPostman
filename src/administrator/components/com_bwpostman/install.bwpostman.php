@@ -1469,7 +1469,7 @@ class com_bwpostmanInstallerScript
 		{
 			$db->setQuery($query);
 
-			$subscribersWithoutUserId = $db->loadResult();
+			$subscribersWithoutUserId = $db->loadAssocList();
 		}
 		catch (RuntimeException $e)
 		{

@@ -85,6 +85,39 @@ class RegisterController extends FormController
 		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
 		parent::__construct($config, $this->factory);
+
+		$app    = Factory::getApplication();
+		$user   = $app->getIdentity();
+		$userId = (int) $user->get('id');
+
+		$subscriberId = 0;
+
+		// Check if user is logged (subscriber id = 0 means the user has no newsletter subscription)
+		if ($userId)
+		{
+			$subsTable    = $this->getModel('subscriber', 'Administrator')->getTable('Subscriber');
+			$subscriberId = $subsTable->getSubscriberIdByUserId($userId);
+		}
+		// Check if user is in edit mode
+		else
+		{
+			$session  = $app->getSession();
+			$subsData = $session->get('session_subscriberid', null);
+
+			if (is_array($subsData))
+			{
+				$subscriberId = $subsData['id'];
+			}
+		}
+
+		// if user is subscriber, redirect to edit subscription
+		if ($subscriberId)
+		{
+			$itemid = BwPostmanSubscriberHelper::getMenuItemid('edit');
+			$route  = Route::_('index.php?option=com_bwpostman&view=edit&itemid=' . $itemid, false);
+
+			$this->setRedirect($route);
+		}
 	}
 
 	/**
@@ -281,7 +314,7 @@ class RegisterController extends FormController
 
 			if (!is_object($err))
 			{
-				$route = Route::_('index.php?option=com_bwpostman&view=register&itemid' . $itemid, false);
+				$route = Route::_('index.php?option=com_bwpostman&view=register&itemid=' . $itemid, false);
 
 				$this->setRedirect($route);
 

@@ -17,9 +17,7 @@ Improvement
 ~ Check and repair default value of table columns two-way at restoring tables and check and repair
 ~ Move pre-text and edit subscription up to be always shown
 ~ Adjust width of select lists at newsletter list view at front end
-
-New
-+ Align subscribers with Joomla! users
+~ Align subscribers with Joomla! users to prevent mismatch at editing subscription
 
 
 Version 4.0.2 released (2021-12-19)----

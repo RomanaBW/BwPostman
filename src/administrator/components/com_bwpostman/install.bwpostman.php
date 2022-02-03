@@ -1507,7 +1507,7 @@ class com_bwpostmanInstallerScript
 
 				try
 				{
-					$db->setQuery($query);
+					$db->setQuery($query2);
 
 					$db->execute();
 				}
@@ -1515,7 +1515,6 @@ class com_bwpostmanInstallerScript
 				{
 					Factory::getApplication()->enqueueMessage('Error alignSubscribers: ' . $e->getMessage() . '<br />', 'error');
 				}
-				$subscriberWithoutUserId['user_id'] = $joomlaUserId;
 			}
 
 		}

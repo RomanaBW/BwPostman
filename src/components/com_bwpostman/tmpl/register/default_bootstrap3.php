@@ -58,6 +58,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 
 <div id="bwpostman" class="mt-3">
 	<div id="bwp_com_register">
+		<div class="content_inner">
 		<?php // displays a message if no availible mailinglist
 		if ($this->lists['available_mailinglists'])
 		{
@@ -74,7 +75,6 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 			<?php
 			} ?>
 
-		<div class="content_inner">
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post"
 					id="bwp_com_form" name="bwp_com_form" class="form-validate">
 				<?php // Spamcheck 1 - Input-field: class="user_highlight" style="position: absolute; top: -5000px;" ?>

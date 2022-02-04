@@ -47,7 +47,6 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 
 $wa->useStyle('mod_bwpostman.bwpm_register_bs2');
 $wa->useScript('mod_bwpostman.bwpm_register');
-$wa->useScript('mod_bwpostman.bwpm_register_modal');
 
 if (file_exists(JPATH_BASE . $css_filename))
 {
@@ -96,6 +95,7 @@ $required_end .= '</div>';
 	}
 	else
 	{
+		$wa->useScript('mod_bwpostman.bwpm_register_modal');
 		// Show registration form only if a mailinglist is selectable ?>
 
 	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=register'); ?>" method="post" id="bwp_mod_form"

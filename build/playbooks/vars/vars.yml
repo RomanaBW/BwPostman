@@ -11,6 +11,7 @@ package_parts:
   - mod_bwpostman_overview
   - plg_bwpostman_personalize
   - plg_system_bw_libregister
+  - plg_system_bwpm_useraccount
   - plg_system_bwpm_user2subscriber
   - plg_bwpostman_footerusedmailinglists
 #  - plg_system_bwpm_mediaoverride
@@ -65,6 +66,7 @@ manifest_list:
   - src/plugins/bwpostman/personalize/personalize.xml
   - src/plugins/system/bwpm_user2subscriber/bwpm_user2subscriber.xml
   - src/plugins/system/bw_libregister/bw_libregister.xml
+  - src/plugins/system/bwpm_useraccount/bwpm_useraccount.xml
   - src/plugins/bwpostman/footerusedmailinglists/footerusedmailinglists.xml
   - build/manifests/pkg_bwpostman.xml
 #  - src/plugins/system/bwpm_mediaoverride/bwpm_mediaoverride.xml

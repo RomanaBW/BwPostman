@@ -4,7 +4,7 @@
 # To reach this I have to use sudo, otherwise target permissions have to be set to 0777, which breaks Joomla
 
 #
-# @ToDo: synchronize plugin B2S (dirs[18]), but only if VirtueMart is installed
+# @ToDo: synchronize plugin B2S (dirs[19]), but only if VirtueMart is installed
 
 src_dir="${1}"
 target_dir="${2}"
@@ -26,9 +26,10 @@ dirs[12]='plugins/quickicon/bwpostman'
 dirs[13]='plugins/system/bw_libregister'
 dirs[14]='plugins/system/bwpm_mediaoverride'
 dirs[15]='plugins/system/bwpm_user2subscriber'
-dirs[16]='plugins/system/bwtestmode'
-dirs[17]='plugins/system/bwtests'
-#dirs[18]='plugins/vmfields'
+dirs[16]='plugins/system/bwpm_useraccount'
+dirs[17]='plugins/system/bwtestmode'
+dirs[18]='plugins/system/bwtests'
+#dirs[19]='plugins/vmfields'
 
 item[1]='administrator/language/de-DE/de-DE.com_bwpostman.ini'
 item[2]='administrator/language/de-DE/de-DE.com_bwpostman.sys.ini'
@@ -62,18 +63,20 @@ item[29]='administrator/language/en-GB/en-GB.plg_system_bw_libregister.sys.ini'
 item[30]='administrator/language/en-GB/en-GB.plg_system_bwpm_mediaoverride.sys.ini'
 item[31]='administrator/language/en-GB/en-GB.plg_system_bwpm_user2subscriber.ini'
 item[32]='administrator/language/en-GB/en-GB.plg_system_bwpm_user2subscriber.sys.ini'
-item[33]='administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.ini'
-item[34]='administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.sys.ini'
-item[35]='language/de-DE/de-DE.com_bwpostman.ini'
-item[36]='language/de-DE/de-DE.pkg_bwtimecontrol.sys.ini'
-item[37]='language/de-DE/de-DE.mod_bwpostman.sys.ini'
-item[38]='language/de-DE/de-DE.mod_bwpostman_overview.ini'
-item[39]='language/de-DE/de-DE.mod_bwpostman_overview.sys.ini'
-item[40]='language/en-GB/en-GB.com_bwpostman.ini'
-item[41]='language/en-GB/en-GB.pkg_bwtimecontrol.sys.ini'
-item[42]='language/en-GB/en-GB.mod_bwpostman.sys.ini'
-item[43]='language/en-GB/en-GB.mod_bwpostman_overview.ini'
-item[44]='language/en-GB/en-GB.mod_bwpostman_overview.sys.ini'
+item[33]='administrator/language/en-GB/en-GB.plg_system_bwpm_useraccount.ini'
+item[34]='administrator/language/en-GB/en-GB.plg_system_bwpm_useraccount.sys.ini'
+item[35]='administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.ini'
+item[36]='administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.sys.ini'
+item[37]='language/de-DE/de-DE.com_bwpostman.ini'
+item[38]='language/de-DE/de-DE.pkg_bwtimecontrol.sys.ini'
+item[39]='language/de-DE/de-DE.mod_bwpostman.sys.ini'
+item[40]='language/de-DE/de-DE.mod_bwpostman_overview.ini'
+item[41]='language/de-DE/de-DE.mod_bwpostman_overview.sys.ini'
+item[42]='language/en-GB/en-GB.com_bwpostman.ini'
+item[43]='language/en-GB/en-GB.pkg_bwtimecontrol.sys.ini'
+item[44]='language/en-GB/en-GB.mod_bwpostman.sys.ini'
+item[45]='language/en-GB/en-GB.mod_bwpostman_overview.ini'
+item[46]='language/en-GB/en-GB.mod_bwpostman_overview.sys.ini'
 
 for part in "${dirs[@]}"; do
   sudo rsync ${options} "${src_dir}/${part}/" "${target_dir}/${part}"

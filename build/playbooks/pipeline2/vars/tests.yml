@@ -63,6 +63,9 @@ test_file:
   - suite: footerusedmailinglists
     testsuite_file: FooterUsedMailinglists
 
+  - suite: useraccount
+    testsuite_file: UserAccount
+
   - suite: createUsers
     testsuite_file: Backend/Access/TestInstallUsersCest
 
@@ -135,6 +138,7 @@ test_suites:
     tests:
       - footerusedmailinglists
       - user2subscriber
+      - useraccount
       - ModReg
       - ModOverview
       - access1

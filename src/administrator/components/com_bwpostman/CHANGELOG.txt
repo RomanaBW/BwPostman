@@ -19,6 +19,9 @@ Improvement
 ~ Adjust width of select lists at newsletter list view at front end
 ~ Align subscribers with Joomla! users to prevent mismatch at editing subscription
 
+New
++ Add plugin userAccount, which aligns Joomla user ID of with subscribers data, if account is created or deleted after subscription
+
 
 Version 4.0.2 released (2021-12-19)----
 

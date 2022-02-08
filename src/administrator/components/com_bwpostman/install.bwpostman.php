@@ -1447,7 +1447,7 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @throws Exception
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 
 	private function alignSubscribersWithUsers(): void

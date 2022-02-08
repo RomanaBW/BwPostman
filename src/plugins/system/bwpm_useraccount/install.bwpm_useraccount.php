@@ -35,14 +35,14 @@ use Joomla\CMS\Language\Text;
 /**
  * Installation script for the plugin
  *
- * @since   4.0.3
+ * @since   4.1.0
  */
 class PlgSystemBwPm_UserAccountInstallerScript
 {
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	protected $min_bwpostman_version    = '4.0';
 
@@ -55,7 +55,7 @@ class PlgSystemBwPm_UserAccountInstallerScript
 	 *
 	 * @throws Exception
 	 *
-	 * @since       4.0.3
+	 * @since       4.1.0
 	 */
 
 	public function preflight(string $type): bool
@@ -87,7 +87,7 @@ class PlgSystemBwPm_UserAccountInstallerScript
 	 *
 	 * @throws Exception
 	 *
-	 * @since     4.0.3
+	 * @since     4.1.0
 	 */
 	public function postflight(string $type)
 	{
@@ -129,7 +129,7 @@ class PlgSystemBwPm_UserAccountInstallerScript
 	 *
 	 * @throws Exception
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	protected function getComponentVersion(): string
 	{

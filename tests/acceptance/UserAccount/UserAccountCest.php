@@ -31,14 +31,14 @@ use Page\User2SubscriberPage as RegPage;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @since   4.0.3
+ * @since   4.1.0
  */
 class UserAccountCest
 {
 	/**
 	 * @var AcceptanceTester  $tester AcceptanceTester
 	 *
-	 * @since   4.0.3
+	 * @since   4.1.0
 	 */
 	public $tester;
 
@@ -51,7 +51,7 @@ class UserAccountCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   4.0.3
+	 * @since   4.1.0
 	 */
 	public function _login(Login $loginPage)
 	{
@@ -72,7 +72,7 @@ class UserAccountCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since   4.0.3
+	 * @since   4.1.0
 	 */
 	public function SyncSubscriberWithAccount(AcceptanceTester $I)
 	{
@@ -130,7 +130,7 @@ class UserAccountCest
 	 * @param AcceptanceTester $I
 	 * @param string $userId
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	private function checkSavedValues(AcceptanceTester $I, $userId = '0')
 	{
@@ -149,7 +149,7 @@ class UserAccountCest
  *
  * @throws Exception
  *
- * @since 4.0.3
+ * @since 4.1.0
  */
 	private function createSubscription(AcceptanceTester $I): void
 	{
@@ -169,7 +169,7 @@ class UserAccountCest
 	/**
 	 * @param AcceptanceTester $I
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	private function createJoomlaAccount(AcceptanceTester $I): void
 	{
@@ -200,7 +200,7 @@ class UserAccountCest
 	 *
 	 * @throws Exception
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	protected function deleteJoomlaUser(AcceptanceTester $I, $userId)
 	{
@@ -230,7 +230,7 @@ class UserAccountCest
 	 *
 	 * @return  void
 	 *
-	 * @since   4.0.3
+	 * @since   4.1.0
 	 */
 	public function _logout(AcceptanceTester $I, Login $loginPage)
 	{

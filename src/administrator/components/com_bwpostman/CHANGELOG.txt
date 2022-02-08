@@ -5,7 +5,7 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-Version 4.0.3 released (2022-02-12)----
+Version 4.1.0 released (2022-02-18)----
 
 Bugfix
 # Imported newsletter templates may not have status default, even if the exported template was default template
@@ -21,6 +21,7 @@ Improvement
 
 New
 + Add plugin userAccount, which aligns Joomla user ID of with subscribers data, if account is created or deleted after subscription
++ SEF uls for articles added to newsletters
 
 
 Version 4.0.2 released (2021-12-19)----

@@ -1095,7 +1095,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @throws Exception
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	public function resetDefaultTpl(int $id)
 	{

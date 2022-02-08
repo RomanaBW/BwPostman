@@ -43,14 +43,14 @@ JLoader::loadByAlias("BwPostmanHelper");
 /**
  * Class UserAccount
  *
- * @since  4.0.3
+ * @since  4.1.0
  */
 class PlgSystemBWPM_UserAccount extends JPlugin
 {
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	protected $min_bwpostman_version    = '4.0';
 
@@ -59,7 +59,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @var    boolean
 	 *
-	 * @since  4.0.3
+	 * @since  4.1.0
 	 */
 	protected $autoloadLanguage = true;
 
@@ -68,7 +68,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @var    boolean
 	 *
-	 * @since  4.0.3
+	 * @since  4.1.0
 	 */
 	protected $BwPostmanComponentEnabled = false;
 
@@ -77,7 +77,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @var    string
 	 *
-	 * @since  4.0.3
+	 * @since  4.1.0
 	 */
 	protected $BwPostmanComponentVersion = '0.0.0';
 
@@ -86,7 +86,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @var    object
 	 *
-	 * @since  4.0.3
+	 * @since  4.1.0
 	 */
 	protected $app;
 	/**
@@ -94,7 +94,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @var    object
 	 *
-	 * @since  4.0.3
+	 * @since  4.1.0
 	 */
 	private $logger;
 
@@ -103,7 +103,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @var    object
 	 *
-	 * @since  4.0.3
+	 * @since  4.1.0
 	 */
 	private $log_cat  = 'Plg_UA';
 
@@ -112,7 +112,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @var    boolean
 	 *
-	 * @since  4.0.3
+	 * @since  4.1.0
 	 */
 	private $debug;
 
@@ -124,7 +124,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @throws Exception
 	 *
-	 * @since   4.0.3
+	 * @since   4.1.0
 	 */
 	public function __construct(DispatcherInterface &$subject, array $config)
 	{
@@ -146,7 +146,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @throws Exception
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	protected function setBwPostmanComponentStatus()
 	{
@@ -183,7 +183,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @throws Exception
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	protected function setBwPostmanComponentVersion()
 	{
@@ -227,7 +227,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @throws Exception
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	protected function loadLanguageFiles()
 	{
@@ -251,7 +251,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @return  bool
 	 *
-	 * @since   4.0.3
+	 * @since   4.1.0
 	 */
 	protected function prerequisitesFulfilled(): bool
 	{
@@ -285,7 +285,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 * @return  bool
 	 *
 	 * @throws Exception
-	 * @since  4.0.3
+	 * @since  4.1.0
 	 */
 	public function onUserAfterSave(array $data, bool $isNew, bool $result): bool
 	{
@@ -343,7 +343,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 * @return  bool
 	 *
 	 * @throws Exception
-	 * @since  4.0.3
+	 * @since  4.1.0
 	 */
 	public function onUserAfterDelete(array $data, bool $result): bool
 	{

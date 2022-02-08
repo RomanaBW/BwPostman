@@ -21,7 +21,7 @@ namespace Page;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @since   4.0.3
+ * @since   4.1.0
  */
 class UserAccountPage
 {
@@ -32,28 +32,28 @@ class UserAccountPage
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	public static $filter_field             = "//*[@id='search']";
 
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	public static $filter_go_button         = "//*/button[@type='submit'][contains(@class, 'btn-primary')]";
 
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	public static $delete_button      = "//*/button[contains(@class, 'button-delete')]";
 
 	/**
 	 * @var string
 	 *
-	 * @since 4.0.3
+	 * @since 4.1.0
 	 */
 	public static $deleteSuccessMsg = "User deleted.";
 }

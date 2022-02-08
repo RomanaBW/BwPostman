@@ -319,8 +319,9 @@ class ContentRenderer
 			{
 				$params  = $row->params;
 				$lang    = self::getArticleLanguage($row->id);
-				$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link    = Route::_(Uri::base());
+				$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
+				$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
+				$link    = str_replace(Uri::base(true).'/', '', Uri::base());
 				if ($_Itemid)
 				{
 					$link .= $_Itemid;
@@ -449,8 +450,9 @@ class ContentRenderer
 			if ($row)
 			{
 				$lang    = self::getArticleLanguage($row->id);
-				$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link    = Route::_(Uri::base());
+				$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
+				$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
+				$link    = str_replace(Uri::base(true).'/', '', Uri::base());
 
 				if ($_Itemid)
 				{
@@ -463,8 +465,6 @@ class ContentRenderer
 				{
 					$create_date = HtmlHelper::_('date', $row->created);
 				}
-
-				$link = str_replace('administrator/', '', $link);
 
 				$content .= $tpl->tpl_article;
 				$content = isset($tpl->article['show_title']) && $tpl->article['show_title'] == 0 ?
@@ -488,7 +488,7 @@ class ContentRenderer
 						$content_text .= '<span class="created_by"><small>';
 						$content_text .= Text::sprintf(
 							'COM_CONTENT_WRITTEN_BY',
-							($row->created_by_alias ?: $row->author)
+							($row->created_by_alias ? $row->created_by_alias : $row->author)
 						);
 						$content_text .= '</small></span>';
 					}
@@ -544,8 +544,6 @@ class ContentRenderer
 				{
 					$create_date = HtmlHelper::_('date', $row->created);
 				}
-
-				$link = str_replace('administrator/', '', $link);
 
 				$content      = $text_tpl->tpl_article;
 				$content      = isset($text_tpl->article['show_title']) && $text_tpl->article['show_title'] == 0 ?
@@ -1522,8 +1520,9 @@ class ContentRenderer
 	private function getIntroText(stdClass $row): array
 	{
 		$lang    = self::getArticleLanguage($row->id);
-		$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-		$link    = Route::_(Uri::base());
+		$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
+		$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
+		$link    = str_replace(Uri::base(true).'/', '', Uri::base());
 
 		if ($_Itemid)
 		{
@@ -1560,7 +1559,7 @@ class ContentRenderer
 		{
 			$content_text .= Text::sprintf(
 				'COM_CONTENT_WRITTEN_BY',
-				($row->created_by_alias ?: $row->author)
+				($row->created_by_alias ? $row->created_by_alias : $row->author)
 			);
 		}
 

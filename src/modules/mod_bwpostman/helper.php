@@ -144,7 +144,7 @@ class ModBwPostmanHelper
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__bwpostman_subscribers'));
 		$query->where($db->quoteName('user_id') . ' = ' . (int) $userid);
-		$query->where($db->quoteName('status') . ' = ' . (int) 9);
+		$query->where($db->quoteName('status') . ' != ' . (int) 9);
 
 		try
 		{

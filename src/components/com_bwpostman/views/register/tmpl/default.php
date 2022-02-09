@@ -56,7 +56,18 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 <div id="bwpostman">
 	<div id="bwp_com_register">
 		<div class="content_inner">
-		<?php // displays a message if no availible mailinglist
+			<?php // Show editlink only if the user is not logged in
+			$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
+			?>
+			<p class="user_edit">
+				<a href="<?php echo $link; ?>">
+					<?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
+				</a>
+			</p>
+			<?php // End: Show editlink only if the user is not logged in
+			?>
+
+			<?php // displays a message if no availible mailinglist
 		if ($this->lists['available_mailinglists'])
 		{
 			if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != ''))
@@ -87,17 +98,6 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 						<p class="pre_text"><?php echo $preText; ?></p>
 						<?php
 					} // End: Show pretext only if set in basic parameters ?>
-
-					<?php // Show editlink only if the user is not logged in
-					$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
-					?>
-						<p class="user_edit">
-							<a href="<?php echo $link; ?>">
-								<?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
-							</a>
-						</p>
-					<?php // End: Show editlink only if the user is not logged in
-					?>
 
 					<?php // Show formfield gender only if enabled in basic parameters
 					if ($this->params->get('show_gender') == 1)

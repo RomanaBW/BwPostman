@@ -200,6 +200,8 @@ class BwPostmanControllerEdit extends JControllerLegacy
 					}
 					else
 					{
+						$session->set('session_subscriberid', $subscriberid);
+
 						$itemid	= (int) BwPostmanSubscriberHelper::getMenuItemid('edit'); // Itemid from edit-view
 
 						$link   = BwPostmanSubscriberHelper::loginGuest((int) $subscriberid, (int) $itemid);

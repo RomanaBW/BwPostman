@@ -39,6 +39,7 @@ use Joomla\Utilities\ArrayHelper;
 
 // Require component helper classes and exception class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 
@@ -80,7 +81,40 @@ class BwPostmanControllerRegister extends JControllerLegacy
 	public function __construct()
 	{
 		parent::__construct();
-	}
+
+		$app    = Factory::getApplication();
+		$user   = $app->getIdentity();
+		$userId = (int) $user->get('id');
+
+		$subscriberId = 0;
+
+		// Check if user is logged (subscriber id = 0 means the user has no newsletter subscription)
+		if ($userId)
+		{
+			$subsTable    = $this->getModel('subscriber', 'Administrator')->getTable('Subscriber');
+			$subscriberId = $subsTable->getSubscriberIdByUserId($userId);
+		}
+		// Check if user is in edit mode
+		else
+		{
+			$session  = $app->getSession();
+			$subsData = $session->get('session_subscriberid', null);
+
+			if (is_array($subsData))
+			{
+				$subscriberId = $subsData['id'];
+			}
+		}
+
+		// if user is subscriber, redirect to edit subscription
+		if ($subscriberId)
+		{
+			$itemid = BwPostmanSubscriberHelper::getMenuItemid('edit');
+			$route  = Route::_('index.php?option=com_bwpostman&view=edit&itemid=' . $itemid, false);
+
+			$this->setRedirect($route);
+		}
+}
 
 	/**
 	 * Display

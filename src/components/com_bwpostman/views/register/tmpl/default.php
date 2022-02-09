@@ -55,6 +55,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 
 <div id="bwpostman">
 	<div id="bwp_com_register">
+		<div class="content_inner">
 		<?php // displays a message if no availible mailinglist
 		if ($this->lists['available_mailinglists'])
 		{
@@ -66,7 +67,6 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 			<?php
 			} ?>
 
-		<div class="content_inner">
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post"
 					id="bwp_com_form" name="bwp_com_form" class="form-validate form-inline">
 				<?php // Spamcheck 1 - Input-field: class="user_highlight" style="position: absolute; top: -5000px;" ?>

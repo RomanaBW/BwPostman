@@ -39,6 +39,18 @@
         owner: romana
         group: users
 
+    - name: Synchronize source files to working dir
+      synchronize:
+        src: "{{ item.src }}"
+        dest: "{{ project_base_dir }}/src/{{ item.path }}"
+        delete: yes
+        owner: yes
+      with_filetree:
+        - "{{ project_source_dir }}/src"
+      when: item.state == 'file'
+      loop_control:
+        label: "{{ item.path }}"
+
     - name: Copy manifest files to working dir
       copy:
         src: "{{ item.src }}"
@@ -122,6 +134,18 @@
         bw_target_ext_path: "{{ project_base_dir }}"
         bw_languages: "{{ languages }}"
         bw_plugin_name: "bw_libregister"
+        bw_plugin_group: "system"
+        bw_external_lang: true
+        bw_media_folder: ""
+
+#    - name: build useraccount plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "bwpm_useraccount"
         bw_plugin_group: "system"
         bw_external_lang: true
         bw_media_folder: ""

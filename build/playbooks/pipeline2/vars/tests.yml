@@ -38,8 +38,6 @@ test_file:
 
   - suite: lists
     testsuite_file: Backend/Lists/
-#    testsuite_file: Backend/Lists/TestNewslettersListsCest::ResetSendingTrialsAndSendAnewQueue
-#    testsuite_file: Backend/Lists/TestTemplatesListsCest
 
   - suite: maintenance
     testsuite_file: Backend/TestMaintenanceCest
@@ -58,14 +56,15 @@ test_file:
 
   - suite: details
     testsuite_file: Backend/Details
-#    testsuite_file: Backend/Details/TestTemplatesDetailsCest::CreateOneHtmlTemplateCompleteMainView
-#    testsuite_file: Backend/Details/TestTemplatesDetailsCest
 
   - suite: user2subscriber
     testsuite_file: User2Subscriber/User2SubscriberCest
 
   - suite: footerusedmailinglists
     testsuite_file: FooterUsedMailinglists
+
+  - suite: useraccount
+    testsuite_file: UserAccount
 
   - suite: createUsers
     testsuite_file: Backend/Access/TestInstallUsersCest
@@ -139,6 +138,7 @@ test_suites:
     tests:
       - footerusedmailinglists
       - user2subscriber
+      - useraccount
       - ModReg
       - ModOverview
       - access1

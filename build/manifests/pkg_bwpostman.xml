@@ -28,6 +28,7 @@
 		<file type="module" id="mod_bwpostman_overview" client="site">mod_bwpostman_overview.zip</file>
 		<file type="plugin" id="personalize" group="bwpostman" client="site">plg_bwpostman_personalize.zip</file>
 		<file type="plugin" id="bwpm_mediaoverride" group="system" client="site">plg_system_bwpm_mediaoverride.zip</file>
+		<file type="plugin" id="bwpm_useraccount" group="system" client="site">plg_system_bwpm_useraccount.zip</file>
 		<file type="plugin" id="bwpm_user2subscriber" group="system" client="site">plg_system_bwpm_user2subscriber.zip</file>
 		<file type="plugin" id="footerusedmailinglists" group="bwpostman" client="site">plg_bwpostman_footerusedmailinglists.zip</file>
 	</files>

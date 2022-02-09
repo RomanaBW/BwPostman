@@ -31,8 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
-require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
-
 
 /**
  * Installation script for the plugin

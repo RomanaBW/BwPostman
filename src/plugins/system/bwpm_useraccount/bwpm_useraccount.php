@@ -33,6 +33,8 @@ use Joomla\Event\DispatcherInterface;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Log\LogEntry;
 
+jimport('joomla.plugin.plugin');
+
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/logging/BwLogger.php');
 
@@ -122,7 +124,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @since   3.2.0
 	 */
-	public function __construct(DispatcherInterface &$subject, array $config)
+	public function __construct(&$subject, array $config)
 	{
 		parent::__construct($subject, $config);
 

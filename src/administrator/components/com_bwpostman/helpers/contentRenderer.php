@@ -319,8 +319,9 @@ class contentRenderer
 			{
 				$params  = $row->params;
 				$lang    = self::getArticleLanguage($row->id);
-				$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link    = Route::_(Uri::base());
+				$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
+				$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
+				$link    = str_replace(Uri::base(true).'/', '', Uri::base());
 				if ($_Itemid)
 				{
 					$link .= $_Itemid;
@@ -374,7 +375,6 @@ class contentRenderer
 					$tag_readon = isset($tpl->tpl_tags_readon) && $tpl->tpl_tags_readon == 0 ?
 						$tpl->tpl_tags_readon_advanced :
 						BwPostmanTplHelper::getReadonTag();
-					$link = str_replace('administrator/', '', $link);
 
 					// Trigger Plugin "substitutelinks"
 					if (Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks') == '1')
@@ -448,8 +448,9 @@ class contentRenderer
 			if ($row)
 			{
 				$lang    = self::getArticleLanguage($row->id);
-				$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-				$link    = Route::_(Uri::base());
+				$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
+				$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
+				$link    = str_replace(Uri::base(true).'/', '', Uri::base());
 
 				if ($_Itemid)
 				{
@@ -462,8 +463,6 @@ class contentRenderer
 				{
 					$create_date = HtmlHelper::_('date', $row->created);
 				}
-
-				$link = str_replace('administrator/', '', $link);
 
 				$content .= $tpl->tpl_article;
 				$content = isset($tpl->article['show_title']) && $tpl->article['show_title'] == 0 ?
@@ -543,8 +542,6 @@ class contentRenderer
 				{
 					$create_date = HtmlHelper::_('date', $row->created);
 				}
-
-				$link = str_replace('administrator/', '', $link);
 
 				$content      = $text_tpl->tpl_article;
 				$content      = isset($text_tpl->article['show_title']) && $text_tpl->article['show_title'] == 0 ?
@@ -631,7 +628,7 @@ class contentRenderer
 						Factory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
 					}
 
-					$content .= Text::_('READ_MORE') . ": \n" . str_replace('administrator/', '', $link) . "\n\n";
+					$content .= Text::_('READ_MORE') . ": \n" . $link . "\n\n";
 				}
 
 				return stripslashes($content);
@@ -1521,8 +1518,9 @@ class contentRenderer
 	private function getIntroText(stdClass $row)
 	{
 		$lang    = self::getArticleLanguage($row->id);
-		$_Itemid = ContentHelperRoute::getArticleRoute($row->id, 0, $lang);
-		$link    = Route::_(Uri::base());
+		$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
+		$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
+		$link    = str_replace(Uri::base(true).'/', '', Uri::base());
 
 		if ($_Itemid)
 		{

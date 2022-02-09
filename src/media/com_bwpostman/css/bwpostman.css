@@ -314,8 +314,6 @@
 
 #bwpostman #bwp_search .filter_mls {
 	display:			inline-block;
-	margin-top:      0.5em;
-	min-width:			11.5em;
 }
 
 #bwpostman #bwp_search .filter_cams {
@@ -329,19 +327,16 @@
 #bwpostman #bwp_search .filter_month {
 	display:			inline-block;
 	margin-bottom:      5px;
-	min-width:			7.0em;
 }
 
 #bwpostman #bwp_search .filter_year {
 	display:			inline-block;
 	margin-bottom:      5px;
-	min-width:			6.0em;
 }
 
 #bwpostman #bwp_search .filter_list {
 	display:			inline-block;
 	margin-bottom:      5px;
-	min-width:			5.0em;
 }
 
 #bwpostman #bwp_search button.go {

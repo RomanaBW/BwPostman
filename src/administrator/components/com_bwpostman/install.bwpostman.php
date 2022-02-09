@@ -409,6 +409,9 @@ class Com_BwPostmanInstallerScript
 
 			$this->logger->addEntry(new LogEntry("Postflight processSqlUpdate passed", BwLogger::BW_DEBUG, $this->log_cat));
 
+			// Align subscribers with joomla users
+			$this->alignSubscribersWithUsers();
+
 			$app->enqueueMessage(Text::_('Installing BwPostman ... '));
 		}
 
@@ -1388,6 +1391,90 @@ class Com_BwPostmanInstallerScript
 //			}
 //		}
 	}
+
+	/**
+	 * Method to align subscribers with users
+	 * This is necessary because BwPostman don't get user ID if account is created after subscription until plugin
+	 * userAccount is provided
+	 *
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 4.1.0
+	 */
+
+	private function alignSubscribersWithUsers(): void
+	{
+		// Get all subscriber email entries without joomla user ID
+		$subscribersWithoutUserId = false;
+		$joomlaUserId = null;
+
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
+
+		$query->select($db->quoteName('id'));
+		$query->select($db->quoteName('email'));
+		$query->from($db->quoteName('#__bwpostman_subscribers'));
+		$query->where("`user_id` = '0'");
+
+		try
+		{
+			$db->setQuery($query);
+
+			$subscribersWithoutUserId = $db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage('Error alignSubscribers: ' . $e->getMessage() . '<br />', 'error');
+		}
+
+		// Search for user IDs at Joomla
+		foreach ($subscribersWithoutUserId as $subscriberWithoutUserId)
+		{
+			$query  = $db->getQuery(true);
+
+			$query->select($db->quoteName('id'));
+			$query->from($db->quoteName('#__users'));
+			$query->where("`email` = '" . $subscriberWithoutUserId['email'] . "'");
+
+			try
+			{
+				$db->setQuery($query);
+
+				$joomlaUserId = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				Factory::getApplication()->enqueueMessage('Error alignSubscribers: ' . $e->getMessage() . '<br />', 'error');
+			}
+
+			// Update subscriber data for found user IDs
+			if ($joomlaUserId)
+			{
+				$query2  = $db->getQuery(true);
+
+				$query2->update($db->quoteName('#__bwpostman_subscribers'));
+				$query2->set($db->quoteName('user_id') . " = " . $db->quote($joomlaUserId));
+				$query2->where("`email` = '" . $subscriberWithoutUserId['email'] . "'");
+
+				try
+				{
+					$db->setQuery($query2);
+
+					$db->execute();
+				}
+				catch (RuntimeException $e)
+				{
+					Factory::getApplication()->enqueueMessage('Error alignSubscribers: ' . $e->getMessage() . '<br />', 'error');
+				}
+			}
+
+		}
+
+	}
+
 
 	/**
 	 * installs sample usergroups and add BwPostmanAdmin to viewlevel and root asset

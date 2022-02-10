@@ -34,21 +34,21 @@ class UserAccountPage
 	 *
 	 * @since 4.1.0
 	 */
-	public static $filter_field             = "//*[@id='search']";
+	public static $filter_field             = "//*[@id='filter_search']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.1.0
 	 */
-	public static $filter_go_button         = "//*/button[@type='submit'][contains(@class, 'btn-primary')]";
+	public static $filter_go_button         = "//*/button[@type='submit'][contains(@aria-label, 'Search')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.1.0
 	 */
-	public static $delete_button      = "//*/button[contains(@class, 'button-delete')]";
+	public static $delete_button      = "//*/div[@id='toolbar-delete']/button";
 
 	/**
 	 * @var string

@@ -86,6 +86,11 @@ class UserAccountCest
 
 		// Ensure U2S plugin is deactivated
 		$u2SState = $I->getExtensionEnabledState('bwpm_user2subscriber');
+
+		if ($u2SState === false)
+		{
+			$u2SState = 0;
+		}
 		codecept_debug('State of U2S: ' . $u2SState);
 		$I->setExtensionStatus('bwpm_user2subscriber', '0');
 
@@ -159,11 +164,11 @@ class UserAccountCest
 
 		SubEdit::fillFormSimple($I, SubManage::$format_html, SubEdit::$female);
 
-		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
+		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see(SubEdit::$success_saved, Generals::$alert_success);
-		$I->clickAndWait(Generals::$systemMessageClose, 1);
+//		$I->clickAndWait(Generals::$systemMessageClose, 1);
 	}
 
 	/**
@@ -181,6 +186,7 @@ class UserAccountCest
 		$I->fillField(RegPage::$login_identifier_name, RegPage::$login_value_name);
 		$I->fillField(RegPage::$login_identifier_username, RegPage::$login_value_username);
 		$I->fillField(RegPage::$login_identifier_email1, SubEdit::$field_email);
+		$I->fillField(RegPage::$login_identifier_email2, SubEdit::$field_email);
 
 		$I->fillField(RegPage::$login_identifier_password1, RegPage::$login_value_password);
 		$I->fillField(RegPage::$login_identifier_password2, RegPage::$login_value_password);
@@ -213,7 +219,6 @@ class UserAccountCest
 
 		// Delete user
 		$I->click(Generals::$check_all_button);
-		$I->click(Generals::$toolbarActions);
 		$I->clickAndWait(UAPage::$delete_button, 1);
 		$I->acceptPopup();
 

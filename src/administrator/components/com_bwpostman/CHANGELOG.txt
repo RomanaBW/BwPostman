@@ -5,13 +5,21 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-Version 3.1.10 released (2022-01-29)----
+Version 3.1.10 released (2022-02-18)----
 
 Bugfix
-# Imported newsletter templates may not have status default, even if the exported template was default template
+# Imported newsletter templates may not have status 'default', even if the exported template was a default template
+# At front end view register a container was not closed correctly, if no mailing list was selectable
+# Module registration showed subscription instead of 'edit link', if visitor with subscription is logged in
 
 Improvement
-~ Check and repair default value of table columns two-way at restoring tables and check and repair
+~ Better check and repair default value of table columns at restoring tables and check and repair
+~ Edit subscription now is also shown at view register, if no mailinglist is selectable
+~ Align subscribers with Joomla! users to prevent mismatch at editing subscription at update of BwPostman
+
+New
++ Add plugin userAccount, which aligns Joomla user ID of with subscribers data, if account is created or deleted after subscription
++ Newsletters now show search engine friendly URLs for 'ReadMore'
 
 
 Version 3.1.9 released (2021-12-19)----

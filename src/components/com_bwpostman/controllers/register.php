@@ -83,7 +83,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		parent::__construct();
 
 		$app    = Factory::getApplication();
-		$user   = $app->getIdentity();
+		$user     = Factory::getUser();
 		$userId = (int) $user->get('id');
 
 		$subscriberId = 0;

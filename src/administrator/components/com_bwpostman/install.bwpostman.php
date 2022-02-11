@@ -1440,7 +1440,7 @@ class com_bwpostmanInstallerScript
 	/**
 	 * Method to align subscribers with users
 	 * This is necessary because BwPostman don't get user ID if account is created after subscription until plugin
-	 * XXXX is provided
+	 * userAccount is provided
 	 *
 	 *
 	 * @return  void

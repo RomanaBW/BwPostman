@@ -7,10 +7,10 @@
 		<type>package</type>
 		<client>0</client>
 
-		<version>4.0.3</version>
+		<version>4.1.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.4.0.2.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.4.1.0.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
@@ -20,9 +20,9 @@
 
 		<targetplatform name="joomla" version="4.[0123456789]" min_dev_level="0" php_minimum="7.4" />
 
-		<sha256>535ed4ab42593894ce3abdcf148a84345406a50c2a360fb9d29ab885270a63b5</sha256>
-		<sha384>db3feb9985452845ad932da97036702d4d4c44065a88a492e626cfa11d41566c48a1c4508ffde3838c3468b9492e2b17</sha384>
-		<sha512>cdc67e91d92331835be5115d79a5018594c03bca44f7add8294584d89d46a255f1ff7dba7284c86edf7c1ec28ae2edc2b5abe8f73b9323afdd787e3af20f79cc</sha512>
+		<sha256>c7a19ba43550f867e8544475b306373267aa938f1bd5208b20b2608ccf266198</sha256>
+		<sha384>a624047efc88cafe0297e35c223cb469cd596b287f25b64adf39cc20bfe9aa4e1d3df61ea7689229a1204e9aba3b6f9f</sha384>
+		<sha512>ff7d9144e8f50f70f7e36be8ce5e5da52247f86bc4092393ecef776fb0f7d6d0c01b7aa27db41fbc545af3621a2b6c75a7377bab7f494f9b2c0d52a1449df5d0</sha512>
 	</update>
 
 	<update>
@@ -83,10 +83,10 @@
 		<type>package</type>
 		<client>0</client>
 
-		<version>3.1.10</version>
+		<version>3.2.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.3.1.10.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.3.2.0.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
@@ -96,9 +96,9 @@
 
 		<targetplatform name="joomla" version="3.[456789]|10" min_dev_level="0" php_minimum="5.3" />
 
-		<sha256>78a7d854e3ff52719d38ed39654fcd6b5e09e2a06a259a4203a740bd088a7c47</sha256>
-		<sha384>1bd4a47a854c2b630e86ee22f8f866794a37b684673be34de7363f6a46414518791e556b4a5992164709c6924839b0a7</sha384>
-		<sha512>51b34f2ad9b26fde6b896deae3c8dfcf800e01ae5454e91bfbd34824d94a2188a9fbb174595e68405b415b2fd66a0ea9efd7b62a0acc7b47d1d5651b3c199df8</sha512>
+		<sha256>be1bc8a88af6f1118989423a6050f06aafe87343d3cdba0511daf5163e56a50c</sha256>
+		<sha384>74f503aebef0b9faaf159680ba02b5ccbea365398f3db32492fff948fa6777950db171fe4f3733707f2c0f4b1997e20f</sha384>
+		<sha512>8e1f32b7a710dbb7a761894eb2faee60d0a222a2d414f91b9d68cc01641140f392d2b9027658e60f59a374a7d635812ce35ab119e712ea282415c9ef6410e73f</sha512>
 	</update>
 
 	<update>
@@ -108,10 +108,10 @@
 		<type>package</type>
 		<client>0</client>
 
-		<version>3.1.10</version>
+		<version>3.2.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.3.1.10.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.3.2.0.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
@@ -121,9 +121,9 @@
 
 		<targetplatform name="joomla" version="3.3" min_dev_level="6" php_minimum="5.3" />
 
-		<sha256>78a7d854e3ff52719d38ed39654fcd6b5e09e2a06a259a4203a740bd088a7c47</sha256>
-		<sha384>1bd4a47a854c2b630e86ee22f8f866794a37b684673be34de7363f6a46414518791e556b4a5992164709c6924839b0a7</sha384>
-		<sha512>51b34f2ad9b26fde6b896deae3c8dfcf800e01ae5454e91bfbd34824d94a2188a9fbb174595e68405b415b2fd66a0ea9efd7b62a0acc7b47d1d5651b3c199df8</sha512>
+		<sha256>be1bc8a88af6f1118989423a6050f06aafe87343d3cdba0511daf5163e56a50c</sha256>
+		<sha384>74f503aebef0b9faaf159680ba02b5ccbea365398f3db32492fff948fa6777950db171fe4f3733707f2c0f4b1997e20f</sha384>
+		<sha512>8e1f32b7a710dbb7a761894eb2faee60d0a222a2d414f91b9d68cc01641140f392d2b9027658e60f59a374a7d635812ce35ab119e712ea282415c9ef6410e73f</sha512>
 	</update>
 
 	<update>

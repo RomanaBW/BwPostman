@@ -36,6 +36,7 @@
     - "reset-sending-stats.sql"
     - "change-install-plugins-order.sql"
     - "disable-top-modules.sql"
+    - "disable-scheduler.sql"
 
 - name: insert Joomla data to database to J4
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item }}"
@@ -70,5 +71,8 @@
 
 - name: disable some top modules
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/disable-top-modules.sql"
+
+- name: disable scheduler
+  shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/disable-scheduler.sql"
 
 

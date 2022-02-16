@@ -5,7 +5,8 @@ whoami
 rm -f {{ codecept_failed_file }}
 
 # delete old X-server lock file
-rm -f /tmp/X45-lock
+rm -f /tmp/.X45-lock
+
 
 # export sudo user
 export BW_TESTER_USER="jenkins"
@@ -59,6 +60,7 @@ sleep 1
 tmux send-keys -t BwPostmanRecording1 q
 
 # Ensure X-server lock file is removed
-rm -f /tmp/X45-lock
+rm -f /tmp/.X45-lock
+
 
 exit ${failed_check}

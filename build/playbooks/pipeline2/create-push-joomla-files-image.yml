@@ -100,6 +100,10 @@
         name: '{{ bare_source.web_container_name }}'
         state: absent
 
+    - name: Show playbook dir
+      debug:
+        msg: "{{ playbook_dir }}"
+
     - name: Replace table prefix at Joomla 4
       replace:
         path: "{{ playbook_dir }}/files/joomla4/{{ item }}"

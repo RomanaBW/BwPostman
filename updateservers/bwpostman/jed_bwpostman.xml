@@ -39,7 +39,7 @@
 	<documentation_link>https://www.boldt-webservice.de/index.php/en/forum-en/manuals/bwpostman-manual.html</documentation_link>
 	<support_link>https://www.boldt-webservice.de/index.php/en/forum-en/forum/bwpostman.html</support_link>
 
-	<version>3.2.0</version>
+	<version>3.2.1</version>
 
 	<compatibility>
 		<version>34</version>

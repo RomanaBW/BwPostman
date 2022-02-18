@@ -4,8 +4,8 @@ joomla_version: "3.10.6"
 
 j_version_short: "j3"
 
-bwpm_version: "3.2.0"
-bwpm_version_previous: "3.1.10"
+bwpm_version: "3.2.1"
+bwpm_version_previous: "3.2.0"
 
 vm_version: "3.8.8.10472"
 tcpdf_version: "1.0.9"

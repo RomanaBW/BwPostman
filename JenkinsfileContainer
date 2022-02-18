@@ -5,7 +5,7 @@ pipeline {
         stage('Set variables') {
 			steps {
 				script {
-					BWPM_VERSION = "4.1.0"
+					BWPM_VERSION = "4.1.1"
 
 					JOOMLA_VERSION = "4.1.0"
 

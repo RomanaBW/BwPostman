@@ -172,7 +172,7 @@ class BwPostmanViewEdit extends JViewLegacy
 		$layout   = $this->getLayout();
 		if ($layout !== "editlink_form")
 		{
-			$tpl = $this->params->get('fe_layout');
+			$tpl = $this->params->get('fe_layout', null);
 		}
 		// Set parent display
 		parent::display($tpl);

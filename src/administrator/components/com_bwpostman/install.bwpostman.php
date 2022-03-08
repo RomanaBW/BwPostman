@@ -30,7 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
-use Joomla\Database\UTF8MB4SupportInterface;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
@@ -41,8 +40,6 @@ use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Installer\InstallerAdapter;
-use Joomla\Component\Users\Administrator\Model\GroupModel;
-use Joomla\Component\Users\Administrator\Model\LevelModel;
 
 /**
  * Class Com_BwPostmanInstallerScript
@@ -1405,7 +1402,7 @@ class Com_BwPostmanInstallerScript
 	 * @since 4.1.0
 	 */
 
-	private function alignSubscribersWithUsers(): void
+	private function alignSubscribersWithUsers()
 	{
 		// Get all subscriber email entries without joomla user ID
 		$subscribersWithoutUserId = false;
@@ -1948,6 +1945,7 @@ class Com_BwPostmanInstallerScript
 		$params_default['special_desc']                    = "Bitte geben Sie ihre Mitgliedsnummer ein.";
 		$params_default['show_emailformat']                = "1";
 		$params_default['default_emailformat']             = "0";
+		$params_default['verify_mailaddress']              = "0";
 		$params_default['show_desc']                       = "1";
 		$params_default['desc_length']                     = "150";
 		$params_default['disclaimer']                      = "0";
@@ -1980,6 +1978,10 @@ class Com_BwPostmanInstallerScript
 		$params_default['display_num']                     = "10";
 		$params_default['attachment_single_enable']        = "1";
 		$params_default['subject_as_title']                = "1";
+		$params_default['excluded_categories']             = "";
+		$params_default['fe_layout_list']                  = "";
+		$params_default['fe_layout']                       = "";
+		$params_default['fe_layout_detail']                = "";
 
 		$params	= json_encode($params_default);
 

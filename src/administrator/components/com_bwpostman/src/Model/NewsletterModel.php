@@ -1281,7 +1281,6 @@ class NewsletterModel extends AdminModel
 		try
 		{
 			$check_subscribers    = 0;
-			$check_allsubscribers = 0;
 			$usergroups           = array();
 
 			$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, $cam_id);
@@ -1292,7 +1291,7 @@ class NewsletterModel extends AdminModel
 				return false;
 			}
 
-			$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $check_allsubscribers, $usergroups);
+			$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $usergroups);
 
 			// Check if the subscribers are confirmed and not archived
 			$count_subscribers  = 0;
@@ -1732,7 +1731,6 @@ class NewsletterModel extends AdminModel
 			case "recipients": // Contain subscribers and joomla users
 
 				$check_subscribers    = 0;
-				$check_allsubscribers = 0;
 				$usergroups           = array();
 
 				$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, $cam_id);
@@ -1743,32 +1741,13 @@ class NewsletterModel extends AdminModel
 					return false;
 				}
 
-				$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $check_allsubscribers, $usergroups);
-
-				// Push all subscribers including archived to sendmailqueue if desired
-				if ($check_allsubscribers)
-				{
-					if ($send_to_unconfirmed)
-					{
-						$status = '0,1,9';
-					}
-					else
-					{
-						$status = '1,9';
-					}
-
-					if (!$tblSendmailQueue->pushSubscribers($content_id, $status, null, null))
-					{
-						$ret_msg = Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '2');
-						return false;
-					}
-				}
+				$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $usergroups);
 
 				// Push all users of selected usergroups  to sendmailqueue if desired
 				if (count($usergroups))
 				{
 					$params = ComponentHelper::getParams('com_bwpostman');
-					if (!$tblSendmailQueue->pushJoomlaUser($content_id, $usergroups, $params->get('default_emailformat')))
+					if (!$tblSendmailQueue->pushJoomlaUser($content_id, $usergroups, $params->get('default_emailformat', 0)))
 					{
 						$ret_msg = Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '3');
 						return false;
@@ -2465,12 +2444,11 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @param array   $mailinglists
 	 * @param boolean $check_subscribers
-	 * @param boolean $check_allsubscribers
 	 * @param array   $usergroups
 	 *
 	 * @since 2.3.0
 	 */
-	private function getSubscriberChecks(array $mailinglists, bool &$check_subscribers, bool &$check_allsubscribers, array &$usergroups)
+	private function getSubscriberChecks(array $mailinglists, bool &$check_subscribers, array &$usergroups)
 	{
 		foreach ($mailinglists as $mailinglist)
 		{
@@ -2480,18 +2458,10 @@ class NewsletterModel extends AdminModel
 				$check_subscribers = 1;
 			}
 
-			// All subscribers
-			if ($mailinglist === -1)
+			// Usergroups
+			if ((int) $mailinglist < 0)
 			{
-				$check_allsubscribers = 1;
-			}
-			else
-			{
-				// Usergroups
-				if ((int) $mailinglist < 0)
-				{
-					$usergroups[] = -(int) $mailinglist;
-				}
+				$usergroups[] = -(int) $mailinglist;
 			}
 		}
 	}

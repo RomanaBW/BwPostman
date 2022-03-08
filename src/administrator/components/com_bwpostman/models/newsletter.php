@@ -1713,7 +1713,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 					return false;
 				}
 
-				$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $check_allsubscribers, $usergroups);
+				$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $usergroups);
 
 				// Push all users of selected usergroups  to sendmailqueue if desired
 				if (count($usergroups))

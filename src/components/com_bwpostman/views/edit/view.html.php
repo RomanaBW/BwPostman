@@ -143,7 +143,7 @@ class BwPostmanViewEdit extends JViewLegacy
 		// Build the email format select list
 		if (!isset($subscriber->emailformat))
 		{
-			$mailformat_selected = $this->params->get('default_emailformat');
+			$mailformat_selected = $this->params->get('default_emailformat', '0');
 		}
 		else
 		{
@@ -172,7 +172,7 @@ class BwPostmanViewEdit extends JViewLegacy
 		$layout   = $this->getLayout();
 		if ($layout !== "editlink_form")
 		{
-			$tpl = $this->params->get('fe_layout');
+			$tpl = $this->params->get('fe_layout', '');
 		}
 		// Set parent display
 		parent::display($tpl);

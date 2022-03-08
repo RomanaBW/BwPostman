@@ -56,7 +56,7 @@ class ModBwPostmanOverviewHelper
 	 */
 	public static function getList(&$params, $module_id	= 0)
 	{
-		$item   = $params->get('menu_item');
+		$item   = $params->get('menu_item', '');
 		$itemid = (!empty($item)) ? '&Itemid=' . $item : '';
 
 		$i     = 0;
@@ -104,20 +104,20 @@ class ModBwPostmanOverviewHelper
 	private static function getItems(&$params)
 	{
 		// Get conditions
-		$menuItemId = $params->get('menu_item');
+		$menuItemId = $params->get('menu_item', '');
 
 		if ($menuItemId)
 		{
 			$menu_params = self::getMenuItemParams($menuItemId);
 
-			$params->set('access-check', $menu_params->get('access-check'));
-			$params->set('show_type', $menu_params->get('show_type'));
-			$params->set('ml_selected_all', $menu_params->get('ml_selected_all'));
-			$params->set('ml_available', $menu_params->get('ml_available'));
-			$params->set('groups_selected_all', $menu_params->get('groups_selected_all'));
-			$params->set('groups_available', $menu_params->get('groups_available'));
-			$params->set('cam_selected_all', $menu_params->get('cam_selected_all'));
-			$params->set('cam_available', $menu_params->get('cam_available'));
+			$params->set('access-check', $menu_params->get('access-check', '1'));
+			$params->set('show_type', $menu_params->get('show_type', 'all'));
+			$params->set('ml_selected_all', $menu_params->get('ml_selected_all', 'no'));
+			$params->set('ml_available', $menu_params->get('ml_available', '0'));
+			$params->set('groups_selected_all', $menu_params->get('groups_selected_all', 'no'));
+			$params->set('groups_available', $menu_params->get('groups_available', ''));
+			$params->set('cam_selected_all', $menu_params->get('cam_selected_all', 'no'));
+			$params->set('cam_available', $menu_params->get('cam_available', ''));
 		}
 
 		// get accessible mailing lists
@@ -189,7 +189,7 @@ class ModBwPostmanOverviewHelper
 		$logger     = BwLogger::getInstance($logOptions);
 
 		// fetch only from mailinglists, which are selected, if so
-		$all_mls = $params->get('ml_selected_all');
+		$all_mls = $params->get('ml_selected_all', 'no');
 		$sel_mls = $params->get('ml_available', array());
 		$mls     = array();
 
@@ -280,13 +280,13 @@ class ModBwPostmanOverviewHelper
 	{
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
-		$check = $params->get('access-check');
+		$check = $params->get('access-check', '1');
 
 		$logOptions = array();
 		$logger     = BwLogger::getInstance($logOptions);
 
 		// fetch only from campaigns, which are selected, if so
-		$all_cams = $params->get('cam_selected_all');
+		$all_cams = $params->get('cam_selected_all', 'no');
 		$sel_cams = $params->get('cam_available', array());
 		$cams     = array();
 
@@ -411,7 +411,7 @@ class ModBwPostmanOverviewHelper
 		$check = $params->get('access-check', 1);
 
 		// fetch only from usergroups, which are selected, if so
-		$all_groups	= $params->get('groups_selected_all');
+		$all_groups	= $params->get('groups_selected_all', 'no');
 		$sel_groups	= $params->get('groups_available', array());
 
 		if (!is_array($sel_groups) && $all_groups === 'no')
@@ -514,7 +514,7 @@ class ModBwPostmanOverviewHelper
 		$nowDate  = $db->quote(Factory::getDate()->toSql());
 
 		$sinceDateString = ' != ' . $nullDate;
-		$count = (int)$params->get('count');
+		$count = (int)$params->get('count', '12');
 
 		if ($count > 0)
 		{

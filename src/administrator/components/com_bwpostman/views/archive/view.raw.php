@@ -97,7 +97,7 @@ class BwPostmanViewArchive extends JViewLegacy
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		$layout	= $jinput->get('layout');
+		$layout	= $jinput->get('layout', '_:default');
 
 		switch ($layout)
 		{ // Which tab are we in?

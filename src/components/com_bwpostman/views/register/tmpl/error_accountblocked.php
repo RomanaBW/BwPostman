@@ -74,7 +74,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 		$msg1 = Text::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email);
 		echo '<p class="contact-admin">' . HtmlHelper::_('content.prepare', $msg1) . '</p>';
 
-		if ($this->params->get('show_boldt_link') === '1')
+		if ($this->params->get('show_boldt_link', '1') === '1')
 		{ ?>
 			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
 		<?php

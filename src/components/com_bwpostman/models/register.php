@@ -235,7 +235,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	public function delete(&$pks = null)
 	{
 		$params 	= ComponentHelper::getParams('com_bwpostman');
-		$send_mail	= $params->get('deactivation_to_webmaster');
+		$send_mail	= $params->get('deactivation_to_webmaster', '0');
 		$subscriber = null;
 		$subsTable = $this->getTable();
 
@@ -486,6 +486,7 @@ class BwPostmanModelRegister extends JModelAdmin
 	{
 		$mailer	    = Factory::getMailer();
 		$params     = ComponentHelper::getParams('com_bwpostman');
+		$config	= Factory::getConfig();
 
 		// set sender and reply-to
 		$sender = BwPostmanSubscriberHelper::getSender();
@@ -495,13 +496,13 @@ class BwPostmanModelRegister extends JModelAdmin
 		$mailer->addReplyTo($reply);
 
 		// set recipient
-		$recipient_mail = MailHelper::cleanAddress($params->get('activation_to_webmaster_email'));
-		$recipient_name	= Text::_($params->get('activation_from_name'));
+		$recipient_mail = MailHelper::cleanAddress($params->get('activation_to_webmaster_email', $config->get('mailfrom')));
+		$recipient_name	= Text::_($params->get('activation_from_name', $config->get('fromname')));
 
 		if ($mode === 'deactivation')
 		{
-			$recipient_mail = MailHelper::cleanAddress($params->get('deactivation_to_webmaster_email'));
-			$recipient_name	= Text::_($params->get('deactivation_from_name'));
+			$recipient_mail = MailHelper::cleanAddress($params->get('deactivation_to_webmaster_email', $config->get('mailfrom')));
+			$recipient_name	= Text::_($params->get('deactivation_from_name', $config->get('fromname')));
 		}
 
 		if (!is_string($recipient_mail))

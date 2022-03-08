@@ -70,11 +70,11 @@ class BwPostmanControllerNewsletter extends JControllerLegacy
 
 			// Get the params
 			$params         = ComponentHelper::getParams('com_bwpostman');
-			$mails_per_step = (int)$app->getUserState('com_bwpostman.newsletters.mails_per_pageload', $params->get('default_mails_per_pageload'));
+			$mails_per_step = (int)$app->getUserState('com_bwpostman.newsletters.mails_per_pageload', $params->get('default_mails_per_pageload', 100));
 			$sendandpublish = (int)$app->getUserState('com_bwpostman.newsletters.sendmailandpublish', 0);
 			$id             = (int)$app->getUserState('com_bwpostman.newsletters.publish_id', 0);
 
-			$defaultPublish	= (int)$app->getUserState('com_bwpostman.newsletters.publish_nl_by_default', $params->get('publish_nl_by_default'));
+			$defaultPublish	= (int)$app->getUserState('com_bwpostman.newsletters.publish_nl_by_default', $params->get('publish_nl_by_default', 0));
 
 			if ($defaultPublish)
 			{

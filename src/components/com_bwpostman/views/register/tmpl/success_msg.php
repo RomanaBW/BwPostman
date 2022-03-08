@@ -97,7 +97,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 				}
 			}
 
-			if ($this->params->get('show_boldt_link') === '1')
+			if ($this->params->get('show_boldt_link', '1') === '1')
 			{ ?>
 				<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
 			<?php

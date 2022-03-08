@@ -174,7 +174,7 @@ class JFormFieldAvailableContent extends JFormFieldList
 		$options    = array();
 		$categories = array();
 		$params     = ComponentHelper::getParams('com_bwpostman');
-		$exc_cats   = $params->get('excluded_categories');
+		$exc_cats   = $params->get('excluded_categories', '');
 
 		$rows_list_uncat  = array();
 		$selected_content = '';

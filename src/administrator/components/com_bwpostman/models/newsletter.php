@@ -450,7 +450,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		}
 
 		// Hide published on tab edit_basic
-		if ($jinput->get('layout') == 'edit_basic')
+		if ($jinput->get('layout', '_:default') == 'edit_basic')
 		{
 			$form->setFieldAttribute('published', 'type', 'hidden');
 		}
@@ -1719,7 +1719,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				if (count($usergroups))
 				{
 					$params = ComponentHelper::getParams('com_bwpostman');
-					if (!$tblSendmailQueue->pushJoomlaUser($content_id, $usergroups, $params->get('default_emailformat')))
+					if (!$tblSendmailQueue->pushJoomlaUser($content_id, $usergroups, $params->get('default_emailformat', 0)))
 					{
 						$ret_msg = Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '3');
 						return false;

@@ -242,7 +242,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		$this->setState('layout', Factory::getApplication()->input->getCmd('layout'));
 
-		$limit = (int) $app->getUserStateFromRequest('com_bwpostman.newsletters.list.limit', 'limit', $params->get('display_num'), 'uint');
+		$limit = (int) $app->getUserStateFromRequest('com_bwpostman.newsletters.list.limit', 'limit', $params->get('display_num', '10'), 'uint');
 		$this->setState('list.limit', $limit);
 
 		$limitstart = $app->input->get('start');
@@ -574,7 +574,7 @@ class BwPostmanModelNewsletters extends JModelList
 
 		// Filter by search word.
 		$searchword	= $this->getState('filter.search');
-		if (is_object($params) && ($params->get('filter_field') != 'hide') && !empty($searchword))
+		if (is_object($params) && ($params->get('filter_field', '1') != 'hide') && !empty($searchword))
 		{
 			$search	= '%' . $db->escape($this->getState('filter.search'), true) . '%';
 			$query->where('subject LIKE ' . $db->quote($search, false));
@@ -784,12 +784,12 @@ class BwPostmanModelNewsletters extends JModelList
 	public function getAccessibleMailinglists($title = true)
 	{
 		$params        = $this->getAppropriateParams();
-		$check         = $params->get('access-check');
+		$check         = $params->get('access-check', '1');
 		$mlTable       = $this->getTable('Mailinglists');
 
 		// fetch only from mailing lists, which are selected, if so
-		$all_mls = $params->get('ml_selected_all');
-		$sel_mls = $params->get('ml_available');
+		$all_mls = $params->get('ml_selected_all', 'no');
+		$sel_mls = $params->get('ml_available', '0');
 		$mls     = $sel_mls;
 
 		if ($all_mls)
@@ -845,11 +845,11 @@ class BwPostmanModelNewsletters extends JModelList
 		$mailinglists = null;
 		$campaigns    = null;
 		$params       = $this->getAppropriateParams();
-		$check        = $params->get('access-check');
+		$check        = $params->get('access-check', '1');
 
 		// fetch only from campaigns, which are selected, if so
-		$all_cams = $params->get('cam_selected_all');
-		$sel_cams = $params->get('cam_available');
+		$all_cams = $params->get('cam_selected_all', 'no');
+		$sel_cams = $params->get('cam_available', '');
 		$cams     = $sel_cams;
 
 		if ($all_cams)
@@ -907,11 +907,11 @@ class BwPostmanModelNewsletters extends JModelList
 		$groups     = null;
 		$params      = $this->getAppropriateParams();
 
-		$check		= $params->get('access-check');
+		$check		= $params->get('access-check', '1');
 
 		// fetch only from usergroups, which are selected, if so
-		$all_groups	= $params->get('groups_selected_all');
-		$sel_groups	= $params->get('groups_available');
+		$all_groups	= $params->get('groups_selected_all', 'no');
+		$sel_groups	= $params->get('groups_available', '');
 		$c_groups	= $sel_groups;
 
 		if ($all_groups)

@@ -463,7 +463,7 @@ class BwPostmanHelper
 		$intval     = 1;
 		if ($date == 'minute')
 		{
-			$intval = ComponentHelper::getParams('Com_bwpostman')->get('autocam_minute_intval');
+			$intval = ComponentHelper::getParams('Com_bwpostman')->get('autocam_minute_intval', 1);
 		}
 
 		switch ($date)

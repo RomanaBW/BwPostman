@@ -74,7 +74,7 @@ class BwPostmanViewMaintenance extends JViewLegacy
 			$app->redirect('index.php?option=com_bwpostman');
 		}
 
-		$layout	= $jinput->get('layout');
+		$layout	= $jinput->get('layout', '_:default');
 
 		if ($layout == 'saveTables')
 		{

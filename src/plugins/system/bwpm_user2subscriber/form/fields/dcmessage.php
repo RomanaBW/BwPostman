@@ -64,7 +64,7 @@ class JFormFieldDcMessage extends JFormField
 		$html = array();
 		$html[] = '<div class="dc_message">';
 		$html[] = '	<p>' . Text::_('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_MESSAGE') . '</p>';
-		$html[] = '	<p class="invalid">' . $com_params->get('disclaimer') ? '' : Text::_('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_COM_DISABLED') . '</p>';
+		$html[] = '	<p class="invalid">' . $com_params->get('disclaimer', '0') ? '' : Text::_('PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DISCLAIMER_COM_DISABLED') . '</p>';
 		$html[] = '</div>';
 
 		return implode('', $html);

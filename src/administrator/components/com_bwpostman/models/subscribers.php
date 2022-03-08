@@ -102,7 +102,7 @@ class BwPostmanModelSubscribers extends JModelList
 		$jinput = $app->input;
 
 		// Adjust the context to support modal layouts.
-		$layout = $jinput->get('layout');
+		$layout = $jinput->get('layout', '_:default');
 
 		if ($layout)
 		{

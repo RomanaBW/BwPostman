@@ -103,7 +103,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 			<?php echo HtmlHelper::_('form.token'); ?>
 		</form>
 
-		<?php if ($this->params->get('show_boldt_link') === '1')
+		<?php if ($this->params->get('show_boldt_link', '1') === '1')
 		{ ?>
 			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
 		<?php } ?>

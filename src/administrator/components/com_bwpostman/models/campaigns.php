@@ -105,7 +105,7 @@ class BwPostmanModelCampaigns extends JModelList
 		$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
-		$layout = $app->input->get('layout');
+		$layout = $app->input->get('layout', '_:default');
 
 		if ($layout)
 		{

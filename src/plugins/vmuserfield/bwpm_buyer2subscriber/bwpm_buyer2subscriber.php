@@ -562,7 +562,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$new_field->hidden      = 1;
 		$new_field->default     = 0;
 
-		if (ComponentHelper::getParams('com_bwpostman')->get('show_gender'))
+		if (ComponentHelper::getParams('com_bwpostman')->get('show_gender', '1'))
 		{
 			$userFields[$this->BwPostman_field_ids['bw_gender']]->description
 				= Text::_('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_SUBS_FIELD_GENDER_DESC');
@@ -587,13 +587,13 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	{
 		$com_params = ComponentHelper::getParams('com_bwpostman');
 
-		if ($com_params->get('name_field_obligation'))
+		if ($com_params->get('name_field_obligation', '1'))
 		{
 			$com_params->set('show_name_field', '1');
 			$userFields[$this->BwPostman_field_ids['last_name']]->required = 1;
 		}
 
-		if ($com_params->get('show_name_field'))
+		if ($com_params->get('show_name_field', '1'))
 		{
 			$userFields[$this->BwPostman_field_ids['last_name']]->account      = 1;
 			$userFields[$this->BwPostman_field_ids['last_name']]->registration = 1;
@@ -609,13 +609,13 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	{
 		$com_params = ComponentHelper::getParams('com_bwpostman');
 
-		if ($com_params->get('firstname_field_obligation'))
+		if ($com_params->get('firstname_field_obligation', '1'))
 		{
 			$com_params->set('show_firstname_field', '1');
 			$userFields[$this->BwPostman_field_ids['first_name']]->required = 1;
 		}
 
-		if ($com_params->get('show_firstname_field'))
+		if ($com_params->get('show_firstname_field', '1'))
 		{
 			$userFields[$this->BwPostman_field_ids['first_name']]->account      = 1;
 			$userFields[$this->BwPostman_field_ids['first_name']]->registration = 1;
@@ -649,17 +649,17 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		$new_show->hidden      = 1;
 		$new_show->default     = 0;
 
-		if ($com_params->get('special_field_obligation'))
+		if ($com_params->get('special_field_obligation', '0'))
 		{
 			$com_params->set('show_special', '1');
 			$userFields[$this->BwPostman_field_ids['bw_newsletter_additional']]->required = 1;
 			$new_required->default  = 1;
 			$new_show->default      = 1;
 		}
-		elseif ($com_params->get('show_special'))
+		elseif ($com_params->get('show_special', '1'))
 		{
-			$special_label = $com_params->get('special_label');
-			$special_desc  = $com_params->get('special_desc');
+			$special_label = $com_params->get('special_label', '');
+			$special_desc  = $com_params->get('special_desc', '');
 			$new_show->default      = 1;
 
 			if ($special_label == '')
@@ -706,10 +706,10 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 		$com_params = ComponentHelper::getParams('com_bwpostman');
 
-		$userFields[$this->BwPostman_field_ids['bw_newsletter_format']]->value       = $com_params->get('default_emailformat');
+		$userFields[$this->BwPostman_field_ids['bw_newsletter_format']]->value       = $com_params->get('default_emailformat', '0');
 		$userFields[$this->BwPostman_field_ids['bw_newsletter_format']]->description
 			= Text::_('PLG_BWPOSTMAN_PLUGIN_BUYER2SUBSCRIBER_MAILFORMAT_DESC');
-		if (!$com_params->get('show_emailformat'))
+		if (!$com_params->get('show_emailformat', '0'))
 		{
 			$userFields[$this->BwPostman_field_ids['bw_newsletter_format']]->type = 'hidden';
 			$new_field->default     = 0;

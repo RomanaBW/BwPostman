@@ -228,65 +228,65 @@ class BwPostmanViewSubscriber extends JViewLegacy
 				}
 
 				// Get show fields
-				if (!$params->get('show_name_field') && !$params->get('name_field_obligation'))
+				if (!$params->get('show_name_field', '1') && !$params->get('name_field_obligation', '1'))
 				{
 					$this->form->setFieldAttribute('name', 'type', 'hidden');
 				}
 
-				if (!$params->get('show_firstname_field') && !$params->get('firstname_field_obligation'))
+				if (!$params->get('show_firstname_field', '1') && !$params->get('firstname_field_obligation', '1'))
 				{
 					$this->form->setFieldAttribute('firstname', 'type', 'hidden');
 				}
 
-				if (!$params->get('show_gender'))
+				if (!$params->get('show_gender', '1'))
 				{
 					$this->form->setFieldAttribute('gender', 'type', 'hidden');
 				}
 
-				if (!$params->get('show_special') && !$params->get('special_field_obligation'))
+				if (!$params->get('show_special', '1') && !$params->get('special_field_obligation', '0'))
 				{
 					$this->form->setFieldAttribute('special', 'type', 'hidden');
 				}
 
-				if (!$params->get('show_emailformat'))
+				if (!$params->get('show_emailformat', '1'))
 				{
 					$this->form->setFieldAttribute('emailformat', 'type', 'hidden');
 				}
 				else
 				{
-					$this->form->setFieldAttribute('default_emailformat', 'default', $params->get('default_emailformat'));
+					$this->form->setFieldAttribute('default_emailformat', 'default', $params->get('default_emailformat', '0'));
 				}
 
 				// Set required fields
-				$this->obligation['name']		    = $params->get('name_field_obligation');
-				$this->obligation['firstname']  	= $params->get('firstname_field_obligation');
-				$this->obligation['special']	    = $params->get('special_field_obligation');
-				$this->obligation['special_label']	= Text::_($params->get('special_label'));
+				$this->obligation['name']		    = $params->get('name_field_obligation', '1');
+				$this->obligation['firstname']  	= $params->get('firstname_field_obligation', '1');
+				$this->obligation['special']	    = $params->get('special_field_obligation', '0');
+				$this->obligation['special_label']	= Text::_($params->get('special_label', ''));
 
-				if ($params->get('name_field_obligation'))
+				if ($params->get('name_field_obligation', '1'))
 				{
 					$this->form->setFieldAttribute('name', 'required', 'true');
 				}
 
-				if ($params->get('firstname_field_obligation'))
+				if ($params->get('firstname_field_obligation', '1'))
 				{
 					$this->form->setFieldAttribute('firstname', 'required', 'true');
 				}
 
-				if ($params->get('special_field_obligation'))
+				if ($params->get('special_field_obligation', '0'))
 				{
 					$this->form->setFieldAttribute('special', 'required', 'true');
 				}
 
 				// Set label and description/tooltip for additional field
-				if ($params->get('special_desc') != '')
+				if ($params->get('special_desc', '') != '')
 				{
-					$this->form->setFieldAttribute('special', 'description', Text::_($params->get('special_desc')));
+					$this->form->setFieldAttribute('special', 'description', Text::_($params->get('special_desc', '')));
 				}
 
-				if ($params->get('special_label') != '')
+				if ($params->get('special_label', '') != '')
 				{
-					$this->form->setFieldAttribute('special', 'label', Text::_($params->get('special_label')));
+					$this->form->setFieldAttribute('special', 'label', Text::_($params->get('special_label', '')));
 				}
 
 			$this->addToolbar();
@@ -371,7 +371,7 @@ class BwPostmanViewSubscriber extends JViewLegacy
 		}
 
 		// Get the emailformat select list for the layout import2
-		$lists['emailformat']	= BwPostmanHTMLHelper::getMailFormatList($params->get('default_emailformat'));
+		$lists['emailformat']	= BwPostmanHTMLHelper::getMailFormatList($params->get('default_emailformat', '0'));
 
 		// Get import result data from the session for the layout import2
 		$import_result = $session->get('com_bwpostman.subscriber.import.messages', null);

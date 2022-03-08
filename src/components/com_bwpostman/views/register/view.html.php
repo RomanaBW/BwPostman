@@ -147,7 +147,7 @@ class BwPostmanViewRegister extends JViewLegacy
 				break;
 			default:
 				// switch frontend layout
-				$tpl = $this->params->get('fe_layout');
+				$tpl = $this->params->get('fe_layout', '');
 				$this->displayDefault();
 				break;
 		}
@@ -255,7 +255,7 @@ class BwPostmanViewRegister extends JViewLegacy
 		// Build the email format select list
 		if (!isset($subscriber->emailformat))
 		{
-			$mailformat_selected = $this->params->get('default_emailformat');
+			$mailformat_selected = $this->params->get('default_emailformat', '0');
 		}
 		else
 		{

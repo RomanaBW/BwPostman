@@ -75,7 +75,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="clearfix">
 				<div class="row clearfix">
 					<div class="col-sm-4 search_left mb-2">
-						<?php if ($this->params->get('filter_field') != "hide") : ?>
+						<?php if ($this->params->get('filter_field', '1') != "hide") : ?>
 							<label for="filter_search" class="element-invisible">
 								<?php echo Text::_('JSEARCH_FILTER'); ?>
 							</label>
@@ -101,7 +101,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 					<div class="col-sm-8 search_right clearfix">
 						<div class="search_right1 text-right clearfix">
 							<div class="mb-2">
-								<?php if ($this->params->get('date_filter_enable') != 'hide') : ?>
+								<?php if ($this->params->get('date_filter_enable', '1') != 'hide') : ?>
 									<?php echo $this->form->monthField; ?>
 									<?php echo $this->form->yearField; ?>
 								<?php endif; ?>
@@ -109,7 +109,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 							</div>
 						</div>
 						<div class="search_right2 text-right clearfix">
-							<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
+							<?php if ($this->params->get('ml_filter_enable', '1') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
 							{ ?>
 									<?php echo HtmlHelper::_(
 										'select.genericlist',
@@ -139,7 +139,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 										'filter.usergroup'
 									); ?>
 							<?php endif; ?>
-							<?php if ($this->params->get('cam_filter_enable') != 'hide' && is_array($this->campaigns) && count($this->campaigns) > 2) : ?>
+							<?php if ($this->params->get('cam_filter_enable', '1') != 'hide' && is_array($this->campaigns) && count($this->campaigns) > 2) : ?>
 									<?php echo HtmlHelper::_(
 										'select.genericlist',
 										$this->campaigns,
@@ -190,7 +190,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 									<?php echo $item->subject; ?>
 								</a>
 								<?php
-								if (!empty($item->attachment) && $this->params->get('attachment_enable') != 'hide')
+								if (!empty($item->attachment) && $this->params->get('attachment_enable', '1') != 'hide')
 								{
 									foreach ($attachments as $attachment)
 									{ ?>
@@ -234,7 +234,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 		</form>
 
 		<?php
-		if ($this->params->get('show_boldt_link') === '1')
+		if ($this->params->get('show_boldt_link', '1') === '1')
 		{ ?>
 			<p class="bwpm_copyright"><?php echo BwPostman::footer(); ?></p>
 			<?php

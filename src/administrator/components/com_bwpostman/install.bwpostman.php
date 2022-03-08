@@ -2100,6 +2100,7 @@ EOS;
 		$params_default['special_desc']                    = "Bitte geben Sie ihre Mitgliedsnummer ein.";
 		$params_default['show_emailformat']                = "1";
 		$params_default['default_emailformat']             = "0";
+		$params_default['verify_mailaddress']              = "0";
 		$params_default['show_desc']                       = "1";
 		$params_default['desc_length']                     = "150";
 		$params_default['disclaimer']                      = "0";
@@ -2134,6 +2135,10 @@ EOS;
 		$params_default['fe_layout_detail']                = "cassiopeia";
 		$params_default['attachment_single_enable']        = "1";
 		$params_default['subject_as_title']                = "1";
+		$params_default['excluded_categories']             = "";
+		$params_default['fe_layout_list']                  = "";
+		$params_default['fe_layout']                       = "";
+		$params_default['fe_layout_detail']                = "";
 
 		$params	= json_encode($params_default);
 

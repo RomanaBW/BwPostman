@@ -1246,7 +1246,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		try
 		{
 			$check_subscribers    = 0;
-			$check_allsubscribers = 0;
 			$usergroups           = array();
 
 			$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, (int)$cam_id);
@@ -1257,7 +1256,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				return false;
 			}
 
-			$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $check_allsubscribers, $usergroups);
+			$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $usergroups);
 
 			// Check if the subscribers are confirmed and not archived
 			$count_subscribers  = 0;
@@ -1274,19 +1273,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 
 				$count_subscribers = BwPostmanNewsletterHelper::countSubscribersOfNewsletter($associatedMailinglists, $status, false);
-			}
-			elseif ($check_allsubscribers)
-			{ // Check all subscribers (select option "All subscribers")
-				if ($send_to_unconfirmed)
-				{
-					$status = '0,1,9';
-				}
-				else
-				{
-					$status = '1,9';
-				}
-
-				$count_subscribers = BwPostmanNewsletterHelper::countSubscribersOfNewsletter(array(), $status, true);
 			}
 
 			// Checks if the selected usergroups contain users
@@ -1717,7 +1703,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 			case "recipients": // Contain subscribers and joomla users
 
 				$check_subscribers    = 0;
-				$check_allsubscribers = 0;
 				$usergroups           = array();
 
 				$associatedMailinglists = $this->getAssociatedMailinglists($nl_id, (int)$cam_id);
@@ -1729,25 +1714,6 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 
 				$this->getSubscriberChecks($associatedMailinglists, $check_subscribers, $check_allsubscribers, $usergroups);
-
-				// Push all subscribers including archived to sendmailqueue if desired
-				if ($check_allsubscribers)
-				{
-					if ($send_to_unconfirmed)
-					{
-						$status = '0,1,9';
-					}
-					else
-					{
-						$status = '1,9';
-					}
-
-					if (!$tblSendmailQueue->pushSubscribers($content_id, $status, null, null))
-					{
-						$ret_msg = Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '2');
-						return false;
-					}
-				}
 
 				// Push all users of selected usergroups  to sendmailqueue if desired
 				if (count($usergroups))
@@ -2432,35 +2398,26 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	 *
 	 * @param array    $mailinglists
 	 * @param boolean  $check_subscribers
-	 * @param boolean  $check_allsubscribers
 	 * @param array    $usergroups
 	 *
 	 * @return string|boolean
 	 *
 	 * @since 2.3.0
 	 */
-	private function getSubscriberChecks($mailinglists, &$check_subscribers, &$check_allsubscribers, &$usergroups)
+	private function getSubscriberChecks($mailinglists, &$check_subscribers, &$usergroups)
 	{
 		foreach ($mailinglists as $mailinglist)
 		{
 			// Mailinglists
-			if ($mailinglist > 0)
+			if ((int) $mailinglist > 0)
 			{
 				$check_subscribers = 1;
 			}
 
-			// All subscribers
-			if ($mailinglist === -1)
+			// Usergroups
+			if ((int) $mailinglist < 0)
 			{
-				$check_allsubscribers = 1;
-			}
-			else
-			{
-				// Usergroups
-				if ((int) $mailinglist < 0)
-				{
-					$usergroups[] = -(int) $mailinglist;
-				}
+				$usergroups[] = -(int) $mailinglist;
 			}
 		}
 

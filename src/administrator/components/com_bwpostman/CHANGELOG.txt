@@ -13,6 +13,7 @@ Bugfix
 Improvement
 ~ Add setting of missing component parameters at installation
 ~ Ensure getting of parameters has default value
+~ Add sorting of selected articles while creating/editing a newsletter
 
 
 Version 3.2.0 released (2022-02-18)----

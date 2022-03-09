@@ -646,17 +646,20 @@ class BwPostmanModelMaintenance extends JModelLegacy
 
 		if (is_array($groups))
 		{
-			foreach ($groups as $item)
+			for ($i = 0; $i < count($groups); $i++)
 			{
-				$userGroupXml = $this->xml->createElement('usergroup');
-				$userGroupsXml->appendChild($userGroupXml);
-
-				foreach ($item as $key => $value)
+				if (is_array($groups[$i]))
 				{
-					$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
+					$userGroupXml = $this->xml->createElement('usergroup');
+					$userGroupsXml->appendChild($userGroupXml);
 
-					$dataXml = $this->xml->createElement($key, $insert_string);
-					$userGroupXml->appendChild($dataXml);
+					foreach ($groups[$i] as $key => $value)
+					{
+						$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
+
+						$dataXml = $this->xml->createElement($key, $insert_string);
+						$userGroupXml->appendChild($dataXml);
+					}
 				}
 			}
 		}

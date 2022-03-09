@@ -319,6 +319,10 @@ $currentTab = 'edit_basic';
 									<input style="width: 50px;" type="button" name="right" class="btn-right" value="&gt;"
 										onclick="moveSelectedOptions(document.adminForm['jform_selected_content'],
 										document.adminForm['jform_available_content'])" />
+									<input style="width: 50px;" type="button" name="up" class="btn-up" value="&and;"
+										onclick="sortSelectedOptions('up')" />
+									<input style="width: 50px;" type="button" name="down" class="btn-down" value="&or;"
+										onclick="sortSelectedOptions('down')" />
 								</div>
 
 								<div class="width-40 fltlft span4">

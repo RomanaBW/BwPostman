@@ -240,13 +240,13 @@ function moveSelectedOptions(from,to) { // Moves elements from one select box to
 	from.selectedIndex = -1;
 	to.selectedIndex = -1;
 }
+
 function sortSelectedOptions(updown) {
 	// Sort selected content up / down
 	var select = document.getElementById('jform_selected_content');
 	var option = select.options[select.selectedIndex];
 
-	if(option)
-	{
+	if(option) {
 		if (updown === 'up') {
 			select.options.add(option, select.selectedIndex - 1);
 		}
@@ -256,6 +256,10 @@ function sortSelectedOptions(updown) {
 			if (ind > select.options.length) ind = 0;
 			select.options.add(option, ind);
 		}
+	}
+	else
+	{
+		alert(Joomla.Text._('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'));
 	}
 }
 

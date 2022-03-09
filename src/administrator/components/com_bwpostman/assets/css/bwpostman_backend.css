@@ -883,7 +883,23 @@ div.ordering-select.hidden-phone.unsent li.active-result.unsent.sent {
 ----------------------------------------------------------*/
 #bwp_view_single select#jform_selected_content,
 #bwp_view_single select#jform_available_content {
-	width:				500px;
+	width: 100%;
+}
+
+.text-inline {
+	display: inline-block;
+}
+
+.width-5 {
+	width: 5%!important;
+}
+
+.width-10 {
+	width: 10%!important;
+}
+
+.width-90 {
+	width: 90%!important;
 }
 
 .top-spacer {

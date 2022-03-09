@@ -36,6 +36,8 @@ HtmlHelper::_('bootstrap.tooltip');
 HtmlHelper::_('behavior.multiselect');
 HtmlHelper::_('behavior.keepalive');
 
+Text::script('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+
 $image = '<i class="icon-info"></i>';
 
 $checkContentArgs	= "'" . Text::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true) . "', ";
@@ -300,8 +302,8 @@ $currentTab = 'edit_basic';
 								<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?></span>
 							</legend>
 							<div class="well well-small">
-								<div class="width-40 fltlft span4">
-									<ul class="adminformlist unstyled">
+								<div class="width-40 fltlft span5">
+									<ul class="adminformlist unstyled text-inline width-90">
 										<?php foreach($this->form->getFieldset('selected_content') as $field): ?>
 											<?php if ($field->hidden): ?>
 												<li><?php echo $field->input; ?></li>
@@ -311,18 +313,21 @@ $currentTab = 'edit_basic';
 											<?php endif; ?>
 										<?php endforeach; ?>
 									</ul>
+									<div class="text-center text-inline width-5">
+										<input style="width: 50px;" type="button" name="up" class="btn-up" value="&and;"
+											onclick="sortSelectedOptions('up')" />
+										<br />
+										<input style="width: 50px;" type="button" name="down" class="btn-down" value="&or;"
+											onclick="sortSelectedOptions('down')" />
+									</div>
 								</div>
-								<div class="width-20 fltlft span3">
+								<div class="width-20 fltlft span2 text-center"><br />
 									<input style="width: 50px;" type="button" name="left" class="btn-left" value="&lt;"
 										onclick="moveSelectedOptions(document.adminForm['jform_available_content'],
 										document.adminForm['jform_selected_content'])" />
 									<input style="width: 50px;" type="button" name="right" class="btn-right" value="&gt;"
 										onclick="moveSelectedOptions(document.adminForm['jform_selected_content'],
 										document.adminForm['jform_available_content'])" />
-									<input style="width: 50px;" type="button" name="up" class="btn-up" value="&and;"
-										onclick="sortSelectedOptions('up')" />
-									<input style="width: 50px;" type="button" name="down" class="btn-down" value="&or;"
-										onclick="sortSelectedOptions('down')" />
 								</div>
 
 								<div class="width-40 fltlft span4">

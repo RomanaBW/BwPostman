@@ -178,7 +178,7 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$this->params = $params;
 
 		// switch frontend layout
-		$tpl = $this->params->get('fe_layout_detail', '');
+		$tpl = $this->params->get('fe_layout_detail', null);
 
 		// Set parent display
 		parent::display($tpl);

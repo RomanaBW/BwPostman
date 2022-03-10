@@ -158,7 +158,7 @@ class BwLogger extends JLogLoggerW3c
 	{
 		// Get component option loglevel
 		$param    = ComponentHelper::getParams('com_bwpostman');
-		$loglevel = $param->get('loglevel', 1);
+		$loglevel = $param->get('loglevel', self::BW_ERROR);
 
 		// Rewrite Joomla default loglevel (Info) to the one of BwPostman (Info)
 		if ($entry->priority > 16)

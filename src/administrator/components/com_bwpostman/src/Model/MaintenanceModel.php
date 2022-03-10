@@ -651,14 +651,14 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		if (is_array($groups))
 		{
-			foreach ($groups as $item)
+			for ($i = 0; $i < count($groups); $i++)
 			{
-				$userGroupXml = $this->xml->createElement('usergroup');
-				$userGroupsXml->appendChild($userGroupXml);
-
-				if (!is_null($item))
+				if (is_array($groups[$i]))
 				{
-					foreach ($item as $key => $value)
+					$userGroupXml = $this->xml->createElement('usergroup');
+					$userGroupsXml->appendChild($userGroupXml);
+
+					foreach ($groups[$i] as $key => $value)
 					{
 						$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
 

@@ -143,7 +143,7 @@ class HtmlView extends BaseHtmlView
 		$layout   = $this->getLayout();
 		if ($layout !== "editlink_form")
 		{
-			$tpl = $this->params->get('fe_layout');
+			$tpl = $this->params->get('fe_layout', 'cassiopeia');
 		}
 
 		// Set parent display
@@ -187,7 +187,7 @@ class HtmlView extends BaseHtmlView
 	{
 		if (!isset($subscriber->emailformat))
 		{
-			$mailformat_selected = $this->params->get('default_emailformat');
+			$mailformat_selected = $this->params->get('default_emailformat', '1');
 		}
 		else
 		{

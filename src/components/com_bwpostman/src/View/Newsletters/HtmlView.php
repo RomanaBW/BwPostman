@@ -257,7 +257,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// switch frontend layout
-		$tpl = $this->params->get('fe_layout_list');
+		$tpl = $this->params->get('fe_layout_list', null);
 
 		// Set parent display
 		parent::display($tpl);

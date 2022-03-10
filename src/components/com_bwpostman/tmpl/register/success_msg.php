@@ -110,7 +110,7 @@ if (file_exists(JPATH_BASE . $css_filename))
 				}
 			}
 
-			if ($this->params->get('show_boldt_link') === '1')
+			if ($this->params->get('show_boldt_link', '1') === '1')
 			{ ?>
 				<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
 			<?php

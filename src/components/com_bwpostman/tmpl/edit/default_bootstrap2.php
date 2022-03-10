@@ -86,16 +86,16 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 
 				<div class="contentpane mb-3<?php echo $this->params->get('pageclass_sfx'); ?>">
 					<?php // Show pretext only if set in basic parameters
-					if ($this->params->get('pretext'))
+					if ($this->params->get('pretext', ''))
 					{
-						$preText = Text::_($this->params->get('pretext'));
+						$preText = Text::_($this->params->get('pretext', ''));
 						?>
 						<div class="pre_text mb-3"><?php echo $preText; ?></div>
 						<?php
 					} // End: Show pretext only if set in basic parameters ?>
 
 					<?php // Show formfield gender only if enabled in basic parameters
-					if ($this->params->get('show_gender') == 1)
+					if ($this->params->get('show_gender', '1') == 1)
 					{
 				        $gender_selected = isset($this->subscriber->gender) ? $this->subscriber->gender : '2';
 						$class = $formclass === 'sm' ? ' class="input-small"' : ' class="input-medium"';
@@ -120,13 +120,13 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					} // End gender ?>
 
 					<?php // Show first name-field only if set in basic parameters
-					if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation'))
+					if ($this->params->get('show_firstname_field', '1') || $this->params->get('firstname_field_obligation', '1'))
 					{ ?>
 						<div class="control-group user_firstname">
 							<label id="firstnamemsg" class="control-label" for="firstname">
 								<?php echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label>
 							<?php // Is filling out the firstname field obligating
-							if ($this->params->get('firstname_field_obligation'))
+							if ($this->params->get('firstname_field_obligation', '1'))
 							{ ?>
 					            <div class="controls">
 					                <div class="input-append">
@@ -157,13 +157,13 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 
 
 					<?php // Show name-field only if set in basic parameters
-					if ($this->params->get('show_name_field') || $this->params->get('name_field_obligation'))
+					if ($this->params->get('show_name_field', '1') || $this->params->get('name_field_obligation', '1'))
 					{ ?>
 						<div class="control-group user_name edit_name">
 							<label id="namemsg" class="control-label" for="name">
 								<?php echo Text::_('COM_BWPOSTMAN_NAME'); ?>: </label>
 							<?php // Is filling out the name field obligating
-							if ($this->params->get('name_field_obligation'))
+							if ($this->params->get('name_field_obligation', '1'))
 							{ ?>
 					            <div class="controls">
 					                <div class="input-append">
@@ -193,11 +193,11 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					// End: Show name-fields only if set in basic parameters ?>
 
 					<?php // Show special only if set in basic parameters or required
-					if ($this->params->get('show_special') || $this->params->get('special_field_obligation'))
+					if ($this->params->get('show_special', '1') || $this->params->get('special_field_obligation', '0'))
 					{
-						if ($this->params->get('special_desc') != '')
+						if ($this->params->get('special_desc', '') != '')
 						{
-							$tip = Text::_($this->params->get('special_desc'));
+							$tip = Text::_($this->params->get('special_desc', ''));
 						}
 						else
 						{
@@ -207,9 +207,9 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 						<div class="control-group edit_special">
 							<label id="specialmsg" class="control-label hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special">
 								<?php
-								if ($this->params->get('special_label') != '')
+								if ($this->params->get('special_label', '') != '')
 								{
-									echo Text::_($this->params->get('special_label'));
+									echo Text::_($this->params->get('special_label', ''));
 								}
 								else
 								{
@@ -218,7 +218,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 								?>:
 							</label>
 							<?php // Is filling out the special field obligating
-							if ($this->params->get('special_field_obligation'))
+							if ($this->params->get('special_field_obligation', '0'))
 							{ ?>
 					            <div class="controls">
 					                <div class="input-append">
@@ -259,9 +259,9 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					</div>
 					<?php
 					// Show formfield email format only if enabled in basic parameters
-					if ($this->params->get('show_emailformat') == 1)
+					if ($this->params->get('show_emailformat', '1') == 1)
 					{
-				        $mailformat_selected = isset($this->subscriber->emailformat) ? $this->subscriber->emailformat : $this->params->get('default_emailformat');
+				        $mailformat_selected = isset($this->subscriber->emailformat) ? $this->subscriber->emailformat : $this->params->get('default_emailformat', '1');
 					?>
 						<div class="control-group user_mailformat edit_emailformat">
 							<label id="emailformatmsg" class="control-label"> <?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label>
@@ -284,7 +284,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					{
 						// hidden field with the default email format
 						?>
-						<input type="hidden" name="emailformat" value="<?php echo $this->params->get('default_emailformat'); ?>" />
+						<input type="hidden" name="emailformat" value="<?php echo $this->params->get('default_emailformat', '1'); ?>" />
 					<?php
 					}
 
@@ -299,7 +299,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 							<?php
 							$n = count($this->lists['available_mailinglists']);
 
-							$descLength = $this->params->get('desc_length');
+							$descLength = $this->params->get('desc_length', '150');
 
 							if ($this->lists['available_mailinglists'] && ($n > 0))
 							{
@@ -308,7 +308,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 									<input title="mailinglists_array" type="checkbox" style="display: none;" id="<?php echo "mailinglists0"; ?>"
 											name="<?php echo "mailinglists[]"; ?>" value="<?php echo $this->lists['available_mailinglists'][0]->id; ?>" checked="checked" />
 									<?php
-									if ($this->params->get('show_desc') == 1)
+									if ($this->params->get('show_desc', '1') == 1)
 									{ ?>
 										<p class="mail_available strong">
 											<?php echo Text::_('COM_BWPOSTMAN_MAILINGLIST'); ?>
@@ -348,10 +348,10 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 													echo "checked=\"checked\"";
 												} ?> />
 												<span class="mail_available_list_title">
-													<?php echo $this->params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
+													<?php echo $this->params->get('show_desc', '1') == 1 ? $item->title . ": " : $item->title; ?>
 												</span><br />
 												<?php
-												if ($this->params->get('show_desc') == 1)
+												if ($this->params->get('show_desc', '1') == 1)
 												{ ?>
 												<span>
 													<?php
@@ -406,23 +406,23 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 				<input type="hidden" name="view" value="edit" />
 				<input type="hidden" name="edit" value="" />
 				<input type="hidden" name="id" value="<?php echo $this->subscriber->id; ?>" />
-				<input type="hidden" name="name_field_obligation" value="<?php echo $this->params->get('name_field_obligation'); ?>" />
-				<input type="hidden" name="firstname_field_obligation" value="<?php echo $this->params->get('firstname_field_obligation'); ?>" />
-				<input type="hidden" name="special_field_obligation" value="<?php echo $this->params->get('special_field_obligation'); ?>" />
-				<input type="hidden" name="show_name_field" value="<?php echo $this->params->get('show_name_field'); ?>" />
-				<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field'); ?>" />
-				<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special'); ?>" />
+				<input type="hidden" name="name_field_obligation" value="<?php echo $this->params->get('name_field_obligation', '1'); ?>" />
+				<input type="hidden" name="firstname_field_obligation" value="<?php echo $this->params->get('firstname_field_obligation', '1'); ?>" />
+				<input type="hidden" name="special_field_obligation" value="<?php echo $this->params->get('special_field_obligation', '0'); ?>" />
+				<input type="hidden" name="show_name_field" value="<?php echo $this->params->get('show_name_field', '1'); ?>" />
+				<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field', '1'); ?>" />
+				<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special', '1'); ?>" />
 				<?php // Is filling out the special field obligating
-				if ($this->params->get('show_special') || $this->params->get('special_field_obligation'))
+				if ($this->params->get('show_special', '1') || $this->params->get('special_field_obligation', '0'))
 				{ ?>
-					<input type="hidden" name="special_label" value="<?php echo $this->params->get('special_label'); ?>" />
+					<input type="hidden" name="special_label" value="<?php echo $this->params->get('special_label', ''); ?>" />
 				<?php
 				} ?>
 				<?php echo HtmlHelper::_('form.token'); ?>
 			</form>
 
 			<?php
-			if ($this->params->get('show_boldt_link') === '1')
+			if ($this->params->get('show_boldt_link', '1') === '1')
 			{ ?>
 				<p class="bwpm_copyright text-center my-3"><?php echo BwPostmanSite::footer(); ?></p>
 			<?php

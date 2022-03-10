@@ -852,9 +852,9 @@ class BwPostmanPhpCron {
 		$ret = 1;
 		$ret_msg = '';
 		$params			= ComponentHelper::getParams('com_bwpostman');
-		$mails_per_step	= (int) $params->get('default_mails_per_pageload');
+		$mails_per_step	= (int) $params->get('default_mails_per_pageload', '100');
 		// We have to divide by 1000, because sending by component is made by JS and therefore the sleep is stored in ms
-		$delay			= (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit') / 1000;
+		$delay			= (int) $params->get('mails_per_pageload_delay', '10') * (int) $params->get('mails_per_pageload_delay_unit', '1000') / 1000;
 
 		if (count($error))
 		{

@@ -386,12 +386,12 @@ class HtmlView extends BaseHtmlView
 	{
 		// Get the params
 		$params      = ComponentHelper::getParams('com_bwpostman');
-		$this->delay = (int) $params->get('mails_per_pageload_delay') * (int) $params->get('mails_per_pageload_delay_unit');
+		$this->delay = (int) $params->get('mails_per_pageload_delay', '10') * (int) $params->get('mails_per_pageload_delay_unit', '1000');
 		$this->logger->addEntry(new LogEntry('View raw delay: ' . $this->delay, BwLogger::BW_DEBUG, 'send'));
 
-		if ((int) $params->get('mails_per_pageload_delay_unit') == 1000)
+		if ((int) $params->get('mails_per_pageload_delay_unit', '1000') == 1000)
 		{
-			if ((int) $params->get('mails_per_pageload_delay') == 1)
+			if ((int) $params->get('mails_per_pageload_delay', '10') == 1)
 			{
 				$this->delay_message = Text::sprintf(
 					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
@@ -408,7 +408,7 @@ class HtmlView extends BaseHtmlView
 		}
 		else
 		{
-			if ((int) $params->get('mails_per_pageload_delay') == 1)
+			if ((int) $params->get('mails_per_pageload_delay', '10') == 1)
 			{
 				$this->delay_message = Text::sprintf(
 					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',

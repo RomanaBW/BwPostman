@@ -126,8 +126,8 @@ class HtmlView extends BaseHtmlView
 
 		// Get the global list params and preset them
 		$globalParams				= ComponentHelper::getParams('com_bwpostman', true);
-		$this->attachment_enabled	= $globalParams->get('attachment_single_enable');
-		$this->page_title			= $globalParams->get('subject_as_title');
+		$this->attachment_enabled	= $globalParams->get('attachment_single_enable', '1');
+		$this->page_title			= $globalParams->get('subject_as_title', '1');
 
 		$menuParams = new Registry;
 		$menu = $app->getMenu()->getActive();
@@ -148,21 +148,21 @@ class HtmlView extends BaseHtmlView
 				// if we have a menu state, use this and overwrite global settings
 				if (is_object($nls_state))
 				{
-					if ($nls_state->get('attachment_enable') !== null) {
-						$this->attachment_enabled	= $nls_state->get('attachment_enable');
+					if ($nls_state->get('attachment_enable', '1') !== null) {
+						$this->attachment_enabled	= $nls_state->get('attachment_enable', '1');
 					}
 				}
 			}
 			else
 			{
 				// we come from single menu link, use menu params if set, otherwise global details params are used
-				if ($menuParams->get('attachment_single_enable') !== null)
+				if ($menuParams->get('attachment_single_enable', '1') !== null)
 				{
-					$this->attachment_enabled	= $menuParams->get('attachment_single_enable');
+					$this->attachment_enabled	= $menuParams->get('attachment_single_enable', '1');
 				}
 				else
 				{
-					$this->attachment_enabled	= $globalParams->get('attachment_single_enable');
+					$this->attachment_enabled	= $globalParams->get('attachment_single_enable', '1');
 				}
 			}
 		}
@@ -181,7 +181,7 @@ class HtmlView extends BaseHtmlView
 		$this->params = $params;
 
 		// switch frontend layout
-		$tpl = $this->params->get('fe_layout_detail');
+		$tpl = $this->params->get('fe_layout_detail', null);
 
 		// Set parent display
 		parent::display($tpl);

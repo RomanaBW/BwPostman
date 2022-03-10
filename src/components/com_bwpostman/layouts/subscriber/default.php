@@ -39,9 +39,9 @@ $lists      = $displayData['lists'];
 
 <div class="contentpane<?php echo $params->get('pageclass_sfx'); ?>">
 	<?php // Show pretext only if set in basic parameters
-	if ($params->get('pretext'))
+	if ($params->get('pretext', ''))
 	{
-		$preText = Text::_($params->get('pretext'));
+		$preText = Text::_($params->get('pretext', ''));
 		?>
 		<p class="pre_text"><?php echo $preText; ?></p>
 		<?php
@@ -61,7 +61,7 @@ $lists      = $displayData['lists'];
 	// End: Show editlink only if the user is not logged in ?>
 
 	<?php // Show formfield gender only if enabled in basic parameters
-	if ($params->get('show_gender') == 1)
+	if ($params->get('show_gender', '1') == 1)
 	{
 		?><p class="edit_gender">
 			<label id="gendermsg"> <?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label><?php
@@ -70,13 +70,13 @@ $lists      = $displayData['lists'];
 	} // End gender ?>
 
 	<?php // Show first name-field only if set in basic parameters
-	if ($params->get('show_firstname_field') || $params->get('firstname_field_obligation'))
+	if ($params->get('show_firstname_field', '1') || $params->get('firstname_field_obligation', '1'))
 	{
-		?><p class="user_firstname input<?php echo ($params->get('firstname_field_obligation')) ? '-append' : '' ?>">
+		?><p class="user_firstname input<?php echo ($params->get('firstname_field_obligation', '1')) ? '-append' : '' ?>">
 			<label id="firstnamemsg" for="firstname"><?php
 				echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label><?php
 			// Is filling out the firstname field obligating
-			if ($params->get('firstname_field_obligation'))
+			if ($params->get('firstname_field_obligation', '1'))
 			{
 				?><input type="text" name="firstname" id="firstname" size="40"
 						value="<?php
@@ -114,8 +114,8 @@ $lists      = $displayData['lists'];
 
 
 	<?php // Show name-field only if set in basic parameters
-	if ($params->get('show_name_field') || $params->get('name_field_obligation'))
-	{ ?><p class="user_name edit_name input<?php echo ($params->get('name_field_obligation')) ? '-append' : '' ?>">
+	if ($params->get('show_name_field', '1') || $params->get('name_field_obligation', '1'))
+	{ ?><p class="user_name edit_name input<?php echo ($params->get('name_field_obligation', '1')) ? '-append' : '' ?>">
 			<label id="namemsg" for="name"
 				<?php
 				if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
@@ -124,7 +124,7 @@ $lists      = $displayData['lists'];
 				} ?>>
 				<?php echo Text::_('COM_BWPOSTMAN_NAME'); ?>: </label><?php
 			// Is filling out the name field obligating
-			if ($params->get('name_field_obligation'))
+			if ($params->get('name_field_obligation', '1'))
 			{
 				?><input type="text" name="name" id="name" size="40" value="<?php echo $subscriber->name; ?>"
 						class="<?php
@@ -151,18 +151,18 @@ $lists      = $displayData['lists'];
 	// End: Show name-fields only if set in basic parameters ?>
 
 	<?php // Show special only if set in basic parameters or required
-	if ($params->get('show_special') || $params->get('special_field_obligation'))
+	if ($params->get('show_special', '1') || $params->get('special_field_obligation', '0'))
 	{
-		if ($params->get('special_desc') != '')
+		if ($params->get('special_desc', '') != '')
 		{
-			$tip = Text::_($params->get('special_desc'));
+			$tip = Text::_($params->get('special_desc', ''));
 		}
 		else
 		{
 			$tip = Text::_('COM_BWPOSTMAN_SPECIAL');
 		}
 
-		?><p class="edit_special input<?php echo ($params->get('special_field_obligation')) ? '-append' : '' ?>">
+		?><p class="edit_special input<?php echo ($params->get('special_field_obligation', '0')) ? '-append' : '' ?>">
 			<label id="specialmsg" class="hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special"
 				<?php
 				if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
@@ -171,9 +171,9 @@ $lists      = $displayData['lists'];
 				}?>
 				>
 				<?php
-				if ($params->get('special_label') != '')
+				if ($params->get('special_label', '') != '')
 				{
-					echo Text::_($params->get('special_label'));
+					echo Text::_($params->get('special_label', ''));
 				}
 				else
 				{
@@ -182,7 +182,7 @@ $lists      = $displayData['lists'];
 				?>:
 			</label><?php
 			// Is filling out the special field obligating
-			if ($params->get('special_field_obligation'))
+			if ($params->get('special_field_obligation', '0'))
 			{ ?><input type="text" name="special" id="special" size="40" value="<?php echo $subscriber->special; ?>"
 						class="<?php
 						if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
@@ -229,7 +229,7 @@ $lists      = $displayData['lists'];
 	</p>
 	<?php
 	// Show formfield email format only if enabled in basic parameters
-	if ($params->get('show_emailformat') == 1)
+	if ($params->get('show_emailformat', '1') == 1)
 	{
 		?><div class="user_mailformat edit_emailformat">
 			<label id="emailformatmsg"> <?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label><?php
@@ -240,7 +240,7 @@ $lists      = $displayData['lists'];
 	else
 	{
 		// hidden field with the default email format
-		?><input type="hidden" name="emailformat" value="<?php echo $params->get('default_emailformat'); ?>" />
+		?><input type="hidden" name="emailformat" value="<?php echo $params->get('default_emailformat', '1'); ?>" />
 	<?php
 	}
 
@@ -257,7 +257,7 @@ $lists      = $displayData['lists'];
 			<?php
 			$n = count($lists['available_mailinglists']);
 
-			$descLength = $params->get('desc_length');
+			$descLength = $params->get('desc_length', '150');
 
 			if ($lists['available_mailinglists'] && ($n > 0))
 			{
@@ -266,7 +266,7 @@ $lists      = $displayData['lists'];
 					?><input title="mailinglists_array" type="checkbox" style="display: none;" id="<?php echo "mailinglists0"; ?>"
 							name="<?php echo "mailinglists[]"; ?>" value="<?php echo $lists['available_mailinglists'][0]->id; ?>" checked="checked" />
 					<?php
-					if ($params->get('show_desc') == 1)
+					if ($params->get('show_desc', '1') == 1)
 					{
 						?><p class="mail_available">
 							<?php echo Text::_('COM_BWPOSTMAN_MAILINGLIST'); ?>
@@ -306,10 +306,10 @@ $lists      = $displayData['lists'];
 								echo "checked=\"checked\"";
 							} ?> />
 							<span class="mail_available_list_title">
-								<?php echo $params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
+								<?php echo $params->get('show_desc', '1') == 1 ? $item->title . ": " : $item->title; ?>
 							</span>
 							<?php
-							if ($params->get('show_desc') == 1)
+							if ($params->get('show_desc', '1') == 1)
 							{ ?>
 							<span>
 								<?php

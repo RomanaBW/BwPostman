@@ -776,7 +776,7 @@ class ContentRenderer
 		$lang->load('com_bwpostman', JPATH_ADMINISTRATOR, null, true);
 
 		$params          = ComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click = $params->get('del_sub_1_click');
+		$del_sub_1_click = $params->get('del_sub_1_click', '0');
 
 		// replace edit and unsubscribe link
 		if ($del_sub_1_click === '0')
@@ -929,8 +929,8 @@ class ContentRenderer
 
 		$uri             = Uri::getInstance();
 		$params          = ComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click = $params->get('del_sub_1_click');
-		$impressum       = Text::_($params->get('legal_information_text'));
+		$del_sub_1_click = $params->get('del_sub_1_click', '0');
+		$impressum       = Text::_($params->get('legal_information_text', ''));
 		$impressum       = nl2br($impressum, true);
 		$sitelink        = $uri->root();
 
@@ -1013,7 +1013,7 @@ class ContentRenderer
 		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
 		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
 		$params             = ComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click    = $params->get('del_sub_1_click');
+		$del_sub_1_click    = $params->get('del_sub_1_click', '0');
 
 		if ($del_sub_1_click === '0')
 		{
@@ -1068,8 +1068,8 @@ class ContentRenderer
 		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
 		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
 		$params             = ComponentHelper::getParams('com_bwpostman');
-		$del_sub_1_click    = $params->get('del_sub_1_click');
-		$impressum          = "\n\n" . Text::_($params->get('legal_information_text')) . "\n\n";
+		$del_sub_1_click    = $params->get('del_sub_1_click', '0');
+		$impressum          = "\n\n" . Text::_($params->get('legal_information_text', '')) . "\n\n";
 
 		$unsubscribelink = $uri->root() . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_unsubscribe .
 			'&amp;view=edit&amp;task=unsubscribe&amp;email=[UNSUBSCRIBE_EMAIL]&amp;code=[UNSUBSCRIBE_CODE]';

@@ -463,7 +463,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = ComponentHelper::getParams('com_bwpostman');
 
-		if (!$com_params->get('show_gender'))
+		if (!$com_params->get('show_gender', '1'))
 		{
 			$this->form->removeField('gender', $this->group);
 		}
@@ -478,12 +478,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = ComponentHelper::getParams('com_bwpostman');
 
-		if ($com_params->get('name_field_obligation'))
+		if ($com_params->get('name_field_obligation', '1'))
 		{
 			$this->form->setValue('name_required', $this->group, 1);
 		}
 
-		if (!$com_params->get('show_name_field') && !$com_params->get('name_field_obligation'))
+		if (!$com_params->get('show_name_field', '1') && !$com_params->get('name_field_obligation', '1'))
 		{
 			$this->form->removeField('bwpm_name', $this->group);
 		}
@@ -498,12 +498,12 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = ComponentHelper::getParams('com_bwpostman');
 
-		if ($com_params->get('firstname_field_obligation'))
+		if ($com_params->get('firstname_field_obligation', '1'))
 		{
 			$this->form->setValue('firstname_required', $this->group, 1);
 		}
 
-		if (!$com_params->get('show_firstname_field') && !$com_params->get('firstname_field_obligation'))
+		if (!$com_params->get('show_firstname_field', '1') && !$com_params->get('firstname_field_obligation', '1'))
 		{
 			$this->form->removeField('firstname', $this->group);
 		}
@@ -518,19 +518,19 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = ComponentHelper::getParams('com_bwpostman');
 
-		if ($com_params->get('special_field_obligation'))
+		if ($com_params->get('special_field_obligation', '0'))
 		{
 			$this->form->setValue('additional_required', $this->group, 1);
 		}
 
-		if (!$com_params->get('show_special') && !$com_params->get('special_field_obligation'))
+		if (!$com_params->get('show_special', '1') && !$com_params->get('special_field_obligation', '0'))
 		{
 			$this->form->removeField('special', $this->group);
 		}
 		else
 		{
-			$special_label = $com_params->get('special_label');
-			$special_desc  = $com_params->get('special_desc');
+			$special_label = $com_params->get('special_label', '');
+			$special_desc  = $com_params->get('special_desc', '');
 
 			if ($special_label != '')
 			{
@@ -553,15 +553,15 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$com_params = ComponentHelper::getParams('com_bwpostman');
 
-		$this->form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat'), $this->group);
+		$this->form->setFieldAttribute('emailformat', 'default', $com_params->get('default_emailformat', '1'), $this->group);
 
-		if ($com_params->get('show_emailformat'))
+		if ($com_params->get('show_emailformat', '1'))
 		{
 			$this->form->setFieldAttribute('emailformat', 'required', 'true', $this->group);
 		}
 		else
 		{
-			$this->form->setFieldAttribute('emailformat_show', 'default', $com_params->get('show_emailformat'), $this->group);
+			$this->form->setFieldAttribute('emailformat_show', 'default', $com_params->get('show_emailformat', '1'), $this->group);
 		}
 	}
 
@@ -610,28 +610,28 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$com_params = ComponentHelper::getParams('com_bwpostman');
 		$disclaimer_link = '';
 
-		if ($this->params->get('disclaimer') && $com_params->get('disclaimer'))
+		if ($this->params->get('disclaimer', '0') && $com_params->get('disclaimer', '0'))
 		{
 			// Extends the disclaimer link with '&tmpl=component' to see only the content
 			$tpl_com = '&amp;tmpl=component';
 			// Disclaimer article and target_blank or not
-			if ($com_params->get('disclaimer_selection') == 1 && $com_params->get('article_id') > 0)
+			if ($com_params->get('disclaimer_selection', '1') == 1 && $com_params->get('article_id', '0') > 0)
 			{
-				$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($com_params->get('article_id') . $tpl_com));
+				$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($com_params->get('article_id', '0') . $tpl_com));
 			}
 			// Disclaimer menu item and target_blank or not
-			elseif ($com_params->get('disclaimer_selection') == 2 && $com_params->get('disclaimer_menuitem') > 0)
+			elseif ($com_params->get('disclaimer_selection', '1') == 2 && $com_params->get('disclaimer_menuitem', '0') > 0)
 			{
 				if ($tpl_com !== '' && (Factory::getApplication()->get('sef') === '1' || Factory::getApplication()->get('sef') === true))
 				{
 					$tpl_com = '?tmpl=component';
 				}
-				$disclaimer_link = Route::_("index.php?Itemid={$com_params->get('disclaimer_menuitem')}") . $tpl_com;
+				$disclaimer_link = Route::_("index.php?Itemid={$com_params->get('disclaimer_menuitem', '0')}") . $tpl_com;
 			}
 			// Disclaimer url and target_blank or not
 			else
 			{
-				$disclaimer_link = $com_params->get('disclaimer_link');
+				$disclaimer_link = $com_params->get('disclaimer_link', '');
 			}
 		}
 
@@ -969,7 +969,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			$res = $_db->execute();
 
 			$params    = ComponentHelper::getParams('com_bwpostman');
-			$send_mail = $params->get('activation_to_webmaster');
+			$send_mail = $params->get('activation_to_webmaster', '0');
 
 			// @ToDo: How could I get here with no object $this->stored_subscriber_data
 			if ($send_mail && $res && $subscriber_id)

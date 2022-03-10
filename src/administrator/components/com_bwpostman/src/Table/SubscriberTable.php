@@ -467,7 +467,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		{
 			$missingValues = array();
 			// Check for valid first name
-			if ($params->get('firstname_field_obligation'))
+			if ($params->get('firstname_field_obligation', '1'))
 			{
 				if (trim($this->firstname) === '')
 				{
@@ -478,7 +478,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			}
 
 			// Check for valid name
-			if ($params->get('name_field_obligation'))
+			if ($params->get('name_field_obligation', '1'))
 			{
 				if (trim($this->name) === '')
 				{
@@ -489,11 +489,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			}
 
 			// Check for valid additional field
-			if ($params->get('special_field_obligation'))
+			if ($params->get('special_field_obligation', '0'))
 			{
 				if (trim($this->special) === '')
 				{
-					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', $params->get('special_label') != '' ? Text::_($params->get('special_label')) : Text::_('COM_BWPOSTMAN_SPECIAL')), 'error');
+					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_SPECIAL', $params->get('special_label', '') != '' ? Text::_($params->get('special_label', '')) : Text::_('COM_BWPOSTMAN_SPECIAL')), 'error');
 					$missingValues[] = 413;
 					$fault	= true;
 				}
@@ -525,7 +525,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			}
 
 			// agreecheck
-			if ($params->get('disclaimer') == 1)
+			if ($params->get('disclaimer', '0') == 1)
 			{
 				if(!isset($data['agreecheck']) || (isset($data['mod_id']) && $fault))
 				{
@@ -557,10 +557,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			// Captcha check 1
 			// Set error message if captcha test failed
-			if ($params->get('use_captcha') == 1)
+			if ($params->get('use_captcha', '0') == 1)
 			{
 				// start check
-				if(trim($data['stringQuestion']) !== trim($params->get('security_answer')) || (isset($data['mod_id']) && $fault))
+				if(trim($data['stringQuestion']) !== trim($params->get('security_answer', '4')) || (isset($data['mod_id']) && $fault))
 				{
 					// input wrong - set error
 					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');
@@ -570,7 +570,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			}
 
 			// Captcha check 2
-			if ($params->get('use_captcha') == 2)
+			if ($params->get('use_captcha', '0') == 2)
 			{
 				// Temp folder of captcha-images
 				$captchaDir = JPATH_COMPONENT_SITE . '/assets/capimgdir/';

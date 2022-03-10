@@ -298,9 +298,9 @@ class BwPostmanSubscriberHelper
 		$sitename = $app->getConfig()->get('sitename');
 		$siteURL  = Uri::root();
 
-		$active_title      = Text::_($params->get('activation_salutation_text'));
-		$active_intro      = Text::_($params->get('activation_text'));
-		$permission_text   = Text::_($params->get('permission_text'));
+		$active_title      = Text::_($params->get('activation_salutation_text', ''));
+		$active_intro      = Text::_($params->get('activation_text', ''));
+		$permission_text   = Text::_($params->get('permission_text', ''));
 
 		$active_msg = $active_title;
 
@@ -332,7 +332,7 @@ class BwPostmanSubscriberHelper
 				}
 
 				$body = $active_msg . Text::_('COM_BWPOSTMAN_ACTIVATION_CODE_MSG') . " " . $link . "\n\n" . $permission_text;
-				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
+				$body .= "\n\n" . Text::_($params->get('legal_information_text', ''));
 				break;
 			case 1: // Send Editlink
 				$editlink = $subscriber->editlink;
@@ -355,7 +355,7 @@ class BwPostmanSubscriberHelper
 						$siteURL . "index.php?option=com_bwpostman&Itemid=$itemid&view=edit&editlink=$editlink"
 					);
 				}
-				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
+				$body .= "\n\n" . Text::_($params->get('legal_information_text', ''));
 				break;
 			case 2: // Send Activation reminder
 				$subject = Text::sprintf('COM_BWPOSTMAN_SEND_ACTVIATIONCODE_SUBJECT', $sitename);
@@ -377,7 +377,7 @@ class BwPostmanSubscriberHelper
 						$siteURL . "index.php?option=com_bwpostman&Itemid=$itemid&view=register&task=activate&subscriber=$subscriber->activation"
 					);
 				}
-				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
+				$body .= "\n\n" . Text::_($params->get('legal_information_text', ''));
 				break;
 			case 3: // Send confirmation mail because the email address has been changed
 				$subject = Text::sprintf('COM_BWPOSTMAN_SEND_CONFIRMEMAIL_SUBJECT', $sitename);
@@ -397,7 +397,7 @@ class BwPostmanSubscriberHelper
 						$siteURL . "index.php?option=com_bwpostman&Itemid=$itemid&view=register&task=activate&subscriber=$subscriber->activation"
 					);
 				}
-				$body .= "\n\n" . Text::_($params->get('legal_information_text'));
+				$body .= "\n\n" . Text::_($params->get('legal_information_text', ''));
 				$app->enqueueMessage(Text::_("COM_BWPOSTMAN_SEND_CONFIRM_SCREEN_MSG"));
 				break;
 			case 4: // Send registration mail because of import or new account
@@ -931,9 +931,9 @@ class BwPostmanSubscriberHelper
 		{
 			if (BwPostmanFilterHelper::containsLink($data['special']))
 			{
-				if ($params->get('special_label') != '')
+				if ($params->get('special_label', '') != '')
 				{
-					$fieldName = Text::_($params->get('special_label'));
+					$fieldName = Text::_($params->get('special_label', ''));
 				}
 				else
 				{
@@ -957,7 +957,7 @@ class BwPostmanSubscriberHelper
 			}
 
 			// Enhanced check, if mail address is reachable
-			if ((int)$params->get('verify_mailaddress') === 1)
+			if ((int)$params->get('verify_mailaddress', '0') === 1)
 			{
 				if(!self::validateEmail($data['email']))
 				{
@@ -1020,18 +1020,8 @@ class BwPostmanSubscriberHelper
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$sender = array();
 
-		$sender[0] = MailHelper::cleanAddress($params->get('default_from_email'));
-		$sender[1] = Text::_($params->get('default_from_name'));
-
-		if (empty($sender[0]))
-		{
-			$sender[0] = MailHelper::cleanAddress($config->get('mailfrom'));
-		}
-
-		if (empty($sender[1]))
-		{
-			$sender[1] = $config->get('fromname');
-		}
+		$sender[0] = MailHelper::cleanAddress($params->get('default_from_email', $config->get('mailfrom')));
+		$sender[1] = Text::_($params->get('default_from_name', $config->get('fromname')));
 
 		return $sender;
 	}
@@ -1051,18 +1041,8 @@ class BwPostmanSubscriberHelper
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$reply = array();
 
-		$reply[0] = MailHelper::cleanAddress($params->get('default_from_email'));
-		$reply[1] = Text::_($params->get('default_reply_email'));
-
-		if (empty($reply[0]))
-		{
-			$reply[0] = MailHelper::cleanAddress($config->get('mailfrom'));
-		}
-
-		if (empty($reply[1]))
-		{
-			$reply[1] = $config->get('fromname');
-		}
+		$reply[0] = MailHelper::cleanAddress($params->get('default_from_email', $config->get('mailfrom')));
+		$reply[1] = Text::_($params->get('default_reply_email', $config->get('fromname')));
 
 		return $reply;
 	}

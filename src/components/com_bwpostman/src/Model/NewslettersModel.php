@@ -248,7 +248,7 @@ class NewslettersModel extends ListModel
 
 		$this->setState('layout', $jinput->getCmd('layout'));
 
-		$limit = (int) $app->getUserStateFromRequest('com_bwpostman.newsletters.list.limit', 'limit', $params->get('display_num'), 'uint');
+		$limit = (int) $app->getUserStateFromRequest('com_bwpostman.newsletters.list.limit', 'limit', $params->get('display_num', '10'), 'uint');
 		$this->setState('list.limit', $limit);
 
 		$limitstart = $app->input->get('start');
@@ -582,7 +582,7 @@ class NewslettersModel extends ListModel
 
 		// Filter by search word.
 		$searchword	= $this->getState('filter.search');
-		if (is_object($params) && ($params->get('filter_field') != 'hide') && !empty($searchword))
+		if (is_object($params) && ($params->get('filter_field', '1') != 'hide') && !empty($searchword))
 		{
 			$search	= '%' . $db->escape($this->getState('filter.search'), true) . '%';
 			$query->where('subject LIKE ' . $db->quote($search, false));
@@ -721,7 +721,7 @@ class NewslettersModel extends ListModel
 	public function getAccessibleMailinglists(bool $title = true): array
 	{
 		$params        = $this->getAppropriateParams();
-		$check         = $params->get('access-check');
+		$check         = $params->get('access-check', '1');
 		$mlTable       = $this->getTable('Mailinglist');
 
 		// fetch only from mailing lists, which are selected, if so
@@ -780,7 +780,7 @@ class NewslettersModel extends ListModel
 	public function getAccessibleCampaigns(bool $title = true): array
 	{
 		$params       = $this->getAppropriateParams();
-		$check        = $params->get('access-check');
+		$check        = $params->get('access-check', '1');
 
 		// fetch only from campaigns, which are selected, if so
 		$all_cams = $params->get('cam_selected_all');
@@ -842,7 +842,7 @@ class NewslettersModel extends ListModel
 		$groups     = null;
 		$params      = $this->getAppropriateParams();
 
-		$check		= $params->get('access-check');
+		$check		= $params->get('access-check', '1');
 
 		// fetch only from usergroups, which are selected, if so
 		$all_groups	= $params->get('groups_selected_all');

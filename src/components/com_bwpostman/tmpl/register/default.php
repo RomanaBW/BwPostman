@@ -74,7 +74,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 		if ($this->lists['available_mailinglists'])
 		{
 			$wa->useScript('com_bwpostman.bwpm_register_btn_group');
-			if ($this->params->get('disclaimer') && $this->params->get('showinmodal') == 1)
+			if ($this->params->get('disclaimer', '0') && $this->params->get('showinmodal', '1') == 1)
 			{
 				$wa->useScript('com_bwpostman.bwpm_register_modal');
 			}
@@ -100,9 +100,9 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
 
 					<?php // Show pretext only if set in basic parameters
-					if ($this->params->get('pretext'))
+					if ($this->params->get('pretext', ''))
 					{
-						$preText = Text::_($this->params->get('pretext'));
+						$preText = Text::_($this->params->get('pretext', ''));
 						?>
 						<p class="pre_text"><?php echo $preText; ?></p>
 						<?php
@@ -110,7 +110,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 
 
 					<?php // Show formfield gender only if enabled in basic parameters
-					if ($this->params->get('show_gender') == 1)
+					if ($this->params->get('show_gender', '1') == 1)
 					{ ?>
 						<p class="edit_gender">
 							<label id="gendermsg"><?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label>
@@ -119,9 +119,9 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					} // End gender ?>
 
 					<?php // Show first name-field only if set in basic parameters
-					if ($this->params->get('show_firstname_field') || $this->params->get('firstname_field_obligation'))
+					if ($this->params->get('show_firstname_field', '1') || $this->params->get('firstname_field_obligation', '1'))
 					{ ?>
-						<p class="user_firstname input<?php echo ($this->params->get('firstname_field_obligation')) ? '-append' : '' ?>">
+						<p class="user_firstname input<?php echo ($this->params->get('firstname_field_obligation', '1')) ? '-append' : '' ?>">
 							<label id="firstnamemsg" for="firstname"
 								<?php
 								if (is_array($this->subscriber->missingValues) && in_array(411, $this->subscriber->missingValues))
@@ -130,7 +130,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								} ?>>
 								<?php echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>:</label>
 							<?php // Is filling out the firstname field obligating
-							if ($this->params->get('firstname_field_obligation'))
+							if ($this->params->get('firstname_field_obligation', '1'))
 							{ ?>
 								<input type="text" name="firstname" id="firstname" size="40"
 										value="<?php
@@ -167,9 +167,9 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					// End: Show first name-field only if set in basic parameters ?>
 
 					<?php // Show name-field only if set in basic parameters
-					if ($this->params->get('show_name_field') || $this->params->get('name_field_obligation'))
+					if ($this->params->get('show_name_field', '1') || $this->params->get('name_field_obligation', '1'))
 					{ ?>
-						<p class="user_name edit_name input<?php echo ($this->params->get('name_field_obligation')) ? '-append' : '' ?>">
+						<p class="user_name edit_name input<?php echo ($this->params->get('name_field_obligation', '1')) ? '-append' : '' ?>">
 							<label id="namemsg" for="name"
 								<?php
 								if (is_array($this->subscriber->missingValues) && in_array(412, $this->subscriber->missingValues))
@@ -178,7 +178,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								} ?>>
 								<?php echo Text::_('COM_BWPOSTMAN_NAME'); ?>: </label>
 							<?php // Is filling out the name field obligating
-							if ($this->params->get('name_field_obligation'))
+							if ($this->params->get('name_field_obligation', '1'))
 							{
 								?>
 								<input type="text" name="name" id="name" size="40" value="<?php echo $this->subscriber->name; ?>"
@@ -208,18 +208,18 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					// End: Show name-fields only if set in basic parameters ?>
 
 					<?php // Show special only if set in basic parameters or required
-					if ($this->params->get('show_special') || $this->params->get('special_field_obligation'))
+					if ($this->params->get('show_special', '1') || $this->params->get('special_field_obligation', '0'))
 					{
-						if ($this->params->get('special_desc') != '')
+						if ($this->params->get('special_desc', '') != '')
 						{
-							$tip = Text::_($this->params->get('special_desc'));
+							$tip = Text::_($this->params->get('special_desc', ''));
 						}
 						else
 						{
 							$tip = Text::_('COM_BWPOSTMAN_SPECIAL');
 						} ?>
 
-						<p class="edit_special input<?php echo ($this->params->get('special_field_obligation')) ? '-append' : '' ?>">
+						<p class="edit_special input<?php echo ($this->params->get('special_field_obligation', '0')) ? '-append' : '' ?>">
 							<label id="specialmsg" title="<?php echo $tip; ?>" for="special"
 								<?php
 								if (is_array($this->subscriber->missingValues) && in_array(413, $this->subscriber->missingValues))
@@ -227,9 +227,9 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 									echo " class=\"invalid\"";
 								}
 								echo ">";
-								if ($this->params->get('special_label') != '')
+								if ($this->params->get('special_label', '') != '')
 								{
-									echo Text::_($this->params->get('special_label'));
+									echo Text::_($this->params->get('special_label', ''));
 								}
 								else
 								{
@@ -238,7 +238,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								?>:
 							</label>
 							<?php // Is filling out the special field obligating
-							if ($this->params->get('special_field_obligation'))
+							if ($this->params->get('special_field_obligation', '0'))
 							{ ?>
 								<input type="text" name="special" id="special" size="40" value="<?php echo $this->subscriber->special; ?>"
 										class="<?php
@@ -288,7 +288,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 
 					<?php
 					// Show formfield email format only if enabled in basic parameters
-					if ($this->params->get('show_emailformat') == 1)
+					if ($this->params->get('show_emailformat', '1') == 1)
 					{ ?>
 						<div class="user_mailformat edit_emailformat">
 							<label id="emailformatmsg"><?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>:</label>
@@ -300,7 +300,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					{
 						// hidden field with the default email format
 						?>
-						<input type="hidden" name="emailformat" value="<?php echo $this->params->get('default_emailformat'); ?>" />
+						<input type="hidden" name="emailformat" value="<?php echo $this->params->get('default_emailformat', '1'); ?>" />
 					<?php
 					}
 
@@ -317,7 +317,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							<?php
 							$n = count($this->lists['available_mailinglists']);
 
-							$descLength = $this->params->get('desc_length');
+							$descLength = $this->params->get('desc_length', '150');
 
 							if ($this->lists['available_mailinglists'] && ($n > 0))
 							{
@@ -326,7 +326,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 									<input title="mailinglists_array" type="checkbox" style="display: none;" id="<?php echo "mailinglists0"; ?>"
 											name="<?php echo "mailinglists[]"; ?>" value="<?php echo $this->lists['available_mailinglists'][0]->id; ?>" checked="checked" />
 									<?php
-									if ($this->params->get('show_desc') == 1)
+									if ($this->params->get('show_desc', '1') == 1)
 									{ ?>
 										<p class="mail_available">
 											<?php echo Text::_('COM_BWPOSTMAN_MAILINGLIST'); ?>
@@ -375,10 +375,10 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 													{
 														echo " invalid";
 													} ?>">
-												<?php echo $this->params->get('show_desc') == 1 ? $item->title . ": " : $item->title; ?>
+												<?php echo $this->params->get('show_desc', '1') == 1 ? $item->title . ": " : $item->title; ?>
 											</span>
 											<?php
-											if ($this->params->get('show_desc') == 1)
+											if ($this->params->get('show_desc', '1') == 1)
 											{ ?>
 											<span>
 												<?php
@@ -408,10 +408,10 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 				</div>
 
 				<?php // Question
-				if ($this->params->get('use_captcha') == 1) : ?>
+				if ($this->params->get('use_captcha', '0') == 1) : ?>
 					<div class="question">
 						<p class="question-text"><?php echo Text::_('COM_BWPOSTMAN_CAPTCHA'); ?></p>
-						<p class="security_question_lbl"><?php echo Text::_($this->params->get('security_question')); ?></p>
+						<p class="security_question_lbl"><?php echo Text::_($this->params->get('security_question', '')); ?></p>
 						<p class="question-result input-append">
 							<label id="question" for="stringQuestion"
 								<?php
@@ -432,7 +432,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 				<?php endif; // End question ?>
 
 				<?php // Captcha
-				if ($this->params->get('use_captcha') == 2) :
+				if ($this->params->get('use_captcha', '0') == 2) :
 					$codeCaptcha = md5(microtime());
 					?>
 
@@ -466,7 +466,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					$disclaimer_link = '';
 					$title = '';
 
-					if ($this->params->get('disclaimer')) :
+					if ($this->params->get('disclaimer', '0')) :
 						?>
 						<p class="agree_check">
 							<input title="<?php echo Text::_('COM_BWPOSTMAN_DISCLAIMER'); ?>" type="checkbox" id="agreecheck" name="agreecheck"
@@ -478,25 +478,25 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 							/>
 							<?php
 							// Extends the disclaimer link with '&tmpl=component' to see only the content
-							$tpl_com = $this->params->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
+							$tpl_com = $this->params->get('showinmodal', '1') == 1 ? '&amp;tmpl=component' : '';
 							// Disclaimer article and target_blank or not
-							if ($this->params->get('disclaimer_selection') == 1 && $this->params->get('article_id') > 0)
+							if ($this->params->get('disclaimer_selection', '1') == 1 && $this->params->get('article_id', '0') > 0)
 							{
-								$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($this->params->get('article_id') . $tpl_com, 0));
+								$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($this->params->get('article_id', '0') . $tpl_com, 0));
 							}
 							// Disclaimer menu item and target_blank or not
-							elseif ($this->params->get('disclaimer_selection') == 2 && $this->params->get('disclaimer_menuitem') > 0)
+							elseif ($this->params->get('disclaimer_selection', '1') == 2 && $this->params->get('disclaimer_menuitem', '0') > 0)
 							{
 								if ($tpl_com !== '' && ($app->get('sef') === '1' || $app->get('sef') === true))
 								{
 									$tpl_com = '?tmpl=component';
 								}
-								$disclaimer_link = Route::_("index.php?Itemid={$this->params->get('disclaimer_menuitem')}") . $tpl_com;
+								$disclaimer_link = Route::_("index.php?Itemid={$this->params->get('disclaimer_menuitem', '0')}") . $tpl_com;
 							}
 							// Disclaimer url and target_blank or not
 							else
 							{
-								$disclaimer_link = stripslashes($this->params->get('disclaimer_link'));
+								$disclaimer_link = stripslashes($this->params->get('disclaimer_link', ''));
 							}
 							?>
 							<span
@@ -507,7 +507,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								} ?>>
 								<?php
 								// Show inside modalbox
-								if ($this->params->get('showinmodal') == 1)
+								if ($this->params->get('showinmodal', '1') == 1)
 								{
 									echo '<a id="bwp_com_open" href="javascript:void(0)"';
 									$title = Text::_('COM_BWPOSTMAN_DISCLAIMER_TITLE');
@@ -517,7 +517,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								{
 
 									echo '<a href="' . $disclaimer_link . '"';
-									if ($this->params->get('disclaimer_target') == 0)
+									if ($this->params->get('disclaimer_target', '0') == 0)
 									{
 										echo ' target="_blank"';
 									}
@@ -542,14 +542,14 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 			<input type="hidden" name="id" value="<?php echo $this->subscriber->id; ?>" />
 			<input type="hidden" name="bwp-<?php echo $this->captcha; ?>" value="1" />
 			<input type="hidden" name="name_field_obligation" id="name_field_obligation"
-					value="<?php echo $this->params->get('name_field_obligation'); ?>" />
+					value="<?php echo $this->params->get('name_field_obligation', '1'); ?>" />
 			<input type="hidden" name="firstname_field_obligation" id="firstname_field_obligation"
-					value="<?php echo $this->params->get('firstname_field_obligation'); ?>" />
+					value="<?php echo $this->params->get('firstname_field_obligation', '1'); ?>" />
 			<input type="hidden" name="special_field_obligation" id="special_field_obligation"
-					value="<?php echo $this->params->get('special_field_obligation'); ?>" />
-			<input type="hidden" name="show_name_field" value="<?php echo $this->params->get('show_name_field'); ?>" />
-			<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field'); ?>" />
-			<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special'); ?>" />
+					value="<?php echo $this->params->get('special_field_obligation', '0'); ?>" />
+			<input type="hidden" name="show_name_field" value="<?php echo $this->params->get('show_name_field', '1'); ?>" />
+			<input type="hidden" name="show_firstname_field" value="<?php echo $this->params->get('show_firstname_field', '1'); ?>" />
+			<input type="hidden" name="show_special" value="<?php echo $this->params->get('show_special', '1'); ?>" />
 			<input type="hidden" name="registration_ip" value="<?php echo $remote_ip; ?>" />
 			<?php echo HtmlHelper::_('form.token'); ?>
 			</form>
@@ -557,7 +557,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 			<?php
 
 			// The Modal
-			if ($this->params->get('disclaimer') && $this->params->get('showinmodal') == 1)
+			if ($this->params->get('disclaimer', '0') && $this->params->get('showinmodal', '1') == 1)
 			{ ?>
 				<input type="hidden" id="bwp_com_Modalhref" value="<?php echo $disclaimer_link; ?>" />
 				<div id="bwp_com_Modal" class="bwp_com_modal">
@@ -575,7 +575,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 			echo Text::_('COM_BWPOSTMAN_MESSAGE_NO_AVAILIBLE_MAILINGLIST');
 		}
 
-		if ($this->params->get('show_boldt_link') === '1')
+		if ($this->params->get('show_boldt_link', '1') === '1')
 		{ ?>
 			<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
 		<?php

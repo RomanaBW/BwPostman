@@ -128,7 +128,7 @@ class ModBwPostmanOverviewHelper
 		{
 			$menu_params = self::getMenuItemParams($menuItemId);
 
-			$params->set('access-check', $menu_params->get('access-check'));
+			$params->set('access-check', $menu_params->get('access-check', '1'));
 			$params->set('show_type', $menu_params->get('show_type'));
 			$params->set('ml_selected_all', $menu_params->get('ml_selected_all'));
 			$params->set('ml_available', $menu_params->get('ml_available'));
@@ -298,7 +298,7 @@ class ModBwPostmanOverviewHelper
 	{
 		$db    = BwPostmanHelper::getDbo();
 		$query = $db->getQuery(true);
-		$check = $params->get('access-check');
+		$check = $params->get('access-check', '1');
 
 		$logOptions = array();
 		$logger     = BwLogger::getInstance($logOptions);

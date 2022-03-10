@@ -95,7 +95,7 @@ $colNum = 7;
 										<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_FIRSTNAME', 'a.firstname', $listDirn, $listOrder); ?>
 									</th>
 									<?php
-									if($this->params->get('show_gender'))
+									if($this->params->get('show_gender', '1'))
 									{
 										$colNum = 8;
 										?>
@@ -154,7 +154,7 @@ $colNum = 7;
 											} ?>
 										</td>
 										<td class="d-none d-lg-table-cell"><?php echo $item->firstname; ?></td>
-										<?php if($this->params->get('show_gender'))
+										<?php if($this->params->get('show_gender', '1'))
 										{
 											?>
 											<td>

@@ -880,7 +880,7 @@ class TemplateModel extends AdminModel
 
 		// get legal info an ItemId's
 		$params    = ComponentHelper::getParams('com_bwpostman');
-		$impressum = "<br /><br />" . Text::_($params->get('legal_information_text'));
+		$impressum = "<br /><br />" . Text::_($params->get('legal_information_text', ''));
 		$impressum = nl2br($impressum, true);
 
 		if (strpos($text, '[%impressum%]') !== false)
@@ -1129,7 +1129,7 @@ class TemplateModel extends AdminModel
 				Uri::root(true),
 				$itemid_edit
 			) .
-			"<br /><br />" . Text::_($params->get('legal_information_text')) . "<br /><br />";
+			"<br /><br />" . Text::_($params->get('legal_information_text', '')) . "<br /><br />";
 			$preview_text = str_replace('[%impressum%]', nl2br($impressum, true), $preview_text);
 		}
 
@@ -1205,7 +1205,7 @@ class TemplateModel extends AdminModel
 					Uri::root(true),
 					$itemid_edit
 				) .
-				"<br /><br />" . Text::_($params->get('legal_information_text')) . "<br /><br />";
+				"<br /><br />" . Text::_($params->get('legal_information_text', '')) . "<br /><br />";
 			$preview_text = $preview_text . nl2br($impressum, true);
 		}
 

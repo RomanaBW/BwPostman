@@ -242,7 +242,7 @@ class ModBwPostmanHelper
 	 */
 	public static function getMailformatSelectList(Registry $paramsComponent): string
 	{
-		$mailformat_selected = $paramsComponent->get('default_emailformat');
+		$mailformat_selected = $paramsComponent->get('default_emailformat', '1');
 
 		$emailformat = '<div id="edit_mailformat_m" class="radio btn-group">';
 		$emailformat .= '<input type="radio" name="a_emailformat" id="formatTextMod" class="rounded-left" value="0"';

@@ -116,7 +116,7 @@ if (file_exists(JPATH_BASE . $css_filename))
 			<?php echo HtmlHelper::_('form.token'); ?>
 		</form>
 
-		<?php if ($this->params->get('show_boldt_link') === '1')
+		<?php if ($this->params->get('show_boldt_link', '1') === '1')
 		{ ?>
 			<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
 		<?php } ?>

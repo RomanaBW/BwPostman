@@ -89,7 +89,7 @@ if ($moduleId !== null && $moduleId !== '')
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="clearfix">
 				<div class="clearfix">
 					<div class="search_left pull-left">
-						<?php if ($this->params->get('filter_field') != "hide") : ?>
+						<?php if ($this->params->get('filter_field', '1') != "hide") : ?>
 							<label for="filter_search" class="element-invisible">
 								<?php echo Text::_('JSEARCH_FILTER'); ?>
 							</label>
@@ -112,7 +112,7 @@ if ($moduleId !== null && $moduleId !== '')
 					</div>
 					<div class="search_right1 clearfix">
 						<div class="form-inline pull-right mb-2">
-							<?php if ($this->params->get('date_filter_enable') != 'hide') : ?>
+							<?php if ($this->params->get('date_filter_enable', '1') != 'hide') : ?>
 								<?php echo $this->form->monthField; ?>
 								<?php echo $this->form->yearField; ?>
 							<?php endif; ?>
@@ -121,7 +121,7 @@ if ($moduleId !== null && $moduleId !== '')
 					</div>
 					<div class="search_right2 clearfix">
 						<div class="form-inline pull-right">
-							<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
+							<?php if ($this->params->get('ml_filter_enable', '1') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
 							{ ?>
 									<?php echo HtmlHelper::_(
 										'select.genericlist',
@@ -151,7 +151,7 @@ if ($moduleId !== null && $moduleId !== '')
 										'filter.usergroup'
 									); ?>
 							<?php endif; ?>
-							<?php if ($this->params->get('cam_filter_enable') != 'hide' && is_array($this->campaigns) && count($this->campaigns) > 2) : ?>
+							<?php if ($this->params->get('cam_filter_enable', '1') != 'hide' && is_array($this->campaigns) && count($this->campaigns) > 2) : ?>
 									<?php echo HtmlHelper::_(
 										'select.genericlist',
 										$this->campaigns,
@@ -211,7 +211,7 @@ if ($moduleId !== null && $moduleId !== '')
 									<?php echo $item->subject; ?>
 								</a>
 								<?php
-								if (!empty($item->attachment) && $this->params->get('attachment_enable') != 'hide')
+								if (!empty($item->attachment) && $this->params->get('attachment_enable', '1') != 'hide')
 								{
 									foreach ($attachments as $attachment)
 									{ ?>
@@ -255,7 +255,7 @@ if ($moduleId !== null && $moduleId !== '')
 		</form>
 
 		<?php
-		if ($this->params->get('show_boldt_link') === '1')
+		if ($this->params->get('show_boldt_link', '1') === '1')
 		{ ?>
 			<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
 			<?php

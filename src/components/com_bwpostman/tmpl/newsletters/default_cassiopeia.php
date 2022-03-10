@@ -92,7 +92,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="clearfix">
 				<div class="row clearfix">
 					<div class="col-lg-4 search_left mb-2">
-						<?php if ($this->params->get('filter_field') != "hide") : ?>
+						<?php if ($this->params->get('filter_field', '1') != "hide") : ?>
 							<label for="filter_search" class="element-invisible">
 								<?php echo Text::_('JSEARCH_FILTER'); ?>
 							</label>
@@ -116,7 +116,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					<div class="col-lg-8 search_right clearfix">
 						<div class="search_right1 d-flex justify-content-end clearfix">
 							<div class="mb-2">
-								<?php if ($this->params->get('date_filter_enable') != 'hide') : ?>
+								<?php if ($this->params->get('date_filter_enable', '1') != 'hide') : ?>
 									<?php echo $formclass === "sm" ? str_replace('form-select', 'form-select form-select-sm', $this->form->monthField) : $this->form->monthField; ?>
 									<?php echo $formclass === "sm" ? str_replace('form-select', 'form-select form-select-sm', $this->form->yearField) : $this->form->yearField; ?>
 								<?php endif; ?>
@@ -124,7 +124,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 							</div>
 						</div>
 						<div class="search_right2 d-flex justify-content-end clearfix">
-							<?php if ($this->params->get('ml_filter_enable') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
+							<?php if ($this->params->get('ml_filter_enable', '1') != 'hide' && is_array($this->mailinglists) && count($this->mailinglists) > 2)
 							{ ?>
 									<?php echo HtmlHelper::_(
 										'select.genericlist',
@@ -154,7 +154,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 										'filter.usergroup'
 									); ?>
 							<?php endif; ?>
-							<?php if ($this->params->get('cam_filter_enable') != 'hide' && is_array($this->campaigns) && count($this->campaigns) > 2) : ?>
+							<?php if ($this->params->get('cam_filter_enable', '1') != 'hide' && is_array($this->campaigns) && count($this->campaigns) > 2) : ?>
 									<?php echo HtmlHelper::_(
 										'select.genericlist',
 										$this->campaigns,
@@ -214,7 +214,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 									<?php echo $item->subject; ?>
 								</a>
 								<?php
-								if (!empty($item->attachment) && $this->params->get('attachment_enable') != 'hide')
+								if (!empty($item->attachment) && $this->params->get('attachment_enable', '1') != 'hide')
 								{
 									foreach ($attachments as $attachment)
 									{ ?>
@@ -258,7 +258,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 		</form>
 
 		<?php
-		if ($this->params->get('show_boldt_link') === '1')
+		if ($this->params->get('show_boldt_link', '1') === '1')
 		{ ?>
 			<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
 			<?php

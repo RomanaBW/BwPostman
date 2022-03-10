@@ -115,7 +115,7 @@ $currentTab = 'edit_send';
 								</div>
 								<div class="form-inline mb-3">
 									<input type="text" class="form-control me-2" name="mails_per_pageload" id="mails_per_pageload" title="mails_per_pageload"
-											size="4" maxlength="10" value="<?php echo $this->params->get('default_mails_per_pageload');?>" />
+											size="4" maxlength="10" value="<?php echo $this->params->get('default_mails_per_pageload', '100');?>" />
 									<span aria-describedby="tip-mails_per_pageload">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_SEND_MAILS_PER_PAGELOAD'); ?>&nbsp;
 									<?php echo $image; ?>

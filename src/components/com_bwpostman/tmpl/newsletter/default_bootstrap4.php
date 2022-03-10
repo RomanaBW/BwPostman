@@ -149,7 +149,7 @@ $wa->addInlineScript($js);
 		<p class="mt-3"><a class="back_link btn btn-outline-primary" href="<?php echo htmlspecialchars($this->backlink); ?>"><?php echo Text::_('JPREV'); ?></a></p>
 
 		<?php
-		if ($this->params->get('show_boldt_link') === '1')
+		if ($this->params->get('show_boldt_link', '1') === '1')
 		{ ?>
 		<p class="bwpm_copyright text-center my-3"><?php echo BwPostmanSite::footer(); ?></p>
 		<?php

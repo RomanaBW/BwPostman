@@ -371,7 +371,7 @@ class RegisterController extends FormController
 		$activation		= $this->getModel()->getDbo()->escape($activation);
 		$activation_ip	= $jinput->server->get('REMOTE_ADDR', '', '');
 		$params 		= ComponentHelper::getParams('com_bwpostman');
-		$send_mail		= $params->get('activation_to_webmaster');
+		$send_mail		= $params->get('activation_to_webmaster', '0');
 
 		// No activation string
 		if (empty($activation))

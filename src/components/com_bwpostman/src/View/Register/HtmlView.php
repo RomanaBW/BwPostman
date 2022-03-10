@@ -144,7 +144,7 @@ class HtmlView extends BaseHtmlView
 				break;
 			default:
 				// switch frontend layout
-				$tpl = $this->params->get('fe_layout');
+				$tpl = $this->params->get('fe_layout_detail', 'cassiopeia');
 				$this->displayDefault();
 				break;
 		}
@@ -258,7 +258,7 @@ class HtmlView extends BaseHtmlView
 		// Build the email format select list
 		if (!isset($subscriber->emailformat))
 		{
-			$mailformat_selected = $this->params->get('default_emailformat');
+			$mailformat_selected = $this->params->get('default_emailformat', '1');
 		}
 		else
 		{

@@ -109,7 +109,7 @@ $required_end .= '</div>';
 					title="<?php echo addslashes(Text::_('MOD_BWPOSTMANSPAMCHECK')); ?>" maxlength="50" />
 		</p>
 		<?php // End Spamcheck
-		if ($paramsComponent->get('pretext'))
+		if ($paramsComponent->get('pretext', '', ''))
 		{ // Show pretext only if set in basic parameters
 			$preText = Text::_($paramsComponent->get('pretext'));
 			?>
@@ -118,7 +118,7 @@ $required_end .= '</div>';
 		} // End: Show pretext only if set in basic parameters
 
 		// Show formfield gender only if enabled at parameters
-		if ($paramsComponent->get('show_gender') == 1)
+		if ($paramsComponent->get('show_gender', '1') == 1)
 		{
 			?>
 			<div class="form-group bwp_mod_form_genderformat">
@@ -130,14 +130,14 @@ $required_end .= '</div>';
 			<?php
 		} // End show gender
 
-		if ($paramsComponent->get('show_firstname_field') OR $paramsComponent->get('firstname_field_obligation'))
+		if ($paramsComponent->get('show_firstname_field', '1') OR $paramsComponent->get('firstname_field_obligation', '1'))
 		{ // Show firstname-field only if set in basic parameters
 			?>
 			<div id="bwp_mod_form_firstnamefield">
 				<?php
 				// Is filling out the firstname field obligating
 				isset($subscriber->firstname) ? $sub_firstname = $subscriber->firstname : $sub_firstname = '';
-				if ($paramsComponent->get('firstname_field_obligation') === '1')
+				if ($paramsComponent->get('firstname_field_obligation', '1') === '1')
 				{
 	                echo $required_begin;
 				}
@@ -146,7 +146,7 @@ $required_end .= '</div>';
 						placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANFIRSTNAME')); ?>"
 						value="<?php echo $sub_firstname; ?>" maxlength="50" />
 				<?php
-				if ($paramsComponent->get('firstname_field_obligation') === '1')
+				if ($paramsComponent->get('firstname_field_obligation', '1') === '1')
 				{
 					echo $required_end;
 				}
@@ -155,14 +155,14 @@ $required_end .= '</div>';
 			<?php
 		}
 
-		if ($paramsComponent->get('show_name_field') OR $paramsComponent->get('name_field_obligation'))
+		if ($paramsComponent->get('show_name_field', '1') OR $paramsComponent->get('name_field_obligation', '1'))
 		{
 			// Show name-field only if set in basic parameters
 			?>
 			<div id="bwp_mod_form_namefield">
 				<?php // Is filling out the name field obligating
 				isset($subscriber->name) ? $sub_name = $subscriber->name : $sub_name = '';
-				if ($paramsComponent->get('name_field_obligation') === '1')
+				if ($paramsComponent->get('name_field_obligation', '1') === '1')
 				{
 	                echo $required_begin;
 				}
@@ -171,7 +171,7 @@ $required_end .= '</div>';
 						placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANNAME')); ?>"
 						value="<?php echo $sub_name; ?>" maxlength="50" />
 				<?php
-				if ($paramsComponent->get('name_field_obligation') === '1')
+				if ($paramsComponent->get('name_field_obligation', '1') === '1')
 				{
 	                echo $required_end;
 				}
@@ -183,9 +183,9 @@ $required_end .= '</div>';
 
 		<?php
 		// Show additional field only if set in basic parameters
-		$showSpecial       = $paramsComponent->get('show_special');
-		$specialObligatory = $paramsComponent->get('special_field_obligation');
-		$specialLabel      = Text::_($paramsComponent->get('special_label'));
+		$showSpecial       = $paramsComponent->get('show_special', '1');
+		$specialObligatory = $paramsComponent->get('special_field_obligation', '0');
+		$specialLabel      = Text::_($paramsComponent->get('special_label', ''));
 		$sub_special       = '';
 
 		if (isset($subscriber->special))
@@ -234,10 +234,10 @@ $required_end .= '</div>';
 			?>
 		</div>
 		<?php
-		if ($paramsComponent->get('show_emailformat') == 1)
+		if ($paramsComponent->get('show_emailformat', '1') == 1)
 		{
 			// Show formfield emailformat only if enabled in basic parameters
-	        $mailformat_selected = isset($subscriber->emailformat) ? $subscriber->emailformat : $paramsComponent->get('default_emailformat');
+	        $mailformat_selected = isset($subscriber->emailformat) ? $subscriber->emailformat : $paramsComponent->get('default_emailformat', '1');
 			?>
 			<div id="bwp_mod_form_emailformat" class="control-group mb-3">
 				<label id="emailformatmsg_mod" class="control-label"><?php echo Text::_('MOD_BWPOSTMANEMAILFORMAT'); ?>: </label>
@@ -260,7 +260,7 @@ $required_end .= '</div>';
 		{
 			// hidden field with the default emailformat
 			?>
-			<input type="hidden" name="emailformat" value="<?php echo $paramsComponent->get('default_emailformat'); ?>" />
+			<input type="hidden" name="emailformat" value="<?php echo $paramsComponent->get('default_emailformat', '1'); ?>" />
 			<?php
 		} // End emailformat
 		?>
@@ -268,7 +268,7 @@ $required_end .= '</div>';
 		<?php // Show available mailinglists
 		$n = count($mailinglists);
 
-		$descLength = $params->get('desc_length');
+		$descLength = $params->get('desc_length', '150');
 
 		if (($mailinglists) && ($n > 0))
 		{
@@ -277,7 +277,7 @@ $required_end .= '</div>';
 				<input type="checkbox" style="display: none;" id="a_<?php echo "mailinglists0"; ?>" name="<?php echo "mailinglists[]"; ?>"
 					title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglists[0]->id; ?>" checked="checked" />
 				<?php
-				if ($params->get('show_desc') == 1)
+				if ($params->get('show_desc', '1') == 1)
 				{ ?>
 					<p id="bwp_mod_form_lists">
 						<?php echo Text::_('MOD_BWPOSTMANLIST'); ?>
@@ -312,7 +312,7 @@ $required_end .= '</div>';
 									title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglist->id; ?>" />
 								<?php
 								echo $mailinglist->title;
-								if ($params->get('show_desc') == 1)
+								if ($params->get('show_desc', '1') == 1)
 								{
 								?>:
 									<br />
@@ -339,11 +339,11 @@ $required_end .= '</div>';
 		?>
 
 		<?php // Question
-		if ($paramsComponent->get('use_captcha') == 1)
+		if ($paramsComponent->get('use_captcha', '0') == 1)
 		{ ?>
 			<div class="question">
 				<p class="security_question_entry small"><?php echo Text::_('MOD_BWPOSTMANCAPTCHA'); ?></p>
-				<p class="security_question_lbl"><strong><?php echo Text::_($paramsComponent->get('security_question')); ?></strong></p>
+				<p class="security_question_lbl"><strong><?php echo Text::_($paramsComponent->get('security_question', '')); ?></strong></p>
 				<div class="questionp">
 					<div class="input-append input-block-level">
 						<input type="text" name="stringQuestion" id="a_stringQuestion" placeholder="<?php echo addslashes(Text::_('MOD_BWPOSTMANCAPTCHA_LABEL')); ?>"
@@ -357,7 +357,7 @@ $required_end .= '</div>';
 		?>
 
 		<?php // Captcha
-		if ($paramsComponent->get('use_captcha') == 2)
+		if ($paramsComponent->get('use_captcha', '0') == 2)
 		{
 			$codeCaptcha = md5(microtime()); ?>
 			<div class="captcha">
@@ -380,7 +380,7 @@ $required_end .= '</div>';
 		?>
 		<?php // End Spamcheck 2
 
-		if ($paramsComponent->get('disclaimer'))
+		if ($paramsComponent->get('disclaimer', '0'))
 		{
 			// Show Disclaimer only if enabled in basic parameters
 			?>
@@ -388,30 +388,30 @@ $required_end .= '</div>';
 				<input type="checkbox" id="agreecheck_mod" class="pull-left" name="agreecheck_mod" title="agreecheck_mod" />
 				<?php
 				// Extends the disclaimer link with '&tmpl=component' to see only the content
-				$tpl_com = $paramsComponent->get('showinmodal') == 1 ? '&amp;tmpl=component' : '';
-				if ($paramsComponent->get('disclaimer_selection') == 1 && $paramsComponent->get('article_id') > 0)
+				$tpl_com = $paramsComponent->get('showinmodal', '1') == 1 ? '&amp;tmpl=component' : '';
+				if ($paramsComponent->get('disclaimer_selection', '1') == 1 && $paramsComponent->get('article_id', '0') > 0)
 				{
 					// Disclaimer article and target_blank or not
-					$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($paramsComponent->get('article_id')) . $tpl_com);
+					$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($paramsComponent->get('article_id', '0')) . $tpl_com);
 				}
-				elseif ($paramsComponent->get('disclaimer_selection') == 2 && $paramsComponent->get('disclaimer_menuitem') > 0)
+				elseif ($paramsComponent->get('disclaimer_selection', '1') == 2 && $paramsComponent->get('disclaimer_menuitem', '0') > 0)
 				{
 					// Disclaimer menu item and target_blank or not
 					if ($tpl_com !== '' && (Factory::getApplication()->get('sef') === '1' || Factory::getApplication()->get('sef') === true))
 					{
 						$tpl_com = '?tmpl=component';
 					}
-					$disclaimer_link = Route::_("index.php?Itemid={$paramsComponent->get('disclaimer_menuitem')}") . $tpl_com;
+					$disclaimer_link = Route::_("index.php?Itemid={$paramsComponent->get('disclaimer_menuitem', '0')}") . $tpl_com;
 				}
 				else
 				{
 					// Disclaimer url and target_blank or not
-					$disclaimer_link = $paramsComponent->get('disclaimer_link');
+					$disclaimer_link = $paramsComponent->get('disclaimer_link', '');
 				} ?>
 				<label class="checkbox">
 					<?php
 					// Show inside modalbox
-					if ($paramsComponent->get('showinmodal') == 1)
+					if ($paramsComponent->get('showinmodal', '1') == 1)
 					{
 						echo '<a id="bwp_mod_open"';
 					}
@@ -419,7 +419,7 @@ $required_end .= '</div>';
 					else
 					{
 						echo '<a href="' . $disclaimer_link . '"';
-						if ($paramsComponent->get('disclaimer_target') == 0)
+						if ($paramsComponent->get('disclaimer_target', '0') == 0)
 						{
 							echo ' target="_blank"';
 						};
@@ -444,17 +444,17 @@ $required_end .= '</div>';
 		<!-- <input type="hidden" name="id" value="<?php echo isset($subscriber->id); ?>" /> -->
 		<input type="hidden" name="registration_ip" value="<?php echo $remote_ip; ?>" />
 		<input type="hidden" name="name_field_obligation_mod" id="name_field_obligation_mod"
-				value="<?php echo $paramsComponent->get('name_field_obligation'); ?>" />
+				value="<?php echo $paramsComponent->get('name_field_obligation', '1'); ?>" />
 		<input type="hidden" name="firstname_field_obligation_mod" id="firstname_field_obligation_mod"
-				value="<?php echo $paramsComponent->get('firstname_field_obligation'); ?>" />
+				value="<?php echo $paramsComponent->get('firstname_field_obligation', '1'); ?>" />
 		<input type="hidden" name="special_field_obligation_mod" id="special_field_obligation_mod"
-				value="<?php echo $paramsComponent->get('special_field_obligation'); ?>" />
+				value="<?php echo $paramsComponent->get('special_field_obligation', '0'); ?>" />
 		<input type="hidden" name="show_name_field_mod" id="show_name_field_mod"
-				value="<?php echo $paramsComponent->get('show_name_field'); ?>" />
+				value="<?php echo $paramsComponent->get('show_name_field', '1'); ?>" />
 		<input type="hidden" name="show_firstname_field_mod" id="show_firstname_field_mod"
-				value="<?php echo $paramsComponent->get('show_firstname_field'); ?>" />
-		<input type="hidden" name="show_special_mod" id="show_special_mod" value="<?php echo $paramsComponent->get('show_special'); ?>" />
-		<input type="hidden" name="special_label" id="special_label" value="<?php echo $paramsComponent->get('special_label'); ?>" />
+				value="<?php echo $paramsComponent->get('show_firstname_field', '1'); ?>" />
+		<input type="hidden" name="show_special_mod" id="show_special_mod" value="<?php echo $paramsComponent->get('show_special', '1'); ?>" />
+		<input type="hidden" name="special_label" id="special_label" value="<?php echo $paramsComponent->get('special_label', ''); ?>" />
 		<input type="hidden" name="mod_id" id="mod_id" value="<?php echo $module_id; ?>" />
 		<?php echo HtmlHelper::_('form.token'); ?>
 

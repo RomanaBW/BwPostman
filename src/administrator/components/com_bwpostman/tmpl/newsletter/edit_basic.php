@@ -38,6 +38,8 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('behavior.keepalive');
 
+Text::script('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+
 $image = '<i class="fa fa-lg fa-info-circle"></i>';
 
 $checkContentArgs	= "'" . Text::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true) . "', ";
@@ -342,7 +344,18 @@ $currentTab = 'edit_basic';
 							<?php endforeach; ?>
 						</div>
 
-						<div class="col-lg-2 nl-content-mover text-center my-3">
+						<div class="col-lg-1 nl-content-mover text-center my-3">
+							<div class="control-label">
+								<label>&nbsp;</label>
+							</div>
+							<div class="controls">
+								<input style="width: 50px;" type="button" name="up" class="btn-up" value="&and;"
+										onclick="sortSelectedOptions('up')" />
+								<input style="width: 50px;" type="button" name="down" class="btn-down" value="&or;"
+										onclick="sortSelectedOptions('down')" />
+							</div>
+						</div>
+						<div class="col-lg-1 nl-content-mover text-center my-3">
 							<div class="control-label">
 								<label>&nbsp;</label>
 							</div>

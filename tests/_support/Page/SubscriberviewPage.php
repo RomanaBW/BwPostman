@@ -333,14 +333,14 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_submit            = ".//*[@id='bwp_com_form']/button[1]";
+	public static $button_submit            = ".//*[@id='bwp_com_form']/div/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_submitleave       = ".//*[@id='bwp_com_form']/button[2]";
+	public static $button_submitleave       = ".//*[@id='bwp_com_form']/div/button[2]";
 
 	/**
 	 * @var string

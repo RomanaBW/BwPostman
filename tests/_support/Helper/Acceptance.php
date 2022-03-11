@@ -493,7 +493,7 @@ class Acceptance extends Codeception\Module
 	 *
 	 * @param   string $subscriber_mail mail address of subscriber
 	 *
-	 * @return  array
+	 * @return  string
 	 *
 	 *
 	 * @throws Exception

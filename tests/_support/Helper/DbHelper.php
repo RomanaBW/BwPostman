@@ -95,15 +95,15 @@ class DbHelper extends Module
 	/**
 	 * DbHelper method to get activation code of subscription
 	 *
-	 * @param   string      $subscriber_mail    mail address of subscriber
-	 * @param   array       $criteria           special criteria, i.e. WHERE
-	 * @param   array       $credentials        credentials of database
+	 * @param string  $subscriber_mail mail address of subscriber
+	 * @param array   $criteria        special criteria, i.e. WHERE
+	 * @param   array $credentials     credentials of database
 	 *
-	 * @return  array
+	 * @return  string
 	 *
 	 * @since   2.0.0
 	 */
-	public static function fetchActivationCode($subscriber_mail, $criteria = array(), array $credentials)
+	public static function fetchActivationCode(string $subscriber_mail, array $criteria = array(), array $credentials = array())
 	{
 		$table_name = Generals::$db_prefix . 'bwpostman_subscribers';
 

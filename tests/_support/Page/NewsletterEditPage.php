@@ -1094,14 +1094,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $add_content              = "//*/div[contains(@class, 'nl-content-mover')]/div[2]/input[1]";
+	public static $add_content              = "//*/div[contains(@class, 'nl-content-mover')]/div[2]/input[contains(@class, 'btn-left')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $remove_content           = "//*/div[contains(@class, 'nl-content-mover')]/div[2]/input[2]";
+	public static $remove_content           = "//*/div[contains(@class, 'nl-content-mover')]/div[2]/input[contains(@class, 'btn-right')]";
 
 
 	/**

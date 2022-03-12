@@ -337,6 +337,10 @@ $currentTab = 'edit_basic';
 												<li><?php echo $field->input; ?></li>
 											<?php else: ?>
 												<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
+													<?php if ($field->fieldname == 'ac_id') { ?>
+														<span class="input-prepend"><input style="width: 50px;" type="button" name="ac-left" class="btn btn-left"
+															value="&lt;" onclick="moveArticle()" /></span>
+													<?php } ?>
 													<?php echo $field->input; ?></li>
 											<?php endif; ?>
 										<?php endforeach; ?>

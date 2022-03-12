@@ -241,6 +241,20 @@ function moveSelectedOptions(from,to) { // Moves elements from one select box to
 	to.selectedIndex = -1;
 }
 
+function moveArticle() {
+	// Move article id from available content helper to selected content
+	var select = document.getElementById('jform_selected_content');
+	var fieldId = document.getElementById('jform_ac_id_id');
+	var fieldTitle = document.getElementById('jform_ac_id_name');
+
+	if(fieldId.value && fieldTitle.value) {
+		var option = document.createElement("option");
+		option.value = fieldId.value;
+		option.text = fieldTitle.value;
+		select.appendChild(option);
+	}
+}
+
 function sortSelectedOptions(updown) {
 	// Sort selected content up / down
 	var select = document.getElementById('jform_selected_content');

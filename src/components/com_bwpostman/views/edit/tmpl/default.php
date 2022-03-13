@@ -86,7 +86,7 @@ HTMLHelper::_('bootstrap.tooltip');
 				{
 					if (form.special.value == "")
 					{
-						alert('<?php echo Text::sprintf("COM_BWPOSTMAN_SUB_ERROR_SPECIAL", Text::_($this->$this->params->get('special_label', ''))); ?>');
+						alert('<?php echo Text::sprintf("COM_BWPOSTMAN_SUB_ERROR_SPECIAL", Text::_($this->params->get('special_label', ''))); ?>');
 						fault = true;
 					}
 				}

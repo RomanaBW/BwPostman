@@ -332,6 +332,7 @@ $currentTab = 'edit_basic';
 
 								<div class="width-40 fltlft span4">
 									<ul class="adminformlist unstyled">
+										<?php echo Text::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT'); ?>
 										<?php foreach($this->form->getFieldset('available_content') as $field): ?>
 											<?php if ($field->hidden): ?>
 												<li><?php echo $field->input; ?></li>

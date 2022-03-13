@@ -363,7 +363,7 @@ class BwPostmanModelNewsletters extends JModelList
 			$item->params = clone $this->getState('params');
 
 			// Get display date
-			switch ($item->params->get('list_show_date'))
+			switch ($item->params->get('list_show_date', ''))
 			{
 				case 'modified_time':
 					$item->displayDate = $item->modified_time;

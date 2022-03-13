@@ -179,7 +179,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		$log_options    = array();
 		$this->logger   = BwLogger::getInstance($log_options);
-		$this->debug    = $this->params->get('debug_option');
+		$this->debug    = $this->params->get('debug_option', '0');
 
 		$this->setBwPostmanComponentStatus();
 		$this->setBwPostmanComponentVersion();
@@ -797,7 +797,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 			}
 		}
 
-		if ($this->params->get('auto_update_email_option') && $changeMail)
+		if ($this->params->get('auto_update_email_option', '1') && $changeMail)
 		{
 			$email_update_result  = $this->updateMailaddress($user_mail);
 
@@ -1084,7 +1084,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		$this->stored_subscriber_data = BWPM_User2SubscriberHelper::getSubscriptionData($user_id);
 
-		if ($this->params->get('auto_delete_option'))
+		if ($this->params->get('auto_delete_option', '0'))
 		{
 			$delete_result = $this->deleteSubscription();
 		}

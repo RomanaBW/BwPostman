@@ -75,9 +75,9 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 	<?php // if newsletter unpublished - only backlink
 	if ($this->newsletter->published != 0)
 	{
-		if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) { ?>
-			<h1 class="contentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-				<?php echo $this->escape($this->params->get('page_heading')); ?>
+		if (($this->params->get('show_page_heading', 0) != 0) && ($this->params->get('page_heading', '') != '')) { ?>
+			<h1 class="contentheading<?php echo $this->escape($this->params->get('pageclass_sfx', '')); ?>">
+				<?php echo $this->escape($this->params->get('page_heading', '')); ?>
 			</h1>
 			<?php
 			if ($this->page_title)
@@ -96,7 +96,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 		<?php
 		} ?>
 
-		<p class="mailingdate<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+		<p class="mailingdate<?php echo $this->escape($this->params->get('pageclass_sfx', '')); ?>">
 			<?php echo HtmlHelper::date($this->newsletter->mailing_date, Text::_('DATE_FORMAT_LC3'));  ?>
 			<?php
 			if (!empty($this->newsletter->attachment) && $this->attachment_enabled != 'hide')

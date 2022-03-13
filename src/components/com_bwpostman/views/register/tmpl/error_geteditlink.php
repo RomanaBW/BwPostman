@@ -49,10 +49,10 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 <div id="bwpostman">
 	<div id="bwp_com_error_geteditlink">
 		<?php
-		if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != ''))
+		if (($this->params->get('show_page_heading', 0) != 0) && ($this->params->get('page_heading', '') != ''))
 		{ ?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
-				<?php echo $this->escape($this->params->get('page_heading')); ?>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
+				<?php echo $this->escape($this->params->get('page_heading', '')); ?>
 			</h1>
 		<?php
 		}
@@ -63,7 +63,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 
 		<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
 				name="bwp_com_form" class="form-validate">
-			<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+			<div class="contentpane<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 				<p class="getlink">
 					<label id="emailmsg" for="email"> <?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:</label>
 					<input type="text" id="email" name="email" size="40" value="" class="inputbox required validate-email" maxlength="100" />

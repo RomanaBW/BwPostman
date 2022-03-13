@@ -64,15 +64,15 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 
 <div id="bwpostman">
 	<div id="bwp_com_nl_all">
-		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
-				<?php echo $this->escape($this->params->get('page_heading')); ?>
+		<?php if (($this->params->get('show_page_heading', 0) != 0) && ($this->params->get('page_heading', '') != '')) : ?>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
+				<?php echo $this->escape($this->params->get('page_heading', '')); ?>
 			</h1>
 		<?php endif; ?>
 
 		<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=newsletters&' . $actionSuffix); ?>" method="post"
 				name="adminForm" id="adminForm" class="form-inline">
-			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx'); ?>" class="clearfix">
+			<div id="bwp_search<?php echo $this->params->get('pageclass_sfx', ''); ?>" class="clearfix">
 				<div class="row clearfix">
 					<div class="col-sm-4 search_left mb-2">
 						<?php if ($this->params->get('filter_field', '1') != "hide") : ?>
@@ -127,7 +127,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 							{
 	//							$this->state->set('filter.mailinglist', '');
 							} ?>
-							<?php if ($this->params->get('groups_filter_enable') != 'hide' && is_array($this->usergroups) && count($this->usergroups) > 2) : ?>
+							<?php if ($this->params->get('groups_filter_enable', '') != 'hide' && is_array($this->usergroups) && count($this->usergroups) > 2) : ?>
 									<?php echo HtmlHelper::_(
 										'select.genericlist',
 										$this->usergroups,
@@ -156,7 +156,7 @@ JHtml::_('stylesheet', $css_filename, array('version' => 'auto'));
 					<div class="clearfix"></div>
 				</div>
 			</div>
-			<table id="bwp_newsletters_table" class="table table-striped<?php echo $this->params->get('pageclass_sfx'); ?>">
+			<table id="bwp_newsletters_table" class="table table-striped<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 				<thead>
 					<tr>
 						<th class="date_head">

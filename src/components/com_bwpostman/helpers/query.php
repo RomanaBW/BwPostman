@@ -183,7 +183,7 @@ class BwPostmanHelperQuery
 			$params = ComponentHelper::getParams('com_content');
 		}
 
-		$voting = $params->get('show_vote');
+		$voting = $params->get('show_vote', '');
 
 		if ($voting)
 		{

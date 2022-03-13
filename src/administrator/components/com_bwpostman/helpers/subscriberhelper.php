@@ -964,7 +964,7 @@ class BwPostmanSubscriberHelper
 			}
 
 			// Enhanced check, if mail address is reachable
-			if ((int)$params->get('verify_mailaddress') === 1)
+			if ((int)$params->get('verify_mailaddress', '0') === 1)
 			{
 				if(!self::validateEmail($data['email']))
 				{
@@ -1027,18 +1027,8 @@ class BwPostmanSubscriberHelper
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$sender = array();
 
-		$sender[0] = MailHelper::cleanAddress($params->get('default_from_email'));
-		$sender[1] = Text::_($params->get('default_from_name'));
-
-		if (empty($sender[0]))
-		{
-			$sender[0] = MailHelper::cleanAddress($config->get('mailfrom'));
-		}
-
-		if (empty($sender[1]))
-		{
-			$sender[1] = $config->get('fromname');
-		}
+		$sender[0] = MailHelper::cleanAddress($params->get('default_from_email', $config->get('mailfrom', '')));
+		$sender[1] = Text::_($params->get('default_from_name', $config->get('fromname', '')));
 
 		return $sender;
 	}
@@ -1056,18 +1046,8 @@ class BwPostmanSubscriberHelper
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$reply = array();
 
-		$reply[0] = MailHelper::cleanAddress($params->get('default_from_email'));
-		$reply[1] = Text::_($params->get('default_reply_email'));
-
-		if (empty($reply[0]))
-		{
-			$reply[0] = MailHelper::cleanAddress($config->get('mailfrom'));
-		}
-
-		if (empty($reply[1]))
-		{
-			$reply[1] = $config->get('fromname');
-		}
+		$reply[0] = MailHelper::cleanAddress($params->get('default_from_email',$config->get('mailfrom'), ''));
+		$reply[1] = Text::_($params->get('default_reply_email', $config->get('fromname', '')));
 
 		return $reply;
 	}

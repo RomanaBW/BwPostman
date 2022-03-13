@@ -244,7 +244,7 @@ class contentRenderer
 			$params = new JRegistry();
 			$params->loadString($row->attribs, 'JSON');
 
-			$params->def('link_titles', $app->get('link_titles'));
+			$params->def('link_titles', $app->get('link_titles', ''));
 			$params->def('author', $params->get('newsletter_show_author'));
 			$params->def('createdate', $params->get('newsletter_show_createdate'));
 			$params->def('modifydate', !$app->get('hideModifyDate'));
@@ -253,7 +253,7 @@ class contentRenderer
 			$params->def('email', !$app->get('hideEmail'));
 			$params->def('rating', $app->get('vote'));
 			$params->def('icons', $app->get('icons'));
-			$params->def('readmore', $app->get('readmore'));
+			$params->def('readmore', $app->get('readmore', '0'));
 			$params->def('item_title', 1);
 
 			$params->set('intro_only', 1);
@@ -860,10 +860,10 @@ class contentRenderer
 		$newtext .= '   <style type="text/css">' . "\n";
 		$newtext .= '   ' . $tpl->tpl_css . "\n";
 		// only for old newsletters with template_id < 1
-		if ($id < 1 && $params->get('use_css_for_html_newsletter') == 1)
+		if ($id < 1 && $params->get('use_css_for_html_newsletter', '0') == 1)
 		{
 			$params	= ComponentHelper::getParams('com_bwpostman');
-			$css	= $params->get('css_for_html_newsletter');
+			$css	= $params->get('css_for_html_newsletter', '');
 			$newtext .= '   ' . $css . "\n";
 		}
 

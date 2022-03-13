@@ -112,9 +112,9 @@ class BwPostmanViewNewsletter extends JViewLegacy
 		$newsletter->hit($id);
 
 		$document = Factory::getDocument();
-		if ($params->get('page_heading') != '')
+		if ($params->get('page_heading', '') != '')
 		{
-			$document->setTitle($params->get('page_title'));
+			$document->setTitle($params->get('page_title', ''));
 		}
 		else
 		{

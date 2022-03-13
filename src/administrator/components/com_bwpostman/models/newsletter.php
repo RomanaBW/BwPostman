@@ -376,37 +376,17 @@ class BwPostmanModelNewsletter extends JModelAdmin
 		// predefine some values
 		if (!$form->getValue('from_name'))
 		{
-			if ($params->get('default_from_name') && !$form->getValue('from_name'))
-			{
-				$form->setValue('from_name', '', $params->get('default_from_name'));
-			}
-			else
-			{
-				$form->setValue('from_name', '', $config->get('fromname'));
-			}
+			$form->setValue('from_name', '', $params->get('default_from_name',  $config->get('fromname', '')));
 		}
 
 		if (!$form->getValue('from_email'))
 		{
-			if ($params->get('default_from_email'))
-			{
-				$form->setValue('from_email', '', $params->get('default_from_email'));
-			}
-			else
-			{
-				$form->setValue('from_email', '', $config->get('mailfrom'));
-			}
+			$form->setValue('from_email', '', $params->get('default_from_email', $config->get('mailfrom', '')));
 		}
 
 		if (!$form->getValue('reply_email'))
 		{
-			if ($params->get('default_reply_email')) {
-				$form->setValue('reply_email', '', $params->get('default_reply_email'));
-			}
-			else
-			{
-				$form->setValue('reply_email', '', $config->get('mailfrom'));
-			}
+			$form->setValue('reply_email', '', $params->get('default_reply_email', $config->get('mailfrom', '')));
 		}
 
 		// Check for existing newsletter.

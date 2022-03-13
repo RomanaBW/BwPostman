@@ -66,7 +66,7 @@ class JFormFieldBwpSpacer extends JFormField
 		$class = !empty($this->class) ? ' class="' . $this->class . '"' : '';
 		$html[] = '<p' . $class . '>';
 
-		$text = $params->get('register_message_option') ? Text::_($params->get('register_message_option')) : '';
+		$text = $params->get('register_message_option', '1') ? Text::_($params->get('register_message_option', '1')) : '';
 
 		$html[] = $text . '</p>';
 

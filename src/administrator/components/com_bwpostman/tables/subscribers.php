@@ -544,7 +544,7 @@ class BwPostmanTableSubscribers extends JTable
 			if ($params->get('use_captcha', '0') == 1)
 			{
 				// start check
-				if(trim($data['stringQuestion']) !== trim($params->get('security_answer', '4')) || (isset($data['mod_id']) && $fault))
+				if(trim($data['stringQuestion']) !== trim($params->get('security_answer', '')) || (isset($data['mod_id']) && $fault))
 				{
 					// input wrong - set error
 					$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_CAPTCHA'), 'error');

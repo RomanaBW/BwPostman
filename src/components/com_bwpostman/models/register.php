@@ -496,13 +496,13 @@ class BwPostmanModelRegister extends JModelAdmin
 		$mailer->addReplyTo($reply);
 
 		// set recipient
-		$recipient_mail = MailHelper::cleanAddress($params->get('activation_to_webmaster_email', $config->get('mailfrom')));
-		$recipient_name	= Text::_($params->get('activation_from_name', $config->get('fromname')));
+		$recipient_mail = MailHelper::cleanAddress($params->get('activation_to_webmaster_email', $config->get('mailfrom', '')));
+		$recipient_name	= Text::_($params->get('activation_from_name', $config->get('fromname', '')));
 
 		if ($mode === 'deactivation')
 		{
-			$recipient_mail = MailHelper::cleanAddress($params->get('deactivation_to_webmaster_email', $config->get('mailfrom')));
-			$recipient_name	= Text::_($params->get('deactivation_from_name', $config->get('fromname')));
+			$recipient_mail = MailHelper::cleanAddress($params->get('deactivation_to_webmaster_email', $config->get('mailfrom', '')));
+			$recipient_name	= Text::_($params->get('deactivation_from_name', $config->get('fromname', '')));
 		}
 
 		if (!is_string($recipient_mail))

@@ -315,6 +315,12 @@
 
 	<fieldset name="available_content" addfieldpath="/administrator/components/com_content/models/fields">
 		<field
+			name="ac_id"
+			type="modal_article"
+			label="COM_BWPOSTMAN_NL_FIELD_AVAILABLE_CONTENT_HELPER_LABEL"
+			description="COM_BWPOSTMAN_NL_FIELD_AVAILABLE_CONTENT_HELPER_DESC"
+		/>
+		<field
 			name="available_content"
 			type="availablecontent"
 			label="COM_BWPOSTMAN_NL_FIELD_AVAILABLE_CONTENT_LABEL"
@@ -323,12 +329,6 @@
 			size="20"
 			multiple="true"
 			ondblclick="moveSelectedOptions(document.adminForm['jform_available_content'], document.adminForm['jform_selected_content'])"
-		/>
-		<field
-			name="ac_id"
-			type="modal_article"
-			label="COM_BWPOSTMAN_NL_FIELD_AVAILABLE_CONTENT_HELPER_LABEL"
-			description="COM_BWPOSTMAN_NL_FIELD_AVAILABLE_CONTENT_HELPER_DESC"
 		/>
 	</fieldset>
 

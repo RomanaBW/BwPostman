@@ -252,6 +252,7 @@ function moveArticle() {
 		option.value = fieldId.value;
 		option.text = fieldTitle.value;
 		select.appendChild(option);
+		window.processModalParent('jform_ac_id');
 	}
 }
 

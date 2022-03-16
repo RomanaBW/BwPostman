@@ -53,7 +53,7 @@ if (file_exists(JPATH_BASE . $css_filename))
 //	$document->addStyleSheet(Uri::root(true) . $css_filename);
 }
 
-$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''));
 $list            = ModBwPostmanOverviewHelper::getList($params, $module->id);
 
 require ModuleHelper::getLayoutPath('mod_bwpostman_overview', $params->get('layout', 'default'));

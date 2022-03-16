@@ -177,8 +177,8 @@ class DisplayController extends BaseController
 		$plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
 		$pluginParams = new Registry();
 		$pluginParams->loadString($plugin->params);
-		$pluginPw   = (string) $pluginParams->get('bwtimecontrol_passwd');
-		$pluginUser = (string) $pluginParams->get('bwtimecontrol_username');
+		$pluginPw   = (string) $pluginParams->get('bwtimecontrol_passwd', '');
+		$pluginUser = (string) $pluginParams->get('bwtimecontrol_username', '');
 
 		if ($pluginUser === "" || $pluginPw === "")
 		{

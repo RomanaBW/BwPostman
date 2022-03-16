@@ -78,10 +78,10 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 				$wa->useScript('com_bwpostman.bwpm_register_modal');
 			}
 
-			if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != ''))
+			if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != ''))
 			{ ?>
-				<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
-					<?php echo $this->escape($this->params->get('page_heading')); ?>
+				<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
+					<?php echo $this->escape($this->params->get('page_heading', '')); ?>
 				</h1>
 			<?php
 			} ?>
@@ -96,7 +96,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 				</p>
 				<?php // End Spamcheck ?>
 
-				<div class="contentpane mb-3<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="contentpane mb-3<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 
 					<?php // Show pretext only if set in basic parameters
 					if ($this->params->get('pretext', ''))
@@ -367,7 +367,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					// Show available mailinglists
 					if ($this->lists['available_mailinglists'])
 					{ ?>
-						<div class="lists <?php echo $this->params->get('pageclass_sfx'); ?>">
+						<div class="lists <?php echo $this->params->get('pageclass_sfx', ''); ?>">
 							<?php
 							$n = count($this->lists['available_mailinglists']);
 
@@ -525,7 +525,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
 				<?php endif; // End captcha ?>
 
-				<div class="disclaimer my-3<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="disclaimer my-3<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 					<?php // Show Disclaimer only if enabled in basic parameters
 					if ($this->params->get('disclaimer', '0')) :
 						?>

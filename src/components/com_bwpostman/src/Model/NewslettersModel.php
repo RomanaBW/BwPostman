@@ -371,7 +371,7 @@ class NewslettersModel extends ListModel
 			$item->params = clone $this->getState('params');
 
 			// Get display date
-			switch ($item->params->get('list_show_date'))
+			switch ($item->params->get('list_show_date', ''))
 			{
 				case 'modified_time':
 					$item->displayDate = $item->modified_time;
@@ -725,8 +725,8 @@ class NewslettersModel extends ListModel
 		$mlTable       = $this->getTable('Mailinglist');
 
 		// fetch only from mailing lists, which are selected, if so
-		$all_mls = $params->get('ml_selected_all');
-		$sel_mls = $params->get('ml_available');
+		$all_mls = $params->get('ml_selected_all', 'no');
+		$sel_mls = $params->get('ml_available', '');
 		$mls     = $sel_mls;
 
 		if ($all_mls)
@@ -783,8 +783,8 @@ class NewslettersModel extends ListModel
 		$check        = $params->get('access-check', '1');
 
 		// fetch only from campaigns, which are selected, if so
-		$all_cams = $params->get('cam_selected_all');
-		$sel_cams = $params->get('cam_available');
+		$all_cams = $params->get('cam_selected_all', 'no');
+		$sel_cams = $params->get('cam_available', '');
 		$cams     = $sel_cams;
 
 		if ($all_cams)
@@ -845,8 +845,8 @@ class NewslettersModel extends ListModel
 		$check		= $params->get('access-check', '1');
 
 		// fetch only from usergroups, which are selected, if so
-		$all_groups	= $params->get('groups_selected_all');
-		$sel_groups	= $params->get('groups_available');
+		$all_groups	= $params->get('groups_selected_all', 'no');
+		$sel_groups	= $params->get('groups_available', '');
 		$c_groups	= $sel_groups;
 
 		if ($all_groups)

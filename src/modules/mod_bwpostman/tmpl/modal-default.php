@@ -97,8 +97,8 @@ Text::script('MOD_BWPOSTMANERROR_CAPTCHA_CHECK');
 		// Show registration form only if a mailinglist is selectable ?>
 	<button id="bwp_reg_open" type="button" class="btn">
 		<?php echo Text::_(
-				$paramsComponent->get('modal_btn_label') != ''
-				? $paramsComponent->get('modal_btn_label')
+				$paramsComponent->get('modal_btn_label', '') != ''
+				? $paramsComponent->get('modal_btn_label', '')
 				: $module->title);
 		?>
 	</button>

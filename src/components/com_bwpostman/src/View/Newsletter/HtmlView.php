@@ -115,9 +115,9 @@ class HtmlView extends BaseHtmlView
 		// Get document object, set document title
 		$document     = $app->getDocument();
 
-		if ($params->get('page_heading') != '')
+		if ($params->get('page_heading', '') != '')
 		{
-			$document->setTitle($params->get('page_title'));
+			$document->setTitle($params->get('page_title', ''));
 		}
 		else
 		{

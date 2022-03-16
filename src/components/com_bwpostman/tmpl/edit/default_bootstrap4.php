@@ -75,9 +75,9 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 
 <div id="bwpostman" class="mt-3">
 	<div id="bwp_com_edit_subscription">
-		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
-				<?php echo $this->escape($this->params->get('page_heading')); ?>
+		<?php if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != '')) : ?>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
+				<?php echo $this->escape($this->params->get('page_heading', '')); ?>
 			</h1>
 		<?php endif; ?>
 
@@ -85,7 +85,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
 					name="bwp_com_form" class="form-validate">
 
-				<div class="contentpane mb-3<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="contentpane mb-3<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 					<?php // Show pretext only if set in basic parameters
 					if ($this->params->get('pretext', ''))
 					{
@@ -306,7 +306,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 					// Show available mailinglists
 					if ($this->lists['available_mailinglists'])
 					{ ?>
-						<div class="lists my-4<?php echo $this->params->get('pageclass_sfx'); ?>">
+						<div class="lists my-4<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 							<?php
 							$n = count($this->lists['available_mailinglists']);
 
@@ -391,7 +391,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 
 				</div>
 
-				<div class="card card-body<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+				<div class="card card-body<?php echo $this->escape($this->params->get('pageclass_sfx', '')); ?>">
 					<div class="form-check edit_unsubscribe">
 						<input title="unsubscribe" type="checkbox" id="unsubscribe" class="form-check-input" name="unsubscribe" value="1" />
 						<label class="form-check-label edit_unsubscribe_text text-danger" for="unsubscribe"><?php echo Text::_('COM_BWPOSTMAN_UNSUBSCRIBE') ?></label>

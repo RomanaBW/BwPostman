@@ -79,10 +79,10 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 				$wa->useScript('com_bwpostman.bwpm_register_modal');
 			}
 
-			if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != ''))
+			if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != ''))
 			{ ?>
-				<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
-					<?php echo $this->escape($this->params->get('page_heading')); ?>
+				<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
+					<?php echo $this->escape($this->params->get('page_heading', '')); ?>
 				</h1>
 			<?php
 			} ?>
@@ -97,7 +97,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 				</p>
 				<?php // End Spamcheck ?>
 
-				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="contentpane<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 
 					<?php // Show pretext only if set in basic parameters
 					if ($this->params->get('pretext', ''))
@@ -311,9 +311,9 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					// Show available mailinglists
 					if ($this->lists['available_mailinglists'])
 					{ ?>
-						<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
+						<div class="maindivider<?php echo $this->params->get('pageclass_sfx', ''); ?>"></div>
 
-						<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+						<div class="contentpane<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 							<?php
 							$n = count($this->lists['available_mailinglists']);
 
@@ -394,7 +394,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 										</p>
 										<?php
 									} ?>
-									<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
+									<div class="maindivider<?php echo $this->params->get('pageclass_sfx', ''); ?>"></div>
 									<?php
 								}
 							}?>
@@ -461,7 +461,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 					<input type="hidden" name="codeCaptcha" value="<?php echo $codeCaptcha; ?>" />
 				<?php endif; // End captcha ?>
 
-				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="contentpane<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 					<?php // Show Disclaimer only if enabled in basic parameters
 					$disclaimer_link = '';
 					$title = '';

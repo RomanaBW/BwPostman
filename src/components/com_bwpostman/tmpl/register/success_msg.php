@@ -61,11 +61,11 @@ if (file_exists(JPATH_BASE . $css_filename))
 <div id="bwpostman" class="mt">
 	<div id="bwp_com_register_success">
 		<?php
-		if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != ''))
+		if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != ''))
 		{
 			?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
-				<?php echo $this->escape($this->params->get('page_heading')); ?>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
+				<?php echo $this->escape($this->params->get('page_heading', '')); ?>
 			</h1>
 		<?php } ?>
 

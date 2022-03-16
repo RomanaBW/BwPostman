@@ -65,11 +65,11 @@ if (file_exists(JPATH_BASE . $css_filename))
 <div id="bwpostman">
 	<div id="bwp_com_error_account_notactivated">
 		<?php
-		if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != ''))
+		if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != ''))
 		{
 			?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
-				<?php echo $this->escape($this->params->get('page_heading')); ?>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
+				<?php echo $this->escape($this->params->get('page_heading', '')); ?>
 			</h1>
 		<?php
 		}
@@ -97,7 +97,7 @@ if (file_exists(JPATH_BASE . $css_filename))
 				echo '<p class="error-message">' . Text::_($this->error->err_msg) . '</p>';
 			?>
 
-			<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+			<div class="contentpane<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 				<p class="activate">
 						<label id="emailmsg" for="email"> <?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:</label>
 						<input type="text" id="email" name="email" size="40" value="" class="required validate-email" maxlength="100" />

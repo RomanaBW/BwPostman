@@ -37,7 +37,7 @@ $params     = ComponentHelper::getParams('com_bwpostman', true);
 $lists      = $displayData['lists'];
 ?>
 
-<div class="contentpane<?php echo $params->get('pageclass_sfx'); ?>">
+<div class="contentpane<?php echo $params->get('pageclass_sfx', ''); ?>">
 	<?php // Show pretext only if set in basic parameters
 	if ($params->get('pretext', ''))
 	{
@@ -251,9 +251,9 @@ $lists      = $displayData['lists'];
 	// Show available mailinglists
 	if ($lists['available_mailinglists'])
 	{
-		?><div class="maindivider<?php echo $params->get('pageclass_sfx'); ?>"></div>
+		?><div class="maindivider<?php echo $params->get('pageclass_sfx', ''); ?>"></div>
 
-		<div class="contentpane<?php echo $params->get('pageclass_sfx'); ?>">
+		<div class="contentpane<?php echo $params->get('pageclass_sfx', ''); ?>">
 			<?php
 			$n = count($lists['available_mailinglists']);
 
@@ -325,7 +325,7 @@ $lists      = $displayData['lists'];
 						</p>
 						<?php
 					} ?>
-					<div class="maindivider<?php echo $params->get('pageclass_sfx'); ?>"></div>
+					<div class="maindivider<?php echo $params->get('pageclass_sfx', ''); ?>"></div>
 					<?php
 				}
 			}?>

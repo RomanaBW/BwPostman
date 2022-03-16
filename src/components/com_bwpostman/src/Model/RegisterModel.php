@@ -245,7 +245,7 @@ class RegisterModel extends AdminModel
 	public function delete(&$pks = null): bool
 	{
 		$params 	= ComponentHelper::getParams('com_bwpostman');
-		$send_mail	= $params->get('deactivation_to_webmaster');
+		$send_mail	= $params->get('deactivation_to_webmaster', '0s');
 		$subscriber = null;
 		$subsTable = $this->getTable();
 

@@ -55,13 +55,13 @@ class HtmlContent
 	 */
 	public function Title(object $row, object $params)
 	{
-		if ($params->get('item_title'))
+		if ($params->get('item_title', ''))
 		{
-			if ($params->get('link_titles') && $row->link_on != '')
+			if ($params->get('link_titles', '') && $row->link_on != '')
 			{
 				?>
 				<h2>
-					<a href="<?php echo $row->link_on; ?>" class="contentpagetitle<?php echo $params->get('pageclass_sfx'); ?>">
+					<a href="<?php echo $row->link_on; ?>" class="contentpagetitle<?php echo $params->get('pageclass_sfx', ''); ?>">
 						<?php echo $row->title; ?>
 					</a>
 				</h2>
@@ -233,13 +233,13 @@ class HtmlContent
 	 */
 	public function ReadMore(object $row, object $params)
 	{
-		if ($params->get('readmore'))
+		if ($params->get('readmore', '0'))
 		{
-			if ($params->get('intro_only') && $row->link_text)
+			if ($params->get('intro_only', '1') && $row->link_text)
 			{
 				?>
 				<p class="link_on"><a href="<?php echo $row->link_on; ?>"
-						class="readon<?php echo $params->get('pageclass_sfx'); ?>"> <?php echo $row->link_text; ?></a>
+						class="readon<?php echo $params->get('pageclass_sfx', ''); ?>"> <?php echo $row->link_text; ?></a>
 				</p>
 				<?php
 			}

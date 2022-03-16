@@ -368,8 +368,8 @@ class MaintenanceController extends BaseController
 		$pluginParams = new Registry();
 		$pluginParams->loadString($plugin->params);
 
-		$pluginUser = $pluginParams->get('bwtimecontrol_username');
-		$pluginPw   = $pluginParams->get('bwtimecontrol_passwd');
+		$pluginUser = $pluginParams->get('bwtimecontrol_username', '');
+		$pluginPw   = $pluginParams->get('bwtimecontrol_passwd', '');
 
 		if ($pluginUser === null || $pluginPw === null)
 		{

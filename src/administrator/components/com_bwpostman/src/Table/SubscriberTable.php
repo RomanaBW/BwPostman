@@ -411,7 +411,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			$params = BwPostmanSubscriberHelper::getModParams((int)$data['mod_id']);
 			$module_params  = new Registry($params->params);
 
-			if ($module_params->get('com_params') == 0)
+			if ($module_params->get('com_params', '1') == 0)
 			{
 				$params = $module_params;
 			}

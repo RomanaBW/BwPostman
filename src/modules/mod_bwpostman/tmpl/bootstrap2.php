@@ -111,7 +111,7 @@ $required_end .= '</div>';
 		<?php // End Spamcheck
 		if ($paramsComponent->get('pretext', '', ''))
 		{ // Show pretext only if set in basic parameters
-			$preText = Text::_($paramsComponent->get('pretext'));
+			$preText = Text::_($paramsComponent->get('pretext', ''));
 			?>
 			<div id="bwp_mod_form_pretext" class="mb-3"><?php echo $preText; ?></div>
 			<?php

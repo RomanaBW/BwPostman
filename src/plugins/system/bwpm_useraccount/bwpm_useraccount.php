@@ -132,7 +132,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 
 		$log_options    = array();
 		$this->logger   = BwLogger::getInstance($log_options);
-		$this->debug    = $this->params->get('debug_option');
+		$this->debug    = $this->params->get('debug_option', '0');
 
 		$this->setBwPostmanComponentStatus();
 		$this->setBwPostmanComponentVersion();

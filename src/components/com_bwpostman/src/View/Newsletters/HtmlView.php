@@ -246,7 +246,7 @@ class HtmlView extends BaseHtmlView
 		{
 			$menu_params = new Registry();
 			$menu_params->loadString($menu->getParams());
-			if (!$menu_params->get('page_heading'))
+			if (!$menu_params->get('page_heading', ''))
 			{
 				$this->params->set('page_heading',	Text::_('COM_BWPOSTMAN_NLS'));
 			}

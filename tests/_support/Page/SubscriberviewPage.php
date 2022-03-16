@@ -305,7 +305,7 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_register          = ".//*[@id='bwp_com_form']/p[2]/button";
+	public static $button_register          = "//*[@id='bwp_com_form']/div/div[contains(@class, 'button-register')]/button";
 
 	/**
 	 * @var string
@@ -442,21 +442,21 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $firstname_star    = "//*/p[contains(@class, 'user_firstname')]/span/i[@class='icon-star']";
+	public static $firstname_star    = "//*/div[contains(@class, 'user_firstname')]/div/div/span/i[contains(@class, 'fa-star')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $name_star    = "//*/p[contains(@class, 'user_name')]/span/i[@class='icon-star']";
+	public static $name_star    = "//*/div[contains(@class, 'user_name')]/div/div/span/i[contains(@class, 'fa-star')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $special_star    = "//*/p[contains(@class, 'edit_special')]/span/i[@class='icon-star']";
+	public static $special_star    = "//*/div[contains(@class, 'edit_special')]/div/div/span/i[contains(@class, 'fa-star')]";
 
 	/**
 	 * @var string
@@ -470,28 +470,28 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mailaddress_star    = "//*/p[contains(@class, 'user_email')]/span/i[@class='icon-star']";
+	public static $mailaddress_star    = "//*/div[contains(@class, 'user_email')]/div/div/span/i[contains(@class, 'fa-star')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $ml_select_star    = "//*/p[contains(@class, 'mail_available')]/sup/i[@class='icon-star']";
+	public static $ml_select_star    = "//*/div[contains(@class, 'mail_available')]/sup/i[contains(@class, 'fa-star')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $disclaimer_star    = "//*/p[contains(@class, 'agree_check')]/span/i[@class='icon-star']";
+	public static $disclaimer_star    = "//*/div[contains(@class, 'agree_check')]/div/div/span/i[contains(@class, 'fa-star')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $security_star    = "//*/p[contains(@class, 'question-result')]/span/i[@class='icon-star']";
+	public static $security_star    = "//*/div[contains(@class, 'question-result')]/div/div/span/i[contains(@class, 'fa-star')]";
 
 	/**
 	 * @var string
@@ -519,7 +519,7 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $ml_desc_identifier    = "//*/p[@class='mail_available_list mailinglists2']/span[2]";
+	public static $ml_desc_identifier    = "//*/p[contains(@class, 'mailinglists2']/label";
 
 	/**
 	 * @var string

@@ -193,7 +193,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 		$log_options    = array();
 		$this->logger   = BwLogger::getInstance($log_options);
-		$this->debug    = $this->params->get('debug_option');
+		$this->debug    = $this->params->get('debug_option', '0');
 
 		$this->setComponentStatus();
 		$this->setComponentVersion();
@@ -535,10 +535,10 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function processMessageField(&$userFields)
 	{
-		if ($this->params->get('bw_register_message_option') != '')
+		if ($this->params->get('bw_register_message_option', '0') != '')
 		{
-			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->title       = Text::_($this->params->get('bw_register_message_option'));
-			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->description = Text::_($this->params->get('bw_register_message_option'));
+			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->title       = Text::_($this->params->get('bw_register_message_option', '0'));
+			$userFields[$this->BwPostman_field_ids['bw_newsletter_message']]->description = Text::_($this->params->get('bw_register_message_option', '0'));
 		}
 		else
 		{

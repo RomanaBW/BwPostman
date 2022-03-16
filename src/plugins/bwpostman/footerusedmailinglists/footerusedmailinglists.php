@@ -105,17 +105,17 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		$insertText       = '';
 		$additionalFooter = '';
 
-		if ($this->params->get('show_mailinglists'))
+		if ($this->params->get('show_mailinglists', '0'))
 		{
 			$insertText .= $this->insertMailinglistsAtHtmlFooter($usedMailinglists);
 		}
 
-		if ($this->params->get('show_usergroups'))
+		if ($this->params->get('show_usergroups', '0'))
 		{
 			$insertText .= $this->insertUsergroupsAtHtmlFooter($usedUsergroups);
 		}
 
-		if ($this->params->get('show_all_recipients'))
+		if ($this->params->get('show_all_recipients', '0'))
 		{
 			$nbrAllRecipients = $this->getNbrAllRecipients($usedMailinglists, $usedUsergroups);
 
@@ -169,17 +169,17 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		$usedUsergroups   = $this->getUsedUsergroups($usedUgIds);
 		$insertText       = '';
 
-		if ($this->params->get('show_mailinglists'))
+		if ($this->params->get('show_mailinglists', '0'))
 		{
 			$insertText .= $this->insertMailinglistsAtTextFooter($usedMailinglists);
 		}
 
-		if ($this->params->get('show_usergroups'))
+		if ($this->params->get('show_usergroups', '0'))
 		{
 			$insertText .= $this->insertUsergroupsAtTextFooter($usedUsergroups);
 		}
 
-		if ($this->params->get('show_all_recipients'))
+		if ($this->params->get('show_all_recipients', '0'))
 		{
 			$nbrAllRecipients = $this->getNbrAllRecipients($usedMailinglists, $usedUsergroups);
 
@@ -412,7 +412,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 				$insertText .= "\t\t\t\t\t" . "<td>" . "\n";
 				$insertText .= $usedMailinglist['title'];
 
-				if ($this->params->get('show_mailinglists_recipients'))
+				if ($this->params->get('show_mailinglists_recipients', '0'))
 				{
 					$insertText .= Text::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_RECIPIENTS', $usedMailinglist['nbrRecipients']);
 				}
@@ -451,7 +451,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 				$insertText .= "\n\t";
 				$insertText .= $usedMailinglist['title'];
 
-				if ($this->params->get('show_mailinglists_recipients'))
+				if ($this->params->get('show_mailinglists_recipients', '0'))
 				{
 					$insertText .= Text::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_RECIPIENTS', $usedMailinglist['nbrRecipients']);
 				}
@@ -494,7 +494,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 				$insertText .= "\t\t\t\t\t" . "<td>" . "\n";
 				$insertText .= $usedUsergroup['title'];
 
-				if ($this->params->get('show_usergroups_recipients'))
+				if ($this->params->get('show_usergroups_recipients', '0'))
 				{
 					$insertText .= Text::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_RECIPIENTS', $usedUsergroup['nbrRecipients']);
 				}
@@ -532,7 +532,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 				$insertText .= "\n\t";
 				$insertText .= $usedUsergroup['title'];
 
-				if ($this->params->get('show_usergroups_recipients'))
+				if ($this->params->get('show_usergroups_recipients', '0'))
 				{
 					$insertText .= Text::sprintf('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_RECIPIENTS', $usedUsergroup['nbrRecipients']);
 				}

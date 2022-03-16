@@ -75,9 +75,9 @@ HtmlHelper::_('behavior.formvalidator');
 
 <div id="bwpostman" class="mt">
 	<div id="bwp_com_edit_subscription">
-		<?php if (($this->params->get('show_page_heading') != 0) && ($this->params->get('page_heading') != '')) : ?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx'); ?>">
-				<?php echo $this->escape($this->params->get('page_heading')); ?>
+		<?php if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != '')) : ?>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
+				<?php echo $this->escape($this->params->get('page_heading', '')); ?>
 			</h1>
 		<?php endif; ?>
 
@@ -85,7 +85,7 @@ HtmlHelper::_('behavior.formvalidator');
 			<form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" id="bwp_com_form"
 					name="bwp_com_form" class="form-validate form-inline">
 
-				<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+				<div class="contentpane<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 
 					<?php // Show pretext only if set in basic parameters
 					if ($this->params->get('pretext', ''))
@@ -292,9 +292,9 @@ HtmlHelper::_('behavior.formvalidator');
 					// Show available mailinglists
 					if ($this->lists['available_mailinglists'])
 					{ ?>
-						<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
+						<div class="maindivider<?php echo $this->params->get('pageclass_sfx', ''); ?>"></div>
 
-						<div class="contentpane<?php echo $this->params->get('pageclass_sfx'); ?>">
+						<div class="contentpane<?php echo $this->params->get('pageclass_sfx', ''); ?>">
 							<?php
 							$n = count($this->lists['available_mailinglists']);
 
@@ -365,7 +365,7 @@ HtmlHelper::_('behavior.formvalidator');
 										</p>
 										<?php
 									} ?>
-									<div class="maindivider<?php echo $this->params->get('pageclass_sfx'); ?>"></div>
+									<div class="maindivider<?php echo $this->params->get('pageclass_sfx', ''); ?>"></div>
 									<?php
 								}
 							}?>
@@ -378,16 +378,16 @@ HtmlHelper::_('behavior.formvalidator');
 
 				</div>
 
-				<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+				<div class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx', '')); ?>">
 					<p class="edit_unsubscribe">
 						<input title="unsubscribe" type="checkbox" id="unsubscribe" name="unsubscribe" value="1" />
 						<span class="edit_unsubscribe_text"><?php echo Text::_('COM_BWPOSTMAN_UNSUBSCRIBE') ?></span>
 					</p>
 				</div>
 
-				<div class="maindivider<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"></div>
+				<div class="maindivider<?php echo $this->escape($this->params->get('pageclass_sfx', '')); ?>"></div>
 
-				<div class="w-100 contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
+				<div class="w-100 contentpane<?php echo $this->escape($this->params->get('pageclass_sfx', '')); ?>">
 					<p class="edit_required">
 						<?php echo Text::_('COM_BWPOSTMAN_REQUIRED'); ?>
 					</p>

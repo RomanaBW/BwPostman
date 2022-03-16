@@ -74,7 +74,7 @@ $subscriberid = ModBwPostmanHelper::getSubscriberID();
 $captcha      = BwPostmanHelper::getCaptcha();
 
 // use module or component parameters
-if ($params->get('com_params') == 0)
+if ($params->get('com_params', '1') == 0)
 {
 	// Module params
 	$paramsComponent = $params;
@@ -105,7 +105,7 @@ else
 	$lists['emailformat'] = $emailformat = ModBwPostmanHelper::getMailformatSelectList($paramsComponent);
 
 	// Get the checked mailinglists from module parameters
-	$mod_mls = (array)$params->get('mod_ml_available');
+	$mod_mls = (array)$params->get('mod_ml_available', '');
 
 	// Get the access levels for the user, preset with access level guest and public
 	$publicAccess = array(1, 5);

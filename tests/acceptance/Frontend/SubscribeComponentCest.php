@@ -819,6 +819,7 @@ class SubscribeComponentCest
 		// Set disclaimer to link
 		$I->setManifestOption('com_bwpostman', 'disclaimer_selection', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
 
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(SubsView::$view_register, 0, -100);
@@ -894,6 +895,7 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'showinmodal', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_target', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
 
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(SubsView::$view_register, 0, -100);
@@ -960,6 +962,7 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'showinmodal', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_target', '1');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
 
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(SubsView::$view_register, 0, -100);
@@ -1040,6 +1043,7 @@ class SubscribeComponentCest
 		$I->scrollTo(SubsView::$button_register);
 		$I->wait(1);
 		$I->click(SubsView::$button_register);
+		$I->wait(2);
 
 		$I->scrollTo("//*/div/nav/ol");
 		$I->wait(1);

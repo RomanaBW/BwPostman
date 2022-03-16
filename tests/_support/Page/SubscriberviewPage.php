@@ -463,7 +463,7 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $special_placeholder    = "//*/p[contains(@class, 'edit_special')]/label[contains(text(), '%s')]";
+	public static $special_placeholder    = "//*/div[contains(@class, 'edit_special')]/label[contains(text(), '%s')]";
 
 	/**
 	 * @var string
@@ -484,7 +484,7 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $disclaimer_star    = "//*/div[contains(@class, 'agree_check')]/div/div/span/i[contains(@class, 'fa-star')]";
+	public static $disclaimer_star    = "//*/div[contains(@class, 'agree_check')]/label/sup/i[contains(@class, 'fa-star')]";
 
 	/**
 	 * @var string
@@ -519,14 +519,14 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $ml_desc_identifier    = "//*/p[contains(@class, 'mailinglists2']/label";
+	public static $ml_desc_identifier    = "//*/div[contains(@class, 'mailinglists2')]/label/span[2]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $intro_identifier    = "//*/p[@class='pre_text']";
+	public static $intro_identifier    = "//*/div[contains(@class, 'pre_text')]";
 
 	/**
 	 * @var string
@@ -547,7 +547,7 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $disclaimer_link    = "//*/p[@class='agree_check']/span/a";
+	public static $disclaimer_link    = "//*/div[contains(@class, 'agree_check')]/label/a";
 
 	/**
 	 * @var string

@@ -245,7 +245,6 @@ class contentRenderer
 			$params->loadString($row->attribs, 'JSON');
 
 			$params->def('link_titles', $app->get('link_titles', ''));
-			$params->def('createdate', $params->get('newsletter_show_createdate'));
 			$params->def('readmore', $app->get('readmore', '0'));
 			$params->def('item_title', 1);
 

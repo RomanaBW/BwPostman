@@ -75,7 +75,6 @@ class contentRenderer
 		PluginHelper::importPlugin('bwpostman');
 		$app = Factory::getApplication();
 
-		$param = ComponentHelper::getParams('com_bwpostman');
 		$content = array();
 
 		$tpl      = $this->getTemplate((int)$template_id);
@@ -95,18 +94,7 @@ class contentRenderer
 			}
 		}
 
-		// only for old templates
-		if ($template_id < 1)
-		{
-			$content['html_version'] = '<div class="outer"><div class="header"><img class="logo" src="' .
-				Route::_(Uri::root() . $param->get('logo', '')) .
-				'" alt="" /></div><div class="content-outer"><div class="content"><div class="content-inner"><p class="nl-intro">&nbsp;</p>';
-		}
-		else
-		{
-			$content['html_version'] = '';
-		}
-
+		$content['html_version'] = '';
 		$content['text_version'] = '';
 
 		$nl_content = ArrayHelper::toInteger($nl_content);
@@ -157,12 +145,6 @@ class contentRenderer
 		}
 
 		$app->triggerEvent('onBwpmAfterRenderNewsletter', array(&$nl_content, &$tpl, &$text_tpl, &$content));
-
-		// only for old templates
-		if ($template_id < 1)
-		{
-			$content['html_version'] .= '</div></div></div></div>';
-		}
 
 		return $content;
 	}
@@ -244,16 +226,6 @@ class contentRenderer
 			$params = new JRegistry();
 			$params->loadString($row->attribs, 'JSON');
 
-			$params->def('link_titles', $app->get('link_titles', ''));
-			$params->def('readmore', $app->get('readmore', '0'));
-			$params->def('item_title', 1);
-
-			$params->set('intro_only', 1);
-			$params->set('item_navigation', 0);
-
-			$params->def('back_button', 0);
-			$params->def('image', 1);
-
 			$row->params = $params;
 			$row->text   = $row->introtext;
 		}
@@ -309,7 +281,6 @@ class contentRenderer
 
 			if ($row)
 			{
-				$params  = $row->params;
 				$lang    = self::getArticleLanguage($row->id);
 				$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
 				$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
@@ -327,7 +298,7 @@ class contentRenderer
 				{
 					ob_start();
 					// Displays Item Title
-					$html_content->Title($row, $params);
+					$html_content->Title($row);
 
 					$content .= ob_get_contents();
 					ob_end_clean();
@@ -719,8 +690,8 @@ class contentRenderer
 		// only for old templates
 		if (empty($tpl->article))
 		{
-			$tpl->article['show_createdate'] = $params->get('newsletter_show_createdate');
-			$tpl->article['show_author'] = $params->get('newsletter_show_author');
+			$tpl->article['show_createdate'] = 0;
+			$tpl->article['show_author'] = 0;
 			$tpl->article['show_readon'] = 1;
 		}
 

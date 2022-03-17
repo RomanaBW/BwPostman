@@ -51,27 +51,11 @@ class htmlContent
 	 *
 	 * @since       0.9.1
 	 */
-	public function Title(&$row, &$params)
+	public function Title(&$row)
 	{
-		if ($params->get('item_title', ''))
-		{
-			if ($params->get('link_titles', '') && $row->link_on != '')
-			{
-				?>
-				<h2>
-					<a href="<?php echo $row->link_on; ?>" class="contentpagetitle<?php echo $params->get('pageclass_sfx', ''); ?>">
-						<?php echo $row->title; ?>
-					</a>
-				</h2>
-				<?php
-			}
-			else
-			{
-				?>
-				<h2><?php echo $row->title; ?></h2>
-				<?php
-			}
-		}
+		?>
+		<h2><?php echo $row->title; ?></h2>
+		<?php
 	}
 
 	/**

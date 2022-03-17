@@ -74,7 +74,6 @@ class ContentRenderer
 		PluginHelper::importPlugin('bwpostman');
 		$app = Factory::getApplication();
 
-		$param = ComponentHelper::getParams('com_bwpostman');
 		$content = array();
 
 		$tpl      = $this->getTemplate($template_id);
@@ -94,18 +93,7 @@ class ContentRenderer
 			}
 		}
 
-		// only for old templates
-		if ($template_id < 1)
-		{
-			$content['html_version'] = '<div class="outer"><div class="header"><img class="logo" src="' .
-				Route::_(Uri::root() . $param->get('logo')) .
-				'" alt="" /></div><div class="content-outer"><div class="content"><div class="content-inner"><p class="nl-intro">&nbsp;</p>';
-		}
-		else
-		{
-			$content['html_version'] = '';
-		}
-
+		$content['html_version'] = '';
 		$content['text_version'] = '';
 
 		$nl_content = ArrayHelper::toInteger($nl_content);
@@ -156,12 +144,6 @@ class ContentRenderer
 		}
 
 		$app->triggerEvent('onBwpmAfterRenderNewsletter', array(&$nl_content, &$tpl, &$text_tpl, &$content));
-
-		// only for old templates
-		if ($template_id < 1)
-		{
-			$content['html_version'] .= '</div></div></div></div>';
-		}
 
 		return $content;
 	}
@@ -241,17 +223,7 @@ class ContentRenderer
 		if ($row)
 		{
 			$params = new Registry();
-			$params->loadString($row->attribs);
-
-			$params->def('link_titles', $app->get('link_titles', ''));
-			$params->def('readmore', $app->get('readmore', '0'));
-			$params->def('item_title', 1);
-
-			$params->set('intro_only', 1);
-			$params->set('item_navigation', 0);
-
-			$params->def('back_button', 0);
-			$params->def('image', 1);
+			$params->loadString($row->attribs, 'JSON');
 
 			$row->params = $params;
 			$row->text   = $row->introtext;
@@ -723,8 +695,8 @@ class ContentRenderer
 		// only for old templates
 		if (empty($tpl->article))
 		{
-			$tpl->article['show_createdate'] = $params->get('newsletter_show_createdate');
-			$tpl->article['show_author'] = $params->get('newsletter_show_author');
+			$tpl->article['show_createdate'] = 0;
+			$tpl->article['show_author'] = 0;
 			$tpl->article['show_readon'] = 1;
 		}
 

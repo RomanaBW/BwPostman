@@ -75,24 +75,6 @@ class htmlContent
 	}
 
 	/**
-	 * Writes Category
-	 *
-	 * @param   object $row
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function Category(&$row)
-	{
-		?>
-		<span class="sc_category"><small> <?php
-				echo $row->category;
-				?></small></span>
-		<?php
-	}
-
-	/**
 	 * Writes p-tag for Author and CreateDate
 	 *
 	 * @return  void
@@ -165,82 +147,5 @@ class htmlContent
 					$create_date); ?>&nbsp;&nbsp;&nbsp;&nbsp;</small>
 		</span>
 		<?php
-	}
-
-	/**
-	 * Writes URL's
-	 *
-	 * @param   object $row
-	 * @param   object $params
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function URL(&$row, &$params)
-	{
-		if ($params->get('url') && $row->urls)
-		{
-			?>
-			<p class="row_url">
-				<a href="http://<?php echo $row->urls; ?>" target="_blank"> <?php echo $row->urls; ?></a>
-			</p>
-			<?php
-		}
-	}
-
-	/**
-	 * Writes Modified Date
-	 *
-	 * @param   object $row
-	 * @param   object $params
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function ModifiedDate(&$row, &$params)
-	{
-		$mod_date = null;
-
-		if (intval($row->modified) != 0)
-		{
-			$mod_date = HtmlHelper::_('date', $row->modified);
-		}
-
-		if (($mod_date != '') && $params->get('modifydate'))
-		{
-			?>
-			<p class="modifydate">
-				<?php echo Text::_('LAST_UPDATED'); ?>
-				(<?php echo $mod_date; ?>)
-			</p>
-			<?php
-		}
-	}
-
-	/**
-	 * Writes read more button
-	 *
-	 * @param   object $row
-	 * @param   object $params
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function ReadMore(&$row, &$params)
-	{
-		if ($params->get('readmore', '0'))
-		{
-			if ($params->get('intro_only', '1') && $row->link_text)
-			{
-				?>
-				<p class="link_on"><a href="<?php echo $row->link_on; ?>"
-						class="readon<?php echo $params->get('pageclass_sfx', ''); ?>"> <?php echo $row->link_text; ?></a>
-				</p>
-				<?php
-			}
-		}
 	}
 }

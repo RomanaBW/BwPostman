@@ -245,14 +245,7 @@ class contentRenderer
 			$params->loadString($row->attribs, 'JSON');
 
 			$params->def('link_titles', $app->get('link_titles', ''));
-			$params->def('author', $params->get('newsletter_show_author'));
 			$params->def('createdate', $params->get('newsletter_show_createdate'));
-			$params->def('modifydate', !$app->get('hideModifyDate'));
-			$params->def('print', !$app->get('hidePrint'));
-			$params->def('pdf', !$app->get('hidePdf'));
-			$params->def('email', !$app->get('hideEmail'));
-			$params->def('rating', $app->get('vote'));
-			$params->def('icons', $app->get('icons'));
 			$params->def('readmore', $app->get('readmore', '0'));
 			$params->def('item_title', 1);
 

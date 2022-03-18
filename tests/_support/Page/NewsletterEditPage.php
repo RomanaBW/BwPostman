@@ -825,7 +825,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $legend_content       = "//*[@id='jform_available_content']";
+	public static $legend_content       = "//*[@id='available_content_label']";
 
 
 	/**

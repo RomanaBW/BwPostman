@@ -368,7 +368,7 @@ $currentTab = 'edit_basic';
 						</div>
 
 						<div class="col-lg-5">
-							<p class="mb-3"><?php echo Text::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT'); ?></p>
+							<p id="available_content_label" class="mb-3"><?php echo Text::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT'); ?></p>
 							<?php foreach($this->form->getFieldset('available_content') as $field): ?>
 								<?php if ($field->hidden): ?>
 									<?php echo $field->input; ?>

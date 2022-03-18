@@ -368,6 +368,7 @@ $currentTab = 'edit_basic';
 						</div>
 
 						<div class="col-lg-5">
+							<p class="mb-3"><?php echo Text::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT'); ?></p>
 							<?php foreach($this->form->getFieldset('available_content') as $field): ?>
 								<?php if ($field->hidden): ?>
 									<?php echo $field->input; ?>
@@ -376,7 +377,19 @@ $currentTab = 'edit_basic';
 										<?php echo $field->label; ?>
 									</div>
 									<div class="controls">
+										<?php if ($field->fieldname == 'ac_id') { ?>
+										<div class="row my-3">
+											<div class="col-lg-1">
+											<input type="button" name="ac-left" class="btn btn-outline-info btn-left"
+														value="&lt;" onclick="moveArticle()" />
+											</div>
+											<div class="col-lg-11">
+										<?php } ?>
 										<?php echo $field->input; ?>
+										<?php if ($field->fieldname == 'ac_id') { ?>
+											</div>
+										</div>
+									<?php } ?>
 									</div>
 								<?php endif; ?>
 							<?php endforeach; ?>

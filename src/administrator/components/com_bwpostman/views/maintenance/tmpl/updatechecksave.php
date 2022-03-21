@@ -94,7 +94,8 @@ if ($show_update || $string_special != '')
 <div id="com_bwp_install_outer">
 </div>
 <div id="checkResult" class="row-fluid">
-	<div class="alert"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_WARNING'); ?></div>
+	<div id="warn" class="alert"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_WARNING'); ?></div>
+	<div id="info" class="alert alert-info" style="display:none;"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_INFO'); ?></div>
 	<div class="span6 inner well">
 		<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES'); ?></h2>
 		<p id="step0" class="well"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_0'); ?></p>

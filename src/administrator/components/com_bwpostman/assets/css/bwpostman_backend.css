@@ -467,6 +467,9 @@ fieldset p.mllabel {
 	margin-bottom:		5px;
 }
 
+#jform_ac_id_id-lbl, .available_content_label {
+	margin: 1.2em 0 0.8em 0;
+}
 
 /*----------------------------------------------------------
 	Panels

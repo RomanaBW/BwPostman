@@ -1210,18 +1210,142 @@ class TestNewslettersDetailsCest
 		// add content
 		$I->scrollTo(NlEdit::$legend_content, 0, -100);
 		// …by button
+		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 3));
 		$I->click(sprintf(NlEdit::$available_content, 3));
 		$I->click(NlEdit::$add_content);
-		// … by double click
-		$I->doubleClick(sprintf(NlEdit::$available_content, 3));
-		$I->doubleClick(sprintf(NlEdit::$available_content, 2));
+		$I->dontSee(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 3));
 
-		// remove content
-		// …by button
-		$I->click(sprintf(NlEdit::$selected_content, 3));
-		$I->click(NlEdit::$remove_content);
-		// …by double click
+		// … by double click
+		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 3));
+		$I->doubleClick(sprintf(NlEdit::$available_content, 3));
+		$I->dontSee(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 3));
+
+		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 2));
+		$I->doubleClick(sprintf(NlEdit::$available_content, 2));
+		$I->dontSee(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 2));
+
+		// … by popup selector
+		$I->see(NlEdit::$popupSelectorSelectText, NlEdit::$popupSelectorSelect);
+		$I->clickAndWait(NlEdit::$popupSelectorSelect, 2);
+		$I->waitForElementVisible(NlEdit::$popupModalIdentifier, 5);
+		$I->switchToIFrame(NlEdit::$popupIframe);
+
+		// Filter popup list
+		$I->clickAndWait(NlEdit::$popupFilterbarIdentifier, 2);
+		$I->see(NlEdit::$popupFilteredArticleText, NlEdit::$popupFilteredArticleIdentifier);
+		$I->moveMouseOver(NlEdit::$popupFilteredArticleIdentifier);
+		$I->clickAndWait(NlEdit::$popupFilterbarCategoryList, 1);
+		$I->clickAndWait(NlEdit::$popupFilterbarCategorySelection, 1);
+		$I->dontSee(NlEdit::$popupFilteredArticleText, NlEdit::$popupFilteredArticleIdentifier);
+
+		// Select content
+		$I->clickAndWait(NlEdit::$popupFilterbarContentSelection, 1);
+		$I->switchToIFrame();
+		$I->wait(1);
+		$I->see(NlEdit::$popupSelectorClearText, NlEdit::$popupSelectorClear);
+
+		// Add content to selected content
+		$I->clickAndWait(NlEdit::$popupSelectorMover, 1);
+		$I->see(NlEdit::$popupSelectorSelectText, NlEdit::$popupSelectorSelect);
+
+
+		// Check selected content
+		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$selected_content, 1));
+		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$selected_content, 2));
+		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$selected_content, 3));
+		$I->see(NlEdit::$selectedContent_4, sprintf(NlEdit::$selected_content, 4));
+
+		$selectedContents = $I->grabTextFrom(NlEdit::$selected_content_pure);
+
+		$I->assertContains(NlEdit::$selectedContent_1, $selectedContents);
+		$I->assertContains(NlEdit::$selectedContent_2, $selectedContents);
+		$I->assertContains(NlEdit::$selectedContent_3, $selectedContents);
+		$I->assertContains(NlEdit::$selectedContent_4, $selectedContents);
+
+		$nbrSelectedContents = explode("\n", $selectedContents);
+
+		$I->assertCount(4, $nbrSelectedContents);
+
+
+		// Select same content a second time by popup selector
+		$I->see(NlEdit::$popupSelectorSelectText, NlEdit::$popupSelectorSelect);
+		$I->clickAndWait(NlEdit::$popupSelectorSelect, 2);
+		$I->waitForElementVisible(NlEdit::$popupModalIdentifier, 5);
+		$I->switchToIFrame(NlEdit::$popupIframe);
+
+		// Select content
+		$I->clickAndWait(NlEdit::$popupFilterbarContentSelection, 1);
+		$I->switchToIFrame();
+		$I->wait(1);
+		$I->see(NlEdit::$popupSelectorClearText, NlEdit::$popupSelectorClear);
+
+		// Add content to selected content
+		$I->clickAndWait(NlEdit::$popupSelectorMover, 1);
+		$I->see(NlEdit::$popupSelectorSelectText, NlEdit::$popupSelectorSelect);
+
+
+		// Check selected content
+		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$selected_content, 1));
+		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$selected_content, 2));
+		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$selected_content, 3));
+		$I->see(NlEdit::$selectedContent_4, sprintf(NlEdit::$selected_content, 4));
+
+		$selectedContents = $I->grabTextFrom(NlEdit::$selected_content_pure);
+
+		$I->assertContains(NlEdit::$selectedContent_1, $selectedContents);
+		$I->assertContains(NlEdit::$selectedContent_2, $selectedContents);
+		$I->assertContains(NlEdit::$selectedContent_3, $selectedContents);
+		$I->assertContains(NlEdit::$selectedContent_4, $selectedContents);
+
+		$nbrSelectedContents = explode("\n", $selectedContents);
+
+		$I->assertCount(4, $nbrSelectedContents);
+
+
+		// Check available content
+		$availableContents = $I->grabTextFrom(NlEdit::$available_content_pure);
+
+		$I->assertNotContains(NlEdit::$selectedContent_1, $availableContents);
+		$I->assertNotContains(NlEdit::$selectedContent_2, $availableContents);
+		$I->assertNotContains(NlEdit::$selectedContent_3, $availableContents);
+		$I->assertNotContains(NlEdit::$selectedContent_4, $availableContents);
+
+
+		// Sort content by content mover
+		$I->clickAndWait(sprintf(NlEdit::$selected_content, 1), 1);
+		$I->clickAndWait(NlEdit::$move_down, 1);
+		// Workaround because previously selected entry is not deselected
+		$I->clickAndWait(sprintf(NlEdit::$selected_content, 2), 1);
+
+		$I->clickAndWait(sprintf(NlEdit::$selected_content, 4), 1);
+		$I->clickAndWait(NlEdit::$move_up, 1);
+		// Workaround because previously selected entry is not deselected
+		$I->clickAndWait(sprintf(NlEdit::$selected_content, 3), 1);
+
+		// Check order of selected content
+		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$selected_content, 1));
+		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$selected_content, 2));
+		$I->see(NlEdit::$selectedContent_4, sprintf(NlEdit::$selected_content, 3));
+		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$selected_content, 4));
+
+		// remove content by button
+		$I->clickAndWait(sprintf(NlEdit::$selected_content, 3), 1);
+		$I->clickAndWait(NlEdit::$remove_content, 1);
+
+		// Check selected content
+		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$selected_content, 1));
+		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$selected_content, 2));
+		$I->dontSee(NlEdit::$selectedContent_4, sprintf(NlEdit::$selected_content, 3));
+		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$selected_content, 3));
+
+		// remove content by double click
 		$I->doubleClick(sprintf(NlEdit::$selected_content, 1));
 		$I->wait(1);
+
+		// Check selected content
+		$I->dontSee(NlEdit::$selectedContent_2, sprintf(NlEdit::$selected_content, 1));
+		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$selected_content, 1));
+		$I->dontSee(NlEdit::$selectedContent_4, sprintf(NlEdit::$selected_content, 2));
+		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$selected_content, 2));
 	}
 }

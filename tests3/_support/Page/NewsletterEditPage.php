@@ -978,16 +978,163 @@ class NewsletterEditPage
 	/**
 	 * @var string
 	 *
-	 * @since   2.0.0
+	 * @since   3.2.1
 	 */
-	public static $available_content        = ".//*[@id='jform_available_content']/option[%s]";
+	public static $available_content_pure        = "//*[@id='jform_available_content']";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $selected_content         = ".//*[@id='jform_selected_content']/option[%s]";
+	public static $available_content        = "//*[@id='jform_available_content']/option[%s]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $popupSelectorSelect        = "//*[@id='jform_ac_id_select']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $popupSelectorSelectText        = "Select";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $popupSelectorClear        = "//*[@id='jform_ac_id_clear']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $popupSelectorClearText        = "Clear";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $popupModalIdentifier        = "//*[@id='ModalSelectArticle_jform_ac_id']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $popupFilterbarIdentifier        = "//*[contains(@class, 'js-stools-btn-filter')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupFilteredArticleIdentifier        = "//*/a[contains(text(),'Quick Icons')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupFilteredArticleText        = "Quick Icons";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $popupFilterbarCategoryList        = "//*/div[@id='filter_category_id_chzn']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $popupFilterbarCategorySelection        = "//*/div[@id='filter_category_id_chzn']/div/ul/li[contains(text(), '- - - - Content Modules')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $popupFilterbarContentSelection        = "//*/a[contains(text(),'Related Items Module')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $popupIframe        = "Select or Change article";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $popupSelectorMover        = "//*/input[@name='ac-left']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $selected_content_pure         = "//*[@id='jform_selected_content']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   2.0.0
+	 */
+	public static $selected_content         = "//*[@id='jform_selected_content']/option[%s]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $selectedContent_1         = "park-site/photo-gallery/animals = Spotted Quoll";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $selectedContent_2         = "park-site/photo-gallery/animals = Wobbegone";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $selectedContent_3         = "sample-data-articles/park-site/photo-gallery/animals = Phyllopteryx";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $selectedContent_4         = "Related Items Module";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $move_up              = "//*/input[contains(@class, 'btn-up')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   3.2.1
+	 */
+	public static $move_down              = "//*/input[contains(@class, 'btn-down')]";
 
 	/**
 	 * @var string

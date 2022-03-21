@@ -246,13 +246,39 @@ function moveArticle() {
 	var select = document.getElementById('jform_selected_content');
 	var fieldId = document.getElementById('jform_ac_id_id');
 	var fieldTitle = document.getElementById('jform_ac_id_name');
+	var availableContent = document.getElementById('jform_available_content').options;
 
 	if(fieldId.value && fieldTitle.value) {
-		var option = document.createElement("option");
-		option.value = fieldId.value;
-		option.text = fieldTitle.value;
-		select.appendChild(option);
+		var contentFound = 0;
+
+		// Search for selected article at (remaining) available list,
+		for (let i = 0; i < availableContent.length; i++) {
+			if (parseInt(availableContent[i].value) === parseInt(fieldId.value))
+			{
+				contentFound = i;
+			}
+		}
+
+		// If selected article is found at available list, this article is not selected so far and can be used.
+		if (contentFound > 0)
+		{
+			// Add to selected list
+			var option = document.createElement("option");
+			option.value = fieldId.value;
+			option.text = availableContent[contentFound].text;
+			select.appendChild(option);
+
+			// Remove from available list
+			availableContent[contentFound] = null;
+		}
+
+		// Empty input field
 		window.processModalParent('jform_ac_id');
+
+	}
+	else
+	{
+		alert(Joomla.Text._('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'));
 	}
 }
 

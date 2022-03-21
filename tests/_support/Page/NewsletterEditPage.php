@@ -1085,9 +1085,142 @@ class NewsletterEditPage
 	/**
 	 * @var string
 	 *
+	 * @since   4.1.1
+	 */
+	public static $popupSelectorSelect        = "//*[@id='jform_ac_id_select']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupSelectorSelectText        = "Select";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupSelectorClear        = "//*[@id='jform_ac_id_clear']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupSelectorClearText        = "Clear";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupModalIdentifier        = "//*[@id='ModalSelectArticle_jform_ac_id']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupFilterbarIdentifier        = "//*[contains(@class, 'filter-search-actions__button')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupFilteredArticleIdentifier        = "//*/a[contains(text(),'Typography')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupFilteredArticleText        = "Typography";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupFilterbarCategoryList        = "//*/div[3][contains(@class, 'js-stools-field-filter')]/joomla-field-fancy-select/div/div";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupFilterbarCategorySelection        = "//*/div[@id='choices--filter_category_id-item-choice-3']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupFilterbarContentSelection        = "//*/a[contains(text(),'Working on Your Site')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupIframe        = "Select an Article";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $popupSelectorMover        = "//*/input[@name='ac-left']";
+
+	/**
+	 * @var string
+	 *
 	 * @since   2.0.0
 	 */
 	public static $selected_content         = "//*[@id='jform_selected_content']/option[%s]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $selectedContent_1         = "blog = Your Modules";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $selectedContent_2         = "blog = Your Template";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $selectedContent_3         = "blog = Welcome to your blog";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $selectedContent_4         = "Working on Your Site";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $move_up              = "//*/input[contains(@class, 'btn-up')]";
+
+	/**
+	 * @var string
+	 *
+	 * @since   4.1.1
+	 */
+	public static $move_down              = "//*/input[contains(@class, 'btn-down')]";
 
 	/**
 	 * @var string

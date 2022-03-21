@@ -67,6 +67,8 @@ function processUpdateStep(data)
 				document.getElementById('resultSet').style.backgroundColor = '#e1f5ec';
 				document.getElementById('resultSet').style.borderColor = '#0f2f21';
 			}
+			document.getElementById('warn').style.display = 'none';
+			document.getElementById('info').style.display = 'block';
 
 			var toolbar = document.getElementById('toolbar');
 			if (toolbar) {

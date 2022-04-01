@@ -1,22 +1,23 @@
 INSERT INTO `jos_users`
-	VALUES (
-	        '200',
-	        'Super User',
-	        'Webmemsahib',
-	        'webmaster@boldt-webservice.de',
-	        '$2y$10$0sHFUqku.423Npjbw06FvOYu9VeAMv8QK9HwTFRpnij2OFUe7tRya',
-			'0',
-			'1',
-			'2019-04-02 13:17:59',
-			'0000-00-00 00:00:00',
-			'',
-			'',
-			'0000-00-00 00:00:00',
-			'0',
-			'',
-			'',
-			'0'
-		   );
+VALUES (
+		   '200',
+		   'Super User',
+		   'Webmemsahib',
+		   'webmaster@boldt-webservice.de',
+		   '$2y$10$0sHFUqku.423Npjbw06FvOYu9VeAMv8QK9HwTFRpnij2OFUe7tRya',
+		   '0',
+		   '1',
+		   '2019-04-02 13:17:59',
+		   '0000-00-00 00:00:00',
+		   '',
+		   '',
+		   '0000-00-00 00:00:00',
+		   '0',
+		   '',
+		   '',
+		   '0',
+		   ''
+	   );
 
 INSERT INTO `jos_user_usergroup_map`
 VALUES (
@@ -41,7 +42,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_user_usergroup_map`
@@ -67,7 +69,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_user_usergroup_map`
@@ -93,7 +96,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_user_usergroup_map`
@@ -119,7 +123,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_user_usergroup_map`
@@ -145,7 +150,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_user_usergroup_map`
@@ -171,7 +177,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_user_usergroup_map`
@@ -197,7 +204,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -217,7 +225,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -237,7 +246,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -257,7 +267,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -277,7 +288,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -297,7 +309,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -317,7 +330,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -337,7 +351,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -357,7 +372,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -377,7 +393,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -397,7 +414,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -417,7 +435,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -437,7 +456,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -457,7 +477,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -477,7 +498,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -497,7 +519,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -517,7 +540,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -537,7 +561,8 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );
 
 INSERT INTO `jos_users`
@@ -557,5 +582,6 @@ VALUES (
 		   '0',
 		   '',
 		   '',
-		   '0'
+		   '0',
+		   ''
 	   );

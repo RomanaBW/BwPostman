@@ -27,15 +27,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+
+$lang      = Factory::getApplication()->getLanguage()->getTag();
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?php echo $lang; ?>">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title><?php echo Text::_('COM_BWPOSTMAN_SUB_DATA_TITLE'); ?></title>
-	<style>
+	<style type="text/css">
 		@page {
 			margin-top: 1.5cm;
 			margin-bottom: 2cm;

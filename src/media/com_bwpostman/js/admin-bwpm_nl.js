@@ -222,11 +222,16 @@ function buttonClick(text, editor) {
 //http://www.mattkruse.com/javascript/selectbox/source.html
 //-------------------------------------------------------------------
 function moveSelectedOptions(from,to) { // Moves elements from one select box to another one
+
+	// Count selected content
+	var selcnt = null;
+
 	// Move them over
 	for (var i=0; i<from.options.length; i++) {
 		var o = from.options[i];
 		if (o.selected) {
 		  to.options[to.options.length] = new Option(o.text, o.value, false, false);
+          selcnt = true;
 		}
 	}
 
@@ -239,6 +244,10 @@ function moveSelectedOptions(from,to) { // Moves elements from one select box to
 	}
 	from.selectedIndex = -1;
 	to.selectedIndex = -1;
+
+	if (selcnt === null) {
+		alert(Joomla.Text._('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'));
+	}
 }
 
 function moveArticle() {

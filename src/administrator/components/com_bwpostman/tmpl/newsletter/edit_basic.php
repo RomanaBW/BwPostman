@@ -38,8 +38,6 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('behavior.keepalive');
 
-Text::script('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
-
 $image = '<i class="fa fa-lg fa-info-circle"></i>';
 
 $checkContentArgs	= "'" . Text::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true) . "', ";
@@ -322,44 +320,51 @@ $currentTab = 'edit_basic';
 					<div class="row nl-content">
 						<div class="col-12 mb-2">
 							<div id="bw_nl_edit_content" class="h4 mb-3">
-								<div aria-describedby="tip-nl-content">
-									<?php echo $image; ?>
-									<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?>
-								</div>
-								<div role="tooltip" id="tip-nl-content"><?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?></div>
+								<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?>
 							</div>
-						</div>
-						<div class="col-lg-5">
-							<?php foreach($this->form->getFieldset('selected_content') as $field): ?>
-								<?php if ($field->hidden): ?>
-									<?php echo $field->input; ?>
-								<?php else: ?>
-									<div class="control-label">
-										<?php echo $field->label; ?>
-									</div>
-									<div class="controls">
-										<?php echo $field->input; ?>
-									</div>
-								<?php endif; ?>
-							<?php endforeach; ?>
 						</div>
 
-						<div class="col-lg-1 nl-content-mover text-center my-3">
-							<div class="control-label">
-								<label>&nbsp;</label>
-							</div>
-							<div class="controls">
-								<input style="width: 50px;" type="button" name="up" class="btn-up" value="&and;"
-										onclick="sortSelectedOptions('up')" />
-								<input style="width: 50px;" type="button" name="down" class="btn-down" value="&or;"
-										onclick="sortSelectedOptions('down')" />
+						<div class="col-lg-5">
+							<div class="row">
+								<div class="col-lg-10">
+									<?php foreach($this->form->getFieldset('selected_content') as $field): ?>
+										<?php if ($field->hidden): ?>
+											<?php echo $field->input; ?>
+										<?php else: ?>
+											<div class="control-label">
+												<div aria-describedby="tip-nl-content">
+													<?php echo $image; ?>
+													<?php echo $field->label; ?>
+												</div>
+												<div role="tooltip" id="tip-nl-content"><?php echo Text::_('COM_BWPOSTMAN_NL_REMOVE_CONTENT_NOTE'); ?></div>
+											</div>
+											<div class="controls">
+												<?php echo $field->input; ?>
+											</div>
+										<?php endif; ?>
+									<?php endforeach; ?>
+								</div>
+
+								<div class="col-lg-2 nl-content-mover my-3">
+									<div class="control-label">
+										<label>&nbsp;</label>
+									</div>
+									<div>
+										<input style="width: 50px;" type="button" name="up" class="btn-up" value="&and;"
+												onclick="sortSelectedOptions('up')" />
+										<br class="my-3">
+										<input style="width: 50px;" type="button" name="down" class="btn-down" value="&or;"
+												onclick="sortSelectedOptions('down')" />
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="col-lg-1 nl-content-mover text-center my-3">
+
+						<div class="col-lg-2 nl-content-mover text-center my-3">
 							<div class="control-label">
 								<label>&nbsp;</label>
 							</div>
-							<div class="controls">
+							<div>
 								<input type="button" name="left" class="btn btn-outline-info btn-left" value="&lt;"
 										onclick="moveSelectedOptions(form['jform_available_content'], form['jform_selected_content'])" />
 								<input type="button" name="right" class="btn btn-outline-info btn-right" value="&gt;"
@@ -368,13 +373,28 @@ $currentTab = 'edit_basic';
 						</div>
 
 						<div class="col-lg-5">
-							<p id="available_content_label" class="mb-3"><?php echo Text::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT'); ?></p>
+							<div aria-describedby="tip-nl-content">
+								<div id="available_content_label" class="mb-3">
+									<?php echo $image; ?>
+									<?php echo Text::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT'); ?>
+								</div>
+							</div>
+							<div role="tooltip" id="tip-nl-content"><?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?></div>
 							<?php foreach($this->form->getFieldset('available_content') as $field): ?>
 								<?php if ($field->hidden): ?>
 									<?php echo $field->input; ?>
 								<?php else: ?>
 									<div class="control-label">
-										<?php echo $field->label; ?>
+										<?php if ($field->id == 'jform_ac_id') { ?>
+											<?php echo $image; ?>
+											<?php echo $field->label; ?>
+											<div role="tooltip" id="tip-nl-content"><?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_POPUP_NOTE'); ?></div>
+										<?php } ?>
+										<?php if ($field->id == 'jform_available_content') { ?>
+											<?php echo $image; ?>
+											<?php echo $field->label; ?>
+											<div role="tooltip" id="tip-nl-content"><?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_LIST_NOTE'); ?></div>
+										<?php } ?>
 									</div>
 									<div class="controls">
 										<?php if ($field->fieldname == 'ac_id') { ?>

@@ -8,7 +8,7 @@ pipeline {
 				script {
 					BWPM_VERSION = "3.2.1"
 
-					JOOMLA_VERSION = "3.10.6"
+					JOOMLA_VERSION = "3.10.8"
 
 					GIT_MESSAGE = "not specified"
 

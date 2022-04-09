@@ -38,6 +38,8 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('behavior.keepalive');
 
+Text::script('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+
 $image = '<i class="fa fa-lg fa-info-circle"></i>';
 
 $checkContentArgs	= "'" . Text::_('COM_BWPOSTMAN_NL_CONFIRM_ADD_CONTENT', true) . "', ";
@@ -320,13 +322,17 @@ $currentTab = 'edit_basic';
 					<div class="row nl-content">
 						<div class="col-12 mb-2">
 							<div id="bw_nl_edit_content" class="h4 mb-3">
-								<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?>
+								<div aria-describedby="tip-nl-content">
+									<?php echo $image; ?>
+									<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_CONTENTS'); ?>
+								</div>
+								<div role="tooltip" id="tip-nl-content"><?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?></div>
 							</div>
 						</div>
 
 						<div class="col-lg-5">
 							<div class="row">
-								<div class="col-lg-10">
+								<div class="col-lg-9">
 									<?php foreach($this->form->getFieldset('selected_content') as $field): ?>
 										<?php if ($field->hidden): ?>
 											<?php echo $field->input; ?>
@@ -344,31 +350,35 @@ $currentTab = 'edit_basic';
 										<?php endif; ?>
 									<?php endforeach; ?>
 								</div>
-
 								<div class="col-lg-2 nl-content-mover my-3">
 									<div class="control-label">
 										<label>&nbsp;</label>
 									</div>
-									<div>
-										<input style="width: 50px;" type="button" name="up" class="btn-up" value="&and;"
-												onclick="sortSelectedOptions('up')" />
+									<div class="w-100 text-center mt-2">
+										<button type="button" name="up" class="btn-up btn btn-outline-secondary mr-2" onclick="sortSelectedOptions('up')">
+											<span class="icon-chevron-up" aria-hidden="true"></span>
+										</button>
 										<br class="my-3">
-										<input style="width: 50px;" type="button" name="down" class="btn-down" value="&or;"
-												onclick="sortSelectedOptions('down')" />
+										<button type="button" name="down" class="btn-down btn btn-outline-secondary" onclick="sortSelectedOptions('down')">
+											<span class="icon-chevron-down" aria-hidden="true"></span>
+										</button>
 									</div>
 								</div>
 							</div>
 						</div>
 
+
 						<div class="col-lg-2 nl-content-mover text-center my-3">
 							<div class="control-label">
 								<label>&nbsp;</label>
 							</div>
-							<div>
-								<input type="button" name="left" class="btn btn-outline-info btn-left" value="&lt;"
-										onclick="moveSelectedOptions(form['jform_available_content'], form['jform_selected_content'])" />
-								<input type="button" name="right" class="btn btn-outline-info btn-right" value="&gt;"
-										onclick="moveSelectedOptions(form['jform_selected_content'], form['jform_available_content'])" />
+							<div class="pt-lg-4">
+								<button type="button" name="left" class="btn-left btn btn-primary mr-2" onclick="moveSelectedOptions(form['jform_available_content'], form['jform_selected_content'])">
+									<span class="icon-chevron-left" aria-hidden="true"></span>
+								</button>
+								<button type="button" name="right" class="btn-right btn btn-primary" onclick="moveSelectedOptions(form['jform_selected_content'], form['jform_available_content'])">
+									<span class="icon-chevron-right" aria-hidden="true"></span>
+								</button>
 							</div>
 						</div>
 
@@ -398,15 +408,16 @@ $currentTab = 'edit_basic';
 									</div>
 									<div class="controls">
 										<?php if ($field->fieldname == 'ac_id') { ?>
-										<div class="row my-3">
-											<div class="col-lg-1">
-											<input type="button" name="ac-left" class="btn btn-outline-info btn-left"
-														value="&lt;" onclick="moveArticle()" />
+										<div class="row g-0 my-3">
+											<div class="col-2 text-end">
+												<button type="button" name="ac-left" class="btn btn-outline-info btn-left" onclick="moveArticle()" >
+													<span class="icon-chevron-left" aria-hidden="true"></span>
+												</button>
 											</div>
-											<div class="col-lg-11">
-										<?php } ?>
-										<?php echo $field->input; ?>
-										<?php if ($field->fieldname == 'ac_id') { ?>
+											<div class="col-10">
+												<?php } ?>
+												<?php echo $field->input; ?>
+												<?php if ($field->fieldname == 'ac_id') { ?>
 											</div>
 										</div>
 									<?php } ?>

@@ -1171,7 +1171,7 @@ class NewsletterEditPage
 	 *
 	 * @since   4.1.1
 	 */
-	public static $popupSelectorMover        = "//*/input[@name='ac-left']";
+	public static $popupSelectorMover        = "//*/button[@name='ac-left']";
 
 	/**
 	 * @var string
@@ -1213,28 +1213,28 @@ class NewsletterEditPage
 	 *
 	 * @since   4.1.1
 	 */
-	public static $move_up              = "//*/input[contains(@class, 'btn-up')]";
+	public static $move_up              = "//*/button[contains(@class, 'btn-up')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   4.1.1
 	 */
-	public static $move_down              = "//*/input[contains(@class, 'btn-down')]";
+	public static $move_down              = "//*/button[contains(@class, 'btn-down')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $add_content              = "//*/div[contains(@class, 'nl-content-mover')]/div[2]/input[contains(@class, 'btn-left')]";
+	public static $add_content              = "//*/div[contains(@class, 'nl-content-mover')]/div[2]/button[contains(@class, 'btn-left')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $remove_content           = "//*/div[contains(@class, 'nl-content-mover')]/div[2]/input[contains(@class, 'btn-right')]";
+	public static $remove_content           = "//*/div[contains(@class, 'nl-content-mover')]/div[2]/button[contains(@class, 'btn-right')]";
 
 
 	/**

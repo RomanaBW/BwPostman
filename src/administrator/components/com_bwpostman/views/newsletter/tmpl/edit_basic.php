@@ -303,23 +303,28 @@ $currentTab = 'edit_basic';
 							</legend>
 							<div class="well well-small">
 								<div class="width-40 fltlft span5">
-									<ul class="adminformlist unstyled text-inline width-90">
-										<?php foreach($this->form->getFieldset('selected_content') as $field): ?>
-											<?php if ($field->hidden): ?>
-												<li><?php echo $field->input; ?></li>
-											<?php else: ?>
-												<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
-													<?php echo $field->input; ?></li>
-											<?php endif; ?>
-										<?php endforeach; ?>
-									</ul>
-									<div class="text-center text-inline width-5">
-										<input style="width: 50px;" type="button" name="up" class="btn-up" value="&and;"
-											onclick="sortSelectedOptions('up')" />
-										<br />
-										<input style="width: 50px;" type="button" name="down" class="btn-down" value="&or;"
-											onclick="sortSelectedOptions('down')" />
-									</div>
+									<fieldset class="adminform">
+										<ul class="adminformlist unstyled text-inline width-90">
+											<?php foreach($this->form->getFieldset('selected_content') as $field): ?>
+												<li <?php echo 'class="' . $field->name . '"'; ?>>
+													<legend>
+														<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_REMOVE_CONTENT_NOTE'); ?>">
+															<?php echo $image; ?>
+														</span>
+														<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_SELECTED_CONTENT_LABEL'); ?></span>
+													</legend>
+													<?php echo $field->input; ?>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+										<div class="text-center text-inline width-5">
+											<input style="width: 50px;" type="button" name="up" class="btn-up" value="&and;"
+													onclick="sortSelectedOptions('up')" />
+											<br />
+											<input style="width: 50px;" type="button" name="down" class="btn-down" value="&or;"
+													onclick="sortSelectedOptions('down')" />
+										</div>
+									</fieldset>
 								</div>
 								<div class="width-20 fltlft span2 text-center"><br />
 									<input style="width: 50px;" type="button" name="left" class="btn-left" value="&lt;"
@@ -332,18 +337,37 @@ $currentTab = 'edit_basic';
 
 								<div class="width-40 fltlft span4">
 									<ul class="adminformlist unstyled">
-										<?php echo Text::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT'); ?>
+										<fieldset class="adminform">
+											<legend>
+												<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_NOTE'); ?>">
+													<?php echo $image; ?>
+												</span>
+												<span>&nbsp;<?php echo Text::_('COM_BWPOSTMAN_NL_AVAILABLE_CONTENT'); ?></span>
+											</legend>
+										</fieldset>
 										<?php foreach($this->form->getFieldset('available_content') as $field): ?>
-											<?php if ($field->hidden): ?>
-												<li><?php echo $field->input; ?></li>
-											<?php else: ?>
-												<li <?php echo 'class="' . $field->name . '"'; ?>><?php echo $field->label; ?>
-													<?php if ($field->fieldname == 'ac_id') { ?>
-														<span class="input-prepend"><input style="width: 50px;" type="button" name="ac-left" class="btn btn-left"
-															value="&lt;" onclick="moveArticle()" /></span>
-													<?php } ?>
-													<?php echo $field->input; ?></li>
-											<?php endif; ?>
+											<li <?php echo 'class="' . $field->name . '"'; ?>>
+												<?php if ($field->fieldname == 'ac_id') { ?>
+													<p>
+														<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_POPUP_NOTE'); ?>">
+															<?php echo $image; ?>
+														</span>
+														<span><?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_AVAILABLE_CONTENT_HELPER_LABEL'); ?></span>
+													</p>
+													<span class="input-prepend"><input style="width: 50px;" type="button" name="ac-left" class="btn btn-left"
+														value="&lt;" onclick="moveArticle()" /></span>
+												<?php }
+												else
+												{ ?>
+													<p>
+														<span class="editlinktip hasTip hasTooltip" title="<?php echo Text::_('COM_BWPOSTMAN_NL_ADD_CONTENT_LIST_NOTE'); ?>">
+															<?php echo $image; ?>
+														</span>
+														<span><?php echo Text::_('COM_BWPOSTMAN_NL_FIELD_AVAILABLE_CONTENT_LABEL'); ?></span>
+													</p>
+												<?php } ?>
+												<?php echo $field->input; ?>
+											</li>
 										<?php endforeach; ?>
 									</ul>
 								</div>

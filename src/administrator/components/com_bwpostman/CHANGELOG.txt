@@ -7,18 +7,18 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 
 Version 4.1.1 released (2022-04-14)----
 
-Bugfix
-# Remove obsolete check_allsubscribers part
+# At the check for recipients at sending newsletters na obsolete part of this check caused errors in rare cases.
 
 Improvement
-~ Add setting of missing component parameters at installation
-~ Ensure getting of parameters has default value
-~ Improve tooltips and texts at article selection
-~ Change message of popup when check after update is ready
+~ Not all parameters of the component were predefined at installation.
+~ If parameters of component, module or plugins are caught, they now get a default value.
+~ Tooltips and texts improved at creating and editing newsletters.
+~ The message 'Please close this window only if the test has finished' now changes to 'The test has finished, this window can be closed!', if the check of the tables after update was successful.
+~ Errors at language strings corrected
 
 New
-+ Add sorting of selected articles while creating/editing a newsletter
-+ Add selection of articles for creating/editing by filterable popup
++ Selected articles now can be sorted at creating and editing of newsletters.
++ At creating and editing of newsletters articles now can be selected by a popup, where the articles also may be filtered.
 
 Version 4.1.0 released (2022-02-18)----
 

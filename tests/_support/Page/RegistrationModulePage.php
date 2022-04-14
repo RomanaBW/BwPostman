@@ -292,14 +292,14 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $invalid_select_newsletter_mod_pop    = 'You have to select at least one mailinglist for finishing up your registration.';
+	public static $invalid_select_newsletter_mod_pop    = 'You have to select at least one newsletter for finishing up your registration.';
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $invalid_select_mailaddress_mod_pop    = 'You have to select at least one mailinglist for finishing up your registration.';
+	public static $invalid_select_mailaddress_mod_pop    = 'You have to select at least one newsletter for finishing up your registration.';
 
 	/**
 	 * @var string

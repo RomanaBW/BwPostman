@@ -66,6 +66,7 @@
         - "{{ container_dir }}/testers"
         - "{{ test_dir }}/_output/{{ project_name }}/videos"
         - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
+        - "{{ test_dir }}/_output/{{ project_name }}/xmlreports"
 
     - name: Ensure output path is writable
       become: true
@@ -78,6 +79,7 @@
         - "{{ test_dir }}"
         - "{{ test_dir }}/_output/{{ project_name }}/videos"
         - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
+        - "{{ test_dir }}/_output/{{ project_name }}/xmlreports"
 
     - name: Create infrastructure compose file
       template:

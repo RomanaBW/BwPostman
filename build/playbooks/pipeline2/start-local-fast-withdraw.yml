@@ -4,8 +4,24 @@
   gather_facts: no
   vars_files:
     - vars/fast-test-vars.yml
-    - vars/tester-image-vars.yml
-    - vars/codecept_paths_J4.yml
+
+  tasks:
+    # Synchronize var files to repo before used by following playbook and tasks
+    - name: Synchronize needed vars files to repo
+      become: yes
+      synchronize:
+        src: "{{ test_project_base_dir }}/build/playbooks/"
+        dest: "{{ repo_dir }}/build/playbooks"
+        delete: yes
+        recursive: yes
+        partial: yes
+        rsync_opts:
+          - "--update"
+          - "--quiet"
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
 
 - import_playbook: run-local-fast-withdraw.yml
 

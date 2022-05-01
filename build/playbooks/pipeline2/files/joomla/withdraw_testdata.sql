@@ -1,3 +1,6 @@
+# Disable strict mode if needed, i.e #1292 - Incorrect datetime value: '0000-00-00 00:00:00'
+# SET sql_mode = '';
+
 # Versanddatum ohne Veröffentlichungsdatum mitziehen
 UPDATE `jos_bwpostman_newsletters` SET `mailing_date`=DATE_ADD(`mailing_date`,interval 1 MONTH) WHERE `id` IN (4, 12, 13, 17, 19, 20, 21, 23, 25, 26, 27, 28, 29, 32, 34, 38, 41, 43, 45, 47, 48, 49, 50, 52, 57, 58, 60);
 

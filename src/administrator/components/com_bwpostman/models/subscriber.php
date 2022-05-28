@@ -679,6 +679,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 		$db_fields     = $data['db_fields'];
 
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
+		$data['jform'] = isset($data['jform']) ? $data['jform'] : array();
 		$mailinglists = BwPostmanMailinglistHelper::mergeMailinglistsOnly($data['jform']);
 
 		// We need the database columns for subsequent checking of the values

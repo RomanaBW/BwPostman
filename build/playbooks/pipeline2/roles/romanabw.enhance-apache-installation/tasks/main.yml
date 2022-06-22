@@ -34,11 +34,11 @@
 - name: install php mysqli
   shell: "docker-php-ext-install -j$(nproc) mysqli"
 
-- name: install php intl
-  shell: "docker-php-ext-install -j$(nproc) intl"
+#- name: install php intl
+#  shell: "docker-php-ext-install -j$(nproc) intl"
 
-- name: install php zip
-  shell: "docker-php-ext-install -j$(nproc) zip"
+#- name: install php zip
+#  shell: "docker-php-ext-install -j$(nproc) zip"
 
 #- name: install php openssl
 #  shell: "docker-php-ext-install -j$(nproc) openssl"

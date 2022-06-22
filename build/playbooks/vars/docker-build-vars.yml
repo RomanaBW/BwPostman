@@ -1,7 +1,7 @@
 ---
 private_docker_repo: "universe3:5000"
 author: "Romana Boldt info@boldt-webservice.de"
-joomla_version: "4.1.2"
+joomla_version: "4.1.5"
 
 suse_containers:
   - os_base:

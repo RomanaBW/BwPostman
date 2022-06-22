@@ -32,7 +32,7 @@
 
     - name: Install python at container
       become: yes
-      shell: "docker exec -u root -t {{ base_source.db_container_name }} apt-get install sudo python-apt --no-install-recommends -y"
+      shell: "docker exec -u root -t {{ base_source.db_container_name }} apt-get install sudo python --no-install-recommends -y"
 
     - name: clean up apt
       shell: "docker exec -u root -t {{ base_source.db_container_name }} apt-get clean"

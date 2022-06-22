@@ -47,7 +47,7 @@
 
     - name: Set python3 alternatives
       become: yes
-      shell: "docker exec -t {{ base_source.web_container_name }} update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2"
+      shell: "docker exec -t {{ base_source.web_container_name }} update-alternatives --install /usr/bin/python python /usr/bin/python3 2"
 
 - hosts: "{{ base_source.web_container_name }}"
   connection: docker

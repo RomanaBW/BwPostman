@@ -41,7 +41,7 @@
 
     - name: Set python3 alternatives
       become: yes
-      shell: "docker exec -t {{ base_source.db_container_name }} update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2"
+      shell: "docker exec -t {{ base_source.db_container_name }} update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2"
 
     - name: clean up apt
       shell: "docker exec -u root -t {{ base_source.db_container_name }} apt-get clean"

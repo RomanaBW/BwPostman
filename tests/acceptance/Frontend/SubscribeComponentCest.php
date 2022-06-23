@@ -819,7 +819,7 @@ class SubscribeComponentCest
 		// Set disclaimer to link
 		$I->setManifestOption('com_bwpostman', 'disclaimer_selection', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
-		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.jahamo-training.de/index.php?option=com_content&view=article&id=15&Itemid=582');
 
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(SubsView::$view_register, 0, -100);
@@ -895,7 +895,7 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'showinmodal', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_target', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
-		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.jahamo-training.de/index.php?option=com_content&view=article&id=15&Itemid=582');
 
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(SubsView::$view_register, 0, -100);
@@ -962,7 +962,7 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'showinmodal', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_target', '1');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
-		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.jahamo-training.de/index.php?option=com_content&view=article&id=15&Itemid=582');
 
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(SubsView::$view_register, 0, -100);

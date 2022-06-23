@@ -568,7 +568,7 @@ class SubscriberviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $disclaimer_url_text    = "1. Inhalt des Onlineangebotes";
+	public static $disclaimer_url_text    = "Alle Angaben auf dieser Web-Site dienen ausschließlich informativen Zwecken";
 
 	/**
 	 * @var string

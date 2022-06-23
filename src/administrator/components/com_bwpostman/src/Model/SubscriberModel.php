@@ -850,7 +850,7 @@ class SubscriberModel extends AdminModel
 			$app->setUserState('com_bwpostman.subscriber.fileformat', 'csv');
 
 			// Get data from the file and store them into an array
-			$row = fgetcsv($fh, '', $delimiter, $enclosure);
+			$row = fgetcsv($fh, 0, $delimiter, $enclosure);
 
 			while(is_array($row))
 			{
@@ -883,7 +883,7 @@ class SubscriberModel extends AdminModel
 				if ($caption)
 				{
 					$caption = false;
-					$row     = fgetcsv($fh, '', $delimiter, $enclosure);
+					$row     = fgetcsv($fh, 0, $delimiter, $enclosure);
 					continue;
 				}
 
@@ -895,7 +895,7 @@ class SubscriberModel extends AdminModel
 					$mail = $ret_maildata;
 				}
 
-				$row = fgetcsv($fh, '', $delimiter, $enclosure);
+				$row = fgetcsv($fh, 0, $delimiter, $enclosure);
 			} // Endif format == csv
 		}
 		else

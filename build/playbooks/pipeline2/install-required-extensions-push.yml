@@ -215,6 +215,9 @@
       set_fact:
         sql_base_cmd: "mysql -u {{ mariadb_user }} -p{{ mariadb_password }} {{ mariadb_database }}"
 
+    - name: enable JCE editor toggler
+      shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/set-jce-toggle-param.sql"
+
 
 - hosts: localhost
   pre_tasks:

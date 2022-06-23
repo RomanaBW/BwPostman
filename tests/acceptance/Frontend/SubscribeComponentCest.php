@@ -1069,29 +1069,29 @@ class SubscribeComponentCest
 	 *
 	 * @since   4.0.0
 	 */
-	public function SubscribeActivationNoSenderData(AcceptanceTester $I)
-	{
-		$I->wantTo("Subscribe to mailinglist by component, get error message no activation mail was sent");
-		$I->expectTo('see error message');
-
-		Generals::presetComponentOptions($I);
-		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster');
-
-		SubsView::subscribeByComponent($I);
-		$I->click(SubsView::$button_register);
-
-		$I->scrollTo(SubsView::$err_no_activation, 0, -100);
-		$I->wait(1);
-		$I->waitForElementVisible(SubsView::$err_no_activation, 3);
-		$I->see(SubsView::$msg_err_occurred);
-		$I->see(SubsView::$activation_mail_error);
-
-		SubsView::activate($I, SubsView::$mail_fill_1);
-
-		SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
-
-		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster@boldt-webservice.de');
-	}
+//	public function SubscribeActivationNoSenderData(AcceptanceTester $I)
+//	{
+//		$I->wantTo("Subscribe to mailinglist by component, get error message no activation mail was sent");
+//		$I->expectTo('see error message');
+//
+//		Generals::presetComponentOptions($I);
+//		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster');
+//
+//		SubsView::subscribeByComponent($I);
+//		$I->click(SubsView::$button_register);
+//
+//		$I->scrollTo(SubsView::$err_no_activation, 0, -100);
+//		$I->wait(1);
+//		$I->waitForElementVisible(SubsView::$err_no_activation, 3);
+//		$I->see(SubsView::$msg_err_occurred);
+//		$I->see(SubsView::$activation_mail_error);
+//
+//		SubsView::activate($I, SubsView::$mail_fill_1);
+//
+//		SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
+//
+//		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster@boldt-webservice.de');
+//	}
 
 	/**
 	 * Test method to go to edit newsletter subscription

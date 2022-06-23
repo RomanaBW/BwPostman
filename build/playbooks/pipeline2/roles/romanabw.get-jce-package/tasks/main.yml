@@ -1,7 +1,7 @@
 ---
 - name: Set archive source
   set_fact:
-    archive_source: "https://www.joomlacontenteditor.net/downloads/editor/core?task=release.download&id=271"
+    archive_source: "https://www.joomlacontenteditor.net/downloads/editor/core?task=release.download&id=275"
 
 - name: get JCE installation package
   get_url:

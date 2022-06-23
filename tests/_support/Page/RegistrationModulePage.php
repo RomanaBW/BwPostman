@@ -474,7 +474,7 @@ class RegistrationModulePage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_disclaimer_url_text    = "New feature: Workflows";
+	public static $mod_disclaimer_url_text    = "Alle Angaben auf dieser Web-Site dienen ausschließlich informativen Zwecke";
 
 	/**
 	 * @var string

@@ -37,6 +37,7 @@
     - "change-install-plugins-order.sql"
     - "disable-top-modules.sql"
     - "disable-scheduler.sql"
+    - "set-jce-toggle-param.sql"
 
 - name: insert Joomla data to database to J4
   shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item }}"

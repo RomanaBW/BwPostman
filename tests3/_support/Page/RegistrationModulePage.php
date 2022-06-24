@@ -398,7 +398,7 @@ class RegistrationModulePage
 	 *
 	 * @since 3.0.2
 	 */
-	public static $mod_disclaimer_url_text    = "1. Inhalt des Onlineangebotes";
+	public static $mod_disclaimer_url_text    = "Alle Angaben auf dieser Web-Site dienen ausschließlich informativen Zwecken";
 
 	/**
 	 * @var string
@@ -522,7 +522,7 @@ class RegistrationModulePage
 		$I->setManifestOption('mod_bwpostman', 'default_emailformat', '1');
 		$I->setManifestOption('mod_bwpostman', 'disclaimer', '1');
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '1');
-		$I->setManifestOption('mod_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_link', 'https://www.jahamo-training.de/index.php?option=com_content&view=article&id=15&Itemid=582');
 		$I->setManifestOption('mod_bwpostman', 'article_id', '70');
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_menuitem', '437');
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_target', '0');

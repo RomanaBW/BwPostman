@@ -779,7 +779,7 @@ class BwPostmanModelSubscriber extends JModelAdmin
 			$app->setUserState('com_bwpostman.subscriber.fileformat', 'csv');
 
 			// Get data from the file and store them into an array
-			while(($row = fgetcsv($fh, '', $delimiter, $enclosure)) !== false)
+			while(($row = fgetcsv($fh, 0, $delimiter, $enclosure)) !== false)
 			{
 				$intKeys = array(
 					'emailformat',

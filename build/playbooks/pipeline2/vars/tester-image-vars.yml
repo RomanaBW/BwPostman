@@ -104,8 +104,8 @@ phantom_version: "2.1.1"
 # Settings for creating base LAMP containers
 official_mariadb: bitnami/mariadb:10.5-debian-10
 official_mariadb_short: mariadb:10.5-debian-10
-official_apache: php:apache
-official_apache_short: php-apache
+official_apache: php:7.4.26-apache
+official_apache_short: php_7.4.26-apache
 official_tester: romana/selenium-standalone-chrome-debug-ffmpeg:latest
 official_tester_short: selenium-standalone-chrome-debug-ffmpeg:latest
 

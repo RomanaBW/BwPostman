@@ -46,11 +46,6 @@
       set_fact:
         net_name: "{{ project_name }}"
 
-    - name: Check for failure file
-      stat:
-        path: "{{ test_dir }}/_output/{{ project_name }}/failed"
-      register: failure_file
-
     - name: Create output folders
       become: yes
       file:
@@ -98,6 +93,11 @@
 
     - name: Synchronize tests
       command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir }}/tests {{ src_dir }}/tests"
+
+    - name: Check for failure file
+      stat:
+        path: "{{ test_dir }}/_output/{{ project_name }}/failed"
+      register: failure_file
 
     - name: Set rebase command
       set_fact:

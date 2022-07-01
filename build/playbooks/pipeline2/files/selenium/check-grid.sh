@@ -15,7 +15,7 @@ do
         shift 2
         ;;
         --port)
-        PORT=${2:-"4444"}
+        PORT=${2:-"4445"}
         shift 2
         ;;
         *)

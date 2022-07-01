@@ -4,7 +4,7 @@
 mkdir -p /tmp/xdebug
 cd /tmp/xdebug
 
-wget http://xdebug.org/files/xdebug-$XDEBUG_VERSION.tgz
+wget https://xdebug.org/files/xdebug-$XDEBUG_VERSION.tgz
 
 tar -xvzf xdebug-$XDEBUG_VERSION.tgz
 

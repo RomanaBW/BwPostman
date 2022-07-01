@@ -3,7 +3,7 @@
 mkdir -p /tmp/uopz
 cd /tmp/uopz
 
-wget http://pecl.php.net/get/uopz-$UOPZ_VERSION.tgz
+wget https://pecl.php.net/get/uopz-$UOPZ_VERSION.tgz
 
 tar -xvzf uopz-$UOPZ_VERSION.tgz
 

@@ -37,10 +37,10 @@ modules:
         browser: chrome
         port: 4445
         capabilities:
-            chromeOptions:
-                args: ["--window-size=1920,1080"]
-                prefs:
-                  download.default_directory: "/tests/tests/_output"
+          "goog:chromeOptions":
+            args: ["--window-size=1920,1080", "--no-sandbox"]
+            prefs:
+              download.default_directory: "/tests/tests/_output"
 
 
         connection_timeout: 60

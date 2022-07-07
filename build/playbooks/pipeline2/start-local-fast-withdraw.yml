@@ -13,7 +13,7 @@
         src: "{{ test_project_base_dir }}/build/playbooks/"
         dest: "{{ repo_dir }}/build/playbooks"
         delete: yes
-        recursive: yes
+        archive: yes
         partial: yes
         rsync_opts:
           - "--update"

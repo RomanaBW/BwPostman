@@ -1,4 +1,24 @@
 ---
+- hosts: Arbeitsplatz
+  connection: local
+  gather_facts: no
+  vars_files:
+    - vars/fast-test-vars.yml
+
+  tasks:
+    # Synchronize var files to repo before used by following playbook and tasks
+    - name: Synchronize needed vars files to repo
+      become: yes
+      synchronize:
+        src: "{{ test_project_base_dir }}/build/playbooks/"
+        dest: "{{ repo_dir }}/build/playbooks"
+        delete: yes
+        archive: yes
+        partial: yes
+        rsync_opts:
+          - "--update"
+          - "--quiet"
+
 - hosts: localhost
   pre_tasks:
     - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"

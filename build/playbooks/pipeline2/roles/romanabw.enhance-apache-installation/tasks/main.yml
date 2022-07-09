@@ -34,15 +34,6 @@
 - name: install php mysqli
   shell: "docker-php-ext-install -j$(nproc) mysqli"
 
-#- name: install php intl
-#  shell: "docker-php-ext-install -j$(nproc) intl"
-
-#- name: install php zip
-#  shell: "docker-php-ext-install -j$(nproc) zip"
-
-#- name: install php openssl
-#  shell: "docker-php-ext-install -j$(nproc) openssl"
-
 - name: configure php gd
   shell: "docker-php-ext-configure gd --with-freetype --with-jpeg"
 
@@ -52,7 +43,6 @@
 - name: pecl install uopz and xdebug
   command: "pecl install {{ item }}"
   with_items:
-    - uopz
     - xdebug
-  ignore_errors: yes
+    - uopz-6.1.2
 

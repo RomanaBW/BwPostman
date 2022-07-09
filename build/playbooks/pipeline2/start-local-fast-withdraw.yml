@@ -1,5 +1,5 @@
 ---
- hosts: Arbeitsplatz
+- hosts: workplace
   gather_facts: no
   vars_files:
     - vars/fast-test-vars.yml
@@ -14,6 +14,7 @@
         delete: yes
         archive: yes
         partial: yes
+        mode: pull
         rsync_opts:
           - "--update"
           - "--quiet"

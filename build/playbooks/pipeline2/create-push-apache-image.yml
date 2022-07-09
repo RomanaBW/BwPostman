@@ -1,5 +1,5 @@
 ---
- hosts: Arbeitsplatz
+- hosts: workplace
   gather_facts: no
   vars_files:
     - vars/fast-test-vars.yml
@@ -11,9 +11,9 @@
       synchronize:
         src: "{{ test_project_base_dir }}/build/playbooks/"
         dest: "{{ repo_dir }}/build/playbooks"
-        delete: yes
         archive: yes
         partial: yes
+        mode: pull
         rsync_opts:
           - "--update"
           - "--quiet"
@@ -52,17 +52,28 @@
             "universe3.bet2.nil" : "192.168.2.100",
           }
 
-    - name: Update apt at container
-      become: yes
-      shell: "docker exec -t {{ base_source.web_container_name }} apt-get update"
+    - block:
+        - name: Update apt at container
+          become: yes
+          shell: "docker exec -t {{ base_source.web_container_name }} apt-get update"
 
-    - name: Install python at container
-      become: yes
-      shell: "docker exec -t {{ base_source.web_container_name }} apt-get install sudo python3 python3-apt --no-install-recommends -y"
-#
-#    - name: Update-alternatives python version 3 to default
-#      become: true
-#      shell: "docker exec -t {{ base_source.web_container_name }} update-alternatives --install /usr/bin/python python /usr/bin/python3.9 2"
+        - name: Install python at container
+          become: yes
+          shell: "docker exec -t {{ base_source.web_container_name }} apt-get install sudo python3 python3-apt --no-install-recommends -y"
+
+        - name: Update-alternatives python version 3 to default
+          become: true
+          shell: "docker exec -t {{ base_source.web_container_name }} update-alternatives --install /usr/bin/python python /usr/bin/python3 2"
+
+      rescue:
+        - name: Remove the container on error case
+          docker_container:
+            name: '{{ base_source.web_container_name }}'
+            state: absent
+
+        - name: break here on error case
+          shell: "/bin/false"
+
 
 - hosts: "{{ base_source.web_container_name }}"
   connection: docker
@@ -71,17 +82,23 @@
     - vars/tester-test-vars.yml
 
   tasks:
-    - name: Run the role enhance apache installation
-      include_role:
-        name: romanabw.enhance-apache-installation
+    - block:
+        - name: Run the role enhance apache installation
+          include_role:
+            name: romanabw.enhance-apache-installation
 
-    - name: Run the role configure apache
-      include_role:
-        name: romanabw.configure-apache
+        - name: Run the role configure apache
+          include_role:
+            name: romanabw.configure-apache
 
-    - name: Run the role configure sendmail
-      include_role:
-        name: romanabw.configure-sendmail
+        - name: Run the role configure sendmail
+          include_role:
+            name: romanabw.configure-sendmail
+
+      rescue:
+        - name: Ensure that the playbook runs further to be able to cleanup
+          debug:
+            msg: "Error at docker container occurred"
 
 - hosts: tester
   connection: local
@@ -91,14 +108,17 @@
     - vars/tester-test-vars.yml
 
   tasks:
-    - name: Commit the container
-      command: 'docker commit -a "{{ author }}" {{ base_source.web_container_name }} {{ private_docker_repo }}/{{ base_target.web_image_tag_target }}'
+    - block:
+        - name: Commit the container
+          command: 'docker commit -a "{{ author }}" {{ base_source.web_container_name }} {{ private_docker_repo }}/{{ base_target.web_image_tag_target }}'
 
-    - name: Push container image to private registry
-      shell: "docker push {{ private_docker_repo }}/{{ base_target.web_image_tag_target }}"
+        - name: Push container image to private registry
+          shell: "docker push {{ private_docker_repo }}/{{ base_target.web_image_tag_target }}"
+      when: hostvars[base_source.web_container_name]['ansible_failed_result'] is not defined
 
     - name: Remove the container
       docker_container:
         name: '{{ base_source.web_container_name }}'
         state: absent
+      failed_when: hostvars[base_source.web_container_name]['ansible_failed_result'] is defined
 

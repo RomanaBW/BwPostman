@@ -155,10 +155,10 @@ class InstallVirtuemartCest
 	{
 		$this->addShopMenuItem($I);
 		$this->addSampleData($I);
-//		$this->configureSafePath($I);
-//		$this->configureRegisterOnCheckout($I);
-//		$this->configureVendor($I);
-//		$this->configureShopper($I);
+		$this->configureSafePath($I);
+		$this->configureRegisterOnCheckout($I);
+		$this->configureShopper($I);
+		$this->configureVendor($I);
 	}
 
 	/**
@@ -213,8 +213,14 @@ class InstallVirtuemartCest
 		$I->fillField(InstallPage::$virtuemart_shop_url_field, InstallPage::$virtuemart_shop_url_value);
 
 		$I->clickSelectList(InstallPage::$virtuemart_shop_currency_field, InstallPage::$virtuemart_shop_currency_value, InstallPage::$virtuemart_shop_currency_id);
-		$I->clickSelectList(InstallPage::$virtuemart_shop_accepted_currency_field, InstallPage::$virtuemart_shop_accepted_currency_value, InstallPage::$virtuemart_shop_accepted_currency_id);
-//		$I->clickAndWait(Generals::$toolbar['Save'], 1);
+//		$I->clickSelectList(InstallPage::$virtuemart_shop_accepted_currency_field, InstallPage::$virtuemart_shop_accepted_currency_value, InstallPage::$virtuemart_shop_accepted_currency_id);
+		$I->clickAndWait(InstallPage::$virtuemart_shop_accepted_currency_field, 1);
+		$I->waitForElementVisible(InstallPage::$virtuemart_shop_accepted_currency_id);
+		$I->scrollTo(InstallPage::$virtuemart_shop_accepted_currency_value, 0);
+		$I->clickAndWait(InstallPage::$virtuemart_shop_accepted_currency_value, 1);
+		$I->seeElement(InstallPage::$virtuemart_shop_accepted_currency_selected);
+
+		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 	}
 
 	/**
@@ -228,7 +234,7 @@ class InstallVirtuemartCest
 	 */
 	private function configureShopper(AcceptanceTester $I)
 	{
-//		$I->amOnPage(InstallPage::$virtuemart_editshop_url);
+		$I->amOnPage(InstallPage::$virtuemart_editshop_url);
 		$I->clickAndWait(InstallPage::$virtuemart_shop_shopper_tab, 1);
 		$I->scrollTo(InstallPage::$virtuemart_shop_shopper_billto, 0, -50);
 		$I->wait(1);
@@ -268,7 +274,7 @@ class InstallVirtuemartCest
 		$I->click(InstallPage::$virtuemart_sample_data_button);
 		$I->seeInPopup(InstallPage::$virtuemart_sample_data_popup_text);
 		$I->acceptPopup();
-		$I->waitForElementVisible(Generals::$alert_success, 120);
+		$I->waitForElementVisible(Generals::$alert_info, 120);
 	}
 
 	/**

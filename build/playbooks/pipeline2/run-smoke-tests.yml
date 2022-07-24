@@ -84,6 +84,7 @@
         source: "{{ smoke_source }}"
         target: "{{ smoke_target }}"
         webroot_path: "{{ joomla_base_folders[sub_path_smoke] }}"
+        container_web_root: "{{ tester_web_root }}"
 
 
 - hosts: "{{ smoke_source.web_container_name }}"

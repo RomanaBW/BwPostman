@@ -68,6 +68,7 @@
         source: "{{ acceptance_source }}"
         target: "{{ acceptance_target }}"
         j_main_version: "{{ joomla_version[0] }}"
+        container_web_root: "{{ tester_web_root }}"
 
 
 - hosts: "bwpm_fast_web-{{ lookup('env','BW_TEST_JOOMLA_VERSION')[0] }}"

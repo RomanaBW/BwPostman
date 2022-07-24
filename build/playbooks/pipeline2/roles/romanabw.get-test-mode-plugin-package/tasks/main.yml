@@ -1,5 +1,0 @@
----
-- name: copy test mode plugin package to container
-  copy:
-    src: "/repositories/BwTestModePlugin/packages/workingOn/plg_bwtestmode.zip"
-    dest: "{{ codecept_path_data }}"

@@ -10,6 +10,7 @@ services:
       - {{ base_dir }}:/tests
       - {{ web_dir }}/{{ project_name }}/files:/www_path
       - /dev/shm:/dev/shm
+      - /repositories:/repositories
     environment:
       - BW_TEST_BWPM_VERSION={{ bwpm_version }}
       - BW_TEST_CAT={{ test_cat }}

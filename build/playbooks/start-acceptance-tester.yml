@@ -102,8 +102,8 @@
       become: true
       become_user: root
       template:
-        src: "acceptance.yml.j2"
-        dest: "{{ acceptance_manifest_path }}/acceptance.yml"
+        src: "acceptance.suite.yml.j2"
+        dest: "{{ acceptance_manifest_path }}/acceptance.suite.yml"
 
     - name: Create test script
       template:

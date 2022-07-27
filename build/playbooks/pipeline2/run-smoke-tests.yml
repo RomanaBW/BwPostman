@@ -194,8 +194,8 @@
       become: true
       become_user: root
       template:
-        src: "acceptance.yml.j2"
-        dest: "/data/tests/acceptance.yml"
+        src: "acceptance.suite.yml.j2"
+        dest: "/data/tests/acceptance.suite.yml"
       when: do_record == "true"
 
     - name: Prepare manifest for acceptance tests with phantomJS

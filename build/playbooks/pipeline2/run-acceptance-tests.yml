@@ -59,6 +59,7 @@
         source: "{{ acceptance_source }}"
         target: "{{ acceptance_target }}"
         webroot_path: "{{ main_base_folder }}/{{ sub_path }}"
+        container_web_root: "{{ tester_web_root }}"
 
 
 - hosts: "{{ acceptance_source.web_container_name }}"
@@ -160,23 +161,14 @@
         src: "codeception.yml.j2"
         dest: "/data/codeception.yml"
 
-    - name: Prepare manifest for acceptance tests with chromium
+    - name: Prepare manifest for acceptance tests
       become: true
       become_user: root
       template:
         src: "acceptance.suite.yml.j2"
         dest: "/data/tests/acceptance.suite.yml"
-#      when: do_record == "true"
-#
-#    - name: Prepare manifest for acceptance tests with phantomJS
-#      become: true
-#      become_user: root
-#      template:
-#        src: "acceptance-phantom.suite.yml.j2"
-#        dest: "/data/tests/acceptance.suite.yml"
-#      when: do_record == "false"
 
-    - name: Create test script for chromium
+    - name: Create test script
       template:
         src: "do-tests.sh.j2"
         dest: "/data/do-tests.sh"

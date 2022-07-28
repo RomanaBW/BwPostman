@@ -7,9 +7,6 @@ j_version_short: "j3"
 bwpm_version: "3.2.2"
 bwpm_version_previous: "3.2.1"
 
-vm_version: "3.8.8.10472"
-tcpdf_version: "1.0.9"
-
 j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 
 
@@ -31,10 +28,18 @@ additional_extensions:
   - pkg_jce.zip
   - plg_bwtestmode.zip
 
+virtuemart_download_path: "https://dev.virtuemart.net/attachments/download/1295"
+
+vm_version: "3.8.9.10564"
+#tcpdf_version: "1.2.0"
+
+vm_archive_file: "com_virtuemart.{{ vm_version }}_package_or_extract.zip"
+vm_generalized_package_name: "com_virtuemart_package.zip"
+
 virtuemart_extensions:
-  - com_tcpdf.zip
-  - com_virtuemart.zip
-  - com_virtuemart_ext_aio.zip
+  - "{{ vm_archive_file }}"
+#  - com_virtuemart_ext_aio.zip
+#  - com_tcpdf.zip
 
 
 # Commit values

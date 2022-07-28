@@ -1,0 +1,57 @@
+---
+- name: ensure old zip file is removed
+  file:
+    path: "{{ bw_target_ext_path }}/plg_{{ bw_plugin_name }}.zip"
+    state: absent
+
+- name: Ensure folders for plugin files exists (and with this all upper folders)
+  file:
+    path: "{{ bw_workspace }}/plugins/{{ bw_plugin_group }}/{{ bw_plugin_name }}/"
+    state: directory
+
+- name: Copy plugin files
+  synchronize:
+    src: "{{ bw_workspace }}/plugins/{{ bw_plugin_group }}/{{ bw_plugin_name }}/"
+    dest: "{{ bw_target_ext_path }}/files"
+
+- name: Create folders for language files
+  file:
+    path: "{{ bw_target_ext_path }}/files/language/{{ item }}"
+    state: directory
+  with_items: "{{ bw_languages }}"
+  when: bw_external_lang|bool
+
+- name: Copy language file
+  synchronize:
+    src: "{{ bw_workspace }}/administrator/language/{{ item }}/{{ item }}.plg_{{ bw_plugin_group }}_{{ bw_plugin_name }}.ini"
+    dest: "{{ bw_target_ext_path }}/files/language/{{ item }}/{{ item }}.plg_{{ bw_plugin_group }}_{{ bw_plugin_name }}.ini"
+  with_items: "{{ bw_languages }}"
+  ignore_errors: yes
+  when: bw_external_lang|bool
+
+- name: Copy sys language file
+  synchronize:
+    src: "{{ bw_workspace }}/administrator/language/{{ item }}/{{ item }}.plg_{{ bw_plugin_group }}_{{ bw_plugin_name }}.sys.ini"
+    dest: "{{ bw_target_ext_path }}/files/language/{{ item }}/{{ item }}.plg_{{ bw_plugin_group }}_{{ bw_plugin_name }}.sys.ini"
+  with_items: "{{ bw_languages }}"
+  ignore_errors: yes
+  when: bw_external_lang|bool
+
+- name: Copy licence file in place
+  synchronize:
+    src: "/repositories/BwCommons/docs/gnu_gpl_v3.txt"
+    dest: "{{ bw_target_ext_path }}/files/LICENSE.txt"
+
+- name: Pack installation package
+  archive:
+    path: "{{ bw_target_ext_path }}/files/"
+    dest: "{{ bw_target_ext_path }}/plg_{{ bw_plugin_group }}_{{ bw_plugin_name }}.zip"
+    mode: 0664
+    owner: romana
+    group: users
+    format: zip
+
+- name: Remove folder files, now not more needed
+  file:
+    path: "{{ bw_target_ext_path }}/files/"
+    state: absent

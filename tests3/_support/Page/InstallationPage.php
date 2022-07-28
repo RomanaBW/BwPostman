@@ -67,14 +67,14 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_advanced    = "/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/div[1]/fieldset[3]";
+	public static $virtuemart_config_advanced    = "//*/form[@id='adminForm']/div/div/ul[2]/li[1]/div/div/div/div/div[1]/div[3]/div/div[1]/div";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_enable_db_tools    = '//*[@id="dangeroustools"]';
+	public static $virtuemart_config_enable_db_tools    = "//*[@id='dangeroustools']/label[1]";
 
 	/**
 	 * @var string
@@ -88,14 +88,14 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_tools_db_tab    = "/html/body/div[2]/section/div/div/div[2]/div[3]/div/div/ul/li[1]";
+	public static $virtuemart_tools_db_tab    = "//*/div[@id='vmuikit-admin-ui-tabs']/div/ul[1]/li[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_sample_data_button    = "/html/body/div[2]/section/div/div/div[2]/div[3]/div/div/div[1]/table[2]/tbody/tr[2]/td[2]/div/a";
+	public static $virtuemart_sample_data_button    = "//*/a[contains(text(), 'fresh install with sample data')]";
 
 	/**
 	 * @var string
@@ -109,21 +109,21 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_shop_tab    = "/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/ul/li[1]";
+	public static $virtuemart_config_shop_tab    = "//*/form[@id='adminForm']/div/div/ul[1]/li[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_template_tab    = "/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/ul/li[4]";
+	public static $virtuemart_config_template_tab    = "//*/form[@id='adminForm']/div/div/ul[1]/li[4]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_checkout_tab    = "/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/ul/li[6]";
+	public static $virtuemart_config_checkout_tab    = "//*/form[@id='adminForm']/div/div/ul[1]/li[6]";
 
 	/**
 	 * @var string
@@ -144,14 +144,14 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_checkout_register_field    = '//*[@id="oncheckout_show_register"]';
+	public static $virtuemart_config_checkout_register_field    = "//*[@id='oncheckout_show_register']/label[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_vendor_tab    = '/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/ul/li[1]';
+	public static $virtuemart_shop_vendor_tab    = "//*/form[@id='adminForm']/div/div/ul[1]/li[1]";
 
 	/**
 	 * @var string
@@ -221,35 +221,42 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_accepted_currency_id    = 'vendor_accepted_currencies_chzn';
+	public static $virtuemart_shop_accepted_currency_id    = "//*[@id='vendor_accepted_currencies_chzn']/div/ul/li";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_accepted_currency_field    = '//*[@id="vendor_accepted_currencies_chzn"]';
+	public static $virtuemart_shop_accepted_currency_field    = "//*[@id='vendor_accepted_currencies_chzn']/ul/li/input";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_accepted_currency_value    = '//*[@id="vendor_accepted_currencies_chzn"]/div/ul/li[text()="Euro"]';
+	public static $virtuemart_shop_accepted_currency_value    = "//*[@id='vendor_accepted_currencies_chzn']/div/ul/li[text()='Euro']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.2
+	 */
+	public static $virtuemart_shop_accepted_currency_selected    = "//*[@id='vendor_accepted_currencies_chzn']/ul/li/span[text()='Euro']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_shopper_tab    = '/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/ul/li[3]';
+	public static $virtuemart_shop_shopper_tab    = "//*/form[@id='adminForm']/div/div/ul[1]/li[3]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_shopper_billto    = '/html/body/div[2]/section/div/div/div[2]/div[3]/form/div/div[3]/fieldset[4]/legend';
+	public static $virtuemart_shop_shopper_billto    = "//*/h3[contains(text(), 'Bill To Information')]";
 
 
 	/**
@@ -257,7 +264,7 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shopper_firstname_field    = '//*[@id="first_name_field"]';
+	public static $virtuemart_shopper_firstname_field    = "//*[@id='first_name_field']";
 
 	/**
 	 * @var string
@@ -334,7 +341,7 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shopper_country_field    = '//*[@id="virtuemart_country_id_field_chzn"]/a';
+	public static $virtuemart_shopper_country_field    = "//*[@id='virtuemart_country_id_field_chzn']/a";
 
 	/**
 	 * @var string

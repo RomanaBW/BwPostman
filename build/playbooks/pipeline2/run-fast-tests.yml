@@ -4,7 +4,6 @@
   vars_files:
     - vars/tester-image-vars.yml
     - vars/fast-test-vars.yml
-#    - "vars/codecept_paths_J{{ lookup('env','BW_TEST_JOOMLA_VERSION')[0] }}.yml"
 
   tasks:
     - name: Import transmitted parameters
@@ -76,7 +75,7 @@
     - vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/fast-test-vars.yml
-    - "vars/codecept_paths_J{{ lookup('env','BW_TEST_JOOMLA_VERSION')[0] }}.yml"
+    - vars/codecept_paths.yml
 
   tasks:
     - name: Import transmitted parameters
@@ -149,7 +148,7 @@
     - vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/fast-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - vars/codecept_paths.yml
 
   tasks:
     - name: Import transmitted parameters
@@ -221,7 +220,7 @@
   vars_files:
     - vars/tester-image-vars.yml
     - vars/fast-test-vars.yml
-    - "vars/codecept_paths_J{{ lookup('env','BW_TEST_JOOMLA_VERSION')[0] }}.yml"
+    - vars/codecept_paths.yml
 
   tasks:
     - name: run tests

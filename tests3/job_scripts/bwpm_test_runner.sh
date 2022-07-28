@@ -235,29 +235,29 @@ fi
 if [[ "${BW_TEST_CAT}" == details_nl ]]
 then
 # single tests for newsletters
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCancelMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_cancel_main.xml --html htmlreports/report_newsletters_cancel_main.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCompleteMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_complete_main.xml --html htmlreports/report_newsletters_complete_main.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCancelMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_cancel_main.xml --html htmlreports/report_newsletters_cancel_main.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCompleteMainView "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_complete_main.xml --html htmlreports/report_newsletters_complete_main.html
 codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCancelListView "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_cancel_list.xml --html htmlreports/report_newsletters_cancel_list.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCompleteListViewDefault "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_complete_list.xml --html htmlreports/report_newsletters_complete_list.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCompleteListViewTemplate "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_complete_template_list.xml --html htmlreports/report_newsletters_complete_template_list.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterSaveNewListView "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_save_new_list.xml --html htmlreports/report_newsletters_save_new_list.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterSaveCopyListViewDefault "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_save_copy_list.xml --html htmlreports/report_newsletters_save_copy_list.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterSaveCopyListViewTemplate "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_save_copy_template_list.xml --html htmlreports/report_newsletters_save_copy_template_list.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterWithFileUpload "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_file_upload.xml --html htmlreports/report_newsletters_file_upload.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterListViewRestore "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_restore_list.xml --html htmlreports/report_newsletters_restore_list.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateNewsletterTwiceListView "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_twice_list.xml --html htmlreports/report_newsletters_twice_list.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CopyNewsletterOnly "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_copy.xml --html htmlreports/report_newsletters_copy.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CopyNewsletterTemplate "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_copy_template.xml --html htmlreports/report_newsletters_copy_template.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCompleteListViewDefault "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_complete_list.xml --html htmlreports/report_newsletters_complete_list.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterCompleteListViewTemplate "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_complete_template_list.xml --html htmlreports/report_newsletters_complete_template_list.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterSaveNewListView "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_save_new_list.xml --html htmlreports/report_newsletters_save_new_list.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterSaveCopyListViewDefault "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_save_copy_list.xml --html htmlreports/report_newsletters_save_copy_list.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterSaveCopyListViewTemplate "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_save_copy_template_list.xml --html htmlreports/report_newsletters_save_copy_template_list.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterWithFileUpload "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_file_upload.xml --html htmlreports/report_newsletters_file_upload.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateOneNewsletterListViewRestore "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_restore_list.xml --html htmlreports/report_newsletters_restore_list.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CreateNewsletterTwiceListView "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_twice_list.xml --html htmlreports/report_newsletters_twice_list.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CopyNewsletterOnly "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_copy.xml --html htmlreports/report_newsletters_copy.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::CopyNewsletterTemplate "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_copy_template.xml --html htmlreports/report_newsletters_copy_template.html
 
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToTestrecipients "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_test.xml --html htmlreports/report_newsletters_send_test.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToRealRecipientsPublishOptionNo "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_real_publish_option_no.xml --html htmlreports/report_newsletters_send_real_publish_option_no.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToRealRecipientsPublishOptionYes "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_real_publish_option_yes.xml --html htmlreports/report_newsletters_send_real_publish_option_yes.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendPublishNewsletterToRealRecipientsPublishOptionNo "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_publish_real_publish_option_no.xml --html htmlreports/report_newsletters_send_publish_real_publish_option_no.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendPublishNewsletterToRealRecipientsPublishOptionYes "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_publish_real_publish_option_yes.xml --html htmlreports/report_newsletters_send_publish_real_publish_option_yes.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToUnconfirmed "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_unconfirmed.xml --html htmlreports/report_newsletters_send_unconfirmed.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToRealUsergroup "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_usergroup.xml --html htmlreports/report_newsletters_send_usergroup.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterIsTemplate "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_is_template.xml --html htmlreports/report_newsletters_send_is_template.html
-codecept run acceptance Backend/Details/TestNewslettersDetailsCest::EditSentNewsletter "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_edit_sent.xml --html htmlreports/report_newsletters_edit_sent.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToTestrecipients "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_test.xml --html htmlreports/report_newsletters_send_test.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToRealRecipientsPublishOptionNo "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_real_publish_option_no.xml --html htmlreports/report_newsletters_send_real_publish_option_no.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToRealRecipientsPublishOptionYes "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_real_publish_option_yes.xml --html htmlreports/report_newsletters_send_real_publish_option_yes.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendPublishNewsletterToRealRecipientsPublishOptionNo "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_publish_real_publish_option_no.xml --html htmlreports/report_newsletters_send_publish_real_publish_option_no.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendPublishNewsletterToRealRecipientsPublishOptionYes "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_publish_real_publish_option_yes.xml --html htmlreports/report_newsletters_send_publish_real_publish_option_yes.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToUnconfirmed "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_unconfirmed.xml --html htmlreports/report_newsletters_send_unconfirmed.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterToRealUsergroup "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_usergroup.xml --html htmlreports/report_newsletters_send_usergroup.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::SendNewsletterIsTemplate "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_send_is_template.xml --html htmlreports/report_newsletters_send_is_template.html
+#codecept run acceptance Backend/Details/TestNewslettersDetailsCest::EditSentNewsletter "${BW_TEST_DEBUG}" --xml xmlreports/report_newsletters_edit_sent.xml --html htmlreports/report_newsletters_edit_sent.html
 fi
 
 ###
@@ -371,14 +371,14 @@ fi
 if [[ "${BW_TEST_CAT}" ==  maintenance_single ]]
 then
 # single tests for maintenance
-#codecept run acceptance Backend/TestMaintenanceCest::saveTablesZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_save_tables_zip.xml --html htmlreports/report_maintenance_save_tables_zip.html
+codecept run acceptance Backend/TestMaintenanceCest::saveTablesZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_save_tables_zip.xml --html htmlreports/report_maintenance_save_tables_zip.html
 #codecept run acceptance Backend/TestMaintenanceCest::saveTablesNoZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_save_tables.xml --html htmlreports/report_maintenance_save_tables.html
 #codecept run acceptance Backend/TestMaintenanceCest::checkTables "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_check_tables.xml --html htmlreports/report_maintenance_check_tables.html
-codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithErrors "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_errors.xml --html htmlreports/report_maintenance_restore_tables_errors.html
-codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithModsSimple "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_mods_simple.xml --html htmlreports/report_maintenance_restore_tables_mods_simple.html
-codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithModsVersion "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_mods_version.xml --html htmlreports/report_maintenance_restore_tables_mods_version.html
-codecept run acceptance Backend/TestMaintenanceCest::restoreTablesNoZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables.xml --html htmlreports/report_maintenance_restore_tables.html
-codecept run acceptance Backend/TestMaintenanceCest::restoreTablesZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_zip.xml --html htmlreports/report_maintenance_restore_tables_zip.html
+#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithErrors "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_errors.xml --html htmlreports/report_maintenance_restore_tables_errors.html
+#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithModsSimple "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_mods_simple.xml --html htmlreports/report_maintenance_restore_tables_mods_simple.html
+#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithModsVersion "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_mods_version.xml --html htmlreports/report_maintenance_restore_tables_mods_version.html
+#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesNoZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables.xml --html htmlreports/report_maintenance_restore_tables.html
+#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_zip.xml --html htmlreports/report_maintenance_restore_tables_zip.html
 #codecept run acceptance Backend/TestMaintenanceCest::testBasicSettings "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_basic_settings.xml --html htmlreports/report_maintenance_basic_settings.html
 #codecept run acceptance Backend/TestMaintenanceCest::testForumLink "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_forum_link.xml --html htmlreports/report_maintenance_forum_link.html
 fi

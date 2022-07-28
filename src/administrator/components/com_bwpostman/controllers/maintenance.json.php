@@ -781,7 +781,7 @@ class BwPostmanControllerMaintenance extends JControllerLegacy
 	 * @since   1.3.0
 	 */
 
-	protected function getInstalledTableNames($session, int $errorCode)
+	protected function getInstalledTableNames($session, $errorCode)
 	{
 		$model           = $this->getModel('maintenance');
 		$tableNamesArray = $model->getTableNamesFromDB();

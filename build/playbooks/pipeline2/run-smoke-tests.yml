@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   pre_tasks:
-    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - include_vars: vars/codecept_paths.yml
   connection: local
   vars_files:
     - vars/tester-image-vars.yml
@@ -93,7 +93,7 @@
     - ../vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
-    - "vars/codecept_paths_J{{ joomla_version[0] }}.yml"
+    - vars/codecept_paths.yml
 
   tasks:
     - name: Show Joomla version
@@ -118,7 +118,7 @@
     - vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
-    - "vars/codecept_paths_J{{ joomla_version[0] }}.yml"
+    - vars/codecept_paths.yml
 
   tasks:
     - name: Show Joomla master version

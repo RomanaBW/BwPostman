@@ -473,7 +473,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		$dbname = self::getDBName();
 
 		//build query to get all names of installed BwPostman tables
-		$query = "SHOW TABLES WHERE `Tables_in_{$dbname}` LIKE '%bwpostman%'";
+		$query = "SHOW TABLES WHERE `Tables_in_$dbname` LIKE '%bwpostman%'";
 
 		try
 		{
@@ -547,7 +547,7 @@ class BwPostmanModelMaintenance extends JModelLegacy
 		// Get version of BwPostman
 		$version = $this->getBwPostmanVersion();
 
-		if ($version === false)
+		if ($version === '')
 		{
 			return false;
 		}

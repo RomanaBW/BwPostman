@@ -3,7 +3,7 @@ version: '3'
 services:
   bwpm-tester:
     container_name: "bwpm-tester"
-    image: universe3:5000/romana/selenium-standalone-chrome-debug-ffmpeg:latest
+    image: universe3:5000/romana/tester-tw-browser:chromium
     volumes:
       - {{ container_dir }}/testers/os-data:/data
       - {{ base_dir }}/{{ test_src_dir }}/job_scripts:/scripts
@@ -15,6 +15,7 @@ services:
       - BW_TEST_BWPM_VERSION={{ bwpm_version }}
       - BW_TEST_CAT={{ test_cat }}
       - BW_TEST_DEBUG={{ test_debug }}
+      - SYMFONY_DEPRECATIONS_HELPER=weak
     working_dir: /tests
     entrypoint: /scripts/bwpm_tester_start_fast.sh
     networks:

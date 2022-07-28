@@ -4,7 +4,7 @@
   vars_files:
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - vars/codecept_paths.yml
 
   vars:
     test_suite: accept1
@@ -42,7 +42,7 @@
     - vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - vars/codecept_paths.yml
 
   tasks:
     - name: Set db host name
@@ -110,7 +110,7 @@
   vars_files:
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - vars/codecept_paths.yml
 
   vars:
     test_suite: accept1

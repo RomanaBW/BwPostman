@@ -31,7 +31,7 @@
   vars_files:
     - vars/fast-test-vars.yml
     - vars/tester-image-vars.yml
-    - vars/codecept_paths_J4.yml
+    - vars/codecept_paths.yml
 
   tasks:
     - name: Start tests

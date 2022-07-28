@@ -150,7 +150,7 @@
     - vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/fast-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - vars/codecept_paths.yml
 
   tasks:
     - name: Import transmitted parameters

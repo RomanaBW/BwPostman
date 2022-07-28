@@ -4,7 +4,7 @@
   vars_files:
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - vars/codecept_paths.yml
 
   tasks:
     - name: ensure log folder for test results exists
@@ -68,7 +68,7 @@
     - vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - vars/codecept_paths.yml
 
   tasks:
     - name: Set db host name
@@ -104,7 +104,7 @@
     - vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - vars/codecept_paths.yml
 
   tasks:
     - name: Set ip of webserver

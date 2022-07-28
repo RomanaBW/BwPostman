@@ -40,19 +40,6 @@
         - "{{ test_log_path }}/joomla_logs"
         - "{{ record_path }}"
 
-#    - name: get failure files to delete
-#      find:
-#        paths: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/{{ test_suite }}/logs"
-#        pattern: "*"
-#      register: log_files_to_delete
-#
-#    - name: delete old failure files
-#      file:
-#        path: "{{ item.path }}"
-#        state: absent
-#      with_items: "{{ log_files_to_delete.files }}"
-#      when: log_files_to_delete.matched != 0
-
     - name: Set project dir variable
       set_fact:
         bw_project_base_dir: "{{ project_base_dir }}"

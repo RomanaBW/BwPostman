@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<project name="BwPostman" description="Build file for complete package of BwPostman from scratch" default="build">
-	<import file="bwpostman_build_all_parts.xml"/>
-	<import file="bwpostman_build_package_from_parts.xml"/>
-
-	<target name="build" depends="build_parts, upload" description="Build file for complete package of BwPostman from scratch"/>
-	</project>

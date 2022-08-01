@@ -372,15 +372,15 @@ if [[ "${BW_TEST_CAT}" ==  maintenance_single ]]
 then
 # single tests for maintenance
 codecept run acceptance Backend/TestMaintenanceCest::saveTablesZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_save_tables_zip.xml --html htmlreports/report_maintenance_save_tables_zip.html
-#codecept run acceptance Backend/TestMaintenanceCest::saveTablesNoZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_save_tables.xml --html htmlreports/report_maintenance_save_tables.html
-#codecept run acceptance Backend/TestMaintenanceCest::checkTables "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_check_tables.xml --html htmlreports/report_maintenance_check_tables.html
-#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithErrors "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_errors.xml --html htmlreports/report_maintenance_restore_tables_errors.html
-#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithModsSimple "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_mods_simple.xml --html htmlreports/report_maintenance_restore_tables_mods_simple.html
-#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithModsVersion "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_mods_version.xml --html htmlreports/report_maintenance_restore_tables_mods_version.html
-#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesNoZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables.xml --html htmlreports/report_maintenance_restore_tables.html
-#codecept run acceptance Backend/TestMaintenanceCest::restoreTablesZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_zip.xml --html htmlreports/report_maintenance_restore_tables_zip.html
-#codecept run acceptance Backend/TestMaintenanceCest::testBasicSettings "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_basic_settings.xml --html htmlreports/report_maintenance_basic_settings.html
-#codecept run acceptance Backend/TestMaintenanceCest::testForumLink "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_forum_link.xml --html htmlreports/report_maintenance_forum_link.html
+codecept run acceptance Backend/TestMaintenanceCest::saveTablesNoZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_save_tables.xml --html htmlreports/report_maintenance_save_tables.html
+codecept run acceptance Backend/TestMaintenanceCest::checkTables "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_check_tables.xml --html htmlreports/report_maintenance_check_tables.html
+codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithErrors "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_errors.xml --html htmlreports/report_maintenance_restore_tables_errors.html
+codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithModsSimple "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_mods_simple.xml --html htmlreports/report_maintenance_restore_tables_mods_simple.html
+codecept run acceptance Backend/TestMaintenanceCest::restoreTablesWithModsVersion "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_mods_version.xml --html htmlreports/report_maintenance_restore_tables_mods_version.html
+codecept run acceptance Backend/TestMaintenanceCest::restoreTablesNoZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables.xml --html htmlreports/report_maintenance_restore_tables.html
+codecept run acceptance Backend/TestMaintenanceCest::restoreTablesZip "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_restore_tables_zip.xml --html htmlreports/report_maintenance_restore_tables_zip.html
+codecept run acceptance Backend/TestMaintenanceCest::testBasicSettings "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_basic_settings.xml --html htmlreports/report_maintenance_basic_settings.html
+codecept run acceptance Backend/TestMaintenanceCest::testForumLink "${BW_TEST_DEBUG}" --xml xmlreports/report_maintenance_forum_link.xml --html htmlreports/report_maintenance_forum_link.html
 fi
 
 ###############################

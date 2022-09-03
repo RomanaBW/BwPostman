@@ -479,14 +479,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_select1            = "//*/div[contains(@style,'joomla_black.png')]/parent::div/parent::div";
+	public static $attachment_select1            = "//*/div[@class='media-browser-item-preview'][contains(@title,'joomla_black.png')]/parent::div/parent::div";
 
 	/**
 	 * @var string
 	 *
 	 * @since   4.0.0
 	 */
-	public static $attachment_scrollto_select1            = "//*/div[contains(@style,'joomla_black.png')]";
+	public static $attachment_scrollto_select1            = "//*/div[@class='media-browser-item-preview'][contains(@title,'joomla_black.png')]";
 
 	/**
 	 * @var string
@@ -507,14 +507,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select2            = "//*/div[contains(@style,'powered_by.png')]/parent::div/parent::div";
+	public static $attachment_select2            = "//*/div[@class='media-browser-item-preview'][contains(@title,'powered_by.png')]/parent::div/parent::div";
 
 	/**
 	 * @var string
 	 *
 	 * @since   4.0.0
 	 */
-	public static $attachment_scrollto_select2            = "//*/div[contains(@style,'powered_by.png')]";
+	public static $attachment_scrollto_select2            = "//*/div[@class='media-browser-item-preview'][contains(@title,'powered_by.png')]";
 
 	/**
 	 * @var string

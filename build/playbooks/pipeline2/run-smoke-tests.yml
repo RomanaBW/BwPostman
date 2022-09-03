@@ -94,6 +94,8 @@
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
     - vars/codecept_paths.yml
+  vars:
+    ansible_remote_tmp: "/tmp"
 
   tasks:
     - name: Show Joomla version

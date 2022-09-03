@@ -789,6 +789,8 @@ class TestNewslettersDetailsCest
 		$I->wantTo("Send a newsletter with two attachments to real recipients with publish option no");
 		$I->expectTo("see unpublished sent newsletter");
 
+		$I->setManifestOption('com_bwpostman', 'publish_nl_by_default', '0');
+
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], false, true);
 
 		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 10);

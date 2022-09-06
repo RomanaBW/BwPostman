@@ -42,6 +42,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/exceptions/BwException.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/subscriberhelper.php');
+require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/models/subscriber.php');
 
 
 /**

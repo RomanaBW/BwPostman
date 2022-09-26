@@ -216,8 +216,8 @@ class InstallVirtuemartCest
 //		$I->clickSelectList(InstallPage::$virtuemart_shop_accepted_currency_field, InstallPage::$virtuemart_shop_accepted_currency_value, InstallPage::$virtuemart_shop_accepted_currency_id);
 		$I->clickAndWait(InstallPage::$virtuemart_shop_accepted_currency_field, 1);
 		$I->waitForElementVisible(InstallPage::$virtuemart_shop_accepted_currency_id);
-		$I->scrollTo(InstallPage::$virtuemart_shop_accepted_currency_value, 0);
-		$I->clickAndWait(InstallPage::$virtuemart_shop_accepted_currency_value, 1);
+//		$I->scrollTo(InstallPage::$virtuemart_shop_accepted_currency_value, 0);
+//		$I->clickAndWait(InstallPage::$virtuemart_shop_accepted_currency_value, 1);
 		$I->seeElement(InstallPage::$virtuemart_shop_accepted_currency_selected);
 
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);

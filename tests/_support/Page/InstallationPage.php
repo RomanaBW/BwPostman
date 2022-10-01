@@ -151,6 +151,13 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
+	public static $virtuemart_config_checkout_register_option_no    = "//*[@id='oncheckout_show_register1']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
 	public static $virtuemart_shop_vendor_tab    = "//*/form[@id='adminForm']/div/div/ul[1]/li[1]";
 
 	/**

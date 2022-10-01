@@ -191,7 +191,9 @@ class InstallVirtuemartCest
 	{
 		$I->amOnPage(InstallPage::$virtuemart_config_url);
 		$I->clickAndWait(InstallPage::$virtuemart_config_checkout_tab, 1);
-		$I->uncheckOption(InstallPage::$virtuemart_config_checkout_register_field);
+		$I->scrollTo(InstallPage::$virtuemart_config_checkout_register_option_no, 0, -50);
+		$I->wait(1);
+		$I->clickAndWait(InstallPage::$virtuemart_config_checkout_register_option_no, 1);
 		$I->clickAndWait(Generals::$toolbar['Save'], 1);
 	}
 

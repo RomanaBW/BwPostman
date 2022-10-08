@@ -5,16 +5,17 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-Version 3.2.2 released (2022-09-30)----
+Version 3.2.2 released (2022-10-14)----
 
 Bugfix
-# At some rare casessubscriber model couldn't load from front end
+# At some rare cases subscriber model couldn't load from front end
 
 
 Version 3.2.1 released (2022-06-30)----
 
 Improvement
 ~ Make it possible to import subscribers without selecting a mailinglist.
+~ Adjust call of getcsv at import of subscribers to prevent php warnings
 
 
 Version 3.2.0 released (2022-02-18)----

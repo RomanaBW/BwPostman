@@ -648,6 +648,7 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
+		$I->setManifestOption('com_bwpostman', 'use_captcha', '1');
 
 		// Call page with new options
 		$I->amOnPage(SubsView::$register_url);
@@ -663,6 +664,9 @@ class SubscribeComponentCest
 		$I->dontSeeElement(SubsView::$format_html);
 		$I->dontSeeElement(SubsView::$format_text);
 		$I->dontSeeElement(SubsView::$disclaimer);
+
+		// Check visibility of question field
+		$I->seeElement(SubsView::$question);
 
 		// Check visibility of obligation marker
 		$I->dontSeeElement(SubsView::$firstname_star);
@@ -681,6 +685,7 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'show_special', '1');
 		$I->setManifestOption('com_bwpostman', 'show_emailformat', '1');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
+		$I->setManifestOption('com_bwpostman', 'use_captcha', '2');
 
 		// Call page with new options
 		$I->reloadPage();
@@ -694,6 +699,7 @@ class SubscribeComponentCest
 		$I->seeElement(SubsView::$format_html);
 		$I->seeElement(SubsView::$format_text);
 		$I->seeElement(SubsView::$disclaimer);
+		$I->seeElement(SubsView::$math_captcha);
 
 		// Check label of field special
 		$I->seeElement(sprintf(SubsView::$special_placeholder, $options->special_label));

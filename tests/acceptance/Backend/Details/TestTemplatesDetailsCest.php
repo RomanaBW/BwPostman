@@ -366,10 +366,13 @@ class TestTemplatesDetailsCest
 			codecept_debug('Popup Template Cancel not found');
 		}
 
-		$I->see("Template", Generals::$pageTitle);
+		$I->reloadPage();
+		$I->wait(1);
+		$I->see(TplEdit::$TemplatesListTitle, Generals::$pageTitle);
+//		$I->see(TplEdit::$description, sprintf(TplEdit::$field_description, 'HTML'));
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
-		$I->see('Template', Generals::$pageTitle);
+		$I->see(TplEdit::$TemplatesListTitle, Generals::$pageTitle);
 	}
 
 	/**
@@ -437,7 +440,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		// check if preview is visible at template list
-		$I->see("Template", Generals::$pageTitle);
+		$I->see(TplEdit::$TemplatesListTitle, Generals::$pageTitle);
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);
@@ -479,7 +482,7 @@ class TestTemplatesDetailsCest
 			codecept_debug('Popup Template Cancel not found');
 		}
 
-		$I->see("Template", Generals::$pageTitle);
+		$I->see(TplEdit::$TemplatesListTitle, Generals::$pageTitle);
 	}
 
 	/**
@@ -730,7 +733,10 @@ class TestTemplatesDetailsCest
 			codecept_debug('Popup Template Cancel not found');
 		}
 
-		$I->see("Template", Generals::$pageTitle);
+		$I->reloadPage();
+		$I->wait(1);
+		$I->see(TplEdit::$TemplatesListTitle, Generals::$pageTitle);
+//		$I->see(TplEdit::$description, sprintf(TplEdit::$field_description, 'Text'));
 
 		$I->HelperArcDelItems($I, TplManage::$arc_del_array, TplEdit::$arc_del_array, true);
 		$I->see('Template', Generals::$pageTitle);

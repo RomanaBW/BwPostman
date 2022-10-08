@@ -5,7 +5,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman 4 for Joomla! 4.0+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>4.1.2</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -30,7 +30,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman 4 for Joomla! 4.0+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>4.1.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -55,7 +55,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman 4 for Joomla! 4.0+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>4.1.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -80,7 +80,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman 4 for Joomla! 4.0+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>4.0.2</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -106,7 +106,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman 4 for Joomla! 4.0+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>4.0.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -131,7 +131,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.2.2</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -156,7 +156,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.2.2</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -181,7 +181,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.2.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -206,7 +206,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.2.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -231,7 +231,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.2.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -256,7 +256,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.2.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -281,7 +281,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.9</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -306,7 +306,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.9</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -331,7 +331,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.7</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -356,7 +356,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.7</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -381,7 +381,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.6</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -406,7 +406,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.6</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -431,7 +431,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.5</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -456,7 +456,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.5</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -477,7 +477,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.4</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -498,7 +498,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.4</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -519,7 +519,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.3</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -540,7 +540,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.3</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -561,7 +561,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.2</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -582,7 +582,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.2</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -603,7 +603,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -624,7 +624,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -645,7 +645,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -666,7 +666,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.1.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -687,7 +687,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.0.3</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -708,7 +708,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.0.3</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -729,7 +729,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.0.2</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -750,7 +750,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.0.2</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -771,7 +771,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.0.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -792,7 +792,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.0.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -813,7 +813,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.0.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -834,7 +834,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>3.0.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -855,7 +855,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.3.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -876,7 +876,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.3.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -897,7 +897,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.3.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -918,7 +918,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.3.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -939,7 +939,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.2.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -960,7 +960,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.2.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -981,7 +981,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.2.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -1002,7 +1002,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.2.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -1023,7 +1023,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.1.2</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -1044,7 +1044,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.1.2</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -1065,7 +1065,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.1.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -1086,7 +1086,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.1.1</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -1107,7 +1107,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.1.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
@@ -1128,7 +1128,7 @@
 		<description>Installation package for Boldt Webservice's Newsletter component BwPostman for Joomla! 3.3.6+</description>
 		<element>pkg_bwpostman</element>
 		<type>package</type>
-		<client>0</client>
+		<client>site</client>
 
 		<version>2.1.0</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>

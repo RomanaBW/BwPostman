@@ -790,7 +790,16 @@ class SubscribeModuleCest
 		$I->setManifestOption('mod_bwpostman', 'com_params', '0');
 		$I->setManifestOption('com_bwpostman', 'verify_mailaddress', 0);
 
-		// Set disclaimer to link
+		// Set use security captcha
+		$I->setManifestOption('mod_bwpostman', 'use_captcha', '2');
+
+		// Check visibility of security captcha
+		$I->amOnPage(SubsView::$register_url);
+		$I->scrollTo(Helper::$mod_button_register, 0, -200);
+		$I->wait(1);
+		$I->seeElement(SubsView::$math_captcha_mod);
+
+		// Set use security question
 		$I->setManifestOption('mod_bwpostman', 'use_captcha', '1');
 
 		$I->amOnPage(SubsView::$register_url);

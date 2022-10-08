@@ -433,7 +433,7 @@ class InstallationPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $installedText   = "//*[@id='com_bwp_install_outer']/div/h1";
+	public static $installedText   = "//*[@id='com_bwp_install_outer']/h1";
 
 
 	/**

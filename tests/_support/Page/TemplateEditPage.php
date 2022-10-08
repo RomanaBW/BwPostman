@@ -287,6 +287,13 @@ class TemplateEditPage
 	/**
 	 * @var string
 	 *
+	 * @since 4.2.1
+	 */
+	public static $TemplatesListTitle   = "Templates";
+
+	/**
+	 * @var string
+	 *
 	 * @since 4.0.0
 	 */
 	public static $htmlHeaderIdentifier   = "//*[@class='article-title']";

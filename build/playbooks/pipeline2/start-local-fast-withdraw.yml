@@ -1,5 +1,5 @@
 ---
-- hosts: workplace
+- hosts: localhost
   gather_facts: no
   vars_files:
     - vars/fast-test-vars.yml

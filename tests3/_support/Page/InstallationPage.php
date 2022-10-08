@@ -433,7 +433,7 @@ class InstallationPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $installButton37   = "//*[@id='select-file-button']";
+	public static $installedText   = "//*[@id='com_bwp_install_outer']/div/h1";
 
 
 	/**
@@ -510,6 +510,13 @@ class InstallationPage
 	 * @since 2.0.0
 	 */
 	public static $installSuccessMsg    = "Installation of the package was successful.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $installSuccessMsg2    = "Welcome to BwPostman,";
 
 	/**
 	 * @var string
@@ -811,6 +818,7 @@ class InstallationPage
 
 		$I->waitForElement(Generals::$alert_success, 30);
 		$I->see(self::$installSuccessMsg, Generals::$alert_success);
+		$I->see(self::$installSuccessMsg2, self::$installedText);
 		$I->dontSee("Error", Generals::$alert_heading);
 		$I->dontSee("Warning", Generals::$alert_heading);
 	}

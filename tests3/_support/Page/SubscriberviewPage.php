@@ -218,6 +218,12 @@ class SubscriberviewPage
 	 */
 	public static $math_captcha  = ".//*[@id='stringCaptcha']";
 
+	/** @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $math_captcha_mod  = ".//*[@id='a_stringCaptcha']";
+
 	/**
 	 * @var string
 	 *

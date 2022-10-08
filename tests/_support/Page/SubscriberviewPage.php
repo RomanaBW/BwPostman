@@ -223,6 +223,13 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
+	public static $math_captcha_mod  = ".//*[@id='a_stringCaptcha']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $disclaimer    = ".//*[@id='agreecheck']";
 
 	/**

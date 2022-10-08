@@ -1,6 +1,7 @@
 <?php
 use Page\Generals as Generals;
 use Page\InstallationPage as InstallPage;
+use Page\Login;
 
 /**
  * Class TestInstallationCest
@@ -30,7 +31,7 @@ class TestInstallationCest
 	/**
 	 * Test method to login into backend
 	 *
-	 * @param   \Page\Login     $loginPage
+	 * @param   Login     $loginPage
 	 *
 	 * @return  void
 	 *
@@ -38,7 +39,7 @@ class TestInstallationCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function _login(\Page\Login $loginPage)
+	public function _login(Login $loginPage)
 	{
 		$loginPage->logIntoBackend(Generals::$admin);
 	}
@@ -117,7 +118,7 @@ class TestInstallationCest
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester        $I
-	 * @param   \Page\Login             $loginPage
+	 * @param   Login             $loginPage
 	 *
 	 * @return  void
 	 *
@@ -125,7 +126,7 @@ class TestInstallationCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
+	public function _logout(AcceptanceTester $I, Login $loginPage)
 	{
 		$loginPage->logoutFromBackend($I);
 	}

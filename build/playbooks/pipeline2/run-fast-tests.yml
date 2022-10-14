@@ -40,19 +40,6 @@
         - "{{ test_log_path }}/joomla_logs"
         - "{{ record_path }}"
 
-#    - name: get failure files to delete
-#      find:
-#        paths: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/{{ test_suite }}/logs"
-#        pattern: "*"
-#      register: log_files_to_delete
-#
-#    - name: delete old failure files
-#      file:
-#        path: "{{ item.path }}"
-#        state: absent
-#      with_items: "{{ log_files_to_delete.files }}"
-#      when: log_files_to_delete.matched != 0
-
     - name: Set project dir variable
       set_fact:
         bw_project_base_dir: "{{ project_base_dir }}"
@@ -68,6 +55,7 @@
         source: "{{ acceptance_source }}"
         target: "{{ acceptance_target }}"
         j_main_version: "{{ joomla_version[0] }}"
+        container_web_root: "{{ tester_web_root }}"
 
 
 - hosts: "bwpm_fast_web-{{ lookup('env','BW_TEST_JOOMLA_VERSION')[0] }}"
@@ -149,7 +137,7 @@
     - vars/tests.yml
     - vars/tester-image-vars.yml
     - vars/fast-test-vars.yml
-    - "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - vars/codecept_paths.yml
 
   tasks:
     - name: Import transmitted parameters

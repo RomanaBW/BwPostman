@@ -1,6 +1,7 @@
 <?php
 use Page\Generals as Generals;
 use Page\InstallationPage as InstallPage;
+use Page\Login;
 
 /**
  * Class TestInstallationCest
@@ -30,7 +31,7 @@ class TestInstallationCest
 	/**
 	 * Test method to login into backend
 	 *
-	 * @param   \Page\Login     $loginPage
+	 * @param   Login     $loginPage
 	 *
 	 * @return  void
 	 *
@@ -38,7 +39,7 @@ class TestInstallationCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function _login(\Page\Login $loginPage)
+	public function _login(Login $loginPage)
 	{
 		$loginPage->logIntoBackend(Generals::$admin);
 	}
@@ -100,10 +101,6 @@ class TestInstallationCest
 		$state = $I->getExtensionEnabledState('personalize');
 		$I->assertEquals(true, $state, 'Plugin Personalize enabled');
 
-		// Plugin BwMediaOverride has to be enabled
-//		$state = $I->getExtensionEnabledState('bwpm_mediaoverride');
-//		$I->assertEquals(true, $state, 'Plugin BwMediaOverride enabled');
-
 		// Plugin U2S has to be disabled
 		$state = $I->getExtensionEnabledState('bwpm_user2subscriber');
 		$I->assertEquals(false, $state, 'Plugin U2S disabled');
@@ -115,21 +112,13 @@ class TestInstallationCest
 		// Package BwPostman has to be enabled
 		$state = $I->getExtensionEnabledState('pkg_bwpostman');
 		$I->assertEquals(true, $state, 'Package BwPostman enabled');
-
-		// Plugin B2S has to be enabled
-//		$state = $I->getExtensionEnabledState('Plugin bwpm_buyer2subscriber');
-//		$I->assertEquals(true, $state, 'Plugin B2S enabled');
-
-		// Plugin bwtimecontrol has to be enabled
-//		$state = $I->getExtensionEnabledState('bwtimecontrol');
-//		$I->assertEquals(true, $state, 'Plugin TC enabled');
 	}
 
 	/**
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester        $I
-	 * @param   \Page\Login             $loginPage
+	 * @param   Login             $loginPage
 	 *
 	 * @return  void
 	 *
@@ -137,7 +126,7 @@ class TestInstallationCest
 	 *
 	 * @since   2.0.0
 	 */
-	public function _logout(AcceptanceTester $I, \Page\Login $loginPage)
+	public function _logout(AcceptanceTester $I, Login $loginPage)
 	{
 		$loginPage->logoutFromBackend($I);
 	}

@@ -1,11 +1,11 @@
 #! /bin/bash
 whoami
 
-# delete old failure file
+echo "delete old failure file"
 rm -f {{ codecept_failed_file }}
 
-# delete old X-server lock file
-rm -f /tmp/.X45-lock
+echo  "delete old X-server lock file"
+sudo rm -f /tmp/.X45-lock
 
 
 # export sudo user

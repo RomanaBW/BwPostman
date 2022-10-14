@@ -750,6 +750,7 @@ class SubscriberModel extends AdminModel
 		$db_fields     = $data['db_fields'];
 
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
+		$data['jform'] = isset($data['jform']) ? $data['jform'] : array();
 		$mailinglists = BwPostmanMailinglistHelper::mergeMailinglistsOnly($data['jform']);
 
 		// We need the database columns for subsequent checking of the values
@@ -849,7 +850,7 @@ class SubscriberModel extends AdminModel
 			$app->setUserState('com_bwpostman.subscriber.fileformat', 'csv');
 
 			// Get data from the file and store them into an array
-			$row = fgetcsv($fh, '', $delimiter, $enclosure);
+			$row = fgetcsv($fh, 0, $delimiter, $enclosure);
 
 			while(is_array($row))
 			{
@@ -882,7 +883,7 @@ class SubscriberModel extends AdminModel
 				if ($caption)
 				{
 					$caption = false;
-					$row     = fgetcsv($fh, '', $delimiter, $enclosure);
+					$row     = fgetcsv($fh, 0, $delimiter, $enclosure);
 					continue;
 				}
 
@@ -894,7 +895,7 @@ class SubscriberModel extends AdminModel
 					$mail = $ret_maildata;
 				}
 
-				$row = fgetcsv($fh, '', $delimiter, $enclosure);
+				$row = fgetcsv($fh, 0, $delimiter, $enclosure);
 			} // Endif format == csv
 		}
 		else

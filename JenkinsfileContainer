@@ -5,9 +5,9 @@ pipeline {
         stage('Set variables') {
 			steps {
 				script {
-					BWPM_VERSION = "4.1.1"
+					BWPM_VERSION = "4.1.2"
 
-					JOOMLA_VERSION = "4.1.2"
+					JOOMLA_VERSION = "4.2.3"
 
 					GIT_MESSAGE = "not specified"
 
@@ -24,13 +24,6 @@ pipeline {
 				}
 			}
         }
-
-//		stage('Create tester package') {
-//			steps {
-//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=false'"
-//			}
-//		}
-
 
 		stage('Create full package') {
 			steps {

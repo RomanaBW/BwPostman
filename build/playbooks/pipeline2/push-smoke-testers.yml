@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   pre_tasks:
-    - include_vars: "vars/codecept_paths_J{{ j_master_version }}.yml"
+    - include_vars: vars/codecept_paths.yml
   connection: local
   vars_files:
     - vars/tester-image-vars.yml
@@ -27,7 +27,7 @@
         path: "{{ joomla_base_folders[sub_path] }}/images/com_bwpostman"
         state: directory
         mode: 0777
-        owner: 1200
+        owner: "1200"
         group: users
 
     - name: copy misc files to webserver

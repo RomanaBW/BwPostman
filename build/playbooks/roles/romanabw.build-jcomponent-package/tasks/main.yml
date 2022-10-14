@@ -77,7 +77,7 @@
     dest: "{{ bw_target_ext_path }}/files/install.{{ bw_extension }}.php"
 
 - name: Move manifest file in place
-  command: "mv {{ bw_target_ext_path }}/files/admin/bwpostman.xml {{ bw_target_ext_path }}/files/{{ bw_extension }}.xml"
+  command: "mv {{ bw_target_ext_path }}/files/admin/{{ bw_extension }}.xml {{ bw_target_ext_path }}/files/{{ bw_extension }}.xml"
 
 - name: Remove SQL file without UTF8
   file:

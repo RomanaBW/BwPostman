@@ -16,10 +16,6 @@
         vm_project_part: ""
         test_runner: "bwpm_test_runner.sh"
 
-    - name: Set base source dir depending on joomla main version
-      set_fact:
-        base_src_dir: "/vhosts/dev4"
-
     - name: VM part of project name
       set_fact:
         vm_project_part: "_vm{{ vm_version }}"
@@ -46,11 +42,6 @@
       set_fact:
         net_name: "{{ project_name }}"
 
-    - name: Check for failure file
-      stat:
-        path: "{{ test_dir }}/_output/{{ project_name }}/failed"
-      register: failure_file
-
     - name: Create output folders
       become: yes
       file:
@@ -66,6 +57,7 @@
         - "{{ container_dir }}/testers"
         - "{{ test_dir }}/_output/{{ project_name }}/videos"
         - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
+        - "{{ test_dir }}/_output/{{ project_name }}/xmlreports"
 
     - name: Ensure output path is writable
       become: true
@@ -78,6 +70,7 @@
         - "{{ test_dir }}"
         - "{{ test_dir }}/_output/{{ project_name }}/videos"
         - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
+        - "{{ test_dir }}/_output/{{ project_name }}/xmlreports"
 
     - name: Create infrastructure compose file
       template:
@@ -96,6 +89,11 @@
 
     - name: Synchronize tests
       command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir }}/tests {{ src_dir }}/tests"
+
+    - name: Check for failure file
+      stat:
+        path: "{{ test_dir }}/_output/{{ project_name }}/failed"
+      register: failure_file
 
     - name: Set rebase command
       set_fact:

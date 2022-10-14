@@ -67,14 +67,14 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_advanced    = "//*[@id='admin-ui-tabs']/div/fieldset[3]";
+	public static $virtuemart_config_advanced    = "//*/form[@id='adminForm']/div/div/ul[2]/li[1]/div/div/div/div/div[1]/div[3]/div/div[1]/div";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_enable_db_tools    = '//*[@id="dangeroustools"]';
+	public static $virtuemart_config_enable_db_tools    = "//*[@id='dangeroustools']/label[1]";
 
 	/**
 	 * @var string
@@ -88,14 +88,14 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_tools_db_tab    = "//*[@id='admin-ui-tabs']/ul/li[1]";
+	public static $virtuemart_tools_db_tab    = "//*/div[@id='vmuikit-admin-ui-tabs']/div/ul[1]/li[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_sample_data_button    = "//*[@id='admin-ui-tabs']/div/table[2]/tbody/tr/td[2]/div/a";
+	public static $virtuemart_sample_data_button    = "//*/a[contains(text(), 'fresh install with sample data')]";
 
 	/**
 	 * @var string
@@ -109,21 +109,21 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_shop_tab    = "//*/ul[@id='tabs']/li[1]";
+	public static $virtuemart_config_shop_tab    = "//*/form[@id='adminForm']/div/div/ul[1]/li[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_template_tab    = "//*/ul[@id='tabs']/li[4]";
+	public static $virtuemart_config_template_tab    = "//*/form[@id='adminForm']/div/div/ul[1]/li[4]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_checkout_tab    = "//*/ul[@id='tabs']/li[6]";
+	public static $virtuemart_config_checkout_tab    = "//*/form[@id='adminForm']/div/div/ul[1]/li[6]";
 
 	/**
 	 * @var string
@@ -144,14 +144,21 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_config_checkout_register_field    = '//*[@id="oncheckout_show_register"]';
+	public static $virtuemart_config_checkout_register_field    = "//*[@id='oncheckout_show_register']/label[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_vendor_tab    = "//*/ul[@id='tabs']/li[1]";
+	public static $virtuemart_config_checkout_register_option_no    = "//*[@id='oncheckout_show_register1']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $virtuemart_shop_vendor_tab    = "//*/form[@id='adminForm']/div/div/ul[1]/li[1]";
 
 	/**
 	 * @var string
@@ -221,35 +228,42 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_accepted_currency_id    = 'vendor_accepted_currencies_chosen';
+	public static $virtuemart_shop_accepted_currency_id    = "//*[@id='vendor_accepted_currencies_chosen']/div/ul/li";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_accepted_currency_field    = '//*[@id="vendor_accepted_currencies_chosen"]';
+	public static $virtuemart_shop_accepted_currency_field    = "//*[@id='vendor_accepted_currencies_chosen']/ul/li/input";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_accepted_currency_value    = '//*[@id="vendor_accepted_currencies_chosen"]/div/ul/li[text()="Euro"]';
+	public static $virtuemart_shop_accepted_currency_value    = "//*[@id='vendor_accepted_currencies_chosen']/div/ul/li[text()='Euro']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.2
+	 */
+	public static $virtuemart_shop_accepted_currency_selected    = "//*[@id='vendor_accepted_currencies_chosen']/ul/li/span[text()='Euro']";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_shopper_tab    = "//*/ul[@id='tabs']/li[3]";
+	public static $virtuemart_shop_shopper_tab    = "//*/form[@id='adminForm']/div/div/ul[1]/li[3]";
 
 	/**
 	 * @var string
 	 *
 	 * @since 2.3.1
 	 */
-	public static $virtuemart_shop_shopper_billto    = "//*[@id='admin-ui-tabs']/div/fieldset[4]";
+	public static $virtuemart_shop_shopper_billto    = "//*/h3[contains(text(), 'Bill To Information')]";
 
 
 	/**
@@ -426,7 +440,7 @@ class InstallationPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $installButton37   = "//*[@id='select-file-button']";
+	public static $installedText   = "//*[@id='com_bwp_install_outer']/div/h1";
 
 
 	/**
@@ -503,6 +517,13 @@ class InstallationPage
 	 * @since 2.0.0
 	 */
 	public static $installSuccessMsg    = "Installation of the package was successful.";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $installSuccessMsg2    = "Welcome to BwPostman,";
 
 	/**
 	 * @var string
@@ -775,6 +796,7 @@ class InstallationPage
 
 		$I->waitForElement(Generals::$alert_success4, 30);
 		$I->see(self::$installSuccessMsg, Generals::$alert_success4);
+		$I->see(self::$installSuccessMsg2, self::$installedText);
 		$I->dontSee("Error", Generals::$alert_heading4);
 		$I->dontSee("Warning", Generals::$alert_heading4);
 	}

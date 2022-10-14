@@ -4,7 +4,7 @@
   vars_files:
     - vars/fast-test-vars.yml
     - vars/tester-image-vars.yml
-    - vars/codecept_paths_J4.yml
+    - vars/codecept_paths.yml
 
   tasks:
     - name: Set test runner
@@ -120,19 +120,13 @@
     - name: Start infrastructure
       command: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm-fast.yml -p {{ project_name }} up -d"
 
-    - name: Show test synchronization command
-      debug:
-        msg: "{{ test_dir }}/job_scripts/bwpm_tests_withdraw_rsync_build.sh {{ test_project_base_dir }}/tests {{ src_dir }}/tests"
-
     - name: Synchronize tests
-      command: "{{ test_dir }}/job_scripts/bwpm_tests_withdraw_rsync_build.sh {{ test_project_base_dir }}/tests {{ src_dir }}/tests"
-
-    - name: Show build synchronization command
-      debug:
-        msg: "{{ test_dir }}/job_scripts/bwpm_build_withdraw_rsync_build.sh {{ test_project_base_dir }}/build {{ repo_dir }}/build"
-
-#    - name: Synchronize builds
-#      command: "{{ test_dir }}/job_scripts/bwpm_build_withdraw_rsync_build.sh {{ test_project_base_dir }}/build {{ repo_src_dir }}/build"
+      become: true
+      synchronize:
+        src: "{{ test_project_base_dir }}/tests"
+        dest: "{{ src_dir }}/tests"
+        delete: yes
+        archive: yes
 
     - name: Set rebase command
       set_fact:

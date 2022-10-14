@@ -707,7 +707,8 @@ class User2SubscriberCest
 		$admin = $I->haveFriend('Admin10');
 		$admin->does(
 			function (AcceptanceTester $I) {
-				LoginPage::logIntoBackend(Generals::$admin, $I);
+				$loginPage = new LoginPage($I);
+				$loginPage->logIntoBackend(Generals::$admin, $I);
 
 				$this->activated = false;
 				$identifier = self::getTabDependentIdentifier(RegPage::$subscriber_edit_link);
@@ -725,7 +726,7 @@ class User2SubscriberCest
 
 				self::deleteJoomlaUser($I);
 
-				LoginPage::logoutFromBackend($I, false);
+				$loginPage->logoutFromBackend($I, false);
 			}
 		);
 		$admin->leave();
@@ -882,7 +883,8 @@ class User2SubscriberCest
 		$admin = $I->haveFriend('Admin2');
 		$admin->does(
 			function (AcceptanceTester $I) {
-				LoginPage::logIntoBackend(Generals::$admin, $I);
+				$loginPage = new LoginPage($I);
+				$loginPage->logIntoBackend(Generals::$admin, $I);
 
 				self::deleteJoomlaUserByDb($I);
 
@@ -896,13 +898,13 @@ class User2SubscriberCest
 				}
 				catch (Exception $e)
 				{
-					LoginPage::logoutFromBackend($I, false);
+					$loginPage->logoutFromBackend($I, false);
 					return false;
 				}
 
 				$I->assertEmpty($user_id);
 
-				LoginPage::logoutFromBackend($I, false);
+				$loginPage->logoutFromBackend($I, false);
 
 				return null;
 			}
@@ -1007,7 +1009,8 @@ class User2SubscriberCest
 
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
-		LoginPage::logoutFromBackend($I, false);
+		$loginPage = new LoginPage($I);
+		$loginPage->logoutFromBackend($I, false);
 	}
 
 	/**
@@ -1083,7 +1086,8 @@ class User2SubscriberCest
 		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
-		LoginPage::logoutFromBackend($I, false);
+		$loginPage = new LoginPage($I);
+		$loginPage->logoutFromBackend($I, false);
 	}
 
 	/**
@@ -1167,7 +1171,8 @@ class User2SubscriberCest
 		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
-		LoginPage::logoutFromBackend($I, false);
+		$loginPage = new LoginPage($I);
+		$loginPage->logoutFromBackend($I, false);
 	}
 
 	/**
@@ -1238,7 +1243,8 @@ class User2SubscriberCest
 		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar['Save & Close'], 1);
 
-		LoginPage::logoutFromBackend($I, false);
+		$loginPage = new LoginPage($I);
+		$loginPage->logoutFromBackend($I, false);
 	}
 
 	/**
@@ -1376,9 +1382,10 @@ class User2SubscriberCest
 		$admin = $I->haveFriend('Admin' . $run);
 		$admin->does(
 			function (AcceptanceTester $I) {
-				LoginPage::logIntoBackend(Generals::$admin, $I);
+				$loginPage = new LoginPage($I);
+				$loginPage->logIntoBackend(Generals::$admin, $I);
 				self::deleteJoomlaUserByDb($I);
-				LoginPage::logoutFromBackend($I, false);
+				$loginPage->logoutFromBackend($I, false);
 			}
 		);
 		$admin->leave();
@@ -1577,13 +1584,14 @@ class User2SubscriberCest
 		$admin = $I->haveFriend('Admin5');
 		$admin->does(
 			function (AcceptanceTester $I) {
-				LoginPage::logIntoBackend(Generals::$admin, $I);
+				$loginPage = new LoginPage($I);
+				$loginPage->logIntoBackend(Generals::$admin, $I);
 
 				self::checkForSubscriptionSuccess($I);
 				self::deleteJoomlaUserByDb($I);
 				self::checkForSubscriptionDeletion($I);
 
-				LoginPage::logoutFromBackend($I, false);
+				$loginPage->logoutFromBackend($I, false);
 			}
 		);
 		$admin->leave();
@@ -1850,7 +1858,8 @@ class User2SubscriberCest
 		$admin = $I->haveFriend('Admin6');
 		$admin->does(
 			function (AcceptanceTester $I) {
-				LoginPage::logIntoBackend(Generals::$admin, $I);
+				$loginPage = new LoginPage($I);
+				$loginPage->logIntoBackend(Generals::$admin, $I);
 
 				self::checkForSubscriptionSuccess($I);
 
@@ -1870,7 +1879,7 @@ class User2SubscriberCest
 					self::checkForSubscriptionDeletion($I);
 				}
 
-				LoginPage::logoutFromBackend($I, false);
+				$loginPage->logoutFromBackend($I, false);
 			}
 		);
 		$admin->leave();
@@ -1943,7 +1952,8 @@ class User2SubscriberCest
 		$admin = $I->haveFriend('Admin7');
 		$admin->does(
 			function (AcceptanceTester $I) {
-				LoginPage::logIntoBackend(Generals::$admin, $I);
+				$loginPage = new LoginPage($I);
+				$loginPage->logIntoBackend(Generals::$admin, $I);
 
 				$this->gotoUserManagement($I);
 				$user_found = $this->findUser($I);
@@ -1963,7 +1973,7 @@ class User2SubscriberCest
 					self::checkForSubscriptionDeletion($I);
 				}
 
-				LoginPage::logoutFromBackend($I, false);
+				$loginPage->logoutFromBackend($I, false);
 			}
 		);
 		$admin->leave();
@@ -1983,7 +1993,8 @@ class User2SubscriberCest
 		$admin = $I->haveFriend('Admin8');
 		$admin->does(
 			function (AcceptanceTester $I) {
-				LoginPage::logIntoBackend(Generals::$admin, $I);
+				$loginPage = new LoginPage($I);
+				$loginPage->logIntoBackend(Generals::$admin, $I);
 
 				SubsManagePage::gotoSubscribersListTab($I, $this->activated);
 				self::filterForSubscriber($I);
@@ -2008,7 +2019,7 @@ class User2SubscriberCest
 				$I->wait(1);
 				$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
-				LoginPage::logoutFromBackend($I, false);
+				$loginPage->logoutFromBackend($I, false);
 			}
 		);
 		$admin->leave();
@@ -2045,7 +2056,8 @@ class User2SubscriberCest
 	protected function editPluginOptions(AcceptanceTester $I)
 	{
 		$this->tester = $I;
-		LoginPage::logIntoBackend(Generals::$admin, $I);
+		$loginPage = new LoginPage($I);
+		$loginPage->logIntoBackend(Generals::$admin, $I);
 
 		RegPage::selectPluginPage($I);
 
@@ -2064,7 +2076,8 @@ class User2SubscriberCest
 	protected function editComponentOptions(AcceptanceTester $I)
 	{
 		$this->tester = $I;
-		LoginPage::logIntoBackend(Generals::$admin, $I);
+		$loginPage = new LoginPage($I);
+		$loginPage->logIntoBackend(Generals::$admin, $I);
 
 		$this->selectComponentPage($I);
 		$I->waitForElementVisible(Generals::$toolbar4['Options']);

@@ -648,6 +648,7 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '0');
 		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '0');
+		$I->setManifestOption('com_bwpostman', 'use_captcha', '1');
 
 		// Call page with new options
 		$I->amOnPage(SubsView::$register_url);
@@ -663,6 +664,9 @@ class SubscribeComponentCest
 		$I->dontSeeElement(SubsView::$format_html);
 		$I->dontSeeElement(SubsView::$format_text);
 		$I->dontSeeElement(SubsView::$disclaimer);
+
+		// Check visibility of question field
+		$I->seeElement(SubsView::$question);
 
 		// Check visibility of obligation marker
 		$I->dontSeeElement(SubsView::$firstname_star);
@@ -681,6 +685,7 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'show_special', '1');
 		$I->setManifestOption('com_bwpostman', 'show_emailformat', '1');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
+		$I->setManifestOption('com_bwpostman', 'use_captcha', '2');
 
 		// Call page with new options
 		$I->reloadPage();
@@ -694,6 +699,7 @@ class SubscribeComponentCest
 		$I->seeElement(SubsView::$format_html);
 		$I->seeElement(SubsView::$format_text);
 		$I->seeElement(SubsView::$disclaimer);
+		$I->seeElement(SubsView::$math_captcha);
 
 		// Check label of field special
 		$I->seeElement(sprintf(SubsView::$special_placeholder, $options->special_label));
@@ -819,7 +825,7 @@ class SubscribeComponentCest
 		// Set disclaimer to link
 		$I->setManifestOption('com_bwpostman', 'disclaimer_selection', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
-		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.jahamo-training.de/index.php?option=com_content&view=article&id=15&Itemid=582');
 
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(SubsView::$view_register, 0, -100);
@@ -895,7 +901,7 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'showinmodal', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_target', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
-		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.jahamo-training.de/index.php?option=com_content&view=article&id=15&Itemid=582');
 
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(SubsView::$view_register, 0, -100);
@@ -962,7 +968,7 @@ class SubscribeComponentCest
 		$I->setManifestOption('com_bwpostman', 'showinmodal', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_target', '1');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '1');
-		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.jahamo-training.de/index.php?option=com_content&view=article&id=15&Itemid=582');
 
 		$I->amOnPage(SubsView::$register_url);
 		$I->scrollTo(SubsView::$view_register, 0, -100);
@@ -1069,29 +1075,29 @@ class SubscribeComponentCest
 	 *
 	 * @since   4.0.0
 	 */
-	public function SubscribeActivationNoSenderData(AcceptanceTester $I)
-	{
-		$I->wantTo("Subscribe to mailinglist by component, get error message no activation mail was sent");
-		$I->expectTo('see error message');
-
-		Generals::presetComponentOptions($I);
-		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster');
-
-		SubsView::subscribeByComponent($I);
-		$I->click(SubsView::$button_register);
-
-		$I->scrollTo(SubsView::$err_no_activation, 0, -100);
-		$I->wait(1);
-		$I->waitForElementVisible(SubsView::$err_no_activation, 3);
-		$I->see(SubsView::$msg_err_occurred);
-		$I->see(SubsView::$activation_mail_error);
-
-		SubsView::activate($I, SubsView::$mail_fill_1);
-
-		SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
-
-		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster@boldt-webservice.de');
-	}
+//	public function SubscribeActivationNoSenderData(AcceptanceTester $I)
+//	{
+//		$I->wantTo("Subscribe to mailinglist by component, get error message no activation mail was sent");
+//		$I->expectTo('see error message');
+//
+//		Generals::presetComponentOptions($I);
+//		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster');
+//
+//		SubsView::subscribeByComponent($I);
+//		$I->click(SubsView::$button_register);
+//
+//		$I->scrollTo(SubsView::$err_no_activation, 0, -100);
+//		$I->wait(1);
+//		$I->waitForElementVisible(SubsView::$err_no_activation, 3);
+//		$I->see(SubsView::$msg_err_occurred);
+//		$I->see(SubsView::$activation_mail_error);
+//
+//		SubsView::activate($I, SubsView::$mail_fill_1);
+//
+//		SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
+//
+//		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster@boldt-webservice.de');
+//	}
 
 	/**
 	 * Test method to go to edit newsletter subscription

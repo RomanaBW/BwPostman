@@ -428,8 +428,8 @@ class Generals
 	public static $downloadFolder = array(
 		'root' => '/tests/tests/_output/',
 		'user1' => '/tests/tests/_output/',
-		'user2' => '/repositories/artifacts/bwpostman/downloads/',
-		'jenkins' => '/repositories/artifacts/bwpostman/downloads/',
+		'user2' => '/repositories/artifacts/bwpostman4/downloads/',
+		'jenkins' => '/repositories/artifacts/bwpostman4/downloads/',
 		);
 
 	/**
@@ -1253,7 +1253,7 @@ class Generals
 		$I->setManifestOption('com_bwpostman', 'desc_length', '150');
 		$I->setManifestOption('com_bwpostman', 'disclaimer', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_selection', '0');
-		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.disclaimer.de/disclaimer.htm');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.jahamo-training.de/index.php?option=com_content&view=article&id=15&Itemid=582');
 		$I->setManifestOption('com_bwpostman', 'article_id', '6');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_menuitem', '108');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_target', '0');

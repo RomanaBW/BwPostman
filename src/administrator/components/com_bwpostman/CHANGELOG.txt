@@ -5,9 +5,17 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
+Version 4.1.2 released (2022-10-14)----
+
+Improvement
+~ Make it possible to import subscribers without selecting a mailinglist
+~ Adjust call of getcsv at import of subscribers to prevent php warnings
+
+
 Version 4.1.1 released (2022-04-14)----
 
-# At the check for recipients at sending newsletters na obsolete part of this check caused errors in rare cases.
+Bugfix
+# At the check for recipients at sending newsletters an obsolete part of this check caused errors in rare cases.
 
 Improvement
 ~ Not all parameters of the component were predefined at installation.

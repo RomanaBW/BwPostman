@@ -1,96 +1,16 @@
 ---
-bw_tester_base: bw-tester-base-1
-bw_tester_base_latest: bw-tester-base-1_2021-06-20
-bw_webserver_fast: bw_webserver_fast
-
-tester_basic_packages:
-  - curl
-  - wget
-  - gcc
-  - make
-  - git
-  - glibc-i18ndata
-  - glibc-locale
-  - dejavu-fonts
-  - tar
-  - bzip2
-  - unzip
-  - tmux
-  - zlib-devel
-  - udev
-  - libexif
-  - mariadb-client
-  - supervisor
-
-tester_java_packages:
-  - java-16-openjdk-headless
-
-tester_headless_packages:
-  - ffmpeg
-  - lame
-  - gstreamer-plugins-bad
-  - gstreamer-plugins-ugly
-  - gstreamer-plugins-ugly-orig-addon
-  - gstreamer-plugins-libav
-  - ffx264
-  - free-ttf-fonts
-  - x11vnc
-  - xvfb-run
-  - xorg-x11-fonts
-  - xorg-x11-Xvnc
-
-tester_headless_repos:
-  - http://packman.jacobs-university.de/suse/openSUSE_Tumbleweed/ Packman
-#  - https://opensuse-guide.org/repo/openSUSE_Tumbleweed/ dvd
-
-tester_chromium_packages:
-  - chromium
-  - chromedriver
-  - libminizip1
-  - libre2-9
-  - dbus-1-glib
-  - gobject-introspection
-  - libXss1
-  - libgthread-2_0-0
-  - libsnappy1
-  - libwebpdemux2
-  - gconf2
-
-tester_php_packages:
-  - php7
-  - php7-bcmath
-  - php7-bz2
-  - php7-ctype
-  - php7-curl
-  - php7-devel
-  - php7-dom
-  - php7-fastcgi
-  - php7-fpm
-  - php7-iconv
-  - php7-json
-  - php7-mbstring
-  - php7-openssl
-  - php7-pcntl
-  - php7-pdo
-  - php7-mysql
-  - php7-pear
-  - php7-phar
-  - php7-soap
-  - php7-tokenizer
-  - php7-xmlwriter
-  - php7-zlib
-  - php7-zip
-
 acceptance_environment:
   DISPLAY: ":99"
   COMPOSER_DIR: "/opt/composer"
   UOPZ_VERSION: "6.1.2"
   XDEBUG_VERSION: "3.0.4"
   SELENIUM_DIR: "/opt/selenium"
-  SELENIUMSERVER_VERSION: "3.141.59"
-  GECKODRIVER_VERSION: "v0.11.1"
-  CHROMEDRIVER_VERSION: "91.0.4472.101"
+  SELENIUMSERVER_VERSION: "3.9.1"
+  GECKODRIVER_VERSION: "v0.31.0"
+  CHROMEDRIVER_VERSION: "100.0.4896.20"
 
+
+bw_webserver_fast: bw_webserver_fast
 
 webserver_fast_packages:
   - sendmail

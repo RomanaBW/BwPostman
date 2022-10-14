@@ -20,9 +20,9 @@
 
 		<targetplatform name="joomla" version="4.[0123456789]" min_dev_level="0" php_minimum="7.4" />
 
-		<sha256></sha256>
-		<sha384></sha384>
-		<sha512></sha512>
+		<sha256>f666fb0c816810716281259ebe69a21e5ce90776f562f7f69822c7d0b4bab312</sha256>
+		<sha384>7587b2209c0a57e3c4b1e9f00fb304e46eccc8bcbed0ba45297324f087b4b161147cbd91d7712d021ded2ce22a41eb6b</sha384>
+		<sha512>6cd035ef8f0e34a142eb0f52b6b2f81119c89dc6361151c337a34125d212b195b6c1487b5909a102d70abef98fc2a6f0af9cee8ad4c26f32554fe152d8dbe6d1</sha512>
 	</update>
 
 	<update>
@@ -146,9 +146,9 @@
 
 		<targetplatform name="joomla" version="3.[456789]|10" min_dev_level="0" php_minimum="5.3" />
 
-		<sha256></sha256>
-		<sha384></sha384>
-		<sha512></sha512>
+		<sha256>53e5725324b2c482ebc305d4dd4b63467ea41514ba20546a88c91e3cdc99b3c1</sha256>
+		<sha384>ca4951188ce9e0aaf5ec02f9bfe758b42b8828f359c2f349891777eabee2f4d105e4843a73d342d0a2fec107fcf4d2c2</sha384>
+		<sha512>4b2477e34f4d265fa4405c315637a1678260070bd3c399616f44198dffba3e0437b5ce45e336f9af9b519919c62b23fd5bbe0995ee8fdd6ce45afed12d4d151a</sha512>
 	</update>
 
 	<update>

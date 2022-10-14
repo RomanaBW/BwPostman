@@ -1,0 +1,94 @@
+[main]
+host = https://www.transifex.com
+lang_map = en_GB: en-GB, de_DE: de-DE
+type = INI
+
+[bwpostman.admin-en-gb-com-bwpostman]
+file_filter = src/administrator/language/<lang>/<lang>.com_bwpostman.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.com_bwpostman.ini
+source_lang = en_GB
+
+[bwpostman.admin-en-gb-com-bwpostman-sys]
+file_filter = src/administrator/language/<lang>/<lang>.com_bwpostman.sys.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.com_bwpostman.sys.ini
+source_lang = en_GB
+
+[bwpostman.admin-en-gb-plg-bwpostman-personalize]
+file_filter = src/administrator/language/<lang>/<lang>.plg_bwpostman_personalize.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.plg_bwpostman_personalize.ini
+source_lang = en_GB
+
+[bwpostman.admin-en-gb-plg-bwpostman-personalize-sys]
+file_filter = src/administrator/language/<lang>/<lang>.plg_bwpostman_personalize.sys.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.plg_bwpostman_personalize.sys.ini
+source_lang = en_GB
+
+[bwpostman.admin-en-gb-plg-system-bwpm-user2subscriber]
+file_filter = src/administrator/language/<lang>/<lang>.plg_system_bwpm_user2subscriber.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.plg_system_bwpm_user2subscriber.ini
+source_lang = en_GB
+
+[bwpostman.admin-en-gb-plg-system-bwpm-user2subscriber-sys]
+file_filter = src/administrator/language/<lang>/<lang>.plg_system_bwpm_user2subscriber.sys.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.plg_system_bwpm_user2subscriber.sys.ini
+source_lang = en_GB
+
+[bwpostman.admin-en-gb-plg-bwpostman-footerusedmailinglists]
+file_filter = src/administrator/language/<lang>/<lang>.plg_bwpostman_footerusedmailinglists.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.plg_bwpostman_footerusedmailinglists.ini
+source_lang = en_GB
+
+[bwpostman.admin-en-gb-plg-bwpostman-footerusedmailinglists-sys]
+file_filter = src/administrator/language/<lang>/<lang>.plg_bwpostman_footerusedmailinglists.sys.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.plg_bwpostman_footerusedmailinglists.sys.ini
+source_lang = en_GB
+
+[bwpostman.admin-en-gb-plg-bwpostman-useraccount]
+file_filter = src/administrator/language/<lang>/<lang>.plg_system_bwpm_useraccount.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.plg_system_bwpm_useraccount.ini
+source_lang = en_GB
+
+[bwpostman.admin-en-gb-plg-bwpostman-useraccount-sys]
+file_filter = src/administrator/language/<lang>/<lang>.plg_system_bwpm_useraccount.sys.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.plg_system_bwpm_useraccount.sys.ini
+source_lang = en_GB
+
+[bwpostman.site-en-gb-com-bwpostman]
+file_filter = src/language/<lang>/<lang>.com_bwpostman.ini
+minimum_perc = 0
+source_file = src/language/en-GB/en-GB.com_bwpostman.ini
+source_lang = en-GB
+
+[bwpostman.site-en-gb-mod-bwpostman]
+file_filter = src/language/<lang>/<lang>.mod_bwpostman.ini
+minimum_perc = 0
+source_file = src/language/en-GB/en-GB.mod_bwpostman.ini
+source_lang = en-GB
+
+[bwpostman.site-en-gb-mod-bwpostman-sys]
+file_filter = src/language/<lang>/<lang>.mod_bwpostman.sys.ini
+minimum_perc = 0
+source_file = src/language/en-GB/en-GB.mod_bwpostman.sys.ini
+source_lang = en-GB
+
+[bwpostman.site-en-gb-mod-bwpostman-overview]
+file_filter = src/language/<lang>/<lang>.mod_bwpostman_overview.ini
+minimum_perc = 0
+source_file = src/language/en-GB/en-GB.mod_bwpostman_overview.ini
+source_lang = en-GB
+
+[bwpostman.site-en-gb-mod-bwpostman-overview-sys]
+file_filter = src/language/<lang>/<lang>.mod_bwpostman_overview.sys.ini
+minimum_perc = 0
+source_file = src/language/en-GB/en-GB.mod_bwpostman_overview.sys.ini
+source_lang = en-GB

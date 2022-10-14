@@ -1,0 +1,94 @@
+[main]
+host     = https://www.transifex.com
+lang_map = de_DE: de-DE, en_GB: en-GB
+
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-com-bwpostman]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.com_bwpostman.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.com_bwpostman.ini
+source_lang  = en_GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-com-bwpostman-sys]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.com_bwpostman.sys.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.com_bwpostman.sys.ini
+source_lang  = en_GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-plg-bwpostman-footerusedmailinglists]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.plg_bwpostman_footerusedmailinglists.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.plg_bwpostman_footerusedmailinglists.ini
+source_lang  = en_GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-plg-bwpostman-footerusedmailinglists-sys]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.plg_bwpostman_footerusedmailinglists.sys.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.plg_bwpostman_footerusedmailinglists.sys.ini
+source_lang  = en_GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-plg-bwpostman-personalize]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.plg_bwpostman_personalize.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.plg_bwpostman_personalize.ini
+source_lang  = en_GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-plg-bwpostman-personalize-sys]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.plg_bwpostman_personalize.sys.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.plg_bwpostman_personalize.sys.ini
+source_lang  = en_GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-plg-bwpostman-useraccount]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.plg_system_bwpm_useraccount.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.plg_system_bwpm_useraccount.ini
+source_lang  = en_GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-plg-bwpostman-useraccount-sys]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.plg_system_bwpm_useraccount.sys.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.plg_system_bwpm_useraccount.sys.ini
+source_lang  = en_GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-plg-system-bwpm-user2subscriber]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.plg_system_bwpm_user2subscriber.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.plg_system_bwpm_user2subscriber.ini
+source_lang  = en_GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-plg-system-bwpm-user2subscriber-sys]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.plg_system_bwpm_user2subscriber.sys.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.plg_system_bwpm_user2subscriber.sys.ini
+source_lang  = en_GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:site-en-gb-com-bwpostman]
+file_filter  = ../../src/language/<lang>/<lang>.com_bwpostman.ini
+source_file  = ../../src/language/en-GB/en-GB.com_bwpostman.ini
+source_lang  = en-GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:site-en-gb-mod-bwpostman]
+file_filter  = ../../src/language/<lang>/<lang>.mod_bwpostman.ini
+source_file  = ../../src/language/en-GB/en-GB.mod_bwpostman.ini
+source_lang  = en-GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:site-en-gb-mod-bwpostman-overview]
+file_filter  = ../../src/language/<lang>/<lang>.mod_bwpostman_overview.ini
+source_file  = ../../src/language/en-GB/en-GB.mod_bwpostman_overview.ini
+source_lang  = en-GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:site-en-gb-mod-bwpostman-overview-sys]
+file_filter  = ../../src/language/<lang>/<lang>.mod_bwpostman_overview.sys.ini
+source_file  = ../../src/language/en-GB/en-GB.mod_bwpostman_overview.sys.ini
+source_lang  = en-GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:site-en-gb-mod-bwpostman-sys]
+file_filter  = ../../src/language/<lang>/<lang>.mod_bwpostman.sys.ini
+source_file  = ../../src/language/en-GB/en-GB.mod_bwpostman.sys.ini
+source_lang  = en-GB
+minimum_perc = 0
+

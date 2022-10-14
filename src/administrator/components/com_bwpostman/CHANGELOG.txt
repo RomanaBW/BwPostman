@@ -15,7 +15,7 @@ Improvement
 Version 4.1.1 released (2022-04-14)----
 
 Bugfix
-# At the check for recipients at sending newsletters na obsolete part of this check caused errors in rare cases.
+# At the check for recipients at sending newsletters an obsolete part of this check caused errors in rare cases.
 
 Improvement
 ~ Not all parameters of the component were predefined at installation.

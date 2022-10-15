@@ -5,48 +5,11 @@
     source_test_path: "/daten/deposition/jenkins/BwPostman/builds/test"
     target_path: "/daten/deposition/jenkins/BwPostman/builds/archive"
     nbr_remaning: 15
+    folder_list: []
 
   tasks:
-    - name: Set folder file name
-      set_fact:
-        folder_file: "{{ target_path }}/folder_list.txt"
-
-    - name: Ensure target folder exists
-      become: yes
-      file:
-        path: "{{ target_path }}"
-        state: directory
-        mode: 0775
-        owner: romana
-        group: users
-
-    - name: Remove folder file
-      file:
-        path: "{{ folder_file }}"
-        state: absent
-
-    - name: Get list of  log folders
-      shell: "ls -cdA */ > {{ folder_file }}"
-      args:
-        chdir: "{{ source_path }}"
-
-    - name: Remove slash from file entries
-      replace:
-        path: "{{ folder_file }}"
-        regexp: "/"
-        replace: ""
-
-    - name: Get folder list
-      command: "cat {{ folder_file }}"
-      register: folder_list_raw
-
-    - name: Get lines of folder file
-      set_fact:
-        folder_list: "{{ folder_list_raw.stdout.splitlines() }}"
-
-    - name: Show folder list
-      debug:
-        msg: "{{ folder_list[nbr_remaning:] }}"
+    - include_role:
+        name: romanabw.get-pipeline-logs-folderlist
 
     - include_role:
         name: romanabw.pack-pipeline-logs

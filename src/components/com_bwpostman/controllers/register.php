@@ -92,7 +92,7 @@ class BwPostmanControllerRegister extends JControllerLegacy
 		// Check if user is logged (subscriber id = 0 means the user has no newsletter subscription)
 		if ($userId)
 		{
-			$subsTable    = $this->getModel('subscriber', 'Administrator')->getTable('Subscriber');
+			$subsTable    = $this->getModel('Subscriber', 'BwPostmanModel')->getTable('Subscribers');
 			$subscriberId = $subsTable->getSubscriberIdByUserId($userId);
 		}
 		// Check if user is in edit mode

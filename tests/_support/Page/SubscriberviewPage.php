@@ -888,7 +888,56 @@ class SubscriberviewPage
 	 */
 	public static $errorAbuseEmail    = "Invalid input at 'Your email address'";
 
-	/**
+    /**
+     * @var string
+     *
+     * @since 4.1.3
+     */
+    public static $loginPage    = "/index.php?option=com_users&view=login";
+
+    /**
+     * @var string
+     *
+     * @since 4.1.3
+     */
+    public static $loginUsernameField    = "//*[@id='username']";
+
+    /**
+     * @var string
+     *
+     * @since 4.1.3
+     */
+    public static $loginPasswordField    = "//*[@id='password']";
+
+    /**
+     * @var string
+     *
+     * @since 4.1.3
+     */
+	public static $loginButton    = "//*[@id='com-users-login__form']/fieldset/div/div/button[@type='submit']";
+
+    /**
+     * @var string
+     *
+     * @since 4.1.3
+     */
+	public static $logoutButton    = "//*[@class='com-users-logout__form form-horizontal well']/div/div/button[@type='submit']";
+
+    /**
+     * @var string
+     *
+     * @since 4.1.3
+     */
+    public static $profileNameField    = "//*[@id='users-profile-core']/dl/dd[1]";
+
+    /**
+     * @var string
+     *
+     * @since 4.1.3
+     */
+    public static $itemTitle    = "//*/div[@class='blog-featured']/div[1]/div/h2/a";
+
+    /**
 	 * Test method to subscribe to newsletter in front end by component
 	 *
 	 * @param \AcceptanceTester             $I
@@ -989,4 +1038,55 @@ class SubscriberviewPage
 		$I->click(self::$button_submitleave);
 		$I->dontSee(self::$mail_fill_1, self::$mail);
 	}
+
+    /**
+     * Test method to login at frontend
+     *
+     * @param \AcceptanceTester $I
+     *
+     * @throws \Exception
+     *
+     * @since   4.1.3
+     */
+    public static function loginToFrontend(\AcceptanceTester $I)
+    {
+//        Go to login page
+        $I->amOnPage(self::$loginPage);
+        $I->wait(1);
+        $I->seeElement(self::$loginUsernameField);
+
+//        Fill login data
+        $I->fillField(self::$loginUsernameField, 'BwPostmanPublisher');
+        $I->fillField(self::$loginPasswordField, 'BwPostmanTest');
+
+//        Submit login
+        $I->clickAndWait(self::$loginButton, 1);
+
+//        Check success of login
+        $I->see('BwPostmanPublisher', self::$profileNameField);
+    }
+
+    /**
+     * Test method to logout from frontend
+     *
+     * @param \AcceptanceTester $I
+     *
+     * @throws \Exception
+     *
+     * @since   4.1.3
+     */
+    public static function logoutFromFrontend(\AcceptanceTester $I)
+    {
+//        Go to login page
+        $I->amOnPage(self::$loginPage);
+        $I->wait(1);
+        $I->seeElement(self::$logoutButton);
+
+//        Submit logout
+        $I->clickAndWait(self::$logoutButton, 1);
+
+//        Check success of logout
+        $I->see('Joomla!', );
+
+    }
 }

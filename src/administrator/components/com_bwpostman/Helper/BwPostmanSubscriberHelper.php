@@ -623,11 +623,13 @@ class BwPostmanSubscriberHelper
 	 */
 	static public function customizeSubscriberDataFields(Form $form)
 	{
+		$nullDate = BwPostmanHelper::getDbo()->getNullDate();
+
 		// Check to show confirmation data or checkbox
-		$c_date	= strtotime($form->getValue('confirmation_date'));
+		$c_date = $form->getValue('confirmation_date', null, $nullDate);
 
 		// check if conformation date is '0000-00-00 00:00:00'
-		if (empty($c_date) || $form->getValue('confirmation_date') == 0)
+		if ($c_date === $nullDate)
 		{
 			$form->setFieldAttribute('confirmation_date', 'type', 'hidden');
 			$form->setFieldAttribute('confirmed_by', 'type', 'hidden');
@@ -650,7 +652,7 @@ class BwPostmanSubscriberHelper
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
-		if ($m_date == BwPostmanHelper::getDbo()->getNullDate())
+		if ($m_date === $nullDate)
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');

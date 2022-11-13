@@ -645,6 +645,184 @@ class TestSubscribersDetailsCest
 	}
 
 	/**
+	 * Test method to create a test recipient from main view and cancel creation
+	 *
+	 * @param   AcceptanceTester            $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.1.3
+	 */
+	public function CreateOneTesterCancelMainView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one test recipient and cancel from main view");
+		$I->amOnPage(MainView::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(Generals::$extension, Generals::$pageTitle);
+		$I->click(MainView::$addTestRecipientButton);
+
+		SubEdit::fillFormSimple($I, 1, 2, true);
+
+		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see(Generals::$extension, Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to create a test recipient from list view and cancel creation
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneTesterCancelListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create one test recipient cancel list view");
+		$I->amOnPage(SubManage::$url);
+
+		$I->clickAndWait(SubManage::$tab_testers, 1);
+
+		$I->click(Generals::$toolbar['New']);
+
+		$this->fillFormExtended($I, true);
+
+		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
+		$I->see("Subscribers", Generals::$pageTitle);
+	}
+
+	/**
+	 * Test method to test creation of test recipients and also single Subscriber from list view.
+	 * One test recipient with html format, one with text format, a second with text format (should give an error) and
+	 * one regular subscriber. All three should be possible.
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.1.3
+	 */
+	public function CreateTestersListView(AcceptanceTester $I)
+	{
+		$I->wantTo("Create a html test recipient complete list view");
+
+		// Preset all fields to be shown and obligatory if possible
+		Generals::presetComponentOptions($I);
+
+		$I->setManifestOption('com_bwpostman', 'show_gender', '1');
+		$I->setManifestOption('com_bwpostman', 'show_firstname_field', '1');
+		$I->setManifestOption('com_bwpostman', 'firstname_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_name_field', '1');
+		$I->setManifestOption('com_bwpostman', 'name_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'show_special', '1');
+		$I->setManifestOption('com_bwpostman', 'special_field_obligation', '1');
+		$I->setManifestOption('com_bwpostman', 'special_label', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'special_desc', 'Mitgliedsnummer');
+		$I->setManifestOption('com_bwpostman', 'show_emailformat', '1');
+		$I->setManifestOption('com_bwpostman', 'default_emailformat', '1');
+
+		$I->amOnPage(SubManage::$url);
+
+		// Create test recipient with html format
+		$I->clickAndWait(SubManage::$tab_testers, 1);
+
+		$I->click(Generals::$toolbar['New']);
+
+		SubEdit::fillFormSimple($I, SubManage::$format_html, SubEdit::$female, true);
+
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
+
+		$I->waitForElementVisible(Generals::$alert_header, 5);
+		$I->see(SubEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+		$this->checkSavedValues($I, '1', '1');
+
+
+		// Create test recipient with text format
+		$I->clickAndWait(SubManage::$tab_unconfirmed, 1);
+		$I->clickAndWait(SubManage::$tab_testers, 1);
+
+		$I->click(Generals::$toolbar['New']);
+
+		SubEdit::fillFormSimple($I, SubManage::$format_text, SubEdit::$male, true);
+
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
+
+		$I->waitForElementVisible(Generals::$alert_header, 5);
+		$I->see(SubEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+		$this->checkSavedValues($I, '0', '0');
+
+		// Create second test recipient with text format
+		$I->clickAndWait(SubManage::$tab_unconfirmed, 1);
+		$I->clickAndWait(SubManage::$tab_testers, 1);
+
+		$I->click(Generals::$toolbar['New']);
+
+		SubEdit::fillFormSimple($I, SubManage::$format_text, SubEdit::$male, true);
+
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
+
+		$I->waitForElementVisible(Generals::$alert_header, 5);
+
+		$I->see(sprintf(SubEdit::$error_save_tester, SubEdit::$field_email), Generals::$alert_error_1);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
+
+		// Create regular recipient with html format
+		$I->clickAndWait(SubManage::$tab_confirmed, 1);
+
+		$I->click(Generals::$toolbar['New']);
+
+		SubEdit::fillFormSimple($I, SubManage::$format_html, SubEdit::$female);
+
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
+
+		$I->waitForElementVisible(Generals::$alert_header, 5);
+		$I->see(SubEdit::$success_saved, Generals::$alert_success);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
+		$this->checkSavedValues($I, '1', '1');
+
+		// Cleanup regular subscriber
+		$edit_arc_del_array = SubEdit::prepareDeleteArray($I, true, false, false);
+
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true, false);
+		$I->see('Subscribers', Generals::$pageTitle);
+
+		// Cleanup test recipients
+		$I->amOnPage(SubManage::$url);
+
+		$I->clickAndWait(SubManage::$tab_testers, 1);
+
+		$edit_arc_del_array = SubEdit::prepareDeleteArray($I, true, true, true);
+
+		$I->HelperArcDelItems($I, SubManage::$arc_del_array, $edit_arc_del_array, true, true);
+		$I->see('Subscribers', Generals::$pageTitle);
+
+		// Reset settings
+		Generals::presetComponentOptions($I);
+	}
+
+	/**
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester    $I
@@ -667,12 +845,11 @@ class TestSubscribersDetailsCest
 	 * to check if the related messages appears
 	 *
 	 * @param AcceptanceTester $I
-	 *
-	 * @throws Exception
+	 * @param bool             $isTester
 	 *
 	 * @since   2.0.0
 	 */
-	private function fillFormExtended(AcceptanceTester $I)
+	private function fillFormExtended(AcceptanceTester $I, $isTester = false)
 	{
 		$options    = $I->getManifestOptions('com_bwpostman');
 
@@ -755,18 +932,21 @@ class TestSubscribersDetailsCest
 			$I->waitForText("Text", 5);
 		}
 
-		$I->click(SubEdit::$confirm);
-		$I->selectOption(SubEdit::$confirm, SubEdit::$confirmed);
-		$I->wait(1);
-		$I->waitForText("confirmed", 5);
+		if (!$isTester)
+		{
+			$I->click(SubEdit::$confirm);
+			$I->selectOption(SubEdit::$confirm, SubEdit::$confirmed);
+			$I->wait(1);
+			$I->waitForText("confirmed", 5);
 
-		$I->scrollTo(SubEdit::$mls_label, 0, -100);
-		$I->wait(1);
-		$I->click(sprintf(SubEdit::$mls_accessible, 3));
-		$I->click(sprintf(SubEdit::$mls_nonaccessible, 5));
-		$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);
-		$I->wait(1);
-		$I->click(sprintf(SubEdit::$mls_internal, 7));
+			$I->scrollTo(SubEdit::$mls_label, 0, -100);
+			$I->wait(1);
+			$I->click(sprintf(SubEdit::$mls_accessible, 3));
+			$I->click(sprintf(SubEdit::$mls_nonaccessible, 5));
+			$I->scrollTo(SubEdit::$mls_internal_label, 0, -100);
+			$I->wait(1);
+			$I->click(sprintf(SubEdit::$mls_internal, 7));
+		}
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);

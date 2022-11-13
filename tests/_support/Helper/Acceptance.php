@@ -1174,20 +1174,20 @@ class Acceptance extends Codeception\Module
 	/**
 	 * Helper method archive and delete items, specified by EditData
 	 *
-	 * @param   \AcceptanceTester               $I
-	 * @param   array                           $manage_data
-	 * @param   array                           $edit_data
-	 * @param   boolean                         $delete_allowed
+	 * @param \AcceptanceTester $I
+	 * @param array             $manage_data
+	 * @param array             $edit_data
+	 * @param boolean           $delete_allowed
+	 * @param bool              $isTester
 	 *
 	 * @return  void
 	 *
 	 * @throws Exception
-	 *
 	 * @since   2.0.0
 	 */
-	public function HelperArcDelItems(\AcceptanceTester $I, $manage_data, $edit_data, $delete_allowed)
+	public function HelperArcDelItems(\AcceptanceTester $I, $manage_data, $edit_data, $delete_allowed, $isTester = false)
 	{
-		$this->HelperArchiveItems($I, $manage_data, $edit_data);
+		$this->HelperArchiveItems($I, $manage_data, $edit_data, $isTester);
 
 		$this->switchToArchive($I, $edit_data['archive_tab']);
 
@@ -1203,14 +1203,13 @@ class Acceptance extends Codeception\Module
 	 * @param \AcceptanceTester $I
 	 * @param                   $manage_data
 	 * @param                   $edit_data
+	 * @param                   $isTester
 	 *
 	 * @return void
 	 *
-	 * @throws Exception
-	 *
 	 * @since 2.0.0
 	 */
-	public function HelperArchiveItems(\AcceptanceTester $I, $manage_data, $edit_data)
+	public function HelperArchiveItems(\AcceptanceTester $I, $manage_data, $edit_data, $isTester = false)
 	{
 		// ensure we are on the section list page
 		$I->see($manage_data['section'], Generals::$pageTitle);
@@ -1275,7 +1274,14 @@ class Acceptance extends Codeception\Module
 		}
 		else
 		{
-			$I->see($edit_data['archive_success2_msg'], Generals::$alert_success4);
+			if (!$isTester)
+			{
+				$I->see($edit_data['archive_success2_msg'], Generals::$alert_success4);
+			}
+			else
+			{
+				$I->see($edit_data['archive_success4_msg'], Generals::$alert_success4);
+			}
 		}
 	}
 

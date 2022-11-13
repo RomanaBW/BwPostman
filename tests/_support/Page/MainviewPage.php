@@ -81,7 +81,7 @@ class MainviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $addTestRecipientButton   = '//*/div[contains(@class,"bw-icons")]/div/div[5]';
+	public static $addTestRecipientButton   = "//*/div[contains(@class,'bw-icons')]/div/div[5]";
 
 	/**
 	 * @var string

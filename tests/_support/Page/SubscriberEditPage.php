@@ -214,6 +214,13 @@ class SubscriberEditPage
 	 */
 	public static $error_save       = 'Save failed with the following error:';
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $error_save_tester       = "The entered email address '%s' is already registered in the database (ID: ";
+
 
 	/**
 	 * @var string
@@ -312,9 +319,12 @@ class SubscriberEditPage
 		'archive_identifier'   => "Name & Email",
 		'archive_title_col'    => "//*[@id='main-table-bw-confirmed']/tbody/*/td[%s]",
 		'archive_title_col_unconfirmed' => "//*[@id='main-table-bw-unconfirmed']/tbody/*/td[%s]",
+		'archive_title_col_testrecipient' => "//*[@id='main-table-bw-testrecipients']/tbody/*/td[%s]",
 		'archive_confirm'      => 'Do you wish to archive the selected subscriber(s)?',
 		'archive_success_msg'  => 'The selected subscriber has been archived.',
 		'archive_success2_msg' => 'The selected subscribers have been archived.',
+		'archive_success3_msg'  => 'The selected test-recipient has been archived.',
+		'archive_success4_msg'  => 'The selected test-recipients have been archived',
 
 		'delete_button'        => "//*[@id='toolbar-delete']/button",
 		'delete_identifier'    => "Name & Email",
@@ -479,14 +489,13 @@ class SubscriberEditPage
 	 * This method simply fills all fields, required or not
 	 *
 	 * @param AcceptanceTester $I
-	 * @param string $format (0 = text, 1 = HTML)
-	 * @param string $gender (0 = male, 1 = female, 2 = n.a.)
-	 *
-	 * @throws \Exception
+	 * @param string           $format (0 = text, 1 = HTML)
+	 * @param string           $gender (0 = male, 1 = female, 2 = n.a.)
+	 * @param bool             $isTester
 	 *
 	 * @since   2.0.0
 	 */
-	public static function fillFormSimple(AcceptanceTester $I, $format = "0", $gender = "0")
+	public static function fillFormSimple(AcceptanceTester $I, $format = "0", $gender = "0", $isTester = false)
 	{
 		$options    = $I->getManifestOptions('com_bwpostman');
 
@@ -520,18 +529,21 @@ class SubscriberEditPage
 			$I->fillField(self::$special, self::$field_special);
 		}
 
-		$I->click(self::$confirm);
-		$I->selectOption(self::$confirm, self::$confirmed);
-		$I->wait(1);
-		$I->waitForText("confirmed", 5);
+		if (!$isTester)
+		{
+			$I->click(self::$confirm);
+			$I->selectOption(self::$confirm, self::$confirmed);
+			$I->wait(1);
+			$I->waitForText("confirmed", 5);
 
-		$I->scrollTo(self::$mls_label, 0, -100);
-		$I->wait(1);
-		$I->click(sprintf(self::$mls_accessible, 3));
-		$I->click(sprintf(self::$mls_nonaccessible, 5));
-		$I->scrollTo(self::$mls_internal_label, 0, -100);
-		$I->wait(1);
-		$I->click(sprintf(self::$mls_internal, 7));
+			$I->scrollTo(self::$mls_label, 0, -100);
+			$I->wait(1);
+			$I->click(sprintf(self::$mls_accessible, 3));
+			$I->click(sprintf(self::$mls_nonaccessible, 5));
+			$I->scrollTo(self::$mls_internal_label, 0, -100);
+			$I->wait(1);
+			$I->click(sprintf(self::$mls_internal, 7));
+		}
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
@@ -540,14 +552,14 @@ class SubscriberEditPage
 	/**
 	 * @param \AcceptanceTester $I
 	 * @param boolean           $confirmed
+	 * @param bool              $isTester
+	 * @param bool              $multiple
 	 *
 	 * @return array
 	 *
-	 * @throws \Exception
-	 *
 	 * @since version
 	 */
-	public static function prepareDeleteArray(\AcceptanceTester $I, bool $confirmed = true)
+	public static function prepareDeleteArray(\AcceptanceTester $I, bool $confirmed = true, bool $isTester = false, bool $multiple = false)
 	{
 		$edit_arc_del_array = self::$arc_del_array;
 		$title_col = 4;
@@ -564,6 +576,17 @@ class SubscriberEditPage
 		{
 			$edit_arc_del_array['mainTableId'] = "//*[@id='main-table-bw-unconfirmed']";
 			$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col_unconfirmed'], $title_col);
+		}
+		elseif ($isTester)
+		{
+			$edit_arc_del_array['mainTableId'] = "//*[@id='main-table-bw-testrecipients']";
+			$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col_testrecipient'], $title_col);
+			$edit_arc_del_array['archive_success_msg'] = $edit_arc_del_array['archive_success3_msg'];
+
+			if ($multiple)
+			{
+				$edit_arc_del_array['archive_success_msg'] = $edit_arc_del_array['archive_success4_msg'];
+			}
 		}
 
 		return $edit_arc_del_array;

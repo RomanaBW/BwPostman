@@ -352,7 +352,6 @@ class SubscriberController extends FormController
 		{
 			case 'save':
 			case 'save2new':
-//			case 'save2copy':
 				Factory::getApplication()->setUserState('subscriber.id', null);
 				Factory::getApplication()->setUserState('com_bwpostman.edit.subscriber.mailinglists', null);
 				break;

@@ -406,7 +406,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 		if ($app->isClient('site') && !empty($data['mod_id']))
 		{
-			// if data from module, we need module params
+			// if data are from module, we need module params
 			// we can't use JoomlaModuleHelper, because module isn't shown on frontend
 			$params = BwPostmanSubscriberHelper::getModParams((int)$data['mod_id']);
 			$module_params  = new Registry($params->params);
@@ -607,7 +607,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 				if ($xid && $xid !== intval($this->id))
 				{
-					$testrecipient = $this->getSubscriberNewsletterData($xid);
+					$testrecipient = $this->getSubscriberNewsletterData($xid, true);
 
 					// Account with this emailformat already exists
 					if (($testrecipient->archive_flag === 0) && ($testrecipient->emailformat === $this->emailformat))
@@ -891,17 +891,21 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 * Method to check if a subscriber is archived
 	 *
 	 * @param integer $subsId ID of the subscriber to check
+	 * @param bool    $isTester Don't reset table if tester is asked
 	 *
-	 * @return 	object|null
+	 * @return    object|null
 	 *
 	 * @throws Exception
-	 *
 	 * @since 3.0.0
 	 */
-	public function getSubscriberNewsletterData(int $subsId): ?object
+	public function getSubscriberNewsletterData(int $subsId, bool $isTester =false): ?object
 	{
 		$result = false;
-		$this->reset();
+
+		if (!$isTester)
+		{
+			$this->reset();
+		}
 
 		$db    = $this->_db;
 		$query = $db->getQuery(true);

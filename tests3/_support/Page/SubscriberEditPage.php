@@ -201,8 +201,15 @@ class SubscriberEditPage
 	 */
 	public static $error_save       = 'Save failed with the following error:';
 
+    /**
+     * @var string
+     *
+     * @since 2.0.0
+     */
+    public static $error_save_tester       = "The entered email address '%s' is already registered in the database (ID: ";
 
-	/**
+
+    /**
 	 * @var string
 	 *
 	 * @since 2.0.0
@@ -285,8 +292,11 @@ class SubscriberEditPage
 		'archive_identifier'   => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
 		'archive_title_col'    => "//*[@id='main-table-bw-confirmed']/tbody/*/td[%s]",
 		'archive_confirm'      => 'Do you wish to archive the selected subscriber(s)?',
+        'archive_title_col_testrecipient' => "//*[@id='main-table-bw-testrecipients']/tbody/*/td[%s]",
 		'archive_success_msg'  => 'The selected subscriber has been archived.',
 		'archive_success2_msg' => 'The selected subscribers have been archived.',
+        'archive_success3_msg'  => 'The selected test-recipient has been archived.',
+        'archive_success4_msg'  => 'The selected test-recipients have been archived',
 
 		'delete_button'        => ".//*[@id='toolbar-delete']/button",
 		'delete_identifier'    => ".//*[@id='filter_search_filter_chzn']/div/ul/li[5]",
@@ -415,19 +425,19 @@ class SubscriberEditPage
 		$I->see('Subscribers', Generals::$pageTitle);
 	}
 
-	/**
-	 * Method to fill form without check of required fields
-	 * This method simply fills all fields, required or not
-	 *
-	 * @param AcceptanceTester $I
-	 * @param string $format (0 = text, 1 = HTML)
-	 * @param string $gender (0 = male, 1 = female, 2 = n.a.)
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	public static function fillFormSimple(AcceptanceTester $I, $format = ".//*/li[text()='Text']", $gender = "//*[@id='jform_gender_chzn']/div/ul/li[3]")
+    /**
+     * Method to fill form without check of required fields
+     * This method simply fills all fields, required or not
+     *
+     * @param AcceptanceTester $I
+     * @param string           $format (0 = text, 1 = HTML)
+     * @param string           $gender (0 = male, 1 = female, 2 = n.a.)
+     * @param bool             $isTester
+     *
+     * @throws Exception
+     * @since   2.0.0
+     */
+	public static function fillFormSimple(AcceptanceTester $I, $format = ".//*/li[text()='Text']", $gender = "//*[@id='jform_gender_chzn']/div/ul/li[3]", $isTester = false)
 	{
 		$options    = $I->getManifestOptions('com_bwpostman');
 
@@ -460,27 +470,32 @@ class SubscriberEditPage
 			$I->fillField(self::$special, self::$field_special);
 		}
 
-		$I->clickAndWait(self::$confirm, 1);
-		$I->clickAndWait(self::$confirmed, 1);
+        if (!$isTester)
+        {
+            $I->clickAndWait(self::$confirm, 1);
+            $I->clickAndWait(self::$confirmed, 1);
 
-		$I->scrollTo(self::$mls_label, 0, -100);
-		$I->click(sprintf(self::$mls_accessible, 2));
-		$I->click(sprintf(self::$mls_nonaccessible, 3));
-		$I->scrollTo(self::$mls_internal_label, 0, -100);
-		$I->click(sprintf(self::$mls_internal, 4));
+            $I->scrollTo(self::$mls_label, 0, -100);
+            $I->click(sprintf(self::$mls_accessible, 2));
+            $I->click(sprintf(self::$mls_nonaccessible, 3));
+            $I->scrollTo(self::$mls_internal_label, 0, -100);
+            $I->click(sprintf(self::$mls_internal, 4));
+        }
 		$I->scrollTo(Generals::$sys_message_container, 0, -100);
 	}
 
-	/**
-	 * @param AcceptanceTester $I
-	 *
-	 * @return array
-	 *
-	 * @throws Exception
-	 *
-	 * @since version
-	 */
-	public static function prepareDeleteArray(AcceptanceTester $I)
+    /**
+     * @param AcceptanceTester $I
+     * @param bool             $confirmed
+     * @param bool             $isTester
+     * @param bool             $multiple
+     *
+     * @return array
+     *
+     * @throws Exception
+     * @since version
+     */
+	public static function prepareDeleteArray(AcceptanceTester $I, $confirmed = true, $isTester = false, $multiple = false)
 	{
 		$edit_arc_del_array = self::$arc_del_array;
 		$title_col = 4;
@@ -491,7 +506,20 @@ class SubscriberEditPage
 		{
 			$title_col = 5;
 		}
-		$edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], $title_col);
+
+        $edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col'], $title_col);
+
+        if ($isTester)
+        {
+            $edit_arc_del_array['mainTableId'] = "//*[@id='main-table-bw-testrecipients']";
+            $edit_arc_del_array['archive_title_col'] = sprintf($edit_arc_del_array['archive_title_col_testrecipient'], $title_col);
+            $edit_arc_del_array['archive_success_msg'] = $edit_arc_del_array['archive_success3_msg'];
+
+            if ($multiple)
+            {
+                $edit_arc_del_array['archive_success_msg'] = $edit_arc_del_array['archive_success4_msg'];
+            }
+        }
 
 		return $edit_arc_del_array;
 	}

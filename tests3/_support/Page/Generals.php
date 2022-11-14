@@ -235,7 +235,14 @@ class Generals
 	 */
 	public static $alert_error      = 'div.alert-error';
 
-	/**
+    /**
+     * @var string
+     *
+     * @since 3.2.3
+     */
+    public static $systemMessageClose      = "//*[@id='system-message-container']/div/button";
+
+    /**
 	 * @var string
 	 *
 	 * @since 2.0.0

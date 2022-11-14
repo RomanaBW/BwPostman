@@ -93,10 +93,10 @@ $colNum = 7;
 				<table id="main-table-bw-testrecipients" class="table bw-testrecipients">
 							<thead>
 							<tr>
-								<th style="width: 1%;" class="text-center">
-									<!-- <input type="checkbox" name="checkall-toggle" value=""
-										 title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /> -->
-								</th>
+                                <th style="width: 1%;" class="text-center">
+                                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>"
+                                            onclick="Joomla.checkAll(this)" />
+                                </th>
 								<th class="d-none d-md-table-cell" style="min-width: 100px;" scope="col">
 									<?php echo HtmlHelper::_('searchtools.sort',  'COM_BWPOSTMAN_SUB_NAME', 'a.name', $listDirn, $listOrder); ?>
 								</th>
@@ -132,7 +132,7 @@ $colNum = 7;
 									$name		= ($item->name) ? $item->name : Text::_('COM_BWPOSTMAN_SUB_NONAME');
 									?>
 								<tr class="row<?php echo $i % 2; ?>">
-									<td align="center"><?php echo HtmlHelper::_('grid.id', $i, $item->id, 0, 'cid', 'tb'); ?></td>
+									<td align="center"><?php echo HtmlHelper::_('grid.id', $i, $item->id, 0, 'cid', 'cb'); ?></td>
 									<td>
 										<?php
 										if ($item->checked_out)
@@ -143,7 +143,8 @@ $colNum = 7;
 												$item->editor,
 												$item->checked_out_time,
 												'subscribers.',
-												BwPostmanHelper::canCheckin('subscriber', $item->checked_out)
+												BwPostmanHelper::canCheckin('subscriber', $item->checked_out),
+									        	'tb'
 											);
 										}
 

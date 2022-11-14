@@ -435,7 +435,7 @@ class BwPostmanTableSubscribers extends JTable
 		$this->name              = $filter->clean($this->name);
 		$this->firstname         = $filter->clean($this->firstname);
 		$this->email             = $filter->clean($this->email);
-		$this->emailformat       = $filter->clean($this->emailformat, 'BOOLEAN');
+		$this->emailformat       = $filter->clean($this->emailformat, 'INT');
 		$this->gender            = $filter->clean($this->gender, 'UINT');
 		$this->special           = $filter->clean($this->special);
 		$this->status            = $filter->clean($this->status, 'UINT');
@@ -589,17 +589,17 @@ class BwPostmanTableSubscribers extends JTable
 
 				if ($xid && $xid !== intval($this->id))
 				{
-					$testrecipient = $this->getSubscriberNewsletterData($xid);
+					$testrecipient = $this->getSubscriberNewsletterData($xid, true);
 
 					// Account with this emailformat already exists
-					if (($testrecipient->archive_flag === 0) && ($testrecipient->emailformat === $this->emailformat))
+					if (((int)$testrecipient->archive_flag === 0) && ((int)$testrecipient->emailformat === $this->emailformat))
 					{
 						$app->enqueueMessage(
 							Text::sprintf(
 								'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTEXISTS',
 								$this->email,
-								$format_txt[$this->emailformat],
-								$testrecipient->id
+								$testrecipient->id,
+								$format_txt[$this->emailformat]
 							),
 							'error'
 						);
@@ -607,8 +607,8 @@ class BwPostmanTableSubscribers extends JTable
 						$err['err_msg'] = Text::sprintf(
 							'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTEXISTS',
 							$this->email,
-							$format_txt[$this->emailformat],
-							$testrecipient->id
+							$testrecipient->id,
+							$format_txt[$this->emailformat]
 						);
 						$err['err_id'] = $xid;
 						$app->setUserState('com_bwpostman.subscriber.register.error', $err);
@@ -616,8 +616,8 @@ class BwPostmanTableSubscribers extends JTable
 							Text::sprintf(
 								'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTEXISTS',
 								$this->email,
-								$format_txt[$this->emailformat],
-								$testrecipient->id
+								$testrecipient->id,
+								$format_txt[$this->emailformat]
 							),
 							'error'
 						);
@@ -626,7 +626,7 @@ class BwPostmanTableSubscribers extends JTable
 					}
 
 					// Account is archived
-					if (($testrecipient->archive_flag === 1) && ($testrecipient->emailformat === $this->emailformat))
+					if ((int)($testrecipient->archive_flag === 1) && ((int)$testrecipient->emailformat === $this->emailformat))
 					{
 						$app->enqueueMessage(
 							Text::sprintf(
@@ -650,8 +650,8 @@ class BwPostmanTableSubscribers extends JTable
 							Text::sprintf(
 								'COM_BWPOSTMAN_TEST_ERROR_ACCOUNTARCHIVED',
 								$this->email,
-								$format_txt[$this->emailformat],
-								$testrecipient->id
+								$testrecipient->id,
+								$format_txt[$this->emailformat]
 							),
 							'error'
 						);
@@ -889,6 +889,7 @@ class BwPostmanTableSubscribers extends JTable
 	 * Method to check if a subscriber is archived
 	 *
 	 * @param integer $subsId   ID of the subscriber to check
+     * @param bool    $isTester Don't reset table if tester is asked
 	 *
 	 * @return 	object|false
 	 *
@@ -896,10 +897,14 @@ class BwPostmanTableSubscribers extends JTable
 	 *
 	 * @since 3.0.0
 	 */
-	public function getSubscriberNewsletterData($subsId)
+	public function getSubscriberNewsletterData($subsId, $isTester = false)
 	{
 		$result = false;
-		$this->reset();
+
+        if (!$isTester)
+        {
+            $this->reset();
+        }
 
 		$db    = $this->_db;
 		$query = $db->getQuery(true);
@@ -1015,7 +1020,7 @@ class BwPostmanTableSubscribers extends JTable
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		return (int)$id;
+		return $id;
 	}
 
 	/**

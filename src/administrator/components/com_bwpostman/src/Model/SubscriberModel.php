@@ -46,7 +46,6 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglis
 use RuntimeException;
 use SimpleXMLElement;
 use stdClass;
-use Joomla\CMS\Object\CMSObject;
 
 /**
  * BwPostman subscriber model
@@ -63,20 +62,20 @@ class SubscriberModel extends AdminModel
 	/**
 	 * Subscriber/Test-recipient id
 	 *
-	 * @var integer
+	 * @var int|null
 	 *
 	 * @since       0.9.1
 	 */
-	private $id = null;
+	private int|null $id = null;
 
 	/**
 	 * Subscriber/Test-recipient data
 	 *
-	 * @var array
+	 * @var array|null
 	 *
 	 * @since       0.9.1
 	 */
-	private $data = null;
+	private array|null $data = null;
 
 	/**
 	 * property to hold permissions as array
@@ -85,7 +84,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * property to hold array of mailinglist ids
@@ -94,7 +93,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since       4.0.0
 	 */
-	public $list_id_values;
+	public array $list_id_values;
 
 
 	/**
@@ -129,7 +128,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($name = 'Subscriber', $prefix = 'Administrator', $options = array())
+	public function getTable($name = 'Subscriber', $prefix = 'Administrator', $options = array()): Table|bool
 	{
 		return parent::getTable($name, $prefix, $options);
 	}
@@ -169,13 +168,13 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @param int|null $sub_id Subscriber ID
 	 *
-	 * @return 	object Subscriber
+	 * @return 	stdClass Subscriber
 	 *
 	 * @throws Exception
 	 *
 	 * @since
 	 */
-	public function getSubscriberData(int $sub_id = null)
+	public function getSubscriberData(int $sub_id = null): stdClass
 	{
 		$subscriber = new stdClass();
 		$db         = $this->_db;
@@ -282,13 +281,13 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @param	integer	$pk	The id of the primary key.
 	 *
-	 * @return    bool|CMSObject|object    Object on success, false on failure.
+	 * @return    bool|object    Object on success, false on failure.
 	 *
 	 * @throws Exception
 	 *
 	 * @since	1.0,1
 	 */
-	public function getItem($pk = null)
+	public function getItem($pk = null): object|bool
 	{
 		$app          = Factory::getApplication();
 		$data         = $app->getUserState('com_bwpostman.edit.subscriber.data');
@@ -354,6 +353,7 @@ class SubscriberModel extends AdminModel
 			$item->params = $registry->toArray();
 		}
 
+		$app->setUserState('com_bwpostman.edit.subscriber.id', empty($pk) ? null : array($pk));
 		$app->setUserState('com_bwpostman.edit.subscriber.data', null);
 		$app->setUserState('com_bwpostman.edit.subscriber.mailinglists', null);
 
@@ -372,7 +372,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = array(), $loadData = true): bool|Form
 	{
 		Form::addFieldPath('JPATH_ADMINISTRATOR/components/com_bwpostman/models/fields');
 
@@ -424,7 +424,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function loadFormData()
+	protected function loadFormData(): mixed
 	{
 		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.subscriber.id');
 
@@ -509,7 +509,6 @@ class SubscriberModel extends AdminModel
 				else
 				{
 					$data['confirmed_by'] = -1;
-					$confirmed            = 0;
 				}
 			}
 			// Existing subscriber
@@ -750,11 +749,11 @@ class SubscriberModel extends AdminModel
 		$db_fields     = $data['db_fields'];
 
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
-		$data['jform'] = isset($data['jform']) ? $data['jform'] : array();
+		$data['jform'] = $data['jform'] ?? array();
 		$mailinglists = BwPostmanMailinglistHelper::mergeMailinglistsOnly($data['jform']);
 
 		// We need the database columns for subsequent checking of the values
-		$colEmail = array_search('email', $db_fields);
+		$colEmail = in_array('email', $db_fields);
 
 		if ($colEmail ===  false)
 		{
@@ -1195,13 +1194,12 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @param array $data associative array of export option data
 	 *
-	 * @return 	string  $output     File content
+	 * @return bool|string $output     File content
 	 *
 	 * @throws Exception
-	 *
 	 * @since       0.9.1
 	 */
-	public function export(array $data)
+	public function export(array $data): bool|string
 	{
 		// Access check
 		if (!$this->permissions['com']['admin'])
@@ -1412,7 +1410,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since   1.0.8
 	 */
-	public function batch($commands, $pks, $contexts)
+	public function batch($commands, $pks, $contexts): bool|int|array
 	{
 		// Sanitize user ids.
 		$old_list = Factory::getApplication()->getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
@@ -1518,7 +1516,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since	1.0.8
 	 */
-	protected function batchAdd(int $mailinglist, array $pks)
+	protected function batchAdd(int $mailinglist, array $pks): bool|array
 	{
 		// Access check
 		if (!BwPostmanHelper::canEdit('subscriber', $pks))
@@ -1569,7 +1567,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since   1.0.8
 	 */
-	protected function batchRemove(int $mailinglist, array $pks)
+	protected function batchRemove(int $mailinglist, array $pks): bool|array
 	{
 		// Access check
 		if (!BwPostmanHelper::canEdit('subscriber', $pks))
@@ -1628,7 +1626,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since 3.0.0
 	 */
-	private function getSubscribersToExport(array $data)
+	private function getSubscribersToExport(array $data): mixed
 	{
 		$db            = $this->_db;
 		$export_fields = $data['export_fields'];
@@ -1665,7 +1663,8 @@ class SubscriberModel extends AdminModel
 		}
 		catch (RuntimeException $e)
 		{
-			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_GET_SUBSCRIBERS'), 'error');
+			$msg = Text::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_GET_SUBSCRIBERS') . ' ' . $e->getMessage();
+			Factory::getApplication()->enqueueMessage($msg, 'error');
 			return false;
 		}
 	}

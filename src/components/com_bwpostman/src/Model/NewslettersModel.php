@@ -35,6 +35,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Table\Table;
 use Joomla\Database\QueryInterface;
 use Joomla\Registry\Registry;
@@ -68,61 +69,43 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since       0.9.1
 	 */
-	protected $extension = 'com_bwpostman';
+	protected string $extension = 'com_bwpostman';
 
 	/**
 	 * property to hold newsletters
 	 *
-	 * @var array
+	 * @var ?array
 	 *
 	 * @since       0.9.1
 	 */
-	protected $newsletters = null;
+	protected ?array $newsletters = null;
 
 	/**
 	 * Newsletter id
 	 *
-	 * @var integer
+	 * @var ?integer
 	 *
 	 * @since       0.9.1
 	 */
-	private $id = null;
+	private ?int $id = null;
 
 	/**
 	 * Newsletter data
 	 *
-	 * @var array
+	 * @var ?array
 	 *
 	 * @since       0.9.1
 	 */
-	private $data = null;
-
-	/**
-	 * Number of all Newsletters which are shown
-	 *
-	 * @var integer
-	 *
-	 * @since       0.9.1
-	 */
-	private $total = null;
+	private ?array $data = null;
 
 	/**
 	 * Pagination object
 	 *
-	 * @var object
+	 * @var ?Pagination
 	 *
 	 * @since       0.9.1
 	 */
-	private $pagination = null;
-
-	/**
-	 * Newsletter filter
-	 *
-	 * @var string
-	 *
-	 * @since       0.9.1
-	 */
-	private $filter = null;
+	private Pagination|null $pagination = null;
 
 	/**
 	 * Constructor
@@ -392,7 +375,7 @@ class NewslettersModel extends ListModel
 			}
 
 			// Compute the asset access permissions.
-			// Technically guest could edit an newsletter, but lets not check that to improve performance a little.
+			// Technically guest could edit a newsletter, but let's not check that to improve performance a little.
 			if (!$guest)
 			{
 				$asset = 'com_bwpostman.newsletter.' . $item->id;
@@ -436,6 +419,71 @@ class NewslettersModel extends ListModel
 	}
 
 	/**
+	 * Method to get mailing dates options of listed newsletters.
+	 *
+	 *
+	 * @return    array|null    An array of options for date filter.
+	 *
+	 * @throws Exception
+	 *
+	 * @since    4.1.3
+	 */
+	public function getDateOptions(): ?array
+	{
+		// unset/set list limit and get all items
+		$limit	= $this->getState('list.limit', 0);
+		$this->setState('list.limit', 0);
+		$items	= $this->getItems();
+		$this->setState('list.limit', $limit);
+
+		// Substrings of mailingdate
+		$ms = array(); //months
+		$ys = array(); //years
+		foreach ($items as $item)
+		{
+			$ms[] = substr($item->mailing_date,5,2);
+			$ys[] = substr($item->mailing_date,0,4);
+		}
+
+		// Month Field
+		$months = array(
+			'01' => Text::_('JANUARY_SHORT'),
+			'02' => Text::_('FEBRUARY_SHORT'),
+			'03' => Text::_('MARCH_SHORT'),
+			'04' => Text::_('APRIL_SHORT'),
+			'05' => Text::_('MAY_SHORT'),
+			'06' => Text::_('JUNE_SHORT'),
+			'07' => Text::_('JULY_SHORT'),
+			'08' => Text::_('AUGUST_SHORT'),
+			'09' => Text::_('SEPTEMBER_SHORT'),
+			'10' => Text::_('OCTOBER_SHORT'),
+			'11' => Text::_('NOVEMBER_SHORT'),
+			'12' => Text::_('DECEMBER_SHORT')
+		);
+
+		// unique month
+		foreach ($months as $key=>$month) {
+			if (!in_array($key, array_unique($ms))) {
+				unset($months[$key]);
+			}
+		}
+		$date_options['months'] = array('' => Text::_('COM_BWPOSTMAN_MONTH')) + $months;
+
+		// Year Field
+		$years = array();
+
+		// sorted unique years
+		$ys = array_unique($ys);
+		asort($ys);
+		foreach($ys as $v) {
+			$years[$v] = $v;
+		}
+		$date_options['years'] = array('' => Text::_('JYEAR')) + $years;
+
+		return $date_options;
+	}
+
+	/**
 	 * Method to build the MySQL query
 	 *
 	 * @return false|QueryInterface Query
@@ -444,7 +492,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function getListQuery()
+	protected function getListQuery(): bool|QueryInterface
 	{
 		// define variables
 		$db		= $this->_db;
@@ -582,7 +630,7 @@ class NewslettersModel extends ListModel
 
 		// Filter by search word.
 		$searchword	= $this->getState('filter.search');
-		if (is_object($params) && ($params->get('filter_field', '1') != 'hide') && !empty($searchword))
+		if (($params->get('filter_field', '1') != 'hide') && !empty($searchword))
 		{
 			$search	= '%' . $db->escape($this->getState('filter.search'), true) . '%';
 			$query->where('subject LIKE ' . $db->quote($search, false));
@@ -619,7 +667,8 @@ class NewslettersModel extends ListModel
 		}
 		catch (RuntimeException $e)
 		{
-			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
+			$msg = Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'). ' ' . $e->getMessage();
+			Factory::getApplication()->enqueueMessage($msg, 'error');
 			return false;
 		}
 
@@ -828,11 +877,10 @@ class NewslettersModel extends ListModel
 	 *
 	 * @param boolean $title with title
 	 *
-	 * @return 	array	$groups     ID of allowed campaigns
+	 * @return array|null $groups     ID of allowed campaigns
 	 *
 	 * @throws Exception
-	 *
-	 * @since	1.2.0
+	 * @since    1.2.0
 	 */
 	public function getAccessibleUsergroups(bool $title = true): ?array
 	{
@@ -944,7 +992,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @param int $id module ID
 	 *
-	 * @return 	object	$module module object
+	 * @return 	?object	$module module object
 	 *
 	 * @throws Exception
 	 *
@@ -1022,6 +1070,7 @@ class NewslettersModel extends ListModel
 		// get authorized viewlevels
 		$viewLevels = Access::getAuthorisedViewLevels(Factory::getApplication()->getIdentity()->id);
 
+//		@ToDo: Why this? $viewLevelKeys is never used…
 		if (is_array($viewLevels) && count($viewLevels) > 0)
 		{
 			foreach ($viewLevels as $key => $value)

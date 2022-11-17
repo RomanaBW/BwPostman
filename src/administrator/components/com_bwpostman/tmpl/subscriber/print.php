@@ -107,11 +107,11 @@ use Joomla\CMS\Language\Text;
 		</td>
 		<td>
 			<?php
-			if ($this->sub->gender === '1')
+			if ($this->sub->gender === 1)
 			{
 				echo Text::_('COM_BWPOSTMAN_FEMALE');
 			}
-			elseif ($this->sub->gender === '0')
+			elseif ($this->sub->gender === 0)
 			{
 				echo Text::_('COM_BWPOSTMAN_MALE');
 			}
@@ -168,15 +168,15 @@ use Joomla\CMS\Language\Text;
 		</td>
 		<td>
 			<?php
-			if ($this->sub->status === '1' && $this->sub->archive_flag === '0')
+			if ($this->sub->status === 1 && $this->sub->archive_flag === 0)
 			{
 				echo mb_strtolower(Text::_('COM_BWPOSTMAN_ARC_SUB_CONFIRMED'));
 			}
-			elseif ($this->sub->status === '0' && $this->sub->archive_flag === '0')
+			elseif ($this->sub->status === 0 && $this->sub->archive_flag === 0)
 			{
 				echo mb_strtolower(Text::_('COM_BWPOSTMAN_ARC_SUB_UNCONFIRMED'));
 			}
-			elseif ($this->sub->archive_flag !== '0')
+			elseif ($this->sub->archive_flag !== 0)
 			{
 				echo mb_strtolower(Text::_('ARCHIVED'));
 			}
@@ -229,7 +229,7 @@ use Joomla\CMS\Language\Text;
 		</td>
 		<td>
 			<?php
-			if ($this->sub->status === '1')
+			if ($this->sub->status === 1)
 			{
 				echo $this->sub->confirmation_date;
 			}
@@ -241,7 +241,7 @@ use Joomla\CMS\Language\Text;
 		</td>
 	</tr>
 	<?php
-	if ($this->item->status === '1')
+	if ($this->item->status === 1)
 	{
 		if ($this->sub->confirmed_by != '')
 		{
@@ -288,7 +288,7 @@ use Joomla\CMS\Language\Text;
 		</tr>
 		<?php
 	}
-	if ($this->sub->archive_flag !== '0')
+	if ($this->sub->archive_flag !== 0)
 	{
 		?>
 		<tr>

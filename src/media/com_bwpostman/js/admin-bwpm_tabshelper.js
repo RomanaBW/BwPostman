@@ -68,24 +68,26 @@ function ready(callbackFunc) {
 ready(function() {
 	var bwpModal = document.getElementById('bwp-modal');
 
-	bwpModal.addEventListener('show.bs.modal', function (event) {
-		// Button that triggered the modal
-		var button = event.relatedTarget;
-		var windowheight = window.innerHeight - 225;
+	if (bwpModal != null) {
+		bwpModal.addEventListener('show.bs.modal', function (event) {
+			// Button that triggered the modal
+			var button = event.relatedTarget;
+			var windowheight = window.innerHeight - 225;
 
-		// Extract info from data-bs-* attributes
-		var title      = button.getAttribute('data-bs-title');
-		var contentSrc = button.getAttribute('data-bs-src');
-		var frameName  = button.getAttribute('data-bs-frame');
+			// Extract info from data-bs-* attributes
+			var title      = button.getAttribute('data-bs-title');
+			var contentSrc = button.getAttribute('data-bs-src');
+			var frameName  = button.getAttribute('data-bs-frame');
 
-		// Update the modal's content.
-		var modalTitle   = bwpModal.querySelector('.modal-title');
-		var modalFrame   = bwpModal.querySelector('.modal-frame');
+			// Update the modal's content.
+			var modalTitle   = bwpModal.querySelector('.modal-title');
+			var modalFrame   = bwpModal.querySelector('.modal-frame');
 
-		modalTitle.textContent   = title;
+			modalTitle.textContent   = title;
 
-		modalFrame.src    = contentSrc;
-		modalFrame.name   = frameName;
-		modalFrame.height = windowheight;
-	});
+			modalFrame.src    = contentSrc;
+			modalFrame.name   = frameName;
+			modalFrame.height = windowheight;
+		});
+	}
 });

@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Pagination\Pagination;
 use Joomla\Registry\Registry;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -52,7 +52,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $state;
+	protected array $state;
 
 	/**
 	 * property to hold selected item
@@ -61,7 +61,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $params;
+	protected object $params;
 
 	/**
 	 * property to hold items
@@ -70,7 +70,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
 	 * property to hold item id
@@ -79,16 +79,16 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       3.0.0
 	 */
-	protected $Itemid;
+	protected int $Itemid;
 
 	/**
 	 * property to hold pagination object
 	 *
-	 * @var object  $object
+	 * @var Pagination|null  $pagination
 	 *
 	 * @since       0.9.1
 	 */
-	protected $pagination	= null;
+	protected Pagination|null $pagination	= null;
 
 	/**
 	 * property to hold form object
@@ -102,47 +102,47 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * property to hold filter form object
 	 *
-	 * @var object  $filterForm
+	 * @var object|null  $filterForm
 	 *
 	 * @since       0.9.1
 	 */
-	protected $filterForm	= null;
+	protected object|null $filterForm	= null;
 
 	/**
 	 * property to hold active filters object
 	 *
-	 * @var object  $activeFilters
+	 * @var object|null  $activeFilters
 	 *
 	 * @since       0.9.1
 	 */
-	protected $activeFilters	= null;
+	protected object|null $activeFilters	= null;
 
 	/**
-	 * property to hold mailinglists object
+	 * property to hold mailinglists
 	 *
-	 * @var object  $mailinglists
+	 * @var array|null  $mailinglists
 	 *
 	 * @since       0.9.1
 	 */
-	protected $mailinglists	= null;
+	protected array|null $mailinglists	= null;
 
 	/**
-	 * property to hold campaigns object
+	 * property to hold campaigns
 	 *
-	 * @var object  $campaigns
+	 * @var array|null $campaigns
 	 *
 	 * @since       0.9.1
 	 */
-	protected $campaigns	= null;
+	protected array|null $campaigns	= null;
 
 	/**
 	 * property to hold usergroups object
 	 *
-	 * @var object  $usergroups
+	 * @var array|null $usergroups
 	 *
 	 * @since       0.9.1
 	 */
-	protected $usergroups	= null;
+	protected array|null $usergroups	= null;
 
 	/**
 	 * Execute and display a template script.
@@ -166,51 +166,32 @@ class HtmlView extends BaseHtmlView
 		$pagination	= $this->get('Pagination');
 		$form		= new stdClass;
 
-		// Month Field
-		$months = array(
-			'' => Text::_('COM_BWPOSTMAN_MONTH'),
-			'01' => Text::_('JANUARY_SHORT'),
-			'02' => Text::_('FEBRUARY_SHORT'),
-			'03' => Text::_('MARCH_SHORT'),
-			'04' => Text::_('APRIL_SHORT'),
-			'05' => Text::_('MAY_SHORT'),
-			'06' => Text::_('JUNE_SHORT'),
-			'07' => Text::_('JULY_SHORT'),
-			'08' => Text::_('AUGUST_SHORT'),
-			'09' => Text::_('SEPTEMBER_SHORT'),
-			'10' => Text::_('OCTOBER_SHORT'),
-			'11' => Text::_('NOVEMBER_SHORT'),
-			'12' => Text::_('DECEMBER_SHORT')
-		);
-		$form->monthField = HtmlHelper::_(
-			'select.genericlist',
-			$months,
-			'month',
-			array(
-				'list.attr' => 'class="form-select" size="1" onchange="document.getElementById(\'adminForm\').submit();"',
-				'list.select' => $state->get('filter.month'),
-				'option.key' => null
-			)
-		);
-
-		// Year Field
-		$years = array();
-		$years[] = HtmlHelper::_('select.option', null, Text::_('JYEAR'));
-
-		for ($year = date('Y'), $i = $year - 10; $i <= $year; $i++)
+		if ($state->params->get('date_filter_enable', '1') != 'hide')
 		{
-			$years[] = HtmlHelper::_('select.option', $i, $i);
+			// get all possible mailingdate options
+			$date_options = $this->get('DateOptions');
+			$months = $date_options['months'];
+			$form->monthField = HtmlHelper::_(
+				'select.genericlist',
+				$months,
+				'month',
+				array(
+					'list.attr' => 'class="form-select" size="1" onchange="document.getElementById(\'adminForm\').submit();"',
+					'list.select' => $state->get('filter.month'),
+					'option.key' => null
+				)
+			);
+			$years = $date_options['years'];
+			$form->yearField = HtmlHelper::_(
+				'select.genericlist',
+				$years,
+				'year',
+				array(
+					'list.attr' => 'class="form-select" size="1" onchange="document.getElementById(\'adminForm\').submit();"',
+					'list.select' => $state->get('filter.year')
+				)
+			);
 		}
-
-		$form->yearField = HtmlHelper::_(
-			'select.genericlist',
-			$years,
-			'year',
-			array(
-				'list.attr' => 'class="form-select" size="1" onchange="document.getElementById(\'adminForm\').submit();"',
-				'list.select' => $state->get('filter.year')
-			)
-		);
 		$form->limitField = $pagination->getLimitBox();
 
 		$this->items			= &$items;

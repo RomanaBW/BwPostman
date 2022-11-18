@@ -80,11 +80,11 @@ class SubscriberModel extends AdminModel
 	/**
 	 * property to hold permissions as array
 	 *
-	 * @var array $permissions
+	 * @var ?array $permissions
 	 *
 	 * @since       2.0.0
 	 */
-	public array $permissions;
+	public ?array $permissions;
 
 	/**
 	 * property to hold array of mailinglist ids

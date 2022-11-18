@@ -88,43 +88,43 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected Pagination|null $pagination	= null;
+	protected $pagination	= null;
 
 	/**
 	 * property to hold form object
 	 *
-	 * @var object  $form
+	 * @var ?object  $form
 	 *
 	 * @since       0.9.1
 	 */
-	protected $form	= null;
+	protected ?object $form	= null;
 
 	/**
 	 * property to hold filter form object
 	 *
-	 * @var object|null  $filterForm
+	 * @var ?object  $filterForm
 	 *
 	 * @since       0.9.1
 	 */
-	protected object|null $filterForm	= null;
+	protected ?object $filterForm	= null;
 
 	/**
 	 * property to hold active filters object
 	 *
-	 * @var object|null  $activeFilters
+	 * @var ?object   $activeFilters
 	 *
 	 * @since       0.9.1
 	 */
-	protected object|null $activeFilters	= null;
+	protected ?object  $activeFilters	= null;
 
 	/**
 	 * property to hold mailinglists
 	 *
-	 * @var array|null  $mailinglists
+	 * @var ?array  $mailinglists
 	 *
 	 * @since       0.9.1
 	 */
-	protected array|null $mailinglists	= null;
+	protected ?array $mailinglists	= null;
 
 	/**
 	 * property to hold campaigns
@@ -133,16 +133,16 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array|null $campaigns	= null;
+	protected ?array $campaigns	= null;
 
 	/**
 	 * property to hold usergroups object
 	 *
-	 * @var array|null $usergroups
+	 * @var ?array $usergroups
 	 *
 	 * @since       0.9.1
 	 */
-	protected array|null $usergroups	= null;
+	protected ?array $usergroups	= null;
 
 	/**
 	 * Execute and display a template script.

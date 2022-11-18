@@ -105,7 +105,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since       0.9.1
 	 */
-	private Pagination|null $pagination = null;
+	private $pagination = null;
 
 	/**
 	 * Constructor
@@ -492,7 +492,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function getListQuery(): bool|QueryInterface
+	protected function getListQuery()
 	{
 		// define variables
 		$db		= $this->_db;

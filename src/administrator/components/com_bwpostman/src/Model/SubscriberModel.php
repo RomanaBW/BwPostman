@@ -1626,7 +1626,7 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since 3.0.0
 	 */
-	private function getSubscribersToExport(array $data): mixed
+	private function getSubscribersToExport(array $data)
 	{
 		$db            = $this->_db;
 		$export_fields = $data['export_fields'];

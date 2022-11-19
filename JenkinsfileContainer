@@ -9,10 +9,12 @@ pipeline {
 
 					JOOMLA_VERSION = "4.2.5"
 
+					PHP_VERSION = "8.1.12"
+
 					GIT_MESSAGE = "not specified"
 
 					PROJECT_NAME = "j${JOOMLA_VERSION}_bwpm${BWPM_VERSION}"
-					VERSIONS_EXTRA_VAR_4 = "joomla_version=${JOOMLA_VERSION} bwpm_version=${BWPM_VERSION}";
+					VERSIONS_EXTRA_VAR_4 = "joomla_version=${JOOMLA_VERSION} bwpm_version=${BWPM_VERSION} php_selected_version=${PHP_VERSION}";
 					DO_RECORD_SMOKE = "true";
 					DO_RECORD_1 = "false";
 					DO_RECORD_2 = "false";

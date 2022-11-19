@@ -12,7 +12,8 @@ j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 php_minimum_version: "7.4.26"
 php_current_version: "8.1.12"
 
-php_selected_version: "{{ php_current_version }}"
+#php_selected_version: "{{ php_current_version }}"
+php_selected_version: "{{ php_minimum_version }}"
 
 
 

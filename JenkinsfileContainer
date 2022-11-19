@@ -2,14 +2,14 @@ pipeline {
     agent { label 'Tester' }
 
     stages {
-        stage('Set variables') {
+        stage('Set variables for php 8 part') {
 			steps {
 				script {
 					BWPM_VERSION = "4.1.3"
 
 					JOOMLA_VERSION = "4.2.5"
 
-					PHP_VERSION = "8.1.12"
+					PHP_VERSION = "7.4.26"
 
 					GIT_MESSAGE = "not specified"
 
@@ -33,7 +33,7 @@ pipeline {
 			}
 		}
 
-		stage('Run smoke tests') {
+		stage('Run smoke tests with php 8') {
 			steps {
 //				echo "Dummy Smoke"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} do_record=${DO_RECORD_SMOKE} ${VERSIONS_EXTRA_VAR_4}'"
@@ -51,7 +51,7 @@ pipeline {
 			}
 		}
 
-		stage('Run acceptance Joomla 4') {
+		stage('Run acceptance Joomla 4 with php 8') {
 			parallel {
 				stage('4-1: Maintenance + Lists + P2') {
 					steps {
@@ -135,6 +135,118 @@ pipeline {
 				}
 			}
 		}
+
+//        stage('Set variables for php 7 part') {
+//			steps {
+//				script {
+//					PHP_VERSION = "7.4.26"
+//					VERSIONS_EXTRA_VAR_4 = "joomla_version=${JOOMLA_VERSION} bwpm_version=${BWPM_VERSION} php_selected_version=${PHP_VERSION}";
+//				}
+//			}
+//        }
+
+//		stage('Run smoke tests with php 7') {
+//			steps {
+////				echo "Dummy Smoke"
+//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} do_record=${DO_RECORD_SMOKE} ${VERSIONS_EXTRA_VAR_4}'"
+//				sh "docker exec -t bwpm_enh_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
+//				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/push-smoke-testers.yml --extra-vars '${VERSIONS_EXTRA_VAR_4}'"
+//			}
+//			post {
+//					always {
+////					echo "Dummy Smoke ALWAYS"
+//					sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_4}'"
+//				}
+//				failure {
+//					bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME}")
+//				}
+//			}
+//		}
+
+//		stage('Run acceptance Joomla 4 with php 7') {
+//			parallel {
+//				stage('4-1: Maintenance + Lists + P2') {
+//					steps {
+////						echo "Dummy 1"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_4}'"
+//						sh "docker exec -t bwpm_accept1_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
+//					}
+//					post {
+//						always {
+////							echo "Dummy 1 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_4}'"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME}")
+//						}
+//					}
+//				}
+//				stage('4-2: Details') {
+//					steps {
+////						echo "Dummy 2"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_4}'"
+//						sh "docker exec -t bwpm_accept2_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
+//					}
+//					post {
+//						always {
+////							echo "Dummy 2 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2 ${VERSIONS_EXTRA_VAR_4}'"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME}")
+//						}
+//					}
+//				}
+//				stage('4-3: P4') {
+//					steps {
+////						echo "Dummy 3"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_4}'"
+//						sh "docker exec -t bwpm_accept3_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
+//					}
+//					post {
+//						always {
+////							echo "Dummy 3 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept3 ${VERSIONS_EXTRA_VAR_4}'"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME}")
+//						}
+//					}
+//				}
+//				stage('4-4: FUM + U2S + Mod Reg + Mod Over + P1') {
+//					steps {
+////						echo "Dummy 4"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_4}'"
+//						sh "docker exec -t bwpm_accept4_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
+//					}
+//					post {
+//						always {
+////							echo "Dummy 4 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4 ${VERSIONS_EXTRA_VAR_4}'"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME}")
+//						}
+//					}
+//				}
+//				stage('4-5: FE + P3') {
+//					steps {
+////						echo "Dummy 5"
+//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5 do_record=${DO_RECORD_5} ${VERSIONS_EXTRA_VAR_4}'"
+//						sh "docker exec -t bwpm_accept5_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
+//					}
+//					post {
+//						always {
+////							echo "Dummy 5 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept5 ${VERSIONS_EXTRA_VAR_4}'"
+//						}
+//						failure {
+//							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME}")
+//						}
+//					}
+//				}
+//			}
+//		}
 
 		stage('Dev-Upload') {
 			steps {

@@ -11,7 +11,8 @@ networks:
 services:
   mysqldbbwpm4:
     container_name: mysqldbbwpm4
-    image: universe3:5000/romana/mariadb
+    image: "{{ base_target.db_image_tag_target }}"
+#    image: universe3:5000/romana/mariadb
     hostname: mysqlserver-bwpm
     domainname: tester-net.nil
     networks:
@@ -32,9 +33,11 @@ services:
 
   webserverbwpm4:
     container_name: webserverbwpm4
-    image: universe3:5000/romana/webserver_fast_{{ php_version }}
+    image: "{{ fast_target.web_image_tag_target }}"
+#    image: universe3:5000/romana/webserver_fast_{{ php_version }}
     hostname: webserver-bwpm
     domainname: tester-net.nil
+    command: "apache2-foreground"
     depends_on:
       - "mysqldbbwpm4"
     networks:
@@ -47,5 +50,5 @@ services:
     ports:
       - "8001:80"
     volumes:
-      -  "{{ container_dir }}/infrastructure/apache/data/logs:/var/log/apache2/"
+      -  "/vhosts/dev4/tests/_output//{{ project_name }}:/var/logs/apache2/"
       -  "{{ web_dir }}/{{ project_name }}/files:/var/www/html"

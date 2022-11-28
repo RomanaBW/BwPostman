@@ -1,10 +1,12 @@
 ---
 # Fast changing variables
 joomla_version: "4.2.5"
+joomla_version_dotted: "4.2.5"
 
 j_version_short: "j4"
 
 bwpm_version: "4.1.3"
+bwpm_version_dotted: "4.1.3"
 bwpm_version_previous: "4.1.2"
 
 j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
@@ -12,8 +14,8 @@ j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 php_minimum_version: "7.4.26"
 php_current_version: "8.1.12"
 
-#php_selected_version: "{{ php_current_version }}"
-php_selected_version: "{{ php_minimum_version }}"
+php_selected_version: "{{ php_current_version }}"
+#php_selected_version: "{{ php_minimum_version }}"
 
 
 
@@ -112,8 +114,8 @@ phantom_version: "2.1.1"
 # Settings for creating base LAMP containers
 official_mariadb: bitnami/mariadb:10.5-debian-10
 official_mariadb_short: mariadb:10.5-debian-10
-official_apache: php:7.4.26-apache
-official_apache_short: php_7.4.26-apache
+official_apache: "php:{{ php_selected_version }}-apache"
+official_apache_short: "php_{{ php_selected_version }}-apache"
 official_tester: romana/selenium-standalone-chrome-debug-ffmpeg:latest
 official_tester_short: selenium-standalone-chrome-debug-ffmpeg:latest
 
@@ -126,9 +128,9 @@ base_source:
   tester_image_tag_source: "{{ official_tester }}"
 
 base_target:
-  db_image_tag_target: "romana/{{ official_mariadb_short }}"
-  web_image_tag_target: "romana/{{ official_apache_short }}:{{ joomla_version }}"
-  tester_image_tag_target: "romana/{{ official_tester_short }}"
+  db_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_mariadb_short }}"
+  web_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_apache_short }}:{{ joomla_version_dotted }}"
+  tester_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_tester_short }}"
 
 
 # Settings for creating bare Joomla containers
@@ -138,15 +140,15 @@ bare_source:
   web_container_name: joomla_bare_web
   web_image_tag_source: "{{ base_target.web_image_tag_target }}"
   tester_container_name: bwpm_bare_tester
-  tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
+  tester_image_tag_source: "{{ private_docker_repo }}/romana/{{ official_tester_short }}"
 
   tester_network_name: "bwpm_network_{{ test_suite }}"
 
 bare_target:
   db_image: "{{ private_docker_repo }}/{{ bare_source.db_image_tag_source }}"
-  db_image_tag_target: "romana/joomla-bare-tables:{{ joomla_version }}"
+  db_image_tag_target: "romana/joomla-bare-tables:{{ joomla_version_dotted }}"
   web_image: "{{ private_docker_repo }}/{{ bare_source.web_image_tag_source }}"
-  web_image_tag_target: "romana/joomla-bare-files:{{ joomla_version }}"
+  web_image_tag_target: "romana/joomla-bare-files:{{ joomla_version_dotted }}"
   tester_image: "romana/{{ bare_source.tester_image_tag_source }}"
 
 
@@ -204,11 +206,11 @@ smoke_source:
 
 smoke_target:
   db_image: "{{ smoke_source.db_image_tag_source }}"
-  db_image_tag_target: "romana/{{ smoke_source.db_container_name }}:{{ php_selected_version }}-{{ joomla_version }}-{{ bwpm_version }}"
+  db_image_tag_target: "{{ private_docker_repo }}/romana/{{ smoke_source.db_container_name }}:{{ php_selected_version }}-{{ joomla_version_dotted }}-{{ bwpm_version_dotted }}"
   web_image: "{{ smoke_source.web_image_tag_source }}"
-  web_image_tag_target: "romana/{{ smoke_source.web_container_name }}:{{ php_selected_version }}-{{ joomla_version }}-{{ bwpm_version }}"
+  web_image_tag_target: "{{ private_docker_repo }}/romana/{{ smoke_source.web_container_name }}:{{ php_selected_version }}-{{ joomla_version_dotted }}-{{ bwpm_version_dotted }}"
   tester_image: "{{ smoke_source.tester_image_tag_source }}"
-  tester_image_tag_target: "romana/{{ smoke_source.tester_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
+  tester_image_tag_target: "{{ private_docker_repo }}/romana/{{ smoke_source.tester_container_name }}:{{ joomla_version_dotted }}-{{ bwpm_version_dotted }}"
 
 # Settings for creating acceptance tests container
 acceptance_source:
@@ -236,7 +238,8 @@ fast_source:
   tester_network_name: "bwpm_network_{{ test_suite }}-{{ j_main_version }}"
 
 fast_target:
-  db_image: "{{ acceptance_source.db_image_tag_source }}"
-  web_image: "{{ acceptance_source.web_image_tag_source }}"
-  tester_image: "{{ acceptance_source.tester_image_tag_source }}"
+#  db_image: "{{ acceptance_source.db_image_tag_source }}"
+#  web_image: "{{ acceptance_source.web_image_tag_source }}"
+#  tester_image: "{{ acceptance_source.tester_image_tag_source }}"
+  web_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_apache_short }}:bare"
 

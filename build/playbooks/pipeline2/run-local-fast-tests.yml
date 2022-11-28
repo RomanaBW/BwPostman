@@ -3,6 +3,7 @@
   connection: local
   vars_files:
     - vars/fast-test-vars.yml
+    - vars/tester-image-vars.yml
 
   tasks:
     - name: Import transmitted parameters

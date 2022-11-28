@@ -379,7 +379,7 @@ class NewsletterModel extends AdminModel
 		}
 
 		$jinput = Factory::getApplication()->input;
-		$id     = $jinput->get('id', 0);
+		$id     = (int)$jinput->get('id', 0);
 		$layout = Factory::getApplication()->getUserState('newsletter.tab' . $id, 'edit_basic');
 
 		// predefine some values
@@ -400,14 +400,14 @@ class NewsletterModel extends AdminModel
 
 		// Check for existing newsletter.
 		// Modify the form based on Edit State access controls.
-		if ($id != 0 && (!$user->authorise('bwpm.newsletter.edit.state', 'com_bwpostman.newsletter.' . (int) $id))
-			|| ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman')))
+		if ($id !== 0 && (!$user->authorise('bwpm.newsletter.edit.state', 'com_bwpostman.newsletter.' . (int) $id))
+			|| ($id === 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman')))
 		{
 			// Disable fields for display.
 			$form->setFieldAttribute('published', 'disabled', 'true');
 
 			// Disable fields while saving.
-			// The controller has already verified this is an newsletter you can edit.
+			// The controller has already verified this is a newsletter you can edit.
 			$form->setFieldAttribute('state', 'filter', 'unset');
 		}
 
@@ -1288,19 +1288,6 @@ class NewsletterModel extends AdminModel
 				}
 
 				$count_subscribers = BwPostmanNewsletterHelper::countSubscribersOfNewsletter($associatedMailinglists, $status, false);
-			}
-			elseif ($check_allsubscribers)
-			{ // Check all subscribers (select option "All subscribers")
-				if ($send_to_unconfirmed)
-				{
-					$status = '0,1,9';
-				}
-				else
-				{
-					$status = '1,9';
-				}
-
-				$count_subscribers = BwPostmanNewsletterHelper::countSubscribersOfNewsletter(array(), $status, true);
 			}
 
 			// Checks if the selected usergroups contain users

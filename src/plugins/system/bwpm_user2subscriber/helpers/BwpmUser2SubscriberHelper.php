@@ -127,7 +127,7 @@ abstract class BwpmUser2SubscriberHelper
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
-		if (!$result['status'] && $result['activation'] != '')
+		if (key_exists('status', $result) && key_exists('activation', $result) && !$result['status'] && $result['activation'] != '')
 		{
 			return true;
 		}

@@ -1127,7 +1127,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 				return true;
 			}
 
-			if ($this->stored_subscriber_data['id'] != 0)
+			if (key_exists('id', $this->stored_subscriber_data) && $this->stored_subscriber_data['id'] != 0)
 			{
 				$res_delete_subscriber      = $this->deleteSubscriber();
 				$res_delete_mailinglists    = $this->deleteSubscribedMailinglists();

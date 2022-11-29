@@ -555,7 +555,7 @@ class BwPostmanHelper
 
 	public static function getActions(int $id = 0, string $section = ''): stdClass
 	{
-		$path   = JPATH_ADMINISTRATOR . '/components/com_bwpostman/access.xml';
+		$path   = BWPM_ADMINISTRATOR . '/access.xml';
 		$result = new stdClass();
 
 		if (($section != '') && $id)
@@ -1412,13 +1412,13 @@ class BwPostmanHelper
 		// TTF-Schrift
 		// Sie sollten hier unbedingt den absoluten Pfad angeben, da ansonsten
 		// eventuell die TTF-Datei nicht eingebunden werden kann!
-		$fileTTF = JPATH_COMPONENT_SITE . '/assets/ttf/style.ttf';
+		$fileTTF = BWPM_SITE . '/assets/ttf/style.ttf';
 
 		// Verzeichnis für die Captcha-Bilder (muss Schreibrechte besitzen!)
 		// Ausserdem sollten in diesem Ordner nur die Bilder gespeichert werden
 		// da das Programm in regelmaessigen Abstaenden dieses leert!
 		// Kein abschliessenden Slash benutzen!
-		$captchaDir = JPATH_COMPONENT_SITE . '/assets/capimgdir';
+		$captchaDir = BWPM_SITE . '/assets/capimgdir';
 
 		// Schriftgröße Rechenaufgabe
 		$sizeMath = 20;
@@ -1552,109 +1552,6 @@ class BwPostmanHelper
 		return false;
 	}
 
-	/**
-	 * Load BwPostman language file
-	 *
-	 * Helper function for external modules and plugins to load the main BwPostman language file(s)
-	 *
-	 * @param   string $file
-	 * @param   string $client
-	 *
-	 * @return  array
-	 *
-	 * @since
-	 */
-//	public static function loadLanguage($file = 'com_bwpostman', $client = 'site')
-//	{
-//		static $loaded = array();
-//
-//		if ($client == 'site')
-//		{
-//			$lookup1 = JPATH_SITE;
-//			$lookup2 = JPATH_SITE . 'component/com_bwpostman';
-//		}
-//		else
-//		{
-//			$client  = 'admin';
-//			$lookup1 = JPATH_ADMINISTRATOR;
-//			$lookup2 = JPATH_ADMINISTRATOR . 'component/com_bwpostman';
-//		}
-//
-//		if (empty($loaded["{$client}/{$file}"]))
-//		{
-//			$lang    = Factory::getLanguage();
-//			$english = false;
-//			if ($lang->getTag() != 'en-GB' && !JDEBUG && !$lang->getDebug())
-//			{
-//				$lang->load($file, $lookup2, 'en-GB', true, false);
-//				$english = true;
-//			}
-//
-//			$loaded[$file] = $lang->load($file, $lookup1, null, $english, false)
-//				|| $lang->load($file, $lookup2, null, $english, false)
-//				|| $lang->load($file, $lookup1, $lang->getDefault(), $english, false)
-//				|| $lang->load($file, $lookup2, $lang->getDefault(), $english, false);
-//		}
-//
-//		return $loaded[$file];
-//	}
-
-	/**
-	 * Method to parse language file
-	 *
-	 * @param $lang
-	 * @param $filename
-	 *
-	 * @return bool
-	 *
-	 * @since
-	 */
-//	protected static function parseLanguage($lang, $filename)
-//	{
-//		if (!file_exists($filename))
-//		{
-//			return false;
-//		}
-//
-//		$version = phpversion();
-//
-//		// Capture hidden PHP errors from the parsing.
-//		$php_errormsg = null;
-//		$track_errors = ini_get('track_errors');
-//		ini_set('track_errors', true);
-//
-//		if ($version >= '5.3.1')
-//		{
-//			$contents = file_get_contents($filename);
-//			$contents = str_replace('_QQ_', '"\""', $contents);
-//			$strings  = @parse_ini_string($contents);
-//		}
-//		else
-//		{
-//			$strings = @parse_ini_file($filename);
-//
-//			if ($version == '5.3.0' && is_array($strings))
-//			{
-//				foreach ($strings as $key => $string)
-//				{
-//					$strings[$key] = str_replace('_QQ_', '"', $string);
-//				}
-//			}
-//		}
-//
-//		// Restore error tracking to what it was before.
-//		ini_set('track_errors', $track_errors);
-//
-//		if (!is_array($strings))
-//		{
-//			$strings = array();
-//		}
-//
-//		$lang->_strings = array_merge($lang->_strings, $strings);
-//
-//		return !empty($strings);
-//	}
-//
 	/**
 	 * Method to get creator id
 	 *

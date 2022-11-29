@@ -136,6 +136,16 @@ pipeline {
 			}
 		}
 
+        stage('Send success mail for php 8 part') {
+			steps {
+				emailext(
+					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 4 and php 8 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman J4 php 8 build ${currentBuild.number} successful",
+					to: 'webmaster@boldt-webservice.de'
+				)
+			}
+        }
+
         stage('Set variables for php 7 part') {
 			steps {
 				script {
@@ -300,8 +310,8 @@ pipeline {
 			)
 
 				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 4 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J4 build ${currentBuild.number} successful",
+					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 4 and php 7 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman J4 php 7 build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de'
 				)
 //				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!

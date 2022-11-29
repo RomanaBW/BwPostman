@@ -41,6 +41,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use stdClass;
 
 /**
  * BwPostman Newsletter Controller
@@ -510,6 +511,17 @@ class NewsletterController extends FormController
 		// Test whether the data is valid.
 		PluginHelper::importPlugin('bwpostman');
 		$app->triggerEvent('onBwPostmanBeforeNewsletterControllerValidate', array(&$form));
+
+		// convert attachment JSON to array, to be able to check subform
+		if (isset($data['attachment']) && is_string($data['attachment']))
+		{
+			$data['attachment'] = json_decode($data['attachment']);
+
+			if (!is_object($data['attachment']))
+			{
+				$data['attachment'] = new stdClass;
+			}
+		}
 
 		$validData = $model->validate($form, $data);
 

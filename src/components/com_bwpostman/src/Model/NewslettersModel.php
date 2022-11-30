@@ -203,7 +203,7 @@ class NewslettersModel extends ListModel
 
 		// Filter on month, year
 		$this->setState('filter.month', $app->input->getString('month'));
-		$this->setState('filter.year', $app->input->getInt('year'));
+		$this->setState('filter.year', $app->input->getString('year'));
 
 		// Optional filter text
 		$this->setState('filter.search', $jinput->getString('filter_search'));
@@ -432,7 +432,7 @@ class NewslettersModel extends ListModel
 	{
 		// unset/set list limit and get all items
 		$limit	= $this->getState('list.limit', 0);
-		$this->setState('list.limit', 0);
+		$this->setState('list.limit', 10);
 		$items	= $this->getItems();
 		$this->setState('list.limit', $limit);
 
@@ -637,15 +637,15 @@ class NewslettersModel extends ListModel
 		}
 
 		// Filter on month
-		$month = $this->getState('filter.month');
-		if ($month)
+		$month = $this->getState('filter.month', '');
+		if ($month !== '')
 		{
 			$query->where($query->month('a.mailing_date') . ' = ' . $month);
 		}
 
 		// Filter on year
-		$year = $this->getState('filter.year');
-		if ($year)
+		$year = $this->getState('filter.year', '');
+		if ($year !== '')
 		{
 			$query->where($query->year('a.mailing_date') . ' = ' . $year);
 		}

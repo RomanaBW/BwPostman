@@ -48,11 +48,11 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * property to hold state data
 	 *
-	 * @var array   $state
+	 * @var object   $state
 	 *
 	 * @since       0.9.1
 	 */
-	protected array $state;
+	protected object $state;
 
 	/**
 	 * property to hold selected item
@@ -111,11 +111,11 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * property to hold active filters object
 	 *
-	 * @var ?object   $activeFilters
+	 * @var array   $activeFilters
 	 *
 	 * @since       0.9.1
 	 */
-	protected ?object  $activeFilters	= null;
+	protected array $activeFilters	= [];
 
 	/**
 	 * property to hold mailinglists

@@ -202,6 +202,7 @@ class NewslettersModel extends ListModel
 		$this->setState('module.id', $app->input->getInt('mid'));
 
 		// Filter on month, year
+		$month = $this->getUserStateFromRequest('com_bwpostman.newsletters.filter.month', 'filter_month', '');
 		$this->setState('filter.month', $app->input->getString('month'));
 		$this->setState('filter.year', $app->input->getString('year'));
 
@@ -235,6 +236,7 @@ class NewslettersModel extends ListModel
 		$this->setState('list.limit', $limit);
 
 		$limitstart = $app->input->get('start');
+
 		if ($limitstart === null)
 		{
 			$limitstart = $app->input->get('limitstart');
@@ -267,6 +269,8 @@ class NewslettersModel extends ListModel
 		$id	.= ':' . $this->getState('filter.mailinglist');
 		$id	.= ':' . $this->getState('filter.campaign');
 		$id	.= ':' . $this->getState('filter.usergroup');
+		$id	.= ':' . $this->getState('filter.month');
+		$id	.= ':' . $this->getState('filter.year');
 		$id	.= ':' . $this->getState('getTotal');
 
 		return parent::getStoreId($id);
@@ -346,7 +350,7 @@ class NewslettersModel extends ListModel
 		$guest	= $user->get('guest');
 		$groups	= $user->getAuthorisedViewLevels();
 
-		$this->pagination = parent::getPagination();
+//		$this->pagination = parent::getPagination();
 
 		// Convert the parameter fields into objects.
 		foreach ($items as $item)
@@ -432,9 +436,16 @@ class NewslettersModel extends ListModel
 	{
 		// unset/set list limit and get all items
 		$limit	= $this->getState('list.limit', 0);
-		$this->setState('list.limit', 10);
+		$limitstart = $this->getState('list.start', 0);
+
+		$this->setState('list.limit', 0);
+		$this->setState('list.start', 0);
+
 		$items	= $this->getItems();
+
 		$this->setState('list.limit', $limit);
+		$this->setState('list.start', $limitstart);
+
 
 		// Substrings of mailingdate
 		$ms = array(); //months

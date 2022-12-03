@@ -322,10 +322,14 @@
 
 #bwpostman #bwp_search .filter_cams {
 	display:			inline-block;
+	margin-top:      0.5em;
+	min-width:			11.5em;
 }
 
 #bwpostman #bwp_search .filter_groups {
 	display:			inline-block;
+	margin-top:      0.5em;
+	min-width:			11.5em;
 }
 
 #bwpostman #bwp_search .filter_month {

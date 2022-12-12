@@ -119,9 +119,9 @@ base_source:
   tester_image_tag_source: "{{ official_tester }}"
 
 base_target:
-  db_image_tag_target: "romana/{{ official_mariadb_short }}"
-  web_image_tag_target: "romana/{{ official_apache_short }}:{{ joomla_version }}"
-  tester_image_tag_target: "romana/{{ official_tester_short }}"
+  db_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_mariadb_short }}"
+  web_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_apache_short }}:{{ joomla_version }}"
+  tester_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_tester_short }}"
 
 
 # Settings for creating bare Joomla containers
@@ -131,7 +131,7 @@ bare_source:
   web_container_name: joomla_bare_web
   web_image_tag_source: "{{ base_target.web_image_tag_target }}"
   tester_container_name: bwpm_bare_tester
-  tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
+  tester_image_tag_source: "{{ private_docker_repo }}/romana/{{ official_tester_short }}"
 
   tester_network_name: "bwpm_network_{{ test_suite }}"
 
@@ -197,11 +197,11 @@ smoke_source:
 
 smoke_target:
   db_image: "{{ smoke_source.db_image_tag_source }}"
-  db_image_tag_target: "romana/{{ smoke_source.db_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
+  db_image_tag_target: "{{ private_docker_repo }}/romana/{{ smoke_source.db_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
   web_image: "{{ smoke_source.web_image_tag_source }}"
-  web_image_tag_target: "romana/{{ smoke_source.web_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
+  web_image_tag_target: "{{ private_docker_repo }}/romana/{{ smoke_source.web_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
   tester_image: "{{ smoke_source.tester_image_tag_source }}"
-  tester_image_tag_target: "romana/{{ smoke_source.tester_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
+  tester_image_tag_target: "{{ private_docker_repo }}/romana/{{ smoke_source.tester_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
 
 # Settings for creating acceptance tests container
 acceptance_source:
@@ -229,7 +229,8 @@ fast_source:
   tester_network_name: "bwpm_network_{{ test_suite }}-{{ j_main_version }}"
 
 fast_target:
-  db_image: "{{ acceptance_source.db_image_tag_source }}"
-  web_image: "{{ acceptance_source.web_image_tag_source }}"
-  tester_image: "{{ acceptance_source.tester_image_tag_source }}"
+#  db_image: "{{ acceptance_source.db_image_tag_source }}"
+#  web_image: "{{ acceptance_source.web_image_tag_source }}"
+#  tester_image: "{{ acceptance_source.tester_image_tag_source }}"
+  web_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_apache_short }}:bare"
 

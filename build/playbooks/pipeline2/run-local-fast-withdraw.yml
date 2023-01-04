@@ -117,6 +117,10 @@
         src: "run-bwpm-fast.yml.j2"
         dest: "{{ container_dir }}/infrastructure/run-bwpm-fast.yml"
 
+    - name: Show start infrastructure command
+      debug:
+        msg: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm-fast.yml -p {{ project_name }} up -d"
+
     - name: Start infrastructure
       command: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm-fast.yml -p {{ project_name }} up -d"
 

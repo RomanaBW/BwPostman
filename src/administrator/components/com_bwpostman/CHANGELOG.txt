@@ -15,7 +15,7 @@ Bugfix
 Improvement
 ~ Use nulldate as default value for subscription dates and check against nulldate to prevent php deprecated messages
 
-# New
+New
 - Adaptions to meet php 8 needs
 
 

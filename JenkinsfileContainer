@@ -5,7 +5,7 @@ pipeline {
         stage('Set variables') {
 			steps {
 				script {
-					BWPM_VERSION = "3.2.3"
+					BWPM_VERSION = "3.2.4"
 
 					JOOMLA_VERSION = "3.10.11"
 //					JOOMLA_VERSION = "3.9.28"
@@ -165,7 +165,7 @@ pipeline {
 
 				sshPublisher(
 					publishers: [sshPublisherDesc(
-					configName: 'Web Dev BwPostman',
+					configName: 'Web Dev Webservice BwPostman',
 					transfers: [sshTransfer(
 					cleanRemote: false,
 					excludes: '',

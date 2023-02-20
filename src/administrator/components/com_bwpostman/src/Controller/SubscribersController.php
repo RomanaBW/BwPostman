@@ -578,6 +578,7 @@ class SubscribersController extends AdminController
 		$app->setUserState('com_bwpostman.subscribers.export.data', $post);
 		$jinput->set('view', 'subscriber');
 
+		// Workaround to get error messages on the screen
 		$model = $this->getModel('subscriber');
 
 		if (!$model->export($post))

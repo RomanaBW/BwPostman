@@ -1230,25 +1230,36 @@ class SubscriberModel extends AdminModel
 
 				$subscribers_export = $this->getSubscribersToExport($data);
 
-				foreach ($subscribers_export AS $subscriber)
+				if (is_array($subscribers_export))
 				{
-					$subscriber_export_tmp = array();
-
-					foreach ($subscriber AS $subscriber_tmp)
+					foreach ($subscribers_export AS $subscriber)
 					{
-						// Insert enclosure
-						$subscriber_export_tmp[] = $enclosure . $subscriber_tmp . $enclosure;
-					}
+						$subscriber_export_tmp = array();
 
-					// Write file
-					$output .= implode($delimiter, $subscriber_export_tmp) . $newline;
+						foreach ($subscriber AS $subscriber_tmp)
+						{
+							// Insert enclosure
+							$subscriber_export_tmp[] = $enclosure . $subscriber_tmp . $enclosure;
+						}
+
+						// Write file
+						$output .= implode($delimiter, $subscriber_export_tmp) . $newline;
+					}
 				}
 			}
 			else
 			{ // Fileformat == xml
 				$subscribers_export = $this->getSubscribersToExport($data);
 
-				$output = $this->processXmlExport($subscribers_export);
+				if (is_array($subscribers_export))
+				{
+					$output = $this->processXmlExport($subscribers_export);
+				}
+			}
+
+			if ($subscribers_export === false)
+			{
+				return false;
 			}
 		}
 		catch (RuntimeException $e)
@@ -1327,6 +1338,7 @@ class SubscriberModel extends AdminModel
 			else
 			{
 				$subQuery = " WHERE {$db->quoteName('archive_flag')} = " . 0;
+				$where = true;
 			}
 		}
 		elseif ($archive1)
@@ -1339,6 +1351,7 @@ class SubscriberModel extends AdminModel
 			else
 			{
 				$subQuery = " WHERE {$db->quoteName('archive_flag')} = " . 1;
+				$where = true;
 			}
 		}
 
@@ -1659,11 +1672,13 @@ class SubscriberModel extends AdminModel
 		{
 			$db->setQuery($query);
 
-			return $db->loadAssocList();
+			$subscribersList = $db->loadAssocList();
+
+			return $subscribersList;
 		}
 		catch (RuntimeException $e)
 		{
-			$msg = Text::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_GET_SUBSCRIBERS') . ' ' . $e->getMessage();
+			$msg = Text::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_GET_SUBSCRIBERS') . '<br />' . $e->getMessage();
 			Factory::getApplication()->enqueueMessage($msg, 'error');
 			return false;
 		}

@@ -33,7 +33,6 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
-use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwWebApp;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
@@ -98,17 +97,18 @@ class RawView extends BaseHtmlView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  RawView  A string if successful, otherwise a JError object.
+	 * @return  RawView|bool  A string if successful, otherwise a JError object.
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl = null): RawView
+	public function display($tpl = null)
 	{
 		$app 	  = Factory::getApplication();
 		$jinput	  = $app->input;
 		$task	  = $jinput->get('task', 'export');
+		$model    = $this->getModel('subscriber');
 		$document = $app->getDocument();
 		$document->getWebAssetManager()->registerAndUseScript('com_bwpostman.admin-bwpm_subscriber', 'com_bwpostman/admin-bwpm_subscriber.js');
 
@@ -117,7 +117,6 @@ class RawView extends BaseHtmlView
 			// Get the data from the model
 			$this->form		= $this->get('Form');
 			$this->item		= $this->get('Item');
-			$model = $this->getModel('subscriber');
 			$this->sub	= $model->getSubscriberData((int) $this->item->id);
 
 			// Call parent display
@@ -184,7 +183,6 @@ class RawView extends BaseHtmlView
 			$appWeb->sendHeaders();
 
 			// Get the export data
-			$model = $this->getModel('subscriber');
 			echo $model->export($post);
 		}
 

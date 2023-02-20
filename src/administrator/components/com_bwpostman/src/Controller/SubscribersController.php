@@ -578,9 +578,21 @@ class SubscribersController extends AdminController
 		$app->setUserState('com_bwpostman.subscribers.export.data', $post);
 		$jinput->set('view', 'subscriber');
 
-		$document->setType('raw');
-		$link = Route::_('index.php?option=com_bwpostman&view=subscriber&layout=export&format=raw', false);
-		$this->setRedirect($link);
+		$model = $this->getModel('subscriber');
+
+		if (!$model->export($post))
+		{
+			$jinput->set('layout', 'export');
+			$link = Route::_('index.php?option=com_bwpostman&view=subscribers', false);
+			$this->setRedirect($link);
+		}
+		else
+		{
+			$document->setType('raw');
+			$link = Route::_('index.php?option=com_bwpostman&view=subscriber&layout=export&format=raw', false);
+
+			$this->setRedirect($link);
+		}
 
 		parent::display();
 	}

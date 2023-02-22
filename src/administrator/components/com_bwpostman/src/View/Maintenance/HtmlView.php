@@ -174,12 +174,13 @@ class HtmlView extends BaseHtmlView
 			require_once JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php';
 
 			$cron = new \BwPostmanPhpCron;
+			$refreshInterval = 60;
 
 			// Check for start file
 			if (property_exists($cron, 'startFile') && File::exists(JPATH_PLUGINS . $cron->startFile))
 			{
 				$url = 'index.php?option=' . $jinput->getCmd('option', 'com_bwpostman') . '&view=maintenance';
-				echo '<meta http-equiv="refresh" content="10; URL=' . $url . '">';
+				echo '<meta http-equiv="refresh" content="' . $refreshInterval . '; URL=' . $url . '">';
 
 				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_STARTING_CRON'), 'Info');
 			}
@@ -194,7 +195,7 @@ class HtmlView extends BaseHtmlView
 			if (property_exists($cron, 'stopFile') && File::exists(JPATH_PLUGINS . $cron->stopFile))
 			{
 				$url = 'index.php?option=' . $jinput->getCmd('option', 'com_bwpostman') . '&view=maintenance';
-				echo '<meta http-equiv="refresh" content="10; URL=' . $url . '">';
+				echo '<meta http-equiv="refresh" content="' . $refreshInterval . '; URL=' . $url . '">';
 
 				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_STOPPING_CRON'), '');
 			}

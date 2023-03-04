@@ -132,6 +132,10 @@
         delete: yes
         archive: yes
 
+    - name: Ensure database is fully started
+      pause:
+        seconds: 30
+
     - name: Set rebase command
       set_fact:
          sql_command: "mysql -u {{ test_db_user }} -p{{ test_db_password }} -h {{ test_db_host_ip }} {{ test_db_dbname }} < {{ web_dir }}/{{ project_name }}/backups/{{ project_name }}.sql"

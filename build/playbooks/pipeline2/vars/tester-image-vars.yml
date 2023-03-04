@@ -1,7 +1,7 @@
 ---
 # Fast changing variables
-joomla_version: "4.2.6"
-joomla_version_dotted: "4.2.6"
+joomla_version: "4.2.8"
+joomla_version_dotted: "4.2.8"
 
 j_version_short: "j4"
 

@@ -210,7 +210,7 @@ class NewslettersModel extends ListModel
 	 */
 	protected function getListQuery()
 	{
-		$db          = $this->_db;
+		$db          = $this->getDatabase();
 		$jinput      = Factory::getApplication()->input;
 		$this->query = $db->getQuery(true);
 
@@ -279,7 +279,7 @@ class NewslettersModel extends ListModel
 	 */
 	private function getQueryJoins(string $tab)
 	{
-		$db = $this->_db;
+		$db = $this->getDatabase();
 
 		if ($tab == 'sent' || $tab == 'unsent')
 		{
@@ -366,7 +366,7 @@ class NewslettersModel extends ListModel
 	 */
 	private function getQueryOrder(string $tab)
 	{
-		$db        = $this->_db;
+		$db        = $this->getDatabase();
 		$orderCol  = $this->state->get('list.ordering', 'a.subject');
 		$orderDirn = $this->state->get('list.direction', 'asc');
 
@@ -407,7 +407,7 @@ class NewslettersModel extends ListModel
 	 */
 	private function getFilterByAccessLevelFilter()
 	{
-		$db = $this->_db;
+		$db = $this->getDatabase();
 
 		if (Factory::getApplication()->isClient('site'))
 		{
@@ -431,7 +431,7 @@ class NewslettersModel extends ListModel
 	 */
 	private function getFilterByViewLevel()
 	{
-		$db = $this->_db;
+		$db = $this->getDatabase();
 
 		if (Factory::getApplication()->isClient('site'))
 		{
@@ -456,7 +456,7 @@ class NewslettersModel extends ListModel
 	 */
 //	private function getFilterByComponentPermissions()
 //	{
-//		$db            = $this->_db;
+//		$db            = $this->getDatabase();
 //		$allowed_items = BwPostmanHelper::getAllowedRecords('newsletter');
 //
 //		if ($allowed_items != 'all')
@@ -551,7 +551,7 @@ class NewslettersModel extends ListModel
 	 */
 	private function getFilterBySearchword(string $tab)
 	{
-		$db           = $this->_db;
+		$db           = $this->getDatabase();
 		$filtersearch = $this->getState('filter.search_filter');
 		$search       = $db->escape($this->getState('filter.search'), true);
 
@@ -634,7 +634,7 @@ class NewslettersModel extends ListModel
 	private function getFilterByPublishedState()
 	{
 		// Define null and now dates, get params
-		$db       = $this->_db;
+		$db       = $this->getDatabase();
 		$nullDate = $db->quote($db->getNullDate());
 		$nowDate  = $db->quote(Factory::getDate()->toSql());
 
@@ -682,7 +682,7 @@ class NewslettersModel extends ListModel
 	 */
 	private function getFilterByArchiveState()
 	{
-		$db = $this->_db;
+		$db = $this->getDatabase();
 
 		$this->query->where($db->quoteName('a.archive_flag') . ' = ' . 0);
 	}
@@ -746,7 +746,7 @@ class NewslettersModel extends ListModel
 				break;
 		}
 
-		$this->query->where('a.mailing_date' . $tab_int . $this->_db->quote($this->_db->getNullDate()));
+		$this->query->where('a.mailing_date' . $tab_int . $this->getDatabase()->quote($this->getDatabase()->getNullDate()));
 	}
 
 	/**
@@ -790,7 +790,7 @@ class NewslettersModel extends ListModel
 	public function getCountQueue(): int
 	{
 		$count_queue = 0;
-		$db          = $this->_db;
+		$db          = $this->getDatabase();
 		$query       = $db->getQuery(true);
 
 		$query->select('COUNT(*)');

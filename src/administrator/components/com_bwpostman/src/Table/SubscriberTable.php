@@ -115,7 +115,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $gender = null;
+	public $gender = 2;
 
 	/**
 	 * @var string special field

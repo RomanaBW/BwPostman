@@ -778,7 +778,7 @@ class SubscriberModel extends AdminModel
 		for ($i = 0; $i < count($db_fields); $i++)
 		{
 			$colNumToDBName[$import_fields[$i]] = $db_fields[$i];
-			$values[$db_fields[$i]] = 0;
+			$values[$db_fields[$i]] = null;
 		}
 
 		$remote_ip = $app->input->server->get('REMOTE_ADDR', '', '');
@@ -862,7 +862,7 @@ class SubscriberModel extends AdminModel
 				foreach($colNumToDBName as $key => $value)
 				{
 					// Reset the import values. We should do this for every import row preventively.
-					$values[$key] = 0;
+					$values[$key] = null;
 
 					// Get the values from the csv and filter them
 					$filterType = 'STRING';

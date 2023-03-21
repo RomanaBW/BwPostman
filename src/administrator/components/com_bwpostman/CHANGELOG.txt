@@ -6,11 +6,15 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
-Version 4.1.4 released (2023-03-15)----
+Version 4.1.4 released (2023-03-25)----
 
 Bugfix
 # On export of subscribers the sql query was buggy, if only subscribers of one mailing list shall be exported
 # Ajax error at check and repair tables, if plugin BwTimeControl is enabled
+# Path to user defined CSS files corrected, for that they could be loaded
+
+improvement
+~ Default setting for gender set from male to not specified, so new/imported subscribers are no longer all male
 
 
 Version 4.1.3 released (2022-12-15)----

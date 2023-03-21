@@ -42,11 +42,11 @@ $wa->useStyle('com_bwpostman.cassiopeia');
 
 // Get user defined style file
 $templateName = $app->getTemplate();
-$css_filename = '/templates/' . $templateName . '/css/com_bwpostman.css';
+$css_filename = 'templates/' . $templateName . '/css/com_bwpostman.css';
 
-if (file_exists(JPATH_BASE . $css_filename))
+if (file_exists(JPATH_BASE . '/' . $css_filename))
 {
-	$wa->registerAndUseStyle('customCss', Uri::root(true) . $css_filename);
+	$wa->registerAndUseStyle('customCss', Uri::root() . $css_filename);
 }
 
 $js = "

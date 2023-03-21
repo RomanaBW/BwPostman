@@ -43,9 +43,9 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 $wa->useStyle('mod_bwpostman.bwpm_register_bs4');
 $wa->useScript('mod_bwpostman.bwpm_register');
 
-if (file_exists(JPATH_BASE . $css_filename))
+if (file_exists(JPATH_BASE . '/' . $css_filename))
 {
-	$wa->registerAndUseStyle('mod_bwpostman.bwpm_register_custom', Uri::root(true) . $css_filename);
+	$wa->registerAndUseStyle('mod_bwpostman.bwpm_register_custom', Uri::root() . $css_filename);
 //	$document->addStyleSheet(Uri::root(true) . $css_filename);
 }
 

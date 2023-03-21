@@ -47,7 +47,7 @@ $wr->addRegistryFile('media/mod_bwpostman_overview/joomla.asset.json');
 
 $wa->useStyle('mod_bwpostman_overview.bwpostman_overview');
 
-if (file_exists(JPATH_BASE . $css_filename))
+if (file_exists(JPATH_BASE . '/' . $css_filename))
 {
 	$wa->registerAndUseStyle('mod_bwpostman_overview.bwpostman_overview_custom', Uri::root(true) . $css_filename);
 //	$document->addStyleSheet(Uri::root(true) . $css_filename);

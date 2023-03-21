@@ -60,7 +60,7 @@ if (!ComponentHelper::isEnabled('com_bwpostman'))
 // Get document object, set document title and add css
 $document     = $app->getDocument();
 $templateName = $app->getTemplate();
-$css_filename = '/templates/' . $templateName . '/css/mod_bwpostman.css';
+$css_filename = 'templates/' . $templateName . '/css/mod_bwpostman.css';
 
 $wa = $document->getWebAssetManager();
 $wr = $wa->getRegistry();

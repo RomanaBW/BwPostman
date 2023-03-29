@@ -29,7 +29,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -244,7 +243,7 @@ class BwPostmanViewNewsletters extends JViewLegacy
 		{
 			$menu_params = new Registry();
 			$menu_params->loadString($menu->getParams());
-			if (!$menu_params->get('page_heading'))
+			if (!$menu_params->get('page_heading', ''))
 			{
 				$this->params->set('page_heading',	Text::_('COM_BWPOSTMAN_NLS'));
 			}

@@ -134,7 +134,7 @@
 
     - name: Ensure database is fully started
       pause:
-        seconds: 30
+        seconds: 60
 
     - name: Set rebase command
       set_fact:

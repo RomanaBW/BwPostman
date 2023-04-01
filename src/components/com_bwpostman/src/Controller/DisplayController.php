@@ -192,4 +192,5 @@ class DisplayController extends BaseController
 
 		return true;
 	}
+
 }

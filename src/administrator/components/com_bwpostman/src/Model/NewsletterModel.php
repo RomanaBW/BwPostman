@@ -1842,7 +1842,7 @@ class NewsletterModel extends AdminModel
 				}
 
 				$counter++;
-				if ($counter >= 10)
+				if ($fromComponent && $counter >= 10)
 				{     // package for ajax call
 					return $sendMailCounter;
 				}

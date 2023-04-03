@@ -28,13 +28,8 @@ namespace BoldtWebservice\Component\BwPostman\Site\Dispatcher;
 
 defined('JPATH_PLATFORM') or die;
 
-use BwPostmanPhpCron;
 use Exception;
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\Registry\Registry;
 
 /**
  * ComponentDispatcher class for com_bwpostman
@@ -44,9 +39,16 @@ use Joomla\Registry\Registry;
 class Dispatcher extends ComponentDispatcher
 {
 	/**
-	 * Dispatch a controller task. Redirecting the user if appropriate.
+	 * The default controller (and view), if none is specified in the request.
 	 *
-	 * @return  void
+	 * @var   string
+	 *
+	 * @since 1.0.0
+	 */
+	protected string $defaultController = 'display';
+
+	/**
+	 * Dispatch a controller task. Redirecting the user if appropriate.
 	 *
 	 * @throws Exception
 	 *
@@ -54,10 +56,57 @@ class Dispatcher extends ComponentDispatcher
 	 */
 	public function dispatch()
 	{
-		$input = Factory::getApplication()->input;
-		$view  = $input->get('view', 'register');
-		$input->set('controller', $view);
+		$this->applyViewAndController();
 
 		parent::dispatch();
+	}
+	/**
+	 * Applies the view and controller to the input object communicated to the MVC objects.
+	 *
+	 * If we have a controller without view or just a task=controllerName.taskName we populate the view to make things
+	 * easier and more consistent for us to handle.
+	 *
+	 * @return  void
+	 *
+	 * @since 1.0.0
+	 */
+	protected function applyViewAndController(): void
+	{
+		$controller = $this->input->getCmd('controller');
+		$view       = $this->input->getCmd('view');
+		$task       = $this->input->getCmd('task');
+
+		if (strpos($task, '.') !== false)
+		{
+			// Explode the controller.task command.
+			[$controller, $task] = explode('.', $task);
+			$view = null;
+		}
+
+		if (empty($controller) && empty($view))
+		{
+			$controller = $this->defaultController;
+			$view       = $this->defaultController;
+		}
+		elseif (empty($controller) && !empty($view))
+		{
+			$controller = $view;
+		}
+		elseif (!empty($controller) && empty($view))
+		{
+			$view = $controller;
+		}
+
+		if ($task === 'doCron')
+		{
+			$controller = 'display';
+		}
+
+		$controller = strtolower($controller);
+		$view       = strtolower($view);
+
+		$this->input->set('view', $view);
+		$this->input->set('controller', $controller);
+		$this->input->set('task', $task);
 	}
 }

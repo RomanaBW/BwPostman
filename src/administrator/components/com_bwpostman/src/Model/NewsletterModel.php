@@ -1518,6 +1518,8 @@ class NewsletterModel extends AdminModel
 		// Access check
 		if (!BwPostmanHelper::canSend($nl_id))
 		{
+			$ret_msg .= 'Model sendNewsletter: Access denied';
+			$this->logger->addEntry(new LogEntry($ret_msg, BwLogger::BW_DEBUG, 'send'));
 			return false;
 		}
 
@@ -1526,13 +1528,16 @@ class NewsletterModel extends AdminModel
 
 		if ($id	=== false)
 		{
-			$ret_msg = Text::_('COM_BWPOSTMAN_NL_ERROR_CONTENT_PREPARING');
+			$ret_msg .= Text::_('COM_BWPOSTMAN_NL_ERROR_CONTENT_PREPARING');
+			$this->logger->addEntry(new LogEntry('Model sendNewsletter:' . $ret_msg, BwLogger::BW_DEBUG, 'send'));
 			return false;
 		}
 
 		// Prepare the recipient queue
 		if (!$this->addSendMailQueue($ret_msg, $id, $recipients, $nl_id, $unconfirmed, $cam_id))
 		{
+			$ret_msg .= 'Model sendNewsletter: Addint to sendMailQueue failed';
+			$this->logger->addEntry(new LogEntry($ret_msg, BwLogger::BW_DEBUG, 'send'));
 			return false;
 		}
 

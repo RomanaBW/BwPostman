@@ -9,12 +9,13 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 Version 4.1.5 released (2023-05-25)----
 
 Bugfix
-#
+# Correct condition for ajax call to prevent sending only 10 mails per step at time controlled sending
 #
 #
 
 improvement
-~
+~ Add raw view for collaboration with BwTimeControl
+~ Make FE dispatcher more specific working
 
 
 Version 4.1.4 released (2023-03-25)----

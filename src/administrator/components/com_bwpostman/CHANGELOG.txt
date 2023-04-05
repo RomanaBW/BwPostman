@@ -10,8 +10,6 @@ Version 4.1.5 released (2023-05-25)----
 
 Bugfix
 # Correct condition for ajax call to prevent sending only 10 mails per step at time controlled sending
-#
-#
 
 improvement
 ~ Add raw view for collaboration with BwTimeControl

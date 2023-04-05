@@ -36,6 +36,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 // Require component helper classes and exception class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/helper.php');

@@ -32,6 +32,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 require_once(dirname(__FILE__) . '/helper.php');
 require_once JPATH_ROOT . '/administrator/components/com_bwpostman/helpers/subscriberhelper.php';

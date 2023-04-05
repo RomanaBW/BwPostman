@@ -38,6 +38,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Mail\MailHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filter\InputFilter;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 // Require helper class
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper.php');

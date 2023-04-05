@@ -42,6 +42,7 @@ use Joomla\CMS\Mail\MailHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Filter\InputFilter;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 // Require helper class
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/logging/BwLogger.php');
@@ -1768,13 +1769,22 @@ class BwPostmanModelNewsletter extends JModelAdmin
 	public function checkTrials($trial = 2, $count = 0)
 	{
 		PluginHelper::importPlugin('bwpostman');
-		Factory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
+        $app = Factory::getApplication();
+        $table = '#__sendmailqueue';
 
-		$tblSendmailQueue = $this->getTable('sendmailqueue', 'BwPostmanTable');
+        $db    = $this->_db;
+        $query = $db->getQuery(true);
 
-		$result = $tblSendmailQueue->checkTrials($trial, $count);
+        $query->select('*');
+        $query->from($db->quoteName($table));
+        $query->where($db->quoteName('trial') . ' < ' . $trial);
+        $query->order($db->quoteName($table) . ' ASC LIMIT 0,1');
 
-		return $result;
+        $app->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
+
+        $tblSendmailQueue = $this->getTable('Sendmailqueue');
+
+        return $tblSendmailQueue->checkTrials($trial, $count);
 	}
 
 	/**
@@ -1818,7 +1828,7 @@ class BwPostmanModelNewsletter extends JModelAdmin
 				}
 
 				$counter++;
-				if ($counter >= 10)
+				if ($fromComponent && $counter >= 10)
 				{     // package for ajax call
 					return $sendMailCounter;
 				}

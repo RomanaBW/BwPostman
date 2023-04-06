@@ -105,7 +105,15 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	 */
 	public $sidebar;
 
-	/**
+    /**
+     * The EOS date for 3.10
+     *
+     * @var    string
+     * @since  3.10.0
+     */
+    const EOS_DATE = '2023-08-17';
+
+    /**
 	 * Execute and display a template script.
 	 *
 	 * @param string $tpl The name of the template file to parse; automatically searches through the template paths.
@@ -120,6 +128,11 @@ class BwPostmanViewBwPostman extends JViewLegacy
 	{
 		$uri        = Uri::getInstance('SERVER');
 		$uri_string = $uri->toString();
+
+        // Add EOS message
+        $eosData = $this->getEosMessage();
+
+        Factory::getApplication()->enqueueMessage($eosData['eosMessage'], "'" . $eosData['eosMsgLevel'] . "'");
 
 		//check for queue entries
 		$this->queueEntries = BwPostmanHelper::checkQueueEntries();
@@ -277,4 +290,29 @@ class BwPostmanViewBwPostman extends JViewLegacy
 			$this->archive['arc_text_templates'] = '';
 		}
 	}
+
+    /**
+     *
+     * @return array
+     *
+     * @since 3.2.4
+     */
+    protected function getEosMessage()
+    {
+        $diff    = Factory::getDate()->diff(Factory::getDate(static::EOS_DATE));
+        $date    = new JDate(static::EOS_DATE);
+        $eosDate = $date->format(JText::_('DATE_FORMAT_LC3'));
+        $eosLink = "https://www.boldt-webservice.de/index.php/en/joomla-extensions/bwpostman/54-news-en/139-infos-for-bwpostman-and-joomla-4.html";
+
+        $eosMessage = JText::sprintf('COM_BWPOSTMAN_EOS3_MESSAGE_WARNING_SECURITY_ONLY', $eosDate, $eosLink);
+        $warnLevel  = 'warning';
+
+        if ($diff->y <= 0 && $diff->m <= 0 && $diff->d <0)
+        {
+            $eosMessage = JText::sprintf('COM_BWPOSTMAN_EOS3_MESSAGE_ERROR_SUPPORT_ENDED', $eosDate, $eosLink);
+            $warnLevel  = 'error';
+        }
+
+        return array ('eosMessage' => $eosMessage, 'eosMsgLevel' => $warnLevel);
+    }
 }

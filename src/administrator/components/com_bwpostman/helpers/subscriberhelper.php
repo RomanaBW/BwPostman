@@ -29,8 +29,13 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 
 defined('_JEXEC') or die('Restricted access');
 
+use BwEmailValidation;
+use BwLogger;
 use BwPostmanFilterHelper;
+use BwPostmanModelEdit;
 use BwPostmanModelRegister;
+use Exception;
+use JFactory;
 use JForm;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -40,6 +45,8 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Mail\MailHelper;
+use RuntimeException;
+use UnexpectedValueException;
 
 require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/filterhelper.php');
 

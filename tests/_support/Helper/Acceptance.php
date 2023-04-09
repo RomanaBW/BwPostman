@@ -767,7 +767,7 @@ class Acceptance extends Codeception\Module
 						default:
 							if (!($key == 'user_id') || ($needle != '0'))
 							{
-								$I->assertContains($needle, $haystack);
+								$I->assertStringContainsString($needle, $haystack);
 							}
 					} // end key switch
 				} //end row loop

@@ -190,7 +190,7 @@ class AcceptanceTester extends \Codeception\Actor
 		// assert that all rows contain search value
 		foreach ($row_values_actual as $item)
 		{
-			$this->assertContains($search_value, $item);
+			$this->assertStringContainsString($search_value, $item);
 		}
 	}
 
@@ -211,7 +211,7 @@ class AcceptanceTester extends \Codeception\Actor
 		// assert that all rows contain filtered values
 		for ($i = 0; $i < $res_nbr; $i++)
 		{
-			$this->assertContains($filter_values[$i], $row_values_actual[$i]);
+			$this->assertStringContainsString($filter_values[$i], $row_values_actual[$i]);
 		}
 	}
 

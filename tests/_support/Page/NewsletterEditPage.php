@@ -1,8 +1,6 @@
 <?php
 namespace Page;
 
-use Exception;
-use Page\NewsletterEditPage as NlEdit;
 use Page\NewsletterManagerPage as NlManage;
 use Page\Generals as Generals;
 
@@ -1420,6 +1418,7 @@ class NewsletterEditPage
 		//Select first attachment
 		$I->clickAndWait(self::$attachment_select_button1, 1);
 
+		$I->setIframeName(Generals::$media_frame1);
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->waitForElementVisible("div.media-browser-grid", 5);
 		$I->wait(1);
@@ -1439,6 +1438,7 @@ class NewsletterEditPage
 		$I->clickAndWait(self::$attachment_new_button1, 1);
 		$I->clickAndWait(self::$attachment_select_button2, 1);
 
+		$I->setIframeName(Generals::$media_frame2);
 		$I->switchToIFrame(Generals::$media_frame2);
 		$I->waitForElementVisible("div.media-browser-grid", 5);
 

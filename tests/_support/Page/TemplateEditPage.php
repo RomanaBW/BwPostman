@@ -161,7 +161,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_url               = "/images/powered_by.png";
+	public static $thumb_url               = "/images/powered_by.png#joomlaImage://local-images/powered_by.png?width=294&height=44";
 
 
 	/**
@@ -690,6 +690,7 @@ class TemplateEditPage
 
 		$I->clickAndWait(self::$thumb_select_button, 1);
 
+		$I->setIframeName(Generals::$media_frame1);
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->wait(1);
 

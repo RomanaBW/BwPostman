@@ -111,9 +111,17 @@ class NewsletterjsonController extends BaseController
 			ob_start();
 
 			// set number of queue entries before start sending
-			$sumentries	= is_null($app->getUserState('com_bwpostman.newsletters.entries'))
-				? $app->setUserState('com_bwpostman.newsletters.entries', $model->checkTrials(2, 1))
-				: $app->getUserState('com_bwpostman.newsletters.entries');
+			$sumentries = $app->getUserState('com_bwpostman.newsletters.entries');
+
+			if (!$sumentries)
+			{
+				$sumentries = $model->checkTrials(2, 1);
+				$app->setUserState('com_bwpostman.newsletters.entries', $sumentries);
+			}
+
+//			$sumentries	= is_null($app->getUserState('com_bwpostman.newsletters.entries'))
+//				? $app->setUserState('com_bwpostman.newsletters.entries', $model->checkTrials(2, 1))
+//				: $app->getUserState('com_bwpostman.newsletters.entries');
 
 			if ($model->checkTrials())
 			{

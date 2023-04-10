@@ -1897,9 +1897,18 @@ class User2SubscriberCest
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		// check mail address change of account
-		$I->see(RegPage::$change_value_email, RegPage::$email_identifier);
-		$I->dontSee(RegPage::$login_value_email, RegPage::$email_identifier);
-	}
+		try
+		{
+			codecept_debug('Check mail change BE with MFA activated');
+			$I->see(RegPage::$change_value_email, RegPage::$email_identifier_mfa);
+			$I->dontSee(RegPage::$login_value_email, RegPage::$email_identifier_mfa);
+		}
+		catch (Exception $exception)
+		{
+			codecept_debug('Check mail change BE with MFA deactivated');
+			$I->see(RegPage::$change_value_email, RegPage::$email_identifier);
+			$I->dontSee(RegPage::$login_value_email, RegPage::$email_identifier);
+		}	}
 
 	/**
 	 * @param AcceptanceTester $I

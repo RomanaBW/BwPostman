@@ -679,6 +679,13 @@ class User2SubscriberPage
 	 *
 	 * @since 2.0.0
 	 */
+	public static $email_identifier_mfa             = "//*[@id='userList']/tbody/tr[1]/td[7]";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $mail_field_identifier            = "//*[@id='jform_email']";
 
 	/**

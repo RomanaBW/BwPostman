@@ -163,6 +163,12 @@ class TemplateEditPage
 	 */
 	public static $thumb_url               = "/images/powered_by.png#joomlaImage://local-images/powered_by.png?width=294&height=44";
 
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
+	public static $thumb_url_short         = "/images/powered_by.png";
 
 	/**
 	 * @var string

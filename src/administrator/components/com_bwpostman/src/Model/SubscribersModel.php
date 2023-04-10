@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\ListModel;
@@ -523,5 +524,39 @@ class SubscribersModel extends ListModel
 		$mlSelectList[] = HtmlHelper::_('select.option',  '', '- ' . Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS') . ' -');
 
 		return array_merge($mlSelectList, $mailinglistsFromTable);
+	}
+
+	/**
+	 * Get the filter form
+	 *
+	 * @param array   $data     data
+	 * @param boolean $loadData load current data
+	 *
+	 * @return  Form|null  The \JForm object or null if the form can't be found
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.3.0
+	 */
+	public function getFilterForm($data = [], $loadData = true)
+	{
+		$layout = Factory::getApplication()->input->get('tab', 'confirmed');
+		$this->filterFormName = 'filter_subscribers_' . $layout;
+
+		if (empty($this->filterFormName) || !file_exists(BWPM_ADMINISTRATOR . '/forms/' . $this->filterFormName . '.xml'))
+		{
+			return null;
+		}
+
+		try
+		{
+			// Get the form.
+			return $this->loadForm($this->context . '.filter', $this->filterFormName, ['control' => '', 'load_data' => $loadData]);
+		}
+		catch (RuntimeException $e)
+		{
+		}
+
+		return null;
 	}
 }

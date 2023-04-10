@@ -214,7 +214,7 @@ class HtmlView extends BaseHtmlView
 		$this->state			= $this->get('State');
 		$this->items 			= $this->get('Items');
 		$this->mailinglists 	= $this->get('Mailinglists');
-		$this->filterForm		= $this->get('FilterForm');
+		$this->filterForm		= $this->getModel()->getFilterForm();
 		$this->activeFilters	= $this->get('ActiveFilters');
 		$this->pagination		= $this->get('Pagination');
 		$this->total 			= $this->get('total');

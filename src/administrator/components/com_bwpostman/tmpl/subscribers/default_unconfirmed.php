@@ -52,11 +52,7 @@ $colNum = 8;
 				<div id="j-main-container" class="j-main-container">
 					<?php
 					// Search tools bar
-					echo LayoutHelper::render(
-						'tabbed',
-						array('view' => $this, 'tab' => 'unconfirmed'),
-						$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
-					);
+					echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 					?>
 
 					<div class="bwp-subscribers">

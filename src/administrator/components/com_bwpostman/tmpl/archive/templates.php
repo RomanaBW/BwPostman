@@ -65,11 +65,7 @@ $this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabsh
 				<div id="j-main-container" class="j-main-container">
 					<?php
 					// Search tools bar
-					echo LayoutHelper::render(
-						'tabbed',
-						array('view' => $this, 'tab' => $tab),
-						$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
-					);
+					echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 					?>
 
 					<div class="bwp-archive">

@@ -197,7 +197,7 @@ class HtmlView extends BaseHtmlView
 		// Get data from the model
 		$this->state			= $this->get('State');
 		$this->items			= $this->get('Items');
-		$this->filterForm		= $this->get('FilterForm');
+		$this->filterForm		= $this->getModel()->getFilterForm();
 		$this->activeFilters	= $this->get('ActiveFilters');
 		$this->pagination		= $this->get('Pagination');
 		$this->queuePagination	= $this->get('QueuePagination');

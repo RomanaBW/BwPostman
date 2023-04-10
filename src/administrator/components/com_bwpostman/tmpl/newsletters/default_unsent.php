@@ -69,17 +69,13 @@ $isTemplateButton = (new ActionButton(['tip_title' => Text::_('COM_BWPOSTMAN_NL_
 				<div id="j-main-container" class="j-main-container">
 					<?php
 					// Search tools bar
-					echo LayoutHelper::render(
-							'tabbed',
-							array('view' => $this, 'tab' => 'unsent'),
-							$basePath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/searchtools'
-					);
+					echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 					?>
 
 					<div class="bwp-newsletters">
 						<ul class="nav nav-tabs bwp-tabs">
 							<li class="nav-item">
-								<a id="tab-unsent" href="javascript:void(0);" onclick="changeTab('unsent');Joomla.submitbutton();" class="nav-link active">
+								<a id="tab-unsent" href="javascript:void(0);" onclick="changeTab('unsent');Joomla.submitbutton();" data-layout="unsent" class="nav-link active">
 									<?php echo Text::_('COM_BWPOSTMAN_NL_UNSENT'); ?>
 								</a>
 							</li>

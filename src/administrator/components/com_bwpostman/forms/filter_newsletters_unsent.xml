@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="BoldtWebservice\Component\BwPostman\Administrator\Field">
+	<fields name="filter">
+		<field
+			name="search"
+			type="text"
+			label="COM_CONTENT_FILTER_SEARCH_DESC"
+			hint="JSEARCH_FILTER"
+		/>
+		<field
+			name="search_filter"
+			type="list"
+			label="COM_BWPOSTMAN_NL_FILTER_TITLE_LBL"
+			description="COM_BWPOSTMAN_NL_FILTER_TITLE_DESC"
+			onchange="this.form.submit();"
+			>
+			<option value="subject">COM_BWPOSTMAN_NL_FILTER_SEARCH_SUBJECT</option>
+			<option value="description">COM_BWPOSTMAN_NL_FILTER_SEARCH_DESCRIPTION</option>
+			<option value="subject_description">COM_BWPOSTMAN_NL_FILTER_SEARCH_SUBJECT_DESCRIPTION</option>
+			<option value="html_version">COM_BWPOSTMAN_NL_FILTER_SEARCH_HTML</option>
+			<option value="text_version">COM_BWPOSTMAN_NL_FILTER_SEARCH_TEXT</option>
+			<option value="html_text_version">COM_BWPOSTMAN_NL_FILTER_SEARCH_HTMLTEXT</option>
+		</field>
+		<field
+			name="campaign_id"
+			type="campaigns"
+			label="COM_BWPOSTMAN_NL_FILTER_CAMPAIGNLIST_LBL"
+			description="COM_BWPOSTMAN_NL_FILTER_CAMPAIGNLIST_DESC"
+			onchange="this.form.submit();"
+			>
+			<option value="-1">COM_BWPOSTMAN_NL_FILTER_NO_CAMPAIGN</option>
+		</field>
+		<field
+			name="authors"
+			type="authors"
+			label="COM_BWPOSTMAN_NL_FILTER_AUTHORLIST_LBL"
+			description="COM_BWPOSTMAN_NL_FILTER_AUTHORLIST_DESC"
+			onchange="this.form.submit();"
+			>
+		</field>
+		<field
+				name="is_template"
+				type="list"
+				label="COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE_LBL"
+				description="COM_CONTENT_FILTER_IS_TEMPLATE_DESC"
+				onchange="this.form.submit();"
+		>
+			<option value="">COM_BWPOSTMAN_NL_FILTER_IS_TEMPLATE</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fields>
+
+	<fields name="list">
+		<field
+			name="fullordering"
+			type="list"
+			label="COM_CONTENT_LIST_FULL_ORDERING"
+			description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+			onchange="this.form.submit();"
+			default="a.subject ASC"
+			class="list_ordering"
+			>
+			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="a.attachment ASC">COM_BWPOSTMAN_NL_ATTACHMENT_ASC</option>
+			<option value="a.attachment DESC">COM_BWPOSTMAN_NL_ATTACHMENT_DESC</option>
+			<option value="a.subject ASC">COM_BWPOSTMAN_NL_SUBJECT_ASC</option>
+			<option value="a.subject DESC">COM_BWPOSTMAN_NL_SUBJECT_DESC</option>
+			<option value="a.description ASC">COM_BWPOSTMAN_NL_DESCRIPTION_ASC</option>
+			<option value="a.description DESC">COM_BWPOSTMAN_NL_DESCRIPTION_DESC</option>
+			<option value="a.modified_time ASC">COM_BWPOSTMAN_NL_MODIFIED_ASC</option>
+			<option value="a.modified_time DESC">COM_BWPOSTMAN_NL_MODIFIED_DESC</option>
+			<option value="authors ASC">COM_BWPOSTMAN_NL_AUTHOR_ASC</option>
+			<option value="authors DESC">COM_BWPOSTMAN_NL_AUTHOR_DESC</option>
+			<option value="campaign_id ASC">COM_BWPOSTMAN_NL_CAMPAIGN_ASC</option>
+			<option value="campaign_id DESC">COM_BWPOSTMAN_NL_CAMPAIGN_DESC</option>
+			<option value="is_template ASC">COM_BWPOSTMAN_NL_IS_TEMPLATE_ASC</option>
+			<option value="is_template DESC">COM_BWPOSTMAN_NL_IS_TEMPLATE_DESC</option>
+			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+		</field>
+
+		<field
+			name="limit"
+			type="limitbox"
+			class="input-mini"
+			default="20"
+			label="COM_CONTENT_LIST_LIMIT"
+			description="COM_CONTENT_LIST_LIMIT_DESC"
+			onchange="this.form.submit();"
+		/>
+	</fields>
+</form>
+

@@ -104,6 +104,11 @@
       debug:
          msg: "{{ sql_command }}"
 
+    - name: Pause before rebase to ensure database is up
+      pause:
+        seconds: 20
+      when: failure_file.stat.exists or rebase|bool
+
     - name: Rebase database
       shell: "{{ sql_command }}"
       when: failure_file.stat.exists or rebase|bool

@@ -1060,6 +1060,8 @@ class SubscriberviewPage
         $I->fillField(self::$loginPasswordField, 'BwPostmanTest');
 
 //        Submit login
+		$I->scrollTo(self::$loginButton, 0, -100);
+		$I->wait(1);
         $I->clickAndWait(self::$loginButton, 1);
 
 //        Check success of login

@@ -1425,7 +1425,7 @@ class TestAccessCest
 				$I->click(Generals::$first_page);
 			}
 		}
-		catch (Exception)
+		catch (Exception $exception)
 		{
 			codecept_debug('NO pagination available');
 		}

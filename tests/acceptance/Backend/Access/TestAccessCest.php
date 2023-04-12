@@ -20,6 +20,7 @@ use Page\NewsletterManagerPage as NewsletterManagerPage;
 use Page\MaintenancePage as MaintenancePage;
 
 use Page\OptionsPage as OptionsPage;
+use PHPUnit\Exception;
 
 /**
  * Class TestInstallationCest
@@ -1411,14 +1412,22 @@ class TestAccessCest
 		$I->clickAndWait(Generals::$clear_button, 2);
 
 		codecept_debug('Scroll to pagination');
-		$I->scrollTo(Generals::$pagination_bar);
-		$I->wait(1);
 
-		$linkToFirstPage    = count($I->grabMultiple(Generals::$first_page));
-
-		if ($linkToFirstPage === 1)
+		try
 		{
-			$I->click(Generals::$first_page);
+			$I->scrollTo(Generals::$pagination_bar);
+			$I->wait(1);
+
+			$linkToFirstPage    = count($I->grabMultiple(Generals::$first_page));
+
+			if ($linkToFirstPage === 1)
+			{
+				$I->click(Generals::$first_page);
+			}
+		}
+		catch (Exception)
+		{
+			codecept_debug('NO pagination available');
 		}
 
 		$I->scrollTo(TemplateManagerPage::$default_button1, 0, -250);

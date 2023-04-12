@@ -32,6 +32,13 @@ class InstallationPage
 	 *
 	 * @since 2.0.0
 	 */
+	public static $fe_url          = "/index.php";
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.0.0
+	 */
 	public static $install_url          = "/administrator/index.php?option=com_installer";
 
 	/**

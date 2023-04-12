@@ -58,6 +58,25 @@ class InstallRequiredCest
 	}
 
 	/**
+	 * Test method to see FE Page before
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.2.9
+	 */
+	public function preinstallation(AcceptanceTester $I)
+	{
+		$I->wantTo("Call FE before Be to ensure namespace cache could completely initialize");
+		$I->expectTo("FE page");
+		$I->amOnPage(InstallPage::$fe_url);
+		$I->wait(1);
+	}
+
+	/**
 	 * Test method to install required extensions
 	 *
 	 * @param   AcceptanceTester                $I
@@ -170,7 +189,26 @@ class InstallRequiredCest
 		$I->waitForText(InstallPage::$sampleDataSuccessText4, 30);
 	}
 
-		/**
+	/**
+	 * Test method to see FE Page after
+	 *
+	 * @param   AcceptanceTester                $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.2.9
+	 */
+	public function postinstallation(AcceptanceTester $I)
+	{
+		$I->wantTo("Call FE before Be to ensure namespace cache could completely initialize");
+		$I->expectTo("FE page");
+		$I->amOnPage(InstallPage::$fe_url);
+		$I->wait(1);
+	}
+
+	/**
 	 * Test method to logout from backend
 	 *
 	 * @param   AcceptanceTester        $I

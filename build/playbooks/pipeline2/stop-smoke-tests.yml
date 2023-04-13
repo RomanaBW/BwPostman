@@ -12,3 +12,4 @@
       vars:
         source: "{{ smoke_source }}"
         target: "{{ smoke_target }}"
+        remove_images: true

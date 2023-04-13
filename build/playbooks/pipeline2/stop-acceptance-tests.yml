@@ -12,3 +12,4 @@
       vars:
         source: "{{ acceptance_source }}"
         target: "{{ acceptance_target }}"
+        remove_images: false

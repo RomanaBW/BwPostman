@@ -6,14 +6,16 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
-Version 4.1.5 released (2023-05-25)----
+Version 4.1.5 released (2023-04-18)----
 
 Bugfix
 # Correct condition for ajax call to prevent sending only 10 mails per step at time controlled sending
+# Numbers of mails to send not always determined correctly
+# Separate filter manifests to get reliable filter bar
 
 improvement
 ~ Add raw view for collaboration with BwTimeControl
-~ Make FE dispatcher more specific working
+~ Make FE dispatcher work more specific
 
 
 Version 4.1.4 released (2023-03-25)----

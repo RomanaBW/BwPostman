@@ -1,6 +1,8 @@
 <?php
 namespace Backend\Access;
 
+use AcceptanceTester;
+use Exception;
 use Page\Generals as Generals;
 use Page\MainviewPage as MainView;
 use Page\Login as LoginPage;
@@ -20,7 +22,7 @@ use Page\NewsletterManagerPage as NewsletterManagerPage;
 use Page\MaintenancePage as MaintenancePage;
 
 use Page\OptionsPage as OptionsPage;
-use PHPUnit\Exception;
+use RuntimeException;
 
 /**
  * Class TestInstallationCest
@@ -55,11 +57,11 @@ class TestAccessCest
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function _login(LoginPage $loginPage, array $user)
+	public function _login(LoginPage $loginPage, array $user): void
 	{
 		$loginPage->logIntoBackend($user);
 	}
@@ -67,15 +69,15 @@ class TestAccessCest
 	/**
 	 * Test method to check for allowed/forbidden of list links at main view of BwPostman
 	 *
-	 * @param   \AcceptanceTester            $I
+	 * @param   AcceptanceTester            $I
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function TestAccessRightsForListViewButtonsFromMainView(\AcceptanceTester $I)
+	public function TestAccessRightsForListViewButtonsFromMainView(AcceptanceTester $I): void
 	{
 		$I->wantTo("check permissions for main view list buttons");
 		$I->expectTo("see appropriate messages");
@@ -134,7 +136,6 @@ class TestAccessCest
 				{
 					if ($button == 'Basic settings')
 					{
-						$text_to_see    = 'BwPostman Configuration';
 						$I->see('Options', Generals::$toolbar4['Options']);
 					}
 
@@ -154,28 +155,27 @@ class TestAccessCest
 	 * @param $button
 	 * @param $permission_array
 	 *
-	 * @return mixed
+	 * @return bool
 	 *
 	 * @since 2.0.0
 	 */
-	private function getAllowedByUser($user, $button, $permission_array)
+	private function getAllowedByUser($user, $button, $permission_array): bool
 	{
 		$permission_array = $user['user'] . $permission_array;
-		$allowed          = AccessPage::${$permission_array}[$button];
 
-		return $allowed;
+		return AccessPage::${$permission_array}[$button];
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
+	 * @param AcceptanceTester $I
 	 * @param string           $button
 	 * @param string           $allowed
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function checkAccessByJoomlaMenu(\AcceptanceTester $I, $button, $allowed)
+	private function checkAccessByJoomlaMenu(AcceptanceTester $I, string $button, string $allowed): void
 	{
 		if ($button != 'Basic settings')
 		{
@@ -198,15 +198,15 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
+	 * @param AcceptanceTester $I
 	 * @param string           $button
 	 * @param string           $visible
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function checkVisibilityOfGeneralStatistics(\AcceptanceTester $I, $button, $visible)
+	private function checkVisibilityOfGeneralStatistics(AcceptanceTester $I, string $button, string $visible): void
 	{
 		if ($button != 'Archive' && $button != 'Basic settings' && $button != 'Maintenance')
 		{
@@ -228,16 +228,16 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
+	 * @param AcceptanceTester $I
 	 * @param string           $button
 	 * @param string           $archive_allowed
 	 * @param string           $visible
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function checkVisibilityOfArchiveStatistics(\AcceptanceTester $I, $button, $archive_allowed, $visible)
+	private function checkVisibilityOfArchiveStatistics(AcceptanceTester $I, string $button, string $archive_allowed, string $visible): void
 	{
 		if ($button != 'Archive' && $button != 'Basic settings' && $button != 'Maintenance')
 		{
@@ -269,15 +269,15 @@ class TestAccessCest
 	/**
 	 * Test method to check for allowed/forbidden of "add" links at main view of BwPostman
 	 *
-	 * @param   \AcceptanceTester            $I
+	 * @param   AcceptanceTester            $I
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function TestAccessRightsForAddButtonsFromMainView(\AcceptanceTester $I)
+	public function TestAccessRightsForAddButtonsFromMainView(AcceptanceTester $I): void
 	{
 		$I->wantTo("check permissions for main view add buttons");
 		$I->expectTo("see appropriate messages");
@@ -328,15 +328,15 @@ class TestAccessCest
 	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
 	 * loop over all list views, loop over first half of user groups
 	 *
-	 * @param   \AcceptanceTester            $I
+	 * @param   AcceptanceTester            $I
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.4.0
 	 */
-	public function TestAccessRightsForActionsInListsByButtonsPart1(\AcceptanceTester $I)
+	public function TestAccessRightsForActionsInListsByButtonsPart1(AcceptanceTester $I): void
 	{
 		$I->wantTo("check permissions for single list by buttons");
 		$I->expectTo("see appropriate messages");
@@ -358,15 +358,15 @@ class TestAccessCest
 	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
 	 * loop over all list views, loop over second half of user groups
 	 *
-	 * @param   \AcceptanceTester            $I
+	 * @param   AcceptanceTester            $I
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.4.0
 	 */
-	public function TestAccessRightsForActionsInListsByButtonsPart2(\AcceptanceTester $I)
+	public function TestAccessRightsForActionsInListsByButtonsPart2(AcceptanceTester $I): void
 	{
 		$I->wantTo("check permissions for single list by buttons");
 		$I->expectTo("see appropriate messages");
@@ -388,16 +388,16 @@ class TestAccessCest
 	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
 	 * loop over all list views
 	 *
-	 * @param   \AcceptanceTester            $I
-	 * @param   array                        $users
+	 * @param   AcceptanceTester $I
+	 * @param array              $users
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	protected function TestAccessRightsForActionsInListsByButtons(\AcceptanceTester $I, $users)
+	protected function TestAccessRightsForActionsInListsByButtons(AcceptanceTester $I, array $users): void
 	{
 		$I->wantTo("check permissions for single list by buttons");
 		$I->expectTo("see appropriate messages");
@@ -524,6 +524,7 @@ class TestAccessCest
 							// @ToDo: import subscribers
 							// @ToDo: export subscribers
 							// @ToDo: batch
+							codecept_debug('Subscribers nothing to do');
 						}
 						elseif ($button == 'Templates')
 						{
@@ -537,6 +538,7 @@ class TestAccessCest
 					{
 						// @ToDo: restore other item?
 						// @ToDo: delete other item?
+						codecept_debug('Archive nothing to do');
 					}
 					elseif ($button == 'Basic settings')
 					{
@@ -584,17 +586,17 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester  $I
-	 * @param string            $button
-	 * @param array             $permission_array
+	 * @param AcceptanceTester $I
+	 * @param string           $button
+	 * @param array            $permission_array
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function createNewItem($I, $button, $permission_array)
+	private function createNewItem(AcceptanceTester $I, string $button, array $permission_array): void
 	{
 		$allowed    = $permission_array[$button]['permissions']['Create'];
 
@@ -615,9 +617,9 @@ class TestAccessCest
 					$I->seeInPopup('Any changes will not be saved. Close without saving?');
 					$I->acceptPopup();
 				}
-				catch (\Exception $e)
+				catch (Exception $e)
 				{
-					codecept_debug('Popup Templates not found');
+					codecept_debug('Popup Templates not found ' . $e->getMessage());
 				}
 			}
 
@@ -633,15 +635,15 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param $button
-	 * @param $add_text
-	 * @param $check_content
+	 * @param string $button
+	 * @param string $add_text
+	 * @param string $check_content
 	 *
 	 * @return string
 	 *
 	 * @since 2.0.0
 	 */
-	private function getTitleToSee($button, $add_text, $check_content = '')
+	private function getTitleToSee(string $button, string $add_text, string $check_content = ''): string
 	{
 		$title_to_see = substr($button, 0, -1) . ' details: ';
 
@@ -653,24 +655,23 @@ class TestAccessCest
 		}
 
 		$title_to_see .= $add_text;
-		$title_to_see = substr($title_to_see, 0, 42);
 
-		return $title_to_see;
+		return substr($title_to_see, 0, 42);
 	}
 
 	/**
-	 * @param \AcceptanceTester  $I
-	 * @param string            $button
-	 * @param string            $action
-	 * @param array             $permission_array
+	 * @param AcceptanceTester $I
+	 * @param string           $button
+	 * @param string           $action
+	 * @param array            $permission_array
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function editItem($I, $button, $action, $permission_array)
+	private function editItem(AcceptanceTester $I, string $button, string $action, array $permission_array): void
 	{
 		$check_content  = $permission_array[$button][$action]['check content'];
 		$check_locator  = $permission_array[$button]['check locator'];
@@ -721,17 +722,17 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester  $I
-	 * @param string            $button
-	 * @param string            $check_content
-	 * @param string            $check_locator
-	 * @param boolean           $allowed
+	 * @param AcceptanceTester $I
+	 * @param string           $button
+	 * @param string           $check_content
+	 * @param string           $check_locator
+	 * @param boolean          $allowed
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function checkForEditResult($I, $button, $check_content, $check_locator, $allowed)
+	private function checkForEditResult(AcceptanceTester $I, string $button, string $check_content, string $check_locator, bool $allowed): void
 	{
 		if ($allowed)
 		{
@@ -742,9 +743,10 @@ class TestAccessCest
 				$I->waitForElementNotVisible(Generals::$systemMessageClose, 3);
 
 			}
-			catch(\RuntimeException $e)
+			catch(RuntimeException $e)
 			{
 				// Do nothing, if there is no content template
+				codecept_debug('No content template ' . $e->getMessage());
 			}
 
 			$addText = '[ Edit ]';
@@ -771,9 +773,9 @@ class TestAccessCest
 			{
 				$I->acceptPopup();
 			}
-			catch (\Exception $e)
+			catch (Exception $e)
 			{
-				codecept_debug('Popup Templates not found');
+				codecept_debug('Popup Templates not found ' . $e->getMessage());
 			}
 		}
 
@@ -781,34 +783,33 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester  $I
-	 * @param string            $title_content
-	 * @param string            $tableId
+	 * @param AcceptanceTester $I
+	 * @param string           $title_content
+	 * @param string           $tableId
 	 *
 	 * @return string
 	 *
 	 * @since 2.0.0
 	 */
-	private function getCheckbox($I, $title_content, $tableId = 'main-table')
+	private function getCheckbox(AcceptanceTester $I, string $title_content, string $tableId = 'main-table'): string
 	{
 		$checkbox_nbr  = $I->getTableRowIdBySearchValue($title_content, $tableId);
-		$checkbox = sprintf(AccessPage::$checkbox_identifier, $checkbox_nbr - 1);
 
-		return $checkbox;
+		return sprintf(AccessPage::$checkbox_identifier, $checkbox_nbr - 1);
 	}
 
 	/**
-	 * @param \AcceptanceTester  $I
-	 * @param string            $button
-	 * @param array             $permission_array
+	 * @param AcceptanceTester $I
+	 * @param string           $button
+	 * @param array            $permission_array
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function changeStateItem($I, $button, $permission_array)
+	private function changeStateItem(AcceptanceTester $I, string $button, array $permission_array): void
 	{
 		$has_state_to_change    = array('Newsletters', 'Mailinglists', 'Templates');
 		$allowed                = $permission_array[$button]['permissions']['ModifyState'];
@@ -848,18 +849,18 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester  $I
-	 * @param string             $button
-	 * @param array              $user
-	 * @param array              $permission_array
+	 * @param AcceptanceTester $I
+	 * @param string           $button
+	 * @param array            $user
+	 * @param array            $permission_array
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function restoreArchivedItem($I, $button, $user, $permission_array)
+	private function restoreArchivedItem(AcceptanceTester $I, string $button, array $user, array $permission_array): void
 	{
 		$archive_allowed    = $permission_array[$button]['permissions']['Archive'];
 		$restore_allowed    = $permission_array[$button]['permissions']['Restore'];
@@ -903,18 +904,18 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester  $I
-	 * @param string             $button
-	 * @param array              $user
-	 * @param array              $permission_array
+	 * @param AcceptanceTester $I
+	 * @param string           $button
+	 * @param array            $user
+	 * @param array            $permission_array
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function deleteArchivedItem($I, $button, $user, $permission_array)
+	private function deleteArchivedItem(AcceptanceTester $I, string $button, array $user, array $permission_array): void
 	{
 		$archive_allowed    = $permission_array[$button]['permissions']['Archive'];
 
@@ -938,18 +939,18 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester  $I
-	 * @param string             $button
-	 * @param string             $link
-	 * @param array              $permission_array
+	 * @param AcceptanceTester $I
+	 * @param string           $button
+	 * @param string           $link
+	 * @param array            $permission_array
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function checkinOwnItem($I, $button, $link, $permission_array)
+	private function checkinOwnItem(AcceptanceTester $I, string $button, string $link, array $permission_array): void
 	{
 		$check_content  = $permission_array[$button]['own']['check content'];
 		$check_link     = $permission_array[$button]['check link'];
@@ -999,18 +1000,18 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
-	 * @param $button
-	 * @param $link
-	 * @param $check_content
-	 * @param $item_link
-	 * @param string        $tableId
+	 * @param AcceptanceTester $I
+	 * @param string           $button
+	 * @param string           $link
+	 * @param string           $check_content
+	 * @param string           $item_link
+	 * @param string           $tableId
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function openItemAndGoBackToListView(\AcceptanceTester $I, $button, $link, $check_content, $item_link, $tableId)
+	private function openItemAndGoBackToListView(AcceptanceTester $I, string $button, string $link, string $check_content, string $item_link, string $tableId): void
 	{
 		$I->filterForItemToEdit($check_content, $tableId);
 
@@ -1031,19 +1032,19 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
-	 * @param $check_content
-	 * @param $lock_icon
-	 * @param $button
-	 * @param string     $tableId
+	 * @param AcceptanceTester $I
+	 * @param string           $check_content
+	 * @param string           $lock_icon
+	 * @param string           $button
+	 * @param string           $tableId
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function checkCheckinResult(\AcceptanceTester $I, $check_content, $lock_icon, $button, $tableId)
+	private function checkCheckinResult(AcceptanceTester $I, string $check_content, string $lock_icon, string $button, string $tableId): void
 	{
 		$I->scrollTo(Generals::$sys_message_container, 0, 100);
 		$I->wait(1);
@@ -1064,18 +1065,18 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester  $I
-	 * @param int               $i
-	 * @param string            $button
-	 * @param string            $link
+	 * @param AcceptanceTester $I
+	 * @param int              $i
+	 * @param string           $button
+	 * @param string           $link
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function checkinOtherItem($I, $i, $button, $link)
+	private function checkinOtherItem(AcceptanceTester $I, int $i, string $button, string $link): void
 	{
 		// Other user: next one from array. If current user is last one, take previous for other user
 		$current_user   = AccessPage::$all_users[$i];
@@ -1148,13 +1149,13 @@ class TestAccessCest
 
 
 	/**
-	 * @param $i
+	 * @param int $i
 	 *
-	 * @return mixed
+	 * @return array
 	 *
 	 * @since 2.0.0
 	 */
-	private function getNextUser($i)
+	private function getNextUser(int $i): array
 	{
 		$next_user_id = $i + 1;
 		if ($next_user_id > count(AccessPage::$all_users))
@@ -1162,25 +1163,23 @@ class TestAccessCest
 			$next_user_id = 1;
 		}
 
-		$next_user = AccessPage::$all_users[$next_user_id];
-
-		return $next_user;
+		return AccessPage::$all_users[$next_user_id];
 	}
 
 	/**
-	 * @param $I
-	 * @param $user_to_login
+	 * @param AcceptanceTester $I
+	 * @param array            $user_to_login
 	 *
-	 * @since 2.0.0
+	 * @throws Exception
+	 *@since 2.0.0
 	 *
-	 * @throws \Exception
 	 */
-	private function switchLoggedInUser($I, $user_to_login)
+	private function switchLoggedInUser(AcceptanceTester $I, array $user_to_login): void
 	{
 		$loginPage = new LoginPage($I);
 
 		// logout current user
-		$this->_logout($I, $loginPage, false);
+		$this->_logout($I, $loginPage);
 
 		// login as other user
 		$this->_login($loginPage, $user_to_login);
@@ -1189,11 +1188,11 @@ class TestAccessCest
 	/**
 	 * Test method to check for allowed/forbidden to all parts of BwPostman
 	 *
-	 * @param   \AcceptanceTester            $I
+	 * @param   AcceptanceTester            $I
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1223,42 +1222,40 @@ class TestAccessCest
 	/**
 	 * method to handle single link
 	 *
-	 * @param   \AcceptanceTester    $I
-	 * @param   string              $link
-	 * @param   string              $user
+	 * @param   AcceptanceTester $I
+	 * @param string             $link
+	 * @param string             $user
 	 *
 	 * @return  string
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	private function testResultForLink(\AcceptanceTester $I, $link, $user)
+	protected function testResultForLink(AcceptanceTester $I, string $link, string $user): string
 	{
-		// click link an wait for page loaded
+		// click link a wait for page loaded
 		$I->amOnPage($link);
 		$I->waitForElement('.//*[@id=\'isisJsData\']/div/div', 30);
 
-		$expected_result    = $this->getExpectedResultByUser($I, $user, $link);
-
 		// Check for allowed/forbidden
-		return $expected_result;
+		return $this->getExpectedResultByUser($I, $user, $link);
 	}
 
 	/**
 	 * method to get result that is expected for this user at this link
 	 *
-	 * @param   \AcceptanceTester    $I
-	 * @param   string              $link
-	 * @param   string              $user
+	 * @param   AcceptanceTester $I
+	 * @param string             $link
+	 * @param string             $user
 	 *
 	 * @return  string
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	private function getExpectedResultByUser(\AcceptanceTester $I, $user, $link)
+	private function getExpectedResultByUser(AcceptanceTester $I, string $user, string $link): string
 	{
 		$action = $this->getActionForLink($I, $link);
 
@@ -1276,16 +1273,16 @@ class TestAccessCest
 	/**
 	 * method to get result that is expected for this user at this link
 	 *
-	 * @param   \AcceptanceTester    $I
-	 * @param   string              $link
+	 * @param   AcceptanceTester $I
+	 * @param string             $link
 	 *
 	 * @return  string
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	private function getActionForLink(\AcceptanceTester $I, $link)
+	private function getActionForLink(AcceptanceTester $I, string $link): string
 	{
 		$action = '';
 
@@ -1298,33 +1295,33 @@ class TestAccessCest
 	/**
 	 * Test method to logout from backend
 	 *
-	 * @param   \AcceptanceTester     $I
-	 * @param   LoginPage             $loginPage
-	 * @param   boolean               $truncateSession
+	 * @param   AcceptanceTester $I
+	 * @param   LoginPage        $loginPage
+	 * @param boolean            $truncateSession
 	 *
 	 * @return  void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
-	public function _logout(\AcceptanceTester $I, LoginPage $loginPage, $truncateSession = false)
+	public function _logout(AcceptanceTester $I, LoginPage $loginPage, bool $truncateSession = false): void
 	{
 		$loginPage->logoutFromBackend($I, $truncateSession);
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
-	 * @param array             $user
-	 * @param array             $item_permission_array
+	 * @param AcceptanceTester $I
+	 * @param array            $user
+	 * @param array            $item_permission_array
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function duplicateNewsletter(\AcceptanceTester $I, $user, $item_permission_array)
+	private function duplicateNewsletter(AcceptanceTester $I, array $user, array $item_permission_array): void
 	{
 		$create_allowed    = $item_permission_array['Newsletters']['permissions']['Create'];
 
@@ -1347,17 +1344,17 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
-	 * @param array             $user
-	 * @param array             $item_permission_array
+	 * @param AcceptanceTester $I
+	 * @param array            $user
+	 * @param array            $item_permission_array
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function sendNewsletter(\AcceptanceTester $I, $user, $item_permission_array)
+	private function sendNewsletter(AcceptanceTester $I, array $user, array $item_permission_array): void
 	{
 		$I->wantTo("Send a newsletter to real recipients, checked by permissions");
 
@@ -1389,16 +1386,16 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
+	 * @param AcceptanceTester $I
 	 * @param array            $item_permission_array
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function setDefaultTemplate(\AcceptanceTester $I, $item_permission_array)
+	private function setDefaultTemplate(AcceptanceTester $I, array $item_permission_array): void
 	{
 		$I->amOnPage(TemplateManagerPage::$url);
 		$I->waitForElement(Generals::$pageTitle, 30);
@@ -1425,9 +1422,9 @@ class TestAccessCest
 				$I->click(Generals::$first_page);
 			}
 		}
-		catch (Exception $exception)
+		catch (Exception $e)
 		{
-			codecept_debug('NO pagination available');
+			codecept_debug('No pagination available ' . $e->getMessage());
 		}
 
 		$I->scrollTo(TemplateManagerPage::$default_button1, 0, -250);
@@ -1436,25 +1433,26 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
-	 * @param $button
-	 * @param $user
-	 * @param $permission_array
-	 * @param $edit_data
-	 *
-	 * @throws \Exception
+	 * @param AcceptanceTester $I
+	 * @param string           $button
+	 * @param array            $user
+	 * @param array            $permission_array
+	 * @param array            $edit_data
 	 *
 	 * @return array
 	 *
+	 * @throws Exception
+	 *
 	 * @since 2.0.0
 	 */
-	private function createItemForRestoreAndDelete($I, $button, $user, $permission_array, $edit_data)
+	private function createItemForRestoreAndDelete(AcceptanceTester $I, string $button, array $user, array $permission_array, array $edit_data): array
 	{
 		$create_allowed = $permission_array[$button]['permissions']['Create'];
 
 		if (!$create_allowed)
 		{
-			$this->switchLoggedInUser($I, 'BwPostmanAdmin');
+			$adminUser = AccessPage::$all_users[0];
+			$this->switchLoggedInUser($I, $adminUser);
 		}
 
 		switch ($button)
@@ -1489,13 +1487,13 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param $button
+	 * @param string $button
 	 *
 	 * @return array
 	 *
 	 * @since 2.0.0
 	 */
-	private function getUiData($button)
+	private function getUiData(string $button): array
 	{
 		$ui_data     = array();
 
@@ -1527,18 +1525,18 @@ class TestAccessCest
 	}
 
 	/**
-	 * @param \AcceptanceTester $I
-	 * @param $button
-	 * @param $user
-	 * @param $permission_array
-	 * @param $manage_data
-	 * @param $edit_data
+	 * @param AcceptanceTester $I
+	 * @param string           $button
+	 * @param array            $user
+	 * @param array            $permission_array
+	 * @param array            $manage_data
+	 * @param array            $edit_data
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since 2.0.0
 	 */
-	private function deleteItem($I, $button, $user, $permission_array, $manage_data, $edit_data)
+	private function deleteItem(AcceptanceTester $I, string $button, array $user, array $permission_array, array $manage_data, array $edit_data): void
 	{
 		$delete_allowed = $permission_array[$button]['permissions']['Delete'];
 
@@ -1547,7 +1545,9 @@ class TestAccessCest
 		{
 			$I->dontSeeElement(Generals::$toolbar4['Delete']);
 
-			$this->switchLoggedInUser($I, 'BwPostmanAdmin');
+			$adminUser = AccessPage::$all_users[0];
+			$this->switchLoggedInUser($I, $adminUser);
+
 			$I->HelperArcDelItems($I, $manage_data, $edit_data, true);
 			$this->switchLoggedInUser($I, $user['user']);
 		}

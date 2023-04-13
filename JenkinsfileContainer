@@ -139,6 +139,13 @@ pipeline {
 			}
 		}
 
+		stage('php 8: Remove container images after use') {
+			steps {
+//				echo "Dummy 5"
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/remove-acceptance-images.yml --extra-vars 'test_suite=accept5 ${VERSIONS_EXTRA_VAR_4}'"
+			}
+		}
+
         stage('Send success mail for php 8 part') {
 			steps {
 				emailext(
@@ -260,6 +267,14 @@ pipeline {
 				}
 			}
 		}
+
+		stage('php 7: Remove container images after use') {
+			steps {
+//				echo "Dummy 5"
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/remove-acceptance-images.yml --extra-vars 'test_suite=accept5 ${VERSIONS_EXTRA_VAR_4}'"
+			}
+		}
+
 
 		stage('Dev-Upload') {
 			steps {

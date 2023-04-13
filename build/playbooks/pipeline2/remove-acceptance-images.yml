@@ -6,9 +6,9 @@
     - vars/tester-test-vars.yml
 
   tasks:
-    - name: remove all test containers (db, webserver, tester) and network
+    - name: remove all container images
       include_role:
-        name: romanabw.remove-complete-infrastructure
+        name: romanabw.remove-infrastructure-images
       vars:
         source: "{{ acceptance_source }}"
         target: "{{ acceptance_target }}"

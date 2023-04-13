@@ -86,19 +86,19 @@ class TestAccessCest
 
 		foreach (AccessPage::$all_users as $user)
 		{
+			$this->_login($loginPage, $user);
+
+			$I->click(AccessPage::$j_menu_components);
+			$I->wait(1);
+			$I->waitForElementVisible(AccessPage::$j_menu_tags, 3);
+			$I->see('BwPostman', AccessPage::$j_menu_bwpostman);
+
+			$I->click(AccessPage::$j_menu_bwpostman_link);
+			$I->wait(1);
+			$I->waitForElementVisible(sprintf(AccessPage::$j_menu_bwpostman_sub_item, 'Maintenance'), 3);
+
 			foreach (AccessPage::$main_list_buttons as $button => $link)
 			{
-				$this->_login($loginPage, $user);
-
-				$I->click(AccessPage::$j_menu_components);
-				$I->wait(1);
-				$I->waitForElementVisible(AccessPage::$j_menu_tags, 3);
-				$I->see('BwPostman', AccessPage::$j_menu_bwpostman);
-
-				$I->click(AccessPage::$j_menu_bwpostman_link);
-				$I->wait(1);
-				$I->waitForElementVisible(sprintf(AccessPage::$j_menu_bwpostman_sub_item, 'Maintenance'), 3);
-
 				$permission_array   = '_main_list_permissions';
 				$allowed            = $this->getAllowedByUser($user, $button, $permission_array);
 				$archive_allowed    = $this->getAllowedByUser($user, 'Archive', $permission_array);
@@ -144,9 +144,9 @@ class TestAccessCest
 					$this->checkVisibilityOfArchiveStatistics($I, $button, $archive_allowed, true);
 					$I->wait(1);
 				}
-
-				$this->_logout($I, $loginPage);
 			}
+
+			$this->_logout($I, $loginPage);
 		}
 	}
 

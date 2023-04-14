@@ -10,7 +10,7 @@ pipeline {
 //					Stable
 //					JOOMLA_VERSION = "4.2.9"
 //					RC
-					JOOMLA_VERSION = "4.3.0-rc2"
+					JOOMLA_VERSION = "4.3.0-rc3"
 
 					PHP_VERSION = "8.1.12"
 

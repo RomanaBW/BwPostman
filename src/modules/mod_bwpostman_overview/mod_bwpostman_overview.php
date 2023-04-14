@@ -5,7 +5,7 @@
  * BwPostman main part of module.
  *
  * @version %%version_number%%
- * @package BwPostman-Rchive-Module
+ * @package BwPostman-Overview-Module
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html

@@ -104,7 +104,7 @@ pipeline {
 						}
 					}
 				}
-				stage('4-4: FUM + U2S + Mod Reg + Mod Over + P1') {
+				stage('4-4: P1 + FUM + U2S + Mod Reg + Mod Over') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_4}'"
@@ -120,7 +120,7 @@ pipeline {
 						}
 					}
 				}
-				stage('4-5: FE + P3') {
+				stage('4-5: P3 + FE') {
 					steps {
 //						echo "Dummy 5"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5 do_record=${DO_RECORD_5} ${VERSIONS_EXTRA_VAR_4}'"
@@ -233,7 +233,7 @@ pipeline {
 						}
 					}
 				}
-				stage('4-4: FUM + U2S + Mod Reg + Mod Over + P1') {
+				stage('4-4: P1 + FUM + U2S + Mod Reg + Mod Over') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_4}'"
@@ -249,7 +249,7 @@ pipeline {
 						}
 					}
 				}
-				stage('4-5: FE + P3') {
+				stage('4-5: P3 + FE') {
 					steps {
 //						echo "Dummy 5"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5 do_record=${DO_RECORD_5} ${VERSIONS_EXTRA_VAR_4}'"

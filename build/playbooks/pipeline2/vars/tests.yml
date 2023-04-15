@@ -136,17 +136,17 @@ test_suites:
 
   - name: accept4
     tests:
+      - access1
       - footerusedmailinglists
       - user2subscriber
       - useraccount
       - ModReg
       - ModOverview
-      - access1
 
   - name: accept5
     tests:
-      - frontend
       - access3
+      - frontend
 
   - name: accept6
     tests:

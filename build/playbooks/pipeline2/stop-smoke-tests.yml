@@ -12,10 +12,3 @@
       vars:
         source: "{{ smoke_source }}"
         target: "{{ smoke_target }}"
-
-    - name: remove all container images (db, webserver, tester)
-      include_role:
-        name: romanabw.remove-infrastructure-images
-      vars:
-        source: "{{ smoke_source }}"
-        target: "{{ smoke_target }}"

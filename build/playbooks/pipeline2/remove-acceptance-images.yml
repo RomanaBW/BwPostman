@@ -10,12 +10,12 @@
       include_role:
         name: romanabw.remove-infrastructure-images
       vars:
-        image_suite: "{{ smoke_target }}"
+        image_suite: "{{ acceptance_target }}"
         tagged: false
 
     - name: remove container target images (db, webserver, tester)
       include_role:
         name: romanabw.remove-infrastructure-images
       vars:
-        image_suite: "{{ smoke_target }}"
+        image_suite: "{{ acceptance_target }}"
         tagged: true

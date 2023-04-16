@@ -50,6 +50,13 @@ pipeline {
 			}
 		}
 
+		stage('Remove smoke tests container images') {
+			steps {
+//				echo "Dummy Smoke Remove"
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/remove-smoke-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_3}'"
+            }
+		}
+
 		stage('Run acceptance Joomla 3') {
 			parallel {
 				stage('3-1: Lists + P2') {
@@ -133,6 +140,13 @@ pipeline {
 					}
 				}
 			}
+		}
+
+		stage('Remove acceptance tests container images') {
+			steps {
+//				echo "Dummy Acceptance Remove"
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/remove-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_3}'"
+            }
 		}
 
 		stage('Dev-Upload') {

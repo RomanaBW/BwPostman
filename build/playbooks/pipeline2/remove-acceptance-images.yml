@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - vars/tester-image-vars.yml
+    - vars/tester-test-vars.yml
+
+  tasks:
+    - name: remove container source images (db, webserver, tester)
+      include_role:
+        name: romanabw.remove-infrastructure-images
+      vars:
+        image_suite: "{{ smoke_target }}"
+        tagged: false
+
+    - name: remove container target images (db, webserver, tester)
+      include_role:
+        name: romanabw.remove-infrastructure-images
+      vars:
+        image_suite: "{{ smoke_target }}"
+        tagged: true

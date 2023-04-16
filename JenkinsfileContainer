@@ -54,7 +54,7 @@ pipeline {
 			}
 		}
 
-		stage('Remove smoke tests container images') {
+		stage('Remove smoke tests container images php 8') {
 			steps {
 //				echo "Dummy Smoke Remove"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/remove-smoke-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_4}'"
@@ -190,7 +190,7 @@ pipeline {
 			}
 		}
 
-		stage('Remove smoke tests container images') {
+		stage('Remove smoke tests container images php7') {
 			steps {
 //				echo "Dummy Smoke Remove"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/remove-smoke-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_4}'"

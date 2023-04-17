@@ -8,7 +8,7 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 Version 3.2.3 released (2023-04-18)----
 
 Bugfix
-# Correct condition for ajax call to prevent sending only 10 mails per step at time controlled sending
+# The update of the view all 10 recipients while sending a newsletter caused, that only 10 mails per step were sent at time controlled sending.
 
 
 Version 3.2.2 released (2022-10-15)----

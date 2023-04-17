@@ -9,13 +9,14 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 Version 4.1.5 released (2023-04-18)----
 
 Bugfix
-# Correct condition for ajax call to prevent sending only 10 mails per step at time controlled sending
-# Numbers of mails to send not always determined correctly
-# Separate filter manifests to get reliable filter bar
+# The number of mails to send wasn't always calculated properly at sending process, resulting in an inaccurate visual display.
+# The update of the view all 10 recipients while sending a newsletter caused, that only 10 mails per step were sent at time controlled sending.
+# The manifests for the filter bar at list view of newsletters and recipients now are separated by tabs to work correct and reliable at Joomla! 4.3.0.
 
 improvement
-~ Add raw view for collaboration with BwTimeControl
-~ Make FE dispatcher work more specific
+~ The dispatcher at font end now works more specific.
+~ The front end got a new "raw view" to interoperate better with BwPostman TimeControl.
+~ At sending of the newsletter some more messages are written to log file, if the log level is set to debug.
 
 
 Version 4.1.4 released (2023-03-25)----

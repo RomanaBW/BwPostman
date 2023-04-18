@@ -8,9 +8,9 @@ pipeline {
 					BWPM_VERSION = "4.1.5"
 
 //					Stable
-//					JOOMLA_VERSION = "4.2.9"
+					JOOMLA_VERSION = "4.2.9"
 //					RC
-					JOOMLA_VERSION = "4.3.0-rc3"
+//					JOOMLA_VERSION = "4.3.0-rc3"
 
 					PHP_VERSION = "8.1.12"
 

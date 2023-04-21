@@ -1007,92 +1007,84 @@ class TestNewslettersDetailsCest
 	 */
 	public function EditSentNewsletter(\AcceptanceTester $I)
 	{
-		if (getenv('BWPM_VERSION') != '132')
-		{
-			$I->wantTo("edit published, publish up and down and change description of a sent newsletter");
+		$I->wantTo("edit published, publish up and down and change description of a sent newsletter");
 
-			$I->amOnPage(NlManage::$url);
-			$I->waitForElement(Generals::$pageTitle, 30);
-			$I->clickAndWait(NlManage::$tab2, 1);
+		$I->amOnPage(NlManage::$url);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->clickAndWait(NlManage::$tab2, 1);
 
-			$I->click(NlManage::$first_list_entry_tab2);
-			$I->clickAndWait(Generals::$toolbarActions, 1);
-			$I->click(Generals::$toolbar4['Edit']);
-			$I->waitForElement(Generals::$pageTitle, 30);
-			$I->see('Newsletter Publishing Details', Generals::$pageTitle);
+		$I->click(NlManage::$first_list_entry_tab2);
+		$I->clickAndWait(Generals::$toolbarActions, 1);
+		$I->click(Generals::$toolbar4['Edit']);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see('Newsletter Publishing Details', Generals::$pageTitle);
 
-			// make changes
-			$I->selectOption(NlEdit::$published, 'published');
-//			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_published, NlEdit::$published_list_id);
+		// make changes
+		$I->selectOption(NlEdit::$published, 'published');
 
-			$I->fillField(NlEdit::$publish_up, NlEdit::$field_edit_publish_up);
-			$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
+		$I->fillField(NlEdit::$publish_up, NlEdit::$field_edit_publish_up);
+		$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
 
-			$I->fillField(NlEdit::$publish_down, NlEdit::$field_edit_publish_down);
-			$I->pressKey(NlEdit::$publish_down, \Facebook\WebDriver\WebDriverKeys::TAB);
+		$I->fillField(NlEdit::$publish_down, NlEdit::$field_edit_publish_down);
+		$I->pressKey(NlEdit::$publish_down, \Facebook\WebDriver\WebDriverKeys::TAB);
 
-			$I->fillField(NlEdit::$description, NlEdit::$field_edit_description);
+		$I->fillField(NlEdit::$description, NlEdit::$field_edit_description);
 
-			$I->click(Generals::$toolbar['Save']);
-			Generals::dontSeeAnyWarning($I);
+		$I->click(Generals::$toolbar['Save']);
+		Generals::dontSeeAnyWarning($I);
 
-			$I->see(NlEdit::$success_saved, Generals::$alert_success);
+		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 
-			// check changes
-//			$I->see("published", NlEdit::$published_list_text);
+		// check changes
+		$publish_up = $I->grabValueFrom(NlEdit::$publish_up);
+		$I->assertEquals(NlEdit::$field_edit_publish_up, $publish_up);
 
-			$publish_up = $I->grabValueFrom(NlEdit::$publish_up);
-			$I->assertEquals(NlEdit::$field_edit_publish_up, $publish_up);
+		$publish_down = $I->grabValueFrom(NlEdit::$publish_down);
+		$I->assertEquals(NlEdit::$field_edit_publish_down, $publish_down);
 
-			$publish_down = $I->grabValueFrom(NlEdit::$publish_down);
-			$I->assertEquals(NlEdit::$field_edit_publish_down, $publish_down);
+		$I->see(NlEdit::$field_edit_description, NlEdit::$description);
 
-			$I->see(NlEdit::$field_edit_description, NlEdit::$description);
+		$I->click(Generals::$toolbar['Cancel']);
 
-			$I->click(Generals::$toolbar['Cancel']);
+		$I->see('Newsletters', Generals::$pageTitle);
+		$I->clickAndWait(NlManage::$tab2, 1);
 
-			$I->see('Newsletters', Generals::$pageTitle);
-			$I->clickAndWait(NlManage::$tab2, 1);
+		// check changes in list
+		$I->seeElement(NlManage::$publish_by_icon['publish_result']);
+		$I->see(NlEdit::$field_edit_publish_up, NlManage::$sent_column_publish_up);
+		$I->see(NlEdit::$field_edit_publish_down, NlManage::$sent_column_publish_down);
+		$I->see(NlEdit::$field_edit_description, NlManage::$sent_column_description);
 
-			// check changes in list
-			$I->seeElement(NlManage::$publish_by_icon['publish_result']);
-			$I->see(NlEdit::$field_edit_publish_up, NlManage::$sent_column_publish_up);
-			$I->see(NlEdit::$field_edit_publish_down, NlManage::$sent_column_publish_down);
-			$I->see(NlEdit::$field_edit_description, NlManage::$sent_column_description);
+		// revert changes
+		$I->click(NlManage::$first_list_link);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->see('Newsletter Publishing Details', Generals::$pageTitle);
 
-			// revert changes
-			$I->click(NlManage::$first_list_link);
-			$I->waitForElement(Generals::$pageTitle, 30);
-			$I->see('Newsletter Publishing Details', Generals::$pageTitle);
+		// make changes
+		$I->selectOption(NlEdit::$published, 'unpublished');
 
-			// make changes
-//			$I->clickSelectList(NlEdit::$published_list, NlEdit::$published_unpublished, NlEdit::$published_list_id);
-			$I->selectOption(NlEdit::$published, 'unpublished');
+		$I->fillField(NlEdit::$publish_up, NlEdit::$field_publish_up);
+		$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
 
-			$I->fillField(NlEdit::$publish_up, NlEdit::$field_publish_up);
-			$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
+		$I->fillField(NlEdit::$publish_down, NlEdit::$field_publish_down);
+		$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
 
-			$I->fillField(NlEdit::$publish_down, NlEdit::$field_publish_down);
-			$I->pressKey(NlEdit::$publish_up, \Facebook\WebDriver\WebDriverKeys::TAB);
+		$I->fillField(NlEdit::$description, NlEdit::$field_description);
 
-			$I->fillField(NlEdit::$description, NlEdit::$field_description);
+		$I->click(Generals::$toolbar['Save & Close']);
+		$I->waitForElement(Generals::$pageTitle, 30);
+		Generals::dontSeeAnyWarning($I);
 
-			$I->click(Generals::$toolbar['Save & Close']);
-			$I->waitForElement(Generals::$pageTitle, 30);
-			Generals::dontSeeAnyWarning($I);
+		$I->see(NlEdit::$success_saved, Generals::$alert_success);
+		$I->see('Newsletters', Generals::$pageTitle);
 
-//			$I->see("Message", Generals::$alert_heading);
-			$I->see(NlEdit::$success_saved, Generals::$alert_success);
-			$I->see('Newsletters', Generals::$pageTitle);
+		$I->clickAndWait(NlManage::$tab2, 1);
 
-			$I->clickAndWait(NlManage::$tab2, 1);
-
-			// check changes in list
-			$I->seeElement(NlManage::$publish_by_icon['unpublish_result']);
-			$I->see(NlEdit::$field_publish_up, NlManage::$sent_column_publish_up);
-			$I->see(NlEdit::$field_publish_down, NlManage::$sent_column_publish_down);
-			$I->see(NlEdit::$field_description, NlManage::$sent_column_description);
-		}
+		// check changes in list
+		$I->seeElement(NlManage::$publish_by_icon['unpublish_result']);
+		$I->see(NlEdit::$field_publish_up, NlManage::$sent_column_publish_up);
+		$I->see(NlEdit::$field_publish_down, NlManage::$sent_column_publish_down);
+		$I->see(NlEdit::$field_description, NlManage::$sent_column_description);
 	}
 
 	/**

@@ -76,6 +76,7 @@ HTMLHelper::_('behavior.keepalive');
 			</div>
 		</div>
 
+		<div class="hidden" style="display:none">
 		<?php
 		foreach($this->form->getFieldset('basic_1_hidden') as $field)
 		{
@@ -112,7 +113,7 @@ HTMLHelper::_('behavior.keepalive');
 			echo $field->input;
 		}
 		?>
-
+		</div>
 		<div class="clr clearfix"></div>
 
 		<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>

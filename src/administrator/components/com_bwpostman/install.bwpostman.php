@@ -2070,7 +2070,6 @@ EOS;
 	 *
 	 * @since
 	 */
-
 	private function setDefaultParams()
 	{
 		$params_default = array();

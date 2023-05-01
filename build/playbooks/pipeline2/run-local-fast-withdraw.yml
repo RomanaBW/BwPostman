@@ -140,11 +140,6 @@
       set_fact:
          sql_command: "mysql -u {{ test_db_user }} -p{{ test_db_password }} -h {{ test_db_host_ip }} {{ test_db_dbname }} < {{ web_dir }}/{{ project_name }}/backups/{{ project_name }}.sql"
 
-    - name: Pause before rebase to ensure database is up
-      pause:
-        seconds: 20
-      when: failure_file.stat.exists or rebase|bool
-
     - name: Output rebase command
       debug:
          msg: "{{ sql_command }}"

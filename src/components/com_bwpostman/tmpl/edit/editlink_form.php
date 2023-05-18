@@ -54,7 +54,7 @@ HtmlHelper::_('behavior.formvalidator');
 
 // Form to order the editlink
 // --> the editlink is needed to modify the subscriber account if the subscriber is not logged into the website
-// --> the editlink will be send with email
+// --> the editlink will be sent with email
 ?>
 
 <div id="bwpostman" class="mt">

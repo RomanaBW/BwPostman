@@ -41,6 +41,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use RuntimeException;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwEmailValidation;
+use stdClass;
 use UnexpectedValueException;
 
 /**
@@ -91,7 +92,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function errorSubscriberData(object $err, int $subscriberid = null, string $email = null)
+	public static function errorSubscriberData(object $err, int $subscriberid = null, string $email = null): void
 	{
 		$jinput        = Factory::getApplication()->input;
 		$session       = Factory::getApplication()->getSession();
@@ -160,7 +161,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function errorEditlink()
+	public static function errorEditlink(): void
 	{
 		$session = Factory::getApplication()->getSession();
 
@@ -171,13 +172,13 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to process wrong or empty activation code
 	 *
-	 * @param    string error message
+	 * @param string $err_msg error message
 	 *
 	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function errorActivationCode($err_msg)
+	public static function errorActivationCode(string $err_msg): void
 	{
 		$jinput  = Factory::getApplication()->input;
 		$session = Factory::getApplication()->getSession();
@@ -195,13 +196,13 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to process a wrong unsubscribe-link
 	 *
-	 * @param    string error message
+	 * @param string $err_msg error message
 	 *
 	 * @throws Exception
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function errorUnsubscribe($err_msg)
+	public static function errorUnsubscribe(string $err_msg): void
 	{
 		$jinput  = Factory::getApplication()->input;
 		$itemid  = self::getMenuItemid('edit'); // Itemid from edit-view
@@ -227,7 +228,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function errorSendingEmail(string $err_msg, string $email = '')
+	public static function errorSendingEmail(string $err_msg, string $email = ''): void
 	{
 		$jinput        = Factory::getApplication()->input;
 		$session       = Factory::getApplication()->getSession();
@@ -253,7 +254,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since       2.0.0 (here)
 	 */
-	public static function success(string $success_msg, string $editlink = null, int $itemid = null)
+	public static function success(string $success_msg, string $editlink = null, int $itemid = null): void
 	{
 		$jinput          = Factory::getApplication()->input;
 		$session         = Factory::getApplication()->getSession();
@@ -588,9 +589,9 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since	2.2.0
 	 */
-	public static function getModParams(int $id = 0): ?object
+	public static function getModParams(int $id = 0): object
 	{
-		$params = null;
+		$params = new stdClass();
 		$db     = BwPostmanHelper::getDbo();
 		$query  = $db->getQuery(true);
 
@@ -621,7 +622,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since 2.4.0 here
 	 */
-	static public function customizeSubscriberDataFields(Form $form)
+	static public function customizeSubscriberDataFields(Form $form): void
 	{
 		$nullDate = BwPostmanHelper::getDbo()->getNullDate();
 
@@ -670,9 +671,9 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since   2.4.0 (here)
 	 */
-	public static function getJoomlaUserIdByEmail(string $email): ?int
+	public static function getJoomlaUserIdByEmail(string $email): int
 	{
-		$user_id = null;
+		$user_id = 0;
 
 		$db    = BwPostmanHelper::getDbo();
 		$query = $db->getQuery(true);
@@ -748,7 +749,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since    2.4.0
 	 */
-	public static function createSubscriberRegisteredBy(object $subscriber)
+	public static function createSubscriberRegisteredBy(object $subscriber): void
 	{
 		if ($subscriber->registered_by == 0)
 		{
@@ -798,7 +799,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since    2.4.0
 	 */
-	public static function createSubscriberConfirmedBy(object $subscriber)
+	public static function createSubscriberConfirmedBy(object $subscriber): void
 	{
 		if ($subscriber->confirmed_by == 0)
 		{
@@ -840,13 +841,13 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to get the fields list for subscriber export
 	 *
-	 * @return array|boolean	export fields list
+	 * @return array	export fields list
 	 *
 	 * @throws Exception
 	 *
 	 * @since
 	 */
-	static public function getExportFieldsList()
+	static public function getExportFieldsList(): array
 	{
 		$db = BwPostmanHelper::getDbo();
 
@@ -867,7 +868,7 @@ class BwPostmanSubscriberHelper
 		{
 			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 
-			return false;
+			return array();
 		}
 
 		return $columns;

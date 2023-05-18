@@ -1204,6 +1204,43 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	}
 
 	/**
+	 * Method to update the editlink for a specific subscriber
+	 *
+	 * @param int    $subscriberId
+	 * @param string $editlink
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 * @since 4,1,6
+	 */
+	public function updateEditlink(int $subscriberId, string $editlink): bool
+	{
+		$db = $this->_db;
+
+		$query = $db->getQuery(true);
+
+		$query->update($db->quoteName($this->_tbl));
+		$query->set($db->quoteName('editlink') . " = " . $db->quote($editlink));
+		$query->where("`id` = '" . $subscriberId . "'");
+
+		try
+		{
+			$db->setQuery($query);
+
+			$executed = $db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Method to create the activation and check if the string does not exist twice or more
 	 *
 	 * @return string   $activation

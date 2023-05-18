@@ -1049,5 +1049,19 @@ class BwPostmanSubscriberHelper
 
 		return $reply;
 	}
+
+	/**
+	 * Method to check if an editlink has length of 32 characters and has only hex characters
+	 *
+	 * @param string $editlink
+	 *
+	 * @return bool
+	 *
+	 * @since 4.1.6
+	 */
+	public static function isValidEditlink(string $editlink = ''): bool
+	{
+		return strlen($editlink) === 32 && ctype_xdigit($editlink);
+	}
 }
 

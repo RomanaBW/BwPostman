@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use BoldtWebservice\Component\BwPostman\Administrator\Table\SubscriberTable;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -1062,6 +1063,27 @@ class BwPostmanSubscriberHelper
 	public static function isValidEditlink(string $editlink = ''): bool
 	{
 		return strlen($editlink) === 32 && ctype_xdigit($editlink);
+	}
+
+	/**
+	 * Method to repair a faulty editlink
+	 *
+	 * @param int $subscriberId
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 4.1.6
+	 */
+	public static function repairEditlink(int $subscriberId = 0): array
+	{
+		$subscriberTable = new SubscriberTable();
+
+		$editlink        = $subscriberTable->getEditlink();
+		$editlinkUpdated = $subscriberTable->updateEditlink($subscriberId, $editlink);
+
+		return array ($editlink, $editlinkUpdated);
 	}
 }
 

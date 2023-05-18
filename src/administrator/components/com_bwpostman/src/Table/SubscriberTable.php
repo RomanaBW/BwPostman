@@ -1161,13 +1161,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to create the editlink and check if the string does not exist twice or more
 	 *
-	 * @return string|null   $editlink
+	 * @return string   $editlink
 	 *
 	 * @throws Exception
 	 *
 	 * @since 3.0.0 here
 	 */
-	public function getEditlink(): ?string
+	public function getEditlink(): string
 	{
 		$db              = $this->_db;
 		$newEditlink     = "";

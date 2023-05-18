@@ -1237,6 +1237,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			return false;
 		}
 
+		if ($executed === false)
+		{
+			return false;
+		}
+
 		return true;
 	}
 

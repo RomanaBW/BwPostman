@@ -1066,7 +1066,7 @@ class BwPostmanSubscriberHelper
 	}
 
 	/**
-	 * Method to repair a faulty editlink
+	 * Method to repair a faulty editlink: Fetch new editlink and store it at subscriber
 	 *
 	 * @param int $subscriberId
 	 *

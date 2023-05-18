@@ -1078,7 +1078,8 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function repairEditlink(int $subscriberId = 0): array
 	{
-		$subscriberTable = new SubscriberTable();
+		$db              = BwPostmanHelper::getDbo();
+		$subscriberTable = new SubscriberTable($db);
 
 		$editlink        = $subscriberTable->getEditlink();
 		$editlinkUpdated = $subscriberTable->updateEditlink($subscriberId, $editlink);

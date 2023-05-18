@@ -1985,6 +1985,17 @@ class NewsletterModel extends AdminModel
 			if (property_exists($recipients_data, 'editlink') && !$isTestrecipient)
 			{ // testrecipient has no edit link
 				$editlink = $recipients_data->editlink;
+
+				// Check and repair for faulty editlink
+				if (!BwPostmanSubscriberHelper::isValidEditlink($editlink))
+				{
+					list($editlink, $editlinkUpdated) = BwPostmanSubscriberHelper::repairEditlink($tblSendMailQueue->subscriber_id);
+
+					if (!$editlinkUpdated)
+					{
+						return -1;
+					}
+				}
 			}
 		}
 

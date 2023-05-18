@@ -626,6 +626,18 @@ class EditController extends FormController
 			$err->err_code	= 406; // Email address exists but account is not activated
 			$err->err_msg	= 'COM_BWPOSTMAN_ERROR_ACCOUNTNOTACTIVATED';
 		}
+		elseif (!BwPostmanSubscriberHelper::isValidEditlink($subscriberdata->editlink))
+		{
+			list($subscriberdata->editlink, $editlinkUpdated) = BwPostmanSubscriberHelper::repairEditlink($subscriberdata->id);
+
+			if (!$editlinkUpdated)
+			{
+				$subs_id       = $subscriberdata->id;
+				$err->err_id   = $id;
+				$err->err_code = 401; // Could not repair editlink
+				$err->err_msg  = 'COM_BWPOSTMAN_ERROR_SUB_EDITLINK_REPAIR';
+			}
+		}
 
 		if ($err->err_code !== 0)
 		{

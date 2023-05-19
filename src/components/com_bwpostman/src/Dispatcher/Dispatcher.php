@@ -76,7 +76,7 @@ class Dispatcher extends ComponentDispatcher
 		$view       = $this->input->getCmd('view');
 		$task       = $this->input->getCmd('task');
 
-		if (!is_null($task) && str_contains($task, '.'))
+		if (!is_null($task) && strpos($task, '.') !== false)
 		{
 			// Explode the controller.task command.
 			[$controller, $task] = explode('.', $task);

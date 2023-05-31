@@ -1950,8 +1950,11 @@ class NewsletterModel extends AdminModel
 			$pos1              = strpos($attachment['single_attachment'], '#');
 			$rawFilename       = $pos1 === false ? $attachment['single_attachment'] : substr($attachment['single_attachment'], 0, $pos1);
 
+			// Convert back HTML entities
+			$cleanedFilename = urldecode($rawFilename);
+
 			// Create filepath
-			$fullAttachments[] = JPATH_SITE . '/' .$rawFilename;
+			$fullAttachments[] = JPATH_SITE . '/' . $cleanedFilename;
 		}
 
 		$tblSendMailContent->attachment = $fullAttachments;

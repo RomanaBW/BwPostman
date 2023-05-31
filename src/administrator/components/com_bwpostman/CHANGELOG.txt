@@ -11,6 +11,7 @@ Version 4.1.6 released (2023-07-19)----
 Bugfix
 # htmlspecialchars array error with multiple attachments at sent newsletter
 # Dispatcher of frontend lamented if task was not set at url
+# Sending of newsletters with attachments with space at the name was not possible
 
 improvement
 ~ Replace faulty editlink before use (send newsletter, send editlink for edit subscription)

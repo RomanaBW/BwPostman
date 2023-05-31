@@ -505,28 +505,28 @@ class NewsletterEditPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select2            = "//*/div[@class='media-browser-item-preview'][contains(@title,'powered_by.png')]/parent::div/parent::div";
+	public static $attachment_select2            = "//*/div[@class='media-browser-item-preview'][contains(@title,'powered by.png')]/parent::div/parent::div";
 
 	/**
 	 * @var string
 	 *
 	 * @since   4.0.0
 	 */
-	public static $attachment_scrollto_select2            = "//*/div[@class='media-browser-item-preview'][contains(@title,'powered_by.png')]";
+	public static $attachment_scrollto_select2            = "//*/div[@class='media-browser-item-preview'][contains(@title,'powered by.png')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   4.0.0
 	 */
-	public static $attachment_selected2            = "//*/input[contains(@value,'powered_by.png')]";
+	public static $attachment_selected2            = "//*/input[contains(@value,'powered%20by.png')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   4.0.0
 	 */
-	public static $attachment2                   = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div[2]/img[contains(@src, 'powered_by.png')]";
+	public static $attachment2                   = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div[2]/img[contains(@src, 'powered%20by.png')]";
 
 	/**
 	 * @var string

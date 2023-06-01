@@ -869,7 +869,7 @@ class TestSubscribersDetailsCest
 
 				if ($options->firstname_field_obligation)
 				{
-					$I->waitForElement(Generals::$alert_header, 30);
+					$I->waitForElementVisible(Generals::$alert_header, 30);
 					$I->see("danger", Generals::$alert_heading);
 					$I->see(SubEdit::$firstNameMissing, Generals::$alert_error_1);
 				}
@@ -889,7 +889,7 @@ class TestSubscribersDetailsCest
 
 				if ($options->name_field_obligation)
 				{
-					$I->waitForElement(Generals::$alert_header, 30);
+					$I->waitForElementVisible(Generals::$alert_header, 30);
 					$I->see("danger", Generals::$alert_heading);
 					$I->see(SubEdit::$lastNameMissing, Generals::$alert_error_1);
 				}
@@ -906,7 +906,7 @@ class TestSubscribersDetailsCest
 				$I->fillField(SubEdit::$special, "");
 				$I->click(Generals::$toolbar4['Save']);
 
-				$I->waitForElement(Generals::$alert_header, 30);
+				$I->waitForElementVisible(Generals::$alert_header, 30);
 				$I->see("danger", Generals::$alert_heading);
 				$I->see(sprintf(SubEdit::$popup_special, $options->special_label), Generals::$alert_error_1);
 			}
@@ -918,7 +918,7 @@ class TestSubscribersDetailsCest
 		$I->fillField(SubEdit::$email, '');
 		$I->click(Generals::$toolbar4['Save & Close']);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see("Warning", Generals::$alert_heading);
 		$I->see(Generals::$invalidField . SubEdit::$emailTitle, Generals::$alert_warn);
 

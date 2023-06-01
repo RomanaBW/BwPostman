@@ -301,7 +301,7 @@ class SubscribeComponentCest
 		$I->click(SubsView::$button_register);
 
 		$I->scrollTo(SubsView::$registration_complete);
-		$I->wait(1);
+		$I->wait(2);
 		$I->waitForElement(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 

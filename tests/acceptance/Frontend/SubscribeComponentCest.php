@@ -319,7 +319,7 @@ class SubscribeComponentCest
 			$I->scrollTo(SubsView::$button_submit);
 			$I->wait(1);
 			$I->click(SubsView::$button_submit);
-			$I->waitForElement(Generals::$alert_heading, 5);
+			$I->waitForElementVisible(Generals::$alert_heading, 5);
 			$I->see(SubsView::$msg_saved_successfully);
 			$I->dontSeeInField(SubsView::$firstname, SubsView::$firstname_fill);
 			$I->seeInField(SubsView::$firstname, 'Charles');
@@ -331,7 +331,7 @@ class SubscribeComponentCest
 			$I->scrollTo(SubsView::$button_submit);
 			$I->wait(1);
 			$I->click(SubsView::$button_submit);
-			$I->waitForElement(Generals::$alert_heading, 5);
+			$I->waitForElementVisible(Generals::$alert_heading, 5);
 			$I->see(SubsView::$msg_saved_successfully);
 			$I->dontSeeInField(SubsView::$name, SubsView::$lastname_fill);
 			$I->seeInField(SubsView::$name, 'Crackerbarrel');
@@ -343,7 +343,7 @@ class SubscribeComponentCest
 			$I->scrollTo(SubsView::$button_submit);
 			$I->wait(1);
 			$I->click(SubsView::$button_submit);
-			$I->waitForElement(Generals::$alert_heading, 5);
+			$I->waitForElementVisible(Generals::$alert_heading, 5);
 			$I->see(SubsView::$msg_saved_successfully);
 			$I->dontSeeInField(SubsView::$special, SubsView::$special_fill);
 			$I->seeInField(SubsView::$special, '4711');
@@ -355,7 +355,7 @@ class SubscribeComponentCest
 		$I->scrollTo(SubsView::$button_submit);
 		$I->wait(1);
 		$I->click(SubsView::$button_submit);
-		$I->waitForElement(Generals::$alert_heading, 5);
+		$I->waitForElementVisible(Generals::$alert_heading, 5);
 		$I->wait(1);
 		$I->see(SubsView::$msg_saved_successfully);
 		$I->waitForElement(SubsView::$view_edit, 5);

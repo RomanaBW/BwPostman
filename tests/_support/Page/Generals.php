@@ -1126,7 +1126,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $mls_usergroup        = "//*[@id='group_2_1']";
+	public static $mls_usergroup        = "//*/label[contains(.,'Registered')]";
 
 	/**
 	 * General messages

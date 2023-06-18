@@ -413,6 +413,8 @@ class ContentRenderer
 
 			if ($row)
 			{
+				$row = $this->processContentPlugins($row);
+
 				$lang    = self::getArticleLanguage($row->id);
 				$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
 				$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
@@ -502,6 +504,8 @@ class ContentRenderer
 
 			if ($row)
 			{
+				$row = $this->processContentPlugins($row);
+
 				list($link, $intro_text) = $this->getIntroText($row);
 
 				if (intval($row->created) != 0)
@@ -1530,5 +1534,20 @@ class ContentRenderer
 		$content_text .= "\n\n";
 
 		return $content_text;
+	}
+
+	/**
+	 * @param object|stdClass                                      $row
+	 *
+	 * @return mixed|object|stdClass
+	 *
+	 * @since 4.2.0
+	 */
+	protected function processContentPlugins($row): mixed
+	{
+		PluginHelper::importPlugin('content');
+		Factory::getApplication()->triggerEvent('onContentPrepare', ['com_content.article', &$row, &$row->attribs, 0]);
+
+		return $row;
 	}
 }

@@ -147,11 +147,11 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 										$canEditState = BwPostmanHelper::canEditState('newsletter', $item->id);
 										?>
 										<tr class="row<?php echo $i % 2; ?>">
-										<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
-										<td class="d-none d-lg-table-cell">
-												<?php if (!empty($item->attachment)) { ?>
-														<i class="fa fa-paperclip fa-lg"></i>
-												<?php } ?>
+											<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+											<td class="d-none d-lg-table-cell">
+													<?php if (!empty($item->attachment)) { ?>
+															<i class="fa fa-paperclip fa-lg"></i>
+													<?php } ?>
 											</td>
 											<td>
 												<?php

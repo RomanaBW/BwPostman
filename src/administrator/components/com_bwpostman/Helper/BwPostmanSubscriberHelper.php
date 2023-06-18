@@ -1058,7 +1058,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @return bool
 	 *
-	 * @since 4.1.6
+	 * @since 4.2.0
 	 */
 	public static function isValidEditlink(string $editlink = ''): bool
 	{
@@ -1074,7 +1074,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @throws Exception
 	 *
-	 * @since 4.1.6
+	 * @since 4.2.0
 	 */
 	public static function repairEditlink(int $subscriberId = 0): array
 	{

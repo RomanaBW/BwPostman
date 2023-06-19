@@ -217,7 +217,8 @@
   tasks:
     - name: set base sql command
       set_fact:
-        sql_base_cmd: "mysql -u {{ test_db_user }} -p{{ test_db_password }} {{ test_db_name }}"
+#        sql_base_cmd: "mysql -u {{ test_db_user }} -p{{ test_db_password }} {{ test_db_name }}"
+        sql_base_cmd: "mysql -u tester -pbarbamama joomla_db"
 
 
     - name: Copy configuring sql table files to container

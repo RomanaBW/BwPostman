@@ -1209,6 +1209,13 @@ class NewsletterEditPage
 	/**
 	 * @var string
 	 *
+	 * @since   4.2.0
+	 */
+	public static $selectedContent_5         = "blog = Test content fields";
+
+	/**
+	 * @var string
+	 *
 	 * @since   4.1.1
 	 */
 	public static $move_up              = "//*/button[contains(@class, 'btn-up')]";
@@ -1389,7 +1396,7 @@ class NewsletterEditPage
 		// add content
 		$I->scrollTo(self::$legend_content, 0, -100);
 		$I->wait(2);
-		$I->doubleClick(sprintf(self::$available_content, 2));
+		$I->doubleClick(sprintf(self::$available_content, 3));
 		$I->wait(2);
 		$content_title = $I->grabTextFrom(sprintf(self::$selected_content, 1));
 		$I->see($content_title, self::$selected_content_list);

@@ -1432,7 +1432,7 @@ class FooterUsedMailinglistsCest
 		// add content
 		$I->scrollTo(NlEdit::$legend_content, 0, -100);
 		$I->wait(2);
-		$I->doubleClick(sprintf(NlEdit::$available_content, 2));
+		$I->doubleClick(sprintf(NlEdit::$available_content, 3));
 		$I->wait(2);
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);

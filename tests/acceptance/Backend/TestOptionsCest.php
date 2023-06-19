@@ -262,7 +262,7 @@ class TestOptionsCest
 		$I->click(MainView::$addNewsletterButton);
 		$I->scrollTo(NlEditPage::$legend_content);
 		$I->wait(1);
-		$availableContent1 = $I->grabTextFrom(sprintf(NlEditPage::$available_content, 2));
+		$availableContent1 = $I->grabTextFrom(sprintf(NlEditPage::$available_content, 3));
 
 		$I->assertEquals("sample-data-articles/park-site/photo-gallery/animals = Phyllopteryx", $availableContent1);
 		$I->clickAndWait(Generals::$toolbar['Back'], 1);
@@ -292,7 +292,7 @@ class TestOptionsCest
 		$I->click(MainView::$addNewsletterButton);
 		$I->scrollTo(NlEditPage::$legend_content);
 		$I->wait(1);
-		$availableContent2 = $I->grabTextFrom(sprintf(NlEditPage::$available_content, 2));
+		$availableContent2 = $I->grabTextFrom(sprintf(NlEditPage::$available_content, 3));
 
 		$I->assertNotEquals("sample-data-articles/park-site/photo-gallery/animals = Phyllopteryx", $availableContent2);
 		$I->clickAndWait(Generals::$toolbar['Back'], 1);

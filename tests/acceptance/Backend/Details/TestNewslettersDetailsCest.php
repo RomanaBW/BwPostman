@@ -191,6 +191,108 @@ class TestNewslettersDetailsCest
 	}
 
 	/**
+	 * Test method to create a single Newsletter from list view with Joomla article with custom field, checks preview
+	 *
+	 * @param   \AcceptanceTester                $I
+	 *
+	 * @before  _login
+	 *
+	 * @after   _logout
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function CreateOneNewsletterCompleteListViewCustomfield(\AcceptanceTester $I)
+	{
+		$I->wantTo("Create one Newsletter with Joomla article with custom fields, archive and delete list view");
+		$I->amOnPage(NlManage::$url);
+
+		$I->click(Generals::$toolbar['New']);
+
+		$I->fillField(NlEdit::$from_name, NlEdit::$field_from_name);
+		$I->fillField(NlEdit::$from_email, NlEdit::$field_from_email);
+		$I->fillField(NlEdit::$reply_email, NlEdit::$field_reply_email);
+		$I->fillField(NlEdit::$subject, NlEdit::$field_subject);
+		$I->fillField(NlEdit::$description, NlEdit::$field_description);
+
+		// fill publish and unpublish
+		NlEdit::fillPublishedDate($I);
+
+		$I->scrollTo(NlEdit::$legend_templates, 0, -100);
+		$I->wait(2);
+		$I->click(NlEdit::$template_html);
+		$I->click(NlEdit::$template_text);
+		$I->wait(1);
+
+		NlEdit::selectRecipients($I, false);
+
+		// add content
+		$I->scrollTo(NlEdit::$legend_content, 0, -100);
+		$I->wait(1);
+
+		// … by double click
+		$I->see(NlEdit::$selectedContent_5, sprintf(NlEdit::$available_content, 1));
+		$I->doubleClick(sprintf(NlEdit::$available_content, 1));
+		$I->dontSee(NlEdit::$selectedContent_5, sprintf(NlEdit::$available_content, 1));
+
+		// Check selected content
+		$I->see(NlEdit::$selectedContent_5, sprintf(NlEdit::$selected_content, 1));
+
+		$I->click(Generals::$toolbar4['Save']);
+
+		// Check save success
+//		$I->waitForElementVisible(Generals::$alert_header, 5);
+//		NlEdit::checkSuccess($I, Generals::$admin['author']);
+
+		// Check content success
+		// Switch to tab 4 (preview)
+		$I->scrollTo(NlEdit::$tab4, 0, -150);
+		$I->wait(1);
+		$I->clickAndWait(NlEdit::$tab4, 1);
+
+		// Check HTML version
+		$I->scrollTo(NlEdit::$tab4_preview_html);
+		$I->wait(1);
+		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
+		$I->scrollTo(".//*[@class='article-data']", 0, -150); // scroll to before legal
+		$I->wait(1);
+
+		$I->waitForElementVisible(".//*[@class='article-data']");
+		$I->seeElement(".//*[@class='article-data']/following-sibling::*[1]");
+		$I->see('Test for custom fields', ".//*[@class='article-data']/following-sibling::*[1]");
+		$I->seeElement(".//*[@class='article-data']/following-sibling::*[2]");
+		$I->see('Author: About the Author: The author loves programming', ".//*[@class='article-data']/following-sibling::*[2]");
+		$I->seeElement(".//*[@class='article-data']/following-sibling::*[3]");
+		$I->see('Date: Date: 2023-06-18', ".//*[@class='article-data']/following-sibling::*[3]");
+
+		$I->switchToIFrame();
+
+//		// Check text version
+		$I->scrollTo(NlEdit::$tab4_preview_text);
+		$I->wait(1);
+		$I->switchToIFrame(NlEdit::$tab4_preview_text_iframe);
+
+		$I->see('Test for custom fields');
+		$I->see('Author: About the Author: The author loves programming');
+		$I->see('Date: Date: 2023-06-18');
+
+		$I->switchToIFrame();
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
+		$I->click(Generals::$toolbar['Cancel']);
+
+
+
+
+
+		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+		$I->see('Newsletters', Generals::$pageTitle);
+	}
+
+	/**
 	 * Test method to create a single Newsletter as content template from list view, save it and go back to list view
 	 *
 	 * @param   \AcceptanceTester                $I
@@ -1139,8 +1241,8 @@ class TestNewslettersDetailsCest
 		$I->click(NlEdit::$template_html);
 		$I->click(NlEdit::$template_text);
 
-		$content_1 = $I->grabTextFrom(sprintf(NlEdit::$available_content, 2));
-		$I->click(sprintf(NlEdit::$available_content, 2));
+		$content_1 = $I->grabTextFrom(sprintf(NlEdit::$available_content, 3));
+		$I->click(sprintf(NlEdit::$available_content, 3));
 		$I->click(NlEdit::$add_content);
 		$I->see($content_1, NlEdit::$selected_content_list);
 		$I->dontSee($content_1, NlEdit::$available_content_list);
@@ -1254,19 +1356,19 @@ class TestNewslettersDetailsCest
 		$I->wait(1);
 
 		// …by button
-		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 3));
-		$I->click(sprintf(NlEdit::$available_content, 3));
+		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 4));
+		$I->click(sprintf(NlEdit::$available_content, 4));
 		$I->click(NlEdit::$add_content);
-		$I->dontSee(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 3));
+		$I->dontSee(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 4));
 
 		// … by double click
-		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 3));
-		$I->doubleClick(sprintf(NlEdit::$available_content, 3));
-		$I->dontSee(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 3));
+		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 4));
+		$I->doubleClick(sprintf(NlEdit::$available_content, 4));
+		$I->dontSee(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 4));
 
-		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 2));
-		$I->doubleClick(sprintf(NlEdit::$available_content, 2));
-		$I->dontSee(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 2));
+		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 3));
+		$I->doubleClick(sprintf(NlEdit::$available_content, 3));
+		$I->dontSee(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 3));
 
 		// … by popup selector
 		$I->see(NlEdit::$popupSelectorSelectText, NlEdit::$popupSelectorSelect);

@@ -20,3 +20,15 @@ test_db_password: "barbamama"
 #screen_size: '1440x900'
 screen_size: '1920x1080'
 display: '45'
+
+sql_additional_files:
+#  - "add-joomla-users.sql"
+#  - "enable-user-registration.sql"
+#  - "update-uids-at-diverse-tables.sql"
+#  - "reset-post-installation-messages.sql"
+#  - "reset-update-notification.sql"
+#  - "reset-sending-stats.sql"
+#  - "change-install-plugins-order.sql"
+#  - "disable-top-modules.sql"
+  - "add_user_fields.sql"
+  - "add_user_field_content.sql"

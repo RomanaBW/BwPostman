@@ -1543,7 +1543,7 @@ class ContentRenderer
 	 *
 	 * @since 4.2.0
 	 */
-	protected function processContentPlugins($row): mixed
+	protected function processContentPlugins($row)
 	{
 		PluginHelper::importPlugin('content');
 		Factory::getApplication()->triggerEvent('onContentPrepare', ['com_content.article', &$row, &$row->attribs, 0]);

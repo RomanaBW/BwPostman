@@ -202,30 +202,3 @@
         src: "do-tests.sh.j2"
         dest: "/data/do-tests.sh"
         mode: 0775
-
-#- hosts: "{{ smoke_source.db_container_name }}"
-#  connection: docker
-#  vars_files:
-#    - vars/tests.yml
-#    - vars/tester-image-vars.yml
-#    - vars/tester-test-vars.yml
-#    - vars/codecept_paths.yml
-#    - vars/vault.yml
-#  vars:
-#    ansible_remote_tmp: "/tmp"
-#
-#  tasks:
-#    - name: set base sql command
-#      set_fact:
-#        sql_base_cmd: "mysql -u {{ test_db_user }} -p{{ test_db_password }} {{ test_db_dbname }}"
-#
-#    - name: Copy configuring sql table files to container
-#      copy:
-#        src: "files/joomla4/{{ item }}"
-#        dest: "{{ joomla_additional_files_folder }}"
-#      with_items: "{{ sql_additional_files }}"
-#
-#    - name: Process additional sql files
-#      shell: "{{ sql_base_cmd }} < {{ joomla_additional_files_folder }}/{{ item }}"
-#      with_items: "{{ sql_additional_files }}"
-#

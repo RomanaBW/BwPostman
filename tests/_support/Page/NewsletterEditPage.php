@@ -1740,4 +1740,83 @@ class NewsletterEditPage
 		$I->see("Newsletters", Generals::$pageTitle);
 		$I->clickAndWait(NlManage::$tab2, 1);
 	}
+
+	/**
+	 * Add a custom Joomla field
+	 *
+	 * @param   \AcceptanceTester $I
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   4.2.0
+	 */
+	public static function addCustomField(\AcceptanceTester $I)
+	{
+		$I->amOnPage('/administrator/index.php?option=com_fields&view=fields&context=com_content.article');
+
+		$I->clickAndWait(Generals::$toolbar['New'], 1);
+
+		$I->fillField('#jform_title', 'Date');
+		$I->selectOption('#jform_type', array('value' => 'calendar'));
+
+		$I->clickAndWait("//*/button[contains(@aria-controls, 'attrib-basic')]", 1);
+		$I->fillField('#jform_params_hint', 'Date to insert');
+
+		$I->click(Generals::$toolbar4['Save & Close']);
+	}
+
+	/**
+	 * Add an article with a custom Joomla field
+	 *
+	 * @param   \AcceptanceTester $I
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 *
+	 * @since   4.2.0
+	 */
+	public static function addContentWithCustomField(\AcceptanceTester $I)
+	{
+		$content = <<<CONTENT
+<p>Test for custom fields</p>
+<p>Author: {field 1}</p>
+<p>Date: {field 2}</p>
+CONTENT;
+
+
+
+		$I->amOnPage('/administrator/index.php?option=com_content&view=articles');
+
+		$I->clickAndWait(Generals::$toolbar['New'], 1);
+
+		$I->fillField('#jform_title', 'Test content fields');
+
+		$I->selectOption('#jform_state', array('value' => '1'));
+		$I->wait(1);
+		$I->clickAndWait('//*/div[2]/div[2]/joomla-field-fancy-select/div/div[1]', 1);
+		$I->clickAndWait('//*[@id="choices--jform_catid-item-choice-2"]', 1);
+
+		$I->scrollTo("//*/button[contains(@class, 'wf-editor-toggle')]", 0, -100);
+		$I->wait(1);
+		$I->clickAndWait("//*/button[contains(@class, 'wf-editor-toggle')]", 1);
+
+		$I->fillField("//*[@id='jform_articletext']", $content);
+
+		$I->scrollTo("//*/button[contains(@class, 'wf-editor-toggle')]", 0, -100);
+		$I->wait(1);
+		$I->clickAndWait("//*/button[contains(@class, 'wf-editor-toggle')]", 1);
+		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+		$I->wait(1);
+
+		$I->clickAndWait("//*/form/div[2]/joomla-tab/div/button[4]", 1);
+		$I->fillField("#jform_com_fields_date", "2023-06-18");
+
+		$I->clickAndWait("//*/form/div[2]/joomla-tab/div/button[5]", 1);
+		$I->fillField("#jform_com_fields_about_the_author", "The author loves programming");
+
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
+	}
 }

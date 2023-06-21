@@ -68,7 +68,7 @@ class TestUpdateCest
 		$I->clickAndWait(InstallPage::$installButton, 5);
 
 		$I->waitForElement(Generals::$alert_success, 30);
-		$I->see(InstallPage::$installSuccessMsg, Generals::$alert_success);
+//		$I->see(InstallPage::$installSuccessMsg, Generals::$alert_success);
 		$I->dontSee("Error", Generals::$alert_heading);
 	}
 

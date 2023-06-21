@@ -68,6 +68,10 @@ class TestNewslettersDetailsCest
 	public function CreateOneNewsletterCancelMainView(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Newsletter and cancel from main view");
+
+		NlEdit::addCustomField($I);
+		NlEdit::addContentWithCustomField($I);
+
 		$I->amOnPage(MainView::$url);
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
@@ -208,9 +212,6 @@ class TestNewslettersDetailsCest
 	public function CreateOneNewsletterCompleteListViewCustomfield(\AcceptanceTester $I)
 	{
 		$I->wantTo("Create one Newsletter with Joomla article with custom fields, archive and delete list view");
-
-		NlEdit::addCustomField($I);
-		NlEdit::addContentWithCustomField($I);
 
 		$I->amOnPage(NlManage::$url);
 		$I->click(Generals::$toolbar['New']);

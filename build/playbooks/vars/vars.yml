@@ -14,7 +14,7 @@ package_parts:
   - plg_system_bwpm_useraccount
   - plg_system_bwpm_user2subscriber
   - plg_bwpostman_footerusedmailinglists
-#  - plg_system_bwpm_mediaoverride
+  - plg_bwpostman_newslettercontent
 
 languages:
   - de-DE
@@ -69,6 +69,7 @@ manifest_list:
   - src/plugins/system/bwpm_useraccount/bwpm_useraccount.xml
   - src/plugins/bwpostman/footerusedmailinglists/footerusedmailinglists.xml
   - build/manifests/pkg_bwpostman.xml
+  - src/plugins/bwpostman/newslettercontent/newslettercontent.xml
 #  - src/plugins/system/bwpm_mediaoverride/bwpm_mediaoverride.xml
 #  - build/manifests/lang_bwpostman_de-DE.xml
 #  - build/manifests/lang_bwpostman_en-GB.xml

@@ -139,7 +139,7 @@ class ContentRenderer
 					$content['text_version'] .= $this->replaceContentText($content_id, $text_tpl);
 				}
 
-				$app->triggerEvent('onBwpmAfterRenderNewsletterArticle', array(&$nl_content, &$tpl, &$text_tpl, &$content));
+				$app->triggerEvent('onBwpmAfterRenderNewsletterArticle', array(&$nl_content, &$tpl, &$text_tpl, &$content, $content_id, 'bwpostman'));
 			}
 		}
 
@@ -159,7 +159,7 @@ class ContentRenderer
 	 *
 	 * @since       0.9.1
 	 */
-	public function retrieveContent(int $id)
+	public function  retrieveContent(int $id)
 	{
 		$row   = new stdClass();
 		$app   = Factory::getApplication();
@@ -235,7 +235,7 @@ class ContentRenderer
 	/**
 	 * Method to replace HTML content
 	 *
-	 * @param int    $id
+	 * @param int    $id    Content ID
 	 * @param object $tpl
 	 *
 	 * @return string
@@ -281,6 +281,10 @@ class ContentRenderer
 
 			if ($row)
 			{
+//				$row = $this->processContentPlugins($row);
+				$app->triggerEvent('onBwpmRenderNewsletterArticle', array('bwpostman', &$row));
+
+
 				$params  = $row->params;
 				$lang    = self::getArticleLanguage($row->id);
 				$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
@@ -413,7 +417,8 @@ class ContentRenderer
 
 			if ($row)
 			{
-				$row = $this->processContentPlugins($row);
+//				$row = $this->processContentPlugins($row);
+				$app->triggerEvent('onBwpmRenderNewsletterArticle', array('bwpostman', &$row));
 
 				$lang    = self::getArticleLanguage($row->id);
 				$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
@@ -504,7 +509,8 @@ class ContentRenderer
 
 			if ($row)
 			{
-				$row = $this->processContentPlugins($row);
+//				$row = $this->processContentPlugins($row);
+				Factory::getApplication()->triggerEvent('onBwpmRenderNewsletterArticle', array('bwpostman', &$row));
 
 				list($link, $intro_text) = $this->getIntroText($row);
 
@@ -571,6 +577,9 @@ class ContentRenderer
 
 			if ($row)
 			{
+//				$row = $this->processContentPlugins($row);
+				$app->triggerEvent('onBwpmRenderNewsletterArticle', array('bwpostman', &$row));
+
 				list($link, $intro_text) = $this->getIntroText($row);
 
 				if (intval($row->created) != 0)
@@ -1537,17 +1546,53 @@ class ContentRenderer
 	}
 
 	/**
-	 * @param object|stdClass                                      $row
+	 * Process content plugins on newsletter content
 	 *
-	 * @return mixed|object|stdClass
+	 * @param object $row
+	 *
+	 * @return mixed|object
+	 *
+	 * @throws Exception
 	 *
 	 * @since 4.2.0
 	 */
-	protected function processContentPlugins($row)
-	{
-		PluginHelper::importPlugin('content');
-		Factory::getApplication()->triggerEvent('onContentPrepare', ['com_content.article', &$row, &$row->attribs, 0]);
-
-		return $row;
-	}
+//	protected function processContentPlugins(object $row)
+//	{
+//		// Some plugins don't make sense in context of newsletters, so exclude them from processing
+//		$excludedPlugins = array(
+//			'confirmconsent',
+//			'emailcloak',
+//			'finder',
+//			'joomla',
+//			'pagebreak',
+//			'pagenavigation',
+//			'vote',
+//			'jce',
+//		);
+//
+//		// Get list of all content plugins
+//		$availablePlugins = PluginHelper::getPlugin('content');
+//
+//		// Only process not excluded plugins, one by one to be able to process special handling, if plugin needs it
+//		foreach ($availablePlugins as $availablePlugin)
+//		{
+//			if (!in_array($availablePlugin->name, $excludedPlugins))
+//			{
+//				// Prepare row data for loadmodule
+//				if ($availablePlugin->name == 'loadmodule')
+//				{
+//					$row->text = $row->introtext;
+//				}
+//
+//				$currentPlugin = Factory::getApplication()->bootPlugin($availablePlugin->name, 'content');
+//
+//				if (method_exists($currentPlugin, 'onContentPrepare'))
+//				{
+//					$currentPlugin->onContentPrepare('com_content.article', $row, $row->attribs, 0);
+//				}
+//			}
+//		}
+//
+//		return $row;
+//	}
 }

@@ -9,7 +9,7 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 Version 4.2.0 released (2023-07-14)----
 
 New
-+ Support for content plugins at articles
++ Support for some content plugins at articles used at newsletter content
 
 Bugfix
 # htmlspecialchars array error with multiple attachments at sent newsletter

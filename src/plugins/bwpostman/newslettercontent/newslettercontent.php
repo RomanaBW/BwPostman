@@ -102,6 +102,10 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 			'jce',
 		);
 
+		$includedPlugins = array(
+			'fields',
+		);
+
 		// Prepare the applications
 		$container = Factory::getContainer();
 		$user = Factory::getApplication()->getIdentity();
@@ -146,7 +150,8 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 		// Only process not excluded plugins, one by one to be able to process special handling, if plugin needs it
 		foreach ($availablePlugins as $availablePlugin)
 		{
-			if (!in_array($availablePlugin->name, $excludedPlugins))
+//			if (!in_array($availablePlugin->name, $excludedPlugins))
+			if (in_array($availablePlugin->name, $includedPlugins))
 			{
 				$currentPlugin = $adminApp->bootPlugin($availablePlugin->name, 'content');
 
@@ -175,12 +180,13 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 	/**
 	 * Get the path to a layout from a Plugin
 	 *
-	 * @param   string  $type    Plugin type
-	 * @param   string  $name    Plugin name
-	 * @param   string  $layout  Layout name
+	 * @param string $type   Plugin type
+	 * @param string $name   Plugin name
+	 * @param string $layout Layout name
 	 *
 	 * @return  string  Layout path
 	 *
+	 * @throws Exception
 	 * @since   3.0
 	 */
 	public function getLayoutPath($type, $name, $layout = 'default')

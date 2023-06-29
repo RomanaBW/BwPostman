@@ -679,7 +679,9 @@ final class BwSiteApplication extends CMSApplication
 			$user->groups   = [$guestUsergroup];
 		}
 
-		if ($plugin = PluginHelper::getPlugin('system', 'languagefilter'))
+		$plugin = PluginHelper::getPlugin('system', 'languagefilter');
+
+		if ($plugin)
 		{
 			$pluginParams = new Registry($plugin->params);
 			$this->setLanguageFilter(true);

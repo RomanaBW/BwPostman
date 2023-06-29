@@ -104,6 +104,7 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 
 		$includedPlugins = array(
 			'fields',
+			'phocamenu',
 		);
 
 		// Prepare the applications
@@ -140,6 +141,7 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 		$siteApp = $container->get(BwSiteApplication::class);
 		$siteApp->scope = 'com_bwpostman';
 		$siteApp->initialiseApp();
+		$siteApp->loadDocument();
 		$siteApp->loadIdentity($user);
 
 		$adminApp = Factory::getApplication();

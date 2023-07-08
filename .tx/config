@@ -92,3 +92,16 @@ file_filter = src/language/<lang>/<lang>.mod_bwpostman_overview.sys.ini
 minimum_perc = 0
 source_file = src/language/en-GB/en-GB.mod_bwpostman_overview.sys.ini
 source_lang = en-GB
+
+[bwpostman.admin-en-gb-plg-bwpostman-newslettercontent]
+file_filter = src/administrator/language/<lang>/<lang>.plg_bwpostman_newslettercontent.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.plg_bwpostman_newslettercontent.ini
+source_lang = en_GB
+
+[bwpostman.admin-en-gb-plg-bwpostman-newslettercontent-sys]
+file_filter = src/administrator/language/<lang>/<lang>.plg_bwpostman_newslettercontent.sys.ini
+minimum_perc = 0
+source_file = src/administrator/language/en-GB/en-GB.plg_bwpostman_newslettercontent.sys.ini
+source_lang = en_GB
+

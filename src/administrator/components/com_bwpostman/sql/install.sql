@@ -221,7 +221,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_templates` (
   `tpl_article` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `tpl_divider` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `tpl_id` INT(11) NOT NULL DEFAULT '0',
-  `basics` VARCHAR(400) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `basics` VARCHAR(2000) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `header` VARCHAR(1600) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `intro` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `article` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,

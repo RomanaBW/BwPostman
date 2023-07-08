@@ -1,1 +1,3 @@
-/* Placeholder file for database changes for version 4.2.0 to satisfy Joomla!'s extensions installer */
+/* Increase size of column basics  at table #__bwpostman_templates */
+
+ALTER TABLE `#__bwpostman_templates` MODIFY `basics` VARCHAR(2000) NOT NULL DEFAULT '';

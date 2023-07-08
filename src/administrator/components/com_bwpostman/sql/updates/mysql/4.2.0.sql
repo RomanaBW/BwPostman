@@ -1,3 +1,3 @@
-/* Increase size of column basics  at table #__bwpostman_templates */
+/* Change column basics at table #__bwpostman_templates from varchar to text */
 
-ALTER TABLE `#__bwpostman_templates` MODIFY `basics` VARCHAR(2000) NOT NULL DEFAULT '';
+ALTER TABLE `#__bwpostman_templates` MODIFY `basics` TEXT NOT NULL DEFAULT '';

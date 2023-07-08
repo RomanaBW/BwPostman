@@ -74,7 +74,7 @@ ALTER TABLE `#__bwpostman_templates` MODIFY `tpl_html` TEXT NOT NULL;
 ALTER TABLE `#__bwpostman_templates` MODIFY `tpl_css` TEXT NOT NULL;
 ALTER TABLE `#__bwpostman_templates` MODIFY `tpl_article` TEXT NOT NULL;
 ALTER TABLE `#__bwpostman_templates` MODIFY `tpl_divider` TEXT NOT NULL;
-ALTER TABLE `#__bwpostman_templates` MODIFY `basics` VARCHAR(2000) NOT NULL;
+ALTER TABLE `#__bwpostman_templates` MODIFY `basics` TEXT NOT NULL;
 ALTER TABLE `#__bwpostman_templates` MODIFY `header` VARCHAR(1600) NOT NULL;
 ALTER TABLE `#__bwpostman_templates` MODIFY `intro` TEXT NOT NULL;
 ALTER TABLE `#__bwpostman_templates` MODIFY `article` TEXT NOT NULL;

@@ -6,7 +6,7 @@
 DROP TABLE IF EXISTS `#__bwpostman_tc_schedule`;
 CREATE TABLE IF NOT EXISTS `#__bwpostman_tc_schedule` (
   `newsletter_id` INT(11) NOT NULL,
-  `scheduled_date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `scheduled_date` DATETIME NOT NULL,
   `ready_to_send` TINYINT(1) NOT NULL DEFAULT '0',
   `sent` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`newsletter_id`)

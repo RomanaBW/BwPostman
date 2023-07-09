@@ -15,6 +15,7 @@ Bugfix
 # htmlspecialchars array error with multiple attachments at sent newsletter
 # Dispatcher of frontend lamented if task was not set at url
 # Sending of newsletters with attachments with space at the name was not possible
+# Don't set default value for DATETIME columns at table because this may lead to SQL errors
 
 improvement
 ~ Replace faulty editlink before use (send newsletter, send editlink for edit subscription)

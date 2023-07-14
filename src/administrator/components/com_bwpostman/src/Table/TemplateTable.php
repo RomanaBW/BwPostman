@@ -139,7 +139,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       1.1.0
 	 */
-	public $basics = null;
+	public $basics = '';
 
 	/**
 	 * @var string header

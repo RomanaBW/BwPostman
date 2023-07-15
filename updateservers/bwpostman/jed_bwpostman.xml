@@ -7,6 +7,7 @@
 		**BwPostman main features:**
 
 		- You can compose the content of the newsletter with free text and articles that are already written in Joomla!®.
+		- You can use selected content plugins at articles of Joomla!® in Your newsletter.
 		- The newsletters can be personalized.
 		- In BwPostman you can create as many mailing lists as you want and so you can get different mailing lists for every thinkable constellation of recipients (guests, registered users, issue...).
 		- BwPostman always generates the newsletter in HTML and in text format.
@@ -40,7 +41,7 @@
 	<documentation_link>https://www.boldt-webservice.de/index.php/en/forum-en/manuals/bwpostman-manual.html</documentation_link>
 	<support_link>https://www.boldt-webservice.de/index.php/en/forum-en/forum/bwpostman.html</support_link>
 
-	<version>4.2.1</version>
+	<version>4.2.2</version>
 
 	<compatibility>
 		<version>4</version>

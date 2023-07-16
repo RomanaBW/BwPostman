@@ -954,15 +954,17 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 		if ($id)
 		{
-			// Existing newsletter list
+			// Existing newsletter
 			$this->modified_time = $date->toSql();
 			$this->modified_by = $user->get('id');
 		}
 		else
 		{
-			// New newsletter list
+			// New newsletter
 			$this->created_date = $date->toSql();
 			$this->created_by = $user->get('id');
+			$this->modified_time = $this->_db->getNullDate();
+			$this->archive_date = $this->_db->getNullDate();
 		}
 
 		$res	= parent::store($updateNulls);

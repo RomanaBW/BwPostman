@@ -811,6 +811,8 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	public function store($updateNulls = false): bool
 	{
 		$app  = Factory::getApplication();
+		$date = Factory::getDate();
+		$user = $app->getIdentity();
 
 		if ($this->gender === '')
 		{
@@ -820,8 +822,16 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		if ($this->id)
 		{
 			// Existing subscriber
-			$this->modified_time = Factory::getDate()->toSql();
-			$this->modified_by   = Factory::getApplication()->getIdentity()->get('id');
+			$this->modified_time = $date->toSql();
+			$this->modified_by   = $user->get('id');
+		}
+		else
+		{
+			// New subscriber
+			$this->created_date = $date->toSql();
+			$this->created_by   = $user->get('id');
+			$this->modified_time = $this->_db->getNullDate();
+			$this->archive_date = $this->_db->getNullDate();
 		}
 
 		if ($this->confirmation_date == 0)

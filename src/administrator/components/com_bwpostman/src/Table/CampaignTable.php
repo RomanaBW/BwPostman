@@ -394,6 +394,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 			$this->created_by = $user->get('id');
 			$this->modified_time = $this->_db->getNullDate();
 			$this->archive_date = $this->_db->getNullDate();
+			$this->checked_out_time = $this->_db->getNullDate();
 		}
 
 		$res	= parent::store($updateNulls);

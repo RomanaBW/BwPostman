@@ -5,7 +5,7 @@ pipeline {
         stage('Set variables for php 8 part') {
 			steps {
 				script {
-					BWPM_VERSION = "4.2.2"
+					BWPM_VERSION = "4.2.3"
 
 //					Stable
 					JOOMLA_VERSION = "4.3.3"

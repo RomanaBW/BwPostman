@@ -107,7 +107,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $modified_time = '0000-00-00 00:00:00';
+	public $modified_time = null;
 
 	/**
 	 * @var int user ID
@@ -128,7 +128,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out_time = '0000-00-00 00:00:00';
+	public $checked_out_time = null;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
@@ -142,7 +142,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $archive_date = '0000-00-00 00:00:00';
+	public $archive_date = null;
 
 	/**
 	 * @var int ID --> 0 = campaign is not archived, another ID = account is archived by an administrator
@@ -392,9 +392,6 @@ class CampaignTable extends Table implements VersionableTableInterface
 			// New mailing list
 			$this->created_date = $date->toSql();
 			$this->created_by = $user->get('id');
-			$this->modified_time = $this->_db->getNullDate();
-			$this->archive_date = $this->_db->getNullDate();
-			$this->checked_out_time = $this->_db->getNullDate();
 		}
 
 		$res	= parent::store($updateNulls);

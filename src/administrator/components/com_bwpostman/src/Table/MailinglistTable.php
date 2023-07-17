@@ -123,7 +123,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $modified_time = '0000-00-00 00:00:00';
+	public $modified_time = null;
 
 	/**
 	 * @var int user ID
@@ -419,9 +419,6 @@ class MailinglistTable extends Table implements VersionableTableInterface
 			// New mailing list
 			$this->created_date = $date->toSql();
 			$this->created_by   = $user->get('id');
-			$this->modified_time = $this->_db->getNullDate();
-			$this->archive_date = $this->_db->getNullDate();
-			$this->checked_out_time = $this->_db->getNullDate();
 		}
 
 		$res = parent::store($updateNulls);

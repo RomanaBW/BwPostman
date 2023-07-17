@@ -221,7 +221,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $modified_time = '0000-00-00 00:00:00';
+	public $modified_time = null;
 
 	/**
 	 * @var int user ID
@@ -235,7 +235,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $mailing_date = '0000-00-00 00:00:00';
+	public $mailing_date = null;
 
 	/**
 	 * @var int Published
@@ -249,14 +249,14 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       1.2.0
 	 */
-	public $publish_up = '0000-00-00 00:00:00';
+	public $publish_up = null;
 
 	/**
 	 * @var datetime for publishing down a newsletter
 	 *
 	 * @since       1.2.0
 	 */
-	public $publish_down = '0000-00-00 00:00:00';
+	public $publish_down = null;
 
 	/**
 	 * @var int Checked-out Owner
@@ -963,11 +963,6 @@ class NewsletterTable extends Table implements VersionableTableInterface
 			// New newsletter
 			$this->created_date = $date->toSql();
 			$this->created_by = $user->get('id');
-			$this->modified_time = $this->_db->getNullDate();
-			$this->archive_date = $this->_db->getNullDate();
-			$this->checked_out_time = $this->_db->getNullDate();
-			$this->publish_up = $this->_db->getNullDate();
-			$this->publish_down = $this->_db->getNullDate();
 		}
 
 		$res	= parent::store($updateNulls);

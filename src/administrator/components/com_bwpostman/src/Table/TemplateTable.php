@@ -237,7 +237,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       1.1.0
 	 */
-	public $modified_time = '0000-00-00 00:00:00';
+	public $modified_time = null;
 
 	/**
 	 * @var int user ID
@@ -272,7 +272,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       1.1.0
 	 */
-	public $archive_date = '0000-00-00 00:00:00';
+	public $archive_date = null;
 
 	/**
 	 * @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator
@@ -660,8 +660,6 @@ class TemplateTable extends Table implements VersionableTableInterface
 			// New template
 			$this->created_date = $date->toSql();
 			$this->created_by   = $user->get('id');
-			$this->modified_time = $this->_db->getNullDate();
-			$this->checked_out_time = $this->_db->getNullDate();
 		}
 
 		$res = parent::store($updateNulls);

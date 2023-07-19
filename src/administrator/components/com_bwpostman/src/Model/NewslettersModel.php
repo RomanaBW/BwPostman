@@ -747,7 +747,8 @@ class NewslettersModel extends ListModel
 				break;
 		}
 
-		$this->query->where('a.mailing_date' . $tab_int . $this->getDatabase()->quote($this->getDatabase()->getNullDate()));
+		$this->query->where('a.mailing_date' . $tab_int . $this->getDatabase()->quote($this->getDatabase()->getNullDate())
+			. ' OR a.mailing_date IS NULL');
 	}
 
 	/**

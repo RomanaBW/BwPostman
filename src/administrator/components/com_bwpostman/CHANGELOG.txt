@@ -9,6 +9,8 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 Version 4.2.3 released (2023-10-21)----
 
 Bugfix
+# Table check claimed about missing array column 'Type'
+# Unsent newsletter not displayed in backend list
 
 
 Version 4.2.2 released (2023-07-17)----

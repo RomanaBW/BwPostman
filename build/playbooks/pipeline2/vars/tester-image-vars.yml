@@ -6,7 +6,7 @@ j_version_short: "j4"
 
 bwpm_version: "4.2.3"
 bwpm_version_dotted: "4.2.3"
-bwpm_version_previous: "4.1.5"
+bwpm_version_previous: "4.2.2"
 
 j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 

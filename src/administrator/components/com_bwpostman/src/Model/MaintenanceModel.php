@@ -995,7 +995,7 @@ class MaintenanceModel extends BaseDatabaseModel
 								// get column type
 								$length = strpos($column, ' ');
 
-								if ($length > 0)
+								if ($length > 0 || !$length)
 								{
 									$col_arr->Type = substr($column, 0, $length);
 									$sub_txt       = substr($column, $length + 1);
@@ -2006,7 +2006,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				'MEDIUMBLOB',
 				'LONGBLOB',
 				' GEOMETRY',
-				'JSON'
+				'JSON',
 			);
 			$defaultQuery   = '';
 
@@ -2094,7 +2094,9 @@ class MaintenanceModel extends BaseDatabaseModel
 //		Check if default value of installed columns is set, where it should not be set
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
-			if (!key_exists('Default', $neededColumns[$i]) && key_exists('Default', $installedColumns[$i]) && $installedColumns[$i]['Default'] !== '' && in_array($neededColumns[$i]['Type'], $withoutDefault))
+			if (!key_exists('Default', $neededColumns[$i])
+				&& key_exists('Default', $installedColumns[$i])
+				&& $installedColumns[$i]['Default'] !== '' && in_array($neededColumns[$i]['Type'], $withoutDefault))
 			{
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DEFAULT_WRONG',
 					$neededColumns[$i]['Column'], $checkTable->name);

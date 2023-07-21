@@ -918,8 +918,8 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 		if (!$archived)
 		{
-			$query->where($db->quoteName('mailing_date') . $mailingDateOperator . $db->quote($db->getNullDate())
-				. ' OR ' . $db->quoteName('mailing_date') . $nullDateOperator);
+			$query->where('(' . $db->quoteName('mailing_date') . $mailingDateOperator . $db->quote($db->getNullDate())
+				. ' OR ' . $db->quoteName('mailing_date') . $nullDateOperator . ')');
 		}
 
 		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);

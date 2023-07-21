@@ -766,6 +766,7 @@ class NewsletterModel extends AdminModel
 
 		if (!parent::save($data))
 		{
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_ERROR_SAVE_SENDING_NOT_POSSIBLE'), 'error');
 			return false;
 		}
 

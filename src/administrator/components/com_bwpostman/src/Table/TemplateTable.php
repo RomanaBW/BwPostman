@@ -660,8 +660,6 @@ class TemplateTable extends Table implements VersionableTableInterface
 			// New template
 			$this->created_date = $date->toSql();
 			$this->created_by   = $user->get('id');
-			$this->modified_time = $this->_db->getNullDate();
-			$this->checked_out_time = $this->_db->getNullDate();
 		}
 
 		$res = parent::store($updateNulls);

@@ -419,9 +419,6 @@ class MailinglistTable extends Table implements VersionableTableInterface
 			// New mailing list
 			$this->created_date = $date->toSql();
 			$this->created_by   = $user->get('id');
-			$this->modified_time = $this->_db->getNullDate();
-			$this->archive_date = $this->_db->getNullDate();
-			$this->checked_out_time = $this->_db->getNullDate();
 		}
 
 		$res = parent::store($updateNulls);

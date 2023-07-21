@@ -248,7 +248,7 @@ class MailinglistModel extends AdminModel
 		$c_date   = $form->getValue('created_date');
 		$nullDate = $this->_db->getNullDate();
 
-		if ($c_date === $nullDate)
+		if ($c_date === $nullDate || $c_date === null)
 		{
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
 			$form->setFieldAttribute('created_by', 'type', 'hidden');
@@ -257,7 +257,7 @@ class MailinglistModel extends AdminModel
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
 
-		if ($m_date === $nullDate)
+		if ($m_date === $nullDate || $m_date === null)
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
@@ -334,7 +334,7 @@ class MailinglistModel extends AdminModel
 				}
 			}
 
-			$time = $this->_db->getNullDate();
+			$time = null;
 			$uid  = 0;
 		}
 

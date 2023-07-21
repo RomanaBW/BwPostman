@@ -258,7 +258,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       1.1.0
 	 */
-	public $checked_out_time = 0;
+	public $checked_out_time = null;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived

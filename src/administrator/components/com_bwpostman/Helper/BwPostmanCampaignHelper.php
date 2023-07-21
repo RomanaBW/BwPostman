@@ -117,10 +117,12 @@ abstract class BwPostmanCampaignHelper
 		$newsletters = array();
 		$archiveFlag = 0;
 		$mailingDateOperator = "=";
+		$nullDateOperator    = ' IS NULL';
 
 		if ($sent)
 		{
 			$mailingDateOperator = "!=";
+			$nullDateOperator    = 'IS NOT NULL';
 		}
 
 		if ($all)
@@ -143,7 +145,8 @@ abstract class BwPostmanCampaignHelper
 
 		if (!$archiveFlag)
 		{
-			$query->where($db->quoteName('mailing_date') . $mailingDateOperator . $db->quote($db->getNullDate()));
+			$query->where($db->quoteName('mailing_date') . $mailingDateOperator . $db->quote($db->getNullDate())
+				. ' OR ' . $db->quoteName('mailing_date') . $nullDateOperator);
 		}
 
 		try
@@ -186,7 +189,8 @@ abstract class BwPostmanCampaignHelper
 
 		if ($hasMailingdate)
 		{
-			$sub_query->where($db->quoteName('b') . '.' . $db->quoteName('mailing_date') . ' != "' . $nullDate . '"');
+			$sub_query->where($db->quoteName('b') . '.' . $db->quoteName('mailing_date') . ' != "' . $nullDate . '"'
+			. $db->quoteName('b') . '.' . $db->quoteName('mailing_date') . ' IS NOT NULL');
 		}
 
 		if ($archiveMatters)

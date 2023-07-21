@@ -427,7 +427,7 @@ class TemplateModel extends AdminModel
 		$nullDate = $this->_db->getNullDate();
 		$c_date   = $form->getValue('created_date');
 
-		if ($c_date === $nullDate)
+		if ($c_date === $nullDate || $c_date === null)
 		{
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
 			$form->setFieldAttribute('created_by', 'type', 'hidden');
@@ -436,7 +436,7 @@ class TemplateModel extends AdminModel
 		// Check to show modified data
 		$m_date = $form->getValue('modified_time');
 
-		if ($m_date === $nullDate)
+		if ($m_date === $nullDate || $m_date === null)
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
@@ -514,7 +514,7 @@ class TemplateModel extends AdminModel
 				}
 			}
 
-			$time = $db->getNullDate();
+			$time = null;
 			$uid  = 0;
 		}
 

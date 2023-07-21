@@ -200,7 +200,8 @@ class NewsletterelementModel extends BaseDatabaseModel
 
 		// Filter by published state
 		$query->where('a.published != ' . 0);
-		$query->where($db->quoteName('a.mailing_date') . ' != ' . $db->quote($db->getNullDate()));
+		$query->where($db->quoteName('a.mailing_date') . ' != ' . $db->quote($db->getNullDate())
+			. ' OR a.mailing_date IS NOT NULL');
 
 		// Get the search string
 		$search = $this->getSearch();

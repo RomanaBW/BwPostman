@@ -144,7 +144,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out_time = 0;
+	public $checked_out_time = null;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived

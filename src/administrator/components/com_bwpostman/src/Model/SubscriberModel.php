@@ -789,7 +789,7 @@ class SubscriberModel extends AdminModel
 		$values["registration_date"] = $time;
 		$values["registered_by"]     = $user->get('id');
 		$values["registration_ip"]   = $remote_ip;
-		$values["confirmation_date"] = 0;
+		$values["confirmation_date"] = null;
 		$values["confirmation_ip"]   = 0;
 		$values["confirmed_by"]      = -1;
 		$values["editlink"]          = '';

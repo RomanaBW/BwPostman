@@ -415,7 +415,7 @@ class NewsletterModel extends AdminModel
 		$nulldate = $this->_db->getNullDate();
 		$c_date   = $form->getValue('created_date');
 
-		if ($c_date === $nulldate)
+		if ($c_date === $nulldate || $c_date === null)
 		{
 			$form->setFieldAttribute('created_date', 'type', 'hidden');
 			$form->setFieldAttribute('created_by', 'type', 'hidden');
@@ -424,7 +424,7 @@ class NewsletterModel extends AdminModel
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
 
-		if ($m_date === $nulldate)
+		if ($m_date === $nulldate || $m_date === null)
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');
@@ -433,7 +433,7 @@ class NewsletterModel extends AdminModel
 		// Check to show mailing data
 		$s_date	= $form->getValue('mailing_date');
 
-		if ($s_date === $nulldate)
+		if ($s_date === $nulldate || $s_date === null)
 		{
 			$form->setFieldAttribute('mailing_date', 'type', 'hidden');
 		}
@@ -726,17 +726,16 @@ class NewsletterModel extends AdminModel
 	{
 		$app      = Factory::getApplication();
 		$jinput   = $app->input;
-		$nullDate = $this->_db->getNullDate();
 
 		// Correct empty publishing dates
 		if (isset($data['publish_up']) &&  $data['publish_up'] === "")
 		{
-			$data['publish_up'] = $nullDate;
+			$data['publish_up'] = null;
 		}
 
 		if (isset($data['publish_down']) &&  $data['publish_down'] === "")
 		{
-			$data['publish_down'] = $nullDate;
+			$data['publish_down'] = null;
 		}
 
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
@@ -925,12 +924,12 @@ class NewsletterModel extends AdminModel
 		$newsletters_data_copy->created_by       = $uid;
 		$newsletters_data_copy->modified_time    = null;
 		$newsletters_data_copy->modified_by      = null;
-		$newsletters_data_copy->mailing_date     = 0;
+		$newsletters_data_copy->mailing_date     = null;
 		$newsletters_data_copy->published        = null;
 		$newsletters_data_copy->checked_out      = null;
 		$newsletters_data_copy->checked_out_time = null;
 		$newsletters_data_copy->archive_flag     = 0;
-		$newsletters_data_copy->archive_date     = 0;
+		$newsletters_data_copy->archive_date     = null;
 		$newsletters_data_copy->hits             = null;
 		$newsletters_data_copy->substitute_links = null;
 		$newsletters_data_copy->is_template      = 0;
@@ -1226,18 +1225,16 @@ class NewsletterModel extends AdminModel
 			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_HTML_AND_TEXT');
 		}
 
-		$nullDate = $this->_db->getNullDate();
-
 		// Check for valid publish_up values
 		if (!$data['publish_up'])
 		{
-			$data['publish_up'] = $nullDate;
+			$data['publish_up'] = null;
 		}
 
 		// Check for valid publish_down values
 		if (!$data['publish_down'])
 		{
-			$data['publish_down'] = $nullDate;
+			$data['publish_down'] = null;
 		}
 
 		return $data;

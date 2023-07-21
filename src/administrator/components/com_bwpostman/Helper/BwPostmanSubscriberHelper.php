@@ -631,7 +631,7 @@ class BwPostmanSubscriberHelper
 		$c_date = $form->getValue('confirmation_date', null, $nullDate);
 
 		// check if conformation date is '0000-00-00 00:00:00'
-		if ($c_date === $nullDate)
+		if ($c_date === $nullDate || $c_date === null)
 		{
 			$form->setFieldAttribute('confirmation_date', 'type', 'hidden');
 			$form->setFieldAttribute('confirmed_by', 'type', 'hidden');
@@ -654,7 +654,7 @@ class BwPostmanSubscriberHelper
 
 		// Check to show modified data
 		$m_date	= $form->getValue('modified_time');
-		if ($m_date === $nullDate)
+		if ($m_date === $nullDate || $m_date === null)
 		{
 			$form->setFieldAttribute('modified_time', 'type', 'hidden');
 			$form->setFieldAttribute('modified_by', 'type', 'hidden');

@@ -652,14 +652,18 @@ class NewslettersModel extends ListModel
 					break;
 				case 2:
 					$this->query->where($db->quoteName('a.publish_down') . ' <> ' . $nullDate);
+					$this->query->where($db->quoteName('a.publish_down') . ' IS NOT NOLL');
 					$this->query->where($db->quoteName('a.publish_down') . ' <= ' . $nowDate);
 					break;
 				case 3:
-					$this->query->where($db->quoteName('publish_down') . ' >= ' . $nowDate . ' OR publish_down = ' . $nullDate . ')');
+					$this->query->where($db->quoteName('publish_down') . ' >= ' . $nowDate
+						. ' OR publish_down = ' . $nullDate
+						. ' OR publish_down IS NULL)');
 					break;
 				case 4:
 					$this->query->where($db->quoteName('a.publish_up') . ' <= ' . $nowDate);
 					$this->query->where($db->quoteName('a.publish_down') . ' <> ' . $nullDate);
+					$this->query->where($db->quoteName('a.publish_down') . ' IS NOT NOLL');
 					$this->query->where($db->quoteName('a.publish_down') . ' > ' . $nowDate);
 					break;
 				case 5:

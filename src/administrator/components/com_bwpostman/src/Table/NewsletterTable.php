@@ -270,7 +270,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out_time = 0;
+	public $checked_out_time = null;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
@@ -284,7 +284,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $archive_date = 0;
+	public $archive_date = null;
 
 	/**
 	 * @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator
@@ -746,7 +746,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 		}
 		else
 		{
-			$time = $db->getNullDate();
+			$time = null;
 			$uid  = 0;
 		}
 
@@ -897,10 +897,12 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	{
 		$archiveFlag         = 0;
 		$mailingDateOperator = "=";
+		$nullDateOperator    = ' IS NULL';
 
 		if ($sent)
 		{
 			$mailingDateOperator = "!=";
+			$nullDateOperator    = ' IS NOT NULL';
 		}
 
 		if ($archived)
@@ -916,7 +918,8 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 		if (!$archived)
 		{
-			$query->where($db->quoteName('mailing_date') . $mailingDateOperator . $db->quote($db->getNullDate()));
+			$query->where($db->quoteName('mailing_date') . $mailingDateOperator . $db->quote($db->getNullDate())
+				. ' OR ' . $db->quoteName('mailing_date') . $nullDateOperator);
 		}
 
 		$query->where($db->quoteName('archive_flag') . ' = ' . $archiveFlag);

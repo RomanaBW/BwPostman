@@ -365,7 +365,6 @@ class CampaignModel extends AdminModel
 		$uid      = Factory::getApplication()->getIdentity()->get('id');
 		$db       = $this->_db;
 		$query    = $db->getQuery(true);
-		$nullDate = $db->getNullDate();
 
 		$cid = ArrayHelper::toInteger($cid);
 
@@ -393,7 +392,7 @@ class CampaignModel extends AdminModel
 				}
 			}
 
-			$time = $nullDate;
+			$time = null;
 			$uid  = 0;
 		}
 

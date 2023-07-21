@@ -200,7 +200,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $modified_time = '0000-00-00 00:00:00';
+	public $modified_time = null;
 
 	/**
 	 * @var int user ID
@@ -221,7 +221,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out_time = '0000-00-00 00:00:00';
+	public $checked_out_time = null;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
@@ -1401,7 +1401,8 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$query->from($db->quoteName($this->_tbl));
 		$query->where($db->quoteName('activation') . ' = ' . $db->quote($activation));
 		$query->where($db->quoteName('status') . ' = ' . 0);
-		$query->where($db->quoteName('confirmation_date') . ' = ' . $db->quote($db->getNullDate()));
+		$query->where($db->quoteName('confirmation_date') . ' = ' . $db->quote($db->getNullDate())
+		 . ' OR ' . $db->quoteName('confirmation_date') . ' IS NULL');
 		$query->where($db->quoteName('confirmed_by') . ' = ' . -1);
 		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
 		$query->where($db->quoteName('archived_by') . ' = ' . -1);

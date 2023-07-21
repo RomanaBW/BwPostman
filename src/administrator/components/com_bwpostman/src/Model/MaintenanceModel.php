@@ -4007,7 +4007,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			$insert_data = implode(',', $dataset);
 			$insert_data = substr($insert_data, 1, (strlen($insert_data) - 2));
 
-			$query = 'REPLACE INTO ' . $this->db->quoteName($table) . '(' . implode(',',
+			$query = 'INSERT IGNORE INTO ' . $this->db->quoteName($table) . '(' . implode(',',
 					$table_colnames) . ') VALUES (' . $insert_data . ')';
 
 			$this->db->setQuery($query);
@@ -4313,7 +4313,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 
 			// copy affected tables to temporary tables, data set part
-			$query = 'INSERT INTO ' . $this->db->quoteName($tableNameGeneric . '_tmp') . ' SELECT * FROM ' . $this->db->quoteName($tableNameGeneric);
+			$query = 'INSERT IGNORE INTO ' . $this->db->quoteName($tableNameGeneric . '_tmp') . ' SELECT * FROM ' . $this->db->quoteName($tableNameGeneric);
 
 			try
 			{

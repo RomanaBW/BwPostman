@@ -577,7 +577,7 @@ class NewslettersModel extends ListModel
 				'list.select',
 				'DISTINCT(a.id), a.subject, a.mailing_date, a.hits, a.campaign_id, a.access, a.created_date, a.attachment, ' .
 				// Use mailing date if publish_up is 0
-				'CASE WHEN a.publish_up = ' . $nullDate . ' THEN a.mailing_date ELSE a.publish_up END as publish_up,' .
+				'CASE WHEN (a.publish_up = ' . $nullDate . ' OR a.publish_up = null) THEN a.mailing_date ELSE a.publish_up END as publish_up,' .
 				'publish_down'
 			)
 		);
@@ -585,7 +585,8 @@ class NewslettersModel extends ListModel
 		$query->from($db->quoteName('#__bwpostman_newsletters') . ' AS ' . $db->quoteName('a'));
 		// in front end only sent and published newsletters are shown!
 		$query->where($db->quoteName('a') . '.' . $db->quoteName('published') . ' = ' . 1);
-		$query->where($db->quoteName('a') . '.' . $db->quoteName('mailing_date') . ' != ' . $db->quote($db->getNullDate()));
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('mailing_date') . ' != ' . $db->quote($db->getNullDate())
+		. $db->quoteName('a') . '.' . $db->quoteName('mailing_date') . ' IS NOT NULL');
 
 		// Filter by mailing lists, user groups and campaigns
 		$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
@@ -603,12 +604,12 @@ class NewslettersModel extends ListModel
 			case 'not_arc_down':
 					$query->where('a.archive_flag = 0');
 					$query->where('a.publish_up <= ' . $nowDate);
-					$query->where('(a.publish_down >= ' . $nowDate . ' OR a.publish_down = ' . $nullDate . ')');
+					$query->where('(a.publish_down >= ' . $nowDate . ' OR a.publish_down = ' . $nullDate . ' OR a.publish_down = null)');
 				break;
 			case 'not_arc_but_down':
 					$query->where('a.archive_flag = 0');
 					$query->where('a.publish_up <= ' . $nowDate);
-					$query->where('a.publish_down <> ' . $nullDate);
+					$query->where('a.publish_down <> ' . $nullDate . 'a.publish_down IS NOT NULL');
 					$query->where('a.publish_down <= ' . $nowDate);
 				break;
 			case 'arc':
@@ -616,20 +617,20 @@ class NewslettersModel extends ListModel
 				break;
 			case 'down':
 					$query->where('a.publish_up <= ' . $nowDate);
-					$query->where('a.publish_down <> ' . $nullDate);
+					$query->where('a.publish_down <> ' . $nullDate . 'a.publish_down IS NOT NULL');
 					$query->where('a.publish_down <= ' . $nowDate);
 				break;
 			case 'arc_and_down':
 					$query->where('a.archive_flag = 1');
 					$query->where('a.publish_up <= ' . $nowDate);
-					$query->where('a.publish_down <> ' . $nullDate);
+					$query->where('a.publish_down <> ' . $nullDate . 'a.publish_down IS NOT NULL');
 					$query->where('a.publish_down <= ' . $nowDate);
 				break;
 			case 'arc_or_down':
 					$query->where(
 						'(a.archive_flag = 1
 							OR (
-								a.publish_down <> ' . $nullDate . '
+								(a.publish_down <> ' . $nullDate . ' OR a.publish_down IS NOT NULL) 
 								AND a.publish_down <= ' . $nowDate . '
 								AND a.publish_up <= ' . $nowDate . '
 							))'

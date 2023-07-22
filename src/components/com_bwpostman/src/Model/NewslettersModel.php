@@ -586,7 +586,7 @@ class NewslettersModel extends ListModel
 		// in front end only sent and published newsletters are shown!
 		$query->where($db->quoteName('a') . '.' . $db->quoteName('published') . ' = ' . 1);
 		$query->where($db->quoteName('a') . '.' . $db->quoteName('mailing_date') . ' != ' . $db->quote($db->getNullDate())
-		. $db->quoteName('a') . '.' . $db->quoteName('mailing_date') . ' IS NOT NULL');
+		. ' AND ' . $db->quoteName('a') . '.' . $db->quoteName('mailing_date') . ' IS NOT NULL');
 
 		// Filter by mailing lists, user groups and campaigns
 		$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
@@ -604,7 +604,7 @@ class NewslettersModel extends ListModel
 			case 'not_arc_down':
 					$query->where('a.archive_flag = 0');
 					$query->where('a.publish_up <= ' . $nowDate);
-					$query->where('(a.publish_down >= ' . $nowDate . ' OR a.publish_down = ' . $nullDate . ' OR a.publish_down = null)');
+					$query->where('(a.publish_down >= ' . $nowDate . ' OR a.publish_down = ' . $nullDate . ' OR a.publish_down IS NULL)');
 				break;
 			case 'not_arc_but_down':
 					$query->where('a.archive_flag = 0');

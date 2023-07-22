@@ -1190,10 +1190,15 @@ class NewsletterModel extends AdminModel
 
 		// We need to check if attachment exists
 		// Convert attachment string or JSON to array, if present
-		if (is_string($data['attachment']))
+		if (key_exists('attachment', $data) && is_string($data['attachment']))
 		{
 			$attachments = BwPostmanNewsletterHelper::decodeAttachments($data['attachment']);
 		}
+		else
+		{
+			$attachments = array();
+		}
+
 		$counter = 1;
 		foreach ($attachments as $attachment)
 		{

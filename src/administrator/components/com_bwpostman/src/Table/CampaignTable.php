@@ -394,6 +394,13 @@ class CampaignTable extends Table implements VersionableTableInterface
 			$this->created_by = $user->get('id');
 		}
 
+		// Ensure nulldate columns have correct nulldate
+		$nulldateCols = array(
+			'modified_time',
+			'checked_out_time',
+			'archive_date',
+		);
+
 		$res	= parent::store($updateNulls);
 		Factory::getApplication()->setUserState('com_bwpostman.edit.campaign.id', $this->id);
 

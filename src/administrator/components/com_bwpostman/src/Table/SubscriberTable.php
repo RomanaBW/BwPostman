@@ -832,6 +832,14 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			$this->registered_by     = $user->get('id');
 		}
 
+		// Ensure nulldate columns have correct nulldate
+		$nulldateCols = array(
+			'confirmation_date',
+			'modified_time',
+			'checked_out_time',
+			'archive_date',
+		);
+
 		$res = parent::store($updateNulls);
 
 		if ($res !== true)

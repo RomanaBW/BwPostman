@@ -968,6 +968,24 @@ class NewsletterTable extends Table implements VersionableTableInterface
 			$this->created_by = $user->get('id');
 		}
 
+		// Ensure nulldate columns have correct nulldate
+		$nulldateCols = array(
+			'publish_up',
+			'publish_down',
+			'modified_time',
+			'mailing_date',
+			'checked_out_time',
+			'archive_date',
+		);
+
+		foreach ($nulldateCols as $nulldateCol)
+		{
+			if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->_db->getNullDate())
+			{
+				$this->$nulldateCol = null;
+			}
+		}
+
 		$res	= parent::store($updateNulls);
 		$app->setUserState('com_bwpostman.newsletter.id', $this->id);
 

@@ -840,6 +840,14 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			'archive_date',
 		);
 
+		foreach ($nulldateCols as $nulldateCol)
+		{
+			if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->_db->getNullDate())
+			{
+				$this->$nulldateCol = null;
+			}
+		}
+
 		$res = parent::store($updateNulls);
 
 		if ($res !== true)

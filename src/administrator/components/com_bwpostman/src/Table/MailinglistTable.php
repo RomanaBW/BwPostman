@@ -428,6 +428,14 @@ class MailinglistTable extends Table implements VersionableTableInterface
 			'archive_date',
 		);
 
+		foreach ($nulldateCols as $nulldateCol)
+		{
+			if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->_db->getNullDate())
+			{
+				$this->$nulldateCol = null;
+			}
+		}
+
 		$res = parent::store($updateNulls);
 		Factory::getApplication()->setUserState('com_bwpostman.edit.mailinglist.id', $this->id);
 

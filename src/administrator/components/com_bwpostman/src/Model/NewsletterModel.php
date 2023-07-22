@@ -727,17 +727,6 @@ class NewsletterModel extends AdminModel
 		$app      = Factory::getApplication();
 		$jinput   = $app->input;
 
-		// Correct empty publishing dates
-		if (isset($data['publish_up']) &&  $data['publish_up'] === "")
-		{
-			$data['publish_up'] = null;
-		}
-
-		if (isset($data['publish_down']) &&  $data['publish_down'] === "")
-		{
-			$data['publish_down'] = null;
-		}
-
 		// merge ml-arrays, single array may not exist, therefore array_merge would not give a result
 		BwPostmanMailinglistHelper::mergeMailinglists($data);
 
@@ -1223,18 +1212,6 @@ class NewsletterModel extends AdminModel
 		if ((trim($data['html_version']) === '') && (trim($data['text_version']) === ''))
 		{
 			$err[] = Text::_('COM_BWPOSTMAN_NL_ERROR_HTML_AND_TEXT');
-		}
-
-		// Check for valid publish_up values
-		if (!$data['publish_up'])
-		{
-			$data['publish_up'] = null;
-		}
-
-		// Check for valid publish_down values
-		if (!$data['publish_down'])
-		{
-			$data['publish_down'] = null;
 		}
 
 		return $data;

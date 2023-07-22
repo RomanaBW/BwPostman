@@ -523,7 +523,7 @@ class TemplateModel extends AdminModel
 
 			$query->update($db->quoteName('#__bwpostman_templates'));
 			$query->set($db->quoteName('archive_flag') . " = " . $db->quote($archive));
-			$query->set($db->quoteName('archive_date') . " = " . $db->quote($time, false));
+			$query->set($db->quoteName('archive_date') . " = " . $time);
 			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 

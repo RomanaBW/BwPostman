@@ -486,13 +486,12 @@ class TemplateModel extends AdminModel
 	{
 		$db   = $this->_db;
 		$app  = Factory::getApplication();
-		$date = Factory::getDate();
 		$uid  = $app->getIdentity()->get('id');
 		$cid  = ArrayHelper::toInteger($cid);
 
 		if ($archive == 1)
 		{
-			$time = $date->toSql();
+			$time = $db->quote(Factory::getDate()->toSql(), false);
 
 			// Access check.
 			foreach ($cid as $id)
@@ -514,7 +513,7 @@ class TemplateModel extends AdminModel
 				}
 			}
 
-			$time = null;
+			$time = 'null';
 			$uid  = 0;
 		}
 

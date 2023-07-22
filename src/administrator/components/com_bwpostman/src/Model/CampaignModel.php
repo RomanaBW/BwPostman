@@ -370,7 +370,7 @@ class CampaignModel extends AdminModel
 
 		if ($archive == 1)
 		{
-			$time = $date->toSql();
+			$time = $db->quote(Factory::getDate()->toSql(), false);
 
 			// Access check.
 			foreach ($cid as $id)
@@ -392,7 +392,7 @@ class CampaignModel extends AdminModel
 				}
 			}
 
-			$time = null;
+			$time = 'null';
 			$uid  = 0;
 		}
 
@@ -400,7 +400,7 @@ class CampaignModel extends AdminModel
 		{
 			$query->update($db->quoteName('#__bwpostman_campaigns'));
 			$query->set($db->quoteName('archive_flag') . ' = ' . $archive);
-			$query->set($db->quoteName('archive_date') . ' = ' . $db->quote($time, false));
+			$query->set($db->quoteName('archive_date') . ' = ' . $time);
 			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 

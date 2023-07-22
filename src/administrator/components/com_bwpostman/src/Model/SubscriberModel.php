@@ -594,7 +594,7 @@ class SubscriberModel extends AdminModel
 	public function archive(array $cid = array(), int $archive = 1): bool
 	{
 		$app  = Factory::getApplication();
-		$date = Factory::getDate();
+		$date = $this->_db->quote(Factory::getDate()->toSql(), false);
 		$user = $app->getIdentity();
 		$db   = $this->_db;
 		$cid  = ArrayHelper::toInteger($cid);
@@ -624,6 +624,8 @@ class SubscriberModel extends AdminModel
 					return false;
 				}
 			}
+
+			$date = 'null';
 		}
 
 		if (count($cid))
@@ -632,7 +634,7 @@ class SubscriberModel extends AdminModel
 
 			$query->update($db->quoteName('#__bwpostman_subscribers'));
 			$query->set($db->quoteName('archive_flag') . " = " . $archive);
-			$query->set($db->quoteName('archive_date') . " = " . $db->quote($date));
+			$query->set($db->quoteName('archive_date') . " = " . $date);
 			$query->set($db->quoteName('archived_by') . " = " . $userid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 

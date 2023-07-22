@@ -742,11 +742,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 		if ($archive === 1)
 		{
-			$time = Factory::getDate()->toSql();
+			$time = $db->quote(Factory::getDate()->toSql(), false);
 		}
 		else
 		{
-			$time = null;
+			$time = 'null';
 			$uid  = 0;
 		}
 
@@ -754,7 +754,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 		$query->update($db->quoteName($this->_tbl));
 		$query->set($db->quoteName('archive_flag') . " = " . $archive);
-		$query->set($db->quoteName('archive_date') . " = " . $db->quote($time, false));
+		$query->set($db->quoteName('archive_date') . " = " . $time);
 		$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 		$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 

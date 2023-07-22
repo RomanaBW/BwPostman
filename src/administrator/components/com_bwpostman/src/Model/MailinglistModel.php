@@ -306,13 +306,12 @@ class MailinglistModel extends AdminModel
 	public function archive(array $cid = array(0), int $archive = 1): bool
 	{
 		$db   = $this->_db;
-		$date = Factory::getDate();
 		$uid  = Factory::getApplication()->getIdentity()->get('id');
 		$cid  = ArrayHelper::toInteger($cid);
 
 		if ($archive == 1)
 		{
-			$time = $date->toSql();
+			$time = $db->quote(Factory::getDate()->toSql(), false);
 
 			// Access check.
 			foreach ($cid as $id)
@@ -334,7 +333,7 @@ class MailinglistModel extends AdminModel
 				}
 			}
 
-			$time = null;
+			$time = 'null';
 			$uid  = 0;
 		}
 
@@ -345,7 +344,7 @@ class MailinglistModel extends AdminModel
 
 			$query->update($db->quoteName('#__bwpostman_mailinglists'));
 			$query->set($db->quoteName('archive_flag') . " = " . $db->quote($archive));
-			$query->set($db->quoteName('archive_date') . " = " . $db->quote($time, false));
+			$query->set($db->quoteName('archive_date') . " = " . $time);
 			$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 			$query->where($db->quoteName('id') . ' IN (' . implode(',', $cid) . ')');
 

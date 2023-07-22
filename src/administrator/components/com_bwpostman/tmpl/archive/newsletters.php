@@ -228,7 +228,7 @@ $this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabsh
 											<td>
 												<?php
 												echo $item->subject;
-												if ($item->mailing_date != BwPostmanHelper::getDbo()->getNullDate() || $item->mailing_date != null)
+												if ($item->mailing_date != BwPostmanHelper::getDbo()->getNullDate() && $item->mailing_date != null)
 												{ ?>&nbsp;&nbsp;
 													<div class="bw-btn">
 														<div class="d-inline-block" aria-describedby="tip-html-<?php echo $i; ?>">
@@ -255,7 +255,7 @@ $this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabsh
 											<td class="d-none d-lg-table-cell text-center"><?php echo $item->description; ?></td>
 											<td class="d-none d-xl-table-cell text-center">
 												<?php
-												if ($item->mailing_date !== $nullDate || $item->mailing_date !== null)
+												if ($item->mailing_date !== $nullDate && $item->mailing_date !== null)
 												{
 													echo HTMLHelper::date($item->mailing_date, Text::_('BW_DATE_FORMAT_LC5'));
 												}
@@ -282,12 +282,12 @@ $this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabsh
 											</td>
 											<td class="d-none d-lg-table-cell text-center">
 												<p style="text-align: center;">
-													<?php echo ($item->publish_up !== $nullDate || $item->publish_up !== null)
+													<?php echo ($item->publish_up !== $nullDate && $item->publish_up !== null)
 														? HTMLHelper::date($item->publish_up, Text::_('BW_DATE_FORMAT_LC5'))
 														: '-'; ?>
 													<br /></p>
 												<p style="text-align: center;">
-													<?php echo ($item->publish_down !== $nullDate || $item->publish_down !== null)
+													<?php echo ($item->publish_down !== $nullDate && $item->publish_down !== null)
 														? HTMLHelper::date($item->publish_down, Text::_('BW_DATE_FORMAT_LC5'))
 														: '-'; ?>
 												</p>

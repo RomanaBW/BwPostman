@@ -215,12 +215,12 @@ Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 											</td>
 											<td class="text-center">
 												<p>
-													<?php echo ($item->publish_up !== $nullDate || $item->publish_up !== null)
+													<?php echo ($item->publish_up !== $nullDate && $item->publish_up !== null)
 														? HTMLHelper::date($item->publish_up, Text::_('BW_DATE_FORMAT_LC5'))
 														: '-'; ?><br />
 												</p>
 												<p>
-													<?php echo ($item->publish_down !== $nullDate || $item->publish_down !== null)
+													<?php echo ($item->publish_down !== $nullDate && $item->publish_down !== null)
 														? HTMLHelper::date($item->publish_down, Text::_('BW_DATE_FORMAT_LC5'))
 														: '-'; ?>
 												</p>

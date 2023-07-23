@@ -376,7 +376,7 @@ class RegisterController extends FormController
 		// No activation string
 		if (empty($activation))
 		{
-			$err_msg = 'COM_BWPOSTMAN_ERROR_WRONGACTIVATIONCODE';
+			$err_msg = 'COM_BWPOSTMAN_ERROR_WRONGACTIVATIONCODE_1';
 			BwPostmanSubscriberHelper::errorActivationCode($err_msg);
 		}
 		else

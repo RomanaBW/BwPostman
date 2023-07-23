@@ -317,7 +317,7 @@ class RegisterModel extends AdminModel
 		else
 		{
 			// The activation code does not exist in the db
-			$ret_err_msg = 'COM_BWPOSTMAN_ERROR_WRONGACTIVATIONCODE';
+			$ret_err_msg = 'COM_BWPOSTMAN_ERROR_WRONGACTIVATIONCODE_2';
 			return false;
 		}
 

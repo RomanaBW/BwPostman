@@ -715,6 +715,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 					return false;
 				}
 			}
+
+			// Existing confirmation ip and confirmed_by = -1 is a strong indication, that subscriber wants to change
+			// his mail address, so ensure, confirmation date is reset.
+			if ($this->confirmation_ip !== null && $this->confirmed_by === -1)
+			{
+				$this->confirmation_date = null;
+			}
 		}
 
 		return true;
@@ -808,7 +815,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since   1.0.1
 	 */
-	public function store($updateNulls = false): bool
+	public function store($updateNulls = true): bool
 	{
 		$app  = Factory::getApplication();
 		$date = Factory::getDate();
@@ -846,6 +853,14 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			{
 				$this->$nulldateCol = null;
 			}
+		}
+
+
+		// Existing confirmation ip and confirmed_by = -1 is a strong indication, that subscriber wants to change
+		// his mail address, so ensure, confirmation date is reset.
+		if ($this->confirmation_ip !== null && $this->confirmed_by === -1)
+		{
+			$this->confirmation_date = null;
 		}
 
 		$res = parent::store($updateNulls);

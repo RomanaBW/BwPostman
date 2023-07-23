@@ -373,7 +373,7 @@ class EditController extends FormController
 			{
 				$newEmail					= true;
 				$post['status'] 			= 0;
-				$post['confirmation_date'] 	= '';
+				$post['confirmation_date'] 	= $model->getDbo()->getNullDate();
 				$post['confirmed_by'] 		= -1;
 				$post['activation']			= $subsTable->createActivation();
 			}

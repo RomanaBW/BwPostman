@@ -1418,7 +1418,7 @@ class com_bwpostmanInstallerScript
 		}
 		elseif (is_file($path) === true || is_file(realpath($path)))
 		{
-			if (!str_contains($path, '/administrator/components/com_bwpostman/sql/updates/mysql/4.0.0.sql')
+			if (!str_contains($path, '/administrator/components/com_bwpostman/sql/updates/mysql/4.')
 				&& !str_contains($path, '/administrator/components/com_bwpostman/sql/updates/mysql/index.html'))
 			{
 				return unlink($path);

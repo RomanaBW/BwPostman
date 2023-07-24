@@ -31,7 +31,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Session\Session;
-use Joomla\Database\UTF8MB4SupportInterface;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
@@ -407,14 +406,6 @@ class com_bwpostmanInstallerScript
 			$this->removeObsoleteFilesAndFolders();
 
 			$this->logger->addEntry(new LogEntry("Postflight removeObsoleteFilesAndFolders passed", BwLogger::BW_DEBUG, $this->log_cat));
-
-			// ensure SQL update files are processed
-			if ($this->processSqlUpdate($oldRelease) === false)
-			{
-				$this->logger->addEntry(new LogEntry("Postflight processSqlUpdate error", BwLogger::BW_ERROR, $this->log_cat));
-			}
-
-			$this->logger->addEntry(new LogEntry("Postflight processSqlUpdate passed", BwLogger::BW_DEBUG, $this->log_cat));
 
 			// Align subscribers with joomla users
 			$this->alignSubscribersWithUsers();
@@ -1571,131 +1562,6 @@ class com_bwpostmanInstallerScript
 		$repairedRules = str_replace('"":1,', '', $rootRules);
 
 		$this->saveRootAsset($repairedRules);
-	}
-
-	/**
-	 * ensure SQL update files are processed
-	 *
-	 * @param string $oldVersion
-	 *
-	 * @return  false|int  Number of queries processed or False on error
-	 *
-	 * @throws Exception
-	 *
-	 * @since 3.0.0
-	 */
-	protected function processSqlUpdate(string $oldVersion)
-	{
-		$update_count = 0;
-		$db           = Factory::getDbo();
-		$schemapath   = JPATH_ROOT . '/administrator/components/com_bwpostman/sql/updates/mysql';
-		$extensionId  = $this->getExtensionId(1);
-
-		$files = Folder::files($schemapath, '\.sql$');
-
-		if (empty($files))
-		{
-			return true;
-		}
-
-		$files = str_replace('.sql', '', $files);
-		usort($files, 'version_compare');
-
-		foreach ($files as $file)
-		{
-			if (version_compare($file, $oldVersion) >= 0)
-			{
-				$buffer = file_get_contents($schemapath . '/' . $file . '.sql');
-
-				// Graceful exit and rollback(?) if read not successful
-				if ($buffer === false)
-				{
-					$this->logger->addEntry(new LogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_READBUFFER'), BwLogger::BW_ERROR, $this->log_cat));
-
-					return false;
-				}
-
-				// Create an array of queries from the sql file
-				$queries = JDatabaseDriver::splitSql($buffer);
-
-				if (count($queries) === 0)
-				{
-					// No queries to process
-					continue;
-				}
-
-				$isUtf8mb4Db = $db instanceof UTF8MB4SupportInterface;
-
-				// Process each query in the $queries array (split out of sql file).
-				foreach ($queries as $query)
-				{
-					try
-					{
-						if ($isUtf8mb4Db)
-						{
-							$query = $db->convertUtf8mb4QueryToUtf8($query);
-						}
-
-						$db->setQuery($query);
-
-						$queryMessage = "Query to process: " . $query;
-						$this->logger->addEntry(new LogEntry($queryMessage, BwLogger::BW_DEBUG, $this->log_cat));
-
-						$db->execute();
-					}
-					catch (RuntimeException $e)
-					{
-						$this->logger->addEntry(new LogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), BwLogger::BW_ERROR, $this->log_cat));
-
-						return false;
-					}
-
-					$queryString = (string) $query;
-					$queryString = str_replace(array("\r", "\n"), array('', ' '), $queryString);
-					$this->logger->addEntry(new LogEntry(Text::sprintf('JLIB_INSTALLER_UPDATE_LOG_QUERY', $file, $queryString), BwLogger::BW_DEBUG, $this->log_cat));
-
-					$update_count++;
-				}
-			}
-		}
-
-		// Update the database
-		$query = $db->getQuery(true)
-			->delete('#__schemas')
-			->where('extension_id = ' . $extensionId);
-
-		try
-		{
-			$db->setQuery($query);
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			$this->logger->addEntry(new LogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), BwLogger::BW_ERROR, $this->log_cat));
-
-			return false;
-		}
-
-		$schemaVersion = end($files);
-
-		$query->clear();
-		$query->insert($db->quoteName('#__schemas'));
-		$query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
-		$query->values($db->quote($extensionId) . ',' . $db->quote($schemaVersion));
-
-		try
-		{
-			$db->setQuery($query);
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			$this->logger->addEntry(new LogEntry(Text::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), BwLogger::BW_ERROR, $this->log_cat));
-
-			return false;
-		}
-
-		return $update_count;
 	}
 
 	/**

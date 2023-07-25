@@ -916,7 +916,6 @@ class MaintenanceModel extends BaseDatabaseModel
 						$query = implode(array_map('trim', preg_split('/(\n|\r\r)/i', $query)));
 						$query = preg_replace('/\s+/', ' ', trim($query));
 
-//						$query = $db->escape($query);
 						$table->install_query = $db->escape($query);
 
 						// get table name
@@ -1053,19 +1052,6 @@ class MaintenanceModel extends BaseDatabaseModel
 									$sub_txt        = str_replace('auto_increment', '', $column);
 									$column         = trim($sub_txt);
 									$table->auto    = $col_arr->Extra;
-								}
-
-								// get default
-								$start = stripos($column, 'default');
-
-								if ($start !== false)
-								{
-									$start            = $start + 9;
-									$stop             = strpos($column, "'", $start);
-									$length           = $stop - $start;
-									$col_arr->Default = substr($column, $start, $length);
-									$sub_txt          = str_replace($col_arr->Default, '', $column);
-									$column           = trim($sub_txt);
 								}
 
 								// get unsigned

@@ -6,11 +6,19 @@ This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
-Version 4.2.3 released (2023-10-21)----
+Version 4.2.3 released (2023-07-28)----
 
 Bugfix
-# Table check claimed about missing array column 'Type'
-# Unsent newsletter not displayed in backend list
+# On some sql servers installation and update are not possible.
+# Table check claimed about missing array column 'Type'.
+# Unsent newsletter are not displayed in backend list.
+# Version mismatch at backend view system -> database corrected.
+# Sql installation files for the provided templates throws warnings for some columns.
+# In some cases newsletter without attachment throws warning.
+
+Improvement
+~ Add error message, if saving newsletter before sending fails.
+~ Cleanup component installation file.
 
 
 Version 4.2.2 released (2023-07-17)----

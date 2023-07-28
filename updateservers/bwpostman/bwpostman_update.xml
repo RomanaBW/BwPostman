@@ -7,7 +7,7 @@
 		<type>package</type>
 		<client>site</client>
 
-		<version>4.2.3</version>
+		<version>4.2.4</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.4.2.3.zip</downloadurl>
@@ -23,6 +23,31 @@
 		<sha256></sha256>
 		<sha384></sha384>
 		<sha512></sha512>
+	</update>
+
+	<update>
+		<name>BwPostman</name>
+		<description>Installation package for Boldt Webservice's Newsletter component BwPostman 4 for Joomla! 4.0+</description>
+		<element>pkg_bwpostman</element>
+		<type>package</type>
+		<client>site</client>
+
+		<version>4.2.3</version>
+		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.4.2.3.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Romana Boldt</maintainer>
+		<maintainerurl>https://www.boldt-webservice.de</maintainerurl>
+
+		<targetplatform name="joomla" version="4.[0123456789]" min_dev_level="0" php_minimum="7.4" />
+
+		<sha256>919051cc5b22f3be97d11d20c08c07160780916d6727f1cf2740077c51d2b31e</sha256>
+		<sha384>76983d53ba795b4da86e5295ab828ae2b4c3076274ef79c0120736ae359b11a4f93e221818972aabc7382fdacc8186a5</sha384>
+		<sha512>82059c638e49d1149a267938628a6c4302aaa2a6bc06504af366220a5802b90833871b3a3bc87560060720bacb64d849301d601d07df15fd80d85d0b01f58ebc</sha512>
 	</update>
 
 	<update>

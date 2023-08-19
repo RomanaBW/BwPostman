@@ -455,7 +455,7 @@ class NewsletterModel extends AdminModel
 			}
 
 			// Insert first tier to attachments array if only one tier exists
-			if (is_array($attachments) && !is_array($attachments[array_key_first($attachments)]))
+			if (is_array($attachments) && !is_null(array_key_first($attachments)) && !is_array($attachments[array_key_first($attachments)]))
 			{
 				$attachments = BwPostmanNewsletterHelper::makeTwoTierAttachment($attachments);
 			}

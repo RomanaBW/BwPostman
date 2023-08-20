@@ -744,15 +744,17 @@ class NewslettersModel extends ListModel
 			case ("unsent"):
 			case ("queue"):
 			default:
-				$tab_int = ' = ';
+				$comparator1 = ' = ';
+				$comparator2 = ' IS ';
 				break;
 			case ("sent"):
-				$tab_int = ' <> ';
+				$comparator1 = ' <> ';
+				$comparator2 = ' IS NOT ';
 				break;
 		}
 
-		$this->query->where('(a.mailing_date' . $tab_int . $this->getDatabase()->quote($this->getDatabase()->getNullDate())
-			. ' OR a.mailing_date IS NULL)');
+		$this->query->where('(a.mailing_date' . $comparator1 . $this->getDatabase()->quote($this->getDatabase()->getNullDate())
+			. ' OR a.mailing_date' . $comparator2 . ' NULL)');
 	}
 
 	/**

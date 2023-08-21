@@ -5,9 +5,12 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-Version 4.2.4 released (2023-10-20)----
+Version 4.2.4 released (2023-08-24)----
 
 Bugfix
+# Check for old attachments caused php warning
+# Newly archived newsletters were also shown at the backend at lists for unsent and sent newsletters
+
 
 
 Version 4.2.3 released (2023-07-28)----

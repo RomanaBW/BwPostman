@@ -746,15 +746,17 @@ class NewslettersModel extends ListModel
 			default:
 				$comparator1 = ' = ';
 				$comparator2 = ' IS ';
+				$glue        = ' OR ';
 				break;
 			case ("sent"):
 				$comparator1 = ' <> ';
 				$comparator2 = ' IS NOT ';
+				$glue        = ' AND ';
 				break;
 		}
 
 		$this->query->where('(a.mailing_date' . $comparator1 . $this->getDatabase()->quote($this->getDatabase()->getNullDate())
-			. ' OR a.mailing_date' . $comparator2 . ' NULL)');
+			. $glue . 'a.mailing_date' . $comparator2 . ' NULL)');
 	}
 
 	/**

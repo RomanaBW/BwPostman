@@ -8,7 +8,7 @@ pipeline {
 					BWPM_VERSION = "4.2.4"
 
 //					Stable
-					JOOMLA_VERSION = "4.3.3"
+					JOOMLA_VERSION = "4.3.4"
 //					RC
 //					JOOMLA_VERSION = "4.3.0-rc3"
 

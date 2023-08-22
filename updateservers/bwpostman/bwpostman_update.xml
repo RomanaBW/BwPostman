@@ -10,7 +10,7 @@
 		<version>4.2.4</version>
 		<infourl title="BwPostman Changelog">https://www.boldt-webservice.de/index.php/en/forum-en/manuals/changelog-bwpostman/changelog-for-bwpostman-component.html</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.4.2.3.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://www.boldt-webservice.de/download/bwpostman/pkg_bwpostman.4.2.4.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
@@ -20,9 +20,9 @@
 
 		<targetplatform name="joomla" version="4.[0123456789]" min_dev_level="0" php_minimum="7.4" />
 
-		<sha256></sha256>
-		<sha384></sha384>
-		<sha512></sha512>
+		<sha256>1cd518c8e74bcebc142284e1b4c24db926380fb82986850c0e3e78454161f9a9</sha256>
+		<sha384>2fea03ec0ef2f3407e4142c173e62ac962b9c1e2af58048ecdee0b8a8f629e2f5b07ad2f03897272f24c76a85913bee8</sha384>
+		<sha512>d2ad5b5492d9bcfff6a9700ae49037e00a995973d97dcf142b0f7fd9ab390134bad1b69077f2c5971a379a2f337c1bf79bfe74ddd0912b714df1f77d1f108384</sha512>
 	</update>
 
 	<update>

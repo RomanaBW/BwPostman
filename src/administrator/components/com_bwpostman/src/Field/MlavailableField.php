@@ -148,6 +148,13 @@ class MlavailableField extends RadioField
 				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
+		elseif (is_array($value) && !empty($value))
+		{
+			foreach ($value as $singleValue => $ml)
+			{
+				$ml_select[] = $ml[0];
+			}
+		}
 
 		if (is_array($subs_id) && !empty($subs_id))
 		{

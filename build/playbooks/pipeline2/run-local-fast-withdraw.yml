@@ -126,11 +126,11 @@
 
     - name: Synchronize tests
       become: true
-      synchronize:
+      copy:
         src: "{{ test_project_base_dir }}/tests"
         dest: "{{ src_dir }}/tests"
-        delete: yes
-        archive: yes
+#        delete: yes
+#        archive: yes
 
     - name: Ensure database is fully started
       pause:

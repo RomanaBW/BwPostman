@@ -190,7 +190,7 @@ abstract class BwPostmanCampaignHelper
 		if ($hasMailingdate)
 		{
 			$sub_query->where($db->quoteName('b') . '.' . $db->quoteName('mailing_date') . ' != "' . $nullDate . '"'
-			. $db->quoteName('b') . '.' . $db->quoteName('mailing_date') . ' IS NOT NULL');
+			. ' AND ' . $db->quoteName('b') . '.' . $db->quoteName('mailing_date') . ' IS NOT NULL');
 		}
 
 		if ($archiveMatters)

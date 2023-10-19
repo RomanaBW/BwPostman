@@ -238,12 +238,12 @@ class TestNewslettersDetailsCest
 		$I->wait(1);
 
 		// … by double click
-		$I->see(NlEdit::$selectedContent_5, sprintf(NlEdit::$available_content, 1));
+		$I->see('blog = ' . NlEdit::$selectedContent_5, sprintf(NlEdit::$available_content, 1));
 		$I->doubleClick(sprintf(NlEdit::$available_content, 1));
-		$I->dontSee(NlEdit::$selectedContent_5, sprintf(NlEdit::$available_content, 1));
+		$I->dontSee('blog = ' . NlEdit::$selectedContent_5, sprintf(NlEdit::$available_content, 1));
 
 		// Check selected content
-		$I->see(NlEdit::$selectedContent_5, sprintf(NlEdit::$selected_content, 1));
+		$I->see('blog = ' . NlEdit::$selectedContent_5, sprintf(NlEdit::$selected_content, 1));
 
 		$I->click(Generals::$toolbar4['Save']);
 

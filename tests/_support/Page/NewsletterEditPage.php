@@ -123,6 +123,13 @@ class NewsletterEditPage
 	/**
 	 * @var string
 	 *
+	 * @since 2.0.0
+	 */
+	public static $button_editor_toggle     = "//*/button[contains(@aria-controls, 'wf-editor-source')]";
+
+	/**
+	 * @var string
+	 *
 	 * @since   2.0.0
 	 */
 	public static $tab2_iframe      = "jform_html_version_ifr";
@@ -1211,7 +1218,7 @@ class NewsletterEditPage
 	 *
 	 * @since   4.2.0
 	 */
-	public static $selectedContent_5         = "blog = Test content fields";
+	public static $selectedContent_5         = "ZZZ Test content fields";
 
 	/**
 	 * @var string
@@ -1754,17 +1761,24 @@ class NewsletterEditPage
 	 */
 	public static function addCustomField(\AcceptanceTester $I)
 	{
-		$I->amOnPage('/administrator/index.php?option=com_fields&view=fields&context=com_content.article');
+		try
+		{
+			$I->seeInDatabase(Generals::$db_prefix . 'fields', ['title' => 'Date']);
+		}
+		catch (\RuntimeException $e)
+		{
+			$I->amOnPage('/administrator/index.php?option=com_fields&view=fields&context=com_content.article');
 
-		$I->clickAndWait(Generals::$toolbar['New'], 1);
+			$I->clickAndWait(Generals::$toolbar['New'], 1);
 
-		$I->fillField('#jform_title', 'Date');
-		$I->selectOption('#jform_type', array('value' => 'calendar'));
+			$I->fillField('#jform_title', 'Date');
+			$I->selectOption('#jform_type', array('value' => 'calendar'));
 
-		$I->clickAndWait("//*/button[contains(@aria-controls, 'attrib-basic')]", 1);
-		$I->fillField('#jform_params_hint', 'Date to insert');
+			$I->clickAndWait("//*/button[contains(@aria-controls, 'attrib-basic')]", 1);
+			$I->fillField('#jform_params_hint', 'Date to insert');
 
-		$I->click(Generals::$toolbar4['Save & Close']);
+			$I->click(Generals::$toolbar4['Save & Close']);
+		}
 	}
 
 	/**
@@ -1780,43 +1794,51 @@ class NewsletterEditPage
 	 */
 	public static function addContentWithCustomField(\AcceptanceTester $I)
 	{
-		$content = <<<CONTENT
-<p>Test for custom fields</p>
-<p>Author: {field 1}</p>
-<p>Date: {field 2}</p>
-CONTENT;
+		try
+		{
+			$I->seeInDatabase(Generals::$db_prefix . 'content', ['title' => self::$selectedContent_5]);
+		}
+		catch (\RuntimeException $e)
+		{
+			$content = <<<CONTENT
+	<p>Test for custom fields</p>
+	<p>Author: {field 1}</p>
+	<p>Date: {field 2}</p>
+	CONTENT;
 
+			$I->amOnPage('/administrator/index.php?option=com_content&view=articles');
 
+			$I->clickAndWait(Generals::$toolbar['New'], 1);
 
-		$I->amOnPage('/administrator/index.php?option=com_content&view=articles');
+			$I->fillField('#jform_title', self::$selectedContent_5);
 
-		$I->clickAndWait(Generals::$toolbar['New'], 1);
+			// Set published
+			$I->selectOption('#jform_state', array('value' => '1'));
+			$I->wait(1);
+			// Set category
+			$I->clickAndWait('//*/div[2]/div[2]/joomla-field-fancy-select/div/div[1]', 1);
+			$I->clickAndWait('//*[@id="choices--jform_catid-item-choice-2"]', 1);
 
-		$I->fillField('#jform_title', 'Test content fields');
+			// Add article content
+			$I->scrollTo(self::$button_editor_toggle, 0, -100);
+			$I->wait(1);
+			$I->clickAndWait(self::$button_editor_toggle, 1);
 
-		$I->selectOption('#jform_state', array('value' => '1'));
-		$I->wait(1);
-		$I->clickAndWait('//*/div[2]/div[2]/joomla-field-fancy-select/div/div[1]', 1);
-		$I->clickAndWait('//*[@id="choices--jform_catid-item-choice-2"]', 1);
+			$I->fillField("//*[@id='jform_articletext_editor_source_textarea']", $content);
 
-		$I->scrollTo("//*/button[contains(@class, 'wf-editor-toggle')]", 0, -100);
-		$I->wait(1);
-		$I->clickAndWait("//*/button[contains(@class, 'wf-editor-toggle')]", 1);
+			$I->scrollTo(self::$button_editor_toggle, 0, -100);
+			$I->wait(1);
+			$I->clickAndWait(self::$button_editor_toggle, 1);
+			$I->scrollTo(Generals::$joomlaHeader, 0, -100);
+			$I->wait(1);
 
-		$I->fillField("//*[@id='jform_articletext']", $content);
+			$I->clickAndWait("//*/form/div[2]/joomla-tab/div/button[4]", 1);
+			$I->fillField("#jform_com_fields_date", "2023-06-18");
 
-		$I->scrollTo("//*/button[contains(@class, 'wf-editor-toggle')]", 0, -100);
-		$I->wait(1);
-		$I->clickAndWait("//*/button[contains(@class, 'wf-editor-toggle')]", 1);
-		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
-		$I->wait(1);
+			$I->clickAndWait("//*/form/div[2]/joomla-tab/div/button[5]", 1);
+			$I->fillField("#jform_com_fields_about_the_author", "The author loves programming");
 
-		$I->clickAndWait("//*/form/div[2]/joomla-tab/div/button[4]", 1);
-		$I->fillField("#jform_com_fields_date", "2023-06-18");
-
-		$I->clickAndWait("//*/form/div[2]/joomla-tab/div/button[5]", 1);
-		$I->fillField("#jform_com_fields_about_the_author", "The author loves programming");
-
-		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
+			$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
+		}
 	}
 }

@@ -9,8 +9,8 @@
     public $captcha = '0';
     public $list_limit = '20';
     public $access = '1';
-    public $debug = '0';
-    public $debug_lang = '0';
+    public $debug = '{{ debug_joomla_core }}';
+    public $debug_lang = '{{ debug_joomla_lang }}';
     public $dbtype = 'mysqli';
     public $host = '{{ db_host }}';
     public $user = '{{ mariadb_user }}';
@@ -20,7 +20,7 @@
     public $live_site = '';
     public $secret = 'lwwwKFgx1ISR45BI';
     public $gzip = '0';
-    public $error_reporting = 'development';
+    public $error_reporting = '{{ debug_joomla_level }}';
     public $helpurl = 'https://help.joomla.org/proxy?keyref=Help{major}{minor}:{keyref}&lang={langcode}';
     public $ftp_host = '';
     public $ftp_port = '';

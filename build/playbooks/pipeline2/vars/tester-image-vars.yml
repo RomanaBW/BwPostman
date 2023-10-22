@@ -68,10 +68,13 @@ main_base_folder: "/joomla-files"
 joomla_base_folders:
   smoke_j3: "{{ main_base_folder }}/smoke_j3"
   smoke_j4: "{{ main_base_folder }}/smoke_j4"
+  smoke_j5: "{{ main_base_folder }}/smoke_j5"
   ext_install_j3: "{{ main_base_folder }}/jbase_j3"
   ext_install_j4: "{{ main_base_folder }}/jbase_j4"
+  ext_install_j5: "{{ main_base_folder }}/jbase_j5"
   vm_install_j3: "{{ main_base_folder }}/jvm_j3"
   vm_install_j4: "{{ main_base_folder }}/jvm_j4"
+  vm_install_j5: "{{ main_base_folder }}/jvm_j5"
 
 acceptance_j3_folders:
   - "{{ main_base_folder }}/accept1_j3"
@@ -89,6 +92,14 @@ acceptance_j4_folders:
   - "{{ main_base_folder }}/accept5_j4"
   - "{{ main_base_folder }}/acceptB2S_j4"
 
+acceptance_j5_folders:
+  - "{{ main_base_folder }}/accept1_j5"
+  - "{{ main_base_folder }}/accept2_j5"
+  - "{{ main_base_folder }}/accept3_j5"
+  - "{{ main_base_folder }}/accept4_j5"
+  - "{{ main_base_folder }}/accept5_j5"
+  - "{{ main_base_folder }}/acceptB2S_j5"
+
 # Webserver settings
 apache_host: joomla_web
 
@@ -102,6 +113,10 @@ joomla_additional_files_folder: "/joomla-files"
 tester_db_prefix: "jos_"
 tester_mail_from: "webmaster@boldt-webservice.de"
 tester_mail_from_name: "Joomla-Test"
+debug_joomla_core: 1
+debug_joomla_lang: 0
+debug_joomla_level: 'maximum'
+
 # SMTP configuration is not really needed
 tester_smtp_user: "info@boldt-webservice.de"
 tester_smtp_password: "@Miriam02#"
@@ -111,8 +126,8 @@ phantom_dir: "/opt/phantomJS"
 phantom_version: "2.1.1"
 
 # Settings for creating base LAMP containers
-official_mariadb: bitnami/mariadb:10.5-debian-10
-official_mariadb_short: mariadb:10.5-debian-10
+official_mariadb: bitnami/mariadb:10.11-debian-11
+official_mariadb_short: mariadb:10.11-debian-11
 official_apache: "php:{{ php_selected_version }}-apache"
 official_apache_short: "php_{{ php_selected_version }}-apache"
 official_tester: romana/selenium-standalone-chrome-debug-ffmpeg:latest

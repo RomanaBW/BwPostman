@@ -397,7 +397,14 @@ class InstallationPage
 	 *
 	 * @since 2.3.1
 	 */
-	public static $joomla_topmenu_shop_button    = "//*[@id='details']/div/div/div/div[2]/span/button";
+	public static $joomla_topmenu_shop_button    = "//*[@id='jform_type']/parent::span/button";
+
+	/**
+	 * @var string
+	 *
+	 * @since 4.3.5
+	 */
+	public static $joomla_topmenu_shop_button_5    = "//*[@id='jform_type']/parent::div/button";
 
 	/**
 	 * @var string
@@ -405,6 +412,13 @@ class InstallationPage
 	 * @since 2.3.1
 	 */
 	public static $joomla_topmenu_shop_iframe_name    = 'Menu Item Type';
+
+	/**
+	 * @var string
+	 *
+	 * @since 2.3.1
+	 */
+	public static $joomla_topmenu_shop_iframe_name_5    = '.iframe-content';
 
 	/**
 	 * @var string

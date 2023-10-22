@@ -295,8 +295,22 @@ class InstallVirtuemartCest
 
 		$I->fillField(InstallPage::$joomla_topmenu_shop_title_field, InstallPage::$joomla_topmenu_shop_title_value);
 
-		$I->clickAndWait(InstallPage::$joomla_topmenu_shop_button, 1);
-		$I->switchToIFrame(InstallPage::$joomla_topmenu_shop_iframe_name);
+		$jVersion = getenv('JOOMLA_VERSION');
+		codecept_debug("Joomla version: " . $jVersion);
+
+		$menuSelectIdentifier = InstallPage::$joomla_topmenu_shop_button;
+
+		if ($jVersion === '5')
+		{
+			$I->clickAndWait(InstallPage::$joomla_topmenu_shop_button_5, 1);
+			$I->switchToIFrame(InstallPage::$joomla_topmenu_shop_iframe_name_5);
+		}
+		else
+		{
+			$I->clickAndWait(InstallPage::$joomla_topmenu_shop_button, 1);
+			$I->switchToIFrame(InstallPage::$joomla_topmenu_shop_iframe_name);
+		}
+
 
 		$I->scrollTo(InstallPage::$joomla_topmenu_shop_iframe_virtuemart, 0, -50);
 		$I->wait(1);

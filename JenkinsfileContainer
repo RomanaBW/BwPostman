@@ -8,7 +8,7 @@ pipeline {
 					BWPM_VERSION = "4.2.5"
 
 //					Stable
-					JOOMLA_VERSION = "4.4.0"
+					JOOMLA_VERSION = "5.0.0"
 //					RC
 //					JOOMLA_VERSION = "4.3.0-rc3"
 
@@ -26,6 +26,9 @@ pipeline {
 					DO_RECORD_5 = "false";
 					DO_RECORD_6 = "false";
 					DO_RECORD_7 = "false";
+
+					DO_J4 = "true";
+					DO_J5 = "false";
 				}
 			}
         }
@@ -37,6 +40,7 @@ pipeline {
 		}
 
 		stage('Run smoke tests with php 8') {
+			when { ${DO_J4} }
 			steps {
 //				echo "Dummy Smoke"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} do_record=${DO_RECORD_SMOKE} ${VERSIONS_EXTRA_VAR_4}'"

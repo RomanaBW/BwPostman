@@ -40,7 +40,6 @@ pipeline {
 		}
 
 		stage('Run smoke tests with php 8') {
-			when { ${DO_J4} }
 			steps {
 //				echo "Dummy Smoke"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-smoke-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} do_record=${DO_RECORD_SMOKE} ${VERSIONS_EXTRA_VAR_4}'"

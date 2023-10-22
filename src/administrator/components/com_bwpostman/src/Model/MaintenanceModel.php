@@ -2569,7 +2569,13 @@ class MaintenanceModel extends BaseDatabaseModel
 
 				foreach ($item as $key => $value)
 				{
-					$insert_string = str_replace('&', '&amp;', html_entity_decode($value, 0, 'UTF-8'));
+					$insert_string = '';
+
+					if (!is_null($value))
+					{
+						$entityDecoded = html_entity_decode($value, 0, 'UTF-8');
+						$insert_string = str_replace('&', '&amp;', $entityDecoded);
+					}
 
 					// Check if column has to be prepared with CDATA
 					if (in_array($tableName, $this->cdataTables) && in_array($key, $this->cdataColumns[$tableName]))

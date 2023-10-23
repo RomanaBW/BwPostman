@@ -68,6 +68,11 @@ pipeline {
 		}
 
 		stage('Remove smoke tests container images J4') {
+			when {
+				expression {
+					return params.DO_J4
+				}
+			}
 			steps {
 //				echo "Dummy Smoke Remove"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/remove-smoke-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_4}'"
@@ -75,6 +80,11 @@ pipeline {
 		}
 
 		stage('Run acceptance Joomla 4 with J4') {
+			when {
+				expression {
+					return params.DO_J4
+				}
+			}
 			parallel {
 				stage('4-1: Maintenance + Lists + P2') {
 					steps {
@@ -160,6 +170,11 @@ pipeline {
 		}
 
 		stage('Remove acceptance tests container images for J4') {
+			when {
+				expression {
+					return params.DO_J4
+				}
+			}
 			steps {
 //				echo "Dummy Acceptance Remove"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/remove-acceptance-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_4}'"
@@ -167,6 +182,11 @@ pipeline {
 		}
 
         stage('Send success mail for Joomla 4 part') {
+			when {
+				expression {
+					return params.DO_J4
+				}
+			}
 			steps {
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 4 and php ${PHP_VERSION_4} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
@@ -202,6 +222,11 @@ pipeline {
 		}
 
 		stage('Remove smoke tests container images J5') {
+			when {
+				expression {
+					return params.DO_J5
+				}
+			}
 			steps {
 //				echo "Dummy Smoke Remove"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/remove-smoke-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_5}'"
@@ -209,6 +234,11 @@ pipeline {
 		}
 
 		stage('Run acceptance Joomla 4 with J5') {
+			when {
+				expression {
+					return params.DO_J5
+				}
+			}
 			parallel {
 				stage('4-1: Maintenance + Lists + P2') {
 					steps {
@@ -294,6 +324,11 @@ pipeline {
 		}
 
 		stage('Remove acceptance tests container images for J5') {
+			when {
+				expression {
+					return params.DO_J5
+				}
+			}
 			steps {
 //				echo "Dummy Acceptance Remove"
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/remove-acceptance-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_5}'"
@@ -301,6 +336,11 @@ pipeline {
 		}
 
         stage('Send success mail for Joomla 5 part') {
+			when {
+				expression {
+					return params.DO_J5
+				}
+			}
 			steps {
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 5 and php ${PHP_VERSION_5} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",

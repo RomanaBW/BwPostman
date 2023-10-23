@@ -70,9 +70,9 @@ class NewsletterController extends FormController
 	public $permissions;
 
 	/**
-	 * property to hold permissions as array
+	 * property to hold logger
 	 *
-	 * @var array $permissions
+	 * @var BwLogger $logger
 	 *
 	 * @since       2.4.0
 	 */

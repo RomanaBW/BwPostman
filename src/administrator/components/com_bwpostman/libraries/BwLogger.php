@@ -31,6 +31,8 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use Joomla\CMS\Log\Logger\W3cLogger;
 
@@ -41,8 +43,10 @@ use Joomla\CMS\Log\Logger\W3cLogger;
  *
  * @since 2.0.0
  */
-class BwLogger extends W3cLogger
+class BwLogger extends W3cLogger implements LoggerAwareInterface
 {
+	use LoggerAwareTrait;
+
 	/**
 	 * Action must be taken immediately.
 	 *

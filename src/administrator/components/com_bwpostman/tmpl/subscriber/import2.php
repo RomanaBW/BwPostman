@@ -59,7 +59,7 @@ if (isset($this->result['import_success']))
 }
 
 $option			= $jinput->getCmd('option');
-$fileformat		= Factory::getApplication()->getUserState('com_bwpostman.subscriber.fileformat');
+$fileformat		= Factory::getApplication()->getUserState('com_bwpostman.subscriber.fileformat', '');
 
 if ($fileformat == 'xml')
 {

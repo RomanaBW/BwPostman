@@ -154,7 +154,7 @@ class HtmlView extends BaseHtmlView
 
 		PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
-		$this->permissions		= $app->getUserState('com_bwpm.permissions');
+		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
 		if (!$this->permissions['view']['maintenance'])
 		{

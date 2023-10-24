@@ -203,7 +203,7 @@ class HtmlView extends BaseHtmlView
 		$log_options  = array();
 		$this->logger = BwLogger::getInstance($log_options);
 
-		$this->permissions = $app->getUserState('com_bwpm.permissions');
+		$this->permissions = $app->getUserState('com_bwpm.permissions', []);
 
 		if (!$this->permissions['view']['newsletter'])
 		{

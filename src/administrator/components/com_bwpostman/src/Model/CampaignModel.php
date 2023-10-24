@@ -311,10 +311,10 @@ class CampaignModel extends AdminModel
 	 */
 	protected function loadFormData()
 	{
-		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.campaign.id');
+		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.campaign.id', 0);
 
 		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_bwpostman.edit.campaign.data', array());
+		$data = Factory::getApplication()->getUserState('com_bwpostman.edit.campaign.data', []);
 
 		if (empty($data) || (is_object($data) && $recordId != $data->id))
 		{
@@ -474,11 +474,11 @@ class CampaignModel extends AdminModel
 				{
 					$jinput = $app->input;
 					//get id of new inserted data to write cross table newsletters-mailinglists and inject into form
-					$data['id']	= $app->getUserState('com_bwpostman.edit.campaign.id');
+					$data['id']	= $app->getUserState('com_bwpostman.edit.campaign.id', 0);
 					$jinput->set('id', $data['id']);
 
 					// update state
-					$state_data	= $app->getUserState('com_bwpostman.edit.campaign.data');
+					$state_data	= $app->getUserState('com_bwpostman.edit.campaign.data', new stdClass);
 					$state_data->id	= $data['id'];
 					$app->setUserState('com_bwpostman.edit.campaign.data', $state_data);
 

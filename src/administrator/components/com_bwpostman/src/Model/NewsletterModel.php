@@ -159,7 +159,7 @@ class NewsletterModel extends AdminModel
 	 */
 	public function __construct()
 	{
-		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions		= Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
 		parent::__construct();
 
@@ -479,7 +479,7 @@ class NewsletterModel extends AdminModel
 	 */
 	protected function loadFormData()
 	{
-		$recordId = Factory::getApplication()->getUserState('com_bwpostman.newsletter.id');
+		$recordId = Factory::getApplication()->getUserState('com_bwpostman.newsletter.id', 0);
 
 		// Check the session for previously entered form data for this record id.
 		$data = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data');
@@ -522,7 +522,7 @@ class NewsletterModel extends AdminModel
 	public function getSingleNewsletter(): object
 	{
 		$app  = Factory::getApplication();
-		$item = $app->getUserState('com_bwpostman.edit.newsletter.data');
+		$item = $app->getUserState('com_bwpostman.edit.newsletter.data', new stdClass);
 
 		//convert to object if necessary
 		if ($item && !is_object($item))
@@ -768,7 +768,7 @@ class NewsletterModel extends AdminModel
 		else
 		{
 			//get id of new inserted data to write cross table newsletters-mailinglists and inject into form
-			$data['id']	= (int)$app->getUserState('com_bwpostman.newsletter.id');
+			$data['id']	= (int)$app->getUserState('com_bwpostman.newsletter.id', 0);
 			$jinput->set('id', $data['id']);
 
 			// update state
@@ -815,7 +815,7 @@ class NewsletterModel extends AdminModel
 	public function archive(array $cid = array(), int $archive = 1): bool
 	{
 		$app        = Factory::getApplication();
-		$state_data = $app->getUserState('com_bwpostman.edit.newsletter.data');
+		$state_data = $app->getUserState('com_bwpostman.edit.newsletter.data', new stdClass);
 		$cid        = ArrayHelper::toInteger($cid);
 
 		// Access check.
@@ -1129,7 +1129,7 @@ class NewsletterModel extends AdminModel
 		{
 			// heal form data and get them
 			$this->changeTab();
-			$data = ArrayHelper::fromObject(Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data'));
+			$data = ArrayHelper::fromObject(Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data', new stdClass));
 
 			$data['id'] = $recordId;
 		}
@@ -1350,7 +1350,7 @@ class NewsletterModel extends AdminModel
 			$app->setUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '1');
 		}
 
-		$state_data = $app->getUserState('com_bwpostman.edit.newsletter.data');
+		$state_data = $app->getUserState('com_bwpostman.edit.newsletter.data', []);
 
 		// Check for differences between form and state, only for development purpose
 //		$diffDataKeys = $this->getDiffDataKeys($state_data, $form_data);

@@ -459,7 +459,7 @@ class plgBwPostmanBwTimeControl extends JPlugin
 			return false;
 		}
 
-		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
 		if ($permissions['view']['maintenance'])
 		{

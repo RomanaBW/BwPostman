@@ -232,7 +232,7 @@ class BwpostmanModel extends BaseDatabaseModel
 		$db   = $this->_db;
 		$user = $app->getIdentity();
 
-		$statePermissions = $app->getUserState('com_bwpm.permissions');
+		$statePermissions = $app->getUserState('com_bwpm.permissions', []);
 
 		if (is_null($permission))
 		{

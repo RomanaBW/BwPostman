@@ -130,7 +130,7 @@ class HtmlView extends BaseHtmlView
 		$this->general     = $this->get('Generaldata');
 		$this->checkGeneralStatisticsData();
 		$this->request_url = $uri_string;
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
 		$this->addToolbar();
 

@@ -106,7 +106,7 @@ class SubscriberModel extends AdminModel
 	 */
 	public function __construct()
 	{
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
 		parent::__construct();
 
@@ -312,7 +312,7 @@ class SubscriberModel extends AdminModel
 		if (empty($pk))
 		{
 			$jPk  = (int) $this->getState($this->getName() . '.id');
-			$myPk = (int) $app->getUserState('subscriber.id');
+			$myPk = (int) $app->getUserState('subscriber.id', 0);
 			$pk   = $jPk;
 
 			if ($myPk > $jPk)
@@ -526,7 +526,7 @@ class SubscriberModel extends AdminModel
 			if (parent::save($data))
 			{
 				// Get the subscriber ID
-				$subscriber_id = (int)$app->getUserState('com_bwpostman.subscriber.id');
+				$subscriber_id = (int)$app->getUserState('com_bwpostman.subscriber.id', 0);
 				$subsMlTable   = $this->getTable('SubscribersMailinglists');
 
 				// Delete all entries of the subscriber from subscribers_mailinglists-Table

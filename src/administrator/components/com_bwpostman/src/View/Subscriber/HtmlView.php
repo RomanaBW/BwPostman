@@ -187,7 +187,7 @@ class HtmlView extends BaseHtmlView
 		$jinput	= $app->input;
 		$params = ComponentHelper::getParams('com_bwpostman');
 
-		$this->permissions		= $app->getUserState('com_bwpm.permissions');
+		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
 		if (!$this->permissions['view']['subscriber'])
 		{

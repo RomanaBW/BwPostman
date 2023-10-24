@@ -211,7 +211,7 @@ class RegisterModel extends AdminModel
 		if (parent::save($data))
 		{
 			// Get the subscriber id
-			$subscriber_id	= $app->getUserState('com_bwpostman.subscriber.id');
+			$subscriber_id	= $app->getUserState('com_bwpostman.subscriber.id', 0);
 
 			if (isset($data['mailinglists']))
 			{

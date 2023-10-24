@@ -277,12 +277,12 @@ class MailinglistModel extends AdminModel
 	 */
 	protected function loadFormData()
 	{
-		$recordId = (int)Factory::getApplication()->getUserState('com_bwpostman.edit.mailinglist.id');
+		$recordId = (int)Factory::getApplication()->getUserState('com_bwpostman.edit.mailinglist.id', 0);
 
 		// Check the session for previously entered form data.
 		$data = Factory::getApplication()->getUserState('com_bwpostman.edit.mailinglist.data', array());
 
-		if (empty($data) || (is_object($data) &&$recordId !== (int)$data->id))
+		if (empty($data) || (is_object($data) && $recordId !== (int)$data->id))
 		{
 			$data = $this->getItem();
 		}

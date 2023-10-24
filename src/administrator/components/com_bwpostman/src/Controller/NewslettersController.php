@@ -88,7 +88,7 @@ class NewslettersController extends AdminController
 		$this->registerTask('sendtestmail', 'sendmail');
 		$this->registerTask('sendmailandpublish', 'sendmail');
 
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 	}
 
 	/**

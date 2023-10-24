@@ -124,7 +124,7 @@ class RawView extends BaseHtmlView
 		}
 		else
 		{
-			$this->permissions = $app->getUserState('com_bwpm.permissions');
+			$this->permissions = $app->getUserState('com_bwpm.permissions', []);
 
 			if (!$this->permissions['view']['subscriber'])
 			{
@@ -134,7 +134,7 @@ class RawView extends BaseHtmlView
 			}
 
 			// Get the post data
-			$post = $app->getUserState('com_bwpostman.subscribers.export.data');
+			$post = $app->getUserState('com_bwpostman.subscribers.export.data', []);
 
 			if ($post['fileformat'] == 'csv')
 			{

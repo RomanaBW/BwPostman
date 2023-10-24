@@ -67,7 +67,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * property to hold logger
@@ -76,7 +76,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since       2.4.0
 	 */
-	public $logger;
+	public BwLogger $bwLogger;
 
 	/**
 	 * Constructor.
@@ -96,7 +96,7 @@ class NewsletterController extends FormController
 		parent::__construct($config, $this->factory);
 
 		$log_options  = array();
-		$this->logger = BwLogger::getInstance($log_options);
+		$this->bwLogger = BwLogger::getInstance($log_options);
 
 		//register extra tasks
 		$this->registerTask('setContent', 'setContent');
@@ -109,7 +109,7 @@ class NewsletterController extends FormController
 		$this->registerTask('changeTab', 'changeTab');
 		$this->registerTask('changeIsTemplate', 'changeIsTemplate');
 
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 	}
 
 	/**
@@ -141,11 +141,12 @@ class NewsletterController extends FormController
 	/**
 	 * Method override to check if you can add a new record.
 	 *
-	 * @param	array	$data		An array of input data.
+	 * @param array $data An array of input data.
 	 *
-	 * @return	boolean
+	 * @return    boolean
 	 *
-	 * @since	1.0.1
+	 * @throws Exception
+	 * @since    1.0.1
 	 */
 	protected function allowAdd($data = array()): bool
 	{
@@ -231,7 +232,7 @@ class NewsletterController extends FormController
 
 	/**
 	 * Override method to edit an existing record, based on Joomla method.
-	 * We need an override, because we want to handle state a bit different than Joomla at this point
+	 * We need an override, because we want to handle state a bit different from Joomla at this point
 	 *
 	 * @param	string	$key		The name of the primary key of the URL variable.
 	 * @param	string	$urlVar		The name of the URL variable if different from the primary key
@@ -293,7 +294,7 @@ class NewsletterController extends FormController
 			return false;
 		}
 
-		// Attempt to check-out the new record for editing and redirect.
+		// Attempt to check out the new record for editing and redirect.
 		if ($checkin && !$model->checkout($recordId))
 		{
 			// Check-out failed, display a notice…
@@ -357,7 +358,7 @@ class NewsletterController extends FormController
 
 		$recordId = $app->input->getInt($key);
 
-		// Attempt to check-in the current record.
+		// Attempt to check in the current record.
 		if ($recordId)
 		{
 			if ($checkin)
@@ -465,7 +466,7 @@ class NewsletterController extends FormController
 			$this->changeTab();
 		}
 
-		$data = ArrayHelper::fromObject($app->getUserState('com_bwpostman.edit.newsletter.data'));
+		$data = ArrayHelper::fromObject($app->getUserState('com_bwpostman.edit.newsletter.data', []));
 		$app->setUserState($this->context . '.tab' . $recordId, 'edit_basic');
 
 		// Populate the row id from the session.
@@ -791,7 +792,7 @@ class NewsletterController extends FormController
 		$model = $this->getModel();
 		$error = array();
 		$link  = '';
-		$this->logger->addEntry(new LogEntry('NL controller sendmail reached', BwLogger::BW_DEBUG, 'send'));
+		$this->bwLogger->addEntry(new LogEntry('NL controller sendmail reached', BwLogger::BW_DEBUG, 'send'));
 
 		// Get record ID from list view
 		$ids = $this->input->get('cid', 0, '');
@@ -805,7 +806,7 @@ class NewsletterController extends FormController
 		}
 
 		$data = $model->preSendChecks($error, $recordId);
-		$this->logger->addEntry(new LogEntry('NL controller preSendChecks finished', BwLogger::BW_DEBUG, 'send'));
+		$this->bwLogger->addEntry(new LogEntry('NL controller preSendChecks finished', BwLogger::BW_DEBUG, 'send'));
 
 		// If preSendChecks fails redirect to edit
 		if ($error)
@@ -838,7 +839,7 @@ class NewsletterController extends FormController
 			// make sure, recordID matches data id (because we may come from list view or from a new newsletter)
 			$recordId = (int)$model->getState('newsletter.id');
 			$ret_msg  = '';
-			$this->logger->addEntry(new LogEntry('NL controller model save finished', BwLogger::BW_DEBUG, 'send'));
+			$this->bwLogger->addEntry(new LogEntry('NL controller model save finished', BwLogger::BW_DEBUG, 'send'));
 
 			switch ($task)
 			{
@@ -895,7 +896,7 @@ class NewsletterController extends FormController
 
 			if ($startsending)
 			{
-				$this->logger->addEntry(new LogEntry('NL controller start sending reached', BwLogger::BW_DEBUG, 'send'));
+				$this->bwLogger->addEntry(new LogEntry('NL controller start sending reached', BwLogger::BW_DEBUG, 'send'));
 				if ($task == "sendmailandpublish")
 				{
 					$app->setUserState('com_bwpostman.newsletters.sendmailandpublish', 1);
@@ -1089,7 +1090,7 @@ class NewsletterController extends FormController
 
 		if (empty($cid))
 		{
-			$this->logger->addEntry(new LogEntry(Text::_($this->text_prefix . '_NO_ITEM_SELECTED'), BwLogger::BW_WARNING, 'newsletter'));
+			$this->bwLogger->addEntry(new LogEntry(Text::_($this->text_prefix . '_NO_ITEM_SELECTED'), BwLogger::BW_WARNING, 'newsletter'));
 		}
 		else
 		{

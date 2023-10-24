@@ -140,7 +140,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app	= Factory::getApplication();
 
-		$this->permissions = $app->getUserState('com_bwpm.permissions');
+		$this->permissions = $app->getUserState('com_bwpm.permissions', []);
 
 		if (!$this->permissions['view']['campaign'])
 		{

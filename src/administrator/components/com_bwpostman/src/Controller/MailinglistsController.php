@@ -86,7 +86,7 @@ class MailinglistsController extends AdminController
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
 
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 	}
 
 	/**

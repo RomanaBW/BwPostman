@@ -402,7 +402,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$app    = Factory::getApplication();
 		$import = $app->getUserState('com_bwpostman.subscriber.import', false);
 		$xtest  = $app->getUserState('com_bwpostman.subscriber.new_test', $this->status);
-		$data   = $app->getUserState('com_bwpostman.subscriber.register.data', array());
+		$data   = $app->getUserState('com_bwpostman.subscriber.register.data', []);
 
 		if ($app->isClient('site') && !empty($data['mod_id']))
 		{

@@ -456,7 +456,7 @@ class TemplateModel extends AdminModel
 	 */
 	protected function loadFormData()
 	{
-		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.template.id');
+		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.template.id', 0);
 
 		// Check the session for previously entered form data.
 		$data = Factory::getApplication()->getUserState('com_bwpostman.edit.template.data', array());

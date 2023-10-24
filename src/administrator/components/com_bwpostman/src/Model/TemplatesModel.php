@@ -549,7 +549,7 @@ class TemplatesModel extends ListModel
 	public function uploadTplFiles(array $file)
 	{
 		// Access check.
-		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
 		if (!$permissions['template']['create'])
 		{

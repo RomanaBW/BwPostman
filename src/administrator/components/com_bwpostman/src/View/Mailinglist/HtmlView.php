@@ -133,7 +133,7 @@ class HtmlView extends BaseHtmlView
 		$uri		= Uri::getInstance();
 		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
-		$this->permissions		= $app->getUserState('com_bwpm.permissions');
+		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
 		if (!$this->permissions['view']['mailinglist'])
 		{

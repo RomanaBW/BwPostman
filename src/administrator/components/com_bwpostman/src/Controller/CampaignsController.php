@@ -78,7 +78,7 @@ class CampaignsController extends AdminController
 	 */
 	public function __construct($config = array())
 	{
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
 		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 

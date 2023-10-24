@@ -607,14 +607,14 @@ class BwPostmanHelper
 		// Debugging variable, normally set to false
 		$reload = true;
 
-		if (is_array(self::$permissions) && !$reload)
+		if (is_array(self::$permissions) && (count(self::$permissions) > 0) && !$reload)
 		{
 			return;
 		}
 
 		if (!is_null($app->getUserState('com_bwpm.permissions')) && !$reload)
 		{
-			self::$permissions = $app->getUserState('com_bwpm.permissions');
+			self::$permissions = $app->getUserState('com_bwpm.permissions', []);
 
 			return;
 		}

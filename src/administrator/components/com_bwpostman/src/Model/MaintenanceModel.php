@@ -246,7 +246,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	public function saveTables(string $fileName, bool $update = false)
 	{
 		// Access check.
-		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions');
+		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
 		if (!$permissions['maintenance']['save'])
 		{
@@ -2679,7 +2679,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	public function outputGeneralInformation()
 	{
 		// Output general information
-		$generals = Factory::getApplication()->getUserState('com_bwpostman.maintenance.generals');
+		$generals = Factory::getApplication()->getUserState('com_bwpostman.maintenance.generals', new stdClass);
 
 		if (key_exists('BwPostmanVersion', $generals) || key_exists('SaveDate', $generals))
 		{
@@ -2718,7 +2718,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		// process user groups, if they exists in backup
 		$com_assets = $app->getUserState('com_bwpostman.maintenance.com_assets', array());
 		$usergroups = $app->getUserState('com_bwpostman.maintenance.usergroups', array());
-		$tmp_file   = $app->getUserState('com_bwpostman.maintenance.tmp_file');
+		$tmp_file   = $app->getUserState('com_bwpostman.maintenance.tmp_file', '');
 		$fp         = fopen($tmp_file, 'r');
 		$tables     = unserialize(fread($fp, filesize($tmp_file)));
 		$modifiedAssets = array();
@@ -2803,7 +2803,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	public function anewBwPostmanTables(array $tables)
 	{
 		// @ToDo: Check for process of plugin tables
-		$tmp_file      = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file');
+		$tmp_file      = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', '');
 		$fp            = fopen($tmp_file, 'r');
 		$tablesQueries = unserialize(fread($fp, filesize($tmp_file)));
 
@@ -2855,7 +2855,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 */
 	public function reWriteTables(string $table, string &$currentContent, bool $lastTable = false): bool
 	{
-		$tmp_file        = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file');
+		$tmp_file        = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', '');
 		$tmpFileExists   = file_exists($tmp_file);
 		$dest            = Factory::getApplication()->getUserState('com_bwpostman.maintenance.dest', '');
 		$assetsFromState = Factory::getApplication()->getUserState('com_bwpostman.maintenance.modifiedAssets', array());

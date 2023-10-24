@@ -80,7 +80,7 @@ class CammlinternField extends RadioField
 		$app       = Factory::getApplication();
 
 		// Get item and selected mailinglists
-		$cam_id  = $app->getUserState('com_bwpostman.edit.campaign.id');
+		$cam_id  = $app->getUserState('com_bwpostman.edit.campaign.id', 0);
 		$options = $this->getOptions();
 
 		$db        = BwPostmanHelper::getDbo();

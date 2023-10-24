@@ -120,7 +120,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app		= Factory::getApplication();
 
-		$this->permissions = $app->getUserState('com_bwpm.permissions');
+		$this->permissions = $app->getUserState('com_bwpm.permissions', []);
 
 		if (!$this->permissions['view']['campaign'])
 		{
@@ -226,7 +226,7 @@ class HtmlView extends BaseHtmlView
 				}
 
 				// Rename the cancel button for existing items
-				if ($app->getUserState('bwtimecontrol.cam_data.nl_referrer') == 'remove')
+				if ($app->getUserState('bwtimecontrol.cam_data.nl_referrer', '') == 'remove')
 				{
 					$toolbar->cancel('campaign.save');
 				}

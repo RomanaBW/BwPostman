@@ -13,7 +13,7 @@
 
     - name: Set base source dir
       set_fact:
-        base_src_dir: "/vhosts/dev4"
+        base_src_dir: "/vhosts/dev5"
 
     - name: Show imported parameters
       debug:

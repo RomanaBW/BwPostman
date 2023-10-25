@@ -605,6 +605,7 @@ class MaintenancejsonController extends AdminController
 					catch (Exception $e)
 					{
 						$error  = '<p class="text-danger">' . $e->getMessage() . '</p>';
+//						$step = "13";
 						throw new BwException($error, 1072);
 					}
 					break;
@@ -909,7 +910,7 @@ class MaintenancejsonController extends AdminController
 				$i--;
 			}
 
-			if ($res !== 'Column check finished')
+			if ($res === false || $res !== 'Column check finished')
 			{
 				$errorMessage = '<p class="alert alert-danger">';
 				$errorMessage .= Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_COLS_ERROR', $neededTables[$i]->name);
@@ -1089,7 +1090,7 @@ class MaintenancejsonController extends AdminController
 		$app   = Factory::getApplication();
 		$model = new MaintenanceModel();
 
-		// Restore restore point only if needed (and available)
+		// Restore the restore point only if needed (and available)
 		if ((1060 <= $errorCode) && ($errorCode <= 1200)
 		|| (1340 <= $errorCode) && ($errorCode <= 1399))
 		{
@@ -1124,6 +1125,6 @@ class MaintenancejsonController extends AdminController
 		$appWeb = new BwWebApp();
 		$appWeb->setHeader('Content-Type', 'application/json', true);
 		echo json_encode($res);
-		$app->close();
+		$appWeb->close();
 	}
 }

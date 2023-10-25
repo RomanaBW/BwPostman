@@ -314,6 +314,20 @@ class Generals
 	/**
 	 * @var string
 	 *
+	 * @since 5.0.0
+	 */
+	public static $confirmModalDialog      = "//*[@class='joomla-dialog-body']";
+
+	/**
+	 * @var string
+	 *
+	 * @since 5.0.0
+	 */
+	public static $confirmModalYes      = "//*[@class='joomla-dialog-footer']/div/button[1]";
+
+	/**
+	 * @var string
+	 *
 	 * @since 2.0.0
 	 */
 	public static $alert_success_txt    = 'success';
@@ -359,6 +373,13 @@ class Generals
 	 * @since 4.0.0
 	 */
 	public static $noticeMessage = "<b>Notice</b>";
+
+	/**
+	 * @var string
+	 *
+	 * @since 5.0.0
+	 */
+	public static $delUserConfirmMessage = "Are you sure you want to delete? Confirming will permanently delete the selected item(s)!";
 
 	/**
 	 * @var string

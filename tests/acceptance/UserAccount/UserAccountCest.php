@@ -85,7 +85,7 @@ class UserAccountCest
 		Generals::presetComponentOptions($I);
 
 		// Ensure U2S plugin is deactivated
-		$u2SState = $I->getExtensionEnabledState('bwpm_user2subscriber');
+		$u2SState = (int)$I->getExtensionEnabledState('bwpm_user2subscriber');
 		codecept_debug('State of U2S: ' . $u2SState);
 		$I->setExtensionStatus('bwpm_user2subscriber', '0');
 
@@ -215,7 +215,18 @@ class UserAccountCest
 		$I->click(Generals::$check_all_button);
 		$I->click(Generals::$toolbarActions);
 		$I->clickAndWait(UAPage::$delete_button, 1);
-		$I->acceptPopup();
+
+		$jVersion = $I->getJoomlaMainVersion($I);
+
+		if ($jVersion == 4)
+		{
+			$I->acceptPopup();
+		}
+		else
+		{
+			$I->see(Generals::$delUserConfirmMessage, Generals::$confirmModalDialog);
+			$I->clickAndWait(Generals::$confirmModalYes, 1);
+		}
 
 		$I->waitForElementVisible(Generals::$alert_success, 10);
 		$I->wait(1);

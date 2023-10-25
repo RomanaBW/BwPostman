@@ -1773,8 +1773,18 @@ class User2SubscriberCest
 			$I->clickAndWait(Generals::$toolbar4['Delete'], 1);
 
 			// process confirmation popup
-			$I->seeInPopup(RegPage::$delete_confirm);
-			$I->acceptPopup();
+			$jVersion = $I->getJoomlaMainVersion($I);
+
+			if ($jVersion == 4)
+			{
+				$I->seeInPopup(RegPage::$delete_confirm);
+				$I->acceptPopup();
+			}
+			else
+			{
+				$I->see(Generals::$delUserConfirmMessage, Generals::$confirmModalDialog);
+				$I->clickAndWait(Generals::$confirmModalYes, 1);
+			}
 
 			// see message deleted
 			$I->waitForElementVisible(Generals::$alert_success4, 30);

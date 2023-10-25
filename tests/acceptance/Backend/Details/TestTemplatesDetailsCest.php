@@ -1110,6 +1110,8 @@ class TestTemplatesDetailsCest
 		// @ToDo: Take care that no php notices are displayed, then the next two lines are obsolete
 		$I->scrollTo(Generals::$joomlaHeader, 0, -150);
 		$I->wait(2);
+
+		$I->switchToIFrame();
 	}
 
 	/**

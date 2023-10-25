@@ -254,8 +254,14 @@ function moveArticle() {
 	// Move article id from available content helper to selected content
 	var select = document.getElementById('jform_selected_content');
 	var fieldId = document.getElementById('jform_ac_id_id');
-	var fieldTitle = document.getElementById('jform_ac_id_name');
 	var availableContent = document.getElementById('jform_available_content').options;
+
+	var fieldTitle = document.getElementById('jform_ac_id_name');
+
+	// J5 creates title other way
+	if (typeof(fieldTitle) == 'undefined' || fieldTitle == null) {
+		var fieldTitle = document.getElementById('jform_ac_id');
+	}
 
 	if(fieldId.value && fieldTitle.value) {
 		var contentFound = 0;

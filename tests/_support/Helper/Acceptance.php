@@ -1326,8 +1326,18 @@ class Acceptance extends Codeception\Module
 		else
 		{
 			// process confirmation popup
-			$I->seeInPopup($edit_data['remove_confirm']);
-			$I->acceptPopup();
+			$jVersion = $I->getJoomlaMainVersion($I);
+
+			if ($jVersion == 4)
+			{
+				$I->seeInPopup($edit_data['remove_confirm']);
+				$I->acceptPopup();
+			}
+			else
+			{
+				$I->see($edit_data['remove_confirm'], Generals::$confirmModalDialog);
+				$I->clickAndWait(Generals::$confirmModalYes, 2);
+			}
 		}
 
 		// @ToDo: This condition is a workaround to get test CreateOneHtmlTemplateCompleteMainView green

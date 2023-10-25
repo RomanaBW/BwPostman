@@ -69,6 +69,7 @@
         mode: 0777
       loop:
         - "{{ test_dir }}"
+        - "{{ test_dir }}/_output/{{ project_name }}"
         - "{{ test_dir }}/_output/{{ project_name }}/videos"
         - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
         - "{{ test_dir }}/_output/{{ project_name }}/xmlreports"

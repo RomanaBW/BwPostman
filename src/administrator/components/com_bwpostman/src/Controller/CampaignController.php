@@ -65,7 +65,7 @@ class CampaignController extends FormController
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Constructor.
@@ -120,7 +120,7 @@ class CampaignController extends FormController
 	 * @param string $prefix The prefix for the PHP class name.
 	 * @param array  $config An optional associative array of configuration settings.
 	 *
-	 * @return bool|BaseDatabaseModel
+	 * @return BaseDatabaseModel
 	 *
 	 * @throws Exception
 	 *
@@ -134,11 +134,13 @@ class CampaignController extends FormController
 	/**
 	 * Method override to check if you can add a new record.
 	 *
-	 * @param	array	$data		An array of input data.
+	 * @param array $data An array of input data.
 	 *
-	 * @return	boolean
+	 * @return    boolean
 	 *
-	 * @since	1.0.1
+	 * @throws Exception
+	 *
+	 * @since    1.0.1
 	 */
 	protected function allowAdd($data = array()): bool
 	{
@@ -190,7 +192,7 @@ class CampaignController extends FormController
 
 	/**
 	 * Override method to edit an existing record, based on Joomla method.
-	 * We need an override, because we want to handle state a bit different than Joomla at this point
+	 * We need an override, because we want to handle state a bit different from Joomla at this point
 	 *
 	 * @param	string	$key		The name of the primary key of the URL variable.
 	 * @param	string	$urlVar		The name of the URL variable if different from the primary key
@@ -228,7 +230,7 @@ class CampaignController extends FormController
 		$checkin  = property_exists($table, 'checked_out');
 
 		// Access check.
-		if ($recordId === 0 || $recordId === null)
+		if ($recordId === 0)
 		{
 			$allowed = $this->allowAdd();
 		}
@@ -297,7 +299,7 @@ class CampaignController extends FormController
 	 * @since	1.0.1
 	 *
 	 */
-	public function save($key = null, $urlVar = null)
+	public function save($key = null, $urlVar = null): void
 	{
 
 		// Check for request forgeries
@@ -313,7 +315,7 @@ class CampaignController extends FormController
 //		$event = AbstractEvent::create('onBwPostmanAfterCampaignControllerSave', $arguments);
 
 //		Factory::getApplication()->getDispatcher()->dispatch('onBwPostmanAfterCampaignControllerSave', $event);
-		Factory::getApplication()->triggerEvent('onBwPostmanAfterCampaignControllerSave', array());
+		Factory::getApplication()->triggerEvent('onBwPostmanAfterCampaignControllerSave');
 	}
 
 	/**

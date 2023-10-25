@@ -30,9 +30,8 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
 defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Model\MaintenanceModel;
-use BwPostmanPhpCron;
 use Exception;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -59,7 +58,7 @@ class MaintenanceController extends BaseController
 	 *
 	 * @since	1.0.4
 	 */
-	protected $text_prefix = 'COM_BWPOSTMAN_MAINTENANCE';
+	protected string $text_prefix = 'COM_BWPOSTMAN_MAINTENANCE';
 
 	/**
 	 * Constructor
@@ -139,7 +138,7 @@ class MaintenanceController extends BaseController
 	 *
 	 * @since    1.3.0
 	 */
-	public function updateCheckSave()
+	public function updateCheckSave(): void
 	{
 		$model = new MaintenanceModel();
 
@@ -383,7 +382,7 @@ class MaintenanceController extends BaseController
 		else
 		{
 			PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-			$results = Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceStartCron', array());
+			$results = Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceStartCron');
 
 			if ($results[0] !== true)
 			{
@@ -419,7 +418,7 @@ class MaintenanceController extends BaseController
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
 
 		PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-		Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceStopCron', array());
+		Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceStopCron');
 
 		$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
 		$this->setRedirect($link);

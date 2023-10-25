@@ -63,7 +63,7 @@ class SubscriberController extends FormController
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Constructor.
@@ -300,7 +300,7 @@ class SubscriberController extends FormController
 	 *
 	 * @since       0.9.1
 	 */
-	public function add()
+	public function add(): void
 	{
 		// set state for normal subscriber…
 		Factory::getApplication()->setUserState('com_bwpostman.subscriber.new_test', '0');
@@ -317,7 +317,7 @@ class SubscriberController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	public function add_test()
+	public function add_test(): void
 	{
 		// set state for test-recipient…
 		Factory::getApplication()->setUserState('com_bwpostman.subscriber.new_test', '9');
@@ -338,13 +338,13 @@ class SubscriberController extends FormController
 	 * @since	1.0.1
 	 *
 	 */
-	public function save($key = null, $urlVar = null)
+	public function save($key = null, $urlVar = null): void
 	{
 
 		parent::save();
 
 		PluginHelper::importPlugin('bwpostman');
-		Factory::getApplication()->triggerEvent('onBwPostmanAfterSubscriberControllerSave', array());
+		Factory::getApplication()->triggerEvent('onBwPostmanAfterSubscriberControllerSave');
 
 		$task = $this->getTask();
 
@@ -370,7 +370,7 @@ class SubscriberController extends FormController
 	 * @since	2.4.0
 	 *
 	 */
-	public function cancel($key = null)
+	public function cancel($key = null): void
 	{
 
 		parent::cancel();
@@ -388,7 +388,7 @@ class SubscriberController extends FormController
 	 *
 	 * @since       4.0.0
 	 */
-	public function sendconfirmmail()
+	public function sendconfirmmail(): void
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())

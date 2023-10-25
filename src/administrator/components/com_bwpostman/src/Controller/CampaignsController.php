@@ -63,7 +63,7 @@ class CampaignsController extends AdminController
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Constructor
@@ -146,8 +146,8 @@ class CampaignsController extends AdminController
 	}
 
 	/**
-	 * Override method to checkin an existing record, based on Joomla method.
-	 * We need an override, because we want to handle this a bit different than Joomla at this point
+	 * Override method to check in an existing record, based on Joomla method.
+	 * We need an override, because we want to handle this a bit different from Joomla at this point
 	 *
 	 * @return	boolean		True if access level check and checkout passes, false otherwise.
 	 *

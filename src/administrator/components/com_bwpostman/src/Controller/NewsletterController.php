@@ -663,7 +663,7 @@ class NewsletterController extends FormController
 					$app->setUserState('com_bwpostman.edit.newsletter.data', null);
 
 					PluginHelper::importPlugin('bwpostman');
-					$app->triggerEvent('onBwPostmanAfterNewsletterSave', array());
+					$app->triggerEvent('onBwPostmanAfterNewsletterSave');
 
 					// Redirect to the list screen.
 					$this->setRedirect(
@@ -692,7 +692,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	public function changeTab()
+	public function changeTab(): void
 	{
 		$app      = Factory::getApplication();
 		$recordId = $this->input->getInt('id', 0);
@@ -728,7 +728,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since
 	 */
-	public function sendOut()
+	public function sendOut(): void
 	{
 		// get newsletter ID to send
 		$app      = Factory::getApplication();
@@ -936,7 +936,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since       0.9.1
 	 */
-	public function copy()
+	public function copy(): void
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -969,7 +969,7 @@ class NewsletterController extends FormController
 				if ($res === true)
 				{
 					PluginHelper::importPlugin('bwpostman');
-					$app->triggerEvent('onBwPostmanAfterNewsletterCopy', array());
+					$app->triggerEvent('onBwPostmanAfterNewsletterCopy');
 				}
 			}
 		}
@@ -1075,7 +1075,7 @@ class NewsletterController extends FormController
 	 *
 	 * @since	2.2.0
 	 */
-	public function changeIsTemplate()
+	public function changeIsTemplate(): void
 	{
 		// Check for request forgeries
 		if (!Session::checkToken())
@@ -1111,10 +1111,7 @@ class NewsletterController extends FormController
 					$nText = 'COM_BWPOSTMAN_NLS_N_ITEMS_IS_TEMPLATE_1';
 				}
 
-				if ($nText !== null)
-				{
-					$this->setMessage(Text::_($nText));
-				}
+				$this->setMessage(Text::_($nText));
 			}
 			catch (Exception $e)
 			{

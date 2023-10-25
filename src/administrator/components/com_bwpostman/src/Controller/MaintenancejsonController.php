@@ -58,7 +58,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @since 3.0.0
 	 */
-	protected $ready = 0;
+	protected int $ready = 0;
 
 	/**
 	 * String to hold current message css class
@@ -67,7 +67,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @since 3.0.0
 	 */
-	protected $alertClass = 'success';
+	protected string $alertClass = 'success';
 
 	/**
 	 * String to hold current error message
@@ -76,7 +76,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @since 3.0.0
 	 */
-	protected $errorMessage = '';
+	protected string $errorMessage = '';
 
 	/**
 	 * Constructor
@@ -107,7 +107,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @since   1.3.0
 	 */
-	public function tCheck()
+	public function tCheck(): void
 	{
 		$app     = Factory::getApplication();
 		$session = $app->getSession();
@@ -300,7 +300,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @since   1.3.0
 	 */
-	public function tRestore()
+	public function tRestore(): void
 	{
 		$app     = Factory::getApplication();
 		$session = $app->getSession();
@@ -525,7 +525,6 @@ class MaintenancejsonController extends AdminController
 						$table_names    = $session->get('trestore_tablenames', '');
 						$i              = $session->get('trestore_i', 0);
 						$currentContent = '';
-						$error          = '';
 
 						if ($i == 0)
 						{
@@ -799,7 +798,7 @@ class MaintenancejsonController extends AdminController
 	 * @since   1.3.0
 	 */
 
-	protected function getInstalledTableNames($session, int $errorCode)
+	protected function getInstalledTableNames($session, int $errorCode): void
 	{
 		$model           = new MaintenanceModel();
 		$tableNamesArray = $model->getTableNamesFromDB();
@@ -839,7 +838,7 @@ class MaintenancejsonController extends AdminController
 	 * @since   1.3.0
 	 */
 
-	protected function convertTableNames(Session $session, int $errorCode)
+	protected function convertTableNames(Session $session, int $errorCode): void
 	{
 		$model             = new MaintenanceModel();
 		$genericTableNames = $session->get('tcheck_inTaNa');
@@ -874,7 +873,7 @@ class MaintenancejsonController extends AdminController
 	 * @since   1.3.0
 	 */
 
-	protected function checkTableColumns($session, int $errorCode, string $versionOfBackup = null)
+	protected function checkTableColumns($session, int $errorCode, string $versionOfBackup = null): void
 	{
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_TABLE_COLUMNS') . '</h4>';
 
@@ -910,7 +909,7 @@ class MaintenancejsonController extends AdminController
 				$i--;
 			}
 
-			if ($res === false || $res !== 'Column check finished')
+			if ($res !== 'Column check finished')
 			{
 				$errorMessage = '<p class="alert alert-danger">';
 				$errorMessage .= Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_CHECK_COLS_ERROR', $neededTables[$i]->name);
@@ -936,7 +935,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @since   1.3.0
 	 */
-	protected function checkAssetAndUserIds(string &$sessionContent, string $mode = 'assets')
+	protected function checkAssetAndUserIds(string &$sessionContent, string $mode = 'assets'): void
 	{
 		$model        = new MaintenanceModel();
 		$errorMessage = '';
@@ -1010,7 +1009,7 @@ class MaintenancejsonController extends AdminController
 	 * @since   3.1.3
 	 */
 
-	protected function createRestorePoint(string &$sessionContent, int $errorCode)
+	protected function createRestorePoint(string &$sessionContent, int $errorCode): void
 	{
 		$model        = new MaintenanceModel();
 		$errorMessage = '';
@@ -1048,7 +1047,7 @@ class MaintenancejsonController extends AdminController
 	 * @since   3.1.3
 	 */
 
-	protected function deleteRestorePoint(string &$sessionContent)
+	protected function deleteRestorePoint(string &$sessionContent): void
 	{
 		$model        = new MaintenanceModel();
 		$errorMessage = '';
@@ -1085,7 +1084,7 @@ class MaintenancejsonController extends AdminController
 	 *
 	 * @since 3.0.0
 	 */
-	private function handleBwException(int $errorCode, string $result, string $error, string $step)
+	private function handleBwException(int $errorCode, string $result, string $error, string $step): void
 	{
 		$app   = Factory::getApplication();
 		$model = new MaintenanceModel();

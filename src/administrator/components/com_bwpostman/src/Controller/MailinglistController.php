@@ -63,7 +63,7 @@ class MailinglistController extends FormController
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Constructor.
@@ -131,11 +131,13 @@ class MailinglistController extends FormController
 	/**
 	 * Method override to check if you can add a new record.
 	 *
-	 * @param	array	$data	An array of input data.
+	 * @param array $data An array of input data.
 	 *
-	 * @return	boolean
+	 * @return    boolean
 	 *
-	 * @since	1.0.1
+	 * @throws Exception
+	 *
+	 * @since    1.0.1
 	 */
 	protected function allowAdd($data = array()): bool
 	{
@@ -187,7 +189,7 @@ class MailinglistController extends FormController
 
 	/**
 	 * Override method to edit an existing record, based on Joomla method.
-	 * We need an override, because we want to handle state a bit different than Joomla at this point
+	 * We need an override, because we want to handle state a bit different from Joomla at this point
 	 *
 	 * @param	string	$key		The name of the primary key of the URL variable.
 	 * @param	string	$urlVar		The name of the URL variable if different from the primary key
@@ -225,7 +227,7 @@ class MailinglistController extends FormController
 		$checkin  = property_exists($table, 'checked_out');
 
 		// Access check.
-		if ($recordId === 0 || $recordId === null)
+		if ($recordId === 0)
 		{
 			$allowed = $this->allowAdd();
 		}
@@ -247,7 +249,7 @@ class MailinglistController extends FormController
 			return false;
 		}
 
-		// Attempt to check-out the new record for editing and redirect.
+		// Attempt to check out the new record for editing and redirect.
 		if ($checkin && !$model->checkout($recordId))
 		{
 			// Check-out failed, display a notice…
@@ -296,13 +298,13 @@ class MailinglistController extends FormController
 	 * @since	1.0.1
 	 *
 	 */
-	public function save($key = null, $urlVar = null)
+	public function save($key = null, $urlVar = null): void
 	{
 
 		parent::save();
 
 		PluginHelper::importPlugin('bwpostman');
-		Factory::getApplication()->triggerEvent('onBwPostmanAfterMailinglistControllerSave', array());
+		Factory::getApplication()->triggerEvent('onBwPostmanAfterMailinglistControllerSave');
 	}
 
 	/**
@@ -315,7 +317,7 @@ class MailinglistController extends FormController
 	 *
 	 * @since       0.9.1
 	 */
-	public function archive()
+	public function archive(): void
 	{
 		$jinput	= Factory::getApplication()->input;
 

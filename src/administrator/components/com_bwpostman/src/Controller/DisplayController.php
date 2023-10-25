@@ -77,7 +77,7 @@ class DisplayController extends BaseController
 	 *
 	 * @since	1.1.0
 	 */
-	public function addtext()
+	public function addtext(): void
 	{
 		$jinput	= Factory::getApplication()->input;
 
@@ -95,7 +95,7 @@ class DisplayController extends BaseController
 	 *
 	 * @since	1.1.0
 	 */
-	public function addhtml()
+	public function addhtml(): void
 	{
 		$jinput	= Factory::getApplication()->input;
 
@@ -115,7 +115,7 @@ class DisplayController extends BaseController
 	 *
 	 * @since   3.5
 	 */
-	public function storePermission()
+	public function storePermission(): void
 	{
 		$app	= Factory::getApplication();
 

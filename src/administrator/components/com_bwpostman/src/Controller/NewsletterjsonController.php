@@ -57,7 +57,7 @@ class NewsletterjsonController extends BaseController
 	 *
 	 * @since   2.4.0
 	 */
-	public function startsending()
+	public function startsending(): void
 	{
 		try
 		{

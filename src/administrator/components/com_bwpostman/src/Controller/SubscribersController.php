@@ -39,7 +39,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use SimpleXMLElement;
 use stdClass;
 
@@ -67,7 +67,7 @@ class SubscribersController extends AdminController
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Constructor
@@ -233,10 +233,6 @@ class SubscribersController extends AdminController
 			if (isset($post['caption']))
 			{
 				$caption = true;
-			}
-			else
-			{
-				$caption = false;
 			}
 		}
 
@@ -431,7 +427,7 @@ class SubscribersController extends AdminController
 	 *
 	 * @since       0.9.1
 	 */
-	public function import()
+	public function import(): void
 	{
 		$jinput	= Factory::getApplication()->input;
 
@@ -545,7 +541,7 @@ class SubscribersController extends AdminController
 	 *
 	 * @since       0.9.1
 	 */
-	public function export()
+	public function export(): void
 	{
 
 		// Check for request forgeries
@@ -585,15 +581,14 @@ class SubscribersController extends AdminController
 		{
 			$jinput->set('layout', 'export');
 			$link = Route::_('index.php?option=com_bwpostman&view=subscribers', false);
-			$this->setRedirect($link);
 		}
 		else
 		{
 			$document->setType('raw');
 			$link = Route::_('index.php?option=com_bwpostman&view=subscriber&layout=export&format=raw', false);
 
-			$this->setRedirect($link);
 		}
+		$this->setRedirect($link);
 
 		parent::display();
 	}

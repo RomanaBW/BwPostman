@@ -63,7 +63,7 @@ class MailinglistsController extends AdminController
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Constructor

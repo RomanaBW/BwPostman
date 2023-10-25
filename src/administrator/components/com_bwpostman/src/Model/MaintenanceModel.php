@@ -228,7 +228,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	}
 
 	/**
-	 * Method to backup tables
+	 * Method to back up tables
 	 *
 	 * Cannot use File::write() because we want to append data
 	 *
@@ -2806,11 +2806,24 @@ class MaintenanceModel extends BaseDatabaseModel
 		$tmp_file      = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', '');
 		$fp            = fopen($tmp_file, 'r');
 		$tablesQueries = unserialize(fread($fp, filesize($tmp_file)));
+		$tablePrefix   = $this->db->getPrefix();
 
 		// @Todo: Ensure, only tables of BwPostman and its plugins are processed!
 		// delete tables and create it anew
 		foreach ($tables as $table)
 		{
+			$realTmpTable = str_replace('#__', $tablePrefix, $table) . '_tmp';
+			$query = 'SHOW TABLE STATUS WHERE ' . $this->db->quoteName('name') . ' = ' . $this->db->quote($realTmpTable);
+
+			$this->db->setQuery($query);
+			$tmpExists = $this->db->loadResult();
+
+			if (!$tmpExists)
+			{
+				return Text::sprintf('backup table %s does not exist! Perhaps second restore trial?', $realTmpTable, false);
+			}
+
+			// !!!Do this only, if restore point is valid (temporary table exists!)
 			$tableDeleteResult = $this->deleteBwPostmanTable($table);
 
 			if ($tableDeleteResult !== true)
@@ -4338,10 +4351,21 @@ class MaintenanceModel extends BaseDatabaseModel
 	 */
 	public function restoreRestorePoint()
 	{
-		$tables = $this->getAffectedTables(true);
+		$tables      = $this->getAffectedTables(true);
 
 		foreach ($tables as $table)
 		{
+			$query = 'SHOW TABLE STATUS WHERE ' . $this->db->quoteName('name') . ' = ' . $this->db->quote($table['tableNameDb'] . '_tmp');
+
+			$this->db->setQuery($query);
+			$tmpExists = $this->db->loadResult();
+
+			if (!$tmpExists)
+			{
+				return Text::sprintf('backup table %s does not exist! Perhaps second restore trial?', $table['tableNameDb'] . '_tmp', false);
+			}
+
+			// !!!Do this only, if restore point is valid (temporary table exists!)
 			// delete newly created tables
 			$query = ('DROP TABLE IF EXISTS ' . $this->db->quoteName($table['tableNameGeneric']));
 

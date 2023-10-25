@@ -1092,7 +1092,14 @@ class NewsletterEditPage
 	 *
 	 * @since   4.1.1
 	 */
-	public static $popupSelectorSelect        = "//*[@id='jform_ac_id_select']";
+	public static $popupSelectorSelect_4        = "//*[@id='jform_ac_id_select']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   5.0.0
+	 */
+	public static $popupSelectorSelect_5        = "//*[@data-button-action='select']";
 
 	/**
 	 * @var string
@@ -1106,7 +1113,14 @@ class NewsletterEditPage
 	 *
 	 * @since   4.1.1
 	 */
-	public static $popupSelectorClear        = "//*[@id='jform_ac_id_clear']";
+	public static $popupSelectorClear_4        = "//*[@id='jform_ac_id_clear']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   5.0.0
+	 */
+	public static $popupSelectorClear_5        = "//*[@data-button-action='clear']";
 
 	/**
 	 * @var string
@@ -1120,7 +1134,14 @@ class NewsletterEditPage
 	 *
 	 * @since   4.1.1
 	 */
-	public static $popupModalIdentifier        = "//*[@id='ModalSelectArticle_jform_ac_id']";
+	public static $popupModalIdentifier_4        = "//*[@id='ModalSelectArticle_jform_ac_id']";
+
+	/**
+	 * @var string
+	 *
+	 * @since   5.0.0
+	 */
+	public static $popupModalIdentifier_5        = "//*[@class='joomla-dialog-container']";
 
 	/**
 	 * @var string
@@ -1169,7 +1190,14 @@ class NewsletterEditPage
 	 *
 	 * @since   4.1.1
 	 */
-	public static $popupIframe        = "Select an Article";
+	public static $popupIframe_4        = "Select an Article";
+
+	/**
+	 * @var string
+	 *
+	 * @since   5.0.0
+	 */
+	public static $popupIframe_5        = ".iframe-content";
 
 	/**
 	 * @var string

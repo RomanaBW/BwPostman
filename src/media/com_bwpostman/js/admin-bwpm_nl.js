@@ -260,7 +260,7 @@ function moveArticle() {
 
 	// J5 creates title other way
 	if (typeof(fieldTitle) == 'undefined' || fieldTitle == null) {
-		var fieldTitle = document.getElementById('jform_ac_id');
+		fieldTitle = document.getElementById('jform_ac_id');
 	}
 
 	if(fieldId.value && fieldTitle.value) {

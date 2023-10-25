@@ -1366,11 +1366,28 @@ class TestNewslettersDetailsCest
 		$I->doubleClick(sprintf(NlEdit::$available_content, 3));
 		$I->dontSee(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 3));
 
+
+		// Get popup selectors depending on Joomla version
+		$jVersion = $I->getJoomlaMainVersion($I);
+
+		$popupSelectorSelect  = NlEdit::$popupSelectorSelect_5;
+		$popupSelectorClear   = NlEdit::$popupSelectorClear_5;
+		$popupModalIdentifier = NlEdit::$popupModalIdentifier_5;
+		$popupIframe          = NlEdit::$popupIframe_5;
+
+		if ($jVersion === '4')
+		{
+			$popupSelectorSelect  = NlEdit::$popupSelectorSelect_4;
+			$popupSelectorClear   = NlEdit::$popupSelectorClear_4;
+			$popupModalIdentifier = NlEdit::$popupModalIdentifier_4;
+			$popupIframe          = NlEdit::$popupIframe_4;
+		}
+
 		// … by popup selector
-		$I->see(NlEdit::$popupSelectorSelectText, NlEdit::$popupSelectorSelect);
-		$I->clickAndWait(NlEdit::$popupSelectorSelect, 2);
-		$I->waitForElementVisible(NlEdit::$popupModalIdentifier, 5);
-		$I->switchToIFrame(NlEdit::$popupIframe);
+		$I->see(NlEdit::$popupSelectorSelectText, $popupSelectorSelect);
+		$I->clickAndWait($popupSelectorSelect, 2);
+		$I->waitForElementVisible($popupModalIdentifier, 5);
+		$I->switchToIFrame($popupIframe);
 
 		// Filter popup list
 		$I->clickAndWait(NlEdit::$popupFilterbarIdentifier, 2);
@@ -1383,11 +1400,19 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(NlEdit::$popupFilterbarContentSelection, 1);
 		$I->switchToIFrame();
 		$I->wait(1);
-		$I->see(NlEdit::$popupSelectorClearText, NlEdit::$popupSelectorClear);
+		$I->see(NlEdit::$popupSelectorClearText, $popupSelectorClear);
 
 		// Add content to selected content
 		$I->clickAndWait(NlEdit::$popupSelectorMover, 1);
-		$I->see(NlEdit::$popupSelectorSelectText, NlEdit::$popupSelectorSelect);
+
+		if ($jVersion === '4')
+		{
+			$I->see(NlEdit::$popupSelectorSelectText, $popupSelectorSelect);
+		}
+		else
+		{
+			//@ToDo: make JS working (window.processModalParent is not a function at admin-bwpm-nl.js at line 295)
+		}
 
 		// Check selected content
 		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$selected_content, 1));

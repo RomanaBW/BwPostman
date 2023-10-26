@@ -1342,8 +1342,8 @@ class Acceptance extends Codeception\Module
 
 		// @ToDo: This condition is a workaround to get test CreateOneHtmlTemplateCompleteMainView green
 		// The named test does all correctly, but don't show the following message
-		if ($manage_data['section'] == 'templates')
-		{
+//		if ($manage_data['section'] == 'templates')
+//		{
 			// see message deleted
 			$I->waitForElementVisible(Generals::$alert_heading4, 30);
 			$I->seeElement(Generals::$alert_heading4);
@@ -1358,7 +1358,7 @@ class Acceptance extends Codeception\Module
 			}
 
 			$I->dontSee($edit_data['field_title']);
-		}
+//		}
 	}
 
 	/**

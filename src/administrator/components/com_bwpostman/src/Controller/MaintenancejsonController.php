@@ -270,7 +270,7 @@ class MaintenancejsonController extends AdminController
 			$appWeb = new BwWebApp();
 			$appWeb->setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
-			$app->close();
+			$appWeb->close();
 		}
 		catch (BwException $e)
 		{
@@ -438,7 +438,7 @@ class MaintenancejsonController extends AdminController
 						$mem0 = memory_get_usage(true) / (1024.0 * 1024.0);
 
 						echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_PROCESS') . '</h4>';
-						$assetGroupsProcessed = $model->healAssetUserGroups($session->get('trestore_tablenames', ''));
+						$assetGroupsProcessed = $model->healAssetUserGroups($session->get('trestore_tablenames', []));
 
 						if ($assetGroupsProcessed === false)
 						{
@@ -522,7 +522,7 @@ class MaintenancejsonController extends AdminController
 					try
 					{
 						// get stored $base_asset and $curr_asset_id from session
-						$table_names    = $session->get('trestore_tablenames', '');
+						$table_names    = $session->get('trestore_tablenames', []);
 						$i              = $session->get('trestore_i', 0);
 						$currentContent = '';
 
@@ -721,7 +721,7 @@ class MaintenancejsonController extends AdminController
 			$appWeb = new BwWebApp();
 			$appWeb->setHeader('Content-Type', 'application/json', true);
 			echo json_encode($res);
-			$app->close();
+			$appWeb->close();
 		}
 		catch (BwException $e)
 		{

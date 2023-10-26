@@ -54,26 +54,39 @@ ready(function() {
 				successCallback(JSON.parse(response));
 			},
 			onError: function onError(xhr) {
-						let message = '<p class="text-danger">AJAX Error: ' + xhr.statusText + '<br />' + xhr.responseText + '</p>';
-						document.getElementById('loading2').style.display = "none";
-						let alert_step = document.getElementById('step' + parseInt(data.match(/\d/g)));
-						if(typeof alert_step !== 'undefined' && alert_step !== null) {
-							alert_step.querySelector('span.fa').classList.remove('fa-spinner');
-							alert_step.classList.remove('alert-info');
-							alert_step.classList.add('alert-danger');
-						}
-						document.getElementById('result').innerHTML = message;
-						document.getElementById('resultSet').style.backgroundColor = '#f3d4d4';
-						document.getElementById('resultSet').style.borderColor = '#eebfbe';
-						let toolbar = document.getElementById('toolbar');
-						let buttags = toolbar.getElementsByTagName('button');
-						for (let i = 0; i < buttags.length; i++) {
-							buttags[i].removeAttribute('disabled');
-						}
-						let atags = toolbar.getElementsByTagName('a');
-						for (let j = 0; j < atags.length; j++) {
-							atags[j].removeAttribute('disabled');
-						}
+				let errorMessage = xhr.responseText;
+
+				let errorObject;
+				if (errorMessage[0] === "{") {
+					errorObject = JSON.parse(errorMessage);
+					errorMessage = '';
+					for (const key in errorObject) {
+						errorMessage = errorMessage + key + ': ' + errorObject[key] +'<br />';
+					}
+				} else {
+					errorMessage = 'The XHR response text seems not to be a JSON:<br\>';
+				}
+
+				let message = '<p class="text-danger">AJAX Error:' + '<br />' + xhr.statusText + '<br />' + errorMessage + '</p>';
+				document.getElementById('loading2').style.display = "none";
+				let alert_step = document.getElementById('step' + parseInt(data.match(/\d/g)));
+				if(typeof alert_step !== 'undefined' && alert_step !== null) {
+					alert_step.querySelector('span.fa').classList.remove('fa-spinner');
+					alert_step.classList.remove('alert-info');
+					alert_step.classList.add('alert-danger');
+				}
+				document.getElementById('result').innerHTML = message;
+				document.getElementById('resultSet').style.backgroundColor = '#f3d4d4';
+				document.getElementById('resultSet').style.borderColor = '#eebfbe';
+				let toolbar = document.getElementById('toolbar');
+				let buttags = toolbar.getElementsByTagName('button');
+				for (let i = 0; i < buttags.length; i++) {
+					buttags[i].removeAttribute('disabled');
+				}
+				let atags = toolbar.getElementsByTagName('a');
+				for (let j = 0; j < atags.length; j++) {
+					atags[j].removeAttribute('disabled');
+				}
 			}
 		});
 	}
@@ -86,7 +99,7 @@ ready(function() {
 			alert_step_old.classList.add('alert-' + data.aClass);
 		}
 
-		let pstep = document.getElementById('step' + data.step);
+		let pstep = document.getElementById('step' + parseInt(data.step.match(/\d+/g)));
 
 		pstep.classList.remove('alert-secondary');
 		pstep.classList.add('alert-info');
@@ -94,7 +107,7 @@ ready(function() {
 		// Do AJAX post
 		let post = 'step=step' + data.step;
 		doAjax(post, function (data) {
-			if (data.ready !== "1") {
+			if (parseInt(data.ready) !== 1) {
 				document.getElementById('result').innerHTML = data.result;
 				document.getElementById('error').innerHTML = data.error;
 				processUpdateStep(data);

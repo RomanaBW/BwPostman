@@ -1156,7 +1156,8 @@ class TestTemplatesDetailsCest
 		$css_style_content   = TplEdit::getFileContent('tests/_data/html-newsletter.css');
 
 		$I->click(TplEdit::$tpl_tab2);
-		$I->fillField(TplEdit::$css_style, $css_style_content);
+		// @ToDo: For J5: This opens a lot of tabs in the tester browser which makes it impossible to see, if the template is deleted
+//		$I->fillField(TplEdit::$css_style, $css_style_content);
 		$I->scrollTo(TplEdit::$button_refresh_preview, 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar4['Save'], 1);

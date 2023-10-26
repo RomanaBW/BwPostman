@@ -216,11 +216,11 @@ class TestMaintenanceCest
 	 *
 	 * @since   3.1.3
 	 */
-//	public function restoreTablesWithErrors(AcceptanceTester $I)
-//	{
-//		MaintenancePage::restoreTables($I, false, 'BwPostman_4_x_x_Tables_error_default.xml');
-//		MaintenancePage::restoreTables($I, false, 'BwPostman_4_x_x_Tables_error_primary.xml');
-//	}
+	public function restoreTablesWithErrors(AcceptanceTester $I)
+	{
+		MaintenancePage::restoreTables($I, false, 'BwPostman_4_x_x_Tables_error_default.xml');
+		MaintenancePage::restoreTables($I, false, 'BwPostman_4_x_x_Tables_error_primary.xml');
+	}
 
 	/**
 	 * Test method to restore tables from unzipped file with modifications to see if they are handled correctly, simple modifications

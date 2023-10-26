@@ -1659,7 +1659,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			return false;
 		}
 
-		return $increment_key;
+		return (string)$increment_key;
 	}
 
 	/**
@@ -2812,7 +2812,8 @@ class MaintenanceModel extends BaseDatabaseModel
 		// delete tables and create it anew
 		foreach ($tables as $table)
 		{
-			$realTmpTable = str_replace('#__', $tablePrefix, $table) . '_tmp';
+			$realTableName = str_replace('#__', $tablePrefix, $table);
+			$realTmpTable  = str_replace('#__', $tablePrefix, $table) . '_tmp';
 			$query = 'SHOW TABLE STATUS WHERE ' . $this->db->quoteName('name') . ' = ' . $this->db->quote($realTmpTable);
 
 			$this->db->setQuery($query);
@@ -4355,14 +4356,20 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		foreach ($tables as $table)
 		{
-			$query = 'SHOW TABLE STATUS WHERE ' . $this->db->quoteName('name') . ' = ' . $this->db->quote($table['tableNameDb'] . '_tmp');
+			$tableToCheck = $table['tableNameDb'];
+
+			if (is_null($tableToCheck)) {
+				$tableToCheck = $table['tableNameGeneric'];
+			}
+
+			$query = 'SHOW TABLE STATUS WHERE ' . $this->db->quoteName('name') . ' = ' . $this->db->quote($tableToCheck . '_tmp');
 
 			$this->db->setQuery($query);
 			$tmpExists = $this->db->loadResult();
 
 			if (!$tmpExists)
 			{
-				return Text::sprintf('backup table %s does not exist! Perhaps second restore trial?', $table['tableNameDb'] . '_tmp', false);
+				return Text::sprintf('backup table %s does not exist! Perhaps second restore trial?', $tableToCheck . '_tmp', false);
 			}
 
 			// !!!Do this only, if restore point is valid (temporary table exists!)
@@ -6684,7 +6691,9 @@ class MaintenanceModel extends BaseDatabaseModel
 	{
 		if ($table != 'component')
 		{
-			$query = str_replace("\n", '', $tablesQueries[$table]['queries']);
+			$tablePrefix   = $this->db->getPrefix();
+			$realTableName = str_replace('#__', $tablePrefix, $table);
+			$query         = str_replace("\n", '', $tablesQueries[$table]['queries']);
 
 			$tableProps = new stdClass();
 

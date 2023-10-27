@@ -3,7 +3,7 @@ pipeline {
 
 	parameters {
         booleanParam(name: "DO_J5_ACCEPT", defaultValue: true)
-        booleanParam(name: "DO_J5_PERMS", defaultValue: false)
+        booleanParam(name: "DO_J5_PERMS", defaultValue: true)
         booleanParam(name: "DO_J4_ACCEPT", defaultValue: false)
         booleanParam(name: "DO_J4_PERMS", defaultValue: false)
     }
@@ -145,8 +145,8 @@ pipeline {
 					}
 					post {
 						always {
-							echo "Dummy 4 always"
-//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4 ${VERSIONS_EXTRA_VAR_5}'"
+//							echo "Dummy 4 always"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4 ${VERSIONS_EXTRA_VAR_5}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME_5}")

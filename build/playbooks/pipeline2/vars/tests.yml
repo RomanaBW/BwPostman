@@ -122,13 +122,13 @@ test_suites:
 
   - name: accept1
     tests:
-      - maintenance
       - lists
-      - access2
+      - access3
 
   - name: accept2
     tests:
       - details
+      - maintenance
 
   - name: accept3
     tests:
@@ -136,12 +136,14 @@ test_suites:
 
   - name: accept4
     tests:
-      - access1
       - footerusedmailinglists
       - user2subscriber
       - useraccount
       - ModReg
       - ModOverview
+      - frontend
+      - access1
+      - access2
 
   - name: accept5
     tests:

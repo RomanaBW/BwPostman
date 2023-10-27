@@ -480,11 +480,11 @@ pipeline {
 			)]
 			)
 
-				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 4 and php 7 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J5 php 7 build ${currentBuild.number} successful",
-					to: 'webmaster@boldt-webservice.de'
-				)
+//				emailext(
+//					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 4 and php 7 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+//					subject:"BwPostman J5 php 7 build ${currentBuild.number} successful",
+//					to: 'webmaster@boldt-webservice.de'
+//				)
 //				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
 //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
 			}

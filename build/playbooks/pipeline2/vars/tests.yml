@@ -123,16 +123,15 @@ test_suites:
   - name: accept1
     tests:
       - lists
-      - access3
 
   - name: accept2
     tests:
       - details
-      - maintenance
 
   - name: accept3
     tests:
-      - access4
+      - maintenance
+      - frontend
 
   - name: accept4
     tests:
@@ -141,9 +140,6 @@ test_suites:
       - useraccount
       - ModReg
       - ModOverview
-      - frontend
-      - access1
-      - access2
 
   - name: accept5
     tests:
@@ -165,3 +161,20 @@ test_suites:
   - name: acceptTC
     tests:
       - TC
+
+  - name: rights1
+    tests:
+      - access1
+
+  - name: rights2
+    tests:
+      - access2
+
+  - name: rights3
+    tests:
+      - access3
+
+  - name: rights4
+    tests:
+      - access4
+

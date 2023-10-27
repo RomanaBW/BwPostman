@@ -2,8 +2,10 @@ pipeline {
     agent { label 'Tester' }
 
 	parameters {
-        booleanParam(name: "DO_J4", defaultValue: false)
-        booleanParam(name: "DO_J5", defaultValue: true)
+        booleanParam(name: "DO_J5_ACCEPT", defaultValue: true)
+        booleanParam(name: "DO_J5_PERMS", defaultValue: false)
+        booleanParam(name: "DO_J4_ACCEPT", defaultValue: false)
+        booleanParam(name: "DO_J4_PERMS", defaultValue: false)
     }
 
     stages {
@@ -48,7 +50,7 @@ pipeline {
 		stage('Run smoke tests with J5') {
 			when {
 				expression {
-					return params.DO_J5
+					return params.DO_J5_ACCEPT
 				}
 			}
 			steps {
@@ -71,7 +73,7 @@ pipeline {
 		stage('Remove smoke tests container images J5') {
 			when {
 				expression {
-					return params.DO_J5
+					return params.DO_J5_ACCEPT
 				}
 			}
 			steps {
@@ -83,11 +85,11 @@ pipeline {
 		stage('Run acceptance Joomla 5') {
 			when {
 				expression {
-					return params.DO_J5
+					return params.DO_J5_ACCEPT
 				}
 			}
 			parallel {
-				stage('5-1: Lists + P3') {
+				stage('A5-1: Lists') {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_5}'"
@@ -103,7 +105,7 @@ pipeline {
 						}
 					}
 				}
-				stage('5-2: Details + Maintenance') {
+				stage('A5-2: Details') {
 					steps {
 //						echo "Dummy 2"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_5}'"
@@ -119,7 +121,7 @@ pipeline {
 						}
 					}
 				}
-				stage('5-3: P4') {
+				stage('A5-3: Maintenance + Frontend') {
 					steps {
 //						echo "Dummy 3"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_5}'"
@@ -135,7 +137,7 @@ pipeline {
 						}
 					}
 				}
-				stage('5-4: FUM + U2S + UA + Mod Reg + Mod Over + FE + P1 + P2') {
+				stage('A5-4: FUM + U2S + UA + Mod Reg + Mod Over') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_5}'"
@@ -151,29 +153,14 @@ pipeline {
 						}
 					}
 				}
-//				stage('5-5: P3 + FE') {
-//					steps {
-////						echo "Dummy 5"
-//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5 do_record=${DO_RECORD_5} ${VERSIONS_EXTRA_VAR_5}'"
-//						sh "docker exec -t bwpm_accept5_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
-//					}
-//					post {
-//						always {
-////							echo "Dummy 5 always"
-//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept5 ${VERSIONS_EXTRA_VAR_5}'"
-//						}
-//						failure {
-//							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME_5}")
-//						}
-//					}
-//				}
 			}
 		}
+
 
 		stage('Remove acceptance tests container images for J5') {
 			when {
 				expression {
-					return params.DO_J5
+					return params.DO_J5_ACCEPT
 				}
 			}
 			steps {
@@ -182,16 +169,16 @@ pipeline {
             }
 		}
 
-        stage('Send success mail for Joomla 5 part') {
+        stage('Send acceptance success mail for Joomla 5 part') {
 			when {
 				expression {
-					return params.DO_J5
+					return params.DO_J5_ACCEPT
 				}
 			}
 			steps {
 				emailext(
 					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 5 and php ${PHP_VERSION_5} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J5 php ${PHP_VERSION_4} build ${currentBuild.number} successful",
+					subject:"BwPostman J5 acceptance php ${PHP_VERSION_5} build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de'
 				)
 			}
@@ -203,7 +190,7 @@ pipeline {
 		stage('Run smoke tests with J4') {
 			when {
 				expression {
-					return params.DO_J4
+					return params.DO_J4_ACCEPT
 				}
 			}
 			steps {
@@ -226,7 +213,7 @@ pipeline {
 		stage('Remove smoke tests container images J4') {
 			when {
 				expression {
-					return params.DO_J4
+					return params.DO_J4_ACCEPT
 				}
 			}
 			steps {
@@ -238,7 +225,7 @@ pipeline {
 		stage('Run acceptance Joomla 4') {
 			when {
 				expression {
-					return params.DO_J4
+					return params.DO_J4_ACCEPT
 				}
 			}
 			parallel {
@@ -306,29 +293,13 @@ pipeline {
 						}
 					}
 				}
-//				stage('4-5: P3 + FE') {
-//					steps {
-////						echo "Dummy 5"
-//						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=accept5 do_record=${DO_RECORD_5} ${VERSIONS_EXTRA_VAR_4}'"
-//						sh "docker exec -t bwpm_accept5_tester-4 /data/do-tests.sh ${BWPM_VERSION}"
-//					}
-//					post {
-//						always {
-////							echo "Dummy 5 always"
-//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept5 ${VERSIONS_EXTRA_VAR_4}'"
-//						}
-//						failure {
-//							bwpmAcceptFailureContainer ("Suite_5", "${PROJECT_NAME_4}")
-//						}
-//					}
-//				}
 			}
 		}
 
 		stage('Remove acceptance tests container images for J4') {
 			when {
 				expression {
-					return params.DO_J4
+					return params.DO_J4_ACCEPT
 				}
 			}
 			steps {
@@ -337,10 +308,10 @@ pipeline {
             }
 		}
 
-        stage('Send success mail for Joomla 4 part') {
+        stage('Send acceptance success mail for Joomla 4 part') {
 			when {
 				expression {
-					return params.DO_J4
+					return params.DO_J4_ACCEPT
 				}
 			}
 			steps {
@@ -351,6 +322,109 @@ pipeline {
 				)
 			}
         }
+
+
+		stage('Run permissions Joomla 5') {
+			when {
+				expression {
+					return params.DO_J5_PERMS
+				}
+			}
+			parallel {
+				stage('P5-1: P1') {
+					steps {
+//						echo "Dummy 1"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=rights1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_5}'"
+						sh "docker exec -t bwpm_accept1_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
+					}
+					post {
+						always {
+//							echo "Dummy 1 always"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_5}'"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME_5}")
+						}
+					}
+				}
+				stage('P5-2: P2') {
+					steps {
+//						echo "Dummy 2"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=rights2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_5}'"
+						sh "docker exec -t bwpm_accept2_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
+					}
+					post {
+						always {
+//							echo "Dummy 2 always"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=rights2 ${VERSIONS_EXTRA_VAR_5}'"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME_5}")
+						}
+					}
+				}
+				stage('P5-3: P3') {
+					steps {
+//						echo "Dummy 3"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=rights3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_5}'"
+						sh "docker exec -t bwpm_accept3_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
+					}
+					post {
+						always {
+//							echo "Dummy 3 always"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=rights3 ${VERSIONS_EXTRA_VAR_5}'"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME_5}")
+						}
+					}
+				}
+				stage('P5-4: P4') {
+					steps {
+//						echo "Dummy 4"
+						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/run-acceptance-tests.yml --extra-vars 'test_suite=rights4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_5}'"
+						sh "docker exec -t bwpm_accept4_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
+					}
+					post {
+						always {
+							echo "Dummy 4 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=rights4 ${VERSIONS_EXTRA_VAR_5}'"
+						}
+						failure {
+							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME_5}")
+						}
+					}
+				}
+			}
+		}
+
+		stage('Remove permissions tests container images for J5') {
+			when {
+				expression {
+					return params.DO_J5_PERMS
+				}
+			}
+			steps {
+//				echo "Dummy Permissions Remove"
+				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/remove-acceptance-images.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_5}'"
+            }
+		}
+
+        stage('Send permissions success mail for Joomla 5 part') {
+			when {
+				expression {
+					return params.DO_J5_PERMS
+				}
+			}
+			steps {
+				emailext(
+					body: "<p>BwPostman build ${currentBuild.number} has passed all permission tests for Joomla 5 and php ${PHP_VERSION_5} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman J5 permissions php ${PHP_VERSION_5} build ${currentBuild.number} successful",
+					to: 'webmaster@boldt-webservice.de'
+				)
+			}
+        }
+
 
 
 

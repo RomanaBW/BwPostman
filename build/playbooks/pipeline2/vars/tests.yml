@@ -163,10 +163,10 @@ test_suites:
       - listsCampaigns
       - listsMailinglists
       - maintenance
-      - frontend
 
   - name: accept4
     tests:
+      - frontend
       - ModReg
       - ModOverview
       - useraccount

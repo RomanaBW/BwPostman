@@ -36,8 +36,20 @@ test_file:
   - suite: options
     testsuite_file: Backend/TestOptionsCest
 
-  - suite: lists
-    testsuite_file: Backend/Lists/
+  - suite: listsCampaigns
+    testsuite_file: Backend/Lists/TestCampaignsListsCest
+
+  - suite: listsMailinglists
+    testsuite_file: Backend/Lists/TestMailinglistsListsCest
+
+  - suite: listsNewsletters
+    testsuite_file: Backend/Lists/TestNewslettersListsCest
+
+  - suite: listsSubscribers
+    testsuite_file: Backend/Lists/TestSubscribersListsCest
+
+  - suite: listsTemplates
+    testsuite_file: Backend/Lists/TestTemplatesListsCest
 
   - suite: maintenance
     testsuite_file: Backend/TestMaintenanceCest
@@ -54,8 +66,20 @@ test_file:
   - suite: frontend
     testsuite_file: Frontend
 
-  - suite: details
-    testsuite_file: Backend/Details
+  - suite: detailsCampaigns
+    testsuite_file: Backend/Details/TestCampaignsDetailsCest
+
+  - suite: detailsMailinglists
+    testsuite_file: Backend/Details/TestMailinglistsDetailsCest
+
+  - suite: detailsNewsletters
+    testsuite_file: Backend/Details/TestNewslettersDetailsCest
+
+  - suite: detailsSubscribers
+    testsuite_file: Backend/Details/TestSubscribersDetailsCest
+
+  - suite: detailsTemplates
+    testsuite_file: Backend/Details/TestTemplatesDetailsCest
 
   - suite: user2subscriber
     testsuite_file: User2Subscriber/User2SubscriberCest
@@ -122,24 +146,32 @@ test_suites:
 
   - name: accept1
     tests:
-      - lists
+      - listsNewsletters
+      - listsTemplates
+      - listsSubscribers
 
   - name: accept2
     tests:
-      - details
+      - detailsNewsletters
+      - detailsSubscribers
+      - detailsCampaigns
+      - detailsMailinglists
 
   - name: accept3
     tests:
+      - detailsTemplates
+      - listsCampaigns
+      - listsMailinglists
       - maintenance
       - frontend
 
   - name: accept4
     tests:
-      - footerusedmailinglists
-      - user2subscriber
-      - useraccount
       - ModReg
       - ModOverview
+      - useraccount
+      - footerusedmailinglists
+      - user2subscriber
 
   - name: accept5
     tests:

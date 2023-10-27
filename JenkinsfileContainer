@@ -2,10 +2,11 @@ pipeline {
     agent { label 'Tester' }
 
 	parameters {
-        booleanParam(name: "DO_J5_ACCEPT", defaultValue: true)
+        booleanParam(name: "DO_J5_ACCEPT", defaultValue: false)
         booleanParam(name: "DO_J5_PERMS", defaultValue: true)
         booleanParam(name: "DO_J4_ACCEPT", defaultValue: false)
         booleanParam(name: "DO_J4_PERMS", defaultValue: false)
+        booleanParam(name: "PACK_PACKAGE", defaultValue: false)
     }
 
     stages {
@@ -41,6 +42,11 @@ pipeline {
         }
 
 		stage('Create full package') {
+			when {
+				expression {
+					return params.PACK_PACKAGE
+				}
+			}
 			steps {
 				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/build_package.yml --extra-vars 'project_base_dir=${WORKSPACE} version_number=${BWPM_VERSION} build=${BUILD_NUMBER} mb4_support=true replace_vars=true'"
 			}

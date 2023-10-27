@@ -1340,25 +1340,20 @@ class Acceptance extends Codeception\Module
 			}
 		}
 
-		// @ToDo: This condition is a workaround to get test CreateOneHtmlTemplateCompleteMainView green
-		// The named test does all correctly, but don't show the following message
-//		if ($manage_data['section'] == 'templates')
-//		{
-			// see message deleted
-			$I->waitForElementVisible(Generals::$alert_heading4, 30);
-			$I->seeElement(Generals::$alert_heading4);
+		// see message deleted
+		$I->waitForElementVisible(Generals::$alert_heading4, 30);
+		$I->seeElement(Generals::$alert_heading4);
 
-			if ($count == '1')
-			{
-				$I->see($edit_data['success_remove'], Generals::$alert_success4);
-			}
-			else
-			{
-				$I->see($edit_data['success_remove2'], Generals::$alert_success4);
-			}
+		if ($count == '1')
+		{
+			$I->see($edit_data['success_remove'], Generals::$alert_success4);
+		}
+		else
+		{
+			$I->see($edit_data['success_remove2'], Generals::$alert_success4);
+		}
 
-			$I->dontSee($edit_data['field_title']);
-//		}
+		$I->dontSee($edit_data['field_title']);
 	}
 
 	/**

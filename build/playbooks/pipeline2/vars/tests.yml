@@ -154,19 +154,19 @@ test_suites:
     tests:
       - detailsNewsletters
       - detailsSubscribers
-      - detailsCampaigns
-      - detailsMailinglists
 
   - name: accept3
     tests:
       - detailsTemplates
+      - detailsCampaigns
+      - detailsMailinglists
       - listsCampaigns
       - listsMailinglists
       - maintenance
+      - frontend
 
   - name: accept4
     tests:
-      - frontend
       - ModReg
       - ModOverview
       - useraccount

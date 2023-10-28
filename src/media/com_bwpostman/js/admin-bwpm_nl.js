@@ -485,7 +485,7 @@ window.onload = function() {
 
 				if (selectedCampaignValue === '-1')
 				{
-					var res = checkSelectedRecipients(document.getElementById('checkRecipientArgs').value);
+					res = checkSelectedRecipients(document.getElementById('checkRecipientArgs').value);
 					if (res === false)
 					{
 						return false;

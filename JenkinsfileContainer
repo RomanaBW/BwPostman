@@ -7,6 +7,7 @@ pipeline {
         booleanParam(name: "DO_J4_ACCEPT", defaultValue: false)
         booleanParam(name: "DO_J4_PERMS", defaultValue: false)
         booleanParam(name: "PACK_PACKAGE", defaultValue: false)
+        booleanParam(name: "DO_DEV_UPLOAD", defaultValue: false)
     }
 
     stages {
@@ -345,8 +346,8 @@ pipeline {
 					}
 					post {
 						always {
-//							echo "Dummy 1 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_5}'"
+							echo "Dummy 1 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_5}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME_5}")
@@ -436,6 +437,11 @@ pipeline {
 
 
 		stage('Dev-Upload') {
+			when {
+				expression {
+					return params.DO_DEV_UPLOAD
+				}
+			}
 			steps {
 				dir("/repositories/artifacts/bwpostman4/data") {
 					fileOperations([

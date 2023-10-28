@@ -4,8 +4,8 @@ pipeline {
 	parameters {
         booleanParam(name: "DO_J5_ACCEPT", defaultValue: true)
         booleanParam(name: "DO_J5_PERMS", defaultValue: true)
-        booleanParam(name: "DO_J4_ACCEPT", defaultValue: false)
-        booleanParam(name: "DO_J4_PERMS", defaultValue: false)
+        booleanParam(name: "DO_J4_ACCEPT", defaultValue: true)
+        booleanParam(name: "DO_J4_PERMS", defaultValue: true)
         booleanParam(name: "PACK_PACKAGE", defaultValue: true)
         booleanParam(name: "DO_DEV_UPLOAD", defaultValue: false)
     }

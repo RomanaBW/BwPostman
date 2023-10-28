@@ -52,6 +52,10 @@
       set_fact:
         sub_path: "{{ test_suite | regex_replace('rights', 'accept') }}_j{{ j_main_version }}"
 
+    - name: Show variable for current joomla sub folder
+      debug:
+        msg: "{{ sub_path}}"
+
     - name: create network and start all test containers (db, webserver, tester)
       include_role:
         name: romanabw.setup-complete-infrastructure

@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Model\MaintenanceModel;
 use Exception;
-use Joomla\Filesystem\File;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;

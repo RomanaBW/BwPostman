@@ -39,7 +39,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\Filesystem\File;
+use Joomla\CMS\Filesystem\File;
 use SimpleXMLElement;
 use stdClass;
 

@@ -50,7 +50,7 @@
 
     - name: Set variable for current joomla sub folder
       set_fact:
-        sub_path: "{{ test_suite }}_j{{ j_main_version }}"
+        sub_path: "{{ test_suite | regex_replace('rights', 'accept') }}_j{{ j_main_version }}"
 
     - name: create network and start all test containers (db, webserver, tester)
       include_role:

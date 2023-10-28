@@ -75,6 +75,10 @@
       set_fact:
         db_host: "{{ acceptance_source.db_container_name }}"
 
+    - name: Show db host name variable
+      debug:
+        msg: "{{ db_host }}"
+
     - name: copy joomla configuration in place
       template:
         src: "configuration.php.j2"
@@ -95,7 +99,7 @@
         line: "    CustomLog {{ test_log_path }}/{{ apache_host }}-access.log combined"
 
     - name: restart webserver
-      command: "/etc/init.d/apache2 reload"
+      ansible.builtin.command: "/etc/init.d/apache2 reload"
 
 
 - hosts: "{{ acceptance_source.tester_container_name }}"

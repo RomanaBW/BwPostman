@@ -105,6 +105,9 @@ test_file:
   - suite: access4
     testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart2
 
+  - suite: access5
+    testsuite_file: Backend/Access/TestAccessCest::TestAccessRightsForActionsInListsByButtonsPart3
+
   - suite: ModReg
     testsuite_file: Module_Register/SubscribeModuleCest
 
@@ -197,16 +200,17 @@ test_suites:
   - name: rights1
     tests:
       - access1
+      - access2
 
   - name: rights2
     tests:
-      - access2
+      - access3
 
   - name: rights3
     tests:
-      - access3
+      - access4
 
   - name: rights4
     tests:
-      - access4
+      - access5
 

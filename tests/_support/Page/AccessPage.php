@@ -35,7 +35,7 @@ class AccessPage
 	public static $all_users = array(
 		array('user' => 'BwPostmanAdmin', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanAdmin', 'half' => 1),
 		array('user' => 'BwPostmanManager', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanManager', 'half' => 1),
-		array('user' => 'BwPostmanPublisher', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanPublisher', 'half' => 1),
+		array('user' => 'BwPostmanPublisher', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanPublisher', 'half' => 4),
 		array('user' => 'BwPostmanEditor', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanEditor', 'half' => 2),
 		array('user' => 'BwPostmanCampaignAdmin', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanCampaignAdmin', 'half' => 2),
 		array('user' => 'BwPostmanCampaignPublisher', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanCampaignPublisher', 'half' => 2),
@@ -49,9 +49,9 @@ class AccessPage
 		array('user' => 'BwPostmanSubscriberAdmin', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanSubscriberAdmin', 'half' => 3),
 		array('user' => 'BwPostmanSubscriberPublisher', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanSubscriberPublisher', 'half' => 3),
 		array('user' => 'BwPostmanSubscriberEditor', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanSubscriberEditor', 'half' => 3),
-		array('user' => 'BwPostmanTemplateAdmin', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanTemplateAdmin', 'half' => 3),
-		array('user' => 'BwPostmanTemplatePublisher', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanTemplatePublisher', 'half' => 3),
-		array('user' => 'BwPostmanTemplateEditor', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanTemplateEditor', 'half' => 3),
+		array('user' => 'BwPostmanTemplateAdmin', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanTemplateAdmin', 'half' => 4),
+		array('user' => 'BwPostmanTemplatePublisher', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanTemplatePublisher', 'half' => 4),
+		array('user' => 'BwPostmanTemplateEditor', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanTemplateEditor', 'half' => 4),
 	);
 
 	/**

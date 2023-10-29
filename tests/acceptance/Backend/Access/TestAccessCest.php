@@ -416,6 +416,36 @@ class TestAccessCest
 
 	/**
 	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
+	 * loop over all list views, loop over second half of user groups
+	 *
+	 * @param   AcceptanceTester            $I
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.2.5
+	 */
+	public function TestAccessRightsForActionsInListsByButtonsPart4(AcceptanceTester $I): void
+	{
+		$I->wantTo("check permissions for single list by buttons");
+		$I->expectTo("see appropriate messages");
+
+		$partiallyUsers = array();
+
+		foreach (AccessPage::$all_users as $user)
+		{
+			if ($user['half'] === 4)
+			{
+				$partiallyUsers[] = $user;
+			}
+		}
+
+		$this->TestAccessRightsForActionsInListsByButtons($I, $partiallyUsers);
+	}
+
+	/**
+	 * Test method to check for allowed/forbidden of a single list view by buttons in this list views,
 	 * loop over all list views
 	 *
 	 * @param   AcceptanceTester $I

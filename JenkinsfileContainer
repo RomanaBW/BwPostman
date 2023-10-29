@@ -1,16 +1,6 @@
 pipeline {
     agent { label 'Tester' }
 
-	parameters {
-        booleanParam(name: "DO_J5_ACCEPT", defaultValue: false)
-        booleanParam(name: "DO_J5_PERMS", defaultValue: false)
-        booleanParam(name: "DO_J4_ACCEPT", defaultValue: false)
-        booleanParam(name: "DO_J4_PERMS", defaultValue: true)
-        booleanParam(name: "PACK_PACKAGE", defaultValue: true)
-        booleanParam(name: "DO_DEV_UPLOAD", defaultValue: false)
-    }
-
-
     stages {
         stage('Set variables') {
 			steps {
@@ -20,8 +10,12 @@ pipeline {
 					JOOMLA_VERSION_4 = "4.4.0"
 					JOOMLA_VERSION_5 = "5.0.0"
 
+					DO_J5_ACCEPT = 'false'
+					DO_J5_PERMS  = 'false'
 					DO_J4_ACCEPT = 'false'
 					DO_J4_PERMS  = 'true'
+					DO_DEV_UPLOAD = 'false'
+					PACK_PACKAGE  = 'true'
 
 					PHP_VERSION_4 = "8.1.12"
 					PHP_VERSION_5 = "8.1.12"
@@ -49,7 +43,7 @@ pipeline {
 		stage('Create full package') {
 			when {
 				expression {
-					return params.PACK_PACKAGE
+					return PACK_PACKAGE == 'true'
 				}
 			}
 			steps {
@@ -61,7 +55,7 @@ pipeline {
 		stage('Run smoke tests with J5') {
 			when {
 				expression {
-					return params.DO_J5_ACCEPT
+					return DO_J5_ACCEPT == 'true'
 				}
 			}
 			steps {
@@ -84,7 +78,7 @@ pipeline {
 		stage('Remove smoke tests container images J5') {
 			when {
 				expression {
-					return params.DO_J5_ACCEPT
+					return DO_J5_ACCEPT == 'true'
 				}
 			}
 			steps {
@@ -96,7 +90,7 @@ pipeline {
 		stage('Run acceptance Joomla 5') {
 			when {
 				expression {
-					return params.DO_J5_ACCEPT
+					return DO_J5_ACCEPT == 'true'
 				}
 			}
 			parallel {
@@ -171,7 +165,7 @@ pipeline {
 		stage('Remove acceptance tests container images for J5') {
 			when {
 				expression {
-					return params.DO_J5_ACCEPT
+					return DO_J5_ACCEPT == 'true'
 				}
 			}
 			steps {
@@ -183,7 +177,7 @@ pipeline {
         stage('Send acceptance success mail for Joomla 5 part') {
 			when {
 				expression {
-					return params.DO_J5_ACCEPT
+					return DO_J5_ACCEPT == 'true'
 				}
 			}
 			steps {
@@ -338,7 +332,7 @@ pipeline {
 		stage('Run permissions Joomla 5') {
 			when {
 				expression {
-					return params.DO_J5_PERMS
+					return DO_J5_PERMS == 'true'
 				}
 			}
 			parallel {
@@ -412,7 +406,7 @@ pipeline {
 		stage('Remove permissions tests container images for J5') {
 			when {
 				expression {
-					return params.DO_J5_PERMS
+					return DO_J5_PERMS == 'true'
 				}
 			}
 			steps {
@@ -424,7 +418,7 @@ pipeline {
         stage('Send permissions success mail for Joomla 5 part') {
 			when {
 				expression {
-					return params.DO_J5_PERMS
+					return DO_J5_PERMS == 'true'
 				}
 			}
 			steps {
@@ -545,7 +539,7 @@ pipeline {
 		stage('Dev-Upload') {
 			when {
 				expression {
-					return params.DO_DEV_UPLOAD
+					return DO_DEV_UPLOAD == 'true'
 				}
 			}
 			steps {

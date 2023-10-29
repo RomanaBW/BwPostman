@@ -93,7 +93,7 @@
         dest: "{{ container_dir }}/infrastructure/run-bwpm-fast.yml"
 
     - name: Start infrastructure
-      command: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm-fast.yml -p {{ project_name }} up -d"
+      ansible.builtin.command: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm-fast.yml -p {{ project_name }} up -d"
 
     - name: Show synchronization command
       debug:
@@ -104,10 +104,10 @@
         msg: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir }}/tests {{ src_dir }}/tests"
 
     - name: Synchronize files
-      command: "{{ test_dir }}/job_scripts/bwpm_rsync_build.sh {{ src_dir }} {{ web_dir }}/{{ project_name }}/files"
+      ansible.builtin.command: "{{ test_dir }}/job_scripts/bwpm_rsync_build.sh {{ src_dir }} {{ web_dir }}/{{ project_name }}/files"
 
     - name: Synchronize tests
-      command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir }}/tests {{ src_dir }}/tests"
+      ansible.builtin.command: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir }}/tests {{ src_dir }}/tests"
 
     - name: Check for failure file
       stat:

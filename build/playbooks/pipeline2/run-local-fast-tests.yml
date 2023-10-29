@@ -22,6 +22,18 @@
         vm_project_part: "_vm{{ vm_version }}"
       when: vm_version != ''
 
+    - name: Calculate Joomla main version
+      set_fact:
+        joomla_main_version: "{{ joomla_version[0] }}"
+
+    - name: Set src_dir
+      set_fact:
+        src_dir: "{{ src_dir_base }}{{ joomla_main_version }}"
+
+    - name: Set test_dir
+      set_fact:
+        test_dir: "{{ src_dir }}/tests"
+
     - name: Show imported parameters
       debug:
         msg:
@@ -30,6 +42,7 @@
           - "BW_TEST_DEBUG: {{ test_debug }}"
           - "BW_TEST_VM_VERSION: {{ vm_version }}"
           - "BW_TEST_JOOMLA_VERSION: {{ joomla_version }}"
+          - "Joomla Main Version: {{ joomla_main_version }}"
           - "BW_TEST_REBASE_DB: {{ rebase }}"
           - "BW_TEST_BWPM_VERSION: {{ bwpm_version }}"
           - "Test-Dir: {{ test_dir }}"

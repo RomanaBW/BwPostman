@@ -1,13 +1,13 @@
 ---
 base_dir: "/vhosts/dev5"
-src_dir: "/vhosts/dev5"
+src_dir_base: "/vhosts/dev"
 repo_dir: "/repositories/BwPostman4"
 
 container_base: "/vms/dockers"
 container_dir: "{{ container_base }}/containers"
 
 test_runner: "bwpm_test_runner.sh"
-test_dir: "{{ base_dir }}/tests"
+#test_dir: "{{ base_dir }}/tests"
 test_src_dir: "tests"
 
 test_project_base_dir: "/home/romana/PhpstormProjects/BwPostman_J4"

@@ -1309,12 +1309,13 @@ class Acceptance extends Codeception\Module
 		$I->see($edit_data['field_title']);
 
 		//count items
-		$count = $I->GetListLength($I, Generals::$main_table);
+		$count    = $I->GetListLength($I, Generals::$main_table);
+		$jVersion = $I->getJoomlaMainVersion($I);
+		codecept_debug('Joomla main version: ' . $jVersion);
+		codecept_debug('Type of Joomla main version: ' . gettype($jVersion));
 
 		$I->checkOption(Generals::$check_all_button);
 		$I->clickAndWait($edit_data['delete_button'], 1);
-
-		$jVersion = $I->getJoomlaMainVersion($I);
 
 		if ($manage_data['section'] == 'campaigns')
 		{

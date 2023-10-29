@@ -1328,7 +1328,7 @@ class Acceptance extends Codeception\Module
 			// process confirmation popup
 			$jVersion = $I->getJoomlaMainVersion($I);
 
-			if ($jVersion == 4)
+			if ($jVersion != 5)
 			{
 				$I->seeInPopup($edit_data['remove_confirm']);
 				$I->acceptPopup();

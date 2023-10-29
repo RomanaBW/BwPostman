@@ -1159,7 +1159,7 @@ class TestTemplatesDetailsCest
 		// @ToDo: For J5: This opens a lot of tabs in the tester browser which makes it impossible to see, if the template is deleted
 		$jVersion = $I->getJoomlaMainVersion($I);
 
-		if ($jVersion == 4)
+		if ($jVersion != 5)
 		{
 			$I->fillField(TplEdit::$css_style, $css_style_content);
 		}

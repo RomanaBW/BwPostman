@@ -1775,7 +1775,7 @@ class User2SubscriberCest
 			// process confirmation popup
 			$jVersion = $I->getJoomlaMainVersion($I);
 
-			if ($jVersion == 4)
+			if ($jVersion != 5)
 			{
 				$I->seeInPopup(RegPage::$delete_confirm);
 				$I->acceptPopup();

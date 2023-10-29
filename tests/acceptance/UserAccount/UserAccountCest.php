@@ -218,7 +218,7 @@ class UserAccountCest
 
 		$jVersion = $I->getJoomlaMainVersion($I);
 
-		if ($jVersion == 4)
+		if ($jVersion != 5)
 		{
 			$I->acceptPopup();
 		}

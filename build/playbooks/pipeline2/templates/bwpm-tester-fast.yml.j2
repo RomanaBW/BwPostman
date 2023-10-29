@@ -10,8 +10,8 @@ services:
     image: universe3:5000/romana/tester-tw-browser:chromium
     volumes:
       - {{ container_dir }}/testers/os-data:/data
-      - {{ base_dir }}/{{ test_src_dir }}/job_scripts:/scripts
-      - {{ base_dir }}:/tests
+      - {{ src_dir }}/{{ test_src_dir }}/job_scripts:/scripts
+      - {{ src_dir }}:/tests
       - {{ web_dir }}/{{ project_name }}/files:/www_path
       - /dev/shm:/dev/shm
       - /repositories:/repositories

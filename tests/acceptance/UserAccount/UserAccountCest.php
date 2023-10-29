@@ -207,6 +207,8 @@ class UserAccountCest
 		/// Switch to user page
 		$I->amOnPage(UsersPage::$user_management_url);
 
+		$jVersion = $I->getJoomlaMainVersion($I);
+
 		// Search for user by email
 		$I->fillField(Generals::$search_field, SubEdit::$field_email);
 		$I->click(UAPage::$filter_go_button);
@@ -216,9 +218,7 @@ class UserAccountCest
 		$I->click(Generals::$toolbarActions);
 		$I->clickAndWait(UAPage::$delete_button, 1);
 
-		$jVersion = $I->getJoomlaMainVersion($I);
-
-		if ($jVersion != 5)
+		if ($jVersion !== 5)
 		{
 			$I->acceptPopup();
 		}

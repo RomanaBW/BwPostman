@@ -1764,6 +1764,7 @@ class User2SubscriberCest
 	{
 		$this->gotoUserManagement($I);
 		$user_found = $this->findUser($I);
+		$jVersion   = $I->getJoomlaMainVersion($I);
 
 		if ($user_found)
 		{
@@ -1773,9 +1774,7 @@ class User2SubscriberCest
 			$I->clickAndWait(Generals::$toolbar4['Delete'], 1);
 
 			// process confirmation popup
-			$jVersion = $I->getJoomlaMainVersion($I);
-
-			if ($jVersion != 5)
+			if ($jVersion !== 5)
 			{
 				$I->seeInPopup(RegPage::$delete_confirm);
 				$I->acceptPopup();

@@ -1314,6 +1314,8 @@ class Acceptance extends Codeception\Module
 		$I->checkOption(Generals::$check_all_button);
 		$I->clickAndWait($edit_data['delete_button'], 1);
 
+		$jVersion = $I->getJoomlaMainVersion($I);
+
 		if ($manage_data['section'] == 'campaigns')
 		{
 			$I->switchToIFrame($manage_data['popup_delete_iframe']);
@@ -1326,9 +1328,7 @@ class Acceptance extends Codeception\Module
 		else
 		{
 			// process confirmation popup
-			$jVersion = $I->getJoomlaMainVersion($I);
-
-			if ($jVersion != 5)
+			if ($jVersion !== 5)
 			{
 				$I->seeInPopup($edit_data['remove_confirm']);
 				$I->acceptPopup();
@@ -1826,6 +1826,6 @@ class Acceptance extends Codeception\Module
 	 */
 	public function getJoomlaMainVersion(\AcceptanceTester $I)
 	{
-		return $I->grabTextFrom("//*[@class='header-item']/div[contains(@class, 'joomlaversion')]/div/span[3]")[0];
+		return (int)$I->grabTextFrom("//*[@class='header-item']/div[contains(@class, 'joomlaversion')]/div/span[3]")[0];
 	}
 }

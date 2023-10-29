@@ -99,6 +99,10 @@
       debug:
         msg: "{{ test_dir }}/job_scripts/bwpm_rsync_build.sh {{ src_dir  }} {{ web_dir }}/{{ project_name }}/files"
 
+    - name: Show test  synchronization command
+      debug:
+        msg: "{{ test_dir }}/job_scripts/bwpm_tests_rsync_build.sh {{ test_project_base_dir }}/tests {{ src_dir }}/tests"
+
     - name: Synchronize files
       command: "{{ test_dir }}/job_scripts/bwpm_rsync_build.sh {{ src_dir }} {{ web_dir }}/{{ project_name }}/files"
 

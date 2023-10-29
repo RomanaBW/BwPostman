@@ -173,6 +173,22 @@ bwpm_rights4_db-5 ansible_connection=docker
 bwpm_rights4_web-5 ansible_connection=docker
 bwpm_rights4_tester-5 ansible_connection=docker
 
+bwpm_rights1_db-4 ansible_connection=docker
+bwpm_rights1_web-4 ansible_connection=docker
+bwpm_rights1_tester-4 ansible_connection=docker
+
+bwpm_rights2_db-4 ansible_connection=docker
+bwpm_rights2_web-4 ansible_connection=docker
+bwpm_rights2_tester-4 ansible_connection=docker
+
+bwpm_rights3_db-4 ansible_connection=docker
+bwpm_rights3_web-4 ansible_connection=docker
+bwpm_rights3_tester-4 ansible_connection=docker
+
+bwpm_rights4_db-4 ansible_connection=docker
+bwpm_rights4_web-4 ansible_connection=docker
+bwpm_rights4_tester-4 ansible_connection=docker
+
 
 
 

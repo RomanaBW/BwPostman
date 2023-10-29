@@ -45,6 +45,7 @@
           - "Joomla Main Version: {{ joomla_main_version }}"
           - "BW_TEST_REBASE_DB: {{ rebase }}"
           - "BW_TEST_BWPM_VERSION: {{ bwpm_version }}"
+          - "Src-Dir: {{ src_dir }}"
           - "Test-Dir: {{ test_dir }}"
           - "Test-Src-Dir: {{ test_src_dir }}"
 
@@ -139,12 +140,12 @@
     - name: Prepare manifest for codeception tests
       template:
         src: "codeception-fast.yml.j2"
-        dest: "{{ base_dir }}/codeception.yml"
+        dest: "{{ src_dir }}/codeception.yml"
 
     - name: Prepare manifest for acceptance tests with chromium
       template:
         src: "acceptance-fast.suite.yml.j2"
-        dest: "{{ base_dir }}/{{ test_src_dir }}/acceptance.suite.yml"
+        dest: "{{ src_dir }}/{{ test_src_dir }}/acceptance.suite.yml"
 
     - name: Create tester compose file
       become: yes
@@ -159,7 +160,7 @@
       become: yes
       template:
         src: "bwpm_tester_start_fast.sh.j2"
-        dest: "{{ base_dir }}/{{ test_src_dir }}/job_scripts/bwpm_tester_start_fast.sh"
+        dest: "{{ src_dir }}/{{ test_src_dir }}/job_scripts/bwpm_tester_start_fast.sh"
         mode: 0775
         owner: romana
         group: users

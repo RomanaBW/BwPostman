@@ -4,7 +4,7 @@ pipeline {
 	parameters {
         booleanParam(name: "DO_J5_ACCEPT", defaultValue: false)
         booleanParam(name: "DO_J5_PERMS", defaultValue: false)
-        booleanParam(name: "DO_J4_ACCEPT", defaultValue: true)
+        booleanParam(name: "DO_J4_ACCEPT", defaultValue: false)
         booleanParam(name: "DO_J4_PERMS", defaultValue: true)
         booleanParam(name: "PACK_PACKAGE", defaultValue: true)
         booleanParam(name: "DO_DEV_UPLOAD", defaultValue: false)
@@ -19,6 +19,9 @@ pipeline {
 
 					JOOMLA_VERSION_4 = "4.4.0"
 					JOOMLA_VERSION_5 = "5.0.0"
+
+					DO_J4_ACCEPT = 'false'
+					DO_J4_PERMS  = 'true'
 
 					PHP_VERSION_4 = "8.1.12"
 					PHP_VERSION_5 = "8.1.12"
@@ -198,7 +201,7 @@ pipeline {
 		stage('Run smoke tests with J4') {
 			when {
 				expression {
-					return params.DO_J4_ACCEPT
+					return DO_J4_ACCEPT == 'true'
 				}
 			}
 			steps {
@@ -221,7 +224,7 @@ pipeline {
 		stage('Remove smoke tests container images J4') {
 			when {
 				expression {
-					return params.DO_J4_ACCEPT
+					return DO_J4_ACCEPT == 'true'
 				}
 			}
 			steps {
@@ -233,7 +236,7 @@ pipeline {
 		stage('Run acceptance Joomla 4') {
 			when {
 				expression {
-					return params.DO_J4_ACCEPT
+					return DO_J4_ACCEPT == 'true'
 				}
 			}
 			parallel {
@@ -307,7 +310,7 @@ pipeline {
 		stage('Remove acceptance tests container images for J4') {
 			when {
 				expression {
-					return params.DO_J4_ACCEPT
+					return DO_J4_ACCEPT == 'true'
 				}
 			}
 			steps {
@@ -319,7 +322,7 @@ pipeline {
         stage('Send acceptance success mail for Joomla 4 part') {
 			when {
 				expression {
-					return params.DO_J4_ACCEPT
+					return DO_J4_ACCEPT == 'true'
 				}
 			}
 			steps {
@@ -437,7 +440,7 @@ pipeline {
 		stage('Run permissions Joomla 4') {
 			when {
 				expression {
-					return params.DO_J4_PERMS
+					return DO_J4_PERMS == 'true'
 				}
 			}
 			parallel {
@@ -449,8 +452,8 @@ pipeline {
 					}
 					post {
 						always {
-//							echo "Dummy 1 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_4}'"
+							echo "Dummy 1 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_4}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME_4}")
@@ -511,7 +514,7 @@ pipeline {
 		stage('Remove permissions tests container images for J4') {
 			when {
 				expression {
-					return params.DO_J4_PERMS
+					return DO_J4_PERMS == 'true'
 				}
 			}
 			steps {
@@ -523,7 +526,7 @@ pipeline {
         stage('Send permissions success mail for Joomla 4 part') {
 			when {
 				expression {
-					return params.DO_J4_PERMS
+					return DO_J4_PERMS == 'true'
 				}
 			}
 			steps {

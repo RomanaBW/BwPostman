@@ -421,7 +421,7 @@ class CampaignModel extends AdminModel
 				$query->clear();
 				$query->update($db->quoteName('#__bwpostman_newsletters'));
 				$query->set($db->quoteName('archive_flag') . ' = ' . $archive);
-				$query->set($db->quoteName('archive_date') . ' = ' . $db->quote($time, false));
+				$query->set($db->quoteName('archive_date') . ' = ' . $time);
 				$query->set($db->quoteName('archived_by') . " = " . (int) $uid);
 				$query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', $cid) . ')');
 

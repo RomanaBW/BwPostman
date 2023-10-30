@@ -38,7 +38,7 @@ function processUpdateStep(data)
 	// Do AJAX post
 	post = 'step=step' + data.step;
 	doAjax(post, function(data){
-		if(data.ready !== "1")
+		if(parseInt(data.ready) !== 1)
 		{
 			document.getElementById('result').innerHTML = data.result;
 			processUpdateStep(data);

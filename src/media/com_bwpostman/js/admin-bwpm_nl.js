@@ -289,7 +289,6 @@ function moveArticle() {
 
 		// Empty input field
 		document.querySelector('.js-modal-content-select-field .btn-secondary').click();
-		window.processModalParent('jform_ac_id');
 	}
 	else
 	{

@@ -463,9 +463,10 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		$this->archive_date      = $filter->clean($this->archive_date);
 		$this->archived_by       = $filter->clean($this->archived_by, 'INT');
 
+		$missingValues = array();
+
 		if (!$import)
 		{
-			$missingValues = array();
 			// Check for valid first name
 			if ($params->get('firstname_field_obligation', '1'))
 			{

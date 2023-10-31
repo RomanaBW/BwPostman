@@ -1911,6 +1911,8 @@ class NewsletterModel extends AdminModel
 		$tblSendMailContent->load($tblSendMailQueue->content_id);
 
 		// Convert attachment string or JSON to array, if present
+		$attachments = array();
+
 		if (is_string($tblSendMailContent->attachment))
 		{
 			$attachments = BwPostmanNewsletterHelper::decodeAttachments($tblSendMailContent->attachment);

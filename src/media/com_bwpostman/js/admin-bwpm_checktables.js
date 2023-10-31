@@ -42,13 +42,13 @@ function ready(callbackFunc) {
 
 ready(function() {
 	function processUpdateStep(data) {
-		var alert_step_old = document.getElementById('step' + (data.step - 1));
+		let alert_step_old = document.getElementById('step' + (data.step - 1));
 		if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
 			alert_step_old.querySelector('span.fa').classList.remove('fa-spinner');
 			alert_step_old.classList.remove('alert-info');
 			alert_step_old.classList.add('alert-' + data.aClass);
 		}
-		var pstep = document.getElementById('step' + data.step);
+		let pstep = document.getElementById('step' + data.step);
 		pstep.classList.remove('alert-secondary');
 		pstep.classList.add('alert-info');
 		pstep.querySelector('span.fa').classList.add('fa-spinner');
@@ -59,7 +59,7 @@ ready(function() {
 				document.getElementById('result').innerHTML = document.getElementById('result').innerHTML = data.result;
 				processUpdateStep(data);
 			} else {
-				var alert_step_old = document.getElementById('step' + (data.step - 1));
+				let alert_step_old = document.getElementById('step' + (data.step - 1));
 				if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
 					alert_step_old.querySelector('span.fa').classList.remove('fa-spinner');
 					alert_step_old.classList.remove('alert-info');

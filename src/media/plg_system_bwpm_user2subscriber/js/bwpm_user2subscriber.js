@@ -30,18 +30,18 @@
 
 	document.addEventListener('DOMContentLoaded', function () {
 
-		var toggle_fields   = '.bwpm-u2s-fields-toggle';
+		let toggle_fields   = '.bwpm-u2s-fields-toggle';
 
-		var U2S_toggleRequired = function(field_identifier, status)
+		let U2S_toggleRequired = function(field_identifier, status)
 		{
 
-			var label = document.getElementById(field_identifier + '-lbl');
+			let label = document.getElementById(field_identifier + '-lbl');
 
-			var label_span = document.querySelectorAll('#' + field_identifier + '-lbl span');
+			let label_span = document.querySelectorAll('#' + field_identifier + '-lbl span');
 
 			if (label_span.length === 0)
 			{
-				var span = document.createElement("span");
+				let span = document.createElement("span");
 				label.appendChild(span);
 				label_span =  document.querySelectorAll('#' + field_identifier + '-lbl span');
 			}
@@ -87,7 +87,7 @@
 		});
 
 		function ShowHide(ShowOrHide) {
-			var field_required    = [
+			let field_required    = [
 				'jform_bwpm_user2subscriber_firstname_required',
 				'jform_bwpm_user2subscriber_name_required',
 				'jform_bwpm_user2subscriber_additional_required',

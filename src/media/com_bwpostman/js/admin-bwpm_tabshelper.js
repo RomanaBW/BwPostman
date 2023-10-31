@@ -24,17 +24,17 @@
 //
 
 document.addEventListener('readystatechange', (event) => {
-	var myTabs = document.getElementsByClassName('bwpm-arc-tab');
+	let myTabs = document.getElementsByClassName('bwpm-arc-tab');
 	// alert('Archive Tabs length: ' + myTabs.length);
 
-	var i;
+	let i;
 
 	for(i = 0, myTabs.length; i < myTabs.length; i++) {
 		(function(selectedTab) {
 			myTabs[i].onclick = function () {
-				var layout = selectedTab.getAttribute("data-layout");
+				let layout = selectedTab.getAttribute("data-layout");
 
-				var layoutElement = document.getElementById('layout');
+				let layoutElement = document.getElementById('layout');
 				layoutElement.value = layout;
 				document.forms[0].submit();
 			};
@@ -66,22 +66,22 @@ function ready(callbackFunc) {
 }
 
 ready(function() {
-	var bwpModal = document.getElementById('bwp-modal');
+	let bwpModal = document.getElementById('bwp-modal');
 
 	if (bwpModal != null) {
 		bwpModal.addEventListener('show.bs.modal', function (event) {
 			// Button that triggered the modal
-			var button = event.relatedTarget;
-			var windowheight = window.innerHeight - 225;
+			let button = event.relatedTarget;
+			let windowheight = window.innerHeight - 225;
 
 			// Extract info from data-bs-* attributes
-			var title      = button.getAttribute('data-bs-title');
-			var contentSrc = button.getAttribute('data-bs-src');
-			var frameName  = button.getAttribute('data-bs-frame');
+			let title      = button.getAttribute('data-bs-title');
+			let contentSrc = button.getAttribute('data-bs-src');
+			let frameName  = button.getAttribute('data-bs-frame');
 
 			// Update the modal's content.
-			var modalTitle   = bwpModal.querySelector('.modal-title');
-			var modalFrame   = bwpModal.querySelector('.modal-frame');
+			let modalTitle   = bwpModal.querySelector('.modal-title');
+			let modalFrame   = bwpModal.querySelector('.modal-frame');
 
 			modalTitle.textContent   = title;
 

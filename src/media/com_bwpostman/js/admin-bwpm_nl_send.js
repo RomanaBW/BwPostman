@@ -54,19 +54,19 @@ ready(function() {
 				successCallback(JSON.parse(response));
 			},
 			onError: function onError(xhr) {
-				var message = document.createElement('div');
+				let message = document.createElement('div');
 				message.innerHTML = '<p class="text-danger">AJAX Error: ' + xhr.statusText + '<br />' + xhr.responseText + '</p>';
 				document.getElementById('load').style.display = "none";
 				document.getElementById('error').setAttribute('class', 'alert alert-danger');
-				var resultdiv = document.getElementById('result');
+				let resultdiv = document.getElementById('result');
 				resultdiv.insertBefore(message, resultdiv.firstChild);
-				var toolbar = document.getElementById('toolbar');
-				var buttags = toolbar.getElementsByTagName('button');
-				for (var i = 0; i < buttags.length; i++) {
+				let toolbar = document.getElementById('toolbar');
+				let buttags = toolbar.getElementsByTagName('button');
+				for (let i = 0; i < buttags.length; i++) {
 					buttags[i].removeAttribute('disabled');
 				}
-				var atags = toolbar.getElementsByTagName('a');
-				for (var i = 0; i < atags.length; i++) {
+				let atags = toolbar.getElementsByTagName('a');
+				for (let i = 0; i < atags.length; i++) {
 					atags[i].removeAttribute('disabled');
 				}
 			}
@@ -74,19 +74,19 @@ ready(function() {
 	}
 
 	function processUpdateStep(data) {
-		var timeout = document.getElementById('delay').value;
+		let timeout = document.getElementById('delay').value;
 		// Do AJAX post
 		post = 'mailsDone=' + data.mailsDone;
 		doAjax(post, function (data) {
-			var res_container = document.getElementById('sendResult');
+			let res_container = document.getElementById('sendResult');
 			if (data.ready !== "1") {
 				setStatusDivs(data);
-				var alerts = res_container.getElementsByClassName('alert');
-                for (var i = 0; i < alerts.length; i++) {
+				let alerts = res_container.getElementsByClassName('alert');
+                for (let i = 0; i < alerts.length; i++) {
 					alerts[i].classList.remove('hidden');
 				}
-				var alerts_sec = res_container.getElementsByClassName('alert-secondary');
-				for (var i = 0; i < alerts_sec.length; i++) {
+				let alerts_sec = res_container.getElementsByClassName('alert-secondary');
+				for (let i = 0; i < alerts_sec.length; i++) {
 					alerts_sec[i].classList.add('hidden');
 				}
 				if (data.delay_msg === "success") {
@@ -100,36 +100,36 @@ ready(function() {
 				}
 			} else {
 				setStatusDivs(data);
-				var progress = document.getElementById('nl_bar');
+				let progress = document.getElementById('nl_bar');
 				progress.classList.remove('progress-bar-striped');
 				progress.classList.remove('progress-bar-animated');
-				var alerts = res_container.getElementsByClassName('alert');
-                for (var i = 0; i < alerts.length; i++) {
+				let alerts = res_container.getElementsByClassName('alert');
+                for (let i = 0; i < alerts.length; i++) {
 					alerts[i].classList.remove('hidden');
 				}
-				var alerts_sec = res_container.getElementsByClassName('alert-secondary');
-				for (var i = 0; i < alerts_sec.length; i++) {
+				let alerts_sec = res_container.getElementsByClassName('alert-secondary');
+				for (let i = 0; i < alerts_sec.length; i++) {
 					alerts_sec[i].classList.add('hidden');
 				}
 				document.getElementById('load').style.display = 'none';
-				var toolbar = document.getElementById('toolbar');
-				var buttags = toolbar.getElementsByTagName('button');
-				for (var i = 0; i < buttags.length; i++) {
+				let toolbar = document.getElementById('toolbar');
+				let buttags = toolbar.getElementsByTagName('button');
+				for (let i = 0; i < buttags.length; i++) {
 					buttags[i].removeAttribute('disabled');
 				}
-				var atags = toolbar.getElementsByTagName('a');
-				for (var i = 0; i < atags.length; i++) {
+				let atags = toolbar.getElementsByTagName('a');
+				for (let i = 0; i < atags.length; i++) {
 					atags[i].removeAttribute('disabled');
 				}
 			}
 		});
 		function setStatusDivs(data) {
-			var nl_bar = document.getElementById('nl_bar');
+			let nl_bar = document.getElementById('nl_bar');
 			nl_bar.textContent = data.percent+'%';
 			nl_bar.style.width = data.percent+'%';
 			nl_bar.setAttribute('aria-valuenow', data.percent);
 			document.getElementById('nl_to_send_message').innerHTML = data.nl2sendmsg;
-			var result = document.createElement('div');
+			let result = document.createElement('div');
 			result.innerHTML = data.result;
 			var resultdiv = document.getElementById('result');
 			resultdiv.insertBefore(result, resultdiv.firstChild);

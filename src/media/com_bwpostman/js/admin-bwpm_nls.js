@@ -37,10 +37,10 @@ window.onload = function() {
 
 	Joomla.submitbutton = function (pressbutton)
 	{
-		var form = document.adminForm;
+		let form = document.adminForm;
 		if (pressbutton === 'newsletter.archive')
 		{
-			var ConfirmArchive = confirm(document.getElementById('archiveText').value);
+			let ConfirmArchive = confirm(document.getElementById('archiveText').value);
 			if (ConfirmArchive === true)
 			{
 				Joomla.submitform(pressbutton, form);

@@ -43,23 +43,23 @@
 			viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
 			viewportheight = document.getElementsByTagName('body')[0].clientHeight
 		}
-		var modalcontent = document.getElementById('bwp_com_modal-content');
+		let modalcontent = document.getElementById('bwp_com_modal-content');
 		modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';
 		modalcontent.style.width = viewportwidth-(viewportwidth*0.10)+'px';
 
 		// Get the modal
-		var commodal = document.getElementById('bwp_com_Modal');
-		var commodalhref = document.getElementById('bwp_com_Modalhref').value;
+		let commodal = document.getElementById('bwp_com_Modal');
+		let commodalhref = document.getElementById('bwp_com_Modalhref').value;
 
 		// Get the Iframe-Wrapper and set Iframe
-		var wrapper = document.getElementById('bwp_com_wrapper');
-		var html = '<iframe id="BwpFrame" name="BwpFrame" src="'+commodalhref+'" frameborder="0" style="width:100%; height:100%;"></iframe>';
+		let wrapper = document.getElementById('bwp_com_wrapper');
+		let html = '<iframe id="BwpFrame" name="BwpFrame" src="'+commodalhref+'" frameborder="0" style="width:100%; height:100%;"></iframe>';
 
 		// Get the button that opens the modal
-		var btnopen = document.getElementById("bwp_com_open");
+		let btnopen = document.getElementById("bwp_com_open");
 
 		// Get the <span> element that closes the modal
-		var btnclose = document.getElementsByClassName("bwp_com_close")[0];
+		let btnclose = document.getElementsByClassName("bwp_com_close")[0];
 
 		// When the user clicks the button, open the modal
 		btnopen.onclick = function() {

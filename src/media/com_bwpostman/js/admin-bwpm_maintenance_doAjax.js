@@ -38,22 +38,22 @@ function doAjax(data, successCallback)
 			successCallback(JSON.parse(response));
 		},
 		onError: function onError(xhr) {
-			var message = document.createElement('div');
+			let message = document.createElement('div');
 			message.innerHTML = '<p class="text-danger">AJAX Error: ' + xhr.statusText + '<br />' + xhr.responseText + '</p>';
 			document.getElementById('loading2').style.display = "none";
-			var alert_step = document.getElementById('step' + parseInt(data.match(/\d/g)));
+			let alert_step = document.getElementById('step' + parseInt(data.match(/\d/g)));
 			if(typeof alert_step !== 'undefined' && alert_step !== null) {
 				alert_step.querySelector('span.fa').classList.remove('fa-spinner');
 				alert_step.classList.remove('alert-info');
 				alert_step.classList.add('alert-danger');
 			}
-			var resultdiv = document.getElementById('result');
+			let resultdiv = document.getElementById('result');
 			document.getElementById('resultSet').style.backgroundColor = '#f3d4d4';
 			document.getElementById('resultSet').style.borderColor = '#eebfbe';
 			resultdiv.insertBefore(message, resultdiv.firstChild);
-			var toolbar = document.getElementById('toolbar');
-			var buttags = toolbar.getElementsByTagName('button');
-			for (var i = 0; i < buttags.length; i++) {
+			let toolbar = document.getElementById('toolbar');
+			let buttags = toolbar.getElementsByTagName('button');
+			for (let i = 0; i < buttags.length; i++) {
 				buttags[i].removeAttribute('disabled');
 			}
 			var atags = toolbar.getElementsByTagName('a');

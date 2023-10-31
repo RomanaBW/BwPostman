@@ -25,7 +25,7 @@
 
 // insert placeholder
 function buttonClick(text, editor) {
-	var x = document.getElementById("jform_tpl_html");
+	let x = document.getElementById("jform_tpl_html");
 	if (window.getComputedStyle(x).display === "none") {
 		Joomla.editors.instances[editor].replaceSelection(text);
 	}

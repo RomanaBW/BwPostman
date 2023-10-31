@@ -26,7 +26,7 @@
 (function() {
 
 	function clearSelected(w){
-		var select = document.getElementById(w);
+		let select = document.getElementById(w);
 		if (select) {
 			select.selectedIndex = 0;
 		}
@@ -34,7 +34,7 @@
 
 	document.addEventListener('DOMContentLoaded', function() {
 
-		var filterMls = document.getElementById('filter.mailinglist');
+		let filterMls = document.getElementById('filter.mailinglist');
 		if (filterMls) {
            	filterMls.addEventListener('change',function(){
 				clearSelected('filter.campaign');
@@ -43,7 +43,7 @@
 			});
 		}
 
-		var filterCams = document.getElementById('filter.campaign');
+		let filterCams = document.getElementById('filter.campaign');
 		if (filterCams) {
             filterCams.addEventListener('change',function(){
 				clearSelected('filter.mailinglist');
@@ -52,7 +52,7 @@
 			});
 		}
 
-		var filterGroups = document.getElementById('filter.usergroup')
+		let filterGroups = document.getElementById('filter.usergroup')
 		if (filterGroups) {
 			filterGroups.addEventListener('change',function(){
 				clearSelected('filter.mailinglist');

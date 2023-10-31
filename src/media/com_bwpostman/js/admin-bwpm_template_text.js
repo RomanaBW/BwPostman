@@ -25,8 +25,8 @@
 
 // check form field values
 function checkValues(turn) {
-	var inputs = '';
-	var elements = document.adminForm.elements;
+	let inputs = '';
+	let elements = document.adminForm.elements;
 	var fieldValue = '';
 	for (var i = 0; i < elements.length; i++) {
 		if (elements[i].getAttribute('id') !== 'jform_tpl_html') {

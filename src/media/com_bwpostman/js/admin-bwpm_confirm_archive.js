@@ -30,7 +30,7 @@ window.onload = function() {
 	{
 		if (pressbutton === 'mailinglist.archive')
 		{
-			var ConfirmArchive = confirm(document.getElementById('alertArchive').value);
+			let ConfirmArchive = confirm(document.getElementById('alertArchive').value);
 			if (ConfirmArchive === true)
 			{
 				Joomla.submitform(pressbutton, document.adminForm);

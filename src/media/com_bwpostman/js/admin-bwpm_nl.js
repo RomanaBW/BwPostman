@@ -27,13 +27,13 @@
 function checkSelectedContent(text_confirm_content, text_confirm_template, text_confirm_text_template, no_html_template, no_text_template) {
 	// Get the selected content from the database and split the string into an array but only if there is not the content ''
 
-	var selected_content_new = document.adminForm['jform_selected_content'];
-	var selected_content_old = document.getElementById('selected_content_old');
-	var content_exists = document.getElementById('content_exists');
-	var template_ids = document.getElementsByName('jform[template_id]');
-	var text_template_ids = document.getElementsByName('jform[text_template_id]');
-	var template_id_old = document.getElementById('template_id_old');
-	var text_template_id_old = document.getElementById('text_template_id_old');
+	let selected_content_new = document.adminForm['jform_selected_content'];
+	let selected_content_old = document.getElementById('selected_content_old');
+	let content_exists = document.getElementById('content_exists');
+	let template_ids = document.getElementsByName('jform[template_id]');
+	let text_template_ids = document.getElementsByName('jform[text_template_id]');
+	let template_id_old = document.getElementById('template_id_old');
+	let text_template_id_old = document.getElementById('text_template_id_old');
 
 	function checkContent() {
 		if (selected_content_new.options.length === 0) {
@@ -45,23 +45,23 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 		}
 	}
 
-	var selected_content_oldArray = [];
+	let selected_content_oldArray = [];
 	if (selected_content_old.value !== '') {
 		selected_content_oldArray = selected_content_old.value.split(",");
 	}
 
 	// Get the selected content from the form and store it into an array
-	var selected_content_newArray = [];
-	for (var i=0; i<selected_content_new.options.length; i++) {
+	let selected_content_newArray = [];
+	for (let i=0; i<selected_content_new.options.length; i++) {
 
-		var o = selected_content_new.options[i];
+		let o = selected_content_new.options[i];
 		o.selected = true;
 		selected_content_newArray[i] = o.value;
 	}
 
     // Get template_id
-    var length = template_ids.length;
-	var template_id = '';
+    let length = template_ids.length;
+	let template_id = '';
 	for (i = 0; i < length; i++) {
         if (template_ids[i].checked) {
 	        template_id = template_ids[i].value;
@@ -76,7 +76,7 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 
 	// Get text_template_id
     length = text_template_ids.length;
-	var text_template_id = '';
+	let text_template_id = '';
       for (i = 0; i < length; i++)
       {
         if (text_template_ids[i].checked) {
@@ -95,7 +95,7 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 
 		// Check the number of entries and compare them
 		if (selected_content_newArray.length !== selected_content_oldArray.length) { // The lengths of the arrays are not equal
-			var confirmAddContent = confirm(text_confirm_content);
+			let confirmAddContent = confirm(text_confirm_content);
 			if (confirmAddContent === true) {
 				checkContent();
 				return true;
@@ -109,7 +109,7 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 
 			// Method to check if template_id changed
 			if (template_id !== template_id_old.value) { // The values are not equal
-				var confirmTemplateId = confirm(text_confirm_template);
+				let confirmTemplateId = confirm(text_confirm_template);
 				if (confirmTemplateId === true) {
 					checkContent();
 					return true;
@@ -121,7 +121,7 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 			}
 			// Method to check if text_template_id changed
 			if (text_template_id !== text_template_id_old.value) { // The values are not equal
-				var confirmTexttemplateId = confirm(text_confirm_text_template);
+				let confirmTexttemplateId = confirm(text_confirm_text_template);
 				if (confirmTexttemplateId === true) {
 					checkContent();
 					return true;
@@ -133,7 +133,7 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 			}
 
 			// Compare the entries of the arrays
-			for (var j=0; j<selected_content_newArray.length; j++) {
+			for (let j=0; j<selected_content_newArray.length; j++) {
 				if (selected_content_newArray[j] !== selected_content_oldArray[j]) { // The values are not equal
 					confirmAddContent = confirm(text_confirm_content);
 					if (confirmAddContent === true) {
@@ -167,14 +167,14 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 
 function checkSelectedRecipients (message) { // Method to check if some recipients are selected
 
-	var count_selected = 0;
-	var campaign_id = document.getElementById('jform_campaign_id').value;
-	var ml_available = document.getElementsByName('jform[ml_available][]');
-	var ml_unavailable = document.getElementsByName('jform[ml_unavailable][]');
-	var ml_intern = document.getElementsByName('jform[ml_intern][]');
-	var usergroups = document.getElementsByName('jform[usergroups][]');
+	let count_selected = 0;
+	let campaign_id = document.getElementById('jform_campaign_id').value;
+	let ml_available = document.getElementsByName('jform[ml_available][]');
+	let ml_unavailable = document.getElementsByName('jform[ml_unavailable][]');
+	let ml_intern = document.getElementsByName('jform[ml_intern][]');
+	let usergroups = document.getElementsByName('jform[usergroups][]');
 
-	for (var i=0; i<ml_available.length; i++) {
+	for (let i=0; i<ml_available.length; i++) {
 		if (ml_available[i].checked === true) {
 			count_selected++;
 		}
@@ -208,7 +208,7 @@ function checkSelectedRecipients (message) { // Method to check if some recipien
 
 //insert placeholder
 function buttonClick(text, editor) {
-	var x = document.getElementById("jform_html_version");
+	let x = document.getElementById("jform_html_version");
 	if (window.getComputedStyle(x).display === "none") {
 		Joomla.editors.instances[editor].replaceSelection(text);
 	}
@@ -224,7 +224,7 @@ function buttonClick(text, editor) {
 function moveSelectedOptions(from,to) { // Moves elements from one select box to another one
 
 	// Count selected content
-	var selcnt = null;
+	let selcnt = null;
 
 	// Move them over
 	for (var i=0; i<from.options.length; i++) {

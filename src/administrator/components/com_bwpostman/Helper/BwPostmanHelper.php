@@ -684,8 +684,7 @@ class BwPostmanHelper
 		 */
 
 		// Initialise variables.
-		$user      = Factory::getApplication()->getIdentity();
-		$userId    = (int)$user;
+		$userId      = Factory::getApplication()->getIdentity()->id;
 		$recordId  = 0;
 		$createdBy = 0;
 		$action    = 'edit';

@@ -24,8 +24,8 @@
 //
 
 String.prototype.sprintf = function() {
-	var counter = 0;
-	var args = arguments;
+	let counter = 0;
+	let args = arguments;
 
 	return this.replace(/%s/g, function() {
 		return args[counter++];
@@ -43,11 +43,11 @@ jQuery("#registerErrors").on('hidden.bs.modal', function () {
 function checkModRegisterForm()
 {
 
-	var form = document.bwp_mod_form;
-	var errStr = "";
-	var arrCB = document.getElementsByName("mailinglists[]");
-	var n =	arrCB.length;
-	var check = 0;
+	let form = document.bwp_mod_form;
+	let errStr = "";
+	let arrCB = document.getElementsByName("mailinglists[]");
+	let n =	arrCB.length;
+	let check = 0;
 
 	// Validate input fields
 	// firstname
@@ -73,8 +73,8 @@ function checkModRegisterForm()
 	{
 		if ((!document.getElementById("a_special").value) && (document.getElementById("special_field_obligation_mod").value === '1'))
 		{
-			var special_label = document.getElementById("special_label").value;
-			if (special_label != '')
+			let special_label = document.getElementById("special_label").value;
+			if (special_label !== '')
 			{
 				errStr += Joomla.Text._('MOD_BWPOSTMAN_SUB_ERROR_SPECIAL', true).sprintf(special_label)+"<br />";
 			}
@@ -86,7 +86,7 @@ function checkModRegisterForm()
 	}
 
 	// email
-	var email = document.getElementById("a_email").value;
+	let email = document.getElementById("a_email").value;
 
 	if (email === "")
 	{
@@ -94,7 +94,7 @@ function checkModRegisterForm()
 	}
 	else
 	{
-		var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,14})+$/;
+		let filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,14})+$/;
 		if (!filter.test(email))
 		{
 			errStr += Joomla.Text._('MOD_BWPOSTMANERROR_EMAIL_INVALID', true)+"<br />";
@@ -105,7 +105,7 @@ function checkModRegisterForm()
 
 	if (n > 1)
 	{
-		for (i = 0; i < n; i++)
+		for (let i = 0; i < n; i++)
 		{
 			if (arrCB[i].checked === true)
 			{

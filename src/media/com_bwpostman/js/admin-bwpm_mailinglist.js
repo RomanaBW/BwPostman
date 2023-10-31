@@ -24,11 +24,11 @@
 //
 
 window.onload = function() {
-	var Joomla = window.Joomla || {};
+	let Joomla = window.Joomla || {};
 
 	Joomla.submitbutton = function (pressbutton) {
 
-		var form = document.adminForm;
+		let form = document.adminForm;
 
 		if (pressbutton === 'mailinglist.cancel') {
 			Joomla.submitform(pressbutton, form);

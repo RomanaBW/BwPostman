@@ -34,7 +34,7 @@ function changeTab(tab)
 }
 
 window.onload = function() {
-	var Joomla = window.Joomla || {};
+	let Joomla = window.Joomla || {};
 
 	window.OnlyFiltered = function (onlyFiltered) // Get the selected value from modal box
 	{
@@ -47,7 +47,7 @@ window.onload = function() {
 
 	Joomla.submitbutton = function (pressbutton) {
 		if (pressbutton === 'subscriber.archive') {
-			var ConfirmArchive = confirm(document.getElementById('archiveText').value);
+			let ConfirmArchive = confirm(document.getElementById('archiveText').value);
 			if (ConfirmArchive === true) {
 				Joomla.submitform(pressbutton, document.adminForm);
 			}

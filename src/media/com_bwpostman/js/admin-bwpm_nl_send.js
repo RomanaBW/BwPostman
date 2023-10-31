@@ -76,7 +76,7 @@ ready(function() {
 	function processUpdateStep(data) {
 		let timeout = document.getElementById('delay').value;
 		// Do AJAX post
-		post = 'mailsDone=' + data.mailsDone;
+		let post = 'mailsDone=' + data.mailsDone;
 		doAjax(post, function (data) {
 			let res_container = document.getElementById('sendResult');
 			if (data.ready !== "1") {
@@ -131,7 +131,7 @@ ready(function() {
 			document.getElementById('nl_to_send_message').innerHTML = data.nl2sendmsg;
 			let result = document.createElement('div');
 			result.innerHTML = data.result;
-			var resultdiv = document.getElementById('result');
+			let resultdiv = document.getElementById('result');
 			resultdiv.insertBefore(result, resultdiv.firstChild);
 			document.getElementById('sending').setAttribute('class', 'alert alert-'+data.sending);
 			document.getElementById('delay_msg').setAttribute('class', 'alert alert-'+data.delay_msg);
@@ -142,20 +142,20 @@ ready(function() {
 		}
 	}
 
-	var res_container = document.getElementById('sendResult');
-	var alerts_sec = res_container.getElementsByClassName('alert-secondary');
-	for (var i = 0; i < alerts_sec.length; i++) {
+	let res_container = document.getElementById('sendResult');
+	let alerts_sec = res_container.getElementsByClassName('alert-secondary');
+	for (let i = 0; i < alerts_sec.length; i++) {
 		alerts_sec[i].classList.add('hidden');
 	}
-	var toolbar = document.getElementById('toolbar');
-	var buttags = toolbar.getElementsByTagName('button');
-	for (var i = 0; i < buttags.length; i++) {
-		buttags[i].setAttribute("disabled", "disabled");
+	let toolbar = document.getElementById('toolbar');
+	let buttags = toolbar.getElementsByTagName('button');
+	for (let j = 0; j < buttags.length; j++) {
+		buttags[j].setAttribute("disabled", "disabled");
 	}
-	var atags = toolbar.getElementsByTagName('a');
-	for (var i = 0; i < atags.length; i++) {
-		atags[i].setAttribute("disabled", "disabled");
+	let atags = toolbar.getElementsByTagName('a');
+	for (let k = 0; k < atags.length; k++) {
+		atags[k].setAttribute("disabled", "disabled");
 	}
-	var data = {mailsDone: "0"};
+	let data = {mailsDone: "0"};
 	processUpdateStep(data);
 });

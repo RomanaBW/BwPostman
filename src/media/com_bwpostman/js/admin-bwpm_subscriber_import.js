@@ -24,9 +24,9 @@
 //
 
 function getRadioChecked(element) {
-	var radios = document.getElementsByName(element);
+	let radios = document.getElementsByName(element);
 
-	for (var i = 0, length = radios.length; i < length; i++) {
+	for (let i = 0, length = radios.length; i < length; i++) {
 		if (radios[i].checked) {
 			// do whatever you want with the checked radio
 			// only one radio can be logically checked, don't check the rest
@@ -37,11 +37,11 @@ function getRadioChecked(element) {
 
 function extCheck() {
 	// get the file name, possibly with path (depends on browser)
-	var filename = document.getElementById("importfile").value;
-	var format = getRadioChecked('fileformat');
+	let filename = document.getElementById("importfile").value;
+	let format = getRadioChecked('fileformat');
 
 	// Use a regular expression to trim everything before final dot
-	var extension = filename.replace(/^.*\./, '');
+	let extension = filename.replace(/^.*\./, '');
 	// If there is no dot anywhere in filename, we would have extension == filename,
 	// so we account for this possibility now
 	if (extension === filename) {
@@ -53,7 +53,7 @@ function extCheck() {
 		extension = extension.toLowerCase();
 	}
 
-	var errorTextFileFormat = document.getElementById('importAlertFileFormat').value;
+	let errorTextFileFormat = document.getElementById('importAlertFileFormat').value;
 
 	switch (extension) {
 		case 'xml':
@@ -87,7 +87,7 @@ function extCheck() {
 
 function getExtensionOfFilename(filename) {
 	// Use a regular expression to trim everything before final dot
-	var extension = filename.replace(/^.*\./, '');
+	let extension = filename.replace(/^.*\./, '');
 	// If there is no dot anywhere in filename, we would have extension == filename,
 	// so we account for this possibility now
 	if (extension === filename) {
@@ -114,12 +114,12 @@ function switchCsvFieldsVisibility(visibility) {
 window.onload = function() {
 	function extCheck() {
 		// get the file name, possibly with path (depends on browser)
-		var filename = document.getElementById("importfile").value;
-		var format = getRadioChecked('fileformat');
+		let filename = document.getElementById("importfile").value;
+		let format = getRadioChecked('fileformat');
 
-		var extension = getExtensionOfFilename(filename);
+		let extension = getExtensionOfFilename(filename);
 
-		var errorTextFileFormat = document.getElementById('importAlertFileFormat').value;
+		let errorTextFileFormat = document.getElementById('importAlertFileFormat').value;
 
 		switch (extension) {
 			case 'xml':
@@ -151,16 +151,16 @@ window.onload = function() {
 		}
 	}
 
-	var fileformat = document.getElementsByName('fileformat');
-	var i = 0;
-	var len = fileformat.length
+	let fileformat = document.getElementsByName('fileformat');
+	let i = 0;
+	let len = fileformat.length
 
 	for(i = 0, len; i < len; i++) {
 		fileformat[i].onclick = function () {
-			var format = getRadioChecked('fileformat');
+			let format = getRadioChecked('fileformat');
 
-			var importfile = document.getElementById("importfile");
-			var extension = getExtensionOfFilename(importfile.value);
+			let importfile = document.getElementById("importfile");
+			let extension = getExtensionOfFilename(importfile.value);
 
 			importfile.parentNode.parentNode.style.display = "flex";
 
@@ -194,13 +194,13 @@ window.onload = function() {
 };
 
 document.addEventListener("DOMContentLoaded", function() {
-	var formatExists = document.body.contains(document.getElementsByName('fileformat')[0]);
+	let formatExists = document.body.contains(document.getElementsByName('fileformat')[0]);
 
 	document.addEventListener('readystatechange', (event) => {
 
 		if (formatExists) {
-			var format = getRadioChecked('fileformat');
-			var importfile = document.getElementById("importfile");
+			let format = getRadioChecked('fileformat');
+			let importfile = document.getElementById("importfile");
 
 			switchCsvFieldsVisibility('none');
 			document.getElementById("further").parentNode.parentNode.style.display = "none";
@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function() {
 //-----------------------------------------------------------------------------
 function selectAllOptions(obj)
 {
-	for (var i=0; i<obj.options.length; i++)
+	for (let i=0; i<obj.options.length; i++)
 	{
 		obj.options[i].selected = true;
 	}
@@ -240,7 +240,7 @@ function selectAllOptions(obj)
 //-----------------------------------------------------------------------------
 function removeOptions(selectbox) // Method to get all items in the selectbox when submitting
 {
-	var i;
+	let i;
 
 	for(i=selectbox.options.length-1;i>=0;i--)
 	{
@@ -261,13 +261,13 @@ function removeOptions(selectbox) // Method to get all items in the selectbox wh
 //-----------------------------------------------------------------------------
 function moveUp(element) // Method to move an item up
 {
-	for(var i = 0; i < element.options.length; i++)
+	for(let i = 0; i < element.options.length; i++)
 	{
 		if(element.options[i].selected === true)
 		{
 			if(i !== 0)
 			{
-				var temp = new Option(element.options[i-1].text,element.options[i-1].value);
+				let temp = new Option(element.options[i-1].text,element.options[i-1].value);
 				element.options[i-1] = new Option(element.options[i].text, element.options[i].value);
 				element.options[i-1].selected = true;
 				element.options[i] = temp;
@@ -278,13 +278,13 @@ function moveUp(element) // Method to move an item up
 
 function moveDown(element) // Method to move an item down
 {
-	for(var i = (element.options.length - 1); i >= 0; i--)
+	for(let i = (element.options.length - 1); i >= 0; i--)
 	{
 		if(element.options[i].selected === true)
 		{
 			if(i !== (element.options.length - 1))
 			{
-				var temp = new Option(element.options[i+1].text,element.options[i+1].value);
+				let temp = new Option(element.options[i+1].text,element.options[i+1].value);
 				element.options[i+1] = new Option(element.options[i].text, element.options[i].value);
 				element.options[i+1].selected = true;
 				element.options[i] = temp;
@@ -295,9 +295,9 @@ function moveDown(element) // Method to move an item down
 
 function check() // Method to check if the user tries to delete the email item and if the numbers of items in both selected boxes are similar
 {
-	var count_db_fields = document.getElementById('db_fields').length;
+	let count_db_fields = document.getElementById('db_fields').length;
 
-	var count_import_fields = document.getElementById('import_fields').length;
+	let count_import_fields = document.getElementById('import_fields').length;
 
 	if (count_db_fields !== count_import_fields) {
 		alert (document.getElementById('importAlertFields').value);

@@ -62,7 +62,7 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
     // Get template_id
     let length = template_ids.length;
 	let template_id = '';
-	for (i = 0; i < length; i++) {
+	for (let i = 0; i < length; i++) {
         if (template_ids[i].checked) {
 	        template_id = template_ids[i].value;
         }
@@ -77,10 +77,10 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 	// Get text_template_id
     length = text_template_ids.length;
 	let text_template_id = '';
-      for (i = 0; i < length; i++)
+      for (let j = 0; j < length; j++)
       {
-        if (text_template_ids[i].checked) {
-          text_template_id = text_template_ids[i].value;
+        if (text_template_ids[j].checked) {
+          text_template_id = text_template_ids[j].value;
         }
       }
 
@@ -135,7 +135,7 @@ function checkSelectedContent(text_confirm_content, text_confirm_template, text_
 			// Compare the entries of the arrays
 			for (let j=0; j<selected_content_newArray.length; j++) {
 				if (selected_content_newArray[j] !== selected_content_oldArray[j]) { // The values are not equal
-					confirmAddContent = confirm(text_confirm_content);
+					let confirmAddContent = confirm(text_confirm_content);
 					if (confirmAddContent === true) {
 						document.adminForm.add_content.value = 1;
 						return true;
@@ -180,20 +180,20 @@ function checkSelectedRecipients (message) { // Method to check if some recipien
 		}
 	}
 
-	for (i=0; i<ml_unavailable.length; i++) {
-		if (ml_unavailable[i].checked === true) {
+	for (j=0; j<ml_unavailable.length; j++) {
+		if (ml_unavailable[j].checked === true) {
 			count_selected++;
 		}
 	}
 
-	for (i=0; i<ml_intern.length; i++) {
-		if (ml_intern[i].checked === true) {
+	for (k=0; k<ml_intern.length; k++) {
+		if (ml_intern[k].checked === true) {
 			count_selected++;
 		}
 	}
 
-	for (i=0; i<usergroups.length; i++) {
-		if (usergroups[i].checked === true) {
+	for (l=0; l<usergroups.length; l++) {
+		if (usergroups[l].checked === true) {
 			count_selected++;
 		}
 	}
@@ -227,8 +227,8 @@ function moveSelectedOptions(from,to) { // Moves elements from one select box to
 	let selcnt = null;
 
 	// Move them over
-	for (var i=0; i<from.options.length; i++) {
-		var o = from.options[i];
+	for (let i=0; i<from.options.length; i++) {
+		let o = from.options[i];
 		if (o.selected) {
 		  to.options[to.options.length] = new Option(o.text, o.value, false, false);
           selcnt = true;
@@ -252,11 +252,11 @@ function moveSelectedOptions(from,to) { // Moves elements from one select box to
 
 function moveArticle() {
 	// Move article id from available content helper to selected content
-	var select = document.getElementById('jform_selected_content');
-	var fieldId = document.getElementById('jform_ac_id_id');
-	var availableContent = document.getElementById('jform_available_content').options;
+	let select = document.getElementById('jform_selected_content');
+	let fieldId = document.getElementById('jform_ac_id_id');
+	let availableContent = document.getElementById('jform_available_content').options;
 
-	var fieldTitle = document.getElementById('jform_ac_id_name');
+	let fieldTitle = document.getElementById('jform_ac_id_name');
 
 	// J5 creates title other way
 	if (typeof(fieldTitle) == 'undefined' || fieldTitle == null) {
@@ -264,7 +264,7 @@ function moveArticle() {
 	}
 
 	if(fieldId.value && fieldTitle.value) {
-		var contentFound = 0;
+		let contentFound = 0;
 
 		// Search for selected article at (remaining) available list,
 		for (let i = 0; i < availableContent.length; i++) {
@@ -278,7 +278,7 @@ function moveArticle() {
 		if (contentFound > 0)
 		{
 			// Add to selected list
-			var option = document.createElement("option");
+			let option = document.createElement("option");
 			option.value = fieldId.value;
 			option.text = availableContent[contentFound].text;
 			select.appendChild(option);
@@ -302,8 +302,8 @@ function moveArticle() {
 
 function sortSelectedOptions(updown) {
 	// Sort selected content up / down
-	var select = document.getElementById('jform_selected_content');
-	var option = select.options[select.selectedIndex];
+	let select = document.getElementById('jform_selected_content');
+	let option = select.options[select.selectedIndex];
 
 	if(option) {
 		if (updown === 'up') {
@@ -311,7 +311,7 @@ function sortSelectedOptions(updown) {
 		}
 		else
 		{
-			var ind = select.selectedIndex + 2;
+			let ind = select.selectedIndex + 2;
 			if (ind > select.options.length) ind = 0;
 			select.options.add(option, ind);
 		}
@@ -323,9 +323,9 @@ function sortSelectedOptions(updown) {
 }
 
 function hasCampaign() {
-	var selectedCampaign = document.getElementById("jform_campaign_id");
-	var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
-	var hasCampaign = false;
+	let selectedCampaign = document.getElementById("jform_campaign_id");
+	let selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+	let hasCampaign = false;
 	if (selectedCampaignValue !== '-1') {
 		hasCampaign = true;
 	}
@@ -336,16 +336,16 @@ function hasCampaign() {
 function changeTab(newTab, currentTab, text_confirm_content, text_confirm_template, text_confirm_text_template, no_html_template, no_text_template, checkRecipientMessage) {
 	if (newTab !== currentTab) {
 		if (currentTab === 'edit_basic') {
-			var selectedContentOkay = checkSelectedContent(text_confirm_content, text_confirm_template, text_confirm_text_template, no_html_template, no_text_template);
+			let selectedContentOkay = checkSelectedContent(text_confirm_content, text_confirm_template, text_confirm_text_template, no_html_template, no_text_template);
 
 			if (selectedContentOkay === false) {
 				return false;
 			}
 
-			var hasCampaign = window.hasCampaign();
+			let hasCampaign = window.hasCampaign();
 
 			if (!hasCampaign) {
-				var campaignRecipientsOkay = checkSelectedRecipients(checkRecipientMessage);
+				let campaignRecipientsOkay = checkSelectedRecipients(checkRecipientMessage);
 			}
 
 			if (campaignRecipientsOkay === false) {
@@ -358,9 +358,9 @@ function changeTab(newTab, currentTab, text_confirm_content, text_confirm_templa
 }
 
 function switchRecipients() {
-	var selectedCampaign = document.getElementById("jform_campaign_id");
-	var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
-	var recipients = document.getElementById('recipients');
+	let selectedCampaign = document.getElementById("jform_campaign_id");
+	let selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+	let recipients = document.getElementById('recipients');
 
 	if (selectedCampaignValue !== '-1') {
 		recipients.style.display = "none";
@@ -370,20 +370,20 @@ function switchRecipients() {
 }
 
 function InsertAtCaret(myValue) {
-	var ele = document.getElementsByClassName("insertatcaretactive");
-	for (var i = 0; i<ele.length; i++) {
+	let ele = document.getElementsByClassName("insertatcaretactive");
+	for (let i = 0; i<ele.length; i++) {
 		if (document.selection) {
 			//For browsers like Internet Explorer
 			ele[i].focus();
-			var sel = document.selection.createRange();
+			let sel = document.selection.createRange();
 			sel.text = myValue;
 			ele[i].focus();
 		}
 		else if (ele[i].selectionStart || ele[i].selectionStart === 0) {
 			//For browsers like Firefox and Webkit based
-			var startPos = ele[i].selectionStart;
-			var endPos = ele[i].selectionEnd;
-			var scrollTop = ele[i].scrollTop;
+			let startPos = ele[i].selectionStart;
+			let endPos = ele[i].selectionEnd;
+			let scrollTop = ele[i].scrollTop;
 			ele[i].value = ele[i].value.substring(0, startPos) + myValue + ele[i].value.substring(endPos, ele[i].value.length);
 			ele[i].focus();
 			ele[i].selectionStart = startPos + myValue.length;
@@ -405,16 +405,16 @@ function addEventHandler(elem, eventType, handler) {
 }
 
 window.onload = function() {
-	var Joomla = window.Joomla || {};
+	let Joomla = window.Joomla || {};
 
 	if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
-		var selectedCampaign = document.getElementById("jform_campaign_id");
-		var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+		let selectedCampaign = document.getElementById("jform_campaign_id");
+		let selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
 	}
 
 	Joomla.submitbutton = function (pressbutton) {
 
-		var form = document.adminForm;
+		let form = document.adminForm;
 
 		if (form.task.value === 'newsletter.changeTab') {
 			Joomla.submitform(pressbutton, form);
@@ -441,7 +441,7 @@ window.onload = function() {
 			Joomla.submitform(pressbutton, form);
 		}
 
-		var confirmSendNl = '';
+		let confirmSendNl = '';
 		if (pressbutton === 'newsletter.sendmail') {
 			confirmSendNl = confirm(document.getElementById('confirmSend').value);
 			if (confirmSendNl === true) {
@@ -472,15 +472,15 @@ window.onload = function() {
 
 			if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic')
 			{
-				var Args1 = document.getElementById('checkContentArgs1').value;
-				var Args2 = document.getElementById('checkContentArgs2').value;
-				var Args3 = document.getElementById('checkContentArgs3').value;
-				var Args4 = document.getElementById('checkContentArgs4').value;
-				var Args5 = document.getElementById('checkContentArgs5').value;
-				var selectedCampaign = document.getElementById("jform_campaign_id");
-				var selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+				let Args1 = document.getElementById('checkContentArgs1').value;
+				let Args2 = document.getElementById('checkContentArgs2').value;
+				let Args3 = document.getElementById('checkContentArgs3').value;
+				let Args4 = document.getElementById('checkContentArgs4').value;
+				let Args5 = document.getElementById('checkContentArgs5').value;
+				let selectedCampaign = document.getElementById("jform_campaign_id");
+				let selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
 
-				var res = checkSelectedContent(Args1, Args2, Args3, Args4, Args5)
+				let res = checkSelectedContent(Args1, Args2, Args3, Args4, Args5)
 				if (res === false)
 				{
 					return false;
@@ -500,7 +500,7 @@ window.onload = function() {
 	};
 
 	if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
-		var recipients = document.getElementById('recipients');
+		let recipients = document.getElementById('recipients');
 		if (selectedCampaignValue !== '-1') {
 			recipients.style.display = "none";
 		} else {
@@ -509,8 +509,8 @@ window.onload = function() {
 	}
 
 	if (document.getElementById('substitute') !== null && document.getElementById('substitute').value === true) {
-		var substitute = document.getElementsByName("jform[substitute_links]");
-		for (var i = 0; i < substitute.length; i++) {
+		let substitute = document.getElementsByName("jform[substitute_links]");
+		for (let i = 0; i < substitute.length; i++) {
 			substitute[i].onclick = function () {
 				document.getElementById("add_content").value = "1";
 				document.getElementById("template_id_old").value = "";
@@ -538,21 +538,21 @@ function ready(callbackFunc) {
 
 ready(function() {
 	// enable InsertAtCaret
-	var elms = document.querySelectorAll("#jform_intro_text_text,#jform_intro_text_headline,#jform_text_version,#jform_intro_headline,#jform_intro_text,#jform_html_version");
-	for(var i = 0; i < elms.length; i++) {
+	let elms = document.querySelectorAll("#jform_intro_text_text,#jform_intro_text_headline,#jform_text_version,#jform_intro_headline,#jform_intro_text,#jform_html_version");
+	for(let i = 0; i < elms.length; i++) {
 		addEventHandler(elms[i], 'focus', function() {
-			var actives = document.getElementsByClassName('insertatcaretactive');
-			for (var z = 0; z < actives.length; z++) {
+			let actives = document.getElementsByClassName('insertatcaretactive');
+			for (let z = 0; z < actives.length; z++) {
 				actives[z].classList.remove('insertatcaretactive');
 			}
 			this.classList.add('insertatcaretactive');
 		});
 	}
 
-	var jform_campaign_id = document.getElementById('jform_campaign_id');
+	let jform_campaign_id = document.getElementById('jform_campaign_id');
 	if (jform_campaign_id) {
 		addEventHandler(jform_campaign_id, 'change', function() {
-			var recipients = document.getElementById('recipients');
+			let recipients = document.getElementById('recipients');
 			if (this.value !== '-1') {
 				recipients.style.display = 'none';
 			} else {

@@ -53,7 +53,7 @@ ready(function() {
 		pstep.classList.add('alert-info');
 		pstep.querySelector('span.fa').classList.add('fa-spinner');
 		// Do AJAX post
-		post = 'step=step' + data.step;
+		let post = 'step=step' + data.step;
 		doAjax(post, function (data) {
 			if (parseInt(data.ready) !== 1) {
 				document.getElementById('result').innerHTML = document.getElementById('result').innerHTML = data.result;
@@ -70,7 +70,7 @@ ready(function() {
 				if (typeof data.error !== 'undefined' && data.error !== null) {
 					document.getElementById('resultSet').style.backgroundColor = '#f3d4d4';
 					document.getElementById('resultSet').style.borderColor = '#eebfbe';
-					var alert_step = document.getElementById(data.step);
+					let alert_step = document.getElementById(data.step);
 					if(typeof alert_step !== 'undefined' && alert_step !== null) {
 						alert_step.querySelector('span.fa').classList.remove('fa-spinner');
 						alert_step.classList.remove('alert-info');
@@ -81,29 +81,29 @@ ready(function() {
 					document.getElementById('resultSet').style.borderColor = '#0f2f21';
 				}
 
-				var toolbar = document.getElementById('toolbar');
-				var buttags = toolbar.getElementsByTagName('button');
-				for (var i = 0; i < buttags.length; i++) {
+				let toolbar = document.getElementById('toolbar');
+				let buttags = toolbar.getElementsByTagName('button');
+				for (let i = 0; i < buttags.length; i++) {
 					buttags[i].removeAttribute('disabled');
 				}
-				var atags = toolbar.getElementsByTagName('a');
-				for (var i = 0; i < atags.length; i++) {
-					atags[i].removeAttribute('disabled');
+				let atags = toolbar.getElementsByTagName('a');
+				for (let j = 0; j < atags.length; j++) {
+					atags[j].removeAttribute('disabled');
 				}
 			}
 		});
 	}
 
-	var toolbar = document.getElementById('toolbar');
-	var buttags = toolbar.getElementsByTagName('button');
-	for (var i = 0; i < buttags.length; i++) {
-		buttags[i].setAttribute("disabled", "disabled");
+	let toolbar = document.getElementById('toolbar');
+	let buttags = toolbar.getElementsByTagName('button');
+	for (let k = 0; k < buttags.length; k++) {
+		buttags[k].setAttribute("disabled", "disabled");
 	}
-	var atags = toolbar.getElementsByTagName('a');
-	for (var i = 0; i < atags.length; i++) {
-		atags[i].setAttribute("disabled", "disabled");
+	let atags = toolbar.getElementsByTagName('a');
+	for (let l = 0; l < atags.length; l++) {
+		atags[l].setAttribute("disabled", "disabled");
 	}
-	var data = {step: "1"};
+	let data = {step: "1"};
 	setTimeout(function(){
 		processUpdateStep(data);
 	}, 1000);

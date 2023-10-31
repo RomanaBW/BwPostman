@@ -27,7 +27,7 @@
 	function bwpBtnGroupMod() {
 		const form = document.getElementById("bwp_mod_form");
 		const matches = form.querySelectorAll(".radio.btn-group label");
-		for (var i = 0; i < matches.length; ++i) {
+		for (let i = 0; i < matches.length; ++i) {
 			matches[i].classList.add('btn');
 		}
 		const activlabels = form.querySelectorAll(".btn-group label:not(.active)");
@@ -40,7 +40,7 @@
 				if (input.checked === false)
 				{
 					const matches = form.querySelectorAll('.radio.btn-group label');
-					for (var i = 0; i < matches.length; ++i) {
+					for (let i = 0; i < matches.length; ++i) {
 						matches[i].classList.remove('active');
 					}
 					if (input.value === '')

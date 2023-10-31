@@ -56,8 +56,8 @@ function doAjax(data, successCallback)
 			for (let i = 0; i < buttags.length; i++) {
 				buttags[i].removeAttribute('disabled');
 			}
-			var atags = toolbar.getElementsByTagName('a');
-			for (var i = 0; i < atags.length; i++) {
+			let atags = toolbar.getElementsByTagName('a');
+			for (let i = 0; i < atags.length; i++) {
 				atags[i].removeAttribute('disabled');
 			}
 		}

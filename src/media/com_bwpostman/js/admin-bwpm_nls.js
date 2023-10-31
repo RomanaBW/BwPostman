@@ -33,7 +33,7 @@ function changeTab(newTab, currentTab)
 }
 
 window.onload = function() {
-	Joomla = window.Joomla || {};
+	let Joomla = window.Joomla || {};
 
 	Joomla.submitbutton = function (pressbutton)
 	{

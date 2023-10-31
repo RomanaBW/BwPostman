@@ -26,14 +26,14 @@
 
 	function setRegModal() {
 		// Get the modal
-		var modal = document.getElementById('bwp_reg_modal');
+		let modal = document.getElementById('bwp_reg_modal');
 
 		// Get the button that opens the modal
-		var regopen = document.getElementById("bwp_reg_open");
-		var customopen = document.getElementById("bwp_reg_custom_open");
+		let regopen = document.getElementById("bwp_reg_open");
+		let customopen = document.getElementById("bwp_reg_custom_open");
 
 		// Get the <span> element that closes the modal
-		var regclose = document.getElementsByClassName("bwp_reg_close")[0];
+		let regclose = document.getElementsByClassName("bwp_reg_close")[0];
 
 		// When the user clicks the button, open the modal
 		regopen.onclick = function() {

@@ -25,18 +25,18 @@
 
 function processUpdateStep(data)
 {
-	var alert_step_old = document.getElementById('step' + (data.step - 1));
+	let alert_step_old = document.getElementById('step' + (data.step - 1));
 	if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
 		alert_step_old.querySelector('span.fa').classList.remove('fa-spinner');
 		alert_step_old.classList.remove('alert-info');
 		alert_step_old.classList.add('alert-' + data.aClass);
 	}
-	var pstep = document.getElementById('step' + data.step);
+	let pstep = document.getElementById('step' + data.step);
 	pstep.classList.remove('alert-secondary');
 	pstep.classList.add('alert-info');
 	pstep.querySelector('span.fa').classList.add('fa-spinner');
 	// Do AJAX post
-	post = 'step=step' + data.step;
+	let post = 'step=step' + data.step;
 	doAjax(post, function(data){
 		if(parseInt(data.ready) !== 1)
 		{
@@ -45,7 +45,7 @@ function processUpdateStep(data)
 		}
 		else
 		{
-			var alert_step_old = document.getElementById('step' + (data.step - 1));
+			let alert_step_old = document.getElementById('step' + (data.step - 1));
 			if(typeof alert_step_old !== 'undefined' && alert_step_old !== null) {
 				alert_step_old.querySelector('span.fa').classList.remove('fa-spinner');
 				alert_step_old.classList.remove('alert-info');
@@ -57,7 +57,7 @@ function processUpdateStep(data)
 			if (typeof data.error !== 'undefined' && data.error !== null) {
 				document.getElementById('resultSet').style.backgroundColor = '#f3d4d4';
 				document.getElementById('resultSet').style.borderColor = '#eebfbe';
-				var alert_step = document.getElementById(data.step);
+				let alert_step = document.getElementById(data.step);
 				if(typeof alert_step !== 'undefined' && alert_step !== null) {
 					alert_step.querySelector('span.fa').classList.remove('fa-spinner');
 					alert_step.classList.remove('alert-info');
@@ -70,20 +70,20 @@ function processUpdateStep(data)
 			document.getElementById('warn').style.display = 'none';
 			document.getElementById('info').style.display = 'block';
 
-			var toolbar = document.getElementById('toolbar');
+			let toolbar = document.getElementById('toolbar');
 			if (toolbar) {
-				var buttags = toolbar.getElementsByTagName('button');
-				for (var i = 0; i < buttags.length; i++) {
+				let buttags = toolbar.getElementsByTagName('button');
+				for (let i = 0; i < buttags.length; i++) {
 					buttags[i].removeAttribute('disabled');
 				}
-				var atags = toolbar.getElementsByTagName('a');
-				for (var i = 0; i < atags.length; i++) {
-					atags[i].removeAttribute('disabled');
+				let atags = toolbar.getElementsByTagName('a');
+				for (let j = 0; j < atags.length; j++) {
+					atags[j].removeAttribute('disabled');
 				}
 			}
 			// Get the modal
-			var modal = window.parent.document.getElementById('bwp_Modal');
-			var btnclose = window.parent.document.getElementsByClassName('bwp_close')[0];
+			let modal = window.parent.document.getElementById('bwp_Modal');
+			let btnclose = window.parent.document.getElementsByClassName('bwp_close')[0];
 			btnclose.style.display = 'block';
 			btnclose.onclick = function() {
 				modal.style.display = 'none';
@@ -96,18 +96,18 @@ function processUpdateStep(data)
 		}
 	});
 }
-var toolbar = document.getElementById('toolbar');
+let toolbar = document.getElementById('toolbar');
 if (toolbar) {
-	var buttags = toolbar.getElementsByTagName('button');
-	for (var i = 0; i < buttags.length; i++) {
-		buttags[i].setAttribute("disabled", "disabled");
+	let buttags = toolbar.getElementsByTagName('button');
+	for (let k = 0; k < buttags.length; k++) {
+		buttags[k].setAttribute("disabled", "disabled");
 	}
-	var atags = toolbar.getElementsByTagName('a');
-	for (var i = 0; i < atags.length; i++) {
-		atags[i].setAttribute("disabled", "disabled");
+	let atags = toolbar.getElementsByTagName('a');
+	for (let l = 0; l < atags.length; l++) {
+		atags[l].setAttribute("disabled", "disabled");
 	}
 }
-var data = {step: "0"};
+let data = {step: "0"};
 
 function ready(callbackFunc) {
 	if (document.readyState !== 'loading') {

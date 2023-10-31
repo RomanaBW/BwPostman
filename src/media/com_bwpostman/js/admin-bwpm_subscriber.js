@@ -24,20 +24,20 @@
 //
 
 window.onload = function() {
-	var Joomla = window.Joomla || {};
+	let Joomla = window.Joomla || {};
 
 	Joomla.submitbutton = function (pressbutton) {
-		var form = document.adminForm;
+		let form = document.adminForm;
 
 		if (pressbutton === 'subscriber.cancel') {
 			Joomla.submitform(pressbutton, form);
 		} else {
-			var isValid = true;
-			var action = pressbutton.split('.');
+			let isValid = true;
+			let action = pressbutton.split('.');
 
 			if (action[1] !== 'cancel' && action[1] !== 'close') {
-				var forms = document.querySelectorAll('form.form-validate');
-				for (var i = 0; i < forms.length; i++) {
+				let forms = document.querySelectorAll('form.form-validate');
+				for (let i = 0; i < forms.length; i++) {
 					if (!document.formvalidator.isValid(forms[i])) {
 						isValid = false;
 						break;
@@ -55,9 +55,9 @@ window.onload = function() {
 	// This function changes the layout-value if the checkbox 'confirm' exists and if it is not checked
 	function checkConfirmBox() {
 
-		var form = document.adminForm;
+		let form = document.adminForm;
 
-		var cb = document.getElementById('confirm');
+		let cb = document.getElementById('confirm');
 
 		// Does the checkbox 'confirm' exist?
 		if (cb == null) {

@@ -28,7 +28,7 @@
 //-----------------------------------------------------------------------------
 function selectAllOptions(obj)
 {
-	for (var i = 0; i < obj.options.length; i++)
+	for (let i = 0; i < obj.options.length; i++)
 	{
 		obj.options[i].selected = true;
 	}
@@ -40,7 +40,7 @@ function selectAllOptions(obj)
 //-----------------------------------------------------------------------------
 function removeOptions(selectbox)
 {
-	var i;
+	let i;
 
 	for(i=selectbox.options.length-1;i>=0;i--)
 	{
@@ -56,13 +56,13 @@ function removeOptions(selectbox)
 //-----------------------------------------------------------------------------
 function moveUp(element) // Method to move an item up
 {
-	for(var i = 0; i < element.options.length; i++)
+	for(let i = 0; i < element.options.length; i++)
 	{
 		if(element.options[i].selected === true)
 		{
 			if(i !== 0)
 			{
-				var temp    = new Option(element.options[i-1].text,element.options[i-1].value);
+				let temp    = new Option(element.options[i-1].text,element.options[i-1].value);
 				element.options[i-1] = new Option(element.options[i].text, element.options[i].value);
 				element.options[i-1].selected = true;
 				element.options[i] = temp;
@@ -73,13 +73,13 @@ function moveUp(element) // Method to move an item up
 
 function moveDown(element) // Method to move an item down
 {
-	for(var i = (element.options.length - 1); i >= 0; i--)
+	for(let i = (element.options.length - 1); i >= 0; i--)
 	{
 		if(element.options[i].selected === true)
 		{
 			if(i !== (element.options.length - 1))
 			{
-				var temp    = new Option(element.options[i+1].text,element.options[i+1].value);
+				let temp    = new Option(element.options[i+1].text,element.options[i+1].value);
 				element.options[i+1] = new Option(element.options[i].text, element.options[i].value);
 				element.options[i+1].selected = true;
 				element.options[i] = temp;
@@ -90,7 +90,7 @@ function moveDown(element) // Method to move an item down
 
 function check() // Method to check if the user didn't delete all items in the select box
 {
-	var count_export_fields = document.getElementById('export_fields').length;
+	let count_export_fields = document.getElementById('export_fields').length;
 
 	if (count_export_fields <= 0)
 	{
@@ -110,7 +110,7 @@ function addEventHandler(elem, eventType, handler) {
 window.onload = function() {
 
 	function extCheck() {
-		var format = document.querySelector('input[name="fileformat"]:checked').value
+		let format = document.querySelector('input[name="fileformat"]:checked').value
 
 		switch (format) {
 			case 'xml':
@@ -151,8 +151,8 @@ window.onload = function() {
 		document.getElementById('button_tr').style.display = 'none';
 	});
 
-	var fileformat = document.querySelectorAll("input[name=fileformat]");
-	for (var i = 0; i < fileformat.length; i++) {
+	let fileformat = document.querySelectorAll("input[name=fileformat]");
+	for (let i = 0; i < fileformat.length; i++) {
 		addEventHandler(fileformat[i], 'change', function() {
 			document.getElementById('delimiter_tr').style.display = 'none';
 			document.getElementById('enclosure_tr').style.display = 'none';
@@ -160,9 +160,9 @@ window.onload = function() {
 		});
 	}
 
-	var states = document.querySelectorAll(".state input[type='checkbox']");
-	for (var i = 0; i < states.length; i++) {
-		addEventHandler(states[i], 'change', function() {
+	let states = document.querySelectorAll(".state input[type='checkbox']");
+	for (let j = 0; j < states.length; j++) {
+		addEventHandler(states[j], 'change', function() {
 			if (document.querySelectorAll(".archive input:checked").length) {
 				document.getElementById('button_tr').style.display = '';
 			}
@@ -172,9 +172,9 @@ window.onload = function() {
 		});
 	}
 
-	var archives = document.querySelectorAll(".archive input[type='checkbox']");
-	for (var i = 0; i < archives.length; i++) {
-		addEventHandler(archives[i], 'change', function() {
+	let archives = document.querySelectorAll(".archive input[type='checkbox']");
+	for (let k = 0; k < archives.length; k++) {
+		addEventHandler(archives[k], 'change', function() {
 			if (document.querySelectorAll(".state input:checked").length) {
 				document.getElementById('button_tr').style.display = '';
 			}

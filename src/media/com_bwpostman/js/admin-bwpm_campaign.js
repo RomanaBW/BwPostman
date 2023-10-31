@@ -24,22 +24,22 @@
 //
 
 window.onload = function() {
-	var Joomla = window.Joomla || {};
+	let Joomla = window.Joomla || {};
 
 	Joomla.submitbutton = function (pressbutton) {
-		var form = document.adminForm;
+		let form = document.adminForm;
 		if (pressbutton === 'campaign.cancel') {
 			Joomla.submitform(pressbutton, form);
 			return;
 		}
 
 		if ((pressbutton === 'campaign.apply') || (pressbutton === 'campaign.save') || (pressbutton === 'campaign.save2new') || (pressbutton === 'campaign.save2copy')) {
-			var errors = 0;
-			var title = form.jform_title.value;
-			var inputs = document.getElementsByTagName('input');
-			var recipients = 0;
+			let errors = 0;
+			let title = form.jform_title.value;
+			let inputs = document.getElementsByTagName('input');
+			let recipients = 0;
 
-			for (var i = 0; i < inputs.length; i++) {
+			for (let i = 0; i < inputs.length; i++) {
 				if (inputs[i].type.toLowerCase() === 'checkbox' && inputs[i].checked === true) {
 					recipients++;
 				}

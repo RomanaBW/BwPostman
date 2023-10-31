@@ -25,12 +25,12 @@
 
 // check form field values
 function checkValues(turn) {
-	var inputs = '';
-	var elements = document.adminForm.elements;
-	for (var i = 0; i < elements.length; i++) {
-		var fieldValue = elements[i].value;
+	let inputs = '';
+	let elements = document.adminForm.elements;
+	for (let i = 0; i < elements.length; i++) {
+		let fieldValue = elements[i].value;
 		if (elements[i].getAttribute('checked') !== false) {
-			var fieldChecked = elements[i].getAttribute('checked');
+			let fieldChecked = elements[i].getAttribute('checked');
 		}
 		inputs += fieldValue + fieldChecked;
 	}

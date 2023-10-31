@@ -27,15 +27,15 @@
 function checkValues(turn) {
 	let inputs = '';
 	let elements = document.adminForm.elements;
-	var fieldValue = '';
-	for (var i = 0; i < elements.length; i++) {
+	let fieldValue = '';
+	for (let i = 0; i < elements.length; i++) {
 		if (elements[i].getAttribute('id') !== 'jform_tpl_html') {
 			fieldValue = elements[i].value;
 		} else {
 			fieldValue = elements[i].value.length;
 		}
 		if (elements[i].getAttribute('checked') !== false) {
-			var fieldChecked = elements[i].getAttribute('checked');
+			let fieldChecked = elements[i].getAttribute('checked');
 		}
 		inputs += fieldValue + fieldChecked;
 	}

@@ -28,20 +28,20 @@
 		// Set the modal height and width 90%
 		if (typeof window.innerWidth != 'undefined')
 		{
-			viewportwidth = window.innerWidth,
-			viewportheight = window.innerHeight
+			let viewportwidth = window.innerWidth;
+			let viewportheight = window.innerHeight
 		}
 		else if (typeof document.documentElement != 'undefined'
 			&& typeof document.documentElement.clientWidth !=
-			'undefined' && document.documentElement.clientWidth != 0)
+			'undefined' && document.documentElement.clientWidth !== 0)
 		{
-			viewportwidth = document.documentElement.clientWidth,
-			viewportheight = document.documentElement.clientHeight
+			let viewportwidth = document.documentElement.clientWidth;
+			let viewportheight = document.documentElement.clientHeight;
 		}
 		else
 		{
-			viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
-			viewportheight = document.getElementsByTagName('body')[0].clientHeight
+			let viewportwidth = document.getElementsByTagName('body')[0].clientWidth;
+			let viewportheight = document.getElementsByTagName('body')[0].clientHeight
 		}
 		let modalcontent = document.getElementById('bwp_com_modal-content');
 		modalcontent.style.height = viewportheight-(viewportheight*0.10)+'px';

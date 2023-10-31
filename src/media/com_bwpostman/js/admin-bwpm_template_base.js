@@ -39,8 +39,8 @@ function FormChanges(form) {
 	if (!form || !form.nodeName || form.nodeName.toLowerCase() != "form") return null;
 
 	// find changed elements
-	var changed = [], n, c, def, o, ol, opt;
-	for (var e = 0, el = form.elements.length; e < el; e++) {
+	let changed = [], n, c, def, o, ol, opt;
+	for (let e = 0, el = form.elements.length; e < el; e++) {
 		n = form.elements[e];
 		c = false;
 
@@ -83,15 +83,15 @@ function FormChanges(form) {
 }
 
 window.onload = function() {
-	var Joomla = window.Joomla || {};
+	let Joomla = window.Joomla || {};
 
 	Joomla.submitbutton = function (pressbutton) {
-		var form = document.adminForm;
+		let form = document.adminForm;
 
 		if (pressbutton === 'template.cancel') {
 			if (FormChanges(form) === true) {
 				// confirm if cancel or not
-				var confirmCancel = confirm(document.getElementById('cancelText').value);
+				let confirmCancel = confirm(document.getElementById('cancelText').value);
 				if (confirmCancel === false) {
 					return;
 				}
@@ -110,10 +110,10 @@ window.onload = function() {
 		}
 	};
 
-	var framefenster = document.getElementById("myIframe");
+	let framefenster = document.getElementById("myIframe");
 
 	if (framefenster.contentWindow.document.body) {
-		var framefenster_size = framefenster.contentWindow.document.body.offsetHeight+20;
+		let framefenster_size = framefenster.contentWindow.document.body.offsetHeight+20;
 		if (document.all && !window.opera) {
 			framefenster_size = framefenster.contentWindow.document.body.scrollHeight+20;
 		}

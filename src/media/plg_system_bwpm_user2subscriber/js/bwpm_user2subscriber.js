@@ -94,38 +94,39 @@
 				'jform_bwpm_user2subscriber_mailinglists_required',
 				'jform_bwpm_user2subscriber_bwpdisclaimer_required'
 			];
-			var field_identifier    = [
+			let field_identifier    = [
 				'jform_bwpm_user2subscriber_firstname',
 				'jform_bwpm_user2subscriber_bwpm_name',
 				'jform_bwpm_user2subscriber_special',
 				'jform_bwpm_user2subscriber_mailinglists',
 				'jform_bwpm_user2subscriber_bwpdisclaimer'
 			];
-			var len = field_required.length;
+			let len = field_required.length;
+			let setRequired = 1;
 			if (ShowOrHide === 'show')
 			{
 				document.querySelectorAll(toggle_fields).forEach(function(el) {
 				   el.closest('.control-group').style.display = 'block';
 				});
 
-				var show_format = document.getElementById('jform_bwpm_user2subscriber_emailformat_show').value;
+				let show_format = document.getElementById('jform_bwpm_user2subscriber_emailformat_show').value;
 
 				if (show_format === '0')
 				{
 					document.getElementById('jform_bwpm_user2subscriber_emailformat0').closest('.control-group').style.display = 'none';
 				}
 
-				var setRequired = 1;
+				setRequired = 1;
 			}
 			else
 			{
 				document.querySelectorAll(toggle_fields).forEach(function(el) {
 				   el.closest('.control-group').style.display = 'none';
 				});
-				var setRequired = 0;
+				setRequired = 0;
 			}
 
-			for(var i = 0; i < len; i++) {
+			for(let i = 0; i < len; i++) {
 				if (document.getElementById(field_required[i]).value === '1') {
 					U2S_toggleRequired(field_identifier[i], setRequired);
 				}
@@ -135,8 +136,8 @@
 		function setPlgModal() {
 
 			// Set the modal height and width 90%
-			var viewportwidth = 0;
-			var viewportheight = 0;
+			let viewportwidth = 0;
+			let viewportheight = 0;
 			if (typeof window.innerWidth != 'undefined')
 			{
 				viewportwidth = window.innerWidth,
@@ -154,24 +155,24 @@
 				viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
 					viewportheight = document.getElementsByTagName('body')[0].clientHeight
 			}
-			var modalcontent = document.getElementById('bwp_plg_modal-content');
+			let modalcontent = document.getElementById('bwp_plg_modal-content');
 
 			if (modalcontent !== null) {
 				modalcontent.style.height = viewportheight - (viewportheight * 0.10) + 'px';
 				modalcontent.style.width = viewportwidth - (viewportwidth * 0.10) + 'px';
 
 				// Get the modal
-				var modal = document.getElementById('bwp_plg_Modal');
+				let modal = document.getElementById('bwp_plg_Modal');
 
 				// Get the Iframe-Wrapper and set Iframe
-				var wrapper = document.getElementById('bwp_plg_wrapper');
-				var html = '<iframe id="iFrame" name="iFrame" src="' + dc_src + '" frameborder="0" style="width:100%; height:100%;"></iframe>';
+				let wrapper = document.getElementById('bwp_plg_wrapper');
+				let html = '<iframe id="iFrame" name="iFrame" src="' + dc_src + '" frameborder="0" style="width:100%; height:100%;"></iframe>';
 
 				// Get the button that opens the modal
-				var btnopen = document.getElementById("bwp_plg_open");
+				let btnopen = document.getElementById("bwp_plg_open");
 
 				// Get the <span> element that closes the modal
-				var btnclose = document.getElementsByClassName("bwp_plg_close")[0];
+				let btnclose = document.getElementsByClassName("bwp_plg_close")[0];
 
 				// When the user clicks the button, open the modal
 				btnopen.onclick = function () {
@@ -199,13 +200,13 @@
 		}
 
 // Only submit, if mailinglist field is required and a checkbox is selected
-		var userForm = document.getElementById('member-registration');
+		let userForm = document.getElementById('member-registration');
 		userForm.addEventListener("submit", function(evt) {
 			if (document.getElementById('jform_bwpm_user2subscriber_mailinglists').classList.contains('required'))
 			{
 				evt.preventDefault();
-				var checkbox = document.getElementsByName('jform[mailinglists][]');
-				for(var i=0; i< checkbox.length; i++) {
+				let checkbox = document.getElementsByName('jform[mailinglists][]');
+				for(let i=0; i< checkbox.length; i++) {
 					if (checkbox[i].checked)
 					{
 						userForm.submit();

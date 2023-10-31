@@ -49,20 +49,20 @@ function ready(callbackFunc) {
 }
 
 function InsertAtCaret(myValue) {
-	var ele = document.getElementsByClassName("insertatcaretactive");
-	for (var i = 0; i<ele.length; i++) {
+	let ele = document.getElementsByClassName("insertatcaretactive");
+	for (let i = 0; i<ele.length; i++) {
 		if (document.selection) {
 			//For browsers like Internet Explorer
 			ele[i].focus();
-			var sel = document.selection.createRange();
+			let sel = document.selection.createRange();
 			sel.text = myValue;
 			ele[i].focus();
 		}
 		else if (ele[i].selectionStart || ele[i].selectionStart === 0) {
 			//For browsers like Firefox and Webkit based
-			var startPos = ele[i].selectionStart;
-			var endPos = ele[i].selectionEnd;
-			var scrollTop = ele[i].scrollTop;
+			let startPos = ele[i].selectionStart;
+			let endPos = ele[i].selectionEnd;
+			let scrollTop = ele[i].scrollTop;
 			ele[i].value = ele[i].value.substring(0, startPos) + myValue + ele[i].value.substring(endPos, ele[i].value.length);
 			ele[i].focus();
 			ele[i].selectionStart = startPos + myValue.length;
@@ -78,11 +78,11 @@ function InsertAtCaret(myValue) {
 
 ready(function() {
 	// enable InsertAtCaret
-	var elms = document.querySelectorAll("#jform_intro_intro_text,#jform_intro_intro_headline,#jform_tpl_html");
-	for(var i = 0; i < elms.length; i++) {
+	let elms = document.querySelectorAll("#jform_intro_intro_text,#jform_intro_intro_headline,#jform_tpl_html");
+	for(let i = 0; i < elms.length; i++) {
 		addEventHandler(elms[i], 'focus', function() {
-			var actives = document.getElementsByClassName('insertatcaretactive');
-			for (var z = 0; z < actives.length; z++) {
+			let actives = document.getElementsByClassName('insertatcaretactive');
+			for (let z = 0; z < actives.length; z++) {
 				actives[z].classList.remove('insertatcaretactive');
 			}
 			this.classList.add('insertatcaretactive');

@@ -305,38 +305,32 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 			$tag = '';
 		}
 
-		$cacheId = 'templates0' . $tag;
+		$templates = $siteApp->bootComponent('templates')->getMVCFactory()
+			->createModel('Style', 'Administrator')->getSiteTemplates();
 
-//		if ($cache->contains($cacheId)) {
-//			$templates = $cache->get($cacheId);
-//		} else {
-			$templates = $siteApp->bootComponent('templates')->getMVCFactory()
-				->createModel('Style', 'Administrator')->getSiteTemplates();
-
-			foreach ($templates as &$template) {
-				// Create home element
-				if ($template->home == 1 && !isset($template_home) || $siteApp->getLanguageFilter() && $template->home == $tag) {
-					$template_home = clone $template;
-				}
-
-				$template->params = new Registry($template->params);
+		foreach ($templates as &$template) {
+			// Create home element
+			if ($template->home == 1 && !isset($template_home) || $siteApp->getLanguageFilter() && $template->home == $tag) {
+				$template_home = clone $template;
 			}
 
-			// Unset the $template reference to the last $templates[n] item cycled in the foreach above to avoid editing it later
-			unset($template);
+			$template->params = new Registry($template->params);
+		}
 
-			// Add home element, after loop to avoid double execution
-			if (isset($template_home)) {
-				$template_home->params = new Registry($template_home->params);
-				$templates[0]          = $template_home;
-			}
+		// Unset the $template reference to the last $templates[n] item cycled in the foreach above to avoid editing it later
+		unset($template);
 
-//			$cache->store($templates, $cacheId);
-//		}
+		// Add home element, after loop to avoid double execution
+		if (isset($template_home)) {
+			$template_home->params = new Registry($template_home->params);
+			$templates[0]          = $template_home;
+		}
 
-		if (isset($templates[$id])) {
+		if (isset($templates[$id]))
+		{
 			$template = $templates[$id];
-		} else {
+		} else
+		{
 			$template = $templates[0];
 		}
 

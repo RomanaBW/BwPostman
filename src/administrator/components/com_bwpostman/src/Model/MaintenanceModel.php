@@ -1994,7 +1994,6 @@ class MaintenanceModel extends BaseDatabaseModel
 				' GEOMETRY',
 				'JSON',
 			);
-			$defaultQuery   = '';
 
 			if (!empty($diff))
 			{
@@ -2812,7 +2811,6 @@ class MaintenanceModel extends BaseDatabaseModel
 		// delete tables and create it anew
 		foreach ($tables as $table)
 		{
-			$realTableName = str_replace('#__', $tablePrefix, $table);
 			$realTmpTable  = str_replace('#__', $tablePrefix, $table) . '_tmp';
 			$query = 'SHOW TABLE STATUS WHERE ' . $this->db->quoteName('name') . ' = ' . $this->db->quote($realTmpTable);
 
@@ -6692,7 +6690,6 @@ class MaintenanceModel extends BaseDatabaseModel
 		if ($table != 'component')
 		{
 			$tablePrefix   = $this->db->getPrefix();
-			$realTableName = str_replace('#__', $tablePrefix, $table);
 			$query         = str_replace("\n", '', $tablesQueries[$table]['queries']);
 
 			$tableProps = new stdClass();

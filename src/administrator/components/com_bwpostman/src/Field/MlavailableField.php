@@ -150,7 +150,7 @@ class MlavailableField extends RadioField
 		}
 		elseif (is_array($value) && !empty($value))
 		{
-			foreach ($value as $singleValue => $ml)
+			foreach ($value as $ml)
 			{
 				$ml_select[] = $ml[0];
 			}

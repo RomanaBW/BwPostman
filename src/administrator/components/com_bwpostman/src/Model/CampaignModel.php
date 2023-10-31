@@ -361,7 +361,6 @@ class CampaignModel extends AdminModel
 	 */
 	public function archive(array $cid = array(0), int $archive = 1, int $archive_nl = 1): bool
 	{
-		$date     = Factory::getDate();
 		$uid      = Factory::getApplication()->getIdentity()->get('id');
 		$db       = $this->_db;
 		$query    = $db->getQuery(true);

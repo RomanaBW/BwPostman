@@ -1087,7 +1087,6 @@ class MaintenancejsonController extends AdminController
 	 */
 	private function handleBwException(int $errorCode, string $result, string $error, string $step): void
 	{
-		$app   = Factory::getApplication();
 		$model = new MaintenanceModel();
 
 		// Restore the restore point only if needed (and available)

@@ -202,7 +202,6 @@ class NewslettersModel extends ListModel
 		$this->setState('module.id', $app->input->getInt('mid'));
 
 		// Filter on month, year
-		$month = $this->getUserStateFromRequest('com_bwpostman.newsletters.filter.month', 'filter_month', '');
 		$this->setState('filter.month', $app->input->getString('month'));
 		$this->setState('filter.year', $app->input->getString('year'));
 

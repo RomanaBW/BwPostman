@@ -56,7 +56,7 @@ ready(function() {
 		post = 'step=step' + data.step;
 		doAjax(post, function (data) {
 			if (parseInt(data.ready) !== 1) {
-				document.getElementById('result').innerHTML = document.getElementById('result').innerHTML + data.result;
+				document.getElementById('result').innerHTML = document.getElementById('result').innerHTML = data.result;
 				processUpdateStep(data);
 			} else {
 				var alert_step_old = document.getElementById('step' + (data.step - 1));
@@ -66,7 +66,7 @@ ready(function() {
 					alert_step_old.classList.add('alert-' + data.aClass);
 				}
 				document.getElementById('loading2').style.display = 'none';
-				document.getElementById('result').innerHTML = document.getElementById('result').innerHTML + data.result;
+				document.getElementById('result').innerHTML = document.getElementById('result').innerHTML = data.result;
 				if (typeof data.error !== 'undefined' && data.error !== null) {
 					document.getElementById('resultSet').style.backgroundColor = '#f3d4d4';
 					document.getElementById('resultSet').style.borderColor = '#eebfbe';

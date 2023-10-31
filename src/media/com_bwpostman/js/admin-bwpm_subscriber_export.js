@@ -63,8 +63,7 @@ function moveUp(element) // Method to move an item up
 			if(i !== 0)
 			{
 				var temp    = new Option(element.options[i-1].text,element.options[i-1].value);
-				var temp2   = new Option(element.options[i].text,element.options[i].value);
-				element.options[i-1] = temp2;
+				element.options[i-1] = new Option(element.options[i].text, element.options[i].value);
 				element.options[i-1].selected = true;
 				element.options[i] = temp;
 			}
@@ -81,8 +80,7 @@ function moveDown(element) // Method to move an item down
 			if(i !== (element.options.length - 1))
 			{
 				var temp    = new Option(element.options[i+1].text,element.options[i+1].value);
-				var temp2   = new Option(element.options[i].text,element.options[i].value);
-				element.options[i+1] = temp2;
+				element.options[i+1] = new Option(element.options[i].text, element.options[i].value);
 				element.options[i+1].selected = true;
 				element.options[i] = temp;
 			}

@@ -29,9 +29,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 defined('JPATH_PLATFORM') or die;
 
 use Exception;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Access\Access;
 
 /**
  * Component helper class
@@ -51,7 +48,7 @@ class BwPostmanFilterHelper
 	 *
 	 * @since   2.5
 	 */
-	public static function filterContent(string $text): string
+/*	public static function filterContent(string $text): string
 	{
 		// Filter settings
 		$config     = ComponentHelper::getParams('com_config', true);
@@ -78,7 +75,7 @@ class BwPostmanFilterHelper
 		// Remember they are included in the Public group as well.
 		foreach ($userGroups as $groupId)
 		{
-/*			// May have added a group by not saved the filters.
+			// May have added a group by not saved the filters.
 			if (!isset($filters->$groupId))
 			{
 				continue;
@@ -151,7 +148,7 @@ class BwPostmanFilterHelper
 					$whiteListAttributes = array_merge($whiteListAttributes, $tempAttributes);
 				}
 			}
-*/
+
 		}
 
 		// Remove duplicates before processing (because the black list uses both sets of arrays).
@@ -170,7 +167,7 @@ class BwPostmanFilterHelper
 		else
 		{
 			// Custom blacklist precedes Default blacklist
-/*			if ($customList)
+			if ($customList)
 			{
 				$filter = JFilterInput::getInstance(array(), array(), 1, 1);
 
@@ -218,11 +215,11 @@ class BwPostmanFilterHelper
 			}
 
 			$text = $filter->clean($text, 'html');
-*/
+
 		}
 		return $text;
 	}
-
+*/
 	/**
 	 * Method to check, if value contains a link
 	 *

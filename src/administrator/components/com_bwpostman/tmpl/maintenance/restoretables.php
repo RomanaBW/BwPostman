@@ -37,8 +37,6 @@ use Joomla\CMS\Uri\Uri;
 // Load the tooltip behavior for the notes
 HTMLHelper::_('behavior.keepalive');
 
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_restore_tables');
-
 $jinput	= Factory::getApplication()->input;
 $image = '<i class="fa fa-lg fa-info-circle"></i>';
 $option	= $jinput->getCmd('option');

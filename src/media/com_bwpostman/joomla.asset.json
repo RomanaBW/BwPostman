@@ -116,11 +116,6 @@
       "uri": "com_bwpostman/admin-bwpm_nls.js"
     },
     {
-      "name": "com_bwpostman.admin-bwpm_restore_tables",
-      "type": "script",
-      "uri": "com_bwpostman/admin-bwpm_restore_tables.js"
-    },
-    {
       "name": "com_bwpostman.admin-bwpm_subscriber",
       "type": "script",
       "uri": "com_bwpostman/admin-bwpm_subscriber.js"

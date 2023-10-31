@@ -69,6 +69,13 @@ class com_bwpostmanInstallerScript
 	private $minimum_joomla_release = "4.0.0";
 
 	/**
+	 * @var string $minimum_php_version
+	 *
+	 * @since       4.2.5
+	 */
+	private $minimum_php_version = "8.0";
+
+	/**
 	 * @var string release
 	 *
 	 * @since       2.0.0
@@ -233,9 +240,9 @@ class com_bwpostmanInstallerScript
 			return false;
 		}
 
-		if(version_compare(phpversion(), '7.2.5', 'lt'))
+		if(version_compare(phpversion(), $this->minimum_php_version, 'lt'))
 		{
-			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_USES_PHP7'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_USES_PHP8'), 'error');
 			return false;
 		}
 

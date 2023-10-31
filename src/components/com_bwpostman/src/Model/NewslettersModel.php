@@ -313,7 +313,7 @@ class NewslettersModel extends ListModel
 		if ($query instanceof DatabaseQuery)
 		{
 			$query = clone $query;
-			$query->clear('limit')->clear('offset');
+			$query->clear('limit');
 		}
 
 		try

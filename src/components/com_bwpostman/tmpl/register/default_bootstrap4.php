@@ -255,11 +255,12 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 						<div class="form-group row edit_special">
 							<label id="specialmsg" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special" class="col-sm-3 col-form-label hasTooltip
 								<?php
-								if (is_array($this->subscriber->missingValues) && in_array(413, $this->subscriber->missingValues))
-								{
-									echo " invalid";
-								}
-								echo "\">";
+							if (is_array($this->subscriber->missingValues) && in_array(413, $this->subscriber->missingValues))
+							{ ?>
+									 invalid
+								<?php } ?>
+								">
+								<?php
 								if ($this->params->get('special_label', '') != '')
 								{
 									echo Text::_($this->params->get('special_label', ''));

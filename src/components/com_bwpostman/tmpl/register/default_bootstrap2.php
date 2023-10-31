@@ -251,10 +251,11 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 							<label id="specialmsg" title="<?php echo $tip; ?>" for="special" class="control-label
 								<?php
 								if (is_array($this->subscriber->missingValues) && in_array(413, $this->subscriber->missingValues))
-								{
-									echo " invalid";
-								}
-								echo "\">";
+								{ ?>
+									 invalid
+								<?php } ?>
+								">
+								<?php
 								if ($this->params->get('special_label', '') != '')
 								{
 									echo Text::_($this->params->get('special_label', ''));

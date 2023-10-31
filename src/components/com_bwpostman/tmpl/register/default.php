@@ -235,7 +235,7 @@ $remote_ip  = Factory::getApplication()->input->server->get('REMOTE_ADDR', '', '
 								{
 									echo Text::_('COM_BWPOSTMAN_SPECIAL');
 								}
-								?>:
+								?>>:
 							</label>
 							<?php // Is filling out the special field obligating
 							if ($this->params->get('special_field_obligation', '0'))

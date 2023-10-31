@@ -1405,14 +1405,14 @@ class TestNewslettersDetailsCest
 		// Add content to selected content
 		$I->clickAndWait(NlEdit::$popupSelectorMover, 1);
 
-		if ($jVersion === '4')
-		{
+//		if ($jVersion === '4')
+//		{
 			$I->see(NlEdit::$popupSelectorSelectText, $popupSelectorSelect);
-		}
-		else
-		{
-			//@ToDo: make JS working (window.processModalParent is not a function at admin-bwpm-nl.js at line 295)
-		}
+//		}
+//		else
+//		{
+//			//@ToDo: make JS working (window.processModalParent is not a function at admin-bwpm-nl.js at line 295)
+//		}
 
 		// Check selected content
 		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$selected_content, 1));

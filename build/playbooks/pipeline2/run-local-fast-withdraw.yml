@@ -122,7 +122,7 @@
         msg: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm-fast.yml -p {{ project_name }} up -d"
 
     - name: Start infrastructure
-      command: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm-fast.yml -p {{ project_name }} up -d"
+      ansible.builtin.command: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm-fast.yml -p {{ project_name }} up -d"
 
     - name: Synchronize tests
       become: true

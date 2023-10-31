@@ -104,10 +104,10 @@
         line: "    CustomLog {{ test_log_path }}/{{ apache_host }}-access.log combined"
 
     - name: restart webserver
-      command: "/etc/init.d/apache2 reload"
+      ansible.builtin.command: "/etc/init.d/apache2 reload"
 
     - name: check current user
-      command: whoami
+      ansible.builtin.command: whoami
       register: current_user
 
     - name: show current user
@@ -213,4 +213,4 @@
 
   tasks:
     - name: run tests
-      command: "docker exec -t {{ fast_source.tester_container_name }} /data/bwpm_tester_start.sh ${BW_TEST_BWPM_VERSION}"
+      ansible.builtin.command: "docker exec -t {{ fast_source.tester_container_name }} /data/bwpm_tester_start.sh ${BW_TEST_BWPM_VERSION}"

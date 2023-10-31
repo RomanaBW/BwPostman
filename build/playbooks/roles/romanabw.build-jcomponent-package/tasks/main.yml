@@ -77,7 +77,7 @@
     dest: "{{ bw_target_ext_path }}/files/install.{{ bw_extension }}.php"
 
 - name: Move manifest file in place
-  command: "mv {{ bw_target_ext_path }}/files/admin/{{ bw_extension }}.xml {{ bw_target_ext_path }}/files/{{ bw_extension }}.xml"
+  ansible.builtin.command: "mv {{ bw_target_ext_path }}/files/admin/{{ bw_extension }}.xml {{ bw_target_ext_path }}/files/{{ bw_extension }}.xml"
 
 - name: Remove SQL file without UTF8
   file:
@@ -86,7 +86,7 @@
   when: mb4_support == "true"
 
 - name: Rename SQL file with UTF8
-  command: "mv {{ bw_target_ext_path }}/files/admin/sql/install-utf8.sql {{ bw_target_ext_path }}/files/admin/sql/install.sql"
+  ansible.builtin.command: "mv {{ bw_target_ext_path }}/files/admin/sql/install-utf8.sql {{ bw_target_ext_path }}/files/admin/sql/install.sql"
   when: mb4_support == "true"
 
 - name: Pack installation package

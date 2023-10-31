@@ -288,7 +288,7 @@ function moveArticle() {
 		}
 
 		// Empty input field
-		if (document.querySelector("data-button-action")) {
+		if (document.querySelector("button[data-button-action]")) {
 			document.querySelector('.js-modal-content-select-field .btn-secondary').click();
 		} else {
 			window.processModalParent('jform_ac_id');

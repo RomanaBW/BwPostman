@@ -35,9 +35,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Access\Access;
-use JHtmlSidebar;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwAccess;
 use RuntimeException;
 use stdClass;
@@ -53,11 +51,11 @@ class BwPostmanHelper
 	/**
 	 * property to hold permissions array
 	 *
-	 * @var array
+	 * @var ?array
 	 *
 	 * @since 2.0.0
 	 */
-	private static $permissions = null;
+	private static ?array $permissions = null;
 
 	/**
 	 * Get the database object.
@@ -70,96 +68,7 @@ class BwPostmanHelper
 	 */
 	public static function getDbo(): DatabaseDriver
 	{
-		$component = Factory::getContainer()->get('db');
-
-		return $component;
-	}
-
-	/**
-	 * Configure the Link bar.
-	 *
-	 * @param string $vName The name of the task view.
-	 *
-	 * @return    void
-	 *
-	 * @throws Exception
-	 *
-	 * @since    1.2.0
-	 */
-	public static function addSubmenu(string $vName)
-	{
-		if (!is_array(self::$permissions))
-		{
-			self::setPermissionsState();
-		}
-
-		JHtmlSidebar::addEntry(
-			Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY'),
-			'index.php?option=com_bwpostman',
-			$vName == 'bwpostman'
-		);
-
-		if (self::$permissions['view']['newsletter'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS'),
-				'index.php?option=com_bwpostman&view=newsletters',
-				$vName == 'newsletters'
-			);
-		}
-
-		if (self::$permissions['view']['subscriber'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_SUBS'),
-				$vName == 'subscribers'
-			);
-		}
-
-		if (self::$permissions['view']['campaign'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_CAMS'),
-				'index.php?option=com_bwpostman&view=Campaigns',
-				$vName == 'campaigns'
-			);
-		}
-
-		if (self::$permissions['view']['mailinglist'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MLS'),
-				'index.php?option=com_bwpostman&view=Mailinglists',
-				$vName == 'mailinglists'
-			);
-		}
-
-		if (self::$permissions['view']['template'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_TPLS'),
-				'index.php?option=com_bwpostman&view=Templates',
-				$vName == 'templates'
-			);
-		}
-
-		if (self::$permissions['view']['archive'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_ARC'),
-				'index.php?option=com_bwpostman&view=Archive&layout=newsletters',
-				$vName == 'archive'
-			);
-		}
-
-		if (self::$permissions['view']['maintenance'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MAINTENANCE'),
-				'index.php?option=com_bwpostman&view=Maintenance',
-				$vName == 'maintenance'
-			);
-		}
+		return Factory::getContainer()->get('db');
 	}
 
 	/**
@@ -217,13 +126,16 @@ class BwPostmanHelper
 	 *
 	 * @return string
 	 *
+	 * @throws Exception
+	 *
 	 * @since   0.9.1
 	 */
 	static public function getInstalledBwPostmanVersion()
 	{
+		$app   = Factory::getApplication();
+
 		try
 		{
-			$app   = Factory::getApplication();
 			$db    = self::getDbo();
 			$query = $db->getQuery(true);
 
@@ -277,7 +189,7 @@ class BwPostmanHelper
 		 *
 		 * To enable item based deny to someone, who normally has the permission to edit (or vice versa), first check on item level.
 		 * If there is found an entry on item level, this one has priority!
-		 * If no entry on item level is found, we have check further, until we find an entry.
+		 * If no entry on item level is found, we have to check further, until we find an entry.
 		 * If we find no entry on all levels, we deny.
 		 *
 		 * To reach that, we also need a return value of null at authorize method. So we can't use $user->authorize
@@ -422,7 +334,7 @@ class BwPostmanHelper
 
 	/**
 	 * @param string  $view
-	 * @param string  $action           may be edit/edit.own, archive, restore or delete
+	 * @param string  $action           maybe edit, edit.own, archive, restore or delete
 	 * @param integer $itemsFromArchive Do we want items from archive?
 	 *
 	 * @return bool
@@ -461,83 +373,6 @@ class BwPostmanHelper
 		}
 
 		return false;
-	}
-
-	/**
-	 * Method to get selectlist for dates
-	 *
-	 * @access    public
-	 *
-	 * @param array  $selectval selected values
-	 * @param string $date      sort of date --> day, hour, minute
-	 *
-	 * @return array selectlist
-	 *
-	 * @since
-	 */
-	public function getDateList(array $selectval, string $date = 'minute'): array
-	{
-		$options    = array();
-		$selectlist = array();
-		$intval     = 1;
-		if ($date == 'minute')
-		{
-			$intval = ComponentHelper::getParams('Com_bwpostman')->get('autocam_minute_intval');
-		}
-
-		switch ($date)
-		{
-			case 'day':
-				for ($i = 0; $i <= 31; $i++)
-				{
-					$options[] = $i;
-				}
-				break;
-
-			case 'hour':
-				for ($i = 0; $i < 24; $i++)
-				{
-					$options[] = $i;
-				}
-				break;
-
-			case 'minute':
-				for ($i = 0; $i < 60; $i += $intval)
-				{
-					$options[] = $i;
-				}
-				break;
-		}
-
-		foreach ($selectval->$date as $key => $value)
-		{
-			$opt = "automailing_values[" . $date . "][" . $key . "]";
-			if ($value != '0')
-			{
-				$selected = $value;
-			}
-			else
-			{
-				$selected = 0;
-			}
-
-			$select_html = '<select id="' . $opt . '" name="automailing_values[' . $date . '][]" >';
-			foreach ($options as $key2 => $value2)
-			{
-				$select_html .= '<option value="' . $key2 * $intval . '"';
-				if ($selected == $key2 * $intval)
-				{
-					$select_html .= ' selected="selected"';
-				}
-
-				$select_html .= '>' . $value2 . '</option>';
-			}
-
-			$select_html .= '</select>';
-			$selectlist[] = $select_html;
-		}
-
-		return $selectlist;
 	}
 
 	/**
@@ -605,7 +440,7 @@ class BwPostmanHelper
 		$app = Factory::getApplication();
 
 		// Debugging variable, normally set to false
-		$reload = true;
+		$reload = false;
 
 		if (is_array(self::$permissions) && (count(self::$permissions) > 0) && !$reload)
 		{
@@ -797,7 +632,7 @@ class BwPostmanHelper
 		}
 
 		$user   = Factory::getApplication()->getIdentity();
-		$userId = (int)$user->get('id');
+		$userId = (int)$user->id;
 
 		// If current user checked out, he may check in.
 		if ($checkedOut === $userId)
@@ -842,7 +677,7 @@ class BwPostmanHelper
 		/*
 		 * To enable item based deny to someone, who normally has the permission to edit (or vice versa), first check on item level.
 		 * If there is found an entry on item level, this one has priority!
-		 * If no entry on item level is found, we have check further, until we find an entry.
+		 * If no entry on item level is found, we have to check further, until we find an entry.
 		 * If we find no entry on all levels, we deny.
 		 *
 		 * To reach that, we also need a return value of null at authorize method. So we can't use $user->authorize
@@ -850,7 +685,7 @@ class BwPostmanHelper
 
 		// Initialise variables.
 		$user      = Factory::getApplication()->getIdentity();
-		$userId    = (int)$user->get('id');
+		$userId    = (int)$user;
 		$recordId  = 0;
 		$createdBy = 0;
 		$action    = 'edit';
@@ -919,6 +754,8 @@ class BwPostmanHelper
 
 		// Third check for general or view edit.own permission
 		$editOwn = self::$permissions['com']['edit.own'] || self::$permissions[$view]['edit.own'];
+
+		// If $permissions is null, both upper conditions result as null!
 		if ($editOwn !== null)
 		{
 			if ($editOwn)
@@ -1387,7 +1224,7 @@ class BwPostmanHelper
 		 * @param $size
 		 * @param $fileTTF
 		 *
-		 * @return string    $fileName    Gibt die Rechenaufgabe als String für den Dateinamen wieder
+		 * @return string    $fileName	Gibt die Rechenaufgabe als String für den Dateinamen wieder
 		 *
 		 * @since
 		 */
@@ -1467,7 +1304,7 @@ class BwPostmanHelper
 	 *
 	 * @param        string $codeCaptcha   Hash-Wert
 	 * @param string        $stringCaptcha Eingabe durch den User
-	 * @param string        $dir           Das Verzeichnis mit den Captcha-Bilder
+	 * @param string        $dir           Das Verzeichnis mit den Captcha-Bildern
 	 * @param integer       $delFile       Die Zeit in Minuten, nachdem ein Captcha-Bild gelöscht wird
 	 *
 	 * @return        bool        TRUE/FALSE
@@ -1704,11 +1541,14 @@ class BwPostmanHelper
 
 	/**
 	 * Method to get an array of strings of all asset names of the component section
-	 * The array items are of the form 'component.section.id', where the part with id may be empty (section-wide permission)
+	 * The array items are of the form 'component.section.id', where the part with id may be empty (section-wide
+	 * permission)
 	 *
 	 * @param string $view The name of the context.
 	 *
 	 * @return  array   $asset_records  section names of assets
+	 *
+	 * @throws Exception
 	 *
 	 * @since   2.0.0
 	 */
@@ -1877,7 +1717,7 @@ class BwPostmanHelper
 
 				$query->select($_db->quoteName($field));
 				$query->from($_db->quoteName($table));
-				if (is_array($allowed_mailinglists) && !empty($allowed_mailinglists))
+				if (!empty($allowed_mailinglists))
 				{
 					$query->where($_db->quoteName('mailinglist_id') . ' IN (' . implode(',', $allowed_mailinglists) . ')');
 				}
@@ -1918,7 +1758,7 @@ class BwPostmanHelper
 	{
 		$userId = Factory::getApplication()->getIdentity()->id;
 
-		return BwAccess::check($userId, $action, $assetName, false);
+		return BwAccess::check($userId, $action, $assetName);
 	}
 
 	/**
@@ -1934,7 +1774,7 @@ class BwPostmanHelper
 	{
 		$whereMlsClause = '';
 
-		if (is_array($mls) && !empty($mls))
+		if (!empty($mls))
 		{
 			$whereMlsClause .= 'm.mailinglist_id IN (' . implode(',', $mls) . ')';
 		}
@@ -1955,7 +1795,7 @@ class BwPostmanHelper
 	{
 		$whereCamsClause = '';
 
-		if (is_array($cams) && !empty($cams))
+		if (!empty($cams))
 		{
 			$whereCamsClause .= 'a.campaign_id IN (' . implode(',', $cams) . ')';
 		}

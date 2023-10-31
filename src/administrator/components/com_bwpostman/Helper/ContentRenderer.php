@@ -223,7 +223,7 @@ class ContentRenderer
 		if ($row)
 		{
 			$params = new Registry();
-			$params->loadString($row->attribs, 'JSON');
+			$params->loadString($row->attribs);
 
 			$row->params = $params;
 			$row->text   = $row->introtext;
@@ -459,7 +459,7 @@ class ContentRenderer
 						$content_text .= '<span class="created_by"><small>';
 						$content_text .= Text::sprintf(
 							'COM_CONTENT_WRITTEN_BY',
-							($row->created_by_alias ? $row->created_by_alias : $row->author)
+							($row->created_by_alias ?: $row->author)
 						);
 						$content_text .= '</small></span>';
 					}
@@ -673,14 +673,8 @@ class ContentRenderer
 	 */
 	public function getTemplate(int $template_id): object
 	{
-		$params     = ComponentHelper::getParams('com_bwpostman');
 		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 		$tplTable   = $MvcFactory->createTable('Template', 'Administrator');
-
-		if (is_null($template_id))
-		{
-			$template_id = 1;
-		}
 
 		$tpl = $tplTable->getTemplate($template_id);
 
@@ -908,7 +902,7 @@ class ContentRenderer
 		$params          = ComponentHelper::getParams('com_bwpostman');
 		$del_sub_1_click = $params->get('del_sub_1_click', '0');
 		$impressum       = Text::_($params->get('legal_information_text', ''));
-		$impressum       = nl2br($impressum, true);
+		$impressum       = nl2br($impressum);
 		$sitelink        = $uri->root();
 
 		PluginHelper::importPlugin('bwpostman');
@@ -1536,7 +1530,7 @@ class ContentRenderer
 		{
 			$content_text .= Text::sprintf(
 				'COM_CONTENT_WRITTEN_BY',
-				($row->created_by_alias ? $row->created_by_alias : $row->author)
+				($row->created_by_alias ?: $row->author)
 			);
 		}
 

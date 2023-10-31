@@ -33,6 +33,7 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\LogEntry;
+use Joomla\Database\DatabaseInterface;
 use PDO;
 use RuntimeException;
 
@@ -56,7 +57,7 @@ class BwPostmanInstallHelper
 	 */
 	public static function serverClaimsUtf8mb4Support(string $format): bool
 	{
-		$_db = Factory::getDbo();
+		$_db = Factory::getContainer()->get(DatabaseInterface::class);
 
 		switch ($format)
 		{
@@ -105,7 +106,7 @@ class BwPostmanInstallHelper
 	 */
 	public static function convertToUtf8Mb4(string $reference_table = '', string $conversion_file = '')
 	{
-		$_db       = Factory::getDbo();
+		$_db       = Factory::getContainer()->get(DatabaseInterface::class);
 		$converted = false;
 
 		// This is only required for MySQL databases
@@ -155,7 +156,7 @@ class BwPostmanInstallHelper
 		}
 
 		// Show if there was some error
-		if ($converted == false)
+		if (!$converted)
 		{
 			// Show an error message telling to check database problems
 			Factory::getApplication()->enqueueMessage(Text::_('JLIB_DATABASE_ERROR_DATABASE_UPGRADE_FAILED'), 'error');
@@ -181,7 +182,7 @@ class BwPostmanInstallHelper
 		$table_name = $dbprefix . $test_table;
 		$ret        = false;
 
-		$_db = Factory::getDbo();
+		$_db = Factory::getContainer()->get(DatabaseInterface::class);
 
 		$query  = 'SHOW TABLE STATUS WHERE Name = ' . $_db->quote($table_name);
 
@@ -220,7 +221,7 @@ class BwPostmanInstallHelper
 		$logOptions   = array();
 		$logger = BwLogger::getInstance($logOptions);
 
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->update($db->quoteName('#__bwpostman_mailinglists'));

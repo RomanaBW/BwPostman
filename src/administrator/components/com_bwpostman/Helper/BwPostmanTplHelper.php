@@ -71,7 +71,7 @@ abstract class BwPostmanTplHelper
 	}
 
 	/**
-	 * Configure the begin of article-tag.
+	 * Configure the beginning of article-tag.
 	 *
 	 * @return   string $article_tag define the standard article-tag.
 	 *
@@ -114,7 +114,7 @@ abstract class BwPostmanTplHelper
 	}
 
 	/**
-	 * Configure the begin of legal-tag.
+	 * Configure the beginning of legal-tag.
 	 *
 	 * @return   string $legal_tag define the standard legal-tag.
 	 *

@@ -58,7 +58,7 @@ class BwPostmanHTMLHelper {
 	 */
 	public static function quickiconButton(string $link, string $image, string $text, int $x_size = 0, int $y_size = 0, string $target = '', string $onclick = '', bool $closable = true)
 	{
-		$closable = $closable != true ? ', closable: false' : '';
+		$closable = !$closable ? ', closable: false' : '';
 		($x_size && $y_size) ? $modal_text	= 'class="modal" rel="{handler: \'iframe\', size: {x: ' . $x_size . ', y: ' . $y_size . '}' . $closable . '}"' : $modal_text	= '';
 		?>
 		<div class="col">

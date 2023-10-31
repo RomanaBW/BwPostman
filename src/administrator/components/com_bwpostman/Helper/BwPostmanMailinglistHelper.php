@@ -97,7 +97,7 @@ class BwPostmanMailinglistHelper {
 		}
 
 		// merge usergroups into mailinglists, single array may not exist, therefore array_merge would not give a result
-		if (isset($data['usergroups']) && !empty($data['usergroups']))
+		if (!empty($data['usergroups']))
 		{
 			foreach ($data['usergroups'] as $value)
 			{

@@ -494,7 +494,7 @@
 				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
-				default="http://www.mywebsite.com"
+				default="https://www.mywebsite.com"
 				size="30"
 			/>
 			<field
@@ -553,7 +553,7 @@
 				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
-				default="http://www.facebook.com"
+				default="https://www.facebook.com"
 				size="30"
 			/>
 			<field
@@ -612,7 +612,7 @@
 				label="COM_BWPOSTMAN_TPL_BUTTON_HREF_LABEL"
 				labelclass="control-label"
 				description="COM_BWPOSTMAN_TPL_BUTTON_HREF_DESC"
-				default="http://www.twitter.com/"
+				default="https://www.twitter.com/"
 				size="30"
 			/>
 			<field

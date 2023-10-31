@@ -46,7 +46,7 @@ abstract class BwPostmanCampaignHelper
 	 *
 	 * @param int|null $cam_id Campaign ID
 	 *
-	 * @return    object Campaign
+	 * @return    mixed|null Campaign
 	 *
 	 * @throws Exception
 	 *

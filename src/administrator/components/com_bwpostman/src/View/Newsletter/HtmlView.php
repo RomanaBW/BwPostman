@@ -31,14 +31,12 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\LinkButton;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;

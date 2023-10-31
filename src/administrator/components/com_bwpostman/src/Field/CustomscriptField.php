@@ -33,7 +33,6 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * Renders a custom form field to insert a javascript to bwpostman settings

@@ -35,7 +35,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;

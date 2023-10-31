@@ -32,7 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;

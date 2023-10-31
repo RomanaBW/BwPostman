@@ -36,7 +36,6 @@ use Joomla\Registry\Registry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\Utilities\ArrayHelper;
-use stdClass;
 
 /**
  * Class BwPostmanViewEdit

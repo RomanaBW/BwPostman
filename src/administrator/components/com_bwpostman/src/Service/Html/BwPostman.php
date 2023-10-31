@@ -11,10 +11,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Service\Html;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
-
 /**
  * BwPostman HTML class.
  *

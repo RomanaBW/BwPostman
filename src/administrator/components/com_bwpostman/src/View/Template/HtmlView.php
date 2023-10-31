@@ -30,13 +30,11 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\View\Template;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Environment\Browser;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanTplHelper;

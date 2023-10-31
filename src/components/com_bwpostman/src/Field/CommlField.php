@@ -33,7 +33,6 @@ use JLoader;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CheckboxesField;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
 use \BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglistHelper;
 
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', false, false);

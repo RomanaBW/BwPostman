@@ -39,7 +39,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;

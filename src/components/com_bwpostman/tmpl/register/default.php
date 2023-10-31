@@ -33,7 +33,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 
 HtmlHelper::_('behavior.keepalive');
 

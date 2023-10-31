@@ -34,7 +34,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Form\Form;
 use Joomla\Event\DispatcherInterface;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Log\LogEntry;

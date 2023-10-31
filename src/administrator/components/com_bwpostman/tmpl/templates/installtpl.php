@@ -29,8 +29,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Session\Session;
 
 $wa = $this->document->getWebAssetManager();

@@ -34,6 +34,7 @@ use Exception;
 use JLoader;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 use RuntimeException;
 use stdClass;
@@ -102,7 +103,7 @@ class ModBwPostmanHelper
 	{
 		$mailinglists = array();
 
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select('*');
@@ -158,7 +159,7 @@ class ModBwPostmanHelper
 	{
 		$subscriberid = 0;
 
-		$db	= BwPostmanHelper::getDbo();
+		$db	= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -202,7 +203,7 @@ class ModBwPostmanHelper
 	{
 		$id	   = 0;
 		$user  = new stdClass;
-		$db	   = BwPostmanHelper::getDbo();
+		$db	   = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('name'));

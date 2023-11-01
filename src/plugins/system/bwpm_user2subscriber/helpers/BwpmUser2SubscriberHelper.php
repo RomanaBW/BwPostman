@@ -34,6 +34,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Table\SubscriberTable;
 use Exception;
 use JLoader;
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
 use stdClass;
@@ -68,7 +69,7 @@ abstract class BwpmUser2SubscriberHelper
 			return 0;
 		}
 
-		$_db	= BwPostmanHelper::getDbo();
+		$_db	= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));
@@ -108,7 +109,7 @@ abstract class BwpmUser2SubscriberHelper
 		}
 
 		$result = array();
-		$_db	= BwPostmanHelper::getDbo();
+		$_db	= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('status'));
@@ -156,7 +157,7 @@ abstract class BwpmUser2SubscriberHelper
 		}
 
 		$result = false;
-		$_db	= BwPostmanHelper::getDbo();
+		$_db	= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -196,7 +197,7 @@ abstract class BwpmUser2SubscriberHelper
 			return false;
 		}
 
-		$_db	= BwPostmanHelper::getDbo();
+		$_db	= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -306,7 +307,7 @@ abstract class BwpmUser2SubscriberHelper
 		$subscribed_mailinglists = array();
 
 		// @Todo: As from version 2.0.0 helper class of component may be used
-		$_db = BwPostmanHelper::getDbo();
+		$_db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query  = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('mailinglist_id'));
@@ -352,7 +353,7 @@ abstract class BwpmUser2SubscriberHelper
 			return $subscriber;
 		}
 
-		$_db	= BwPostmanHelper::getDbo();
+		$_db	= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $_db->getQuery(true);
 
 		$query->select($_db->quoteName('email'));
@@ -402,7 +403,7 @@ abstract class BwpmUser2SubscriberHelper
 
 		$captcha    = 'bwp-' . BwPostmanHelper::getCaptcha();
 
-		$db         = BwPostmanHelper::getDbo();
+		$db         = Factory::getContainer()->get(DatabaseInterface::class);
 		$subsTable  = new SubscriberTable($db);
 		$subscriber = new stdClass();
 
@@ -443,7 +444,7 @@ abstract class BwpmUser2SubscriberHelper
 	public static function saveSubscriber(object $data): int
 	{
 		// @Todo: As from version 2.0.0 BwPostmanModelRegister->save() may be used, depends on spam check solution
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$table = new SubscriberTable($db);
 
 		// Bind the data.
@@ -493,7 +494,7 @@ abstract class BwpmUser2SubscriberHelper
 	{
 		// @Todo: As from version 2.0.0 helper class of component may be used
 		$result = false;
-		$_db    = BwPostmanHelper::getDbo();
+		$_db    = Factory::getContainer()->get(DatabaseInterface::class);
 
 		foreach ($mailinglist_ids as $mailinglist_id)
 		{
@@ -540,7 +541,7 @@ abstract class BwpmUser2SubscriberHelper
 	public static function getSubscriberIdByEmail(string $email): int
 	{
 		$id     = 0;
-		$_db    = BwPostmanHelper::getDbo();
+		$_db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('id'));

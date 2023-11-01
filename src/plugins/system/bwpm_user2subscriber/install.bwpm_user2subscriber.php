@@ -33,6 +33,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Installation script for the plugin
@@ -113,7 +114,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 
 		$version    = '0.0.0';
-		$_db        = BwPostmanHelper::getDbo();
+		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));

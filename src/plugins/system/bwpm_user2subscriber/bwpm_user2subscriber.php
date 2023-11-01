@@ -33,6 +33,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Form\Form;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
@@ -208,7 +209,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function setBwPostmanComponentStatus()
 	{
-		$_db        = BwPostmanHelper::getDbo();
+		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -246,7 +247,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	 */
 	protected function setBwPostmanComponentVersion()
 	{
-		$_db        = BwPostmanHelper::getDbo();
+		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -948,7 +949,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 		$activation_ip  = $this->app->input->server->get('REMOTE_ADDR', '', '');
 		$subscriber_id  = BwpmUser2SubscriberHelper::getSubscriberIdByEmail($user_mail);
 
-		$_db	= BwPostmanHelper::getDbo();
+		$_db	= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $_db->getQuery(true);
 
 		$date   = Factory::getDate();
@@ -1035,7 +1036,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 	{
 		$result = false;
 
-		$_db	= BwPostmanHelper::getDbo();
+		$_db	= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $_db->getQuery(true);
 
 		$query->update($_db->quoteName('#__bwpostman_subscribers'));
@@ -1162,7 +1163,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		try
 		{
-			$_db	= BwPostmanHelper::getDbo();
+			$_db	= Factory::getContainer()->get(DatabaseInterface::class);
 			$query	= $_db->getQuery(true);
 
 			$query->delete($_db->quoteName('#__bwpostman_subscribers'));
@@ -1197,7 +1198,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 		try
 		{
-			$_db	= BwPostmanHelper::getDbo();
+			$_db	= Factory::getContainer()->get(DatabaseInterface::class);
 			$query	= $_db->getQuery(true);
 
 			$query->delete($_db->quoteName('#__bwpostman_subscribers_mailinglists'));
@@ -1244,7 +1245,7 @@ class PlgSystemBWPM_User2Subscriber extends JPlugin
 
 			if ($this->stored_subscriber_data['id'] != 0)
 			{
-				$_db	= BwPostmanHelper::getDbo();
+				$_db	= Factory::getContainer()->get(DatabaseInterface::class);
 				$query	= $_db->getQuery(true);
 
 				$query->update($_db->quoteName('#__bwpostman_subscribers'));

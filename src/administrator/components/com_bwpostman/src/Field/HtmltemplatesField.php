@@ -34,6 +34,7 @@ use Joomla\CMS\Form\Field\RadioField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Exception;
+use Joomla\Database\DatabaseInterface;
 use RuntimeException;
 
 /**
@@ -150,7 +151,7 @@ class HtmltemplatesField extends RadioField
 		$item		= $app->getUserState('com_bwpostman.edit.newsletter.data');
 
 		// prepare query
-		$db		= BwPostmanHelper::getDbo();
+		$db		= Factory::getContainer()->get(DatabaseInterface::class);
 
 		// Build the select list for the templates
 		$query = $db->getQuery(true);

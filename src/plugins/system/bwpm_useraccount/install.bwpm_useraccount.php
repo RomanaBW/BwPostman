@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Installation script for the plugin
@@ -136,7 +137,7 @@ class PlgSystemBwPm_UserAccountInstallerScript
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 
 		$version    = '0.0.0';
-		$_db        = BwPostmanHelper::getDbo();
+		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));

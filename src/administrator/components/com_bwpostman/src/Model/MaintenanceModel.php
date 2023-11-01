@@ -35,6 +35,7 @@ use Exception;
 use Joomla\CMS\Access\Rules;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Component\Users\Administrator\Model\GroupModel;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\Folder;
@@ -1087,7 +1088,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	public static function getGenericTableName(string $table): string
 	{
 		// get db prefix
-		$prefix = BwPostmanHelper::getDbo()->getPrefix();
+		$prefix = Factory::getContainer()->get(DatabaseInterface::class)->getPrefix();
 
 		// Replace the magic prefix if found.
 		return preg_replace("|^$prefix|", '#__', $table);

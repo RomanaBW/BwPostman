@@ -30,6 +30,7 @@ defined ('_JEXEC') or die ();
 
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
 
@@ -161,7 +162,7 @@ class BwPostmanMailinglistHelper {
 	{
 		$mailinglist = null;
 
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('a') . '.*');
@@ -203,7 +204,7 @@ class BwPostmanMailinglistHelper {
 	public static function getMailinglistsFieldlistOptions(bool $archiveMatters = false): ?array
 	{
 		$options   = null;
-		$db        = BwPostmanHelper::getDbo();
+		$db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$query     = $db->getQuery(true);
 
 		$query->select($db->quoteName('a') . '.' . $db->quoteName('id')  . ' AS value');

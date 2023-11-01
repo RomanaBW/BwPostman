@@ -35,6 +35,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Installer\InstallerAdapter;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Script file of BwPostmanOverview module
@@ -177,7 +178,7 @@ class Mod_BwPostman_OverviewInstallerScript
 	{
 		$manifest = null;
 
-		$db		= BwPostmanHelper::getDbo();
+		$db		= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));

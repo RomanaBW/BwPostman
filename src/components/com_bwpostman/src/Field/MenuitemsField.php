@@ -32,6 +32,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
+use Joomla\Database\DatabaseInterface;
 use RuntimeException;
 
 /**
@@ -65,7 +66,7 @@ class MenuitemsField extends ListField
 	protected function getOptions(): array
 	{
 		$options    = null;
-		$db	    = BwPostmanHelper::getDbo();
+		$db	    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query	    = $db->getQuery(true);
 
 		$query->select($db->quoteName('id') . ' AS value');

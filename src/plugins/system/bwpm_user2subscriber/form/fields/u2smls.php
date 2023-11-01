@@ -31,6 +31,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CheckboxesField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\Database\DatabaseInterface;
 
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 
@@ -156,7 +157,7 @@ class JFormFieldU2sMls extends CheckboxesField
 		}
 
 		// prepare query
-		$_db		= BwPostmanHelper::getDbo();
+		$_db		= Factory::getContainer()->get(DatabaseInterface::class);
 		$query		= $_db->getQuery(true);
 
 		$query->select("a.id AS value, a.title AS text, a.description");

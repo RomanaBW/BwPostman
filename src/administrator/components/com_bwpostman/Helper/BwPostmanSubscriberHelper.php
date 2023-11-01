@@ -40,6 +40,7 @@ use Joomla\CMS\Mail\MailHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Database\DatabaseInterface;
 use RuntimeException;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwEmailValidation;
 use stdClass;
@@ -593,7 +594,7 @@ class BwPostmanSubscriberHelper
 	public static function getModParams(int $id = 0): object
 	{
 		$params = new stdClass();
-		$db     = BwPostmanHelper::getDbo();
+		$db     = Factory::getContainer()->get(DatabaseInterface::class);
 		$query  = $db->getQuery(true);
 
 		$query->select('params');
@@ -625,7 +626,7 @@ class BwPostmanSubscriberHelper
 	 */
 	static public function customizeSubscriberDataFields(Form $form): void
 	{
-		$nullDate = BwPostmanHelper::getDbo()->getNullDate();
+		$nullDate = Factory::getContainer()->get(DatabaseInterface::class)->getNullDate();
 
 		// Check to show confirmation data or checkbox
 		$c_date = $form->getValue('confirmation_date', null, $nullDate);
@@ -676,7 +677,7 @@ class BwPostmanSubscriberHelper
 	{
 		$user_id = 0;
 
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -712,7 +713,7 @@ class BwPostmanSubscriberHelper
 	{
 		$itemid = 0;
 
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -769,7 +770,7 @@ class BwPostmanSubscriberHelper
 		}
 		else
 		{
-			$db = BwPostmanHelper::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 
 			$query_reg	= $db->getQuery(true);
 			$query_reg->select('name');
@@ -819,7 +820,7 @@ class BwPostmanSubscriberHelper
 		}
 		else
 		{
-			$db = BwPostmanHelper::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 
 			$query_conf	= $db->getQuery(true);
 			$query_conf->select('name');
@@ -850,7 +851,7 @@ class BwPostmanSubscriberHelper
 	 */
 	static public function getExportFieldsList(): array
 	{
-		$db = BwPostmanHelper::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 
 		$query = "SHOW COLUMNS FROM {$db->quoteName('#__bwpostman_subscribers')}
 			WHERE {$db->quoteName('Field')} NOT IN (
@@ -1078,7 +1079,7 @@ class BwPostmanSubscriberHelper
 	 */
 	public static function repairEditlink(int $subscriberId = 0): array
 	{
-		$db              = BwPostmanHelper::getDbo();
+		$db              = Factory::getContainer()->get(DatabaseInterface::class);
 		$subscriberTable = new SubscriberTable($db);
 
 		$editlink        = $subscriberTable->getEditlink();

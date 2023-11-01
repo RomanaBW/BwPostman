@@ -34,6 +34,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\RulesField;
 use Joomla\CMS\HTML\HTMLHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwAccess;
+use Joomla\Database\DatabaseInterface;
 use RuntimeException;
 
 /**
@@ -149,7 +150,7 @@ class BwrulesField extends RulesField
 				$parentAssetName .= '.' . $section;
 			}
 
-			$db    = BwPostmanHelper::getDbo();
+			$db    = Factory::getContainer()->get(DatabaseInterface::class);
 			$query = $db->getQuery(true);
 			$query->clear();
 
@@ -173,7 +174,7 @@ class BwrulesField extends RulesField
 		if (!$isGlobalConfig)
 		{
 			// In this case we need to get the section rules too.
-			$db = BwPostmanHelper::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 
 			$query = $db->getQuery(true)
 				->select($db->quoteName('parent_id'))
@@ -252,7 +253,7 @@ class BwrulesField extends RulesField
 	private function checkAssetId(int $assetId = null): ?int
 	{
 		$res   = null;
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));

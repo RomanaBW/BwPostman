@@ -29,6 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Script file of BwPostman module
@@ -95,7 +96,7 @@ class PlgBwPostmanNewslettercontentInstallerScript
 		{
 			JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 
-			$db = BwPostmanHelper::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 			$query = $db->getQuery(true);
 
 			$fields = array(

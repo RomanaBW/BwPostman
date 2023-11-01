@@ -26,10 +26,10 @@
 
 namespace BoldtWebservice\Module\BwPostmanOverview\Site\Helper;
 
-use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
-
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Site\Model\NewslettersModel;
 use DateTime;
 use Exception;
@@ -40,11 +40,11 @@ use Joomla\CMS\Access\Access;
 use Joomla\CMS\Log\LogEntry;
 use Joomla\Registry\Registry;
 use Joomla\CMS\HTML\HTMLHelper;
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use RuntimeException;
 use stdClass;
 
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper',
+    JPATH_ADMINISTRATOR . '/components/com_bwpostman/Helper');
 
 /**
  * Class ModBwPostmanOverviewHelper
@@ -199,7 +199,7 @@ class ModBwPostmanOverviewHelper
 	 */
 	private static function getAccessibleMailinglists(Registry $params): array
 	{
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get('db');
 		$query = $db->getQuery(true);
 		$check = $params->get('access-check', 1);
 
@@ -296,7 +296,7 @@ class ModBwPostmanOverviewHelper
 	 */
 	private static function getAccessibleCampaigns(Registry $params): array
 	{
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get('db');
 		$query = $db->getQuery(true);
 		$check = $params->get('access-check', '1');
 
@@ -424,7 +424,7 @@ class ModBwPostmanOverviewHelper
 	 */
 	private static function getAccessibleUsergroups(Registry $params): array
 	{
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get('db');
 		$query = $db->getQuery(true);
 		$check = $params->get('access-check', 1);
 
@@ -524,7 +524,7 @@ class ModBwPostmanOverviewHelper
 	private static function getUniqueNlIds(array $mls, array $cams, Registry $params): array
 	{
 		// Get database
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get('db');
 		$query = $db->getQuery(true);
 
 		// Define null and now dates
@@ -555,7 +555,7 @@ class ModBwPostmanOverviewHelper
 		// Filter by accessible mailing lists, user groups and campaigns
 		$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
 
-		$whereMlsCamsClause = BwPostmanHelper::getWhereMlsCamsClause($mls, $cams);
+        $whereMlsCamsClause = BwPostmanHelper::getWhereMlsCamsClause($mls, $cams);
 
 		if ($whereMlsCamsClause !== '')
 		{
@@ -646,7 +646,7 @@ class ModBwPostmanOverviewHelper
 	private static function getNlCountList(array $nls): array
 	{
 		// Get database
-		$db = BwPostmanHelper::getDbo();
+		$db = Factory::getContainer()->get('db');
 
 		$query = $db->getQuery(true);
 		$query->select($query->month($db->quoteName('a.mailing_date')) . ' AS sent_month');

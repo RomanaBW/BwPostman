@@ -34,6 +34,7 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseInterface;
 use RuntimeException;
 use stdClass;
 
@@ -65,7 +66,7 @@ class ArcmailinglistsField extends ListField
 	protected function getOptions(): array
 	{
 		// Get a db connection.
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		// Get # of all published mailinglists

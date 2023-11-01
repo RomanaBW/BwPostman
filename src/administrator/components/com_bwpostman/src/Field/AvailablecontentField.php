@@ -35,6 +35,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
 
@@ -130,7 +131,7 @@ class AvailablecontentField extends ListField
 	public function getOptions(): array
 	{
 		// prepare query
-		$db         = BwPostmanHelper::getDbo();
+		$db         = Factory::getContainer()->get(DatabaseInterface::class);
 		$query_user = $db->getQuery(true);
 
 		// get user_ids if exists
@@ -166,7 +167,7 @@ class AvailablecontentField extends ListField
 	private function getAvailableContent(): array
 	{
 		$app        = Factory::getApplication();
-		$db         = BwPostmanHelper::getDbo();
+		$db         = Factory::getContainer()->get(DatabaseInterface::class);
 		$query      = $db->getQuery(true);
 		$options    = array();
 		$categories = array();

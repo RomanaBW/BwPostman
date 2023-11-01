@@ -34,6 +34,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use Joomla\Database\DatabaseInterface;
 
 HTMLHelper::_('behavior.core');
 HTMLHelper::_('behavior.formvalidator');
@@ -45,7 +46,7 @@ $user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$nullDate   = BwPostmanHelper::getDbo()->getNullDate();
+$nullDate   = Factory::getContainer()->get(DatabaseInterface::class)->getNullDate();
 
 $iconImage = Uri::getInstance()->base() . 'media/com_bwpostman/images/icon-48-newsletters.png';
 

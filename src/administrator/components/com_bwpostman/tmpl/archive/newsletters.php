@@ -33,6 +33,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use Joomla\Database\DatabaseInterface;
 
 // Load the bootstrap tooltip for the notes
 HTMLHelper::_('behavior.multiselect');
@@ -42,7 +43,7 @@ $user		= Factory::getApplication()->getIdentity();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$nullDate   = BwPostmanHelper::getDbo()->getNullDate();
+$nullDate   = Factory::getContainer()->get(DatabaseInterface::class)->getNullDate();
 
 //Set context and layout state for filters
 $this->context	= 'Archive.newsletters';
@@ -228,7 +229,7 @@ $this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabsh
 											<td>
 												<?php
 												echo $item->subject;
-												if ($item->mailing_date != BwPostmanHelper::getDbo()->getNullDate() && $item->mailing_date != null)
+												if ($item->mailing_date != Factory::getContainer()->get(DatabaseInterface::class)->getNullDate() && $item->mailing_date != null)
 												{ ?>&nbsp;&nbsp;
 													<div class="bw-btn">
 														<div class="d-inline-block" aria-describedby="tip-html-<?php echo $i; ?>">

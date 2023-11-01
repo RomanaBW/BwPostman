@@ -31,6 +31,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Installer\InstallerAdapter;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Script file of BwPostman module
@@ -195,7 +196,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 		{
 			JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 
-			$db = BwPostmanHelper::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 			$query = $db->getQuery(true);
 
 			$fields = array(
@@ -235,7 +236,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 */
 	private function getManifestVar(string $name, string $extension)
 	{
-		$db		= BwPostmanHelper::getDbo();
+		$db		= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));

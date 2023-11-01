@@ -30,6 +30,7 @@ defined('JPATH_PLATFORM') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Table\Asset;
 use Joomla\CMS\Factory;
@@ -244,7 +245,7 @@ class BwAccess
 	{
 		$sectionRules = null;
 
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('rules'));
@@ -339,7 +340,7 @@ class BwAccess
 
 		foreach ($identities as $identity)
 		{
-			$db    = BwPostmanHelper::getDbo();
+			$db    = Factory::getContainer()->get(DatabaseInterface::class);
 			$query = $db->getQuery(true);
 
 			$query->select('p.parent_id');
@@ -528,7 +529,7 @@ class BwAccess
 //		if (!isset(self::$assetPermissionsParentIdMapping[$extensionName]))
 //		{
 //			// Get the database connection object.
-//			$db = BwPostmanHelper::getDbo();
+//			$db = Factory::getContainer()->get(DatabaseInterface::class);
 //
 //			// Get a fresh query object:
 //			$query    = $db->getQuery(true);
@@ -581,7 +582,7 @@ class BwAccess
 
 		// Get the database connection object.
 		$assets     = null;
-		$db         = BwPostmanHelper::getDbo();
+		$db         = Factory::getContainer()->get(DatabaseInterface::class);
 		$extraQuery = $db->qn('name') . ' = ' . $db->q($extensionName) . ' OR ' . $db->qn('parent_id') . ' = 0';
 
 		// Get a fresh query object.
@@ -654,7 +655,7 @@ class BwAccess
 
 		// Get the database connection object.
 		$assets = null;
-		$db     = BwPostmanHelper::getDbo();
+		$db     = Factory::getContainer()->get(DatabaseInterface::class);
 
 		// Get the asset info for all assets in asset names list.
 		$query = $db->getQuery(true)
@@ -930,7 +931,7 @@ class BwAccess
 		}
 
 		// Get the database connection object.
-		$db = BwPostmanHelper::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 
 		// Build the database query to get the rules for the asset.
 		$query = $db->getQuery(true)
@@ -1030,7 +1031,7 @@ class BwAccess
 		}
 
 		// No preload. Return root asset id from Assets.
-		$assets = new Asset(BwPostmanHelper::getDbo());
+		$assets = new Asset(Factory::getContainer()->get(DatabaseInterface::class));
 
 		return $assets->getRootId();
 	}
@@ -1073,7 +1074,7 @@ class BwAccess
 				// Else we have to do an extra db query to fetch it from the table fetch it from table.
 				else
 				{
-					$table = new Asset(BwPostmanHelper::getDbo());
+					$table = new Asset(Factory::getContainer()->get(DatabaseInterface::class));
 					$table->load(array('name' => $assetKey));
 					$loaded[$assetKey] = $table->id;
 				}
@@ -1117,7 +1118,7 @@ class BwAccess
 			// Else we have to do an extra db query to fetch it from the table fetch it from table.
 			else
 			{
-				$table = new Asset(BwPostmanHelper::getDbo());
+				$table = new Asset(Factory::getContainer()->get(DatabaseInterface::class));
 				$table->load($assetKey);
 				$loaded[$assetKey] = $table->name;
 			}
@@ -1197,7 +1198,7 @@ class BwAccess
 //	public static function getGroupTitle($groupId)
 //	{
 //		// Fetch the group title from the database
-//		$db    = BwPostmanHelper::getDbo();
+//		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 //		$query = $db->getQuery(true);
 //		$query->select('title')
 //			->from('#__usergroups')
@@ -1246,7 +1247,7 @@ class BwAccess
 			// Registered user and guest if all groups are requested
 			else
 			{
-				$db = BwPostmanHelper::getDbo();
+				$db = Factory::getContainer()->get(DatabaseInterface::class);
 
 				// Build the database query to get the rules for the asset.
 				$query = $db->getQuery(true)
@@ -1320,7 +1321,7 @@ class BwAccess
 //	public static function getUsersByGroup(int $groupId, $recursive = false): array
 //	{
 //		// Get a database object.
-//		$db = BwPostmanHelper::getDbo();
+//		$db = Factory::getContainer()->get(DatabaseInterface::class);
 //
 //		$test = $recursive ? '>=' : '=';
 //
@@ -1368,7 +1369,7 @@ class BwAccess
 		if (empty(self::$viewLevels))
 		{
 			// Get a database object.
-			$db = BwPostmanHelper::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 
 			// Build the base query.
 			$query = $db->getQuery(true)

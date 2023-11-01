@@ -30,6 +30,7 @@ defined ('_JEXEC') or die ();
 
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
 
@@ -53,7 +54,7 @@ abstract class BwPostmanNewsletterHelper {
 		$count_users = 0;
 		$usergroup   = ArrayHelper::toInteger($usergroup);
 
-		$db       = BwPostmanHelper::getDbo();
+		$db       = Factory::getContainer()->get(DatabaseInterface::class);
 		$sub_query = $db->getQuery(true);
 
 		$sub_query->select($db->quoteName('g') . '.' . $db->quoteName('user_id'));
@@ -99,7 +100,7 @@ abstract class BwPostmanNewsletterHelper {
 		$count_subscribers      = 0;
 		$associatedMailinglists = ArrayHelper::toInteger($associatedMailinglists);
 
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(' . $db->quoteName('id') . ')');

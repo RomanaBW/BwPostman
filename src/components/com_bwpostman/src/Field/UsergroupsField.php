@@ -33,6 +33,7 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CheckboxesField;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseInterface;
 use RuntimeException;
 
 /**
@@ -166,7 +167,7 @@ class UsergroupsField extends CheckboxesField
 		{
 			static::$options[$hash] = parent::getOptions();
 
-			$db = BwPostmanHelper::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 			$query = $db->getQuery(true);
 			$query->select('CONCAT("-",' . $db->quoteName('a') . '.' . $db->quoteName('id') . ') AS  value');
 			$query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');

@@ -34,6 +34,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Database\DatabaseInterface;
 use RuntimeException;
 
 /**
@@ -135,7 +136,7 @@ class SelectedcontentField extends ListField
 	private function getSelectedContent(): array
 	{
 		$app              = Factory::getApplication();
-		$db               = BwPostmanHelper::getDbo();
+		$db               = Factory::getContainer()->get(DatabaseInterface::class);
 		$options          = array();
 		$selected_content = '';
 

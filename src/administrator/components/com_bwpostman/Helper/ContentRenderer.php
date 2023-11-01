@@ -39,6 +39,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Multilanguage;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Registry\Registry;
 use RuntimeException;
@@ -163,7 +164,7 @@ class ContentRenderer
 	{
 		$row   = new stdClass();
 		$app   = Factory::getApplication();
-		$_db   = BwPostmanHelper::getDbo();
+		$_db   = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('a') . '.*');
@@ -634,7 +635,7 @@ class ContentRenderer
 		if (Multilanguage::isEnabled())
 		{
 			$result = '';
-			$_db    = BwPostmanHelper::getDbo();
+			$_db    = Factory::getContainer()->get(DatabaseInterface::class);
 			$query  = $_db->getQuery(true);
 
 			$query->select($_db->quoteName('language'));

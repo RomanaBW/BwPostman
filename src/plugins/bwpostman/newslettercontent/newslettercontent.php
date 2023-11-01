@@ -43,6 +43,7 @@ use Joomla\CMS\Profiler\Profiler;
 use Joomla\CMS\User\UserFactoryInterface;
 use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\DI\Container;
 use Joomla\Event\DispatcherInterface;
@@ -1086,7 +1087,7 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 		// Build a cache ID for the resulting data object
 		$cacheId = implode(',', $groups) . '.' . $clientId . '.' . $itemId;
 
-		$db      = BwPostmanHelper::getDbo();
+		$db      = Factory::getContainer()->get(DatabaseInterface::class);
 		$query   = $db->getQuery(true);
 		$nowDate = Factory::getDate()->toSql();
 

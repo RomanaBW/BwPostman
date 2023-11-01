@@ -29,6 +29,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Log\LogEntry;
@@ -150,7 +151,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 */
 	protected function setBwPostmanComponentStatus()
 	{
-		$_db        = BwPostmanHelper::getDbo();
+		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -187,7 +188,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 */
 	protected function setBwPostmanComponentVersion()
 	{
-		$_db        = BwPostmanHelper::getDbo();
+		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -310,7 +311,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 
 		if ($isNew)
 		{
-			$db        = BwPostmanHelper::getDbo();
+			$db        = Factory::getContainer()->get(DatabaseInterface::class);
 			$query  = $db->getQuery(true);
 
 			$query->update($db->quoteName('#__bwpostman_subscribers'));
@@ -365,7 +366,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 		// Get and sanitize data
 		$user_mail = ArrayHelper::getValue($data, 'email', '', 'string');
 
-		$db     = BwPostmanHelper::getDbo();
+		$db     = Factory::getContainer()->get(DatabaseInterface::class);
 		$query  = $db->getQuery(true);
 
 		$query->update($db->quoteName('#__bwpostman_subscribers'));

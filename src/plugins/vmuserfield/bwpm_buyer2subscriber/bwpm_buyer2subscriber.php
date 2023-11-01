@@ -210,7 +210,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setComponentStatus()
 	{
-		$_db        = BwPostmanHelper::getDbo();
+		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -246,7 +246,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setComponentVersion()
 	{
-		$_db        = BwPostmanHelper::getDbo();
+		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('manifest_cache'));
@@ -281,7 +281,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setUser2SubscriberPluginStatus()
 	{
-		$_db        = BwPostmanHelper::getDbo();
+		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));
@@ -317,7 +317,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	 */
 	protected function setBuyer2SubscriberPluginStatus()
 	{
-		$_db        = BwPostmanHelper::getDbo();
+		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$query      = $_db->getQuery(true);
 
 		$query->select($_db->quoteName('enabled'));

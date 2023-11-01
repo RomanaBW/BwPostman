@@ -271,7 +271,7 @@ class SubscribeComponentCest
 		$I->see(sprintf(SubsView::$popup_enter_special, $options->special_label));
 		$I->see(SubsView::$popup_accept_disclaimer);
 
-		Generals::presetComponentOptions($I);;
+		Generals::presetComponentOptions($I);
 	}
 
 	/**

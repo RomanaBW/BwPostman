@@ -34,6 +34,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
+use Joomla\Database\DatabaseInterface;
 
 HTMLHelper::_('behavior.multiselect');
 
@@ -178,7 +179,7 @@ $isTemplateButton = (new ActionButton(['tip_title' => Text::_('COM_BWPOSTMAN_NL_
 											<td class="d-none d-lg-table-cell"><?php echo $this->escape($item->description); ?></td>
 											<td class="d-none d-xxl-table-cell">
 												<?php
-												if (property_exists($item, 'modified_time') && $item->modified_time !== BwPostmanHelper::getDbo()->getNullDate() && $item->modified_time !== null)
+												if (property_exists($item, 'modified_time') && $item->modified_time !== Factory::getContainer()->get(DatabaseInterface::class)->getNullDate() && $item->modified_time !== null)
 												{
 													echo HTMLHelper::date($item->modified_time, Text::_('BW_DATE_FORMAT_LC5'));
 												} ?>

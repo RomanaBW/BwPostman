@@ -30,6 +30,7 @@ defined ('_JEXEC') or die ();
 
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use RuntimeException;
 
 /**
@@ -56,7 +57,7 @@ abstract class BwPostmanCampaignHelper
 	{
 		$campaign = null;
 
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select('*');
@@ -130,7 +131,7 @@ abstract class BwPostmanCampaignHelper
 			$archiveFlag = 1;
 		}
 
-		$db    = BwPostmanHelper::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('a') . '.*');
@@ -178,7 +179,7 @@ abstract class BwPostmanCampaignHelper
 	public static function getCampaignsFieldlistOptions(bool $hasMailingdate = false, bool $archiveMatters = false): array
 	{
 		$options   = array();
-		$db        = BwPostmanHelper::getDbo();
+		$db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$nullDate  = $db->getNullDate();
 		$query     = $db->getQuery(true);
 		$sub_query = $db->getQuery(true);

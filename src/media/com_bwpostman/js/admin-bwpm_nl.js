@@ -180,19 +180,19 @@ function checkSelectedRecipients (message) { // Method to check if some recipien
 		}
 	}
 
-	for (j=0; j<ml_unavailable.length; j++) {
+	for (let j=0; j<ml_unavailable.length; j++) {
 		if (ml_unavailable[j].checked === true) {
 			count_selected++;
 		}
 	}
 
-	for (k=0; k<ml_intern.length; k++) {
+	for (let k=0; k<ml_intern.length; k++) {
 		if (ml_intern[k].checked === true) {
 			count_selected++;
 		}
 	}
 
-	for (l=0; l<usergroups.length; l++) {
+	for (let l=0; l<usergroups.length; l++) {
 		if (usergroups[l].checked === true) {
 			count_selected++;
 		}
@@ -236,8 +236,8 @@ function moveSelectedOptions(from,to) { // Moves elements from one select box to
 	}
 
 	// Delete them from original
-	for (i=(from.options.length-1); i>=0; i--) {
-		o = from.options[i];
+	for (let i=(from.options.length-1); i>=0; i--) {
+		let o = from.options[i];
 		if (o.selected) {
 		  from.options[i] = null;
 		}

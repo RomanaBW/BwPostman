@@ -314,7 +314,7 @@ $required_end .= '</div>';
 						<input type="checkbox" id="a_<?php echo "mailinglists$i"; ?>" class="form-check-input" name="<?php echo "mailinglists[]"; ?>"
 								title="<?php echo "mailinglists[]"; ?>" value="<?php echo $mailinglist->id; ?>" />
 						<label class="mailinglist-title hasTooltip form-check-label" for="a_<?php echo "mailinglists$i"; ?>"
-								title="<?php echo HTMLHelper::tooltipText($mailinglists[$i]->title, Text::_($mailinglists[$i]->description)); ?>">
+								title="<?php echo HTMLHelper::tooltipText($mailinglist->title, Text::_($mailinglist->description)); ?>">
 							<?php
 							echo $mailinglist->title;
 							if ($params->get('show_desc', '1') == 1)

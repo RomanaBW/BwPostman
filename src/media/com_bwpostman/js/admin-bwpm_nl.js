@@ -345,7 +345,7 @@ function changeTab(newTab, currentTab, text_confirm_content, text_confirm_templa
 			let hasCampaign = window.hasCampaign();
 
 			if (!hasCampaign) {
-				let campaignRecipientsOkay = checkSelectedRecipients(checkRecipientMessage);
+				campaignRecipientsOkay = checkSelectedRecipients(checkRecipientMessage);
 			}
 
 			if (campaignRecipientsOkay === false) {
@@ -408,8 +408,8 @@ window.onload = function() {
 	let Joomla = window.Joomla || {};
 
 	if (document.getElementById('currentTab') !== null && document.getElementById('currentTab').value === 'edit_basic') {
-		let selectedCampaign = document.getElementById("jform_campaign_id");
-		let selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+		selectedCampaign = document.getElementById("jform_campaign_id");
+		selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
 	}
 
 	Joomla.submitbutton = function (pressbutton) {
@@ -478,7 +478,7 @@ window.onload = function() {
 				let Args4 = document.getElementById('checkContentArgs4').value;
 				let Args5 = document.getElementById('checkContentArgs5').value;
 				let selectedCampaign = document.getElementById("jform_campaign_id");
-				let selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
+				selectedCampaignValue = selectedCampaign.options[selectedCampaign.selectedIndex].value;
 
 				let res = checkSelectedContent(Args1, Args2, Args3, Args4, Args5)
 				if (res === false)

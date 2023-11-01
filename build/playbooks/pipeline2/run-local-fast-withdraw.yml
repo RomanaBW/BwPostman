@@ -15,6 +15,22 @@
       set_fact:
         base_src_dir: "/vhosts/dev5"
 
+    - name: Calculate Joomla main version
+      set_fact:
+        joomla_main_version: "{{ joomla_version[0] }}"
+
+    - name: Set src_dir
+      set_fact:
+        src_dir: "/vhosts/dev{{ joomla_main_version }}"
+
+    - name: Set test_dir
+      set_fact:
+        test_dir: "{{ src_dir }}/tests"
+
+    - name: Set project name
+      set_fact:
+        project_name: "j{{ joomla_version }}_bwpm{{ bwpm_version }}"
+
     - name: Show imported parameters
       debug:
         msg:

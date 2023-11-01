@@ -140,20 +140,20 @@
 			let viewportheight = 0;
 			if (typeof window.innerWidth != 'undefined')
 			{
-				viewportwidth = window.innerWidth,
-					viewportheight = window.innerHeight
+				viewportwidth = window.innerWidth;
+				viewportheight = window.innerHeight;
 			}
 			else if (typeof document.documentElement != 'undefined'
 				&& typeof document.documentElement.clientWidth !=
 				'undefined' && document.documentElement.clientWidth !== 0)
 			{
-				viewportwidth = document.documentElement.clientWidth,
-					viewportheight = document.documentElement.clientHeight
+				viewportwidth = document.documentElement.clientWidth;
+				viewportheight = document.documentElement.clientHeight;
 			}
 			else
 			{
-				viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
-					viewportheight = document.getElementsByTagName('body')[0].clientHeight
+				viewportwidth = document.getElementsByTagName('body')[0].clientWidth;
+				viewportheight = document.getElementsByTagName('body')[0].clientHeight;
 			}
 			let modalcontent = document.getElementById('bwp_plg_modal-content');
 

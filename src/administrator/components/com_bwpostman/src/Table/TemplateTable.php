@@ -1106,7 +1106,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @param integer $id
 	 *
-	 * @return 	boolean false
+	 * @return 	void
 	 *
 	 * @throws Exception
 	 *

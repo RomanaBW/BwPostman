@@ -420,16 +420,13 @@ final class BwSiteApplication extends CMSApplication
 	/**
 	 * Return a reference to the Pathway object.
 	 *
-	 * @param string $name    The name of the application.
-	 * @param array  $options An optional associative array of configuration settings.
-	 *
 	 * @return  Pathway  A Pathway object
 	 *
 	 * @since   3.2
 	 */
-	public function getPathway($name = 'site', $options = [])
+	public function getPathway()
 	{
-		return parent::getPathway($name, $options);
+		return parent::getPathway();
 	}
 
 	/**

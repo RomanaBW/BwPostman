@@ -1051,7 +1051,7 @@ class TemplatesModel extends ListModel
 				$query = $_db->getQuery(true);
 
 				$query->select('*');
-				$query->from($_db->quoteName('#__' . $setting['table'] . ''));
+				$query->from($_db->quoteName('#__' . $setting['table']));
 				$query->where($_db->quoteName($setting['where1']) . ' = ' . (($setting['where2'] == 'id') ? (int) $id : (int) $tpl_id));
 
 				try

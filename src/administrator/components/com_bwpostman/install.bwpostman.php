@@ -2193,7 +2193,7 @@ EOS;
 
 		try
 		{
-			$this->logger->addEntry(new LogEntry(sprintf("Postflight getExtensionId Query: %s", (string)$query), BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logger->addEntry(new LogEntry(sprintf("Postflight getExtensionId Query: %s", $query), BwLogger::BW_DEBUG, $this->log_cat));
 
 			$db->setQuery($query);
 

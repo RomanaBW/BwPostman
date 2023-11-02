@@ -91,12 +91,12 @@ if ($show_update || $string_special != '')
 
 <div id="com_bwp_install_outer">
 </div>
-<div class="row">
+<div class="row mt-2">
 	<div id="checkResult" class="col-12">
-		<div id="warn" class="card alert-warning my-3 p-2">
+		<div id="warn" class="alert alert-warning my-3 p-2">
 			<?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_WARNING'); ?>
 		</div>
-		<div id="info" class="card alert-info my-3 p-2" style="display:none;">
+		<div id="info" class="alert alert-info my-3 p-2" style="display:none;">
 			<?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_INFO'); ?>
 		</div>
 	</div>

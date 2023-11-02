@@ -1980,21 +1980,22 @@ class MaintenanceModel extends BaseDatabaseModel
 			$value = $value === null ? "" : $value;
 		});
 
+        $withoutDefault = array(
+            'TINYTEXT',
+            'TEXT',
+            'MEDIUMTEXT',
+            'LONGTEXT',
+            'TINYBLOB',
+            'BLOB',
+            'MEDIUMBLOB',
+            'LONGBLOB',
+            ' GEOMETRY',
+            'JSON',
+        );
+
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
-			$diff           = array_udiff($neededColumns[$i], $installedColumns[$i], 'strcasecmp');
-			$withoutDefault = array(
-				'TINYTEXT',
-				'TEXT',
-				'MEDIUMTEXT',
-				'LONGTEXT',
-				'TINYBLOB',
-				'BLOB',
-				'MEDIUMBLOB',
-				'LONGBLOB',
-				' GEOMETRY',
-				'JSON',
-			);
+			$diff = array_udiff($neededColumns[$i], $installedColumns[$i], 'strcasecmp');
 
 			if (!empty($diff))
 			{

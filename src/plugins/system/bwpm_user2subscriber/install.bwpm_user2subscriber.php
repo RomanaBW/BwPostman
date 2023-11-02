@@ -28,7 +28,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;

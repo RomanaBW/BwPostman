@@ -27,7 +27,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Installer\InstallerAdapter;

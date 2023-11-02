@@ -28,7 +28,6 @@ namespace BoldtWebservice\Component\BwPostman\Site\Helpers;
 
 defined('_JEXEC') or die('Restricted access');
 
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;

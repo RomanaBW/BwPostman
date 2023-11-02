@@ -26,7 +26,6 @@
 
 defined('JPATH_PLATFORM') or die;
 
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;

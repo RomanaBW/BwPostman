@@ -28,7 +28,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
 
 defined('JPATH_PLATFORM') or die;
 
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;

@@ -29,7 +29,6 @@ namespace BoldtWebservice\Module\BwPostman\Site\Helper;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use JLoader;
 use Joomla\CMS\Factory;

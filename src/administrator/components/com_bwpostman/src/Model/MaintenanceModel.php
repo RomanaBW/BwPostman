@@ -499,6 +499,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		foreach ($tableNames as $tableName)
 		{
+            // Only process real tables, not from restore point (tables with suffix _tmp)
 			if (strpos($tableName, '_tmp') === false)
 			{
 				$table = array();
@@ -511,6 +512,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$tableArray[]      = $table;
 				$installedTables[] = $tableName;
 			}
+            // Get the tables from restore point, that is tables with suffix _tmp, and remove _tmp suffix
 			else
 			{
 				$tmpTables[] = substr($tableName, 0, -4);
@@ -886,27 +888,33 @@ class MaintenanceModel extends BaseDatabaseModel
 				$string  = '';
 				$i       = 0;
 
+                // Separate queries
 				foreach ($txt_array as $value)
 				{
 					$pos = strpos($value, 'CREATE');
 
-					if ($pos !== false)
+					// Line contains keyword CREATE, that means a new query begins
+                    if ($pos !== false)
 					{
 						if ($i !== 0)
-						{ // fill array only with complete query
+                        { // fill array only with complete query
+                            // Add to array of queries
 							$queries[] = $string;
 						}
 
+                        // Create a new query string
 						$string = $value . ' ';
 					}
 					else
 					{
+                        // Add remaining part of query to string
 						$string .= $value . ' ';
 					}
 
 					$i++;
 				}
 
+                // Add to array of queries
 				$queries[] = $string;
 
 				if (count($queries))
@@ -914,7 +922,9 @@ class MaintenanceModel extends BaseDatabaseModel
 					foreach ($queries as $query)
 					{
 						$table = new stdClass();
+                        // Convert multiline query to oneliner
 						$query = implode(array_map('trim', preg_split('/(\n|\r\r)/i', $query)));
+                        // Match a sequence, made up of one or more space characters, and replace them with a single space
 						$query = preg_replace('/\s+/', ' ', trim($query));
 
 						$table->install_query = $db->escape($query);
@@ -1063,7 +1073,15 @@ class MaintenanceModel extends BaseDatabaseModel
 									$col_arr->Type .= ' unsigned';
 								}
 
-								$table->columns[] = $col_arr;
+                                // get default
+                                $start = stripos($column, 'default');
+
+                                if ($start !== false)
+                                {
+                                    $col_arr->Default = substr($column, ($start + 8));
+                                }
+
+                                $table->columns[] = $col_arr;
 							} // end foreach columns
 							$tables[] = $table;
 						} // end get columns definitions
@@ -1319,7 +1337,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	{
 		foreach ($neededTables as $table)
 		{
-			// Get properties of  installed table
+			// Get properties of installed table
 			try
 			{
 				$createTableQuery = $this->db->getTableCreate($table->name)[$table->name];
@@ -1974,12 +1992,6 @@ class MaintenanceModel extends BaseDatabaseModel
 	 */
 	private function handleColumnAttributes(array $neededColumns, array $installedColumns, object $checkTable): bool
 	{
-
-		// Remove $value = null, because "deprecated: strcasecmp(): Passing null to parameter"
-		array_walk_recursive($installedColumns, function (&$value) {
-			$value = $value === null ? "" : $value;
-		});
-
         $withoutDefault = array(
             'TINYTEXT',
             'TEXT',
@@ -1992,6 +2004,11 @@ class MaintenanceModel extends BaseDatabaseModel
             ' GEOMETRY',
             'JSON',
         );
+
+        // Remove $value = null, because "deprecated: strcasecmp(): Passing null to parameter"
+		array_walk_recursive($installedColumns, function (&$value) {
+			$value = $value === null ? "" : $value;
+		});
 
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
@@ -2078,7 +2095,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 		}
 
-//		Check if default value of installed columns is set, where it should not be set
+//		Check if default value of installed columns is set, where it should not be set, i.e. blob columns
 		for ($i = 0; $i < count($neededColumns); $i++)
 		{
 			if (!key_exists('Default', $neededColumns[$i])

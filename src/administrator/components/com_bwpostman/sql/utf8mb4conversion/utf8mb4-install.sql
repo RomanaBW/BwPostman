@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers` (
 	`name` VARCHAR(400) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
 	`firstname` VARCHAR(400) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
 	`email` VARCHAR(320) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-	`emailformat` TINYINT(1) NOT NULL DEFAULT '1',
+	`emailformat` TINYINT(1) NOT NULL DEFAULT 1,
 	`gender` TINYINT(1) unsigned NULL,
 	`special` VARCHAR(400) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
 	`status` INT(1) NOT NULL DEFAULT 0,
@@ -185,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `#__bwpostman_subscribers` (
 	`checked_out_time` DATETIME DEFAULT NULL,
 	`archive_flag` TINYINT(1) NOT NULL DEFAULT 0,
 	`archive_date` DATETIME DEFAULT NULL,
-	`archived_by` INT(11) NOT NULL DEFAULT '-1',
+	`archived_by` INT(11) NOT NULL DEFAULT -1,
 	PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 

@@ -997,7 +997,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 								if ($length > 0)
 								{
-									$col_arr->Column = substr($column, 1, $length - 2);
+									$col_arr->Field = substr($column, 1, $length - 2);
 									$sub_txt         = substr($column, $length + 1);
 									$column          = $sub_txt;
 								}
@@ -1007,7 +1007,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 								if ($length > 0 || !$length)
 								{
-									$col_arr->Type = substr($column, 0, $length);
+									$col_arr->Type = strtolower(substr($column, 0, $length));
 									$sub_txt       = substr($column, $length + 1);
 									$column        = $sub_txt;
 								}
@@ -1022,19 +1022,51 @@ class MaintenanceModel extends BaseDatabaseModel
 
 									if ($stop === false)
 									{
-										$col_arr->collation = substr($column, $start);
+										$col_arr->Collation = substr($column, $start);
 									}
 									else
 									{
 										$length             = $stop - $start;
-										$col_arr->collation = substr($column, $start, $length);
+										$col_arr->Collation = substr($column, $start, $length);
 									}
 
-									$sub_txt            = str_ireplace('collate ' . $col_arr->collation, '', $column);
+									$sub_txt            = str_ireplace('collate ' . $col_arr->Collation, '', $column);
 									$column             = trim($sub_txt);
 								}
 
-								// get NOT NULL
+                                // get default
+                                $start = stripos($column, 'default');
+
+                                if ($start !== false)
+                                {
+                                    $start              = $start + 8;
+                                    $stop               = strpos($column, " ", $start);
+
+                                    if ($stop !== false)
+                                    {
+                                        $length = $stop - $start;
+                                    }
+                                    else
+                                    {
+                                        $length = null;
+                                    }
+
+                                    $defValue = substr($column, $start, $length);
+
+                                    if (stripos($defValue, 'null') !== false)
+                                    {
+                                        $col_arr->Default = null;
+                                    }
+                                    else
+                                    {
+                                        $col_arr->Default = $defValue;
+                                    }
+
+                                    $sub_txt            = str_ireplace('default ' . $col_arr->Default, '', $column);
+                                    $column             = trim($sub_txt);
+                                }
+
+                                // get NOT NULL
 								$start = stripos($column, 'NOT NULL');
 
 								if ($start !== false)
@@ -1059,7 +1091,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 								if ($start !== false)
 								{
-									$col_arr->Extra = substr($column, $start, 15);
+									$col_arr->Extra = strtolower(substr($column, $start, 15));
 									$sub_txt        = str_replace('auto_increment', '', $column);
 									$column         = trim($sub_txt);
 									$table->auto    = $col_arr->Extra;
@@ -1072,14 +1104,6 @@ class MaintenanceModel extends BaseDatabaseModel
 								{
 									$col_arr->Type .= ' unsigned';
 								}
-
-                                // get default
-                                $start = stripos($column, 'default');
-
-                                if ($start !== false)
-                                {
-                                    $col_arr->Default = substr($column, ($start + 8));
-                                }
 
                                 $table->columns[] = $col_arr;
 							} // end foreach columns
@@ -1769,7 +1793,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		foreach ($neededColumns as $col)
 		{
-			$search_cols_2[] = $col['Column'];
+			$search_cols_2[] = $col['Field'];
 		}
 
 		$installedColumns = array();
@@ -1851,18 +1875,18 @@ class MaintenanceModel extends BaseDatabaseModel
 	 */
 	private function handleNeededColumns(array $neededColumns, $i, array $search_cols_1, object $checkTable)
 	{
-		if (array_search($neededColumns[$i]['Column'], $search_cols_1) === false)
+		if (array_search($neededColumns[$i]['Field'], $search_cols_1) === false)
 		{
 			($neededColumns[$i]['Null'] == 'NO') ? $null = ' NOT NULL' : $null = ' NULL ';
 			(isset($neededColumns[$i]['Default'])) ? $default = ' DEFAULT ' . $this->db->quote($neededColumns[$i]['Default']) : $default = '';
 
-			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COLS', $neededColumns[$i]['Column'], $checkTable->name);
+			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COLS', $neededColumns[$i]['Field'], $checkTable->name);
 			echo '<p class="text-warning">' . $message . '</p>';
 
 			$query = "ALTER TABLE " . $this->db->quoteName($checkTable->name);
-			$query .= " ADD " . $this->db->quoteName($neededColumns[$i]['Column']);
+			$query .= " ADD " . $this->db->quoteName($neededColumns[$i]['Field']);
 			$query .= ' ' . $neededColumns[$i]['Type'] . $null . $default;
-			$query .= " AFTER " . $this->db->quoteName($neededColumns[$i - 1]['Column']);
+			$query .= " AFTER " . $this->db->quoteName($neededColumns[$i - 1]['Field']);
 
 			try
 			{
@@ -1874,7 +1898,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				{
 					$message = Text::sprintf(
 						'COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_CREATE_ERROR',
-						$neededColumns[$i]['Column'],
+						$neededColumns[$i]['Field'],
 						$checkTable->name
 					);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -1887,7 +1911,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				{
 					$message = str_pad(
 						Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_CREATE_SUCCESS',
-							$neededColumns[$i]['Column'],
+							$neededColumns[$i]['Field'],
 							$checkTable->name),
 						4096
 					);
@@ -2005,20 +2029,15 @@ class MaintenanceModel extends BaseDatabaseModel
             'JSON',
         );
 
-        // Remove $value = null, because "deprecated: strcasecmp(): Passing null to parameter"
-		array_walk_recursive($installedColumns, function (&$value) {
-			$value = $value === null ? "" : $value;
-		});
-
-		for ($i = 0; $i < count($neededColumns); $i++)
+        for ($i = 0; $i < count($neededColumns); $i++)
 		{
-			$diff = array_udiff($neededColumns[$i], $installedColumns[$i], 'strcasecmp');
+			$diff = $this->getColumnDiff($neededColumns[$i], $installedColumns[$i]);
 
 			if (!empty($diff))
 			{
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES',
 					implode(',', array_keys($diff)),
-					$neededColumns[$i]['Column'],
+					$neededColumns[$i]['Field'],
 					$checkTable->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
 
@@ -2047,7 +2066,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					}
 
 					$query = "ALTER TABLE " . $this->db->quoteName($checkTable->name);
-					$query .= " MODIFY " . $this->db->quoteName($neededColumns[$i]['Column']) . ' ' . $neededColumns[$i]['Type'] . $collation . $null . $default;
+					$query .= " MODIFY " . $this->db->quoteName($neededColumns[$i]['Field']) . ' ' . $neededColumns[$i]['Type'] . $collation . $null . $default;
 
 					if (array_key_exists('Extra', $neededColumns[$i]))
 					{
@@ -2064,7 +2083,7 @@ class MaintenanceModel extends BaseDatabaseModel
 						{
 							$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES_ERROR',
 								$missingCol,
-								$neededColumns[$i]['Column'],
+								$neededColumns[$i]['Field'],
 								$checkTable->name);
 							$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
@@ -2075,7 +2094,7 @@ class MaintenanceModel extends BaseDatabaseModel
 							$message = str_pad(
 								Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF_COL_ATTRIBUTES_SUCCESS',
 									$missingCol,
-									$neededColumns[$i]['Column'],
+									$neededColumns[$i]['Field'],
 									$checkTable->name),
 								4096
 							);
@@ -2103,12 +2122,12 @@ class MaintenanceModel extends BaseDatabaseModel
 				&& $installedColumns[$i]['Default'] !== '' && in_array($neededColumns[$i]['Type'], $withoutDefault))
 			{
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DEFAULT_WRONG',
-					$neededColumns[$i]['Column'], $checkTable->name);
+					$neededColumns[$i]['Field'], $checkTable->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
 
 				echo '<p class="text-warning">' . $message . '</p>';
 
-				$defaultQuery = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' ALTER ' . $this->db->quoteName($neededColumns[$i]['Column']) . ' DROP DEFAULT';
+				$defaultQuery = 'ALTER TABLE ' . $this->db->quoteName($checkTable->name) . ' ALTER ' . $this->db->quoteName($neededColumns[$i]['Field']) . ' DROP DEFAULT';
 
 				try
 				{
@@ -2118,7 +2137,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				catch (RuntimeException $exception)
 				{
 					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DROP_DEFAULT_ERROR',
-						$neededColumns[$i]['Column'], $checkTable->name);
+						$neededColumns[$i]['Field'], $checkTable->name);
 					$message .= $exception->getMessage();
 
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -2129,7 +2148,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				}
 
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DROP_DEFAULT_SUCCESS',
-					$neededColumns[$i]['Column'], $checkTable->name);
+					$neededColumns[$i]['Field'], $checkTable->name);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
 				echo '<p class="text-success">' . $message . '</p>';
@@ -2495,7 +2514,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				$fieldXml = $this->xml->createElement('field');
 				$fieldsXml->appendChild($fieldXml);
 
-				$columnXml = $this->xml->createElement('Column', $field->Field);
+				$columnXml = $this->xml->createElement('Field', $field->Field);
 				$fieldXml->appendChild($columnXml);
 
 				$typeXml = $this->xml->createElement('Type', $field->Type);
@@ -6880,4 +6899,34 @@ class MaintenanceModel extends BaseDatabaseModel
 			$table->collation = str_replace(';', '', $table->collation);
 		}
 	}
+
+    /**
+     * Method to get the differences between column properties of needed tables and installed tables
+     * - Check for needed key to exist
+     * - Check for installed value to be same as needed value
+     *
+     * @param array $neededColumn
+     * @param array $installedColumn
+     *
+     * @return array
+     *
+     * @since 4.2.5
+     */
+    protected function getColumnDiff(array $neededColumn, array $installedColumn): array
+    {
+        $diffArray = [];
+
+        foreach ($neededColumn as $key => $value)
+        {
+            if (!array_key_exists($key, $installedColumn))
+            {
+                $diffArray[$key] = $value;
+            }
+            elseif ($installedColumn[$key] !== $value)
+            {
+                $diffArray[$key] = $value;
+            }
+        }
+        return $diffArray;
+    }
 }

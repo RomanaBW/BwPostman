@@ -673,9 +673,9 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				{
 					$err = array(
 						'err_code' => 405,
-						'err_msg' => Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $this->email, $xids),
+						'err_msg' => Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTBLOCKED_BY_SYSTEM', $data['email'], $xids),
 						'err_id' => $xids,
-						'err_email' => $this->email,
+						'err_email' => $data['email'],
 					);
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
 					$session->set('session_error', $err);
@@ -687,9 +687,9 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				{
 					$err = array(
 						'err_code' => 406,
-						'err_msg' => Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $this->email, $xids),
+						'err_msg' => Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTNOTACTIVATED', $data['email'], $xids),
 					 	'err_id' => $xids,
-						'err_email' => $this->email,
+						'err_email' => $data['email'],
 					);
 
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
@@ -702,17 +702,17 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				if (($subscriber->status == 1) && ($subscriber->archive_flag != 1))
 				{
 					$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
-					$err_msg = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $this->email, $link);
+					$err_msg = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $data['email']->email, $link);
 					//@ToDo: With the following routing with SEO activated don't work
 					$err = array(
 						'err_code' => 407,
 						'err_msg' => $err_msg,
 						'err_id' => $xids,
-						'err_email' => $this->email,
+						'err_email' => $data['email'],
 					);
 					$app->setUserState('com_bwpostman.subscriber.register.error', $err);
 					$session->set('session_error', $err);
-					$this->setError(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $this->email,  $xids));
+					$this->setError(Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $data['email'],  $xids));
 					return false;
 				}
 			}

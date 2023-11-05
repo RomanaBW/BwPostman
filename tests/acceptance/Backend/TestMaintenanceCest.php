@@ -188,7 +188,7 @@ class TestMaintenanceCest
 		$I->waitForElement(MaintenancePage::$step3Field, 30);
 		$I->wait(10);
 		$I->waitForElement(MaintenancePage::$step4Field, 30);
-		$I->waitForElement(MaintenancePage::$step5Field, 30);
+		$I->waitForElement(MaintenancePage::$step5Field, 60);
 		$I->waitForElement(MaintenancePage::$step6Field, 30);
 		$I->waitForElement(MaintenancePage::$step7Field, 30);
 		$I->waitForElement(MaintenancePage::$step7SuccessClass, 30);

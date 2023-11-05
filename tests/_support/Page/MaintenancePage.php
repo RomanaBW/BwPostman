@@ -499,21 +499,21 @@ class MaintenancePage
 	 *
 	 * @since 3.1.3
 	 */
-	public static $warningTextColumn     = "The attribute(s) 'Column' of column 'published' of table `#__bwpostman_campaigns` is/are not as expected. Trying to adjust defective attribute(s)...";
+	public static $warningTextColumn     = "The attribute(s) 'Field' of column 'published' of table `#__bwpostman_campaigns` is/are not as expected. Trying to adjust defective attribute(s)...";
 
 	/**
 	 * @var string
 	 *
 	 * @since 3.1.3
 	 */
-	public static $repairTextColumn     = "Attribute 'Column' of column 'published' of table `#__bwpostman_campaigns` adjusted successfully";
+	public static $repairTextColumn     = "Attribute 'Field' of column 'published' of table `#__bwpostman_campaigns` adjusted successfully";
 
 	/**
 	 * @var string
 	 *
 	 * @since 3.1.3
 	 */
-	public static $warningTextType     = "The attribute(s) 'Type' of column 'title' of table `#__bwpostman_campaigns` is/are not as expected. Trying to adjust defective attribute(s)...";
+	public static $warningTextType     = "The attribute(s) 'Type,Default' of column 'title' of table `#__bwpostman_campaigns` is/are not as expected. Trying to adjust defective attribute(s)...";
 
 	/**
 	 * @var string
@@ -569,14 +569,14 @@ class MaintenancePage
 	 *
 	 * @since 4.0.4
 	 */
-	public static $warningTextDefault     = "The default value for column `tpl_html` of table `#__bwpostman_templates` is wrong. Trying to adjust the correct the value...";
+	public static $warningTextDefault     = "The attribute(s) 'Default,Null' of column 'created_date' of table `#__bwpostman_templates` is/are not as expected. Trying to adjust defective attribute(s)...";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.4
 	 */
-	public static $repairTextDefault     = "Default value for column `tpl_html` of table `#__bwpostman_templates` adjusted successfully";
+	public static $repairTextDefault     = "Attribute 'Default' of column 'created_date' of table `#__bwpostman_templates` adjusted successfully";
 
 	/**
 	 * @var string
@@ -791,7 +791,7 @@ class MaintenancePage
 		$I->waitForElementVisible(self::$step6Field, 300);
 		$I->waitForElementVisible(self::$step7Field, 30);
 		$I->waitForElementVisible(self::$step8Field, 30);
-		$I->waitForElementVisible(self::$step9Field, 30);
+		$I->waitForElementVisible(self::$step9Field, 60);
 		$I->waitForElementVisible(self::$step10Field, 60);
 		$I->waitForElementVisible(self::$step11Field, 180);
 		$I->waitForElementVisible(self::$step11SuccessClass, 30);

@@ -987,122 +987,81 @@ class MaintenanceModel extends BaseDatabaseModel
 							$column_string = substr($query, $start + 1, $length - 1);
 							$columns       = explode(',', $column_string);
 
-							foreach ($columns as $column)
+                            foreach ($columns as $column)
 							{
-								$col_arr = new stdClass();
+                                $columnArray = array_map('strtolower', explode(' ', $column));
+                                $col_arr = new stdClass();
 
 								// get column name
-								$column = trim($column);
-								$length = strpos($column, ' ');
-
-								if ($length > 0)
-								{
-									$col_arr->Field = substr($column, 1, $length - 2);
-									$sub_txt         = substr($column, $length + 1);
-									$column          = $sub_txt;
-								}
+                                $col_arr->Field = str_replace('`', '', $columnArray[0]);
 
 								// get column type
-								$length = strpos($column, ' ');
+                                $col_arr->Type = $columnArray[1];
 
-								if ($length > 0 || !$length)
+                                // get unsigned
+                                $index = array_search('unsigned', $columnArray);
+
+                                if ($index !== false)
+                                {
+                                    $col_arr->Type .= ' unsigned';
+                                }
+
+                                // get column collation
+                                $index = array_search('collate', $columnArray);
+
+								if ($index !== false)
 								{
-									$col_arr->Type = strtolower(substr($column, 0, $length));
-									$sub_txt       = substr($column, $length + 1);
-									$column        = $sub_txt;
-								}
-
-								// get column collation
-								$start = stripos($column, 'collate');
-
-								if ($start !== false)
-								{
-									$start              = $start + 8;
-									$stop               = strpos($column, " ", $start);
-
-									if ($stop === false)
-									{
-										$col_arr->Collation = substr($column, $start);
-									}
-									else
-									{
-										$length             = $stop - $start;
-										$col_arr->Collation = substr($column, $start, $length);
-									}
-
-									$sub_txt            = str_ireplace('collate ' . $col_arr->Collation, '', $column);
-									$column             = trim($sub_txt);
-								}
+                                    $col_arr->Collation = $columnArray[($index + 1)];
+                                }
 
                                 // get default
-                                $start = stripos($column, 'default');
+                                $index = array_search('default', $columnArray);
 
-                                if ($start !== false)
+                                if ($index !== false)
                                 {
-                                    $start              = $start + 8;
-                                    $stop               = strpos($column, " ", $start);
+                                    $defValue = $columnArray[($index + 1)];
+                                    $col_arr->Default = $defValue;
 
-                                    if ($stop !== false)
-                                    {
-                                        $length = $stop - $start;
-                                    }
-                                    else
-                                    {
-                                        $length = null;
-                                    }
-
-                                    $defValue = substr($column, $start, $length);
-
-                                    if (stripos($defValue, 'null') !== false)
+                                    // Make string null to null value
+                                    if ($defValue === 'null')
                                     {
                                         $col_arr->Default = null;
                                     }
-                                    else
-                                    {
-                                        $col_arr->Default = $defValue;
-                                    }
 
-                                    $sub_txt            = str_ireplace('default ' . $col_arr->Default, '', $column);
-                                    $column             = trim($sub_txt);
+                                    // Unset element to ensure, get NOT NULL/NULL don't find this one
+                                    unset($columnArray[$index]);
+                                    unset($columnArray[($index + 1)]);
                                 }
 
                                 // get NOT NULL
-								$start = stripos($column, 'NOT NULL');
+                                $index = array_search('not', $columnArray);
 
-								if ($start !== false)
-								{
-									$col_arr->Null = 'NO';
-									$sub_txt       = str_replace('NOT NULL', '', $column);
-									$column        = trim($sub_txt);
-								}
+                                if ($index !== false)
+                                {
+                                    $col_arr->Null = 'NO';
 
-								// get NULL
-								$start = stripos($column, 'NULL');
+                                    // Unset element to ensure, get NULL don't find this one
+                                    unset($columnArray[$index]);
+                                    unset($columnArray[($index + 1)]);
+                                }
 
-								if ($start !== false)
-								{
-									$col_arr->Null = 'YES';
-									$sub_txt       = str_replace('NULL', '', $column);
-									$column        = trim($sub_txt);
-								}
+                                // get NULL
+                                $index = array_search('null', $columnArray);
+
+                                if ($index !== false)
+                                {
+                                    $col_arr->Null = 'YES';
+                                    unset($columnArray[$index]);
+                                }
 
 								// get autoincrement
-								$start = stripos($column, 'auto_increment');
+                                $index = array_search('auto_increment', $columnArray);
+                                $start = stripos($column, 'auto_increment');
 
 								if ($start !== false)
 								{
-									$col_arr->Extra = strtolower(substr($column, $start, 15));
-									$sub_txt        = str_replace('auto_increment', '', $column);
-									$column         = trim($sub_txt);
+									$col_arr->Extra = 'auto_increment';
 									$table->auto    = $col_arr->Extra;
-								}
-
-								// get unsigned
-								$start = stripos($column, 'unsigned');
-
-								if ($start !== false)
-								{
-									$col_arr->Type .= ' unsigned';
 								}
 
                                 $table->columns[] = $col_arr;

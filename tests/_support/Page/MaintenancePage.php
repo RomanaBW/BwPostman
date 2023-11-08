@@ -569,7 +569,7 @@ class MaintenancePage
 	 *
 	 * @since 4.0.4
 	 */
-	public static $warningTextDefault     = "The attribute(s) 'Default,Null' of column 'created_date' of table `#__bwpostman_templates` is/are not as expected. Trying to adjust defective attribute(s)...";
+	public static $warningTextDefault     = "The attribute(s) 'Default' of column 'created_date' of table `#__bwpostman_templates` is/are not as expected. Trying to adjust defective attribute(s)...";
 
 	/**
 	 * @var string

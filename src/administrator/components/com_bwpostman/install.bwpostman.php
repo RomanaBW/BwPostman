@@ -73,7 +73,7 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since       4.2.5
 	 */
-	private $minimum_php_version = "8.0";
+	private $minimum_php_version = "7.2.5";
 
 	/**
 	 * @var string release

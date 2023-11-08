@@ -242,7 +242,7 @@ class com_bwpostmanInstallerScript
 
 		if(version_compare(phpversion(), $this->minimum_php_version, 'lt'))
 		{
-			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_USES_PHP8'), 'error');
+			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_USES_PHP7'), 'error');
 			return false;
 		}
 

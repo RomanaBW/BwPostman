@@ -5,21 +5,18 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-Version 4.2.5 released (2023-11-04)----
-
-New
-+ Drop support for php 7
+Version 4.2.5 released (2023-11-11)----
 
 Bugfix
-# Correct queries for campaigns list and archiving campaigns with newsletters
-# Mail address was not displayed at some error messages
+# Correct queries for campaigns list and archiving campaigns with newsletters.
+# Mail address was not displayed at some error messages at registration.
 
 Improvement
-~ Make BwPostman compatible to Joomla! 5
-~ Improve support for plugin Buyer2Subscriber
-~ Add support for php 8.1
-~ Table check and repair now also repairs default values of columns
-~ 'Safety belt' added to not delete tables, which have no restore point
+~ BwPostman is compatible to Joomla! 5.
+~ BwPostman is ready for php 8.2.
+~ Table check and repair now also repairs default values of columns.
+~ Safety belt' added to not delete tables, which have no restore point.
+~ Improve support for plugin Buyer2Subscriber.
 
 Version 4.2.4 released (2023-08-24)----
 

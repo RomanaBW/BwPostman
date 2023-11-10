@@ -15,7 +15,7 @@ Improvement
 ~ BwPostman is compatible to Joomla! 5.
 ~ BwPostman is ready for php 8.2.
 ~ Table check and repair now also repairs default values of columns.
-~ Safety belt' added to not delete tables, which have no restore point.
+~ The original tables could be deleted, even if no restore points are available at restoring tables. But this only could happen at manual intervention while processing.
 ~ Improve support for plugin Buyer2Subscriber.
 
 Version 4.2.4 released (2023-08-24)----

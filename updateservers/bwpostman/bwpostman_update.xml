@@ -20,9 +20,9 @@
 
 		<targetplatform name="joomla" version="4.[0123456789]" min_dev_level="0" php_minimum="7.4" />
 
-		<sha256></sha256>
-		<sha384></sha384>
-		<sha512></sha512>
+		<sha256>8af80e592bc6faa0741374f95479b9bc865994050d51376a7c1ae7d3d6ee1705</sha256>
+		<sha384>6282fb2bc63a536ac24a8583d354186c579bb4ea96f3563b1f7b458c0415e98cbf6b5d180b819966881e7a728a2abe21</sha384>
+		<sha512>a11786894be6a414c0949665bf646e867f29bd0f5595c75651285fc27814717517cbf06a9fff717c885ce478d4fe07e9c3f39bafa4857b86caed0aa539e4882a</sha512>
 	</update>
 
 	<update>

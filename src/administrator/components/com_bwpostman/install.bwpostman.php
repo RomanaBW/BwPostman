@@ -1870,6 +1870,7 @@ class com_bwpostmanInstallerScript
 
 				// Open the modal
 					wrapper.innerHTML = html;
+                    wrapper.style.opacity = '1';
 					modal.style.display = 'block';
 
 			}

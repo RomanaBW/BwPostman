@@ -264,7 +264,7 @@ function moveArticle() {
 	}
 
 	if(fieldId.value && fieldTitle.value) {
-		let contentFound = 0;
+		let contentFound = -1;
 
 		// Search for selected article at (remaining) available list,
 		for (let i = 0; i < availableContent.length; i++) {
@@ -275,7 +275,7 @@ function moveArticle() {
 		}
 
 		// If selected article is found at available list, this article is not selected so far and can be used.
-		if (contentFound > 0)
+		if (contentFound >= 0)
 		{
 			// Add to selected list
 			let option = document.createElement("option");

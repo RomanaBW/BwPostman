@@ -160,7 +160,7 @@ class ContentRenderer
 	 *
 	 * @since       0.9.1
 	 */
-	public function  retrieveContent(int $id)
+	public function  retrieveContent(int $id, int $show_readon)
 	{
 		$row   = new stdClass();
 		$app   = Factory::getApplication();
@@ -227,7 +227,8 @@ class ContentRenderer
 			$params->loadString($row->attribs);
 
 			$row->params = $params;
-			$row->text   = $row->introtext;
+//			$row->text   = $row->introtext;
+      $row->text = ($row->fulltext !== null && trim($row->fulltext) != '' && $show_readon !== 1) ? $row->introtext . ' ' . $row->fulltext : $row->introtext;
 		}
 
 		return $row;
@@ -278,7 +279,7 @@ class ContentRenderer
 				return stripslashes($content);
 			}
 
-			$row = $this->retrieveContent($id);
+			$row = $this->retrieveContent($id, intval($tpl->article['show_readon']));
 
 			if ($row)
 			{
@@ -414,7 +415,7 @@ class ContentRenderer
 				return stripslashes($content);
 			}
 
-			$row = $this->retrieveContent($id);
+			$row = $this->retrieveContent($id, intval($tpl->article['show_readon']));
 
 			if ($row)
 			{
@@ -506,7 +507,7 @@ class ContentRenderer
 
 		if ($id !== 0)
 		{
-			$row = $this->retrieveContent($id);
+			$row = $this->retrieveContent($id, intval($text_tpl->article['show_readon']));
 
 			if ($row)
 			{
@@ -574,7 +575,7 @@ class ContentRenderer
 
 		if ($id !== 0)
 		{
-			$row = $this->retrieveContent($id);
+			$row = $this->retrieveContent($id, intval($text_tpl->article['show_readon']));
 
 			if ($row)
 			{

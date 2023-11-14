@@ -230,9 +230,6 @@ class com_bwpostmanInstallerScript
 		$this->release	= (string)$manifest->version;
 		$session->set('release', $this->release, 'bwpostman');
 
-		// Manifest file minimum Joomla version
-//		$this->minimum_joomla_release = $manifest->attributes()->version;
-
 		// abort if the current Joomla release is older
 		if(version_compare(JVERSION, $this->minimum_joomla_release, 'lt'))
 		{

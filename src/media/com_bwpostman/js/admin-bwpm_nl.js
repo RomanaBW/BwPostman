@@ -343,6 +343,7 @@ function changeTab(newTab, currentTab, text_confirm_content, text_confirm_templa
 			}
 
 			let hasCampaign = window.hasCampaign();
+            let campaignRecipientsOkay = true;
 
 			if (!hasCampaign) {
 				campaignRecipientsOkay = checkSelectedRecipients(checkRecipientMessage);

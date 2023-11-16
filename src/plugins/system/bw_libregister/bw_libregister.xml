@@ -26,9 +26,4 @@
 		<language tag="de-DE">de-DE/de-DE.plg_system_bw_libregister.ini</language>
 		<language tag="de-DE">de-DE/de-DE.plg_system_bw_libregister.sys.ini</language>
 	</languages>
-
-	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_update.xml</server>
-	</updateservers>
-
 </extension>

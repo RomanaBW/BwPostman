@@ -24,9 +24,4 @@
 		<language tag="en-GB">en-GB/en-GB.plg_bwpostman_newslettercontent.ini</language>
 		<language tag="en-GB">en-GB/en-GB.plg_bwpostman_newslettercontent.sys.ini</language>
 	</languages>
-
-	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_update.xml</server>
-	</updateservers>
-
 </extension>

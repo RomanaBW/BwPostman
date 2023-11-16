@@ -110,9 +110,4 @@
 	</administration>
 
 	<scriptfile>install.bwpostman.php</scriptfile>
-
-	<updateservers>
-		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_update.xml</server>
-	</updateservers>
-
 </extension>

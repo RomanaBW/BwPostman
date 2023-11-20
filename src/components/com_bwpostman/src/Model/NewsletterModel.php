@@ -34,6 +34,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Model\NewsletterModel as AdminNewsletterModel;
+use Joomla\Event\Event;
 
 /**
  * Class BwPostmanModelNewsletter
@@ -62,7 +63,19 @@ class NewsletterModel extends BaseDatabaseModel
 		// Get the dispatcher and include bwpostman plugins
 		PluginHelper::importPlugin('bwpostman');
 
-		$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.view', &$newsletter, $user->id));
+        $eventArgs = array(
+            'context' => 'com_bwpostman.view',
+            'body'    => $newsletter,
+            'id'      => $user->id,
+        );
+        $event = new Event('onBwPostmanPersonalize', $eventArgs);
+        $app->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
+
+        if ($eventResults)
+        {
+            $newsletter = $eventResults[0];
+        }
 
 		return $newsletter;
 	}

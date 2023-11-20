@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension group="system" method="upgrade" type="plugin" version="4.0">
+<extension group="system" method="upgrade" type="plugin">
 	<name>PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER</name>
 	<version>%%version_number%%</version>
 	<creationDate>%%creation_date%%</creationDate>
@@ -9,11 +9,13 @@
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
 	<description>PLG_BWPOSTMAN_PLUGIN_USER2SUBSCRIBER_DESCRIPTION</description>
+	<namespace path="src">BoldtWebservice\Plugin\System\Bwpm_user2subscriber</namespace>
 
 	<scriptfile>install.bwpm_user2subscriber.php</scriptfile>
 
 	<files>
-		<filename plugin="bwpm_user2subscriber">bwpm_user2subscriber.php</filename>
+		<folder>services</folder>
+		<folder plugin="bwpm_user2subscriber">src</folder>
 		<filename >install.bwpm_user2subscriber.php</filename>
 		<filename >index.html</filename>
 		<folder>form</folder>

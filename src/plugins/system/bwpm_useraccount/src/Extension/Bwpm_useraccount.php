@@ -26,13 +26,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Plugin\System\Bwpm_useraccount\Extension;
+
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\Database\DatabaseInterface;
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use Exception;
+use JLoader;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Event\User\AfterDeleteEvent;
+use Joomla\CMS\Event\User\AfterSaveEvent;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Database\DatabaseAwareInterface;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Event\DispatcherInterface;
+use Joomla\Event\SubscriberInterface;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Log\LogEntry;
+use RuntimeException;
 
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', true);
@@ -46,14 +57,16 @@ JLoader::loadByAlias("BwPostmanHelper");
  *
  * @since  4.1.0
  */
-class PlgSystemBWPM_UserAccount extends JPlugin
+final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, DatabaseAwareInterface
 {
-	/**
+    use DatabaseAwareTrait;
+
+    /**
 	 * @var string
 	 *
 	 * @since 4.1.0
 	 */
-	protected $min_bwpostman_version    = '4.0';
+	protected string $min_bwpostman_version    = '4.0';
 
 	/**
 	 * Load the language file on instantiation
@@ -71,7 +84,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @since  4.1.0
 	 */
-	protected $BwPostmanComponentEnabled = false;
+	protected bool $BwPostmanComponentEnabled = false;
 
 	/**
 	 * Property to hold component version
@@ -80,7 +93,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @since  4.1.0
 	 */
-	protected $BwPostmanComponentVersion = '0.0.0';
+	protected string $BwPostmanComponentVersion = '0.0.0';
 
 	/**
 	 * Property to hold app
@@ -92,30 +105,30 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	protected $app;
 	/**
 	 * Property to hold logger
-	 *
-	 * @var    object
+     *
+     * @var BwLogger
 	 *
 	 * @since  4.1.0
 	 */
-	private $logger;
+	private BwLogger $logger;
 
 	/**
 	 * Property to hold log category
 	 *
-	 * @var    object
+	 * @var    string
 	 *
 	 * @since  4.1.0
 	 */
-	private $log_cat  = 'Plg_UA';
+	private string $log_cat  = 'Plg_UA';
 
 	/**
 	 * Property to hold debug
 	 *
-	 * @var    boolean
+	 * @var    bool
 	 *
 	 * @since  4.1.0
 	 */
-	private $debug;
+	private bool $debug;
 
 	/**
 	 * PlgSystemBWPM_UserAccount constructor.
@@ -127,20 +140,43 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @since   4.1.0
 	 */
-	public function __construct(DispatcherInterface &$subject, array $config)
+	public function __construct(DispatcherInterface $subject, array $config)
 	{
 		parent::__construct($subject, $config);
 
 		$log_options    = array();
 		$this->logger   = BwLogger::getInstance($log_options);
-		$this->debug    = $this->params->get('debug_option', '0');
+		$this->debug    = (bool)$this->params->get('debug_option', false);
 
 		$this->setBwPostmanComponentStatus();
 		$this->setBwPostmanComponentVersion();
-		$this->loadLanguageFiles();
 	}
 
-	/**
+    /**
+     * Returns an array of events this subscriber will listen to.
+     *
+     * @return  array
+     *
+     * @since 4.2.6
+     */
+    public
+    static function getSubscribedEvents(): array
+    {
+        // Only subscribe events if the component is installed and enabled
+        if (!ComponentHelper::isEnabled('com_bwpostman'))
+        {
+            return [];
+        }
+        else
+        {
+            return [
+                'onUserAfterSave'      => 'onUserAfterSave',
+                'onUserAfterDelete'    => 'onUserAfterDelete',
+            ];
+        }
+    }
+
+    /**
 	 * Method to set status of component activation property
 	 *
 	 * @return void
@@ -149,20 +185,20 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @since 4.1.0
 	 */
-	protected function setBwPostmanComponentStatus()
-	{
-		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
-		$query      = $_db->getQuery(true);
+	protected function setBwPostmanComponentStatus(): void
+    {
+		$db        = $this->getDatabase();
+		$query      = $db->getQuery(true);
 
-		$query->select($_db->quoteName('enabled'));
-		$query->from($_db->quoteName('#__extensions'));
-		$query->where($_db->quoteName('element') . ' = ' . $_db->quote('com_bwpostman'));
+		$query->select($db->quoteName('enabled'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_bwpostman'));
 
 		try
 		{
-			$_db->setQuery($query);
+			$db->setQuery($query);
 
-			$enabled                = (bool)$_db->loadResult();
+			$enabled                = (bool)$db->loadResult();
 			$this->BwPostmanComponentEnabled = $enabled;
 
 			if ($this->debug)
@@ -186,21 +222,21 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 	 *
 	 * @since 4.1.0
 	 */
-	protected function setBwPostmanComponentVersion()
-	{
-		$_db        = Factory::getContainer()->get(DatabaseInterface::class);
-		$query      = $_db->getQuery(true);
+	protected function setBwPostmanComponentVersion(): void
+    {
+		$db   = $this->getDatabase();
+		$query = $db->getQuery(true);
 
-		$query->select($_db->quoteName('manifest_cache'));
-		$query->from($_db->quoteName('#__extensions'));
-		$query->where($_db->quoteName('element') . " = " . $_db->quote('com_bwpostman'));
+		$query->select($db->quoteName('manifest_cache'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element') . " = " . $db->quote('com_bwpostman'));
 
 		try
 		{
-			$_db->setQuery($query);
+			$db->setQuery($query);
 
 
-			$result   = $_db->loadResult();
+			$result   = $db->loadResult();
 
 			if ($result === null)
 			{
@@ -221,30 +257,6 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 			$this->BwPostmanComponentVersion = '0.0.0';
 			$this->logger->addEntry(new LogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
 		}
-	}
-
-	/**
-	 * Method to load further language files
-	 *
-	 * @throws Exception
-	 *
-	 * @since 4.1.0
-	 */
-	protected function loadLanguageFiles()
-	{
-		$lang = $this->app->getLanguage();
-
-		//Load first english file of component
-		$lang->load('com_bwpostman', JPATH_SITE, 'en-GB', true);
-
-		//load specific language of component
-		$lang->load('com_bwpostman', JPATH_SITE, null, true);
-
-		//Load specified other language files in english
-		$lang->load('plg_system_bwpm_useraccount', JPATH_ADMINISTRATOR, 'en-GB', true);
-
-		// and other language
-		$lang->load('plg_system_bwpm_useraccount', JPATH_ADMINISTRATOR, null, true);
 	}
 
 	/**
@@ -274,21 +286,18 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 		return true;
 	}
 
-	/**
-	 * Event method onUserAfterSave
-	 *
-	 * Writes user ID at subscriber if account is created and subscriber with same email address exists
-	 *
-	 * @param array  $data   User data
-	 * @param bool   $isNew  true on new user
-	 * @param bool   $result result of saving user
-	 *
-	 * @return  bool
-	 *
-	 * @throws Exception
-	 * @since  4.1.0
-	 */
-	public function onUserAfterSave(array $data, bool $isNew, bool $result): bool
+    /**
+     * Event method onUserAfterSave
+     *
+     * Writes user ID at subscriber if account is created and subscriber with same email address exists
+     *
+     * @param AfterSaveEvent $event
+     *
+     * @return void
+     *
+     * @since  4.1.0
+     */
+	public function onUserAfterSave(AfterSaveEvent $event): void
 	{
 		if ($this->debug)
 		{
@@ -297,12 +306,16 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 
 		if (!$this->prerequisitesFulfilled())
 		{
-			return false;
+			return;
 		}
 
-		if ($result == false)
+        $data   = $event->getArgument('subject');
+        $isNew  = $event->getArgument('isNew');
+        $result = $event->getArgument('savingResult');
+
+        if (!$result)
 		{
-			return false;
+			return;
 		}
 
 		// Get and sanitize data
@@ -311,8 +324,8 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 
 		if ($isNew)
 		{
-			$db        = Factory::getContainer()->get(DatabaseInterface::class);
-			$query  = $db->getQuery(true);
+			$db    = $this->getDatabase();
+			$query = $db->getQuery(true);
 
 			$query->update($db->quoteName('#__bwpostman_subscribers'));
 			$query->set($db->quoteName('user_id') . " = " . $db->quote($user_id));
@@ -326,27 +339,23 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 			}
 			catch (RuntimeException $e)
 			{
-				Factory::getApplication()->enqueueMessage('Error pluginUserAccount: ' . $e->getMessage() . '<br />', 'error');
+                $this->getApplication()->enqueueMessage('Error pluginUserAccount: ' . $e->getMessage() . '<br />', 'error');
 			}
 		}
-
-		return true;
 	}
 
-	/**
-	 * Event method onUserAfterDelete
-	 *
-	 * Removes user ID of subscriber if account is deleted and subscriber with same email address exists
-	 *
-	 * @param array $data   User data
-	 * @param bool  $result true on new user
-	 *
-	 * @return  bool
-	 *
-	 * @throws Exception
-	 * @since  4.1.0
-	 */
-	public function onUserAfterDelete(array $data, bool $result): bool
+    /**
+     * Event method onUserAfterDelete
+     *
+     * Removes user ID of subscriber if account is deleted and subscriber with same email address exists
+     *
+     * @param AfterDeleteEvent $event
+     *
+     * @return void
+     *
+     * @since  4.1.0
+     */
+	public function onUserAfterDelete(AfterDeleteEvent $event): void
 	{
 		if ($this->debug)
 		{
@@ -355,18 +364,21 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 
 		if (!$this->prerequisitesFulfilled())
 		{
-			return false;
+			return;
 		}
 
-		if ($result !== true)
+        $data   = $event->getArgument('subject');
+        $result = $event->getArgument('deletingResult');
+
+        if ($result !== true)
 		{
-			return false;
+			return;
 		}
 
 		// Get and sanitize data
 		$user_mail = ArrayHelper::getValue($data, 'email', '', 'string');
 
-		$db     = Factory::getContainer()->get(DatabaseInterface::class);
+		$db     = $this->getDatabase();
 		$query  = $db->getQuery(true);
 
 		$query->update($db->quoteName('#__bwpostman_subscribers'));
@@ -381,9 +393,7 @@ class PlgSystemBWPM_UserAccount extends JPlugin
 		}
 		catch (RuntimeException $e)
 		{
-			Factory::getApplication()->enqueueMessage('Error pluginUserAccount: ' . $e->getMessage() . '<br />', 'error');
+			$this->getApplication()->enqueueMessage('Error pluginUserAccount: ' . $e->getMessage() . '<br />', 'error');
 		}
-
-		return true;
 	}
 }

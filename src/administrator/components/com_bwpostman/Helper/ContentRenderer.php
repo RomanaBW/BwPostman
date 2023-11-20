@@ -40,6 +40,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Event\Event;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Registry\Registry;
 use RuntimeException;
@@ -283,8 +284,18 @@ class ContentRenderer
 
 			if ($row)
 			{
-//				$row = $this->processContentPlugins($row);
-				$app->triggerEvent('onBwpmRenderNewsletterArticle', array('bwpostman', &$row));
+                $eventArgs = array(
+                    'context' => 'bwpostman',
+                    'article' => $row,
+                );
+                $event     = new Event('onBwpmRenderNewsletterArticle', $eventArgs);
+                $app->getDispatcher()->dispatch($event->getName(), $event);
+                $eventResults = $event->getArgument('result', []);
+
+                if ($eventResults)
+                {
+                    $row = $eventResults[0];
+                }
 
 
 				$params  = $row->params;
@@ -419,10 +430,20 @@ class ContentRenderer
 
 			if ($row)
 			{
-//				$row = $this->processContentPlugins($row);
-				$app->triggerEvent('onBwpmRenderNewsletterArticle', array('bwpostman', &$row));
+                $eventArgs = array(
+                    'context' => 'bwpostman',
+                    'article' => $row,
+                );
+                $event     = new Event('onBwpmRenderNewsletterArticle', $eventArgs);
+                $app->getDispatcher()->dispatch($event->getName(), $event);
+                $eventResults = $event->getArgument('result', []);
 
-				$lang    = self::getArticleLanguage($row->id);
+                if ($eventResults)
+                {
+                    $row = $eventResults[0];
+                }
+
+                $lang    = self::getArticleLanguage($row->id);
 				$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
 				$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
 				$link    = str_replace(Uri::base(true).'/', '', Uri::base());
@@ -511,10 +532,20 @@ class ContentRenderer
 
 			if ($row)
 			{
-//				$row = $this->processContentPlugins($row);
-				Factory::getApplication()->triggerEvent('onBwpmRenderNewsletterArticle', array('bwpostman', &$row));
+                $eventArgs = array(
+                    'context' => 'bwpostman',
+                    'article' => $row,
+                );
+                $event     = new Event('onBwpmRenderNewsletterArticle', $eventArgs);
+                $app->getDispatcher()->dispatch($event->getName(), $event);
+                $eventResults = $event->getArgument('result', []);
 
-				list($link, $intro_text) = $this->getIntroText($row);
+                if ($eventResults)
+                {
+                    $row = $eventResults[0];
+                }
+
+                list($link, $intro_text) = $this->getIntroText($row);
 
 				if (intval($row->created) != 0)
 				{
@@ -579,10 +610,20 @@ class ContentRenderer
 
 			if ($row)
 			{
-//				$row = $this->processContentPlugins($row);
-				$app->triggerEvent('onBwpmRenderNewsletterArticle', array('bwpostman', &$row));
+                $eventArgs = array(
+                    'context' => 'bwpostman',
+                    'article' => $row,
+                );
+                $event     = new Event('onBwpmRenderNewsletterArticle', $eventArgs);
+                $app->getDispatcher()->dispatch($event->getName(), $event);
+                $eventResults = $event->getArgument('result', []);
 
-				list($link, $intro_text) = $this->getIntroText($row);
+                if ($eventResults)
+                {
+                    $row = $eventResults[0];
+                }
+
+                list($link, $intro_text) = $this->getIntroText($row);
 
 				if (intval($row->created) != 0)
 				{
@@ -908,7 +949,17 @@ class ContentRenderer
 		$sitelink        = $uri->root();
 
 		PluginHelper::importPlugin('bwpostman');
-		$app->triggerEvent('onBwPostmanBeforeObligatoryFooterHtml', array(&$text));
+        $eventArgs = array(
+            'text'   => $text,
+        );
+        $event = new Event('onBwPostmanBeforeObligatoryFooterHtml', $eventArgs);
+        $app->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
+
+        if ($eventResults)
+        {
+            $text = $eventResults[0];
+        }
 
 		// get template assets if exists
 		$tpl_assets	= $this->getTemplateAssets($templateId);
@@ -1050,9 +1101,19 @@ class ContentRenderer
 		$sitelink = $uri->root();
 
 		PluginHelper::importPlugin('bwpostman');
-		$app->triggerEvent('onBwPostmanBeforeObligatoryFooterText', array(&$text));
+        $eventArgs = array(
+            'text' => $text,
+        );
+        $event     = new Event('onBwPostmanBeforeObligatoryFooterText', $eventArgs);
+        $app->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
-		// Trigger Plugin "substitutelinks"
+        if ($eventResults)
+        {
+            $text = $eventResults[0];
+        }
+
+        // Trigger Plugin "substitutelinks"
 		if($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
 		{
 			PluginHelper::importPlugin('bwpostman');

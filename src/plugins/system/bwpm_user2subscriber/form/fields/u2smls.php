@@ -77,6 +77,7 @@ class JFormFieldU2sMls extends CheckboxesField
 	{
 		// Initialize variables.
 		$html	= array();
+        $this->value = (array) $this->value;
 
 		// Initialize some field attributes.
 		$class = $this->element['class'] ? ' class="checkboxes ' . $this->element['class'] . '"' : ' class="checkboxes"';
@@ -97,7 +98,7 @@ class JFormFieldU2sMls extends CheckboxesField
 			foreach ($options as $i => $option)
 			{
 				// Initialize some option attributes.
-				$checked	= (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
+				$checked	= (in_array((string) $option->value, $this->value) ? ' checked="checked"' : '');
 				$class		= !empty($option->class) ? ' class="form-check-input ' . $option->class . '"' : ' class="form-check-input"';
 				$disabled	= !empty($option->disable) ? ' disabled="disabled"' : '';
 

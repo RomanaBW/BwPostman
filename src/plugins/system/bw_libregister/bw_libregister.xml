@@ -9,11 +9,13 @@
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
 	<description>PLG_BWPOSTMAN_PLUGIN_LIBREGISTER_DESCRIPTION</description>
+	<namespace path="src">BoldtWebservice\Plugin\System\Bw_libregister</namespace>
 
 	<scriptfile>installscript.php</scriptfile>
 
 	<files>
-		<filename plugin="bw_libregister">bw_libregister.php</filename>
+		<folder>services</folder>
+		<folder plugin="bw_libregister">src</folder>
 		<filename>installscript.php</filename>
 		<filename>index.html</filename>
 		<folder>language</folder>

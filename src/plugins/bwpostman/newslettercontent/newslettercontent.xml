@@ -9,11 +9,13 @@
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
 	<description>PLG_BWPOSTMAN_PLUGIN_NEWSLETTERCONTENT_DESCRIPTION</description>
+	<namespace path="src">BoldtWebservice\Plugin\BwPostman\NewsletterContent</namespace>
 
 	<scriptfile>installscript.php</scriptfile>
 
 	<files>
-		<filename plugin="newslettercontent">newslettercontent.php</filename>
+		<folder>services</folder>
+		<folder plugin="newslettercontent">src</folder>
 		<filename >installscript.php</filename>
 		<filename >index.html</filename>
 	</files>

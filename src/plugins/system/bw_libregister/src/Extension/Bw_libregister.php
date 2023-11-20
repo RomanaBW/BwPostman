@@ -26,6 +26,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Plugin\System\Bw_libregister\Extension;
+
+use JLoader;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\SubscriberInterface;
+use RuntimeException;
+
 defined('_JEXEC') or die('Restricted access');
 
 /**
@@ -33,14 +41,36 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since  2.0.0
  */
-class PlgSystemBW_Libregister extends JPlugin
+final class Bw_libregister extends CMSPlugin implements SubscriberInterface
 {
-	/**
+    /**
+     * Returns an array of events this subscriber will listen to.
+     *
+     * @return  array
+     *
+     * @since 4.2.6
+     */
+    public static function getSubscribedEvents(): array
+    {
+        // Only subscribe events if the component is installed and enabled
+        if (!ComponentHelper::isEnabled('com_bwpostman'))
+        {
+            return [];
+        }
+        else
+        {
+            return [
+                'onAfterInitialise' => 'onAfterInitialise',
+            ];
+        }
+    }
+
+    /**
 	 * Event method onAfterInitialise
 	 *
 	 * @return  void
 	 *
-	 * @throws Exception
+	 * @throws RuntimeException
 	 *
 	 * @since  2.0.0
 	 */

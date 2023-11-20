@@ -24,30 +24,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Plugin\BwPostman\FooterUsedMailinglists\Extension;
+
 defined('_JEXEC') or die('Restricted access');
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\User\UserFactoryAwareInterface;
+use Joomla\CMS\User\UserFactoryAwareTrait;
+use Joomla\Database\DatabaseAwareInterface;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Event\DispatcherInterface;
-
-if (!ComponentHelper::isEnabled('com_bwpostman')) {
-	Factory::getApplication()->enqueueMessage(
-		Text::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_ERROR') . ', ' . Text::_('PLG_BWPOSTMAN_PLUGIN_FOOTER_USED_MAILINGLISTS_COMPONENT_NOT_INSTALLED'),
-		'error'
-	);
-	return false;
-}
+use Joomla\Event\Event;
+use Joomla\Event\SubscriberInterface;
+use RuntimeException;
 
 /**
  * Class PlgBwPostmanFooterUsedMailinglists
  *
  * @since       2.3.0
  */
-class PlgBwPostmanFooterUsedMailinglists extends JPlugin
+final class FooterUsedMailinglists extends CMSPlugin implements SubscriberInterface, DatabaseAwareInterface, UserFactoryAwareInterface
 {
-	/**
+    use DatabaseAwareTrait;
+    use UserFactoryAwareTrait;
+
+    /**
 	 * Database object
 	 *
 	 * @var    DatabaseDriver
@@ -56,43 +62,60 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 */
 	protected $db;
 
-	/**
-	 * PlgBwPostmanFooterUsedMailinglists constructor.
-	 *
-	 * @param DispatcherInterface $subject
-	 * @param array  $config
-	 *
-	 * @since       2.3.0
-	 */
-	function __construct($subject, $config)
+    /**
+     * PlgBwPostmanFooterUsedMailinglists constructor.
+     *
+     * @param DispatcherInterface $dispatcher
+     * @param array               $config
+     *
+     * @since       2.3.0
+     */
+	public function __construct(DispatcherInterface $dispatcher, array $config)
 	{
-		parent::__construct($subject, $config);
-//		$this->_enabled = false;
+		parent::__construct($dispatcher, $config);
 
-//		$log_options    = array();
-//		$this->logger   = BwLogger::getInstance($log_options);
-//		$this->debug    = false;
-
-//		// Do not load if BwPostman version is not supported or BwPostman isn't detected
-//		$this->setBwPostmanComponentStatus();
-//		$this->setBwPostmanComponentVersion();
 		$this->loadLanguage();
 	}
 
-	/**
-	 * Method to insert the used mailing lists in the footer of the HTML newsletter
-	 *
-	 * @param string $text the footer of the newsletter
-	 *
-	 * @return bool
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.3.0
-	 */
-	public function onBwPostmanBeforeObligatoryFooterHtml(string &$text): bool
+    /**
+     * Returns an array of events this subscriber will listen to.
+     *
+     * @return  array
+     *
+     * @since 4.2.6
+     */
+    public static function getSubscribedEvents(): array
+    {
+        // Only subscribe events if the component is installed and enabled
+        if (!ComponentHelper::isEnabled('com_bwpostman'))
+        {
+            return [];
+        }
+        else
+        {
+            return [
+                'onBwPostmanBeforeObligatoryFooterHtml' => 'doBwPostmanBeforeObligatoryFooterHtml',
+                'onBwPostmanBeforeObligatoryFooterText' => 'doBwPostmanBeforeObligatoryFooterText',
+            ];
+        }
+    }
+
+    /**
+     * Method to insert the used mailing lists in the footer of the HTML newsletter
+     *
+     * @param Event $event
+     *
+     * @return void
+     *
+     * @throws Exception
+     *
+     * @since       2.3.0
+     */
+	public function doBwPostmanBeforeObligatoryFooterHtml(Event $event): void
 	{
-		$app       = Factory::getApplication();
+        $text = $event->getArgument('text');
+
+		$app       = $this->getApplication();
 		$usedUgIds = $app->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
 
 		$mlAvailable = $app->getUserState('com_bwpostman.edit.newsletter.data.ml_available', array());
@@ -140,24 +163,28 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 		}
 
 		$text = str_replace('[%impressum%]', "\n" . $additionalFooter . '[%impressum%]', $text);
+        $result = $event->getArgument('result') ?? [];
+        $result[] = $text;
 
-		return true;
+        $event->setArgument('result', $result);
 	}
 
-	/**
-	 * Method to insert the used mailing lists in the footer of the text newsletter
-	 *
-	 * @param string $text the footer of the newsletter
-	 *
-	 * @return bool
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.3.0
-	 */
-	public function onBwPostmanBeforeObligatoryFooterText(string &$text): bool
+    /**
+     * Method to insert the used mailing lists in the footer of the text newsletter
+     *
+     * @param Event $event
+     *
+     * @return void
+     *
+     * @throws Exception
+     *
+     * @since       2.3.0
+     */
+	public function doBwPostmanBeforeObligatoryFooterText(Event $event): void
 	{
-		$app       = Factory::getApplication();
+        $text = $event->getArgument('text');
+
+        $app       = $this->getApplication();
 		$usedUgIds = $app->getUserState('com_bwpostman.edit.newsletter.data.usergroups', array());
 
 		$mlAvailable = $app->getUserState('com_bwpostman.edit.newsletter.data.ml_available', array());
@@ -190,8 +217,11 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 		$text = str_replace('[%impressum%]', "\n" . $insertText . '[%impressum%]', $text);
 
-		return true;
-	}
+        $result   = $event->getArgument('result') ?? [];
+        $result[] = $text;
+
+        $event->setArgument('result', $result);
+    }
 
 	/**
 	 * Method to get the names of the used mailinglists by newsletter or campaign id
@@ -208,7 +238,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	{
 		$mailinglists = $this->getUsedMailinglistsFromDb($usedMlIds);
 
-		if (is_array($mailinglists) && count($mailinglists))
+		if (count($mailinglists))
 		{
 			for ($i = 0; $i < count($mailinglists); $i++)
 			{
@@ -234,7 +264,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	{
 		$usergroups = $this->getUsedUsergroupsFromDb($usedUgIds);
 
-		if (is_array($usergroups) && count($usergroups))
+		if (count($usergroups))
 		{
 			for ($i = 0; $i < count($usergroups); $i++)
 			{
@@ -260,8 +290,8 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	protected function getUsedRecipientsByNewsletter(int $id, int $checkUsergroups): array
 	{
 		$recipients = array();
-		$db 	= $this->db;
-		$query  = $this->db->getQuery(true);
+		$db 	= $this->getDatabase();
+		$query  = $db->getQuery(true);
 
 		$query->select($db->quoteName('mailinglist_id'));
 		$query->from($db->quoteName('#__bwpostman_newsletters_mailinglists'));
@@ -310,8 +340,8 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	protected function getUsedRecipientsByCampaign(int $id, int $checkUsergroups): array
 	{
 		$recipients = array();
-		$db 	= $this->db;
-		$query  = $this->db->getQuery(true);
+		$db 	= $this->getDatabase();
+		$query  = $db->getQuery(true);
 
 		$query->select($db->quoteName('mailinglist_id'));
 		$query->from($db->quoteName('#__bwpostman_campaigns_mailinglists'));
@@ -358,8 +388,8 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	 */
 	protected function getCampaignIdByNewsletterId(int $id): int
 	{
-		$db 	= $this->db;
-		$query  = $this->db->getQuery(true);
+		$db 	= $this->getDatabase();
+		$query  = $db->getQuery(true);
 
 		$query->select($db->quoteName('campaign_id'));
 		$query->from($db->quoteName('#__bwpostman_newsletters'));
@@ -394,7 +424,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	{
 		$insertText = '';
 
-		if (is_array($usedMailinglists) && count($usedMailinglists))
+		if (count($usedMailinglists))
 		{
 			$insertText .= "\t\t\t" . '<table id="show-mailinglists" style="border-collapse: collapse;border-spacing: 0;">' . "\n";
 			$insertText .= "\t\t\t\t" . '<tr class="show-mailinglists-head">' . "\n";
@@ -440,7 +470,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	{
 		$insertText = '';
 
-		if (is_array($usedMailinglists) && count($usedMailinglists))
+		if (count($usedMailinglists))
 		{
 			$insertText .= "\n";
 			$insertText .= Text::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_MAILINGLISTS_TEXT');
@@ -476,7 +506,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	{
 		$insertText = '';
 
-		if (is_array($usedUsergroups) && count($usedUsergroups))
+		if (count($usedUsergroups))
 		{
 			$insertText .= "\t\t\t" . '<table id="show-usergroups" style="border-collapse: collapse;border-spacing: 0;">' . "\n";
 			$insertText .= "\t\t\t\t" . '<tr class="show-usergroups-head">' . "\n";
@@ -521,7 +551,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	{
 		$insertText = '';
 
-		if (is_array($usedUsergroups) && count($usedUsergroups))
+		if (count($usedUsergroups))
 		{
 			$insertText .= "\n";
 			$insertText .= Text::_('PLG_BWPOSTMAN_FOOTER_USED_MAILINGLISTS_SHOW_USERGROUPS_TEXT');
@@ -561,8 +591,8 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 		if (count($usedMlIds))
 		{
-			$db           = $this->db;
-			$query        = $this->db->getQuery(true);
+			$db    = $this->getDatabase();
+			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName('id'));
 			$query->select($db->quoteName('title'));
@@ -606,10 +636,10 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 		$activeRecipients = $this->getActiveRecipients();
 
-		if (is_array($activeRecipients) && count($activeRecipients))
+		if (count($activeRecipients))
 		{
-			$db       = $this->db;
-			$query    = $this->db->getQuery(true);
+			$db    = $this->getDatabase();
+			$query = $db->getQuery(true);
 
 			$query->select('COUNT(DISTINCT ' . $db->quoteName('subscriber_id') . ')');
 			$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
@@ -646,7 +676,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 		if (count($usedUgIds))
 		{
-			$db    = $this->db;
+			$db    = $this->getDatabase();
 			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName('id'));
@@ -689,7 +719,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	{
 		$nbrRecipients = 0;
 
-		$db    = $this->db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(' . $db->quoteName('user_id') . ')');
@@ -724,7 +754,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 	{
 		$sumRecipients = 0;
 
-		if (is_array($usedMailinglists) && count($usedMailinglists))
+		if (count($usedMailinglists))
 		{
 			foreach ($usedMailinglists as $mailinglist)
 			{
@@ -732,7 +762,7 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 			}
 		}
 
-		if (is_array($usedUsergroups) && count($usedUsergroups))
+		if (count($usedUsergroups))
 		{
 			foreach ($usedUsergroups as $usergroup)
 			{
@@ -757,8 +787,8 @@ class PlgBwPostmanFooterUsedMailinglists extends JPlugin
 
 		$alsoUnconfirmed	= Factory::getApplication()->getUserState('bwpostman.send.alsoUnconfirmed', false);
 
-		$db    = $this->db;
-		$query = $this->db->getQuery(true);
+		$db    = $this->getDatabase();
+		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__bwpostman_subscribers'));

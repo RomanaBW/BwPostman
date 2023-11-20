@@ -38,6 +38,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\Event\Event;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -1995,23 +1996,39 @@ class NewsletterModel extends AdminModel
 		$renderer->replaceContentPlaceholders($body, $tblSendMailQueue, $itemid_edit, $itemid_unsubscribe, $editlink, (int)$tblSendMailContent->substitute_links);
 
 		// Fire the onBwPostmanPersonalize event.
-		if(PluginHelper::isEnabled('bwpostman', 'personalize')
-			&& !$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, &$tblSendMailQueue->subscriber_id)))
-		{
-			$error_msg_plugin = Text::_('COM_BWPOSTMAN_PERSONALIZE_ERROR');
-			$app->enqueueMessage($error_msg_plugin, 'error');
-			$this->logger->addEntry(new LogEntry($error_msg_plugin, BwLogger::BW_ERROR, 'personalize'));
+		if(PluginHelper::isEnabled('bwpostman', 'personalize'))
+        {
+            $eventArgs = array(
+                'context' => 'com_bwpostman.send',
+                'body'    => $body,
+                'id'      => $tblSendMailQueue->subscriber_id,
+            );
+        $event = new Event('onBwPostmanPersonalize', $eventArgs);
+        $app->getDispatcher()->dispatch($event->getName(), $event);
+            $eventResults = $event->getArgument('result', []);
 
-			$tblSendMailQueue->push(
-				$tblSendMailQueue->content_id,
-				$tblSendMailQueue->mode,
-				$tblSendMailQueue->recipient,
-				$tblSendMailQueue->name,
-				$tblSendMailQueue->firstname,
-				$tblSendMailQueue->subscriber_id,
-				$tblSendMailQueue->trial + 1
-			);
-			return -1;
+            if ($eventResults)
+            {
+                $newsletter = $eventResults[0];
+            }
+
+            if (!$newsletter)
+            {
+                $error_msg_plugin = Text::_('COM_BWPOSTMAN_PERSONALIZE_ERROR');
+                $app->enqueueMessage($error_msg_plugin, 'error');
+                $this->logger->addEntry(new LogEntry($error_msg_plugin, BwLogger::BW_ERROR, 'personalize'));
+
+                $tblSendMailQueue->push(
+                    $tblSendMailQueue->content_id,
+                    $tblSendMailQueue->mode,
+                    $tblSendMailQueue->recipient,
+                    $tblSendMailQueue->name,
+                    $tblSendMailQueue->firstname,
+                    $tblSendMailQueue->subscriber_id,
+                    $tblSendMailQueue->trial + 1
+                );
+                return -1;
+            }
 		}
 
 		// Send Mail

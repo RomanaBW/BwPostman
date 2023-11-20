@@ -24,56 +24,74 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Plugin\BwPostman\Personalize\Extension;
+
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-use Joomla\Database\DatabaseDriver;
+use Exception;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Database\DatabaseAwareInterface;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\CMS\Component\ComponentHelper;
-
-if (!ComponentHelper::isEnabled('com_bwpostman')) {
-	Factory::getApplication()->enqueueMessage(
-		Text::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_ERROR') . ', ' . Text::_('PLG_BWPOSTMAN_PLUGIN_PERSONALIZE_COMPONENT_NOT_INSTALLED'),
-		'error'
-	);
-	return false;
-}
+use Joomla\Event\Event;
+use Joomla\Event\SubscriberInterface;
+use RuntimeException;
 
 /**
- * Class plgBwPostmanPersonalize
+ * Class Personalize
  *
  * @since       2.0.0
  */
-class PlgBwPostmanPersonalize extends JPlugin
+final class Personalize extends CMSPlugin implements SubscriberInterface, DatabaseAwareInterface
 {
-	/**
-	 * Database object
-	 *
-	 * @var    DatabaseDriver
-	 *
-	 * @since       2.0.0
-	 */
-	protected $db;
+    use DatabaseAwareTrait;
 
-	/**
-	 * Method to write enhanced personalization in the body of the newsletter
-	 *
-	 * Inserts male or female string depending on gender of subscriber. If no gender is available, male string is used.
-	 * At incomplete plugin parameters an empty string is inserted. We don't want incomplete plugin characters in
-	 * newsletter.
-	 *
-	 * @param string $context context of the newsletter to display
-	 * @param string $body    the body of the newsletter
-	 * @param int    $id      subscriber ID or user ID, depends on the context
-	 *
-	 * @return bool
-	 *
-	 * @throws Exception
-	 * @since       2.0.0
-	 */
-	public function onBwPostmanPersonalize(string $context= 'com_bwpostman.view', string &$body = '', int $id = 0): bool
+    /**
+     * Returns an array of events this subscriber will listen to.
+     *
+     * @return  array
+     *
+     * @since 4.2.6
+     */
+    public static function getSubscribedEvents(): array
+    {
+        // Only subscribe events if the component is installed and enabled
+        if (!ComponentHelper::isEnabled('com_bwpostman'))
+        {
+            return [];
+        }
+        else
+        {
+            return [
+                'onBwPostmanPersonalize' => 'doBwPostmanPersonalize',
+            ];
+        }
+    }
+
+    /**
+     * Method to write enhanced personalization in the body of the newsletter
+     *
+     * Inserts male or female string depending on gender of subscriber. If no gender is available, male string is used.
+     * At incomplete plugin parameters an empty string is inserted. We don't want incomplete plugin characters in
+     * newsletter.
+     *
+     * @param Event $event
+     *
+     * @eventArgs   string $context context of the newsletter to display
+     * @eventArgs   string $body    the body of the newsletter
+     * @eventArgs   int    $id      subscriber ID or user ID, depends on the context     * @return void
+     *
+     * @throws Exception
+     *
+     * @since       2.0.0
+     */
+	public function doBwPostmanPersonalize(Event $event): void
 	{
-		$gender = 2;
+        $context = $event->getArgument('context');
+        $body    = $event->getArgument('body');
+        $id      = $event->getArgument('id');
+
+        $gender = 2;
 
 		// get gender
 		if ($context === 'com_bwpostman.send')
@@ -109,7 +127,10 @@ class PlgBwPostmanPersonalize extends JPlugin
 			$body = preg_replace($regex_all, $replace_value, $body, 1);
 		}
 
-		return true;
+        $result   = $event->getArgument('result') ?? [];
+        $result[] = $body;
+
+        $event->setArgument('result', $result);
 	}
 
 	/**
@@ -126,18 +147,18 @@ class PlgBwPostmanPersonalize extends JPlugin
 	protected function getGenderFromSubscriberId(int $id): int
 	{
 		$gender = 2;
-		$_db 	= $this->db;
-		$query  = $_db->getQuery(true);
+        $db = $this->getDatabase();
+        $query  = $db->getQuery(true);
 
-		$query->select($_db->quoteName('gender'));
+		$query->select($db->quoteName('gender'));
 		$query->from('#__bwpostman_subscribers');
-		$query->where($_db->quoteName('id') . ' = ' . $id);
+		$query->where($db->quoteName('id') . ' = ' . $id);
 
 		try
 		{
-			$_db->setQuery($query);
+			$db->setQuery($query);
 
-			$gender = $_db->loadResult();
+			$gender = $db->loadResult();
 
 			if ($gender === null)
 			{
@@ -146,7 +167,7 @@ class PlgBwPostmanPersonalize extends JPlugin
 		}
 		catch (RuntimeException $e)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $gender;
@@ -167,18 +188,18 @@ class PlgBwPostmanPersonalize extends JPlugin
 	{
 		$gender = 2;
 
-		$_db   = $this->db;
-		$query = $_db->getQuery(true);
+        $db    = $this->getDatabase();
+		$query = $db->getQuery(true);
 
-		$query->select($_db->quoteName('gender'));
+		$query->select($db->quoteName('gender'));
 		$query->from('#__bwpostman_subscribers');
-		$query->where($_db->quoteName('user_id') . ' = ' . $id);
+		$query->where($db->quoteName('user_id') . ' = ' . $id);
 
 		try
 		{
-			$_db->setQuery($query);
+			$db->setQuery($query);
 
-			$gender = $_db->loadResult();
+			$gender = $db->loadResult();
 
 			if ($gender === null)
 			{
@@ -187,7 +208,7 @@ class PlgBwPostmanPersonalize extends JPlugin
 		}
 		catch (RuntimeException $e)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->getApplication()->enqueueMessage($e->getMessage(), 'error');
 		}
 
 		return $gender;

@@ -27,6 +27,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwSiteApplication;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Cache\Controller\CallbackController;
 use Joomla\CMS\Cache\Controller\OutputController;
@@ -37,37 +38,39 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Menu\MenuFactoryInterface;
+use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Profiler\Profiler;
+use Joomla\CMS\User\UserFactoryAwareInterface;
+use Joomla\CMS\User\UserFactoryAwareTrait;
 use Joomla\CMS\User\UserFactoryInterface;
+use Joomla\Database\DatabaseAwareInterface;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\DI\Container;
 use Joomla\Event\DispatcherInterface;
+use Joomla\Event\Event;
+use Joomla\Event\SubscriberInterface;
 use Joomla\Registry\Registry;
 use Joomla\Session\SessionInterface;
 use Psr\Log\LoggerInterface;
 
-define('JPATH_THEMES_SITE', JPATH_ROOT . DIRECTORY_SEPARATOR . 'templates');
-
-if (!ComponentHelper::isEnabled('com_bwpostman')) {
-	Factory::getApplication()->enqueueMessage(
-		Text::_('PLG_BWPOSTMAN_PLUGIN_NEWSLETTERCONTENT_ERROR') . ', ' . Text::_('PLG_BWPOSTMAN_PLUGIN_NEWSLETTERCONTENT_COMPONENT_NOT_INSTALLED'),
-		'error'
-	);
-	return false;
-}
+const JPATH_THEMES_SITE = JPATH_ROOT . DIRECTORY_SEPARATOR . 'templates';
 
 /**
- * Class plgBwPostmanNewslettercontent
+ * Class NewsletterContent
  *
  * @since       4.2.0
  */
-class PlgBwPostmanNewslettercontent extends JPlugin
+final class NewsletterContent extends CMSPlugin implements SubscriberInterface, DatabaseAwareInterface, UserFactoryAwareInterface
 {
-	/**
+    use DatabaseAwareTrait;
+    use UserFactoryAwareTrait;
+
+    /**
 	 * Database object
 	 *
 	 * @var    DatabaseDriver
@@ -76,21 +79,47 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 	 */
 	protected $db;
 
-	/**
-	 * Method to process content plugins on an article, when it is added to the newsletter content
-	 *
-	 * @param string $context    The context working in
-	 * @param object $article    The complete content of the newsletter up to now as html content and text content
-	 *
-	 * @return bool
-	 *
-	 * @throws Exception
-	 *
-	 * @since       4.2.0
-	 */
-	public function onBwpmRenderNewsletterArticle(string $context, object &$article): bool
+    /**
+     * Returns an array of events this subscriber will listen to.
+     *
+     * @return  array
+     *
+     * @since 4.2.6
+     */
+    public static function getSubscribedEvents(): array
+    {
+        // Only subscribe events if the component is installed and enabled
+        if (!ComponentHelper::isEnabled('com_bwpostman'))
+        {
+            return [];
+        }
+        else
+        {
+            return [
+                'onBwpmRenderNewsletterArticle' => 'doBwpmRenderNewsletterArticle',
+            ];
+        }
+    }
+
+    /**
+     * Method to process content plugins on an article, when it is added to the newsletter content
+     *
+     * @eventArgs   string $context    The context working in
+     * @eventArgs   object $article    The complete content of the newsletter up to now as html content and text content
+     *
+     * @param Event $event
+     *
+     * @return void
+     *
+     * @throws Exception
+     *
+     * @since       4.2.0
+     */
+	public function doBwpmRenderNewsletterArticle(Event $event): void
 	{
-		// Some plugins don't make sense in context of newsletters, so exclude them from processing
+        $article = $event->getArgument('article');
+
+        // Some plugins don't make sense in context of newsletters, so exclude them from processing
 		$excludedPlugins = array(
 			'confirmconsent',
 			'emailcloak',
@@ -176,8 +205,11 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 			}
 		}
 
-		return true;
-	}
+        $result   = $event->getArgument('result') ?? [];
+        $result[] = $article;
+
+        $event->setArgument('result', $result);
+    }
 
 	/**
 	 * Get the path to a layout from a Plugin
@@ -189,11 +221,12 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 	 * @return  string  Layout path
 	 *
 	 * @throws Exception
+     *
 	 * @since   3.0
 	 */
-	public function getLayoutPath($type, $name, $layout = 'default')
-	{
-		$app = Factory::getApplication();
+	public function getLayoutPath(string $type, string $name, string $layout = 'default'): string
+    {
+		$app = $this->getApplication();
 
 		if ($app->isClient('site') || $app->isClient('administrator')) {
 			$templateObj = $app->getTemplate(true);
@@ -247,25 +280,25 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 	/**
 	 * Gets the name of the current template.
 	 *
-	 * @param   boolean  $params  True to return the template parameters
+	 * @param boolean $params True to return the template parameters
 	 *
-	 * @return  string|\stdClass  The name of the template if the params argument is false. The template object if the params argument is true.
+	 * @return  string|stdClass  The name of the template if the params argument is false. The template object if the params argument is true.
 	 *
-	 * @throws  \InvalidArgumentException
+	 * @throws  InvalidArgumentException
 	 *
 	 * @since   4.2.0
 	 */
-	public function getTemplate($siteApp, $params = false)
+	public function getTemplate($siteApp, bool $params = false)
 	{
-		if (\is_object($siteApp->template)) {
+		if (is_object($siteApp->template)) {
 			if ($siteApp->template->parent) {
 				if (!is_file(JPATH_THEMES . '/' . $siteApp->template->template . '/index.php')) {
 					if (!is_file(JPATH_THEMES . '/' . $siteApp->template->parent . '/index.php')) {
-						throw new \InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $siteApp->template->template));
+						throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $siteApp->template->template));
 					}
 				}
 			} elseif (!is_file(JPATH_THEMES . '/' . $siteApp->template->template . '/index.php')) {
-				throw new \InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $siteApp->template->template));
+				throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $siteApp->template->template));
 			}
 
 			if ($params) {
@@ -285,7 +318,7 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 
 		$id = 0;
 
-		if (\is_object($item)) {
+		if (is_object($item)) {
 			// Valid item retrieved
 			$id = $item->template_style_id;
 		}
@@ -308,7 +341,7 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 		$templates = $siteApp->bootComponent('templates')->getMVCFactory()
 			->createModel('Style', 'Administrator')->getSiteTemplates();
 
-		foreach ($templates as &$template) {
+		foreach ($templates as $template) {
 			// Create home element
 			if ($template->home == 1 && !isset($template_home) || $siteApp->getLanguageFilter() && $template->home == $tag) {
 				$template_home = clone $template;
@@ -326,13 +359,7 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 			$templates[0]          = $template_home;
 		}
 
-		if (isset($templates[$id]))
-		{
-			$template = $templates[$id];
-		} else
-		{
-			$template = $templates[0];
-		}
+        $template = $templates[$id] ?? $templates[0];
 
 		// Allows for overriding the active template from the request
 		$template_override = $siteApp->input->getCmd('template', '');
@@ -370,7 +397,7 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 
 					// Check, the data were found and if template really exists
 					if (!is_file(JPATH_THEMES . '/' . $template->template . '/index.php')) {
-						throw new \InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $original_tmpl));
+						throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $original_tmpl));
 					}
 				}
 			}
@@ -389,7 +416,7 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 
 			// Check, the data were found and if template really exists
 			if (!is_file(JPATH_THEMES . '/' . $template->template . '/index.php')) {
-				throw new \InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $original_tmpl));
+				throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $original_tmpl));
 			}
 		}
 
@@ -681,8 +708,8 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 	 *
 	 * @since   4.2.0
 	 */
-	private function getModuleByPosition(string $position)
-	{
+	private function getModuleByPosition(string $position): array
+    {
 		$position = strtolower($position);
 		$result   = [];
 		$input    = Factory::getApplication()->getInput();
@@ -720,8 +747,8 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 	 *
 	 * @since   4.2.0
 	 */
-	private function getModuleById($id)
-	{
+	private function getModuleById($id): stdClass
+    {
 		$modules = $this->getModules();
 
 		$total = count($modules);
@@ -735,9 +762,7 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 		}
 
 		// If we didn't find it, create a dummy object
-		$result = $this->createDummyModule();
-
-		return $result;
+        return $this->createDummyModule();
 	}
 
 	/**
@@ -775,8 +800,8 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 	 *
 	 * @since   4.2.0
 	 */
-	private function render(object $module, array $attribs = [], string $content = null)
-	{
+	private function render(object $module, array $attribs = [], string $content = null): string
+    {
 		if (!is_object($module)) {
 			$title = $attribs['title'] ?? null;
 
@@ -850,12 +875,12 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 	 *
 	 * @since   4.2.0
 	 */
-	private function renderModule(object $module, array $attribs = [])
-	{
+	private function renderModule(object $module, array $attribs = []): string
+    {
 		$app = Factory::getApplication();
 
 		// Check that $module is a valid module object
-		if (!\is_object($module) || !isset($module->module) || !isset($module->params)) {
+		if (!is_object($module) || !isset($module->module) || !isset($module->params)) {
 			if (JDEBUG) {
 				Log::addLogger(['text_file' => 'jmodulehelper.log.php'], Log::ALL, ['modulehelper']);
 				$app->getLogger()->debug(
@@ -967,8 +992,8 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 	 *
 	 * @since   4.2.0
 	 */
-	private function renderRawModule($module, Registry $params, $attribs = [])
-	{
+	private function renderRawModule(object $module, Registry $params, array $attribs = []): string
+    {
 		if (!empty($module->contentRendered)) {
 			return $module->content;
 		}
@@ -979,8 +1004,8 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 
 		// Get the site application
 //		$app = Factory::getApplication();
-		$container = \Joomla\CMS\Factory::getContainer();
-		$siteApp = $container->get(\Joomla\CMS\Application\SiteApplication::class);
+		$container = Factory::getContainer();
+		$siteApp = $container->get(SiteApplication::class);
 //		$siteApp->execute();
 
 		// Record the scope.
@@ -1050,7 +1075,7 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 		// Execute the layout without the module context
 		$loader = static function ($path, array $displayData) {
 			// If $displayData doesn't exist in extracted data, unset the variable.
-			if (!\array_key_exists('displayData', $displayData)) {
+			if (!array_key_exists('displayData', $displayData)) {
 				extract($displayData);
 				unset($displayData);
 			} else {
@@ -1151,7 +1176,7 @@ class PlgBwPostmanNewslettercontent extends JPlugin
 			$cache = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
 				->createCacheController('callback', ['defaultgroup' => 'com_modules']);
 
-			$modules = $cache->get([$db, 'loadObjectList'], [], md5($cacheId), false);
+			$modules = $cache->get([$db, 'loadObjectList'], [], md5($cacheId));
 		} catch (RuntimeException $e) {
 			$app->getLogger()->warning(
 				Text::sprintf('JLIB_APPLICATION_ERROR_MODULE_LOAD', $e->getMessage()),

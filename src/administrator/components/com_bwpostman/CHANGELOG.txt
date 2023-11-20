@@ -8,7 +8,16 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 Version 4.2.6 released (2024-02-15)----
 
 Bugfix
-#
+# Make it possible to also use first entry of available content list
+# Use stripos instead of str_contains to keep compatibility with php 7
+# Switch to other tab while creating/editing a newsletter with campaign not possible
+# Plugin User2Subscriber throws error, if no mailinglist is available
+
+
+
+Improvement
+~ If read more link in template is deactivated, the full article text is taken for newsletter content
+~ Switch ton native Joomla 4 plugins
 
 
 Version 4.2.5 released (2023-11-11)----
@@ -67,7 +76,7 @@ New
 + Support for selected content plugins, if articles of Joomla! are used at newsletter content.
 
 Bugfix
-# If a newsletter contained multiple attachments, there was an htmlspecialchars array error.
+# If a newsletter contained multiple attachments, there was a htmlspecialchars array error.
 # The dispatcher of front end lamented if task was not set at url.
 # The sending of newsletters with attachments with space at the name was not possible.
 # Default value for DATETIME columns at the database tables is no longer set because this may lead to SQL errors.

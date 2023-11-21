@@ -34,6 +34,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Exception;
 use JLoader;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Event\Result\ResultAwareInterface;
 use Joomla\CMS\Event\User\AfterDeleteEvent;
 use Joomla\CMS\Event\User\AfterSaveEvent;
 use Joomla\CMS\Factory;
@@ -42,6 +43,7 @@ use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
+use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Log\LogEntry;
@@ -308,13 +310,13 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
      *
      * Writes user ID at subscriber if account is created and subscriber with same email address exists
      *
-     * @param AfterSaveEvent $event
+     * @param Event $event
      *
      * @return void
      *
      * @since  4.1.0
      */
-	public function onUserAfterSave(AfterSaveEvent $event): void
+	public function onUserAfterSave(Event $event): void
 	{
 		if ($this->debug)
 		{
@@ -326,9 +328,18 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 			return;
 		}
 
-        $data   = $event->getArgument('subject');
-        $isNew  = $event->getArgument('isNew');
-        $result = $event->getArgument('savingResult');
+        // If using a concrete event, do it the simple way
+        if ($event instanceof AfterSaveEvent)
+        {
+            $data    = $event->getArgument('subject');
+            $isNew = $event->getArgument('isNew');
+            $result = $event->getArgument('deletingResult');
+        }
+        // If using a generic event, do it the hard way
+        else
+        {
+            [$data, $isNew, $result] = $event->getArguments();
+        }
 
         if (!$result)
 		{
@@ -359,20 +370,29 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
                 $this->getApplication()->enqueueMessage('Error pluginUserAccount: ' . $e->getMessage() . '<br />', 'error');
 			}
 		}
-	}
+
+        $result = [
+            'subject'        => $data,
+            'isNew'          => $isNew,
+            'deletingResult' => $result,
+        ];
+
+        // Return the result
+        $this->setResult($event, $result);
+    }
 
     /**
      * Event method onUserAfterDelete
      *
      * Removes user ID of subscriber if account is deleted and subscriber with same email address exists
      *
-     * @param AfterDeleteEvent $event
+     * @param Event $event
      *
      * @return void
      *
      * @since  4.1.0
      */
-	public function onUserAfterDelete(AfterDeleteEvent $event): void
+	public function onUserAfterDelete(Event $event): void
 	{
 		if ($this->debug)
 		{
@@ -384,8 +404,17 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 			return;
 		}
 
-        $data   = $event->getArgument('subject');
-        $result = $event->getArgument('deletingResult');
+        // If using a concrete event, do it the simple way
+        if ($event instanceof AfterDeleteEvent)
+        {
+            $data    = $event->getArgument('subject');
+            $result = $event->getArgument('deletingResult');
+        }
+        // If using a generic event, do it the hard way
+        else
+        {
+            [$data, $result, $errorMessage] = $event->getArguments();
+        }
 
         if ($result !== true)
 		{
@@ -412,5 +441,38 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 		{
 			$this->getApplication()->enqueueMessage('Error pluginUserAccount: ' . $e->getMessage() . '<br />', 'error');
 		}
-	}
+
+        $result = [
+            'subject'        => $data,
+            'deletingResult' => $result,
+            'errorMessage'   => $errorMessage,
+        ];
+
+        // Return the result
+        $this->setResult($event, $result);
+    }
+
+    /**
+     * Method to set the event result
+     *
+     * @param Event $event
+     * @param       $value
+     *
+     *
+     * @since 4.2.6
+     */
+    private function setResult(Event $event, $value): void
+    {
+        if ($event instanceof ResultAwareInterface)
+        {
+            $event->addResult($value);
+
+            return;
+        }
+
+        $result   = $event->getArgument('result', []) ?: [];
+        $result   = is_array($result) ? $result : [];
+        $result[] = $value;
+        $event->setArgument('result', $result);
+    }
 }

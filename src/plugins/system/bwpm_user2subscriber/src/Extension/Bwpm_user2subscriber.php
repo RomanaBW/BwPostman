@@ -34,6 +34,7 @@ use ContentHelperRoute;
 use Exception;
 use JLoader;
 use Joomla\CMS\Event\Model\PrepareFormEvent;
+use Joomla\CMS\Event\Result\ResultAwareInterface;
 use Joomla\CMS\Event\User\AfterDeleteEvent;
 use Joomla\CMS\Event\User\AfterSaveEvent;
 use Joomla\CMS\Event\User\BeforeSaveEvent;
@@ -323,7 +324,6 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 		{
 			$db->setQuery($query);
 
-
 			$result   = $db->loadResult();
 
 			if ($result === null)
@@ -349,13 +349,13 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 	}
 
     /**
-     * Method to load further language files
+     * Method to load further language files. This plugin uses language strings of the component.
      *
      * @throws Exception
      *
      * @since 2.0.0
      */
-    protected function loadLanguageFiles()
+    protected function loadLanguageFiles(): void
     {
         $lang = Factory::getApplication()->getLanguage();
 
@@ -375,7 +375,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
     /**
      * Event method onContentPrepareForm
      *
-     * @param PrepareFormEvent $event
+     * @param Event $event
      *
      * @return void
      *
@@ -383,7 +383,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
      *
      * @since  2.0.0
      */
-	public function onContentPrepareForm(PrepareFormEvent $event): void
+	public function onContentPrepareForm(Event $event): void
 	{
         //		$this->logger->addEntry(new LogEntry('onContentPrepareForm reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
 
@@ -392,8 +392,18 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			return;
 		}
 
-        $form    = $event->getForm();
-        $data    = $event->getData();
+        // If using a concrete event, do it the simple way
+        if ($event instanceof PrepareFormEvent)
+        {
+            $form    = $event->getForm();
+            $data    = $event->getData();
+        }
+        // If using a generic event, do it the hard way
+        else
+        {
+            [$form, $data] = $event->getArguments();
+        }
+
         $context = $form->getName();
 
         if ($this->debug)
@@ -484,6 +494,14 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 		$this->processNewsletterFormatField();
 		$this->processSelectedMailinglists();
 		$this->processCaptchaField();
+
+        $result = [
+            'subject' => $form,
+            'data'    => $data,
+        ];
+
+        // Return the result
+        $this->setResult($event, $result);
 	}
 
 	/**
@@ -710,13 +728,13 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
     /**
      * Event method onUserBeforeSave
      *
-     * @param BeforeSaveEvent $event
+     * @param Event $event
      *
      * @return void
      *
      * @since  2.0.0
      */
-	public function onUserBeforeSave(BeforeSaveEvent $event): void
+	public function onUserBeforeSave(Event $event): void
 	{
 //        new BeforeSaveEvent('onEventName', ['subject' => $oldUserArray, 'isNew' => $isNew, 'data' => $data]);
 
@@ -730,8 +748,17 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			return;
 		}
 
-        $oldUser = $event->getArgument('subject');
-        $newUser = $event->getArgument('data');
+        // If using a concrete event, do it the simple way
+        if ($event instanceof BeforeSaveEvent)
+        {
+            $oldUser = $event->getArgument('subject');
+            $newUser = $event->getArgument('data');
+        }
+        // If using a generic event, do it the hard way
+        else
+        {
+            [$oldUser, $isNew, $newUser] = $event->getArguments();
+        }
 
 		// Sanitize data
 		$old_activation	= ArrayHelper::getValue($oldUser, 'activation', '', 'string');
@@ -754,12 +781,21 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			$session->set('plg_bwpm_user2subscriber.userid', $user_id);
 			$session->set('plg_bwpm_user2subscriber.activation', $old_activation);
 		}
-	}
+
+        $result = [
+            'subject' => $oldUser,
+            'isNew'   => $isNew,
+            'data'    => $newUser,
+        ];
+
+        // Return the result
+        $this->setResult($event, $result);
+    }
 
     /**
      * Event method onUserAfterSave
      *
-     * @param AfterSaveEvent $event
+     * @param Event $event
      *
      * @return void
      *
@@ -767,7 +803,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
      *
      * @since  2.0.0
      */
-	public function onUserAfterSave(AfterSaveEvent $event): void
+	public function onUserAfterSave(Event $event): void
 	{
 //        new AfterSaveEvent('onEventName', ['subject' => $userArray, 'isNew' => $isNew, 'savingResult' => $result, 'errorMessage' => $errorStr]);
 
@@ -781,9 +817,18 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			return;
 		}
 
-        $data   = $event->getArgument('subject');
-        $isNew  = $event->getArgument('isNew');
-        $result = $event->getArgument('savingResult');
+        // If using a concrete event, do it the simple way
+        if ($event instanceof AfterSaveEvent)
+        {
+            $data   = $event->getArgument('subject');
+            $isNew  = $event->getArgument('isNew');
+            $result = $event->getArgument('deletingResult');
+        }
+        // If using a generic event, do it the hard way
+        else
+        {
+            [$data, $isNew, $result] = $event->getArguments();
+        }
 
         if (!$result)
 		{
@@ -883,7 +928,16 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 		{
 			$this->updateMailaddress($user_mail);
 		}
-	}
+
+        $result = [
+            'subject'        => $data,
+            'isNew'          => $isNew,
+            'deletingResult' => $result,
+        ];
+
+        // Return the result
+        $this->setResult($event, $result);
+    }
 
 	/**
 	 * @param string $user_mail
@@ -1125,7 +1179,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
     /**
      * Event method onUserAfterDelete
      *
-     * @param AfterDeleteEvent $event
+     * @param Event $event
      *
      * @return void
      *
@@ -1133,7 +1187,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
      *
      * @since  2.0.0
      */
-	public function onUserAfterDelete(AfterDeleteEvent $event): void
+	public function onUserAfterDelete(Event $event): void
 	{
 //        new AfterDeleteEvent('onEventName', ['subject' => $userArray, 'deletingResult' => $result, 'errorMessage' => $errorStr]);
 		if ($this->debug)
@@ -1146,8 +1200,16 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			return;
 		}
 
-        $data = $event->getArgument('subject');
-        $success = $event->getArgument('deletingResult');
+        // If using a concrete event, do it the simple way
+        if ($event instanceof AfterDeleteEvent) {
+            $data    = $event->getArgument('subject');
+            $success = $event->getArgument('deletingResult');
+        }
+        // If using a generic event, do it the hard way
+        else
+        {
+            [$data, $success, $errorMessage] = $event->getArguments();
+        }
 
         if (!$success)
 		{
@@ -1166,7 +1228,16 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 		{
 			$this->removeUseridFromSubscription($user_id);
 		}
-	}
+
+        $result = [
+            'subject'        => $data,
+            'deletingResult' => $success,
+            'errorMessage'   => $errorMessage,
+        ];
+
+        // Return the result
+        $this->setResult($event, $result);
+    }
 
 	/**
 	 * Method to delete subscription, if Joomla account is deleted
@@ -1363,4 +1434,26 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			}
 		}
 	}
+
+    /**
+     * Method to set the event result
+     * @param Event $event
+     * @param       $value
+     *
+     *
+     * @since 4.2.6
+     */
+    private function setResult(Event $event, $value): void
+    {
+        if ($event instanceof ResultAwareInterface) {
+            $event->addResult($value);
+
+            return;
+        }
+
+        $result   = $event->getArgument('result', []) ?: [];
+        $result   = is_array($result) ? $result : [];
+        $result[] = $value;
+        $event->setArgument('result', $result);
+    }
 }

@@ -10,7 +10,7 @@ use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
 use BoldtWebservice\Plugin\BwPostman\FooterUsedMailinglists\Extension\FooterUsedMailinglists;
 
-return new class implements ServiceProviderInterface {
+return new class () implements ServiceProviderInterface {
     /**
      * Registers the service provider with a DI container.
      *

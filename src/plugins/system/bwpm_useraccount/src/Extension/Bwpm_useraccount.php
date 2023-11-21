@@ -36,9 +36,11 @@ use JLoader;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Event\User\AfterDeleteEvent;
 use Joomla\CMS\Event\User\AfterSaveEvent;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Utilities\ArrayHelper;
@@ -148,7 +150,8 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 		$this->logger   = BwLogger::getInstance($log_options);
 		$this->debug    = (bool)$this->params->get('debug_option', false);
 
-		$this->setBwPostmanComponentStatus();
+        $this->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
+        $this->setBwPostmanComponentStatus();
 		$this->setBwPostmanComponentVersion();
 	}
 
@@ -174,6 +177,20 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
                 'onUserAfterDelete'    => 'onUserAfterDelete',
             ];
         }
+    }
+
+    /**
+     * Set the database.
+     *
+     * @param DatabaseInterface $db The database.
+     *
+     * @return  void
+     *
+     * @since   4.2.6
+     */
+    public function setDatabase(DatabaseInterface $db): void
+    {
+        $this->databaseAwareTraitDatabase = $db;
     }
 
     /**

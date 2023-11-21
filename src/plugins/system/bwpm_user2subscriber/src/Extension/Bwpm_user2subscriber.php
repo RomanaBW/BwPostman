@@ -47,6 +47,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\User\UserFactoryAwareTrait;
 use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Event\Event;
@@ -216,9 +217,24 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 		$this->logger   = BwLogger::getInstance($log_options);
 		$this->debug    = (bool)$this->params->get('debug_option', false);
 
+        $this->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
 		$this->setBwPostmanComponentStatus();
 		$this->setBwPostmanComponentVersion();
 	}
+
+    /**
+     * Set the database.
+     *
+     * @param DatabaseInterface $db The database.
+     *
+     * @return  void
+     *
+     * @since   4.2.6
+     */
+    public function setDatabase(DatabaseInterface $db): void
+    {
+        $this->databaseAwareTraitDatabase = $db;
+    }
 
     /**
      * Returns an array of events this subscriber will listen to.

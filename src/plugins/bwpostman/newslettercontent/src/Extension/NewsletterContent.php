@@ -24,9 +24,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace BoldtWebservice\Plugin\BwPostman\NewsletterContent\Extension;
+
 defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwSiteApplication;
+use Exception;
+use InvalidArgumentException;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Cache\Controller\CallbackController;
@@ -57,6 +61,8 @@ use Joomla\Event\SubscriberInterface;
 use Joomla\Registry\Registry;
 use Joomla\Session\SessionInterface;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
+use stdClass;
 
 const JPATH_THEMES_SITE = JPATH_ROOT . DIRECTORY_SEPARATOR . 'templates';
 

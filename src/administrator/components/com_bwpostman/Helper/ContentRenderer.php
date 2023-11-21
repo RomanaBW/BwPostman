@@ -150,17 +150,18 @@ class ContentRenderer
 		return $content;
 	}
 
-	/**
-	 * Method to retrieve content
-	 *
-	 * @param int $id
-	 *
-	 * @return object|null
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
+    /**
+     * Method to retrieve content
+     *
+     * @param int $id
+     * @param int $show_readon
+     *
+     * @return object|null
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
 	public function  retrieveContent(int $id, int $show_readon)
 	{
 		$row   = new stdClass();
@@ -537,7 +538,7 @@ class ContentRenderer
                     'article' => $row,
                 );
                 $event     = new Event('onBwpmRenderNewsletterArticle', $eventArgs);
-                $app->getDispatcher()->dispatch($event->getName(), $event);
+                Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
                 $eventResults = $event->getArgument('result', []);
 
                 if ($eventResults)

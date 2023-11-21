@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') || die;
 
-use BoldtWebservice\Plugin\System\NewsletterContent\Extension\NewsletterContent;
+use BoldtWebservice\Plugin\BwPostman\NewsletterContent\Extension\NewsletterContent;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;

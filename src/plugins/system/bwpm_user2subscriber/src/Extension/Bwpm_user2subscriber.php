@@ -220,6 +220,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
         $this->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
 		$this->setBwPostmanComponentStatus();
 		$this->setBwPostmanComponentVersion();
+		$this->loadLanguageFiles();
 	}
 
     /**
@@ -346,6 +347,30 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			$this->logger->addEntry(new LogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
+
+    /**
+     * Method to load further language files
+     *
+     * @throws Exception
+     *
+     * @since 2.0.0
+     */
+    protected function loadLanguageFiles()
+    {
+        $lang = Factory::getApplication()->getLanguage();
+
+        //Load first english file of component
+        $lang->load('com_bwpostman', JPATH_SITE, 'en-GB', true);
+
+        //load specific language of component
+        $lang->load('com_bwpostman', JPATH_SITE, null, true);
+
+        //Load specified other language files in english
+        $lang->load('plg_system_bwpm_user2subscriber', JPATH_ADMINISTRATOR, 'en-GB', true);
+
+        // and other language
+        $lang->load('plg_system_bwpm_user2subscriber', JPATH_ADMINISTRATOR, null, true);
+    }
 
     /**
      * Event method onContentPrepareForm

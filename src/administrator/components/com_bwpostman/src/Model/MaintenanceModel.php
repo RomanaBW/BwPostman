@@ -34,6 +34,7 @@ use DOMElement;
 use Exception;
 use Joomla\CMS\Access\Rules;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Asset;
 use Joomla\Component\Users\Administrator\Model\GroupModel;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;
@@ -2160,12 +2161,12 @@ class MaintenanceModel extends BaseDatabaseModel
 					return false;
 				}
 
-				// The following array $itemIdsWithoutAssets holds ids of items, where the asset_id does not exists at
+				// The following array $itemIdsWithoutAssets holds ids of items, where the asset_id does not exist at
 				// section table or assets table or where an existing asset_id does not match the asset name, build by
 				// component.section.item_id.
 				// But be careful! This array also contains items, for which an appropriate asset name exists, but with
 				// wrong asset_id at items table. The assets for these items cannot be inserted at assets table, because
-				// they exists. So there is a counter-check necessary at the end of this check.
+				// they exist. So there is a counter-check necessary at the end of this check.
 				$itemIdsWithoutAssets = array();
 
 				foreach ($itemAssetList as $item)
@@ -2286,12 +2287,51 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 		}
 
-		return $returnMessage;
+        // Rebuild the complete asset tree
+        $assetRebuild = $this->rebuildAssets();
+
+        if (!$assetRebuild)
+        {
+            return false;
+        }
+
+        return $returnMessage;
 	}
+
+    /**
+     * Method to rebuild the whole nested asset tree.
+     *
+     * @return    bool
+     *
+     * @throws Exception
+     *
+     * @since    4.2.6
+     */
+    public function rebuildAssets(): bool
+    {
+        try
+        {
+            $assetTable = new Asset($this->db);
+//            $parentId = $assetTable->loadByName('com_bwpostman');
+            $parentId = $assetTable->getRootId();
+
+            $assetTable->rebuild($parentId);
+
+        }
+        catch (RuntimeException $exception)
+        {
+            $message = $exception->getMessage();
+            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+
+            return false;
+        }
+
+        return true;
+    }
 
 	/**
 	 * Method to check, if column asset_id has a real value. If not, there is no possibility to delete data sets in BwPostman.
-	 * Therefore each dataset without real value for asset_id has to be stored one time, to get this value
+	 * Therefore, each dataset without real value for asset_id has to be stored one time, to get this value
 	 *
 	 * @return    bool
 	 *

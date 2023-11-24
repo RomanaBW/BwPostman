@@ -127,6 +127,6 @@ function ready(callbackFunc) {
 }
 
 ready(function() {
-	document.querySelector('body.contentpane').style.overflowX = 'hidden';
+	// document.querySelector('body.contentpane').style.overflowX = 'hidden';
 	processUpdateStep(data);
 });

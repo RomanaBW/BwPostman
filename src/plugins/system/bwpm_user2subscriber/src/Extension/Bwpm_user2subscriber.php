@@ -827,7 +827,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
         {
             $data   = $event->getArgument('subject');
             $isNew  = $event->getArgument('isNew');
-            $result = $event->getArgument('deletingResult');
+            $result = $event->getArgument('savingResult');
         }
         // If using a generic event, do it the hard way
         else

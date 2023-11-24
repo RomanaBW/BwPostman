@@ -333,7 +333,7 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
         {
             $data    = $event->getArgument('subject');
             $isNew = $event->getArgument('isNew');
-            $result = $event->getArgument('deletingResult');
+            $result = $event->getArgument('savingResult');
         }
         // If using a generic event, do it the hard way
         else

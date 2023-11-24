@@ -72,7 +72,7 @@ class Pkg_BwPostmanInstallerScript
 		$manifest = $parent->getManifest();
 		$this->release = (string)$manifest->version;
 
-		// override existing message
+		// override existing message for update by installing manually
 		$this->showFinished(false);
   }
 
@@ -97,7 +97,10 @@ class Pkg_BwPostmanInstallerScript
 		$manifest = $parent->getManifest();
 		$this->release = (string)$manifest->version;
 
-		// override existing message
+        // Set redirect path to do table check on update by Joomla!
+        Factory::getApplication()->setUserState('com_installer.redirect_url', 'index.php?option=com_bwpostman&view=maintenance&layout=updateCheckSave');
+
+        // override existing message for update by installing manually
 		$this->showFinished(true);
 	}
 

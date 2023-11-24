@@ -140,7 +140,7 @@ class Pkg_BwPostmanInstallerScript
 		{
 			$oldRelease	= Factory::getApplication()->getUserState('com_bwpostman.update.oldRelease', '');
 
-			if (version_compare($oldRelease, '2.2.1', 'lt'))
+			if (version_compare($oldRelease, '4.2.6', 'lt'))
 			{
 				// rebuild update servers
 				$installerModel = new UpdatesitesModel();

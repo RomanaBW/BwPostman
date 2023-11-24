@@ -788,6 +788,11 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
             'data'    => $newUser,
         ];
 
+        if ($event instanceof BeforeSaveEvent)
+        {
+            $result = true;
+        }
+
         // Return the result
         $this->setResult($event, $result);
     }

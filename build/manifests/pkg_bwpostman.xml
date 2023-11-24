@@ -29,6 +29,11 @@
 		<file type="plugin" id="newslettercontent" group="bwpostman" client="site">plg_bwpostman_newslettercontent.zip</file>
 	</files>
 
+
+	<updateservers>
+		<server type="extension" priority="1" name="BwPostman Updates">https://www.boldt-webservice.de/updateservers/bwpostman/bwpostman_update.xml</server>
+	</updateservers>
+
 	<compatibility>
 		<version>4</version>
 	</compatibility>

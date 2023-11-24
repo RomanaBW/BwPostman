@@ -5,18 +5,20 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-Version 4.2.6 released (2023-11-22)----
+Version 4.2.6 released (2023-11-29)----
 
 Bugfix
 # Make it possible to also use first entry of available content list
 # Use stripos instead of str_contains to keep compatibility with php 7
 # Switch to other tab while creating/editing a newsletter with campaign not possible
 # Plugin User2Subscriber throws error, if no mailinglist is available
+# BwPostman didn't write assets correctly, so in some cases it was not possible to enter back end after deleting an item of BwPostman
 
 Improvement
 ~ If read more link in template is deactivated, the full article text is taken for newsletter content
 ~ Switch to native Joomla! 4 plugins
 ~ Remove update servers from package parts to keep update server entries of Joomla! clean
+~ Set redirect url after update to be able to do table check after update by Joomla for J4 and J5
 
 
 Version 4.2.5 released (2023-11-11)----

@@ -34,9 +34,12 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 
-$app = Factory::getApplication();
+$app     = Factory::getApplication();
+$jinput	 = $app->input;
+$session = $app->getSession();
 
-$jinput	= $app->input;
+$postInstallMsg = $session->get('com_bwpostman.extension_message', '');
+$session->remove('com_bwpostman.extension_message');
 
 if ($this->queueEntries) {
 	$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
@@ -45,6 +48,13 @@ if ($this->queueEntries) {
 
 <div id="view_bwpostman">
 	<div class="top-spacer row clearfix">
+			<?php
+            if ($postInstallMsg)
+            {
+                echo $postInstallMsg;
+            }
+            ?>
+
 		<div class="bw-icons col-md-8 module-wrapper">
 			<div class="row row-cols-2 row-cols-lg-3 row-cols-xl-4 g-3">
 			<?php

@@ -88,7 +88,8 @@ class Pkg_BwPostmanInstallerScript
 
 	public function update($installer)
 	{
-		$session = Factory::getApplication()->getSession();
+        $app     = Factory::getApplication();
+		$session = $app->getSession();
 		$session->set('update', true, 'bwpostman');
 
 		// Get component manifest file version
@@ -98,7 +99,7 @@ class Pkg_BwPostmanInstallerScript
 		$this->release = (string)$manifest->version;
 
         // Set redirect path to do table check on update by Joomla!
-        Factory::getApplication()->setUserState('com_installer.redirect_url', 'index.php?option=com_bwpostman&view=maintenance&layout=updateCheckSave');
+        $app->setUserState('com_installer.redirect_url', 'index.php?option=com_bwpostman&view=bwpostman');
 
         // override existing message for update by installing manually
 		$this->showFinished(true);
@@ -146,19 +147,23 @@ class Pkg_BwPostmanInstallerScript
 				$installerModel = new UpdatesitesModel();
 				$installerModel->rebuild();
 			}
-		}
 
-		$parent = $installer->getParent();
+            $session = Factory::getApplication()->getSession();
+            $session->set('com_bwpostman.extension_message', $installer->extensionMessage);
+        }
 
-		$manifest = $parent->getManifest();
+        if ($type !== 'uninstall')
+        {
+            $manifest = $installer->getParent()->getManifest();
 
-		if (is_object($manifest))
-		{
-			$this->release = $manifest->version;
-		}
+            if (is_object($manifest))
+            {
+                $this->release = $manifest->version;
+            }
 
-		// remove obsolete
-		$this->removeObsoleteExtensions($type, $installer);
+            // remove obsolete
+            $this->removeObsoleteExtensions($type, $installer);
+        }
 
 		return true;
   }
@@ -321,7 +326,7 @@ class Pkg_BwPostmanInstallerScript
 	 * @since
 	 */
 	public function showFinished(bool $update)
-		{
+	{
 		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
 		$lang->load('com_bwpostman.sys', JPATH_ADMINISTRATOR, 'en_GB', true);

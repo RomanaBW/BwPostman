@@ -13,6 +13,8 @@ Bugfix
 # Switch to other tab while creating/editing a newsletter with campaign not possible
 # Plugin User2Subscriber throws error, if no mailinglist is available
 # BwPostman didn't write assets correctly, so in some cases it was not possible to enter back end after deleting an item of BwPostman
+# If tables with enhanced prefix (i.e. bak_<real_prefix>_) existed, it was impossible to do a table restore
+# Update message and table check after update BwPostman by Joomla! update didn't work with Joomla! 4 and 5
 
 Improvement
 ~ If read more link in template is deactivated, the full article text is taken for newsletter content

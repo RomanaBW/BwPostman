@@ -476,9 +476,10 @@ class MaintenanceModel extends BaseDatabaseModel
 	{
 		// Get database name
 		$dbname = self::getDBName();
+        $likeExp = $this->db->getPrefix() . 'bwpostman%';
 
 		//build query to get all names of installed BwPostman tables
-		$query = "SHOW TABLES WHERE `Tables_in_$dbname` LIKE '%bwpostman%'";
+		$query = "SHOW TABLES WHERE `Tables_in_$dbname` LIKE '$likeExp'";
 
 		try
 		{

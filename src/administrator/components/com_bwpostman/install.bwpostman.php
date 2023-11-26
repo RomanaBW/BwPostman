@@ -228,7 +228,7 @@ class com_bwpostmanInstallerScript
 
 		// Get component manifest file version
 		$this->release	= (string)$manifest->version;
-		$session->set('release', $this->release, 'bwpostman');
+		$session->set('release', $this->release);
 
 		// abort if the current Joomla release is older
 		if(version_compare(JVERSION, $this->minimum_joomla_release, 'lt'))
@@ -445,7 +445,7 @@ class com_bwpostmanInstallerScript
 	public function install()
 	{
 		$session = Factory::getApplication()->getSession();
-		$session->set('update', false, 'bwpostman');
+		$session->set('update', false);
 		$this->bwpostman_install();
 		$this->showFinished(false);
 	}
@@ -463,7 +463,7 @@ class com_bwpostmanInstallerScript
 	public function update()
 	{
 		$session = Factory::getApplication()->getSession();
-		$session->set('update', true, 'bwpostman');
+		$session->set('update', true);
 		$this->bwpostman_install();
 
 		$this->showFinished(true);

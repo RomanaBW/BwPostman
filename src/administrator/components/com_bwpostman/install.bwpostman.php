@@ -1374,7 +1374,6 @@ class com_bwpostmanInstallerScript
 
 //		Remove files from J3 and sql update files
 		$obsoleteJ3 = array(
-			'/administrator/components/com_bwpostman/sql/updates/mysql',
 			'/administrator/components/com_bwpostman/controllers',
 			'/administrator/components/com_bwpostman/helpers',
 			'/administrator/components/com_bwpostman/models',

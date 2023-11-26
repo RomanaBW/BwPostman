@@ -147,7 +147,7 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 	public function __construct(DispatcherInterface $subject, array $config)
 	{
         // Only do something if component is enabled
-        if (!ComponentHelper::isEnabled('com_bwpostman'))
+        if (ComponentHelper::isEnabled('com_bwpostman'))
         {
             parent::__construct($subject, $config);
 

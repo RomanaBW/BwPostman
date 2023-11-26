@@ -209,7 +209,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 	public function __construct(DispatcherInterface $dispatcher, array $config = [])
 	{
         // Only do something if component is enabled
-        if (!ComponentHelper::isEnabled('com_bwpostman'))
+        if (ComponentHelper::isEnabled('com_bwpostman'))
         {
             $plugin = PluginHelper::getPlugin('system', 'bwpm_user2subscriber');
 

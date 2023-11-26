@@ -146,15 +146,19 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 	 */
 	public function __construct(DispatcherInterface $subject, array $config)
 	{
-		parent::__construct($subject, $config);
+        // Only do something if component is enabled
+        if (!ComponentHelper::isEnabled('com_bwpostman'))
+        {
+            parent::__construct($subject, $config);
 
-		$log_options    = array();
-		$this->logger   = BwLogger::getInstance($log_options);
-		$this->debug    = (bool)$this->params->get('debug_option', false);
+            $log_options  = array();
+            $this->logger = BwLogger::getInstance($log_options);
+            $this->debug  = (bool) $this->params->get('debug_option', false);
 
-        $this->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
-        $this->setBwPostmanComponentStatus();
-		$this->setBwPostmanComponentVersion();
+            $this->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
+            $this->setBwPostmanComponentStatus();
+            $this->setBwPostmanComponentVersion();
+        }
 	}
 
     /**

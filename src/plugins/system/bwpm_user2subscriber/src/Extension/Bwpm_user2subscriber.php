@@ -208,20 +208,24 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
      */
 	public function __construct(DispatcherInterface $dispatcher, array $config = [])
 	{
-        $plugin = PluginHelper::getPlugin('system', 'bwpm_user2subscriber');
+        // Only do something if component is enabled
+        if (!ComponentHelper::isEnabled('com_bwpostman'))
+        {
+            $plugin = PluginHelper::getPlugin('system', 'bwpm_user2subscriber');
 
-        $config['params'] = new Registry($plugin->params);
+            $config['params'] = new Registry($plugin->params);
 
-        parent::__construct($dispatcher, $config);
+            parent::__construct($dispatcher, $config);
 
-		$log_options    = array();
-		$this->logger   = BwLogger::getInstance($log_options);
-		$this->debug    = (bool)$this->params->get('debug_option', false);
+            $log_options  = array();
+            $this->logger = BwLogger::getInstance($log_options);
+            $this->debug  = (bool) $this->params->get('debug_option', false);
 
-        $this->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
-		$this->setBwPostmanComponentStatus();
-		$this->setBwPostmanComponentVersion();
-		$this->loadLanguageFiles();
+            $this->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
+            $this->setBwPostmanComponentStatus();
+            $this->setBwPostmanComponentVersion();
+            $this->loadLanguageFiles();
+        }
 	}
 
     /**

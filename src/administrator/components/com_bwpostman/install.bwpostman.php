@@ -243,7 +243,7 @@ class com_bwpostmanInstallerScript
 			return false;
 		}
 
-		// abort if the component being installed is not newer than the currently installed version
+		// abort if the component being installed is lower than the currently installed version
 		if ($type == 'update')
 		{
 			$oldRelease = $this->getManifestVar('version');

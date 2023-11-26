@@ -290,7 +290,7 @@ class com_bwpostmanInstallerScript
 			}
 		}
 
-        // Safety belt to be able to uninstall BwPostman if syl update folder does not exist
+        // Safety belt to be able to uninstall BwPostman if sql update folder does not exist
         if ($type === 'uninstall')
         {
             $sqlUpdatePath = JPATH_ROOT . '/administrator/components/com_bwpostman/sql/updates/mysql';

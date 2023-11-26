@@ -286,7 +286,7 @@ class com_bwpostmanInstallerScript
 
 			if (BwPostmanInstallHelper::serverClaimsUtf8mb4Support($name))
 			{
-				Folder::copy($tmp_path . '/sql/utf8mb4conversion/utf8mb4-install.sql', $tmp_path . '/sql/install.sql');
+				File::copy($tmp_path . '/sql/utf8mb4conversion/utf8mb4-install.sql', $tmp_path . '/sql/install.sql');
 			}
 		}
 

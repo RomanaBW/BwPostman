@@ -1610,7 +1610,7 @@ class NewsletterEditPage
 		codecept_debug("buildQueue: $buildQueue");
 		codecept_debug("iFrame time: $iframeTime");
 		codecept_debug("Publish: $publish");
-        codecept_debug("suppress_sending: " .(string)$suppressSending);
+        codecept_debug("suppress_sending default: " .(int)$suppressSending);
 
 		// Reset build queue switch
 		$I->setExtensionStatus('bwtestmode', 0);
@@ -1656,6 +1656,8 @@ class NewsletterEditPage
 
             $remainsToSend = $nbrToSend;
         }
+
+        codecept_debug("suppress_sending after evaluation: " . (int) $I->getManifestOptions('bwtestmode')->suppress_sending);
 
         if (!$publish)
 		{

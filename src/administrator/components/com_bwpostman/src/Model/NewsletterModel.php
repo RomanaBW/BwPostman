@@ -124,7 +124,16 @@ class NewsletterModel extends AdminModel
 	 */
 	private $arise_queue       = 0;
 
-	/**
+    /**
+     * Suppress sending
+     *
+     * @var integer
+     *
+     * @since
+     */
+    private $suppress_sending = 0;
+
+    /**
 	 * property to hold permissions as array
 	 *
 	 * @var array $permissions
@@ -2087,7 +2096,15 @@ class NewsletterModel extends AdminModel
 //				Use the following with care! Complete mails with body are written to log…
 //				$this->logger->addEntry(new LogEntry('Mailer data: ' . print_r($mailer, true), BwLogger::BW_DEVELOPMENT, 'send'));
 
-				$res = $mailer->Send();
+                if (!$this->suppress_sending)
+                {
+                    $res = $mailer->Send();
+                }
+                else
+                {
+                    $res = true;
+                }
+
 				$this->logger->addEntry(new LogEntry(sprintf('Sending result: %s', $res), BwLogger::BW_INFO, 'send'));
 			}
 		}
@@ -2155,10 +2172,11 @@ class NewsletterModel extends AdminModel
 		{
 			$params = json_decode($test_plugin->params);
 
-			$this->demo_mode       = $params->demo_mode_option;
-			$this->dummy_sender    = $params->sender_address_option;
-			$this->dummy_recipient = $params->recipient_address_option;
-			$this->arise_queue     = $params->arise_queue_option;
+			$this->demo_mode        = $params->demo_mode_option;
+			$this->dummy_sender     = $params->sender_address_option;
+			$this->dummy_recipient  = $params->recipient_address_option;
+			$this->arise_queue      = $params->arise_queue_option;
+            $this->suppress_sending = $params->suppress_sending;
 		}
 	}
 

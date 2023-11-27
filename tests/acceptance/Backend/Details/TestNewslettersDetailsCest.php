@@ -890,7 +890,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author'], false, true);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 10);
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 10, false, true);
 
 		NlEdit::checkStatusOfSentNewsletter($I, NlManage::$first_line_unpublished);
 
@@ -922,7 +922,7 @@ class TestNewslettersDetailsCest
 
 		NlEdit::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
-		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 10);
+		NlEdit::SendNewsletterToRealRecipients($I, false, false, false, 10, false, true);
 
 		NlEdit::checkStatusOfSentNewsletter($I, NlManage::$first_line_published);
 

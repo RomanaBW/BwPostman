@@ -1584,27 +1584,26 @@ class NewsletterEditPage
 		}
 	}
 
-	/**
-	 * Test method to send newsletter to real recipients
-	 *
-	 * @param   \AcceptanceTester   $I
-	 * @param   boolean             $sentToUnconfirmed
-	 * @param   boolean             $toUsergroup
-	 * @param   boolean             $buildQueue
-	 * @param   integer             $iframeTime         time to wait for the last iframe sendFrame appearance (chromium 66+ specific)
-	 * @param   boolean             $publish            button send and publish?
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @return  void
-	 *
-	 * @throws \Exception
-	 *
-	 * @since   2.0.0
-	 */
-	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false, $iframeTime = 20, $publish = false)
+    /**
+     * Test method to send newsletter to real recipients
+     *
+     * @param \AcceptanceTester $I
+     * @param boolean           $sentToUnconfirmed
+     * @param boolean           $toUsergroup
+     * @param boolean           $buildQueue
+     * @param integer           $iframeTime time to wait for the last iframe sendFrame appearance (chromium 66+ specific)
+     * @param boolean           $publish    button send and publish?
+     * @param bool              $suppressSending switch the suppression of real sending
+     *
+     * @return  void
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @since   2.0.0
+     */
+	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false, $iframeTime = 20, $publish = false, $suppressSending = true)
 	{
 		codecept_debug("toUnconfirmed: $sentToUnconfirmed");
 		codecept_debug("toUsergroup: $toUsergroup");
@@ -1615,6 +1614,9 @@ class NewsletterEditPage
 		// Reset build queue switch
 		$I->setExtensionStatus('bwtestmode', 0);
 		$I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
+
+        // Set suppress sending switch
+        $I->setExtensionStatus('bwtestmode', 'suppress_sending', $suppressSending);
 
 		$I->click(self::$mark_to_send);
 		$I->clickAndWait(Generals::$toolbarActions, 1);

@@ -1616,7 +1616,7 @@ class NewsletterEditPage
 		$I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
 
         // Set suppress sending switch
-        $I->setExtensionStatus('bwtestmode', 'suppress_sending', $suppressSending);
+        $I->setManifestOption('bwtestmode', 'suppress_sending', '1');
 
 		$I->click(self::$mark_to_send);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
@@ -1647,7 +1647,16 @@ class NewsletterEditPage
 			$remainsToSend = $nbrToSend;
 		}
 
-		if (!$publish)
+        if (!$suppressSending)
+        {
+            // Set build queue switch
+            $I->setExtensionStatus('bwtestmode', 1);
+            $I->setManifestOption('bwtestmode', 'suppress_sending', '0');
+
+            $remainsToSend = $nbrToSend;
+        }
+
+        if (!$publish)
 		{
 			$I->clickAndWait(self::$button_send, 1);
 			$I->seeInPopup(self::$popup_send_confirm);

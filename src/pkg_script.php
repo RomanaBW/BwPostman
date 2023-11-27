@@ -99,6 +99,7 @@ class Pkg_BwPostmanInstallerScript
 		$this->release = (string)$manifest->version;
 
         // Set redirect path to do table check on update by Joomla!
+        $parent->set('redirect_url', 'index.php?option=com_bwpostman&view=bwpostman');
         $app->setUserState('com_installer.redirect_url', 'index.php?option=com_bwpostman&view=bwpostman');
 
         // override existing message for update by installing manually

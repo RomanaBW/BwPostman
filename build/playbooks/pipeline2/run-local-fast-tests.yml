@@ -88,7 +88,7 @@
         - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
         - "{{ test_dir }}/_output/{{ project_name }}/xmlreports"
 
-    - name: Create infrastructure compose file
+    - name: Create infrastructure compose file for J5
       template:
         src: "run-bwpm-fast.yml.j2"
         dest: "{{ container_dir }}/infrastructure/run-bwpm-fast.yml"
@@ -125,7 +125,7 @@
 
     - name: Pause before rebase to ensure database is up
       pause:
-        seconds: 20
+        seconds: 10
       when: failure_file.stat.exists or rebase|bool
 
     - name: Rebase database

@@ -622,7 +622,62 @@ class TestNewslettersListsCest
 		$I->wait(1);
 	}
 
-	/**
+    /**
+     * Test method to check reset sending trials in queue and send anew
+     *
+     * @param   AcceptanceTester                $I
+     *
+     * @before  _login
+     *
+     * @after   _logout
+     *
+     * @return  void
+     *
+     * @throws \Exception
+     *
+     * @since   2.0.0
+     */
+    public function ResetSendingTrialsAndSendAnewQueue(AcceptanceTester $I)
+    {
+        $I->wantTo("reset sending trials at queue");
+        $I->amOnPage(NlManage::$url);
+
+        $this->buildQueue($I);
+
+        $I->clickAndWait(NlManage::$tab3, 1);
+        $I->clickAndWait(Generals::$systemMessageClose, 1);
+
+        $trial_value    = $I->grabTextFrom(NlManage::$queue_sending_trials_col);
+        $I->assertNotEquals(0, intval($trial_value));
+
+        $I->clickAndWait(Generals::$toolbar['Reset sending trials'], 1);
+
+        $trial_value    = $I->grabTextFrom(NlManage::$queue_sending_trials_col);
+        $I->assertEquals(0, intval($trial_value));
+
+        $I->setExtensionStatus('bwtestmode', 1);
+        $I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
+        $I->setManifestOption('bwtestmode', 'suppress_sending', '1');
+
+        $I->clickAndWait(Generals::$toolbar4['Continue sending'], 1);
+        $I->setExtensionStatus('bwtestmode', 0);
+        $I->setManifestOption('bwtestmode', 'suppress_sending', '0');
+
+        $I->waitForElementVisible(NlManage::$sendLayout, 5);
+        $I->waitForElementVisible(NlEdit::$success_send_number_id, 10);
+        $I->waitForText(NlEdit::$success_send_ready, 180);
+        $I->see(NlEdit::$success_send_ready);
+
+        $I->click(NlManage::$sendLayoutBack);
+        $I->waitForElementVisible(Generals::$page_header, 10);
+        $I->see("Newsletters", Generals::$pageTitle);
+
+        $I->clickAndWait(NlManage::$tab2, 1);
+
+        $I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+    }
+
+    /**
 	 * Test method to check list limit of newsletters
 	 *
 	 * @param   AcceptanceTester                $I
@@ -703,58 +758,6 @@ class TestNewslettersListsCest
 		$this->cleanupQueue($I);
 
 		$I->see("Newsletters", Generals::$pageTitle);
-		$I->clickAndWait(NlManage::$tab2, 1);
-
-		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
-	}
-
-	/**
-	 * Test method to check reset sending trials in queue and send anew
-	 *
-	 * @param   AcceptanceTester                $I
-	 *
-	 * @before  _login
-	 *
-	 * @after   _logout
-	 *
-	 * @return  void
-	 *
-	 * @throws \Exception
-	 *
-	 * @since   2.0.0
-	 */
-	public function ResetSendingTrialsAndSendAnewQueue(AcceptanceTester $I)
-	{
-		$I->wantTo("reset sending trials at queue");
-		$I->amOnPage(NlManage::$url);
-
-		$this->buildQueue($I);
-
-		$I->clickAndWait(NlManage::$tab3, 1);
-		$I->clickAndWait(Generals::$systemMessageClose, 1);
-
-		$trial_value    = $I->grabTextFrom(NlManage::$queue_sending_trials_col);
-		$I->assertNotEquals(0, intval($trial_value));
-
-		$I->clickAndWait(Generals::$toolbar['Reset sending trials'], 1);
-
-		$trial_value    = $I->grabTextFrom(NlManage::$queue_sending_trials_col);
-		$I->assertEquals(0, intval($trial_value));
-
-		$I->setExtensionStatus('bwtestmode', 0);
-		$I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
-
-		$I->clickAndWait(Generals::$toolbar4['Continue sending'], 1);
-
-		$I->waitForElementVisible(NlManage::$sendLayout, 5);
-		$I->waitForElementVisible(NlEdit::$success_send_number_id, 10);
-		$I->waitForText(NlEdit::$success_send_ready, 180);
-		$I->see(NlEdit::$success_send_ready);
-
-		$I->click(NlManage::$sendLayoutBack);
-		$I->waitForElementVisible(Generals::$page_header, 10);
-		$I->see("Newsletters", Generals::$pageTitle);
-
 		$I->clickAndWait(NlManage::$tab2, 1);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);

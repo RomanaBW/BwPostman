@@ -27,4 +27,4 @@
         net_name: "{{ project_name }}"
 
     - name: Stop infrastructure
-      command: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm.yml -p {{ project_name }} down"
+      ansible.builtin.command:  "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm.yml -p {{ project_name }} down"

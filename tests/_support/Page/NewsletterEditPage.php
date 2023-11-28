@@ -1605,15 +1605,17 @@ class NewsletterEditPage
      */
 	public static function SendNewsletterToRealRecipients(\AcceptanceTester $I, $sentToUnconfirmed = false, $toUsergroup = false, $buildQueue = false, $iframeTime = 20, $publish = false, $suppressSending = true)
 	{
-		codecept_debug("toUnconfirmed: $sentToUnconfirmed");
-		codecept_debug("toUsergroup: $toUsergroup");
-		codecept_debug("buildQueue: $buildQueue");
+		codecept_debug("toUnconfirmed:" . (int)$sentToUnconfirmed);
+		codecept_debug("toUsergroup:" . (int)$toUsergroup);
+		codecept_debug("buildQueue:" . (int)$buildQueue);
 		codecept_debug("iFrame time: $iframeTime");
-		codecept_debug("Publish: $publish");
+		codecept_debug("Publish:" . (int)$publish);
         codecept_debug("suppress_sending default: " .(int)$suppressSending);
 
+        // Switch on test mode
+        $I->setExtensionStatus('bwtestmode', 1);
+
 		// Reset build queue switch
-		$I->setExtensionStatus('bwtestmode', 0);
 		$I->setManifestOption('bwtestmode', 'arise_queue_option', '0');
 
         // Preset suppress sending switch
@@ -1642,7 +1644,6 @@ class NewsletterEditPage
 		if ($buildQueue)
 		{
 			// Set build queue switch
-			$I->setExtensionStatus('bwtestmode', 1);
 			$I->setManifestOption('bwtestmode', 'arise_queue_option', '1');
 
 			$remainsToSend = $nbrToSend;
@@ -1651,13 +1652,10 @@ class NewsletterEditPage
         if (!$suppressSending)
         {
             // Set suppress sending switch
-            $I->setExtensionStatus('bwtestmode', 1);
             $I->setManifestOption('bwtestmode', 'suppress_sending', '0');
-
-            $remainsToSend = $nbrToSend;
         }
 
-        codecept_debug("suppress_sending after evaluation: " . (int) $I->getManifestOptions('bwtestmode')->suppress_sending);
+        codecept_debug("Suppress_sending after evaluation: " . (int) $I->getManifestOptions('bwtestmode')->suppress_sending);
 
         if (!$publish)
 		{
@@ -1682,7 +1680,10 @@ class NewsletterEditPage
 		$I->waitForElementVisible(Generals::$page_header, 10);
 		$I->see("Newsletters", Generals::$pageTitle);
 
-		$I->clickAndWait(NlManage::$tab2, 1);
+        $I->clickAndWait(NlManage::$tab2, 1);
+
+        // Switch off test mode
+        $I->setExtensionStatus('bwtestmode', 0);
 	}
 
 	/**

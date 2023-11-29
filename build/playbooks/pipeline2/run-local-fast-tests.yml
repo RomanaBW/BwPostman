@@ -17,6 +17,7 @@
         vm_project_part: ""
         test_runner: "bwpm_test_runner.sh"
 
+
     - name: VM part of project name
       set_fact:
         vm_project_part: "_vm{{ vm_version }}"
@@ -26,13 +27,26 @@
       set_fact:
         joomla_main_version: "{{ joomla_version[0] }}"
 
-    - name: Set src_dir
+
+    - name: Set src_dir and DB host
       set_fact:
         src_dir: "{{ src_dir_base }}{{ joomla_main_version }}"
+        test_db_host: "mysqldbbwpm{{ joomla_main_version }}"
+        test_url_name: "test_url{{ joomla_main_version }}"
 
     - name: Set test_dir
       set_fact:
         test_dir: "{{ src_dir }}/tests"
+
+    - name: Set test_url for J5
+      set_fact:
+        test_url: "{{ test_url5 }}"
+      when: joomla_main_version == '5'
+
+    - name: Set test_url for J4
+      set_fact:
+        test_url: "{{ test_url4 }}"
+      when: joomla_main_version == '4'
 
     - name: Show imported parameters
       debug:
@@ -48,6 +62,8 @@
           - "Src-Dir: {{ src_dir }}"
           - "Test-Dir: {{ test_dir }}"
           - "Test-Src-Dir: {{ test_src_dir }}"
+          - "DB Test Host: {{ test_db_host }}"
+          - "Test Url: {{ test_url }}"
 
     - name: Set project name
       set_fact:
@@ -147,14 +163,25 @@
         src: "acceptance-fast.suite.yml.j2"
         dest: "{{ src_dir }}/{{ test_src_dir }}/acceptance.suite.yml"
 
-    - name: Create tester compose file
+    - name: Create tester compose file for J5
       become: yes
       template:
-        src: "bwpm-tester-fast.yml.j2"
+        src: "bwpm-tester-fast-J5.yml.j2"
         dest: "{{ container_dir }}/testers/bwpm-tester-fast.yml"
         mode: 0664
         owner: romana
         group: users
+      when: joomla_main_version == '5'
+
+    - name: Create tester compose file for J4
+      become: yes
+      template:
+        src: "bwpm-tester-fast-J4.yml.j2"
+        dest: "{{ container_dir }}/testers/bwpm-tester-fast.yml"
+        mode: 0664
+        owner: romana
+        group: users
+      when: joomla_main_version == '4'
 
     - name: Create tester start script
       become: yes
@@ -164,3 +191,6 @@
         mode: 0775
         owner: romana
         group: users
+
+#    - name: Stop infrastructure
+#      ansible.builtin.command:  "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm.yml -p {{ project_name }} down"

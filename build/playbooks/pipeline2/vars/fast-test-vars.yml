@@ -32,13 +32,14 @@ log_path: '/data/logs'
 record_path: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/videos"
 test_log_path: "{{ bw_artifacts_base }}/j{{ joomla_version }}_bwpm{{ bwpm_version }}/logs"
 
-test_db_host: "mysqldbbwpm4"
+test_db_host: "mysqldbbwpm{{ joomla_main_version }}"
 test_db_host_ip: "172.18.0.27"
 test_db_dbname: "joomlatest"
 test_db_user: "tester"
 test_db_password: "barbamama"
 
-test_url: "172.18.0.28"
+test_url5: "172.18.0.28"
+test_url4: "172.18.0.44"
 
 #screen_size: '1440x900'
 screen_size: '1920x1080'

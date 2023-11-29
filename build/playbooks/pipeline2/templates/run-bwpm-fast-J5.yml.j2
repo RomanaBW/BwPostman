@@ -9,11 +9,11 @@ networks:
         - subnet: 172.18.0.24/29
 
 services:
-  mysqldbbwpm4:
-    container_name: mysqldbbwpm4
+  mysqldbbwpm5:
+    container_name: mysqldbbwpm5
     image: "{{ base_target.db_image_tag_target }}"
 #    image: universe3:5000/romana/mariadb
-    hostname: mysqlserver-bwpm
+    hostname: mysqlserver-bwpm5
     domainname: tester-net.nil
     networks:
       tester-net.nil:
@@ -31,24 +31,24 @@ services:
       MYSQL_USER: tester
       MYSQL_PASSWORD: barbamama
 
-  webserverbwpm4:
-    container_name: webserverbwpm4
+  webserverbwpm5:
+    container_name: webserverbwpm5
     image: "{{ fast_target.web_image_tag_target }}"
 #    image: universe3:5000/romana/webserver_fast_{{ php_version }}
-    hostname: webserver-bwpm
+    hostname: webserver-bwpm5
     domainname: tester-net.nil
     command: "apache2-foreground"
     depends_on:
-      - "mysqldbbwpm4"
+      - "mysqldbbwpm5"
     networks:
       tester-net.nil:
         ipv4_address: 172.18.0.28
     expose:
       - "80"
     links:
-      - mysqldbbwpm4:mysqldbbwpm4
+      - mysqldbbwpm5:mysqldbbwpm5
     ports:
       - "8001:80"
     volumes:
-      -  "/vhosts/dev4/tests/_output//{{ project_name }}:/var/logs/apache2/"
+      -  "/vhosts/dev5/tests/_output//{{ project_name }}:/var/logs/apache2/"
       -  "{{ web_dir }}/{{ project_name }}/files:/var/www/html"

@@ -1,0 +1,32 @@
+version: '3'
+
+# universe3:5000/romana/bwpm_enh_tester-4:4.3.0-rc2-4.1.5
+# universe3:5000/romana/tester-tw-browser:chromium
+
+
+services:
+  bwpm-tester:
+    container_name: "bwpm-tester5"
+    image: universe3:5000/romana/tester-tw-browser:chromium
+    volumes:
+      - {{ container_dir }}/testers/os-data:/data
+      - {{ src_dir }}/{{ test_src_dir }}/job_scripts:/scripts
+      - {{ src_dir }}:/tests
+      - {{ web_dir }}/{{ project_name }}/files:/www_path
+      - /dev/shm:/dev/shm
+      - /repositories:/repositories
+    environment:
+      - BW_TEST_BWPM_VERSION={{ bwpm_version }}
+      - BW_TEST_CAT={{ test_cat }}
+      - BW_TEST_DEBUG={{ test_debug }}
+      - SYMFONY_DEPRECATIONS_HELPER=weak
+    working_dir: /tests
+    entrypoint: /scripts/bwpm_tester_start_fast.sh
+    networks:
+      tester-net.nil:
+        ipv4_address: 172.18.0.30
+
+networks:
+  tester-net.nil:
+    name:  {{ net_name }}_tester-net.nil
+    external: true

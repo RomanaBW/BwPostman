@@ -10,11 +10,11 @@ pipeline {
 					JOOMLA_VERSION_4 = "4.4.1"
 					JOOMLA_VERSION_5 = "5.0.1"
 
-					DO_J5_ACCEPT  = 'true'
-					DO_J5_PERMS   = 'true'
-					DO_J4_ACCEPT  = 'true'
-					DO_J4_PERMS   = 'true'
-					DO_DEV_UPLOAD = 'true'
+					DO_J5_ACCEPT  = 'false'
+					DO_J5_PERMS   = 'false'
+					DO_J4_ACCEPT  = 'false'
+					DO_J4_PERMS   = 'false'
+					DO_DEV_UPLOAD = 'false'
 					PACK_PACKAGE  = 'true'
 
 					PHP_VERSION_4 = "8.1.12"

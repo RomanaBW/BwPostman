@@ -10,10 +10,14 @@ pipeline {
 					JOOMLA_VERSION_4 = "4.4.1"
 					JOOMLA_VERSION_5 = "5.0.1"
 
-					DO_J5_ACCEPT  = 'false'
-					DO_J5_PERMS   = 'false'
-					DO_J4_ACCEPT  = 'false'
-					DO_J4_PERMS   = 'false'
+					DO_J5_SMOKE  = 'true'
+					DO_J5_ACCEPT = 'false'
+					DO_J5_PERMS  = 'false'
+
+					DO_J4_SMOKE  = 'true'
+					DO_J4_ACCEPT = 'false'
+					DO_J4_PERMS  = 'false'
+
 					DO_DEV_UPLOAD = 'false'
 					PACK_PACKAGE  = 'true'
 
@@ -55,7 +59,7 @@ pipeline {
 		stage('Run smoke tests with J5') {
 			when {
 				expression {
-					return DO_J5_ACCEPT == 'true'
+					return DO_J5_SMOKE == 'true'
 				}
 			}
 			steps {
@@ -78,7 +82,7 @@ pipeline {
 		stage('Remove smoke tests container images J5') {
 			when {
 				expression {
-					return DO_J5_ACCEPT == 'true'
+					return DO_J5_SMOKE == 'true'
 				}
 			}
 			steps {
@@ -195,7 +199,7 @@ pipeline {
 		stage('Run smoke tests with J4') {
 			when {
 				expression {
-					return DO_J4_ACCEPT == 'true'
+					return DO_J4_SMOKE == 'true'
 				}
 			}
 			steps {
@@ -218,7 +222,7 @@ pipeline {
 		stage('Remove smoke tests container images J4') {
 			when {
 				expression {
-					return DO_J4_ACCEPT == 'true'
+					return DO_J4_SMOKE == 'true'
 				}
 			}
 			steps {

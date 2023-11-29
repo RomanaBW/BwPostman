@@ -151,7 +151,7 @@ class MainviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $maintenanceButton        = '//*/div[contains(@class,"bw-icons")]/div/div[15]';
+	public static $maintenanceButton        = "//*/div[contains(@class,'bw-icons')]/div/div/div/a/span[contains(text(),'Maintenance')]";
 
 	/**
 	 * @var string

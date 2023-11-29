@@ -609,7 +609,9 @@ class MaintenancePage
 		$I->expectTo("see 'Result check okay'");
 		$I->amOnPage(MainView::$url);
 
-		$I->click(MainView::$maintenanceButton);
+        $I->scrollTo(MainView::$maintenanceButton, 0, -100);
+        $I->wait(1);
+        $I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(self::$heading);

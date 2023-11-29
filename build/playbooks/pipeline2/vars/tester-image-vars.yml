@@ -1,13 +1,13 @@
 ---
 # Fast changing variables
-joomla_version: "5.0.0"
-#joomla_version: "4.4.0"
+joomla_version: "5.0.1"
+#joomla_version: "4.4.1"
 
 j_version_short: "j4"
 
-bwpm_version: "4.2.6"
-bwpm_version_dotted: "4.2.6"
-bwpm_version_previous: "4.2.5"
+bwpm_version: "4.2.7"
+bwpm_version_dotted: "4.2.7"
+bwpm_version_previous: "4.2.6"
 
 j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 

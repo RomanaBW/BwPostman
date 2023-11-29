@@ -67,7 +67,9 @@ class TestMaintenanceCest
 		$I->setManifestOption('com_bwpostman', 'compress_backup', '1');
 
 		$I->amOnPage(MainView::$url);
-		$I->click(MainView::$maintenanceButton);
+        $I->scrollTo(MainView::$maintenanceButton, 0, -100);
+        $I->wait(1);
+        $I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(MaintenancePage::$heading);
@@ -123,6 +125,8 @@ class TestMaintenanceCest
 		$I->setManifestOption('com_bwpostman', 'compress_backup', '0');
 
 		$I->amOnPage(MainView::$url);
+        $I->scrollTo(MainView::$maintenanceButton, 0, -100);
+        $I->wait(1);
 		$I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);
@@ -177,7 +181,9 @@ class TestMaintenanceCest
 		$I->wantTo("Check tables");
 		$I->expectTo("see 'Result check okay'");
 		$I->amOnPage(MainView::$url);
-		$I->click(MainView::$maintenanceButton);
+        $I->scrollTo(MainView::$maintenanceButton, 0, -100);
+        $I->wait(1);
+        $I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(MaintenancePage::$heading);
@@ -322,7 +328,9 @@ class TestMaintenanceCest
 		$I->wantTo("test basic settings button");
 		$I->expectTo("see configuration page");
 		$I->amOnPage(MainView::$url);
-		$I->click(MainView::$maintenanceButton);
+        $I->scrollTo(MainView::$maintenanceButton, 0, -100);
+        $I->wait(1);
+        $I->click(MainView::$maintenanceButton);
 
 		$I->waitForElement(Generals::$pageTitle, 30);
 		$I->see(MaintenancePage::$heading);
@@ -355,7 +363,9 @@ class TestMaintenanceCest
 			$I->wantTo("test forum link");
 			$I->expectTo("see new page with forum of BwPostman");
 			$I->amOnPage(MainView::$url);
-			$I->click(MainView::$maintenanceButton);
+            $I->scrollTo(MainView::$maintenanceButton, 0, -100);
+            $I->wait(1);
+            $I->click(MainView::$maintenanceButton);
 
 			$I->waitForElement(Generals::$pageTitle, 30);
 			$I->see(MaintenancePage::$heading);

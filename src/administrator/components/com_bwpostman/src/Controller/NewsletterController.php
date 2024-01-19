@@ -32,6 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use Exception;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Event\Event;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
@@ -511,7 +512,17 @@ class NewsletterController extends FormController
 
 		// Test whether the data is valid.
 		PluginHelper::importPlugin('bwpostman');
-		$app->triggerEvent('onBwPostmanBeforeNewsletterControllerValidate', array(&$form));
+        $eventArgs = array(
+            'form'      => $form,
+        );
+        $event = new Event('onBwPostmanBeforeNewsletterControllerValidate', $eventArgs);
+        $app->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
+
+        if ($eventResults)
+        {
+            $form = $eventResults[0];
+        }
 
 		// convert attachment JSON to array, to be able to check subform
 		if (isset($data['attachment']) && is_string($data['attachment']))

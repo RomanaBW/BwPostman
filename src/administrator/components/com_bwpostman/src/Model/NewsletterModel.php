@@ -277,9 +277,24 @@ class NewsletterModel extends AdminModel
 				}
 
 				// Convert to the JObject before adding other data.
-				$properties = $table->getProperties(1);
+                $properties = get_object_vars($table);
+//				$properties = $table->getProperties(1);
 
-				$app->triggerEvent('onBwPostmanAfterNewsletterModelGetProperties', array(&$properties));
+
+                $eventArgs = array(
+                    'properties'   => $properties,
+                );
+                $event = new Event('onBwPostmanAfterNewsletterModelGetProperties', $eventArgs);
+                $app->getDispatcher()->dispatch($event->getName(), $event);
+                $eventResults = $event->getArgument('result', []);
+
+                if ($eventResults)
+                {
+                    $properties = $eventResults[0];
+                }
+
+
+//                $app->triggerEvent('onBwPostmanAfterNewsletterModelGetProperties', array(&$properties));
 				$item = ArrayHelper::toObject($properties, 'JObject');
 
 				if (property_exists($item, 'params'))

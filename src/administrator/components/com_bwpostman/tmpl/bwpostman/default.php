@@ -46,8 +46,8 @@ if ($this->queueEntries) {
 }
 ?>
 
-<div id="view_bwpostman">
-	<div class="top-spacer row clearfix">
+<div id="view_bwpostman" class="col-md-12">
+	<div class="top-spacer row col-md-12 clearfix">
 			<?php
             if ($postInstallMsg)
             {

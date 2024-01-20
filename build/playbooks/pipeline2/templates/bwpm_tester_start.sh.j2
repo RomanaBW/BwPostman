@@ -12,13 +12,13 @@
   echo "Display {{ display }}"
   /usr/bin/Xvfb :{{ display }} -ac -screen 0 {{ screen_size }}x16 &
 
-java -jar -Dwebdriver.chrome.driver=/opt/selenium/chromedriver-91.0.4472.19 -Dwebdriver.chrome.logfile=/data/logs/chromedriver_log.txt -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone.jar -port 4445 >/data/logs/selenium_log.txt 2>/data/logs/selenium_log.txt &
+# java -jar -Dwebdriver.chrome.driver=/opt/selenium/chromedriver-91.0.4472.19 -Dwebdriver.chrome.logfile=/data/logs/chromedriver_log.txt -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone.jar -port 4445 >/data/logs/selenium_log.txt 2>/data/logs/selenium_log.txt &
+java -jar /opt/selenium/selenium-server.jar standalone --port 4445 >/data/logs/selenium.log 2>/selenium.log &
 
 # Loop until selenium server is available
-until $(curl --output /dev/null --silent --head --fail http://localhost:4445/wd/hub); do
-printf '.'
-sleep 1
-done
+printf 'Waiting Selenium Server to load\n'
+sleep 5
+
 printf '\n'
 
 # start video recording

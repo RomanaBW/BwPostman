@@ -29,8 +29,10 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\View\Maintenance;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+\JLoader::registerNamespace('BoldtWebservice\\Plugin\\Bwpostman\\Bwtimecontrol\\Helper', JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers');
+
+use BoldtWebservice\Plugin\Bwpostman\Bwtimecontrol\Helper\BwPostmanPhpCron;
 use Exception;
-use JHtmlSidebar;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -170,9 +172,7 @@ class HtmlView extends BaseHtmlView
 
 		if (PluginHelper::isEnabled('bwpostman', 'bwtimecontrol'))
 		{
-			require_once JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php';
-
-			$cron = new \BwPostmanPhpCron;
+			$cron = new BwPostmanPhpCron;
 			$refreshInterval = 60;
 
 			// Check for start file
@@ -221,11 +221,6 @@ class HtmlView extends BaseHtmlView
 			case 'doRestore':
 				break;
 			default:
-		}
-
-		if (empty($layout))
-		{
-			$this->sidebar = JHtmlSidebar::render();
 		}
 
 		parent::display($tpl);

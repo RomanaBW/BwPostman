@@ -280,13 +280,27 @@ class com_bwpostmanInstallerScript
 			// Check if utf8mb4 is supported; if so, copy utf8mb4 file as sql installation file
 			$tmp_path   = $this->parentInstaller->getPath('source') . '/admin';
 
-			require_once($tmp_path . '/Helper/BwPostmanInstallHelper.php');
+            if ($type !== 'discover_install')
+            {
+                require_once($tmp_path . '/Helper/BwPostmanInstallHelper.php');
+            }
+            else
+            {
+                require_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/Helper/BwPostmanInstallHelper.php');
+            }
 
 			$name = $db->getName();
 
 			if (BwPostmanInstallHelper::serverClaimsUtf8mb4Support($name))
 			{
-				File::copy($tmp_path . '/sql/utf8mb4conversion/utf8mb4-install.sql', $tmp_path . '/sql/install.sql');
+                if ($type !== 'discover_install')
+                {
+                    File::copy($tmp_path . '/sql/utf8mb4conversion/utf8mb4-install.sql', $tmp_path . '/sql/install.sql');                    require_once($tmp_path . '/Helper/BwPostmanInstallHelper.php');
+                }
+                else
+                {
+                    File::copy(JPATH_ADMINISTRATOR . '/components/com_bwpostman/sql/utf8mb4conversion/utf8mb4-install.sql', JPATH_ADMINISTRATOR . '/components/com_bwpostman/sql/install.sql');
+                }
 			}
 		}
 

@@ -23,11 +23,9 @@ echo "Pid of Xvfb: ${PIDOF_XVFB}"
 
 java -jar /opt/selenium/selenium-server.jar standalone --port 4445 >{{ test_log_path }}/selenium.log 2>{{ test_log_path }}/selenium.log &
 
-# Loop until selenium server is available
-#until $(curl --output /dev/null --silent --head --fail http://localhost:4445/wd/hub); do
-#    printf '.'
-#    sleep 1
-#done
+# Wait until selenium server and web driver are available
+sleep 5
+
 printf '\n'
 
 # Start recording

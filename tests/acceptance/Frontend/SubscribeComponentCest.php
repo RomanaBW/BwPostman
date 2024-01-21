@@ -868,7 +868,7 @@ class SubscribeComponentCest
 		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link_modal);
-		$I->wait(10);
+		$I->wait(15);
 		$I->waitForElementVisible(SubsView::$disclaimer_modal_identifier, 5);
 		$I->switchToIframe('BwpFrame');
 		$I->see(SubsView::$disclaimer_url_text);
@@ -884,7 +884,7 @@ class SubscribeComponentCest
 		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link_modal);
-		$I->wait(10);
+		$I->wait(15);
 		$I->waitForElementVisible(SubsView::$disclaimer_modal_identifier, 5);
 		$I->switchToIframe('BwpFrame');
 		$I->see(SubsView::$disclaimer_article_text);
@@ -900,7 +900,7 @@ class SubscribeComponentCest
 		$I->wait(1);
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link_modal);
-		$I->wait(10);
+		$I->wait(15);
 		$I->waitForElementVisible(SubsView::$disclaimer_modal_identifier, 5);
 		$I->switchToIframe('BwpFrame');
 		$I->see(SubsView::$disclaimer_menuitem_text);

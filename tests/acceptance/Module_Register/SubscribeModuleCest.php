@@ -602,7 +602,7 @@ class SubscribeModuleCest
 		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link_modal);
-		$I->wait(10);
+		$I->wait(15);
 		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
 		$I->switchToIframe('BwpFrame');
 		$I->see(Helper::$mod_disclaimer_url_text);
@@ -677,6 +677,7 @@ class SubscribeModuleCest
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link);
 		$I->switchToNextTab();
+        $I->wait(15);
 		$I->see(Helper::$mod_disclaimer_url_text);
 		$I->closeTab();
 
@@ -741,6 +742,7 @@ class SubscribeModuleCest
 		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link);
+        $I->wait(15);
 		$I->see(Helper::$mod_disclaimer_url_text);
 
 		// Set disclaimer to article

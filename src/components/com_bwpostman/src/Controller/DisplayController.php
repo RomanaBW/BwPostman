@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Model\BwpostmanModel;
-use BwPostmanPhpCron;
+use BoldtWebservice\Plugin\Bwpostman\Bwtimecontrol\Helper\BwPostmanPhpCron;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -174,7 +174,9 @@ class DisplayController extends BaseController
 	 */
 	public function doCron(): bool
 	{
-		$plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
+        \JLoader::registerNamespace('BoldtWebservice\\Plugin\\Bwpostman\\Bwtimecontrol\\Helper', JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers');
+
+        $plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
 		$pluginParams = new Registry();
 		$pluginParams->loadString($plugin->params);
 		$pluginPw   = (string) $pluginParams->get('bwtimecontrol_passwd', '');
@@ -185,12 +187,10 @@ class DisplayController extends BaseController
 			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_TC_NO_CREDENTIALS'), 'error');
 		}
 
-		require_once JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers/phpcron.php';
 		$bwpostmancron = new BwPostmanPhpCron();
 
 		$bwpostmancron->doCronJob();
 
 		return true;
 	}
-
 }

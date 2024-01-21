@@ -27,8 +27,6 @@
 
 namespace BoldtWebservice\Component\BwPostman\API\Controller;
 
-\JLoader::registerNamespace('BoldtWebservice\\Plugin\\Bwpostman\\Bwtimecontrol\\Helper', JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers');
-
 use BoldtWebservice\Plugin\Bwpostman\Bwtimecontrol\Helper\BwPostmanPhpCron;
 use Exception;
 use Joomla\CMS\Factory;
@@ -98,6 +96,8 @@ class MaintenanceController extends ApiController
      */
     public function doCron(): void
     {
+        \JLoader::registerNamespace('BoldtWebservice\\Plugin\\Bwpostman\\Bwtimecontrol\\Helper', JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers');
+
         $plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
         $pluginParams = new Registry();
         $pluginParams->loadString($plugin->params);

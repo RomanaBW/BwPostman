@@ -41,6 +41,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMaintenanceHelper;
+use Joomla\Event\Event;
 use Joomla\Registry\Registry;
 
 /**
@@ -382,7 +383,13 @@ class MaintenanceController extends BaseController
 		else
 		{
 			PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-			$results = Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceStartCron');
+
+            $eventArgs = array(
+                'subject'   => $this,
+            );
+            $event = new Event('onBwPostmanMaintenanceStartCron', $eventArgs);
+            Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+            $results = $event->getArgument('result', []);
 
 			if ($results[0] !== true)
 			{

@@ -372,8 +372,8 @@ class TestMaintenanceCest
 
 			$I->click(MaintenancePage::$forumButton);
 			$I->switchToNextTab();
-			$I->wait(5);
-			$I->see("In this category you can ask your questions for the Joomla! extension BwPostman.");
+			$I->waitForElement(MaintenancePage::$forumText, 20);
+//			$I->see("In this category you can ask your questions for the Joomla! extension BwPostman.");
 		}
 	}
 

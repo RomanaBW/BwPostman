@@ -86,7 +86,14 @@ class MaintenancePage
 	 */
 	public static $forumButton          = "//*/div/a/span[contains(text(),'BwPostman Forum')]";
 
-	/**
+    /**
+     * @var string
+     *
+     * @since 4.2.7
+     */
+    public static $forumText          = "//*/div[contains(text(),'In this category you can ask your questions for the Joomla! extension BwPostman.')]";
+
+    /**
 	 * @var string
 	 *
 	 * @since 2.0.0

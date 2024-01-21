@@ -372,7 +372,7 @@ class TestMaintenanceCest
 
 			$I->click(MaintenancePage::$forumButton);
 			$I->switchToNextTab();
-			$I->wait(2);
+			$I->wait(5);
 			$I->see("In this category you can ask your questions for the Joomla! extension BwPostman.");
 		}
 	}

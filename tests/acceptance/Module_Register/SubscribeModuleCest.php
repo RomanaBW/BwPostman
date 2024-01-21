@@ -602,7 +602,7 @@ class SubscribeModuleCest
 		$I->wait(1);
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link_modal);
-		$I->wait(2);
+		$I->wait(10);
 		$I->waitForElementVisible(Helper::$mod_disclaimer_modal_identifier, 5);
 		$I->switchToIframe('BwpFrame');
 		$I->see(Helper::$mod_disclaimer_url_text);

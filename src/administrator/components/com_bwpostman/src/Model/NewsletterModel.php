@@ -2125,8 +2125,15 @@ class NewsletterModel extends AdminModel
 		}
 		catch (UnexpectedValueException | InvalidArgumentException | MailDisabledException | \PHPMailer\PHPMailer\Exception  | \Exception $exception)
 		{
-			$message    = $exception->getMessage();
-			$res        = false;
+			$message  = $exception->getMessage();
+
+            $eType    = get_class($exception);
+            $message .= 'Exception: ' . $eType;
+
+            $trace    = $exception->getTraceAsString();
+            $message .= 'Trace: ' . $trace;
+
+			$res      = false;
 
 			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'send newsletter'));
 		}

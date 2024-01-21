@@ -691,6 +691,7 @@ class SubscribeModuleCest
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link);
 		$I->switchToNextTab();
+        $I->wait(3);
 		$I->see(Helper::$mod_disclaimer_article_text);
 		$I->closeTab();
 
@@ -704,6 +705,7 @@ class SubscribeModuleCest
 		$I->seeElement(Helper::$mod_disclaimer);
 		$I->click(Helper::$mod_disclaimer_link);
 		$I->switchToNextTab();
+        $I->wait(3);
 		$I->see(Helper::$mod_disclaimer_menuitem_text);
 		$I->closeTab();
 

@@ -945,6 +945,7 @@ class SubscribeComponentCest
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link);
 		$I->switchToNextTab();
+        $I->wait(15);
 		$I->see(SubsView::$disclaimer_url_text);
 		$I->closeTab();
 
@@ -958,6 +959,7 @@ class SubscribeComponentCest
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link);
 		$I->switchToNextTab();
+        $I->wait(5);
 		$I->see(SubsView::$disclaimer_article_text);
 		$I->closeTab();
 
@@ -971,6 +973,7 @@ class SubscribeComponentCest
 		$I->seeElement(SubsView::$disclaimer);
 		$I->click(SubsView::$disclaimer_link);
 		$I->switchToNextTab();
+        $I->wait(5);
 		$I->see(SubsView::$disclaimer_menuitem_text);
 		$I->closeTab();
 

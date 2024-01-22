@@ -190,6 +190,7 @@ class SubscribeComponentCest
 
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
+        $I->wait(1);
 
 		$I->scrollTo(SubsView::$registration_complete);
 		$I->wait(1);

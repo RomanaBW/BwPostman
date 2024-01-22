@@ -7,7 +7,7 @@ pipeline {
 				script {
 					BWPM_VERSION = "4.2.7"
 
-					JOOMLA_VERSION_4 = "4.4.1"
+					JOOMLA_VERSION_4 = "4.4.2"
 					JOOMLA_VERSION_5 = "5.0.2"
 
 					DO_J5_SMOKE  = 'true'
@@ -597,8 +597,8 @@ pipeline {
 			}
 			steps {
 				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed all permission tests for Joomla ${JOOMLA_VERSION_5} and php ${PHP_VERSION_4} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J${JOOMLA_VERSION_5} permissions php ${PHP_VERSION_4} build ${currentBuild.number} successful",
+					body: "<p>BwPostman build ${currentBuild.number} has passed all permission tests for Joomla ${JOOMLA_VERSION_4} and php ${PHP_VERSION_4} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman J${JOOMLA_VERSION_4} permissions php ${PHP_VERSION_4} build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de'
 				)
 			}

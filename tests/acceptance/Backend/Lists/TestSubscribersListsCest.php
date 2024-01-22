@@ -815,7 +815,7 @@ class TestSubscribersListsCest
 		$I->seeElement(SubsManage::$import_search_button);
 		$I->attachFile(SubsManage::$import_search_button, SubsManage::$import_xml_file);
 
-		$I->click(SubsManage::$import_button_further);
+		$I->clickAndWait(SubsManage::$import_button_further, 1);
 
 		$I->see(SubsManage::$import_xml_file);
 

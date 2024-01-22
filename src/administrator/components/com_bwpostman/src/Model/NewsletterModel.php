@@ -277,8 +277,8 @@ class NewsletterModel extends AdminModel
 				}
 
 				// Convert to the JObject before adding other data.
-                $properties = get_object_vars($table);
-//				$properties = $table->getProperties(1);
+//                $properties = get_object_vars($table);
+				$properties = $table->getProperties(1);
 
 
                 $eventArgs = array(

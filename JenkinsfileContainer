@@ -8,7 +8,7 @@ pipeline {
 					BWPM_VERSION = "4.2.7"
 
 					JOOMLA_VERSION_4 = "4.4.1"
-					JOOMLA_VERSION_5 = "5.0.1"
+					JOOMLA_VERSION_5 = "5.0.2"
 
 					DO_J5_SMOKE  = 'true'
 					DO_J5_ACCEPT = 'true'
@@ -186,8 +186,8 @@ pipeline {
 			}
 			steps {
 				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 5 and php ${PHP_VERSION_5} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J5 acceptance php ${PHP_VERSION_5} build ${currentBuild.number} successful",
+					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_5} and php ${PHP_VERSION_5} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman J${JOOMLA_VERSION_5} acceptance php ${PHP_VERSION_5} build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de'
 				)
 			}
@@ -325,8 +325,8 @@ pipeline {
 			}
 			steps {
 				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 4 and php ${PHP_VERSION_4} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J4 php ${PHP_VERSION_4} build ${currentBuild.number} successful",
+					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_4} and php ${PHP_VERSION_4} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman J${JOOMLA_VERSION_4} php ${PHP_VERSION_4} build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de'
 				)
 			}
@@ -391,8 +391,8 @@ pipeline {
 			)
 
 //				emailext(
-//					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla 4 and php 7 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-//					subject:"BwPostman J5 php 7 build ${currentBuild.number} successful",
+//					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_4} and php 7 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+//					subject:"BwPostman J${JOOMLA_VERSION_4} php 7 build ${currentBuild.number} successful",
 //					to: 'webmaster@boldt-webservice.de'
 //				)
 //				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
@@ -495,8 +495,8 @@ pipeline {
 			}
 			steps {
 				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed all permission tests for Joomla 5 and php ${PHP_VERSION_5} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J5 permissions php ${PHP_VERSION_5} build ${currentBuild.number} successful",
+					body: "<p>BwPostman build ${currentBuild.number} has passed all permission tests for Joomla ${JOOMLA_VERSION_5} and php ${PHP_VERSION_5} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman J${JOOMLA_VERSION_5} permissions php ${PHP_VERSION_5} build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de'
 				)
 			}
@@ -597,8 +597,8 @@ pipeline {
 			}
 			steps {
 				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed all permission tests for Joomla 4 and php ${PHP_VERSION_4} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J4 permissions php ${PHP_VERSION_4} build ${currentBuild.number} successful",
+					body: "<p>BwPostman build ${currentBuild.number} has passed all permission tests for Joomla ${JOOMLA_VERSION_5} and php ${PHP_VERSION_4} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+					subject:"BwPostman J${JOOMLA_VERSION_5} permissions php ${PHP_VERSION_4} build ${currentBuild.number} successful",
 					to: 'webmaster@boldt-webservice.de'
 				)
 			}

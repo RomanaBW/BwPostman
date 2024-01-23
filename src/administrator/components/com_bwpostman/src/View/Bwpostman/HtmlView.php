@@ -30,7 +30,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\View\Bwpostman;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
-use JHtmlSidebar;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -133,8 +132,6 @@ class HtmlView extends BaseHtmlView
 		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
 		$this->addToolbar();
-
-		$this->sidebar = JHtmlSidebar::render();
 
 		parent::display($tpl);
 

@@ -30,7 +30,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\View\Newsletters;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
-use JHtmlSidebar;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -206,8 +205,6 @@ class HtmlView extends BaseHtmlView
 		$this->context			= 'com_bwpostman.newsletters';
 
 		$this->addToolbar();
-
-		$this->sidebar = JHtmlSidebar::render();
 
 		// Show the layout depending on the tab
 		$tpl = $jinput->get('tab', 'unsent');

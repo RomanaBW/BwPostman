@@ -30,7 +30,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\View\Campaigns;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
-use JHtmlSidebar;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -161,8 +160,6 @@ class HtmlView extends BaseHtmlView
 //		$this->auto_nbr	= $app->triggerEvent('onBwPostmanCampaignsPrepare', array (&$this->items));
 
 		$this->addToolbar();
-
-		$this->sidebar = JHtmlSidebar::render();
 
 		// Call parent display
 		parent::display($tpl);

@@ -30,7 +30,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\View\Mailinglists;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
-use JHtmlSidebar;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -154,8 +153,6 @@ class HtmlView extends BaseHtmlView
 		$this->total			= $this->get('total');
 
 		$this->addToolbar();
-
-		$this->sidebar = JHtmlSidebar::render();
 
 		// Call parent display
 		parent::display($tpl);

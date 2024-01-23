@@ -30,7 +30,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\View\Archive;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
-use JHtmlSidebar;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -170,8 +169,6 @@ class HtmlView extends BaseHtmlView
 		}
 
 		$this->addToolbar();
-
-		$this->sidebar = JHtmlSidebar::render();
 
 		$wa = $this->document->getWebAssetManager();
 		$wa->useScript('com_bwpostman.admin-bwpm_confirm_unarchive');

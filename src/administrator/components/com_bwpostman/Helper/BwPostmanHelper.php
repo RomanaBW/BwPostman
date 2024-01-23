@@ -30,7 +30,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
-use JHtmlSidebar;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -72,94 +71,7 @@ class BwPostmanHelper
 		return Factory::getContainer()->get('db');
 	}
 
-	/**
-	 * Configure the Link bar.
-	 *
-	 * @param string $vName The name of the task view.
-	 *
-	 * @return    void
-	 *
-	 * @throws Exception
-	 *
-	 * @since    1.2.0
-	 */
-	public static function addSubmenu(string $vName)
-	{
-		if (!is_array(self::$permissions))
-		{
-			self::setPermissionsState();
-		}
-
-		JHtmlSidebar::addEntry(
-			Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY'),
-			'index.php?option=com_bwpostman',
-			$vName == 'bwpostman'
-		);
-
-		if (self::$permissions['view']['newsletter'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_NLS'),
-				'index.php?option=com_bwpostman&view=newsletters',
-				$vName == 'newsletters'
-			);
-		}
-
-		if (self::$permissions['view']['subscriber'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_SUBS'),
-				$vName == 'subscribers'
-			);
-		}
-
-		if (self::$permissions['view']['campaign'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_CAMS'),
-				'index.php?option=com_bwpostman&view=Campaigns',
-				$vName == 'campaigns'
-			);
-		}
-
-		if (self::$permissions['view']['mailinglist'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MLS'),
-				'index.php?option=com_bwpostman&view=Mailinglists',
-				$vName == 'mailinglists'
-			);
-		}
-
-		if (self::$permissions['view']['template'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_TPLS'),
-				'index.php?option=com_bwpostman&view=Templates',
-				$vName == 'templates'
-			);
-		}
-
-		if (self::$permissions['view']['archive'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_ARC'),
-				'index.php?option=com_bwpostman&view=Archive&layout=newsletters',
-				$vName == 'archive'
-			);
-		}
-
-		if (self::$permissions['view']['maintenance'])
-		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_BWPOSTMAN_MENU_MAIN_ENTRY_MAINTENANCE'),
-				'index.php?option=com_bwpostman&view=Maintenance',
-				$vName == 'maintenance'
-			);
-		}
-	}
-
-	/**
+		/**
 	 * Check if BwPostman is safe to be used.
 	 *
 	 * If installer is running, it's unsafe to use our framework. Files may be currently replaced with

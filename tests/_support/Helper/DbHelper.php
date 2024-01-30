@@ -229,7 +229,7 @@ class DbHelper extends Module
 			$table_name = Generals::$db_prefix . 'modules';
 			$where      = " WHERE `module` = '$extension'";
 		}
-	else
+	    else
 		{
 			$table_name = Generals::$db_prefix . 'extensions';
 			$where      = " WHERE `element` = '$extension'";

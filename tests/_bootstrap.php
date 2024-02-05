@@ -1,7 +1,7 @@
 <?php
 // This is global bootstrap for autoloading
 
-//require __DIR__ . '/_support/BwRunFailed.php';
+require __DIR__ . '/_support/BwRunFailed.php';
 
 /*
 \Codeception\Configuration::$defaultSuiteSettings['paths'] = [

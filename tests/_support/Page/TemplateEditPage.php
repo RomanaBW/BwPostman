@@ -432,7 +432,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $html_style       = "//*[@id='jform_tpl_html_editor_source_textarea']";
+	public static $html_style       = "//*[@id='jform_tpl_html']";
 
 	/**
 	 * @var string
@@ -448,7 +448,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_editor_toggle     = "//*/button[contains(@aria-controls, 'wf-editor-source')]";
+	public static $button_editor_toggle     = "//*/button[contains(@class, 'js-tiny-toggler-button')]";
 
 	/**
 	 * @var string

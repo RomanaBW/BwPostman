@@ -447,8 +447,8 @@ class Generals
 	 * @since  2.1.0
 	 */
 	public static $downloadFolder = array(
-		'root' => '/tests/tests/_output/',
-		'user1' => '/tests/tests/_output/',
+		'root' => '/data/output/',
+		'user1' => '/data/output/',
 		'user2' => '/repositories/artifacts/bwpostman4/downloads/',
 		'jenkins' => '/repositories/artifacts/bwpostman4/downloads/',
 		);

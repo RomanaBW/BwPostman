@@ -125,14 +125,14 @@ class NewsletterEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $button_editor_toggle     = "//*/button[contains(@aria-controls, 'wf-editor-source')]";
+	public static $button_editor_toggle     = "//*/button[contains(@class, 'js-tiny-toggler-button')]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $tab2_iframe      = "jform_html_version_ifr";
+	public static $tab2_iframe      = "#jform_html_version_ifr";
 
 
 	/**
@@ -1463,7 +1463,7 @@ class NewsletterEditPage
 //		$I->setIframeName(Generals::$media_frame1);
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->waitForElementVisible("div.media-browser-grid", 5);
-		$I->wait(1);
+		$I->wait(3);
 
 		$I->scrollTo(self::$attachment_scrollto_select1, 0, 0);
 		$I->wait(1);

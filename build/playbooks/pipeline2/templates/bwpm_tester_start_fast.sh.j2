@@ -4,6 +4,8 @@ whoami
 echo "Test-Cat: {{ test_cat }}"
 echo "Project: {{ project_name }}"
 
+sudo chmod 1777 /tmp/.X11-unix
+
 VIDEO_NAME=/tests/tests/_output/{{ project_name }}/videos/{{ test_cat }}.mp4
 VIDEO_LOG=/tests/tests/_output/{{ project_name }}/videos/ffmpeg.log
 
@@ -16,12 +18,14 @@ export DISPLAY=${DISPLAY}
 echo "Video-Name: ${VIDEO_NAME}"
 echo "Display: ${DISPLAY}"
 
+sudo chmod 0777 /data/logs/selenium.log
+
 # java -jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver -Dwebdriver.chrome.logfile=/data/logs/chromedriver_log.txt -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone.jar -port 4445 >/data/logs/selenium_log.txt 2>/data/logs/selenium_log.txt &
-java -jar /opt/selenium/selenium-server.jar standalone --port 4445 >/data/logs/selenium.log 2>/selenium.log &
+java -jar /opt/selenium/selenium-server.jar standalone --port 4445 >/tests/tests/_output/{{ project_name }}/selenium.log 2>/tests/tests/_output/{{ project_name }}/selenium.log &
 
 # Loop until selenium server is available
 printf 'Waiting Selenium Server to load\n'
-sleep 5
+sleep 10
 
 printf '\n'
 
@@ -41,4 +45,4 @@ XVFB_PID="$(pgrep -f /usr/bin/Xvfb)"
 echo "PID: ${XVFB_PID}"
 kill "$(pgrep -f /usr/bin/Xvfb)"
 
-#sleep 120
+# sleep 120

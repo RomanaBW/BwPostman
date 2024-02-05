@@ -811,7 +811,7 @@ class TestNewslettersDetailsCest
 		$I->scrollTo(Generals::$nlTabBar, 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(NlEdit::$tab2, 3);
-		$I->executeJS("document.getElementById('" . NlEdit::$tab2_iframe . "').setAttribute('name', '" . NlEdit::$tab2_iframe . "');");
+//		$I->executeJS("document.getElementById('" . NlEdit::$tab2_iframe . "').setAttribute('name', '" . NlEdit::$tab2_iframe . "');");
 		$I->switchToIFrame(NlEdit::$tab2_iframe);
 		$I->waitForElement(NlEdit::$tab2_editor);
 		$I->waitForText($content_title, 30);
@@ -1129,6 +1129,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$description, NlEdit::$field_edit_description);
 
 		$I->click(Generals::$toolbar['Save']);
+        $I->wait(2);
 		Generals::dontSeeAnyWarning($I);
 
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
@@ -1271,20 +1272,7 @@ class TestNewslettersDetailsCest
 		// always select recipients, without that other warnings don't appear
 		NlEdit::selectRecipients($I);
 
-		// omit from_name
-		$I->scrollTo(NlEdit::$legend_general, 0, -100);
-		$I->wait(1);
-		$I->fillField(NlEdit::$from_name, '');
-		$I->fillField(NlEdit::$subject, NlEdit::$field_subject);
-		$I->clickAndWait(NlEdit::$description, 1);
-		$I->click(Generals::$toolbar4['Save']);
-		$I->waitForElement(Generals::$alert_header, 30);
-		$I->see(Generals::$alert_warn_txt);
-		$I->see(NlEdit::$msg_required_sender_name, Generals::$alert_warn);
-		$I->clickAndWait(Generals::$systemMessageClose, 1);
-
 		// omit from_email
-		NlEdit::selectRecipients($I);
 		$I->scrollTo(NlEdit::$legend_general, 0, -100);
 		$I->wait(1);
 		$I->fillField(NlEdit::$from_name, NlEdit::$field_from_name);
@@ -1310,7 +1298,20 @@ class TestNewslettersDetailsCest
 		$I->see(NlEdit::$msg_required_replyto_email, Generals::$alert_warn);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
-		// omit subject
+        // omit from_name
+        NlEdit::selectRecipients($I);
+        $I->scrollTo(NlEdit::$legend_general, 0, -100);
+        $I->wait(1);
+        $I->fillField(NlEdit::$from_name, '');
+        $I->fillField(NlEdit::$subject, NlEdit::$field_subject);
+        $I->clickAndWait(NlEdit::$description, 1);
+        $I->click(Generals::$toolbar4['Save']);
+        $I->waitForElement(Generals::$alert_header, 30);
+        $I->see(Generals::$alert_warn_txt);
+        $I->see(NlEdit::$msg_required_sender_name, Generals::$alert_warn);
+        $I->clickAndWait(Generals::$systemMessageClose, 1);
+
+        // omit subject
 		NlEdit::selectRecipients($I);
 		$I->scrollTo(NlEdit::$legend_general, 0, -100);
 		$I->wait(1);

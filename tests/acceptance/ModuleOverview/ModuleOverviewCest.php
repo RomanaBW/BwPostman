@@ -70,7 +70,7 @@ class ModuleOverviewCest
 
 		// Open Module configuration page
 		$I->amOnPage(InstallationPage::$siteModulesUrl);
-		$I->fillField(Generals::$search_field, 'BwPostman Overview Module');
+		$I->fillField(Generals::$search_field, 'Newsletter Overview');
 		$I->clickAndWait(InstallationPage::$search_button, 1);
 
 		$I->click(InstallationPage::$overviewModuleLine);

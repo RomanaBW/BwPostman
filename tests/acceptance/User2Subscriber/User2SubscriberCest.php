@@ -1980,7 +1980,7 @@ class User2SubscriberCest
 				{
 					$I->seeElement(".//*[@id='userList']/tbody/tr[1]/td[4]/a/span", array('class' => 'icon-unpublish'));
 					$I->clickAndWait(".//*[@id='userList']/tbody/tr[1]/td[4]/a", 1);
-					$I->seeElement(".//*[@id='userList']/tbody/tr[1]/td[4]/span/span", array('class' => 'icon-publish'));
+					$I->seeElement(".//*[@id='userList']/tbody/tr[1]/td[4]/span", array('class' => 'icon-check'));
 					$this->activated    = true;
 
 					self::checkForSubscriptionSuccess($I);

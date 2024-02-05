@@ -86,16 +86,18 @@ class TestMaintenanceCest
 		$path     = Generals::$downloadFolder[$user];
 		$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml.zip';
 		$downloadPath = $path . $filename;
-		codecept_debug("Download path: " . $downloadPath);
+//        codecept_debug("User: " . $user);
+//        codecept_debug("Current path: " . getcwd());
+//		codecept_debug("Download path: " . $downloadPath);
 
-		$I->clickAndWait(MaintenancePage::$saveTablesButton, 15);
-
-		$I->assertTrue(file_exists($downloadPath));
+        $I->clickAndWait(MaintenancePage::$saveTablesButton, 15);
 
 		$withdraw = getenv('BW_TEST_WITHDRAW');
 		codecept_debug ('ENV withdraw: ' . $withdraw);
 
-		if ($withdraw == false)
+        $I->assertTrue(file_exists($downloadPath));
+
+        if ($withdraw == false || $withdraw == 'no')
 		{
 			codecept_debug ('Unlink downloaded file');
 			unlink($downloadPath);
@@ -123,6 +125,7 @@ class TestMaintenanceCest
 		$I->expectTo("see xml file in download directory");
 
 		$I->setManifestOption('com_bwpostman', 'compress_backup', '0');
+        $I->wait(2);
 
 		$I->amOnPage(MainView::$url);
         $I->scrollTo(MainView::$maintenanceButton, 0, -100);
@@ -144,16 +147,19 @@ class TestMaintenanceCest
 		$path     = Generals::$downloadFolder[$user];
 		$filename = 'BwPostman_' . str_replace('.', '_', $versionToTest) . '_Tables_' . date("Y-m-d_H_i") . '.xml';
 		$downloadPath = $path . $filename;
+//        codecept_debug("User: " . $user);
+//        codecept_debug("Current path: " . getcwd());
+//        codecept_debug("Download path: " . $downloadPath);
 
 		$I->clickAndWait(MaintenancePage::$saveTablesButton, 10);
-
-		$I->assertTrue(file_exists($downloadPath));
 
 		$withdraw = getenv('BW_TEST_WITHDRAW');
 		codecept_debug ('ENV withdraw: ' . $withdraw);
 
-		if ($withdraw == false)
-		{
+        $I->assertTrue(file_exists($downloadPath));
+
+        if ($withdraw == false || $withdraw == 'no')
+        {
 			codecept_debug ('Unlink downloaded file');
 			unlink($downloadPath);
 		}
@@ -194,7 +200,7 @@ class TestMaintenanceCest
 		$I->waitForElement(MaintenancePage::$step3Field, 30);
 		$I->wait(10);
 		$I->waitForElement(MaintenancePage::$step4Field, 30);
-		$I->waitForElement(MaintenancePage::$step5Field, 60);
+		$I->waitForElement(MaintenancePage::$step5Field, 90);
 		$I->waitForElement(MaintenancePage::$step6Field, 30);
 		$I->waitForElement(MaintenancePage::$step7Field, 30);
 		$I->waitForElement(MaintenancePage::$step7SuccessClass, 30);

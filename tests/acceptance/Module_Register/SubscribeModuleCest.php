@@ -70,7 +70,7 @@ class SubscribeModuleCest
 
 		// Open Module configuration page
 		$I->amOnPage(InstallationPage::$siteModulesUrl);
-		$I->fillField(Generals::$search_field, 'BwPostman');
+		$I->fillField(Generals::$search_field, 'Newsletter Subscription');
 		$I->clickAndWait(InstallationPage::$search_button, 1);
 
 		$I->click(InstallationPage::$registrationModuleLine);

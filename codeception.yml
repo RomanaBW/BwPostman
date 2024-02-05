@@ -1,0 +1,25 @@
+---
+actor: Tester
+paths:
+  tests: tests
+  log: ../output/j502_bwpm427
+  data: ../repositories/artifacts/bwpostman4/data
+  support: tests/_support
+#    envs: tests/_envs
+settings:
+  colors: true
+  memory_limit: 2048M
+#extensions:
+#  enabled:
+#    - Codeception\Extension\BwRunFailed
+coverage:
+  enabled: true
+modules:
+  config:
+    Codeception\Extension\RemoteDebug:
+      sessionName: PHPSTORM
+
+    Db:
+      populate: false
+      cleanup: false
+

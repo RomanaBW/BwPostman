@@ -164,7 +164,7 @@ class TestCampaignsDetailsCest
 		$I->click(Generals::$toolbar['New']);
 
 		CamEdit::fillFormSimple($I);
-		$I->click(Generals::$toolbar4['Save & Close']);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 2);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 
 		$I->see(CamEdit::$success_save, Generals::$alert_success);

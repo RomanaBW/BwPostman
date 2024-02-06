@@ -19,7 +19,7 @@ pipeline {
 					DO_J4_PERMS  = 'true'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'true'
+					PACK_PACKAGE  = 'false'
 
 					PHP_VERSION_4 = "8.1.12"
 					PHP_VERSION_5 = "8.1.0"

@@ -74,7 +74,7 @@ class ModuleOverviewCest
         $I->selectOption("#filter_module", 'BwPostman Overview Module');
         $I->wait(2);
 
-		$I->click(InstallationPage::$overviewModuleLine);
+		$I->clickAndWait(InstallationPage::$overviewModuleLine, 2);
 		$I->waitForElement(InstallationPage::$positionField, 5);
 
 		// Fill module tab

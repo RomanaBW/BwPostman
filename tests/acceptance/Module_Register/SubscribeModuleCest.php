@@ -74,7 +74,7 @@ class SubscribeModuleCest
         $I->selectOption("#filter_module", 'BwPostman Module');
         $I->wait(2);
 
-		$I->click(InstallationPage::$registrationModuleLine);
+		$I->clickAndWait(InstallationPage::$registrationModuleLine, 2);
 		$I->waitForElement(InstallationPage::$positionField, 5);
 
 		// Fill module tab

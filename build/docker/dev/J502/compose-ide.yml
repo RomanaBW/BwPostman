@@ -1,0 +1,93 @@
+networks:
+  bwpm-ide.nil:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.5.8/29
+
+services:
+  bwpm-db:
+    volumes:
+      - db_data_502:/var/lib/mariadb
+    networks:
+      bwpm-ide.nil:
+        ipv4_address: 172.18.5.10
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MARIADB_DATABASE: joomlatest
+      MARIADB_USER: tester
+      MARIADB_PASSWORD_FILE: /run/secrets/db_password
+    expose:
+      - 3306
+
+  bwpm-joomla:
+    build:
+      network: host
+    volumes:
+      # mount webserver root
+      - type: bind
+        source: /home/container-files/j502
+        target: /var/www/html
+      # mount Joomla configuration
+      - type: bind
+        source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/dev/J502/configuration.php
+        target: /var/www/html/configuration.php
+      # mount logs folder
+      - type: bind
+        source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/dev/J502/logs
+        target: /var/www/html/administrator/logs
+    ports:
+      - 80:80
+      - 9000:9000
+    expose:
+      - 9000
+    healthcheck:
+      test: curl --fail http://172.18.5.11/index.php || exit 1
+      start_period: 5s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks:
+      bwpm-ide.nil:
+        ipv4_address: 172.18.5.11
+    depends_on:
+      bwpm-db:
+        condition: service_healthy
+    secrets:
+       - j_root_password
+       - db_password
+       - db_root_password
+
+#  bwpm-redis:
+#    networks:
+#      bwpm-ide.nil:
+#        ipv4_address: 172.18.5.12
+#    expose:
+#      - 6380
+
+  bwpm-phpmyadmin:
+    networks:
+      bwpm-ide.nil:
+        ipv4_address: 172.18.5.13
+    depends_on:
+      bwpm-db:
+        condition: service_healthy
+    healthcheck:
+#    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
+      test: curl --fail http://172.18.5.13/LICENSE || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+secrets:
+   db_password:
+     file: ../../db_password.txt
+   db_root_password:
+     file: ../../db_root_password.txt
+   j_root_password:
+     file: ../../j_root_password.txt
+
+volumes:
+  db_data_502:

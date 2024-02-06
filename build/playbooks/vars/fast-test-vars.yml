@@ -1,0 +1,8 @@
+---
+webserver_url: "172.118.5.11"
+database_ip: "172.118.5.10"
+testcontainer_ip: "172.118.5.14"
+project_src_dir: "/home/romana/PhpstormProjects/BwPostman_J4"
+display: "45"
+screen_size: "1920x1080"
+screen_size_opts: "1920,1080"

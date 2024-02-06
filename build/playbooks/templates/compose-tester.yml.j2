@@ -1,0 +1,55 @@
+services:
+  bwpm-tester:
+    # So ist dieses Image nicht gut, denn das gibt es erst, wenn die Pipeline einmal gelaufen ist.
+    # Außerdem ist es abhängig von den Versionen von Joomla und BwPostman
+    image: universe3:5000/romana/bwpm_enh_tester-5:5.0.2-4.2.7
+    ulimits:
+      nofile: 72768
+    volumes:
+      # Use shared memory of host
+      - /dev/shm:/dev/shm
+      # Mount codeception tests folders
+      - type: bind
+        source: /home/romana/PhpstormProjects/BwPostman_J4/tests
+        target: /data/tests
+      # Mount codeception manifest
+      - type: bind
+        source: /home/romana/PhpstormProjects/BwPostman_J4/tests/codeception.yml
+        target: /data/codeception.yml
+      # Mount output folders
+      - type: bind
+        source: "{{ artifacts_base }}"
+        target: /data/output
+      # Mount repositories folder for artifacts.
+      # *** Probably it would be better to mount the specific path for this project.
+      - type: bind
+        source: /repositories
+        target: /repositories
+      # Mount document root of webserver.
+      # This is needed to be able to delete the uploaded attachment.
+      # Otherwise, this could make the next upload impossible.
+      # *** Probably it would be better to mount the specific media path for this project.
+      - /home/container-files/j{{ joomla_version }}:/www_path
+
+      # Mount tester entry point
+      - type: bind
+        source: "{{ project_src_dir }}/build/docker/test/tester_entry_point.sh"
+        target: /tester_entry_point.sh
+
+    environment:
+      - BW_TEST_BWPM_VERSION={{ bwpm_version }}
+      - BW_TEST_CAT={{ test_cat }}
+      - BW_TEST_DEBUG={{ test_debug }}
+      - SYMFONY_DEPRECATIONS_HELPER=weak
+    working_dir: /data
+    # Der Einstiegspunkt wird per Template generiert und hier abgelegt.
+    # Wegen Projektname, Test Runner (=/data/bwpm_test_runner.sh), Display, Test-Cat, Screen Size
+    entrypoint: /tester_entry_point.sh
+    networks:
+      bwpm-test:
+        ipv4_address: "{{ testcontainer_ip }}"
+
+networks:
+  bwpm-test:
+    external: true
+    name: bwpm-test

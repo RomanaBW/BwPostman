@@ -1,0 +1,109 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - vars/fast-test-vars.yml
+
+  tasks:
+    - name: Import transmitted environment parameters
+      set_fact:
+        joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('502', true) }}"
+        bwpm_version: "{{ lookup('env','BW_TEST_BWPM_VERSION') | d('427', true) }}"
+        test_cat: "{{ lookup('env','BW_TEST_CAT') | d('maintenance_single', true) }}"
+        test_debug: "{{ lookup('env','BW_TEST_DEBUG') | d('--debug', true) }}"
+        vm_version: "{{ lookup('env','BW_TEST_VM_VERSION') | d('', true) }}"
+        rebase: "{{ lookup('env','BW_TEST_REBASE_DB') | d('false', true) }}"
+
+    - name: Set artifacts base and project name (shortcut)
+      set_fact:
+        project_name: "j{{ joomla_version }}_bwpm{{ bwpm_version }}"
+
+    - name: Set artifacts path
+      set_fact:
+        artifacts_base: "/home/container-files/artifacts/{{ project_name }}"
+
+    - name: Show imported parameters
+      debug:
+        msg:
+#          - "Hostname: {{ ansible_hostname }}"
+          - "BW_TEST_CAT: {{ test_cat }}"
+          - "BW_TEST_DEBUG: {{ test_debug }}"
+          - "BW_TEST_JOOMLA_VERSION: {{ joomla_version }}"
+          - "BW_TEST_REBASE_DB: {{ rebase }}"
+          - "BW_TEST_BWPM_VERSION: {{ bwpm_version }}"
+          - "Webserver URL: {{ webserver_url }}"
+          - "Database IP: {{ database_ip }}"
+          - "Tester IP: {{ testcontainer_ip }}"
+
+    - name: Ensure output folders are present and writable
+      become: yes
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0777"
+        owner: jenkins
+        group: users
+      with_items:
+        - "{{ artifacts_base }}/logs"
+        - "{{ artifacts_base }}/videos"
+        - "{{ artifacts_base }}/htmlreports"
+        - "{{ artifacts_base }}/xmlreports"
+        - "{{ artifacts_base }}/backups"
+
+    - name: Check for failure file
+      stat:
+        path: "{{ artifacts_base }}/failed"
+      register: failure_file
+
+    - name: Set rebase command
+      set_fact:
+         sql_command: "/usr/bin/mariadb -u tester -pbarbamama -h {{ database_ip }} joomlatest < {{ artifacts_base }}/backups/{{ project_name }}.sql"
+
+    - name: Output rebase command
+      debug:
+         msg: "{{ sql_command }}"
+
+# Now probably abundant, database is always running
+#    - name: Pause before rebase to ensure database is up
+#      pause:
+#        seconds: 10
+#      when: failure_file.stat.exists or rebase|bool
+
+    - name: Rebase database
+      shell: "{{ sql_command }}"
+      when: failure_file.stat.exists or rebase|bool
+
+    - name: Pause after rebase
+      pause:
+        seconds: 10
+      when: failure_file.stat.exists or rebase|bool
+
+    - name: Prepare manifest for codeception tests
+      become: yes
+      template:
+        src: "codeception-fast.yml.j2"
+        dest: "{{ project_src_dir }}/tests/codeception.yml"
+
+    - name: Prepare manifest for acceptance tests with chrome
+      become: yes
+      template:
+        src: "acceptance-fast.yml.j2"
+        dest: "{{ project_src_dir }}/tests/acceptance.suite.yml"
+
+    - name: Create tester entry point
+      become: yes
+      template:
+        src: "tester_entry_point.sh.j2"
+        dest: "{{ project_src_dir }}/build/docker/test/tester_entry_point.sh"
+        mode: 0775
+        owner: romana
+        group: users
+
+    - name: Create tester compose file
+      become: yes
+      template:
+        src: "compose-tester.yml.j2"
+        dest: "{{ project_src_dir }}/build/docker/test/compose-tester.yml"
+        mode: 0664
+        owner: romana
+        group: users

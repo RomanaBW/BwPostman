@@ -674,14 +674,14 @@ class InstallationPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $registrationModuleLine    = "//*[@id='moduleList']/tbody/tr/th/div/a[contains(@title, 'Edit BwPostman Module')]";
+	public static $registrationModuleLine    = "//*[@id='moduleList']/tbody/tr/th/div/a";
 
 	/**
 	 * @var string
 	 *
 	 * @since 4.0.0
 	 */
-	public static $overviewModuleLine    = "//*[@id='moduleList']/tbody/tr/th/div/a[contains(@title, 'Edit BwPostman Overview Module')]";
+	public static $overviewModuleLine    = "//*[@id='moduleList']/tbody/tr/th/div/a";
 
 	/**
 	 * @var string

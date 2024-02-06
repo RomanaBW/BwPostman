@@ -22,7 +22,7 @@ pipeline {
 					PACK_PACKAGE  = 'true'
 
 					PHP_VERSION_4 = "8.1.12"
-					PHP_VERSION_5 = "8.1.12"
+					PHP_VERSION_5 = "8.1.0"
 
 					GIT_MESSAGE = "not specified"
 

@@ -19,7 +19,7 @@ pipeline {
 					DO_J4_PERMS  = 'true'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'false'
+					PACK_PACKAGE  = 'true'
 
 					PHP_VERSION_4 = "8.1.12"
 					PHP_VERSION_5 = "8.1.12"
@@ -70,8 +70,8 @@ pipeline {
 			}
 			post {
 					always {
-					echo "Dummy Smoke ALWAYS"
-//					sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_5}'"
+//					echo "Dummy Smoke ALWAYS"
+					sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_5}'"
 				}
 				failure {
 					bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME_5}")

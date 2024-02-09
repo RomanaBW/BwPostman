@@ -119,7 +119,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_select            = "//*[@id='browser-list']/ul/li[contains(@id, '/powered_by.png')]/a";
+	public static $thumb_select            = "//div[@class='media-browser-item-preview'][contains(@title, 'powered_by.png')]";
 
 	/**
 	 * @var string
@@ -700,7 +700,7 @@ class TemplateEditPage
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->wait(1);
 
-		$I->waitForElementVisible(".//*[@id='browser-list']", 5);
+		$I->waitForElementVisible(".//*[@id='com_media']", 5);
 		$I-> waitForElement(self::$thumb_select, 5);
 		$I->scrollTo(self::$thumb_select, 0, -100);
 		$I->wait(1);

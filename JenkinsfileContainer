@@ -106,8 +106,8 @@ pipeline {
 					}
 					post {
 						always {
-//							echo "Dummy 1 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_5}'"
+							echo "Dummy 1 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_5}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME_5}")

@@ -133,7 +133,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_insert            = "//button[@id='insert']";
+	public static $thumb_insert            = "//button[contains(@class, 'button-save-selected')]";
 
 	/**
 	 * @var string

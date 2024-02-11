@@ -696,11 +696,11 @@ class TemplateEditPage
 
 		$I->clickAndWait(self::$thumb_select_button, 1);
 
-		$I->setIframeName(Generals::$media_frame1);
+//		$I->setIframeName(Generals::$media_frame1);
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->wait(1);
 
-		$I->waitForElementVisible(".//*[@id='com_media']", 5);
+		$I->waitForElementVisible("//*[@id='com_media']", 5);
 		$I-> waitForElement(self::$thumb_select, 5);
 		$I->scrollTo(self::$thumb_select, 0, -100);
 		$I->wait(1);

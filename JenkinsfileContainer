@@ -19,7 +19,7 @@ pipeline {
 					DO_J4_PERMS  = 'true'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'true'
+					PACK_PACKAGE  = 'false'
 
 					PHP_VERSION_4 = "8.1.12"
 					PHP_VERSION_5 = "8.1.12"
@@ -106,8 +106,8 @@ pipeline {
 					}
 					post {
 						always {
-							echo "Dummy 1 always"
-//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_5}'"
+//							echo "Dummy 1 always"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_5}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME_5}")
@@ -122,8 +122,8 @@ pipeline {
 					}
 					post {
 						always {
-//							echo "Dummy 2 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2 ${VERSIONS_EXTRA_VAR_5}'"
+							echo "Dummy 2 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2 ${VERSIONS_EXTRA_VAR_5}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_2", "${PROJECT_NAME_5}")

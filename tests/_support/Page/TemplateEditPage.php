@@ -700,7 +700,7 @@ class TemplateEditPage
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->wait(1);
 
-		$I->waitForElementVisible("//*[@id='com_media']", 5);
+		$I->waitForElementVisible("//*[@id='com-media']", 5);
 		$I-> waitForElement(self::$thumb_select, 5);
 		$I->scrollTo(self::$thumb_select, 0, -100);
 		$I->wait(1);

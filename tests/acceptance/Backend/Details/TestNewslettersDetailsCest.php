@@ -238,9 +238,9 @@ class TestNewslettersDetailsCest
 		$I->wait(1);
 
 		// … by double click
-		$I->see('blog = ' . NlEdit::$selectedContent_5, sprintf(NlEdit::$available_content, 1));
-		$I->doubleClick(sprintf(NlEdit::$available_content, 1));
-		$I->dontSee('blog = ' . NlEdit::$selectedContent_5, sprintf(NlEdit::$available_content, 1));
+		$I->see('blog = ' . NlEdit::$selectedContent_5, sprintf(NlEdit::$available_content, 5));
+		$I->doubleClick(sprintf(NlEdit::$available_content, 5));
+		$I->dontSee('blog = ' . NlEdit::$selectedContent_5, sprintf(NlEdit::$available_content, 5));
 
 		// Check selected content
 		$I->see('blog = ' . NlEdit::$selectedContent_5, sprintf(NlEdit::$selected_content, 1));
@@ -1353,19 +1353,19 @@ class TestNewslettersDetailsCest
 		$I->wait(1);
 
 		// …by button
-		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 4));
-		$I->click(sprintf(NlEdit::$available_content, 4));
+		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 3));
+		$I->click(sprintf(NlEdit::$available_content, 3));
 		$I->click(NlEdit::$add_content);
-		$I->dontSee(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 4));
+		$I->dontSee(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 3));
 
 		// … by double click
-		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 4));
-		$I->doubleClick(sprintf(NlEdit::$available_content, 4));
-		$I->dontSee(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 4));
-
-		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 3));
+		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 3));
 		$I->doubleClick(sprintf(NlEdit::$available_content, 3));
-		$I->dontSee(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 3));
+		$I->dontSee(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 3));
+
+		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 2));
+		$I->doubleClick(sprintf(NlEdit::$available_content, 2));
+		$I->dontSee(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 2));
 
 
 		// Get popup selectors depending on Joomla version

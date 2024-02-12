@@ -706,9 +706,9 @@ class TemplateEditPage
 		$I->wait(1);
 		$I->clickAndWait(self::$thumb_select, 1);
 
-		$I->clickAndWait(self::$thumb_insert, 1);
-
 		$I->switchToIFrame();
+
+        $I->clickAndWait(self::$thumb_insert, 1);
 	}
 
 	/**

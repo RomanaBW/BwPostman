@@ -74,6 +74,7 @@ class TestTemplatesDetailsCest
 
 		$this->fillFormSimpleHtml($I);
 
+        // Two clicks are necessary, because with TinyMCE one click doesn't do what is expected
 		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
         $I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
@@ -412,6 +413,7 @@ class TestTemplatesDetailsCest
 
 		TplEdit::fillFormSimpleText($I);
 
+        // Two clicks are necessary, because with TinyMCE one click doesn't do what is expected
 		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
         $I->clickAndWait(Generals::$toolbar4['Back'], 1);
 

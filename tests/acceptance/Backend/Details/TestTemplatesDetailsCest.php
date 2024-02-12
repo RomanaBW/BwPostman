@@ -75,6 +75,7 @@ class TestTemplatesDetailsCest
 		$this->fillFormSimpleHtml($I);
 
 		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
+        $I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
@@ -412,6 +413,7 @@ class TestTemplatesDetailsCest
 		TplEdit::fillFormSimpleText($I);
 
 		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
+        $I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
 		$I->waitForElement(Generals::$pageTitle, 5);
 		$I->see(Generals::$extension, Generals::$pageTitle);

@@ -68,7 +68,7 @@
         target: "{{ acceptance_target }}"
         webroot_path: "{{ main_base_folder }}/{{ sub_path }}"
         container_web_root: "{{ tester_web_root }}"
-        subnet_part: "0{{ j_main_version }}{{ test_suite_number }}"
+        subnet_part: "{{ j_main_version }}{{ test_suite_number }}"
 
 
 - hosts: "{{ acceptance_source.web_container_name }}"

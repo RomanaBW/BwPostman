@@ -1241,7 +1241,9 @@ class Generals
 	 */
 	public static function presetComponentOptions(AcceptanceTester $I)
 	{
-		// Basic settings
+        $menuItemId = $I->grabFromDatabase('jos_menu', 'id', array('title' => 'Help'));
+
+        // Basic settings
 		$I->setManifestOption('com_bwpostman', 'default_from_name', 'Joomla-Test Container');
 		$I->setManifestOption('com_bwpostman', 'default_from_email', 'webmaster@boldt-webservice.de');
 		$I->setManifestOption('com_bwpostman', 'default_reply_email', 'webmaster@boldt-webservice.de');
@@ -1276,7 +1278,7 @@ class Generals
 		$I->setManifestOption('com_bwpostman', 'disclaimer_selection', '0');
 		$I->setManifestOption('com_bwpostman', 'disclaimer_link', 'https://www.jahamo-training.de/index.php?option=com_content&view=article&id=15&Itemid=582');
 		$I->setManifestOption('com_bwpostman', 'article_id', '6');
-		$I->setManifestOption('com_bwpostman', 'disclaimer_menuitem', '108');
+		$I->setManifestOption('com_bwpostman', 'disclaimer_menuitem', $menuItemId);
 		$I->setManifestOption('com_bwpostman', 'disclaimer_target', '0');
 		$I->setManifestOption('com_bwpostman', 'showinmodal', '1');
 		$I->setManifestOption('com_bwpostman', 'use_captcha', '0');

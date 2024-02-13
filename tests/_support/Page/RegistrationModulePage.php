@@ -577,6 +577,8 @@ class RegistrationModulePage
 	 */
 	public static function presetModuleOptions(AcceptanceTester $I)
 	{
+        $menuItemId = $I->grabFromDatabase('jos_menu', 'id', array('title' => 'Help'));
+
 		// Mailing list selection
 		$I->setManifestOption('mod_bwpostman', 'ml_available', array("5", "27", "4", "24"));
 		$I->setManifestOption('mod_bwpostman', 'show_desc', '1');
@@ -601,7 +603,7 @@ class RegistrationModulePage
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_selection', '1');
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_link', 'https://www.jahamo-training.de/index.php?option=com_content&view=article&id=15&Itemid=582');
 		$I->setManifestOption('mod_bwpostman', 'article_id', '6');
-		$I->setManifestOption('mod_bwpostman', 'disclaimer_menuitem', '108');
+		$I->setManifestOption('mod_bwpostman', 'disclaimer_menuitem', $menuItemId);
 		$I->setManifestOption('mod_bwpostman', 'disclaimer_target', '0');
 		$I->setManifestOption('mod_bwpostman', 'showinmodal', '1');
 		$I->setManifestOption('mod_bwpostman', 'use_captcha', '0');

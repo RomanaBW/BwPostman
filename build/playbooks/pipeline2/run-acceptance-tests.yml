@@ -52,6 +52,10 @@
       set_fact:
         sub_path: "{{ test_suite | regex_replace('rights', 'accept') }}_j{{ j_main_version }}"
 
+    - name: Set variable for current test suite as number
+      set_fact:
+        test_suite_number: "{{ test_suite | regex_replace('accept', '') }}"
+
     - name: Show variable for current joomla sub folder
       debug:
         msg: "{{ sub_path}}"
@@ -64,6 +68,7 @@
         target: "{{ acceptance_target }}"
         webroot_path: "{{ main_base_folder }}/{{ sub_path }}"
         container_web_root: "{{ tester_web_root }}"
+        subnet_part: "0{{ j_main_version }}{{ test_suite_number }}"
 
 
 - hosts: "{{ acceptance_source.web_container_name }}"

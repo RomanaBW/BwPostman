@@ -431,7 +431,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			$this->logger->addEntry(new LogEntry(sprintf('Count mailinglists is: %s', count($mailinglists)), BwLogger::BW_DEBUG, $this->log_cat));
 		}
 
-		if (!count($mailinglists))
+		if ($mailinglists === "0" || !count($mailinglists))
 		{
 			return;
 		}

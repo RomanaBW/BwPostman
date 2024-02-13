@@ -35,7 +35,7 @@ class ModuleOverviewPage
 	 *
 	 * @since 4.0.0
 	 */
-	public static $mod_title_position = "//*/h3[contains(text(), 'Newsletter Overview')]";
+	public static $mod_title_position = "//*/h3[contains(text(), 'BwPostman Overview Module')]";
 
 	/**
 	 * @var string

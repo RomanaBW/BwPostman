@@ -393,7 +393,7 @@ class HtmlView extends BaseHtmlView
 			{
 				$this->delay_message = Text::sprintf(
 					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_SECONDS', $this->delay / 1000)
+					Text::_('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_SECONDS')
 				);
 			}
 			else
@@ -410,14 +410,14 @@ class HtmlView extends BaseHtmlView
 			{
 				$this->delay_message = Text::sprintf(
 					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_MINUTES', $this->delay / 1000)
+					Text::_('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_MINUTES')
 				);
 			}
 			else
 			{
 				$this->delay_message = Text::sprintf(
 					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_MINUTES', $this->delay / 1000)
+					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_MINUTES', $this->delay / 60000)
 				);
 			}
 		}

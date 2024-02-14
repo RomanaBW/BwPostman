@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Site\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -73,7 +74,7 @@ class EditModel extends AdminModel
 	 */
 	private $data;
 
-	/**
+    /**
 	 * Constructor
 	 * Builds object, determines the subscriber ID and the viewlevel
 	 *
@@ -270,9 +271,11 @@ class EditModel extends AdminModel
 
 			$this->data = $_db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Edit subscription');
+
+			$app->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		// if no data get, take default values

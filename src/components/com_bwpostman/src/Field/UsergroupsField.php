@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Site\Field;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CheckboxesField;
@@ -197,9 +198,11 @@ class UsergroupsField extends CheckboxesField
 
 				static::$options[$hash] = array_merge(static::$options[$hash], $options);
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'FE UserGroupField');
+
+				Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 

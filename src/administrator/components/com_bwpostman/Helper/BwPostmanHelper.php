@@ -29,9 +29,11 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Exception;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Utilities\ArrayHelper;
@@ -48,7 +50,7 @@ use Throwable;
  */
 class BwPostmanHelper
 {
-	/**
+    /**
 	 * property to hold permissions array
 	 *
 	 * @var ?array
@@ -147,9 +149,9 @@ class BwPostmanHelper
 
 			$manifest = json_decode($db->loadResult(), true);
 		}
-		catch (Throwable $e)
+		catch (Throwable $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+			$app->enqueueMessage($exception->getMessage(), 'error');
 			return false;
 		}
 
@@ -1841,4 +1843,25 @@ class BwPostmanHelper
 
 		return $whereMlsCamsClause;
 	}
+
+    /**
+     * @param Exception|RuntimeException $exception
+     * @param string                     $category
+     *
+     * @since 4.2.7
+     */
+    public static function logException(Exception|RuntimeException $exception, string $category): void
+    {
+        $log_options    = array();
+        $logger   = BwLogger::getInstance($log_options);
+
+        $eType = get_class($exception);
+        $trace = $exception->getTraceAsString();
+
+        $message = $exception->getMessage();
+        $message .= ' Exception: ' . $eType;
+        $message .= ' Trace: ' . $trace;
+
+        $logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $category));
+    }
 }

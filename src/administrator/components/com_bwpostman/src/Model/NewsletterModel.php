@@ -2126,12 +2126,11 @@ class NewsletterModel extends AdminModel
 		}
 		catch (UnexpectedValueException | InvalidArgumentException | MailDisabledException | \PHPMailer\PHPMailer\Exception  | \Exception $exception)
 		{
-			$message  = $exception->getMessage();
-
             $eType    = get_class($exception);
-            $message .= 'Exception: ' . $eType;
-
             $trace    = $exception->getTraceAsString();
+
+            $message  = $exception->getMessage();
+            $message .= 'Exception: ' . $eType;
             $message .= 'Trace: ' . $trace;
 
 			$res      = false;

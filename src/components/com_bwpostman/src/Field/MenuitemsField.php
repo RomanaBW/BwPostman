@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Site\Field;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
@@ -84,9 +85,11 @@ class MenuitemsField extends ListField
 
 			$options = $db->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'FE MenuItemField');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

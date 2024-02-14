@@ -29,11 +29,10 @@ namespace BoldtWebservice\Component\BwPostman\Site\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
@@ -52,7 +51,16 @@ use UnexpectedValueException;
  */
 class RegisterModel extends AdminModel
 {
-	/**
+    /**
+     * property to hold logger
+     *
+     * @var object $logger
+     *
+     * @since       4.2.7
+     */
+    public $logger;
+
+    /**
 	 * Constructor
 	 *
 	 * @throws Exception
@@ -265,9 +273,11 @@ class RegisterModel extends AdminModel
 				$subsMlTable = $this->getTable('SubscribersMailinglists');
 				$subsMlTable->deleteMailinglistsOfSubscriber((int)$pks);
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_DELETE_MAILINGLISTS'), 'warning');
+                BwPostmanHelper::logException($exception, 'send newsletter');
+
+                Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_DELETE_MAILINGLISTS'), 'warning');
 				return false;
 			}
 		}
@@ -397,11 +407,7 @@ class RegisterModel extends AdminModel
 		}
 		catch (UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
 		{
-			$logOptions = array();
-			$logger     = BwLogger::getInstance($logOptions);
-			$message    = $exception->getMessage();
-
-			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'deactivation'));
+            BwPostmanHelper::logException($exception, 'deactivation');
 		}
 	}
 
@@ -453,11 +459,7 @@ class RegisterModel extends AdminModel
 		}
 		catch (UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
 		{
-			$logOptions = array();
-			$logger     = BwLogger::getInstance($logOptions);
-			$message    = $exception->getMessage();
-
-			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'activation'));
+            BwPostmanHelper::logException($exception, 'activation');
 		}
 	}
 

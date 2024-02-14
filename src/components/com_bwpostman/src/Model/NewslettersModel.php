@@ -107,7 +107,16 @@ class NewslettersModel extends ListModel
 	 */
 	private $pagination = null;
 
-	/**
+    /**
+     * property to hold logger
+     *
+     * @var object $logger
+     *
+     * @since       4.2.7
+     */
+    public $logger;
+
+    /**
 	 * Constructor
 	 *
 	 * @throws Exception
@@ -322,9 +331,11 @@ class NewslettersModel extends ListModel
 
 			$result = $this->_db->getNumRows();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Newsletter FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $result;
@@ -676,9 +687,11 @@ class NewslettersModel extends ListModel
 		{
 			$db->setQuery($query);
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$msg = Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'). ' ' . $e->getMessage();
+            BwPostmanHelper::logException($exception, 'Newsletter FE');
+
+            $msg = Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'). ' ' . $exception->getMessage();
 			Factory::getApplication()->enqueueMessage($msg, 'error');
 			return false;
 		}
@@ -734,9 +747,11 @@ class NewslettersModel extends ListModel
 
 				$itemid = $db->loadResult();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$app->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'Newsletter FE');
+
+                $app->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 
@@ -919,9 +934,11 @@ class NewslettersModel extends ListModel
 
 				$groups	= $db->loadColumn();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$app->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'Newsletter FE');
+
+                $app->enqueueMessage($exception->getMessage(), 'error');
 			}
 
 			//convert usergroups to match bwPostman's needs
@@ -985,9 +1002,11 @@ class NewslettersModel extends ListModel
 
 				$groups	= $db->loadAssocList();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$app->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'Newsletter FE');
+
+                $app->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 		else
@@ -1025,9 +1044,11 @@ class NewslettersModel extends ListModel
 
 			$module	= $db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Newsletter FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $module;

@@ -2083,7 +2083,8 @@ class NewsletterModel extends AdminModel
 		{
 			$this->logger->addEntry(new LogEntry('Model sendMail recipient to send: ' . $tblSendMailQueue->recipient, BwLogger::BW_DEBUG, 'send'));
 
-			$mailer->setSender($sender);
+            $mailer->Sender = $this->getBounceAddress();
+            $mailer->setSender($sender);
 
 			if ($unsubscribe_url !== '')
 			{
@@ -2105,7 +2106,7 @@ class NewsletterModel extends AdminModel
 				$mailer->isHtml(true);
 			}
 
-			if (!$this->arise_queue)
+            if (!$this->arise_queue)
 			{
 				$this->logger->addEntry(new LogEntry('Before sending', BwLogger::BW_INFO, 'send'));
 //				Use the following with care! Complete mails with body are written to log…
@@ -2174,6 +2175,18 @@ class NewsletterModel extends AdminModel
 
 		return 1;
 	}
+
+    /**
+     * Method to determine the bounce address
+     *
+     * @return string
+     *
+     * @since 4.2.6
+     */
+    private function getBounceAddress()
+    {
+        return '';
+    }
 
 	/**
 	 * Method to process test mode with one or more of the following settings

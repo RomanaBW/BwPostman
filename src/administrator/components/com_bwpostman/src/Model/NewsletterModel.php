@@ -2033,10 +2033,10 @@ class NewsletterModel extends AdminModel
 
             if ($eventResults)
             {
-                $newsletter = $eventResults[0];
+                $body = $eventResults[0];
             }
 
-            if (!$newsletter)
+            if (!$body)
             {
                 $error_msg_plugin = Text::_('COM_BWPOSTMAN_PERSONALIZE_ERROR');
                 $app->enqueueMessage($error_msg_plugin, 'error');

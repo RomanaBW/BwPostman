@@ -19,7 +19,7 @@ pipeline {
 					DO_J4_PERMS  = 'true'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'false'
+					PACK_PACKAGE  = 'true'
 
 					PHP_VERSION_4 = "8.1.12"
 					PHP_VERSION_5 = "8.1.12"
@@ -154,8 +154,8 @@ pipeline {
 					}
 					post {
 						always {
-							echo "Dummy 4 always"
-//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4 ${VERSIONS_EXTRA_VAR_5}'"
+//							echo "Dummy 4 always"
+							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4 ${VERSIONS_EXTRA_VAR_5}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_4", "${PROJECT_NAME_5}")

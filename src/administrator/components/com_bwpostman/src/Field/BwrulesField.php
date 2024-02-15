@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\RulesField;
@@ -163,9 +164,11 @@ class BwrulesField extends RulesField
 
 				$assetId = (int) $db->loadResult();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'BwRulesField BE');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 
@@ -184,9 +187,11 @@ class BwrulesField extends RulesField
 			{
 				$db->setQuery($query);
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'BwRulesField BE');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 
@@ -265,9 +270,11 @@ class BwrulesField extends RulesField
 
 			$res = $db->loadAssoc();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'BwRulesField BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if (is_array($res))

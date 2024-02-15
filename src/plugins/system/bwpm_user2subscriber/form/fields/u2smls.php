@@ -26,6 +26,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\CheckboxesField;
 use Joomla\CMS\Language\Text;
@@ -177,9 +178,11 @@ class JFormFieldU2sMls extends CheckboxesField
 
 			$options = $_db->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg U2S FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

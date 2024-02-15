@@ -477,9 +477,11 @@ class TemplateController extends FormController
 			$model->setDefaultTemplate($id);
 			$this->setMessage(Text::_('COM_BWPOSTMAN_TPL_SUCCESS_HOME_SET'));
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplateController BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		$this->setRedirect('index.php?option=com_bwpostman&view=templates', false);

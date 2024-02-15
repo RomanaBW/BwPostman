@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use Exception;
 use JAccessRules;
@@ -153,9 +154,11 @@ class SubscribersMailinglistsTable extends Table
 
 			$subscribersOfMailinglist = $db->loadColumn();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubsMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 
@@ -194,9 +197,11 @@ class SubscribersMailinglistsTable extends Table
 
 			return true;
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubsMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 
 			return false;
 		}
@@ -242,9 +247,11 @@ class SubscribersMailinglistsTable extends Table
 
 			return  true;
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubsMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			return false;
 		}
 	}
@@ -277,9 +284,11 @@ class SubscribersMailinglistsTable extends Table
 
 			$subsIdExists = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubsMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			return -1;
 		}
 
@@ -317,9 +326,11 @@ class SubscribersMailinglistsTable extends Table
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubsMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			return false;
 		}
 
@@ -354,9 +365,11 @@ class SubscribersMailinglistsTable extends Table
 
 			$mailinglist_ids = $db->loadColumn();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubsMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return ArrayHelper::toInteger($mailinglist_ids);

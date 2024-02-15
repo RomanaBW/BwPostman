@@ -28,6 +28,7 @@ namespace BoldtWebservice\Plugin\BwPostman\NewsletterContent\Extension;
 
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwSiteApplication;
 use Exception;
 use InvalidArgumentException;
@@ -1183,9 +1184,13 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 				->createCacheController('callback', ['defaultgroup' => 'com_modules']);
 
 			$modules = $cache->get([$db, 'loadObjectList'], [], md5($cacheId));
-		} catch (RuntimeException $e) {
-			$app->getLogger()->warning(
-				Text::sprintf('JLIB_APPLICATION_ERROR_MODULE_LOAD', $e->getMessage()),
+		}
+        catch (RuntimeException $exception)
+        {
+            BwPostmanHelper::logException($exception, 'Plg NlContent FE');
+
+            $app->getLogger()->warning(
+				Text::sprintf('JLIB_APPLICATION_ERROR_MODULE_LOAD', $exception->getMessage()),
 				['category' => 'jerror']
 			);
 

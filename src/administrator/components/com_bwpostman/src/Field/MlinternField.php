@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_BASE') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Form\Field\RadioField;
 use Joomla\Database\DatabaseInterface;
@@ -141,9 +142,11 @@ class MlinternField extends RadioField
 
 				$ml_select = $db->loadColumn();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$app->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'MlInternField BE');
+
+                $app->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 
@@ -160,9 +163,11 @@ class MlinternField extends RadioField
 
 				$ml_select = $db->loadColumn();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$app->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'MlInternField BE');
+
+                $app->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 
@@ -220,9 +225,11 @@ class MlinternField extends RadioField
 
 			$options = $db->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'MlInternField BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

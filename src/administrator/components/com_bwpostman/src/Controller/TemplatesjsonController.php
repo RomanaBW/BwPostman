@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\AdminController;
@@ -176,10 +177,12 @@ class TemplatesjsonController extends AdminController
 			echo json_encode($res);
 			$app->close();
 		}
-		catch (RuntimeException | Exception $e)
+		catch (RuntimeException | Exception $exception)
 		{
-			echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '<br />';
-			echo $e->getMessage();
+            BwPostmanHelper::logException($exception, 'TemplatesJsonController BE');
+
+            echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '<br />';
+			echo $exception->getMessage();
 			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
 			exit;
 		}

@@ -200,9 +200,11 @@ class TemplateModel extends AdminModel
 
 					$newitems = $db->loadAssoc();
 				}
-				catch (RuntimeException $e)
+				catch (RuntimeException $exception)
 				{
-					$app->enqueueMessage($e->getMessage(), 'error');
+                    BwPostmanHelper::logException($exception, 'TemplateModel BE');
+
+                    $app->enqueueMessage($exception->getMessage(), 'error');
 				}
 
 				if (!empty($newitems))
@@ -532,9 +534,11 @@ class TemplateModel extends AdminModel
 				$db->setQuery($query);
 				$db->execute();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$app->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'TemplateModel BE');
+
+                $app->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 

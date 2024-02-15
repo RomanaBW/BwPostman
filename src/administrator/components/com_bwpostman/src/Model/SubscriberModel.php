@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use DOMDocument;
 use Exception;
 use Joomla\CMS\Factory;
@@ -227,9 +228,11 @@ class SubscriberModel extends AdminModel
 
 			$subscriber = $db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberModel BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		$mailinglist_ids = $this->getTable('SubscribersMailinglists')->getMailinglistIdsOfSubscriber((int)$sub_id);
@@ -569,9 +572,11 @@ class SubscriberModel extends AdminModel
 				$result = false;
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberModel BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $result;
@@ -643,9 +648,11 @@ class SubscriberModel extends AdminModel
 				$db->setQuery($query);
 				$db->execute();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$app->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'SubscriberModel BE');
+
+                $app->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 
@@ -684,9 +691,11 @@ class SubscriberModel extends AdminModel
 			{
 				parent::delete($pks);
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'SubscriberModel BE');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 
 			// Delete subscribed mailinglists from subscribers_mailinglists-table
@@ -1175,9 +1184,11 @@ class SubscriberModel extends AdminModel
 				$session->set('com_bwpostman.subscriber.import.messages', $importMessages);
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberModel BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if (isset($subscriber_emaildata))
@@ -1264,9 +1275,11 @@ class SubscriberModel extends AdminModel
 				return false;
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberModel BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $output;
@@ -1678,9 +1691,14 @@ class SubscriberModel extends AdminModel
 
 			return $subscribersList;
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$msg = Text::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_GET_SUBSCRIBERS') . '<br />' . $e->getMessage();
+            $msg = Text::_('COM_BWPOSTMAN_SUB_EXPORT_ERROR_GET_SUBSCRIBERS');
+
+            BwPostmanHelper::logException($exception, 'SubscriberModel BE', BwLogger::BW_ERROR, $msg);
+
+            $msg .= '<br />' . $exception->getMessage();
+
 			Factory::getApplication()->enqueueMessage($msg, 'error');
 			return false;
 		}

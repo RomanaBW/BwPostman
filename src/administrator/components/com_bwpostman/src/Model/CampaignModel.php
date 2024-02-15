@@ -408,9 +408,11 @@ class CampaignModel extends AdminModel
 				$db->setQuery($query);
 				$db->execute();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_RESTORE_RIGHTS_MISSING'), 'error');
+                BwPostmanHelper::logException($exception, 'CampaignModel BE');
+
+                Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_RESTORE_RIGHTS_MISSING'), 'error');
 				return false;
 			}
 
@@ -429,9 +431,11 @@ class CampaignModel extends AdminModel
 					$db->setQuery($query);
 					$db->execute();
 				}
-				catch (RuntimeException $e)
+				catch (RuntimeException $exception)
 				{
-					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                    BwPostmanHelper::logException($exception, 'CampaignModel BE');
+
+                    Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 					return false;
 				}
 			}

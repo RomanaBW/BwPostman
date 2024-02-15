@@ -30,6 +30,7 @@ namespace BoldtWebservice\Plugin\System\Bwpm_useraccount\Extension;
 
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Exception;
 use JLoader;
@@ -229,10 +230,12 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 				$this->logger->addEntry(new LogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEVELOPMENT, $this->log_cat));
 			}
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->BwPostmanComponentEnabled = false;
-			$this->logger->addEntry(new LogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
+            BwPostmanHelper::logException($exception, 'Plg UA FE');
+
+            $this->BwPostmanComponentEnabled = false;
+			$this->logger->addEntry(new LogEntry($exception->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -275,10 +278,12 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 				$this->logger->addEntry(new LogEntry(sprintf('Component version is: %s', $manifest['version']), BwLogger::BW_DEVELOPMENT, $this->log_cat));
 			}
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->BwPostmanComponentVersion = '0.0.0';
-			$this->logger->addEntry(new LogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
+            BwPostmanHelper::logException($exception, 'Plg UA FE');
+
+            $this->BwPostmanComponentVersion = '0.0.0';
+			$this->logger->addEntry(new LogEntry($exception->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -369,9 +374,11 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 
 				$db->execute();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-                $this->getApplication()->enqueueMessage('Error pluginUserAccount: ' . $e->getMessage() . '<br />', 'error');
+                BwPostmanHelper::logException($exception, 'Plg UA FE');
+
+                $this->getApplication()->enqueueMessage('Error pluginUserAccount: ' . $exception->getMessage() . '<br />', 'error');
 			}
 		}
 
@@ -441,9 +448,11 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$this->getApplication()->enqueueMessage('Error pluginUserAccount: ' . $e->getMessage() . '<br />', 'error');
+            BwPostmanHelper::logException($exception, 'Plg UA FE');
+
+            $this->getApplication()->enqueueMessage('Error pluginUserAccount: ' . $exception->getMessage() . '<br />', 'error');
 		}
 
         $result = [

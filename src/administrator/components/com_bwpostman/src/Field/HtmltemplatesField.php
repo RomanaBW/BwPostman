@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\RadioField;
 use Joomla\CMS\Language\Text;
@@ -184,9 +185,11 @@ class HtmltemplatesField extends RadioField
 
 			$options = $db->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'HtmlTemplatesField BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		// Merge any additional options in the XML definition.

@@ -755,9 +755,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$testrecipients = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if (!$testrecipients)
@@ -797,9 +799,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$result = $db->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $result;
@@ -960,9 +964,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$result = $db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $result;
@@ -997,9 +1003,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$id = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if (empty($id))
@@ -1051,9 +1059,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				$id = $this->_db->loadColumn();
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $id;
@@ -1090,9 +1100,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$subscriber = $db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $subscriber;
@@ -1127,9 +1139,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$user_id = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if (is_null($user_id))
@@ -1186,9 +1200,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			return $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 		return false;
 	}
@@ -1224,9 +1240,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 				$editlink = $db->loadResult();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 				return false;
 			}
 			if ($editlink !== $newEditlink)
@@ -1265,9 +1283,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$executed = $db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 
 			return false;
 		}
@@ -1311,9 +1331,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 				$activation = $db->loadResult();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 				return false;
 			}
 
@@ -1354,9 +1376,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$subscriber = $db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $subscriber;
@@ -1401,9 +1425,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			return $db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return false;
@@ -1444,9 +1470,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$subscriber = $db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $subscriber;
@@ -1485,9 +1513,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			return false;
 		}
 
@@ -1526,9 +1556,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			$db->setQuery($query);
 			$id = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			return false;
 		}
 
@@ -1563,9 +1595,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$emailaddress = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $emailaddress;
@@ -1601,9 +1635,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$id = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $id;
@@ -1649,9 +1685,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
 			$data = $db->loadRowList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $data;

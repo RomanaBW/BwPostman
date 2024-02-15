@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use Exception;
 use JAccessRules;
@@ -260,9 +261,11 @@ class SendmailcontentTable extends Table
 
 				$res = $this->_db->loadResult();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'SendmailContentTable BE');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 
 			if ($res)
@@ -278,9 +281,11 @@ class SendmailcontentTable extends Table
 			{
 				$this->_db->insertObject($this->_tbl, $this);
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage(get_class($this) . '::store failed - ' . $e->getMessage());
+                BwPostmanHelper::logException($exception, 'SendmailContentTable BE');
+
+                Factory::getApplication()->enqueueMessage(get_class($this) . '::store failed - ' . $exception->getMessage());
 
 				return false;
 			}
@@ -330,9 +335,11 @@ class SendmailcontentTable extends Table
 
 			$result = $db->loadAssoc();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SendmailContentTable BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $this->bind($result);
@@ -368,9 +375,11 @@ class SendmailcontentTable extends Table
 
 			$newsletter = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SendmailContentTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $newsletter;

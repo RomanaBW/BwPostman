@@ -1124,9 +1124,11 @@ class NewsletterController extends FormController
 
 				$this->setMessage(Text::_($nText));
 			}
-			catch (Exception $e)
+			catch (Exception $exception)
 			{
-				$this->setMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'NewsletterController BE');
+
+                $this->setMessage($exception->getMessage(), 'error');
 			}
 		}
 

@@ -353,9 +353,11 @@ class MailinglistModel extends AdminModel
 				$db->setQuery($query);
 				$db->execute();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'MailinglistModel BE');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 

@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -150,7 +151,9 @@ class BwpostmanModel extends BaseDatabaseModel
 		}
 		catch (Exception $exception)
 		{
-			$message = Text::_('COM_BWPOSTMAN_ERROR_GENERAL_STATISTICS_DATA_ERROR');
+            BwPostmanHelper::logException($exception, 'BwPostmanModel BE');
+
+            $message = Text::_('COM_BWPOSTMAN_ERROR_GENERAL_STATISTICS_DATA_ERROR');
 			Factory::getApplication()->enqueueMessage($message, 'error');
 		}
 
@@ -203,7 +206,9 @@ class BwpostmanModel extends BaseDatabaseModel
 		}
 		catch (Exception $exception)
 		{
-			$message = Text::_('COM_BWPOSTMAN_ERROR_ARCHIVE_STATISTICS_DATA_ERROR');
+            BwPostmanHelper::logException($exception, 'BwPostmanModel BE');
+
+            $message = Text::_('COM_BWPOSTMAN_ERROR_ARCHIVE_STATISTICS_DATA_ERROR');
 			Factory::getApplication()->enqueueMessage($message, 'error');
 		}
 
@@ -413,9 +418,11 @@ class BwpostmanModel extends BaseDatabaseModel
 				return false;
 			}
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'BwPostmanModel BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 
 			return false;
 		}
@@ -471,9 +478,11 @@ class BwpostmanModel extends BaseDatabaseModel
 
 			$totalChildGroups = (int) $db->loadResult();
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'BwPostmanModel BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 
 			return false;
 		}

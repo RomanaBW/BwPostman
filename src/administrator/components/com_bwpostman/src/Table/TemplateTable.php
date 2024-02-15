@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use BoldtWebservice\Component\BwPostman\Administrator\Model\TemplateModel;
 use BoldtWebservice\Component\BwPostman\Administrator\Model\TemplatesTplModel;
@@ -607,9 +608,11 @@ class TemplateTable extends Table implements VersionableTableInterface
 
 			$xid = intval($this->_db->loadResult());
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplateTable BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if ($xid && $xid != intval($this->id))
@@ -799,9 +802,11 @@ class TemplateTable extends Table implements VersionableTableInterface
 
 			$count_std = $db->getNumRows();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplateTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 
@@ -861,9 +866,11 @@ class TemplateTable extends Table implements VersionableTableInterface
 
 			return $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplateTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 		return false;
 	}
@@ -895,9 +902,11 @@ class TemplateTable extends Table implements VersionableTableInterface
 
 			$TplTitle = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplateTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 
 			return false;
 		}
@@ -933,9 +942,11 @@ class TemplateTable extends Table implements VersionableTableInterface
 
 			return $db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplateTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 
 			return false;
 		}
@@ -978,9 +989,11 @@ class TemplateTable extends Table implements VersionableTableInterface
 
 			$tpl = $db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplateTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 		return $tpl;
 	}
@@ -1027,9 +1040,11 @@ class TemplateTable extends Table implements VersionableTableInterface
 
 			$tpl = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplateTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $tpl;
@@ -1075,9 +1090,11 @@ class TemplateTable extends Table implements VersionableTableInterface
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplateTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		// Set the new standard template.
@@ -1093,9 +1110,11 @@ class TemplateTable extends Table implements VersionableTableInterface
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplateTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return true;
@@ -1135,9 +1154,11 @@ class TemplateTable extends Table implements VersionableTableInterface
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplateTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 	}
 

@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use DateTime;
 use Exception;
@@ -536,9 +537,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 			$xid = intval($db->loadResult());
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterTable BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if ($xid && $xid !== intval($this->id))
@@ -624,9 +627,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return true;
@@ -675,9 +680,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $newIsTemplate;
@@ -714,9 +721,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 				return true;
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return false;
@@ -763,9 +772,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 
 			return false;
 		}
@@ -799,9 +810,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 			$newslettersData = $db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 
 			return false;
 		}
@@ -837,9 +850,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 			$content_ids = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $content_ids;
@@ -873,9 +888,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 			$campaignId = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return (int)$campaignId;
@@ -930,9 +947,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
 			return $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 		return false;
 	}
@@ -1016,9 +1035,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			return false;
 		}
 

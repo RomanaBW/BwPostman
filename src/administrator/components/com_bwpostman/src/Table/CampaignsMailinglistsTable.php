@@ -26,6 +26,7 @@
 
 namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -129,9 +130,11 @@ class CampaignsMailinglistsTable extends Table
 
 			$lists = $_db->loadAssocList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'CamMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		foreach ($lists as $list)
@@ -154,9 +157,11 @@ class CampaignsMailinglistsTable extends Table
 				$_db->setQuery($query);
 				$_db->execute();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_COPY_MAILINGLISTS_FAILED'), 'error');
+                BwPostmanHelper::logException($exception, 'CamMlTable BE');
+
+                Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_COPY_MAILINGLISTS_FAILED'), 'error');
 				return false;
 			}
 		}
@@ -191,9 +196,11 @@ class CampaignsMailinglistsTable extends Table
 
 			$mailinglists = $db->loadColumn();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'CamMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $mailinglists;
@@ -227,9 +234,11 @@ class CampaignsMailinglistsTable extends Table
 
 			$cams = $db->loadColumn();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'CamMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $cams;
@@ -259,9 +268,11 @@ class CampaignsMailinglistsTable extends Table
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'CamMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			return false;
 		}
 
@@ -292,9 +303,11 @@ class CampaignsMailinglistsTable extends Table
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'CamMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			return false;
 		}
 
@@ -336,9 +349,11 @@ class CampaignsMailinglistsTable extends Table
 				$db->setQuery($query);
 				$db->execute();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'CamMlTable BE');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 				return false;
 			}
 		}

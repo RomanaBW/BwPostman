@@ -151,7 +151,9 @@ class BwPostmanHelper
 		}
 		catch (Throwable $exception)
 		{
-			$app->enqueueMessage($exception->getMessage(), 'error');
+            self::logException($exception, 'BwPostmanHelper BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 			return false;
 		}
 
@@ -1094,9 +1096,11 @@ class BwPostmanHelper
 
 			$ml_published = $_db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::logException($exception, 'BwPostmanHelper BE');
+
+			Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if ($ml_published < 1)
@@ -1140,9 +1144,11 @@ class BwPostmanHelper
 
 			$queueEntriesAtLimit = $db->loadColumn();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::logException($exception, 'BwPostmanHelper BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		// entries at limit, queue and problem
@@ -1429,9 +1435,11 @@ class BwPostmanHelper
 
 				$creatorId = $db->loadResult();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                self::logException($exception, 'BwPostmanHelper BE');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 
@@ -1532,9 +1540,11 @@ class BwPostmanHelper
 
 			$reducedItems = $db->loadAssocList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::logException($exception, 'BwPostmanHelper BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $reducedItems;
@@ -1570,9 +1580,11 @@ class BwPostmanHelper
 
 			$asset_records = $_db->loadAssocList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$asset_records['name']  = 'com_bwpostman.' . $view;
+            self::logException($exception, 'BwPostmanHelper BE');
+
+            $asset_records['name']  = 'com_bwpostman.' . $view;
 		}
 
 		// If no record is available, set one with general section name (but should not appear on correct installation).
@@ -1727,9 +1739,11 @@ class BwPostmanHelper
 
 				$result = $_db->loadAssocList();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				return $allowed_ids;
+                self::logException($exception, 'BwPostmanHelper BE');
+
+                return $allowed_ids;
 			}
 		}
 
@@ -1847,10 +1861,12 @@ class BwPostmanHelper
     /**
      * @param Exception|RuntimeException $exception
      * @param string                     $category
+     * @param string                     $severity
+     * @param string                     $preMessage
      *
      * @since 4.2.7
      */
-    public static function logException(Exception|RuntimeException $exception, string $category): void
+    public static function logException(Exception|RuntimeException $exception, string $category, string $severity = BwLogger::BW_ERROR, $preMessage = ''): void
     {
         $log_options    = array();
         $logger   = BwLogger::getInstance($log_options);
@@ -1858,10 +1874,18 @@ class BwPostmanHelper
         $eType = get_class($exception);
         $trace = $exception->getTraceAsString();
 
-        $message = $exception->getMessage();
-        $message .= ' Exception: ' . $eType;
+        $message = $preMessage;
+
+        if ($preMessage)
+        {
+           $message .= ' ';
+        }
+
+        $message .= $eType . ' ' . $exception->getMessage();
+        $message .= ' in file ' . $exception->getFile();
+        $message .= ' at line ' . $exception->getLine();
         $message .= ' Trace: ' . $trace;
 
-        $logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $category));
+        $logger->addEntry(new LogEntry($message, $severity, $category));
     }
 }

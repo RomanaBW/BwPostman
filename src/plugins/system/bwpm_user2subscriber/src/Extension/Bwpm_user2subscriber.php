@@ -298,11 +298,13 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 				$this->logger->addEntry(new LogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEVELOPMENT, $this->log_cat));
 			}
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->_subject->setError($e->getMessage());
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            $this->_subject->setError($exception->getMessage());
 			$this->BwPostmanComponentEnabled = false;
-			$this->logger->addEntry(new LogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($exception->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -344,11 +346,13 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 				$this->logger->addEntry(new LogEntry(sprintf('Component version is: %s', $manifest['version']), BwLogger::BW_DEVELOPMENT, $this->log_cat));
 			}
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->_subject->setError($e->getMessage());
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            $this->_subject->setError($exception->getMessage());
 			$this->BwPostmanComponentVersion = '0.0.0';
-			$this->logger->addEntry(new LogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
+			$this->logger->addEntry(new LogEntry($exception->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
 		}
 	}
 
@@ -990,9 +994,11 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 				return ($update_mailinglists && $update_userid_result);
 			}
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->_subject->setError($e->getMessage());
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            $this->_subject->setError($exception->getMessage());
 
 			return false;
 		}
@@ -1043,9 +1049,11 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
 			$ml_save_result     = BwpmUser2SubscriberHelper::saveSubscribersMailinglists($subscriber_id, $mailinglist_ids);
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->_subject->$e->getMessage();
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            $this->_subject->$exception->getMessage();
 			return false;
 		}
 
@@ -1108,9 +1116,11 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 				$model->sendActivationNotification($this->stored_subscriber_data['id']);
 			}
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->_subject->setError($e->getMessage());
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            $this->_subject->setError($exception->getMessage());
 			return false;
 		}
 
@@ -1142,9 +1152,11 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 				$update_email_result = $this->updateEmailOfSubscription();
 			}
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->_subject->setError($e->getMessage());
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            $this->_subject->setError($exception->getMessage());
 			return false;
 		}
 
@@ -1177,9 +1189,11 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
 			$result  = $db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$this->getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            $this->getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $result;
@@ -1274,9 +1288,11 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 				$res_delete_mailinglists    = $this->deleteSubscribedMailinglists();
 			}
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->_subject->setError($e->getMessage());
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            $this->_subject->setError($exception->getMessage());
 			return false;
 		}
 
@@ -1314,9 +1330,11 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
 			$res  = $db->execute();
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->_subject->setError($e->getMessage());
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            $this->_subject->setError($exception->getMessage());
 			return false;
 		}
 
@@ -1349,9 +1367,11 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
 			$res  = $db->execute();
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->_subject->setError($e->getMessage());
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            $this->_subject->setError($exception->getMessage());
 			return false;
 		}
 
@@ -1393,9 +1413,11 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 				$res_update_subscriber  = $db->execute();
 			}
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			$this->_subject->setError($e->getMessage());
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            $this->_subject->setError($exception->getMessage());
 			return false;
 		}
 

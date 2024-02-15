@@ -26,6 +26,7 @@
 
 namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use DateTime;
 use Exception;
@@ -373,9 +374,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 			$xid = intval($db->loadResult());
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if ($xid && $xid !== intval($this->id)) {
@@ -492,9 +495,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 			$mls = $db->loadColumn();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if ($restricted === true)
@@ -549,9 +554,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 			$mailinglists = $db->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		// Does the subscriber already has internal mailinglists?
@@ -585,9 +592,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 					$add_mls = $db->loadObjectList();
 				}
-				catch (RuntimeException $e)
+				catch (RuntimeException $exception)
 				{
-					$app->enqueueMessage($e->getMessage(), 'error');
+                    BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+                    $app->enqueueMessage($exception->getMessage(), 'error');
 				}
 			}
 		}
@@ -642,9 +651,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 			$lists = $db->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $lists;
@@ -678,9 +689,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 			$mailinglists = $db->loadAssocList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $mailinglists;
@@ -713,9 +726,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 			$mailinglists = $db->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $mailinglists;
@@ -748,9 +763,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 			$mailinglists = $db->loadColumn();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $mailinglists;
@@ -784,9 +801,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 			$mailinglists = $db->loadAssocList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		$allowed = array();

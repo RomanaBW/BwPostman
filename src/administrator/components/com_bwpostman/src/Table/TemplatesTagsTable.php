@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
@@ -230,9 +231,11 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 
 			$tpl_assets = $db->loadAssoc();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplatesTagsTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if ($tpl_assets === null)
@@ -322,9 +325,11 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'TemplatesTagsTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return true;

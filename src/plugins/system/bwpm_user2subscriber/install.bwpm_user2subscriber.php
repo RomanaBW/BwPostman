@@ -28,6 +28,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
@@ -133,9 +134,11 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 			$manifest   = json_decode($result, true);
 			$version    = $manifest['version'];
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper Install FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $version;

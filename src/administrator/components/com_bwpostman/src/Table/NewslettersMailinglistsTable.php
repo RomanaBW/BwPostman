@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -129,9 +130,11 @@ class NewslettersMailinglistsTable extends Table
 
 			$lists = $db->loadAssocList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NlMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		foreach ($lists as $list)
@@ -154,9 +157,11 @@ class NewslettersMailinglistsTable extends Table
 				$db->setQuery($query);
 				$db->execute();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_COPY_MAILINGLISTS_FAILED'), 'error');
+                BwPostmanHelper::logException($exception, 'NlMlTable BE');
+
+                Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_NL_COPY_MAILINGLISTS_FAILED'), 'error');
 			}
 		}
 
@@ -217,9 +222,11 @@ class NewslettersMailinglistsTable extends Table
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NlMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 	}
 
@@ -257,9 +264,11 @@ class NewslettersMailinglistsTable extends Table
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NlMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 	}
 
@@ -291,9 +300,11 @@ class NewslettersMailinglistsTable extends Table
 
 			$mailinglists = $db->loadColumn();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NlMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $mailinglists;
@@ -323,9 +334,11 @@ class NewslettersMailinglistsTable extends Table
 			$db->setQuery($query);
 			$db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NlMlTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			return false;
 		}
 

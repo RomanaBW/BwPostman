@@ -361,9 +361,11 @@ class NewsletterModel extends AdminModel
 					$item->text_template_id_old = $item->text_template_id;
 				}
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$app->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'NewsletterModel BE');
+
+				$app->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 
@@ -691,9 +693,11 @@ class NewsletterModel extends AdminModel
 
 				$items = $db->loadObjectList();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'NewsletterModel BE');
+
+				Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 
 			if(count($items) > 0)
@@ -1031,9 +1035,11 @@ class NewsletterModel extends AdminModel
 		{
 			$queueTable->clearQueue();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterModel BE');
+
+			Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return true;
@@ -1309,9 +1315,11 @@ class NewsletterModel extends AdminModel
 				$ret_msg = Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_SUBSCRIBERS');
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterModel BE');
+
+			Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return true;
@@ -1858,12 +1866,9 @@ class NewsletterModel extends AdminModel
 				}
 			}
 		}
-		catch (Throwable $e)
+		catch (Throwable $exception)
 		{
-			$message = 'Exception' . $e->getMessage();
-			$message .= ' in file ' . $e->getFile();
-			$message .= ' at line ' . $e->getLine();
-			$this->logger->addEntry(new LogEntry('Model sendMailsFromQueue throwable exception: ' . $message, BwLogger::BW_DEBUG, 'send'));
+            BwPostmanHelper::logException($exception, 'NewsletterModel BE');
 
 			return 2;
 		}
@@ -2126,16 +2131,7 @@ class NewsletterModel extends AdminModel
 		}
 		catch (UnexpectedValueException | InvalidArgumentException | MailDisabledException | \PHPMailer\PHPMailer\Exception  | \Exception $exception)
 		{
-            $eType    = get_class($exception);
-            $trace    = $exception->getTraceAsString();
-
-            $message  = $exception->getMessage();
-            $message .= 'Exception: ' . $eType;
-            $message .= 'Trace: ' . $trace;
-
-			$res      = false;
-
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'send newsletter'));
+            BwPostmanHelper::logException($exception, 'NewsletterModel BE send');
 		}
 
 		if ($res === true)
@@ -2248,9 +2244,11 @@ class NewsletterModel extends AdminModel
 
 				$html_tpl = $db->loadResult();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'NewsletterModel BE');
+
+				Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 
 			if (is_null($html_tpl))
@@ -2296,9 +2294,11 @@ class NewsletterModel extends AdminModel
 
 				$text_tpl = $db->loadResult();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'NewsletterModel BE');
+
+				Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 
 			if (is_null($text_tpl))

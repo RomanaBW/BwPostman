@@ -28,6 +28,7 @@ namespace BoldtWebservice\Plugin\BwPostman\FooterUsedMailinglists\Extension;
 
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -317,10 +318,10 @@ final class FooterUsedMailinglists extends CMSPlugin implements SubscriberInterf
 				$recipients = array();
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+            BwPostmanHelper::logException($exception, 'Plg FUM FE');
+        }
 
 		return $recipients;
 	}
@@ -367,10 +368,10 @@ final class FooterUsedMailinglists extends CMSPlugin implements SubscriberInterf
 				$recipients = array();
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+            BwPostmanHelper::logException($exception, 'Plg FUM FE');
+        }
 
 		return $recipients;
 	}
@@ -401,11 +402,11 @@ final class FooterUsedMailinglists extends CMSPlugin implements SubscriberInterf
 
 			$camId = (int)$db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg FUM FE');
 
-			return 0;
+            return 0;
 		}
 
 		return $camId;
@@ -610,10 +611,10 @@ final class FooterUsedMailinglists extends CMSPlugin implements SubscriberInterf
 					$mailinglists = array();
 				}
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+                BwPostmanHelper::logException($exception, 'Plg FUM FE');
+            }
 		}
 
 		return $mailinglists;
@@ -652,10 +653,10 @@ final class FooterUsedMailinglists extends CMSPlugin implements SubscriberInterf
 
 				$nbrRecipients = (int)$db->loadResult();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+                BwPostmanHelper::logException($exception, 'Plg FUM FE');
+            }
 		}
 
 		return $nbrRecipients;
@@ -695,10 +696,10 @@ final class FooterUsedMailinglists extends CMSPlugin implements SubscriberInterf
 					$usergroups = array();
 				}
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			}
+                BwPostmanHelper::logException($exception, 'Plg FUM FE');
+            }
 		}
 
 		return $usergroups;
@@ -732,10 +733,10 @@ final class FooterUsedMailinglists extends CMSPlugin implements SubscriberInterf
 
 			$nbrRecipients = (int)$db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+            BwPostmanHelper::logException($exception, 'Plg FUM FE');
+        }
 
 		return $nbrRecipients;
 	}
@@ -818,10 +819,10 @@ final class FooterUsedMailinglists extends CMSPlugin implements SubscriberInterf
 				$activeRecipients = array();
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+            BwPostmanHelper::logException($exception, 'Plg FUM FE');
+        }
 
 		return $activeRecipients;
 	}

@@ -27,6 +27,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Installer\InstallerAdapter;
@@ -216,9 +217,11 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 				$db->setQuery($query);
 				$db->execute();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'Plg FUM Install FE');
+
+				Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 	}
@@ -248,9 +251,11 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 
 			$result = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			return false;
+            BwPostmanHelper::logException($exception, 'Plg FUM Install FE');
+
+            return false;
 		}
 
 		$manifest = json_decode($result, true);

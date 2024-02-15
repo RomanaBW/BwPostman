@@ -230,10 +230,9 @@ class ModBwPostmanOverviewHelper
 
 				$mls     = array_column($res_mls, 'id');
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$message = 'Query 1: ' . $e->getMessage() . ' ' . $query;
-				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+                BwPostmanHelper::logException($exception, 'ModOverHelper FE');
 			}
 		}
 		else
@@ -273,11 +272,10 @@ class ModBwPostmanOverviewHelper
 
 				$mls = array_column($res_mls, 'id');
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$message = 'Query 2: ' . $e->getMessage() . ' ' . $query;
-				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
-			}
+                BwPostmanHelper::logException($exception, 'ModOverHelper FE');
+            }
 		}
 
 		return (array)$mls;
@@ -331,10 +329,9 @@ class ModBwPostmanOverviewHelper
 
 				$cams = array_column($res_cams, 'id');
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$message = 'Query 3: ' . $e->getMessage() . ' ' . $query;
-				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+                BwPostmanHelper::logException($exception, 'ModOverHelper FE');
 			}
 		}
 		else
@@ -374,10 +371,9 @@ class ModBwPostmanOverviewHelper
 
 				$acc_mls = array_column($res_mls, 'id');
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$message = 'Query 4: ' . $e->getMessage() . ' ' . $query;
-				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+                BwPostmanHelper::logException($exception, 'ModOverHelper FE');
 			}
 
 			$query	= $db->getQuery(true);
@@ -401,9 +397,9 @@ class ModBwPostmanOverviewHelper
 				$cams = array_column($acc_cams, 'campaign_id');
 
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$message = 'Query 5: ' . $e->getMessage() . ' ' . $query;
+				$message = 'Query 5: ' . $exception->getMessage() . ' ' . $query;
 				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
 			}
 		}
@@ -457,13 +453,9 @@ class ModBwPostmanOverviewHelper
 
 				$groups = array_column($res_groups, 'id');
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				$logOptions = array();
-				$logger     = BwLogger::getInstance($logOptions);
-				$message    = 'Query 6: ' . $e->getMessage();
-
-				$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+                BwPostmanHelper::logException($exception, 'ModOverHelper FE');
 			}
 
 			if (!is_array($groups))
@@ -623,13 +615,9 @@ class ModBwPostmanOverviewHelper
 
 			return $result;
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$logOptions   = array();
-			$logger  = BwLogger::getInstance($logOptions);
-			$message = 'Query 7: ' . $e->getMessage() . ' ' . $query;
-
-			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+            BwPostmanHelper::logException($exception, 'ModOverHelper FE');
 			return array();
 		}
 	}
@@ -674,13 +662,9 @@ class ModBwPostmanOverviewHelper
 
 			return $result;
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$logOptions   = array();
-			$logger  = BwLogger::getInstance($logOptions);
-			$message = 'Query 8: ' . $e->getMessage() . ' ' . $query;
-
-			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mod_overview'));
+            BwPostmanHelper::logException($exception, 'ModOverHelper FE');
 			return array();
 		}
 	}

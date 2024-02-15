@@ -227,18 +227,22 @@ class NewsletterjsonController extends BaseController
 			echo json_encode($res);
 			$app->close();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
+            BwPostmanHelper::logException($exception, 'NewsletterJsonController BE');
+
 			echo Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '11') . '<br />';
-			echo $e->getMessage();
+			echo $exception->getMessage();
 			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
 			exit;
 		}
 
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			echo Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '12') . '<br />';
-			echo $e->getMessage();
+            BwPostmanHelper::logException($exception, 'NewsletterJsonController BE');
+
+            echo Text::sprintf('COM_BWPOSTMAN_NL_ERROR_SENDING_TECHNICAL_REASON', '12') . '<br />';
+			echo $exception->getMessage();
 			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
 			exit;
 		}

@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
 defined('JPATH_BASE') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
@@ -174,9 +175,11 @@ class SelectedcontentField extends ListField
 
 					$options[] = $db->loadAssoc();
 				}
-				catch (RuntimeException $e)
+				catch (RuntimeException $exception)
 				{
-					$app->enqueueMessage($e->getMessage(), 'error');
+                    BwPostmanHelper::logException($exception, 'SelectedContentField BE');
+
+                    $app->enqueueMessage($exception->getMessage(), 'error');
 				}
 			}
 		}

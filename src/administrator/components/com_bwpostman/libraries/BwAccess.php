@@ -28,6 +28,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
 
 defined('JPATH_PLATFORM') or die;
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;
@@ -257,9 +258,11 @@ class BwAccess
 
 			$sectionRules = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'BwAccess');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $sectionRules;
@@ -354,9 +357,11 @@ class BwAccess
 
 				$parentIdentities[$identity] = $db->loadAssocList();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'BwAccess');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 
@@ -595,9 +600,11 @@ class BwAccess
 		{
 			$assets = $db->setQuery($query)->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'BwAccess');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		self::$assetPermissionsParentIdMapping[$extensionName] = array();
@@ -667,9 +674,11 @@ class BwAccess
 		{
 			$assets = $db->setQuery($query)->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'BwAccess');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		$rootAsset = null;
@@ -965,9 +974,11 @@ class BwAccess
 		{
 			$result = $db->setQuery($query)->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'BwAccess');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		// Get the root even if the asset is not found and in recursive mode
@@ -984,9 +995,11 @@ class BwAccess
 			{
 				$result = $db->setQuery($query)->loadObjectList();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'BwAccess');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 
@@ -1279,9 +1292,11 @@ class BwAccess
 
 					$result = $db->loadColumn();
 				}
-				catch (RuntimeException $e)
+				catch (RuntimeException $exception)
 				{
-					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                    BwPostmanHelper::logException($exception, 'BwAccess');
+
+                    Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 				}
 
 				// Clean up any NULL or duplicate values, just in case
@@ -1380,9 +1395,11 @@ class BwAccess
 			{
 				$db->setQuery($query);
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'BwAccess');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 
 			// Build the view levels array.
@@ -1494,9 +1511,11 @@ class BwAccess
 			{
 				$data = new SimpleXMLElement($data);
 			}
-			catch (Exception $e)
+			catch (Exception $exception)
 			{
-				return false;
+                BwPostmanHelper::logException($exception, 'BwAccess');
+
+                return false;
 			}
 
 			// Make sure the XML loaded correctly.

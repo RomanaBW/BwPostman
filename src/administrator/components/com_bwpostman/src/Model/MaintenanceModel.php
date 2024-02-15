@@ -440,9 +440,11 @@ class MaintenanceModel extends BaseDatabaseModel
 
 			fclose($handle);
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			File::delete($fileName);
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
+
+            File::delete($fileName);
 			fclose($handle);
 
 			return false;
@@ -489,8 +491,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -704,8 +705,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -750,8 +750,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 				return false;
 			}
@@ -803,8 +802,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 				return false;
 			}
@@ -1205,8 +1203,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				}
 				catch (RuntimeException $exception)
 				{
-					$message = $exception->getMessage();
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 					return false;
 				}
@@ -1264,8 +1261,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				}
 				catch (RuntimeException $exception)
 				{
-					$message = $exception->getMessage();
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 					return false;
 				}
@@ -1329,8 +1325,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK');
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK'));
 
 				return false;
 			}
@@ -1429,8 +1424,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 				return false;
 			}
@@ -1521,8 +1515,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK');
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK'));
 
 			return true;
 		}
@@ -1580,8 +1573,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -1627,8 +1619,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -1657,8 +1648,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -1711,8 +1701,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -1765,8 +1754,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return 'Get table columns error';
 		}
@@ -1885,8 +1873,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 				return false;
 			}
@@ -1954,8 +1941,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 				return false;
 			}
@@ -2066,8 +2052,9 @@ class MaintenanceModel extends BaseDatabaseModel
 					}
 					catch (RuntimeException $exception)
 					{
-						$message = $exception->getMessage();
-						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                        BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
+
+                        $message = $exception->getMessage();
 
 						return $message;
 					}
@@ -2097,8 +2084,11 @@ class MaintenanceModel extends BaseDatabaseModel
 				}
 				catch (RuntimeException $exception)
 				{
-					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DROP_DEFAULT_ERROR',
-						$neededColumns[$i]['Field'], $checkTable->name);
+                    $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DROP_DEFAULT_ERROR',
+                        $neededColumns[$i]['Field'], $checkTable->name);
+
+                    BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
+
 					$message .= $exception->getMessage();
 
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
@@ -2321,8 +2311,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
         catch (RuntimeException $exception)
         {
-            $message = $exception->getMessage();
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
             return false;
         }
@@ -2385,11 +2374,9 @@ class MaintenanceModel extends BaseDatabaseModel
 				}
 				catch (RuntimeException $exception)
 				{
-					$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $sectionAsset['name']);
-					$message .= ': ';
-					$message .= $exception->getMessage();
+                    $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $sectionAsset['name']);
 
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 					return false;
 				}
@@ -2446,8 +2433,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -2477,8 +2463,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -2955,8 +2940,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				}
 				catch (RuntimeException $exception)
 				{
-					$message = $exception->getMessage();
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 					return false;
 				}
@@ -3159,8 +3143,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message =  $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 		}
 
@@ -3572,8 +3555,9 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_DATABASE_ERROR');
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_DATABASE_ERROR');
+
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 			return false;
 		}
@@ -3667,8 +3651,9 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_DATABASE_ERROR');
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_DATABASE_ERROR');
+
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 			return false;
 		}
@@ -3834,10 +3819,9 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $sectionName);
-			$message .= ': ';
-			$message .= $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $sectionName);
+
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 			return  false;
 		}
@@ -3884,8 +3868,9 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $asset['name']);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_DATABASE_ERROR', $asset['name']);
+
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 			return false;
 		}
@@ -3981,8 +3966,9 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException$exception)
 		{
-			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR', $dataset) . ': ' . $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR', $dataset) . ': ' . $exception->getMessage();
+
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 			return false;
 		}
@@ -4020,8 +4006,9 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR') . ': ' . $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR') . ': ' . $exception->getMessage();
+
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 			return false;
 		}
@@ -4057,8 +4044,9 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR', $dataset) . ': ' . $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_SAVE_DATA_ERROR', $dataset) . ': ' . $exception->getMessage();
+
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 			return false;
 		}
@@ -4130,8 +4118,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 				return -1;
 			}
@@ -4177,8 +4164,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					}
 					catch (RuntimeException $exception)
 					{
-						$message = $exception->getMessage();
-						$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                        BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 						return -1;
 					}
@@ -4328,10 +4314,9 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
-				$message .= ": ";
-				$message .= $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
+
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 				return false;
 			}
@@ -4346,10 +4331,9 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
-				$message .= ": ";
-				$message .= $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
+
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 				return false;
 			}
@@ -4364,10 +4348,9 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
-				$message .= ": ";
-				$message .= $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_RESTORE_POINT_ERROR');
+
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 				return false;
 			}
@@ -4419,10 +4402,9 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESTORE_RESTORE_POINT_ERROR');
-				$message .= ": ";
-				$message .= $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESTORE_RESTORE_POINT_ERROR');
+
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 				return $message;
 			}
@@ -4442,10 +4424,9 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESTORE_RESTORE_POINT_ERROR');
-				$message .= ": ";
-				$message .= $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_RESTORE_RESTORE_POINT_ERROR');
+
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 				return $message;
 			}
@@ -4484,8 +4465,9 @@ class MaintenanceModel extends BaseDatabaseModel
 				}
 				catch (RuntimeException $exception)
 				{
-					$message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DELETE_RESTORE_POINT_ERROR') . $exception->getMessage();
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DELETE_RESTORE_POINT_ERROR') . $exception->getMessage();
+
+                    BwPostmanHelper::logException($exception, 'MaintenanceModel BE', BwLogger::BW_ERROR, $message);
 
 					return $message;
 				}
@@ -4574,8 +4556,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -4662,8 +4643,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -4768,8 +4748,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return -1;
 		}
@@ -5072,8 +5051,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -5883,8 +5861,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -5918,8 +5895,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -5974,8 +5950,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -6008,8 +5983,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -6079,8 +6053,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -6187,8 +6160,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -6220,8 +6192,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -6254,8 +6225,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -6288,8 +6258,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return -1;
 		}
@@ -6329,8 +6298,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return -1;
 		}
@@ -6368,8 +6336,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return -1;
 		}
@@ -6411,8 +6378,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message = $exception->getMessage();
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 				return false;
 			}
@@ -6447,8 +6413,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -6694,8 +6659,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message =  $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}
@@ -6765,8 +6729,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			catch (RuntimeException $exception)
 			{
-				$message =  $exception->getMessage() . $table;
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 				return $exception->getMessage();
 			}
@@ -6850,8 +6813,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		}
 		catch (RuntimeException $exception)
 		{
-			$message = $exception->getMessage();
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
 			return false;
 		}

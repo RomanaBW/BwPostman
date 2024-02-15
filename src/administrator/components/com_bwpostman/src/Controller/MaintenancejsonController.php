@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -200,9 +201,11 @@ class MaintenancejsonController extends AdminController
 
 						$step = "7";
 					}
-					catch (Exception $e)
+					catch (Exception $exception)
 					{
-						$error  = $e->getMessage();
+                        BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+                        $error  = $exception->getMessage();
 						throw new BwException($error, 1360);
 					}
 					break;
@@ -223,9 +226,11 @@ class MaintenancejsonController extends AdminController
 						$this->ready = "1";
 						$step = "8";
 					}
-					catch (Exception $e)
+					catch (Exception $exception)
 					{
-						$error  = '<p class="text-danger">' . $e->getMessage() . '</p>';
+                        BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+                        $error  = '<p class="text-danger">' . $exception->getMessage() . '</p>';
 						throw new BwException($error, 1370);
 					}
 					break;
@@ -272,20 +277,24 @@ class MaintenancejsonController extends AdminController
 			echo json_encode($res);
 			$appWeb->close();
 		}
-		catch (BwException $e)
+		catch (BwException $exception)
 		{
-			$this->alertClass = 'error';
+            BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+            $this->alertClass = 'error';
 			$this->ready      = "1";
-			$error            = $e->getMessage();
-			$errorCode        = (int)$e->getCode();
+			$error            = $exception->getMessage();
+			$errorCode        = (int)$exception->getCode();
 			$result           = $error . $session->get('tcheck_content', '');
 
 			$this->handleBwException($errorCode, $result, $error, $step);
 		}
 
-		catch (RuntimeException | Exception $e)
+		catch (RuntimeException | Exception $exception)
 		{
-			echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
+            BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+            echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $exception->getMessage();
 			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
 			exit;
 		}
@@ -376,9 +385,11 @@ class MaintenancejsonController extends AdminController
 								BwLogger::BW_DEBUG, 'maintenance')
 						);
 					}
-					catch (Exception $e)
+					catch (Exception $exception)
 					{
-						$error  = '<p class="text-danger">' . $e->getMessage() . '</p>';
+                        BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+                        $error  = '<p class="text-danger">' . $exception->getMessage() . '</p>';
 						throw new BwException($error, 1011);
 					}
 					break;
@@ -402,9 +413,11 @@ class MaintenancejsonController extends AdminController
 								BwLogger::BW_DEBUG, 'maintenance')
 						);
 					}
-					catch (Exception $e)
+					catch (Exception $exception)
 					{
-						$error  = '<p class="text-danger">' . $e->getMessage() . '</p>';
+                        BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+                        $error  = '<p class="text-danger">' . $exception->getMessage() . '</p>';
 						throw new BwException($error, 1020);
 					}
 					break;
@@ -457,9 +470,11 @@ class MaintenancejsonController extends AdminController
 								BwLogger::BW_DEBUG, 'maintenance')
 						);
 					}
-					catch (Exception $e)
+					catch (Exception $exception)
 					{
-						$error  = '<p class="text-danger">' . $e->getMessage() . '</p>';
+                        BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+                        $error  = '<p class="text-danger">' . $exception->getMessage() . '</p>';
 						throw new BwException($error, 1041);
 					}
 					break;
@@ -511,9 +526,11 @@ class MaintenancejsonController extends AdminController
 								BwLogger::BW_DEBUG, 'maintenance')
 						);
 					}
-					catch (Exception $e)
+					catch (Exception $exception)
 					{
-						$error  = '<p class="text-danger err">' . $e->getMessage() . '</p>';
+                        BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+                        $error  = '<p class="text-danger err">' . $exception->getMessage() . '</p>';
 						throw new BwException($error, 1062);
 					}
 					break;
@@ -602,9 +619,11 @@ class MaintenancejsonController extends AdminController
 							);
 						}
 					}
-					catch (Exception $e)
+					catch (Exception $exception)
 					{
-						$error  = '<p class="text-danger">' . $e->getMessage() . '</p>';
+                        BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+                        $error  = '<p class="text-danger">' . $exception->getMessage() . '</p>';
 //						$step = "13";
 						throw new BwException($error, 1072);
 					}
@@ -631,9 +650,11 @@ class MaintenancejsonController extends AdminController
 					$this->checkTableColumns($session, 1100, $versionOfBackup);
 					$step = "11";
 					}
-					catch (Exception $e)
+					catch (Exception $exception)
 					{
-						$error  = $e->getMessage();
+                        BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+                        $error  = $exception->getMessage();
 						throw new BwException($error, 1101);
 					}
 
@@ -652,9 +673,11 @@ class MaintenancejsonController extends AdminController
 
 						$step = "12";
 					}
-					catch (Exception $e)
+					catch (Exception $exception)
 					{
-						$error  = $e->getMessage();
+                        BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+                        $error  = $exception->getMessage();
 						throw new BwException($error, 1110);
 					}
 					break;
@@ -723,21 +746,25 @@ class MaintenancejsonController extends AdminController
 			echo json_encode($res);
 			$appWeb->close();
 		}
-		catch (BwException $e)
+		catch (BwException $exception)
 		{
-			$this->alertClass = 'error';
+            BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+            $this->alertClass = 'error';
 			$this->ready      = "1";
-			$error            = $e->getMessage();
-			$errorCode        = (integer)$e->getCode();
+			$error            = $exception->getMessage();
+			$errorCode        = (integer)$exception->getCode();
 			$result           = $error . $session->get('trestore_content', '');
 
 			$this->handleBwException($errorCode, $result, $error, $step);
 			$app->setUserState('com_bwpostman.maintenance.generals', null);
 		}
 
-		catch (RuntimeException | Exception $e)
+		catch (RuntimeException | Exception $exception)
 		{
-			echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $e->getMessage();
+            BwPostmanHelper::logException($exception, 'MaintenanceJsonController');
+
+            echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ERROR') . $exception->getMessage();
 			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
 			exit;
 		}

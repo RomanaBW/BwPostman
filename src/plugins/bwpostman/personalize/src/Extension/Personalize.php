@@ -28,6 +28,7 @@ namespace BoldtWebservice\Plugin\BwPostman\Personalize\Extension;
 
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Database\DatabaseAwareInterface;
@@ -165,9 +166,11 @@ final class Personalize extends CMSPlugin implements SubscriberInterface, Databa
 				$gender = 2;
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-            $this->getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg Personalize FE');
+
+            $this->getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $gender;
@@ -206,9 +209,11 @@ final class Personalize extends CMSPlugin implements SubscriberInterface, Databa
 				$gender = 2;
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-            $this->getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg Personalize FE');
+
+            $this->getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $gender;

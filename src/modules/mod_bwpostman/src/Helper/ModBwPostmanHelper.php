@@ -29,6 +29,7 @@ namespace BoldtWebservice\Module\BwPostman\Site\Helper;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use JLoader;
 use Joomla\CMS\Factory;
@@ -134,9 +135,11 @@ class ModBwPostmanHelper
 				$mailinglists = array();
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'ModRegHelper FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $mailinglists;
@@ -177,9 +180,11 @@ class ModBwPostmanHelper
 				$subscriberid = 0;
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'ModRegHelper FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $subscriberid;
@@ -221,9 +226,11 @@ class ModBwPostmanHelper
 				$user = new stdClass;
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'ModRegHelper FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		$user->user_id = $id;

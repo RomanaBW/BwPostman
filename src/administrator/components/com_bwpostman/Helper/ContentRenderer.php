@@ -218,9 +218,11 @@ class ContentRenderer
 
 			$row = $_db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'ContentRenderer BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if ($row)
@@ -691,9 +693,11 @@ class ContentRenderer
 
 				$result = $_db->loadResult();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'ContentRenderer BE');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 
 			return $result;

@@ -82,9 +82,11 @@ abstract class BwpmUser2SubscriberHelper
 
 			$subscriber_id  = (int)$_db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $subscriber_id;
@@ -123,9 +125,11 @@ abstract class BwpmUser2SubscriberHelper
 
 			$result  = $_db->loadAssoc();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if (is_array($result) && key_exists('status', $result) && key_exists('activation', $result)
@@ -170,9 +174,11 @@ abstract class BwpmUser2SubscriberHelper
 
 			$result  = $_db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $result;
@@ -237,9 +243,11 @@ abstract class BwpmUser2SubscriberHelper
 
 			$result  = $_db->execute();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $result;
@@ -325,9 +333,11 @@ abstract class BwpmUser2SubscriberHelper
 				$subscribed_mailinglists = array();
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return  $subscribed_mailinglists;
@@ -372,9 +382,11 @@ abstract class BwpmUser2SubscriberHelper
 				$subscriber = array();
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $subscriber;
@@ -518,9 +530,11 @@ abstract class BwpmUser2SubscriberHelper
 
 				$result = $_db->execute();
 			}
-			catch (RuntimeException $e)
+			catch (RuntimeException $exception)
 			{
-				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 			}
 		}
 
@@ -554,9 +568,11 @@ abstract class BwpmUser2SubscriberHelper
 
 			$id = (int)$_db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'Plg U2SHelper FE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return  $id;

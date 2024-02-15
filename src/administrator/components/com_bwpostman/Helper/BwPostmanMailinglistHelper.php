@@ -182,9 +182,11 @@ class BwPostmanMailinglistHelper {
 
 			$mailinglist = $db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'MailinglistHelper BE');
+
+			Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $mailinglist;
@@ -236,9 +238,11 @@ class BwPostmanMailinglistHelper {
 
 			$options = $db->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'MailinglistHelper BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $options;

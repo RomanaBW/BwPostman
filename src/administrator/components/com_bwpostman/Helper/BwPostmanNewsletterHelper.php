@@ -75,9 +75,11 @@ abstract class BwPostmanNewsletterHelper {
 
 			$count_users = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterHelper BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $count_users;
@@ -124,9 +126,11 @@ abstract class BwPostmanNewsletterHelper {
 
 			$count_subscribers = $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'NewsletterHelper BE');
+
+			Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $count_subscribers;

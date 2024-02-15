@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -479,9 +480,11 @@ class ArchiveModel extends ListModel
 		{
 			$db->setQuery($query);
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
+            BwPostmanHelper::logException($exception, 'ArchiveModel BE');
+
+            Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
 			return false;
 		}
 
@@ -774,9 +777,10 @@ class ArchiveModel extends ListModel
 			// Get the form.
 			return $this->loadForm($this->context . '.filter', $this->filterFormName, ['control' => '', 'load_data' => $loadData]);
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-		}
+            BwPostmanHelper::logException($exception, 'ArchiveModel BE');
+        }
 
 		return null;
 	}

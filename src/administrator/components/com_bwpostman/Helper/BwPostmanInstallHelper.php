@@ -143,12 +143,14 @@ class BwPostmanInstallHelper
 						{
 							$_db->setQuery($query)->execute();
 						}
-						catch (RuntimeException $e)
+						catch (RuntimeException $exception)
 						{
-							$converted = false;
+                            BwPostmanHelper::logException($exception, 'InstallHelper BE');
+
+                            $converted = false;
 
 							// Still render the error message from the Exception object
-							Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+							Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 						}
 					}
 				}
@@ -197,9 +199,11 @@ class BwPostmanInstallHelper
 				$ret = true;
 			}
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'InstallHelper BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $ret;
@@ -234,7 +238,9 @@ class BwPostmanInstallHelper
 		}
 		catch (RuntimeException $exception)
 		{
-			$message =  $exception->getMessage();
+            BwPostmanHelper::logException($exception, 'InstallHelper BE');
+
+            $message =  $exception->getMessage();
 			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
 			return  false;

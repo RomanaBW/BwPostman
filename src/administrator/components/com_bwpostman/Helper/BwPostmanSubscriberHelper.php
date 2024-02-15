@@ -463,12 +463,9 @@ class BwPostmanSubscriberHelper
 		}
 		catch (UnexpectedValueException | MailDisabledException | \PHPMailer\PHPMailer\Exception $exception)
 		{
-			$logOptions = array();
-			$logger     = BwLogger::getInstance($logOptions);
-			$message    = $exception->getMessage();
-			$res        = false;
+            BwPostmanHelper::logException($exception, 'Activation');
 
-			$logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'activation'));
+			$res        = false;
 		}
 
 		return $res;
@@ -607,9 +604,11 @@ class BwPostmanSubscriberHelper
 
 			$params	= $db->loadObject();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'SubscriberHelper BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $params;

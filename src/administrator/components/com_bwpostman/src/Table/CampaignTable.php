@@ -29,6 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Table;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use DateTime;
 use Exception;
@@ -345,9 +346,11 @@ class CampaignTable extends Table implements VersionableTableInterface
 
 			$xid = intval($db->loadResult());
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			$app->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'CampaignTable BE');
+
+            $app->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		if ($xid && $xid !== intval($this->id))
@@ -447,9 +450,11 @@ class CampaignTable extends Table implements VersionableTableInterface
 
 			return $db->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'CampaignTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 		return false;
 	}
@@ -478,9 +483,11 @@ class CampaignTable extends Table implements VersionableTableInterface
 
 			$cams = $db->loadColumn();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'CampaignTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $cams;
@@ -514,9 +521,11 @@ class CampaignTable extends Table implements VersionableTableInterface
 
 			$campaigns = $db->loadAssocList();
 		}
-		catch (RuntimeException $e)
+		catch (RuntimeException $exception)
 		{
-			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            BwPostmanHelper::logException($exception, 'CampaignTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 		}
 
 		return $campaigns;

@@ -54,8 +54,13 @@
 		<filename>joomla.asset.json</filename>
 	</media>
 
-	<administration>
+	<api>
+		<files folder="api">
+			<folder>src</folder>
+		</files>
+	</api>
 
+	<administration>
 		<menu>COM_BWPOSTMAN_MENU_MAIN_ENTRY</menu>
 		<submenu>
 			<!--

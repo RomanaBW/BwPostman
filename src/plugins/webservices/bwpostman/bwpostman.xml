@@ -11,19 +11,16 @@
 	<description>PLG_BWPOSTMAN_PLUGIN_USERACCOUNT_DESCRIPTION</description>
 	<namespace path="src">BoldtWebservice\Plugin\Webservices\Bwpostman</namespace>
 
-<!--	<scriptfile>install.bwpm_useraccount.php</scriptfile>-->
-
 	<files>
 		<folder>services</folder>
 		<folder plugin="bwpostman">src</folder>
-<!--		<filename >install.bwpm_useraccount.php</filename>-->
 		<filename >index.html</filename>
 	</files>
 
 	<languages folder="language">
-		<language tag="de-DE">de-DE/de-DE.plg_webservice_bwpostman.ini</language>
-		<language tag="de-DE">de-DE/de-DE.plg_webservice_bwpostman.sys.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_webservice_bwpostman.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_webservice_bwpostman.sys.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_webservices_bwpostman.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_webservices_bwpostman.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_webservices_bwpostman.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_webservices_bwpostman.sys.ini</language>
 	</languages>
 </extension>

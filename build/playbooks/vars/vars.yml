@@ -15,6 +15,7 @@ package_parts:
   - plg_system_bwpm_user2subscriber
   - plg_bwpostman_footerusedmailinglists
   - plg_bwpostman_newslettercontent
+  - plg_webservices_bwpostman
 
 languages:
   - de-DE

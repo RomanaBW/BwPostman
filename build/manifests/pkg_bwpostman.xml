@@ -27,6 +27,7 @@
 		<file type="plugin" id="bwpm_user2subscriber" group="system" client="site">plg_system_bwpm_user2subscriber.zip</file>
 		<file type="plugin" id="footerusedmailinglists" group="bwpostman" client="site">plg_bwpostman_footerusedmailinglists.zip</file>
 		<file type="plugin" id="newslettercontent" group="bwpostman" client="site">plg_bwpostman_newslettercontent.zip</file>
+		<file type="plugin" id="bwpostman" group="webservces" client="site">plg_webservices_bwpostman.zip</file>
 	</files>
 
 

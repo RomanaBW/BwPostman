@@ -136,6 +136,18 @@
         bw_external_lang: true
         bw_media_folder: ""
 
+#    - name: build webservice plugin package
+    - include_role:
+        name: romanabw.build-jplugin-package
+      vars:
+        bw_workspace: "{{ project_base_dir }}/src"
+        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_languages: "{{ languages }}"
+        bw_plugin_name: "bwpostman"
+        bw_plugin_group: "webservices"
+        bw_external_lang: true
+        bw_media_folder: ""
+
 #    - name: pack complete package
     - include_role:
         name: romanabw.build-jpackage-package

@@ -153,6 +153,13 @@ services:
       - type: bind
         source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.sys.ini
         target: /var/www/html/administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.sys.ini
+      # mount webservices plugin language files
+      - type: bind
+        source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.ini
+        target: /var/www/html/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.ini
+      - type: bind
+        source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.sys.ini
+        target: /var/www/html/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.sys.ini
       # mount BwTC plugin language files
       - type: bind
         source: /home/romana/PhpstormProjects/BwTimeControl/src/language/en-GB/en-GB.pkg_bwtimecontrol.sys.ini

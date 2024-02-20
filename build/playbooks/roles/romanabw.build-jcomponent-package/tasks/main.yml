@@ -49,6 +49,11 @@
     state: directory
   with_items: "{{ bw_languages }}"
 
+- name: Copy api files
+  synchronize:
+    src: "{{ bw_workspace }}/api/components/com_{{ bw_extension }}/"
+    dest: "{{ bw_target_ext_path }}/files/api"
+
 - name: Copy site files
   synchronize:
     src: "{{ bw_workspace }}/components/com_{{ bw_extension }}/"

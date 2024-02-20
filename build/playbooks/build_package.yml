@@ -141,7 +141,7 @@
         name: romanabw.build-jplugin-package
       vars:
         bw_workspace: "{{ project_base_dir }}/src"
-        bw_target_ext_path: "{{ project_base_dir }}"
+        bw_target_ext_path: "{{ target_ext_path }}"
         bw_languages: "{{ languages }}"
         bw_plugin_name: "bwpostman"
         bw_plugin_group: "webservices"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension group="webservice" method="upgrade" type="plugin" version="4.0">
-	<name>PLG_BWPOSTMAN_PLUGIN_WEBSERVICE</name>
+<extension group="webservices" method="upgrade" type="plugin" version="4.0">
+	<name>PLG_BWPOSTMAN_PLUGIN_WEBSERVICES</name>
 	<version>%%version_number%%</version>
 	<creationDate>%%creation_date%%</creationDate>
 	<author>Boldt Webservice</author>
@@ -8,7 +8,7 @@
 	<authorUrl>https://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
 	<license>GNU/GPLv3 or later</license>
-	<description>PLG_BWPOSTMAN_PLUGIN_USERACCOUNT_DESCRIPTION</description>
+	<description>PLG_BWPOSTMAN_PLUGIN_WEBSERVICES_DESCRIPTION</description>
 	<namespace path="src">BoldtWebservice\Plugin\Webservices\Bwpostman</namespace>
 
 	<files>

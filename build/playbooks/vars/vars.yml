@@ -71,9 +71,4 @@ manifest_list:
   - src/plugins/bwpostman/footerusedmailinglists/footerusedmailinglists.xml
   - build/manifests/pkg_bwpostman.xml
   - src/plugins/bwpostman/newslettercontent/newslettercontent.xml
-#  - src/plugins/system/bwpm_mediaoverride/bwpm_mediaoverride.xml
-#  - build/manifests/lang_bwpostman_de-DE.xml
-#  - build/manifests/lang_bwpostman_en-GB.xml
-#  - build/manifests/lang_bwpostman_it-IT.xml
-#  - build/manifests/lang_bwpostman_es-ES.xml
-#  - build/manifests/lang_bwpostman_ja-JP.xml
+  - src/plugins/webservices/bwpostman/bwpostman.xml

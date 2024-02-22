@@ -1867,7 +1867,8 @@ class NewsletterEditPage
 			$I->wait(1);
 			$I->clickAndWait(self::$button_editor_toggle, 1);
 
-			$I->fillField("//*[@id='jform_articletext_editor_source_textarea']", $content);
+//			$I->fillField("//*[@id='jform_articletext_editor_source_textarea']", $content);
+            $I->fillField("//*[@id='jform_articletext']", $content);
 
 			$I->scrollTo(self::$button_editor_toggle, 0, -100);
 			$I->wait(1);

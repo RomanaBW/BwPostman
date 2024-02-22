@@ -1882,7 +1882,10 @@ class NewsletterEditPage
 			$I->clickAndWait("//*/form/div[2]/joomla-tab/div/button[5]", 1);
 			$I->fillField("#jform_com_fields_about_the_author", "The author loves programming");
 
-			$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
+            $I->clickAndWait("//*/form/div[2]/joomla-tab/div/button[7]", 1);
+            $I->fillField("//*[@id='jform_created']", "2023-06-18");
+
+            $I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		}
 	}
 }

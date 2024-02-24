@@ -89,6 +89,12 @@ final class Personalize extends CMSPlugin implements SubscriberInterface, Databa
 	public function doBwPostmanPersonalize(Event $event): void
 	{
         $context = $event->getArgument('context');
+
+        if ($context !== 'com_bwpostman.send')
+        {
+            return;
+        }
+
         $body    = $event->getArgument('body');
         $id      = $event->getArgument('id');
 

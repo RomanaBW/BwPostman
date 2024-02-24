@@ -284,6 +284,7 @@ class NewsletterModel extends AdminModel
                 $eventArgs = array(
                     'properties'   => $properties,
                 );
+
                 $event = new Event('onBwPostmanAfterNewsletterModelGetProperties', $eventArgs);
                 $app->getDispatcher()->dispatch($event->getName(), $event);
                 $eventResults = $event->getArgument('result', []);
@@ -2032,8 +2033,8 @@ class NewsletterModel extends AdminModel
                 'body'    => $body,
                 'id'      => $tblSendMailQueue->subscriber_id,
             );
-        $event = new Event('onBwPostmanPersonalize', $eventArgs);
-        $app->getDispatcher()->dispatch($event->getName(), $event);
+            $event = new Event('onBwPostmanPersonalize', $eventArgs);
+            $app->getDispatcher()->dispatch($event->getName(), $event);
             $eventResults = $event->getArgument('result', []);
 
             if ($eventResults)

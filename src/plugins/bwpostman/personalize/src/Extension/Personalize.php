@@ -48,6 +48,18 @@ final class Personalize extends CMSPlugin implements SubscriberInterface, Databa
     use DatabaseAwareTrait;
 
     /**
+     * Definition of which contexts to allow in this plugin
+     *
+     * @var    array
+     *
+     * @since  0.9.0
+     */
+    protected $allowedContext = array(
+        'com_bwpostman.send',
+        'com_bwpostman.view',
+    );
+
+    /**
      * Returns an array of events this subscriber will listen to.
      *
      * @return  array
@@ -90,7 +102,7 @@ final class Personalize extends CMSPlugin implements SubscriberInterface, Databa
 	{
         $context = $event->getArgument('context');
 
-        if ($context !== 'com_bwpostman.send')
+        if (!in_array($context, $this->allowedContext))
         {
             return;
         }
@@ -105,12 +117,9 @@ final class Personalize extends CMSPlugin implements SubscriberInterface, Databa
 		{
 			$gender = $this->getGenderFromSubscriberId($id);
 		}
-		elseif ($context === 'com_bwpostman.view')
+		elseif ($id > 0)
 		{
-			if ($id > 0)
-			{
-				$gender = $this->getGenderFromUserId($id);
-			}
+			$gender = $this->getGenderFromUserId($id);
 		}
 
 		// Start Plugin

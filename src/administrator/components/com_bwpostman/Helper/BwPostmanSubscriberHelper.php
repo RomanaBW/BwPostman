@@ -41,6 +41,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Event\Event;
 use RuntimeException;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwEmailValidation;
 use stdClass;
@@ -433,11 +434,24 @@ class BwPostmanSubscriberHelper
 
 			if (PluginHelper::isEnabled('bwpostman', 'personalize'))
 			{
-//				$arguments = array('com_bwpostman.send', &$body, $subscriber_id);
-//				$event = AbstractEvent::create('onBwPostmanPersonalize', $arguments);
-//
-//				$app->getDispatcher()->dispatch('onBwPostmanPersonalize', $event);
-				$app->triggerEvent('onBwPostmanPersonalize', array('com_bwpostman.send', &$body, $subscriber_id));
+                $eventArgs = array(
+                    'context' => 'com_bwpostman.send',
+                    'body'    => $body,
+                    'id'      => $subscriber_id,
+                );
+                $event = new Event('onBwPostmanPersonalize', $eventArgs);
+                $app->getDispatcher()->dispatch($event->getName(), $event);
+                $eventResults = $event->getArgument('result', []);
+
+                if ($eventResults)
+                {
+                    $body = $eventResults[0];
+                }
+
+                if (!$body)
+                {
+                    $app->enqueueMessage(Text::_('COM_BWPOSTMAN_PERSONALIZE_ERROR'), 'error');
+                }
 			}
 		}
 

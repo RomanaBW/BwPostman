@@ -2114,6 +2114,7 @@ class NewsletterModel extends AdminModel
 
             if (!$this->arise_queue)
 			{
+                $startTime = microtime(true);
 				$this->logger->addEntry(new LogEntry('Before sending', BwLogger::BW_INFO, 'send'));
 //				Use the following with care! Complete mails with body are written to log…
 //				$this->logger->addEntry(new LogEntry('Mailer data: ' . print_r($mailer, true), BwLogger::BW_DEVELOPMENT, 'send'));
@@ -2128,6 +2129,9 @@ class NewsletterModel extends AdminModel
                 }
 
 				$this->logger->addEntry(new LogEntry(sprintf('Sending result: %s', $res), BwLogger::BW_INFO, 'send'));
+
+                $endTime = microtime(true);
+                $this->logger->addEntry(new LogEntry(sprintf('Sending 1 newsletter lasts %s seconds', $endTime - $startTime), BwLogger::BW_INFO, 'send'));
 			}
 		}
 		catch (UnexpectedValueException | InvalidArgumentException | MailDisabledException | \PHPMailer\PHPMailer\Exception  | \Exception $exception)

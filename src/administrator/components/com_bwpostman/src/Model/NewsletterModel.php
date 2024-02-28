@@ -2134,7 +2134,7 @@ class NewsletterModel extends AdminModel
                 $this->logger->addEntry(new LogEntry(sprintf('Sending 1 newsletter lasts %s seconds', $endTime - $startTime), BwLogger::BW_INFO, 'send'));
 			}
 		}
-		catch (UnexpectedValueException | InvalidArgumentException | MailDisabledException | \PHPMailer\PHPMailer\Exception  | \Exception $exception)
+		catch (UnexpectedValueException | InvalidArgumentException | MailDisabledException | \PHPMailer\PHPMailer\Exception  | Exception $exception)
 		{
             BwPostmanHelper::logException($exception, 'NewsletterModel BE send');
 		}

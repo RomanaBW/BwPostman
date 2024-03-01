@@ -282,7 +282,8 @@ class NewsletterModel extends AdminModel
 
 
                 $eventArgs = array(
-                    'properties'   => $properties,
+                    'properties' => $properties,
+                    'context'    => 'newsletter.item',
                 );
 
                 $event = new Event('onBwPostmanAfterNewsletterModelGetProperties', $eventArgs);
@@ -294,8 +295,6 @@ class NewsletterModel extends AdminModel
                     $properties = $eventResults[0];
                 }
 
-
-//                $app->triggerEvent('onBwPostmanAfterNewsletterModelGetProperties', array(&$properties));
 				$item = ArrayHelper::toObject($properties, 'JObject');
 
 				if (property_exists($item, 'params'))
@@ -824,7 +823,18 @@ class NewsletterModel extends AdminModel
 			}
 		}
 
-		$app->triggerEvent('onBwPostmanAfterNewsletterModelSave', array(&$data));
+        $eventArgs = array(
+            'data'    => $data,
+            'context' => 'newsletter.save',
+        );
+        $event = new Event('onBwPostmanAfterNewsletterModelSave', $eventArgs);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $results = $event->getArgument('result', []);
+
+        if ($results[1] === true)
+        {
+            $data = $results[0];
+        }
 
 		return true;
 	}

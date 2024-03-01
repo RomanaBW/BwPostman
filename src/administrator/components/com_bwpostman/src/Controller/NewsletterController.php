@@ -513,7 +513,8 @@ class NewsletterController extends FormController
 		// Test whether the data is valid.
 		PluginHelper::importPlugin('bwpostman');
         $eventArgs = array(
-            'form'      => $form,
+            'form'    => $form,
+            'context' => 'newsletter.edit',
         );
         $event = new Event('onBwPostmanBeforeNewsletterControllerValidate', $eventArgs);
         $app->getDispatcher()->dispatch($event->getName(), $event);

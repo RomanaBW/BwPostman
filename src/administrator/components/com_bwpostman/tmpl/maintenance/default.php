@@ -32,6 +32,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
+use Joomla\Event\Event;
 
 $jinput	= Factory::getApplication()->input;
 
@@ -74,7 +75,12 @@ if ($this->queueEntries)
 			}
 
 			// trigger BwTimeControl event
-			Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceRenderLayout', array());
+            $eventArgs = array(
+                'context' => 'bwpostman.maintenance'
+            );
+
+            $event = new Event('onBwPostmanMaintenanceRenderLayout', $eventArgs);
+            Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
 
 			$link = BwPostmanHTMLHelper::getForumLink();
 			BwPostmanHTMLHelper::quickiconButton($link, 'icon-48-forum.png', Text::_("COM_BWPOSTMAN_FORUM"), 0, 0, 'new');

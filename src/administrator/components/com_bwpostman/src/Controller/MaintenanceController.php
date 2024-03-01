@@ -385,7 +385,7 @@ class MaintenanceController extends BaseController
 			PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
             $eventArgs = array(
-                'subject'   => $this,
+                'context' => 'bwpostman.maintenance'
             );
             $event = new Event('onBwPostmanMaintenanceStartCron', $eventArgs);
             Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
@@ -400,7 +400,7 @@ class MaintenanceController extends BaseController
 					$error .= $result . '<br />';
 				}
 
-				$error .= Text::_('PLG_BWTIMECONTROL_MAINTENANCE_ERROR_CRON');
+				$error .= Text::_('PLG_BWTIMECONTROL_MAINTENANCE_ERROR_CRON_START');
 				Factory::getApplication()->enqueueMessage($error, 'error');
 			}
 
@@ -425,7 +425,12 @@ class MaintenanceController extends BaseController
 		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
 
 		PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
-		Factory::getApplication()->triggerEvent('onBwPostmanMaintenanceStopCron');
+
+        $eventArgs = array(
+            'context' => 'bwpostman.maintenance'
+        );
+        $event = new Event('onBwPostmanMaintenanceStopCron', $eventArgs);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
 
 		$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
 		$this->setRedirect($link);

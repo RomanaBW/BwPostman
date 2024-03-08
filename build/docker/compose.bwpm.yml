@@ -91,6 +91,10 @@ services:
       - type: bind
         source: /home/romana/PhpstormProjects/BwTimeControl/src/plugins/extension/bwtimecontrol
         target: /var/www/html/plugins/extension/bwtimecontrol
+      # mount BwTC media folder
+      - type: bind
+        source: /home/romana/PhpstormProjects/BwTimeControl/src/media/plg_bwpostman_bwtimecontrol
+        target: /var/www/html/media/plg_bwpostman_bwtimecontrol
 
       # mount extension BE language files
       - type: bind

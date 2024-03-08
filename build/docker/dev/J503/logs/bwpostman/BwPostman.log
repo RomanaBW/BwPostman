@@ -1,0 +1,954 @@
+#
+#<?php die('Forbidden.'); ?>
+#Date: 2024-03-08 11:23:21 UTC
+#Software: Joomla! 5.0.3 Stable [ Kuboresha ] 20-February-2024 16:00 GMT
+
+#Fields: date	time	priority	clientip	category	message
+2024-03-08	11:23:21	BW_DEBUG	172.18.5.17	send	NL controller sendmail reached
+2024-03-08	11:23:21	BW_DEBUG	172.18.5.17	send	NL controller preSendChecks finished
+2024-03-08	11:23:21	BW_DEBUG	172.18.5.17	send	NL controller model save finished
+2024-03-08	11:23:21	BW_DEBUG	172.18.5.17	send	NL controller start sending reached
+2024-03-08	11:23:21	BW_DEBUG	172.18.5.17	send	View raw delay: 1000
+2024-03-08	11:23:22	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:22	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:22	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:22	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 
+2024-03-08	11:23:22	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: Test.User@tester-net.nil
+2024-03-08	11:23:22	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:22	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:22	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.24529504776001 seconds
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: Test.Text@tester-net.nil
+2024-03-08	11:23:23	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:23	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:23	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.061154842376709 seconds
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: info@boldt-webservice.de
+2024-03-08	11:23:23	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:23	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:23	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12000298500061 seconds
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 
+2024-03-08	11:23:23	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: romana@boldt-coaching.de
+2024-03-08	11:23:23	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:23	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:23	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.076503992080688 seconds
+2024-03-08	11:23:40	BW_DEBUG	172.18.5.17	send	NL controller sendmail reached
+2024-03-08	11:23:40	BW_DEBUG	172.18.5.17	send	NL controller preSendChecks finished
+2024-03-08	11:23:40	BW_DEBUG	172.18.5.17	send	NL controller model save finished
+2024-03-08	11:23:40	BW_DEBUG	172.18.5.17	send	NL controller start sending reached
+2024-03-08	11:23:40	BW_DEBUG	172.18.5.17	send	View raw delay: 1000
+2024-03-08	11:23:40	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:40	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:40	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:40	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: b16f8478f01b28973110d502f288072d
+2024-03-08	11:23:40	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: r.barth@tester-net.nil
+2024-03-08	11:23:40	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.056008100509644 seconds
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 2bba60e891592d148f911c4df7bec1f5
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: niko.schenk@tester-net.nil
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10359311103821 seconds
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 101c9d946ccef13c9026cf105d432761
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: d.bernd@tester-net.nil
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.056279182434082 seconds
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 189d0a21aa1ad3398263c189a3596bda
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: k.tietz@tester-net.nil
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.059520959854126 seconds
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 70e601f35285367fb8048b3b8741ebf8
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: k.brown@tester-net.nil
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12482404708862 seconds
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: d59f06be45b9a9f7ece0800a7e1121e2
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: gerd.graves@tester-net.nil
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.054548025131226 seconds
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 9bb6ac2aa97e21e75db47f41e8728262
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: helmut.fehrenbach@tester-net.nil
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.056882858276367 seconds
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: da78fdf61b16deeb8a90c3865296f5dc
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: matis.lohmeier@tester-net.nil
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.056595087051392 seconds
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 7a21aa2f072a0bd75edd0fcc421cd0dc
+2024-03-08	11:23:41	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: arne.brass@tester-net.nil
+2024-03-08	11:23:41	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10150218009949 seconds
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 60d7759dbbd07d71341c1c1d7c0d747a
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: heidi.brockhaus@tester-net.nil
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.066244840621948 seconds
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: e2be542027d81e01895d5d36ee1ea5b4
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: juri.ehrenberg@tester-net.nil
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.056572914123535 seconds
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: fa2dfc8365682b5946a2ea96162ba7ae
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: ben.loeffler@tester-net.nil
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10775589942932 seconds
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 6f9602c633932e90b7dca77fddcdc65f
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: mirko.nell@tester-net.nil
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.1202130317688 seconds
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 5bdc472ce3ba92dd2ee9e2de5c05d243
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: sascha.brueck@tester-net.nil
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:42	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.068198919296265 seconds
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:42	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 211798530d420a606d964ffcfc7df60b
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: v.stadler@tester-net.nil
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.072658061981201 seconds
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 87e6175d4fb1b9215395eec6a2fcfc2e
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: olaf.stahl@tester-net.nil
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.1034779548645 seconds
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 621d656262eb60c66054ef5999f68183
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: l.kirschner@tester-net.nil
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.066703081130981 seconds
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 4b6159c2b1666c9124c3ebe4890e9ef7
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: maik.noetzel@tester-net.nil
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.071338891983032 seconds
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 09e80f71c5d128325761616c5c52f5d4
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: l.fleck@tester-net.nil
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.079119920730591 seconds
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 3e7985e1b5f0f5ccb3a3076788b3bd42
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: h.burkhardt@tester-net.nil
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.067615032196045 seconds
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: d042111bf24d1a481f9cfba654812fc6
+2024-03-08	11:23:43	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: lilian.holloway@tester-net.nil
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:43	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.061352014541626 seconds
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 32b56af967f5218a9cff94c04b51d156
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: anton.boettcher@tester-net.nil
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.061376810073853 seconds
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 5f4643bcadbee06c0efd1e92d3e2000e
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: vincent.zabel@tester-net.nil
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.058182954788208 seconds
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: fcad896e85a5008f410b8dd05e5b61c5
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: b.imhof@tester-net.nil
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.060488939285278 seconds
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 341bb5e6bb24639b082974966e5a74c7
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: larissa.brandl@tester-net.nil
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.056720972061157 seconds
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 92a53fc0eafcfbc68d8bcc618bf03eee
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: niklas.manthey@tester-net.nil
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10617089271545 seconds
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 0686454d9f45f9d90c335ad4f1c9964f
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: marc.reinert@tester-net.nil
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.060557842254639 seconds
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 3ee8bf8744d2e15b7544825c1dbaadc9
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: m.raddatz@tester-net.nil
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.06006908416748 seconds
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 56bc125bf66ec313d03fc93c7d1e9181
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: giulia.mahr@tester-net.nil
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.055761098861694 seconds
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 41060abad47186bcbf8eb6d0bb4a5b3d
+2024-03-08	11:23:44	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: ian.wolters@tester-net.nil
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:44	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.058403015136719 seconds
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 0ed0fa19b3c1575cfdf11dad4b498dda
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: s.uhl@tester-net.nil
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.063475847244263 seconds
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 75632e729d9ca29fce2b9b36bc7f5645
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: kurt.neuendorf@tester-net.nil
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.11419105529785 seconds
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 7ff8aae11784eebac5fdb1680ecfee0d
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: g.henning@tester-net.nil
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.065001010894775 seconds
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 9c8e647a32e21c39a7625b2b0e486db3
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: c.frick@tester-net.nil
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.075138092041016 seconds
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: eb0908af608ea0cd6ffd91f406de19e6
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: lennart.grimm@tester-net.nil
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.1308171749115 seconds
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 78eba225de867851fa0af8c4f2db48f7
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: milan.moers@tester-net.nil
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.06967306137085 seconds
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 1d3ba881f4e418128ed551faa593cbe1
+2024-03-08	11:23:45	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: j.jakobs@tester-net.nil
+2024-03-08	11:23:45	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.0677649974823 seconds
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 583041343bc68b787703d5b41bf66c4a
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: s.geiger@tester-net.nil
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.063384056091309 seconds
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: ee0bea66efd223b1c494d55a680ef330
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: h.soellner@tester-net.nil
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.13856911659241 seconds
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 2cbd7e66315d33bd2dff16b56b120645
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: h.peitz@tester-net.nil
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10035991668701 seconds
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 26f008cf3b8c558a75652d03f6a037ba
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: t.schwalbe@tester-net.nil
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.058818817138672 seconds
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: e47b7e5c5f315c4cd2310c52a0ff310d
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: niels.potter@tester-net.nil
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10347700119019 seconds
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 15f137b0544f89c65756e683b496dfa5
+2024-03-08	11:23:46	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: j.young@tester-net.nil
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:46	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.11043691635132 seconds
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 31a02d12cc0df80eec4a99fd7bfa3b7c
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: r.nau@tester-net.nil
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.087390184402466 seconds
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: db450c5222705ac0e42af05f3b56011e
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: n.wagener@tester-net.nil
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.055087089538574 seconds
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: d9006e84a0c091407bc3db0f0d6894e1
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: c.ackermann@tester-net.nil
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10332608222961 seconds
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 3dc706bbcdb13e9bf53562cf20e05330
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: r.sandner@tester-net.nil
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.054851055145264 seconds
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: b4a3b2a8ef4f2e239f202789660646e0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: a.reim@tester-net.nil
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.063446044921875 seconds
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: f9aac7f7e9cc21a73da8407b9e1b1f5c
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: dennis.nehring@tester-net.nil
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.11678600311279 seconds
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: fefcb530c655666dba55961a557981af
+2024-03-08	11:23:47	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: paul.lehmann@tester-net.nil
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:47	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10944700241089 seconds
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: dd04a745ce0398ae05652f6886b8e196
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: ernst.vogl@tester-net.nil
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.066748857498169 seconds
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 816e4011186852cd91a6c571ed073bb7
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: p.neitzel@tester-net.nil
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10668301582336 seconds
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 661be3fb6a43a494e8c0e26757fc79b7
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: ruth.higgins@tester-net.nil
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.081671953201294 seconds
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: e2e1b808eb73c7793affd6c527add164
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: claus.kuntz@tester-net.nil
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.06794810295105 seconds
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: a2ff31edfea8810cd886ea4db7996d7e
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: hildegard.roesler@tester-net.nil
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12040901184082 seconds
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: a3dbfec69dc651d7b3aa91ea970a71ec
+2024-03-08	11:23:48	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: klaus.breidenbach@tester-net.nil
+2024-03-08	11:23:48	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.065847873687744 seconds
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 2cf48878f158cc92dcbb996c75a4c75e
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: ian.eckl@tester-net.nil
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.063179969787598 seconds
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: bab3ce84c13d9faacdf006764b1185f3
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: r.lackner@tester-net.nil
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.070888042449951 seconds
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: faa68840467b964747b9e18c6a4970ff
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: m.cramer@tester-net.nil
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.057739019393921 seconds
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 65f4e753f7d7070a240d2ba80a698bdc
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: j.fleischmann@tester-net.nil
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.055095195770264 seconds
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 4619f7f764329c1e41c85432fd38e945
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: t.schuster@tester-net.nil
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.065096139907837 seconds
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 062cffc3147a8f55b1321d427e01cd4e
+2024-03-08	11:23:49	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: b.seyfert@tester-net.nil
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:49	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.070061922073364 seconds
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 6e8c1a3592398956b432e7be153536f9
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: mert.schuessler@tester-net.nil
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.06591796875 seconds
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: e1aabe753e26cd43dde5efa4cd600025
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: m.lambert@tester-net.nil
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.067380905151367 seconds
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: b9cc7f7e0af97b0e9d52be6d4838fbd7
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: kaja.colon@tester-net.nil
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.14164209365845 seconds
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 949e291f8c88a3871c7566d0df3c8d04
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: m.liebig@tester-net.nil
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.067741870880127 seconds
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 060d6edf91cef2e28068f37d327ad4f0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: riccardo.fritzsche@tester-net.nil
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.11906814575195 seconds
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 00b391e15d9d92bd4d3fa1517fedfa13
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: cedrik.christensen@tester-net.nil
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.11630606651306 seconds
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: daf9676369b0607435bce9db3517c265
+2024-03-08	11:23:50	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: helen.feil@tester-net.nil
+2024-03-08	11:23:50	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12684202194214 seconds
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 552dd489225c5b11bb214cef46659f79
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: lili.zech@tester-net.nil
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12884712219238 seconds
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: a2985d3d9daf0b8a4665bafc1308d674
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: s.held@tester-net.nil
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12638401985168 seconds
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 3b45b0971d137e31e01d74607cc60205
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: r.brodersen@tester-net.nil
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.1018009185791 seconds
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 200891dcd61c58b2ace9e99ee6735cc1
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: c.himmelsbach@tester-net.nil
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10504603385925 seconds
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 59ba525d43a4196c824e6b1a83bded67
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: j.pfeilmacher@tester-net.nil
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.055263996124268 seconds
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 31d931bfa302b053e3d63b4005333e32
+2024-03-08	11:23:51	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: v.steffen@tester-net.nil
+2024-03-08	11:23:51	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.05810284614563 seconds
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: f28f822e8fce7bbd95dcf303c841f613
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: detlef.schwarz@tester-net.nil
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.11495089530945 seconds
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 295745dd1b24d28c1b38a5333d6089ee
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: alfred.morgenstern@tester-net.nil
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10136198997498 seconds
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 7fa85097753410851ed61fe296229669
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: d.thieme@tester-net.nil
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.05809211730957 seconds
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 3a3ed2c64a513651d6b3cbe1df3c9b35
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: luc.flores@tester-net.nil
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.075103044509888 seconds
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: e1c86f6b6bc38ce9cfda7674baac776a
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: f.jacobi@tester-net.nil
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.072872877120972 seconds
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: b05a9e8784221ab534ead0f41898faf2
+2024-03-08	11:23:52	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: matteo.boyd@tester-net.nil
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:52	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.063592910766602 seconds
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 0120c36a64edd21bb14d84064d6a979f
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: janina.boehme@tester-net.nil
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12864398956299 seconds
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 97d7565486351b7f4267d36fa03daa19
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: keno.naujoks@tester-net.nil
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.068063974380493 seconds
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 505d4710d653c3fc9580b28ed8a61e02
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: samira.hoefer@tester-net.nil
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.067418813705444 seconds
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: a119cf26c510639d909265aef1c04169
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: joerg.osborne@tester-net.nil
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.070669174194336 seconds
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: cf401eea5d92d4100400ca4d76d31656
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: l.jakobi@tester-net.nil
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.069792032241821 seconds
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 0f3fef75d496ab4f66ae54b6f53d442b
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: n.nell@tester-net.nil
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12826085090637 seconds
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: fa6fdbc1f0e9ab6e8b9a13d00afaabe1
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: s.loehr@tester-net.nil
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.057721138000488 seconds
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 5e261903e3cb59881d127f3577388093
+2024-03-08	11:23:53	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: h.neumann@tester-net.nil
+2024-03-08	11:23:53	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10253095626831 seconds
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: ef13941427baa4a20d59c95962f978a0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: f.wachsmuth@tester-net.nil
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.06536602973938 seconds
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 8f6715bb16478e532ef00b24fc465c48
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: n.ballmann@tester-net.nil
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10167002677917 seconds
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 9abaddad6675c7f9ce568d4d9eae95c0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: u.owens@tester-net.nil
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10447907447815 seconds
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: b1225e0aa108c2a3df4ffda5c0841094
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: n.schwartz@tester-net.nil
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.060192108154297 seconds
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: f22b58df616d68b1d6cc0fd137a64e1a
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: emily.yilmaz@tester-net.nil
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.055295944213867 seconds
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 9c8e761257637cc877ce58faae69e595
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: d.ebeling@tester-net.nil
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.058288097381592 seconds
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 35f1332af9b9e0aa60042f45960cf663
+2024-03-08	11:23:54	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: juergen.jackson@tester-net.nil
+2024-03-08	11:23:54	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.061284065246582 seconds
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 05264cef930ae016df511af8038fceb3
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: i.lueck@tester-net.nil
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.06793999671936 seconds
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 49ba49a6c8c75b560c6decda3090d6c2
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: kristof.jaschke@tester-net.nil
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.069459199905396 seconds
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 9b0ef4c4f6e7b42e327b1d4e38d69d99
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: marc.erpel@tester-net.nil
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.0798659324646 seconds
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 2ce01489099bb59f57c6b27356694e0a
+2024-03-08	11:23:55	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: rosemarie.zorn@tester-net.nil
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:55	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.067771911621094 seconds
+2024-03-08	11:23:56	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 6ba2519f54ff35b447b794ad1bf1c89b
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: renate.gutierrez@tester-net.nil
+2024-03-08	11:23:56	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:56	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:56	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.058043956756592 seconds
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 982719f21d399045fb116f0b8990ee2d
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: patrik.brose@tester-net.nil
+2024-03-08	11:23:56	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:56	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:56	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.05779504776001 seconds
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 8944df6b9c4ccc4cbeeb75b20fa48100
+2024-03-08	11:23:56	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: j.ziegler@tester-net.nil
+2024-03-08	11:23:56	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:56	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:56	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.056881904602051 seconds
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: b71b4cfe15e03fb1c8c3d5b4780e9a36
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: anouk.jung@tester-net.nil
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.05705189704895 seconds
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 9ac90b2525e80ac138ba7f6f6a08be2b
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: thorben.alexander@tester-net.nil
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.056710958480835 seconds
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 9a0541814b5a245fc6c7d4b6e6a1bb5c
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: astrid.diehl@tester-net.nil
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10078477859497 seconds
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: ff32589a99347de8b8bf0b82bc67b2b1
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: j.brandenburger@tester-net.nil
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.10215592384338 seconds
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 1026510b971f994b3c53a601d9fcb2a1
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: a.koerber@tester-net.nil
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.072355985641479 seconds
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: e20b9bb48bf67750039e6d2e9f033286
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: ilse.tag@tester-net.nil
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12296605110168 seconds
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: e4056a918c1e1f7b02770d254ba6b8e2
+2024-03-08	11:23:57	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: holger.widmann@tester-net.nil
+2024-03-08	11:23:57	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.06995701789856 seconds
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: cdaf8cdfa056c3f2c938b1fa992c40e2
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: finn.kaczmarek@tester-net.nil
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.060635805130005 seconds
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: e33abb3abaf693e352d34bb3341ae886
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: smilla.nestler@tester-net.nil
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.073678970336914 seconds
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 53c730afaa83025c2ae1ab0f1af81802
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: andreas.sailer@tester-net.nil
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.11532092094421 seconds
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: ade116cc591a7c5f39d8eca84382a4b0
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: emmely.blum@tester-net.nil
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12238693237305 seconds
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 24b3ea2056d448c9124cf0ea96026b92
+2024-03-08	11:23:58	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: a.schiller@tester-net.nil
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:58	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.069051027297974 seconds
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 7415d66f16a37b7b3a7f2c53f9891e3b
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: jonna.landwehr@tester-net.nil
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.077741146087646 seconds
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 85c45a9385ab185537c7c4d18d9c6782
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: k.boehm@tester-net.nil
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.077932119369507 seconds
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 9ec2057fe4bf141d4be1dd48c5684dec
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: c.laskowski@tester-net.nil
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.1155891418457 seconds
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: afeb006832477ac62ee5523e7acff6f1
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: m.huber@tester-net.nil
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.11093902587891 seconds
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: d20ac805169316e5ea2978f4033a956a
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: n.hammond@tester-net.nil
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.071844100952148 seconds
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Model sendMailsFromQueue mails per Step: 100
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 3fcaaa3a9d5eba55b4b2a0bcee835884
+2024-03-08	11:23:59	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: maya.eich@tester-net.nil
+2024-03-08	11:23:59	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.11542391777039 seconds
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 077e415edeeba0174603f8f262898699
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: d.ebel@tester-net.nil
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12336397171021 seconds
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: b8fc2af9d371693db40e83d01214dd44
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: lucie.strickland@tester-net.nil
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.069842100143433 seconds
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 569e77378e6d3d977b1dd53d5f4d0d63
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: a.kellner@tester-net.nil
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.075495004653931 seconds
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 2b45146139ea5bc075224176027b7a3e
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: maya.kern@tester-net.nil
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.11287212371826 seconds
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 35c027e6f5c6911b32d9c6ed906a16f9
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: samira.wong@tester-net.nil
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.06969690322876 seconds
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: eb170612d9f80076963c79ef2e15a0ae
+2024-03-08	11:24:00	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: carin.newman@tester-net.nil
+2024-03-08	11:24:00	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:24:01	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:24:01	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.12092685699463 seconds
+2024-03-08	11:24:01	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId edit: 0
+2024-03-08	11:24:01	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId unsubscribe: 0
+2024-03-08	11:24:01	BW_DEBUG	172.18.5.17	send	Model sendMail ItemId editlink: 64c3137d0c3ac54b14aaaef2ffd76e75
+2024-03-08	11:24:01	BW_DEBUG	172.18.5.17	send	Model sendMail recipient to send: info@boldt-coaching.de
+2024-03-08	11:24:01	BW_INFO	172.18.5.17	send	Before sending
+2024-03-08	11:24:01	BW_INFO	172.18.5.17	send	Sending result: 1
+2024-03-08	11:24:01	BW_INFO	172.18.5.17	send	Sending 1 newsletter lasts 0.077874898910522 seconds

@@ -1,13 +1,13 @@
 <?php
 /**
- * BwPostman Webservice Plugin
+ * BwPostman Webservices Plugin
  *
  * Plugin to support webservices of Joomla
  *
- * BwPostman Webservice Plugin main file for BwPostman.
+ * BwPostman Webservices Plugin main file for BwPostman.
  *
  * @version %%version_number%%
- * @package BwPostman Webservice Plugin
+ * @package BwPostman Webservices Plugin
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html

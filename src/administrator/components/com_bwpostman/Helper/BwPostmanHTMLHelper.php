@@ -365,7 +365,7 @@ class BwPostmanHTMLHelper {
 		}
 		else
 		{
-			$baseLink = "https://www.boldt-webservice.de/index.php/de/forum/handb%C3%BCcher/";
+			$baseLink = "https://www.boldt-webservice.de/index.php/de/forum/handb&#252;cher/";
 
 			switch ($section)
 			{

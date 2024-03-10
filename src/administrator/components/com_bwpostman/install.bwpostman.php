@@ -1625,7 +1625,7 @@ class com_bwpostmanInstallerScript
 		else
 		{
 			$forum = "https://www.boldt-webservice.de/de/forum/bwpostman.html";
-			$manual = "https://www.boldt-webservice.de/index.php/de/forum/handb%C3%BCcher/handbuch-zu-bwpostman.html";
+			$manual = "https://www.boldt-webservice.de/index.php/de/forum/handb&#252;cher/handbuch-zu-bwpostman.html";
 		}
 
 		if ($update)

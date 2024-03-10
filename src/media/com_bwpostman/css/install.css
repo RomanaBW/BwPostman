@@ -23,21 +23,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#com_bwp_install_wrapper_update {
+	margin: 1.0rem 0 1.0rem 1.0rem;
+	padding: 0;
+	border: 1px solid #005A00;
+	border-radius: 0.25rem;
+}
+
+#com_bwp_install_wrapper_install {
+	margin: -1.0rem;
+	border: 1px solid #005A00;
+	border-radius: 0.25rem;
+}
+
 #com_bwp_install_header {
 	background: #FFF440;
-	margin: -1rem -16px 0 -16px;
 	text-align: center;
 }
 
 div.top_line {
 	background-color: #005A00;
 	height: 5px;
-	margin: 0 -16px;
 }
 
 #com_bwp_install_outer {
-	margin: 0 -16px -1rem -16px;
+	margin: 0;
 	background: url(../images/verlauf_gelb_2.png) repeat;
+	color : #333;
+	font-family : Arial, Helvetica, sans-serif;
+	border-radius: 5px;
 }
 
 #com_bwp_install_outer h1 {
@@ -67,7 +81,6 @@ div.top_line {
 }
 
 .com_bwp_install_specialnote {
-	/*	background: rgba(180, 90, 0, 0.2);*/
 	border-radius: 5px;
 	border: rgba(180, 90, 0, 1) 3px solid;
 	margin: 0 0 2em 0;
@@ -76,7 +89,6 @@ div.top_line {
 }
 
 .com_bwp_install_updateinfo {
-	/*	background: rgba(0, 90, 0, 0.2);*/
 	border-radius: 5px;
 	border: rgba(0, 90, 0, 1) 1px solid;
 	color: #2B5741;

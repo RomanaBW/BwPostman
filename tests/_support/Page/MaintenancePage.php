@@ -89,7 +89,7 @@ class MaintenancePage
     /**
      * @var string
      *
-     * @since 4.2.7
+     * @since 4.3.0
      */
     public static $forumText          = "//*/div[contains(text(),'In this category you can ask your questions for the Joomla! extension BwPostman.')]";
 

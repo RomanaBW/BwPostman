@@ -2,7 +2,7 @@
 class_name: AcceptanceTester
 
 paths:
-  log: ../output/j502_bwpm427
+  log: ../output/j502_bwpm430
   data: _data
 
 modules:

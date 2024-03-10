@@ -8,7 +8,7 @@
     - name: Import transmitted environment parameters
       set_fact:
         joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('502', true) }}"
-        bwpm_version: "{{ lookup('env','BW_TEST_BWPM_VERSION') | d('427', true) }}"
+        bwpm_version: "{{ lookup('env','BW_TEST_BWPM_VERSION') | d('430', true) }}"
         test_cat: "{{ lookup('env','BW_TEST_CAT') | d('maintenance_single', true) }}"
         test_debug: "{{ lookup('env','BW_TEST_DEBUG') | d('--debug', true) }}"
         vm_version: "{{ lookup('env','BW_TEST_VM_VERSION') | d('', true) }}"

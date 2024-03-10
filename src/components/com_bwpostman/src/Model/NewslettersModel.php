@@ -112,7 +112,7 @@ class NewslettersModel extends ListModel
      *
      * @var object $logger
      *
-     * @since       4.2.7
+     * @since       4.3.0
      */
     public $logger;
 

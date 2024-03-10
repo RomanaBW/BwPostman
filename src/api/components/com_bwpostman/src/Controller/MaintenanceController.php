@@ -43,7 +43,7 @@ defined('_JEXEC') or die;
 /**
  * The styles controller
  *
- * @since  4.2.7
+ * @since  4.3.0
  */
 class MaintenanceController extends ApiController
 {
@@ -51,7 +51,7 @@ class MaintenanceController extends ApiController
      * The content type of the item.
      *
      * @var    string
-     * @since  4.2.7
+     * @since  4.3.0
      */
     protected $contentType = '';
 
@@ -60,7 +60,7 @@ class MaintenanceController extends ApiController
      *
      * @var    string
      *
-     * @since  4.2.7
+     * @since  4.3.0
      */
     protected $default_view = '';
 
@@ -92,7 +92,7 @@ class MaintenanceController extends ApiController
      *
      * @throws Exception
      *
-     * @since   4.2.7
+     * @since   4.3.0
      */
     public function doCron(): void
     {

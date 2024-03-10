@@ -5,8 +5,8 @@ joomla_version: "5.0.1"
 
 j_version_short: "j4"
 
-bwpm_version: "4.2.7"
-bwpm_version_dotted: "4.2.7"
+bwpm_version: "4.3.0"
+bwpm_version_dotted: "4.3.0"
 bwpm_version_previous: "4.2.6"
 
 j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"

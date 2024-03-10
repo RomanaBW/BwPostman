@@ -136,7 +136,7 @@
         bw_external_lang: true
         bw_media_folder: ""
 
-#    - name: build webservice plugin package
+#    - name: build webservices plugin package
     - include_role:
         name: romanabw.build-jplugin-package
       vars:

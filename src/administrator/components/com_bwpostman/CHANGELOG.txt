@@ -5,13 +5,24 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
-Version 4.2.7 released (2024-02-15)----
+Version 4.3.0 released (2024-03-12)----
+
+New
+- API and plugin Webservices added.
 
 Bugfix
-#
+# At the plugin User2Subscriber the check, if a mailing list is selected, did not work properly, in worst case an error appeared.
+# Installation by 'discover install' now also works for BwPostman.
+# The plugin Personalize did not process the desired replacements.
+# The display of the delay time ant newsletter sending was not correct, if a delay was set to more than one minute and the unit minutes was selected.
+# The englisch entries at the sidebar were not okay.
+# A wrong encoding of umlauts at the links to the German manual have produced severe errors at the display of the messages after installation/update in German, but the installation/update worked properly.
 
 Improvement
-~
+~ The texts of some messages at log are now more descriptive.
+~ The events for the plugins are switched to Joomla! 4 native, to be future-proof.
+~ The context for the plugins is now restricted to necessary.
+~ The old sidebar, inherited from BwPostman 3, now is obsolete and removed.
 
 
 Version 4.2.6 released (2023-11-29)----

@@ -41,9 +41,10 @@
 	<documentation_link>https://www.boldt-webservice.de/index.php/en/forum-en/manuals/bwpostman-manual.html</documentation_link>
 	<support_link>https://www.boldt-webservice.de/index.php/en/forum-en/forum/bwpostman.html</support_link>
 
-	<version>4.3.0</version>
+	<version>4.3.1</version>
 
 	<compatibility>
 		<version>4</version>
+		<version>5</version>
 	</compatibility>
 </jedupdate>

@@ -20,6 +20,8 @@ services:
       MARIADB_PASSWORD_FILE: /run/secrets/db_password
     expose:
       - 3306
+    restart: no
+
 
   bwpm-joomla:
     build:
@@ -35,13 +37,14 @@ services:
         target: /var/www/html/configuration.php
       # mount logs folder
       - type: bind
-        source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/dev/J503/logs
-        target: /var/www/html/administrator/logs
+        source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/dev/J503/logs/bwpostman
+        target: /var/www/html/administrator/logs/bwpostman
     ports:
       - 80:80
-      - 9000:9000
+      - 9100:9000
     expose:
       - 9000
+    restart: no
     healthcheck:
       test: curl --fail http://172.18.5.19/index.php || exit 1
       start_period: 5s
@@ -73,6 +76,7 @@ services:
     depends_on:
       bwpm-db:
         condition: service_healthy
+    restart: no
     healthcheck:
 #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
       test: curl --fail http://172.18.5.21/LICENSE || exit 1

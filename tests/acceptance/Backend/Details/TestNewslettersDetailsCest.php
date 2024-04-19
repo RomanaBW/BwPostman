@@ -538,6 +538,7 @@ class TestNewslettersDetailsCest
 
 		$I->clickAndWait(NlEdit::$attachments_add_button, 1);
 		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
+        $I->executeJS("document.getElementsByClassName('iframe-content')[0].setAttribute('name', 'Change Image');");
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->waitForElementVisible("//*[@id='toolbar']", 5);
 
@@ -567,6 +568,7 @@ class TestNewslettersDetailsCest
 
 		// Delete currently uploaded file
 		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
+        $I->executeJS("document.getElementsByClassName('iframe-content')[0].setAttribute('name', 'Change Image');");
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->wait(1);
 

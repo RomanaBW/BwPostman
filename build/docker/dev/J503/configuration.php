@@ -93,7 +93,7 @@ class JConfig {
 	public $session_redis_server_db = 0;
 	public $session_metadata_for_guest = true;
 	public $frontediting = 1;
-	public $log_everything = 1;
+	public $log_everything = 0;
 	public $log_deprecated = 0;
 	public $log_priorities = array('0' => 'all');
 	public $log_categories = '';

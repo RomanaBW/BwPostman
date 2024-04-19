@@ -6,15 +6,15 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.118.5.8/29
+        - subnet: 172.118.5.16/29
 
 services:
   bwpm-db:
     volumes:
-      - db_testdata_502:/var/lib/mariadb
+      - db_testdata_503:/var/lib/mariadb
     networks:
       bwpm-test:
-        ipv4_address: 172.118.5.10
+        ipv4_address: 172.118.5.18
     expose:
       - 3406
     restart: no
@@ -29,26 +29,23 @@ services:
       network: host
     ports:
       - 81:80
-      - 9400:9000
-    expose:
-      - 9400
     restart: no
     healthcheck:
-      test: curl --fail http://172.118.5.11/index.php || exit 1
+      test: curl --fail http://172.118.5.19/index.php || exit 1
       start_period: 5s
       interval: 10s
       timeout: 10s
       retries: 5
     networks:
       bwpm-test:
-        ipv4_address: 172.118.5.11
+        ipv4_address: 172.118.5.19
     depends_on:
       bwpm-db:
         condition: service_healthy
     volumes:
       # mount webserver root
       - type: bind
-        source: /home/container-files/j502
+        source: /home/container-files/j503
         target: /var/www/html
       # mount Joomla configuration
       - type: bind
@@ -56,13 +53,13 @@ services:
         target: /var/www/html/configuration.php
       # mount logs folder
       - type: bind
-        source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/test/logs
-        target: /var/www/html/administrator/logs
+        source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/test/logs/bwpostman
+        target: /var/www/html/administrator/logs/bwpostman
 
 #  bwpm-redis:
 #    networks:
 #      bwpm-test:
-#        ipv4_address: 172.118.5.12
+#        ipv4_address: 172.118.5.20
 #    expose:
 #      - 6480
 #    restart: no
@@ -70,16 +67,16 @@ services:
   bwpm-phpmyadmin:
     networks:
       bwpm-test:
-        ipv4_address: 172.118.5.13
+        ipv4_address: 172.118.5.21
     environment:
-      JOOMLA_DB_HOST: 172.118.5.10
-      PMA_HOST: 172.118.5.10
+      JOOMLA_DB_HOST: 172.118.5.18
+      PMA_HOST: 172.118.5.18
     depends_on:
       bwpm-db:
         condition: service_healthy
     healthcheck:
 #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
-      test: curl --fail http://172.118.5.13/LICENSE || exit 1
+      test: curl --fail http://172.118.5.21/LICENSE || exit 1
       start_period: 10s
       interval: 10s
       timeout: 5s
@@ -89,7 +86,7 @@ services:
     restart: no
 
 volumes:
-  db_testdata_502:
+  db_testdata_503:
 
 secrets:
   db_password:

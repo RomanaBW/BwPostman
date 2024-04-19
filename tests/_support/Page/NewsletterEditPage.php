@@ -449,14 +449,14 @@ class NewsletterEditPage
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select_button1     = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div[3]/button[1]";
+	public static $attachment_select_button1     = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div[2]/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.2.0
 	 */
-	public static $attachment_select_button2     = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div[3]/button[1]";
+	public static $attachment_select_button2     = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div[2]/button[1]";
 
 	/**
 	 * @var string

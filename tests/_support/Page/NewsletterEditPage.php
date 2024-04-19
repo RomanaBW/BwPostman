@@ -575,21 +575,21 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_insert1            = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div/div/div/div[3]/button[1]";
+	public static $attachment_insert1            = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div/div/div/div[2]/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   4.0.0
 	 */
-	public static $attachment_insert2            = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div/div/div/div[3]/button[1]";
+	public static $attachment_insert2            = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div/div/div/div[2]/button[1]";
 
 	/**
 	 * @var string
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_cancel            = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div/div/div/div[3]/button[2]";
+	public static $attachment_cancel            = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div/div/div/div[2]/button[2]";
 
 	/**
 	 * @var string

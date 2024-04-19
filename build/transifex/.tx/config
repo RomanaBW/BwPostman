@@ -104,3 +104,15 @@ source_file  = ../../src/administrator/language/en-GB/en-GB.plg_bwpostman_newsle
 source_lang  = en_GB
 minimum_perc = 0
 
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-plg-bwpostman-webservices]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.plg_webservices_bwpostman.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.ini
+source_lang  = en_GB
+minimum_perc = 0
+
+[o:boldt-webservice:p:bwpostman:r:admin-en-gb-plg-bwpostman-webservices-sys]
+file_filter  = ../../src/administrator/language/<lang>/<lang>.plg_webservices_bwpostman.sys.ini
+source_file  = ../../src/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.sys.ini
+source_lang  = en_GB
+minimum_perc = 0
+

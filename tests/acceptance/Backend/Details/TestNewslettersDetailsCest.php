@@ -547,6 +547,17 @@ class TestNewslettersDetailsCest
 
 		// Upload file
 		$I->attachFile("//*/input[@type='file']", NlEdit::$attachment_upload_file_raw);
+        try
+        {
+            $I->seeInPopup('boldt-webservice.png already exists. Do you want to replace it?');
+            $I->acceptPopup();
+
+            $I->wait(1);
+        }
+        catch (\Exception $e)
+        {
+            codecept_debug('Nothing to overwrite' . $e->getMessage());
+        }
 
 		// Hide file input field
 		$I->executeJS("document.querySelector('input.visible').className = 'hidden';");
@@ -560,8 +571,9 @@ class TestNewslettersDetailsCest
 		$I->wait(1);
 
 		$I->clickAndWait(NlEdit::$attachment_upload_select, 1);
-		$I->switchToIFrame();
-		$I->clickAndWait(NlEdit::$attachment_insert1, 2);
+        $I->switchToIFrame();
+        $I->clickAndWait("//div[contains(@class, 'buttons-holder')]/button[contains(text(),'Select')]", 1);
+//		$I->clickAndWait(NlEdit::$attachment_insert1, 2);
 
 		// See image at attachment at details page/frame
 		$I->waitForElementVisible(NlEdit::$attachment, 10);
@@ -579,7 +591,7 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(NlEdit::$attachment_upload_delete, 1);
 		$I->clickAndWait(NlEdit::$attachment_media_delete_confirm, 1);
 		$I->switchToIFrame();
-		$I->clickAndWait(NlEdit::$attachment_cancel, 1);
+		$I->clickAndWait("//div[contains(@class, 'buttons-holder')]/button[2]", 1);
 
 		$I->click(NlEdit::$toolbar['Cancel']);
 		$I->see("Newsletters", Generals::$pageTitle);
@@ -1355,19 +1367,22 @@ class TestNewslettersDetailsCest
 		$I->wait(1);
 
 		// …by button
-		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 3));
-		$I->click(sprintf(NlEdit::$available_content, 3));
+        $buttonContentNumber = 4;
+		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, $buttonContentNumber));
+		$I->click(sprintf(NlEdit::$available_content, $buttonContentNumber));
 		$I->click(NlEdit::$add_content);
-		$I->dontSee(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, 3));
+		$I->dontSee(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, $buttonContentNumber));
 
 		// … by double click
-		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 3));
-		$I->doubleClick(sprintf(NlEdit::$available_content, 3));
-		$I->dontSee(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, 3));
+        $clickContentNumber1 = 4;
+		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, $clickContentNumber1));
+		$I->doubleClick(sprintf(NlEdit::$available_content, $clickContentNumber1));
+		$I->dontSee(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, $clickContentNumber1));
 
-		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 2));
-		$I->doubleClick(sprintf(NlEdit::$available_content, 2));
-		$I->dontSee(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, 2));
+        $clickContentNumber2 = 3;
+		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, $clickContentNumber2));
+		$I->doubleClick(sprintf(NlEdit::$available_content, $clickContentNumber2));
+		$I->dontSee(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, $clickContentNumber2));
 
 
 		// Get popup selectors depending on Joomla version

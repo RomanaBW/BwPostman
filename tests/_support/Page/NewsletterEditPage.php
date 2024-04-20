@@ -413,7 +413,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment                   = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div[2]/img[contains(@src, 'boldt-webservice.png')]";
+	public static $attachment                   = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div[1]/img[contains(@src, 'boldt-webservice.png')]";
 
 	/**
 	 * @var string
@@ -484,7 +484,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $attachment_select1            = "//*/div[@class='media-browser-item-preview'][contains(@title,'joomla_black.png')]/parent::div/parent::div";
+	public static $attachment_select1            = "//*/div[@class='media-browser-item-preview'][contains(@title,'joomla_black.png')]";
 
 	/**
 	 * @var string
@@ -505,7 +505,7 @@ class NewsletterEditPage
 	 *
 	 * @since   4.0.0
 	 */
-	public static $attachment1                   = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div[2]/img[contains(@src, 'joomla_black.png')]";
+	public static $attachment1                   = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[1]/td/div/div[2]/joomla-field-media/div[1]/img[contains(@src, 'joomla_black.png')]";
 
 	/**
 	 * @var string
@@ -533,7 +533,7 @@ class NewsletterEditPage
 	 *
 	 * @since   4.0.0
 	 */
-	public static $attachment2                   = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div[2]/img[contains(@src, 'powered%20by.png')]";
+	public static $attachment2                   = "//*/table[@id='subfieldList_jform_attachment']/tbody/tr[2]/td/div/div[2]/joomla-field-media/div[1]/img[contains(@src, 'powered%20by.png')]";
 
 	/**
 	 * @var string
@@ -1470,7 +1470,8 @@ class NewsletterEditPage
 		$I->wait(1);
 		$I->clickAndWait(self::$attachment_select1, 1);
 		$I->switchToIFrame();
-		$I->clickAndWait(self::$attachment_insert1, 1);
+        $I->clickAndWait("//div[contains(@class, 'buttons-holder')]/button[contains(text(),'Select')]", 1);
+//		$I->clickAndWait(self::$attachment_insert1, 1);
 
 		// See image at attachment at details page/frame
 		$I->waitForElementVisible(self::$attachment1, 20);
@@ -1482,7 +1483,8 @@ class NewsletterEditPage
 		$I->clickAndWait(self::$attachment_select_button2, 1);
 
 //		$I->setIframeName(Generals::$media_frame2);
-		$I->switchToIFrame(Generals::$media_frame2);
+        $I->executeJS("document.getElementsByClassName('iframe-content')[0].setAttribute('name', 'Change Image');");
+		$I->switchToIFrame(Generals::$media_frame1);
 		$I->waitForElementVisible("div.media-browser-grid", 5);
 
 
@@ -1490,7 +1492,7 @@ class NewsletterEditPage
 		$I->wait(2);
 		$I->clickAndWait(self::$attachment_select2, 1);
 		$I->switchToIFrame();
-		$I->clickAndWait(self::$attachment_insert2, 2);
+		$I->clickAndWait("//div[contains(@class, 'buttons-holder')]/button[contains(text(),'Select')]", 1);
 
 		// See image at attachment at details page/frame
 		$I->waitForElementVisible(self::$attachment2, 20);

@@ -1367,19 +1367,19 @@ class TestNewslettersDetailsCest
 		$I->wait(1);
 
 		// …by button
-        $buttonContentNumber = 4;
+        $buttonContentNumber = 3;
 		$I->see(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, $buttonContentNumber));
 		$I->click(sprintf(NlEdit::$available_content, $buttonContentNumber));
 		$I->click(NlEdit::$add_content);
 		$I->dontSee(NlEdit::$selectedContent_1, sprintf(NlEdit::$available_content, $buttonContentNumber));
 
 		// … by double click
-        $clickContentNumber1 = 4;
+        $clickContentNumber1 = 3;
 		$I->see(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, $clickContentNumber1));
 		$I->doubleClick(sprintf(NlEdit::$available_content, $clickContentNumber1));
 		$I->dontSee(NlEdit::$selectedContent_2, sprintf(NlEdit::$available_content, $clickContentNumber1));
 
-        $clickContentNumber2 = 3;
+        $clickContentNumber2 = 2;
 		$I->see(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, $clickContentNumber2));
 		$I->doubleClick(sprintf(NlEdit::$available_content, $clickContentNumber2));
 		$I->dontSee(NlEdit::$selectedContent_3, sprintf(NlEdit::$available_content, $clickContentNumber2));

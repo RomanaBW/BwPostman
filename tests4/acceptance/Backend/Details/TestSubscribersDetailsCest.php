@@ -919,8 +919,8 @@ class TestSubscribersDetailsCest
 		$I->click(Generals::$toolbar4['Save & Close']);
 
 		$I->waitForElementVisible(Generals::$alert_header, 30);
-		$I->see("danger", Generals::$alert_heading);
-		$I->see(Generals::$invalidField . SubEdit::$emailTitle, Generals::$alert_error_1);
+		$I->see("Warning", Generals::$alert_heading);
+		$I->see(Generals::$invalidField . SubEdit::$emailTitle, Generals::$alert_warn);
 
 		$I->fillField(SubEdit::$email, SubEdit::$field_email);
 

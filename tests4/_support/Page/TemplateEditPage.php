@@ -133,7 +133,7 @@ class TemplateEditPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $thumb_insert            = "//div[contains(@class, 'buttons-holder')]/button[contains(text(),'Select')]";
+	public static $thumb_insert            = "//button[contains(@class, 'button-save-selected')]";
 
 	/**
 	 * @var string
@@ -697,7 +697,6 @@ class TemplateEditPage
 		$I->clickAndWait(self::$thumb_select_button, 1);
 
 //		$I->setIframeName(Generals::$media_frame1);
-        $I->executeJS("document.getElementsByClassName('iframe-content')[0].setAttribute('name', 'Change Image');");
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->wait(1);
 

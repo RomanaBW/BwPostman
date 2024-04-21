@@ -1,0 +1,174 @@
+<table border="0" id="background-table" style="table-layout: fixed; width: 100%;" cellspacing="0" cellpadding="0" align="center">
+	<tbody>
+	<tr>
+		<td align="center" bgcolor="#ececec">
+			<table border="0" class="w640" style="margin: 0px 10px; width: 640px;" cellspacing="0" cellpadding="0">
+				<tbody>
+				<tr>
+					<td class="w640" width="640" height="20">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="w640" width="640">
+						<table border="0" id="top-bar" class="w640" style="width: 640px;" cellspacing="0" cellpadding="0" bgcolor="#043948">
+							<tbody>
+							<tr>
+								<td class="w15" width="15">&nbsp;</td>
+								<td class="w325" align="left" valign="middle" width="350">
+									<table border="0" class="w325" style="width: 350px;" cellspacing="0" cellpadding="0">
+										<tbody>
+										<tr>
+											<td class="w325" width="350" height="8">&nbsp;</td>
+										</tr>
+										</tbody>
+									</table>
+									<div class="header-content"><span class="hide">[%edit_link%]&nbsp;&nbsp;|&nbsp; [%unsubscribe_link%]</span></div>
+									<table border="0" class="w325" style="width: 350px;" cellspacing="0" cellpadding="0">
+										<tbody>
+										<tr>
+											<td class="w325" width="350" height="8">&nbsp;</td>
+										</tr>
+										</tbody>
+									</table>
+								</td>
+								<td class="w30" width="30">&nbsp;</td>
+								<td class="w255" align="right" valign="middle" width="255">
+									<table border="0" class="w255" style="width: 255px;" cellspacing="0" cellpadding="0">
+										<tbody>
+										<tr>
+											<td class="w255" width="255" height="8">&nbsp;</td>
+										</tr>
+										</tbody>
+									</table>
+									<table border="0" cellspacing="0" cellpadding="0">
+										<tbody>
+										<tr>
+											<td valign="middle">
+												<div class="header-content"><a href="http://joomla.org">Gef&auml;llt mir</a></div>
+											</td>
+											<td class="w10" width="10">&nbsp;</td>
+											<td width="3">&nbsp;</td>
+											<td valign="middle">
+												<div class="header-content"><a href="http://joomla.org">Tweet</a></div>
+											</td>
+											<td class="w10" width="10">&nbsp;</td>
+											<td valign="middle">
+												<div class="header-content"><a href="http://joomla.org">Weiterleiten</a></div>
+											</td>
+										</tr>
+										</tbody>
+									</table>
+									<table border="0" class="w255" style="width: 255px;" cellspacing="0" cellpadding="0">
+										<tbody>
+										<tr>
+											<td class="w255" width="255" height="8">&nbsp;</td>
+										</tr>
+										</tbody>
+									</table>
+								</td>
+								<td class="w15" width="15">&nbsp;</td>
+							</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td id="header" class="w640" align="center" bgcolor="#043948" width="640">
+						<div style="text-align: center; margin-top: 20px; margin-bottom: 20px;" align="center"><a href="http://joomla.org"> <img src="images/com_bwpostman/joomla_black.gif" alt="" width="225" height="50" class="w640" style="display: inline; vertical-align: top;" border="0" /> </a></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="w640" bgcolor="#ffffff" width="640" height="30">&nbsp;</td>
+				</tr>
+				<tr id="simple-content-row">
+					<td class="w640" bgcolor="#ffffff" width="640">
+						<table border="0" class="w640" style="width: 640px;" cellspacing="0" cellpadding="0" align="left">
+							<tbody>
+							<tr>
+								<td class="w30" width="30">&nbsp;</td>
+								<td class="w580" width="580">
+									<table border="0" class="w580" style="width: 580px;" cellspacing="0" cellpadding="0">
+										<tbody>
+										<tr>
+											<td class="w580" width="580">
+												<p class="article-title" align="center">Intro-Headline</p>
+												<div class="article-content" align="left">Hallo [FULLNAME],<br />lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae sollicitudin quam donec at mattis orci. Phasellus quam nulla, fringilla ut condimentum vel eros.</div>
+											</td>
+										</tr>
+										<tr>
+											<td class="w580" width="580" height="10">&nbsp;</td>
+										</tr>
+										</tbody>
+									</table>
+								</td>
+								<td class="w30" width="30">&nbsp;</td>
+							</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr id="simple-content-row">
+					<td class="w640" bgcolor="#ffffff" width="640">
+						<table border="0" class="w640" style="width: 640px;" cellspacing="0" cellpadding="0" align="left">
+							<tbody>
+							<tr>
+								<td class="w30" width="30">&nbsp;</td>
+								<td class="w580" width="580">
+									<table border="0" class="w580" style="width: 580px;" cellspacing="0" cellpadding="0">
+										<tbody>
+										<tr>
+											<td class="w580" width="580">
+												<div class="article-content" align="left">[%content%]</div>
+											</td>
+										</tr>
+										</tbody>
+									</table>
+								</td>
+								<td class="w30" width="30">&nbsp;</td>
+							</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td class="w640" bgcolor="#ffffff" width="640" height="15">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="w640" width="640">
+						<table border="0" id="footer" class="w640" style="width: 640px;" cellspacing="0" cellpadding="0" bgcolor="#043948">
+							<tbody>
+							<tr>
+								<td class="w30" width="30">&nbsp;</td>
+								<td class="w580 h0" width="360" height="30">&nbsp;</td>
+								<td class="w0" width="60">&nbsp;</td>
+								<td class="w0" width="160">&nbsp;</td>
+								<td class="w30" width="30">&nbsp;</td>
+							</tr>
+							<tr>
+								<td class="w30" width="30">&nbsp;</td>
+								<td class="w580" valign="top" width="360">
+									<p class="footer-content-left" align="left">[%edit_link%] | [%unsubscribe_link%]</p>
+								</td>
+								<td class="hide w0" width="60">&nbsp;</td>
+								<td class="hide w0" valign="top" width="160">
+									<p id="street-address" class="footer-content-right" align="right"><span>meine Adresse</span><br /><span>Strasse</span><br /><span>Ort</span><br /><span>Tell</span><br /><span>email</span></p>
+								</td>
+								<td class="w30" width="30">&nbsp;</td>
+							</tr>
+							<tr>
+								<td class="w30" width="30">&nbsp;</td>
+								<td class="w580 h0" width="360" height="15">&nbsp;</td>
+								<td class="w0" width="60">&nbsp;</td>
+								<td class="w0" width="160">&nbsp;</td>
+								<td class="w30" width="30">&nbsp;</td>
+							</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</td>
+	</tr>
+	</tbody>
+</table>
+<p>[%impressum%]</p>

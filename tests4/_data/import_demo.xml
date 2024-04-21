@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+						<!-- BwPostman export file -->
+						<!DOCTYPE subscribers [
+						<!ELEMENT subscribers (subscriber+)>
+						<!ELEMENT subscriber (name, firstname, email, emailformat, status)>
+						<!ELEMENT id (#PCDATA)>
+							<!ELEMENT name (#PCDATA)>
+							<!ELEMENT firstname (#PCDATA)>
+							<!ELEMENT email (#PCDATA)>
+							<!ELEMENT emailformat (#PCDATA)>
+							<!ELEMENT status (#PCDATA)>
+						]>
+<subscribers>
+	<subscriber>
+		<name>Muster</name>
+		<firstname>Maximilian</firstname>
+		<email>tester7@boldt-services.de</email>
+		<emailformat>1</emailformat>
+		<status>1</status>
+	</subscriber>
+	<subscriber>
+		<name>Muster</name>
+		<firstname>Emil</firstname>
+		<email>tester8@boldt-services.nul</email>
+		<emailformat>1</emailformat>
+		<status>1</status>
+	</subscriber>
+	<subscriber>
+		<name>Muster</name>
+		<firstname>Hanni</firstname>
+		<email>tester9@boldt-services.nul</email>
+		<emailformat>1</emailformat>
+		<status>1</status>
+	</subscriber>
+	<subscriber>
+		<name>Muster</name>
+		<firstname>Nanni</firstname>
+		<email>tester10@boldt-services.nul</email>
+		<emailformat>1</emailformat>
+		<status>1</status>
+	</subscriber>
+</subscribers>

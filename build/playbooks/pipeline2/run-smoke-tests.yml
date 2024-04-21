@@ -190,7 +190,7 @@
       become_user: root
       synchronize:
         src: "{{ test_source }}"
-               dest: "/data/tests"
+        dest: "/data/tests"
         delete: yes
         recursive: yes
         rsync_opts:

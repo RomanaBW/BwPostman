@@ -157,6 +157,11 @@
       debug:
         msg: "{{ test_source }}"
 
+    - name: Remove tests dir
+      become: true
+      become_user: root
+      shell: "rm -rf /data/tests"
+
     - name: copy tests
       become: true
       become_user: root

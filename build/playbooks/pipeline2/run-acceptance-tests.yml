@@ -147,12 +147,12 @@
     - name: Set test files source depending on Joomla version (J5)
       set_fact:
         test_source: "{{ test_files_source }}"
-      when: joomla_version == '5'
+      when: joomla_version[0] == '5'
 
     - name: Set test files source depending on Joomla version (J4)
       set_fact:
         test_source: "{{ test_files_source4 }}"
-      when: joomla_version == '4'
+      when: joomla_version[0] == '4'
 
     - name: Show test files source
       debug:

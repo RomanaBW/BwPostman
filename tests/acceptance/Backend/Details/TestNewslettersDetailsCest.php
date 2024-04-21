@@ -538,7 +538,6 @@ class TestNewslettersDetailsCest
 
 		$I->clickAndWait(NlEdit::$attachments_add_button, 1);
 		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
-        $I->executeJS("document.getElementsByClassName('iframe-content')[0].setAttribute('name', 'Change Image');");
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->waitForElementVisible("//*[@id='toolbar']", 5);
 
@@ -547,17 +546,6 @@ class TestNewslettersDetailsCest
 
 		// Upload file
 		$I->attachFile("//*/input[@type='file']", NlEdit::$attachment_upload_file_raw);
-        try
-        {
-            $I->seeInPopup('boldt-webservice.png already exists. Do you want to replace it?');
-            $I->acceptPopup();
-
-            $I->wait(1);
-        }
-        catch (\Exception $e)
-        {
-            codecept_debug('Nothing to overwrite' . $e->getMessage());
-        }
 
 		// Hide file input field
 		$I->executeJS("document.querySelector('input.visible').className = 'hidden';");
@@ -571,16 +559,14 @@ class TestNewslettersDetailsCest
 		$I->wait(1);
 
 		$I->clickAndWait(NlEdit::$attachment_upload_select, 1);
-        $I->switchToIFrame();
-        $I->clickAndWait("//div[contains(@class, 'buttons-holder')]/button[contains(text(),'Select')]", 1);
-//		$I->clickAndWait(NlEdit::$attachment_insert1, 2);
+		$I->switchToIFrame();
+		$I->clickAndWait(NlEdit::$attachment_insert1, 2);
 
 		// See image at attachment at details page/frame
 		$I->waitForElementVisible(NlEdit::$attachment, 10);
 
 		// Delete currently uploaded file
 		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
-        $I->executeJS("document.getElementsByClassName('iframe-content')[0].setAttribute('name', 'Change Image');");
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->wait(1);
 
@@ -591,7 +577,7 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(NlEdit::$attachment_upload_delete, 1);
 		$I->clickAndWait(NlEdit::$attachment_media_delete_confirm, 1);
 		$I->switchToIFrame();
-		$I->clickAndWait("//div[contains(@class, 'buttons-holder')]/button[2]", 1);
+		$I->clickAndWait(NlEdit::$attachment_cancel, 1);
 
 		$I->click(NlEdit::$toolbar['Cancel']);
 		$I->see("Newsletters", Generals::$pageTitle);

@@ -144,12 +144,26 @@
         - /data
         - /data/tests
 
+    - name: Set test files source depending on Joomla version (J5)
+      set_fact:
+        test_source: "{{ test_files_source }}"
+      when: joomla_version == '5'
+
+    - name: Set test files source depending on Joomla version (J4)
+      set_fact:
+        test_source: "{{ test_files_source4 }}"
+      when: joomla_version == '4'
+
+    - name: Show test files source
+      debug:
+        msg: "{{ test_source }}"
+
     - name: copy tests
       become: true
       become_user: root
       synchronize:
-        src: "{{ test_files_source }}"
-        dest: "/data/tests"
+        src: "{{ test_source }}"
+               dest: "/data/tests"
         delete: yes
         recursive: yes
         rsync_opts:

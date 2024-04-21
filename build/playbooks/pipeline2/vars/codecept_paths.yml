@@ -6,6 +6,7 @@ codecept_path_output: "/repositories/artifacts/bwpostman4/j{{ joomla_version }}_
 codecept_failed_file: "{{ codecept_path_output }}/failed"
 
 test_files_source: "{{ bw_project_base_dir }}/tests/"
+test_files_source4: "{{ bw_project_base_dir }}/tests5/"
 test_files_source_local: "/vhosts/dev4/tests/"
 #joomla_version: "4.0.0a12"
 

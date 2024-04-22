@@ -170,10 +170,6 @@
       set_fact:
         bw_project_base_dir: "{{ project_base_dir }}"
 
-    - name: Show test source path
-      debug:
-        msg: "{{ test_files_source }}"
-
     - name: Set default test files source
       set_fact:
         test_source: "{{ test_files_source }}"
@@ -189,7 +185,7 @@
 
     - name: Build rsync base command
       set_fact:
-        rsync_command: "/usr/bin/rsync --delay-updates --compress --archive --out-format='<<CHANGED>>%i %n%L'"
+        rsync_command: "/usr/bin/rsync -v --progress --delay-updates --compress --archive --out-format='<<CHANGED>>%i %n%L'"
 
     - name: Rsync tests
       become: yes

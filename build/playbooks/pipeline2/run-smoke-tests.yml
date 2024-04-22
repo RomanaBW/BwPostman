@@ -183,14 +183,6 @@
       debug:
         msg: "{{ test_source }}"
 
-#    - name: Build rsync base command
-#      set_fact:
-#        rsync_command: "/usr/bin/rsync -v --progress --delay-updates --compress --archive --out-format='<<CHANGED>>%i %n%L'"
-#
-#    - name: Rsync tests
-#      become: yes
-#      shell: "{{  rsync_command }} {{ test_source }} /data/tests"
-
     - name: copy tests
       become: true
       become_user: root

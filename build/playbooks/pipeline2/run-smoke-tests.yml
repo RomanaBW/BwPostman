@@ -193,7 +193,7 @@
 
     - name: Rsync tests
       become: yes
-      shell: "{{  rsync_command }} {{ test_source }}/ /data/tests"
+      shell: "{{  rsync_command }} {{ test_source }} /data/tests"
 
 #    - name: copy tests
 #      become: true

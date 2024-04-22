@@ -194,7 +194,7 @@
     - name: copy tests
       become: true
       become_user: root
-      synchronize:
+      ansible.posix.synchronize:
         src: "{{ test_source }}"
         dest: "/data/tests"
         delete: yes

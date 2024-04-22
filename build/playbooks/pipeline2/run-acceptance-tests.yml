@@ -144,7 +144,7 @@
         - /data/tests/acceptance/
         - /data/tests/job_scripts/
 
-    - name: eNSURE tests folder is present
+    - name: Ensure tests folder is present
       become: true
       file:
         path: "{{ item }}"
@@ -169,28 +169,28 @@
       debug:
         msg: "{{ test_source }}"
 
-    - name: Build rsync base command
-      set_fact:
-        rsync_command: "/usr/bin/rsync --delay-updates --compress --archive --out-format='<<CHANGED>>%i %n%L'"
-
-    - name: Rsync tests
-      become: yes
-      shell: "{{  rsync_command }} {{ test_source }} /data/tests"
-      when: test_suite == 'acceptB2S' or test_suite == 'acceptTC'
-
-#    - name: copy tests
-#      become: true
-#      become_user: root
-#      synchronize:
-#        src: "{{ test_source }}"
-#        dest: "/data/tests"
-#        delete: yes
-#        recursive: yes
-#        archive: no
-#        rsync_opts:
-#          - "--exclude=_output"
-#          - "--ignore-times"
+#    - name: Build rsync base command
+#      set_fact:
+#        rsync_command: "/usr/bin/rsync --delay-updates --compress --archive --out-format='<<CHANGED>>%i %n%L'"
+#
+#    - name: Rsync tests
+#      become: yes
+#      shell: "{{  rsync_command }} {{ test_source }} /data/tests"
 #      when: test_suite == 'acceptB2S' or test_suite == 'acceptTC'
+
+    - name: copy tests
+      become: true
+      become_user: root
+      ansible.posix.synchronize:
+        src: "{{ test_source }}"
+        dest: "/data/tests"
+        delete: yes
+        recursive: yes
+        archive: no
+        rsync_opts:
+          - "--exclude=_output"
+          - "--ignore-times"
+      when: test_suite == 'acceptB2S' or test_suite == 'acceptTC'
 
     - name: Set permissions for tests
       become: true

@@ -132,7 +132,19 @@
       set_fact:
         db_host: "{{ acceptance_source.db_container_name }}"
 
-    - name: create tests folder
+    - name: Remove some tests folders
+      become: true
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /data/tests/_support/Helper/
+        - /data/tests/_support/Step/
+        - /data/tests/_support/Page/
+        - /data/tests/acceptance/
+        - /data/tests/job_scripts/
+
+    - name: eNSURE tests folder is present
       become: true
       file:
         path: "{{ item }}"
@@ -156,16 +168,6 @@
     - name: Show test files source
       debug:
         msg: "{{ test_source }}"
-
-    - name: Remove tests dir
-      become: true
-      become_user: root
-      shell: "rm -rf /data/tests"
-
-    - name: Create test directory anew
-      file:
-        path: /data/tests
-        state: directory
 
     - name: copy tests
       become: true

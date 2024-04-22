@@ -142,7 +142,19 @@
       set_fact:
         db_host: "{{ smoke_source.db_container_name }}"
 
-    - name: create tests folder
+    - name: Remove some tests folders
+      become: true
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /data/tests/_support/Helper/
+        - /data/tests/_support/Step/
+        - /data/tests/_support/Page/
+        - /data/tests/acceptance/
+        - /data/tests/job_scripts/
+
+    - name: Ensure tests folder is present
       become: true
       file:
         path: "{{ item }}"
@@ -171,16 +183,6 @@
         test_source: "{{ test_files_source4 }}"
       when: joomla_version[0] == '4'
 
-    - name: Remove tests dir
-      become: true
-      become_user: root
-      shell: "rm -rf /data/tests"
-
-    - name: Create test directory anew
-      file:
-        path: /data/tests
-        state: directory
-
     - name: Show test files source
       debug:
         msg: "{{ test_source }}"
@@ -195,6 +197,7 @@
         recursive: yes
         rsync_opts:
           - "--exclude=_output"
+          - "--ignore-times"
 
     - name: Set permissions for tests
       become: true

@@ -190,7 +190,7 @@
         rsync_opts:
           - "--exclude=_output"
           - "--ignore-times"
-      when: test_suite == 'acceptB2S' or test_suite == 'acceptTC'
+#      when: test_suite == 'acceptB2S' or test_suite == 'acceptTC'
 
     - name: Set permissions for tests
       become: true

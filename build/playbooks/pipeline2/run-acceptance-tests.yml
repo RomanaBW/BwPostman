@@ -132,18 +132,6 @@
       set_fact:
         db_host: "{{ acceptance_source.db_container_name }}"
 
-    - name: Remove some tests folders
-      become: true
-      file:
-        path: "{{ item }}"
-        state: absent
-      with_items:
-        - /data/tests/_support/Helper/
-        - /data/tests/_support/Step/
-        - /data/tests/_support/Page/
-        - /data/tests/acceptance/
-        - /data/tests/job_scripts/
-
     - name: Ensure tests folder is present
       become: true
       file:
@@ -169,15 +157,6 @@
       debug:
         msg: "{{ test_source }}"
 
-#    - name: Build rsync base command
-#      set_fact:
-#        rsync_command: "/usr/bin/rsync --delay-updates --compress --archive --out-format='<<CHANGED>>%i %n%L'"
-#
-#    - name: Rsync tests
-#      become: yes
-#      shell: "{{  rsync_command }} {{ test_source }} /data/tests"
-#      when: test_suite == 'acceptB2S' or test_suite == 'acceptTC'
-
     - name: copy tests
       become: true
       become_user: root
@@ -190,7 +169,6 @@
         rsync_opts:
           - "--exclude=_output"
           - "--ignore-times"
-#      when: test_suite == 'acceptB2S' or test_suite == 'acceptTC'
 
     - name: Set permissions for tests
       become: true

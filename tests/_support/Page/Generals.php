@@ -177,7 +177,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $admin        = array('user' => 'AdminTester', 'password' => 'BwPostmanTest', 'author' => 'AdminTester');
+	public static $admin        = array('user' => 'AdminTester', 'password' => '@Miriam02#01!', 'author' => 'AdminTester');
 
 	/**
 	 * @var string

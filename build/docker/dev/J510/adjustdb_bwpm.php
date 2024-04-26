@@ -529,7 +529,7 @@ function getQueryToInsertUsersToGroups(): string
         (\'844\',\'26\'),
         (\'845\',\'28\'),
         (\'846\',\'27\'),
-        (\'847\',\'21\'),
+        (\'847\',\'8\'),
         (\'853\',\'8\')';
 
     return $query;

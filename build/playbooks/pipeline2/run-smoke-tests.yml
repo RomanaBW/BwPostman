@@ -19,22 +19,22 @@
       set_fact:
         sub_path_smoke: "smoke_j{{ j_main_version }}"
 
-    - name: create acceptance webroot folders and copy joomla files
-      include_role:
-        name: romanabw.create-copy-webroot-folders
-      vars:
-        target_folder: "{{ joomla_base_folders[sub_path_smoke] }}"
-        source_folder: "{{ joomla_base_folders[sub_path_source] }}"
-      with_items: "{{ acceptance_j4_folders }}"
+#    - name: create acceptance webroot folders and copy joomla files
+#      include_role:
+#        name: romanabw.create-copy-webroot-folders
+#      vars:
+#        target_folder: "{{ joomla_base_folders[sub_path_smoke] }}"
+#        source_folder: "{{ joomla_base_folders[sub_path_source] }}"
+#      with_items: "{{ acceptance_j4_folders }}"
 
-    - name: ensure joomla sub folder exists
-      become: true
-      file:
-        path: "{{ joomla_base_folders[sub_path_smoke] }}"
-        state: directory
-        mode: 0777
-        owner: www-data
-        group: users
+#    - name: ensure joomla sub folder exists
+#      become: true
+#      file:
+#        path: "{{ joomla_base_folders[sub_path_smoke] }}"
+#        state: directory
+#        mode: 0777
+#        owner: www-data
+#        group: users
 
     - name: ensure log folder for test results exists
       become: true
@@ -170,7 +170,7 @@
       set_fact:
         bw_project_base_dir: "{{ project_base_dir }}"
 
-    - name: Set default test files source
+    - name: Set default test files source (J5)
       set_fact:
         test_source: "{{ test_files_source }}"
 

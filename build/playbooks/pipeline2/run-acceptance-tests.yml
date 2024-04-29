@@ -97,15 +97,15 @@
 
     - name: set webserver error log file
       lineinfile:
-        path: "/etc/apache2/sites-available/{{ apache_host }}.nil.conf"
-        regexp: '^    ErrorLog'
-        line: "    ErrorLog {{ test_log_path }}/{{ apache_host }}-error.log"
+        path: "/etc/apache2/sites-available/000-default.conf"
+        regexp: '^\tErrorLog'
+        line: "\tErrorLog {{ test_log_path }}/{{ apache_host }}-error.log"
 
     - name: set webserver access log file
       lineinfile:
-        path: "/etc/apache2/sites-available/{{ apache_host }}.nil.conf"
-        regexp: '^    CustomLog'
-        line: "    CustomLog {{ test_log_path }}/{{ apache_host }}-access.log combined"
+        path: "/etc/apache2/sites-available/000-default.conf"
+        regexp: '^\tCustomLog'
+        line: "\tCustomLog {{ test_log_path }}/{{ apache_host }}-access.log combined"
 
     - name: restart webserver
       ansible.builtin.command: "/etc/init.d/apache2 reload"

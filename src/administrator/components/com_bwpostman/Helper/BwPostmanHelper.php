@@ -1866,7 +1866,7 @@ class BwPostmanHelper
      *
      * @since 4.3.0
      */
-    public static function logException(Exception|RuntimeException $exception, string $category, string $severity = BwLogger::BW_ERROR, $preMessage = ''): void
+    public static function logException(Exception $exception, string $category, string $severity = BwLogger::BW_ERROR, $preMessage = ''): void
     {
         $log_options    = array();
         $logger   = BwLogger::getInstance($log_options);

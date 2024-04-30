@@ -831,7 +831,7 @@ class NewslettersModel extends ListModel
 	 * @param array   $data     data
 	 * @param boolean $loadData load current data
 	 *
-	 * @return  Form|null  The \JForm object or null if the form can't be found
+     * returns  The \JForm object or null if the form can't be found
 	 *
 	 * @throws Exception
 	 *

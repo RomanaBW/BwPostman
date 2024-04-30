@@ -831,7 +831,7 @@ class NewsletterModel extends AdminModel
         Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
         $results = $event->getArgument('result', []);
 
-        if ($results[1] === true)
+        if (count($results) > 1 && $results[1] === true)
         {
             $data = $results[0];
         }

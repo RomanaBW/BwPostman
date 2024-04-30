@@ -1,0 +1,91 @@
+networks:
+  bwpm.nil:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.118.5.0/29
+
+services:
+  bwpm-db:
+    image: universe3:5000/romana/joomla-tables:7.4.0-4.4.4
+    container_name: bwpm4-db
+    command: '--default-authentication-plugin=mysql_native_password'
+    restart: no
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--datadir=/var/lib/mariadb", "--connect"]
+      start_period: 30s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      bwpm.nil:
+        ipv4_address: 172.118.5.2
+    secrets:
+       - db_root_password
+       - db_password
+
+  bwpm-web:
+    build:
+      network: host
+    ports:
+      - 80:80
+    restart: no
+    container_name: bwpm4-web
+    healthcheck:
+      test: curl --fail http://172.118.5.3/index.php || exit 1
+      start_period: 5s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks:
+      bwpm.nil:
+        ipv4_address: 172.118.5.3
+    depends_on:
+      bwpm-db:
+        condition: service_healthy
+    environment:
+      JOOMLA_DB_PASSWORD_FILE: /run/secrets/db_root_password
+      JOOMLA_DB_HOST: bwpm-db
+      JOOMLA_DB_USER: root
+      JOOMLA_DB_NAME: joomlatest
+      JOOMLA_DB_TYPE: mysqli
+      JOOMLA_ADMIN_PASSWORD_FILE: /run/secrets/j_root_password
+    volumes:
+      # mount Joomla configuration
+      - type: bind
+        source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/config4/configuration.php
+        target: /var/www/html/configuration.php
+    secrets:
+       - j_root_password
+       - db_password
+       - db_root_password
+
+  bwpm-phpmyadmin:
+    image: phpmyadmin
+    container_name: bwpm4-phpmyadmin
+    restart: no
+    networks:
+      bwpm.nil:
+        ipv4_address: 172.118.5.5
+    depends_on:
+      bwpm-db:
+        condition: service_healthy
+    environment:
+          PMA_HOST: bwpm-db
+    healthcheck:
+      #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
+      test: curl --fail http://172.118.5.5/LICENSE || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+secrets:
+  db_password:
+    file: ../db_password.txt
+  db_root_password:
+    file: ../db_root_password.txt
+  j_root_password:
+    file: ../j_root_password.txt
+

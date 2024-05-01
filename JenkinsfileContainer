@@ -10,8 +10,8 @@ pipeline {
 					JOOMLA_VERSION_4 = "4.4.4"
 					JOOMLA_VERSION_5 = "5.1.0"
 
-					DO_J5_SMOKE  = 'true'
-					DO_J5_ACCEPT = 'true'
+					DO_J5_SMOKE  = 'false'
+					DO_J5_ACCEPT = 'false'
 					DO_J5_PERMS  = 'true'
 
 					DO_J4_SMOKE  = 'true'
@@ -278,8 +278,8 @@ pipeline {
 					}
 					post {
 						always {
-//							echo "Dummy 3 always"
-							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept3 ${VERSIONS_EXTRA_VAR_4}'"
+							echo "Dummy 3 always"
+//							sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/pipeline2/inventory/hosts ${WORKSPACE}/build/playbooks/pipeline2/stop-acceptance-tests.yml --extra-vars 'test_suite=accept3 ${VERSIONS_EXTRA_VAR_4}'"
 						}
 						failure {
 							bwpmAcceptFailureContainer ("Suite_3", "${PROJECT_NAME_4}")

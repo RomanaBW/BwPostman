@@ -4513,8 +4513,19 @@ class MaintenanceModel extends BaseDatabaseModel
 			$tables[] = $table;
 		}
 
-		$tables[]['tableNameGeneric'] = $prefix . 'usergroups';
-		$tables[]['tableNameGeneric'] = $prefix . 'assets';
+        $table = array();
+
+        $table['tableNameDb']      = $prefix . 'usergroups';
+        $table['tableNameGeneric'] = $prefix . 'usergroups';
+
+        $tables[] = $table;
+
+        $table = array();
+
+        $table['tableNameDb']      = $prefix . 'assets';
+        $table['tableNameGeneric'] = $prefix . 'assets';
+
+        $tables[] = $table;
 
 		return $tables;
 	}

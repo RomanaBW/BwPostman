@@ -10,8 +10,8 @@ pipeline {
 					JOOMLA_VERSION_4 = "4.4.4"
 					JOOMLA_VERSION_5 = "5.1.0"
 
-					DO_J5_SMOKE  = 'false'
-					DO_J5_ACCEPT = 'false'
+					DO_J5_SMOKE  = 'true'
+					DO_J5_ACCEPT = 'true'
 					DO_J5_PERMS  = 'true'
 
 					DO_J4_SMOKE  = 'true'

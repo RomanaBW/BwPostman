@@ -38,7 +38,7 @@
       shell: "docker-compose -f /vms/dockers/containers/testers/bwpm-tester-fast-withdraw.yml up"
 
     - name: Remove tester
-      shell: "docker rm bwpm-tester"
+      shell: "docker rm bwpm-tester{{ j_main_version }}"
 
     - name: Get file name of XML backup file
       find:

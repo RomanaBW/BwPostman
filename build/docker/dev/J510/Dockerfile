@@ -1,15 +1,22 @@
-FROM universe3:5000/romana/joomla-files:8.1.0-5.1.0
+FROM universe3:5000/romana/bwpm-configured-files:8.1.0-5.1.0
 LABEL maintainer="Romana Boldt <info@boldt-webservice.de>"
 
 # Custom cache invalidation
 ARG CACHEBUST=1
+ARG XDEBUG_VERSION
+ARG XDEBUG_CLIENT_HOST
+ARG XDEBUG_CLIENT_PORT
+ARG XDEBUG_IDE_KEY
+ARG UOPZ_VERSION
 
 # Enable the PHP extensions xdebug and uopz
 RUN set -ex; \
+    pecl install xdebug-${XDEBUG_VERSION}; \
+    pecl install uopz-${UOPZ_VERSION}; \
 	docker-php-ext-enable \
         xdebug \
         uopz \
-	; \
+	;
 
 # set some needed xdebug settings
 # xdebug.client_host=host.docker.internal don't work, use ip of client, it works
@@ -28,13 +35,11 @@ RUN { \
   		echo 'uopz.exit=1'; \
 	} > /usr/local/etc/php/conf.d/uopz.ini
 
-# Copy appropriate Joomla configuration and db adjustments file to intermediate folder
-RUN mkdir -p /usr/src/files/images
+# Copy db adjustments file to intermediate folder
+RUN mkdir -p /usr/src/files
 COPY adjustdb_bwpm.php /usr/src/files/
-COPY boldt-webservice.png /usr/src/files/images
-COPY boldt-webservice-text.png /usr/src/files/images
 
-# Copy init script and make it executable
+# Copy entrypoint and make it executable
 COPY docker-entrypoint.sh /entrypoint.sh
 RUN chmod u+x /entrypoint.sh
 

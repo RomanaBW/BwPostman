@@ -1,14 +1,6 @@
 #!/bin/bash
 set -e
 
-if [ -d /var/www/html/tmp/bwpm_setup ];
-  then
-    echo "file to adjust db is present"
-  else
-    echo "file to adjust db does not exist"
-fi
-
-
 if [ -n "$JOOMLA_DB_PASSWORD_FILE" ] && [ -f "$JOOMLA_DB_PASSWORD_FILE" ]; then
         JOOMLA_DB_PASSWORD=$(cat "$JOOMLA_DB_PASSWORD_FILE")
 fi
@@ -35,37 +27,16 @@ if [ -f /var/www/html/administrator/cache/autoload_psr4.php ];
   echo >&2
 fi
 
-# Do some settings for BwPostman if not already done
-if [ ! -d /var/www/html/tmp/bwpm_setup ];
-  then
-  echo >&2 "Add users and groups, map users to groups for BwPostman…"
-  echo >&2
-
-  echo >&2 "DB-Params: $JOOMLA_DB_HOST $JOOMLA_DB_USER $JOOMLA_DB_PASSWORD $JOOMLA_DB_NAME $JOOMLA_DB_TYPE"
-  echo >&2
-
-  php /usr/src/files/adjustdb_bwpm.php "$JOOMLA_DB_HOST" "$JOOMLA_DB_USER" "$JOOMLA_DB_PASSWORD" "$JOOMLA_DB_NAME" "$JOOMLA_DB_TYPE"
-
-  echo >&2 "…BwPostman user groups added, users added, mapping users to groups adjusted."
-  mkdir -p /var/www/html/tmp/bwpm_setup
-
-  echo >&2 "Remove file adjustdb_bwpm.php if work is done…"
-  echo >&2
-
-  rm /usr/src/files/adjustdb_bwpm.php
-
-  echo >&2 "…file adjustdb_bwpm.php removed."
-  echo >&2
-fi
-
-echo >&2 "Copy two images needed by BwPostman…"
+# Add BwPostman user groups, map users to them
+echo >&2 "Add BwPostman user groups, map users to them…"
 echo >&2
 
-mkdir -p /var/www/html/images/com_bwpostman
-cp -f /usr/src/files/images/*.png /var/www/html/images/com_bwpostman
-
-echo >&2 "…images copied."
+echo >&2 "DB-Params: $JOOMLA_DB_HOST $JOOMLA_DB_USER $JOOMLA_DB_PASSWORD $JOOMLA_DB_NAME $JOOMLA_DB_TYPE"
 echo >&2
+
+php /usr/src/files/adjustdb_bwpm.php "$JOOMLA_DB_HOST" "$JOOMLA_DB_USER" "$JOOMLA_DB_PASSWORD" "$JOOMLA_DB_NAME" "$JOOMLA_DB_TYPE"
+
+echo >&2 "…BwPostman user groups added, users added, mapping users to groups adjusted."
 
 # Ensure files of Joomla are writable
 echo >&2 "Ensure files of Joomla are writable…"

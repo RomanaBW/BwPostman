@@ -8,24 +8,25 @@ networks:
 
 services:
   bwpm-db:
+    image: universe3:5000/romana/bwpm-configured-tables:8.1.0-5.1.0
     volumes:
       - db_data_510:/var/lib/mariadb
     networks:
       bwpm-ide.nil:
         ipv4_address: 172.18.5.26
-    environment:
-      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
-      MARIADB_DATABASE: joomlatest
-      MARIADB_USER: tester
-      MARIADB_PASSWORD_FILE: /run/secrets/db_password
     expose:
       - 3306
-    restart: no
 
 
   bwpm-joomla:
     build:
       network: host
+      args:
+        XDEBUG_VERSION: 3.3.1
+        XDEBUG_CLIENT_HOST: 192.168.2.1
+        XDEBUG_CLIENT_PORT: 9003
+        XDEBUG_IDE_KEY: PHPSTORM
+        UOPZ_VERSION: 7.1.1
     volumes:
       # mount webserver root
       - type: bind
@@ -41,10 +42,6 @@ services:
         target: /var/www/html/administrator/logs/bwpostman
     ports:
       - 80:80
-      - 9100:9000
-    expose:
-      - 9000
-    restart: no
     healthcheck:
       test: curl --fail http://172.18.5.27/index.php || exit 1
       start_period: 5s
@@ -54,22 +51,11 @@ services:
     networks:
       bwpm-ide.nil:
         ipv4_address: 172.18.5.27
-    depends_on:
-      bwpm-db:
-        condition: service_healthy
-    secrets:
-       - j_root_password
-       - db_password
-       - db_root_password
 
   bwpm-phpmyadmin:
     networks:
       bwpm-ide.nil:
         ipv4_address: 172.18.5.29
-    depends_on:
-      bwpm-db:
-        condition: service_healthy
-    restart: no
     healthcheck:
 #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
       test: curl --fail http://172.18.5.29/LICENSE || exit 1
@@ -77,14 +63,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-
-secrets:
-   db_password:
-     file: ../../db_password.txt
-   db_root_password:
-     file: ../../db_root_password.txt
-   j_root_password:
-     file: ../../j_root_password.txt
 
 volumes:
   db_data_510:

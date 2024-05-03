@@ -1083,7 +1083,7 @@ class SubscribeComponentCest
 
 		$I->fillField(SubsView::$question, '4');
 		$I->seeElement(SubsView::$security_star);
-		$I->scrollTo(SubsView::$button_register);
+		$I->scrollTo(SubsView::$button_register, 0, -100);
 		$I->wait(1);
 		$I->click(SubsView::$button_register);
 		$I->wait(2);

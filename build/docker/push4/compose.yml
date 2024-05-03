@@ -72,7 +72,7 @@ services:
       push-db:
         condition: service_healthy
     environment:
-      PMA_HOST: db
+      PMA_HOST: push-db
     healthcheck:
       #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
       test: curl --fail http://172.118.5.13/LICENSE || exit 1

@@ -35,7 +35,7 @@ pipeline {
 					DO_RECORD_SMOKE = "true";
 					DO_RECORD_1 = "false";
 					DO_RECORD_2 = "false";
-					DO_RECORD_3 = "false";
+					DO_RECORD_3 = "true";
 					DO_RECORD_4 = "true";
 					DO_RECORD_5 = "false";
 					DO_RECORD_6 = "false";

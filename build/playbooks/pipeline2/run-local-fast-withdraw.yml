@@ -13,7 +13,7 @@
 
     - name: Set base source dir
       set_fact:
-        base_src_dir: "/vhosts/dev5"
+        base_src_dir: "/vhosts/dev4"
 
     - name: Calculate Joomla main version
       set_fact:
@@ -23,9 +23,21 @@
       set_fact:
         src_dir: "/vhosts/dev{{ joomla_main_version }}"
 
-    - name: Set test_dir
+    - name: Set src_dir and DB host
       set_fact:
         test_dir: "{{ src_dir }}/tests"
+        test_db_host: "mysqldbbwpm{{ joomla_main_version }}"
+        test_url_name: "test_url{{ joomla_main_version }}"
+
+    - name: Set test_url for J5
+      set_fact:
+        test_url: "{{ test_url5 }}"
+      when: joomla_main_version == '5'
+
+    - name: Set test_url for J4
+      set_fact:
+        test_url: "{{ test_url4 }}"
+      when: joomla_main_version == '4'
 
     - name: Set project name
       set_fact:
@@ -128,10 +140,19 @@
         src: "/vms/dockers/global_data/test_data/{{ project_name }}/backups/{{ project_name }}.sql"
         dest: "/vms/dockers/global_data/test_data/{{ project_name }}/backups/{{ project_name }}_{{ reduced_date }}.sql"
 
-    - name: Create infrastructure compose file
+    - name: Create infrastructure compose file for J5
       template:
-        src: "run-bwpm-fast.yml.j2"
+        src: "run-bwpm-fast-J5.yml.j2"
         dest: "{{ container_dir }}/infrastructure/run-bwpm-fast.yml"
+        force: yes
+      when: joomla_main_version == '5'
+
+    - name: Create infrastructure compose file for J4
+      template:
+        src: "run-bwpm-fast-J4.yml.j2"
+        dest: "{{ container_dir }}/infrastructure/run-bwpm-fast.yml"
+        force: yes
+      when: joomla_main_version == '4'
 
     - name: Show start infrastructure command
       debug:
@@ -203,14 +224,25 @@
         test_cat: "withdraw_testdata"
         test_debug: yes
 
-    - name: Create tester compose file
+    - name: Create tester compose file for J5
       become: yes
       template:
-        src: "bwpm-tester-fast-withdraw.yml.j2"
+        src: "bwpm-tester-fast-J5.yml.j2"
         dest: "{{ container_dir }}/testers/bwpm-tester-fast-withdraw.yml"
         mode: 0664
         owner: romana
         group: users
+      when: joomla_main_version == '5'
+
+    - name: Create tester compose file for J4
+      become: yes
+      template:
+        src: "bwpm-tester-fast-J4.yml.j2"
+        dest: "{{ container_dir }}/testers/bwpm-tester-fast-withdraw.yml"
+        mode: 0664
+        owner: romana
+        group: users
+      when: joomla_main_version == '4'
 
     - name: Create tester start script
       become: yes

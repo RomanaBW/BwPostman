@@ -1,9 +1,12 @@
 services:
   bwpm-db:
-    # We use a mariadb image which supports both amd64 & arm64 architecture
-    image: universe3:5000/romana/joomla-jce-tables:8.1.0-5.0.0
     command: '--default-authentication-plugin=mysql_native_password'
-    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MARIADB_DATABASE: joomlatest
+      MARIADB_USER: tester
+      MARIADB_PASSWORD_FILE: /run/secrets/db_password
+    restart: no
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--datadir=/var/lib/mariadb", "--connect"]
       start_period: 30s
@@ -197,7 +200,14 @@ services:
       - type: bind
         source: /home/romana/PhpstormProjects/BwPostman_J4/src/language/en-GB/en-GB.mod_bwpostman.sys.ini
         target: /var/www/html/language/en-GB/en-GB.mod_bwpostman.sys.ini
-    restart: always
+    restart: no
+    depends_on:
+      bwpm-db:
+        condition: service_healthy
+    secrets:
+      - j_root_password
+      - db_password
+      - db_root_password
     environment:
       JOOMLA_DB_PASSWORD_FILE: /run/secrets/db_password
       JOOMLA_DB_HOST: bwpm-db
@@ -205,26 +215,26 @@ services:
       JOOMLA_DB_NAME: joomlatest
       JOOMLA_DB_TYPE: mysqli
       JOOMLA_ADMIN_PASSWORD_FILE: /run/secrets/j_root_password
-    secrets:
-       - j_root_password
-       - db_password
-       - db_root_password
-
-#  bwpm-redis:
-#    image: redis
-#    command: 'redis-server --save 60 1 --loglevel warning'
-#    restart: always
-#    healthcheck:
-##    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
-#      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
-#      start_period: 10s
-#      interval: 10s
-#      timeout: 5s
-#      retries: 3
+      XDEBUG_VERSION: 3.3.1
+      XDEBUG_CLIENT_HOST: 192.168.2.1
+      XDEBUG_CLIENT_PORT: 9003
+      XDEBUG_IDE_KEY: PHPSTORM
+      UOPZ_VERSION: 7.1.1
 
   bwpm-phpmyadmin:
     image: phpmyadmin
-    restart: always
+    depends_on:
+      bwpm-db:
+        condition: service_healthy
+    restart: no
     environment:
           PMA_HOST: bwpm-db
+
+secrets:
+  db_password:
+    file: ../../db_password.txt
+  db_root_password:
+    file: ../../db_root_password.txt
+  j_root_password:
+    file: ../../j_root_password.txt
 

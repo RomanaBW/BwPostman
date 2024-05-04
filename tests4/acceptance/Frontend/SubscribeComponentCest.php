@@ -201,7 +201,9 @@ class SubscribeComponentCest
 		SubsView::activate($I, SubsView::$mail_fill_1);
 
 		SubsView::subscribeByComponent($I);
-		$I->click(SubsView::$button_register);
+        $I->scrollTo(SubsView::$button_register, 0, -100);
+        $I->wait(1);
+		$I->clickAndWait(SubsView::$button_register, 1);
 
 		$I->scrollTo(SubsView::$err_already_subscribed);
 		$I->wait(1);

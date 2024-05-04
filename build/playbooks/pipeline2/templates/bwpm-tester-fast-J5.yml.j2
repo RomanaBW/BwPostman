@@ -7,7 +7,7 @@ version: '3'
 services:
   bwpm-tester:
     container_name: "bwpm-tester5"
-    image: universe3:5000/romana/tester-tw-browser:chromium
+    image: universe3:5000/romana/bwpm_enh_tester-5:5.0.1-4.3.0
     volumes:
       - {{ container_dir }}/testers/os-data:/data
       - {{ src_dir }}/{{ test_src_dir }}/job_scripts:/scripts

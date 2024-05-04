@@ -7,7 +7,7 @@ version: '3'
 services:
   bwpm-tester:
     container_name: "bwpm-tester4"
-    image: universe3:5000/romana/tester-tw-browser:chromium
+    image: universe3:5000/romana/selenium-standalone-chrome-debug-ffmpeg:latest
     volumes:
       - {{ container_dir }}/testers/os-data:/data
       - {{ src_dir }}/{{ test_src_dir }}/job_scripts:/scripts

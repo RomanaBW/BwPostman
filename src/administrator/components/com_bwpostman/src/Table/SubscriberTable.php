@@ -702,7 +702,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 				if (($subscriber->status == 1) && ($subscriber->archive_flag != 1))
 				{
 					$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
-					$err_msg = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $data['email']->email, $link);
+					$err_msg = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_DB_ACCOUNTEXISTS', $data['email'], $link);
 					//@ToDo: With the following routing with SEO activated don't work
 					$err = array(
 						'err_code' => 407,

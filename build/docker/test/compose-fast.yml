@@ -1,8 +1,8 @@
 networks:
-  bwpm-test:
+  bwpm-test5:
     driver: bridge
     attachable: true
-    name: bwpm-test
+    name: bwpm-test5
     ipam:
       driver: default
       config:
@@ -15,7 +15,7 @@ services:
     volumes:
       - db_testdata_510:/var/lib/mariadb
     networks:
-      bwpm-test:
+      bwpm-test5:
         ipv4_address: 172.118.5.18
     expose:
       - 3456
@@ -48,7 +48,7 @@ services:
       timeout: 10s
       retries: 5
     networks:
-      bwpm-test:
+      bwpm-test5:
         ipv4_address: 172.118.5.19
     depends_on:
       bwpm-fast5-db:
@@ -253,7 +253,7 @@ services:
     container_name: bwpm-fast5-phpmyadmin
     image: phpmyadmin
     networks:
-      bwpm-test:
+      bwpm-test5:
         ipv4_address: 172.118.5.21
     environment:
       JOOMLA_DB_HOST: 172.118.5.18

@@ -4,7 +4,7 @@ class JConfig {
 	public $offline_message = 'Diese Website ist zurzeit im Wartungsmodus.<br />Bitte später wiederkommen.';
 	public $display_offline_message = 1;
 	public $offline_image = '';
-	public $sitename = 'Test503_BwPM_Container';
+	public $sitename = 'Fast5x_BwPM_Container';
 	public $editor = 'tinymce';
 	public $captcha = '0';
 	public $list_limit = 20;
@@ -34,7 +34,7 @@ class JConfig {
 	public $mailonline = true;
 	public $mailer = 'smtp';
 	public $mailfrom = 'webmaster@boldt-webservice.de';
-	public $fromname = 'Test503_BwPM_Container';
+	public $fromname = 'Fast5x_BwPM_Container';
 	public $sendmail = '/usr/sbin/sendmail';
 	public $smtpauth = false;
 	public $smtpuser = '';

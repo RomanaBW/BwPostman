@@ -1,5 +1,5 @@
 services:
-  bwpm-tester:
+  bwpm-tester"{{ j_main }}":
     # So ist dieses Image nicht gut, denn das gibt es erst, wenn die Pipeline einmal gelaufen ist.
     # Außerdem ist es abhängig von den Versionen von Joomla und BwPostman
     image: universe3:5000/romana/bwpm_enh_tester-5:5.0.2-4.2.7
@@ -46,7 +46,7 @@ services:
     # Wegen Projektname, Test Runner (=/data/bwpm_test_runner.sh), Display, Test-Cat, Screen Size
     entrypoint: /tester_entry_point.sh
     networks:
-      bwpm-test:
+      bwpm-test"{{ j_main }}":
         ipv4_address: "{{ testcontainer_ip }}"
 
 networks:

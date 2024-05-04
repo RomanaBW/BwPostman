@@ -6,3 +6,4 @@ project_src_dir: "/home/romana/PhpstormProjects/BwPostman_J4"
 display: "45"
 screen_size: "1920x1080"
 screen_size_opts: "1920,1080"
+j_main: 5

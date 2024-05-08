@@ -98,7 +98,7 @@ class FooterUsedMailinglistsPage
 	 *
 	 * @since   2.3.0
 	 */
-	public static $text_preview_add_footer_ml_available_nbr    = 128;
+	public static $text_preview_add_footer_ml_available_nbr    = 58;
 
 	/**
 	 * @var string

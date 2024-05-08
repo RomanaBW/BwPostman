@@ -326,7 +326,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $nbr_only_confirmed   = 128;
+	public static $nbr_only_confirmed   = 58;
 
 	/**
 	 * @var integer

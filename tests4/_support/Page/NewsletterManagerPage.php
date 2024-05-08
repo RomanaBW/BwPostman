@@ -751,27 +751,27 @@ class NewsletterManagerPage
 	public static $pagination_queue_data_array  = array(
 		'p1_val1'              => "a.kellner@tester-net.nil",
 		'p1_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-		'p1_val_last'          => "astrid.diehl@tester-net.nil",
+		'p1_val_last'          => "cedrik.christensen@tester-net.nil",
 		'p1_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-		'p2_val1'              => "b.imhof@tester-net.nil",
+		'p2_val1'              => "claus.kuntz@tester-net.nil",
 		'p2_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-		'p2_val_last'          => "claus.kuntz@tester-net.nil",
+		'p2_val_last'          => "helen.feil@tester-net.nil",
 		'p2_field_last'        => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-		'p3_val1'              => "d.bernd@tester-net.nil",
+		'p3_val1'              => "hildegard.roesler@tester-net.nil",
 		'p3_field1'            => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-		'p3_val3'              => " f.jacobi@tester-net.nil",
+		'p3_val3'              => " j.ziegler@tester-net.nil",
 		'p3_field3'            => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-		'p_prev_val1'          => "riccardo.fritzsche@tester-net.nil",
+		'p_prev_val1'          => "maya.eich@tester-net.nil",
 		'p_prev_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-		'p_prev_val_last'      => "sascha.brueck@tester-net.nil",
+		'p_prev_val_last'      => "riccardo.fritzsche@tester-net.nil",
 		'p_prev_field_last'    => ".//*[@id='main-table']/tbody/tr[10]/td[4]",
 
-		'p_last_val1'          => "smilla.nestler@tester-net.nil",
+		'p_last_val1'          => "ruth.higgins@tester-net.nil",
 		'p_last_field1'        => ".//*[@id='main-table']/tbody/tr[1]/td[4]",
-		'p_last_val_last'      => "vincent.zabel@tester-net.nil",
+		'p_last_val_last'      => "v.steffen@tester-net.nil",
 		'p_last_field_last'    => ".//*[@id='main-table']/tbody/tr[8]/td[4]",
 	);
 

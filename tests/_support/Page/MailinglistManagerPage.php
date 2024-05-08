@@ -166,25 +166,25 @@ class MailinglistManagerPage
 		'p1_val_last' => "02 Mailingliste 6 B",
 		'p1_field_last' => "//*[@id='main-table']/tbody/tr[10]/td[2]",
 
-		'p2_val1' => "02 Mailingliste 7 A",
+		'p2_val1' => "02 Mailingliste 6 C",
 		'p2_field1' => "//*[@id='main-table']/tbody/tr[1]/td[2]",
-		'p2_val_last' => "03 Mailingliste 12 B",
+		'p2_val_last' => "03 Mailingliste 12 A",
 		'p2_field_last' => "//*[@id='main-table']/tbody/tr[10]/td[2]",
 
-		'p_prev_val1' => "03 Mailingliste 13 A",
+		'p_prev_val1' => "03 Mailingliste 12 B",
 		'p_prev_field1' => "//*[@id='main-table']/tbody/tr[1]/td[2]",
-		'p_prev_val_last' => "04 Mailingliste 17 B",
+		'p_prev_val_last' => "04 Mailingliste 17 A",
 		'p_prev_field_last' => "//*[@id='main-table']/tbody/tr[10]/td[2]",
 
-		'p3_val1' => "03 Mailingliste 13 A",
+		'p3_val1' => "03 Mailingliste 12 B",
 		'p3_field1' => "//*[@id='main-table']/tbody/tr[1]/td[2]",
-		'p3_val3' => "04 Mailingliste 17 B",
+		'p3_val3' => "04 Mailingliste 17 A",
 		'p3_field3' => "//*[@id='main-table']/tbody/tr[10]/td[2]",
 
-		'p_last_val1' => "05 Mailingliste 18 A",
+		'p_last_val1' => "05 Mailingliste 17 B",
 		'p_last_field1' => "//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p_last_val_last' => "05 Mailingliste 20 B",
-		'p_last_field_last' => "//*[@id='main-table']/tbody/tr[6]/td[2]",
+		'p_last_field_last' => "//*[@id='main-table']/tbody/tr[7]/td[2]",
 	);
 
 

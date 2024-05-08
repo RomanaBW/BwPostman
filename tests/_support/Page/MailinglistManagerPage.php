@@ -181,7 +181,7 @@ class MailinglistManagerPage
 		'p3_val3' => "04 Mailingliste 17 A",
 		'p3_field3' => "//*[@id='main-table']/tbody/tr[10]/td[2]",
 
-		'p_last_val1' => "05 Mailingliste 17 B",
+		'p_last_val1' => "04 Mailingliste 17 B",
 		'p_last_field1' => "//*[@id='main-table']/tbody/tr[1]/td[2]",
 		'p_last_val_last' => "05 Mailingliste 20 B",
 		'p_last_field_last' => "//*[@id='main-table']/tbody/tr[7]/td[2]",

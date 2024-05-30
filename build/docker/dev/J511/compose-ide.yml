@@ -66,3 +66,12 @@ services:
 
 volumes:
   db_data_511:
+
+secrets:
+  db_password:
+    file: ../../db_password.txt
+  db_root_password:
+    file: ../../db_root_password.txt
+  j_root_password:
+    file: ../../j_root_password.txt
+

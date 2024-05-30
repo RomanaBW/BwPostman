@@ -88,4 +88,3 @@ secrets:
     file: ../db_root_password.txt
   j_root_password:
     file: ../j_root_password.txt
-

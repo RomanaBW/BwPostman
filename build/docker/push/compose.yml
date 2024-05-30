@@ -7,8 +7,8 @@ networks:
         - subnet: 172.118.5.8/29
 
 services:
-  push-db:
-    image: universe3:5000/romana/bwpm-base-tables:8.1.0-5.1.0
+  bwpm-db:
+    image: universe3:5000/romana/bwpm-base-tables:8.1.0-5.1.1
     container_name: push-db
     restart: no
     networks:
@@ -28,7 +28,7 @@ services:
       timeout: 5s
       retries: 3
 
-  push-web:
+  bwpm-web:
     build:
       context: .
       dockerfile: Dockerfile
@@ -47,7 +47,7 @@ services:
       push-net.nil:
         ipv4_address: 172.118.5.11
     depends_on:
-      push-db:
+      bwpm-db:
         condition: service_healthy
     environment:
       JOOMLA_DB_PASSWORD: barbamama
@@ -59,7 +59,7 @@ services:
         source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/push/configuration.php
         target: /var/www/html/configuration.php
 
-  push-phpmyadmin:
+  bwpm-phpmyadmin:
     image: phpmyadmin
     container_name: push-phpmyadmin
     restart: always
@@ -69,7 +69,7 @@ services:
     expose:
       - 6379
     depends_on:
-      push-db:
+      bwpm-db:
         condition: service_healthy
     environment:
       PMA_HOST: db
@@ -83,8 +83,8 @@ services:
 
 secrets:
   db_password:
-    file: ../../mariadb/db_password.txt
+    file: ../mariadb/db_password.txt
   db_root_password:
-    file: ../../mariadb/db_root_password.txt
+    file: ../mariadb/db_root_password.txt
   j_root_password:
     file: ../j_root_password.txt

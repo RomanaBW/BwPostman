@@ -232,9 +232,9 @@ services:
 
 secrets:
   db_password:
-    file: ../../db_password.txt
+    file: ../db_password.txt
   db_root_password:
-    file: ../../db_root_password.txt
+    file: ../db_root_password.txt
   j_root_password:
-    file: ../../j_root_password.txt
+    file: ../j_root_password.txt
 

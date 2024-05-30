@@ -2,7 +2,7 @@
 whoami
 
 echo "Test-Cat: maintenance_single"
-echo "Project: j510_bwpm431"
+echo "Project: j511_bwpm431"
 
 sudo chmod 1777 /tmp/.X11-unix
 sudo rm -f /tmp/.X45-lock

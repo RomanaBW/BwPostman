@@ -2,7 +2,7 @@ services:
   bwpm-tester4:
     # So ist dieses Image nicht gut, denn das gibt es erst, wenn die Pipeline einmal gelaufen ist.
     # Außerdem ist es abhängig von den Versionen von Joomla und BwPostman
-    image: universe3:5000/romana/bwpm_enh_tester-4:4.4.4-4.3.1
+    image: universe3:5000/romana/bwpm_enh_tester-4:4.4.5-4.3.1
     ulimits:
       nofile: 72768
     volumes:
@@ -18,7 +18,7 @@ services:
         target: /data/codeception.yml
       # Mount output folders
       - type: bind
-        source: "/home/container-files/artifacts/default/j444_bwpm431"
+        source: "/home/container-files/artifacts/default/j445_bwpm431"
         target: /data/output
       # Mount repositories folder for artifacts.
       # *** Probably it would be better to mount the specific path for this project.
@@ -29,7 +29,7 @@ services:
       # This is needed to be able to delete the uploaded attachment.
       # Otherwise, this could make the next upload impossible.
       # *** Probably it would be better to mount the specific media path for this project.
-      - /home/container-files/j444:/www_path
+      - /home/container-files/j445:/www_path
 
       # Mount tester entry point
       - type: bind
@@ -47,7 +47,7 @@ services:
     entrypoint: /tester_entry_point.sh
     networks:
       bwpm-test4:
-        ipv4_address: "172.118.4.22"
+        ipv4_address: "172.118.4.30"
 
 networks:
   bwpm-test4:

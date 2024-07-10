@@ -6,18 +6,18 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.18.0.24/29
+        - subnet: 172.18.0.40/29
 
 services:
   mysqldbbwpm4:
     container_name: mysqldbbwpm4
     image: "{{ base_target.db_image_tag_target }}"
 #    image: universe3:5000/romana/mariadb
-    hostname: mysqlserver-bwpm
+    hostname: mysqlserver-bwpm4
     domainname: tester-net.nil
     networks:
       tester-net.nil:
-        ipv4_address: 172.18.0.27
+        ipv4_address: 172.18.0.43
     expose:
       - "3306"
     ports:
@@ -35,14 +35,14 @@ services:
     container_name: webserverbwpm4
     image: "{{ fast_target.web_image_tag_target }}"
 #    image: universe3:5000/romana/webserver_fast_{{ php_version }}
-    hostname: webserver-bwpm
+    hostname: webserver-bwpm4
     domainname: tester-net.nil
     command: "apache2-foreground"
     depends_on:
       - "mysqldbbwpm4"
     networks:
       tester-net.nil:
-        ipv4_address: 172.18.0.28
+        ipv4_address: 172.18.0.44
     expose:
       - "80"
     links:

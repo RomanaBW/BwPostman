@@ -38,7 +38,8 @@ echo 'start recording'
 tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i :{{ display }}.0 -vcodec libx264 -r 12 ${VIDEO_NAME} 2>${VIDEO_LOG}"
 
 # run tests
-tests/job_scripts/bwpm_test_runner.sh
+cd /data
+tests/job_scripts/{{ test_runner }}
 
 # stop video recording
 echo 'stop recording'

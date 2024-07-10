@@ -7,7 +7,7 @@
   tasks:
     - name: Import transmitted environment parameters
       set_fact:
-        joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('444', true) }}"
+        joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('445', true) }}"
         bwpm_version: "{{ lookup('env','BW_TEST_BWPM_VERSION') | d('431', true) }}"
         test_cat: "{{ lookup('env','BW_TEST_CAT') | d('maintenance_single', true) }}"
         test_debug: "{{ lookup('env','BW_TEST_DEBUG') | d('--debug', true) }}"
@@ -34,6 +34,7 @@
           - "Webserver URL: {{ webserver_url }}"
           - "Database IP: {{ database_ip }}"
           - "Tester IP: {{ testcontainer_ip }}"
+          - "Artifacts base path: {{ artifacts_base }}"
 
     - name: Ensure output folders are present and writable
       become: yes
@@ -44,11 +45,13 @@
         owner: jenkins
         group: users
       with_items:
+        - "{{ artifacts_base }}"
         - "{{ artifacts_base }}/logs"
         - "{{ artifacts_base }}/videos"
         - "{{ artifacts_base }}/htmlreports"
         - "{{ artifacts_base }}/xmlreports"
         - "{{ artifacts_base }}/backups"
+        - "{{ artifacts_base }}/output"
 
     - name: Check for failure file
       stat:
@@ -57,7 +60,7 @@
 
     - name: Set rebase command
       set_fact:
-         sql_command: "/usr/bin/mariadb -u tester -pbarbamama -h {{ database_ip }} joomlatest < {{ artifacts_base }}/backups/{{ project_name }}.sql"
+         sql_command: "/usr/bin/mariadb --ssl=0 -u tester -pbarbamama -h {{ database_ip }} joomlatest < {{ artifacts_base }}/backups/{{ project_name }}.sql"
 
     - name: Output rebase command
       debug:

@@ -1,0 +1,17 @@
+---
+project_src_dir: "/home/romana/PhpstormProjects/BwPostman_J4"
+repo_dir: "/repositories/BwPostman4"
+repo_data_dir: "/repositories/artifacts/bwpostman4/data"
+artifacts_base: "/home/container-files/artifacts/default"
+
+display: "45"
+screen_size: "1920x1080"
+screen_size_opts: "1920,1080"
+
+test_db_dbname: "joomlatest"
+test_db_user: "tester"
+test_db_password: "barbamama"
+
+test_runner: "bwpm_test_runner_withdraw.sh"
+test_cat: "withdraw_testdata"
+test_debug: yes

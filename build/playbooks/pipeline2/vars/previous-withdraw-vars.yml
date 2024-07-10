@@ -1,0 +1,26 @@
+---
+joomla_version: "4.4.5"
+bwpm_version: "4.3.1"
+version_to_test: "{{ bwpm_version| replace('.', '_') }}"
+
+webserver_url: "172.118.4.27"
+database_ip: "172.118.4.26"
+testcontainer_ip: "172.118.4.30"
+
+j_main: "{{ joomla_version[0] }}"
+joomla_version_undotted: "{{ joomla_version| replace('.', '')}}"
+bwpm_version_undotted: "{{ bwpm_version| replace('.', '')}}"
+
+tester_image: "universe3:5000/romana/bwpm_enh_tester-{{ j_main }}:{{ joomla_version }}-{{  bwpm_version}}"
+project_name_dotted: "j{{ joomla_version }}_bwpm{{ bwpm_version }}"
+project_name: "{{ project_name_dotted | replace('.', '')}}"
+
+artifacts_path: "{{ artifacts_base}}/{{ project_name }}"
+test_dir: "/vhosts/dev{{ j_main }}/tests"
+
+backup_name_raw: "BwPostman_{{ version_to_test }}_Tables"
+
+middleware_startup_command: "docker-compose -f {{ project_src_dir }}/build/docker/test4/compose-fast.yml up -d"
+sql_rebase_command: "/usr/bin/mariadb --ssl=0 -u {{ test_db_user }} -p{{ test_db_password }} -h {{ database_ip }} {{ test_db_dbname }} < {{ artifacts_path }}/backups/{{ project_name }}.sql"
+sql_withdraw_command: "/usr/bin/mariadb --ssl=0 -u {{ test_db_user }} -p{{ test_db_password }} -h {{ database_ip }} {{ test_db_dbname }} < /home/container-files/artifacts/withdraw_testdata.sql"
+tester_compose_path: "{{ project_src_dir }}/build/docker/test4"

@@ -1,9 +1,9 @@
 ---
 - hosts: server
   vars:
-    source_path: "/server/configs/jenkins-master/var/lib/jenkins/jobs/BwPostman/branches/master/builds"
+    source_path: "/server/configs/jenkins-master/var/lib/jenkins/jobs/BwPostman Component J4/branches/master/builds"
     source_test_path: "/daten/deposition/jenkins/BwPostman/builds/test"
-    target_path: "/daten/deposition/jenkins/BwPostman/builds/archive"
+    target_path: "/daten/deposition/jenkins/BwPostman4/builds/archive"
     nbr_remaning: 15
     folder_list: []
 

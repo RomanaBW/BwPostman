@@ -18,13 +18,11 @@ modules:
     - Db
     - Asserts
     - Filesystem
-  #      - MailCatcher
-  #      - \Helper\MailCatcher
 
   # Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
   config:
     Db:
-      dsn: 'mysql:host={{ test_db_host }};dbname={{ test_db_dbname }}'
+      dsn: 'mysql:host={{ database_ip }};dbname={{ test_db_dbname }}'
       user: '{{ test_db_user }}'
       password: '{{ test_db_password }}'
 
@@ -33,7 +31,7 @@ modules:
       reconnect: true
 
     WebDriver:
-      url: http://{{ test_url }}
+      url: http://{{ webserver_url }}
 
       browser: chrome
       port: 4445
@@ -41,18 +39,9 @@ modules:
         "goog:chromeOptions":
           args: ["--window-size=1920,1080", "--no-sandbox"]
           prefs:
-            download.default_directory: "/tests/tests/_output"
-
+            download.default_directory: "/data/output/backups"
+            download.directory_upgrade: True
+            download.prompt_for_download: False
 
       connection_timeout: 60
       restart: false
-
-#        browser: phantomjs
-#        port: 4447
-#        browser: firefox
-#        port: 4444
-
-#      MailCatcher:
-#        url: 'http://172.18.0.28'
-#        port: '1080'
-

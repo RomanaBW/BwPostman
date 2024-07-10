@@ -38,7 +38,7 @@ services:
 
     environment:
       - BW_TEST_BWPM_VERSION=431
-      - BW_TEST_CAT=frontend_single
+      - BW_TEST_CAT=maintenance_single
       - BW_TEST_DEBUG=--debug
       - SYMFONY_DEPRECATIONS_HELPER=weak
     working_dir: /data

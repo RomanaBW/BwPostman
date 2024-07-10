@@ -3,7 +3,7 @@ class_name: AcceptanceTester
 
 paths:
   log: output
-  data: ../repositories/artifacts/bwpostman4/data
+  data: "{{ artifacts_base }}"
 
 modules:
   enabled:
@@ -16,7 +16,7 @@ modules:
   # Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
   config:
     Db:
-      dsn: 'mysql:host=172.118.5.10;dbname=joomlatest'
+      dsn: 'mysql:host={{ database_ip }};dbname=joomlatest'
       user: 'tester'
       password: 'barbamama'
 
@@ -25,7 +25,7 @@ modules:
       reconnect: true
 
     WebDriver:
-      url: http://172.118.5.11
+      url: http://{{ webserver_url }}
 
       browser: chrome
       port: 4445
@@ -34,6 +34,8 @@ modules:
           args: ["--window-size={{ screen_size_opts }}", "--no-sandbox"]
           prefs:
             download.default_directory: "/data/output"
+            download.directory_upgrade: True
+            download.prompt_for_download: False
 
       connection_timeout: 60
       restart: false

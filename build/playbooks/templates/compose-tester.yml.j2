@@ -2,7 +2,7 @@ services:
   bwpm-tester{{ j_main }}:
     # So ist dieses Image nicht gut, denn das gibt es erst, wenn die Pipeline einmal gelaufen ist.
     # Außerdem ist es abhängig von den Versionen von Joomla und BwPostman
-    image: "{{ tester_image}}"
+    image: "{{ tester_image }}"
     ulimits:
       nofile: 72768
     volumes:

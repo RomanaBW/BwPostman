@@ -4,8 +4,13 @@ whoami
 echo "Test-Cat: {{ test_cat }}"
 echo "Project: {{ project_name }}"
 
-VIDEO_NAME=/tests/tests/_output/{{ project_name }}/videos/{{ test_cat }}.mp4
-VIDEO_LOG=/tests/tests/_output/{{ project_name }}/videos/ffmpeg.log
+sudo chmod 1777 /tmp/.X11-unix
+sudo rm -f /tmp/.X45-lock
+sudo mkdir -p /home/seluser/.local/share/mc
+sudo chown -R seluser:users /home/seluser
+
+VIDEO_NAME=/data/output/videos/{{ test_cat }}.mp4
+VIDEO_LOG=/data/output/logs/ffmpeg.log
 
 DISPLAY=":{{ display }}"
 
@@ -16,21 +21,22 @@ export DISPLAY=${DISPLAY}
 echo "Video-Name: ${VIDEO_NAME}"
 echo "Display: ${DISPLAY}"
 
-# java -jar -Dwebdriver.chrome.driver=/opt/selenium/chromedriver-91.0.4472.19 -Dwebdriver.chrome.logfile=/data/logs/chromedriver_log.txt -Dwebdriver.chrome.verboseLogging=true /opt/selenium/selenium-server-standalone.jar -port 4445 >/data/logs/selenium_log.txt 2>/data/logs/selenium_log.txt &
-java -jar /opt/selenium/selenium-server.jar standalone --port 4445 >/data/logs/selenium.log 2>/selenium.log &
+java -jar /opt/selenium/selenium-server.jar standalone --port 4445 >/data/output/logs/selenium.log 2>/data/output/logs/selenium.log &
 
 # Loop until selenium server is available
 printf 'Waiting Selenium Server to load\n'
-sleep 5
+sleep 15
 
 printf '\n'
+
+sudo chmod 0777 /data/output/logs/selenium.log
 
 # start video recording
 echo 'start recording'
 tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -video_size {{ screen_size }} -i :{{ display }}.0 -vcodec libx264 -r 12 ${VIDEO_NAME} 2>${VIDEO_LOG}"
 
 # run tests
-/data/{{ test_runner }}
+/data/bwpm_test_runner_withdraw.sh
 
 # stop video recording
 echo 'stop recording'
@@ -41,4 +47,4 @@ XVFB_PID="$(pgrep -f /usr/bin/Xvfb)"
 echo "PID: ${XVFB_PID}"
 kill "$(pgrep -f /usr/bin/Xvfb)"
 
-#sleep 180
+# sleep 180

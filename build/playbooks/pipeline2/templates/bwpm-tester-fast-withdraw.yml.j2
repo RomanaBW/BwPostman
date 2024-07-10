@@ -18,10 +18,10 @@ services:
     entrypoint: /scripts/bwpm_tester_start_withdraw.sh
     networks:
       tester-net.nil:
-        ipv4_address: 172.18.0.30
+        ipv4_address: "{{ testcontainer_ip }}"
 
 networks:
   tester-net.nil:
-    name:  {{ net_name }}_tester-net.nil
+    name: "bwpm-test{{ j_main }}"
     external: true
 

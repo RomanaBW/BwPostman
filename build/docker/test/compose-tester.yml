@@ -29,7 +29,7 @@ services:
       # This is needed to be able to delete the uploaded attachment.
       # Otherwise, this could make the next upload impossible.
       # *** Probably it would be better to mount the specific media path for this project.
-      - /home/container-files/j510:/www_path
+      - /home/container-files/j511:/www_path
 
       # Mount tester entry point
       - type: bind
@@ -38,7 +38,7 @@ services:
 
     environment:
       - BW_TEST_BWPM_VERSION=431
-      - BW_TEST_CAT=maintenance_single
+      - BW_TEST_CAT=lists_cam
       - BW_TEST_DEBUG=--debug
       - SYMFONY_DEPRECATIONS_HELPER=weak
     working_dir: /data
@@ -47,7 +47,7 @@ services:
     entrypoint: /tester_entry_point.sh
     networks:
       bwpm-test5:
-        ipv4_address: "172.118.5.22"
+        ipv4_address: "172.118.5.30"
 
 networks:
   bwpm-test5:

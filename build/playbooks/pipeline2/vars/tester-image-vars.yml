@@ -1,5 +1,5 @@
 ---
-tester_image: "universe3:5000/romana/bwpm_enh_tester-5:5.1.1-4.3.1"
+tester_image: "universe3:5000/romana/bwpm_enh_tester-5:5.1.2-4.3.1"
 webserver_url: "172.118.5.27"
 database_ip: "172.118.5.26"
 testcontainer_ip: "172.118.5.30"

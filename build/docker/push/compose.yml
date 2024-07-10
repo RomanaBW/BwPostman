@@ -8,7 +8,7 @@ networks:
 
 services:
   bwpm-db:
-    image: universe3:5000/romana/bwpm-base-tables:8.1.0-5.1.1
+    image: universe3:5000/romana/bwpm-base-tables:8.1.0-5.1.2
     container_name: push-db
     restart: no
     networks:

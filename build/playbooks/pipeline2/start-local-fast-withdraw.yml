@@ -2,15 +2,20 @@
 - hosts: localhost
   gather_facts: no
   vars_files:
-    - vars/fast-test-vars.yml
+    - vars/general-withdraw-vars.yml
+#    - vars/fast-test-vars.yml
 
   tasks:
+    - name: Get variables if joomla main version is provided as extra_vars
+      include_vars: vars/previous-withdraw-vars.yml
+      when: j_main_version is defined and j_main_version == '4'
+
     # Synchronize var files to repo before used by following playbook and tasks
-    - name: Synchronize needed vars files to repo
-      become: yes
-      copy:
-        src: "{{ test_project_base_dir }}/build/playbooks/"
-        dest: "{{ repo_dir }}/build/playbooks"
+#    - name: Synchronize playbook folder to repo
+#      become: yes
+#      copy:
+#        src: "{{ project_src_dir }}/build/playbooks/"
+#        dest: "{{ repo_dir }}/build/playbooks"
 #        delete: yes
 #        archive: yes
 #        partial: yes
@@ -19,9 +24,17 @@
 #          - "--update"
 #          - "--quiet"
 
+#    - name: Synchronize docker folder to repo
+#      become: yes
+#      copy:
+#        src: "{{ project_src_dir }}/build/docker/"
+#        dest: "{{ repo_dir }}/build/docker"
+
 - hosts: localhost
   connection: local
   gather_facts: no
+  vars_files:
+    - vars/general-withdraw-vars.yml
 
 - import_playbook: run-local-fast-withdraw.yml
 
@@ -29,70 +42,30 @@
   connection: local
   gather_facts: no
   vars_files:
-    - vars/fast-test-vars.yml
-    - vars/tester-image-vars.yml
-    - vars/codecept_paths.yml
+#    - vars/fast-test-vars.yml
+#    - vars/tester-image-vars.yml
+    - vars/general-withdraw-vars.yml
+    - vars/current-withdraw-vars.yml
+#    - vars/codecept_paths.yml
 
   tasks:
+    - name: Get variables if joomla main version is provided as extra_vars
+      include_vars: vars/previous-withdraw-vars.yml
+      when: j_main_version is defined and j_main_version == '4'
+
     - name: Start tests
-      shell: "docker-compose -f /vms/dockers/containers/testers/bwpm-tester-fast-withdraw.yml up"
+      shell: "docker-compose -f {{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml up"
 
     - name: Remove tester
-      shell: "docker rm bwpm-tester{{ j_main_version }}"
+      shell: "docker rm bwpm-tester{{ j_main }}"
 
-    - name: Get file name of XML backup file
-      find:
-        paths: "{{ test_dir }}/_output"
-        patterns: "*.xml"
-        recurse: no
-        file_type: file
-      register: found_files
-
-    - name: Show found files
-      debug:
-        msg: "{{ found_files }}"
-
-    - name: Set found XML file
+    - name: Set test_dir
       set_fact:
-        found_xml: "{{ found_files.files }}"
-
-    - name: Set found XML file name
-      set_fact:
-        found_xml_name: "{{ found_xml[0].path }}"
-
-    - name: Show found XML file name
-      debug:
-        msg: "{{ found_xml_name }}"
-
-    - name: Move XML backup file from tester folder to repository
-      shell: "mv -f {{ found_xml_name }} {{ codecept_path_data }}/BwPostman_{{ bwpm_version  | replace('.', '_') }}_Tables.xml"
-
-    - name: Get file name of ZIP backup file
-      find:
-        paths: "{{ test_dir }}/_output"
-        patterns: "*.xml.zip"
-        recurse: no
-        file_type: file
-      register: found_files
-
-    - name: Set found ZIP file
-      set_fact:
-        found_zip: "{{ found_files.files }}"
-
-    - name: Set found ZIP file name
-      set_fact:
-        found_zip_name: "{{ found_zip[0].path }}"
-
-    - name: Show found ZIP file name
-      debug:
-        msg: "{{ found_zip_name }}"
-
-    - name: Move ZIP backup file from tester folder to repository
-      shell: "mv -f {{ found_zip_name }} {{ codecept_path_data }}/BwPostman_{{ bwpm_version  | replace('.', '_') }}_Tables.xml.zip"
+        test_dir: "{{ artifacts_base }}/{{ project_name }}"
 
     - name: Set command for new database dump
       set_fact:
-        sql_dump_command: "mysqldump -h {{ test_db_host_ip }} -u {{ test_db_user }} -p{{ test_db_password }} --opt --extended-insert --complete-insert {{ test_db_dbname }} > {{ web_dir }}/{{ project_name }}/backups/{{ project_name }}.sql"
+        sql_dump_command: "mariadb-dump --ssl=0 -h {{ database_ip }} -u {{ test_db_user }} -p{{ test_db_password }} --opt --extended-insert --complete-insert {{ test_db_dbname }} > {{ test_dir }}/backups/{{ project_name }}.sql"
 
     - name: Show command for new database dump
       debug:
@@ -100,3 +73,56 @@
 
     - name: Execute command for new database dump
       shell: "{{ sql_dump_command }}"
+
+    - name: Handle backups of BwPostman
+      block:
+        - name: Get file name of XML backup file
+          find:
+            paths: "{{ test_dir }}/backups"
+            patterns: "*.xml"
+            recurse: no
+            file_type: file
+          register: found_files
+
+        - name: Show found files
+          debug:
+            msg: "{{ found_files }}"
+
+        - name: Set found XML file
+          set_fact:
+            found_xml: "{{ found_files.files }}"
+
+        - name: Set found XML file name
+          set_fact:
+            found_xml_name: "{{ found_xml[0].path }}"
+
+        - name: Show found XML file name
+          debug:
+            msg: "{{ found_xml_name }}"
+
+        - name: Move XML backup file from tester folder to repository
+          shell: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_version  | replace('.', '_') }}_Tables.xml"
+
+        - name: Get file name of ZIP backup file
+          find:
+            paths: "{{ test_dir }}/backups"
+            patterns: "*.xml.zip"
+            recurse: no
+            file_type: file
+          register: found_files
+
+        - name: Set found ZIP file
+          set_fact:
+            found_zip: "{{ found_files.files }}"
+
+        - name: Set found ZIP file name
+          set_fact:
+            found_zip_name: "{{ found_zip[0].path }}"
+
+        - name: Show found ZIP file name
+          debug:
+            msg: "{{ found_zip_name }}"
+
+        - name: Move ZIP backup file from tester folder to repository
+          shell: "mv -f {{ found_zip_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_version  | replace('.', '_') }}_Tables.xml.zip"
+      when: j_main_version is not defined or j_main_version == '5'

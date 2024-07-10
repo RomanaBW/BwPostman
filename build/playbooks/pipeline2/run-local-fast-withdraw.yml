@@ -2,46 +2,31 @@
 - hosts: localhost
   connection: local
   vars_files:
-    - vars/fast-test-vars.yml
-    - vars/tester-image-vars.yml
-    - vars/codecept_paths.yml
+#    - vars/fast-test-vars.yml
+#    - vars/tester-image-vars.yml
+    - vars/general-withdraw-vars.yml
+    - vars/current-withdraw-vars.yml
+#    - vars/codecept_paths.yml
 
   tasks:
-    - name: Set test runner
-      set_fact:
-        test_runner: "bwpm_test_runner_withdraw.sh"
+    - name: Get variables if joomla main version is provided as extra_vars
+      include_vars: vars/previous-withdraw-vars.yml
+      when: j_main_version is defined and j_main_version == '4'
 
-    - name: Set base source dir
+    - name: Set DB host and webserver
       set_fact:
-        base_src_dir: "/vhosts/dev4"
+        test_db_host: "mysqldbbwpm{{ j_main }}"
+        test_url_name: "test_url{{ j_main }}"
 
-    - name: Calculate Joomla main version
-      set_fact:
-        joomla_main_version: "{{ joomla_version[0] }}"
-
-    - name: Set src_dir
-      set_fact:
-        src_dir: "/vhosts/dev{{ joomla_main_version }}"
-
-    - name: Set src_dir and DB host
-      set_fact:
-        test_dir: "{{ src_dir }}/tests"
-        test_db_host: "mysqldbbwpm{{ joomla_main_version }}"
-        test_url_name: "test_url{{ joomla_main_version }}"
-
-    - name: Set test_url for J5
-      set_fact:
-        test_url: "{{ test_url5 }}"
-      when: joomla_main_version == '5'
-
-    - name: Set test_url for J4
-      set_fact:
-        test_url: "{{ test_url4 }}"
-      when: joomla_main_version == '4'
-
-    - name: Set project name
-      set_fact:
-        project_name: "j{{ joomla_version }}_bwpm{{ bwpm_version }}"
+#    - name: Set test_url for J5
+#      set_fact:
+#        test_url: "{{ test_url5 }}"
+#      when: j_main == '5'
+#
+#    - name: Set test_url for J4
+#      set_fact:
+#        test_url: "{{ test_url4 }}"
+#      when: j_main == '4'
 
     - name: Show imported parameters
       debug:
@@ -49,60 +34,36 @@
           - "Hostname: {{ ansible_hostname }}"
           - "BW_TEST_JOOMLA_VERSION: {{ joomla_version }}"
           - "BW_TEST_BWPM_VERSION: {{ bwpm_version }}"
+          - "Webserver URL: {{ webserver_url }}"
+          - "Database IP: {{ database_ip }}"
+          - "Tester IP: {{ testcontainer_ip }}"
           - "Test-Dir: {{ test_dir }}"
-          - "Test-Src-Dir: {{ test_src_dir }}"
+#          - "Test-Src-Dir: {{ test_src_dir }}"
+          - "Project name dotted: {{ project_name_dotted }}"
+          - "Project name: {{ project_name }}"
 
-    - name: Set project name
-      set_fact:
-        project_name: "j{{ joomla_version | replace('.', '') }}_bwpm{{ bwpm_version  | replace('.', '') }}"
-
-    - name: Set network name
-      set_fact:
-        net_name: "{{ project_name }}"
-
-    - name: Create output folders
+    - name: Ensure output folders are present and writable
       become: yes
       file:
         path: "{{ item }}"
         state: directory
-        mode: "0775"
+        mode: "0777"
         owner: jenkins
         group: users
       with_items:
-        - "{{ test_dir }}"
-        - "{{ container_dir }}"
-        - "{{ container_dir }}/infrastructure"
-        - "{{ container_dir }}/testers"
-        - "{{ test_dir }}/_output/{{ project_name }}/videos"
-        - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
-
-    - name: Ensure output path is writable
-      become: true
-      file:
-        path: "{{ item }}"
-        state: directory
-        recurse: yes
-        mode: 0777
-      loop:
-        - "{{ test_dir }}"
-        - "{{ test_dir }}/_output/{{ project_name }}/videos"
-        - "{{ test_dir }}/_output/{{ project_name }}/htmlreports"
+        - "{{ artifacts_path }}/logs"
+        - "{{ artifacts_path }}/videos"
+        - "{{ artifacts_path }}/htmlreports"
+        - "{{ artifacts_path }}/xmlreports"
+        - "{{ artifacts_path }}/backups"
 
     - name: Show bwpm version
       debug:
         msg: "{{ bwpm_version }}"
 
-    - name: Set version to test
-      set_fact:
-        version_to_test: "{{ bwpm_version | replace('.', '_') }}"
-
     - name: Show version to test
       debug:
         msg: "{{ version_to_test }}"
-
-    - name: Set name (depending on current version) of current backup files
-      set_fact:
-        backup_name_raw: "BwPostman_{{ version_to_test }}_Tables"
 
     - name: Set current month and year
       set_fact:
@@ -127,8 +88,8 @@
 
     - name: Copy current backups of BwPostman to file with year and month
       copy:
-        src: "{{ codecept_path_data }}/{{ item.src }}"
-        dest: "{{ codecept_path_data }}/{{ item.dest }}"
+        src: "{{ repo_data_dir }}/{{ item.src }}"
+        dest: "{{ repo_data_dir }}/{{ item.dest }}"
       with_items:
         - src: "{{ backup_name_raw }}.xml"
           dest: "{{ backup_name_raw }}_{{ reduced_date }}.xml"
@@ -137,118 +98,90 @@
 
     - name: Copy current table dump to file with year and month
       copy:
-        src: "/vms/dockers/global_data/test_data/{{ project_name }}/backups/{{ project_name }}.sql"
-        dest: "/vms/dockers/global_data/test_data/{{ project_name }}/backups/{{ project_name }}_{{ reduced_date }}.sql"
-
-    - name: Create infrastructure compose file for J5
-      template:
-        src: "run-bwpm-fast-J5.yml.j2"
-        dest: "{{ container_dir }}/infrastructure/run-bwpm-fast.yml"
-        force: yes
-      when: joomla_main_version == '5'
-
-    - name: Create infrastructure compose file for J4
-      template:
-        src: "run-bwpm-fast-J4.yml.j2"
-        dest: "{{ container_dir }}/infrastructure/run-bwpm-fast.yml"
-        force: yes
-      when: joomla_main_version == '4'
+        src: "{{ artifacts_path }}/backups/{{ project_name }}.sql"
+        dest: "{{ artifacts_path }}/backups/{{ project_name }}_{{ reduced_date }}.sql"
 
     - name: Show start infrastructure command
       debug:
-        msg: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm-fast.yml -p {{ project_name }} up -d"
+        msg: "{{ middleware_startup_command }}"
 
-    - name: Start infrastructure
-      ansible.builtin.command: "docker-compose -f {{ container_dir }}/infrastructure/run-bwpm-fast.yml -p {{ project_name }} up -d"
+    - name: Start middleware
+      ansible.builtin.command: "{{ middleware_startup_command }}"
 
-    - name: Synchronize tests
-      become: true
-      copy:
-        src: "{{ test_project_base_dir }}/tests"
-        dest: "{{ src_dir }}/tests"
-#        delete: yes
-#        archive: yes
+# @ToDo: Replace with health check
+#    - name: Ensure database is fully started
+#      pause:
+#        seconds: 10
 
-    - name: Ensure database is fully started
-      pause:
-        seconds: 60
-
-    - name: Set rebase command
-      set_fact:
-         sql_command: "mysql -u {{ test_db_user }} -p{{ test_db_password }} -h {{ test_db_host_ip }} {{ test_db_dbname }} < {{ web_dir }}/{{ project_name }}/backups/{{ project_name }}.sql"
-
-    - name: Output rebase command
+    - name: Show rebase command
       debug:
-         msg: "{{ sql_command }}"
+         msg: "{{ sql_rebase_command }}"
 
+# Comment for debugging
     - name: Rebase database
-      shell: "{{ sql_command }}"
+      shell: "{{ sql_rebase_command }}"
 
+# Comment for debugging
     - name: Pause after rebase
       pause:
-        seconds: 15
+        seconds: 10
 
     - name: Copy sql withdraw file
       copy:
         src: "files/joomla4/withdraw_testdata.sql"
-        dest: "{{ web_dir }}/{{ project_name }}/backups/withdraw_testdata.sql"
+        dest: "/home/container-files/artifacts/withdraw_testdata.sql"
         mode: 0775
-
-    - name: Set withdraw command
-      set_fact:
-         sql_withdraw_command: "mysql -u {{ test_db_user }} -p{{ test_db_password }} -h {{ test_db_host_ip }} {{ test_db_dbname }} < {{ web_dir }}/{{ project_name }}/backups/withdraw_testdata.sql"
 
     - name: Output withdraw command
       debug:
          msg: "{{ sql_withdraw_command }}"
 
+# Comment for debugging
     - name: Execute withdraw at database
       shell: "{{ sql_withdraw_command }}"
 
+# Comment for debugging
     - name: Pause after withdraw
       pause:
-        seconds: 15
+        seconds: 10
 
     - name: Prepare manifest for codeception tests
       template:
         src: "codeception-fast.yml.j2"
-        dest: "{{ base_dir }}/codeception.yml"
+        dest: "{{ project_src_dir }}/tests/codeception.yml"
 
     - name: Prepare manifest for acceptance tests with chromium
       template:
         src: "acceptance-fast.suite.yml.j2"
-        dest: "{{ base_dir }}/{{ test_src_dir }}/acceptance.suite.yml"
+        dest: "{{ project_src_dir }}/tests/acceptance.suite.yml"
 
-    - name: Set test_cat, test_debug
-      set_fact:
-        test_cat: "withdraw_testdata"
-        test_debug: yes
-
-    - name: Create tester compose file for J5
+    - name: Create tester entry point
       become: yes
       template:
-        src: "bwpm-tester-fast-J5.yml.j2"
-        dest: "{{ container_dir }}/testers/bwpm-tester-fast-withdraw.yml"
+        src: "../templates/tester_entry_point.sh.j2"
+        dest: "{{ tester_compose_path }}/tester_entry_point.sh"
+        mode: 0775
+        owner: romana
+        group: users
+
+    - name: Show tester compose file path
+      debug:
+        msg: "{{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml"
+
+    - name: Create tester compose file
+      become: yes
+      template:
+        src: "bwpm-tester-fast-J{{ j_main }}.yml.j2"
+        dest: "{{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml"
         mode: 0664
         owner: romana
         group: users
-      when: joomla_main_version == '5'
-
-    - name: Create tester compose file for J4
-      become: yes
-      template:
-        src: "bwpm-tester-fast-J4.yml.j2"
-        dest: "{{ container_dir }}/testers/bwpm-tester-fast-withdraw.yml"
-        mode: 0664
-        owner: romana
-        group: users
-      when: joomla_main_version == '4'
 
     - name: Create tester start script
       become: yes
       template:
         src: "bwpm_tester_start_withdraw.sh.j2"
-        dest: "{{ base_dir }}/{{ test_src_dir }}/job_scripts/bwpm_tester_start_withdraw.sh"
+        dest: "{{ test_dir }}/job_scripts/bwpm_tester_start_withdraw.sh"
         mode: 0775
         owner: romana
         group: users

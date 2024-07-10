@@ -6,7 +6,7 @@
 #
 
 PHP_VERSION=7.4.0
-JOOMLA_VERSION=4.4.5
+JOOMLA_VERSION=4.4.6
 
 docker commit -a 'Romana Boldt info@boldt-webservice.de' push4-web universe3:5000/romana/bwpm-configured-files:$PHP_VERSION-$JOOMLA_VERSION
 docker commit -a 'Romana Boldt info@boldt-webservice.de' push4-db universe3:5000/romana/bwpm-configured-tables:$PHP_VERSION-$JOOMLA_VERSION

@@ -1,0 +1,6 @@
+{
+  "require": {
+    "phpunit/phpunit": "^9",
+    "phpmailer/phpmailer": "~6.1"
+  }
+}

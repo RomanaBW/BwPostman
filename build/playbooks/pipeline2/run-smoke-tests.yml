@@ -11,6 +11,10 @@
       debug:
         msg: "Joomla version {{ joomla_version }}"
 
+    - name: Set variable j_main_version
+      set_fact:
+        j_main_version: "{{ joomla_version[0] }}"
+
     - name: Set variable for source webroot folder
       set_fact:
         sub_path_source: "ext_install_j{{ j_main_version }}"

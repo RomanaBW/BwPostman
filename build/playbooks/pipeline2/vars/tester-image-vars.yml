@@ -10,3 +10,254 @@ screen_size_opts: "1920,1080"
 j_main: '5'
 joomla_version: "5.1.2"
 bwpm_version: "4.3.1"
+bwpm_version_dotted: "4.3.1"
+bwpm_version_previous: "4.3.0"
+
+j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
+
+php_minimum_version: "7.4.26"
+php_current_version: "8.1.12"
+
+php_selected_version: "{{ php_current_version }}"
+#php_selected_version: "{{ php_minimum_version }}"
+
+
+
+
+j_package_name:
+  j4: "Joomla_{{ j_version_hyphen }}-Stable-Full_Package.zip"
+
+j_main_version: "{{ joomla_version[0] }}"
+
+joomla_packages:
+  - src: "https://downloads.joomla.org/cms/Joomla4/{{ j_version_hyphen }}/{{ j_package_name.j4 }}"
+    dest: "{{ bw_artifacts_base }}/data/j_install/{{ j_package_name.j4 }}"
+
+
+
+
+# Additional extensions to install, raw file names without version
+additional_extensions:
+  - pkg_jce.zip
+  - plg_bwtestmode.zip
+
+virtuemart_download_path: "https://dev.virtuemart.net/attachments/download/1295"
+
+vm_version: "3.8.9.10564"
+#tcpdf_version: "1.2.0"
+
+vm_archive_file: "com_virtuemart.{{ vm_version }}_package_or_extract.zip"
+vm_generalized_package_name: "com_virtuemart_package.zip"
+
+virtuemart_extensions:
+  - "{{ vm_archive_file }}"
+#  - com_virtuemart_ext_aio.zip
+#  - com_tcpdf.zip
+
+
+# Commit values
+private_docker_repo: "universe3:5000"
+author: "Romana Boldt info@boldt-webservice.de"
+
+# Database settings
+mariadb_root_password: barbapapa
+mariadb_user: tester
+mariadb_password: barbamama
+mariadb_database: joomlatest
+mariadb_host: joomla_db
+
+# Joomla file folders
+main_base_folder: "/joomla-files"
+
+joomla_base_folders:
+  smoke_j3: "{{ main_base_folder }}/smoke_j3"
+  smoke_j4: "{{ main_base_folder }}/smoke_j4"
+  smoke_j5: "{{ main_base_folder }}/smoke_j5"
+  ext_install_j3: "{{ main_base_folder }}/jbase_j3"
+  ext_install_j4: "{{ main_base_folder }}/jbase_j4"
+  ext_install_j5: "{{ main_base_folder }}/jbase_j5"
+  vm_install_j3: "{{ main_base_folder }}/jvm_j3"
+  vm_install_j4: "{{ main_base_folder }}/jvm_j4"
+  vm_install_j5: "{{ main_base_folder }}/jvm_j5"
+
+acceptance_j3_folders:
+  - "{{ main_base_folder }}/accept1_j3"
+  - "{{ main_base_folder }}/accept2_j3"
+  - "{{ main_base_folder }}/accept3_j3"
+  - "{{ main_base_folder }}/accept4_j3"
+  - "{{ main_base_folder }}/accept5_j3"
+  - "{{ main_base_folder }}/acceptB2S_j3"
+
+acceptance_j4_folders:
+  - "{{ main_base_folder }}/accept1_j4"
+  - "{{ main_base_folder }}/accept2_j4"
+  - "{{ main_base_folder }}/accept3_j4"
+  - "{{ main_base_folder }}/accept4_j4"
+  - "{{ main_base_folder }}/accept5_j4"
+  - "{{ main_base_folder }}/acceptB2S_j4"
+
+acceptance_j5_folders:
+  - "{{ main_base_folder }}/accept1_j5"
+  - "{{ main_base_folder }}/accept2_j5"
+  - "{{ main_base_folder }}/accept3_j5"
+  - "{{ main_base_folder }}/accept4_j5"
+  - "{{ main_base_folder }}/accept5_j5"
+  - "{{ main_base_folder }}/acceptB2S_j5"
+
+# Webserver settings
+apache_host: joomla_web
+
+tester_web_root: "/var/www/html/"
+tester_www_user: "www-data"
+tester_www_group: "www-data"
+
+joomla_additional_files_folder: "/joomla-files"
+
+# Joomla configuration
+tester_db_prefix: "jos_"
+tester_mail_from: "webmaster@boldt-webservice.de"
+tester_mail_from_name: "Joomla-Test"
+debug_joomla_core: 1
+debug_joomla_lang: 0
+debug_joomla_level: 'maximum'
+
+# SMTP configuration is not really needed
+tester_smtp_user: "info@boldt-webservice.de"
+tester_smtp_password: "@Miriam02#"
+tester_smtp_host: "192.168.2.100"
+
+phantom_dir: "/opt/phantomJS"
+phantom_version: "2.1.1"
+
+# Settings for creating base LAMP containers
+official_mariadb: bitnami/mariadb:10.11-debian-11
+official_mariadb_short: mariadb:10.11-debian-11
+official_apache: "php:{{ php_selected_version }}-apache"
+official_apache_short: "php_{{ php_selected_version }}-apache"
+official_tester: romana/selenium-standalone-chrome-debug-ffmpeg:latest
+official_tester_short: selenium-standalone-chrome-debug-ffmpeg:latest
+
+base_source:
+  db_container_name: mariadb_build
+  db_image_tag_source: "{{ official_mariadb }}"
+  web_container_name: apache_build
+  web_image_tag_source: "{{ official_apache }}"
+  tester_container_name: tester_build
+  tester_image_tag_source: "{{ official_tester }}"
+
+base_target:
+  db_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_mariadb_short }}"
+  web_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_apache_short }}:{{ joomla_version }}"
+  tester_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_tester_short }}"
+
+
+# Settings for creating bare Joomla containers
+bare_source:
+  db_container_name: joomla_bare_db
+  db_image_tag_source: "{{ base_target.db_image_tag_target }}"
+  web_container_name: joomla_bare_web
+  web_image_tag_source: "{{ base_target.web_image_tag_target }}"
+  tester_container_name: bwpm_bare_tester
+  tester_image_tag_source: "{{ private_docker_repo }}/romana/{{ official_tester_short }}"
+
+  tester_network_name: "bwpm_network_{{ test_suite }}"
+
+bare_target:
+  db_image: "{{ private_docker_repo }}/{{ bare_source.db_image_tag_source }}"
+  db_image_tag_target: "romana/joomla-bare-tables:{{ joomla_version }}"
+  web_image: "{{ private_docker_repo }}/{{ bare_source.web_image_tag_source }}"
+  web_image_tag_target: "romana/joomla-bare-files:{{ joomla_version }}"
+  tester_image: "romana/{{ bare_source.tester_image_tag_source }}"
+
+
+# Settings for creating enhanced joomla containers (JCE, test mode plugin,…)
+required_source:
+  db_container_name: joomla_jce_db
+  db_image_tag_source: "romana/joomla-bare-tables:{{ joomla_version }}"
+  web_container_name: joomla_jce_web
+  web_image_tag_source: "romana/joomla-bare-files:{{ joomla_version }}"
+  tester_container_name: bwpm_jce_tester
+  tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
+
+  tester_network_name: "bwpm_network_{{ test_suite }}"
+
+required_target:
+  db_image: "{{ private_docker_repo }}/{{ required_source.db_image_tag_source }}"
+  db_image_tag_target: "romana/joomla-jce-tables:{{ joomla_version }}"
+  web_image: "{{ private_docker_repo }}/{{ required_source.web_image_tag_source }}"
+  web_image_tag_target: "romana/joomla-jce-files:{{ joomla_version }}"
+  tester_image: "{{ private_docker_repo }}/{{ required_source.tester_image_tag_source }}"
+#   At this point there is no need to push the tester!
+#  tester_image_tag_target: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
+
+
+# Settings for creating joomla containers with installed VirtueMart
+virtuemart_source:
+  db_container_name: joomla_vm_db
+  db_image_tag_source: "romana/joomla-jce-tables:{{ joomla_version }}"
+  web_container_name: joomla_vm_web
+  web_image_tag_source: "romana/joomla-jce-files:{{ joomla_version }}"
+  tester_container_name: bwpm_vm_tester
+  tester_image_tag_source: "romana/selenium-standalone-chrome-debug-ffmpeg:latest"
+
+  tester_network_name: "bwpm_network_{{ test_suite }}"
+
+virtuemart_target:
+  db_image: "{{ private_docker_repo }}/{{ virtuemart_source.db_image_tag_source }}"
+  db_image_tag_target: "romana/joomla-vm-tables:{{ joomla_version }}"
+  web_image: "{{ private_docker_repo }}/{{ virtuemart_source.web_image_tag_source }}"
+  web_image_tag_target: "romana/joomla-vm-files:{{ joomla_version }}"
+  tester_image: "{{ private_docker_repo }}/{{ virtuemart_source.tester_image_tag_source }}"
+#   At this point there is no need to push the tester!
+#  tester_image_tag_target: "romana/selenium-standalone-chrome-debug-ffmpeg"
+
+
+# Settings for creating smoke tests container
+smoke_source:
+  db_container_name: "joomla_enh_db-{{ j_main_version }}"
+  db_image_tag_source: "romana/joomla-jce-tables:{{ php_selected_version }}-{{ joomla_version }}"
+  web_container_name: "joomla_enh_web-{{ j_main_version }}"
+  web_image_tag_source: "romana/bwpm-configured-files:{{ php_selected_version }}-{{ joomla_version }}"
+  tester_container_name: "bwpm_enh_tester-{{ j_main_version }}"
+  tester_image_tag_source: "romana/{{ official_tester_short }}"
+  tester_network_name: "bwpm_network_{{ test_suite }}_{{ j_main_version }}"
+
+smoke_target:
+  db_image: "{{ smoke_source.db_image_tag_source }}"
+  db_image_tag_target: "romana/{{ smoke_source.db_container_name }}:{{ php_selected_version }}-{{ joomla_version }}-{{ bwpm_version_dotted }}"
+  web_image: "{{ smoke_source.web_image_tag_source }}"
+  web_image_tag_target: "romana/{{ smoke_source.web_container_name }}:{{ php_selected_version }}-{{ joomla_version }}-{{ bwpm_version_dotted }}"
+  tester_image: "{{ smoke_source.tester_image_tag_source }}"
+  tester_image_tag_target: "romana/{{ smoke_source.tester_container_name }}:{{ joomla_version }}-{{ bwpm_version_dotted }}"
+
+# Settings for creating acceptance tests container
+acceptance_source:
+  db_container_name: "bwpm_{{ test_suite }}_db-{{ j_main_version }}"
+  db_image_tag_source: "romana/{{ smoke_source.db_container_name }}:{{ php_selected_version }}-{{ joomla_version }}-{{ bwpm_version }}"
+  web_container_name: "bwpm_{{ test_suite }}_web-{{ j_main_version }}"
+  web_image_tag_source: "romana/{{ smoke_source.web_container_name }}:{{ php_selected_version }}-{{ joomla_version }}-{{ bwpm_version }}"
+  tester_container_name: "bwpm_{{ test_suite }}_tester-{{ j_main_version }}"
+  tester_image_tag_source: "romana/{{ smoke_source.tester_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
+  tester_network_name: "bwpm_network_{{ test_suite }}_{{ j_main_version }}"
+
+acceptance_target:
+  db_image: "{{ acceptance_source.db_image_tag_source }}"
+  web_image: "{{ acceptance_source.web_image_tag_source }}"
+  tester_image: "{{ acceptance_source.tester_image_tag_source }}"
+
+# Settings for creating fast tests container
+fast_source:
+  db_container_name: "bwpm_{{ test_suite }}_db-{{ j_main_version }}"
+  db_image_tag_source: "{{ private_docker_repo }}/romana/{{ smoke_source.db_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
+  web_container_name: "bwpm_{{ test_suite }}_web-{{ j_main_version }}"
+  web_image_tag_source: "{{ private_docker_repo }}/romana/{{ smoke_source.web_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
+  tester_container_name: "bwpm_{{ test_suite }}_tester-{{ j_main_version }}"
+  tester_image_tag_source: "{{ private_docker_repo }}/romana/{{ smoke_source.tester_container_name }}:{{ joomla_version }}-{{ bwpm_version }}"
+  tester_network_name: "bwpm_network_{{ test_suite }}-{{ j_main_version }}"
+
+fast_target:
+#  db_image: "{{ acceptance_source.db_image_tag_source }}"
+#  web_image: "{{ acceptance_source.web_image_tag_source }}"
+#  tester_image: "{{ acceptance_source.tester_image_tag_source }}"
+  web_image_tag_target: "{{ private_docker_repo }}/romana/{{ official_apache_short }}:bare"
+

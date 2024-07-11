@@ -215,7 +215,7 @@ virtuemart_target:
 # Settings for creating smoke tests container
 smoke_source:
   db_container_name: "joomla_enh_db-{{ j_main_version }}"
-  db_image_tag_source: "romana/joomla-jce-tables:{{ php_selected_version }}-{{ joomla_version }}"
+  db_image_tag_source: "romana/bwpm-configured-tables:{{ php_selected_version }}-{{ joomla_version }}"
   web_container_name: "joomla_enh_web-{{ j_main_version }}"
   web_image_tag_source: "romana/bwpm-configured-files:{{ php_selected_version }}-{{ joomla_version }}"
   tester_container_name: "bwpm_enh_tester-{{ j_main_version }}"

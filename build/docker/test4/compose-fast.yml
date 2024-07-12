@@ -6,17 +6,17 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.118.4.24/29
+        - subnet: 172.118.4.32/29
 
 services:
   bwpm-fast4-db:
     container_name: bwpm-fast4-db
-    image: universe3:5000/romana/joomla_enh_db-4:7.4.0-4.4.5-4.3.1
+    image: universe3:5000/romana/joomla_enh_db-4:7.4.0-4.4.6-4.3.1
     volumes:
-      - db_testdata_445:/var/lib/mariadb
+      - db_testdata_446:/var/lib/mariadb
     networks:
       bwpm-test4:
-        ipv4_address: 172.118.4.26
+        ipv4_address: 172.118.4.34
     expose:
       - 3446
     restart: no
@@ -37,19 +37,19 @@ services:
 
   bwpm-fast4-joomla:
     container_name: bwpm-fast4-web
-    image: universe3:5000/romana/joomla_enh_web-4:7.4.0-4.4.5-4.3.1
+    image: universe3:5000/romana/joomla_enh_web-4:7.4.0-4.4.6-4.3.1
     ports:
       - 84:80
     restart: no
     healthcheck:
-      test: curl --fail http://172.118.4.27/index.php || exit 1
+      test: curl --fail http://172.118.4.35/index.php || exit 1
       start_period: 5s
       interval: 10s
       timeout: 10s
       retries: 5
     networks:
       bwpm-test4:
-        ipv4_address: 172.118.4.27
+        ipv4_address: 172.118.4.35
     depends_on:
       bwpm-fast4-db:
         condition: service_healthy
@@ -60,7 +60,7 @@ services:
     volumes:
       # mount webserver root
       - type: bind
-        source: /home/container-files/j444
+        source: /home/container-files/j446
         target: /var/www/html
       # mount Joomla configuration
       - type: bind
@@ -254,16 +254,16 @@ services:
     image: phpmyadmin
     networks:
       bwpm-test4:
-        ipv4_address: 172.118.4.29
+        ipv4_address: 172.118.4.37
     environment:
-      JOOMLA_DB_HOST: 172.118.4.26
-      PMA_HOST: 172.118.4.26
+      JOOMLA_DB_HOST: 172.118.4.34
+      PMA_HOST: 172.118.4.34
     depends_on:
       bwpm-fast4-db:
         condition: service_healthy
     healthcheck:
 #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
-      test: curl --fail http://172.118.4.29/LICENSE || exit 1
+      test: curl --fail http://172.118.4.37/LICENSE || exit 1
       start_period: 10s
       interval: 10s
       timeout: 5s
@@ -273,7 +273,7 @@ services:
     restart: no
 
 volumes:
-  db_testdata_445:
+  db_testdata_446:
 
 secrets:
   db_password:

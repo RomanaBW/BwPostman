@@ -4,7 +4,7 @@ class JConfig {
 	public $offline_message = 'Diese Website ist zurzeit im Wartungsmodus.<br />Bitte später wiederkommen.';
 	public $display_offline_message = 1;
 	public $offline_image = '';
-	public $sitename = 'Fast4x_BwPM_Container';
+	public $sitename = 'Dev446_BwPM_Container';
 	public $editor = 'tinymce';
 	public $captcha = '0';
 	public $list_limit = 20;
@@ -13,7 +13,7 @@ class JConfig {
 	public $debug_lang = false;
 	public $debug_lang_const = true;
 	public $dbtype = 'mysqli';
-	public $host = '172.118.4.34';
+	public $host = 'j446-bwpm-db-1';
 	public $user = 'tester';
 	public $password = 'barbamama';
 	public $db = 'joomlatest';
@@ -34,7 +34,7 @@ class JConfig {
 	public $mailonline = true;
 	public $mailer = 'smtp';
 	public $mailfrom = 'webmaster@boldt-webservice.de';
-	public $fromname = 'Fast4x_BwPM_Container';
+	public $fromname = 'Dev446_BwPM_Container';
 	public $sendmail = '/usr/sbin/sendmail';
 	public $smtpauth = false;
 	public $smtpuser = '';
@@ -66,7 +66,7 @@ class JConfig {
 	public $memcached_compress = false;
 	public $memcached_server_host = 'localhost';
 	public $memcached_server_port = 11211;
-	public $redis_persist = true;
+	public $redis_persist = false;
 	public $redis_server_host = 'bwpm-redis';
 	public $redis_server_port = 6379;
 	public $redis_server_db = 0;
@@ -93,7 +93,7 @@ class JConfig {
 	public $session_redis_server_db = 0;
 	public $session_metadata_for_guest = true;
 	public $frontediting = 1;
-	public $log_everything = 1;
+	public $log_everything = 0;
 	public $log_deprecated = 0;
 	public $log_priorities = array('0' => 'all');
 	public $log_categories = '';

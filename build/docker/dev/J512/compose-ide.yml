@@ -1,0 +1,77 @@
+networks:
+  bwpm-ide.nil:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.5.40/29
+
+services:
+  bwpm-db:
+    image: universe3:5000/romana/bwpm-configured-tables:8.1.0-5.1.2
+    volumes:
+      - db_data_512:/var/lib/mariadb
+    networks:
+      bwpm-ide.nil:
+        ipv4_address: 172.18.5.42
+    expose:
+      - 3306
+
+
+  bwpm-joomla:
+    build:
+      network: host
+      args:
+        XDEBUG_VERSION: 3.3.1
+        XDEBUG_CLIENT_HOST: 192.168.2.1
+        XDEBUG_CLIENT_PORT: 9003
+        XDEBUG_IDE_KEY: PHPSTORM
+        UOPZ_VERSION: 7.1.1
+    volumes:
+      # mount webserver root
+      - type: bind
+        source: /home/container-files/j512
+        target: /var/www/html
+      # mount Joomla configuration
+      - type: bind
+        source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/dev/J512/configuration.php
+        target: /var/www/html/configuration.php
+      # mount logs folder
+      - type: bind
+        source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/dev/J512/logs/bwpostman
+        target: /var/www/html/administrator/logs/bwpostman
+    ports:
+      - 80:80
+    healthcheck:
+      test: curl --fail http://172.18.5.43/index.php || exit 1
+      start_period: 5s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks:
+      bwpm-ide.nil:
+        ipv4_address: 172.18.5.43
+
+  bwpm-phpmyadmin:
+    networks:
+      bwpm-ide.nil:
+        ipv4_address: 172.18.5.45
+    healthcheck:
+#    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
+      test: curl --fail http://172.18.5.45/LICENSE || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  db_data_512:
+
+secrets:
+  db_password:
+    file: ../../db_password.txt
+  db_root_password:
+    file: ../../db_root_password.txt
+  j_root_password:
+    file: ../../j_root_password.txt
+

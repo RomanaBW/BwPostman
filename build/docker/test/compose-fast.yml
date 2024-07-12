@@ -6,17 +6,17 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.118.5.24/29
+        - subnet: 172.118.5.32/29
 
 services:
   bwpm-fast5-db:
     container_name: bwpm-fast5-db
-    image: universe3:5000/romana/joomla_enh_db-5:8.1.0-5.1.1-4.3.1
+    image: universe3:5000/romana/joomla_enh_db-5:8.1.0-5.1.2-4.3.1
     volumes:
-      - db_testdata_511:/var/lib/mariadb
+      - db_testdata_512:/var/lib/mariadb
     networks:
       bwpm-test5:
-        ipv4_address: 172.118.5.26
+        ipv4_address: 172.118.5.34
     expose:
       - 3456
     restart: no
@@ -37,19 +37,19 @@ services:
 
   bwpm-fast5-joomla:
     container_name: bwpm-fast5-joomla
-    image: universe3:5000/romana/joomla_enh_web-5:8.1.0-5.1.1-4.3.1
+    image: universe3:5000/romana/joomla_enh_web-5:8.1.0-5.1.2-4.3.1
     ports:
       - 85:80
     restart: no
     healthcheck:
-      test: curl --fail http://172.118.5.27/index.php || exit 1
+      test: curl --fail http://172.118.5.35/index.php || exit 1
       start_period: 5s
       interval: 10s
       timeout: 10s
       retries: 5
     networks:
       bwpm-test5:
-        ipv4_address: 172.118.5.27
+        ipv4_address: 172.118.5.35
     depends_on:
       bwpm-fast5-db:
         condition: service_healthy
@@ -60,7 +60,7 @@ services:
     volumes:
       # mount webserver root
       - type: bind
-        source: /home/container-files/j511
+        source: /home/container-files/j512
         target: /var/www/html
       # mount Joomla configuration
       - type: bind
@@ -254,16 +254,16 @@ services:
     image: phpmyadmin
     networks:
       bwpm-test5:
-        ipv4_address: 172.118.5.29
+        ipv4_address: 172.118.5.37
     environment:
-      JOOMLA_DB_HOST: 172.118.5.26
-      PMA_HOST: 172.118.5.26
+      JOOMLA_DB_HOST: 172.118.5.34
+      PMA_HOST: 172.118.5.34
     depends_on:
       bwpm-fast5-db:
         condition: service_healthy
     healthcheck:
 #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
-      test: curl --fail http://172.118.5.29/LICENSE || exit 1
+      test: curl --fail http://172.118.5.37/LICENSE || exit 1
       start_period: 10s
       interval: 10s
       timeout: 5s
@@ -273,7 +273,7 @@ services:
     restart: no
 
 volumes:
-  db_testdata_511:
+  db_testdata_512:
 
 secrets:
   db_password:

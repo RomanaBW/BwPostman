@@ -145,43 +145,46 @@
       pause:
         seconds: 10
 
-    - name: Prepare manifest for codeception tests
-      template:
-        src: "codeception-fast.yml.j2"
-        dest: "{{ project_src_dir }}/tests/codeception.yml"
+    - name: Handle backups of BwPostman
+      block:
+        - name: Prepare manifest for codeception tests
+          template:
+            src: "codeception-fast.yml.j2"
+            dest: "{{ project_src_dir }}/tests/codeception.yml"
 
-    - name: Prepare manifest for acceptance tests with chromium
-      template:
-        src: "acceptance-fast.suite.yml.j2"
-        dest: "{{ project_src_dir }}/tests/acceptance.suite.yml"
+        - name: Prepare manifest for acceptance tests with chromium
+          template:
+            src: "acceptance-fast.suite.yml.j2"
+            dest: "{{ project_src_dir }}/tests/acceptance.suite.yml"
 
-    - name: Create tester entry point
-      become: yes
-      template:
-        src: "../templates/tester_entry_point.sh.j2"
-        dest: "{{ tester_compose_path }}/tester_entry_point.sh"
-        mode: 0775
-        owner: romana
-        group: users
+        - name: Create tester entry point
+          become: yes
+          template:
+            src: "../templates/tester_entry_point.sh.j2"
+            dest: "{{ tester_compose_path }}/tester_entry_point.sh"
+            mode: 0775
+            owner: romana
+            group: users
 
-    - name: Show tester compose file path
-      debug:
-        msg: "{{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml"
+        - name: Show tester compose file path
+          debug:
+            msg: "{{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml"
 
-    - name: Create tester compose file
-      become: yes
-      template:
-        src: "bwpm-tester-fast-J{{ j_main }}.yml.j2"
-        dest: "{{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml"
-        mode: 0664
-        owner: romana
-        group: users
+        - name: Create tester compose file
+          become: yes
+          template:
+            src: "bwpm-tester-fast-J{{ j_main }}.yml.j2"
+            dest: "{{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml"
+            mode: 0664
+            owner: romana
+            group: users
 
-    - name: Create tester start script
-      become: yes
-      template:
-        src: "bwpm_tester_start_withdraw.sh.j2"
-        dest: "{{ test_dir }}/job_scripts/bwpm_tester_start_withdraw.sh"
-        mode: 0775
-        owner: romana
-        group: users
+        - name: Create tester start script
+          become: yes
+          template:
+            src: "bwpm_tester_start_withdraw.sh.j2"
+            dest: "{{ test_dir }}/job_scripts/bwpm_tester_start_withdraw.sh"
+            mode: 0775
+            owner: romana
+            group: users
+      when: j_main_version is not defined or j_main_version == '5'

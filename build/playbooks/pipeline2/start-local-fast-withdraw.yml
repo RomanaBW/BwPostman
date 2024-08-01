@@ -53,11 +53,14 @@
       include_vars: vars/previous-withdraw-vars.yml
       when: j_main_version is defined and j_main_version == '4'
 
-    - name: Start tests
-      shell: "docker-compose -f {{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml up"
+    - name: Handle tests to backup BwPostman
+      block:
+        - name: Start tests
+          shell: "docker-compose -f {{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml up"
 
-    - name: Remove tester
-      shell: "docker rm bwpm-tester{{ j_main }}"
+        - name: Remove tester
+          shell: "docker rm bwpm-tester{{ j_main }}"
+      when: j_main_version is not defined or j_main_version == '5'
 
     - name: Set test_dir
       set_fact:

@@ -41,7 +41,7 @@ services:
         source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/dev/J512/logs/bwpostman
         target: /var/www/html/administrator/logs/bwpostman
     ports:
-      - 80:80
+      - '80:80'
     healthcheck:
       test: curl --fail http://172.18.5.43/index.php || exit 1
       start_period: 5s

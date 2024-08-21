@@ -13,3 +13,9 @@ docker commit -a 'Romana Boldt info@boldt-webservice.de' push-db universe3:5000/
 
 docker push universe3:5000/romana/bwpm-configured-files:$PHP_VERSION-$JOOMLA_VERSION
 docker push universe3:5000/romana/bwpm-configured-tables:$PHP_VERSION-$JOOMLA_VERSION
+
+docker push universe3:5000/romana/bwpm-configured-files-$PHP_VERSION:$JOOMLA_VERSION
+docker push universe3:5000/romana/bwpm-configured-tables-$PHP_VERSION:$JOOMLA_VERSION
+
+docker push universe3:5000/romana/bwpm-configured-files-$PHP_VERSION:latest
+docker push universe3:5000/romana/bwpm-configured-tables-$PHP_VERSION:latest

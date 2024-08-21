@@ -13,7 +13,7 @@ class JConfig {
 	public $debug_lang = false;
 	public $debug_lang_const = true;
 	public $dbtype = 'mysqli';
-	public $host = '172.118.5.34';
+	public $host = '172.118.5.50';
 	public $user = 'tester';
 	public $password = 'barbamama';
 	public $db = 'joomlatest';

@@ -11,7 +11,7 @@ networks:
 services:
   bwpm-fast5-db:
     container_name: bwpm-fast5-db
-    image: universe3:5000/romana/joomla_enh_db-5:8.1.0-5.1.3-4.3.1
+    image: universe3:5000/romana/joomla_enh_db-5:8.1.0-5.1.4-4.3.1
     volumes:
       - db_testdata_513:/var/lib/mariadb
     networks:
@@ -37,7 +37,7 @@ services:
 
   bwpm-fast5-joomla:
     container_name: bwpm-fast5-joomla
-    image: universe3:5000/romana/joomla_enh_web-5:8.1.0-5.1.3-4.3.1
+    image: universe3:5000/romana/joomla_enh_web-5:8.1.0-5.1.4-4.3.1
     ports:
       - 85:80
     restart: no

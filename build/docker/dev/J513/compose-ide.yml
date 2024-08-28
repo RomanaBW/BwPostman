@@ -8,9 +8,9 @@ networks:
 
 services:
   bwpm-db:
-    image: universe3:5000/romana/bwpm-configured-tables:8.1.0-5.1.3
+    image: universe3:5000/romana/bwpm-configured-tables-8.1.0:latest
     volumes:
-      - db_data_513:/var/lib/mariadb
+      - db_data_514:/var/lib/mariadb
     networks:
       bwpm-ide.nil:
         ipv4_address: 172.18.5.50
@@ -30,7 +30,7 @@ services:
     volumes:
       # mount webserver root
       - type: bind
-        source: /home/container-files/j513
+        source: /home/container-files/j514
         target: /var/www/html
       # mount Joomla configuration
       - type: bind
@@ -65,7 +65,7 @@ services:
       retries: 3
 
 volumes:
-  db_data_513:
+  db_data_514:
 
 secrets:
   db_password:

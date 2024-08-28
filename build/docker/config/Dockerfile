@@ -1,4 +1,4 @@
-FROM universe3:5000/romana/joomla-files:8.1.0-5.1.3
+FROM universe3:5000/romana/joomla-files-8.1.0:latest
 LABEL maintainer="Romana Boldt <info@boldt-webservice.de>"
 
 # Custom cache invalidation

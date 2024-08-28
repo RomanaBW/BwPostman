@@ -8,7 +8,7 @@ networks:
 
 services:
   bwpm-db:
-    image: universe3:5000/romana/joomla-tables:7.4.0-4.4.7
+    image: universe3:5000/romana/joomla-tables-7.4.0:latest
     container_name: bwpm4-db
     command: '--default-authentication-plugin=mysql_native_password'
     restart: no
@@ -29,7 +29,7 @@ services:
     build:
       network: host
     ports:
-      - 80:80
+      - 90:80
     restart: no
     container_name: bwpm4-web
     healthcheck:

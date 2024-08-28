@@ -8,11 +8,14 @@
 PHP_VERSION=8.1.0
 JOOMLA_VERSION=5.1.3
 
-docker commit -a 'Romana Boldt info@boldt-webservice.de' push-web universe3:5000/romana/bwpm-configured-files:$PHP_VERSION-$JOOMLA_VERSION
-docker commit -a 'Romana Boldt info@boldt-webservice.de' push-db universe3:5000/romana/bwpm-configured-tables:$PHP_VERSION-$JOOMLA_VERSION
+docker commit -a 'Romana Boldt info@boldt-webservice.de' push-web universe3:5000/romana/bwpm-configured-files-$PHP_VERSION:$JOOMLA_VERSION
+docker commit -a 'Romana Boldt info@boldt-webservice.de' push-db universe3:5000/romana/bwpm-configured-tables-$PHP_VERSION:$JOOMLA_VERSION
 
-docker push universe3:5000/romana/bwpm-configured-files:$PHP_VERSION-$JOOMLA_VERSION
-docker push universe3:5000/romana/bwpm-configured-tables:$PHP_VERSION-$JOOMLA_VERSION
+docker commit -a 'Romana Boldt info@boldt-webservice.de' push-web universe3:5000/romana/bwpm-configured-files-$PHP_VERSION:latest
+docker commit -a 'Romana Boldt info@boldt-webservice.de' push-db universe3:5000/romana/bwpm-configured-tables-$PHP_VERSION:latest
+
+#docker push universe3:5000/romana/bwpm-configured-files:$PHP_VERSION-$JOOMLA_VERSION
+#docker push universe3:5000/romana/bwpm-configured-tables:$PHP_VERSION-$JOOMLA_VERSION
 
 docker push universe3:5000/romana/bwpm-configured-files-$PHP_VERSION:$JOOMLA_VERSION
 docker push universe3:5000/romana/bwpm-configured-tables-$PHP_VERSION:$JOOMLA_VERSION

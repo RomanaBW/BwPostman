@@ -605,7 +605,6 @@ pipeline {
         }
 
 
-
 //		stage('Push to github') {
 //			steps {
 //				echo "Push to github"

@@ -10,7 +10,7 @@ services:
   bwpm-db:
     image: universe3:5000/romana/bwpm-configured-tables-7.4.0:latest
     volumes:
-      - db_data_448:/var/lib/mariadb
+      - db_data_449:/var/lib/mariadb
     networks:
       bwpm-ide.nil:
         ipv4_address: 172.18.4.50
@@ -30,7 +30,7 @@ services:
     volumes:
       # mount webserver root
       - type: bind
-        source: /home/container-files/j448
+        source: /home/container-files/j449
         target: /var/www/html
       # mount Joomla configuration
       - type: bind
@@ -65,7 +65,7 @@ services:
       retries: 3
 
 volumes:
-  db_data_448:
+  db_data_449:
 
 secrets:
   db_password:

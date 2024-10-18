@@ -1036,7 +1036,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $first_page           = "//*/a[contains(@aria-label, 'Go to start page')]";
+	public static $first_page           = "//*/a[contains(@aria-label, 'Go to first page')]";
 
 	/**
 	 * @var string

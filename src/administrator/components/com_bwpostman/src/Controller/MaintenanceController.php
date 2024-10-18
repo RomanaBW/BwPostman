@@ -275,10 +275,11 @@ class MaintenanceController extends BaseController
 		$jinput = $app->input;
 
 		// Retrieve file details from uploaded file, sent from upload form
-		$file = $jinput->files->get('restorefile');
+		$file = $jinput->files->get('restorefile', null, 'RAW');
 
 		// Clean up filename to get rid of strange characters like spaces etc
-		$filename = File::makeSafe($file['name']);
+//		$filename = File::makeSafe($file['name']);
+        $filename = $file['name'];
 
 		// Set up the source and destination of the file
 		$src = $file['tmp_name'];
@@ -325,7 +326,7 @@ class MaintenanceController extends BaseController
 			}
 			else
 			{ // Everything is fine
-				if (File::upload($src, $dest) === false)
+				if (File::upload($src, $dest, false, true) === false)
 				{
 					$msg	= Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_FILE');
 					$link	= Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);

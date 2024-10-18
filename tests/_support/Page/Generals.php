@@ -1057,7 +1057,7 @@ class Generals
 	 *
 	 * @since 2.0.0
 	 */
-	public static $last_page            = "//*/a[contains(@aria-label, 'Go to end page')]";
+	public static $last_page            = "//*/a[contains(@aria-label, 'Go to last page')]";
 
 	/**
 	 * @var string

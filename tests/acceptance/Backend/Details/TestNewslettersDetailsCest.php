@@ -570,7 +570,7 @@ class TestNewslettersDetailsCest
 		$I->scrollTo(NlEdit::$attachment_upload_file, 0, -250);
 		$I->wait(1);
 
-		$I->clickAndWait(NlEdit::$attachment_upload_select, 1);
+//		$I->clickAndWait(NlEdit::$attachment_upload_select, 1);
         $I->switchToIFrame();
         $I->clickAndWait("//div[contains(@class, 'buttons-holder')]/button[contains(text(),'Select')]", 1);
 //		$I->clickAndWait(NlEdit::$attachment_insert1, 2);

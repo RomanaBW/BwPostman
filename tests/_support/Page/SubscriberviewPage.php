@@ -735,7 +735,7 @@ class SubscriberviewPage
 	 *
 	 * @since 2.0.0
 	 */
-	public static $msg_err_invalid_link        = "You cannot activate your newsletter subscription because the entered activation link is invalid.";
+	public static $msg_err_invalid_link        = "You cannot activate your newsletter subscription because the entered activation link is invalid";
 
 	/**
 	 * @var string
@@ -894,6 +894,13 @@ class SubscriberviewPage
      * @since 4.1.3
      */
     public static $loginPage    = "/index.php?option=com_users&view=login";
+
+    /**
+     * @var string
+     *
+     * @since 4.3.1
+     */
+    public static $profilePage    = "/index.php?option=com_users&view=profile";
 
     /**
      * @var string
@@ -1065,6 +1072,8 @@ class SubscriberviewPage
         $I->clickAndWait(self::$loginButton, 1);
 
 //        Check success of login
+        $I->amOnPage(self::$profilePage);
+        $I->wait(1);
         $I->see('BwPostmanPublisher', self::$profileNameField);
     }
 

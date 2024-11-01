@@ -1,11 +1,11 @@
 ---
-joomla_version: "5.1.4"
+joomla_version: "5.2.0"
 bwpm_version: "4.3.1"
 version_to_test: "{{ bwpm_version| replace('.', '_') }}"
 
-webserver_url: "172.118.5.35"
-database_ip: "172.118.5.34"
-testcontainer_ip: "172.118.5.38"
+webserver_url: "172.118.5.51"
+database_ip: "172.118.5.50"
+testcontainer_ip: "172.118.5.54"
 
 j_main: "{{ joomla_version[0] }}"
 joomla_version_undotted: "{{ joomla_version| replace('.', '')}}"

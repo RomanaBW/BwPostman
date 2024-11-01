@@ -13,7 +13,7 @@ services:
     container_name: bwpm-fast5-db
     image: universe3:5000/romana/joomla_enh_db-5:8.1.0-5.2.0-4.3.1
     volumes:
-      - db_testdata_513:/var/lib/mariadb
+      - db_testdata_520:/var/lib/mariadb
     networks:
       bwpm-test5:
         ipv4_address: 172.118.5.50
@@ -60,7 +60,7 @@ services:
     volumes:
       # mount webserver root
       - type: bind
-        source: /home/container-files/j513
+        source: /home/container-files/j520
         target: /var/www/html
       # mount Joomla configuration
       - type: bind
@@ -273,7 +273,7 @@ services:
     restart: no
 
 volumes:
-  db_testdata_513:
+  db_testdata_520:
 
 secrets:
   db_password:

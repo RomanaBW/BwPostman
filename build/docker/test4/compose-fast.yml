@@ -11,7 +11,7 @@ networks:
 services:
   bwpm-fast4-db:
     container_name: bwpm-fast4-db
-    image: universe3:5000/romana/joomla_enh_db-4:7.4.0-4.4.8-4.3.1
+    image: universe3:5000/romana/joomla_enh_db-4:7.4.0-4.4.9-4.3.1
     volumes:
       - db_testdata_447:/var/lib/mariadb
     networks:
@@ -37,7 +37,7 @@ services:
 
   bwpm-fast4-joomla:
     container_name: bwpm-fast4-web
-    image: universe3:5000/romana/joomla_enh_web-4:7.4.0-4.4.8-4.3.1
+    image: universe3:5000/romana/joomla_enh_web-4:7.4.0-4.4.9-4.3.1
     ports:
       - 84:80
     restart: no

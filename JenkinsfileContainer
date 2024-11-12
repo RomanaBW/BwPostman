@@ -8,7 +8,7 @@ pipeline {
 					BWPM_VERSION = "4.3.1"
 
 					JOOMLA_VERSION_4 = "4.4.9"
-					JOOMLA_VERSION_5 = "5.2.0"
+					JOOMLA_VERSION_5 = "5.2.1"
 
 					DO_J5_SMOKE  = 'true'
 					DO_J5_ACCEPT = 'true'

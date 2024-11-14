@@ -2,7 +2,7 @@
 - hosts: localhost
   vars_files:
     - vars/vars.yml
-    - pipeline2/vars/tester-image-vars.yml
+    - vars/tester-image-vars.yml
 
   vars:
     project_source_dir: "/home/romana/PhpstormProjects/BwPostman_J4"

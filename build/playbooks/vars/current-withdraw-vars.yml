@@ -1,18 +1,18 @@
 ---
-joomla_version: "5.2.0"
-bwpm_version: "4.3.1"
-version_to_test: "{{ bwpm_version| replace('.', '_') }}"
+bwpm_joomla_version: "5.2.0"
+bwpm_project_version: "4.3.1"
+version_to_test: "{{ bwpm_project_version| replace('.', '_') }}"
 
-webserver_url: "172.118.5.51"
-database_ip: "172.118.5.50"
-testcontainer_ip: "172.118.5.54"
+webserver_url: "{{ bwpm_joomla_ip }}"
+database_ip: "{{ bwpm_db_ip }}"
+testcontainer_ip: "{{ bwpm_tester_ip }}"
 
-j_main: "{{ joomla_version[0] }}"
-joomla_version_undotted: "{{ joomla_version| replace('.', '')}}"
-bwpm_version_undotted: "{{ bwpm_version| replace('.', '')}}"
+j_main: "{{ bwpm_joomla_version[0] }}"
+bwpm_joomla_version_undotted: "{{ bwpm_joomla_version| replace('.', '')}}"
+bwpm_project_version_undotted: "{{ bwpm_project_version| replace('.', '')}}"
 
-tester_image: "universe3:5000/romana/bwpm_enh_tester-{{ j_main }}:{{ joomla_version }}-{{  bwpm_version}}"
-project_name_dotted: "j{{ joomla_version }}_bwpm{{ bwpm_version }}"
+tester_image: "universe3:5000/romana/bwpm_enh_tester-{{ j_main }}:{{ bwpm_joomla_version }}-{{  bwpm_project_version}}"
+project_name_dotted: "j{{ bwpm_joomla_version }}_bwpm{{ bwpm_project_version }}"
 project_name: "{{ project_name_dotted | replace('.', '')}}"
 
 artifacts_path: "{{ artifacts_base}}/{{ project_name }}"

@@ -12,7 +12,7 @@ The pipeline for testing BwPostman processes multiple steps:
 3. Do smoke tests with codeception
 4. Do acceptance tests with codeception
 5. Do deinstallation test with codeception
-6. Upload both installation packages to web space. Here the package with replaced variables gets the version number at 
+6. Upload both installation packages to webspace. Here the package with replaced variables gets the version number at 
 	the package name.
 7. Notify specific persons about test results with screenshots and to video on failures
 
@@ -22,7 +22,7 @@ Step 2 uses an ansible playbook.
 
 Steps 3 to 5 also use ansible playbooks. The tests need selenium and codeception, so they have to run at a complete 
 infrastructure containing web server, database and tester. To get this infrastructure, I use containers. The efforts with 
-virtual machines, which I used so far were not satisfying, too much false positives, too much dependencies on environmental
+virtual machines, which I used so far were not satisfying, too much false positives, too many dependencies on environmental
 facts. Getting this infrastructure from scratch is described below.
 
 Step 6 and 7 are again simple Jenkinsfile tasks.  

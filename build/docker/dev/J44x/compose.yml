@@ -1,0 +1,287 @@
+---
+networks:
+  bwpm-previous.nil:
+    driver: bridge
+    ipam:
+        driver: default
+        config:
+            - subnet: 172.18.4.56/29
+
+services:
+    #  Database
+  bwpm-dev-previous-db:
+    container_name: bwpm-dev-previous-db
+    image: universe3:5000/romana/bwpm-configured-tables:7.4.0-4.4.9
+    volumes:
+        - bwpm_db:/var/lib/mariadb
+    networks:
+      bwpm-previous.nil:
+        ipv4_address: 172.18.4.58
+    expose:
+        - 3306
+    command: '--default-authentication-plugin=mysql_native_password'
+    environment:
+        MARIADB_DATABASE: joomlatest
+        MARIADB_USER: tester
+        MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+        MARIADB_PASSWORD_FILE: /run/secrets/db_password
+    restart: no
+    healthcheck:
+        test: ["CMD", "healthcheck.sh", "--datadir=/var/lib/mariadb", "--connect"]
+        start_period: 30s
+        interval: 10s
+        timeout: 5s
+        retries: 3
+    secrets:
+        - db_root_password
+        - db_password
+
+    # Webserver
+  bwpm-dev-previous-joomla:
+    container_name: bwpm-dev-previous-joomla
+    image: universe3:5000/romana/bwpm-configured-files:7.4.0-4.4.9
+    ports:
+        - 70:80
+    healthcheck:
+        test: curl --fail http://172.18.4.59/index.php || exit 1
+        start_period: 5s
+        interval: 10s
+        timeout: 10s
+        retries: 5
+    networks:
+      bwpm-previous.nil:
+        ipv4_address: 172.18.4.59
+    depends_on:
+      bwpm-dev-previous-db:
+        condition: service_healthy
+    restart: no
+    secrets:
+        - j_root_password
+        - db_password
+        - db_root_password
+    environment:
+        JOOMLA_DB_PASSWORD_FILE: /run/secrets/db_password
+        JOOMLA_DB_HOST: bwpm-dev-previous-db
+        JOOMLA_DB_USER: tester
+        JOOMLA_DB_NAME: joomlatest
+        JOOMLA_DB_TYPE: mysqli
+        JOOMLA_ADMIN_PASSWORD_FILE: /run/secrets/j_root_password
+    volumes:
+        # mount Joomla configuration
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/dev/J44x/configuration.php
+          target: /var/www/html/configuration.php
+        # mount extension BE component
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/components/com_bwpostman
+          target: /var/www/html/administrator/components/com_bwpostman
+        # mount extension API component
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/api/components/com_bwpostman
+          target: /var/www/html/api/components/com_bwpostman
+        # mount extension FE component
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/components/com_bwpostman
+          target: /var/www/html/components/com_bwpostman
+        # mount extension media
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/media/com_bwpostman
+          target: /var/www/html/media/com_bwpostman
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/media/mod_bwpostman
+          target: /var/www/html/media/mod_bwpostman
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/media/mod_bwpostman_overview
+          target: /var/www/html/media/mod_bwpostman_overview
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/media/plg_bwpostman_footerusedmailinglists
+          target: /var/www/html/media/plg_bwpostman_footerusedmailinglists
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/media/plg_system_bwpm_user2subscriber
+          target: /var/www/html/media/plg_system_bwpm_user2subscriber
+        # mount extension modules
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/modules/mod_bwpostman
+          target: /var/www/html/modules/mod_bwpostman
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/modules/mod_bwpostman_overview
+          target: /var/www/html/modules/mod_bwpostman_overview
+        # mount extension plugins
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/bwpostman/demo
+          target: /var/www/html/plugins/bwpostman/demo
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/bwpostman/footerusedmailinglists
+          target: /var/www/html/plugins/bwpostman/footerusedmailinglists
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/bwpostman/newslettercontent
+          target: /var/www/html/plugins/bwpostman/newslettercontent
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/bwpostman/personalize
+          target: /var/www/html/plugins/bwpostman/personalize
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/quickicon/bwpostman
+          target: /var/www/html/plugins/quickicon/bwpostman
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/system/bw_libregister
+          target: /var/www/html/plugins/system/bw_libregister
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/system/bwpm_user2subscriber
+          target: /var/www/html/plugins/system/bwpm_user2subscriber
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/system/bwpm_useraccount
+          target: /var/www/html/plugins/system/bwpm_useraccount
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/system/bwtestmode
+          target: /var/www/html/plugins/system/bwtestmode
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/webservices/bwpostman
+          target: /var/www/html/plugins/webservices/bwpostman
+        # mount BwTC plugin folders
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwTimeControl/src/plugins/bwpostman/bwtimecontrol
+          target: /var/www/html/plugins/bwpostman/bwtimecontrol
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwTimeControl/src/plugins/extension/bwtimecontrol
+          target: /var/www/html/plugins/extension/bwtimecontrol
+        # mount BwTC media folder
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwTimeControl/src/media/plg_bwpostman_bwtimecontrol
+          target: /var/www/html/media/plg_bwpostman_bwtimecontrol
+
+        # mount extension BE language files
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.com_bwpostman.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.com_bwpostman.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_bwpostman_footerusedmailinglists.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwpostman_footerusedmailinglists.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_bwpostman_personalize.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwpostman_personalize.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_system_bw_libregister.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_system_bw_libregister.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_system_bwpm_useraccount.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_system_bwpm_useraccount.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.com_bwpostman.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.com_bwpostman.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_bwpostman_footerusedmailinglists.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwpostman_footerusedmailinglists.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_bwpostman_personalize.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwpostman_personalize.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_system_bw_libregister.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_system_bw_libregister.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_system_bwpm_useraccount.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_system_bwpm_useraccount.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_bwpostman_demo.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwpostman_demo.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_bwpostman_newslettercontent.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwpostman_newslettercontent.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_bwtests.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwtests.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_system_bwpm_user2subscriber.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_system_bwpm_user2subscriber.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_bwpostman_demo.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwpostman_demo.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_bwpostman_newslettercontent.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwpostman_newslettercontent.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_bwtests.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwtests.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_system_bwpm_user2subscriber.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_system_bwpm_user2subscriber.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_vmuserfield_bwpm_buyer2subscriber.sys.ini
+        # mount webservices plugin language files
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.sys.ini
+        # mount BwTC plugin language files
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwTimeControl/src/language/en-GB/en-GB.pkg_bwtimecontrol.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.pkg_bwtimecontrol.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwTimeControl/src/plugins/bwpostman/bwtimecontrol/language/en-GB/en-GB.plg_bwpostman_bwtimecontrol.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwpostman_bwtimecontrol.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwTimeControl/src/plugins/bwpostman/bwtimecontrol/language/en-GB/en-GB.plg_bwpostman_bwtimecontrol.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_bwpostman_bwtimecontrol.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwTimeControl/src/plugins/extension/bwtimecontrol/language/en-GB/en-GB.plg_extension_bwtimecontrol.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_extension_bwtimecontrol.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwTimeControl/src/plugins/extension/bwtimecontrol/language/en-GB/en-GB.plg_extension_bwtimecontrol.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_extension_bwtimecontrol.ini
+
+        # mount extension FE language files
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/language/en-GB/en-GB.com_bwpostman.ini
+          target: /var/www/html/language/en-GB/en-GB.com_bwpostman.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/language/en-GB/en-GB.mod_bwpostman.ini
+          target: /var/www/html/language/en-GB/en-GB.mod_bwpostman.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/language/en-GB/en-GB.mod_bwpostman_overview.ini
+          target: /var/www/html/language/en-GB/en-GB.mod_bwpostman_overview.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/language/en-GB/en-GB.mod_bwpostman_overview.sys.ini
+          target: /var/www/html/language/en-GB/en-GB.mod_bwpostman_overview.sys.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/language/en-GB/en-GB.mod_bwpostman.sys.ini
+          target: /var/www/html/language/en-GB/en-GB.mod_bwpostman.sys.ini
+
+
+    # pgpMyAdmin
+  bwpm-dev-previous-phpmyadmin:
+    container_name: bwpm-dev-previous-phpmyadmin
+    image: phpmyadmin
+    networks:
+      bwpm-previous.nil:
+        ipv4_address: 172.18.4.61
+    healthcheck:
+        #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
+        test: curl --fail http://172.18.4.61/LICENSE || exit 1
+        start_period: 10s
+        interval: 10s
+        timeout: 5s
+        retries: 3
+    depends_on:
+      bwpm-dev-previous-db:
+        condition: service_healthy
+    restart: no
+    environment:
+        PMA_HOST: bwpm-dev-previous-db
+
+volumes:
+  bwpm_db:
+
+secrets:
+    db_password:
+        file: ../../files/db_password.txt
+    db_root_password:
+        file: ../../files/db_root_password.txt
+    j_root_password:
+        file: ../../files/j_root_password.txt
+
+

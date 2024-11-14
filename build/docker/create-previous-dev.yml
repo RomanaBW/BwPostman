@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - ../vars/vars_previous_dev.yml
+    - ../vars/vars_previous.yml
+    - ../vars/vars_versions.yml
+
+  # Create needed files to be able to start middleware for Dev
+  tasks:
+    - name: Ensure version folder exists
+      ansible.builtin.file:
+        path: "{{ bwpm_base_path }}/logs/bwpostman"
+        state: directory
+
+    - name: Create compose file
+      ansible.builtin.template:
+        src: "compose-ide.yml.j2"
+        dest: "{{ bwpm_base_path }}/compose.yml"
+
+    - name: Create Joomla configuration
+      ansible.builtin.template:
+        src: "configuration.php.j2"
+        dest: "{{ bwpm_base_path }}/configuration.php"
+

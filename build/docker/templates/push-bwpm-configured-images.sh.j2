@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# This is part of step 3 to nail down the created images with installed and adjusted Joomla
+#
+# Tag is php version and Joomla version (with dots), separated by a hyphen
+#
+
+docker commit -a 'Romana Boldt info@boldt-webservice.de' {{ bwpm_joomla_name }} universe3:5000/romana/bwpm-configured-files:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}
+docker commit -a 'Romana Boldt info@boldt-webservice.de' {{ bwpm_db_name }} universe3:5000/romana/bwpm-configured-tables:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}
+
+docker commit -a 'Romana Boldt info@boldt-webservice.de' {{ bwpm_joomla_name }} universe3:5000/romana/bwpm-configured-files-{{ bwpm_php_version }}:latest
+docker commit -a 'Romana Boldt info@boldt-webservice.de' {{ bwpm_db_name }} universe3:5000/romana/bwpm-configured-tables-{{ bwpm_php_version }}:latest
+
+docker push universe3:5000/romana/bwpm-configured-files:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}
+docker push universe3:5000/romana/bwpm-configured-tables:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}
+
+docker push universe3:5000/romana/bwpm-configured-files-{{ bwpm_php_version }}:latest
+docker push universe3:5000/romana/bwpm-configured-tables-{{ bwpm_php_version }}:latest

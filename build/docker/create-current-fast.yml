@@ -1,0 +1,41 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - ../vars/vars_current_fast.yml
+    - ../vars/vars_current.yml
+    - ../vars/vars_versions.yml
+
+  # Create needed files to be able to start middleware for Dev
+  tasks:
+    - name: Ensure version folder exists
+      ansible.builtin.file:
+        path: "{{ bwpm_base_path }}/logs/bwpostman"
+        state: directory
+
+    - name:
+      debug:
+        msg: "{{ bwpm_dump_basepath }}/{{ bwpm_dump_current }}"
+
+    - name: Ensure dump folder exists
+      ansible.builtin.file:
+        path: "{{ bwpm_dump_basepath }}/{{ bwpm_project_name }}/backups"
+        state: directory
+
+    - name: Copy dump file in place
+      ansible.builtin.copy:
+        src: "{{ bwpm_dump_basepath }}/{{ bwpm_dump_previous }}"
+        dest: "{{ bwpm_dump_basepath }}/{{ bwpm_dump_current }}"
+        force: false
+
+    - name: Create compose file
+      ansible.builtin.template:
+        src: "compose-fast.yml.j2"
+        dest: "{{ bwpm_base_path }}/compose.yml"
+
+    - name: Create Joomla configuration
+      ansible.builtin.template:
+        src: "configuration.php.j2"
+        dest: "{{ bwpm_base_path }}/configuration.php"
+

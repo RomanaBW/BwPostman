@@ -1,0 +1,8 @@
+FROM {{ bwpm_joomla_image }}
+LABEL maintainer=" {{ bwpm_maintainer }} "
+
+# Custom cache invalidation
+ARG CACHEBUST=1
+
+ENTRYPOINT ["/usr/bin/env"]
+CMD ["apache2-foreground"]

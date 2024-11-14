@@ -1,0 +1,107 @@
+---
+networks:
+  bwpm-config-current.nil:
+    driver: bridge
+    ipam:
+        driver: default
+        config:
+            - subnet: 172.118.1.16/29
+
+services:
+    #  Database
+  bwpm-config-current-db:
+    container_name: bwpm-config-current-db
+    image: universe3:5000/romana/joomla-tables-8.1.0:5.2.1
+    networks:
+      bwpm-config-current.nil:
+        ipv4_address: 172.118.1.18
+    expose:
+        - 3306
+    command: '--default-authentication-plugin=mysql_native_password'
+    environment:
+        MARIADB_DATABASE: joomlatest
+        MARIADB_USER: tester
+        MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+        MARIADB_PASSWORD_FILE: /run/secrets/db_password
+    restart: no
+    healthcheck:
+        test: ["CMD", "healthcheck.sh", "--datadir=/var/lib/mariadb", "--connect"]
+        start_period: 30s
+        interval: 10s
+        timeout: 5s
+        retries: 3
+    secrets:
+        - db_root_password
+        - db_password
+
+    # Webserver
+  bwpm-config-current-joomla:
+    container_name: bwpm-config-current-joomla
+    build:
+        network: host
+    volumes:
+        # mount Joomla configuration
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/config-current/configuration.php
+          target: /var/www/html/configuration.php
+
+    ports:
+        - 76:80
+    healthcheck:
+        test: curl --fail http://172.118.1.19/index.php || exit 1
+        start_period: 5s
+        interval: 10s
+        timeout: 10s
+        retries: 5
+    networks:
+      bwpm-config-current.nil:
+        ipv4_address: 172.118.1.19
+    depends_on:
+      bwpm-config-current-db:
+        condition: service_healthy
+    restart: no
+    secrets:
+        - j_root_password
+        - db_password
+        - db_root_password
+    environment:
+        JOOMLA_DB_PASSWORD_FILE: /run/secrets/db_password
+        JOOMLA_DB_HOST: bwpm-config-current-db
+        JOOMLA_DB_USER: tester
+        JOOMLA_DB_NAME: joomlatest
+        JOOMLA_DB_TYPE: mysqli
+        JOOMLA_ADMIN_PASSWORD_FILE: /run/secrets/j_root_password
+
+    # pgpMyAdmin
+  bwpm-config-current-phpmyadmin:
+    container_name: bwpm-config-current-phpmyadmin
+    image: phpmyadmin
+    networks:
+      bwpm-config-current.nil:
+        ipv4_address: 172.118.1.21
+    healthcheck:
+        #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
+        test: curl --fail http://172.118.1.21/LICENSE || exit 1
+        start_period: 10s
+        interval: 10s
+        timeout: 5s
+        retries: 3
+    depends_on:
+      bwpm-config-current-db:
+        condition: service_healthy
+    restart: no
+    environment:
+        PMA_HOST: bwpm-config-current-db
+
+volumes:
+  bwpm_db:
+
+secrets:
+    db_password:
+        file: ../files/db_password.txt
+    db_root_password:
+        file: ../files/db_root_password.txt
+    j_root_password:
+        file: ../files/j_root_password.txt
+
+

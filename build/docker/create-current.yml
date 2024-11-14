@@ -1,0 +1,6 @@
+---
+- import_playbook: create-current-config.yml
+- import_playbook: create-current-push.yml
+- import_playbook: create-current-dev.yml
+- import_playbook: create-current-fast.yml
+

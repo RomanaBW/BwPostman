@@ -1,0 +1,6 @@
+---
+- import_playbook: create-previous-config.yml
+- import_playbook: create-previous-push.yml
+- import_playbook: create-previous-dev.yml
+- import_playbook: create-previous-fast.yml
+

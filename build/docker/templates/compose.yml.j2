@@ -1,0 +1,107 @@
+---
+networks:
+  {{ bwpm_network_name }}:
+    driver: bridge
+    ipam:
+        driver: default
+        config:
+            - subnet: {{ bwpm_subnet }}
+
+services:
+    #  Database
+  {{ bwpm_db_name }}:
+    container_name: {{ bwpm_db_name }}
+    image: {{ bwpm_db_image }}
+    networks:
+      {{ bwpm_network_name }}:
+        ipv4_address: {{ bwpm_db_ip }}
+    expose:
+        - {{ bwpm_db_expose }}
+    command: '--default-authentication-plugin=mysql_native_password'
+    environment:
+        MARIADB_DATABASE: joomlatest
+        MARIADB_USER: tester
+        MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+        MARIADB_PASSWORD_FILE: /run/secrets/db_password
+    restart: no
+    healthcheck:
+        test: ["CMD", "healthcheck.sh", "--datadir=/var/lib/mariadb", "--connect"]
+        start_period: 30s
+        interval: 10s
+        timeout: 5s
+        retries: 3
+    secrets:
+        - db_root_password
+        - db_password
+
+    # Webserver
+  {{ bwpm_joomla_name }}:
+    container_name: {{ bwpm_joomla_name }}
+    build:
+        network: host
+    volumes:
+        # mount Joomla configuration
+        - type: bind
+          source: {{ bwpm_base_path }}/configuration.php
+          target: /var/www/html/configuration.php
+
+    ports:
+        - {{ bwpm_joomla_ports  }}
+    healthcheck:
+        test: curl --fail http://{{ bwpm_joomla_ip }}/index.php || exit 1
+        start_period: 5s
+        interval: 10s
+        timeout: 10s
+        retries: 5
+    networks:
+      {{ bwpm_network_name }}:
+        ipv4_address: {{ bwpm_joomla_ip }}
+    depends_on:
+      {{ bwpm_db_name }}:
+        condition: service_healthy
+    restart: no
+    secrets:
+        - j_root_password
+        - db_password
+        - db_root_password
+    environment:
+        JOOMLA_DB_PASSWORD_FILE: /run/secrets/db_password
+        JOOMLA_DB_HOST: {{ bwpm_db_name }}
+        JOOMLA_DB_USER: tester
+        JOOMLA_DB_NAME: joomlatest
+        JOOMLA_DB_TYPE: mysqli
+        JOOMLA_ADMIN_PASSWORD_FILE: /run/secrets/j_root_password
+
+    # pgpMyAdmin
+  {{ bwpm_pma_name }}:
+    container_name: {{ bwpm_pma_name }}
+    image: phpmyadmin
+    networks:
+      {{ bwpm_network_name }}:
+        ipv4_address: {{ bwpm_pma_ip }}
+    healthcheck:
+        #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
+        test: curl --fail http://{{ bwpm_pma_ip }}/LICENSE || exit 1
+        start_period: 10s
+        interval: 10s
+        timeout: 5s
+        retries: 3
+    depends_on:
+      {{ bwpm_db_name }}:
+        condition: service_healthy
+    restart: no
+    environment:
+        PMA_HOST: {{ bwpm_db_name }}
+
+volumes:
+  {{ bwpm_db_volume }}:
+
+secrets:
+    db_password:
+        file: ../files/db_password.txt
+    db_root_password:
+        file: ../files/db_root_password.txt
+    j_root_password:
+        file: ../files/j_root_password.txt
+
+

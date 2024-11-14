@@ -1,0 +1,27 @@
+---
+bwpm_network_name: "bwpm-fast-current"
+bwpm_subnet: "172.118.5.56/29"
+
+bwpm_db_name: "bwpm-fast-current-db"
+bwpm_db_ip: "172.118.5.58"
+bwpm_db_volume: "db_testdata_{{ bwpm_joomla_sub_version_current }}"
+bwpm_db_image: "universe3:5000/romana/joomla_enh_db-5:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}-{{ bwpm_project_version }}"
+bwpm_db_expose: "3456"
+
+bwpm_joomla_name: "bwpm-fast-current-joomla"
+bwpm_joomla_ip: "172.118.5.59"
+bwpm_joomla_volume: "bwpm_joomla_{{ bwpm_joomla_sub_version_current }}"
+bwpm_joomla_image: "universe3:5000/romana/joomla_enh_web-5:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}-{{ bwpm_project_version }}"
+bwpm_joomla_ports: "85:80"
+
+bwpm_pma_name: "bwpm-fast-current-phpmyadmin"
+bwpm_pma_ip: "172.118.5.61"
+
+bwpm_tester_ip: "172.118.5.62"
+
+bwpm_base_path: "/home/romana/PhpstormProjects/BwPostman_J4/build/docker/fast"
+bwpm_site_name: "Fast_Current_BwPM_Container"
+
+bwpm_project_name: "j{{ bwpm_joomla_current  | replace('.', '')}}_bwpm{{ bwpm_project_version  | replace('.', '')}}"
+bwpm_dump_basepath: "/home/container-files/artifacts/default"
+bwpm_dump_current: "{{ bwpm_project_name }}/backups/{{ bwpm_project_name }}.sql"

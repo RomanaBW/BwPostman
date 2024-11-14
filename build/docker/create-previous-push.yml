@@ -1,0 +1,67 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - ../vars/vars_previous_push.yml
+    - ../vars/vars_previous.yml
+    - ../vars/vars_versions.yml
+
+  # Remove entry point from upper images and do push to registry
+  tasks:
+    - name: Ensure version folder exists
+      ansible.builtin.file:
+        path: "{{ bwpm_base_path }}"
+        state: directory
+
+    - name: Create compose file
+      ansible.builtin.template:
+        src: "compose.yml.j2"
+        dest: "{{ bwpm_base_path }}/compose.yml"
+
+    - name: Create Dockerfile
+      ansible.builtin.template:
+        src: "Dockerfile-push.j2"
+        dest: "{{ bwpm_base_path }}/Dockerfile"
+
+    - name: Create Joomla configuration
+      ansible.builtin.template:
+        src: "configuration.php.j2"
+        dest: "{{ bwpm_base_path }}/configuration.php"
+
+    - name: Create push script
+      ansible.builtin.template:
+        src: "push-bwpm-configured-images.sh.j2"
+        dest: "{{ bwpm_base_path }}/push-bwpm-configured-images.sh"
+        mode: 0755
+
+    - name: Create push middleware
+      shell: docker compose up -d
+      args:
+        chdir: "{{ bwpm_base_path }}"
+
+    - name: Wait for push middleware to be completely up
+      pause:
+        seconds: 30
+
+    - name: Push push middleware
+      shell: "{{ bwpm_base_path }}/push-bwpm-configured-images.sh"
+
+    - name: Shut down push middleware
+      shell: docker compose down --volumes
+      args:
+        chdir: "{{ bwpm_base_path }}"
+
+    - name: Remove created images
+      shell: "docker image rm {{ item }}"
+      with_items:
+        - "universe3:5000/romana/bwpm-base-files:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}"
+        - "universe3:5000/romana/bwpm-base-tables:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}"
+        - "universe3:5000/romana/bwpm-configured-files:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}"
+        - "universe3:5000/romana/bwpm-configured-tables:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}"
+        - "universe3:5000/romana/bwpm-configured-files-{{ bwpm_php_version }}:latest"
+        - "universe3:5000/romana/bwpm-configured-tables-{{ bwpm_php_version }}:latest"
+        - "universe3:5000/romana/joomla-tables-{{ bwpm_php_version }}:{{ bwpm_joomla_version }}"
+        - "push-previous-bwpm-push-previous-joomla:latest"
+        - "config-previous-bwpm-config-previous-joomla:latest"
+#        - "{{ bwpm_images_to_delete }}"

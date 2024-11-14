@@ -1,0 +1,21 @@
+---
+bwpm_network_name: "bwpm-previous.nil"
+bwpm_subnet: "172.18.4.56/29"
+
+bwpm_db_name: "bwpm-dev-previous-db"
+bwpm_db_ip: "172.18.4.58"
+bwpm_db_volume: "bwpm_db"
+bwpm_db_image: "universe3:5000/romana/bwpm-configured-tables:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}"
+bwpm_db_expose: "3306"
+
+bwpm_joomla_name: "bwpm-dev-previous-joomla"
+bwpm_joomla_ip: "172.18.4.59"
+bwpm_joomla_volume: "bwpm_joomla"
+bwpm_joomla_image: "universe3:5000/romana/bwpm-configured-files:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}"
+bwpm_joomla_ports: "70:80"
+
+bwpm_pma_name: "bwpm-dev-previous-phpmyadmin"
+bwpm_pma_ip: "172.18.4.61"
+
+bwpm_base_path: "/home/romana/PhpstormProjects/BwPostman_J4/build/docker/dev/J{{ bwpm_joomla_sub_version }}x"
+bwpm_site_name: "Dev_previous_BwPM_Container"

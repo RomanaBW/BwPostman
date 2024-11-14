@@ -1,8 +1,8 @@
 ---
 tester_image: "universe3:5000/romana/bwpm_enh_tester-4:4.4.9-4.3.1"
-webserver_url: "172.118.4.51"
-database_ip: "172.118.4.50"
-testcontainer_ip: "172.118.4.54"
+webserver_url: "172.118.4.59"
+database_ip: "172.118.4.58"
+testcontainer_ip: "172.118.4.562"
 project_src_dir: "/home/romana/PhpstormProjects/BwPostman_J4"
 display: "45"
 screen_size: "1920x1080"

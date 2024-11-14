@@ -1,0 +1,16 @@
+---
+
+bwpm_dump_previous: "j520_bwpm431/backups/j520_bwpm431.sql"
+
+bwpm_joomla_sub_version: "{{ bwpm_joomla_sub_version_current }}"
+bwpm_webroot: "{{ bwpm_webroot_current }}"
+
+bwpm_php_version: "{{ bwpm_php_current }}"
+bwpm_image_tag: "{{ bwpm_joomla_current }}"
+bwpm_joomla_version: "{{ bwpm_joomla_current }}"
+
+bwpm_xdebug_client_host: "192.168.2.1"
+bwpm_xdebug_client_port: "9003"
+bwpm_xdebug_ide_key: "PHPSTORM"
+
+bwpm_maintainer: "Romana Boldt <info@boldt-webservice.de>"

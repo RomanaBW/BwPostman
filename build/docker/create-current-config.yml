@@ -1,0 +1,70 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - ../vars/vars_current_config.yml
+    - ../vars/vars_current.yml
+    - ../vars/vars_versions.yml
+
+# Build base images for BwPostman, only commit
+  tasks:
+    - name: Ensure config folder exists
+      ansible.builtin.file:
+        path: "{{ bwpm_base_path }}"
+        state: directory
+
+    - name: Create compose file
+      ansible.builtin.template:
+        src: "compose.yml.j2"
+        dest: "{{ bwpm_base_path }}/compose.yml"
+
+    - name: Create Dockerfile
+      ansible.builtin.template:
+        src: "Dockerfile-config.j2"
+        dest: "{{ bwpm_base_path }}/Dockerfile"
+
+    - name: Create Joomla configuration
+      become: true
+      ansible.builtin.template:
+        src: "configuration.php.j2"
+        dest: "{{ bwpm_base_path }}/configuration.php"
+        mode: 0777
+
+    - name: Create docker entry point
+      ansible.builtin.copy:
+        src: "docker-entrypoint_config.sh"
+        dest: "{{ bwpm_base_path }}/docker-entrypoint.sh"
+
+    - name: Copy needed files
+      ansible.builtin.copy:
+        src: "files/{{ item }}"
+        dest: "{{ bwpm_base_path }}/{{ item }}"
+        mode: 0755
+      with_items:
+        - "adjustdb_bwpm.php"
+        - "boldt-webservice.png"
+        - "boldt-webservice-text.png"
+
+    - name: Create commit script
+      ansible.builtin.template:
+        src: "commit-bwpm-base-configured-images.sh.j2"
+        dest: "{{ bwpm_base_path }}/commit-bwpm-base-configured-images.sh"
+        mode: 0755
+
+    - name: Create config middleware
+      shell: docker compose up -d
+      args:
+        chdir: "{{ bwpm_base_path }}"
+
+    - name: Wait for config middleware to be completely up
+      pause:
+        seconds: 20
+
+    - name: Commit config middleware
+      shell: "{{ bwpm_base_path }}/commit-bwpm-base-configured-images.sh"
+
+    - name: Shut down config middleware
+      shell: docker compose down --volumes
+      args:
+        chdir: "{{ bwpm_base_path }}"

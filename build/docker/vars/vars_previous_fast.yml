@@ -1,0 +1,27 @@
+---
+bwpm_network_name: "bwpm-fast-previous"
+bwpm_subnet: "172.118.4.56/29"
+
+bwpm_db_name: "bwpm-fast-previous-db"
+bwpm_db_ip: "172.118.4.58"
+bwpm_db_volume: "db_testdata_{{ bwpm_joomla_sub_version_previous }}"
+bwpm_db_image: "universe3:5000/romana/joomla_enh_db-4:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}-{{ bwpm_project_version }}"
+bwpm_db_expose: "3446"
+
+bwpm_joomla_name: "bwpm-fast-previous-joomla"
+bwpm_joomla_ip: "172.118.4.59"
+bwpm_joomla_volume: "bwpm_joomla_{{ bwpm_joomla_sub_version_previous }}"
+bwpm_joomla_image: "universe3:5000/romana/joomla_enh_web-4:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}-{{ bwpm_project_version }}"
+bwpm_joomla_ports: "75:80"
+
+bwpm_pma_name: "bwpm-fast-previous-phpmyadmin"
+bwpm_pma_ip: "172.118.4.61"
+
+bwpm_tester_ip: "172.118.4.62"
+
+bwpm_base_path: "/home/romana/PhpstormProjects/BwPostman_J4/build/docker/fast-previous"
+bwpm_site_name: "Fast_Previous_BwPM_Container"
+
+bwpm_project_name: "j{{ bwpm_joomla_previous  | replace('.', '')}}_bwpm{{ bwpm_project_version  | replace('.', '')}}"
+bwpm_dump_basepath: "/home/container-files/artifacts/default"
+bwpm_dump_current: "{{ bwpm_project_name }}/backups/{{ bwpm_project_name }}.sql"

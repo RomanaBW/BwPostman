@@ -1,5 +1,5 @@
-FROM universe3:5000/romana/joomla-files-8.1.0:latest
-LABEL maintainer="Romana Boldt <info@boldt-webservice.de>"
+FROM {{ bwpm_joomla_image }}
+LABEL maintainer=" {{ bwpm_maintainer }} "
 
 # Custom cache invalidation
 ARG CACHEBUST=1

@@ -3,7 +3,7 @@ class_name: AcceptanceTester
 
 paths:
   log: output
-  data: ../repositories/artifacts/bwpostman4/data
+  data: "/home/container-files/artifacts/default/j449_bwpm431"
 
 modules:
   enabled:

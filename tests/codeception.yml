@@ -1,8 +1,9 @@
 ---
 actor: Tester
+bootstrap: _bootstrap.php
 paths:
   tests: tests
-  log: tests/_output/j512_bwpm431
+  log: output
   data: ../repositories/artifacts/bwpostman4/data
   support: tests/_support
 #    envs: tests/_envs

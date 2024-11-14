@@ -2,11 +2,10 @@
 - hosts: localhost
   connection: local
   vars_files:
-#    - vars/fast-test-vars.yml
-#    - vars/tester-image-vars.yml
+    - ../../docker/vars/vars_versions.yml
+    - ../../docker/vars/vars_current.yml
     - vars/general-withdraw-vars.yml
     - vars/current-withdraw-vars.yml
-#    - vars/codecept_paths.yml
 
   tasks:
     - name: Get variables if joomla main version is provided as extra_vars
@@ -17,16 +16,6 @@
       set_fact:
         test_db_host: "mysqldbbwpm{{ j_main }}"
         test_url_name: "test_url{{ j_main }}"
-
-#    - name: Set test_url for J5
-#      set_fact:
-#        test_url: "{{ test_url5 }}"
-#      when: j_main == '5'
-#
-#    - name: Set test_url for J4
-#      set_fact:
-#        test_url: "{{ test_url4 }}"
-#      when: j_main == '4'
 
     - name: Show imported parameters
       debug:

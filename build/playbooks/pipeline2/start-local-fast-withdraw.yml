@@ -81,7 +81,7 @@
       block:
         - name: Get file name of XML backup file
           find:
-            paths: "{{ test_dir }}/backups"
+            paths: "{{ repo_data_dir }}"
             patterns: "*.xml"
             recurse: no
             file_type: file

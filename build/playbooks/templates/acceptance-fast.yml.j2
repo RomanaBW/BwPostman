@@ -16,7 +16,7 @@ modules:
   # Default configuration is for simple joomla container tests (BwPostman component, modules, 'normal' plugins)
   config:
     Db:
-      dsn: 'mysql:host={{ database_ip }};dbname=joomlatest'
+      dsn: 'mysql:host={{ bwpm_db_ip }};dbname=joomlatest'
       user: 'tester'
       password: 'barbamama'
 
@@ -25,7 +25,7 @@ modules:
       reconnect: true
 
     WebDriver:
-      url: http://{{ webserver_url }}
+      url: http://{{ bwpm_joomla_ip }}
 
       browser: chrome
       port: 4445

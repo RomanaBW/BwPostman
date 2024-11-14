@@ -3,6 +3,9 @@
   connection: local
   vars_files:
     - vars/fast-test-vars.yml
+    - ../docker/vars/vars_versions.yml
+    - ../docker/vars/vars_current.yml
+    - ../docker/vars/vars_current_fast.yml
 
   tasks:
     - name: Import transmitted environment parameters
@@ -13,6 +16,10 @@
         test_debug: "{{ lookup('env','BW_TEST_DEBUG') | d('--debug', true) }}"
         vm_version: "{{ lookup('env','BW_TEST_VM_VERSION') | d('', true) }}"
         rebase: "{{ lookup('env','BW_TEST_REBASE_DB') | d('false', true) }}"
+
+    - name: Show user who runs the playbook
+      debug:
+        msg: "{{ ansible_user_id }}"
 
     - name: Set project name (shortcut)
       set_fact:

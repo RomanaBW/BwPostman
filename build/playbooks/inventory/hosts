@@ -194,7 +194,7 @@ bwpm_rights4_tester-4 ansible_connection=docker
 
 
 [tester]
-tester-j1 ansible_python_interpreter=/usr/bin/python3.6
+tester-j1
 
 [workplace]
 arbeitspferd

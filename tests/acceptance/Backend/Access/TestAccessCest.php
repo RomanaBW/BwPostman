@@ -820,6 +820,7 @@ class TestAccessCest
 		}
 		else
 		{
+            $I->wait(1);
 			$I->see($button, Generals::$pageTitle);
 			// for button tests I may only get here at edit other owners items!
 			$I->see('No permission to edit this item!', Generals::$alert_error_1);
@@ -1028,6 +1029,7 @@ class TestAccessCest
 			$col_nbr++;
 		}
 
+        codecept_debug("Open item for checkin by Icon");
 		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link, $tableId);
 
 		$row_nbr    = $I->getTableRowIdBySearchValue($check_content, $tableId);
@@ -1039,16 +1041,19 @@ class TestAccessCest
 		}
 
 		// by icon
-		$I->seeElement($lock_icon);
+        codecept_debug("Checkin by Icon");
+        $I->seeElement($lock_icon);
 		$I->click($lock_icon);
 		$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
 
+        codecept_debug("Open item for checkin by toolbar");
 		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link, $tableId);
 
 		// see lock icon
 		$I->seeElement($lock_icon);
 
 		// by toolbar
+        codecept_debug("Checkin by toolbar");
 		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 		$I->click($checkbox);
 

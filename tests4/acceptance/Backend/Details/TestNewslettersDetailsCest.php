@@ -415,6 +415,7 @@ class TestNewslettersDetailsCest
 		$I->click(Generals::$toolbar4['Cancel']);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
+        $I->wait(1);
 		$I->see('Newsletters', Generals::$pageTitle);
 	}
 

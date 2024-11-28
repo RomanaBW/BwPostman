@@ -3,10 +3,10 @@
 //
 // BwPostman Javascript for maintenance do restore tables.
 //
-// @version %%version_number%%
+// @version 4.3.1
 // @package BwPostman-Admin
 // @author Romana Boldt, Karl Klostermann
-// @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
+// @copyright (C) 2024 Boldt Webservice <forum@boldt-webservice.de>
 // @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
 // @license GNU/GPL v3, see LICENSE.txt
 // This program is free software: you can redistribute it and/or modify

@@ -4,10 +4,10 @@
  *
  * BwPostman link to component template for module.
  *
- * @version %%version_number%%
+ * @version 4.3.1
  * @package BwPostman-Module
  * @author Romana Boldt
- * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
+ * @copyright (C) 2024 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify

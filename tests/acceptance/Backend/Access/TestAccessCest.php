@@ -1076,16 +1076,17 @@ class TestAccessCest
 		$I->filterForItemToEdit($check_content, $tableId);
 
 		$I->click($item_link);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
+        $I->wait(1);
 
 		// go to main view
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see('BwPostman');
 
 		// goto list view
 		$I->click($link);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see($button, Generals::$pageTitle);
 
 		$I->filterForItemToEdit($check_content, $tableId);

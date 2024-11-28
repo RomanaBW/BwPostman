@@ -540,7 +540,7 @@ class TemplateManagerPage
 	 */
 	public static function SetDefaultTemplates(\AcceptanceTester $I, $permission)
 	{
-		$I->click(self::$default_button1);
+		$I->clickAndWait(self::$default_button1, 1);
 		if ($permission)
 		{
 			$I->seeElement(self::$default_result1);

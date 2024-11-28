@@ -820,6 +820,7 @@ class TestAccessCest
 		}
 		else
 		{
+            $I->wait(1);
 			$I->see($button, Generals::$pageTitle);
 			// for button tests I may only get here at edit other owners items!
 			$I->see('No permission to edit this item!', Generals::$alert_error_1);
@@ -1028,6 +1029,7 @@ class TestAccessCest
 			$col_nbr++;
 		}
 
+        codecept_debug("Open item for checkin by Icon");
 		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link, $tableId);
 
 		$row_nbr    = $I->getTableRowIdBySearchValue($check_content, $tableId);
@@ -1039,16 +1041,19 @@ class TestAccessCest
 		}
 
 		// by icon
-		$I->seeElement($lock_icon);
+        codecept_debug("Checkin by Icon");
+        $I->seeElement($lock_icon);
 		$I->click($lock_icon);
 		$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
 
+        codecept_debug("Open item for checkin by toolbar");
 		$this->openItemAndGoBackToListView($I, $button, $link, $check_content, $item_link, $tableId);
 
 		// see lock icon
 		$I->seeElement($lock_icon);
 
 		// by toolbar
+        codecept_debug("Checkin by toolbar");
 		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 		$I->click($checkbox);
 
@@ -1076,16 +1081,17 @@ class TestAccessCest
 		$I->filterForItemToEdit($check_content, $tableId);
 
 		$I->click($item_link);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
+        $I->wait(1);
 
 		// go to main view
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see('BwPostman');
 
 		// goto list view
 		$I->click($link);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see($button, Generals::$pageTitle);
 
 		$I->filterForItemToEdit($check_content, $tableId);

@@ -110,7 +110,7 @@ bwpm_accept4_web-5 ansible_connection=docker ansible_python_interpreter=/usr/bin
 bwpm_accept4_tester-5 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.10
 
 bwpm_accept5_db-5 ansible_connection=docker
-bwpm_accept5_web-5 ansible_connection=docker ansi ansible_python_interpreter=/usr/bin/python3.10ble_python_interpreter=/usr/bin/python3.9
+bwpm_accept5_web-5 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.10
 bwpm_accept5_tester-5 ansible_connection=docker
 
 bwpm_accept6_db-5 ansible_connection=docker

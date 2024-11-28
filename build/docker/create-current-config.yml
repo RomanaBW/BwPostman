@@ -29,6 +29,8 @@
       ansible.builtin.template:
         src: "configuration.php.j2"
         dest: "{{ bwpm_base_path }}/configuration.php"
+        owner: romana
+        group: users
         mode: 0777
 
     - name: Create docker entry point

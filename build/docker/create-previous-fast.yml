@@ -15,9 +15,13 @@
         state: directory
 
     - name: Ensure dump folder exists
+      become: true
       ansible.builtin.file:
         path: "{{ bwpm_dump_basepath }}/{{ bwpm_project_name }}/backups"
         state: directory
+        owner: romana
+        group: users
+        mode: 0777
 
     - name: Copy dump file in place
       ansible.builtin.copy:

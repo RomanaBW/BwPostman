@@ -1,9 +1,15 @@
 ---
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
 class_name: AcceptanceTester
 
 paths:
-  log: output
-  data: "/home/container-files/artifacts/default/j521_bwpm431"
+  log: tests/_output/j522_bwpm431
+  data: tests/_data
 
 modules:
   enabled:
@@ -33,7 +39,7 @@ modules:
         "goog:chromeOptions":
           args: ["--window-size=1920,1080", "--no-sandbox"]
           prefs:
-            download.default_directory: "/data/output"
+            download.default_directory: "/data/output/backups"
             download.directory_upgrade: True
             download.prompt_for_download: False
 

@@ -3,6 +3,7 @@
   connection: local
   vars_files:
     - vars/fast-test-vars4.yml
+    - vars/previous-withdraw-vars.yml
     - ../docker/vars/vars_versions.yml
     - ../docker/vars/vars_previous.yml
     - ../docker/vars/vars_previous_fast.yml

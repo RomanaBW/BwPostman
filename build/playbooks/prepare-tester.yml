@@ -3,6 +3,7 @@
   connection: local
   vars_files:
     - vars/fast-test-vars.yml
+    - vars/current-withdraw-vars.yml
     - ../docker/vars/vars_versions.yml
     - ../docker/vars/vars_current.yml
     - ../docker/vars/vars_current_fast.yml

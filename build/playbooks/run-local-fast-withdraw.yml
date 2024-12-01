@@ -2,14 +2,24 @@
 - hosts: localhost
   connection: local
   vars_files:
-    - ../../docker/vars/vars_versions.yml
-    - ../../docker/vars/vars_current.yml
+    - ../docker/vars/vars_versions.yml
+    - ../docker/vars/vars_current.yml
+    - ../docker/vars/vars_current_dev.yml
+    - ../docker/vars/vars_current_fast.yml
     - vars/general-withdraw-vars.yml
     - vars/current-withdraw-vars.yml
 
   tasks:
     - name: Get variables if joomla main version is provided as extra_vars
       include_vars: vars/previous-withdraw-vars.yml
+      when: j_main_version is defined and j_main_version == '4'
+
+    - name: Get variables if joomla main version is provided as extra_vars
+      include_vars: ../docker/vars/vars_previous_dev.yml
+      when: j_main_version is defined and j_main_version == '4'
+
+    - name: Get variables if joomla main version is provided as extra_vars
+      include_vars: ../docker/vars/vars_previous_fast.yml
       when: j_main_version is defined and j_main_version == '4'
 
     - name: Set DB host and webserver
@@ -21,8 +31,8 @@
       debug:
         msg:
           - "Hostname: {{ ansible_hostname }}"
-          - "BW_TEST_JOOMLA_VERSION: {{ joomla_version }}"
-          - "BW_TEST_BWPM_VERSION: {{ bwpm_version }}"
+#          - "BW_TEST_JOOMLA_VERSION: {{ bwpm_joomla_version }}"
+#          - "BW_TEST_BWPM_VERSION: {{ bwpm_joomla_version }}"
           - "Webserver URL: {{ webserver_url }}"
           - "Database IP: {{ database_ip }}"
           - "Tester IP: {{ testcontainer_ip }}"
@@ -48,7 +58,7 @@
 
     - name: Show bwpm version
       debug:
-        msg: "{{ bwpm_version }}"
+        msg: "{{ bwpm_project_version }}"
 
     - name: Show version to test
       debug:
@@ -130,9 +140,9 @@
       shell: "{{ sql_withdraw_command }}"
 
 # Comment for debugging
-    - name: Pause after withdraw
-      pause:
-        seconds: 10
+#    - name: Pause after withdraw
+#      pause:
+#        seconds: 10
 
     - name: Handle backups of BwPostman
       block:

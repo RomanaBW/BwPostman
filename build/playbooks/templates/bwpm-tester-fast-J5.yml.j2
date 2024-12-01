@@ -30,7 +30,7 @@ services:
       # This is needed to be able to delete the uploaded attachment.
       # Otherwise, this could make the next upload impossible.
       # *** Probably it would be better to mount the specific media path for this project.
-      - /home/container-files/j{{ joomla_version_undotted }}:/www_path
+      - /home/container-files/j{{ bwpm_joomla_version_undotted }}:/www_path
 
       # Mount tester entry point
       - type: bind
@@ -38,7 +38,7 @@ services:
         target: /tester_entry_point.sh
 
     environment:
-      - BW_TEST_BWPM_VERSION={{ bwpm_version_undotted }}
+      - BW_TEST_BWPM_VERSION={{ bwpm_project_version_undotted }}
       - BW_TEST_CAT=maintenance_single
       - BW_TEST_DEBUG=--debug
       - SYMFONY_DEPRECATIONS_HELPER=weak
@@ -47,10 +47,10 @@ services:
     # Wegen Projektname, Test Runner (=/data/bwpm_test_runner.sh), Display, Test-Cat, Screen Size
     entrypoint: /tester_entry_point.sh
     networks:
-      bwpm-test{{ j_main }}:
+      bwpm-fast-current:
         ipv4_address: "{{ testcontainer_ip }}"
 
 networks:
-  bwpm-test{{ j_main }}:
+  bwpm-fast-current:
     external: true
-    name: bwpm-test{{ j_main }}
+    name: bwpm-fast-current

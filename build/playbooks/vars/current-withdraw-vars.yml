@@ -1,5 +1,5 @@
 ---
-bwpm_joomla_version: "5.2.0"
+bwpm_joomla_version: "5.2.2"
 bwpm_project_version: "4.3.1"
 version_to_test: "{{ bwpm_project_version| replace('.', '_') }}"
 
@@ -20,7 +20,7 @@ test_dir: "/vhosts/dev4/tests"
 
 backup_name_raw: "BwPostman_{{ version_to_test }}_Tables"
 
-middleware_startup_command: "docker-compose -f {{ project_src_dir }}/build/docker/test/compose-fast.yml up -d"
+middleware_startup_command: "docker-compose -f {{ project_src_dir }}/build/docker/fast/compose.yml up -d"
 sql_rebase_command: "/usr/bin/mariadb --ssl=0 -u {{ test_db_user }} -p{{ test_db_password }} -h {{ database_ip }} {{ test_db_dbname }} < {{ artifacts_path }}/backups/{{ project_name }}.sql"
 sql_withdraw_command: "/usr/bin/mariadb --ssl=0 -u {{ test_db_user }} -p{{ test_db_password }} -h {{ database_ip }} {{ test_db_dbname }} < /home/container-files/artifacts/withdraw_testdata.sql"
 tester_compose_path: "{{ project_src_dir }}/build/docker/test"

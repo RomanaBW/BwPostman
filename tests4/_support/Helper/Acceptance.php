@@ -1146,7 +1146,7 @@ class Acceptance extends Codeception\Module
 				$I->click(Generals::$filterOptionsSwitcher);
 				$I->click(Generals::$search_list);
 				$I->selectOption(Generals::$search_list, $search_data_array['search_by'][$i]);
-				$I->wait(1);
+				$I->wait(2);
 
 				// click search button
 				$searchButton = Generals::$search_button;

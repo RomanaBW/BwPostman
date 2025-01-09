@@ -1,7 +1,7 @@
 name;firstname;email;emailformat;status
-Muster;Max;test1@test-domain.nul;1;1
-Muster;Moritz;test2@test-domain.nul;1;1
-Muster;Brunhilde;test3@test-domain.nul;1;1
-Muster;Adelgunde;test4@test-domain.nul;1;1
-Muster;Erika;test5@test-domain.nul;1;0
-Muster;Eugen;test6@test-domain.nul;0;1
+Muster;Max;tester1@boldt-services.de;1;1
+Muster;Moritz;tester2@boldt-services.de;1;1
+Muster;Brunhilde;tester3@boldt-services.de;1;1
+Muster;Adelgunde;tester4@boldt-services.de;1;1
+Muster;Erika;tester5@boldt-services.de;1;1
+Muster;Eugen;tester6@boldt-services.de;0;1

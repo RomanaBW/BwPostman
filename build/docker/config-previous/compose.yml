@@ -11,7 +11,7 @@ services:
     #  Database
   bwpm-config-previous-db:
     container_name: bwpm-config-previous-db
-    image: universe3:5000/romana/joomla-tables-7.4.0:4.4.9
+    image: universe3:5000/romana/joomla-tables-7.4.0:4.4.10
     networks:
       bwpm-config-previous.nil:
         ipv4_address: 172.118.1.34

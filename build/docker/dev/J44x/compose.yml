@@ -11,7 +11,7 @@ services:
     #  Database
   bwpm-dev-previous-db:
     container_name: bwpm-dev-previous-db
-    image: universe3:5000/romana/bwpm-configured-tables:7.4.0-4.4.9
+    image: universe3:5000/romana/bwpm-configured-tables:7.4.0-4.4.10
     volumes:
         - bwpm_db:/var/lib/mariadb
     networks:
@@ -39,7 +39,7 @@ services:
     # Webserver
   bwpm-dev-previous-joomla:
     container_name: bwpm-dev-previous-joomla
-    image: universe3:5000/romana/bwpm-configured-files:7.4.0-4.4.9
+    image: universe3:5000/romana/bwpm-configured-files:7.4.0-4.4.10
     ports:
         - 70:80
     healthcheck:

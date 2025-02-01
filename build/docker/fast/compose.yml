@@ -13,7 +13,7 @@ services:
     #  Database
   bwpm-fast-current-db:
     container_name: bwpm-fast-current-db
-    image: universe3:5000/romana/joomla_enh_db-5:8.1.0-5.2.2-4.3.1
+    image: universe3:5000/romana/joomla_enh_db-5:8.1.0-5.2.3-4.3.1
     volumes:
         - db_testdata_52:/var/lib/mariadb
     networks:
@@ -41,9 +41,9 @@ services:
     # Webserver
   bwpm-fast-current-joomla:
     container_name: bwpm-fast-current-joomla
-    image: universe3:5000/romana/joomla_enh_web-5:8.1.0-5.2.2-4.3.1
+    image: universe3:5000/romana/joomla_enh_web-5:8.1.0-5.2.3-4.3.1
     ports:
-        - 85:80
+        - 86:80
     healthcheck:
         test: curl --fail http://172.118.5.59/index.php || exit 1
         start_period: 5s

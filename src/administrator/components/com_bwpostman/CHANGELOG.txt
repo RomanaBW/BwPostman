@@ -5,6 +5,26 @@ Changelog for BwPostman Component
 This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
+
+Version 4.3.1 released (2025-02-11)----
+
+New
+- Possibility added to use limited HTML at footer for provided newsletter templates.
+- Additional widths possible for sections at provided newsletter templates.
+
+Bugfix
+# Typo corrected at language string for one item published.
+# Check first if event onBwPostmanAfterNewsletterModelSave returns a result before using this result.
+# Zip files are not safe by default for Joomla, so upload of table backups of BwPostman for restoring in some cases did not work.
+# Signature of method logException used two type hints for parameter, which is incompatible with php 7.4.
+
+Improvement
+~ Error message improved, if activation of subscription is not possible.
+~ Message improved, if subscription already exists.
+~ Language strings for plugin user2subscriber separated for one or more available  mailing lists.
+~ Handling of table #__assets for table check improved.
+
+
 Version 4.3.0 released (2024-03-12)----
 
 New

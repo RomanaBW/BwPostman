@@ -466,7 +466,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 		$this->header              = $filter->clean($this->header, 'unknown');
 		$this->intro               = $filter->clean($this->intro, 'unknown');
 		$this->article             = $filter->clean($this->article, 'unknown');
-		$this->footer              = $filter->clean($this->footer, 'unknown');
+		$this->footer              = $filter->clean($this->footer, 'RAW');
 		$this->button1             = $filter->clean($this->button1, 'unknown');
 		$this->button2             = $filter->clean($this->button2, 'unknown');
 		$this->button3             = $filter->clean($this->button3, 'unknown');

@@ -1366,6 +1366,11 @@ class TemplateModel extends AdminModel
 		$content = str_replace('[%width300%]', intval($item->basics['nl_width'] / 2), $content);
 		$content = str_replace('[%width270%]', intval($item->basics['nl_width'] / 2 - 30), $content);
 		$content = str_replace('[%width200%]', intval($item->basics['nl_width'] / 3), $content);
+        $content = str_replace('[%width370%]', intval($item->basics['nl_width'] / 2 - 30 + 100), $content);
+        $content = str_replace('[%width170%]', intval($item->basics['nl_width'] / 2 - 30 - 100), $content);
+        $content = str_replace('[%width410%]', intval($item->basics['nl_width'] / 2 + 10 +100), $content);
+        $content = str_replace('[%width210%]', intval($item->basics['nl_width'] / 2 + 10 - 100), $content);
+
 		$content = str_replace('[%paper_bg%]', $item->basics['paper_bg'], $content);
 		$content = str_replace('[%article_bg%]', $item->basics['article_bg'], $content);
 		$content = str_replace('[%headline_color%]', $item->basics['headline_color'], $content);

@@ -10,16 +10,16 @@ pipeline {
 					JOOMLA_VERSION_4 = "4.4.10"
 					JOOMLA_VERSION_5 = "5.2.3"
 
-					DO_J5_SMOKE  = 'false'
-					DO_J5_ACCEPT = 'false'
+					DO_J5_SMOKE  = 'true'
+					DO_J5_ACCEPT = 'true'
 					DO_J5_PERMS  = 'true'
 
-					DO_J4_SMOKE  = 'false'
-					DO_J4_ACCEPT = 'false'
+					DO_J4_SMOKE  = 'true'
+					DO_J4_ACCEPT = 'true'
 					DO_J4_PERMS  = 'true'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'false'
+					PACK_PACKAGE  = 'true'
 
 					PHP_VERSION_4 = "7.4.0"
 					PHP_VERSION_5 = "8.1.0"
@@ -196,6 +196,73 @@ pipeline {
 
 
 
+		stage('Dev-Upload') {
+			when {
+				expression {
+					return DO_DEV_UPLOAD == 'true'
+				}
+			}
+			steps {
+				dir("/repositories/artifacts/bwpostman4/data") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+						flattenFiles: false,
+						includes: "pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip",
+						targetLocation: "${WORKSPACE}/tests")
+				])
+				}
+
+				dir("/repositories/artifacts/bwpostman4/data") {
+					fileOperations([
+						fileCopyOperation(
+							excludes: '',
+						flattenFiles: false,
+						includes: "CHANGELOG",
+						targetLocation: "${WORKSPACE}/tests")
+				])
+				}
+
+				script {
+					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
+				}
+
+				echo "tests/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
+
+				sshPublisher(
+					publishers: [sshPublisherDesc(
+					configName: 'Web Dev Webservice BwPostman',
+					transfers: [sshTransfer(
+					cleanRemote: false,
+					excludes: '',
+					execCommand: '',
+					execTimeout: 120000,
+					flatten: false,
+					makeEmptyDirs: false,
+					noDefaultExcludes: false,
+					patternSeparator: '[, ]+',
+					remoteDirectory: "dev/${"${BWPM_VERSION}"}.${currentBuild.number}",
+					remoteDirectorySDF: false,
+					removePrefix: 'tests',
+					sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
+			)],
+				usePromotionTimestamp: false,
+					useWorkspaceInPromotion: false,
+					verbose: false
+			)]
+			)
+
+//				emailext(
+//					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_4} and php 7 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+//					subject:"BwPostman J${JOOMLA_VERSION_4} php 7 build ${currentBuild.number} successful",
+//					to: 'webmaster@boldt-webservice.de'
+//				)
+//				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
+//				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
+			}
+		}
+
+
 		stage('Run smoke tests with J4') {
 			when {
 				expression {
@@ -332,73 +399,6 @@ pipeline {
 			}
         }
 
-
-
-		stage('Dev-Upload') {
-			when {
-				expression {
-					return DO_DEV_UPLOAD == 'true'
-				}
-			}
-			steps {
-				dir("/repositories/artifacts/bwpostman4/data") {
-					fileOperations([
-						fileCopyOperation(
-							excludes: '',
-						flattenFiles: false,
-						includes: "pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip",
-						targetLocation: "${WORKSPACE}/tests")
-				])
-				}
-
-				dir("/repositories/artifacts/bwpostman4/data") {
-					fileOperations([
-						fileCopyOperation(
-							excludes: '',
-						flattenFiles: false,
-						includes: "CHANGELOG",
-						targetLocation: "${WORKSPACE}/tests")
-				])
-				}
-
-				script {
-					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
-				}
-
-				echo "tests/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
-
-				sshPublisher(
-					publishers: [sshPublisherDesc(
-					configName: 'Web Dev Webservice BwPostman',
-					transfers: [sshTransfer(
-					cleanRemote: false,
-					excludes: '',
-					execCommand: '',
-					execTimeout: 120000,
-					flatten: false,
-					makeEmptyDirs: false,
-					noDefaultExcludes: false,
-					patternSeparator: '[, ]+',
-					remoteDirectory: "dev/${"${BWPM_VERSION}"}.${currentBuild.number}",
-					remoteDirectorySDF: false,
-					removePrefix: 'tests',
-					sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
-			)],
-				usePromotionTimestamp: false,
-					useWorkspaceInPromotion: false,
-					verbose: false
-			)]
-			)
-
-//				emailext(
-//					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_4} and php 7 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-//					subject:"BwPostman J${JOOMLA_VERSION_4} php 7 build ${currentBuild.number} successful",
-//					to: 'webmaster@boldt-webservice.de'
-//				)
-//				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
-//				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
-			}
-		}
 
 
 		stage('Run permissions Joomla 5') {

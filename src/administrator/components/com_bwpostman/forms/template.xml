@@ -453,6 +453,7 @@
 				default="Name&#13;&#10;Address&#13;&#10;..."
 				rows="3"
 				cols="50"
+				filter="Safehtml"
 			/>
 			<field
 				name="button_headline"

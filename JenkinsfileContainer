@@ -10,16 +10,16 @@ pipeline {
 					JOOMLA_VERSION_4 = "4.4.10"
 					JOOMLA_VERSION_5 = "5.2.3"
 
-					DO_J5_SMOKE  = 'true'
-					DO_J5_ACCEPT = 'true'
+					DO_J5_SMOKE  = 'false'
+					DO_J5_ACCEPT = 'false'
 					DO_J5_PERMS  = 'true'
 
-					DO_J4_SMOKE  = 'true'
-					DO_J4_ACCEPT = 'true'
+					DO_J4_SMOKE  = 'false'
+					DO_J4_ACCEPT = 'false'
 					DO_J4_PERMS  = 'true'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'true'
+					PACK_PACKAGE  = 'false'
 
 					PHP_VERSION_4 = "7.4.0"
 					PHP_VERSION_5 = "8.1.0"

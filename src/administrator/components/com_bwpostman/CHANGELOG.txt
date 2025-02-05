@@ -17,6 +17,7 @@ Bugfix
 # Check first if event onBwPostmanAfterNewsletterModelSave returns a result before using this result.
 # Zip files are not safe by default for Joomla, so upload of table backups of BwPostman for restoring in some cases did not work.
 # Signature of method logException used two type hints for parameter, which is incompatible with php 7.4.
+# Sending newsletters to mailing lists without subscribers was sent to all (confirmed) subscribers.
 
 Improvement
 ~ Error message improved, if activation of subscription is not possible.

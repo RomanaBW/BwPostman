@@ -1324,6 +1324,7 @@ class NewsletterModel extends AdminModel
 			if (!$count_users && !$count_subscribers)
 			{
 				$ret_msg = Text::_('COM_BWPOSTMAN_NL_ERROR_SENDING_NL_NO_SUBSCRIBERS');
+                return false;
 			}
 		}
 		catch (RuntimeException $exception)

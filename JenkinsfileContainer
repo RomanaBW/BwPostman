@@ -5,10 +5,10 @@ pipeline {
         stage('Set variables') {
 			steps {
 				script {
-					BWPM_VERSION = "4.3.1"
+					BWPM_VERSION = "4.3.2"
 
-					JOOMLA_VERSION_4 = "4.4.10"
-					JOOMLA_VERSION_5 = "5.2.3"
+					JOOMLA_VERSION_4 = "4.4.11"
+					JOOMLA_VERSION_5 = "5.2.4"
 
 					DO_J5_SMOKE  = 'true'
 					DO_J5_ACCEPT = 'true'

@@ -8,7 +8,7 @@
 class_name: AcceptanceTester
 
 paths:
-  log: tests/_output/j522_bwpm431
+  log: tests/_output/j524_bwpm431
   data: tests/_data
 
 modules:

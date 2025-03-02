@@ -913,7 +913,8 @@ class MaintenancejsonController extends AdminController
 		if (!is_null($versionOfBackup))
 		{
 			// Compare versions. Do nothing, if backup version is newer than installed version to prevent data lost
-			if (version_compare($versionOfBackup, $model->getBwPostmanVersion(), '>'))
+			if ($model->getBwPostmanVersion() !== '%%version_number%%' &&
+                version_compare($versionOfBackup, $model->getBwPostmanVersion(), '>'))
 			{
 //				$message =  '<h5>' . Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_TABLE_COLUMNS_TABLE', $neededTables[$i]->name) . '</h5>';
 				$message = '<p class="alert alert-warning">';

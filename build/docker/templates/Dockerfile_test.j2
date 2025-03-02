@@ -1,0 +1,26 @@
+FROM {{ bwpm_joomla_image }}
+LABEL maintainer=" {{ bwpm_maintainer }} "
+
+# Custom cache invalidation
+ARG CACHEBUST=1
+# Enable the PHP extensions xdebug and zip
+RUN set -ex; \
+	docker-php-ext-enable \
+        xdebug \
+        zip \
+	;
+
+# set some needed xdebug settings
+# xdebug.client_host=host.docker.internal don't work, use ip of client, it works
+RUN { \
+  		echo "xdebug.client_host = {{ bwpm_xdebug_client_host }}"; \
+		echo "xdebug.client_port = {{ bwpm_xdebug_client_port }}"; \
+		echo "xdebug.idekey = {{ bwpm_xdebug_ide_key }}"; \
+        echo "xdebug.mode=debug"; \
+        echo "xdebug.start_with_request=yes"; \
+		echo 'xdebug.output_dir = /var/www/html/administrator/logs/xdebug'; \
+		echo 'xdebug.log = /var/www/html/administrator/logs/xdebug/debug.log'; \
+	} > /usr/local/etc/php/conf.d/xdebug.ini
+
+ENTRYPOINT ["/usr/bin/env"]
+CMD ["apache2-foreground"]

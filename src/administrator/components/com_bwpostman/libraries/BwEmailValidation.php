@@ -212,7 +212,7 @@ class BwEmailValidation
 	}
 
 	/**
-	 * Check if email address is well formed
+	 * Check if email address is well-formed
 	 *
 	 * @param string $email
 	 *
@@ -414,19 +414,29 @@ class BwEmailValidation
 				 */
 			case '450':
 			case '451':
-			case '452':
 				/**
 				 * http://www.ietf.org/rfc/rfc0821.txt
 				 * 450 Requested action not taken: the remote mail server
 				 * does not want to accept mail from your server for
-				 * some reason (IP address, blacklisting, etc..)
+				 * some reason (IP address, blacklisting, etc…)
 				 * 451 Requested action aborted: local error in processing
-				 * 452 Requested action not taken: insufficient system storage
-				 * email address was grey-listed (or some temporary error occurred on the MTA)
+                 * email address was grey-listed (or some temporary error occurred on the MTA)
 				 * I believe that e-mail exists
 				 */
 				return true;
-			case '550':
+            case '452':
+            case '550':
+            case '552':
+            case '553':
+                /**
+                 * http://www.ietf.org/rfc/rfc0821.txt
+                 * 452 Requested action not taken: insufficient system storage
+                 * 550 Requested action not taken: mailbox unavailable
+                 * [E.g., mailbox not found, no access]
+                 * 552 Requested mail action aborted: exceeded storage allocation
+                 * 553 Requested action not taken: mailbox name not allowed
+                 * [E.g., mailbox syntax incorrect]
+ */
 			default :
 				return false;
 		}

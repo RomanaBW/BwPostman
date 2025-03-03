@@ -979,7 +979,9 @@ class BwPostmanSubscriberHelper
 			{
 				if(!self::validateEmail($data['email']))
 				{
-					$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', Text::_('COM_BWPOSTMAN_EMAIL')), 'error');
+                    $msg = Text::sprintf('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT', Text::_('COM_BWPOSTMAN_EMAIL'));
+                    $msg .= ' ' . Text::_('COM_BWPOSTMAN_ERROR_INVALID_FIELD_CONTENT_REASONS');
+					$app->enqueueMessage($msg, 'error');
 
 					return false;
 				}

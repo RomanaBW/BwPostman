@@ -1,10 +1,10 @@
 ---
 bwpm_project_version: "4.3.2"
 
-bwpm_joomla_current: "5.2.4"
-bwpm_joomla_previous: "4.4.11"
+bwpm_joomla_current: "5.3.0"
+bwpm_joomla_previous: "4.4.13"
 
-bwpm_joomla_sub_version_current: "52"
+bwpm_joomla_sub_version_current: "53"
 bwpm_joomla_sub_version_previous: "44"
 
 bwpm_php_current: "8.1.0"

@@ -272,6 +272,8 @@ services:
     restart: no
     environment:
         PMA_HOST: {{ bwpm_db_name }}
+        MEMORY_LIMIT: 2048M
+        UPLOAD_LIMIT: 8192M
 
 volumes:
   {{ bwpm_db_volume }}:

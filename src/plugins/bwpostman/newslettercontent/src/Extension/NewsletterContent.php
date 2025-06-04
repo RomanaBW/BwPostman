@@ -36,6 +36,7 @@ use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Cache\Controller\CallbackController;
 use Joomla\CMS\Cache\Controller\OutputController;
+use Joomla\CMS\Event\Content\ContentPrepareEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -184,11 +185,11 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 
 		// Get list of all content plugins
 		$availablePlugins = PluginHelper::getPlugin('content');
+        PluginHelper::importPlugin('content');
 
 		// Only process not excluded plugins, one by one to be able to process special handling, if plugin needs it
 		foreach ($availablePlugins as $availablePlugin)
 		{
-//			if (!in_array($availablePlugin->name, $excludedPlugins))
 			if (in_array($availablePlugin->name, $includedPlugins))
 			{
 				$currentPlugin = $adminApp->bootPlugin($availablePlugin->name, 'content');
@@ -201,12 +202,18 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 					if ($availablePlugin->name == 'loadmodule')
 					{
 						$article->text = $article->introtext;
-//						$article = $this->processLoadModule($article, $currentPlugin);
 					}
-//					else
-//					{
-						$currentPlugin->onContentPrepare('com_content.article', $article, $article->attribs, 0);
-//					}
+
+                    $contentEventArguments = [
+                        'context' => 'com_content.article',
+                        'subject' => &$article,
+                        'params'  => &$article->attribs,
+                        'page'    => 0,
+                    ];
+
+                    $contentEvent = new ContentPrepareEvent('onContentPrepare', $contentEventArguments);
+
+                    Factory::getApplication()->getDispatcher()->dispatch('onContentPrepare', $contentEvent);
 					Factory::$application = $adminApp;
 				}
 			}

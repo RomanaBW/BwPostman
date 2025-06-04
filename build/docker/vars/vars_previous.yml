@@ -1,5 +1,5 @@
 ---
-bwpm_dump_previous: "/j4410_bwpm431/backups/j4410_bwpm431.sql"
+bwpm_dump_previous: "/j4411_bwpm432/backups/j4411_bwpm432.sql"
 
 bwpm_joomla_sub_version: "{{ bwpm_joomla_sub_version_previous }}"
 bwpm_webroot: "{{ bwpm_webroot_previous }}"

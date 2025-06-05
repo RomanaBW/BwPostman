@@ -2,7 +2,7 @@
 actor: Tester
 paths:
   tests: tests
-  log: tests/_output/j530_bwpm432
+  log: tests/_output/j531_bwpm432
   data: ../repositories/artifacts/bwpostman4/data
   support: tests/_support
 #    envs: tests/_envs

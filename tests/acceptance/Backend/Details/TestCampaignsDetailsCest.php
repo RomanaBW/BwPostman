@@ -394,7 +394,7 @@ class TestCampaignsDetailsCest
 	{
 		// fill title, omit recipients
 		$I->fillField(CamEdit::$title, CamEdit::$field_title);
-		$I->click(Generals::$toolbar4['Save & Close']);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 2);
 
 		// check for recipients selected
 		$I->seeInPopup(CamEdit::$popup_no_recipients);
@@ -403,7 +403,7 @@ class TestCampaignsDetailsCest
 		// fill recipients, omit title
 		$I->click(sprintf(Generals::$mls_accessible, 2));
 		$I->fillField(CamEdit::$title, "");
-		$I->click(Generals::$toolbar4['Save & Close']);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 2);
 
 		// check for title
 		$I->seeInPopup(CamEdit::$popup_title);

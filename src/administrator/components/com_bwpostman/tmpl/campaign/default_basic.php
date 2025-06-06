@@ -104,7 +104,7 @@ $image = '<i class="fa fa-lg fa-info-circle"></i>';
 </div>
 
 <div class="card card-body">
-	<div class="row cam-recipients">
+	<div id="cam-recipients" class="row cam-recipients">
 		<div class="col-12 mb-2">
 			<div class="h3 required">
 				<?php echo Text::_('COM_BWPOSTMAN_NL_ASSIGNMENTS_RECIPIENTS'); ?> *

@@ -36,7 +36,7 @@ window.onload = function() {
 		if ((pressbutton === 'campaign.apply') || (pressbutton === 'campaign.save') || (pressbutton === 'campaign.save2new') || (pressbutton === 'campaign.save2copy')) {
 			let errors = 0;
 			let title = form.jform_title.value;
-			let inputs = document.getElementsByTagName('input');
+			let inputs = document.getElementById('cam-recipients').getElementsByTagName('input');
 			let recipients = 0;
 
 			for (let i = 0; i < inputs.length; i++) {

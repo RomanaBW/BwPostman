@@ -734,39 +734,49 @@ class MaintenancePage
 		$resultsWarn = $I->grabMultiple(self::$warningIdentifier);
 
 //		codecept_debug($resultsWarn);
+        codecept_debug('Check regular part 1');
 		$I->assertEquals(count($resultsWarn), 0);
 
+        codecept_debug('Check regular part 2');
 		$found = in_array(self::$successTextReadBackup, $resultsOkay);
 		$I->assertEquals($found, true);
 
-		$found = in_array(self::$successTextReadBackup, $resultsOkay);
+        codecept_debug('Check regular part 3');
+        $found = in_array(self::$successTextReadBackup, $resultsOkay);
 		$I->assertEquals($found, true);
 
+        codecept_debug('Check regular part 4');
 		$found = in_array(self::$successTextDelAssets, $resultsOkay);
 		$I->assertEquals($found, true);
 
+        codecept_debug('Check regular part 5');
 		$found = in_array(self::$successTextRepairAssets, $resultsOkay);
 		$I->assertEquals($found, true);
 
 		foreach (self::$successTableArray as $table)
 		{
 //			codecept_debug('Delete table assets: ' . $table);
+            codecept_debug('Check regular part 6');
 			$found = in_array(sprintf(self::$successTextDelAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
 //			codecept_debug('Create table: ' . $table);
+            codecept_debug('Check regular part 7');
 			$found = in_array(sprintf(self::$successTextCreateTables, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
 //			codecept_debug('Restore table: ' . $table);
+            codecept_debug('Check regular part 8');
 			$found = in_array(sprintf(self::$successTextRestoreTables, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
 //			codecept_debug('Column check table: ' . $table);
+            codecept_debug('Check regular part 9');
 			$found = in_array(sprintf(self::$successTextColumns, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
 //			codecept_debug('Attributes check table: ' . $table);
+            codecept_debug('Check regular part 10');
 			$found = in_array(sprintf(self::$successTextAttributes, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}
@@ -774,6 +784,7 @@ class MaintenancePage
 		foreach (self::$assetTableArray as $table)
 		{
 //			codecept_debug('Create table assets: ' . $table);
+            codecept_debug('Check regular part 11');
 			$found = in_array(sprintf(self::$successTextAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}
@@ -810,35 +821,45 @@ class MaintenancePage
 		$resultsOkay = $I->grabMultiple(self::$successIdentifierResult);
 		$resultsWarn = $I->grabMultiple(self::$warningIdentifier);
 
+        codecept_debug('Check simple part 1');
 		$found = in_array(self::$successTextReadBackup, $resultsOkay);
 		$I->assertEquals($found, true);
 
+        codecept_debug('Check simple part 2');
 		$found = in_array(self::$successTextReadBackup, $resultsOkay);
 		$I->assertEquals($found, true);
 
+        codecept_debug('Check simple part 3');
 		$found = in_array(self::$successTextDelAssets, $resultsOkay);
 		$I->assertEquals($found, true);
 
+        codecept_debug('Check simple part 4');
 		$found = in_array(self::$successTextRepairAssets, $resultsOkay);
 		$I->assertEquals($found, true);
 
 		foreach (self::$successTableArray as $table)
 		{
+            codecept_debug('Check simple part 5');
 			$found = in_array(sprintf(self::$successTextDelAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+            codecept_debug('Check simple part 6');
 			$found = in_array(sprintf(self::$successTextCreateTables, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+            codecept_debug('Check simple part 7');
 			$found = in_array(sprintf(self::$successTextRestoreTables, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+            codecept_debug('Check simple part 8');
 			$found = in_array(sprintf(self::$repairTextEngine, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+            codecept_debug('Check simple part 9');
 			$found = in_array(sprintf(self::$successTextColumns, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+            codecept_debug('Check simple part 10');
 			$found = in_array(sprintf(self::$successTextAttributes, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}
@@ -947,6 +968,7 @@ class MaintenancePage
 		$resultsOkay = $I->grabMultiple(self::$successIdentifierResult);
 		$resultsWarn = $I->grabMultiple(self::$warningIdentifier);
 		$resultsWarnVersion = $I->grabMultiple(self::$versionWarningIdentifier);
+        codecept_debug('Determined version of BwPostman is ' . $resultsWarnVersion);
 
         codecept_debug('Check modified part 1');
 		$found = in_array(self::$successTextReadBackup, $resultsOkay);

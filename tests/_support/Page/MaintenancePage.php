@@ -968,7 +968,9 @@ class MaintenancePage
 		$resultsOkay = $I->grabMultiple(self::$successIdentifierResult);
 		$resultsWarn = $I->grabMultiple(self::$warningIdentifier);
 		$resultsWarnVersion = $I->grabMultiple(self::$versionWarningIdentifier);
-        codecept_debug('Determined version of BwPostman is ' . $resultsWarnVersion);
+        codecept_debug('Determined version of BwPostman is ');
+        foreach ($resultsWarnVersion as $test_string)
+            codeept_debug($test_string);
 
         codecept_debug('Check modified part 1');
 		$found = in_array(self::$successTextReadBackup, $resultsOkay);

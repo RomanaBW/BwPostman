@@ -948,45 +948,57 @@ class MaintenancePage
 		$resultsWarn = $I->grabMultiple(self::$warningIdentifier);
 		$resultsWarnVersion = $I->grabMultiple(self::$versionWarningIdentifier);
 
+        codecept_debug('Check modified part 1');
 		$found = in_array(self::$successTextReadBackup, $resultsOkay);
 		$I->assertEquals($found, true);
 
+        codecept_debug('Check modified part 2');
 		$found = in_array(self::$successTextReadBackup, $resultsOkay);
 		$I->assertEquals($found, true);
 
+        codecept_debug('Check modified part 3');
 		$found = in_array(self::$successTextDelAssets, $resultsOkay);
 		$I->assertEquals($found, true);
 
+        codecept_debug('Check modified part 4');
 		$found = in_array(self::$successTextRepairAssets, $resultsOkay);
 		$I->assertEquals($found, true);
 
 		foreach (self::$successTableArray as $table)
 		{
+            codecept_debug('Check modified part 5');
 			$found = in_array(sprintf(self::$successTextDelAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+            codecept_debug('Check modified part 6');
 			$found = in_array(sprintf(self::$successTextCreateTables, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+            codecept_debug('Check modified part 7');
 			$found = in_array(sprintf(self::$successTextRestoreTables, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 
+            codecept_debug('Check modified part 8');
 			$found = in_array(sprintf(self::$repairTextEngine, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}
 //codecept_debug('TP');
 
+        codecept_debug('Check modified part 9');
 		$found = in_array(self::$warningTextVersion, $resultsWarnVersion);
 		$I->assertEquals($found, true);
 
+        codecept_debug('Check modified part 10');
 		$found = in_array(self::$warningTextIncrement, $resultsWarn);
 		$I->assertEquals($found, true);
 
+        codecept_debug('Check modified part 11');
 		$found = in_array(self::$repairTextIncrement, $resultsOkay);
 		$I->assertEquals($found, true);
 
 		foreach (self::$assetTableArray as $table)
 		{
+            codecept_debug('Check modified part 12');
 			$found = in_array(sprintf(self::$successTextAssets, $table), $resultsOkay);
 			$I->assertEquals($found, true);
 		}

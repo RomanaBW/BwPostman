@@ -913,9 +913,13 @@ class MaintenancejsonController extends AdminController
 		// If we are in restore mode, version of backup is not null, so compare versions
 		if (!is_null($versionOfBackup))
 		{
-            $message          = '';
-            $realVersion      = ($installedVersion !== '%%version_number%%');
             $noGreaterVersion = version_compare($versionOfBackup, $installedVersion, 'gt');
+            $realVersion      = true;
+
+            if($installedVersion === '%%version_number%%')
+            {
+                $realVersion = false;
+            }
 
 			// Compare versions. Do nothing, if backup version is newer than installed version to prevent data lost
 			if ($realVersion && $noGreaterVersion)

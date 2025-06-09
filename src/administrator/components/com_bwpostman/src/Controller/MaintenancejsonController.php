@@ -913,8 +913,12 @@ class MaintenancejsonController extends AdminController
 		// If we are in restore mode, version of backup is not null, so compare versions
 		if (!is_null($versionOfBackup))
 		{
+            $message          = '';
+            $realVersion      = ($installedVersion !== '%%version_number%%');
+            $noGreaterVersion = version_compare($versionOfBackup, $installedVersion, 'gt');
+
 			// Compare versions. Do nothing, if backup version is newer than installed version to prevent data lost
-			if ($installedVersion !== '%%version_number%%' && version_compare($versionOfBackup, $installedVersion, 'gt'))
+			if ($realVersion && $noGreaterVersion)
 			{
 //				$message =  '<h5>' . Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_TABLE_COLUMNS_TABLE', $neededTables[$i]->name) . '</h5>';
 				$message = '<p class="alert alert-warning">';

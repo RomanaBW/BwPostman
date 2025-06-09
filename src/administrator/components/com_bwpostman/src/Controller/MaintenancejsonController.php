@@ -916,7 +916,7 @@ class MaintenancejsonController extends AdminController
             $noGreaterVersion = version_compare($versionOfBackup, $installedVersion, 'gt');
             $realVersion      = true;
 
-            if($installedVersion === '%%version_number%%')
+            if($installedVersion === "%%version_number%%")
             {
                 $realVersion = false;
             }

@@ -916,7 +916,7 @@ class MaintenancejsonController extends AdminController
             $doTableCheck     = version_compare($versionOfBackup, $installedVersion, 'le');
 
             // If we are in development, version number is a variable, previous check said false, but we want to do check tables
-            if($installedVersion === "%%version_number%%")
+            if(str_contains($installedVersion, "version_number"))
             {
                 $doTableCheck = true;
             }

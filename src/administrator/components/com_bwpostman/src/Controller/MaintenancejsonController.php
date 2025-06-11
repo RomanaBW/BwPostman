@@ -906,23 +906,23 @@ class MaintenancejsonController extends AdminController
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CHECK_CHECK_TABLE_COLUMNS') . '</h4>';
 
 		// get stored session variables
-		$model            = new MaintenanceModel();
-		$neededTables     = $session->get('tcheck_needTa');
-        $installedVersion = $model->getBwPostmanVersion();
+		$model        = new MaintenanceModel();
+		$neededTables = $session->get('tcheck_needTa');
 
 		// If we are in restore mode, version of backup is not null, so compare versions
 		if (!is_null($versionOfBackup))
 		{
-            $noGreaterVersion = version_compare($versionOfBackup, $installedVersion, 'gt');
-            $realVersion      = true;
+            $installedVersion = $model->getBwPostmanVersion();
+            $doTableCheck     = version_compare($versionOfBackup, $installedVersion, 'le');
 
+            // If we are in development, version number is a variable, previous check said false, but we want to do check tables
             if($installedVersion === "%%version_number%%")
             {
-                $realVersion = false;
+                $doTableCheck = true;
             }
 
-			// Compare versions. Do nothing, if backup version is newer than installed version to prevent data lost
-			if (!$realVersion && $noGreaterVersion)
+			// Do nothing, if backup version is newer than installed version and we are not in dev, to prevent data loss
+			if (!$doTableCheck)
 			{
 				$message = '<p class="alert alert-warning">';
 				$message .= Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_NO_COLUMN_CHECK');

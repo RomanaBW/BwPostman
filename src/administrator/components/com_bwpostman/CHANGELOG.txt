@@ -13,7 +13,7 @@ Bugfix
 
 Improvement
 ~ Sharpen rejection of problematic mail addresses on newsletter subscription, improve error message
-~ Ensure, javascript only gets input checkboxes of recipients while checking if a recipient is selected to prevent false negatives
+~ Ensure javascript only gets input checkboxes of recipients while checking if a recipient is selected to prevent false negatives
 
 
 Version 4.3.1 released (2025-02-11)----

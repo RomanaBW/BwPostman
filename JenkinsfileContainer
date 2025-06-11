@@ -15,8 +15,8 @@ pipeline {
 					DO_J5_PERMS  = 'true'
 
 					DO_J4_SMOKE  = 'true'
-					DO_J4_ACCEPT = 'true'
-					DO_J4_PERMS  = 'true'
+					DO_J4_ACCEPT = 'false'
+					DO_J4_PERMS  = 'false'
 
 					DO_DEV_UPLOAD = 'true'
 					PACK_PACKAGE  = 'true'

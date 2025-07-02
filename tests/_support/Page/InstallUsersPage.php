@@ -73,7 +73,7 @@ class InstallUsersPage
 	 *
 	 * @since 2.1.0
 	 */
-	public static $accountDetailsTab              = "//*/a[@id='tab-details']";
+	public static $accountDetailsTab              = "//*/button[@aria-controls='details'][@role='tab']";
 	/**
 	 * @var string
 	 *

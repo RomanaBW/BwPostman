@@ -3,7 +3,7 @@ class_name: AcceptanceTester
 
 paths:
   log: output
-  data: "/home/container-files/artifacts/default/j531_bwpm432"
+  data: "/home/container-files/artifacts/default/j531_bwpm433"
 
 modules:
   enabled:

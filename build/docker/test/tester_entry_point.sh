@@ -1,8 +1,8 @@
 #!/bin/bash
 whoami
 
-echo "Test-Cat: maintenance_single"
-echo "Project: j531_bwpm432"
+echo "Test-Cat: lists_nl"
+echo "Project: j531_bwpm433"
 
 sudo chmod 1777 /tmp/.X11-unix
 sudo rm -f /tmp/.X45-lock
@@ -10,7 +10,7 @@ sudo mkdir -p /home/seluser/.local/share/mc
 sudo chown -R seluser:users /home/seluser
 
 export BW_TEST_WITHDRAW="no"
-VIDEO_NAME=/data/output/videos/maintenance_single.mp4
+VIDEO_NAME=/data/output/videos/lists_nl.mp4
 VIDEO_LOG=/data/output/logs/ffmpeg.log
 
 DISPLAY=":45"

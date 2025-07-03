@@ -1,6 +1,6 @@
 ---
 bwpm_joomla_version: "4.4.13"
-bwpm_project_version: "4.3.2"
+bwpm_project_version: "4.3.3"
 version_to_test: "{{ bwpm_project_version| replace('.', '_') }}"
 
 webserver_url: "{{ bwpm_joomla_ip }}"

@@ -1,5 +1,5 @@
 ---
-tester_image: "universe3:5000/romana/bwpm_enh_tester-5:5.3.1-4.3.3"
+tester_image: "universe3:5000/romana/bwpm_enh_tester-5:5.3.2-4.3.3"
 webserver_url: "172.118.5.35"
 database_ip: "172.118.5.34"
 testcontainer_ip: "172.118.5.38"
@@ -8,7 +8,7 @@ display: "45"
 screen_size: "1920x1080"
 screen_size_opts: "1920,1080"
 j_main: '5'
-joomla_version: "5.3.1"
+joomla_version: "5.3.2"
 bwpm_version: "4.3.3"
 bwpm_version_dotted: "4.3.3"
 bwpm_version_previous: "4.3.2"

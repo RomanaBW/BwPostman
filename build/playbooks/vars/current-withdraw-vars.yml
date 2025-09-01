@@ -1,5 +1,5 @@
 ---
-bwpm_joomla_version: "5.3.2"
+bwpm_joomla_version: "5.3.3"
 bwpm_project_version: "4.3.3"
 version_to_test: "{{ bwpm_project_version| replace('.', '_') }}"
 

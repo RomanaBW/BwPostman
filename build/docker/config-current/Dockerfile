@@ -1,4 +1,4 @@
-FROM universe3:5000/romana/joomla-files-8.1.0:5.3.2
+FROM universe3:5000/romana/joomla-files-8.1.0:5.3.3
 LABEL maintainer=" Romana Boldt <info@boldt-webservice.de> "
 
 # Custom cache invalidation
@@ -14,7 +14,6 @@ COPY boldt-webservice-text.png /usr/src/files/images
 RUN set -ex; \
 	docker-php-ext-enable \
         xdebug \
-        zip \
 	;
 
 # set some needed xdebug settings

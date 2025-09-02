@@ -1,8 +1,8 @@
 #!/bin/bash
 whoami
 
-echo "Test-Cat: lists_nl"
-echo "Project: j531_bwpm433"
+echo "Test-Cat: withdraw_testdata"
+echo "Project: j533_bwpm433"
 
 sudo chmod 1777 /tmp/.X11-unix
 sudo rm -f /tmp/.X45-lock
@@ -10,7 +10,7 @@ sudo mkdir -p /home/seluser/.local/share/mc
 sudo chown -R seluser:users /home/seluser
 
 export BW_TEST_WITHDRAW="no"
-VIDEO_NAME=/data/output/videos/lists_nl.mp4
+VIDEO_NAME=/data/output/videos/withdraw_testdata.mp4
 VIDEO_LOG=/data/output/logs/ffmpeg.log
 
 DISPLAY=":45"
@@ -39,7 +39,7 @@ tmux new-session -d -s BwPostmanRecording1 "ffmpeg -y -f x11grab -draw_mouse 0 -
 
 # run tests
 cd /data
-tests/job_scripts/bwpm_test_runner.sh
+tests/job_scripts/bwpm_test_runner_withdraw.sh
 
 # stop video recording
 echo 'stop recording'

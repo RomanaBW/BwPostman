@@ -54,6 +54,14 @@
         dest: "{{ bwpm_base_path }}/commit-bwpm-base-configured-images.sh"
         mode: 0755
 
+    - name: Set default builder
+      shell: docker buildx use default
+
+    - name: Create joomla local image
+      shell: docker build -t bwpm-config-current-joomla .
+      args:
+        chdir: "{{ bwpm_base_path }}"
+
     - name: Create config middleware
       shell: docker compose up -d
       args:

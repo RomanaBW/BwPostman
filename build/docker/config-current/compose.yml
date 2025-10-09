@@ -11,7 +11,7 @@ services:
     #  Database
   bwpm-config-current-db:
     container_name: bwpm-config-current-db
-    image: universe3:5000/romana/joomla-tables-8.1.0:5.3.3
+    image: universe3:5000/romana/joomla-tables-8.1.0:5.3.4
     networks:
       bwpm-config-current.nil:
         ipv4_address: 172.118.1.18
@@ -23,6 +23,7 @@ services:
         MARIADB_USER: tester
         MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
         MARIADB_PASSWORD_FILE: /run/secrets/db_password
+        MARIADB_AUTO_UPGRADE:
     restart: no
     healthcheck:
         test: ["CMD", "healthcheck.sh", "--datadir=/var/lib/mariadb", "--connect"]
@@ -92,9 +93,6 @@ services:
     restart: no
     environment:
         PMA_HOST: bwpm-config-current-db
-
-volumes:
-  bwpm_db:
 
 secrets:
     db_password:

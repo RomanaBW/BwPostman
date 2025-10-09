@@ -23,6 +23,7 @@ services:
         MARIADB_USER: tester
         MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
         MARIADB_PASSWORD_FILE: /run/secrets/db_password
+        MARIADB_AUTO_UPGRADE:
     restart: no
     healthcheck:
         test: ["CMD", "healthcheck.sh", "--datadir=/var/lib/mariadb", "--connect"]
@@ -38,7 +39,7 @@ services:
   {{ bwpm_joomla_name }}:
     container_name: {{ bwpm_joomla_name }}
     build:
-        network: host
+        context: .
     volumes:
         # mount Joomla configuration
         - type: bind
@@ -92,9 +93,6 @@ services:
     restart: no
     environment:
         PMA_HOST: {{ bwpm_db_name }}
-
-volumes:
-  {{ bwpm_db_volume }}:
 
 secrets:
     db_password:

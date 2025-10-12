@@ -18,7 +18,7 @@ joomla_enh_web-3 ansible_connection=docker ansible_user=root
 bwpm_enh_tester-3 ansible_connection=docker ansible_user=root
 
 joomla_enh_db-4 ansible_connection=docker ansible_user=root
-joomla_enh_web-4 ansible_connection=docker ansible_user=root ansible_python_interpreter=/usr/bin/python3.11
+joomla_enh_web-4 ansible_connection=docker ansible_user=root ansible_python_interpreter=/usr/bin/python3.9
 bwpm_enh_tester-4 ansible_connection=docker ansible_user=root ansible_python_interpreter=/usr/bin/python3.10
 
 joomla_enh_db-5 ansible_connection=docker ansible_user=root

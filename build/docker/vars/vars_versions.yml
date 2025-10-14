@@ -8,7 +8,7 @@ bwpm_joomla_sub_version_current: "53"
 bwpm_joomla_sub_version_previous: "44"
 
 bwpm_php_current: "8.1.0"
-bwpm_php_previous: "7.4.0"
+bwpm_php_previous: "7.4.33"
 
 bwpm_webroot_current: "j5current"
 bwpm_webroot_previous: "j4current"

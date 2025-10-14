@@ -3,9 +3,9 @@
   connection: local
   gather_facts: no
   vars_files:
-    - ../vars/vars_previous_config.yml
     - ../vars/vars_previous.yml
     - ../vars/vars_versions.yml
+    - ../vars/vars_previous_config.yml
 
 # Build base images for BwPostman, only commit
   tasks:

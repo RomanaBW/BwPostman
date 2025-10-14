@@ -1,5 +1,5 @@
 ---
-bwpm_joomla_version: "5.3.3"
+bwpm_joomla_version: "5.3.4"
 bwpm_project_version: "4.3.3"
 version_to_test: "{{ bwpm_project_version| replace('.', '_') }}"
 
@@ -11,7 +11,8 @@ j_main: "{{ bwpm_joomla_version[0] }}"
 bwpm_joomla_version_undotted: "{{ bwpm_joomla_version| replace('.', '')}}"
 bwpm_project_version_undotted: "{{ bwpm_project_version| replace('.', '')}}"
 
-tester_image: "universe3:5000/romana/bwpm_enh_tester-{{ j_main }}:{{ bwpm_joomla_version }}-{{  bwpm_project_version}}"
+tester_image: "universe3:5000/romana/selenium-standalone-chrome-debug-ffmpeg:latest"
+#tester_image: "universe3:5000/romana/bwpm_enh_tester-{{ j_main }}:{{ bwpm_joomla_version }}-{{  bwpm_project_version}}"
 project_name_dotted: "j{{ bwpm_joomla_version }}_bwpm{{ bwpm_project_version }}"
 project_name: "{{ project_name_dotted | replace('.', '')}}"
 

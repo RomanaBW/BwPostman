@@ -73,6 +73,7 @@ joomla_base_folders:
   smoke_j3: "{{ main_base_folder }}/smoke_j3"
   smoke_j4: "{{ main_base_folder }}/smoke_j4"
   smoke_j5: "{{ main_base_folder }}/smoke_j5"
+  smoke_j6: "{{ main_base_folder }}/smoke_j6"
   ext_install_j3: "{{ main_base_folder }}/jbase_j3"
   ext_install_j4: "{{ main_base_folder }}/jbase_j4"
   ext_install_j5: "{{ main_base_folder }}/jbase_j5"
@@ -103,6 +104,14 @@ acceptance_j5_folders:
   - "{{ main_base_folder }}/accept4_j5"
   - "{{ main_base_folder }}/accept5_j5"
   - "{{ main_base_folder }}/acceptB2S_j5"
+
+acceptance_j6_folders:
+  - "{{ main_base_folder }}/accept1_j6"
+  - "{{ main_base_folder }}/accept2_j6"
+  - "{{ main_base_folder }}/accept3_j6"
+  - "{{ main_base_folder }}/accept4_j6"
+  - "{{ main_base_folder }}/accept5_j6"
+  - "{{ main_base_folder }}/acceptB2S_j6"
 
 # Webserver settings
 apache_host: joomla_web

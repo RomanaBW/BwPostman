@@ -5,7 +5,7 @@ database_ip: "172.118.5.58"
 testcontainer_ip: "172.118.5.62"
 project_src_dir: "/home/romana/PhpstormProjects/BwPostman_J4"
 screen_size_opts: "1920,1080"
-j_main: 5
+j_main: 6
 
 
 base_dir: "/vhosts/dev5"

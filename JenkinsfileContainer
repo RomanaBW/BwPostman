@@ -10,16 +10,16 @@ pipeline {
 					JOOMLA_VERSION_PREVIOUS = "5.4.0"
 					JOOMLA_VERSION_CURRENT = "6.0.0"
 
-					DO_CURRENT_SMOKE  = 'false'
-					DO_CURRENT_ACCEPT = 'false'
-					DO_CURRENT_PERMS  = 'false'
+					DO_CURRENT_SMOKE  = 'true'
+					DO_CURRENT_ACCEPT = 'true'
+					DO_CURRENT_PERMS  = 'true'
 
 					DO_PREVIOUS_SMOKE  = 'true'
-					DO_PREVIOUS_ACCEPT = 'false'
-					DO_PREVIOUS_PERMS  = 'false'
+					DO_PREVIOUS_ACCEPT = 'true'
+					DO_PREVIOUS_PERMS  = 'true'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'true'
+					PACK_PACKAGE  = 'false'
 
 					PHP_VERSION_PREVIOUS = "8.1.0"
 					PHP_VERSION_CURRENT = "8.3.0"
@@ -91,7 +91,7 @@ pipeline {
             }
 		}
 
-		stage('Run acceptance Joomls 6') {
+		stage('Run acceptance Joomla 6') {
 			when {
 				expression {
 					return DO_CURRENT_ACCEPT == 'true'
@@ -178,7 +178,7 @@ pipeline {
             }
 		}
 
-        stage('Send acceptance success mail for Joomls 6 part') {
+        stage('Send acceptance success mail for Joomla 6 part') {
 			when {
 				expression {
 					return DO_CURRENT_ACCEPT == 'true'
@@ -266,7 +266,7 @@ pipeline {
 
 
 
-		stage('Run permissions Joomls 6') {
+		stage('Run permissions Joomla 6') {
 			when {
 				expression {
 					return DO_CURRENT_PERMS == 'true'
@@ -352,7 +352,7 @@ pipeline {
             }
 		}
 
-        stage('Send permissions success mail for Joomls 6 part') {
+        stage('Send permissions success mail for Joomla 6 part') {
 			when {
 				expression {
 					return DO_CURRENT_PERMS == 'true'

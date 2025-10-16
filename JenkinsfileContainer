@@ -8,7 +8,13 @@ pipeline {
 					BWPM_VERSION = "4.3.3"
 
 					JOOMLA_VERSION_PREVIOUS = "5.4.0"
-					JOOMLA_VERSION_CURRENT = "6.0.0"
+					JOOMLA_VERSION_CURRENT  = "6.0.0"
+
+					DO_CURRENT_GENERAL   = 'false'
+					DO_PREVIOUS_GENERAL  = 'true'
+
+					DO_DEV_UPLOAD = 'true'
+					PACK_PACKAGE  = 'false'
 
 					DO_CURRENT_SMOKE  = 'true'
 					DO_CURRENT_ACCEPT = 'true'
@@ -17,9 +23,6 @@ pipeline {
 					DO_PREVIOUS_SMOKE  = 'false'
 					DO_PREVIOUS_ACCEPT = 'false'
 					DO_PREVIOUS_PERMS  = 'false'
-
-					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'false'
 
 					PHP_VERSION_PREVIOUS = "8.1.0"
 					PHP_VERSION_CURRENT = "8.3.0"
@@ -58,9 +61,14 @@ pipeline {
 
 		stage('Run smoke tests with J6') {
 			when {
-				expression {
-					return DO_CURRENT_SMOKE == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_CURRENT_SMOKE == 'true'
+		    		}
+    				expression {
+	    				return DO_CURRENT_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 //				echo "Dummy Smoke"
@@ -81,9 +89,14 @@ pipeline {
 
 		stage('Remove smoke tests container images J6') {
 			when {
-				expression {
-					return DO_CURRENT_SMOKE == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_CURRENT_SMOKE == 'true'
+		    		}
+    				expression {
+	    				return DO_CURRENT_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 //				echo "Dummy Smoke Remove"
@@ -93,9 +106,14 @@ pipeline {
 
 		stage('Run acceptance Joomla 6') {
 			when {
-				expression {
-					return DO_CURRENT_ACCEPT == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_CURRENT_ACCEPT == 'true'
+		    		}
+    				expression {
+	    				return DO_CURRENT_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			parallel {
 				stage('A5-1: Lists NLS, TPLS, SUBS') {
@@ -168,9 +186,14 @@ pipeline {
 
 		stage('Remove acceptance tests container images for J6') {
 			when {
-				expression {
-					return DO_CURRENT_ACCEPT == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_CURRENT_ACCEPT == 'true'
+		    		}
+    				expression {
+	    				return DO_CURRENT_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 //				echo "Dummy Acceptance Remove"
@@ -180,9 +203,14 @@ pipeline {
 
         stage('Send acceptance success mail for Joomla 6 part') {
 			when {
-				expression {
-					return DO_CURRENT_ACCEPT == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_CURRENT_ACCEPT == 'true'
+		    		}
+    				expression {
+	    				return DO_CURRENT_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 				emailext(
@@ -198,9 +226,14 @@ pipeline {
 
 		stage('Dev-Upload') {
 			when {
-				expression {
-					return DO_DEV_UPLOAD == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_DEV_UPLOAD == 'true'
+		    		}
+    				expression {
+	    				return DO_CURRENT_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 				dir("/repositories/artifacts/bwpostman4/data") {
@@ -268,9 +301,14 @@ pipeline {
 
 		stage('Run permissions Joomla 6') {
 			when {
-				expression {
-					return DO_CURRENT_PERMS == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_CURRENT_PERMS == 'true'
+		    		}
+    				expression {
+	    				return DO_CURRENT_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			parallel {
 				stage('P5-1: P1') {
@@ -342,9 +380,14 @@ pipeline {
 
 		stage('Remove permissions tests container images for J6') {
 			when {
-				expression {
-					return DO_CURRENT_PERMS == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_CURRENT_PERMS == 'true'
+		    		}
+    				expression {
+	    				return DO_CURRENT_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 //				echo "Dummy Permissions Remove"
@@ -354,9 +397,14 @@ pipeline {
 
         stage('Send permissions success mail for Joomla 6 part') {
 			when {
-				expression {
-					return DO_CURRENT_PERMS == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_CURRENT_PERMS == 'true'
+		    		}
+    				expression {
+	    				return DO_CURRENT_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 				emailext(
@@ -370,9 +418,14 @@ pipeline {
 
 		stage('Run smoke tests with J5') {
 			when {
-				expression {
-					return DO_PREVIOUS_SMOKE == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_PREVIOUS_SMOKE == 'true'
+		    		}
+    				expression {
+	    				return DO_PREVIOUS_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 //				echo "Dummy Smoke"
@@ -393,9 +446,14 @@ pipeline {
 
 		stage('Remove smoke tests container images J5') {
 			when {
-				expression {
-					return DO_PREVIOUS_SMOKE == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_PREVIOUS_SMOKE == 'true'
+		    		}
+    				expression {
+	    				return DO_PREVIOUS_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 //				echo "Dummy Smoke Remove"
@@ -405,9 +463,14 @@ pipeline {
 
 		stage('Run acceptance Joomla 5') {
 			when {
-				expression {
-					return DO_PREVIOUS_ACCEPT == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_PREVIOUS_ACCEPT == 'true'
+		    		}
+    				expression {
+	    				return DO_PREVIOUS_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			parallel {
 				stage('A4-1: Lists NLS, TPLS, SUBS') {
@@ -479,9 +542,14 @@ pipeline {
 
 		stage('Remove acceptance tests container images for J5') {
 			when {
-				expression {
-					return DO_PREVIOUS_ACCEPT == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_PREVIOUS_ACCEPT == 'true'
+		    		}
+    				expression {
+	    				return DO_PREVIOUS_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 //				echo "Dummy Acceptance Remove"
@@ -491,9 +559,14 @@ pipeline {
 
         stage('Send acceptance success mail for Joomla 5 part') {
 			when {
-				expression {
-					return DO_PREVIOUS_ACCEPT == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_PREVIOUS_ACCEPT == 'true'
+		    		}
+    				expression {
+	    				return DO_PREVIOUS_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 				emailext(
@@ -505,9 +578,14 @@ pipeline {
         }
 		stage('Run permissions Joomla 5') {
 			when {
-				expression {
-					return DO_PREVIOUS_PERMS == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_PREVIOUS_PERMS == 'true'
+		    		}
+    				expression {
+	    				return DO_PREVIOUS_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			parallel {
 				stage('P4-1: P1') {
@@ -579,9 +657,14 @@ pipeline {
 
 		stage('Remove permissions tests container images for J5') {
 			when {
-				expression {
-					return DO_PREVIOUS_PERMS == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_PREVIOUS_PERMS == 'true'
+		    		}
+    				expression {
+	    				return DO_PREVIOUS_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 //				echo "Dummy Permissions Remove"
@@ -591,9 +674,14 @@ pipeline {
 
         stage('Send permissions success mail for Joomla 5 part') {
 			when {
-				expression {
-					return DO_PREVIOUS_PERMS == 'true'
-				}
+			    allOf {
+    				expression {
+	    				return DO_PREVIOUS_PERMS == 'true'
+		    		}
+    				expression {
+	    				return DO_PREVIOUS_GENERAL == 'true'
+		    		}
+		    	}
 			}
 			steps {
 				emailext(

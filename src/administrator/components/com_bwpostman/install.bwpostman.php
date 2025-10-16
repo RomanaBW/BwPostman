@@ -31,8 +31,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Session\Session;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -1928,7 +1929,7 @@ EOS;
 		if ($buffer)
 		{
 			// Create an array of queries from the sql file
-			$queries = JDatabaseDriver::splitSql($buffer);
+			$queries = DatabaseDriver::splitSql($buffer);
 
 			// No queries to process
 			if (count($queries) != 0)

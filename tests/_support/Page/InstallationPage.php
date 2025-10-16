@@ -848,10 +848,10 @@ class InstallationPage
 			$I->click(self::$installButton);
 		}
 
-		if ($new_j_installer)
-		{
-			$I->executeJS("document.getElementById('legacy-uploader').className = 'hidden';");
-		}
+//		if ($new_j_installer)
+//		{
+//			$I->executeJS("document.getElementById('legacy-uploader').className = 'hidden';");
+//		}
 
 		$I->waitForElement(Generals::$sys_message_container, 150);
 

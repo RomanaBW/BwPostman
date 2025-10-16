@@ -29,7 +29,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Log\LogEntry;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

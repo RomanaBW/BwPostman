@@ -27,6 +27,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -36,7 +37,7 @@ use Joomla\CMS\Component\ComponentHelper;
  *
  * @since   2.0.0
  */
-class JFormFieldDcMessage extends JFormField
+class JFormFieldDcMessage extends FormField
 {
 	/**
 	 * The form field type.

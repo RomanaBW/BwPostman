@@ -30,7 +30,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use DateTime;
 use Exception;
-use JAccessRules;
+use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -287,7 +287,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		{
 			if (property_exists($src, 'rules') && is_array($src->rules))
 			{
-				$rules = new JAccessRules($src->rules);
+				$rules = new Rules($src->rules);
 				$this->setRules($rules);
 			}
 		}
@@ -295,7 +295,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		{
 			if (array_key_exists('rules', $src) && is_array($src['rules']))
 			{
-				$rules = new JAccessRules($src['rules']);
+				$rules = new Rules($src['rules']);
 				$this->setRules($rules);
 			}
 		}

@@ -27,6 +27,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -37,7 +38,7 @@ use Joomla\CMS\Plugin\PluginHelper;
  *
  * @since   2.0.0
  */
-class JFormFieldBwpSpacer extends JFormField
+class JFormFieldBwpSpacer extends FormField
 {
 	/**
 	 * The form field type.

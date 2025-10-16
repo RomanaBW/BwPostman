@@ -27,6 +27,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -34,7 +35,7 @@ use Joomla\CMS\Language\Text;
  *
  * @since
  */
-class JFormFieldAsset extends JFormField
+class JFormFieldAsset extends FormField
 {
 	/**
 	 * property to hold type

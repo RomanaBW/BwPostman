@@ -34,7 +34,8 @@ use Exception;
 use InvalidArgumentException;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Mail\MailerFactoryInterface;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -276,7 +277,7 @@ class NewsletterModel extends AdminModel
 					return false;
 				}
 
-				// Convert to the JObject before adding other data.
+				// Convert to Object before adding other data.
 //                $properties = get_object_vars($table);
 				$properties = $table->getProperties(1);
 
@@ -295,7 +296,7 @@ class NewsletterModel extends AdminModel
                     $properties = $eventResults[0];
                 }
 
-				$item = ArrayHelper::toObject($properties, 'JObject');
+				$item = ArrayHelper::toObject($properties);
 
 				if (property_exists($item, 'params'))
 				{
@@ -1096,7 +1097,8 @@ class NewsletterModel extends AdminModel
 
 		if ($changeResult === false)
 		{
-			$this->setError($table->getError());
+//			$this->setError($table->getError());
+//            throw new Exception($table->getError());
 
 			return false;
 		}
@@ -2083,7 +2085,8 @@ class NewsletterModel extends AdminModel
 		$unsubscribe_url = $renderer->generateUnsubscribeUrl($itemid_unsubscribe, $tblSendMailQueue->recipient, $editlink);
 
 		// Get a JMail instance
-		$mailer = Factory::getMailer();
+//		$mailer = Factory::getMailer();
+        $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
 		$mailer->SMTPDebug = true;
 
 		$sender    = array();

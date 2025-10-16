@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
-use JAccessRules;
+use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -141,7 +141,7 @@ class SendmailqueueTable extends Table
 			{
 				if (property_exists($src, 'rules') && is_array($src->rules))
 				{
-					$rules = new JAccessRules($src->rules);
+					$rules = new Rules($src->rules);
 					$this->setRules($rules);
 				}
 			}
@@ -149,7 +149,7 @@ class SendmailqueueTable extends Table
 			{
 				if (array_key_exists('rules', $src) && is_array($src['rules']))
 				{
-					$rules = new JAccessRules($src['rules']);
+					$rules = new Rules($src['rules']);
 					$this->setRules($rules);
 				}
 			}

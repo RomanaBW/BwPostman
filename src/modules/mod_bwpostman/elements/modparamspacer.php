@@ -24,6 +24,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Form\FormField;
+
 defined('JPATH_PLATFORM') or die;
 
 /**
@@ -31,7 +33,7 @@ defined('JPATH_PLATFORM') or die;
  *
  * @since
  */
-class JFormFieldModparamspacer extends JFormField
+class JFormFieldModparamspacer extends FormField
 {
 	/**
 	 * property to hold type

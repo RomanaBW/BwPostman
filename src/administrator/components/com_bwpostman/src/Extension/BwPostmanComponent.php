@@ -35,7 +35,7 @@ use Joomla\CMS\Extension\BootableExtensionInterface;
 use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\Html\BwPostman;
-use Joomla\CMS\MVC\Model\DatabaseAwareTrait;
+use \Joomla\Database\DatabaseAwareTrait;
 use Psr\Container\ContainerInterface;
 
 /**

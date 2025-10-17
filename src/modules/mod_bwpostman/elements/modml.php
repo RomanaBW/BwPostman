@@ -27,6 +27,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\CheckboxesField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormHelper;
@@ -43,10 +44,10 @@ FormHelper::loadFieldClass('checkboxes');
  *
  * @package     Joomla.Platform
  * @subpackage  Form
- * @see         JFormFieldCheckbox
+ * @see         CheckboxesField
  * @since
  */
-class JFormFieldModMl extends JFormFieldCheckboxes
+class JFormFieldModMl extends CheckboxesField
 {
 	/**
 	 * The form field type.

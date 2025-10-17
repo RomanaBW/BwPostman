@@ -30,9 +30,9 @@ defined('JPATH_BASE') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
-use JHtmlSelect;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\HTML\Helpers\Select;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Database\DatabaseInterface;
@@ -106,13 +106,13 @@ class AvailablecontentField extends ListField
 		// Create a read-only list (no name) with a hidden input to store the value.
 		if ((string) $this->element['readonly'] == 'true')
 		{
-			$html[] = JHtmlSelect::genericlist($options, '', trim($attr), 'value', 'text', $this->value, $this->id);
+			$html[] = Select::genericlist($options, '', trim($attr), 'value', 'text', $this->value, $this->id);
 			$html[] = '<input type="hidden" name="' . $this->name . '" value="' . htmlspecialchars($this->value, ENT_COMPAT) . '"/>';
 		}
 		// Create a regular list.
 		else
 		{
-			$html[] = JHtmlSelect::genericlist($options, $this->name, trim($attr), 'value', 'text', $this->value, $this->id);
+			$html[] = Select::genericlist($options, $this->name, trim($attr), 'value', 'text', $this->value, $this->id);
 		}
 
 		return implode($html);

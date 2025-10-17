@@ -27,6 +27,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Form\Field\CheckboxField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormHelper;
@@ -39,7 +40,7 @@ FormHelper::loadFieldClass('checkbox');
  *
  * @since   2.1.1
  */
-class JFormFieldDisclaimer extends JFormFieldCheckbox
+class JFormFieldDisclaimer extends CheckboxField
 {
 	/**
 	 * The form field type.

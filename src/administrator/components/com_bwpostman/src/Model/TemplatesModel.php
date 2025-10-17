@@ -31,9 +31,9 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
-use JLogEntry;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\LogEntry;
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
@@ -573,9 +573,9 @@ class TemplatesModel extends ListModel
 		// If the file isn't okay, redirect to templates
 		if ($file['error'] > 0)
 		{
-			$this->logger->addEntry(new JLogEntry('tmp filename if template to import: ' . $src, BwLogger::BW_DEBUG, 'templates'));
-			$this->logger->addEntry(new JLogEntry('archive name if template to import: ' . $archivename, BwLogger::BW_DEBUG, 'templates'));
-			$this->logger->addEntry(new JLogEntry('file array: ' . print_r($file, true), BwLogger::BW_DEBUG, 'templates'));
+			$this->logger->addEntry(new LogEntry('tmp filename if template to import: ' . $src, BwLogger::BW_DEBUG, 'templates'));
+			$this->logger->addEntry(new LogEntry('archive name if template to import: ' . $archivename, BwLogger::BW_DEBUG, 'templates'));
+			$this->logger->addEntry(new LogEntry('file array: ' . print_r($file, true), BwLogger::BW_DEBUG, 'templates'));
 
 			//http://de.php.net/features.file-upload.errors
 			$msg = Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD');

@@ -34,6 +34,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
+use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 HtmlHelper::_('behavior.keepalive');
 

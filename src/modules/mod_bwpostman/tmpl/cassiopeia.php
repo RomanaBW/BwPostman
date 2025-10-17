@@ -33,6 +33,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
+use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 HTMLHelper::_('bootstrap.tooltip', '.hasTooltip');
 
@@ -396,7 +397,7 @@ $required_end .= '</div>';
 				if ($paramsComponent->get('disclaimer_selection', '1') == 1 && $paramsComponent->get('article_id', '0') > 0)
 				{
 					// Disclaimer article and target_blank or not
-					$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($paramsComponent->get('article_id', '0')) . $tpl_com);
+					$disclaimer_link = Route::_(Uri::base() . RouteHelper::getArticleRoute($paramsComponent->get('article_id', '0')) . $tpl_com);
 				}
 				elseif ($paramsComponent->get('disclaimer_selection', '1') == 2 && $paramsComponent->get('disclaimer_menuitem', '0') > 0)
 				{

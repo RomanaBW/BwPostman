@@ -24,6 +24,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Plugin\CMSPlugin;
+
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
@@ -34,7 +36,7 @@ jimport('joomla.plugin.plugin');
  *
  * @since       2.0.0
  */
-class PlgBwTests extends JPlugin
+class PlgBwTests extends CMSPlugin
 {
 	// only a dummy
 }

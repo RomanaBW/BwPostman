@@ -29,6 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 jimport('joomla.plugin.plugin');
 
@@ -45,7 +46,7 @@ if (!ComponentHelper::isEnabled('com_bwpostman')) {
  *
  * @since       2.0.0
  */
-class plgBwPostmanDemo extends JPlugin
+class plgBwPostmanDemo extends CMSPlugin
 {
 	// only a dummy
 }

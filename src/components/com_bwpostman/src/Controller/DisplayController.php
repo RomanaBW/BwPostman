@@ -19,10 +19,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\Registry\Registry;
-use JResponseJson;
 use function defined;
 
 /**
@@ -154,12 +154,12 @@ class DisplayController extends BaseController
 		if (!Session::checkToken('get'))
 		{
 			$app->enqueueMessage(Text::_('JINVALID_TOKEN'), 'error');
-			echo new JResponseJson;
+			echo new JsonResponse;
 			$app->close();
 		}
 
 		$model = new BwpostmanModel();
-		echo new JResponseJson($model->storePermissions());
+		echo new JsonResponse($model->storePermissions());
 		$app->close();
 	}
 

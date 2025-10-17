@@ -29,7 +29,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-use ContentHelperRoute;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -39,6 +38,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Multilanguage;
+use Joomla\Component\Content\Site\Helper\RouteHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Event\Event;
 use Joomla\Utilities\ArrayHelper;
@@ -304,7 +304,7 @@ class ContentRenderer
 				$params  = $row->params;
 				$lang    = self::getArticleLanguage($row->id);
 				$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
-				$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
+				$_Itemid = Route::link('site', RouteHelper::getArticleRoute($row->slug, $row->catid, $lang));
 				$link    = str_replace(Uri::base(true).'/', '', Uri::base());
 				if ($_Itemid)
 				{
@@ -448,7 +448,7 @@ class ContentRenderer
 
                 $lang    = self::getArticleLanguage($row->id);
 				$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
-				$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
+				$_Itemid = Route::link('site', RouteHelper::getArticleRoute($row->slug, $row->catid, $lang));
 				$link    = str_replace(Uri::base(true).'/', '', Uri::base());
 
 				if ($_Itemid)
@@ -731,6 +731,7 @@ class ContentRenderer
 			$registry = new Registry;
 			$registry->loadString($tpl->basics);
 			$tpl->basics = $registry->toArray();
+			$this->nl_width = $tpl->basics['nl_width'];
 		}
 
 		if (is_string($tpl->article))
@@ -993,6 +994,8 @@ class ContentRenderer
 			$replace3  = isset($tpl_assets['tpl_tags_legal']) && $tpl_assets['tpl_tags_legal'] == 0 ?
 				$tpl_assets['tpl_tags_legal_advanced_b'] :
 				BwPostmanTplHelper::getLegalTagBegin();
+			if (isset($this->nl_width) && $this->nl_width != 0)
+				$replace3 = str_replace('[%width600%]', intval($this->nl_width), $replace3);
 			$replace3 .= $replace . "<br /><br />\n";
 			$replace3 .= isset($tpl_assets['tpl_tags_legal']) && $tpl_assets['tpl_tags_legal'] == 0 ?
 				$tpl_assets['tpl_tags_legal_advanced_e'] :
@@ -1560,7 +1563,7 @@ class ContentRenderer
 	{
 		$lang    = self::getArticleLanguage($row->id);
 		$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
-		$_Itemid = Route::link('site', ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $lang));
+		$_Itemid = Route::link('site', RouteHelper::getArticleRoute($row->slug, $row->catid, $lang));
 		$link    = str_replace(Uri::base(true).'/', '', Uri::base());
 
 		if ($_Itemid)

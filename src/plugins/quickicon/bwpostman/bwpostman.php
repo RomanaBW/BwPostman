@@ -25,6 +25,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+
 defined('_JEXEC') or die('Restricted access');
 
 // Require class
@@ -36,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since       0.9
  */
-class PlgQuickiconBwPostman extends JPlugin
+class PlgQuickiconBwPostman extends CMSPlugin
 {
 	/**
 	 * Constructor.
@@ -52,9 +56,9 @@ class PlgQuickiconBwPostman extends JPlugin
 	 */
 	public function __construct($subject, $config)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		// Do not load if BwPostman version is not supported or BwPostmanNewsletter isn't detected
-		if ($app->isClient('site') || JComponentHelper::getComponent('com_bwpostman', true)->enabled === false) {
+		if ($app->isClient('site') || ComponentHelper::getComponent('com_bwpostman', true)->enabled === false) {
 			return;
 		}
 

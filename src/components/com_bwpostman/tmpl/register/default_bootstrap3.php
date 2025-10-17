@@ -33,6 +33,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 HtmlHelper::_('behavior.keepalive');
 
@@ -541,7 +542,7 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 							// Disclaimer article and target_blank or not
 							if ($this->params->get('disclaimer_selection', '1') == 1 && $this->params->get('article_id', '0') > 0)
 							{
-								$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($this->params->get('article_id', '0') . $tpl_com, 0));
+								$disclaimer_link = Route::_(Uri::base() . RouteHelper::getArticleRoute($this->params->get('article_id', '0') . $tpl_com, 0));
 							}
 							// Disclaimer menu item and target_blank or not
 							elseif ($this->params->get('disclaimer_selection', '1') == 2 && $this->params->get('disclaimer_menuitem', '0') > 0)

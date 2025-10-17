@@ -29,8 +29,9 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Log\LogEntry;
-use Joomla\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Path;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
@@ -264,7 +265,12 @@ class BwLogger extends W3cLogger implements LoggerAwareInterface
 			// Write the new entry to the file.
 			$line .= "\n";
 
-			if (!File::append($this->path, $line))
+            $file = Path::clean($this->path);
+            $ret  = \is_int(file_put_contents($file, $line, FILE_APPEND));
+
+            File::invalidateFileCache($file);
+
+			if (!$ret)
 			{
 				throw new RuntimeException('Cannot write to log file.');
 			}

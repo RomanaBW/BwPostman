@@ -61,6 +61,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Site\Model\RegisterModel;
 use BoldtWebservice\Plugin\BwPostman\System\U2S\Helper\BwpmUser2SubscriberHelper;
 use RuntimeException;
+use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries');
@@ -462,7 +463,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
         if ($this->debug)
         {
-            $this->logger->addEntry(new LogEntry('Form is not an instance of JForm', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+            $this->logger->addEntry(new LogEntry('Form is not an instance of \Joomla\CMS\Form\Form', BwLogger::BW_DEVELOPMENT, $this->log_cat));
         }
 
 		$this->logger->addEntry(new LogEntry('Form U2S is instance'));
@@ -702,7 +703,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			// Disclaimer article and target_blank or not
 			if ($com_params->get('disclaimer_selection', '1') == 1 && $com_params->get('article_id', '0') > 0)
 			{
-				$disclaimer_link = Route::_(Uri::base() . ContentHelperRoute::getArticleRoute($com_params->get('article_id', '0') . $tpl_com));
+				$disclaimer_link = Route::_(Uri::base() . RouteHelper::getArticleRoute($com_params->get('article_id', '0') . $tpl_com));
 			}
 			// Disclaimer menu item and target_blank or not
 			elseif ($com_params->get('disclaimer_selection', '1') == 2 && $com_params->get('disclaimer_menuitem', '0') > 0)

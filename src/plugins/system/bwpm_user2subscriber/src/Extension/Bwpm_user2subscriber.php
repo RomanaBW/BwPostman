@@ -216,6 +216,8 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
             $config['params'] = new Registry($plugin->params);
 
+            $this->autoloadLanguage = true;
+
             parent::__construct($dispatcher, $config);
 
             $log_options  = array();

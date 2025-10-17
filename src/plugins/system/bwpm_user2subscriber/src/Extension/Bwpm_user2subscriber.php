@@ -368,17 +368,20 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
     {
         $lang = Factory::getApplication()->getLanguage();
 
-        //Load first english file of component
-        $lang->load('com_bwpostman', JPATH_SITE, 'en-GB', true);
+        if (is_object($lang))
+        {
+            //Load first english file of component
+            $lang->load('com_bwpostman', JPATH_SITE, 'en-GB', true);
 
-        //load specific language of component
-        $lang->load('com_bwpostman', JPATH_SITE, null, true);
+            //load specific language of component
+            $lang->load('com_bwpostman', JPATH_SITE, null, true);
 
-        //Load specified other language files in english
-        $lang->load('plg_system_bwpm_user2subscriber', JPATH_ADMINISTRATOR, 'en-GB', true);
+            //Load specified other language files in english
+            $lang->load('plg_system_bwpm_user2subscriber', JPATH_ADMINISTRATOR, 'en-GB', true);
 
-        // and other language
-        $lang->load('plg_system_bwpm_user2subscriber', JPATH_ADMINISTRATOR, null, true);
+            // and other language
+            $lang->load('plg_system_bwpm_user2subscriber', JPATH_ADMINISTRATOR, null, true);
+        }
     }
 
     /**

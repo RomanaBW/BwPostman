@@ -1380,7 +1380,7 @@ class TestNewslettersDetailsCest
 		$popupModalIdentifier = NlEdit::$popupModalIdentifier_5;
 		$popupIframe          = NlEdit::$popupIframe_5;
 
-		if ($jVersion !== 5)
+		if ($jVersion < 5)
 		{
 			$popupSelectorSelect  = NlEdit::$popupSelectorSelect_4;
 			$popupSelectorClear   = NlEdit::$popupSelectorClear_4;

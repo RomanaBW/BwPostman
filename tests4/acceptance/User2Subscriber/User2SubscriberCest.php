@@ -1774,7 +1774,7 @@ class User2SubscriberCest
 			$I->clickAndWait(Generals::$toolbar4['Delete'], 1);
 
 			// process confirmation popup
-			if ($jVersion !== 5)
+			if ($jVersion < 5)
 			{
 				$I->seeInPopup(RegPage::$delete_confirm);
 				$I->acceptPopup();

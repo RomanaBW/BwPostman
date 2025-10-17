@@ -218,7 +218,7 @@ class UserAccountCest
 		$I->click(Generals::$toolbarActions);
 		$I->clickAndWait(UAPage::$delete_button, 1);
 
-		if ($jVersion !== 5)
+		if ($jVersion < 5)
 		{
 			$I->acceptPopup();
 		}

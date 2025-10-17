@@ -1329,7 +1329,7 @@ class Acceptance extends Codeception\Module
 		else
 		{
 			// process confirmation popup
-			if ($jVersion !== 5)
+			if ($jVersion < 5)
 			{
 				$I->seeInPopup($edit_data['remove_confirm']);
 				$I->acceptPopup();

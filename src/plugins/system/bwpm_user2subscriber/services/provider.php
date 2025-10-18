@@ -25,7 +25,7 @@ return new class () implements ServiceProviderInterface {
             PluginInterface::class,
             function (Container $container)
             {
-                $config  = (array)PluginHelper::getPlugin('system', 'bw_libregister');
+                $config  = (array)PluginHelper::getPlugin('system', 'bwpm_user2subscriber');
                 $subject = $container->get(DispatcherInterface::class);
 
                 /** @var \Joomla\CMS\Plugin\CMSPlugin $plugin */

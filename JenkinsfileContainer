@@ -14,15 +14,15 @@ pipeline {
 					DO_PREVIOUS_GENERAL  = 'true'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'true'
+					PACK_PACKAGE  = 'false'
 
 					DO_CURRENT_SMOKE  = 'true'
 					DO_CURRENT_ACCEPT = 'true'
 					DO_CURRENT_PERMS  = 'true'
 
-					DO_PREVIOUS_SMOKE  = 'false'
-					DO_PREVIOUS_ACCEPT = 'false'
-					DO_PREVIOUS_PERMS  = 'false'
+					DO_PREVIOUS_SMOKE  = 'true'
+					DO_PREVIOUS_ACCEPT = 'true'
+					DO_PREVIOUS_PERMS  = 'true'
 
 					PHP_VERSION_PREVIOUS = "8.1.0"
 					PHP_VERSION_CURRENT = "8.3.0"

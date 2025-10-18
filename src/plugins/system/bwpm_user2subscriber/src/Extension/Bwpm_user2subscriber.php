@@ -201,10 +201,12 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
     /**
      * PlgSystemBWPM_User2Subscriber constructor.
      *
-     * @param DispatcherInterface $dispatcher
-     * @param array               $config
+     * @param array $config  An optional associative array of configuration settings.
+     *                       Recognized key values include 'name', 'group', 'params', 'language'
+     *                       (this list is not meant to be comprehensive).
      *
      * @throws Exception
+     *
      * @since   2.0.0
      */
 	public function __construct(DispatcherInterface $dispatcher, array $config = [])
@@ -337,7 +339,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
 			if ($result === null)
 			{
-				$result = '';
+				$result = ' ';
 			}
 
 			$manifest = json_decode($result, true);
@@ -405,6 +407,9 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 		{
 			return;
 		}
+
+        // Load plugin language files.
+        $this->loadLanguage();
 
         // If using a concrete event, do it the simple way
         if ($event instanceof PrepareFormEvent)
@@ -532,7 +537,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			return false;
 		}
 
-		if (version_compare($this->BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
+		if ($this->BwPostmanComponentVersion !== '%%version_number%%' && version_compare($this->BwPostmanComponentVersion, $this->min_bwpostman_version, 'lt'))
 		{
 			if ($this->debug)
 			{

@@ -408,8 +408,8 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			return;
 		}
 
-        // Load plugin language files.
-        $this->loadLanguage();
+        // Load plugin and component language files.
+        $this->loadLanguageFiles();
 
         // If using a concrete event, do it the simple way
         if ($event instanceof PrepareFormEvent)

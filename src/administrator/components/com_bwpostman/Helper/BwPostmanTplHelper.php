@@ -125,7 +125,7 @@ abstract class BwPostmanTplHelper
 		$legal_tag_begin  = '   <table id="legal" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed; width: 100%;"><tbody>';
 		$legal_tag_begin .= '     <tr>' . "\n";
 		$legal_tag_begin .= '       <td id="legal_td">' . "\n";
-		$legal_tag_begin .= '         <table class="one-col legal" style="border-collapse: collapse;border-spacing: 0;"><tbody>' . "\n";
+		$legal_tag_begin .= '         <table class="one-col legal" align="center" width="[%width600%]" style="border-collapse: collapse; border-spacing: 0; width: inherit; max-width: [%width600%]px;"><tbody>' . "\n";
 		$legal_tag_begin .= '          <tr>' . "\n";
 		$legal_tag_begin .= '           <td class="legal_td">' . "\n";
 

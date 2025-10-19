@@ -890,6 +890,7 @@ class TemplateModel extends AdminModel
 		{
 			// replace [%impressum%]
 			$replace3  = $legal_tag_b == '' ? BwPostmanTplHelper::getLegalTagBegin() : $legal_tag_b;
+      if (isset($basics['nl_width'])) $replace3  = str_replace('[%width600%]', intval($basics['nl_width']), $replace3);
 			$replace3 .= "<br /><br />" . Text::sprintf('COM_BWPOSTMAN_NL_FOOTER_HTML', Uri::root(true));
 			$replace3 .= $impressum . "<br /><br />\n";
 			$replace3 .= $legal_tag_e == '' ? BwPostmanTplHelper::getLegalTagEnd() : $legal_tag_e;

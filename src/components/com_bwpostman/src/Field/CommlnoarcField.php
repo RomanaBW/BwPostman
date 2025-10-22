@@ -26,7 +26,7 @@
 
 namespace BoldtWebservice\Component\BwPostman\Site\Field;
 
-defined('JPATH_PLATFORM') or die;
+defined('_JEXEC') or die;
 
 use Exception;
 use Joomla\CMS\Form\Field\CheckboxesField;

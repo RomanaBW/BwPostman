@@ -26,7 +26,7 @@
 
 use Joomla\CMS\Form\FormField;
 
-defined('JPATH_PLATFORM') or die;
+defined('_JEXEC') or die;
 
 /**
  * Class JFormFieldAsset

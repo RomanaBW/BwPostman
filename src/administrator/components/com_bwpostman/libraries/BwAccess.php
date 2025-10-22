@@ -26,7 +26,7 @@
 
 namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
 
-defined('JPATH_PLATFORM') or die;
+defined('_JEXEC') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;

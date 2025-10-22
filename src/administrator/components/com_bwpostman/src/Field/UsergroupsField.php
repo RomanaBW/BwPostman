@@ -26,7 +26,7 @@
 
 namespace BoldtWebservice\Component\BwPostman\Administrator\Field;
 
-defined('JPATH_PLATFORM') or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\Field\RadioField;
 use Joomla\CMS\HTML\HTMLHelper;

@@ -30,7 +30,6 @@ namespace BoldtWebservice\Plugin\System\Bwpm_user2subscriber\Extension;
 
 defined('_JEXEC') or die('Restricted access');
 
-use ContentHelperRoute;
 use Exception;
 use JLoader;
 use Joomla\CMS\Event\Model\PrepareFormEvent;
@@ -65,10 +64,6 @@ use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries');
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Model', JPATH_SITE.'/components/com_bwpostman/src/Model');
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Field', JPATH_SITE.'/components/com_bwpostman/src/Field');
-JLoader::registerNamespace('BoldtWebservice\\Plugin\\BwPostman\\System\\U2S\\Field', JPATH_PLUGINS . '/system/bwpm_user2subscriber/form/fields');
-JLoader::registerNamespace('BoldtWebservice\\Plugin\\BwPostman\\System\\U2S\\Helper', JPATH_PLUGINS . '/system/bwpm_user2subscriber/helpers');
 
 /**
  * Class User2Subscriber
@@ -209,7 +204,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
      *
      * @since   2.0.0
      */
-	public function __construct(DispatcherInterface $dispatcher, array $config = [])
+	public function __construct(DispatcherInterface $subject, array $config = [])
 	{
         // Only do something if component is enabled
         if (ComponentHelper::isEnabled('com_bwpostman'))
@@ -220,10 +215,10 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
             $this->autoloadLanguage = true;
 
-            parent::__construct($dispatcher, $config);
+            parent::__construct($config);
 
             $log_options  = array();
-            $this->logger = BwLogger::getInstance($log_options);
+            $this->logger = new BwLogger($log_options);
             $this->debug  = (bool) $this->params->get('debug_option', false);
 
             $this->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));

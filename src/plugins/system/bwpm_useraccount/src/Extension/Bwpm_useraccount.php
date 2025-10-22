@@ -40,22 +40,20 @@ use Joomla\CMS\Event\User\AfterDeleteEvent;
 use Joomla\CMS\Event\User\AfterSaveEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
+use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Log\LogEntry;
 use RuntimeException;
 
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', true);
-JLoader::registerAlias("BwLogger", "BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries\\BwLogger");
-JLoader::registerAlias("BwPostmanHelper", "BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper\\BwPostmanHelper");
-JLoader::loadByAlias("BwLogger");
-JLoader::loadByAlias("BwPostmanHelper");
 
 /**
  * Class UserAccount
@@ -150,10 +148,16 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
         // Only do something if component is enabled
         if (ComponentHelper::isEnabled('com_bwpostman'))
         {
-            parent::__construct($subject, $config);
+            $plugin = PluginHelper::getPlugin('system', 'bwpm_useraccount');
+
+            $config['params'] = new Registry($plugin->params);
+
+            $this->autoloadLanguage = true;
+
+            parent::__construct($config);
 
             $log_options  = array();
-            $this->logger = BwLogger::getInstance($log_options);
+            $this->logger = new BwLogger($log_options);
             $this->debug  = (bool) $this->params->get('debug_option', false);
 
             $this->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
@@ -169,8 +173,7 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
      *
      * @since 4.2.6
      */
-    public
-    static function getSubscribedEvents(): array
+    public static function getSubscribedEvents(): array
     {
         // Only subscribe events if the component is installed and enabled
         if (!ComponentHelper::isEnabled('com_bwpostman'))

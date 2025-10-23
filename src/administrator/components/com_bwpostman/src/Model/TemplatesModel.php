@@ -1247,7 +1247,10 @@ class TemplatesModel extends ListModel
 		File::copy($zipRoot, JPATH_ROOT . '/images/com_bwpostman/templates/' . $this->basename);
 
 		// Delete thumbnail in tmp folder
-		Folder::delete($this->tmp_path . 'images');
+		if (Folder::exists($this->tmp_path . 'images'))
+		{
+			Folder::delete($this->tmp_path . 'images');
+		}
 		File::delete($zipRoot);
 
 		if (!File::exists(JPATH_ROOT . '/images/com_bwpostman/templates/' . $this->basename))

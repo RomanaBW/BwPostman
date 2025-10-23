@@ -804,7 +804,7 @@ class NewslettersModel extends ListModel
 		$sel_mls = $params->get('ml_available', '');
 		$mls     = $sel_mls;
 
-		if ($all_mls)
+		if ($all_mls !== 'no')
 		{
 			$mls = $mlTable->getPublishedMailinglistsIds();
 		}
@@ -862,7 +862,7 @@ class NewslettersModel extends ListModel
 		$sel_cams = $params->get('cam_available', '');
 		$cams     = $sel_cams;
 
-		if ($all_cams)
+		if ($all_cams !== 'no')
 		{
 			$cams	= $this->getTable('Campaign')->getAllCampaignIds();
 		}
@@ -923,7 +923,7 @@ class NewslettersModel extends ListModel
 		$sel_groups	= $params->get('groups_available', '');
 		$c_groups	= $sel_groups;
 
-		if ($all_groups)
+		if ($all_groups !== 'no')
 		{
 			$query->select('id');
 			$query->from('#__usergroups');

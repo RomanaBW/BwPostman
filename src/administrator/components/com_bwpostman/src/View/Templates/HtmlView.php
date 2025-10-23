@@ -161,7 +161,7 @@ class HtmlView extends BaseHtmlView
 				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_TPL_EXPORTTPL_OK',
 					Route::_(Uri::root() . 'images/com_bwpostman/templates/' . $basename),
 					Text::_('COM_BWPOSTMAN_TPL_DOWNLOAD'), Text::_('JCANCEL')), 'message');
-				$app->redirect('index.php?option=com_bwpostman&view=templates', false);
+				$app->redirect('index.php?option=com_bwpostman&view=templates');
 			}
 		}
 

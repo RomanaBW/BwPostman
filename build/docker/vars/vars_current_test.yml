@@ -1,21 +1,21 @@
 ---
 bwpm_network_name: "bwpm-test-current"
-bwpm_subnet: "172.118.5.8/29"
+bwpm_subnet: "172.118.6.8/29"
 
 bwpm_db_name: "bwpm-test-current-db"
-bwpm_db_ip: "172.118.5.10"
+bwpm_db_ip: "172.118.6.10"
 bwpm_db_volume: "bwpm-test-db"
 bwpm_db_image: "universe3:5000/romana/joomla-tables-{{ bwpm_php_version }}:{{ bwpm_joomla_version }}"
-bwpm_db_expose: "3508"
+bwpm_db_expose: "3608"
 
 bwpm_joomla_name: "bwpm-test-current-joomla"
-bwpm_joomla_ip: "172.118.5.11"
+bwpm_joomla_ip: "172.118.6.11"
 bwpm_joomla_volume: "bwpm-test-joomla"
 bwpm_joomla_image: "universe3:5000/romana/joomla-files-{{ bwpm_php_version }}:{{ bwpm_image_tag }}"
-bwpm_joomla_ports: "65:80"
+bwpm_joomla_ports: "66:80"
 
 bwpm_pma_name: "bwpm-test-current-phpmyadmin"
-bwpm_pma_ip: "172.118.5.13"
+bwpm_pma_ip: "172.118.6.13"
 
 bwpm_base_path: "/home/romana/PhpstormProjects/BwPostman_J4/build/docker/test_current"
 bwpm_site_name: "Test_Current_BwPM_Container"

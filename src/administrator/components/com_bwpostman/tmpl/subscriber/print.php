@@ -115,6 +115,10 @@ use Joomla\CMS\Language\Text;
 			{
 				echo Text::_('COM_BWPOSTMAN_MALE');
 			}
+            elseif ($this->sub->gender === 3)
+            {
+                echo Text::_('COM_BWPOSTMAN_NON_BINARY');
+            }
 			else
 			{
 				echo Text::_('COM_BWPOSTMAN_NO_GENDER');

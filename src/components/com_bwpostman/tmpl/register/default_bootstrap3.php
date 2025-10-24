@@ -127,6 +127,9 @@ $formclass	= ''; // '' = default inputs or 'sm' = smaller Inputs
 									<option value="1"<?php echo $gender_selected == '1' ? ' selected="selected"' : ''; ?>>
 							            <?php echo Text::_('COM_BWPOSTMAN_FEMALE'); ?>
 									</option>
+                                    <option value="3"<?php echo $gender_selected == '3' ? ' selected="selected"' : ''; ?>>
+                                        <?php echo Text::_('COM_BWPOSTMAN_NON_BINARY'); ?>
+                                    </option>
 								</select>
 				            </div>
 						</div>

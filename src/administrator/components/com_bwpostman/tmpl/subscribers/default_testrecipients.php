@@ -163,6 +163,10 @@ $colNum = 7;
 												{
 													echo Text::_('COM_BWPOSTMAN_MALE');
 												}
+                                                elseif ($item->gender === 3)
+                                                {
+                                                    echo Text::_('COM_BWPOSTMAN_NON_BINARY');
+                                                }
 												else
 												{
 													echo Text::_('COM_BWPOSTMAN_NO_GENDER');

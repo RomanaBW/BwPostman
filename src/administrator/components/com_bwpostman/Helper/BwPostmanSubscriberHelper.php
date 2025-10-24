@@ -507,7 +507,15 @@ class BwPostmanSubscriberHelper
 		$genderId = $idPrefix . 'gender';
 		$gender = '<select id="' . $genderId . '"' . $class . ' name="'  . $name . '">';
 
-		$gender .= '<option value="2"';
+        $gender .= '<option value="3"';
+        if ($gender_selected == '3')
+        {
+            $gender .= ' selected="selected"';
+        }
+
+        $gender .= '>' . Text::_('COM_BWPOSTMAN_NON_BINARY') . '</option>';
+
+        $gender .= '<option value="2"';
 		if ($gender_selected == '2')
 		{
 			$gender .= ' selected="selected"';

@@ -48,7 +48,7 @@ function extCheck() {
 		extension = '';
 	} else {
 		// if there is an extension, we convert to lower case
-		// (N.B. this conversion will not effect the value of the extension
+		// (N.B. this conversion will not affect the value of the extension
 		// on the file upload.)
 		extension = extension.toLowerCase();
 	}
@@ -94,7 +94,7 @@ function getExtensionOfFilename(filename) {
 		extension = '';
 	} else {
 		// if there is an extension, we convert to lower case
-		// (N.B. this conversion will not effect the value of the extension
+		// (N.B. this conversion will not affect the value of the extension
 		// on the file upload.)
 		extension = extension.toLowerCase();
 	}

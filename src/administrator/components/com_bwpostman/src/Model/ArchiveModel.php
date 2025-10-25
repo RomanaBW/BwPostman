@@ -376,7 +376,7 @@ class ArchiveModel extends ListModel
 				$query->from($db->quoteName('#__bwpostman_subscribers') . ' AS ' . $pef_tbl_a);
 				break;
 
-			// We are in the campaigns_tab and we want to show all assigned newsletters
+			// We are in the campaigns_tab, and we want to show all assigned newsletters
 			// because we offer the option to unarchive not only the campaign but also the
 			// assigned newsletters
 			case "campaigns":

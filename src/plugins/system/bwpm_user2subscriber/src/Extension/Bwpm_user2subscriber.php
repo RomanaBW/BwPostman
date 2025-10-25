@@ -1233,6 +1233,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
         if ($event instanceof AfterDeleteEvent) {
             $data    = $event->getArgument('subject');
             $success = $event->getArgument('deletingResult');
+            $errorMessage = $event->getErrorMessage();
         }
         // If using a generic event, do it the hard way
         else

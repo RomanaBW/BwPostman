@@ -423,6 +423,7 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
         {
             $data    = $event->getArgument('subject');
             $result = $event->getArgument('deletingResult');
+            $errorMessage = $event->getErrorMessage();
         }
         // If using a generic event, do it the hard way
         else

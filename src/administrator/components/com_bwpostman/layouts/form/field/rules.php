@@ -37,7 +37,7 @@ use Joomla\CMS\Session\Session;
 extract($displayData);
 
 // Get some system objects.
-$document = Factory::getDocument();
+$document = Factory::getApplication()->getDocument();
 
 /**
  * Layout variables

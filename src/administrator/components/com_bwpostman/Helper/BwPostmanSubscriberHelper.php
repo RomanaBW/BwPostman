@@ -28,14 +28,13 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 
 defined('_JEXEC') or die('Restricted access');
 
-use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Administrator\Table\SubscriberTable;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Log\LogEntry;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
+use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Mail\MailHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
@@ -280,7 +279,7 @@ class BwPostmanSubscriberHelper
 	 * @param int      $type   emailtype    --> 0 = send registration email, 1 = send editlink, 2 = send activation reminder
 	 * @param int|null $itemid menu item ID
 	 *
-	 * @return    boolean True on success | error object
+	 * @return    bool True on success | error object
 	 *
 	 * @throws Exception
 	 *
@@ -459,8 +458,7 @@ class BwPostmanSubscriberHelper
 		$body    = html_entity_decode($body, ENT_QUOTES);
 
 		// Get a JMail instance and fill in mailer data
-		$mailer = Factory::getMailer();
-
+        $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
 		$sender = self::getSender();
 		$reply  = self::getReplyTo();
 
@@ -547,7 +545,7 @@ class BwPostmanSubscriberHelper
 	/**
 	 * Method to build the mail format select list
 	 *
-	 * @param boolean $mailformat_selected
+	 * @param bool $mailformat_selected
 	 *
 	 * @return string
 	 *
@@ -645,7 +643,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since 2.4.0 here
 	 */
-	static public function customizeSubscriberDataFields(Form $form): void
+	public static function customizeSubscriberDataFields(Form $form): void
 	{
 		$nullDate = Factory::getContainer()->get(DatabaseInterface::class)->getNullDate();
 
@@ -688,7 +686,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @param string $email
 	 *
-	 * @return  integer     $user_id
+	 * @return  int     $user_id
 	 *
 	 * @throws Exception
 	 *
@@ -870,7 +868,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since
 	 */
-	static public function getExportFieldsList(): array
+	public static function getExportFieldsList(): array
 	{
 		$db = Factory::getContainer()->get(DatabaseInterface::class);
 
@@ -905,13 +903,13 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @param array $data
 	 *
-	 * @return boolean	false, if link is present or mail address could not be verified
+	 * @return bool    false, if link is present or mail address could not be verified
 	 *
 	 * @throws Exception
 	 *
 	 * @since 3.0.0
 	 */
-	static public function checkSubscriberInputFields(array $data): bool
+	public static function checkSubscriberInputFields(array $data): bool
 	{
 		$app    = Factory::getApplication();
 		$params = ComponentHelper::getParams('com_bwpostman', true);
@@ -1004,7 +1002,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @param string $email Subscriber/Test-recipient email address
 	 *
-	 * @return	boolean  true if email address is valid and reachable
+	 * @return    bool  true if email address is valid and reachable
 	 *
 	 * @throws Exception
 	 *

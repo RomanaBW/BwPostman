@@ -35,7 +35,7 @@ use Joomla\CMS\Language\Text;
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title><?php echo Text::_('COM_BWPOSTMAN_SUB_DATA_TITLE'); ?></title>
-	<style>
+	<style type="text/css">
 		@page {
             margin : 1.5cm 1.5cm 2cm 2cm;
         }

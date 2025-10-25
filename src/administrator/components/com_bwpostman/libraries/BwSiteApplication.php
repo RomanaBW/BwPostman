@@ -29,6 +29,8 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Libraries;
 defined('_JEXEC') or die('Restricted access');
 defined('JPATH_THEMES_SITE') or define('JPATH_THEMES_SITE', JPATH_ROOT . DIRECTORY_SEPARATOR . 'templates');
 
+use Exception;
+use InvalidArgumentException;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Application\MultiFactorAuthenticationHandler;
 use Joomla\CMS\Cache\Controller\OutputController;
@@ -37,10 +39,11 @@ use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Router;
 use Joomla\Registry\Registry;
 use Joomla\Application\Web\WebClient;
 use Joomla\CMS\Cache\CacheControllerFactoryAwareTrait;
-use Joomla\CMS\Input\Input;
+use Joomla\Input\Input;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Pathway\Pathway;
 use Joomla\CMS\Router\Route;
@@ -48,7 +51,12 @@ use Joomla\CMS\Router\SiteRouter;
 use Joomla\CMS\Uri\Uri;
 use Joomla\DI\Container;
 use Joomla\String\StringHelper;
-
+use stdClass;
+use function array_key_exists;
+use function defined;
+use function in_array;
+use function is_object;
+use function strlen;
 
 if (!ComponentHelper::isEnabled('com_bwpostman')) {
 	Factory::getApplication()->enqueueMessage(
@@ -68,7 +76,7 @@ if (!ComponentHelper::isEnabled('com_bwpostman')) {
 //namespace Joomla\CMS\Application;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -87,7 +95,7 @@ final class BwSiteApplication extends CMSApplication
 	 * @var    boolean
 	 * @since  4.0.0
 	 */
-	protected $language_filter = false;
+	protected bool $language_filter = false;
 
 	/**
 	 * Option to detect language by the browser
@@ -95,7 +103,7 @@ final class BwSiteApplication extends CMSApplication
 	 * @var    boolean
 	 * @since  4.0.0
 	 */
-	protected $detect_browser = false;
+	protected bool $detect_browser = false;
 
 	/**
 	 * The registered URL parameters.
@@ -103,24 +111,24 @@ final class BwSiteApplication extends CMSApplication
 	 * @var    object
 	 * @since  4.3.0
 	 */
-	public $registeredurlparams;
+	public object $registeredurlparams;
 
-	/**
-	 * Class constructor.
-	 *
-	 * @param Input     $input         An optional argument to provide dependency injection for the application's input
-	 *                                 object.  If the argument is a JInput object that object will become the
-	 *                                 application's input object, otherwise a default input object is created.
-	 * @param Registry  $config        An optional argument to provide dependency injection for the application's config
-	 *                                 object.  If the argument is a Registry object that object will become the
-	 *                                 application's config object, otherwise a default config object is created.
-	 * @param WebClient $client        An optional argument to provide dependency injection for the application's client
-	 *                                 object.  If the argument is a WebClient object that object will become the
-	 *                                 application's client object, otherwise a default client object is created.
-	 * @param Container $container     Dependency injection container.
-	 *
-	 * @since   3.2
-	 */
+    /**
+     * Class constructor.
+     *
+     * @param Input|null     $input     An optional argument to provide dependency injection for the application's input
+     *                                  object.  If the argument is a JInput object that object will become the
+     *                                  application's input object, otherwise a default input object is created.
+     * @param Registry|null  $config    An optional argument to provide dependency injection for the application's config
+     *                                  object.  If the argument is a Registry object that object will become the
+     *                                  application's config object, otherwise a default config object is created.
+     * @param WebClient|null $client    An optional argument to provide dependency injection for the application's client
+     *                                  object.  If the argument is a WebClient object that object will become the
+     *                                  application's client object, otherwise a default client object is created.
+     * @param Container|null $container Dependency injection container.
+     *
+     * @since   3.2
+     */
 	public function __construct(
 		Input $input = null,
 		Registry $config = null,
@@ -144,18 +152,18 @@ final class BwSiteApplication extends CMSApplication
 	 *
 	 * @return  void
 	 *
-	 * @throws  \Exception When you are not authorised to view the home page menu item
+	 * @throws  Exception When you are not authorised to view the home page menu item
 	 * @since   3.2
 	 *
 	 */
-	protected function authorise($itemid)
-	{
+	protected function authorise(int $itemid): void
+    {
 		$menus = $this->getMenu();
-		$user  = Factory::getUser();
+		$user  = Factory::getApplication()->getIdentity();
 
 		if (!$menus->authorise($itemid))
 		{
-			if ($user->get('id') == 0)
+			if ($user->id == 0)
 			{
 				// Set the data
 				$this->setUserState('users.login.form.data', ['return' => Uri::getInstance()->toString()]);
@@ -173,7 +181,7 @@ final class BwSiteApplication extends CMSApplication
 				// If we are already in the homepage raise an exception
 				if ($menus->getActive()->id == $home_item->id)
 				{
-					throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+					throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 				}
 
 				// Otherwise redirect to the homepage and show an error
@@ -186,18 +194,18 @@ final class BwSiteApplication extends CMSApplication
 	/**
 	 * Dispatch the application
 	 *
-	 * @param string $component The component which is being rendered.
+	 * @param string|null $component The component which is being rendered.
 	 *
 	 * @return  void
 	 *
 	 * @since   3.2
 	 */
-	public function dispatch($component = null)
-	{
+	public function dispatch(string $component = null): void
+    {
 		// Get the component if not set.
 		if (!$component)
 		{
-			$component = $this->input->getCmd('option', null);
+			$component = $this->input->getCmd('option');
 		}
 
 		// Load the document to the API
@@ -207,8 +215,8 @@ final class BwSiteApplication extends CMSApplication
 		$document = $this->getDocument();
 		$params   = $this->getParams();
 
-		// Register the document object with Factory
-		Factory::$document = $document;
+		// Register the document object with Factory:
+//		Factory::$document = $document;
 
 		switch ($document->getType())
 		{
@@ -269,15 +277,17 @@ final class BwSiteApplication extends CMSApplication
 		$this->triggerEvent('onAfterDispatch');
 	}
 
-	/**
-	 * Method to run the Web application routines.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
-	 */
-	protected function doExecute()
-	{
+    /**
+     * Method to run the Web application routines.
+     *
+     * @return  void
+     *
+     * @throws Exception
+     *
+     * @since   3.2
+     */
+	protected function doExecute(): void
+    {
 		// Initialise the application
 		$this->initialiseApp();
 
@@ -299,7 +309,7 @@ final class BwSiteApplication extends CMSApplication
 			 * $this->input->getCmd('option'); or $this->input->getCmd('view');
 			 * ex: due of the sef urls
 			 */
-			$this->checkUserRequireReset('com_users', 'profile', 'edit',
+			$this->checkUserRequiresReset('com_users', 'profile', 'edit',
 				'com_users/profile.save,com_users/profile.apply,com_users/user.logout');
 		}
 
@@ -317,8 +327,8 @@ final class BwSiteApplication extends CMSApplication
 	 *
 	 * @since   3.2
 	 */
-	public function getDetectBrowser()
-	{
+	public function getDetectBrowser(): bool
+    {
 		return $this->detect_browser;
 	}
 
@@ -329,22 +339,22 @@ final class BwSiteApplication extends CMSApplication
 	 *
 	 * @since   3.2
 	 */
-	public function getLanguageFilter()
-	{
+	public function getLanguageFilter(): bool
+    {
 		return $this->language_filter;
 	}
 
 	/**
 	 * Get the application parameters
 	 *
-	 * @param string $option The component option
+	 * @param string|null $option The component option
 	 *
 	 * @return  Registry  The parameters object
 	 *
 	 * @since   3.2
 	 */
-	public function getParams($option = null)
-	{
+	public function getParams(string $option = null): Registry
+    {
 		static $params = [];
 
 		$hash = '__default';
@@ -359,7 +369,7 @@ final class BwSiteApplication extends CMSApplication
 			// Get component parameters
 			if (!$option)
 			{
-				$option = $this->input->getCmd('option', null);
+				$option = $this->input->getCmd('option');
 			}
 
 			// Get new instance of component global parameters
@@ -390,8 +400,8 @@ final class BwSiteApplication extends CMSApplication
 			// Retrieve com_menu global settings
 			$temp = clone ComponentHelper::getParams('com_menus');
 
-			// Lets cascade the parameters if we have menu item parameters
-			if (\is_object($menu))
+			// Let's cascade the parameters if we have menu item parameters
+			if (is_object($menu))
 			{
 				// Get show_page_heading from com_menu global settings
 				$params[$hash]->def('show_page_heading', $temp->get('show_page_heading'));
@@ -424,8 +434,8 @@ final class BwSiteApplication extends CMSApplication
 	 *
 	 * @since   3.2
 	 */
-	public function getPathway()
-	{
+	public function getPathway(): Pathway
+    {
 		return parent::getPathway();
 	}
 
@@ -435,7 +445,7 @@ final class BwSiteApplication extends CMSApplication
 	 * @param string $name    The name of the application.
 	 * @param array  $options An optional associative array of configuration settings.
 	 *
-	 * @return  \Joomla\CMS\Router\Router
+	 * @return  Router
 	 *
 	 * @since       3.2
 	 *
@@ -443,9 +453,10 @@ final class BwSiteApplication extends CMSApplication
 	 *              Inject the router or load it from the dependency injection container
 	 *              Example: Factory::getContainer()->get(SiteRouter::class);
 	 */
-	public static function getRouter($name = 'site', array $options = [])
-	{
-		return parent::getRouter($name, $options);
+	public static function getRouter($name = 'site', array $options = []): Router
+    {
+        return Factory::getContainer()->get(SiteRouter::class);
+//		return Router::getInstance($name, $options);
 	}
 
 	/**
@@ -453,14 +464,14 @@ final class BwSiteApplication extends CMSApplication
 	 *
 	 * @param boolean $params True to return the template parameters
 	 *
-	 * @return  string|\stdClass  The name of the template if the params argument is false. The template object if the params argument is true.
+	 * @return  string|stdClass  The name of the template if the params argument is false. The template object if the params argument is true.
 	 *
-	 * @throws  \InvalidArgumentException
+	 * @throws  InvalidArgumentException
 	 * @since   3.2
 	 */
-	public function getTemplate($params = false)
-	{
-		if (\is_object($this->template))
+	public function getTemplate($params = false): string|stdClass
+    {
+		if (is_object($this->template))
 		{
 			if ($this->template->parent)
 			{
@@ -468,14 +479,14 @@ final class BwSiteApplication extends CMSApplication
 				{
 					if (!is_file(JPATH_THEMES_SITE . '/' . $this->template->parent . '/index.php'))
 					{
-						throw new \InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
+						throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
 							$this->template->template));
 					}
 				}
 			}
 			elseif (!is_file(JPATH_THEMES_SITE . '/' . $this->template->template . '/index.php'))
 			{
-				throw new \InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
+				throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
 					$this->template->template));
 			}
 
@@ -493,12 +504,12 @@ final class BwSiteApplication extends CMSApplication
 
 		if (!$item)
 		{
-			$item = $menu->getItem($this->input->getInt('Itemid', null));
+			$item = $menu->getItem($this->input->getInt('Itemid'));
 		}
 
 		$id = 0;
 
-		if (\is_object($item))
+		if (is_object($item))
 		{
 			// Valid item retrieved
 			$id = $item->template_style_id;
@@ -535,7 +546,7 @@ final class BwSiteApplication extends CMSApplication
 			$templates = $this->bootComponent('templates')->getMVCFactory()
 				->createModel('Style', 'Administrator')->getSiteTemplates();
 
-			foreach ($templates as &$template)
+			foreach ($templates as $template)
 			{
 				// Create home element
 				if ($template->home == 1 && !isset($template_home) || $this->getLanguageFilter() && $template->home == $tag)
@@ -616,7 +627,7 @@ final class BwSiteApplication extends CMSApplication
 					// Check, the data were found and if template really exists
 					if (!is_file(JPATH_THEMES_SITE . '/' . $template->template . '/index.php'))
 					{
-						throw new \InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
+						throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
 							$original_tmpl));
 					}
 				}
@@ -641,7 +652,7 @@ final class BwSiteApplication extends CMSApplication
 			// Check, the data were found and if template really exists
 			if (!is_file($templateFile))
 			{
-				throw new \InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $original_tmpl));
+				throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $original_tmpl));
 			}
 		}
 
@@ -656,18 +667,20 @@ final class BwSiteApplication extends CMSApplication
 		return $template->template;
 	}
 
-	/**
-	 * Initialise the application.
-	 *
-	 * @param array $options An optional associative array of configuration settings.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
-	 */
-	public function initialiseApp($options = [])
-	{
-		$user = Factory::getUser();
+    /**
+     * Initialise the application.
+     *
+     * @param array $options An optional associative array of configuration settings.
+     *
+     * @return  void
+     *
+     * @throws Exception
+     *
+     * @since   3.2
+     */
+	public function initialiseApp($options = []): void
+    {
+		$user = Factory::getApplication()->getIdentity();
 
 		// If the user is a guest we populate it with the guest user group.
 		if ($user->guest)
@@ -688,7 +701,7 @@ final class BwSiteApplication extends CMSApplication
 		if (empty($options['language']))
 		{
 			// Detect the specified language
-			$lang = $this->input->getString('language', null);
+			$lang = $this->input->getString('language');
 
 			// Make sure that the user's language exists
 			if ($lang && LanguageHelper::exists($lang))
@@ -767,8 +780,8 @@ final class BwSiteApplication extends CMSApplication
 	 *
 	 * @since   3.6.3
 	 */
-	protected function loadLibraryLanguage()
-	{
+	protected function loadLibraryLanguage(): void
+    {
 		/*
 		 * Try the lib_joomla file in the current language (without allowing the loading of the file in the default language)
 		 * Fallback to the default language if necessary
@@ -787,10 +800,10 @@ final class BwSiteApplication extends CMSApplication
 	 *
 	 * @since   3.2
 	 */
-	public function login($credentials, $options = [])
-	{
+	public function login($credentials, $options = []): bool
+    {
 		// Set the application login entry point
-		if (!\array_key_exists('entry_url', $options))
+		if (!array_key_exists('entry_url', $options))
 		{
 			$options['entry_url'] = Uri::base() . 'index.php?option=com_users&task=user.login';
 		}
@@ -801,17 +814,19 @@ final class BwSiteApplication extends CMSApplication
 		return parent::login($credentials, $options);
 	}
 
-	/**
-	 * Rendering is the process of pushing the document buffers into the template
-	 * placeholders, retrieving data from the document and pushing it into
-	 * the application response buffer.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
-	 */
-	protected function render()
-	{
+    /**
+     * Rendering is the process of pushing the document buffers into the template
+     * placeholders, retrieving data from the document and pushing it into
+     * the application response buffer.
+     *
+     * @return  void
+     *
+     * @throws Exception
+     *
+     * @since   3.2
+     */
+	protected function render(): void
+    {
 		switch ($this->document->getType())
 		{
 			case 'feed':
@@ -828,7 +843,7 @@ final class BwSiteApplication extends CMSApplication
 					$this->set('themeFile', 'index.php');
 				}
 
-				if ($this->get('offline') && !Factory::getUser()->authorise('core.login.offline'))
+				if ($this->get('offline') && !Factory::getApplication()->getIdentity()->authorise('core.login.offline'))
 				{
 					$this->setUserState('users.login.form.data', ['return' => Uri::getInstance()->toString()]);
 					$this->set('themeFile', 'offline.php');
@@ -855,20 +870,22 @@ final class BwSiteApplication extends CMSApplication
 		parent::render();
 	}
 
-	/**
-	 * Route the application.
-	 *
-	 * Routing is the process of examining the request environment to determine which
-	 * component should receive the request. The component optional parameters
-	 * are then set in the request object to be processed when the application is being
-	 * dispatched.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
-	 */
-	protected function route()
-	{
+    /**
+     * Route the application.
+     *
+     * Routing is the process of examining the request environment to determine which
+     * component should receive the request. The component optional parameters
+     * are then set in the request object to be processed when the application is being
+     * dispatched.
+     *
+     * @return  void
+     *
+     * @throws Exception
+     *
+     * @since   3.2
+     */
+	protected function route(): void
+    {
 		// Get the full request URI.
 		$uri = clone Uri::getInstance();
 
@@ -882,7 +899,7 @@ final class BwSiteApplication extends CMSApplication
 			$active !== null
 			&& $active->type === 'alias'
 			&& $active->getParams()->get('alias_redirect')
-			&& \in_array($this->input->getMethod(), ['GET', 'HEAD'], true)
+			&& in_array($this->input->getMethod(), ['GET', 'HEAD'], true)
 		)
 		{
 			$item = $this->getMenu()->getItem($active->getParams()->get('aliasoptions'));
@@ -897,7 +914,7 @@ final class BwSiteApplication extends CMSApplication
 				}
 
 				$base             = Uri::base(true);
-				$oldPath          = StringHelper::strtolower(substr($oldUri->getPath(), \strlen($base) + 1));
+				$oldPath          = StringHelper::strtolower(substr($oldUri->getPath(), strlen($base) + 1));
 				$activePathPrefix = StringHelper::strtolower($active->route);
 
 				$position = strpos($oldPath, $activePathPrefix);
@@ -905,11 +922,11 @@ final class BwSiteApplication extends CMSApplication
 				if ($position !== false)
 				{
 					$oldUri->setPath($base . '/' . substr_replace($oldPath, $item->route, $position,
-							\strlen($activePathPrefix)));
+							strlen($activePathPrefix)));
 
 					$this->setHeader('Expires', 'Wed, 17 Aug 2005 00:00:00 GMT', true);
 					$this->setHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT', true);
-					$this->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate', false);
+					$this->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
 					$this->sendHeaders();
 
 					$this->redirect((string) $oldUri, 301);
@@ -926,7 +943,7 @@ final class BwSiteApplication extends CMSApplication
 		PluginHelper::importPlugin('system');
 		$this->triggerEvent('onAfterRoute');
 
-		$Itemid = $this->input->getInt('Itemid', null);
+		$Itemid = $this->input->getInt('Itemid');
 		$this->authorise($Itemid);
 	}
 
@@ -939,8 +956,8 @@ final class BwSiteApplication extends CMSApplication
 	 *
 	 * @since   3.2
 	 */
-	public function setDetectBrowser($state = false)
-	{
+	public function setDetectBrowser(bool $state = false): bool
+    {
 		$old                  = $this->getDetectBrowser();
 		$this->detect_browser = $state;
 
@@ -956,8 +973,8 @@ final class BwSiteApplication extends CMSApplication
 	 *
 	 * @since   3.2
 	 */
-	public function setLanguageFilter($state = false)
-	{
+	public function setLanguageFilter(bool $state = false): bool
+    {
 		$old                   = $this->getLanguageFilter();
 		$this->language_filter = $state;
 
@@ -967,15 +984,15 @@ final class BwSiteApplication extends CMSApplication
 	/**
 	 * Overrides the default template that would be used
 	 *
-	 * @param \stdClass|string $template    The template name or definition
-	 * @param mixed            $styleParams The template style parameters
+	 * @param string|stdClass $template    The template name or definition
+	 * @param mixed|null      $styleParams The template style parameters
 	 *
 	 * @return  void
 	 *
 	 * @since   3.2
 	 */
-	public function setTemplate($template, $styleParams = null)
-	{
+	public function setTemplate(string|stdClass $template, mixed $styleParams = null): void
+    {
 		if (is_object($template))
 		{
 			$templateName        = empty($template->template)
@@ -1001,7 +1018,7 @@ final class BwSiteApplication extends CMSApplication
 
 		if (is_dir(JPATH_THEMES_SITE . '/' . $templateName))
 		{
-			$this->template           = new \stdClass();
+			$this->template           = new stdClass();
 			$this->template->template = $templateName;
 
 			if ($templateParams instanceof Registry)

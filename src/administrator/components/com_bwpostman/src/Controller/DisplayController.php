@@ -13,7 +13,6 @@ defined('_JEXEC') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Model\BwpostmanModel;
-use BoldtWebservice\Plugin\Bwpostman\Bwtimecontrol\Helper\BwPostmanPhpCron;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;

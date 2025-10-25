@@ -34,6 +34,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use DateTime;
 use Exception;
 use Joomla\CMS\Access\Rules;
+use Joomla\CMS\Table\Asset;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -242,9 +243,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 */
 	protected function _getAssetParentId(Table $table = null, $id = null): int
 	{
-//		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
-//		$asset      = $MvcFactory->createTable('Asset', 'Administrator');
-		$asset = Table::getInstance('Asset');
+        $asset = new Asset($this->_db);
 
 		$asset->loadByName('com_bwpostman.campaign');
 		return (integer)$asset->id;
@@ -388,13 +387,13 @@ class CampaignTable extends Table implements VersionableTableInterface
 		{
 			// Existing mailing list
 			$this->modified_time = $date->toSql();
-			$this->modified_by = $user->get('id');
+			$this->modified_by = $user->id;
 		}
 		else
 		{
 			// New mailing list
 			$this->created_date = $date->toSql();
-			$this->created_by = $user->get('id');
+			$this->created_by = $user->id;
 		}
 
 		// Ensure nulldate columns have correct nulldate

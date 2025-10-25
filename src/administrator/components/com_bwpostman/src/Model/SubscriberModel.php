@@ -496,7 +496,7 @@ class SubscriberModel extends AdminModel
 			if (empty($data['id']))
 			{
 				$data['registration_date'] = $time;
-				$data['registered_by']     = $user->get('id');
+				$data['registered_by']     = $user->id;
 				$data['registration_ip']   = $data['ip'];
 				$new_subscriber            = true;
 
@@ -505,7 +505,7 @@ class SubscriberModel extends AdminModel
 				{
 					$data['confirmation_date'] = $time;
 					$data['confirmation_ip']   = $data['ip'];
-					$data['confirmed_by']      = $user->get('id');
+					$data['confirmed_by']      = $user->id;
 					$data['activation']        = '';
 					$confirmed                 = 1;
 				}
@@ -606,7 +606,7 @@ class SubscriberModel extends AdminModel
 
 		if ($archive == 1)
 		{
-			$userid	= (int)$user->get('id');
+			$userid	= (int)$user->id;
 
 			// Access check.
 			foreach ($cid as $id)
@@ -798,7 +798,7 @@ class SubscriberModel extends AdminModel
 		$values["id"]                = 0;
 		$values["user_id"]           = 0;
 		$values["registration_date"] = $time;
-		$values["registered_by"]     = $user->get('id');
+		$values["registered_by"]     = $user->id;
 		$values["registration_ip"]   = $remote_ip;
 		$values["confirmation_date"] = null;
 		$values["confirmation_ip"]   = 0;
@@ -1041,7 +1041,7 @@ class SubscriberModel extends AdminModel
 		if ($confirm && $values['status'] != '0')
 		{
 			$values["confirmation_date"] = $time;
-			$values["confirmed_by"]      = $user->get('id');
+			$values["confirmed_by"]      = $user->id;
 			$values["confirmation_ip"]   = $remote_ip;
 		}
 

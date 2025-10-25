@@ -835,13 +835,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		{
 			// Existing subscriber
 			$this->modified_time = $date->toSql();
-			$this->modified_by   = $user->get('id');
+			$this->modified_by   = $user->id;
 		}
 		else
 		{
 			// New subscriber
 			$this->registration_date = $date->toSql();
-			$this->registered_by     = $user->get('id');
+			$this->registered_by     = $user->id;
 		}
 
 		// Ensure nulldate columns have correct nulldate

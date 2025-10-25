@@ -108,7 +108,7 @@ class EditModel extends AdminModel
 		{
 			// Subscriber is user
 			// Get the subscriber ID from the subscribers-table
-			$id	= $this->getTable()->getSubscriberIdByUserId($user->get('id'));
+			$id	= $this->getTable()->getSubscriberIdByUserId($user->id);
 		}
 
 		$this->setData($id);

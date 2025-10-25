@@ -78,7 +78,7 @@ class ModBwPostmanHelper
 		}
 		else
 		{ // User is logged in
-			$subscriberid = self::getSubscriberIdFromUserID((int)$user->get('id'));
+			$subscriberid = self::getSubscriberIdFromUserID((int)$user->id);
 		}
 
 		return $subscriberid;

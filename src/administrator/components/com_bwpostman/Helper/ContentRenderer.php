@@ -58,7 +58,15 @@ use stdClass;
 */
 class ContentRenderer
 {
-	/**
+    /**
+     * string which holds the width of the newsletter
+     *
+     * @var    string
+     * @since  4.3.3
+     */
+    private $nl_width = '';
+
+    /**
 	 * This is the main function to render the content from an ID to HTML
 	 *
 	 * @param array $nl_content       List of IDs of the selected content

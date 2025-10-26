@@ -167,7 +167,7 @@ class com_bwpostmanInstallerScript
 	private function bwpostman_install()
 	{
 		/*
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = 'INSERT INTO '. $db->quoteName('#__postinstall_messages') .
 		' ( `extension_id`,
 				  `title_key`,
@@ -257,7 +257,7 @@ class com_bwpostmanInstallerScript
 			}
 		}
 
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('params'));
@@ -508,7 +508,7 @@ class com_bwpostmanInstallerScript
 
 		Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_UNINSTALL_FOLDER_BWPOSTMAN', $image_path), 'warning');
 
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		$query->delete($db->quoteName('#__postinstall_messages'));
 		$query->where($db->quoteName('language_extension') . ' = ' . $db->quote('com_bwpostman'));
@@ -538,7 +538,7 @@ class com_bwpostmanInstallerScript
 	private function getManifestVar(string $name)
 	{
 		$manifest = array();
-		$db       = Factory::getDbo();
+		$db       = Factory::getContainer()->get(DatabaseInterface::class);
 		$query    = $db->getQuery(true);
 
 		$query->select($db->quoteName('manifest_cache'));
@@ -569,7 +569,7 @@ class com_bwpostmanInstallerScript
 	 */
 	private function correctCamId()
 	{
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->update($db->quoteName('#__bwpostman_newsletters'));
@@ -597,7 +597,7 @@ class com_bwpostmanInstallerScript
 	private function fillCamCrossTable()
 	{
 		$all_cams = array();
-		$db       = Factory::getDbo();
+		$db       = Factory::getContainer()->get(DatabaseInterface::class);
 		$query    = $db->getQuery(true);
 
 		// First get all campaigns
@@ -774,7 +774,7 @@ class com_bwpostmanInstallerScript
 	 */
 	private function checkSampleTemplates()
 	{
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -1010,7 +1010,7 @@ class com_bwpostmanInstallerScript
 	{
 		try
 		{
-			$db               = Factory::getDbo();
+			$db               = Factory::getContainer()->get(DatabaseInterface::class);
 			$user_id          = Factory::getApplication()->getIdentity()->id;
 			$bwpostman_groups = array(0);
 			$query            = $db->getQuery(true);
@@ -1222,7 +1222,7 @@ class com_bwpostmanInstallerScript
 	private function getGroupId(string $name): int
 	{
 		$result = false;
-		$db     = Factory::getDbo();
+		$db     = Factory::getContainer()->get(DatabaseInterface::class);
 		$query  = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -1255,7 +1255,7 @@ class com_bwpostmanInstallerScript
 	 */
 	private function removeDoubleExtensionsEntries()
 	{
-		$db          = Factory::getDbo();
+		$db          = Factory::getContainer()->get(DatabaseInterface::class);
 		$extensionId = $this->getExtensionId(0);
 
 		if ($extensionId)
@@ -1476,7 +1476,7 @@ class com_bwpostmanInstallerScript
 		$subscribersWithoutUserId = false;
 		$joomlaUserId = null;
 
-		$db     = Factory::getDbo();
+		$db     = Factory::getContainer()->get(DatabaseInterface::class);
 		$query  = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -1920,7 +1920,7 @@ EOS;
 	private function installdata(string $sql)
 	{
 		$app = Factory::getApplication();
-		$db  = Factory::getDbo();
+		$db  = Factory::getContainer()->get(DatabaseInterface::class);
 
 		//we call sql file for the templates data
 		$buffer = file_get_contents(JPATH_ADMINISTRATOR . '/components/com_bwpostman/sql/' . $sql);
@@ -2034,7 +2034,7 @@ EOS;
 
 		$params	= json_encode($params_default);
 
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->update($db->quoteName('#__extensions'));
@@ -2084,7 +2084,7 @@ EOS;
 							);
 		// get stored component rules
 		$current_rules = array();
-		$db            = Factory::getDbo();
+		$db            = Factory::getContainer()->get(DatabaseInterface::class);
 		$query         = $db->getQuery(true);
 
 		$query->select($db->quoteName('rules'));
@@ -2142,7 +2142,7 @@ EOS;
 	{
 		$rootRules = null;
 
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('rules'));
@@ -2172,7 +2172,7 @@ EOS;
 	 */
 	private function saveRootAsset($newRootRules)
 	{
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		$query->update($db->quoteName('#__assets'));
@@ -2205,7 +2205,7 @@ EOS;
 	 */
 	private function getExtensionId(int $clientId, string $extensionName = 'com_bwpostman')
 	{
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$result = 0;
 
 		$query = $db->getQuery(true);

@@ -151,11 +151,11 @@ class HtmlView extends BaseHtmlView
 
 		// Get data from the model
         $model = $this->getModel();
-		$this->items 			= $model->getItems();;
-		$this->pagination		= $model->getPagination();;
+		$this->items 			= $model->getItems();
+		$this->pagination		= $model->getPagination();
 		$this->filterForm		= $model->getFilterForm(array(), true, $this->_layout);
-		$this->activeFilters	= $model->getActiveFilters();;
-		$this->state			= $model->getState();;
+		$this->activeFilters	= $model->getActiveFilters();
+		$this->state			= $model->getState();
 
 		$request_result = $this->checkForAllowedTabs();
 

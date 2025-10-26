@@ -156,8 +156,8 @@ class HtmlView extends BaseHtmlView
 		$this->state			= $model->getState();
 		$this->items			= $model->getItems();
 		$this->filterForm		= $model->getFilterForm();
-		$this->activeFilters	= $model->getActiveFilters();;
-		$this->pagination		= $model->getPagination();;
+		$this->activeFilters	= $model->getActiveFilters();
+		$this->pagination		= $model->getPagination();
 		$this->total			= $model->getTotal();
 
 		// trigger Plugin BwTimeControl event and get results

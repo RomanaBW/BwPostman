@@ -213,12 +213,12 @@ class HtmlView extends BaseHtmlView
 
 		// Get data from the model
         $model = $this->getModel();
-		$this->state			= $model->getState();;
-		$this->items 			= $model->getItems();;
+		$this->state			= $model->getState();
+		$this->items 			= $model->getItems();
 		$this->mailinglists 	= $model->getMailinglists();
 		$this->filterForm		= $model->getFilterForm();
-		$this->activeFilters	= $model->getActiveFilters();;
-		$this->pagination		= $model->getPagination();;
+		$this->activeFilters	= $model->getActiveFilters();
+		$this->pagination		= $model->getPagination();
 		$this->total 			= $model->getTotal();
 		$this->params           = ComponentHelper::getParams('com_bwpostman');
 		$this->context			= 'com_bwpostman.subscribers';

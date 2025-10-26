@@ -37,6 +37,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Table\Table;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\QueryInterface;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Access\Access;
@@ -1031,7 +1032,7 @@ class NewslettersModel extends ListModel
 	private function getModuleById(int $id = 0): ?object
 	{
 		$module = null;
-		$db	= $this->getDbo();
+		$db	= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $db->getQuery(true);
 
 		$query->select('m.id, m.title, m.module, m.position, m.content, m.showtitle, m.params');

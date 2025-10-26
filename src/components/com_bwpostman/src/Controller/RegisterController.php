@@ -37,6 +37,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
@@ -368,7 +369,7 @@ class RegisterController extends FormController
 
 		// Do we have an activation string?
 		$activation		= $jinput->getAlnum('subscriber', '');
-		$activation		= $this->getModel()->getDbo()->escape($activation);
+		$activation		= Factory::getContainer()->get(DatabaseInterface::class)->escape($activation);
 		$activation_ip	= $jinput->server->get('REMOTE_ADDR', '', '');
 		$params 		= ComponentHelper::getParams('com_bwpostman');
 		$send_mail		= $params->get('activation_to_webmaster', '0');

@@ -123,7 +123,7 @@ class HtmlView extends BaseHtmlView
 		// Get data from the model
         $model = $this->getModel();
 		$items 		= $model->getData();
-		$pagination = $model->getPagination();;
+		$pagination = $model->getPagination();
 
 		// Table ordering
 		$lists['order'] = $filter_order;

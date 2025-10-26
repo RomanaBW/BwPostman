@@ -162,9 +162,9 @@ class HtmlView extends BaseHtmlView
         $model = $this->getModel();
 		$menu  = $app->getMenu()->getActive();
 
-		$state		= $model->getState();;
-		$items		= $model->getItems();;
-		$pagination	= $model->getPagination();;
+		$state		= $model->getState();
+		$items		= $model->getItems();
+		$pagination	= $model->getPagination();
 		$form		= new stdClass;
 
 		if ($state->params->get('date_filter_enable', '1') != 'hide')
@@ -201,7 +201,7 @@ class HtmlView extends BaseHtmlView
 		$this->form				= &$form;
 		$this->params			= $this->state->params;
 		$this->filterForm		= $model->getFilterForm();
-		$this->activeFilters	= $model->getActiveFilters();;
+		$this->activeFilters	= $model->getActiveFilters();
 		$this->mailinglists		= $model->getAccessibleMailinglists();
 		$this->campaigns		= $model->getAccessibleCampaigns();
 		$this->usergroups		= $model->getAccessibleUsergroups();

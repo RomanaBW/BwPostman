@@ -219,7 +219,7 @@ class HtmlView extends BaseHtmlView
 				// Get the data from the model
 				$this->form		= $this->getForm;
 				$this->item		= $this->getItem();
-				$this->state	= $model->getState();;
+				$this->state	= $model->getState();
 
 				if ($this->item->id)
 				{
@@ -323,7 +323,7 @@ class HtmlView extends BaseHtmlView
 
 		// Get the data from the model
 		$this->form		= $this->getForm;
-		$this->state	= $model->getState();;
+		$this->state	= $model->getState();
 
 		// Get general import data from the session (fileformat, filename ...)
 		$import_general_data = $session->get('import_general_data');

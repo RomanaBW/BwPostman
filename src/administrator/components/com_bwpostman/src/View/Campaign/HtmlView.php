@@ -139,7 +139,7 @@ class HtmlView extends BaseHtmlView
         $model = $this->getModel();
 		$this->form		= $model->getForm();
 		$this->item		= $model->getItem();
-		$this->state	= $model->getState();;
+		$this->state	= $model->getState();
 
 		// Get the assigned newsletters
 		$this->newsletters = $model->getNewslettersOfCampaign();

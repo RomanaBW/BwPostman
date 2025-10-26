@@ -31,7 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
@@ -147,11 +146,11 @@ class HtmlView extends BaseHtmlView
 
 		// Get data from the model
         $model = $this->getModel();
-		$this->state			= $model->getState();;
-		$this->items			= $model->getItems();;
+		$this->state			= $model->getState();
+		$this->items			= $model->getItems();
 		$this->filterForm		= $model->getFilterForm();
-		$this->activeFilters	= $model->getActiveFilters();;
-		$this->pagination		= $model->getPagination();;
+		$this->activeFilters	= $model->getActiveFilters();
+		$this->pagination		= $model->getPagination();
 		$this->total			= $model->getTotal();
 
 		$this->addToolbar();

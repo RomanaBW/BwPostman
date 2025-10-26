@@ -95,7 +95,7 @@ class PlgSystemBwPm_UserAccountInstallerScript
 		// We only need to perform this if the extension is being installed, not update
 		if ($type == 'install')
 		{
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 			$query = $db->getQuery(true);
 
 			$fields = array(

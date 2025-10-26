@@ -35,6 +35,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Installer\Administrator\Model\UpdatesitesModel;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Class Pkg_BwPostmanInstallerScript
@@ -227,7 +228,7 @@ class Pkg_BwPostmanInstallerScript
 	 */
 	private function getExtensionId(int $clientId, string $extensionName = 'com_bwpostman')
 	{
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$result = 0;
 
 		$query = $db->getQuery(true);
@@ -263,7 +264,7 @@ class Pkg_BwPostmanInstallerScript
 	 */
 	private function removeFromExtensionsTable(string $extensionName): bool
 	{
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		$result = false;
 

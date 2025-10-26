@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\LinkButton;
@@ -234,7 +235,7 @@ class HtmlView extends BaseHtmlView
             $model = $this->getModel();
 			$this->form     = $model->getForm();
 			$this->item     = $model->getItem();
-			$this->state    = $model->getState();;
+			$this->state    = $model->getState();
 			$this->template = $app->getTemplate();
 			$this->params   = ComponentHelper::getParams('com_bwpostman');
 

@@ -30,6 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Filesystem\Folder;
 
 /**
@@ -100,7 +101,7 @@ class PlgSystemBW_LibregisterInstallerScript
 		// We only need to perform this if the extension is being installed, not update
 		if ($type == 'install')
 		{
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 			$query = $db->getQuery(true);
 
 			$fields = array(

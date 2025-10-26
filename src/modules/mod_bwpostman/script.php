@@ -203,7 +203,9 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @return void
 	 *
-	 * @since     0.9.8
+     * @throws Exception
+     *
+     * @since     0.9.8
 	 */
 	public function postflight(string $type, object $parent): void
     {

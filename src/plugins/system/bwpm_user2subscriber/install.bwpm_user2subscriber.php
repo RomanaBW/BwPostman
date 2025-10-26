@@ -88,6 +88,8 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 * @param object $parent is the class calling this method
 	 *
 	 * @return void
+     *
+     * @throws Exception
 	 *
 	 * @since     0.9.8
 	 */

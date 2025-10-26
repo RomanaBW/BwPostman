@@ -160,7 +160,9 @@ class TemplateController extends FormController
 	 *
 	 * @return	boolean
 	 *
-	 * @since	1.1.0
+     * @throws Exception
+     *
+     * @since	1.1.0
 	 */
 	protected function allowAdd($data = array()): bool
 	{

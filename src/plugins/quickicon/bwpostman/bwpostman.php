@@ -58,7 +58,7 @@ class PlgQuickiconBwPostman extends CMSPlugin
 	{
 		$app	= Factory::getApplication();
 		// Do not load if BwPostman version is not supported or BwPostmanNewsletter isn't detected
-		if ($app->isClient('site') || ComponentHelper::getComponent('com_bwpostman', true)->enabled === false) {
+		if ($app->isClient('site') || ComponentHelper::getComponent('com_bwpostman', true)->enabled === 0) {
 			return;
 		}
 

@@ -956,10 +956,11 @@ class MaintenanceModel extends BaseDatabaseModel
 						$this->getCollation($query, $table);
 
 						// get primary key
-						$start = strripos($query, '(`') + 2;
+						$start = strripos($query, '(`');
 
 						if ($start !== false)
 						{
+                            $start              = $start + 2;
 							$stop               = strripos($query, '`)');
 							$length             = $stop - $start;
 							$table->primary_key = str_replace("`", '', substr($query, $start, $length));

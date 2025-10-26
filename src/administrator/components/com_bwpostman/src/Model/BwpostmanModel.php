@@ -332,7 +332,7 @@ class BwpostmanModel extends BaseDatabaseModel
 			$asset = new Asset($db);
 			$result = $asset->loadByName($permission['component']);
 
-			if ($result === false)
+			if ($result === 0)
 			{
 				// @ToDo: Check this path
 				$data = array($permission['action'] => array($permission['rule'] => $permission['value']));

@@ -449,8 +449,9 @@ class TemplatesModel extends ListModel
 	 */
 	private function getFilterByTemplateFormat()
 	{
+        $db = $this->getDatabase();
 		// Filter show only the new templates id > 0
-		$this->query->where($this->_db->quoteName('a.id') . ' > ' . 0);
+		$this->query->where($db->quoteName('a.id') . ' > ' . 0);
 
 		// Filter by format.
 		$format = $this->getState('filter.tpl_id');
@@ -459,12 +460,12 @@ class TemplatesModel extends ListModel
 		{
 			if ($format == '1')
 			{
-				$this->query->where($this->_db->quoteName('a.tpl_id') . ' < 998');
+				$this->query->where($db->quoteName('a.tpl_id') . ' < 998');
 			}
 
 			if ($format == '2')
 			{
-				$this->query->where($this->_db->quoteName('a.tpl_id') . ' > 997');
+				$this->query->where($db->quoteName('a.tpl_id') . ' > 997');
 			}
 		}
 	}
@@ -480,15 +481,16 @@ class TemplatesModel extends ListModel
 	 */
 	private function getFilterByPublishedState()
 	{
+        $db = $this->getDatabase();
 		$published = $this->getState('filter.published');
 
 		if (is_numeric($published))
 		{
-			$this->query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
+			$this->query->where($db->quoteName('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$this->query->where('(' . $this->_db->quoteName('a.published') . ' = 0 OR ' . $this->_db->quoteName('a.published') . ' = 1)');
+			$this->query->where('(' . $db->quoteName('a.published') . ' = 0 OR ' . $db->quoteName('a.published') . ' = 1)');
 		}
 	}
 
@@ -501,7 +503,7 @@ class TemplatesModel extends ListModel
 	 */
 	private function getFilterByArchiveState()
 	{
-		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . 0);
+		$this->query->where($this->getDatabase()->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
 	/**
@@ -513,8 +515,9 @@ class TemplatesModel extends ListModel
 	 */
 	private function getFilterBySearchword()
 	{
+        $db = $this->getDatabase();
 		$filtersearch = $this->getState('filter.search_filter');
-		$search       = $this->_db->escape($this->getState('filter.search'), true);
+		$search       = $db->escape($this->getState('filter.search'), true);
 
 		if (!empty($search))
 		{
@@ -523,16 +526,16 @@ class TemplatesModel extends ListModel
 			switch ($filtersearch)
 			{
 				case 'description':
-					$this->query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false));
 					break;
 				case 'title_description':
 					$this->query->where(
-						'(' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) .
-						' OR ' . $this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+						'(' . $db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false) .
+						' OR ' . $db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false) . ')'
 					);
 					break;
 				case 'title':
-					$this->query->where($this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false));
 					break;
 				default:
 			}
@@ -666,7 +669,7 @@ class TemplatesModel extends ListModel
 	public function installTplFiles(string $sql, string $step): bool
 	{
 		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step) . '</h4>';
-		$db = $this->_db;
+		$db = $this->getDatabase();
 
 		$tempPath   = Factory::getApplication()->getConfig()->get('tmp_path');
 		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
@@ -1052,7 +1055,7 @@ class TemplatesModel extends ListModel
 			// prepare sql string
 			foreach($settings as $setting)
 			{
-				$_db   = $this->_db;
+				$_db   = $this->getDatabase();
 				$query = $_db->getQuery(true);
 
 				$query->select('*');

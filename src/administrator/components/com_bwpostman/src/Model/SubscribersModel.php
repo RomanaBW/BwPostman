@@ -176,7 +176,8 @@ class SubscribersModel extends ListModel
 	 */
 	protected function getListQuery()
 	{
-		$this->query = $this->getDatabase()->getQuery(true);
+        $db		= $this->getDatabase();
+		$this->query = $db->getQuery(true);
 
 		$sub_query = $this->getSubQuery();
 
@@ -188,7 +189,7 @@ class SubscribersModel extends ListModel
 				', a.emailformat, a.user_id, a.status, a.registered_by'
 			) . ', (' . $sub_query . ') AS mailinglists'
 		);
-		$this->query->from($this->getDatabase()->quoteName('#__bwpostman_subscribers', 'a'));
+		$this->query->from($db->quoteName('#__bwpostman_subscribers', 'a'));
 
 		$this->getQueryJoins();
 		$this->getQueryWhere();
@@ -196,7 +197,7 @@ class SubscribersModel extends ListModel
 
 		try
 		{
-			$this->getDatabase()->setQuery($this->query);
+			$db->setQuery($this->query);
 		}
 		catch (RuntimeException $exception)
 		{
@@ -416,15 +417,16 @@ class SubscribersModel extends ListModel
 	 */
 	private function getFilterByMailinglist()
 	{
+        $db = $this->getDatabase();
 		$mailinglist = $this->getState('filter.mailinglist');
 
 		if ($mailinglist)
 		{
-			$query	= $this->getDatabase()->getQuery(true);
+			$query	= $db->getQuery(true);
 
-			$query->select($this->getDatabase()->quoteName('c.subscriber_id'));
-			$query->from($this->getDatabase()->quoteName('#__bwpostman_subscribers_mailinglists', 'c'));
-			$query->where($this->getDatabase()->quoteName('c.mailinglist_id') . ' = ' . (int) $mailinglist);
+			$query->select($db->quoteName('c.subscriber_id'));
+			$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists', 'c'));
+			$query->where($db->quoteName('c.mailinglist_id') . ' = ' . (int) $mailinglist);
 
 			$this->query->where('a.id IN (' . $query . ')');
 		}
@@ -474,8 +476,9 @@ class SubscribersModel extends ListModel
 	 */
 	private function getFilterBySearchword()
 	{
+        $db = $this->getDatabase();
 		$filtersearch = $this->getState('filter.search_filter');
-		$search       = $this->getDatabase()->escape($this->getState('filter.search'), true);
+		$search       = $db->escape($this->getState('filter.search'), true);
 
 		if (!empty($search))
 		{
@@ -484,25 +487,25 @@ class SubscribersModel extends ListModel
 			switch ($filtersearch)
 			{
 				case 'email':
-					$this->query->where($this->getDatabase()->quoteName('a.email') . ' LIKE ' . $this->getDatabase()->quote($search, false));
+					$this->query->where($db->quoteName('a.email') . ' LIKE ' . $db->quote($search, false));
 					break;
 				case 'name_email':
 					$this->query->where(
-						'(' . $this->getDatabase()->quoteName('a.email') . ' LIKE ' . $this->getDatabase()->quote($search, false) .
-						' OR ' . $this->getDatabase()->quoteName('a.name') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+						'(' . $db->quoteName('a.email') . ' LIKE ' . $db->quote($search, false) .
+						' OR ' . $db->quoteName('a.name') . ' LIKE ' . $db->quote($search, false) . ')'
 					);
 					break;
 				case 'fullname':
 					$this->query->where(
-						'(' . $this->_db->quoteName('a.firstname') . ' LIKE ' . $this->_db->quote($search, false) .
-						' OR ' . $this->_db->quoteName('a.name') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+						'(' . $db->quoteName('a.firstname') . ' LIKE ' . $db->quote($search, false) .
+						' OR ' . $db->quoteName('a.name') . ' LIKE ' . $db->quote($search, false) . ')'
 					);
 					break;
 				case 'firstname':
-					$this->query->where($this->_db->quoteName('a.firstname') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($db->quoteName('a.firstname') . ' LIKE ' . $db->quote($search, false));
 					break;
 				case 'name':
-					$this->query->where($this->_db->quoteName('a.name') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($db->quoteName('a.name') . ' LIKE ' . $db->quote($search, false));
 					break;
 				default:
 			}

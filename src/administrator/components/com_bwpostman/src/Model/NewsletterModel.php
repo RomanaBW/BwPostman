@@ -970,7 +970,7 @@ class NewsletterModel extends AdminModel
 
 		if (!$this->save(ArrayHelper::fromObject($newsletters_data_copy, false)))
 		{
-			$app->enqueueMessage($db->getErrorMsg(), 'error');
+			$app->enqueueMessage($crossTable->getError(), 'error');
 
 			return false;
 		}

@@ -115,8 +115,8 @@ class RawView extends BaseHtmlView
 		if ($task == 'insideModal')
 		{
 			// Get the data from the model
-			$this->form		= $this->getForm;
-			$this->item		= $this->getItem();
+			$this->form		= $model->getForm();
+			$this->item		= $model->getItem();
 			$this->sub	= $model->getSubscriberData((int) $this->item->id);
 
 			// Call parent display

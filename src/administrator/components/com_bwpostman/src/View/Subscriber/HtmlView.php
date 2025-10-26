@@ -217,8 +217,9 @@ class HtmlView extends BaseHtmlView
 				$this->template	= $app->getTemplate();
 
 				// Get the data from the model
-				$this->form		= $this->getForm;
-				$this->item		= $this->getItem();
+                $model = $this->getModel();
+				$this->form		= $model->getForm();
+				$this->item		= $model->getItem();
 				$this->state	= $model->getState();
 
 				if ($this->item->id)
@@ -322,7 +323,8 @@ class HtmlView extends BaseHtmlView
 		$app->setUserState('com_bwpostman.subscriber.import', true);
 
 		// Get the data from the model
-		$this->form		= $this->getForm;
+        $model = $this->getModel();
+		$this->form		= $model->getForm();
 		$this->state	= $model->getState();
 
 		// Get general import data from the session (fileformat, filename ...)

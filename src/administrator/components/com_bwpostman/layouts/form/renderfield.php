@@ -42,7 +42,7 @@ extract($displayData);
 
 if (!empty($options['showonEnabled']))
 {
-	HTMLHelper::_('script', 'system/showon.min.js', array('version' => 'auto', 'relative' => true));
+    HTMLHelper::_('script', 'system/showon.min.js', array('version' => 'auto', 'relative' => true));
 }
 $class = empty($options['class']) ? '' : ' ' . $options['class'];
 $rel   = empty($options['rel']) ? '' : ' ' . $options['rel'];
@@ -50,17 +50,17 @@ $id    = $name . '-desc';
 
 ?>
 <div class="control-group<?php echo $class; ?>"<?php echo $rel; ?>>
-	<?php if (empty($options['hiddenLabel'])) : ?>
-		<div class="control-label"><?php echo $label; ?></div>
-	<?php endif; ?>
-	<div class="controls">
-		<?php echo $input; ?>
-	</div>
-	<?php if (!empty($description)) : ?>
-		<div id="<?php echo $id; ?>">
-			<small class="form-text text-muted">
-				<?php echo htmlspecialchars(($description), ENT_COMPAT); ?>
-			</small>
-		</div>
-	<?php endif; ?>
+    <?php if (empty($options['hiddenLabel'])) : ?>
+        <div class="control-label"><?php echo $label; ?></div>
+    <?php endif; ?>
+    <div class="controls">
+        <?php echo $input; ?>
+    </div>
+    <?php if (!empty($description)) : ?>
+        <div id="<?php echo $id; ?>">
+            <small class="form-text text-muted">
+                <?php echo htmlspecialchars(($description), ENT_COMPAT); ?>
+            </small>
+        </div>
+    <?php endif; ?>
 </div>

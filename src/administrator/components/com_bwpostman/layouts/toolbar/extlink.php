@@ -29,7 +29,7 @@ defined('JPATH_BASE') or die;
 $toolbarClass = '';
 if (isset($displayData['options']['toolbar-class']))
 {
-	$toolbarClass  = ' class="' . $displayData['options']['toolbar-class'] . '"';
+    $toolbarClass  = ' class="' . $displayData['options']['toolbar-class'] . '"';
 }
 $buttonClass  = $displayData['options']['btnClass'];
 $iconClass  = 'icon-' . $displayData['options']['icon-class'];
@@ -39,8 +39,8 @@ $text   = $displayData['options']['text'];
 
 ?>
 <joomla-toolbar-button id="<?php echo $id; ?>" task="" <?php echo $toolbarClass; ?>>
-	<button onclick="window.open('<?php echo $url; ?>', '_blank', '');" class="<?php echo $buttonClass; ?>" type="button">
-		<span class="<?php echo $iconClass; ?>" aria-hidden="true"></span>
-		<?php echo $text; ?>
-	</button>
+    <button onclick="window.open('<?php echo $url; ?>', '_blank', '');" class="<?php echo $buttonClass; ?>" type="button">
+        <span class="<?php echo $iconClass; ?>" aria-hidden="true"></span>
+        <?php echo $text; ?>
+    </button>
 </joomla-toolbar-button>

@@ -43,95 +43,95 @@ use Joomla\CMS\HTML\HTMLHelper;
  */
 class HtmlContent
 {
-	/**
-	 * Writes Title
-	 *
-	 * @param object $row
-	 * @param object $params
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function Title(object $row, object $params): void
+    /**
+     * Writes Title
+     *
+     * @param object $row
+     * @param object $params
+     *
+     * @return  void
+     *
+     * @since       0.9.1
+     */
+    public function Title(object $row, object $params): void
     {
-		?>
-		<h2><?php echo $row->title; ?></h2>
-		<?php
-	}
+        ?>
+        <h2><?php echo $row->title; ?></h2>
+        <?php
+    }
 
-	/**
-	 * Writes p-tag for Author and CreateDate
-	 *
-	 * @return  void
-	 *
-	 * @since       2.0.0
-	 */
-	public function ArticleInfoBegin()
-	{
-		?>
-		<p class="article-info">
-		<?php
-	}
-
-	/**
-	 * Writes p-tag for Author and CreateDate
-	 *
-	 * @return  void
-	 *
-	 * @since       2.0.0
-	 */
-	public function ArticleInfoEnd()
-	{
-		?>
-		</p>
-		<?php
-	}
-
-	/**
-	 * Writes Author name
-	 *
-	 * @param object $row
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function Author(object $row): void
+    /**
+     * Writes p-tag for Author and CreateDate
+     *
+     * @return  void
+     *
+     * @since       2.0.0
+     */
+    public function ArticleInfoBegin()
     {
-		?>
-		<span class="created_by">
-			<small>
-				<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY',
-					($row->created_by_alias ?: $row->author)); ?>
-			</small>
-		</span>
-		<?php
-	}
+        ?>
+        <p class="article-info">
+        <?php
+    }
 
-	/**
-	 * Writes Create Date
-	 *
-	 * @param object $row
-	 *
-	 * @return  void
-	 *
-	 * @since       0.9.1
-	 */
-	public function CreateDate(object $row): void
+    /**
+     * Writes p-tag for Author and CreateDate
+     *
+     * @return  void
+     *
+     * @since       2.0.0
+     */
+    public function ArticleInfoEnd()
     {
-		$create_date = null;
+        ?>
+        </p>
+        <?php
+    }
 
-		if (intval($row->created) != 0)
-		{
-			$create_date = HtmlHelper::_('date', $row->created);
-		}
+    /**
+     * Writes Author name
+     *
+     * @param object $row
+     *
+     * @return  void
+     *
+     * @since       0.9.1
+     */
+    public function Author(object $row): void
+    {
+        ?>
+        <span class="created_by">
+            <small>
+                <?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY',
+                    ($row->created_by_alias ?: $row->author)); ?>
+            </small>
+        </span>
+        <?php
+    }
 
-		?>
-		<span class="createdate">
-			<small><?php echo Text::sprintf('COM_CONTENT_CREATED_DATE_ON',
-					$create_date); ?>&nbsp;&nbsp;&nbsp;&nbsp;</small>
-		</span>
-		<?php
-	}
+    /**
+     * Writes Create Date
+     *
+     * @param object $row
+     *
+     * @return  void
+     *
+     * @since       0.9.1
+     */
+    public function CreateDate(object $row): void
+    {
+        $create_date = null;
+
+        if (intval($row->created) != 0)
+        {
+            $create_date = HtmlHelper::_('date', $row->created);
+        }
+
+        ?>
+        <span class="createdate">
+            <small><?php echo Text::sprintf('COM_CONTENT_CREATED_DATE_ON',
+                    $create_date); ?>&nbsp;&nbsp;&nbsp;&nbsp;</small>
+        </span>
+        <?php
+    }
 }

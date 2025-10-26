@@ -48,152 +48,152 @@ abstract class BwPostmanNewsletterHelper {
      * @throws Exception
      * @since 2.3.0 (since 3.0.0 here, before at BE newsletter model)
      */
-	public static function countUsersOfNewsletter(array $usergroup): int|string|null
+    public static function countUsersOfNewsletter(array $usergroup): int|string|null
     {
-		$count_users = 0;
-		$usergroup   = ArrayHelper::toInteger($usergroup);
+        $count_users = 0;
+        $usergroup   = ArrayHelper::toInteger($usergroup);
 
-		$db       = Factory::getContainer()->get(DatabaseInterface::class);
-		$sub_query = $db->getQuery(true);
+        $db       = Factory::getContainer()->get(DatabaseInterface::class);
+        $sub_query = $db->getQuery(true);
 
-		$sub_query->select($db->quoteName('g') . '.' . $db->quoteName('user_id'));
-		$sub_query->from($db->quoteName('#__user_usergroup_map') . ' AS ' . $db->quoteName('g'));
-		$sub_query->where($db->quoteName('g') . '.' . $db->quoteName('group_id') . ' IN (' . implode(',',
-				$usergroup) . ')');
+        $sub_query->select($db->quoteName('g') . '.' . $db->quoteName('user_id'));
+        $sub_query->from($db->quoteName('#__user_usergroup_map') . ' AS ' . $db->quoteName('g'));
+        $sub_query->where($db->quoteName('g') . '.' . $db->quoteName('group_id') . ' IN (' . implode(',',
+                $usergroup) . ')');
 
-		$query     = $db->getQuery(true);
-		$query->select('COUNT(' . $db->quoteName('u') . '.' . $db->quoteName('id') . ')');
-		$query->from($db->quoteName('#__users') . ' AS ' . $db->quoteName('u'));
-		$query->where($db->quoteName('u') . '.' . $db->quoteName('block') . ' = ' .  0);
-		$query->where($db->quoteName('u') . '.' . $db->quoteName('activation') . ' = ' . $db->quote(''));
-		$query->where($db->quoteName('u') . '.' . $db->quoteName('id') . ' IN (' . $sub_query . ')');
+        $query     = $db->getQuery(true);
+        $query->select('COUNT(' . $db->quoteName('u') . '.' . $db->quoteName('id') . ')');
+        $query->from($db->quoteName('#__users') . ' AS ' . $db->quoteName('u'));
+        $query->where($db->quoteName('u') . '.' . $db->quoteName('block') . ' = ' .  0);
+        $query->where($db->quoteName('u') . '.' . $db->quoteName('activation') . ' = ' . $db->quote(''));
+        $query->where($db->quoteName('u') . '.' . $db->quoteName('id') . ' IN (' . $sub_query . ')');
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$count_users = $db->loadResult();
-		}
-		catch (RuntimeException $exception)
-		{
+            $count_users = $db->loadResult();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'NewsletterHelper BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		return $count_users;
-	}
+        return $count_users;
+    }
 
-	/**
-	 * @param array   $associatedMailinglists
-	 * @param string  $status
-	 * @param boolean $allSubscribers
-	 *
-	 * @return integer
-	 *
-	 * @throws Exception
-	 * @throws RuntimeException
-	 *
-	 * @since 2.3.0 (since 3.0.0 here, before at BE newsletter model)
-	 */
-	public static function countSubscribersOfNewsletter(array $associatedMailinglists, string $status, bool $allSubscribers): int
-	{
-		$count_subscribers      = 0;
-		$associatedMailinglists = ArrayHelper::toInteger($associatedMailinglists);
+    /**
+     * @param array   $associatedMailinglists
+     * @param string  $status
+     * @param boolean $allSubscribers
+     *
+     * @return integer
+     *
+     * @throws Exception
+     * @throws RuntimeException
+     *
+     * @since 2.3.0 (since 3.0.0 here, before at BE newsletter model)
+     */
+    public static function countSubscribersOfNewsletter(array $associatedMailinglists, string $status, bool $allSubscribers): int
+    {
+        $count_subscribers      = 0;
+        $associatedMailinglists = ArrayHelper::toInteger($associatedMailinglists);
 
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->getQuery(true);
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->getQuery(true);
 
-		$query->select('COUNT(' . $db->quoteName('id') . ')');
-		$query->from($db->quoteName('#__bwpostman_subscribers'));
+        $query->select('COUNT(' . $db->quoteName('id') . ')');
+        $query->from($db->quoteName('#__bwpostman_subscribers'));
 
-		if (!$allSubscribers)
-		{
-			$subQuery1 = $db->getQuery(true);
-			$subQuery1->select('DISTINCT' . $db->quoteName('subscriber_id'));
-			$subQuery1->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
-			$subQuery1->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $associatedMailinglists) . ')');
-			$query->where($db->quoteName('id') . ' IN (' . $subQuery1 . ')');
-		}
+        if (!$allSubscribers)
+        {
+            $subQuery1 = $db->getQuery(true);
+            $subQuery1->select('DISTINCT' . $db->quoteName('subscriber_id'));
+            $subQuery1->from($db->quoteName('#__bwpostman_subscribers_mailinglists'));
+            $subQuery1->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $associatedMailinglists) . ')');
+            $query->where($db->quoteName('id') . ' IN (' . $subQuery1 . ')');
+        }
 
-		$query->where($db->quoteName('status') . ' IN (' . $status . ')');
-		$query->where($db->quoteName('archive_flag') . ' = ' .  0);
+        $query->where($db->quoteName('status') . ' IN (' . $status . ')');
+        $query->where($db->quoteName('archive_flag') . ' = ' .  0);
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$count_subscribers = $db->loadResult();
-		}
-		catch (RuntimeException $exception)
-		{
+            $count_subscribers = $db->loadResult();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'NewsletterHelper BE');
 
-			Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
+        }
 
-		return $count_subscribers;
-	}
+        return $count_subscribers;
+    }
 
-	/**
-	 * Method to convert attachment JSON string (or old string version) to an array
-	 *
-	 * @param string $attachmentString
-	 *
-	 * @return array   Array of attachments
-	 *
-	 * @since 4.0.0
-	 */
-	public static function decodeAttachments(string $attachmentString): array
-	{
-		$attachments = array();
+    /**
+     * Method to convert attachment JSON string (or old string version) to an array
+     *
+     * @param string $attachmentString
+     *
+     * @return array   Array of attachments
+     *
+     * @since 4.0.0
+     */
+    public static function decodeAttachments(string $attachmentString): array
+    {
+        $attachments = array();
 
-		if (!empty($attachmentString))
-		{
+        if (!empty($attachmentString))
+        {
 //			If attachment is simple string (no JSON), convert it this way
-			if (strpos($attachmentString, '{') === false)
-			{
-				$tmpAttach = explode(';', $attachmentString);
+            if (strpos($attachmentString, '{') === false)
+            {
+                $tmpAttach = explode(';', $attachmentString);
 
 //				If array has only one tier, insert first tier and move existing to second tier
-				if (!is_array($tmpAttach[0]))
-				{
-					$attachments = self::makeTwoTierAttachment($tmpAttach);
-				}
-				else
-				{
-					$attachments = $tmpAttach;
-				}
-			}
+                if (!is_array($tmpAttach[0]))
+                {
+                    $attachments = self::makeTwoTierAttachment($tmpAttach);
+                }
+                else
+                {
+                    $attachments = $tmpAttach;
+                }
+            }
 //			If attachment is JSON, convert it that way
-			else
-			{
-				$attachments = json_decode($attachmentString, true);
-			}
-		}
+            else
+            {
+                $attachments = json_decode($attachmentString, true);
+            }
+        }
 
-		return $attachments;
-	}
+        return $attachments;
+    }
 
-	/**
-	 * Method to convert one tier attachment array to two tier attachment array
-	 *
-	 * @param array $oneTierAttachments
-	 *
-	 * @return array   Array of attachments with two tiers
-	 *
-	 * @since 4.0.0
-	 */
-	public static function makeTwoTierAttachment(array $oneTierAttachments): array
-	{
-		$twoTierAttachments = array();
+    /**
+     * Method to convert one tier attachment array to two tier attachment array
+     *
+     * @param array $oneTierAttachments
+     *
+     * @return array   Array of attachments with two tiers
+     *
+     * @since 4.0.0
+     */
+    public static function makeTwoTierAttachment(array $oneTierAttachments): array
+    {
+        $twoTierAttachments = array();
 
-		for ($i = 0; $i < count($oneTierAttachments); $i++)
-		{
-			$keyField                      = '__field' . ($i + 31);
-			$twoTierAttachments[$keyField] = array('single_attachment' => $oneTierAttachments[$i]);
-		}
+        for ($i = 0; $i < count($oneTierAttachments); $i++)
+        {
+            $keyField                      = '__field' . ($i + 31);
+            $twoTierAttachments[$keyField] = array('single_attachment' => $oneTierAttachments[$i]);
+        }
 
-		return $twoTierAttachments;
-	}
+        return $twoTierAttachments;
+    }
 }

@@ -60,11 +60,11 @@ use function is_object;
 use function strlen;
 
 if (!ComponentHelper::isEnabled('com_bwpostman')) {
-	Factory::getApplication()->enqueueMessage(
-		Text::_('PLG_BWPOSTMAN_PLUGIN_NEWSLETTERCONTENT_ERROR') . ', ' . Text::_('PLG_BWPOSTMAN_PLUGIN_NEWSLETTERCONTENT_COMPONENT_NOT_INSTALLED'),
-		'error'
-	);
-	return false;
+    Factory::getApplication()->enqueueMessage(
+        Text::_('PLG_BWPOSTMAN_PLUGIN_NEWSLETTERCONTENT_ERROR') . ', ' . Text::_('PLG_BWPOSTMAN_PLUGIN_NEWSLETTERCONTENT_COMPONENT_NOT_INSTALLED'),
+        'error'
+    );
+    return false;
 }
 
 /**
@@ -87,32 +87,32 @@ defined('_JEXEC') or die;
  */
 final class BwSiteApplication extends CMSApplication
 {
-	use CacheControllerFactoryAwareTrait;
-	use MultiFactorAuthenticationHandler;
+    use CacheControllerFactoryAwareTrait;
+    use MultiFactorAuthenticationHandler;
 
-	/**
-	 * Option to filter by language
-	 *
-	 * @var    boolean
-	 * @since  4.0.0
-	 */
-	protected bool $language_filter = false;
+    /**
+     * Option to filter by language
+     *
+     * @var    boolean
+     * @since  4.0.0
+     */
+    protected bool $language_filter = false;
 
-	/**
-	 * Option to detect language by the browser
-	 *
-	 * @var    boolean
-	 * @since  4.0.0
-	 */
-	protected bool $detect_browser = false;
+    /**
+     * Option to detect language by the browser
+     *
+     * @var    boolean
+     * @since  4.0.0
+     */
+    protected bool $detect_browser = false;
 
-	/**
-	 * The registered URL parameters.
-	 *
-	 * @var    object
-	 * @since  4.3.0
-	 */
-	public object $registeredurlparams;
+    /**
+     * The registered URL parameters.
+     *
+     * @var    object
+     * @since  4.3.0
+     */
+    public object $registeredurlparams;
 
     /**
      * Class constructor.
@@ -130,156 +130,156 @@ final class BwSiteApplication extends CMSApplication
      *
      * @since   3.2
      */
-	public function __construct(
-		Input $input = null,
-		Registry $config = null,
-		WebClient $client = null,
-		Container $container = null
-	) {
-		// Register the application name
-		$this->name = 'site';
+    public function __construct(
+        Input $input = null,
+        Registry $config = null,
+        WebClient $client = null,
+        Container $container = null
+    ) {
+        // Register the application name
+        $this->name = 'site';
 
-		// Register the client ID
-		$this->clientId = 0;
+        // Register the client ID
+        $this->clientId = 0;
 
-		// Execute the parent constructor
-		parent::__construct($input, $config, $client, $container);
-	}
+        // Execute the parent constructor
+        parent::__construct($input, $config, $client, $container);
+    }
 
-	/**
-	 * Check if the user can access the application
-	 *
-	 * @param integer $itemid The item ID to check authorisation for
-	 *
-	 * @return  void
-	 *
-	 * @throws  Exception When you are not authorised to view the home page menu item
-	 * @since   3.2
-	 *
-	 */
-	protected function authorise(int $itemid): void
+    /**
+     * Check if the user can access the application
+     *
+     * @param integer $itemid The item ID to check authorisation for
+     *
+     * @return  void
+     *
+     * @throws  Exception When you are not authorised to view the home page menu item
+     * @since   3.2
+     *
+     */
+    protected function authorise(int $itemid): void
     {
-		$menus = $this->getMenu();
-		$user  = Factory::getApplication()->getIdentity();
+        $menus = $this->getMenu();
+        $user  = Factory::getApplication()->getIdentity();
 
-		if (!$menus->authorise($itemid))
-		{
-			if ($user->id == 0)
-			{
-				// Set the data
-				$this->setUserState('users.login.form.data', ['return' => Uri::getInstance()->toString()]);
+        if (!$menus->authorise($itemid))
+        {
+            if ($user->id == 0)
+            {
+                // Set the data
+                $this->setUserState('users.login.form.data', ['return' => Uri::getInstance()->toString()]);
 
-				$url = Route::_('index.php?option=com_users&view=login', false);
+                $url = Route::_('index.php?option=com_users&view=login', false);
 
-				$this->enqueueMessage(Text::_('JGLOBAL_YOU_MUST_LOGIN_FIRST'), 'error');
-				$this->redirect($url);
-			}
-			else
-			{
-				// Get the home page menu item
-				$home_item = $menus->getDefault($this->getLanguage()->getTag());
+                $this->enqueueMessage(Text::_('JGLOBAL_YOU_MUST_LOGIN_FIRST'), 'error');
+                $this->redirect($url);
+            }
+            else
+            {
+                // Get the home page menu item
+                $home_item = $menus->getDefault($this->getLanguage()->getTag());
 
-				// If we are already in the homepage raise an exception
-				if ($menus->getActive()->id == $home_item->id)
-				{
-					throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
-				}
+                // If we are already in the homepage raise an exception
+                if ($menus->getActive()->id == $home_item->id)
+                {
+                    throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+                }
 
-				// Otherwise redirect to the homepage and show an error
-				$this->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
-				$this->redirect(Route::_('index.php?Itemid=' . $home_item->id, false));
-			}
-		}
-	}
+                // Otherwise redirect to the homepage and show an error
+                $this->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
+                $this->redirect(Route::_('index.php?Itemid=' . $home_item->id, false));
+            }
+        }
+    }
 
-	/**
-	 * Dispatch the application
-	 *
-	 * @param string|null $component The component which is being rendered.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
-	 */
-	public function dispatch(string $component = null): void
+    /**
+     * Dispatch the application
+     *
+     * @param string|null $component The component which is being rendered.
+     *
+     * @return  void
+     *
+     * @since   3.2
+     */
+    public function dispatch(string $component = null): void
     {
-		// Get the component if not set.
-		if (!$component)
-		{
-			$component = $this->input->getCmd('option');
-		}
+        // Get the component if not set.
+        if (!$component)
+        {
+            $component = $this->input->getCmd('option');
+        }
 
-		// Load the document to the API
-		$this->loadDocument();
+        // Load the document to the API
+        $this->loadDocument();
 
-		// Set up the params
-		$document = $this->getDocument();
-		$params   = $this->getParams();
+        // Set up the params
+        $document = $this->getDocument();
+        $params   = $this->getParams();
 
-		// Register the document object with Factory:
+        // Register the document object with Factory:
 //		Factory::$document = $document;
 
-		switch ($document->getType())
-		{
-			case 'html':
-				// Set up the language
-				LanguageHelper::getLanguages('lang_code');
+        switch ($document->getType())
+        {
+            case 'html':
+                // Set up the language
+                LanguageHelper::getLanguages('lang_code');
 
-				// Set metadata
-				$document->setMetaData('rights', $this->get('MetaRights'));
+                // Set metadata
+                $document->setMetaData('rights', $this->get('MetaRights'));
 
-				// Get the template
-				$template = $this->getTemplate(true);
+                // Get the template
+                $template = $this->getTemplate(true);
 
-				// Store the template and its params to the config
-				$this->set('theme', $template->template);
-				$this->set('themeParams', $template->params);
+                // Store the template and its params to the config
+                $this->set('theme', $template->template);
+                $this->set('themeParams', $template->params);
 
-				// Add Asset registry files
-				$wr = $document->getWebAssetManager()->getRegistry();
+                // Add Asset registry files
+                $wr = $document->getWebAssetManager()->getRegistry();
 
-				if ($component)
-				{
-					$wr->addExtensionRegistryFile($component);
-				}
+                if ($component)
+                {
+                    $wr->addExtensionRegistryFile($component);
+                }
 
-				if ($template->parent)
-				{
-					$wr->addTemplateRegistryFile($template->parent, $this->getClientId());
-				}
+                if ($template->parent)
+                {
+                    $wr->addTemplateRegistryFile($template->parent, $this->getClientId());
+                }
 
-				$wr->addTemplateRegistryFile($template->template, $this->getClientId());
+                $wr->addTemplateRegistryFile($template->template, $this->getClientId());
 
-				break;
+                break;
 
-			case 'feed':
-				$document->setBase(htmlspecialchars(Uri::current()));
-				break;
-		}
+            case 'feed':
+                $document->setBase(htmlspecialchars(Uri::current()));
+                break;
+        }
 
-		$document->setTitle($params->get('page_title'));
-		$document->setDescription($params->get('page_description'));
+        $document->setTitle($params->get('page_title'));
+        $document->setDescription($params->get('page_description'));
 
-		// Add version number or not based on global configuration
-		if ($this->get('MetaVersion', 0))
-		{
-			$document->setGenerator('Joomla! - Open Source Content Management - Version ' . JVERSION);
-		}
-		else
-		{
-			$document->setGenerator('Joomla! - Open Source Content Management');
-		}
+        // Add version number or not based on global configuration
+        if ($this->get('MetaVersion', 0))
+        {
+            $document->setGenerator('Joomla! - Open Source Content Management - Version ' . JVERSION);
+        }
+        else
+        {
+            $document->setGenerator('Joomla! - Open Source Content Management');
+        }
 
-		$contents = ComponentHelper::renderComponent($component);
-		$document->setBuffer($contents, 'component');
+        $contents = ComponentHelper::renderComponent($component);
+        $document->setBuffer($contents, 'component');
 
-		// Trigger the onAfterDispatch event.
-		PluginHelper::importPlugin('system');
+        // Trigger the onAfterDispatch event.
+        PluginHelper::importPlugin('system');
         $this->dispatchEvent(
             'onAfterDispatch',
             new AfterDispatchEvent('onAfterDispatch', ['subject' => $this])
         );
-	}
+    }
 
     /**
      * Method to run the Web application routines.
@@ -290,386 +290,386 @@ final class BwSiteApplication extends CMSApplication
      *
      * @since   3.2
      */
-	protected function doExecute(): void
+    protected function doExecute(): void
     {
-		// Initialise the application
-		$this->initialiseApp();
+        // Initialise the application
+        $this->initialiseApp();
 
-		// Mark afterInitialise in the profiler.
-		JDEBUG ? $this->profiler->mark('afterInitialise') : null;
+        // Mark afterInitialise in the profiler.
+        JDEBUG ? $this->profiler->mark('afterInitialise') : null;
 
-		// Route the application
-		$this->route();
+        // Route the application
+        $this->route();
 
-		// Mark afterRoute in the profiler.
-		JDEBUG ? $this->profiler->mark('afterRoute') : null;
+        // Mark afterRoute in the profiler.
+        JDEBUG ? $this->profiler->mark('afterRoute') : null;
 
-		if (!$this->isHandlingMultiFactorAuthentication())
-		{
-			/*
-			 * Check if the user is required to reset their password
-			 *
-			 * Before $this->route(); "option" and "view" can't be safely read using:
-			 * $this->input->getCmd('option'); or $this->input->getCmd('view');
-			 * ex: due of the sef urls
-			 */
-			$this->checkUserRequiresReset('com_users', 'profile', 'edit',
-				'com_users/profile.save,com_users/profile.apply,com_users/user.logout');
-		}
+        if (!$this->isHandlingMultiFactorAuthentication())
+        {
+            /*
+             * Check if the user is required to reset their password
+             *
+             * Before $this->route(); "option" and "view" can't be safely read using:
+             * $this->input->getCmd('option'); or $this->input->getCmd('view');
+             * ex: due of the sef urls
+             */
+            $this->checkUserRequiresReset('com_users', 'profile', 'edit',
+                'com_users/profile.save,com_users/profile.apply,com_users/user.logout');
+        }
 
-		// Dispatch the application
-		$this->dispatch();
+        // Dispatch the application
+        $this->dispatch();
 
-		// Mark afterDispatch in the profiler.
-		JDEBUG ? $this->profiler->mark('afterDispatch') : null;
-	}
+        // Mark afterDispatch in the profiler.
+        JDEBUG ? $this->profiler->mark('afterDispatch') : null;
+    }
 
-	/**
-	 * Return the current state of the detect browser option.
-	 *
-	 * @return  boolean
-	 *
-	 * @since   3.2
-	 */
-	public function getDetectBrowser(): bool
+    /**
+     * Return the current state of the detect browser option.
+     *
+     * @return  boolean
+     *
+     * @since   3.2
+     */
+    public function getDetectBrowser(): bool
     {
-		return $this->detect_browser;
-	}
+        return $this->detect_browser;
+    }
 
-	/**
-	 * Return the current state of the language filter.
-	 *
-	 * @return  boolean
-	 *
-	 * @since   3.2
-	 */
-	public function getLanguageFilter(): bool
+    /**
+     * Return the current state of the language filter.
+     *
+     * @return  boolean
+     *
+     * @since   3.2
+     */
+    public function getLanguageFilter(): bool
     {
-		return $this->language_filter;
-	}
+        return $this->language_filter;
+    }
 
-	/**
-	 * Get the application parameters
-	 *
-	 * @param string|null $option The component option
-	 *
-	 * @return  Registry  The parameters object
-	 *
-	 * @since   3.2
-	 */
-	public function getParams(string $option = null): Registry
+    /**
+     * Get the application parameters
+     *
+     * @param string|null $option The component option
+     *
+     * @return  Registry  The parameters object
+     *
+     * @since   3.2
+     */
+    public function getParams(string $option = null): Registry
     {
-		static $params = [];
+        static $params = [];
 
-		$hash = '__default';
+        $hash = '__default';
 
-		if (!empty($option))
-		{
-			$hash = $option;
-		}
+        if (!empty($option))
+        {
+            $hash = $option;
+        }
 
-		if (!isset($params[$hash]))
-		{
-			// Get component parameters
-			if (!$option)
-			{
-				$option = $this->input->getCmd('option');
-			}
+        if (!isset($params[$hash]))
+        {
+            // Get component parameters
+            if (!$option)
+            {
+                $option = $this->input->getCmd('option');
+            }
 
-			// Get new instance of component global parameters
-			$params[$hash] = clone ComponentHelper::getParams($option);
+            // Get new instance of component global parameters
+            $params[$hash] = clone ComponentHelper::getParams($option);
 
-			// Get menu parameters
-			$menus = $this->getMenu();
-			$menu  = $menus->getActive();
+            // Get menu parameters
+            $menus = $this->getMenu();
+            $menu  = $menus->getActive();
 
-			// Get language
-			$lang_code = $this->getLanguage()->getTag();
-			$languages = LanguageHelper::getLanguages('lang_code');
+            // Get language
+            $lang_code = $this->getLanguage()->getTag();
+            $languages = LanguageHelper::getLanguages('lang_code');
 
-			$title = $this->get('sitename');
+            $title = $this->get('sitename');
 
-			if (isset($languages[$lang_code]) && $languages[$lang_code]->metadesc)
-			{
-				$description = $languages[$lang_code]->metadesc;
-			}
-			else
-			{
-				$description = $this->get('MetaDesc');
-			}
+            if (isset($languages[$lang_code]) && $languages[$lang_code]->metadesc)
+            {
+                $description = $languages[$lang_code]->metadesc;
+            }
+            else
+            {
+                $description = $this->get('MetaDesc');
+            }
 
-			$rights = $this->get('MetaRights');
-			$robots = $this->get('robots');
+            $rights = $this->get('MetaRights');
+            $robots = $this->get('robots');
 
-			// Retrieve com_menu global settings
-			$temp = clone ComponentHelper::getParams('com_menus');
+            // Retrieve com_menu global settings
+            $temp = clone ComponentHelper::getParams('com_menus');
 
-			// Let's cascade the parameters if we have menu item parameters
-			if (is_object($menu))
-			{
-				// Get show_page_heading from com_menu global settings
-				$params[$hash]->def('show_page_heading', $temp->get('show_page_heading'));
+            // Let's cascade the parameters if we have menu item parameters
+            if (is_object($menu))
+            {
+                // Get show_page_heading from com_menu global settings
+                $params[$hash]->def('show_page_heading', $temp->get('show_page_heading'));
 
-				$params[$hash]->merge($menu->getParams());
-				$title = $menu->title;
-			}
-			else
-			{
-				// Merge com_menu global settings
-				$params[$hash]->merge($temp);
+                $params[$hash]->merge($menu->getParams());
+                $title = $menu->title;
+            }
+            else
+            {
+                // Merge com_menu global settings
+                $params[$hash]->merge($temp);
 
-				// If supplied, use page title
-				$title = $temp->get('page_title', $title);
-			}
+                // If supplied, use page title
+                $title = $temp->get('page_title', $title);
+            }
 
-			$params[$hash]->def('page_title', $title);
-			$params[$hash]->def('page_description', $description);
-			$params[$hash]->def('page_rights', $rights);
-			$params[$hash]->def('robots', $robots);
-		}
+            $params[$hash]->def('page_title', $title);
+            $params[$hash]->def('page_description', $description);
+            $params[$hash]->def('page_rights', $rights);
+            $params[$hash]->def('robots', $robots);
+        }
 
-		return $params[$hash];
-	}
+        return $params[$hash];
+    }
 
-	/**
-	 * Return a reference to the Pathway object.
-	 *
-	 * @return  Pathway  A Pathway object
-	 *
-	 * @since   3.2
-	 */
-	public function getPathway(): Pathway
+    /**
+     * Return a reference to the Pathway object.
+     *
+     * @return  Pathway  A Pathway object
+     *
+     * @since   3.2
+     */
+    public function getPathway(): Pathway
     {
-		return parent::getPathway();
-	}
+        return parent::getPathway();
+    }
 
-	/**
-	 * Return a reference to the Router object.
-	 *
-	 * @param string $name    The name of the application.
-	 * @param array  $options An optional associative array of configuration settings.
-	 *
-	 * @return  Router
-	 *
-	 * @since       3.2
-	 *
-	 * @deprecated  4.3 will be removed in 6.0
-	 *              Inject the router or load it from the dependency injection container
-	 *              Example: Factory::getContainer()->get(SiteRouter::class);
-	 */
-	public static function getRouter($name = 'site', array $options = []): Router
+    /**
+     * Return a reference to the Router object.
+     *
+     * @param string $name    The name of the application.
+     * @param array  $options An optional associative array of configuration settings.
+     *
+     * @return  Router
+     *
+     * @since       3.2
+     *
+     * @deprecated  4.3 will be removed in 6.0
+     *              Inject the router or load it from the dependency injection container
+     *              Example: Factory::getContainer()->get(SiteRouter::class);
+     */
+    public static function getRouter($name = 'site', array $options = []): Router
     {
         return Factory::getContainer()->get(SiteRouter::class);
 //		return Router::getInstance($name, $options);
-	}
+    }
 
-	/**
-	 * Gets the name of the current template.
-	 *
-	 * @param boolean $params True to return the template parameters
-	 *
-	 * @return  string|stdClass  The name of the template if the params argument is false. The template object if the params argument is true.
-	 *
-	 * @throws  InvalidArgumentException
-	 * @since   3.2
-	 */
-	public function getTemplate($params = false): string|stdClass
+    /**
+     * Gets the name of the current template.
+     *
+     * @param boolean $params True to return the template parameters
+     *
+     * @return  string|stdClass  The name of the template if the params argument is false. The template object if the params argument is true.
+     *
+     * @throws  InvalidArgumentException
+     * @since   3.2
+     */
+    public function getTemplate($params = false): string|stdClass
     {
-		if (is_object($this->template))
-		{
-			if ($this->template->parent)
-			{
-				if (!is_file(JPATH_THEMES_SITE . '/' . $this->template->template . '/index.php'))
-				{
-					if (!is_file(JPATH_THEMES_SITE . '/' . $this->template->parent . '/index.php'))
-					{
-						throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
-							$this->template->template));
-					}
-				}
-			}
-			elseif (!is_file(JPATH_THEMES_SITE . '/' . $this->template->template . '/index.php'))
-			{
-				throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
-					$this->template->template));
-			}
+        if (is_object($this->template))
+        {
+            if ($this->template->parent)
+            {
+                if (!is_file(JPATH_THEMES_SITE . '/' . $this->template->template . '/index.php'))
+                {
+                    if (!is_file(JPATH_THEMES_SITE . '/' . $this->template->parent . '/index.php'))
+                    {
+                        throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
+                            $this->template->template));
+                    }
+                }
+            }
+            elseif (!is_file(JPATH_THEMES_SITE . '/' . $this->template->template . '/index.php'))
+            {
+                throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
+                    $this->template->template));
+            }
 
-			if ($params)
-			{
-				return $this->template;
-			}
+            if ($params)
+            {
+                return $this->template;
+            }
 
-			return $this->template->template;
-		}
+            return $this->template->template;
+        }
 
-		// Get the id of the active menu item
-		$menu = $this->getMenu();
-		$item = $menu->getActive();
+        // Get the id of the active menu item
+        $menu = $this->getMenu();
+        $item = $menu->getActive();
 
-		if (!$item)
-		{
-			$item = $menu->getItem($this->input->getInt('Itemid'));
-		}
+        if (!$item)
+        {
+            $item = $menu->getItem($this->input->getInt('Itemid'));
+        }
 
-		$id = 0;
+        $id = 0;
 
-		if (is_object($item))
-		{
-			// Valid item retrieved
-			$id = $item->template_style_id;
-		}
+        if (is_object($item))
+        {
+            // Valid item retrieved
+            $id = $item->template_style_id;
+        }
 
-		$tid = $this->input->getUint('templateStyle', 0);
+        $tid = $this->input->getUint('templateStyle', 0);
 
-		if (is_numeric($tid) && (int) $tid > 0)
-		{
-			$id = (int) $tid;
-		}
+        if (is_numeric($tid) && (int) $tid > 0)
+        {
+            $id = (int) $tid;
+        }
 
-		/** @var OutputController $cache */
-		$cache = $this->getCacheControllerFactory()->createCacheController('output',
-			['defaultgroup' => 'com_templates']);
+        /** @var OutputController $cache */
+        $cache = $this->getCacheControllerFactory()->createCacheController('output',
+            ['defaultgroup' => 'com_templates']);
 
-		if ($this->getLanguageFilter())
-		{
-			$tag = $this->getLanguage()->getTag();
-		}
-		else
-		{
-			$tag = '';
-		}
+        if ($this->getLanguageFilter())
+        {
+            $tag = $this->getLanguage()->getTag();
+        }
+        else
+        {
+            $tag = '';
+        }
 
-		$cacheId = 'templates0' . $tag;
+        $cacheId = 'templates0' . $tag;
 
-		if ($cache->contains($cacheId))
-		{
-			$templates = $cache->get($cacheId);
-		}
-		else
-		{
-			$templates = $this->bootComponent('templates')->getMVCFactory()
-				->createModel('Style', 'Administrator')->getSiteTemplates();
+        if ($cache->contains($cacheId))
+        {
+            $templates = $cache->get($cacheId);
+        }
+        else
+        {
+            $templates = $this->bootComponent('templates')->getMVCFactory()
+                ->createModel('Style', 'Administrator')->getSiteTemplates();
 
-			foreach ($templates as $template)
-			{
-				// Create home element
-				if ($template->home == 1 && !isset($template_home) || $this->getLanguageFilter() && $template->home == $tag)
-				{
-					$template_home = clone $template;
-				}
+            foreach ($templates as $template)
+            {
+                // Create home element
+                if ($template->home == 1 && !isset($template_home) || $this->getLanguageFilter() && $template->home == $tag)
+                {
+                    $template_home = clone $template;
+                }
 
-				$template->params = new Registry($template->params);
-			}
+                $template->params = new Registry($template->params);
+            }
 
-			// Unset the $template reference to the last $templates[n] item cycled in the foreach above to avoid editing it later
-			unset($template);
+            // Unset the $template reference to the last $templates[n] item cycled in the foreach above to avoid editing it later
+            unset($template);
 
-			// Add home element, after loop to avoid double execution
-			if (isset($template_home))
-			{
-				$template_home->params = new Registry($template_home->params);
-				$templates[0]          = $template_home;
-			}
+            // Add home element, after loop to avoid double execution
+            if (isset($template_home))
+            {
+                $template_home->params = new Registry($template_home->params);
+                $templates[0]          = $template_home;
+            }
 
-			$cache->store($templates, $cacheId);
-		}
+            $cache->store($templates, $cacheId);
+        }
 
-		if (isset($templates[$id]))
-		{
-			$template = $templates[$id];
-		}
-		else
-		{
-			$template = $templates[0];
-		}
+        if (isset($templates[$id]))
+        {
+            $template = $templates[$id];
+        }
+        else
+        {
+            $template = $templates[0];
+        }
 
-		// Allows for overriding the active template from the request
-		$template_override = $this->input->getCmd('template', '');
+        // Allows for overriding the active template from the request
+        $template_override = $this->input->getCmd('template', '');
 
-		// Only set template override if it is a valid template (= it exists and is enabled)
-		if (!empty($template_override))
-		{
-			if (is_file(JPATH_THEMES_SITE . '/' . $template_override . '/index.php'))
-			{
-				foreach ($templates as $tmpl)
-				{
-					if ($tmpl->template === $template_override)
-					{
-						$template = $tmpl;
-						break;
-					}
-				}
-			}
-		}
+        // Only set template override if it is a valid template (= it exists and is enabled)
+        if (!empty($template_override))
+        {
+            if (is_file(JPATH_THEMES_SITE . '/' . $template_override . '/index.php'))
+            {
+                foreach ($templates as $tmpl)
+                {
+                    if ($tmpl->template === $template_override)
+                    {
+                        $template = $tmpl;
+                        break;
+                    }
+                }
+            }
+        }
 
-		// Need to filter the default value as well
-		$template->template = InputFilter::getInstance()->clean($template->template, 'cmd');
+        // Need to filter the default value as well
+        $template->template = InputFilter::getInstance()->clean($template->template, 'cmd');
 
-		$templateFile = JPATH_THEMES_SITE . '/' . $template->template . '/index.php';
+        $templateFile = JPATH_THEMES_SITE . '/' . $template->template . '/index.php';
 
-		// Fallback template
-		if (!empty($template->parent))
-		{
-			if (!is_file(JPATH_THEMES_SITE . '/' . $template->template . '/index.php'))
-			{
-				if (!is_file(JPATH_THEMES_SITE . '/' . $template->parent . '/index.php'))
-				{
-					$this->enqueueMessage(Text::_('JERROR_ALERTNOTEMPLATE'), 'error');
+        // Fallback template
+        if (!empty($template->parent))
+        {
+            if (!is_file(JPATH_THEMES_SITE . '/' . $template->template . '/index.php'))
+            {
+                if (!is_file(JPATH_THEMES_SITE . '/' . $template->parent . '/index.php'))
+                {
+                    $this->enqueueMessage(Text::_('JERROR_ALERTNOTEMPLATE'), 'error');
 
-					// Try to find data for 'cassiopeia' template
-					$original_tmpl = $template->template;
+                    // Try to find data for 'cassiopeia' template
+                    $original_tmpl = $template->template;
 
-					foreach ($templates as $tmpl)
-					{
-						if ($tmpl->template === 'cassiopeia')
-						{
-							$template = $tmpl;
-							break;
-						}
-					}
+                    foreach ($templates as $tmpl)
+                    {
+                        if ($tmpl->template === 'cassiopeia')
+                        {
+                            $template = $tmpl;
+                            break;
+                        }
+                    }
 
-					// Check, the data were found and if template really exists
-					if (!is_file(JPATH_THEMES_SITE . '/' . $template->template . '/index.php'))
-					{
-						throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
-							$original_tmpl));
-					}
-				}
-			}
-		}
-		elseif (!is_file($templateFile))
-		{
-			$this->enqueueMessage(Text::_('JERROR_ALERTNOTEMPLATE'), 'error');
+                    // Check, the data were found and if template really exists
+                    if (!is_file(JPATH_THEMES_SITE . '/' . $template->template . '/index.php'))
+                    {
+                        throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE',
+                            $original_tmpl));
+                    }
+                }
+            }
+        }
+        elseif (!is_file($templateFile))
+        {
+            $this->enqueueMessage(Text::_('JERROR_ALERTNOTEMPLATE'), 'error');
 
-			// Try to find data for 'cassiopeia' template
-			$original_tmpl = $template->template;
+            // Try to find data for 'cassiopeia' template
+            $original_tmpl = $template->template;
 
-			foreach ($templates as $tmpl)
-			{
-				if ($tmpl->template === 'cassiopeia')
-				{
-					$template = $tmpl;
-					break;
-				}
-			}
+            foreach ($templates as $tmpl)
+            {
+                if ($tmpl->template === 'cassiopeia')
+                {
+                    $template = $tmpl;
+                    break;
+                }
+            }
 
-			// Check, the data were found and if template really exists
-			if (!is_file($templateFile))
-			{
-				throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $original_tmpl));
-			}
-		}
+            // Check, the data were found and if template really exists
+            if (!is_file($templateFile))
+            {
+                throw new InvalidArgumentException(Text::sprintf('JERROR_COULD_NOT_FIND_TEMPLATE', $original_tmpl));
+            }
+        }
 
-		// Cache the result
-		$this->template = $template;
+        // Cache the result
+        $this->template = $template;
 
-		if ($params)
-		{
-			return $template;
-		}
+        if ($params)
+        {
+            return $template;
+        }
 
-		return $template->template;
-	}
+        return $template->template;
+    }
 
     /**
      * Initialise the application.
@@ -682,141 +682,141 @@ final class BwSiteApplication extends CMSApplication
      *
      * @since   3.2
      */
-	public function initialiseApp($options = []): void
+    public function initialiseApp($options = []): void
     {
-		$user = Factory::getApplication()->getIdentity();
+        $user = Factory::getApplication()->getIdentity();
 
-		// If the user is a guest we populate it with the guest user group.
-		if ($user->guest)
-		{
-			$guestUsergroup = ComponentHelper::getParams('com_users')->get('guest_usergroup', 1);
-			$user->groups   = [$guestUsergroup];
-		}
+        // If the user is a guest we populate it with the guest user group.
+        if ($user->guest)
+        {
+            $guestUsergroup = ComponentHelper::getParams('com_users')->get('guest_usergroup', 1);
+            $user->groups   = [$guestUsergroup];
+        }
 
-		$plugin = PluginHelper::getPlugin('system', 'languagefilter');
+        $plugin = PluginHelper::getPlugin('system', 'languagefilter');
 
-		if ($plugin)
-		{
-			$pluginParams = new Registry($plugin->params);
-			$this->setLanguageFilter(true);
-			$this->setDetectBrowser($pluginParams->get('detect_browser', 1) == 1);
-		}
+        if ($plugin)
+        {
+            $pluginParams = new Registry($plugin->params);
+            $this->setLanguageFilter(true);
+            $this->setDetectBrowser($pluginParams->get('detect_browser', 1) == 1);
+        }
 
-		if (empty($options['language']))
-		{
-			// Detect the specified language
-			$lang = $this->input->getString('language');
+        if (empty($options['language']))
+        {
+            // Detect the specified language
+            $lang = $this->input->getString('language');
 
-			// Make sure that the user's language exists
-			if ($lang && LanguageHelper::exists($lang))
-			{
-				$options['language'] = $lang;
-			}
-		}
+            // Make sure that the user's language exists
+            if ($lang && LanguageHelper::exists($lang))
+            {
+                $options['language'] = $lang;
+            }
+        }
 
-		if (empty($options['language']) && $this->getLanguageFilter())
-		{
-			// Detect cookie language
-			$lang = $this->input->cookie->get(md5($this->get('secret') . 'language'), null, 'string');
+        if (empty($options['language']) && $this->getLanguageFilter())
+        {
+            // Detect cookie language
+            $lang = $this->input->cookie->get(md5($this->get('secret') . 'language'), null, 'string');
 
-			// Make sure that the user's language exists
-			if ($lang && LanguageHelper::exists($lang))
-			{
-				$options['language'] = $lang;
-			}
-		}
+            // Make sure that the user's language exists
+            if ($lang && LanguageHelper::exists($lang))
+            {
+                $options['language'] = $lang;
+            }
+        }
 
-		if (empty($options['language']))
-		{
-			// Detect user language
-			$lang = $user->getParam('language');
+        if (empty($options['language']))
+        {
+            // Detect user language
+            $lang = $user->getParam('language');
 
-			// Make sure that the user's language exists
-			if ($lang && LanguageHelper::exists($lang))
-			{
-				$options['language'] = $lang;
-			}
-		}
+            // Make sure that the user's language exists
+            if ($lang && LanguageHelper::exists($lang))
+            {
+                $options['language'] = $lang;
+            }
+        }
 
-		if (empty($options['language']) && $this->getDetectBrowser())
-		{
-			// Detect browser language
-			$lang = LanguageHelper::detectLanguage();
+        if (empty($options['language']) && $this->getDetectBrowser())
+        {
+            // Detect browser language
+            $lang = LanguageHelper::detectLanguage();
 
-			// Make sure that the user's language exists
-			if ($lang && LanguageHelper::exists($lang))
-			{
-				$options['language'] = $lang;
-			}
-		}
+            // Make sure that the user's language exists
+            if ($lang && LanguageHelper::exists($lang))
+            {
+                $options['language'] = $lang;
+            }
+        }
 
-		if (empty($options['language']))
-		{
-			// Detect default language
-			$params              = ComponentHelper::getParams('com_languages');
-			$options['language'] = $params->get('site', $this->get('language', 'en-GB'));
-		}
+        if (empty($options['language']))
+        {
+            // Detect default language
+            $params              = ComponentHelper::getParams('com_languages');
+            $options['language'] = $params->get('site', $this->get('language', 'en-GB'));
+        }
 
-		// One last check to make sure we have something
-		if (!LanguageHelper::exists($options['language']))
-		{
-			$lang = $this->config->get('language', 'en-GB');
+        // One last check to make sure we have something
+        if (!LanguageHelper::exists($options['language']))
+        {
+            $lang = $this->config->get('language', 'en-GB');
 
-			if (LanguageHelper::exists($lang))
-			{
-				$options['language'] = $lang;
-			}
-			else
-			{
-				// As a last ditch fail to english
-				$options['language'] = 'en-GB';
-			}
-		}
+            if (LanguageHelper::exists($lang))
+            {
+                $options['language'] = $lang;
+            }
+            else
+            {
+                // As a last ditch fail to english
+                $options['language'] = 'en-GB';
+            }
+        }
 
-		// Finish initialisation
-		parent::initialiseApp($options);
-	}
+        // Finish initialisation
+        parent::initialiseApp($options);
+    }
 
-	/**
-	 * Load the library language files for the application
-	 *
-	 * @return  void
-	 *
-	 * @since   3.6.3
-	 */
-	protected function loadLibraryLanguage(): void
+    /**
+     * Load the library language files for the application
+     *
+     * @return  void
+     *
+     * @since   3.6.3
+     */
+    protected function loadLibraryLanguage(): void
     {
-		/*
-		 * Try the lib_joomla file in the current language (without allowing the loading of the file in the default language)
-		 * Fallback to the default language if necessary
-		 */
-		$this->getLanguage()->load('lib_joomla', JPATH_SITE)
-		|| $this->getLanguage()->load('lib_joomla', JPATH_ADMINISTRATOR);
-	}
+        /*
+         * Try the lib_joomla file in the current language (without allowing the loading of the file in the default language)
+         * Fallback to the default language if necessary
+         */
+        $this->getLanguage()->load('lib_joomla', JPATH_SITE)
+        || $this->getLanguage()->load('lib_joomla', JPATH_ADMINISTRATOR);
+    }
 
-	/**
-	 * Login authentication function
-	 *
-	 * @param array $credentials Array('username' => string, 'password' => string)
-	 * @param array $options     Array('remember' => boolean)
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @since   3.2
-	 */
-	public function login($credentials, $options = []): bool
+    /**
+     * Login authentication function
+     *
+     * @param array $credentials Array('username' => string, 'password' => string)
+     * @param array $options     Array('remember' => boolean)
+     *
+     * @return  boolean  True on success.
+     *
+     * @since   3.2
+     */
+    public function login($credentials, $options = []): bool
     {
-		// Set the application login entry point
-		if (!array_key_exists('entry_url', $options))
-		{
-			$options['entry_url'] = Uri::base() . 'index.php?option=com_users&task=user.login';
-		}
+        // Set the application login entry point
+        if (!array_key_exists('entry_url', $options))
+        {
+            $options['entry_url'] = Uri::base() . 'index.php?option=com_users&task=user.login';
+        }
 
-		// Set the access control action to check.
-		$options['action'] = 'core.login.site';
+        // Set the access control action to check.
+        $options['action'] = 'core.login.site';
 
-		return parent::login($credentials, $options);
-	}
+        return parent::login($credentials, $options);
+    }
 
     /**
      * Rendering is the process of pushing the document buffers into the template
@@ -829,50 +829,50 @@ final class BwSiteApplication extends CMSApplication
      *
      * @since   3.2
      */
-	protected function render(): void
+    protected function render(): void
     {
-		switch ($this->getDocument()->getType())
-		{
-			case 'feed':
-				// No special processing for feeds
-				break;
+        switch ($this->getDocument()->getType())
+        {
+            case 'feed':
+                // No special processing for feeds
+                break;
 
-			case 'html':
-			default:
-				$template = $this->getTemplate(true);
-				$file     = $this->input->get('tmpl', 'index');
+            case 'html':
+            default:
+                $template = $this->getTemplate(true);
+                $file     = $this->input->get('tmpl', 'index');
 
-				if ($file === 'offline' && !$this->get('offline'))
-				{
-					$this->set('themeFile', 'index.php');
-				}
+                if ($file === 'offline' && !$this->get('offline'))
+                {
+                    $this->set('themeFile', 'index.php');
+                }
 
-				if ($this->get('offline') && !Factory::getApplication()->getIdentity()->authorise('core.login.offline'))
-				{
-					$this->setUserState('users.login.form.data', ['return' => Uri::getInstance()->toString()]);
-					$this->set('themeFile', 'offline.php');
-					$this->setHeader('Status', '503 Service Temporarily Unavailable', 'true');
-				}
+                if ($this->get('offline') && !Factory::getApplication()->getIdentity()->authorise('core.login.offline'))
+                {
+                    $this->setUserState('users.login.form.data', ['return' => Uri::getInstance()->toString()]);
+                    $this->set('themeFile', 'offline.php');
+                    $this->setHeader('Status', '503 Service Temporarily Unavailable', 'true');
+                }
 
-				if (!is_dir(JPATH_THEMES_SITE . '/' . $template->template) && !$this->get('offline'))
-				{
-					$this->set('themeFile', 'component.php');
-				}
+                if (!is_dir(JPATH_THEMES_SITE . '/' . $template->template) && !$this->get('offline'))
+                {
+                    $this->set('themeFile', 'component.php');
+                }
 
-				// Ensure themeFile is set by now
-				if ($this->get('themeFile') == '')
-				{
-					$this->set('themeFile', $file . '.php');
-				}
+                // Ensure themeFile is set by now
+                if ($this->get('themeFile') == '')
+                {
+                    $this->set('themeFile', $file . '.php');
+                }
 
-				// Pass the parent template to the state
-				$this->set('themeInherits', $template->parent);
+                // Pass the parent template to the state
+                $this->set('themeInherits', $template->parent);
 
-				break;
-		}
+                break;
+        }
 
-		parent::render();
-	}
+        parent::render();
+    }
 
     /**
      * Route the application.
@@ -888,161 +888,161 @@ final class BwSiteApplication extends CMSApplication
      *
      * @since   3.2
      */
-	protected function route(): void
+    protected function route(): void
     {
-		// Get the full request URI.
-		$uri = clone Uri::getInstance();
+        // Get the full request URI.
+        $uri = clone Uri::getInstance();
 
-		// It is not possible to inject the SiteRouter as it requires a SiteApplication
-		// and we would end in an infinite loop
-		$result = $this->getContainer()->get(SiteRouter::class)->parse($uri, true);
+        // It is not possible to inject the SiteRouter as it requires a SiteApplication
+        // and we would end in an infinite loop
+        $result = $this->getContainer()->get(SiteRouter::class)->parse($uri, true);
 
-		$active = $this->getMenu()->getActive();
+        $active = $this->getMenu()->getActive();
 
-		if (
-			$active !== null
-			&& $active->type === 'alias'
-			&& $active->getParams()->get('alias_redirect')
-			&& in_array($this->input->getMethod(), ['GET', 'HEAD'], true)
-		)
-		{
-			$item = $this->getMenu()->getItem($active->getParams()->get('aliasoptions'));
+        if (
+            $active !== null
+            && $active->type === 'alias'
+            && $active->getParams()->get('alias_redirect')
+            && in_array($this->input->getMethod(), ['GET', 'HEAD'], true)
+        )
+        {
+            $item = $this->getMenu()->getItem($active->getParams()->get('aliasoptions'));
 
-			if ($item !== null)
-			{
-				$oldUri = clone Uri::getInstance();
+            if ($item !== null)
+            {
+                $oldUri = clone Uri::getInstance();
 
-				if ($oldUri->getVar('Itemid') == $active->id)
-				{
-					$oldUri->setVar('Itemid', $item->id);
-				}
+                if ($oldUri->getVar('Itemid') == $active->id)
+                {
+                    $oldUri->setVar('Itemid', $item->id);
+                }
 
-				$base             = Uri::base(true);
-				$oldPath          = StringHelper::strtolower(substr($oldUri->getPath(), strlen($base) + 1));
-				$activePathPrefix = StringHelper::strtolower($active->route);
+                $base             = Uri::base(true);
+                $oldPath          = StringHelper::strtolower(substr($oldUri->getPath(), strlen($base) + 1));
+                $activePathPrefix = StringHelper::strtolower($active->route);
 
-				$position = strpos($oldPath, $activePathPrefix);
+                $position = strpos($oldPath, $activePathPrefix);
 
-				if ($position !== false)
-				{
-					$oldUri->setPath($base . '/' . substr_replace($oldPath, $item->route, $position,
-							strlen($activePathPrefix)));
+                if ($position !== false)
+                {
+                    $oldUri->setPath($base . '/' . substr_replace($oldPath, $item->route, $position,
+                            strlen($activePathPrefix)));
 
-					$this->setHeader('Expires', 'Wed, 17 Aug 2005 00:00:00 GMT', true);
-					$this->setHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT', true);
-					$this->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-					$this->sendHeaders();
+                    $this->setHeader('Expires', 'Wed, 17 Aug 2005 00:00:00 GMT', true);
+                    $this->setHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT', true);
+                    $this->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+                    $this->sendHeaders();
 
-					$this->redirect((string) $oldUri, 301);
-				}
-			}
-		}
+                    $this->redirect((string) $oldUri, 301);
+                }
+            }
+        }
 
-		foreach ($result as $key => $value)
-		{
-			$this->input->def($key, $value);
-		}
+        foreach ($result as $key => $value)
+        {
+            $this->input->def($key, $value);
+        }
 
-		// Trigger the onAfterRoute event.
-		PluginHelper::importPlugin('system');
+        // Trigger the onAfterRoute event.
+        PluginHelper::importPlugin('system');
         $this->dispatchEvent(
             'onAfterRoute',
             new AfterDispatchEvent('onAfterRoute', ['subject' => $this])
         );
 
-		$Itemid = $this->input->getInt('Itemid');
-		$this->authorise($Itemid);
-	}
+        $Itemid = $this->input->getInt('Itemid');
+        $this->authorise($Itemid);
+    }
 
-	/**
-	 * Set the current state of the detect browser option.
-	 *
-	 * @param boolean $state The new state of the detect browser option
-	 *
-	 * @return  boolean  The previous state
-	 *
-	 * @since   3.2
-	 */
-	public function setDetectBrowser(bool $state = false): bool
+    /**
+     * Set the current state of the detect browser option.
+     *
+     * @param boolean $state The new state of the detect browser option
+     *
+     * @return  boolean  The previous state
+     *
+     * @since   3.2
+     */
+    public function setDetectBrowser(bool $state = false): bool
     {
-		$old                  = $this->getDetectBrowser();
-		$this->detect_browser = $state;
+        $old                  = $this->getDetectBrowser();
+        $this->detect_browser = $state;
 
-		return $old;
-	}
+        return $old;
+    }
 
-	/**
-	 * Set the current state of the language filter.
-	 *
-	 * @param boolean $state The new state of the language filter
-	 *
-	 * @return  boolean  The previous state
-	 *
-	 * @since   3.2
-	 */
-	public function setLanguageFilter(bool $state = false): bool
+    /**
+     * Set the current state of the language filter.
+     *
+     * @param boolean $state The new state of the language filter
+     *
+     * @return  boolean  The previous state
+     *
+     * @since   3.2
+     */
+    public function setLanguageFilter(bool $state = false): bool
     {
-		$old                   = $this->getLanguageFilter();
-		$this->language_filter = $state;
+        $old                   = $this->getLanguageFilter();
+        $this->language_filter = $state;
 
-		return $old;
-	}
+        return $old;
+    }
 
-	/**
-	 * Overrides the default template that would be used
-	 *
-	 * @param string|stdClass $template    The template name or definition
-	 * @param mixed|null      $styleParams The template style parameters
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
-	 */
-	public function setTemplate(string|stdClass $template, mixed $styleParams = null): void
+    /**
+     * Overrides the default template that would be used
+     *
+     * @param string|stdClass $template    The template name or definition
+     * @param mixed|null      $styleParams The template style parameters
+     *
+     * @return  void
+     *
+     * @since   3.2
+     */
+    public function setTemplate(string|stdClass $template, mixed $styleParams = null): void
     {
-		if (is_object($template))
-		{
-			$templateName        = empty($template->template)
-				? ''
-				: $template->template;
-			$templateInheritable = empty($template->inheritable)
-				? 0
-				: $template->inheritable;
-			$templateParent      = empty($template->parent)
-				? ''
-				: $template->parent;
-			$templateParams      = empty($template->params)
-				? $styleParams
-				: $template->params;
-		}
-		else
-		{
-			$templateName        = $template;
-			$templateInheritable = 0;
-			$templateParent      = '';
-			$templateParams      = $styleParams;
-		}
+        if (is_object($template))
+        {
+            $templateName        = empty($template->template)
+                ? ''
+                : $template->template;
+            $templateInheritable = empty($template->inheritable)
+                ? 0
+                : $template->inheritable;
+            $templateParent      = empty($template->parent)
+                ? ''
+                : $template->parent;
+            $templateParams      = empty($template->params)
+                ? $styleParams
+                : $template->params;
+        }
+        else
+        {
+            $templateName        = $template;
+            $templateInheritable = 0;
+            $templateParent      = '';
+            $templateParams      = $styleParams;
+        }
 
-		if (is_dir(JPATH_THEMES_SITE . '/' . $templateName))
-		{
-			$this->template           = new stdClass();
-			$this->template->template = $templateName;
+        if (is_dir(JPATH_THEMES_SITE . '/' . $templateName))
+        {
+            $this->template           = new stdClass();
+            $this->template->template = $templateName;
 
-			if ($templateParams instanceof Registry)
-			{
-				$this->template->params = $templateParams;
-			}
-			else
-			{
-				$this->template->params = new Registry($templateParams);
-			}
+            if ($templateParams instanceof Registry)
+            {
+                $this->template->params = $templateParams;
+            }
+            else
+            {
+                $this->template->params = new Registry($templateParams);
+            }
 
-			$this->template->inheritable = $templateInheritable;
-			$this->template->parent      = $templateParent;
+            $this->template->inheritable = $templateInheritable;
+            $this->template->parent      = $templateParent;
 
-			// Store the template and its params to the config
-			$this->set('theme', $this->template->template);
-			$this->set('themeParams', $this->template->params);
-		}
-	}
+            // Store the template and its params to the config
+            $this->set('theme', $this->template->template);
+            $this->set('themeParams', $this->template->params);
+        }
+    }
 }

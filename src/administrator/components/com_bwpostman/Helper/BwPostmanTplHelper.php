@@ -37,117 +37,117 @@ defined('_JEXEC') or die('Restricted access');
 abstract class BwPostmanTplHelper
 {
 
-	/**
-	 * Configure the head-tag.
-	 *
-	 * @return    string
-	 *
-	 * @since    2.0.0
-	 */
-	public static function getHeadTag(): string
-	{
-		$head_tag  = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-		$head_tag .= "\n";
-		$head_tag .= '<html>' . "\n";
-		$head_tag .= '	<head>' . "\n";
-		$head_tag .= '		<title>Newsletter</title>' . "\n";
-		$head_tag .= '		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' . "\n";
-		$head_tag .= '		<meta name="robots" content="noindex,nofollow" />' . "\n";
-		$head_tag .= '		<meta property="og:title" content="HTML Newsletter" />' . "\n";
+    /**
+     * Configure the head-tag.
+     *
+     * @return    string
+     *
+     * @since    2.0.0
+     */
+    public static function getHeadTag(): string
+    {
+        $head_tag  = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+        $head_tag .= "\n";
+        $head_tag .= '<html>' . "\n";
+        $head_tag .= '	<head>' . "\n";
+        $head_tag .= '		<title>Newsletter</title>' . "\n";
+        $head_tag .= '		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' . "\n";
+        $head_tag .= '		<meta name="robots" content="noindex,nofollow" />' . "\n";
+        $head_tag .= '		<meta property="og:title" content="HTML Newsletter" />' . "\n";
 
-		return $head_tag;
-	}
+        return $head_tag;
+    }
 
-	/**
-	 * Configure the body-tag.
-	 *
-	 * @return    string  $body_tag define the standard body-tag.
-	 *
-	 * @since    2.0.0
-	 */
-	public static function getBodyTag(): string
-	{
-		return ' <body bgcolor="#ffffff" emb-default-bgcolor="#ffffff">' . "\n";
-	}
+    /**
+     * Configure the body-tag.
+     *
+     * @return    string  $body_tag define the standard body-tag.
+     *
+     * @since    2.0.0
+     */
+    public static function getBodyTag(): string
+    {
+        return ' <body bgcolor="#ffffff" emb-default-bgcolor="#ffffff">' . "\n";
+    }
 
-	/**
-	 * Configure the beginning of article-tag.
-	 *
-	 * @return   string $article_tag define the standard article-tag.
-	 *
-	 * @since    2.0.0
-	 */
-	public static function getArticleTagBegin(): string
-	{
-		return ' <div class="article">' . "\n";
-	}
+    /**
+     * Configure the beginning of article-tag.
+     *
+     * @return   string $article_tag define the standard article-tag.
+     *
+     * @since    2.0.0
+     */
+    public static function getArticleTagBegin(): string
+    {
+        return ' <div class="article">' . "\n";
+    }
 
-	/**
-	 * Configure the end of article-tag.
-	 *
-	 * @return   string $article_tag define the standard article-tag.
-	 *
-	 * @since    2.0.0
-	 */
-	public static function getArticleTagEnd(): string
-	{
-		return ' </div>' . "\n";
-	}
+    /**
+     * Configure the end of article-tag.
+     *
+     * @return   string $article_tag define the standard article-tag.
+     *
+     * @since    2.0.0
+     */
+    public static function getArticleTagEnd(): string
+    {
+        return ' </div>' . "\n";
+    }
 
-	/**
-	 * Configure the readon-tag.
-	 *
-	 * @return   string $readon_tag define the standard readon-tag.
-	 *
-	 * @since    2.0.0
-	 */
-	public static function getReadonTag(): string
-	{
-		$readon_tag  = '<div class="read_on">' . "\n";
-		$readon_tag .= '	<p>' . "\n";
-		$readon_tag .= '		<a href="[%readon_href%]" class="readon">[%readon_text%]</a>' . "\n";
-		$readon_tag .= '		<br/><br/>' . "\n";
-		$readon_tag .= '	</p>' . "\n";
-		$readon_tag .= '</div>' . "\n";
+    /**
+     * Configure the readon-tag.
+     *
+     * @return   string $readon_tag define the standard readon-tag.
+     *
+     * @since    2.0.0
+     */
+    public static function getReadonTag(): string
+    {
+        $readon_tag  = '<div class="read_on">' . "\n";
+        $readon_tag .= '	<p>' . "\n";
+        $readon_tag .= '		<a href="[%readon_href%]" class="readon">[%readon_text%]</a>' . "\n";
+        $readon_tag .= '		<br/><br/>' . "\n";
+        $readon_tag .= '	</p>' . "\n";
+        $readon_tag .= '</div>' . "\n";
 
-		return $readon_tag;
-	}
+        return $readon_tag;
+    }
 
-	/**
-	 * Configure the beginning of legal-tag.
-	 *
-	 * @return   string $legal_tag define the standard legal-tag.
-	 *
-	 * @since    2.0.0
-	 */
-	public static function getLegalTagBegin(): string
-	{
-		$legal_tag_begin  = '   <table id="legal" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed; width: 100%;"><tbody>';
-		$legal_tag_begin .= '     <tr>' . "\n";
-		$legal_tag_begin .= '       <td id="legal_td">' . "\n";
-		$legal_tag_begin .= '         <table class="one-col legal" align="center" width="[%width600%]" style="border-collapse: collapse; border-spacing: 0; width: inherit; max-width: [%width600%]px;"><tbody>' . "\n";
-		$legal_tag_begin .= '          <tr>' . "\n";
-		$legal_tag_begin .= '           <td class="legal_td">' . "\n";
+    /**
+     * Configure the beginning of legal-tag.
+     *
+     * @return   string $legal_tag define the standard legal-tag.
+     *
+     * @since    2.0.0
+     */
+    public static function getLegalTagBegin(): string
+    {
+        $legal_tag_begin  = '   <table id="legal" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed; width: 100%;"><tbody>';
+        $legal_tag_begin .= '     <tr>' . "\n";
+        $legal_tag_begin .= '       <td id="legal_td">' . "\n";
+        $legal_tag_begin .= '         <table class="one-col legal" align="center" width="[%width600%]" style="border-collapse: collapse; border-spacing: 0; width: inherit; max-width: [%width600%]px;"><tbody>' . "\n";
+        $legal_tag_begin .= '          <tr>' . "\n";
+        $legal_tag_begin .= '           <td class="legal_td">' . "\n";
 
-		return $legal_tag_begin;
-	}
+        return $legal_tag_begin;
+    }
 
-	/**
-	 * Configure the end of legal-tag.
-	 *
-	 * @return   string $legal_tag define the standard legal-tag.
-	 *
-	 * @since    2.0.0
-	 */
-	public static function getLegalTagEnd(): string
-	{
-		$legal_tag_end  = '           </td>' . "\n";
-		$legal_tag_end .= '          </tr>' . "\n";
-		$legal_tag_end .= '         </tbody></table>' . "\n";
-		$legal_tag_end .= '       </td>' . "\n";
-		$legal_tag_end .= '     </tr>' . "\n";
-		$legal_tag_end .= '   </tbody></table>' . "\n";
+    /**
+     * Configure the end of legal-tag.
+     *
+     * @return   string $legal_tag define the standard legal-tag.
+     *
+     * @since    2.0.0
+     */
+    public static function getLegalTagEnd(): string
+    {
+        $legal_tag_end  = '           </td>' . "\n";
+        $legal_tag_end .= '          </tr>' . "\n";
+        $legal_tag_end .= '         </tbody></table>' . "\n";
+        $legal_tag_end .= '       </td>' . "\n";
+        $legal_tag_end .= '     </tr>' . "\n";
+        $legal_tag_end .= '   </tbody></table>' . "\n";
 
-		return $legal_tag_end;
-	}
+        return $legal_tag_end;
+    }
 }

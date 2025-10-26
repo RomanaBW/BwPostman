@@ -40,207 +40,207 @@ use RuntimeException;
  */
 abstract class BwPostmanCampaignHelper
 {
-	/**
-	 * Method to get the data of a single campaign for raw view
-	 *
-	 * @access    public
-	 *
-	 * @param int|null $cam_id Campaign ID
-	 *
-	 * @return    object|null Campaign
-	 *
-	 * @throws Exception
-	 *
-	 * @since 3.0.0 here
-	 */
-	public static function getSingleCampaign(int $cam_id = null): ?object
-	{
-		$campaign = null;
+    /**
+     * Method to get the data of a single campaign for raw view
+     *
+     * @access    public
+     *
+     * @param int|null $cam_id Campaign ID
+     *
+     * @return    object|null Campaign
+     *
+     * @throws Exception
+     *
+     * @since 3.0.0 here
+     */
+    public static function getSingleCampaign(int $cam_id = null): ?object
+    {
+        $campaign = null;
 
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->getQuery(true);
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->getQuery(true);
 
-		$query->select('*');
-		$query->from($db->quoteName('#__bwpostman_campaigns'));
-		$query->where($db->quoteName('id') . ' = ' . (int) $cam_id);
+        $query->select('*');
+        $query->from($db->quoteName('#__bwpostman_campaigns'));
+        $query->where($db->quoteName('id') . ' = ' . (int) $cam_id);
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$campaign = $db->loadObject();
-		}
-		catch (RuntimeException $exception)
-		{
+            $campaign = $db->loadObject();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'CampaignHelper BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		// Get all assigned newsletters
-		// --> we offer to unarchive not only the campaign but also the assigned newsletters,
-		// that's why we have to show also the archived newsletters
-		$query->clear();
-		$query->select($db->quoteName('id'));
-		$query->select($db->quoteName('subject'));
-		$query->select($db->quoteName('campaign_id'));
-		$query->select($db->quoteName('archive_flag'));
-		$query->from($db->quoteName('#__bwpostman_newsletters'));
-		$query->where($db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
+        // Get all assigned newsletters
+        // --> we offer to unarchive not only the campaign but also the assigned newsletters,
+        // that's why we have to show also the archived newsletters
+        $query->clear();
+        $query->select($db->quoteName('id'));
+        $query->select($db->quoteName('subject'));
+        $query->select($db->quoteName('campaign_id'));
+        $query->select($db->quoteName('archive_flag'));
+        $query->from($db->quoteName('#__bwpostman_newsletters'));
+        $query->where($db->quoteName('campaign_id') . ' = ' . (int) $cam_id);
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$campaign->newsletters = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
+            $campaign->newsletters = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'CampaignHelper BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		return $campaign;
-	}
+        return $campaign;
+    }
 
-	/**
-	 * Method to get the newsletters of a specific campaign depending on provided campaign id, sending and archive state
-	 *
-	 * @param integer $camId
-	 * @param boolean $sent
-	 * @param boolean $all
-	 *
-	 * @return 	array
-	 *
-	 * @throws Exception
-	 *
-	 * @since 3.0.0 here
-	 */
-	public static function getSelectedNewslettersOfCampaign(int $camId, bool $sent, bool $all): array
-	{
-		$newsletters = array();
-		$archiveFlag = 0;
-		$mailingDateOperator = "=";
-		$nullDateOperator    = ' IS NULL';
+    /**
+     * Method to get the newsletters of a specific campaign depending on provided campaign id, sending and archive state
+     *
+     * @param integer $camId
+     * @param boolean $sent
+     * @param boolean $all
+     *
+     * @return 	array
+     *
+     * @throws Exception
+     *
+     * @since 3.0.0 here
+     */
+    public static function getSelectedNewslettersOfCampaign(int $camId, bool $sent, bool $all): array
+    {
+        $newsletters = array();
+        $archiveFlag = 0;
+        $mailingDateOperator = "=";
+        $nullDateOperator    = ' IS NULL';
 
-		if ($sent)
-		{
-			$mailingDateOperator = "!=";
-			$nullDateOperator    = 'IS NOT NULL';
-		}
+        if ($sent)
+        {
+            $mailingDateOperator = "!=";
+            $nullDateOperator    = 'IS NOT NULL';
+        }
 
-		if ($all)
-		{
-			$archiveFlag = 1;
-		}
+        if ($all)
+        {
+            $archiveFlag = 1;
+        }
 
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->getQuery(true);
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->getQuery(true);
 
-		$query->select($db->quoteName('a') . '.*');
-		$query->select($db->quoteName('v') . '.' . $db->quoteName('name') . ' AS author');
-		$query->from($db->quoteName('#__bwpostman_newsletters') . ' AS a');
-		$query->leftJoin(
-			$db->quoteName('#__users') . ' AS ' . $db->quoteName('v')
-			. ' ON ' . $db->quoteName('v') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('created_by')
-		);
-		$query->where($db->quoteName('campaign_id') . ' = ' . $db->quote($camId));
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+        $query->select($db->quoteName('a') . '.*');
+        $query->select($db->quoteName('v') . '.' . $db->quoteName('name') . ' AS author');
+        $query->from($db->quoteName('#__bwpostman_newsletters') . ' AS a');
+        $query->leftJoin(
+            $db->quoteName('#__users') . ' AS ' . $db->quoteName('v')
+            . ' ON ' . $db->quoteName('v') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('created_by')
+        );
+        $query->where($db->quoteName('campaign_id') . ' = ' . $db->quote($camId));
+        $query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
-		if (!$archiveFlag)
-		{
-			$query->where($db->quoteName('mailing_date') . $mailingDateOperator . $db->quote($db->getNullDate())
-				. ' OR ' . $db->quoteName('mailing_date') . $nullDateOperator);
-		}
+        if (!$archiveFlag)
+        {
+            $query->where($db->quoteName('mailing_date') . $mailingDateOperator . $db->quote($db->getNullDate())
+                . ' OR ' . $db->quoteName('mailing_date') . $nullDateOperator);
+        }
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$newsletters = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
+            $newsletters = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'CampaignHelper BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		return $newsletters;
-	}
+        return $newsletters;
+    }
 
-	/**
-	 * Method to get the options for the form fields comcam and comcam_noarc
-	 *
-	 * @param boolean $hasMailingdate
-	 * @param boolean $archiveMatters
-	 *
-	 * @return 	array
-	 *
-	 * @throws Exception
-	 *
-	 * @since 3.0.0
-	 */
-	public static function getCampaignsFieldlistOptions(bool $hasMailingdate = false, bool $archiveMatters = false): array
-	{
-		$options   = array();
-		$db        = Factory::getContainer()->get(DatabaseInterface::class);
-		$nullDate  = $db->getNullDate();
-		$query     = $db->getQuery(true);
-		$sub_query = $db->getQuery(true);
+    /**
+     * Method to get the options for the form fields comcam and comcam_noarc
+     *
+     * @param boolean $hasMailingdate
+     * @param boolean $archiveMatters
+     *
+     * @return 	array
+     *
+     * @throws Exception
+     *
+     * @since 3.0.0
+     */
+    public static function getCampaignsFieldlistOptions(bool $hasMailingdate = false, bool $archiveMatters = false): array
+    {
+        $options   = array();
+        $db        = Factory::getContainer()->get(DatabaseInterface::class);
+        $nullDate  = $db->getNullDate();
+        $query     = $db->getQuery(true);
+        $sub_query = $db->getQuery(true);
 
-		// Build sub query which counts the newsletters of each campaign and query
-		$sub_query->select('COUNT(' . $db->quoteName('b') . '.' . $db->quoteName('id') . ') AS ' . $db->quoteName('newsletters'));
-		$sub_query->from($db->quoteName('#__bwpostman_newsletters') . 'AS ' . $db->quoteName('b'));
+        // Build sub query which counts the newsletters of each campaign and query
+        $sub_query->select('COUNT(' . $db->quoteName('b') . '.' . $db->quoteName('id') . ') AS ' . $db->quoteName('newsletters'));
+        $sub_query->from($db->quoteName('#__bwpostman_newsletters') . 'AS ' . $db->quoteName('b'));
 
-		if ($hasMailingdate)
-		{
-			$sub_query->where($db->quoteName('b') . '.' . $db->quoteName('mailing_date') . ' != "' . $nullDate . '"'
-			. ' AND ' . $db->quoteName('b') . '.' . $db->quoteName('mailing_date') . ' IS NOT NULL');
-		}
+        if ($hasMailingdate)
+        {
+            $sub_query->where($db->quoteName('b') . '.' . $db->quoteName('mailing_date') . ' != "' . $nullDate . '"'
+            . ' AND ' . $db->quoteName('b') . '.' . $db->quoteName('mailing_date') . ' IS NOT NULL');
+        }
 
-		if ($archiveMatters)
-		{
-			$sub_query->where($db->quoteName('b') . '.' . $db->quoteName('archive_flag') . ' = ' . 0);
-		}
-		$sub_query->where($db->quoteName('b') . '.' . $db->quoteName('campaign_id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('id'));
+        if ($archiveMatters)
+        {
+            $sub_query->where($db->quoteName('b') . '.' . $db->quoteName('archive_flag') . ' = ' . 0);
+        }
+        $sub_query->where($db->quoteName('b') . '.' . $db->quoteName('campaign_id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('id'));
 
-		$query->select($db->quoteName('a') . '.' . $db->quoteName('id')  . ' AS value');
-		$query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');
-		$query->select($db->quoteName('a') . '.' . $db->quoteName('description'));
-		$query->select($db->quoteName('a') . '.' . $db->quoteName('archive_flag')  . ' AS archived');
-		$query->select('(' . $sub_query . ') AS ' . $db->quoteName('newsletters'));
-		$query->from($db->quoteName('#__bwpostman_campaigns') . ' AS ' . $db->quoteName('a'));
+        $query->select($db->quoteName('a') . '.' . $db->quoteName('id')  . ' AS value');
+        $query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');
+        $query->select($db->quoteName('a') . '.' . $db->quoteName('description'));
+        $query->select($db->quoteName('a') . '.' . $db->quoteName('archive_flag')  . ' AS archived');
+        $query->select('(' . $sub_query . ') AS ' . $db->quoteName('newsletters'));
+        $query->from($db->quoteName('#__bwpostman_campaigns') . ' AS ' . $db->quoteName('a'));
 
-		if ($archiveMatters)
-		{
-			$query->where($db->quoteName('a') . '.' . $db->quoteName('archive_flag') . ' = ' . 0);
-		}
+        if ($archiveMatters)
+        {
+            $query->where($db->quoteName('a') . '.' . $db->quoteName('archive_flag') . ' = ' . 0);
+        }
 
-		// Join over the asset groups.
-		$query->select($db->quoteName('ag') . '.' . $db->quoteName('title')  . ' AS access_level');
-		$query->join(
-			'LEFT',
-			$db->quoteName('#__viewlevels') .
-			' AS ' . $db->quoteName('ag') .
-			' ON ' . $db->quoteName('ag') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('access')
-		);
-		$query->order($db->quoteName('text') . 'ASC');
+        // Join over the asset groups.
+        $query->select($db->quoteName('ag') . '.' . $db->quoteName('title')  . ' AS access_level');
+        $query->join(
+            'LEFT',
+            $db->quoteName('#__viewlevels') .
+            ' AS ' . $db->quoteName('ag') .
+            ' ON ' . $db->quoteName('ag') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('access')
+        );
+        $query->order($db->quoteName('text') . 'ASC');
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$options = (array)$db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
+            $options = (array)$db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'CampaignHelper BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		return $options;
-	}
+        return $options;
+    }
 }

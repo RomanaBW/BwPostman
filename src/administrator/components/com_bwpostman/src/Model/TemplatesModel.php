@@ -58,359 +58,359 @@ use RuntimeException;
  */
 class TemplatesModel extends ListModel
 {
-	/**
-	 * The query object
-	 *
-	 * @var	object
-	 *
-	 * @since       2.0.0
-	 */
-	protected $query;
+    /**
+     * The query object
+     *
+     * @var	object
+     *
+     * @since       2.0.0
+     */
+    protected $query;
 
-	/**
-	 * @var	string
-	 *
-	 * @since       2.1.0
-	 */
-	protected string $dummy;
+    /**
+     * @var	string
+     *
+     * @since       2.1.0
+     */
+    protected string $dummy;
 
-	/**
-	 * @var	string
-	 *
-	 * @since       2.1.0
-	 */
-	protected string $content;
+    /**
+     * @var	string
+     *
+     * @since       2.1.0
+     */
+    protected string $content;
 
-	/**
-	 * @var	string
-	 *
-	 * @since       2.1.0
-	 */
-	protected string $tmp_path;
+    /**
+     * @var	string
+     *
+     * @since       2.1.0
+     */
+    protected string $tmp_path;
 
-	/**
-	 * @var	string
-	 *
-	 * @since       2.1.0
-	 */
-	protected string $imgPath;
+    /**
+     * @var	string
+     *
+     * @since       2.1.0
+     */
+    protected string $imgPath;
 
-	/**
-	 * @var	string
-	 *
-	 * @since       2.1.0
-	 */
-	protected string $basename;
+    /**
+     * @var	string
+     *
+     * @since       2.1.0
+     */
+    protected string $basename;
 
-	/**
-	 * @var	string
-	 *
-	 * @since       2.1.0
-	 */
-	protected string $exportId;
+    /**
+     * @var	string
+     *
+     * @since       2.1.0
+     */
+    protected string $exportId;
 
-	/**
-	 * @since       2.4.0
+    /**
+     * @since       2.4.0
      * @var	BwLogger
-	 *
-	 */
-	protected BwLogger $logger;
+     *
+     */
+    protected BwLogger $logger;
 
-	/**
-	 * Constructor
-	 * --> handles the pagination and set the Templates key
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.1.0
-	 */
-	public function __construct()
-	{
-		if (empty($config['filter_fields'])) {
-			$config['filter_fields'] = array(
-				'id', 'a.id',
-				'title', 'a.title',
-				'description', 'a.description',
-				'tpl_id', 'a.tpl_id',
-				'checked_out', 'a.checked_out',
-				'checked_out_time', 'a.checked_out_time',
-				'published', 'a.published',
-				'access', 'a.access', 'access_level',
-				'created_date', 'a.created_date',
-				'created_by', 'a.created_by'
-			);
-		}
-
-		$log_options  = array();
-		$this->logger = BwLogger::getInstance($log_options);
-
-		parent::__construct($config);
-	}
-
-	/**
-	 * Returns a Table object, always creating it.
-	 *
-	 * @param	string $name    The table type to instantiate
-	 * @param	string $prefix  A prefix for the table class name. Optional.
-	 * @param	array  $options Configuration array for model. Optional.
-	 *
-	 * @return	bool|Table	A database object
-	 *
-	 * @throws Exception
-	 *
-	 * @since  1.1.0
-	 */
-	public function getTable($name = 'Template', $prefix = 'Administrator', $options = array()): Table|bool
+    /**
+     * Constructor
+     * --> handles the pagination and set the Templates key
+     *
+     * @throws Exception
+     *
+     * @since 1.1.0
+     */
+    public function __construct()
     {
-		return parent::getTable($name, $prefix, $options);
-	}
+        if (empty($config['filter_fields'])) {
+            $config['filter_fields'] = array(
+                'id', 'a.id',
+                'title', 'a.title',
+                'description', 'a.description',
+                'tpl_id', 'a.tpl_id',
+                'checked_out', 'a.checked_out',
+                'checked_out_time', 'a.checked_out_time',
+                'published', 'a.published',
+                'access', 'a.access', 'access_level',
+                'created_date', 'a.created_date',
+                'created_by', 'a.created_by'
+            );
+        }
 
-	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @param   string  $ordering   An optional ordering field.
-	 * @param   string  $direction  An optional direction (asc|desc).
-	 *
-	 * @return  void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.1.0
-	 */
-	protected function populateState($ordering = null, $direction = null): void
+        $log_options  = array();
+        $this->logger = BwLogger::getInstance($log_options);
+
+        parent::__construct($config);
+    }
+
+    /**
+     * Returns a Table object, always creating it.
+     *
+     * @param	string $name    The table type to instantiate
+     * @param	string $prefix  A prefix for the table class name. Optional.
+     * @param	array  $options Configuration array for model. Optional.
+     *
+     * @return	bool|Table	A database object
+     *
+     * @throws Exception
+     *
+     * @since  1.1.0
+     */
+    public function getTable($name = 'Template', $prefix = 'Administrator', $options = array()): Table|bool
     {
-		$app = Factory::getApplication();
+        return parent::getTable($name, $prefix, $options);
+    }
 
-		// Adjust the context to support modal layouts.
-		$layout = $app->input->get('layout');
-		if ($layout)
-		{
-			$this->context .= '.' . $layout;
-		}
-
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-
-		$filtersearch = $this->getUserStateFromRequest($this->context . '.filter.search_filter', 'filter_search_filter');
-		$this->setState('filter.search_filter', $filtersearch);
-
-		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
-		$this->setState('filter.access', $access);
-
-		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
-		$this->setState('filter.published', $published);
-
-		$tpl_id = $this->getUserStateFromRequest($this->context . '.filter.tpl_id', 'filter_tpl_id', '');
-		$this->setState('filter.tpl_id', $tpl_id);
-
-		// List state information.
-		parent::populateState('a.title', 'asc');
-
-		$limitstart = $app->input->get->post->get('limitstart');
-		$this->setState('list.start', $limitstart);
-	}
-
-	/**
-	 * Method to get a store id based on model configuration state.
-	 *
-	 * This is necessary because the model is used by the component and
-	 * different modules that might need different sets of data or different
-	 * ordering requirements.
-	 *
-	 * @param	string		$id	A prefix for the store id.
-	 *
-	 * @return	string		A store id.
-	 *
-	 * @since	1.1.0
-	 */
-	protected function getStoreId($id = ''): string
-	{
-		// Compile the store id.
-		$id	.= ':' . $this->getState('filter.search');
-		$id	.= ':' . $this->getState('filter.search_filter');
-		$id	.= ':' . $this->getState('filter.access');
-		$id	.= ':' . $this->getState('filter.published');
-
-		return parent::getStoreId($id);
-	}
-
-	/**
-	 * Method to build the MySQL query
-	 *
-	 * @return    false|QueryInterface Query
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.1.0
-	 */
-	protected function getListQuery(): false|QueryInterface
+    /**
+     * Method to auto-populate the model state.
+     *
+     * Note. Calling getState in this method will result in recursion.
+     *
+     * @param   string  $ordering   An optional ordering field.
+     * @param   string  $direction  An optional direction (asc|desc).
+     *
+     * @return  void
+     *
+     * @throws Exception
+     *
+     * @since   1.1.0
+     */
+    protected function populateState($ordering = null, $direction = null): void
     {
-		$this->query = $this->getDatabase()->getQuery(true);
+        $app = Factory::getApplication();
 
-		// Select the required fields from the table.
-		$this->query->select(
-			$this->getState(
-				'list.select',
-				'a.id, a.title, a.thumbnail, a.standard, a.description, a.tpl_id, 
-				a.checked_out, a.checked_out_time, a.published, a.access, a.created_date, a.created_by'
-			)
-		);
-		$this->query->from($this->getDatabase()->quoteName('#__bwpostman_templates', 'a'));
+        // Adjust the context to support modal layouts.
+        $layout = $app->input->get('layout');
+        if ($layout)
+        {
+            $this->context .= '.' . $layout;
+        }
 
-		$this->getQueryJoins();
-		$this->getQueryWhere();
-		$this->getQueryOrder();
+        $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+        $this->setState('filter.search', $search);
 
-		try
-		{
-			$this->getDatabase()->setQuery($this->query);
-		}
-		catch (RuntimeException $exception)
-		{
+        $filtersearch = $this->getUserStateFromRequest($this->context . '.filter.search_filter', 'filter_search_filter');
+        $this->setState('filter.search_filter', $filtersearch);
+
+        $access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
+        $this->setState('filter.access', $access);
+
+        $published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
+        $this->setState('filter.published', $published);
+
+        $tpl_id = $this->getUserStateFromRequest($this->context . '.filter.tpl_id', 'filter_tpl_id', '');
+        $this->setState('filter.tpl_id', $tpl_id);
+
+        // List state information.
+        parent::populateState('a.title', 'asc');
+
+        $limitstart = $app->input->get->post->get('limitstart');
+        $this->setState('list.start', $limitstart);
+    }
+
+    /**
+     * Method to get a store id based on model configuration state.
+     *
+     * This is necessary because the model is used by the component and
+     * different modules that might need different sets of data or different
+     * ordering requirements.
+     *
+     * @param	string		$id	A prefix for the store id.
+     *
+     * @return	string		A store id.
+     *
+     * @since	1.1.0
+     */
+    protected function getStoreId($id = ''): string
+    {
+        // Compile the store id.
+        $id	.= ':' . $this->getState('filter.search');
+        $id	.= ':' . $this->getState('filter.search_filter');
+        $id	.= ':' . $this->getState('filter.access');
+        $id	.= ':' . $this->getState('filter.published');
+
+        return parent::getStoreId($id);
+    }
+
+    /**
+     * Method to build the MySQL query
+     *
+     * @return    false|QueryInterface Query
+     *
+     * @throws Exception
+     *
+     * @since 1.1.0
+     */
+    protected function getListQuery(): false|QueryInterface
+    {
+        $this->query = $this->getDatabase()->getQuery(true);
+
+        // Select the required fields from the table.
+        $this->query->select(
+            $this->getState(
+                'list.select',
+                'a.id, a.title, a.thumbnail, a.standard, a.description, a.tpl_id, 
+                a.checked_out, a.checked_out_time, a.published, a.access, a.created_date, a.created_by'
+            )
+        );
+        $this->query->from($this->getDatabase()->quoteName('#__bwpostman_templates', 'a'));
+
+        $this->getQueryJoins();
+        $this->getQueryWhere();
+        $this->getQueryOrder();
+
+        try
+        {
+            $this->getDatabase()->setQuery($this->query);
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'TemplatesModel BE');
 
             Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
-			return false;
-		}
+            return false;
+        }
 
-		return $this->query;
-	}
+        return $this->query;
+    }
 
-	/**
-	 * Method to get the joins this query needs
-	 *
-	 * @return 	void
-	 *
-	 * @since   2.0.0
-	 */
-	private function getQueryJoins(): void
+    /**
+     * Method to get the joins this query needs
+     *
+     * @return 	void
+     *
+     * @since   2.0.0
+     */
+    private function getQueryJoins(): void
     {
-		$db = $this->getDatabase();
-		// Join over the users for the checked out user.
-		$this->query->select($db->quoteName('uc.name') . ' AS editor');
-		$this->query->join(
-			'LEFT',
-			$db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out')
-		);
+        $db = $this->getDatabase();
+        // Join over the users for the checked out user.
+        $this->query->select($db->quoteName('uc.name') . ' AS editor');
+        $this->query->join(
+            'LEFT',
+            $db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out')
+        );
 
-		// Join over the asset groups.
-		$this->query->select($db->quoteName('ag.title') . ' AS access_level');
-		$this->query->join(
-			'LEFT',
-			$db->quoteName('#__viewlevels', 'ag') . ' ON ' . $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access')
-		);
+        // Join over the asset groups.
+        $this->query->select($db->quoteName('ag.title') . ' AS access_level');
+        $this->query->join(
+            'LEFT',
+            $db->quoteName('#__viewlevels', 'ag') . ' ON ' . $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access')
+        );
 
-		// Join over the users for the author.
-		$this->query->select($db->quoteName('ua.name'), ' AS author_name');
-		$this->query->join(
-			'LEFT',
-			$db->quoteName('#__users', 'ua') . ' ON ' . $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by')
-		);
-	}
+        // Join over the users for the author.
+        $this->query->select($db->quoteName('ua.name'), ' AS author_name');
+        $this->query->join(
+            'LEFT',
+            $db->quoteName('#__users', 'ua') . ' ON ' . $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by')
+        );
+    }
 
-	/**
-	 * Method to build the MySQL query 'where' part
-	 *
-	 * @access 	private
-	 *
-	 * @return 	void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function getQueryWhere(): void
+    /**
+     * Method to build the MySQL query 'where' part
+     *
+     * @access 	private
+     *
+     * @return 	void
+     *
+     * @throws Exception
+     *
+     * @since   2.0.0
+     */
+    private function getQueryWhere(): void
     {
-		$this->getFilterByAccessLevelFilter();
-		$this->getFilterByViewLevel();
+        $this->getFilterByAccessLevelFilter();
+        $this->getFilterByViewLevel();
 //		$this->getFilterByComponentPermissions();
-		$this->getFilterByNewTemplates();
-		$this->getFilterByTemplateFormat();
-		$this->getFilterByPublishedState();
-		$this->getFilterByArchiveState();
-		$this->getFilterBySearchword();
-	}
+        $this->getFilterByNewTemplates();
+        $this->getFilterByTemplateFormat();
+        $this->getFilterByPublishedState();
+        $this->getFilterByArchiveState();
+        $this->getFilterBySearchword();
+    }
 
-	/**
-	 * Method to build the MySQL query 'order' part
-	 *
-	 * @return 	void
-	 *
-	 * @since   2.0.0
-	 */
-	private function getQueryOrder(): void
+    /**
+     * Method to build the MySQL query 'order' part
+     *
+     * @return 	void
+     *
+     * @since   2.0.0
+     */
+    private function getQueryOrder(): void
     {
-		$orderCol  = $this->state->get('list.ordering');
-		$orderDirn = $this->state->get('list.direction', 'asc');
+        $orderCol  = $this->state->get('list.ordering');
+        $orderDirn = $this->state->get('list.direction', 'asc');
 
-		//sqlsrv change
-		if ($orderCol == 'access_level')
-		{
-			$orderCol = 'ag.title';
-		}
+        //sqlsrv change
+        if ($orderCol == 'access_level')
+        {
+            $orderCol = 'ag.title';
+        }
 
-		$this->query->order($this->getDatabase()->quoteName($this->getDatabase()->escape($orderCol)) . ' ' . $this->getDatabase()->escape($orderDirn));
-	}
+        $this->query->order($this->getDatabase()->quoteName($this->getDatabase()->escape($orderCol)) . ' ' . $this->getDatabase()->escape($orderDirn));
+    }
 
-	/**
-	 * Method to get the filter by access level
-	 *
-	 * @access 	private
-	 *
-	 * @return 	void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterByAccessLevelFilter(): void
+    /**
+     * Method to get the filter by access level
+     *
+     * @access 	private
+     *
+     * @return 	void
+     *
+     * @throws Exception
+     *
+     * @since   2.0.0
+     */
+    private function getFilterByAccessLevelFilter(): void
     {
-		if (Factory::getApplication()->isClient('site'))
-		{
-			$access = $this->getState('filter.access');
-			if ($access)
-			{
-				$this->query->where($this->getDatabase()->quoteName('a.access') . ' = ' . (int) $access);
-			}
-		}
-	}
+        if (Factory::getApplication()->isClient('site'))
+        {
+            $access = $this->getState('filter.access');
+            if ($access)
+            {
+                $this->query->where($this->getDatabase()->quoteName('a.access') . ' = ' . (int) $access);
+            }
+        }
+    }
 
-	/**
-	 * Method to get the filter by Joomla view level
-	 *
-	 * @return 	void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterByViewLevel(): void
+    /**
+     * Method to get the filter by Joomla view level
+     *
+     * @return 	void
+     *
+     * @throws Exception
+     *
+     * @since   2.0.0
+     */
+    private function getFilterByViewLevel(): void
     {
-		if (Factory::getApplication()->isClient('site'))
-		{
-			$user = Factory::getApplication()->getIdentity();
+        if (Factory::getApplication()->isClient('site'))
+        {
+            $user = Factory::getApplication()->getIdentity();
 
-			if (!$user->authorise('core.admin'))
-			{
-				$groups = implode(',', $user->getAuthorisedViewLevels());
-				$this->query->where($this->getDatabase()->quoteName('a.access') . ' IN (' . $groups . ')');
-			}
-		}
-	}
+            if (!$user->authorise('core.admin'))
+            {
+                $groups = implode(',', $user->getAuthorisedViewLevels());
+                $this->query->where($this->getDatabase()->quoteName('a.access') . ' IN (' . $groups . ')');
+            }
+        }
+    }
 
-	/**
-	 * Method to get the filter by BwPostman permissions
-	 *
-	 * @access 	private
-	 *
-	 * @return 	void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
+    /**
+     * Method to get the filter by BwPostman permissions
+     *
+     * @access 	private
+     *
+     * @return 	void
+     *
+     * @throws Exception
+     *
+     * @since   2.0.0
+     */
 //	private function getFilterByComponentPermissions()
 //	{
 //		$allowed_items  = BwPostmanHelper::getAllowedRecords('template');
@@ -422,520 +422,520 @@ class TemplatesModel extends ListModel
 //		}
 //	}
 
-	/**
-	 * Method to get only new templates
-	 *
-	 * @access 	private
-	 *
-	 * @return 	void
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterByNewTemplates(): void
+    /**
+     * Method to get only new templates
+     *
+     * @access 	private
+     *
+     * @return 	void
+     *
+     * @since   2.0.0
+     */
+    private function getFilterByNewTemplates(): void
     {
-		// Filter show only the new templates id > 0
-		$this->query->where($this->getDatabase()->quoteName('a.id') . ' > ' . 0);
-	}
+        // Filter show only the new templates id > 0
+        $this->query->where($this->getDatabase()->quoteName('a.id') . ' > ' . 0);
+    }
 
 
-	/**
-	 * Method to get the filter by selected template format
-	 *
-	 * @return 	void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterByTemplateFormat(): void
-    {
-        $db = $this->getDatabase();
-		// Filter show only the new templates id > 0
-		$this->query->where($db->quoteName('a.id') . ' > ' . 0);
-
-		// Filter by format.
-		$format = $this->getState('filter.tpl_id');
-
-		if ($format)
-		{
-			if ($format == '1')
-			{
-				$this->query->where($db->quoteName('a.tpl_id') . ' < 998');
-			}
-
-			if ($format == '2')
-			{
-				$this->query->where($db->quoteName('a.tpl_id') . ' > 997');
-			}
-		}
-	}
-
-	/**
-	 * Method to get the filter by published state
-	 *
-	 * @access 	private
-	 *
-	 * @return 	void
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterByPublishedState(): void
+    /**
+     * Method to get the filter by selected template format
+     *
+     * @return 	void
+     *
+     * @throws Exception
+     *
+     * @since   2.0.0
+     */
+    private function getFilterByTemplateFormat(): void
     {
         $db = $this->getDatabase();
-		$published = $this->getState('filter.published');
+        // Filter show only the new templates id > 0
+        $this->query->where($db->quoteName('a.id') . ' > ' . 0);
 
-		if (is_numeric($published))
-		{
-			$this->query->where($db->quoteName('a.published') . ' = ' . (int) $published);
-		}
-		elseif ($published === '')
-		{
-			$this->query->where('(' . $db->quoteName('a.published') . ' = 0 OR ' . $db->quoteName('a.published') . ' = 1)');
-		}
-	}
+        // Filter by format.
+        $format = $this->getState('filter.tpl_id');
 
-	/**
-	 * Method to get the filter by archived state
-	 *
-	 * @return 	void
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterByArchiveState(): void
-    {
-		$this->query->where($this->getDatabase()->quoteName('a.archive_flag') . ' = ' . 0);
-	}
+        if ($format)
+        {
+            if ($format == '1')
+            {
+                $this->query->where($db->quoteName('a.tpl_id') . ' < 998');
+            }
 
-	/**
-	 * Method to get the filter by search word
-	 *
-	 * @return 	void
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterBySearchword(): void
+            if ($format == '2')
+            {
+                $this->query->where($db->quoteName('a.tpl_id') . ' > 997');
+            }
+        }
+    }
+
+    /**
+     * Method to get the filter by published state
+     *
+     * @access 	private
+     *
+     * @return 	void
+     *
+     * @since   2.0.0
+     */
+    private function getFilterByPublishedState(): void
     {
         $db = $this->getDatabase();
-		$filtersearch = $this->getState('filter.search_filter');
-		$search       = $db->escape($this->getState('filter.search'), true);
+        $published = $this->getState('filter.published');
 
-		if (!empty($search))
-		{
-			$search = '%' . $search . '%';
+        if (is_numeric($published))
+        {
+            $this->query->where($db->quoteName('a.published') . ' = ' . (int) $published);
+        }
+        elseif ($published === '')
+        {
+            $this->query->where('(' . $db->quoteName('a.published') . ' = 0 OR ' . $db->quoteName('a.published') . ' = 1)');
+        }
+    }
 
-			switch ($filtersearch)
-			{
-				case 'description':
-					$this->query->where($db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false));
-					break;
-				case 'title_description':
-					$this->query->where(
-						'(' . $db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false) .
-						' OR ' . $db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false) . ')'
-					);
-					break;
-				case 'title':
-					$this->query->where($db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false));
-					break;
-				default:
-			}
-		}
-	}
-
-	/**
-	 * Method to call the layout for the template upload and install process
-	 *
-	 * @param array $file
-	 *
-	 * @return  string|boolean
-	 *
-	 * @throws Exception
-	 * @since 1.1.0
-	 */
-	public function uploadTplFiles(array $file): bool|string
+    /**
+     * Method to get the filter by archived state
+     *
+     * @return 	void
+     *
+     * @since   2.0.0
+     */
+    private function getFilterByArchiveState(): void
     {
-		// Access check.
-		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
+        $this->query->where($this->getDatabase()->quoteName('a.archive_flag') . ' = ' . 0);
+    }
 
-		if (!$permissions['template']['create'])
-		{
-			return false;
-		}
+    /**
+     * Method to get the filter by search word
+     *
+     * @return 	void
+     *
+     * @since   2.0.0
+     */
+    private function getFilterBySearchword(): void
+    {
+        $db = $this->getDatabase();
+        $filtersearch = $this->getState('filter.search_filter');
+        $search       = $db->escape($this->getState('filter.search'), true);
 
-		$msg = '';
+        if (!empty($search))
+        {
+            $search = '%' . $search . '%';
 
-		// Clean up filename to get rid of strange characters like spaces etc
-		$filename = File::makeSafe($file['name']);
+            switch ($filtersearch)
+            {
+                case 'description':
+                    $this->query->where($db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false));
+                    break;
+                case 'title_description':
+                    $this->query->where(
+                        '(' . $db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false) .
+                        ' OR ' . $db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false) . ')'
+                    );
+                    break;
+                case 'title':
+                    $this->query->where($db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false));
+                    break;
+                default:
+            }
+        }
+    }
 
-		// Set up the source and destination of the file
-		$src         = $file['tmp_name'];
-		$ext         = File::getExt($filename);
-		$tempPath    = Factory::getApplication()->getConfig()->get('tmp_path');
-		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
+    /**
+     * Method to call the layout for the template upload and install process
+     *
+     * @param array $file
+     *
+     * @return  string|boolean
+     *
+     * @throws Exception
+     * @since 1.1.0
+     */
+    public function uploadTplFiles(array $file): bool|string
+    {
+        // Access check.
+        $permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
-		// If the file isn't okay, redirect to templates
-		if ($file['error'] > 0)
-		{
-			$this->logger->addEntry(new LogEntry('tmp filename if template to import: ' . $src, BwLogger::BW_DEBUG, 'templates'));
-			$this->logger->addEntry(new LogEntry('archive name if template to import: ' . $archivename, BwLogger::BW_DEBUG, 'templates'));
-			$this->logger->addEntry(new LogEntry('file array: ' . print_r($file, true), BwLogger::BW_DEBUG, 'templates'));
+        if (!$permissions['template']['create'])
+        {
+            return false;
+        }
 
-			//http://de.php.net/features.file-upload.errors
-			$msg = Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD');
+        $msg = '';
 
-			switch ($file['error'])
-			{
-				case '1':
-				case '2':
-					$msg .= Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_SIZE');
-					break;
-				case '3':
-					$msg .= Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_PART');
-					break;
-				case '4':
-					$msg .= Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_NO_FILE');
-					break;
-			}
-		}
-		else
-		{ // The file is okay
-			// Check if the file has the right extension, we need zip
-			if (strtolower(File::getExt($filename)) !== 'zip')
-			{
-				$msg .= Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_NO_FILE');
-			}
-			else
-			{ // The file is okay
-				if (false === File::upload($src, $archivename, false, true))
-				{
-					$msg .= Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_PART');
-				}
-			}
-		}
+        // Clean up filename to get rid of strange characters like spaces etc
+        $filename = File::makeSafe($file['name']);
 
-		return $msg;
-	}
+        // Set up the source and destination of the file
+        $src         = $file['tmp_name'];
+        $ext         = File::getExt($filename);
+        $tempPath    = Factory::getApplication()->getConfig()->get('tmp_path');
+        $archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
 
-	/**
-	 * Method to extract template zip
-	 *
-	 * @param array $file
-	 *
-	 * @return  boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.1.0
-	 */
-	public function extractTplFiles(array $file): bool
-	{
-		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_EXTRACT') . '</h4>';
+        // If the file isn't okay, redirect to templates
+        if ($file['error'] > 0)
+        {
+            $this->logger->addEntry(new LogEntry('tmp filename if template to import: ' . $src, BwLogger::BW_DEBUG, 'templates'));
+            $this->logger->addEntry(new LogEntry('archive name if template to import: ' . $archivename, BwLogger::BW_DEBUG, 'templates'));
+            $this->logger->addEntry(new LogEntry('file array: ' . print_r($file, true), BwLogger::BW_DEBUG, 'templates'));
 
-		$filename    = File::makeSafe($file['name']);
-		$ext         = File::getExt($filename);
-		$tempPath    = Factory::getApplication()->getConfig()->get('tmp_path');
-		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
-		$extractdir  = $tempPath . '/tmp_bwpostman_installtpl/';
+            //http://de.php.net/features.file-upload.errors
+            $msg = Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD');
 
-		$archiveclass = new Archive;
+            switch ($file['error'])
+            {
+                case '1':
+                case '2':
+                    $msg .= Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_SIZE');
+                    break;
+                case '3':
+                    $msg .= Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_PART');
+                    break;
+                case '4':
+                    $msg .= Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_NO_FILE');
+                    break;
+            }
+        }
+        else
+        { // The file is okay
+            // Check if the file has the right extension, we need zip
+            if (strtolower(File::getExt($filename)) !== 'zip')
+            {
+                $msg .= Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_NO_FILE');
+            }
+            else
+            { // The file is okay
+                if (false === File::upload($src, $archivename, false, true))
+                {
+                    $msg .= Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD_PART');
+                }
+            }
+        }
 
-		$adapter = $archiveclass->getAdapter('zip');
-		$result  = $adapter->extract($archivename, $extractdir);
+        return $msg;
+    }
 
-		if (!$result) // extract failed
-		{
+    /**
+     * Method to extract template zip
+     *
+     * @param array $file
+     *
+     * @return  boolean
+     *
+     * @throws Exception
+     *
+     * @since 1.1.0
+     */
+    public function extractTplFiles(array $file): bool
+    {
+        echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_EXTRACT') . '</h4>';
+
+        $filename    = File::makeSafe($file['name']);
+        $ext         = File::getExt($filename);
+        $tempPath    = Factory::getApplication()->getConfig()->get('tmp_path');
+        $archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
+        $extractdir  = $tempPath . '/tmp_bwpostman_installtpl/';
+
+        $archiveclass = new Archive;
+
+        $adapter = $archiveclass->getAdapter('zip');
+        $result  = $adapter->extract($archivename, $extractdir);
+
+        if (!$result) // extract failed
+        {
 //			$this->delMessage();
-			echo '<p class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR_EXTRACT') . '</p>';
-			return false;
-		}
+            echo '<p class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR_EXTRACT') . '</p>';
+            return false;
+        }
 
-		echo '<p class="text-success">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_EXTRACT_OK') . '</p>';
-		return true;
-	}
+        echo '<p class="text-success">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_EXTRACT_OK') . '</p>';
+        return true;
+    }
 
-	/**
-	 * Method to install template
-	 *
-	 * @param string $sql
-	 * @param string $step
-	 *
-	 * @return boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.1.0
-	 */
+    /**
+     * Method to install template
+     *
+     * @param string $sql
+     * @param string $step
+     *
+     * @return boolean
+     *
+     * @throws Exception
+     *
+     * @since 1.1.0
+     */
 
-	public function installTplFiles(string $sql, string $step): bool
-	{
-		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step) . '</h4>';
-		$db = $this->getDatabase();
+    public function installTplFiles(string $sql, string $step): bool
+    {
+        echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step) . '</h4>';
+        $db = $this->getDatabase();
 
-		$tempPath   = Factory::getApplication()->getConfig()->get('tmp_path');
-		$extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
+        $tempPath   = Factory::getApplication()->getConfig()->get('tmp_path');
+        $extractdir = $tempPath . '/tmp_bwpostman_installtpl/';
 
-		//we call sql file for the templates data
-		$buffer = file_get_contents($extractdir . $sql);
+        //we call sql file for the templates data
+        $buffer = file_get_contents($extractdir . $sql);
 
-		// Graceful exit and rollback if read not successful
-		if ($buffer)
-		{
-			// Create an array of queries from the sql file
-			$queries = DatabaseDriver::splitSql($buffer);
+        // Graceful exit and rollback if read not successful
+        if ($buffer)
+        {
+            // Create an array of queries from the sql file
+            $queries = DatabaseDriver::splitSql($buffer);
 
-			// Are there queries to process?
-			if (count($queries) !== 0)
-			{
-				// Process each query in the $queries array (split out of sql file).
-				foreach ($queries as $this->query)
-				{
-					$this->query = trim($this->query);
+            // Are there queries to process?
+            if (count($queries) !== 0)
+            {
+                // Process each query in the $queries array (split out of sql file).
+                foreach ($queries as $this->query)
+                {
+                    $this->query = trim($this->query);
 
-					if ($this->query != '' && $this->query[0] != '#')
-					{
-						$error      = '';
-						$TplTitle   = '';
-						$CountTitle = '';
+                    if ($this->query != '' && $this->query[0] != '#')
+                    {
+                        $error      = '';
+                        $TplTitle   = '';
+                        $CountTitle = '';
 
-						$this->query = str_replace("`DUMMY`", "'DUMMY'", $this->query);
+                        $this->query = str_replace("`DUMMY`", "'DUMMY'", $this->query);
 
-						try
-						{
-							$db->setQuery($this->query);
-							$db->execute();
+                        try
+                        {
+                            $db->setQuery($this->query);
+                            $db->execute();
 
-							// get last id
-							$lastID   = $db->insertid();
-							$tplTable = $this->getTable();
+                            // get last id
+                            $lastID   = $db->insertid();
+                            $tplTable = $this->getTable();
 
-							// get template title
-							$TplTitle = $tplTable->getTemplateTitle($lastID);
+                            // get template title
+                            $TplTitle = $tplTable->getTemplateTitle($lastID);
 
-							// reset default value of imported template preventively
-							$tplTable->resetDefaultTpl($lastID);
+                            // reset default value of imported template preventively
+                            $tplTable->resetDefaultTpl($lastID);
 
-							// count template titles
-							$CountTitle = $tplTable->getNbrOfTemplates('', '', $TplTitle);
+                            // count template titles
+                            $CountTitle = $tplTable->getNbrOfTemplates('', '', $TplTitle);
 
-							// set new template title
-							if ($CountTitle > 1) {
-								$newTitle = $TplTitle . ' (' . $CountTitle++ . ')';
-								$tplTable->setTemplateTitle($lastID, $newTitle);
-							}
-						}
-						catch (RuntimeException $exception)
-						{
+                            // set new template title
+                            if ($CountTitle > 1) {
+                                $newTitle = $TplTitle . ' (' . $CountTitle++ . ')';
+                                $tplTable->setTemplateTitle($lastID, $newTitle);
+                            }
+                        }
+                        catch (RuntimeException $exception)
+                        {
                             BwPostmanHelper::logException($exception, 'TemplatesModel BE');
 
                             $error = $exception->getMessage();
-							Factory::getApplication()->enqueueMessage($error, 'error');
-						}
+                            Factory::getApplication()->enqueueMessage($error, 'error');
+                        }
 
-						if ($TplTitle === false || $CountTitle === false || $error !== '')
-						{
-							echo '<p class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
-							echo '<p class="text-danger">' . $error . '</p>';
-							return false;
-						}
-					}
-				}//end foreach
-			}
-		}
-		else
-		{
-			echo '<p class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
-			return false;
-		}
+                        if ($TplTitle === false || $CountTitle === false || $error !== '')
+                        {
+                            echo '<p class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
+                            echo '<p class="text-danger">' . $error . '</p>';
+                            return false;
+                        }
+                    }
+                }//end foreach
+            }
+        }
+        else
+        {
+            echo '<p class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_ERROR') . '</p>';
+            return false;
+        }
 
-		echo '<p class="text-success">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step . '_OK') . '</p>';
-		return true;
-	}
+        echo '<p class="text-success">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_TABLE_' . $step . '_OK') . '</p>';
+        return true;
+    }
 
-	/**
-	 * Method to copy template thumbnail
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.1.0
-	 */
-	public function copyThumbsFiles(): bool
-	{
-		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_THUMBS') . '</h4>';
+    /**
+     * Method to copy template thumbnail
+     *
+     * @throws Exception
+     *
+     * @since 1.1.0
+     */
+    public function copyThumbsFiles(): bool
+    {
+        echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_THUMBS') . '</h4>';
 
-		$tempPath = Factory::getApplication()->getConfig()->get('tmp_path');
-		$imagedir = $tempPath . '/tmp_bwpostman_installtpl/images/';
+        $tempPath = Factory::getApplication()->getConfig()->get('tmp_path');
+        $imagedir = $tempPath . '/tmp_bwpostman_installtpl/images/';
 
-		// make new folder and copy template thumbnails
-		$m_params   = ComponentHelper::getParams('com_media');
-		$dest       = JPATH_ROOT . '/' . $m_params->get('file_path', 'images') . '/com_bwpostman';
-		$dest2      = JPATH_ROOT . '/images/com_bwpostman';
-		$media_path = JPATH_ROOT . '/media/com_bwpostman/images/';
+        // make new folder and copy template thumbnails
+        $m_params   = ComponentHelper::getParams('com_media');
+        $dest       = JPATH_ROOT . '/' . $m_params->get('file_path', 'images') . '/com_bwpostman';
+        $dest2      = JPATH_ROOT . '/images/com_bwpostman';
+        $media_path = JPATH_ROOT . '/media/com_bwpostman/images/';
 
-		if (!Folder::exists($dest))
-		{
-			Folder::create($dest);
-		}
+        if (!Folder::exists($dest))
+        {
+            Folder::create($dest);
+        }
 
-		if (!File::exists($dest . '/index.html'))
-		{
-			File::copy(JPATH_ROOT . '/images/index.html', $dest . '/index.html');
-		}
+        if (!File::exists($dest . '/index.html'))
+        {
+            File::copy(JPATH_ROOT . '/images/index.html', $dest . '/index.html');
+        }
 
-		if (!Folder::exists($dest2))
-		{
-			Folder::create(JPATH_ROOT . '/images/com_bwpostman');
-		}
+        if (!Folder::exists($dest2))
+        {
+            Folder::create(JPATH_ROOT . '/images/com_bwpostman');
+        }
 
-		if (!File::exists(JPATH_ROOT . '/images/com_bwpostman/index.html'))
-		{
-			File::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/com_bwpostman/index.html');
-		}
+        if (!File::exists(JPATH_ROOT . '/images/com_bwpostman/index.html'))
+        {
+            File::copy(JPATH_ROOT . '/images/index.html', JPATH_ROOT . '/images/com_bwpostman/index.html');
+        }
 
-		$warn  = false;
-		$files = Folder::files($imagedir);
+        $warn  = false;
+        $files = Folder::files($imagedir);
 
-		foreach ($files as $file)
-		{
-			if (!File::exists($dest . '/' . $file))
-			{
-				File::copy($imagedir . $file, $dest . '/' . $file);
-			}
+        foreach ($files as $file)
+        {
+            if (!File::exists($dest . '/' . $file))
+            {
+                File::copy($imagedir . $file, $dest . '/' . $file);
+            }
 
-			if (!File::exists($dest2 . '/' . $file))
-			{
-				File::copy($imagedir . $file, $dest2 . '/' . $file);
-			}
+            if (!File::exists($dest2 . '/' . $file))
+            {
+                File::copy($imagedir . $file, $dest2 . '/' . $file);
+            }
 
-			if (!File::exists($media_path . '/' . $file))
-			{
-				File::copy($imagedir . $file, $media_path . '/' . $file);
-			}
+            if (!File::exists($media_path . '/' . $file))
+            {
+                File::copy($imagedir . $file, $media_path . '/' . $file);
+            }
 
 //			$this->delMessage();
-			$path_now = $dest . '/';
+            $path_now = $dest . '/';
 
-			if (!File::exists($dest . '/' . $file))
-			{
-				echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
-				echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_NO_THUMB_WARNING', $file, $path_now) . '</p>';
-				$warn = true;
-			}
-			else
-			{
-				echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
-			}
+            if (!File::exists($dest . '/' . $file))
+            {
+                echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
+                echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_NO_THUMB_WARNING', $file, $path_now) . '</p>';
+                $warn = true;
+            }
+            else
+            {
+                echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
+            }
 
-			$path_now = $dest2 . '/';
+            $path_now = $dest2 . '/';
 
-			if (!File::exists($dest2 . '/' . $file))
-			{
-				echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
-				echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_NO_THUMB_WARNING', $file, $path_now) . '</p>';
-				$warn = true;
-			}
-			else
-			{
-				echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
-			}
+            if (!File::exists($dest2 . '/' . $file))
+            {
+                echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
+                echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_NO_THUMB_WARNING', $file, $path_now) . '</p>';
+                $warn = true;
+            }
+            else
+            {
+                echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
+            }
 
-			$path_now = $media_path;
+            $path_now = $media_path;
 
-			if (!File::exists($media_path . $file))
-			{
-				echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
-				$warn = true;
-			}
-			else
-			{
-				echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
-			}
-		}
+            if (!File::exists($media_path . $file))
+            {
+                echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_WARNING', $file, $path_now) . '</p>';
+                $warn = true;
+            }
+            else
+            {
+                echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_COPY_THUMB_OK', $file, $path_now) . '</p>';
+            }
+        }
 
-		if ($warn)
-		{
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
+        if ($warn)
+        {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 
-	/**
-	 * Method to delete temp folder
-	 *
-	 * @param array $file
-	 *
-	 * @return boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.1.0
-	 */
-	public function deleteTempFolder(array $file): bool
-	{
-		echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER') . '</h4>';
+    /**
+     * Method to delete temp folder
+     *
+     * @param array $file
+     *
+     * @return boolean
+     *
+     * @throws Exception
+     *
+     * @since 1.1.0
+     */
+    public function deleteTempFolder(array $file): bool
+    {
+        echo '<h4>' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER') . '</h4>';
 
-		$filename    = File::makeSafe($file['name']);
-		$ext         = File::getExt($filename);
-		$tempPath    = Factory::getApplication()->getConfig()->get('tmp_path');
-		$extractdir  = $tempPath . '/tmp_bwpostman_installtpl/';
-		$archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
+        $filename    = File::makeSafe($file['name']);
+        $ext         = File::getExt($filename);
+        $tempPath    = Factory::getApplication()->getConfig()->get('tmp_path');
+        $extractdir  = $tempPath . '/tmp_bwpostman_installtpl/';
+        $archivename = $tempPath . '/tmp_bwpostman_installtpl.' . $ext;
 
-		$warn = false;
+        $warn = false;
 
-		if (File::exists($archivename))
-		{
-			File::delete($archivename);
-		}
+        if (File::exists($archivename))
+        {
+            File::delete($archivename);
+        }
 
-		if (Folder::exists($extractdir))
-		{
-			Folder::delete($extractdir);
-		}
+        if (Folder::exists($extractdir))
+        {
+            Folder::delete($extractdir);
+        }
 
 //		$this->delMessage();
 
-		if (File::exists($archivename))
-		{
-			echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_WARNING', $archivename, $tempPath) . '</p>';
-			$warn = true;
-		}
-		else
-		{
-			echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_OK', $archivename, $tempPath) . '</p>';
-		}
+        if (File::exists($archivename))
+        {
+            echo '<p class="text-warning">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_WARNING', $archivename, $tempPath) . '</p>';
+            $warn = true;
+        }
+        else
+        {
+            echo '<p class="text-success">' . Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FILE_OK', $archivename, $tempPath) . '</p>';
+        }
 
-		if (Folder::exists($extractdir))
-		{
-			echo '<p class="text-warning">' .
-				Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_WARNING', '/tmp_bwpostman_installtpl/', $tempPath) .
-				'</p>';
-			$warn = true;
-		}
-		else
-		{
-			echo '<p class="text-success">' .
-				Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_OK', '/tmp_bwpostman_installtpl/', $tempPath) .
-				'</p>';
-		}
+        if (Folder::exists($extractdir))
+        {
+            echo '<p class="text-warning">' .
+                Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_WARNING', '/tmp_bwpostman_installtpl/', $tempPath) .
+                '</p>';
+            $warn = true;
+        }
+        else
+        {
+            echo '<p class="text-success">' .
+                Text::sprintf('COM_BWPOSTMAN_TPL_INSTALL_DEL_FOLDER_OK', '/tmp_bwpostman_installtpl/', $tempPath) .
+                '</p>';
+        }
 
-		if ($warn)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
+        if ($warn)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
-	/**
-	 * Method to delete enqueue messages
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.1.0
-	 */
+    /**
+     * Method to delete enqueue messages
+     *
+     * @throws Exception
+     *
+     * @since 1.1.0
+     */
 //	private function delMessage()
 //	{
 //		$app           = Factory::getApplication();
@@ -953,33 +953,33 @@ class TemplatesModel extends ListModel
 //		$_messageQueue->setValue($app, $messages);
 //	}
 
-	/**
-	 * Get file name for ZIP archive
-	 *
-	 * @return  string  The file name
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.1.0
-	 */
-	public function getBaseName(): string
-	{
-		// @ToDo: Karl: This method is never called? Perhaps to do at constructor?
-		if (!isset($this->basename))
-		{
-			$app            = Factory::getApplication();
-			$jinput         = $app->input;
-			$this->exportId = $jinput->get('id');
+    /**
+     * Get file name for ZIP archive
+     *
+     * @return  string  The file name
+     *
+     * @throws Exception
+     *
+     * @since   2.1.0
+     */
+    public function getBaseName(): string
+    {
+        // @ToDo: Karl: This method is never called? Perhaps to do at constructor?
+        if (!isset($this->basename))
+        {
+            $app            = Factory::getApplication();
+            $jinput         = $app->input;
+            $this->exportId = $jinput->get('id');
 
-			$this->tmp_path = $app->get('tmp_path') . '/';
+            $this->tmp_path = $app->get('tmp_path') . '/';
 
-			$basename = 'bwpostman_template_export_id_' . $this->exportId . '.zip';
+            $basename = 'bwpostman_template_export_id_' . $this->exportId . '.zip';
 
-			$this->basename = $basename;
-		}
+            $this->basename = $basename;
+        }
 
-		return $this->basename;
-	}
+        return $this->basename;
+    }
 
     /**
      * Method to call the template export process
@@ -992,297 +992,297 @@ class TemplatesModel extends ListModel
      * @throws Exception
      * @since    2.1.0
      */
-	public function getExportTpl(int $id = NULL, int $tpl_id = NULL): bool|string
+    public function getExportTpl(int $id = NULL, int $tpl_id = NULL): bool|string
     {
-		$id          = $this->exportId;
-		$zip_created = '';
+        $id          = $this->exportId;
+        $zip_created = '';
 
-		if (!isset($this->content))
-		{
-			$settings = array
-			(
-				array
-				(
-					'table' =>  'bwpostman_templates',
-					'where1' =>  'id',
-					'where2'    =>  'id',
-					'insert'    =>  'INSERT IGNORE',
-					'nums'      =>  array(
-						'id',
-						'asset_id',
-						'standard',
-						'tpl_id',
-						'access',
-						'published',
-						'created_by',
-						'modified_by',
-						'checked_out',
-						'archive_flag',
-						'archived_by',
-					),
-					'j'      =>  1
-				),
-				array
-				(
-					'table'  =>  'bwpostman_templates_tpl',
-					'where1' =>  'id',
-					'where2' =>  'tpl_id',
-					'insert' =>  'REPLACE',
-					'nums'   =>  array('id'),
-					'j'      =>  0
-				),
-				array
-				(
-					'table'  =>  'bwpostman_templates_tags',
-					'where1' =>  'templates_table_id',
-					'where2' =>  'id',
-					'insert' =>  'INSERT IGNORE',
-					'nums'   =>  array(
-						'templates_table_id',
-						'tpl_tags_head',
-						'tpl_tags_body',
-						'tpl_tags_article',
-						'tpl_tags_readon',
-						'tpl_tags_legal',
-					),
-					'j'      =>  0
-				)
-			);
+        if (!isset($this->content))
+        {
+            $settings = array
+            (
+                array
+                (
+                    'table' =>  'bwpostman_templates',
+                    'where1' =>  'id',
+                    'where2'    =>  'id',
+                    'insert'    =>  'INSERT IGNORE',
+                    'nums'      =>  array(
+                        'id',
+                        'asset_id',
+                        'standard',
+                        'tpl_id',
+                        'access',
+                        'published',
+                        'created_by',
+                        'modified_by',
+                        'checked_out',
+                        'archive_flag',
+                        'archived_by',
+                    ),
+                    'j'      =>  1
+                ),
+                array
+                (
+                    'table'  =>  'bwpostman_templates_tpl',
+                    'where1' =>  'id',
+                    'where2' =>  'tpl_id',
+                    'insert' =>  'REPLACE',
+                    'nums'   =>  array('id'),
+                    'j'      =>  0
+                ),
+                array
+                (
+                    'table'  =>  'bwpostman_templates_tags',
+                    'where1' =>  'templates_table_id',
+                    'where2' =>  'id',
+                    'insert' =>  'INSERT IGNORE',
+                    'nums'   =>  array(
+                        'templates_table_id',
+                        'tpl_tags_head',
+                        'tpl_tags_body',
+                        'tpl_tags_article',
+                        'tpl_tags_readon',
+                        'tpl_tags_legal',
+                    ),
+                    'j'      =>  0
+                )
+            );
 
-			$this->content = '';
+            $this->content = '';
 
-			// prepare sql string
-			foreach($settings as $setting)
-			{
-				$_db   = $this->getDatabase();
-				$query = $_db->getQuery(true);
+            // prepare sql string
+            foreach($settings as $setting)
+            {
+                $_db   = $this->getDatabase();
+                $query = $_db->getQuery(true);
 
-				$query->select('*');
-				$query->from($_db->quoteName('#__' . $setting['table']));
-				$query->where($_db->quoteName($setting['where1']) . ' = ' . (($setting['where2'] == 'id') ? (int) $id : (int) $tpl_id));
+                $query->select('*');
+                $query->from($_db->quoteName('#__' . $setting['table']));
+                $query->where($_db->quoteName($setting['where1']) . ' = ' . (($setting['where2'] == 'id') ? (int) $id : (int) $tpl_id));
 
-				try
-				{
-					$_db->setQuery($query);
+                try
+                {
+                    $_db->setQuery($query);
 
-					$res = $_db->loadAssoc();
-				}
-				catch (RuntimeException $exception)
-				{
+                    $res = $_db->loadAssoc();
+                }
+                catch (RuntimeException $exception)
+                {
                     BwPostmanHelper::logException($exception, 'TemplatesModel BE');
 
                     Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-					$this->errRedirect($exception->getMessage());
-				}
+                    $this->errRedirect($exception->getMessage());
+                }
 
-				if (!empty($res))
-				{
-					// Count fields in row
+                if (!empty($res))
+                {
+                    // Count fields in row
 //					$num_fields = count($res);
 
-					// Field names
+                    // Field names
 
-					$quote         = "`";
-					$fields_quoted = array();
-					$field_set     = array_keys($res);
+                    $quote         = "`";
+                    $fields_quoted = array();
+                    $field_set     = array_keys($res);
 
-					foreach ($field_set as $field)
-					{
-						$fields_quoted[] = $quote . $field . $quote;
-					}
+                    foreach ($field_set as $field)
+                    {
+                        $fields_quoted[] = $quote . $field . $quote;
+                    }
 
-					$fields = implode(', ', $fields_quoted);
-					$this->content .= $setting['insert'] . ' INTO `#__' . $setting['table'] . '`  (' . $fields . ') VALUES' . "\n";
+                    $fields = implode(', ', $fields_quoted);
+                    $this->content .= $setting['insert'] . ' INTO `#__' . $setting['table'] . '`  (' . $fields . ') VALUES' . "\n";
 
-					// Set tpl_id, path to thumbnail
-					if ($setting['table'] == 'bwpostman_templates')
-					{
-						// we cannot reinstall a second standard template
-						$res['standard'] = 0;
-						$tpl_id        = $res['tpl_id'];
-						$this->imgPath = $res['thumbnail'];
-					}
+                    // Set tpl_id, path to thumbnail
+                    if ($setting['table'] == 'bwpostman_templates')
+                    {
+                        // we cannot reinstall a second standard template
+                        $res['standard'] = 0;
+                        $tpl_id        = $res['tpl_id'];
+                        $this->imgPath = $res['thumbnail'];
+                    }
 
-					// Values
-					$values = array();
+                    // Values
+                    $values = array();
 
-					foreach ($res as $key => $value) {
+                    foreach ($res as $key => $value) {
 
-						if (!isset($value))	// NULL
-						{
-							$values[] = 'NULL';
-						}
-						elseif (in_array($key, $setting['nums']))     // INT
-						{
-							$values[] = $value;
-						}
-						else                                         // STRING
-						{
-							$values[] = '\''
-								. $_db->escape($value)
-								. '\'';
-						}
-					}
-					// Set standard template to 0
-					if ($setting['table'] == 'bwpostman_templates')
-					{
-						// If we don't reset id of exported template, a template with an id, which exists on target can't be imported
-						// So we let the database manage the id
-						$values[0] = 0;
-						// asset_id always depends on current system state, so we can't use the exported one
-						$values[1] = 0;
-					}
-					// We need the last insert id from 'bwpostman_templates'
-					if ($setting['table'] == 'bwpostman_templates_tags')
-					{
-						$values[0] = 'LAST_INSERT_ID()';
-					}
-					$this->content .= '(' . implode(', ', $values) . ');' . "\n";
-				}
-			}
+                        if (!isset($value))	// NULL
+                        {
+                            $values[] = 'NULL';
+                        }
+                        elseif (in_array($key, $setting['nums']))     // INT
+                        {
+                            $values[] = $value;
+                        }
+                        else                                         // STRING
+                        {
+                            $values[] = '\''
+                                . $_db->escape($value)
+                                . '\'';
+                        }
+                    }
+                    // Set standard template to 0
+                    if ($setting['table'] == 'bwpostman_templates')
+                    {
+                        // If we don't reset id of exported template, a template with an id, which exists on target can't be imported
+                        // So we let the database manage the id
+                        $values[0] = 0;
+                        // asset_id always depends on current system state, so we can't use the exported one
+                        $values[1] = 0;
+                    }
+                    // We need the last insert id from 'bwpostman_templates'
+                    if ($setting['table'] == 'bwpostman_templates_tags')
+                    {
+                        $values[0] = 'LAST_INSERT_ID()';
+                    }
+                    $this->content .= '(' . implode(', ', $values) . ');' . "\n";
+                }
+            }
 
-			$this->dummy = '/* Dummy SQL-Query */' . "\n" . "SELECT id FROM `#__bwpostman_templates_tpl` WHERE `title` = 'DUMMY'";
+            $this->dummy = '/* Dummy SQL-Query */' . "\n" . "SELECT id FROM `#__bwpostman_templates_tpl` WHERE `title` = 'DUMMY'";
 
-			$zip_created = $this->createZip();
-		}
+            $zip_created = $this->createZip();
+        }
 
-		return $zip_created;
+        return $zip_created;
 
-	}
+    }
 
-	/**
-	 * Method to create zip archive
-	 *
-	 * @return  boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since	2.1.0
-	 */
-	protected function createZip(): bool
-	{
-		$files =	array(
-			array(
-				'name' => 'bwp_templates.sql',
-				'data' => $this->dummy,
-				'time' => time()
-			),
-			array(
-				'name' => 'bwp_templatestpl.sql',
-				'data' => $this->content,
-				'time' => time()
-			)
-		);
-
-		// Joomla 4 support
-		$imgPath = explode("#", $this->imgPath);
-		if (is_array($imgPath))
-		{
-			$this->imgPath = $imgPath[0];
-		}
-
-		// We need thumbnail in tmp_path
-		$thumbnail = JPATH_ROOT . '/' . $this->imgPath;
-
-		if (File::exists($thumbnail))
-		{
-			$lastSlash = strrpos($thumbnail, '/');
-			$img       = substr($thumbnail, $lastSlash + 1);
-
-			if (!Folder::exists($this->tmp_path . 'images'))
-			{
-				Folder::create($this->tmp_path . 'images');
-			}
-
-			if (File::exists($this->tmp_path . 'images/' . $img))
-			{
-				File::delete($this->tmp_path . 'images/' . $img);
-			}
-
-			File::copy($thumbnail, $this->tmp_path . 'images/' . $img);
-
-			$files[] =	array(
-				'name' => 'images/' . $img,
-				'data' => '',
-				'time' => time()
-			);
-		}
-
-		// Create ZIP
-		$zipRoot = $this->tmp_path . $this->basename;
-
-		if (File::exists($zipRoot))
-		{
-			if (!File::delete($zipRoot))
-			{
-				$errormsg = Text::sprintf('COM_BWPOSTMAN_TPL_ERROR_ZIP_DELETE', $zipRoot);
-				$this->errRedirect($errormsg);
-
-				return false;
-			}
-		}
-
-		$archive  = new Archive;
-		$packager = $archive->getAdapter('zip');
-
-		if (!$packager)
-		{
-			$errormsg = Text::_('COM_BWPOSTMAN_TPL_ERROR_ZIP_ADAPTER');
-			$this->errRedirect($errormsg);
-
-			return false;
-		}
-		elseif (!$packager->create($zipRoot, $files))
-		{
-			$errormsg = Text::_('COM_BWPOSTMAN_TPL_ERROR_ZIP_CREATE');
-			$this->errRedirect($errormsg);
-
-			return false;
-		}
-
-		$path = JPATH_ROOT . "/images/com_bwpostman/templates";
-
-		if (!Folder::exists($path))
-		{
-			Folder::create($path);
-		}
-		File::copy($zipRoot, JPATH_ROOT . '/images/com_bwpostman/templates/' . $this->basename);
-
-		// Delete thumbnail in tmp folder
-		if (Folder::exists($this->tmp_path . 'images'))
-		{
-			Folder::delete($this->tmp_path . 'images');
-		}
-		File::delete($zipRoot);
-
-		if (!File::exists(JPATH_ROOT . '/images/com_bwpostman/templates/' . $this->basename))
-		{
-			$errormsg = Text::_('COM_BWPOSTMAN_TPL_ERROR_COPY_ZIP');
-			$this->errRedirect($errormsg);
-
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to redirect the raw view on errors
-	 *
-	 * @param string $errormsg
-	 * @param string $type
-	 *
-	 * @throws Exception
-	 *
-	 * @since	2.1.0
-	 */
-	protected function errRedirect(string $errormsg, string $type = 'error'): void
+    /**
+     * Method to create zip archive
+     *
+     * @return  boolean
+     *
+     * @throws Exception
+     *
+     * @since	2.1.0
+     */
+    protected function createZip(): bool
     {
-		// Delete thumbnail in tmp folder
-		Folder::delete($this->tmp_path . 'images');
+        $files =	array(
+            array(
+                'name' => 'bwp_templates.sql',
+                'data' => $this->dummy,
+                'time' => time()
+            ),
+            array(
+                'name' => 'bwp_templatestpl.sql',
+                'data' => $this->content,
+                'time' => time()
+            )
+        );
 
-		$app = Factory::getApplication();
-		$app->enqueueMessage($errormsg, $type);
-		$app->redirect(Route::_('index.php?option=com_bwpostman&view=templates', false));
-	}
+        // Joomla 4 support
+        $imgPath = explode("#", $this->imgPath);
+        if (is_array($imgPath))
+        {
+            $this->imgPath = $imgPath[0];
+        }
+
+        // We need thumbnail in tmp_path
+        $thumbnail = JPATH_ROOT . '/' . $this->imgPath;
+
+        if (File::exists($thumbnail))
+        {
+            $lastSlash = strrpos($thumbnail, '/');
+            $img       = substr($thumbnail, $lastSlash + 1);
+
+            if (!Folder::exists($this->tmp_path . 'images'))
+            {
+                Folder::create($this->tmp_path . 'images');
+            }
+
+            if (File::exists($this->tmp_path . 'images/' . $img))
+            {
+                File::delete($this->tmp_path . 'images/' . $img);
+            }
+
+            File::copy($thumbnail, $this->tmp_path . 'images/' . $img);
+
+            $files[] =	array(
+                'name' => 'images/' . $img,
+                'data' => '',
+                'time' => time()
+            );
+        }
+
+        // Create ZIP
+        $zipRoot = $this->tmp_path . $this->basename;
+
+        if (File::exists($zipRoot))
+        {
+            if (!File::delete($zipRoot))
+            {
+                $errormsg = Text::sprintf('COM_BWPOSTMAN_TPL_ERROR_ZIP_DELETE', $zipRoot);
+                $this->errRedirect($errormsg);
+
+                return false;
+            }
+        }
+
+        $archive  = new Archive;
+        $packager = $archive->getAdapter('zip');
+
+        if (!$packager)
+        {
+            $errormsg = Text::_('COM_BWPOSTMAN_TPL_ERROR_ZIP_ADAPTER');
+            $this->errRedirect($errormsg);
+
+            return false;
+        }
+        elseif (!$packager->create($zipRoot, $files))
+        {
+            $errormsg = Text::_('COM_BWPOSTMAN_TPL_ERROR_ZIP_CREATE');
+            $this->errRedirect($errormsg);
+
+            return false;
+        }
+
+        $path = JPATH_ROOT . "/images/com_bwpostman/templates";
+
+        if (!Folder::exists($path))
+        {
+            Folder::create($path);
+        }
+        File::copy($zipRoot, JPATH_ROOT . '/images/com_bwpostman/templates/' . $this->basename);
+
+        // Delete thumbnail in tmp folder
+        if (Folder::exists($this->tmp_path . 'images'))
+        {
+            Folder::delete($this->tmp_path . 'images');
+        }
+        File::delete($zipRoot);
+
+        if (!File::exists(JPATH_ROOT . '/images/com_bwpostman/templates/' . $this->basename))
+        {
+            $errormsg = Text::_('COM_BWPOSTMAN_TPL_ERROR_COPY_ZIP');
+            $this->errRedirect($errormsg);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Method to redirect the raw view on errors
+     *
+     * @param string $errormsg
+     * @param string $type
+     *
+     * @throws Exception
+     *
+     * @since	2.1.0
+     */
+    protected function errRedirect(string $errormsg, string $type = 'error'): void
+    {
+        // Delete thumbnail in tmp folder
+        Folder::delete($this->tmp_path . 'images');
+
+        $app = Factory::getApplication();
+        $app->enqueueMessage($errormsg, $type);
+        $app->redirect(Route::_('index.php?option=com_bwpostman&view=templates', false));
+    }
 }

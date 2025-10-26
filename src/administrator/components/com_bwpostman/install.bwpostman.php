@@ -57,11 +57,11 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 class com_bwpostmanInstallerScript
 {
     /**
-     * @var InstallerAdapter|null $parentInstaller
+     * @var InstallerAdapter $parentInstaller
      *
      * @since       0.9.6.3
      */
-    public InstallerAdapter|null $parentInstaller;
+    public InstallerAdapter $parentInstaller;
 
     /**
      * @var string $minimum_joomla_release

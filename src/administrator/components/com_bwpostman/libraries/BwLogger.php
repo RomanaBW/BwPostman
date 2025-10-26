@@ -110,7 +110,7 @@ class BwLogger extends W3cLogger implements LoggerAwareInterface
 	 *
 	 * @since  3.0.0
 	 */
-	protected static $instances = array();
+	protected static BwLogger|array $instances = array();
 
 	/**
 	 * Constructor.

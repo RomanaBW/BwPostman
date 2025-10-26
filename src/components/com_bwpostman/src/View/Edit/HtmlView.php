@@ -47,29 +47,29 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * The subscriber data
 	 *
-	 * @var    object
+	 * @var    ?object
 	 *
 	 * @since       0.9.1
 	 */
-	public $subscriber = null;
+	public ?object $subscriber = null;
 
 	/**
 	 * several needed lists
 	 *
-	 * @var    array
+	 * @var    ?array
 	 *
 	 * @since       0.9.1
 	 */
-	public $lists = null;
+	public ?array $lists = null;
 
 	/**
 	 * The component parameters
 	 *
-	 * @var    object   Registry object
+	 * @var    ?object   Registry object
 	 *
 	 * @since       0.9.1
 	 */
-	public $params = null;
+	public ?object $params = null;
 
 	/**
 	 * Success values
@@ -78,16 +78,16 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       4.0.0
 	 */
-	public $success;
+	public object $success;
 
 	/**
 	 * The current error object
 	 *
-	 * @var    object
+	 * @var    ?object
 	 *
 	 * @since       4.0.0
 	 */
-	public $error = null;
+	public ?object $error = null;
 
 	/**
 	 * Execute and display a template script.

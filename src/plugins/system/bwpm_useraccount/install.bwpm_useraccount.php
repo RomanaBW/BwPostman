@@ -45,7 +45,7 @@ class PlgSystemBwPm_UserAccountInstallerScript
 	 *
 	 * @since 4.1.0
 	 */
-	protected $min_bwpostman_version    = '4.0';
+	protected string $min_bwpostman_version    = '4.0';
 
 	/**
 	 * Called before any type of action

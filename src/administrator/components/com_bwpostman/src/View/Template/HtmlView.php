@@ -68,7 +68,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	protected $item;
+	protected object $item;
 
 	/**
 	 * property to hold state
@@ -77,7 +77,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	protected $state;
+	protected array|object $state;
 
 	/**
 	 * property to hold queue entries
@@ -86,7 +86,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	public $queueEntries;
+	public bool $queueEntries;
 
 	/**
 	 * property to hold template
@@ -95,7 +95,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	public $template;
+	public bool $template;
 
 	/**
 	 * property to hold request url
@@ -104,56 +104,56 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	public $request_url;
+	public string $request_url;
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $headTag = '';
+	public string $headTag = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $bodyTag = '';
+	public string $bodyTag = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $articleTagBegin = '';
+	public string $articleTagBegin = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $articleTagEnd = '';
+	public string $articleTagEnd = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $readonTag = '';
+	public string $readonTag = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $legalTagBegin = '';
+	public string $legalTagBegin = '';
 
 	/**
 	 * @var string $request_url
 	 *
 	 * @since       2.0.0
 	 */
-	public $legalTagEnd = '';
+	public string $legalTagEnd = '';
 
 	/**
 	 * property to hold permissions as array
@@ -162,7 +162,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Execute and display a template script.

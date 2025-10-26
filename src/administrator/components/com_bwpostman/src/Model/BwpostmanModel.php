@@ -55,7 +55,7 @@ class BwpostmanModel extends BaseDatabaseModel
 	 *
 	 * @since       4.0.0
 	 */
-	protected $factory;
+	protected MVCFactoryInterface $factory;
 
 	/**
 	 * Constructor

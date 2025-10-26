@@ -66,7 +66,7 @@ class ContentRenderer
      * @var    string
      * @since  4.3.3
      */
-    private $nl_width = '';
+    private string $nl_width = '';
 
     /**
 	 * This is the main function to render the content from an ID to HTML

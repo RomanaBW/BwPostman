@@ -61,7 +61,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
 	 * property to hold pagination object
@@ -70,7 +70,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $pagination;
+	protected object $pagination;
 
 	/**
 	 * property to hold state
@@ -79,7 +79,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $state;
+	protected array|object $state;
 
 	/**
 	 * property to hold filter form
@@ -88,7 +88,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $filterForm;
+	public object $filterForm;
 
 	/**
 	 * property to hold active filters
@@ -97,7 +97,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $activeFilters;
+	public object $activeFilters;
 
 	/**
 	 * property to hold sidebar
@@ -106,7 +106,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $sidebar;
+	public object $sidebar;
 
 	/**
 	 * property to hold total value
@@ -115,7 +115,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $total;
+	public object $total;
 
 	/**
 	 * property to hold permissions as array
@@ -124,7 +124,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Execute and display a template script.
@@ -196,7 +196,7 @@ class HtmlView extends BaseHtmlView
 			ToolbarHelper::addNew('campaign.add');
 		}
 
-		if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign') || BwPostmanHelper::canArchive('campaign'))
+		if (BwPostmanHelper::canEdit('campaign', []) || BwPostmanHelper::canEditState('campaign') || BwPostmanHelper::canArchive('campaign'))
 		{
 			$dropdown = $toolbar->dropdownButton('status-group')
 				->text('JTOOLBAR_CHANGE_STATUS')
@@ -212,7 +212,7 @@ class HtmlView extends BaseHtmlView
 				$childBar->edit('campaign.edit')->listCheck(true);
 			}
 
-			if (BwPostmanHelper::canEdit('campaign', 0) || BwPostmanHelper::canEditState('campaign'))
+			if (BwPostmanHelper::canEdit('campaign', []) || BwPostmanHelper::canEditState('campaign'))
 			{
 				$childBar->checkin('campaigns.checkin')->listCheck(true);
 			}

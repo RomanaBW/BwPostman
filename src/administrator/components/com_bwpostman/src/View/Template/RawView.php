@@ -52,7 +52,7 @@ class RawView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	protected $pre;
+	protected string $pre;
 
 	/**
 	 * property to hold permissions as array
@@ -61,7 +61,7 @@ class RawView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Display

@@ -106,7 +106,7 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since       0.9.1
 	 */
-	private $pagination = null;
+	private ?Pagination $pagination = null;
 
     /**
      * property to hold logger
@@ -115,7 +115,7 @@ class NewslettersModel extends ListModel
      *
      * @since       4.3.0
      */
-    public $logger;
+    public object $logger;
 
     /**
 	 * Constructor

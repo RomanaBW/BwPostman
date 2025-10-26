@@ -59,7 +59,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
 	 * property to hold pagination object
@@ -68,7 +68,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $pagination;
+	protected object $pagination;
 
 	/**
 	 * property to hold state
@@ -77,7 +77,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $state;
+	protected array|object $state;
 
 	/**
 	 * property to hold filter form
@@ -86,7 +86,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $filterForm;
+	public object $filterForm;
 
 	/**
 	 * property to hold active filters
@@ -95,7 +95,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $activeFilters;
+	public object $activeFilters;
 
 	/**
 	 * property to hold total value
@@ -104,7 +104,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $total;
+	public string $total;
 
 	/**
 	 * property to hold sidebar
@@ -113,7 +113,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $sidebar;
+	public object $sidebar;
 
 	/**
 	 * property to hold mailinglists
@@ -122,7 +122,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $mailinglists;
+	public array $mailinglists;
 
 	/**
 	 * property to hold params
@@ -131,7 +131,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $params;
+	public object $params;
 
 	/**
 	 * property to hold permissions as array
@@ -140,7 +140,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * property to hold context
@@ -149,7 +149,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $context;
+	public string $context;
 
 	/**
 	 * property to hold filtering mailinglist
@@ -158,7 +158,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.2.0
 	 */
-	public $filterMl;
+	public string $filterMl;
 
 	/**
 	 * Array for confirmed subscribers
@@ -167,7 +167,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since  3.0.0
 	 */
-	public $confirmed;
+	public array $confirmed;
 
 	/**
 	 * Array for unconfirmed subscribers
@@ -176,7 +176,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since  3.0.0
 	 */
-	public $unconfirmed;
+	public array $unconfirmed;
 
 	/**
 	 * Array for test recipients
@@ -185,7 +185,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since  3.0.0
 	 */
-	public $testers;
+	public array $testers;
 
 	/**
 	 * Execute and display a template script.

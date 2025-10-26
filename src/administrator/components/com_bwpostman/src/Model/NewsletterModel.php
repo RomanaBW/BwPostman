@@ -74,29 +74,29 @@ class NewsletterModel extends AdminModel
 	/**
 	 * Newsletter id
 	 *
-	 * @var integer
+	 * @var ?int
 	 *
 	 * @since       0.9.1
 	 */
-	private $id = null;
+	private ?int $id = null;
 
 	/**
 	 * Newsletter data
 	 *
-	 * @var array
+	 * @var ?array
 	 *
 	 * @since       0.9.1
 	 */
-	private $data = null;
+	private ?array $data = null;
 
 	/**
 	 * Demo mode
 	 *
-	 * @var integer
+	 * @var int
 	 *
 	 * @since
 	 */
-	private $demo_mode         = 0;
+	private int $demo_mode         = 0;
 
 	/**
 	 * Dummy sender
@@ -105,7 +105,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	private $dummy_sender      = '';
+	private string $dummy_sender      = '';
 
 	/**
 	 * Dummy recipient
@@ -114,7 +114,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	private $dummy_recipient   = '';
+	private string $dummy_recipient   = '';
 
 	/**
 	 * Arise queue
@@ -123,7 +123,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	private $arise_queue       = 0;
+	private int $arise_queue       = 0;
 
     /**
      * Suppress sending
@@ -132,7 +132,7 @@ class NewsletterModel extends AdminModel
      *
      * @since
      */
-    private $suppress_sending = 0;
+    private int $suppress_sending = 0;
 
     /**
 	 * property to hold permissions as array
@@ -141,16 +141,16 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * property to hold logger
 	 *
-	 * @var object $logger
+	 * @var BwLogger $logger
 	 *
 	 * @since       2.3.0
 	 */
-	public $logger;
+	public BwLogger $logger;
 
 	/**
 	 * property to messages while sending
@@ -159,7 +159,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since       3.0.0
 	 */
-	public $sendmessage;
+	public string $sendmessage;
 	/**
 	 * Constructor
 	 * Determines the newsletter ID

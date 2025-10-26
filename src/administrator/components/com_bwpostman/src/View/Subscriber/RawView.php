@@ -63,7 +63,7 @@ class RawView extends BaseHtmlView
 	 *
 	 * @since       4.0.0
 	 */
-	protected $item;
+	protected object $item;
 
 	/**
 	 * property to hold subscriber data
@@ -72,7 +72,7 @@ class RawView extends BaseHtmlView
 	 *
 	 * @since       4.0.0
 	 */
-	protected $sub;
+	protected object $sub;
 
 	/**
 	 * property to hold row object
@@ -81,7 +81,7 @@ class RawView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $row;
+	protected object $row;
 
 	/**
 	 * property to hold permissions as array
@@ -90,7 +90,7 @@ class RawView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Execute and display a template script.

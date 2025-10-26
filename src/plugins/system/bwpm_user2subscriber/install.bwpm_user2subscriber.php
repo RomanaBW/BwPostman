@@ -47,7 +47,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 *
 	 * @since 2.0.0
 	 */
-	protected $min_bwpostman_version    = '1.3.2';
+	protected string $min_bwpostman_version    = '1.3.2';
 
 	/**
 	 * Called before any type of action

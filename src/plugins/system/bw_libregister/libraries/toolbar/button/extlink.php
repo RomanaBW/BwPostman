@@ -27,7 +27,7 @@ class JButtonExtlink extends ToolbarButton
 	 *
 	 * @since 2.2.0
 	 */
-	protected $_name = 'Extlink';
+	protected string $_name = 'Extlink';
 
 	/**
 	 * Fetch the HTML for the button

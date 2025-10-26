@@ -63,16 +63,16 @@ class TemplatesController extends AdminController
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * property to hold id
 	 *
-	 * @var integer $id
+	 * @var int $id
 	 *
 	 * @since       2.4.0
 	 */
-	public $id;
+	public int $id;
 
 	/**
 	 * Constructor

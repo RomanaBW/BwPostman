@@ -52,20 +52,20 @@ class EditController extends FormController
 	/**
 	 * Subscriber ID
 	 *
-	 * @var integer
+	 * @var int
 	 *
 	 * @since   2.0.0
 	 */
-	private $subscriberid;
+	private int $subscriberid;
 
 	/**
 	 * User ID in subscriber-table
 	 *
-	 * @var integer
+	 * @var int
 	 *
 	 * @since   2.0.0
 	 */
-	private $userid;
+	private int $userid;
 
 	/**
 	 * Constructor

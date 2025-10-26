@@ -55,7 +55,7 @@ class RawView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $sub;
+	protected object $sub;
 
 	/**
 	 * property to hold campaign object
@@ -64,7 +64,7 @@ class RawView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $cam;
+	protected object $cam;
 
 	/**
 	 * property to hold mailinglist object
@@ -73,7 +73,7 @@ class RawView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $ml;
+	protected object $ml;
 
 	/**
 	 * Execute and display a template script.

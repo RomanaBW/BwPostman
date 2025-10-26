@@ -61,7 +61,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
 	 * property to hold pagination object
@@ -70,7 +70,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	protected $pagination;
+	protected object $pagination;
 
 	/**
 	 * property to hold state
@@ -79,7 +79,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	protected $state;
+	protected array|object $state;
 
 	/**
 	 * property to hold filter form
@@ -88,7 +88,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	public $filterForm;
+	public object $filterForm;
 
 	/**
 	 * property to hold active filters
@@ -97,7 +97,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	public $activeFilters;
+	public object $activeFilters;
 
 	/**
 	 * property to hold total value
@@ -106,7 +106,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	public $total;
+	public string $total;
 
 	/**
 	 * property to hold permissions as array
@@ -115,7 +115,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * property to hold sidebar
@@ -124,7 +124,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	public $sidebar;
+	public object $sidebar;
 
 	/**
 	 * Execute and display a template script.
@@ -239,7 +239,7 @@ class HtmlView extends BaseHtmlView
 					ToolbarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
 				}
 
-				if (BwPostmanHelper::canEdit('template', 0) || BwPostmanHelper::canEditState('template') || BwPostmanHelper::canArchive('template'))
+				if (BwPostmanHelper::canEdit('template', []) || BwPostmanHelper::canEditState('template') || BwPostmanHelper::canArchive('template'))
 				{
 					$dropdown = $toolbar->dropdownButton('status-group')
 						->text('JTOOLBAR_CHANGE_STATUS')
@@ -267,7 +267,7 @@ class HtmlView extends BaseHtmlView
 						$childBar->archive('template.archive')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEdit('template', 0) || BwPostmanHelper::canEditState('template'))
+					if (BwPostmanHelper::canEdit('template', []) || BwPostmanHelper::canEditState('template'))
 					{
 						$childBar->checkin('templates.checkin')->listCheck(true);
 					}

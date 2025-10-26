@@ -49,74 +49,74 @@ use Joomla\Filter\InputFilter;
 class TemplatesTplTable extends Table implements VersionableTableInterface
 {
 	/**
-	 * @var int Primary Key
+	 * @var ?int Primary Key
 	 *
 	 * @since       1.1.0
 	 */
-	public $id = null;
+	public ?int $id = null;
 
 	/**
-	 * @var string title
+	 * @var ?string title
 	 *
 	 * @since       1.1.0
 	 */
-	public $title = null;
+	public ?string $title = null;
 
 	/**
 	 * @var string css
 	 *
 	 * @since       1.1.0
 	 */
-	public $css = '';
+	public string $css = '';
 
 	/**
 	 * @var string header_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	public $header_tpl = '';
+	public string $header_tpl = '';
 
 	/**
 	 * @var string intro_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	public $intro_tpl = '';
+	public string $intro_tpl = '';
 
 	/**
 	 * @var string divider_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	public $divider_tpl = '';
+	public string $divider_tpl = '';
 
 	/**
 	 * @var string article_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	public $article_tpl = '';
+	public string $article_tpl = '';
 
 	/**
 	 * @var string readon_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	public $readon_tpl = '';
+	public string $readon_tpl = '';
 
 	/**
 	 * @var string footer_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	public $footer_tpl = '';
+	public string $footer_tpl = '';
 
 	/**
 	 * @var string button_tpl
 	 *
 	 * @since       1.1.0
 	 */
-	public $button_tpl = '';
+	public string $button_tpl = '';
 
 	/**
 	 * Constructor

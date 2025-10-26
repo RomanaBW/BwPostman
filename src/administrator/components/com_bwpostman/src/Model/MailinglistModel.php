@@ -55,20 +55,20 @@ class MailinglistModel extends AdminModel
 	/**
 	 * Mailinglist ID
 	 *
-	 * @var integer
+	 * @var ?int
 	 *
 	 * @since       0.9.1
 	 */
-	private $id = null;
+	private ?int $id = null;
 
 	/**
 	 * Mailinglist data
 	 *
-	 * @var array
+	 * @var ?array
 	 *
 	 * @since       0.9.1
 	 */
-	private $data = null;
+	private ?array $data = null;
 
 	/**
 	 * Constructor

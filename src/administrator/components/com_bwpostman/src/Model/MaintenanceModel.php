@@ -72,14 +72,14 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	protected $tableNames = array();
+	protected array $tableNames = array();
 
 	/**
 	 * @var array
 	 *
 	 * @since 2.0.0
 	 */
-	protected $componentRules = array();
+	protected array $componentRules = array();
 
 	/**
 	 * Array to hold rules of component and sections
@@ -88,7 +88,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	protected $sectionRules = array();
+	protected array $sectionRules = array();
 
 	/**
 	 * Array to hold names of columns of asset table
@@ -97,7 +97,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	protected $assetColnames = array();
+	protected array $assetColnames = array();
 
 	/**
 	 * Array to hold used groups with title and id
@@ -106,7 +106,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	protected $usedGroups = array();
+	protected array $usedGroups = array();
 
 	/**
 	 * Array of tables of sections with assets
@@ -115,7 +115,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.0.0
 	 */
-	protected $assetTargetTables = array('component', 'campaigns', 'mailinglists', 'newsletters', 'subscribers', 'templates');
+	protected array $assetTargetTables = array('component', 'campaigns', 'mailinglists', 'newsletters', 'subscribers', 'templates');
 
 	/**
 	 * Instance of BwLogger
@@ -124,7 +124,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.4.0
 	 */
-	protected $logger;
+	protected BwLogger $logger;
 
 	/**
 	 * Database object
@@ -133,7 +133,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.4.0
 	 */
-	protected $db;
+	protected mixed $db;
 
 	/**
 	 * DomDocument object
@@ -142,7 +142,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 2.4.0
 	 */
-	protected $xml;
+	protected object $xml;
 
 	/**
 	 * DomDocument object, database part
@@ -151,7 +151,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 3.0.0
 	 */
-	protected $databaseXml;
+	protected object $databaseXml;
 
 	/**
 	 * Array of tables which contains text columns that must be encoded with CDATA
@@ -160,7 +160,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 4.0.0
 	 */
-	protected $cdataTables = array(
+	protected array $cdataTables = array(
 		'#__bwpostman_sendmailcontent',
 		'#__bwpostman_tc_settings',
 		'#__bwpostman_newsletters',
@@ -176,7 +176,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since 4.0.0
 	 */
-	protected $cdataColumns = array(
+	protected array $cdataColumns = array(
 		'#__bwpostman_sendmailcontent' => array('body'),
 		'#__bwpostman_tc_settings' => array(
 			'nonce',

@@ -53,18 +53,18 @@ use RuntimeException;
 class SubscribersMailinglistsTable extends Table
 {
 	/**
-	 * @var int Primary Key subscriber-id
+	 * @var ?int Primary Key subscriber-id
 	 *
 	 * @since       0.9.1
 	 */
-	public $subscriber_id = null;
+	public ?int $subscriber_id = null;
 
 	/**
-	 * @var int Primary Key list-id
+	 * @var ?int Primary Key list-id
 	 *
 	 * @since       0.9.1
 	 */
-	public $mailinglist_id = null;
+	public ?int $mailinglist_id = null;
 
 	/**
 	 * Constructor

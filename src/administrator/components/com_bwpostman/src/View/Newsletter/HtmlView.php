@@ -73,7 +73,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $item;
+	protected object $item;
 
 	/**
 	 * property to hold state
@@ -82,16 +82,16 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $state;
+	protected array|object $state;
 
 	/**
 	 * property to hold queue entries property
 	 *
-	 * @var boolean $queueEntries
+	 * @var bool $queueEntries
 	 *
 	 * @since       0.9.1
 	 */
-	public $queueEntries;
+	public bool $queueEntries;
 
 	/**
 	 * property to hold params
@@ -100,16 +100,16 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $params;
+	public object $params;
 
 	/**
 	 * property to hold content_exists
 	 *
-	 * @var boolean $content_exists
+	 * @var bool $content_exists
 	 *
 	 * @since       0.9.1
 	 */
-	public $content_exists;
+	public bool $content_exists;
 
 	/**
 	 * property to hold selected_content_old
@@ -118,32 +118,32 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $selected_content_old;
+	public string $selected_content_old;
 
 	/**
 	 * property to hold old id of template
 	 *
-	 * @var boolean $template_id_old
+	 * @var bool $template_id_old
 	 *
 	 * @since       0.9.1
 	 */
-	public $template_id_old;
+	public bool $template_id_old;
 
 	/**
 	 * property to old id of text template
 	 *
-	 * @var boolean $text_template_id_old
+	 * @var bool $text_template_id_old
 	 *
 	 * @since       0.9.1
 	 */
-	public $text_template_id_old;
+	public bool $text_template_id_old;
 
 	/**
 	 * @var string
 	 *
 	 * @since       2.0.0
 	 */
-	public $template;
+	public string $template;
 
 	/**
 	 * property to hold permissions as array
@@ -152,35 +152,35 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 *
 	 * @since       2.0.0
 	 */
-	public $substitute;
+	public bool $substitute;
 
 	/**
 	 * @var string   $delay_message
 	 *
 	 * @since       2.4.0
 	 */
-	protected $delay_message;
+	protected string $delay_message;
 
 	/**
-	 * @var integer   $delay
+	 * @var int $delay
 	 *
 	 * @since       2.4.0
 	 */
-	protected $delay;
+	protected int $delay;
 
 	/**
 	 * @var object   $logger
 	 *
 	 * @since       2.4.0
 	 */
-	protected $logger;
+	protected object $logger;
 
 	/**
 	 * Execute and display a template script.

@@ -45,11 +45,11 @@ use Joomla\Database\DatabaseInterface;
 class Pkg_BwPostmanInstallerScript
 {
 	/**
-	 * @var string release
+	 * @var ?string release
 	 *
 	 * @since       2.2.1
 	 */
-	private $release = null;
+	private ?string $release = null;
 
 	/**
 	 * Called on installation

@@ -50,38 +50,38 @@ class NewsletterelementModel extends BaseDatabaseModel
 	/**
 	 * Newsletters data
 	 *
-	 * @var array
+	 * @var ?array
 	 *
 	 * @since
 	 */
-	private $data = null;
+	private ?array $data = null;
 
 	/**
 	 * Number of all newsletters
 	 *
-	 * @var integer
+	 * @var ?int
 	 *
 	 * @since
 	 */
-	private $total = null;
+	private ?int $total = null;
 
 	/**
 	 * Pagination object
 	 *
-	 * @var object
+	 * @var ?object
 	 *
 	 * @since
 	 */
-	private $pagination = null;
+	private ?object $pagination = null;
 
 	/**
 	 * Newsletters search
 	 *
-	 * @var string
+	 * @var ?string
 	 *
 	 * @since
 	 */
-	private $search = null;
+	private ?string $search = null;
 
 	/**
 	 * Mailinglists key
@@ -92,7 +92,7 @@ class NewsletterelementModel extends BaseDatabaseModel
 	 *
 	 * @since
 	 */
-	private $key;
+	private string $key;
 
 	/**
 	 * Constructor

@@ -64,7 +64,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected $port = 25;
+	protected int $port = 25;
 
 	/**
 	 * Email address for outgoing request
@@ -73,7 +73,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected $from = 'root@localhost';
+	protected string $from = 'root@localhost';
 
 	/**
 	 * The connection timeout in seconds
@@ -82,7 +82,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected $maxConnectionTimeout = 30;
+	protected int $maxConnectionTimeout = 30;
 
 	/**
 	 * Timeout value on stream in seconds
@@ -91,7 +91,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected $streamTimeout = 5;
+	protected int $streamTimeout = 5;
 
 	/**
 	 * Wait timeout on stream in seconds
@@ -101,7 +101,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected $streamTimeoutWait = 0;
+	protected int $streamTimeoutWait = 0;
 
 	/**
 	 * The number of errors encountered
@@ -110,7 +110,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected $errorCounter = 0;
+	protected int $errorCounter = 0;
 
 	/**
 	 * Instance of BwLogger
@@ -119,7 +119,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected $logger;
+	protected BwLogger $logger;
 
 	/**
 	 * SMTP RFC standard line ending
@@ -135,7 +135,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public $recentError = '';
+	public string $recentError = '';
 
 	/**
 	 * Constructor

@@ -60,228 +60,228 @@ use stdClass;
 class TemplateTable extends Table implements VersionableTableInterface
 {
 	/**
-	 * @var int Primary Key
+	 * @var ?int Primary Key
 	 *
 	 * @since       1.1.0
 	 */
-	public $id = null;
+	public ?int $id = null;
 
 	/**
-	 * @var int asset_id
+	 * @var ?int asset_id
 	 *
 	 * @since       1.1.0
 	 */
-	public $asset_id = null;
+	public ?int $asset_id = null;
 
 	/**
 	 * @var int standard template
 	 *
 	 * @since       1.1.0
 	 */
-	public $standard = 0;
+	public int $standard = 0;
 
 	/**
-	 * @var string title
+	 * @var ?string title
 	 *
 	 * @since       1.1.0
 	 */
-	public $title = null;
+	public ?string $title = null;
 
 	/**
-	 * @var string description
+	 * @var ?string description
 	 *
 	 * @since       1.1.0
 	 */
-	public $description = null;
+	public ?string $description = null;
 
 	/**
-	 * @var string thumbnail url
+	 * @var ?string thumbnail url
 	 *
 	 * @since       1.1.0
 	 */
-	public $thumbnail = null;
+	public ?string $thumbnail = null;
 
 	/**
 	 * @var string tpl_html
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_html = '';
+	public string $tpl_html = '';
 
 	/**
 	 * @var string tpl_css
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_css = '';
+	public string $tpl_css = '';
 
 	/**
 	 * @var string tpl_article
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_article = '';
+	public string $tpl_article = '';
 
 	/**
 	 * @var string tpl_divider
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_divider = '';
+	public string $tpl_divider = '';
 
 	/**
-	 * @var int tpl_id
+	 * @var ?int tpl_id
 	 *
 	 * @since       1.1.0
 	 */
-	public $tpl_id = null;
+	public ?int $tpl_id = null;
 
 	/**
 	 * @var string basics
 	 *
 	 * @since       1.1.0
 	 */
-	public $basics = '';
+	public string $basics = '';
 
 	/**
-	 * @var string header
+	 * @var ?string header
 	 *
 	 * @since       1.1.0
 	 */
-	public $header = null;
+	public ?string $header = null;
 
 	/**
 	 * @var string intro
 	 *
 	 * @since       1.1.0
 	 */
-	public $intro = '';
+	public string $intro = '';
 
 	/**
-	 * @var array article
+	 * @var string|array article
 	 *
 	 * @since       1.1.0
 	 */
-	public $article = '';
+	public string|array $article = '';
 
 	/**
-	 * @var array footer
+	 * @var ?array footer
 	 *
 	 * @since       1.1.0
 	 */
-	public $footer = null;
+	public ?array $footer = null;
 
 	/**
-	 * @var string button1
+	 * @var ?string button1
 	 *
 	 * @since       1.1.0
 	 */
-	public $button1 = null;
+	public ?string $button1 = null;
 
 	/**
-	 * @var string button2
+	 * @var ?string button2
 	 *
 	 * @since       1.1.0
 	 */
-	public $button2 = null;
+	public ?string $button2 = null;
 
 	/**
-	 * @var string button3
+	 * @var ?string button3
 	 *
 	 * @since       1.1.0
 	 */
-	public $button3 = null;
+	public ?string $button3 = null;
 
 	/**
-	 * @var string button4
+	 * @var ?string button4
 	 *
 	 * @since       1.1.0
 	 */
-	public $button4 = null;
+	public ?string $button4 = null;
 
 	/**
-	 * @var string button5
+	 * @var ?string button5
 	 *
 	 * @since       1.1.0
 	 */
-	public $button5 = null;
+	public ?string $button5 = null;
 
 	/**
 	 * @var int access
 	 *
 	 * @since       1.1.0
 	 */
-	public $access = 1;
+	public int $access = 1;
 
 	/**
 	 * @var int Published
 	 *
 	 * @since       1.1.0
 	 */
-	public $published = 0;
+	public int $published = 0;
 
 	/**
-	 * @var datetime creation date of the newsletter
+	 * @var string|datetime creation date of the newsletter
 	 *
 	 * @since       1.1.0
 	 */
-	public $created_date = '0000-00-00 00:00:00';
+	public string|DateTime $created_date = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int Author
 	 *
 	 * @since       1.1.0
 	 */
-	public $created_by = 0;
+	public int $created_by = 0;
 
 	/**
-	 * @var datetime last modification date of the newsletter
+	 * @var ?datetime last modification date of the newsletter
 	 *
 	 * @since       1.1.0
 	 */
-	public $modified_time = null;
+	public ?DateTime $modified_time = null;
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       1.1.0
 	 */
-	public $modified_by = 0;
+	public int $modified_by = 0;
 
 	/**
 	 * @var int Checked-out owner
 	 *
 	 * @since       1.1.0
 	 */
-	public $checked_out = 0;
+	public int $checked_out = 0;
 
 	/**
-	 * @var datetime Checked-out time
+	 * @var ?datetime Checked-out time
 	 *
 	 * @since       1.1.0
 	 */
-	public $checked_out_time = null;
+	public ?DateTime $checked_out_time = null;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
 	 *
 	 * @since       1.1.0
 	 */
-	public $archive_flag = 0;
+	public int $archive_flag = 0;
 
 	/**
-	 * @var datetime Archive-date
+	 * @var ?datetime Archive-date
 	 *
 	 * @since       1.1.0
 	 */
-	public $archive_date = null;
+	public ?DateTime $archive_date = null;
 
 	/**
 	 * @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator
 	 *
 	 * @since       1.1.0
 	 */
-	public $archived_by = 0;
+	public int $archived_by = 0;
 
 	/**
 	 * Constructor

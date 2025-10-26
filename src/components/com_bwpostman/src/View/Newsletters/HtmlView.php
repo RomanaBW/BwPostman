@@ -88,7 +88,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $pagination	= null;
+	protected ?Pagination $pagination	= null;
 
 	/**
 	 * property to hold form object

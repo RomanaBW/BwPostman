@@ -46,47 +46,47 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * Attachment enabled?
 	 *
-	 * @var    boolean
+	 * @var    bool
 	 *
 	 * @since       0.9.1
 	 */
-	public $attachment_enabled = true;
+	public bool $attachment_enabled = true;
 
 	/**
 	 * Page title
 	 *
-	 * @var    string
+	 * @var    bool
 	 *
 	 * @since       0.9.1
 	 */
-	public $page_title = true;
+	public bool $page_title = true;
 
 	/**
 	 * Backlink
 	 *
-	 * @var    string
+	 * @var    bool
 	 *
 	 * @since       0.9.1
 	 */
-	public $backlink = true;
+	public bool $backlink = true;
 
 	/**
 	 * The current newsletter
 	 *
-	 * @var    object
+	 * @var    bool
 	 *
 	 * @since       0.9.1
 	 */
-	public $newsletter = true;
+	public bool $newsletter = true;
 
 	/**
 	 * Params
 	 *
-	 * @var    object JRegistry object
+	 * @var    bool|object JRegistry object
 	 *
 	 * @since       0.9.1
 	 */
-	public $params = true;
+	public bool|object $params = true;
 
 	/**
 	 * Execute and display a template script.

@@ -62,12 +62,12 @@ class UsergroupsField extends CheckboxesField
 	 * @var    array
 	 * @since  3.2
 	 */
-	protected static $options = array();
+	protected static array $options = array();
 
 	/**
 	 * Flag to tell the field to always be in multiple values mode.
 	 *
-	 * @var    boolean
+	 * @var    bool
 	 * @since  11.1
 	 */
 	protected $forceMultiple = true;

@@ -51,7 +51,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
 	 * property to hold pagination object
@@ -60,7 +60,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	protected $pagination;
+	protected object $pagination;
 
 	/**
 	 * property to hold mailing lists
@@ -69,7 +69,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	protected $lists;
+	protected array $lists;
 
 	/**
 	 * property to hold user object
@@ -78,7 +78,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	protected $user;
+	protected object $user;
 
 	/**
 	 * property to hold request url
@@ -87,7 +87,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	protected $request_url;
+	protected string $request_url;
 
 	/**
 	 * Execute and display a template script.

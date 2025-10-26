@@ -54,7 +54,7 @@ final class Personalize extends CMSPlugin implements SubscriberInterface, Databa
      *
      * @since  0.9.0
      */
-    protected $allowedContext = array(
+    protected array $allowedContext = array(
         'com_bwpostman.send',
         'com_bwpostman.view',
     );

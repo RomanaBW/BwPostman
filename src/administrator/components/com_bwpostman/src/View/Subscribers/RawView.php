@@ -52,7 +52,7 @@ class RawView extends BaseHtmlView
 	 *
 	 * @since       2.4.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Execute and display a template script.

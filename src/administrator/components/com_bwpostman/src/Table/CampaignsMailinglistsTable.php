@@ -55,14 +55,14 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since
 	 */
-	public $campaign_id = null;
+	public ?int $campaign_id = null;
 
 	/**
 	 * @var int Primary Key Mailinglist-ID
 	 *
 	 * @since
 	 */
-	public $mailinglist_id = null;
+	public ?int $mailinglist_id = null;
 
 	/**
 	 * Constructor

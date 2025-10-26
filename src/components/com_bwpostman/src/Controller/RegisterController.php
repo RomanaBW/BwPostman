@@ -54,20 +54,20 @@ class RegisterController extends FormController
 	/**
 	 * Subscriber ID
 	 *
-	 * @var integer
+	 * @var int
 	 *
 	 * @since       2.0.0
 	 */
-	protected $subscriberid;
+	protected int $subscriberid;
 
 	/**
 	 * User ID in subscriber-table
 	 *
-	 * @var integer
+	 * @var int
 	 *
 	 * @since       2.0.0
 	 */
-	protected $userid;
+	protected int $userid;
 
 	/**
 	 * Constructor

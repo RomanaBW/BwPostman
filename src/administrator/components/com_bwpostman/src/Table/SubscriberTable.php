@@ -66,177 +66,177 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $id = 0;
+	public int $id = 0;
 
 	/**
-	 * @var int asset_id
+	 * @var ?int asset_id
 	 *
 	 * @since       1.0.1
 	 */
-	public $asset_id = null;
+	public int|null $asset_id = null;
 
 	/**
-	 * @var int User-ID --> 0 = subscriber is not registered for the website, another ID = Subscriber is registered for
+	 * @var ?int User-ID --> 0 = subscriber is not registered for the website, another ID = Subscriber is registered for
 	 *      the website (ID comes from users-table)
 	 *
 	 * @since       0.9.1
 	 */
-	public $user_id = null;
+	public ?int $user_id = null;
 
 	/**
-	 * @var string Name
+	 * @var ?string Name
 	 *
 	 * @since       0.9.1
 	 */
-	public $name = null;
+	public ?string $name = null;
 
 	/**
-	 * @var string Firstname
+	 * @var ?string Firstname
 	 *
 	 * @since       0.9.1
 	 */
-	public $firstname = null;
+	public ?string $firstname = null;
 
 	/**
-	 * @var string Email
+	 * @var ?string Email
 	 *
 	 * @since       0.9.1
 	 */
-	public $email = null;
+	public ?string $email = null;
 
 	/**
-	 * @var int newsletter format --> 0 = text, 1 = html
+	 * @var ?int newsletter format --> 0 = text, 1 = html
 	 *
 	 * @since       0.9.1
 	 */
-	public $emailformat = null;
+	public ?int $emailformat = null;
 
 	/**
 	 * @var int gender --> 0 = male, 1 = female NULL = unknown
 	 *
 	 * @since       0.9.1
 	 */
-	public $gender = 2;
+	public int $gender = 2;
 
 	/**
-	 * @var string special field
+	 * @var ?string special field
 	 *
 	 * @since       0.9.1
 	 */
-	public $special = null;
+	public ?string $special = null;
 
 	/**
 	 * @var int Subscriber status --> 0 = not confirmed, 1 = confirmed, 9 = test-recipient
 	 *
 	 * @since       0.9.1
 	 */
-	public $status = 0;
+	public int $status = 0;
 
 	/**
-	 * @var string Activation code for the subscription
+	 * @var ?string Activation code for the subscription
 	 *
 	 * @since       0.9.1
 	 */
-	public $activation = null;
+	public ?string $activation = null;
 
 	/**
-	 * @var string Code for editing the subscription in the frontend
+	 * @var ?string Code for editing the subscription in the frontend
 	 *
 	 * @since       0.9.1
 	 */
-	public $editlink = null;
+	public ?string $editlink = null;
 
 	/**
 	 * @var int access level/view level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
 	 *
 	 * @since       0.9.1
 	 */
-	public $access = 1;
+	public int $access = 1;
 
 	/**
-	 * @var datetime Registration date
+	 * @var ?datetime Registration date
 	 *
 	 * @since       0.9.1
 	 */
-	public $registration_date = null;
+	public ?DateTime $registration_date = null;
 
 	/**
-	 * @var int ID --> 0 = subscriber registered himself, another ID = administrator from users-table
+	 * @var ?int ID --> 0 = subscriber registered himself, another ID = administrator from users-table
 	 *
 	 * @since       0.9.1
 	 */
-	public $registered_by = null;
+	public ?int $registered_by = null;
 
 	/**
-	 * @var string Registration IP
+	 * @var ?string Registration IP
 	 *
 	 * @since       0.9.1
 	 */
-	public $registration_ip = null;
+	public ?string $registration_ip = null;
 
 	/**
-	 * @var datetime Confirmation date of the subscription
+	 * @var ?datetime Confirmation date of the subscription
 	 *
 	 * @since       0.9.1
 	 */
-	public $confirmation_date = null;
+	public ?DateTime $confirmation_date = null;
 
 	/**
-	 * @var int ID --> -1 = account is not confirmed, 0 = subscriber confirmed the subscription by himself, another ID
+	 * @var ?int ID --> -1 = account is not confirmed, 0 = subscriber confirmed the subscription by himself, another ID
 	 *      = administrator from users-table
 	 *
 	 * @since       0.9.1
 	 */
-	public $confirmed_by = null;
+	public ?int $confirmed_by = null;
 
 	/**
-	 * @var string Confirmation IP
+	 * @var ?string Confirmation IP
 	 *
 	 * @since       0.9.1
 	 */
-	public $confirmation_ip = null;
+	public ?string $confirmation_ip = null;
 
 	/**
-	 * @var datetime last modification date of the subscriber
+	 * @var ?datetime last modification date of the subscriber
 	 *
 	 * @since       0.9.1
 	 */
-	public $modified_time = null;
+	public ?DateTime $modified_time = null;
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       0.9.1
 	 */
-	public $modified_by = 0;
+	public int $modified_by = 0;
 
 	/**
 	 * @var int Checked-out owner
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out = 0;
+	public int $checked_out = 0;
 
 	/**
-	 * @var datetime Checked-out time
+	 * @var ?datetime Checked-out time
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out_time = null;
+	public ?DateTime $checked_out_time = null;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
 	 *
 	 * @since       0.9.1
 	 */
-	public $archive_flag = 0;
+	public int $archive_flag = 0;
 
 	/**
-	 * @var datetime Archive-date
+	 * @var ?datetime Archive-date
 	 *
 	 * @since       0.9.1
 	 */
-	public $archive_date = null;
+	public ?DateTime $archive_date = null;
 
 	/**
 	 * @var int ID --> -1 = account is not archived, 0 = account is archived by the subscriber himself, another ID =
@@ -244,7 +244,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $archived_by = -1;
+	public int $archived_by = -1;
 
 	/**
 	 * Constructor

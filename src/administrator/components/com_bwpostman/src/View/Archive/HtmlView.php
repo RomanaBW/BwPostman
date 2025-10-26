@@ -59,7 +59,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
 	 * property to hold pagination object
@@ -68,7 +68,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $pagination;
+	protected object $pagination;
 
 	/**
 	 * property to hold state
@@ -77,7 +77,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $state;
+	protected array|object $state;
 
 	/**
 	 * property to hold user permissions
@@ -86,7 +86,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	protected $permissions;
+	protected array $permissions;
 
 	/**
 	 * property to hold filter form
@@ -95,7 +95,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $filterForm;
+	public object $filterForm;
 
 	/**
 	 * property to hold active filters
@@ -104,7 +104,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $activeFilters;
+	public object $activeFilters;
 
 	/**
 	 * property to hold request url
@@ -113,7 +113,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $request_url;
+	public string $request_url;
 
 	/**
 	 * property to hold sidebar
@@ -122,7 +122,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $sidebar;
+	public object $sidebar;
 
 	/**
 	 * Display

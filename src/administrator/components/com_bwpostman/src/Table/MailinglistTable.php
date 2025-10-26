@@ -58,116 +58,116 @@ defined('_JEXEC') or die('Restricted access');
 class MailinglistTable extends Table implements VersionableTableInterface
 {
 	/**
-	 * @var int Primary Key
+	 * @var ?int Primary Key
 	 *
 	 * @since       0.9.1
 	 */
-	public $id = null;
+	public ?int $id = null;
 
 	/**
-	 * @var int asset_id
+	 * @var ?int asset_id
 	 *
 	 * @since       1.0.1
 	 */
-	public $asset_id = null;
+	public ?int $asset_id = null;
 
 	/**
-	 * @var string Mailinglist title
+	 * @var ?string Mailinglist title
 	 *
 	 * @since       0.9.1
 	 */
-	public $title = null;
+	public ?string $title = null;
 
 	/**
-	 * @var string Mailinglist description
+	 * @var ?string Mailinglist description
 	 *
 	 * @since       0.9.1
 	 */
-	public $description = null;
+	public ?string $description = null;
 
 	/**
-	 * @var int campaign ID
+	 * @var ?int campaign ID
 	 *
 	 * @since       0.9.1
 	 */
-	public $campaign_id = 0;
+	public ?int $campaign_id = 0;
 
 	/**
 	 * @var int access level/view level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
 	 *
 	 * @since       0.9.1
 	 */
-	public $access = 1;
+	public int $access = 1;
 
 	/**
 	 * @var int Published
 	 *
 	 * @since       0.9.1
 	 */
-	public $published = 0;
+	public int $published = 0;
 
 	/**
-	 * @var datetime creation date of the mailinglist
+	 * @var string|datetime creation date of the mailinglist
 	 *
 	 * @since       0.9.1
 	 */
-	public $created_date = '0000-00-00 00:00:00';
-
-	/**
-	 * @var int user ID
-	 *
-	 * @since       0.9.1
-	 */
-	public $created_by = 0;
-
-	/**
-	 * @var datetime last modification date of the mailinglist
-	 *
-	 * @since       0.9.1
-	 */
-	public $modified_time = null;
+	public string|DateTime $created_date = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       0.9.1
 	 */
-	public $modified_by = 0;
+	public int $created_by = 0;
+
+	/**
+	 * @var ?datetime last modification date of the mailinglist
+	 *
+	 * @since       0.9.1
+	 */
+	public ?DateTime $modified_time = null;
+
+	/**
+	 * @var int user ID
+	 *
+	 * @since       0.9.1
+	 */
+	public int $modified_by = 0;
 
 	/**
 	 * @var int Checked-out owner
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out = 0;
+	public int $checked_out = 0;
 
 	/**
-	 * @var datetime Checked-out time
+	 * @var ?datetime Checked-out time
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out_time = null;
+	public ?DateTime $checked_out_time = null;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
 	 *
 	 * @since       0.9.1
 	 */
-	public $archive_flag = 0;
+	public int $archive_flag = 0;
 
 	/**
-	 * @var datetime Archive-date
+	 * @var ?datetime Archive-date
 	 *
 	 * @since       0.9.1
 	 */
-	public $archive_date = null;
+	public ?DateTime $archive_date = null;
 
 	/**
 	 * @var int ID --> 0 = mailinglist is not archived, another ID = account is archived by an administrator
 	 *
 	 * @since       0.9.1
 	 */
-	public $archived_by = 0;
+	public int $archived_by = 0;
 
 	/**
 	 * Constructor

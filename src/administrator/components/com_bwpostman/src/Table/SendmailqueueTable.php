@@ -54,60 +54,60 @@ use RuntimeException;
 class SendmailqueueTable extends Table
 {
 	/**
-	 * @var int Primary Key
+	 * @var ?int Primary Key
 	 *
 	 * @since       0.9.1
 	 */
-	public $id = null;
+	public ?int $id = null;
 
 	/**
-	 * @var int Content-ID --> from the sendmailcontent-Table
+	 * @var ?int Content-ID --> from the sendmailcontent-Table
 	 *
 	 * @since       0.9.1
 	 */
-	public $content_id = null;
+	public ?int $content_id = null;
 
 	/**
-	 * @var string Recipient email
+	 * @var ?string Recipient email
 	 *
 	 * @since       0.9.1
 	 */
-	public $recipient = null;
+	public ?string $recipient = null;
 
 	/**
-	 * @var int Mode --> 0 = Text, 1 = HTML
+	 * @var ?int Mode --> 0 = Text, 1 = HTML
 	 *
 	 * @since
 	 */
-	public $mode = null;
+	public ?int $mode = null;
 
 	/**
-	 * @var string Recipient name
+	 * @var ?string Recipient name
 	 *
 	 * @since       0.9.1
 	 */
-	public $name = null;
+	public ?string $name = null;
 
 	/**
-	 * @var string Recipient firstname
+	 * @var ?string Recipient firstname
 	 *
 	 * @since       0.9.1
 	 */
-	public $firstname = null;
+	public ?string $firstname = null;
 
 	/**
-	 * @var int Subscriber ID
+	 * @var ?int Subscriber ID
 	 *
 	 * @since       0.9.1
 	 */
-	public $subscriber_id = null;
+	public ?int $subscriber_id = null;
 
 	/**
-	 * @var int Number of delivery attempts
+	 * @var ?int Number of delivery attempts
 	 *
 	 * @since       0.9.1
 	 */
-	public $trial = null;
+	public ?int $trial = null;
 
 	/**
 	 * Constructor

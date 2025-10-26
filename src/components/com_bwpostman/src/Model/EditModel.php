@@ -50,20 +50,20 @@ class EditModel extends AdminModel
 	/**
 	 * Subscriber ID
 	 *
-	 * @var integer
+	 * @var int
 	 *
 	 * @since       0.9.1
 	 */
-	private $id;
+	private int $id;
 
 	/**
 	 * User ID in subscriber-table
 	 *
-	 * @var integer
+	 * @var int
 	 *
 	 * @since       0.9.1
 	 */
-	private $userid;
+	private int $userid;
 
 	/**
 	 * Subscriber data
@@ -72,7 +72,7 @@ class EditModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	private $data;
+	private array $data;
 
     /**
 	 * Constructor

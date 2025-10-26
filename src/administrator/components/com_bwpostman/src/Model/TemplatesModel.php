@@ -72,49 +72,49 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since       2.1.0
 	 */
-	protected $dummy;
+	protected string $dummy;
 
 	/**
 	 * @var	string
 	 *
 	 * @since       2.1.0
 	 */
-	protected $content;
+	protected string $content;
 
 	/**
 	 * @var	string
 	 *
 	 * @since       2.1.0
 	 */
-	protected $tmp_path;
+	protected string $tmp_path;
 
 	/**
 	 * @var	string
 	 *
 	 * @since       2.1.0
 	 */
-	protected $imgPath;
+	protected string $imgPath;
 
 	/**
 	 * @var	string
 	 *
 	 * @since       2.1.0
 	 */
-	protected $basename;
+	protected string $basename;
 
 	/**
 	 * @var	string
 	 *
 	 * @since       2.1.0
 	 */
-	protected $exportId;
+	protected string $exportId;
 
 	/**
 	 * @var	object
 	 *
 	 * @since       2.4.0
 	 */
-	protected $logger;
+	protected BwLogger|object $logger;
 
 	/**
 	 * Constructor

@@ -61,49 +61,49 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since       0.9.6.3
 	 */
-	public $parentInstaller;
+	public InstallerAdapter $parentInstaller;
 
 	/**
 	 * @var string $minimum_joomla_release
 	 *
 	 * @since       2.0.0
 	 */
-	private $minimum_joomla_release = "4.0.0";
+	private string $minimum_joomla_release = "4.0.0";
 
 	/**
 	 * @var string $minimum_php_version
 	 *
 	 * @since       4.2.5
 	 */
-	private $minimum_php_version = "7.2.5";
+	private string $minimum_php_version = "7.2.5";
 
 	/**
 	 * @var string release
 	 *
 	 * @since       2.0.0
 	 */
-	private $release = null;
+	private ?string $release = null;
 
 	/**
 	 * @var string  $reference_table        reference table to check if it is converted already
 	 *
 	 * @since       2.0.0
 	 */
-	private $reference_table = 'bwpostman_campaigns';
+	private string $reference_table = 'bwpostman_campaigns';
 
 	/**
 	 * @var string  $conversion_file        file name of sql conversion file
 	 *
 	 * @since       2.0.0
 	 */
-	private $conversion_file = '/components/com_bwpostman/sql/utf8mb4conversion/utf8mb4-conversion-01.sql';
+	private string $conversion_file = '/components/com_bwpostman/sql/utf8mb4conversion/utf8mb4-conversion-01.sql';
 
 	/**
 	 * @var array $all_bwpm_groups          array which holds user groups of BwPostman
 	 *
 	 * @since       2.0.0
 	 */
-	private $all_bwpm_groups    = array(
+	private array $all_bwpm_groups    = array(
 									'bwpm_usergroups'           => array(
 										'BwPostmanPublisher',
 										'BwPostmanEditor',
@@ -140,7 +140,7 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since       2.0.0
 	 */
-	private $adminUsergroup = null;
+	private ?string $adminUsergroup = null;
 
 	/**
 	 * Property to hold logger
@@ -149,7 +149,7 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since  3.0.0
 	 */
-	private $logger;
+	private object $logger;
 
 	/**
 	 * Property to hold log category
@@ -158,7 +158,7 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since  3.0.0
 	 */
-	private $log_cat = 'Installer';
+	private string $log_cat = 'Installer';
 
 	/**
 	 * Executes additional installation processes

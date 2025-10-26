@@ -67,7 +67,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $item;
+	protected object $item;
 
 	/**
 	 * property to hold state
@@ -76,16 +76,16 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $state;
+	protected array|object $state;
 
 	/**
 	 * property to hold queue entries property
 	 *
-	 * @var boolean $queueEntries
+	 * @var bool $queueEntries
 	 *
 	 * @since       0.9.1
 	 */
-	public $queueEntries;
+	public bool $queueEntries;
 
 	/**
 	 * property to hold request url
@@ -94,7 +94,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $request_url;
+	protected object $request_url;
 
 	/**
 	 * property to hold template
@@ -103,7 +103,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $template;
+	public object $template;
 
 
 	/**
@@ -113,7 +113,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Execute and display a template script.

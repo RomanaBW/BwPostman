@@ -56,7 +56,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
 	 * property to hold pagination object
@@ -65,7 +65,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $pagination;
+	protected object $pagination;
 
 	/**
 	 * property to hold state
@@ -74,7 +74,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $state;
+	protected array|object $state;
 
 	/**
 	 * property to hold filter form
@@ -83,7 +83,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $filterForm;
+	public object $filterForm;
 
 	/**
 	 * property to hold active filters
@@ -92,7 +92,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $activeFilters;
+	public object $activeFilters;
 
 	/**
 	 * property to hold total value
@@ -101,7 +101,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $total;
+	public string $total;
 
 	/**
 	 * property to hold permissions as array
@@ -110,7 +110,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * property to hold sidebar
@@ -119,7 +119,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $sidebar;
+	public object $sidebar;
 
 	/**
 	 * Execute and display a template script.
@@ -209,7 +209,7 @@ class HtmlView extends BaseHtmlView
 				$childBar->archive('mailinglist.archive')->listCheck(true);
 			}
 
-			if (BwPostmanHelper::canEdit('mailinglist', 0) || BwPostmanHelper::canEditState('mailinglist'))
+			if (BwPostmanHelper::canEdit('mailinglist', []) || BwPostmanHelper::canEditState('mailinglist'))
 			{
 				$childBar->checkin('mailinglists.checkin')->listCheck(true);
 			}

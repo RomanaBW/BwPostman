@@ -66,7 +66,7 @@ class TemplateController extends FormController
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * Constructor.

@@ -57,11 +57,11 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * property to hold queue entries
 	 *
-	 * @var boolean   $queueEntries
+	 * @var bool $queueEntries
 	 *
 	 * @since       1.0.1
 	 */
-	protected $queueEntries;
+	protected bool $queueEntries;
 
 	/**
 	 * property to hold template object
@@ -70,7 +70,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	protected $template;
+	protected object $template;
 
 	/**
 	 * property to hold state
@@ -79,7 +79,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	protected $state;
+	protected array|object $state;
 
 	/**
 	 * property to hold filter form
@@ -88,7 +88,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	public $filterForm;
+	public object $filterForm;
 
 	/**
 	 * property to hold active filters
@@ -97,7 +97,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	public $activeFilters;
+	public object $activeFilters;
 
 	/**
 	 * property to hold check res
@@ -106,7 +106,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	public $check_res;
+	public string $check_res;
 
 	/**
 	 * property to hold sidebar
@@ -115,7 +115,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	public $sidebar;
+	public object $sidebar;
 
 	/**
 	 * property to hold permissions as array
@@ -124,7 +124,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * property to hold total value
@@ -133,7 +133,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.0.1
 	 */
-	public $total;
+	public object $total;
 
 	/**
 	 * Execute and display a template script.

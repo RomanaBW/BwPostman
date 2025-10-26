@@ -53,95 +53,95 @@ use RuntimeException;
 class SendmailcontentTable extends Table
 {
 	/**
-	 * @var int Primary Key --> every ID exists twice (once for mode text, once for mode html
+	 * @var ?int Primary Key --> every ID exists twice (once for mode text, once for mode html
 	 *
 	 * @since       0.9.1
 	 */
-	public $id = null;
+	public ?int $id = null;
 
 	/**
-	 * @var int Primary Key --> 0 = Text, 1 = HTML
+	 * @var ?int Primary Key --> 0 = Text, 1 = HTML
 	 *
 	 * @since       0.9.1
 	 */
-	public $mode = null;
+	public ?int $mode = null;
 
 	/**
-	 * @var int Newsletter-ID
+	 * @var ?int Newsletter-ID
 	 *
 	 * @since       0.9.1
 	 */
-	public $nl_id = null;
+	public ?int $nl_id = null;
 
 	/**
-	 * @var string Sender name
+	 * @var ?string Sender name
 	 *
 	 * @since       0.9.1
 	 */
-	public $from_name = null;
+	public ?string $from_name = null;
 
 	/**
-	 * @var string Sender email
+	 * @var ?string Sender email
 	 *
 	 * @since       0.9.1
 	 */
-	public $from_email = null;
+	public ?string $from_email = null;
 
 	/**
-	 * @var string Subject
+	 * @var ?string Subject
 	 *
 	 * @since       0.9.1
 	 */
-	public $subject = null;
+	public ?string $subject = null;
 
 	/**
 	 * @var String Email-body
 	 *
 	 * @since       0.9.1
 	 */
-	public $body = '';
+	public string $body = '';
 
 	/**
-	 * @var string CC email
+	 * @var ?string CC email
 	 *
 	 * @since       0.9.1
 	 */
-	public $cc_email = null;
+	public ?string $cc_email = null;
 
 	/**
-	 * @var string BCC email
+	 * @var ?string BCC email
 	 *
 	 * @since       0.9.1
 	 */
-	public $bcc_email = null;
+	public ?string $bcc_email = null;
 
 	/**
 	 * @var string Attachment
 	 *
 	 * @since       0.9.1
 	 */
-	public $attachment = '';
+	public string $attachment = '';
 
 	/**
-	 * @var string Reply-to email
+	 * @var ?string Reply-to email
 	 *
 	 * @since       0.9.1
 	 */
-	public $reply_email = null;
+	public ?string $reply_email = null;
 
 	/**
-	 * @var string Reply-to name
+	 * @var ?string Reply-to name
 	 *
 	 * @since       0.9.1
 	 */
-	public $reply_name = null;
+	public ?string $reply_name = null;
 
 	/**
-	 * @var int substitute links --> 0 = no, 1 = yes
+	 * @var ?int substitute links --> 0 = no, 1 = yes
 	 *
 	 * @since       2.0.0
 	 */
-	public $substitute_links = null;
+	public ?int $substitute_links = null;
 
 	/**
 	 * Constructor

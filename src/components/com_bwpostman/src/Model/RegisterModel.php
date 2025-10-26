@@ -59,7 +59,7 @@ class RegisterModel extends AdminModel
      *
      * @since       4.3.0
      */
-    public $logger;
+    public object $logger;
 
     /**
 	 * Constructor

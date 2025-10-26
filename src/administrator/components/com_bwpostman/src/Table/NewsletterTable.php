@@ -58,256 +58,256 @@ use RuntimeException;
 class NewsletterTable extends Table implements VersionableTableInterface
 {
 	/**
-	 * @var int Primary Key
+	 * @var ?int Primary Key
 	 *
 	 * @since       0.9.1
 	 */
-	public $id = null;
+	public ?int $id = null;
 
 	/**
-	 * @var int asset_id
+	 * @var ?int asset_id
 	 *
 	 * @since       1.0.1
 	 */
-	public $asset_id = null;
+	public ?int $asset_id = null;
 
 	/**
-	 * @var string Sender name
+	 * @var ?string Sender name
 	 *
 	 * @since       0.9.1
 	 */
-	public $from_name = null;
+	public ?string $from_name = null;
 
 	/**
-	 * @var string Sender email
+	 * @var ?string Sender email
 	 *
 	 * @since       0.9.1
 	 */
-	public $from_email = null;
+	public ?string $from_email = null;
 
 	/**
-	 * @var string Reply-to email
+	 * @var ?string Reply-to email
 	 *
 	 * @since       0.9.1
 	 */
-	public $reply_email = null;
+	public ?string $reply_email = null;
 
 	/**
-	 * @var int Template-ID
+	 * @var ?int Template-ID
 	 *
 	 * @since       1.1.0
 	 */
-	public $template_id = null;
+	public ?int $template_id = null;
 
 	/**
-	 * @var int Text-Template-ID
+	 * @var ?int Text-Template-ID
 	 *
 	 * @since       1.1.0
 	 */
-	public $text_template_id = null;
+	public ?int $text_template_id = null;
 
 	/**
-	 * @var int Campaign-ID
+	 * @var ?int Campaign-ID
 	 *
 	 * @since       0.9.1
 	 */
-	public $campaign_id = null;
+	public ?int $campaign_id = null;
 
 	/**
-	 * @var string Usergroups
+	 * @var ?string Usergroups
 	 *
 	 * @since       0.9.1
 	 */
-	public $usergroups = null;
+	public ?string $usergroups = null;
 
 	/**
-	 * @var string Selected content
+	 * @var ?string Selected content
 	 *
 	 * @since       0.9.1
 	 */
-	public $selected_content = null;
+	public ?string $selected_content = null;
 
 	/**
-	 * @var string Subject
+	 * @var ?string Subject
 	 *
 	 * @since       0.9.1
 	 */
-	public $subject = null;
+	public ?string $subject = null;
 
 	/**
-	 * @var string Newsletter description
+	 * @var ?string Newsletter description
 	 *
 	 * @since       0.9.1
 	 */
-	public $description = null;
+	public ?string $description = null;
 
 	/**
 	 * @var int access level/view level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
 	 *
 	 * @since       0.9.1
 	 */
-	public $access = 1;
+	public int $access = 1;
 
 	/**
 	 * @var string attachment
 	 *
 	 * @since       0.9.7
 	 */
-	public $attachment = "";
+	public string $attachment = "";
 
 	/**
-	 * @var string HTML headline
+	 * @var ?string HTML headline
 	 *
 	 * @since       1.1.0
 	 */
-	public $intro_headline = null;
+	public ?string $intro_headline = null;
 
 	/**
 	 * @var string HTML intro text
 	 *
 	 * @since       1.1.0
 	 */
-	public $intro_text = '';
+	public string $intro_text = '';
 
 	/**
-	 * @var string TEXT headline
+	 * @var ?string TEXT headline
 	 *
 	 * @since       1.1.0
 	 */
-	public $intro_text_headline = null;
+	public ?string $intro_text_headline = null;
 
 	/**
 	 * @var string TEXT intro text
 	 *
 	 * @since       1.1.0
 	 */
-	public $intro_text_text = '';
+	public string $intro_text_text = '';
 
 	/**
 	 * @var string HTML-version
 	 *
 	 * @since       0.9.1
 	 */
-	public $html_version = '';
+	public string $html_version = '';
 
 	/**
 	 * @var string Text-version
 	 *
 	 * @since       0.9.1
 	 */
-	public $text_version = '';
+	public string $text_version = '';
 
 	/**
-	 * @var int $is_template
+	 * @var ?int $is_template
 	 *
 	 * @since       2.2.0
 	 */
-	public $is_template = null;
+	public ?int $is_template = null;
 
 	/**
-	 * @var datetime creation date of the newsletter
+	 * @var string|DateTime creation date of the newsletter
 	 *
 	 * @since       0.9.1
 	 */
-	public $created_date = '0000-00-00 00:00:00';
+	public string|DateTime $created_date = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int Author
 	 *
 	 * @since       0.9.1
 	 */
-	public $created_by = 0;
+	public int $created_by = 0;
 
 	/**
-	 * @var datetime last modification date of the newsletter
+	 * @var ?datetime last modification date of the newsletter
 	 *
 	 * @since       0.9.1
 	 */
-	public $modified_time = null;
+	public ?DateTime $modified_time = null;
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       0.9.1
 	 */
-	public $modified_by = 0;
+	public int $modified_by = 0;
 
 	/**
-	 * @var datetime Mailing date
+	 * @var ?datetime Mailing date
 	 *
 	 * @since       0.9.1
 	 */
-	public $mailing_date = null;
+	public ?DateTime $mailing_date = null;
 
 	/**
-	 * @var int Published
+	 * @var ?int Published
 	 *
 	 * @since       0.9.1
 	 */
-	public $published = null;
+	public ?int $published = null;
 
 	/**
-	 * @var datetime for publishing up a newsletter
+	 * @var ?datetime for publishing up a newsletter
 	 *
 	 * @since       1.2.0
 	 */
-	public $publish_up = null;
+	public ?DateTime $publish_up = null;
 
 	/**
-	 * @var datetime for publishing down a newsletter
+	 * @var ?datetime for publishing down a newsletter
 	 *
 	 * @since       1.2.0
 	 */
-	public $publish_down = null;
+	public ?DateTime $publish_down = null;
 
 	/**
 	 * @var int Checked-out Owner
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out = 0;
+	public int $checked_out = 0;
 
 	/**
-	 * @var datetime Checked-out time
+	 * @var ?datetime Checked-out time
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out_time = null;
+	public ?DateTime $checked_out_time = null;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
 	 *
 	 * @since       0.9.1
 	 */
-	public $archive_flag = 0;
+	public int $archive_flag = 0;
 
 	/**
-	 * @var datetime Archive-date
+	 * @var ?datetime Archive-date
 	 *
 	 * @since       0.9.1
 	 */
-	public $archive_date = null;
+	public ?DateTime $archive_date = null;
 
 	/**
 	 * @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator
 	 *
 	 * @since       0.9.1
 	 */
-	public $archived_by = 0;
+	public int $archived_by = 0;
 
 	/**
-	 * @var int Number of views at the frontend
+	 * @var ?int Number of views at the frontend
 	 *
 	 * @since       0.9.1
 	 */
-	public $hits = null;
+	public ?int $hits = null;
 
 	/**
-	 * @var int substitute links --> 0 = no, 1 = yes
+	 * @var ?int substitute links --> 0 = no, 1 = yes
 	 *
 	 * @since       2.0.0
 	 */
-	public $substitute_links = null;
+	public ?int $substitute_links = null;
 
 	/**
 	 * Constructor

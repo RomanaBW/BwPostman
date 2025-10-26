@@ -61,20 +61,20 @@ class TemplateModel extends AdminModel
 	/**
 	 * template ID
 	 *
-	 * @var integer
+	 * @var ?int
 	 *
 	 * @since 1.1.0
 	 */
-	private $id = null;
+	private ?int $id = null;
 
 	/**
 	 * template data
 	 *
-	 * @var array
+	 * @var ?array
 	 *
 	 * @since 1.1.0
 	 */
-	private $data = null;
+	private ?array $data = null;
 
 	/**
 	 * Constructor

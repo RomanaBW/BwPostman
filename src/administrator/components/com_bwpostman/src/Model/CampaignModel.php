@@ -63,7 +63,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	private $id = null;
+	private ?int $id = null;
 
 	/**
 	 * Campaign data
@@ -72,7 +72,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	private $data = null;
+	private ?array $data = null;
 
 	/**
 	 * All mailinglists
@@ -81,7 +81,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since       3.0.0
 	 */
-	private $mailinglists = array();
+	private array $mailinglists = array();
 
 	/**
 	 * All mailinglists
@@ -90,7 +90,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since       3.0.0
 	 */
-	private $ml_available = array();
+	private array $ml_available = array();
 
 	/**
 	 * Normally unavailable mailinglists
@@ -99,7 +99,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since       3.0.0
 	 */
-	private $ml_unavailable = array();
+	private array $ml_unavailable = array();
 
 	/**
 	 * Internal mailinglists
@@ -108,7 +108,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since       3.0.0
 	 */
-	private $ml_intern = array();
+	private array $ml_intern = array();
 
 	/**
 	 * Associated usergroups
@@ -117,7 +117,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since       3.0.0
 	 */
-	private $usergroups = array();
+	private array $usergroups = array();
 
 	/**
 	 * Constructor

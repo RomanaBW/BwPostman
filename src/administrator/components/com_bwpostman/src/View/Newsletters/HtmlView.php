@@ -58,7 +58,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
 	 * property to hold pagination object
@@ -67,7 +67,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $pagination;
+	protected object $pagination;
 
 	/**
 	 * property to hold pagination object for queue
@@ -76,7 +76,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $queuePagination;
+	protected object $queuePagination;
 
 	/**
 	 * property to hold state
@@ -85,7 +85,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $state;
+	protected array|object $state;
 
 	/**
 	 * property to hold filter form
@@ -94,7 +94,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $filterForm;
+	public object $filterForm;
 
 	/**
 	 * property to hold active filters
@@ -103,16 +103,16 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $activeFilters;
+	public object $activeFilters;
 
 	/**
 	 * property to hold queue entries property
 	 *
-	 * @var boolean $queueEntries
+	 * @var bool $queueEntries
 	 *
 	 * @since       0.9.1
 	 */
-	public $queueEntries;
+	public bool $queueEntries;
 
 	/**
 	 * property to hold total value
@@ -121,7 +121,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $total;
+	public string $total;
 
 	/**
 	 * property to hold count queue
@@ -130,7 +130,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $count_queue;
+	public string $count_queue;
 
 	/**
 	 * property to hold context
@@ -139,7 +139,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $context;
+	public string $context;
 
 	/**
 	 * property to hold permissions as array
@@ -148,7 +148,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * property to hold sidebar
@@ -157,7 +157,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $sidebar;
+	public object $sidebar;
 
 	/**
 	 * Execute and display a template script.
@@ -270,7 +270,7 @@ class HtmlView extends BaseHtmlView
 						$childBar->unpublish('newsletters.unpublish')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter'))
+					if (BwPostmanHelper::canEdit('newsletter', []) || BwPostmanHelper::canEditState('newsletter'))
 					{
 						$childBar->checkin('newsletters.checkin')->listCheck(true);
 					}
@@ -328,7 +328,7 @@ class HtmlView extends BaseHtmlView
 						$childBar->edit('newsletter.edit')->listCheck(true);
 					}
 
-					if (BwPostmanHelper::canEdit('newsletter', 0) || BwPostmanHelper::canEditState('newsletter'))
+					if (BwPostmanHelper::canEdit('newsletter', []) || BwPostmanHelper::canEditState('newsletter'))
 					{
 						$childBar->checkin('newsletters.checkin')->listCheck(true);
 					}

@@ -45,28 +45,28 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	var $minJoomlaRelease;
+	var string $minJoomlaRelease;
 
 	/**
 	 * @var string $minPhpRelease
 	 *
 	 * @since       2.3.0
 	 */
-	var $minPhpRelease = '7.2.5';
+	var string $minPhpRelease = '7.2.5';
 
 	/**
 	 * @var string minimum version of BwPostman
 	 *
 	 * @since       2.3.0
 	 */
-	var $bwpmMinRelease = '2.3.0';
+	var string $bwpmMinRelease = '2.3.0';
 
 	/**
 	 * @var string release
 	 *
 	 * @since       2.3.0
 	 */
-	var $release = null;
+	var ?string $release = null;
 
 	/**
 	 * Method to install the extension

@@ -47,21 +47,21 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @since       0.9.8
 	 */
-	protected $parentInstaller;
+	protected InstallerAdapter $parentInstaller;
 
 	/**
 	 * @var string $minimum_joomla_release
 	 *
 	 * @since       0.9.8
 	 */
-	protected $minimum_joomla_release;
+	protected string $minimum_joomla_release;
 
 	/**
-	 * @var string release
+	 * @var ?string release
 	 *
 	 * @since       0.9.8
 	 */
-	protected $release = null;
+	protected ?string $release = null;
 
 	/**
 	 * Method to install the extension

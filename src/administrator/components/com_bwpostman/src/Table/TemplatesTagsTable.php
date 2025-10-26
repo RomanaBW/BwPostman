@@ -51,102 +51,102 @@ use RuntimeException;
 class TemplatesTagsTable extends Table implements VersionableTableInterface
 {
 	/**
-	 * @var int Primary Key Template-ID
+	 * @var ?int Primary Key Template-ID
 	 *
 	 * @since       2.0.0
 	 */
-	public $templates_table_id = null;
+	public ?int $templates_table_id = null;
 
 	/**
-	 * @var integer template tag head
+	 * @var ?int template tag head
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_head = null;
+	public ?int $tpl_tags_head = null;
 
 	/**
 	 * @var string template tag head advanced
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_head_advanced = '';
+	public string $tpl_tags_head_advanced = '';
 
 	/**
-	 * @var integer template tag body
+	 * @var ?int template tag body
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_body = null;
+	public ?int $tpl_tags_body = null;
 
 	/**
 	 * @var string template tag body advanced
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_body_advanced = '';
+	public string $tpl_tags_body_advanced = '';
 
 	/**
-	 * @var integer template tag article
+	 * @var ?int template tag article
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_article = null;
+	public ?int $tpl_tags_article = null;
 
 	/**
 	 * @var string template tag article advanced begin
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_article_advanced_b = '';
+	public string $tpl_tags_article_advanced_b = '';
 
 	/**
 	 * @var string template tag article advanced end
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_article_advanced_e = '';
+	public string $tpl_tags_article_advanced_e = '';
 
 	/**
-	 * @var integer template tag readon
+	 * @var ?int template tag readon
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_readon = null;
+	public ?int $tpl_tags_readon = null;
 
 	/**
 	 * @var string template tag readon advanced
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_readon_advanced = '';
+	public string $tpl_tags_readon_advanced = '';
 
 	/**
-	 * @var integer template tag legal
+	 * @var ?int template tag legal
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_legal = null;
+	public ?int $tpl_tags_legal = null;
 
 	/**
 	 * @var string template tag legal advanced begin
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_legal_advanced_b = '';
+	public string $tpl_tags_legal_advanced_b = '';
 
 	/**
 	 * @var string template tag legal advanced end
 	 *
 	 * @since       2.0.0
 	 */
-	public $tpl_tags_legal_advanced_e = '';
+	public string $tpl_tags_legal_advanced_e = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 *
 	 * @since       2.0.0
 	 */
-	public $standard = 0;
+	public int $standard = 0;
 
 	/**
 	 * Constructor

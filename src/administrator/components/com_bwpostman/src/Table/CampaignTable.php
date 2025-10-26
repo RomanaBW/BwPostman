@@ -60,98 +60,99 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public $id = 0;
+	public int $id = 0;
 
 	/**
-	 * @var int asset_id
+	 * @var ?int asset_id
 	 *
 	 * @since       1.0.1
 	 */
-	public $asset_id = null;
+	public ?int $asset_id = null;
 
 	/**
-	 * @var string Campaign title
+	 * @var ?string Campaign title
 	 *
 	 * @since       0.9.1
 	 */
-	public $title = null;
+	public ?string $title = null;
 
 	/**
-	 * @var string Campaign description
+	 * @var ?string Campaign description
 	 *
 	 * @since       0.9.1
 	 */
-	public $description = null;
+	public ?string $description = null;
 
 	/**
-	 * @var int Access level/View level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
+	 * @var int Access level/View level
+     * --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
+     *
+     * @since       0.9.1
+     */
+	public int $access = 1;
+
+	/**
+	 * @var string|datetime creation date of the campaign
 	 *
 	 * @since       0.9.1
 	 */
-	public $access = 1;
-
-	/**
-	 * @var datetime creation date of the campaign
-	 *
-	 * @since       0.9.1
-	 */
-	public $created_date = '0000-00-00 00:00:00';
+	public string|DateTime $created_date = '0000-00-00 00:00:00';
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       0.9.1
 	 */
-	public $created_by = 0;
+	public int $created_by = 0;
 
 	/**
 	 * @var datetime last modification date of the campaign
 	 *
 	 * @since       0.9.1
 	 */
-	public $modified_time = null;
+	public ?DateTime $modified_time = null;
 
 	/**
 	 * @var int user ID
 	 *
 	 * @since       0.9.1
 	 */
-	public $modified_by = 0;
+	public int $modified_by = 0;
 
 	/**
 	 * @var int Checked-out owner
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out = 0;
+	public int $checked_out = 0;
 
 	/**
 	 * @var datetime Checked-out time
 	 *
 	 * @since       0.9.1
 	 */
-	public $checked_out_time = null;
+	public ?DateTime $checked_out_time = null;
 
 	/**
 	 * @var int Archive-flag --> 0 = not archived, 1 = archived
 	 *
 	 * @since       0.9.1
 	 */
-	public $archive_flag = 0;
+	public int $archive_flag = 0;
 
 	/**
 	 * @var datetime Archive-date
 	 *
 	 * @since       0.9.1
 	 */
-	public $archive_date = null;
+	public ?DateTime $archive_date = null;
 
 	/**
 	 * @var int ID --> 0 = campaign is not archived, another ID = account is archived by an administrator
 	 *
 	 * @since       0.9.1
 	 */
-	public $archived_by = 0;
+	public int $archived_by = 0;
 
 	/**
 	 * Constructor

@@ -48,56 +48,56 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * The subscriber data
 	 *
-	 * @var    object
+	 * @var    ?object
 	 *
 	 * @since       0.9.1
 	 */
-	public $subscriber = null;
+	public ?object $subscriber = null;
 
 	/**
 	 * several needed lists
 	 *
-	 * @var    array
+	 * @var    ?array
 	 *
 	 * @since       0.9.1
 	 */
-	public $lists = null;
+	public ?array $lists = null;
 
 	/**
 	 * The component parameters
 	 *
-	 * @var    object   Registry object
+	 * @var    ?object   Registry object
 	 *
 	 * @since       0.9.1
 	 */
-	public $params = null;
+	public ?object $params = null;
 
 	/**
 	 * The component captcha
 	 *
-	 * @var    string
+	 * @var    ?string
 	 *
 	 * @since       0.9.1
 	 */
-	public $captcha = null;
+	public ?string $captcha = null;
 
 	/**
 	 * The current error object
 	 *
-	 * @var    object
+	 * @var    ?object
 	 *
 	 * @since       0.9.1
 	 */
-	public $error = null;
+	public ?object $error = null;
 
 	/**
 	 * The current success object
 	 *
-	 * @var    object
+	 * @var    ?object
 	 *
 	 * @since       0.9.1
 	 */
-	public $success = null;
+	public ?object $success = null;
 
 	/**
 	 * Execute and display a template script.

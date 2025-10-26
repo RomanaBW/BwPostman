@@ -70,7 +70,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $item;
+	protected object $item;
 
 	/**
 	 * property to hold row object
@@ -79,7 +79,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $row;
+	protected object $row;
 
 	/**
 	 * property to hold state
@@ -88,7 +88,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $state;
+	protected array|object $state;
 
 	/**
 	 * property to hold obligation values
@@ -97,25 +97,25 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected $obligation;
+	protected array $obligation;
 
 	/**
 	 * property to hold queue entries
 	 *
-	 * @var boolean $queueEntries
+	 * @var bool $queueEntries
 	 *
 	 * @since       0.9.1
 	 */
-	public $queueEntries;
+	public bool $queueEntries;
 
 	/**
 	 * property to hold template
 	 *
-	 * @var boolean $template
+	 * @var bool $template
 	 *
 	 * @since       0.9.1
 	 */
-	public $template;
+	public bool $template;
 
 	/**
 	 * property to hold import
@@ -124,7 +124,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $import;
+	public array $import;
 
 	/**
 	 * property to hold lists
@@ -133,7 +133,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $lists;
+	public array $lists;
 
 	/**
 	 * property to hold request url
@@ -142,7 +142,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $request_url;
+	public string $request_url;
 
 	/**
 	 * property to hold raw format of request url
@@ -151,7 +151,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $request_url_raw;
+	public string $request_url_raw;
 
 	/**
 	 * property to hold permissions as array
@@ -160,7 +160,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public $permissions;
+	public array $permissions;
 
 	/**
 	 * property to hold result
@@ -169,7 +169,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public $result;
+	public string $result;
 
 	/**
 	 * Execute and display a template script.

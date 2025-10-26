@@ -59,20 +59,20 @@ class CampaignModel extends AdminModel
 	/**
 	 * Campaign ID
 	 *
-	 * @var int
+	 * @var ?int
 	 *
 	 * @since       0.9.1
 	 */
-	private int $id = null;
+	private ?int $id = null;
 
 	/**
 	 * Campaign data
 	 *
-	 * @var array
+	 * @var ?array
 	 *
 	 * @since       0.9.1
 	 */
-	private array $data = null;
+	private ?array $data = null;
 
 	/**
 	 * All mailinglists
@@ -303,12 +303,12 @@ class CampaignModel extends AdminModel
     /**
      * Method to get the data that should be injected in the form.
      *
-     * @return object|bool|stdClass The data for the form.
+     * @return object|bool The data for the form.
      *
      * @throws Exception
      * @since    1.6
      */
-	protected function loadFormData(): object|bool|stdClass
+	protected function loadFormData(): object|bool
     {
 		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.campaign.id', 0);
 

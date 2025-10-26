@@ -176,7 +176,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since   3.0.0 (here, before since 2.0.0 at subscriber helper)
 	 */
-	public function deleteMailinglistsOfSubscriber(int $subscriber_id, $mailinglists = null): bool
+	public function deleteMailinglistsOfSubscriber(int $subscriber_id, array $mailinglists = null): bool
 	{
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);

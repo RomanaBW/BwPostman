@@ -106,10 +106,10 @@ class BwLogger extends W3cLogger implements LoggerAwareInterface
 	/**
 	 * Stores the singleton instances of BwLogger.
 	 *
-	 * @since  3.0.0
-     *@var    array|BwLogger
-	 *
-	 */
+	 * @var    array|BwLogger
+     *
+     * @since  3.0.0
+     */
 	protected static BwLogger|array $instances = array();
 
 	/**

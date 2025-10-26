@@ -1390,12 +1390,12 @@ class SubscriberTable extends Table implements VersionableTableInterface
      *
      * @param array $values
      *
-     * @return object|null
+     * @return object|bool
      *
      * @throws Exception
      * @since   3.0.0 (here)
      */
-	public function getSubscriberDataByEmail(array $values): ?object
+	public function getSubscriberDataByEmail(array $values): object|bool
 	{
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);

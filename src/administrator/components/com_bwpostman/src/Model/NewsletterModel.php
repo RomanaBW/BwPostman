@@ -1898,7 +1898,7 @@ class NewsletterModel extends AdminModel
 	 * CAUTION! This always begins with the first entry! If there are entries left from previous attempts,
 	 * then it begins with them!
 	 *
-	 * @param	bool $fromComponent true if we came from component
+	 * @param bool $fromComponent true if we came from component
 	 *
 	 * @return	int		(-1, if there was an error; 0, if no mail addresses left in the queue; 1, if one Mail was send).
 	 *
@@ -1906,7 +1906,7 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function sendMail($fromComponent = true): int
+	public function sendMail(bool $fromComponent = true): int
 	{
 		// initialize
 		$renderer           = new contentRenderer();

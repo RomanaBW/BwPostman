@@ -52,7 +52,7 @@ class MailinglistController extends FormController
 {
 	/**
 	 * @var		string  The prefix to use with controller messages.
-
+     *
 	 * @since	1.0.4
 	 */
 	protected $text_prefix = 'COM_BWPOSTMAN_ML';

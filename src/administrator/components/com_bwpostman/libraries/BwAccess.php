@@ -54,6 +54,7 @@ class BwAccess
 	 * Array of view levels
 	 *
 	 * @var    array
+     *
 	 * @since  11.1
 	 */
 	protected static array $viewLevels = array();
@@ -62,6 +63,7 @@ class BwAccess
 	 * Array of rules for the asset
 	 *
 	 * @var    array
+     *
 	 * @since  11.1
 	 */
 	protected static array $assetRules = array();
@@ -70,6 +72,7 @@ class BwAccess
 	 * Array of identities for asset rules
 	 *
 	 * @var    array
+     *
 	 * @since  11.1
 	 */
 	protected static array $assetRulesIdentities = array();
@@ -78,6 +81,7 @@ class BwAccess
 	 * Array of the permission parent ID mappings
 	 *
 	 * @var    array
+     *
 	 * @since  11.1
 	 */
 	protected static array $assetPermissionsParentIdMapping = array();
@@ -86,6 +90,7 @@ class BwAccess
 	 * Array of asset types that have been preloaded
 	 *
 	 * @var    array
+     *
 	 * @since  11.1
 	 */
 	protected static array $preloadedAssetTypes = array();
@@ -94,6 +99,7 @@ class BwAccess
 	 * Array of loaded user identities
 	 *
 	 * @var    array
+     *
 	 * @since  11.1
 	 */
 	protected static array $identities = array();
@@ -102,6 +108,7 @@ class BwAccess
 	 * Array of user groups.
 	 *
 	 * @var    array
+     *
 	 * @since  11.1
 	 */
 	protected static array $userGroups = array();
@@ -110,6 +117,7 @@ class BwAccess
 	 * Array of user group paths.
 	 *
 	 * @var    array
+     *
 	 * @since  11.1
 	 */
 	protected static array $userGroupPaths = array();
@@ -118,6 +126,7 @@ class BwAccess
 	 * Array of cached groups by user.
 	 *
 	 * @var    array
+     *
 	 * @since  11.1
 	 */
 	protected static array $groupsByUser = array();
@@ -126,6 +135,7 @@ class BwAccess
 	 * Array of preloaded asset names and ids (key is the asset id).
 	 *
 	 * @var    array
+     *
 	 * @since  3.7.0
 	 */
 	protected static array $preloadedAssets = array();
@@ -133,7 +143,8 @@ class BwAccess
 	/**
 	 * The root asset id.
 	 *
-	 * @var    integer|null
+	 * @var    int|null
+     *
 	 * @since  3.7.0
 	 */
 	protected static ?int $rootAssetId = null;
@@ -142,6 +153,7 @@ class BwAccess
 	 * The root asset id.
 	 *
 	 * @var    array
+     *
 	 * @since  3.7.0
 	 */
 	protected static array $actionRule = array();

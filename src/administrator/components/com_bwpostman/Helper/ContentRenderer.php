@@ -199,12 +199,12 @@ class ContentRenderer
      * @param int $id
      * @param int $show_readon
      *
-     * @return object|stdClass|null
+     * @return stdClass|null
      *
      * @throws Exception
      * @since       0.9.1
      */
-	public function  retrieveContent(int $id, int $show_readon): object|stdClass|null
+	public function  retrieveContent(int $id, int $show_readon): stdClass|null
     {
 		$row   = new stdClass();
 		$app   = Factory::getApplication();

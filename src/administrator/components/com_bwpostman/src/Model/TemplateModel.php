@@ -835,19 +835,19 @@ class TemplateModel extends AdminModel
 	/**
 	 * Method to add the HTML-Tags and the css for template preview
 	 *
-	 * @param string             $text
-	 * @param string             $css
-	 * @param array|string|null  $basics
-	 * @param string             $head_tag
-	 * @param string             $body_tag
-	 * @param string             $legal_tag_b
-	 * @param string             $legal_tag_e
+	 * @param string            $text
+	 * @param string            $css
+	 * @param array|string|null $basics
+	 * @param string            $head_tag
+	 * @param string            $body_tag
+	 * @param string            $legal_tag_b
+	 * @param string            $legal_tag_e
 	 *
 	 * @return    string  $text
 	 *
 	 * @since 1.1.0
 	 */
-	public function addHtmlTags(string $text, string $css, $basics, string $head_tag = '', string $body_tag = '', string $legal_tag_b = '', string $legal_tag_e = ''): string
+	public function addHtmlTags(string $text, string $css, array|string|null $basics, string $head_tag = '', string $body_tag = '', string $legal_tag_b = '', string $legal_tag_e = ''): string
 	{
 		// Get Standard Doctype and Head-Tag
 		$newtext = $head_tag == '' ? BwPostmanTplHelper::getHeadTag() : $head_tag;

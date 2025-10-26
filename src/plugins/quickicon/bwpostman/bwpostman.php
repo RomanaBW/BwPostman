@@ -45,16 +45,16 @@ class PlgQuickiconBwPostman extends CMSPlugin
 	/**
 	 * Constructor.
 	 *
-	 * @param	object	$subject
-	 * @param	array	$config		An optional associative array of configuration settings.
-	 *
-	 * @see		JController
+	 * @param	object $subject
+	 * @param	array  $config An optional associative array of configuration settings.
 	 *
 	 * @throws Exception
 	 *
 	 * @since	0.9
+	 *@see		JController
+	 *
 	 */
-	public function __construct($subject, $config)
+	public function __construct($subject, array $config)
 	{
 		$app	= Factory::getApplication();
 		// Do not load if BwPostman version is not supported or BwPostmanNewsletter isn't detected
@@ -74,7 +74,7 @@ class PlgQuickiconBwPostman extends CMSPlugin
 	 *
 	 * @since 0.9
 	 */
-	public function onGetIcons($context)
+	public function onGetIcons(string $context)
 	{
 	}
 }

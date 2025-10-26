@@ -763,8 +763,8 @@ class ArchiveModel extends ListModel
 	 *
 	 * @since   4.3.0
 	 */
-	public function getFilterForm($data = [], $loadData = true, $layout = 'newsletters')
-	{
+	public function getFilterForm($data = [], $loadData = true, string $layout = 'newsletters'): ?Form
+    {
 		$this->filterFormName = 'filter_archive_' . $layout;
 
 		if (empty($this->filterFormName) || !file_exists(BWPM_ADMINISTRATOR . '/forms/' . $this->filterFormName . '.xml'))

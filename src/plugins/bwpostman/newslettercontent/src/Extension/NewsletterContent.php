@@ -762,7 +762,7 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	private function getModuleById($id): stdClass
+	private function getModuleById(string $id): stdClass
     {
 		$modules = $this->getModules();
 

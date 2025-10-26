@@ -668,7 +668,7 @@ class BwPostmanHelper
 	 * Method to check if you can edit a record.
 	 *
 	 * @param string       $view The view to test. Has to be the single mode name.
-	 * @param array|object $data An array of input data.
+	 * @param object|array $data An array of input data.
 	 *
 	 * @return    boolean
 	 *
@@ -676,7 +676,7 @@ class BwPostmanHelper
 	 *
 	 * @since    1.2.0
 	 */
-	public static function canEdit(string $view = '', $data = array()): bool
+	public static function canEdit(string $view = '', object|array $data = []): bool
 	{
 		/*
 		 * To enable item based deny to someone, who normally has the permission to edit (or vice versa), first check on item level.
@@ -1866,7 +1866,7 @@ class BwPostmanHelper
      *
      * @since 4.3.0
      */
-    public static function logException(Exception $exception, string $category, string $severity = BwLogger::BW_ERROR, $preMessage = ''): void
+    public static function logException(Exception $exception, string $category, string $severity = BwLogger::BW_ERROR, string $preMessage = ''): void
     {
         $log_options    = array();
         $logger   = BwLogger::getInstance($log_options);

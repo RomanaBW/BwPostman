@@ -122,7 +122,7 @@ class SubscribersMailinglistsTable extends Table
 	/**
 	 * Method to get the subscribers of a specific mailinglist
 	 *
-	 * @param 	array|integer $ids id of mailinglist
+	 * @param array|integer $ids id of mailinglist
 	 *
 	 * @return 	array       $subscribers of this mailinglist
 	 *
@@ -130,7 +130,7 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since       3.0.0 (here, before since 2.2.0 at mailinglist helper)
 	 */
-	public function getSubscribersOfMailinglist($ids): ?array
+	public function getSubscribersOfMailinglist(array|int $ids): ?array
 	{
 		$subscribersOfMailinglist = null;
 

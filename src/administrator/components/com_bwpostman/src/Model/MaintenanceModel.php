@@ -6075,13 +6075,13 @@ class MaintenanceModel extends BaseDatabaseModel
 	/**
 	 * Method to get asset title for a specific table (hard coded)
 	 *
-	 * @param string|array $table
+	 * @param array|string $table
 	 *
 	 * @return string
 	 *
 	 * @since 2,0.0
 	 */
-	protected function getAssetTitle($table): string
+	protected function getAssetTitle(array|string $table): string
 	{
 		$switchValue = $table;
 
@@ -6566,14 +6566,14 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @param array      $itemsWithoutAsset
 	 * @param string     $tableNameGeneric
-	 * @param array|bool $mapOldAssetIdsToNew
+	 * @param bool|array $mapOldAssetIdsToNew
 	 *
 	 * @return boolean
 	 *
 	 * @since 2.0.0
 	 *
 	 */
-	private function insertItems(array $itemsWithoutAsset, string $tableNameGeneric, $mapOldAssetIdsToNew): bool
+	private function insertItems(array $itemsWithoutAsset, string $tableNameGeneric, bool|array $mapOldAssetIdsToNew): bool
 	{
 		/*
 		 * Import item data (can't use table bind/store, because we have IDs and Joomla sets mode to update,

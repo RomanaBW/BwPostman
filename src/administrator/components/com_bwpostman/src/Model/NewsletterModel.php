@@ -236,12 +236,12 @@ class NewsletterModel extends AdminModel
      *
      * @param null $pk The id of the primary key.
      *
-     * @return object|bool|stdClass Object on success, false on failure.
+     * @return object|bool Object on success, false on failure.
      *
      * @throws Exception
      * @since   1.0.1
      */
-	public function getItem($pk = null): object|bool|stdClass
+	public function getItem($pk = null): object|bool
     {
 		$app  = Factory::getApplication();
 		$item = new stdClass();

@@ -111,10 +111,10 @@ class TemplatesModel extends ListModel
 
 	/**
 	 * @since       2.4.0
-     * @var	object|BwLogger
+     * @var	BwLogger
 	 *
 	 */
-	protected BwLogger|object $logger;
+	protected BwLogger $logger;
 
 	/**
 	 * Constructor
@@ -239,13 +239,13 @@ class TemplatesModel extends ListModel
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @return    false|QueryInterface|object Query
+	 * @return    false|QueryInterface Query
 	 *
 	 * @throws Exception
 	 *
 	 * @since 1.1.0
 	 */
-	protected function getListQuery(): object|false|QueryInterface
+	protected function getListQuery(): false|QueryInterface
     {
 		$this->query = $this->getDatabase()->getQuery(true);
 

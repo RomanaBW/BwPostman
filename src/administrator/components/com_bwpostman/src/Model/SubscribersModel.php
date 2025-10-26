@@ -168,13 +168,13 @@ class SubscribersModel extends ListModel
 	 *
 	 * @access 	private
 	 *
-	 * @return    false|object|QueryInterface Query
+	 * @return    false|QueryInterface Query
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	protected function getListQuery(): object|false|QueryInterface
+	protected function getListQuery(): false|QueryInterface
     {
         $db		= $this->getDatabase();
 		$this->query = $db->getQuery(true);

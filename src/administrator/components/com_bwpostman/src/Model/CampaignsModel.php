@@ -164,13 +164,13 @@ class CampaignsModel extends ListModel
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @return    false|object|QueryInterface      query
+	 * @return    false|QueryInterface      query
 	 *
 	 * @throws Exception
 	 *
 	 * @since   0.9.1
 	 */
-	protected function getListQuery(): object|false|QueryInterface
+	protected function getListQuery(): false|QueryInterface
     {
         $db          = $this->getDatabase();
 		$this->query = $db->getQuery(true);

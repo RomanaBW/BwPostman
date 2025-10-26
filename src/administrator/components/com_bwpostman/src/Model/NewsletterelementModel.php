@@ -162,12 +162,12 @@ class NewsletterelementModel extends BaseDatabaseModel
     /**
      * Method to get a pagination object for the mailinglists view
      *
-     * @return object|Pagination|null Pagination
+     * @return Pagination|null Pagination
      *
      * @throws Exception
      * @since
      */
-	public function getPagination(): object|Pagination|null
+	public function getPagination(): Pagination|null
     {
 		// Load the content if it doesn't already exist
 		if (empty($this->pagination))

@@ -204,13 +204,13 @@ class NewslettersModel extends ListModel
 	/**
 	 * Method to build the MySQL query
 	 *
-	 * @return    false|QueryInterface|object Query
+	 * @return    false|QueryInterface Query
 	 *
 	 * @throws Exception
 	 *
 	 * @since       0.9.1
 	 */
-	protected function getListQuery(): object|false|QueryInterface
+	protected function getListQuery(): false|QueryInterface
     {
 		$db          = $this->getDatabase();
 		$jinput      = Factory::getApplication()->input;

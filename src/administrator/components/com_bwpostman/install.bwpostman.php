@@ -57,7 +57,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 class com_bwpostmanInstallerScript
 {
 	/**
-	 * @var ?InstallerAdapter $parentInstaller
+	 * @var InstallerAdapter|null $parentInstaller
 	 *
 	 * @since       0.9.6.3
 	 */

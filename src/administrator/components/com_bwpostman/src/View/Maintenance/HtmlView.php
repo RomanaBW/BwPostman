@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use BoldtWebservice\Plugin\Bwpostman\Bwtimecontrol\Helper\BwPostmanPhpCron;
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\LinkButton;
 use Joomla\CMS\Language\Text;

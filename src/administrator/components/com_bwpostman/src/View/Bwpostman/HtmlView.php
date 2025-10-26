@@ -125,9 +125,10 @@ class HtmlView extends BaseHtmlView
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
 		// Get data from the model
-		$this->archive     = $this->get('Archivedata');
+        $model = $this->getModel();
+		$this->archive     = $model->getArchivedata();
 		$this->checkArchiveStatisticsData();
-		$this->general     = $this->get('Generaldata');
+		$this->general     = $model->getGeneraldata();
 		$this->checkGeneralStatisticsData();
 		$this->request_url = $uri_string;
 		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);

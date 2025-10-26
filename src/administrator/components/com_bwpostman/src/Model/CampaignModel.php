@@ -272,7 +272,7 @@ class CampaignModel extends AdminModel
 	{
 		// Get the form.
 		$form     = $this->loadForm('com_bwpostman.campaign', 'Campaign', array('control' => 'jform', 'load_data' => $loadData));
-		$nullDate = $this->_db->getNullDate();
+		$nullDate = $this->getDatabase()->getNullDate();
 
 		if (empty($form))
 		{
@@ -362,7 +362,7 @@ class CampaignModel extends AdminModel
 	public function archive(array $cid = array(0), int $archive = 1, int $archive_nl = 1): bool
 	{
 		$uid      = Factory::getApplication()->getIdentity()->id;
-		$db       = $this->_db;
+		$db       = $this->getDatabase();
 		$query    = $db->getQuery(true);
 
 		$cid = ArrayHelper::toInteger($cid);

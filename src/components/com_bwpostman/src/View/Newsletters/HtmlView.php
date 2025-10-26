@@ -158,18 +158,19 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null): HtmlView
 	{
 
-		$app		= Factory::getApplication();
-		$menu		= $app->getMenu()->getActive();
+		$app   = Factory::getApplication();
+        $model = $this->getModel();
+		$menu  = $app->getMenu()->getActive();
 
-		$state		= $this->get('State');
-		$items		= $this->get('Items');
-		$pagination	= $this->get('Pagination');
+		$state		= $model->getState();;
+		$items		= $model->getItems();;
+		$pagination	= $model->getPagination();;
 		$form		= new stdClass;
 
 		if ($state->params->get('date_filter_enable', '1') != 'hide')
 		{
 			// get all possible mailingdate options
-			$date_options = $this->get('DateOptions');
+			$date_options = $model->getDateOptions();
 			$months = $date_options['months'];
 			$form->monthField = HtmlHelper::_(
 				'select.genericlist',
@@ -199,12 +200,12 @@ class HtmlView extends BaseHtmlView
 		$this->pagination		= &$pagination;
 		$this->form				= &$form;
 		$this->params			= $this->state->params;
-		$this->filterForm		= $this->get('FilterForm');
-		$this->activeFilters	= $this->get('ActiveFilters');
-		$this->mailinglists		= $this->get('AccessibleMailinglists');
-		$this->campaigns		= $this->get('AccessibleCampaigns');
-		$this->usergroups		= $this->get('AccessibleUsergroups');
-		$this->Itemid			= $this->get('MenuItemid');
+		$this->filterForm		= $model->getFilterForm();
+		$this->activeFilters	= $model->getActiveFilters();;
+		$this->mailinglists		= $model->getAccessibleMailinglists();
+		$this->campaigns		= $model->getAccessibleCampaigns();
+		$this->usergroups		= $model->getAccessibleUsergroups();
+		$this->Itemid			= $model->getMenuItemid();
 
 		if (is_array($this->mailinglists))
 		{

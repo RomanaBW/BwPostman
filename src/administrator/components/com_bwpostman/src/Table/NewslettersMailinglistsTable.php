@@ -115,7 +115,7 @@ class NewslettersMailinglistsTable extends Table
 	public function copyLists(int $oldid, int $newid): bool
 	{
 		$lists    = array();
-		$db       = $this->_db;
+		$db       = $this->getDatabase();
 		$query    = $db->getQuery(true);
 		$subQuery = $db->getQuery(true);
 
@@ -211,7 +211,7 @@ class NewslettersMailinglistsTable extends Table
 	 */
 	public function deleteNewsletter(int $nlId)
 	{
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
@@ -244,7 +244,7 @@ class NewslettersMailinglistsTable extends Table
 	 */
 	public function insertNewsletter(int $nlId, int $mlId)
 	{
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->insert($db->quoteName($this->_tbl));
@@ -287,7 +287,7 @@ class NewslettersMailinglistsTable extends Table
 	{
 		$mailinglists = array();
 
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('mailinglist_id'));
@@ -323,7 +323,7 @@ class NewslettersMailinglistsTable extends Table
 	 */
 	public function deleteMailinglistNewsletters(int $id): bool
 	{
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));

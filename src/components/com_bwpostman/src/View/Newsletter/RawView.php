@@ -61,7 +61,7 @@ class RawView extends BaseHtmlView
 	 */
 	public function display($tpl = null): RawView
 	{
-		$this->newsletter = $this->get('Content');
+		$this->newsletter = $this->getModel()->getContent();
 
 		// Call parent display
 		parent::display($tpl);

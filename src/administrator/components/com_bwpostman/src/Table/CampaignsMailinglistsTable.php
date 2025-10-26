@@ -115,7 +115,7 @@ class CampaignsMailinglistsTable extends Table
 	public function copyLists(int $oldid, int $newid): bool
 	{
 		$lists    = array();
-		$_db      = $this->_db;
+		$_db      = $this->getDatabase();
 		$query    = $_db->getQuery(true);
 		$subQuery = $_db->getQuery(true);
 
@@ -183,7 +183,7 @@ class CampaignsMailinglistsTable extends Table
 	public function getAssociatedMailinglistsByCampaign(int $cam_id): array
 	{
 		$mailinglists = array();
-		$db	= $this->_db;
+		$db	= $this->getDatabase();
 
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('mailinglist_id'));
@@ -220,7 +220,7 @@ class CampaignsMailinglistsTable extends Table
 	 */
 	public function getAllCampaignIdsByMlCam(array $mls, array $cams): array
 	{
-		$db         = $this->_db;
+		$db         = $this->getDatabase();
 		$query      = $db->getQuery(true);
 
 		$query->select('DISTINCT (' . $db->quoteName('campaign_id') . ')');
@@ -230,7 +230,7 @@ class CampaignsMailinglistsTable extends Table
 
 		try
 		{
-			$this->_db->setQuery($query);
+			$this->getDatabase()->setQuery($query);
 
 			$cams = $db->loadColumn();
 		}
@@ -257,7 +257,7 @@ class CampaignsMailinglistsTable extends Table
 	 */
 	public function deleteCampaignsMailinglistsEntry(int $id): bool
 	{
-		$db   = $this->_db;
+		$db   = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
@@ -292,7 +292,7 @@ class CampaignsMailinglistsTable extends Table
 	 */
 	public function deleteMailinglistsCampaignsEntry(int $id): bool
 	{
-		$db            = $this->_db;
+		$db            = $this->getDatabase();
 		$query          = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
@@ -329,7 +329,7 @@ class CampaignsMailinglistsTable extends Table
 	{
 		foreach ($data['mailinglists'] as $mailinglists_value)
 		{
-			$db    = $this->_db;
+			$db    = $this->getDatabase();
 			$query = $db->getQuery(true);
 
 			$query->insert($db->quoteName($this->_tbl));

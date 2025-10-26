@@ -241,10 +241,10 @@ class HtmlView extends BaseHtmlView
 		{
 			$subscriber = BwPostmanSubscriberHelper::fillVoidSubscriber();
 			// If the user is logged into the website get the data from users-table
-			if (!$user->get('guest'))
+			if (!$user->guest)
 			{
-				$subscriber->name = $user->get('name');
-				$subscriber->email = $user->get('email');
+				$subscriber->name = $user->name;
+				$subscriber->email = $user->email;
 			}
 		}
 

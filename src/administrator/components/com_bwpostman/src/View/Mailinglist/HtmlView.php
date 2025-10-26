@@ -146,9 +146,10 @@ class HtmlView extends BaseHtmlView
 		//check for queue entries
 		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
-		$this->form		= $this->get('Form');
-		$this->item		= $this->get('Item');
-		$this->state	= $this->get('State');
+        $model = $this->getModel();
+		$this->form		= $model->getForm();
+		$this->item		= $model->getItem();
+		$this->state	= $model->getState();;
 
 		// Save a reference into view
 		$this->request_url	= $uri_string;

@@ -172,7 +172,8 @@ class CampaignsModel extends ListModel
 	 */
 	protected function getListQuery()
 	{
-		$this->query = $this->_db->getQuery(true);
+        $db          = $this->getDatabase();
+		$this->query = $db->getQuery(true);
 		$sub_query   = $this->getSubQuery();
 
 		// Select the required fields from the table.
@@ -183,7 +184,7 @@ class CampaignsModel extends ListModel
 				', a.published, a.access, a.created_date, a.created_by'
 			) . ', (' . $sub_query . ') AS newsletters'
 		);
-		$this->query->from($this->_db->quoteName('#__bwpostman_campaigns', 'a'));
+		$this->query->from($db->quoteName('#__bwpostman_campaigns', 'a'));
 
 		$this->getQueryJoins();
 		$this->getQueryWhere();
@@ -191,7 +192,7 @@ class CampaignsModel extends ListModel
 
 		try
 		{
-			$this->_db->setQuery($this->query);
+			$db->setQuery($this->query);
 		}
 		catch (RuntimeException $exception)
 		{
@@ -214,12 +215,13 @@ class CampaignsModel extends ListModel
 	 */
 	private function getSubQuery(): QueryInterface
 	{
-		$sub_query = $this->_db->getQuery(true);
+        $db        = $this->getDatabase();
+		$sub_query = $db->getQuery(true);
 
-		$sub_query->select('COUNT(' . $this->_db->quoteName('b.id') . ') AS ' . $this->_db->quoteName('newsletters'));
-		$sub_query->from($this->_db->quoteName('#__bwpostman_newsletters') . 'AS ' . $this->_db->quoteName('b'));
-		$sub_query->where($this->_db->quoteName('b.archive_flag') . ' = ' . 0);
-		$sub_query->where($this->_db->quoteName('b.campaign_id') . ' = ' . $this->_db->quoteName('a.id'));
+		$sub_query->select('COUNT(' . $db->quoteName('b.id') . ') AS ' . $db->quoteName('newsletters'));
+		$sub_query->from($db->quoteName('#__bwpostman_newsletters') . 'AS ' . $db->quoteName('b'));
+		$sub_query->where($db->quoteName('b.archive_flag') . ' = ' . 0);
+		$sub_query->where($db->quoteName('b.campaign_id') . ' = ' . $db->quoteName('a.id'));
 
 		return $sub_query;
 	}
@@ -233,25 +235,27 @@ class CampaignsModel extends ListModel
 	 */
 	private function getQueryJoins()
 	{
+        $db = $this->getDatabase();
+
 		// Join over the users for the checked out user.
-		$this->query->select($this->_db->quoteName('uc.name') . ' AS editor');
+		$this->query->select($db->quoteName('uc.name') . ' AS editor');
 		$this->query->join(
 			'LEFT',
-			$this->_db->quoteName('#__users', 'uc') . ' ON ' . $this->_db->quoteName('uc.id') . ' = ' . $this->_db->quoteName('a.checked_out')
+			$db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out')
 		);
 
 		// Join over the asset groups.
-		$this->query->select($this->_db->quoteName('ag.title') . ' AS access_level');
+		$this->query->select($db->quoteName('ag.title') . ' AS access_level');
 		$this->query->join(
 			'LEFT',
-			$this->_db->quoteName('#__viewlevels', 'ag') . ' ON ' . $this->_db->quoteName('ag.id') . ' = ' . $this->_db->quoteName('a.access')
+			$db->quoteName('#__viewlevels', 'ag') . ' ON ' . $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access')
 		);
 
 		// Join over the users for the author.
-		$this->query->select($this->_db->quoteName('ua.name'), ' AS author_name');
+		$this->query->select($db->quoteName('ua.name'), ' AS author_name');
 		$this->query->join(
 			'LEFT',
-			$this->_db->quoteName('#__users', 'ua') . ' ON ' . $this->_db->quoteName('ua.id') . ' = ' . $this->_db->quoteName('a.created_by')
+			$db->quoteName('#__users', 'ua') . ' ON ' . $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by')
 		);
 	}
 
@@ -292,7 +296,7 @@ class CampaignsModel extends ListModel
 			$orderCol = 'ag.title';
 		}
 
-		$this->query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
+		$this->query->order($this->getDatabase()->quoteName($this->getDatabase()->escape($orderCol)) . ' ' . $this->getDatabase()->escape($orderDirn));
 	}
 
 	/**
@@ -312,7 +316,7 @@ class CampaignsModel extends ListModel
 
 			if ($access)
 			{
-				$this->query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+				$this->query->where($this->getDatabase()->quoteName('a.access') . ' = ' . (int) $access);
 			}
 		}
 	}
@@ -336,7 +340,7 @@ class CampaignsModel extends ListModel
 			{
 				$groups = $user->getAuthorisedViewLevels();
 				$groups = implode(',', ArrayHelper::toInteger($groups));
-				$this->query->where($this->_db->quoteName('a.access') . ' IN (' . $groups . ')');
+				$this->query->where($this->getDatabase()->quoteName('a.access') . ' IN (' . $groups . ')');
 			}
 		}
 	}
@@ -357,7 +361,7 @@ class CampaignsModel extends ListModel
 //		if ($allowed_items != 'all')
 //		{
 //			$allowed_ids = implode(',', ArrayHelper::toInteger($allowed_items));
-//			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
+//			$this->query->where($this->getDatabase()->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 //		}
 //	}
 
@@ -374,11 +378,11 @@ class CampaignsModel extends ListModel
 
 		if (is_numeric($published))
 		{
-			$this->query->where($this->_db->quoteName('a.published') . ' = ' . (int) $published);
+			$this->query->where($this->getDatabase()->quoteName('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$this->query->where('(' . $this->_db->quoteName('a.published') . ' = 0 OR ' . $this->_db->quoteName('a.published') . ' = 1)');
+			$this->query->where('(' . $this->getDatabase()->quoteName('a.published') . ' = 0 OR ' . $this->getDatabase()->quoteName('a.published') . ' = 1)');
 		}
 	}
 
@@ -391,7 +395,7 @@ class CampaignsModel extends ListModel
 	 */
 	private function getFilterByArchiveState()
 	{
-		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . 0);
+		$this->query->where($this->getDatabase()->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
 	/**
@@ -403,24 +407,25 @@ class CampaignsModel extends ListModel
 	 */
 	private function getFilterBySearchword()
 	{
+        $db           = $this->getDatabase();
 		$filtersearch = $this->getState('filter.search_filter');
-		$search       = '%' . $this->_db->escape($this->getState('filter.search'), true) . '%';
+		$search       = '%' . $db->escape($this->getState('filter.search'), true) . '%';
 
 		if (!empty($search))
 		{
 			switch ($filtersearch)
 			{
 				case 'description':
-					$this->query->where($this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false));
 					break;
 				case 'title_description':
 					$this->query->where(
-						'(' . $this->_db->quoteName('a.description') . ' LIKE ' . $this->_db->quote($search, false) .
-						' OR ' . $this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+						'(' . $db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false) .
+						' OR ' . $db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false) . ')'
 					);
 					break;
 				case 'title':
-					$this->query->where($this->_db->quoteName('a.title') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false));
 					break;
 				default:
 			}

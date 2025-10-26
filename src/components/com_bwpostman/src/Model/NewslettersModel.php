@@ -326,10 +326,10 @@ class NewslettersModel extends ListModel
 
 		try
 		{
-			$this->_db->setQuery($query);
-			$this->_db->execute();
+			$this->getDatabase()->setQuery($query);
+			$this->getDatabase()->execute();
 
-			$result = $this->_db->getNumRows();
+			$result = $this->getDatabase()->getNumRows();
 		}
 		catch (RuntimeException $exception)
 		{
@@ -357,7 +357,7 @@ class NewslettersModel extends ListModel
 		$items	= parent::getItems();
 		$user	= Factory::getApplication()->getIdentity();
 		$userId	= $user->id;
-		$guest	= $user->get('guest');
+		$guest	= $user->guest;
 		$groups	= $user->getAuthorisedViewLevels();
 
 //		$this->pagination = parent::getPagination();
@@ -516,7 +516,7 @@ class NewslettersModel extends ListModel
 	protected function getListQuery()
 	{
 		// define variables
-		$db		= $this->_db;
+		$db		= $this->getDatabase();
 		$query		= $db->getQuery(true);
 
 		// Define null and now dates, get params
@@ -733,7 +733,7 @@ class NewslettersModel extends ListModel
 
 		if ($itemid === null)
 		{
-			$db   = $this->_db;
+			$db   = $this->getDatabase();
 			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName('id'));
@@ -911,7 +911,7 @@ class NewslettersModel extends ListModel
 	public function getAccessibleUsergroups(bool $title = true): ?array
 	{
 		$app       = Factory::getApplication();
-		$db		= $this->_db;
+		$db		= $this->getDatabase();
 		$query		= $db->getQuery(true);
 		$groups     = null;
 		$params      = $this->getAppropriateParams();
@@ -930,7 +930,7 @@ class NewslettersModel extends ListModel
 
 			try
 			{
-				$this->_db->setQuery($query);
+				$this->getDatabase()->setQuery($query);
 
 				$groups	= $db->loadColumn();
 			}
@@ -998,7 +998,7 @@ class NewslettersModel extends ListModel
 
 			try
 			{
-				$this->_db->setQuery($query);
+				$this->getDatabase()->setQuery($query);
 
 				$groups	= $db->loadAssocList();
 			}
@@ -1040,7 +1040,7 @@ class NewslettersModel extends ListModel
 
 		try
 		{
-			$this->_db->setQuery($query);
+			$this->getDatabase()->setQuery($query);
 
 			$module	= $db->loadObject();
 		}

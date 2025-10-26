@@ -140,6 +140,7 @@ class HtmlView extends BaseHtmlView
 	public function display($tpl = null): HtmlView
 	{
 		$app		= Factory::getApplication();
+        $model = $this->getModel();
 
 		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
@@ -154,8 +155,8 @@ class HtmlView extends BaseHtmlView
 		$task = $jinput->get('task');
 		if ($task == 'export')
 		{
-			$basename    = $this->get('BaseName');
-			$zip_created = $this->get('ExportTpl');
+			$basename    = $model->getBaseName();
+			$zip_created = $model->getExportTpl();
 
 			if (isset($zip_created))
 			{
@@ -167,12 +168,12 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// Get data from the model
-		$this->state			= $this->get('State');
-		$this->items			= $this->get('Items');
-		$this->filterForm		= $this->get('FilterForm');
-		$this->activeFilters	= $this->get('ActiveFilters');
-		$this->pagination		= $this->get('Pagination');
-		$this->total			= $this->get('total');
+		$this->state			= $model->getState();
+		$this->items			= $model->getItems();
+		$this->filterForm		= $model->getFilterForm();
+		$this->activeFilters	= $model->getActiveFilters();;
+		$this->pagination		= $model->getPagination();;
+		$this->total			= $model->getTotal();
 
 		$this->addToolbar();
 

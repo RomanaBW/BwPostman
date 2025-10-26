@@ -247,7 +247,7 @@ class TemplatesModel extends ListModel
 	 */
 	protected function getListQuery()
 	{
-		$this->query = $this->_db->getQuery(true);
+		$this->query = $this->getDatabase()->getQuery(true);
 
 		// Select the required fields from the table.
 		$this->query->select(
@@ -257,7 +257,7 @@ class TemplatesModel extends ListModel
 				a.checked_out, a.checked_out_time, a.published, a.access, a.created_date, a.created_by'
 			)
 		);
-		$this->query->from($this->_db->quoteName('#__bwpostman_templates', 'a'));
+		$this->query->from($this->getDatabase()->quoteName('#__bwpostman_templates', 'a'));
 
 		$this->getQueryJoins();
 		$this->getQueryWhere();
@@ -265,7 +265,7 @@ class TemplatesModel extends ListModel
 
 		try
 		{
-			$this->_db->setQuery($this->query);
+			$this->getDatabase()->setQuery($this->query);
 		}
 		catch (RuntimeException $exception)
 		{
@@ -287,7 +287,7 @@ class TemplatesModel extends ListModel
 	 */
 	private function getQueryJoins()
 	{
-		$db = $this->_db;
+		$db = $this->getDatabase();
 		// Join over the users for the checked out user.
 		$this->query->select($db->quoteName('uc.name') . ' AS editor');
 		$this->query->join(
@@ -351,7 +351,7 @@ class TemplatesModel extends ListModel
 			$orderCol = 'ag.title';
 		}
 
-		$this->query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
+		$this->query->order($this->getDatabase()->quoteName($this->getDatabase()->escape($orderCol)) . ' ' . $this->getDatabase()->escape($orderDirn));
 	}
 
 	/**
@@ -372,7 +372,7 @@ class TemplatesModel extends ListModel
 			$access = $this->getState('filter.access');
 			if ($access)
 			{
-				$this->query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+				$this->query->where($this->getDatabase()->quoteName('a.access') . ' = ' . (int) $access);
 			}
 		}
 	}
@@ -395,7 +395,7 @@ class TemplatesModel extends ListModel
 			if (!$user->authorise('core.admin'))
 			{
 				$groups = implode(',', $user->getAuthorisedViewLevels());
-				$this->query->where($this->_db->quoteName('a.access') . ' IN (' . $groups . ')');
+				$this->query->where($this->getDatabase()->quoteName('a.access') . ' IN (' . $groups . ')');
 			}
 		}
 	}
@@ -418,7 +418,7 @@ class TemplatesModel extends ListModel
 //		if ($allowed_items != 'all')
 //		{
 //			$allowed_ids    = implode(',', $allowed_items);
-//			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
+//			$this->query->where($this->getDatabase()->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 //		}
 //	}
 
@@ -434,7 +434,7 @@ class TemplatesModel extends ListModel
 	private function getFilterByNewTemplates()
 	{
 		// Filter show only the new templates id > 0
-		$this->query->where($this->_db->quoteName('a.id') . ' > ' . 0);
+		$this->query->where($this->getDatabase()->quoteName('a.id') . ' > ' . 0);
 	}
 
 

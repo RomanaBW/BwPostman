@@ -245,7 +245,7 @@ class MailinglistModel extends AdminModel
 
 		// Check to show created data
 		$c_date   = $form->getValue('created_date');
-		$nullDate = $this->_db->getNullDate();
+		$nullDate = $this->getDatabase()->getNullDate();
 
 		if ($c_date === $nullDate || $c_date === null)
 		{
@@ -304,7 +304,7 @@ class MailinglistModel extends AdminModel
 	 */
 	public function archive(array $cid = array(0), int $archive = 1): bool
 	{
-		$db   = $this->_db;
+		$db   = $this->getDatabase();
 		$uid  = Factory::getApplication()->getIdentity()->id;
 		$cid  = ArrayHelper::toInteger($cid);
 

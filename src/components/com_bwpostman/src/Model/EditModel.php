@@ -254,7 +254,7 @@ class EditModel extends AdminModel
 	public function getItem($pk = null)
 	{
 		$app	        = Factory::getApplication();
-		$_db	        = $this->_db;
+		$_db	        = $this->getDatabase();
 		$query	        = $_db->getQuery(true);
 
 		// Initialise variables.

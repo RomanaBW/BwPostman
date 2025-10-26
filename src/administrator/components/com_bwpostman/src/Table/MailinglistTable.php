@@ -260,7 +260,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	{
 //		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 //		$asset      = $MvcFactory->createTable('Asset', 'Administrator');
-		$asset = new Asset($this->_db);
+		$asset = new Asset($this->getDatabase());
 
 		$asset->loadByName('com_bwpostman.mailinglist');
 		return (int)$asset->id;
@@ -324,7 +324,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	public function check(): bool
 	{
 		$app   = Factory::getApplication();
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$fault = false;
 		$xid   = 0;
@@ -433,7 +433,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 		foreach ($nulldateCols as $nulldateCol)
 		{
-			if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->_db->getNullDate())
+			if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->getDatabase()->getNullDate())
 			{
 				$this->$nulldateCol = null;
 			}
@@ -464,7 +464,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		$mls = null;
 		$restrictedMls = array();
 
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select('id');
@@ -533,7 +533,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	{
 		$app          = Factory::getApplication();
 		$mailinglists = null;
-		$db           = $this->_db;
+		$db           = $this->getDatabase();
 		$query        = $db->getQuery(true);
 
 		// Get the access levels for the user, preset with access level guest and public
@@ -634,7 +634,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 			$mailinglists = 0;
 		}
 
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -675,7 +675,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	public function getMailinglistsIdTitle(array $mls): ?array
 	{
 		$mailinglists = array();
-		$db     = $this->_db;
+		$db     = $this->getDatabase();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id'));
@@ -711,7 +711,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	public function getMailinglistsValueText(): ?array
 	{
 		$mailinglists = array();
-		$db     = $this->_db;
+		$db     = $this->getDatabase();
 		$query	= $db->getQuery(true);
 
 		$query->select($db->quoteName('id') . ' AS value');
@@ -750,7 +750,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	public function getPublishedMailinglistsIds(): ?array
 	{
 		$mailinglists = array();
-		$db     = $this->_db;
+		$db     = $this->getDatabase();
 		$query	= $db->getQuery(true);
 
 		$query->select('id');
@@ -759,7 +759,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 
 		try
 		{
-			$this->_db->setQuery($query);
+			$this->getDatabase()->setQuery($query);
 
 			$mailinglists = $db->loadColumn();
 		}
@@ -787,7 +787,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	public function getAllowedMailinglists(array $viewLevels): ?array
 	{
 		$mailinglists   = null;
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select('id');

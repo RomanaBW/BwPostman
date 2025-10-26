@@ -440,7 +440,7 @@ class NewsletterModel extends AdminModel
 		}
 
 		// Check to show created data
-		$nulldate = $this->_db->getNullDate();
+		$nulldate = $this->getDatabase()->getNullDate();
 		$c_date   = $form->getValue('created_date');
 
 		if ($c_date === $nulldate || $c_date === null)
@@ -654,7 +654,7 @@ class NewsletterModel extends AdminModel
 	public function getSelectedContentItems(): array
 	{
 		$nlId = (int) $this->getState($this->getName() . '.id');
-		$db   = $this->_db;
+		$db   = $this->getDatabase();
 
 		$selected_content = $this->getTable()->getSelectedContentOfNewsletter($nlId);
 
@@ -915,7 +915,7 @@ class NewsletterModel extends AdminModel
 			return false;
 		}
 
-		$db	= $this->_db;
+		$db	= $this->getDatabase();
 
 		// Get newsletter data to copy
 		$newsletters_data_copy = $this->getTable()->getNewsletterData($id);
@@ -1818,7 +1818,7 @@ class NewsletterModel extends AdminModel
 		$app = Factory::getApplication();
 		$table = '#__sendmailqueue';
 
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select('*');
@@ -2257,7 +2257,7 @@ class NewsletterModel extends AdminModel
 	private function presetOldHTMLTemplate(object &$item)
 	{
 		$html_tpl = null;
-		$db       = $this->_db;
+		$db       = $this->getDatabase();
 
 		if ($item->id == 0)
 		{

@@ -141,7 +141,7 @@ class SubscribersMailinglistsTable extends Table
 
 		$ids = ArrayHelper::toInteger($ids);
 
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('subscriber_id'));
@@ -179,7 +179,7 @@ class SubscribersMailinglistsTable extends Table
 	 */
 	public function deleteMailinglistsOfSubscriber(int $subscriber_id, $mailinglists = null): bool
 	{
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
@@ -221,7 +221,7 @@ class SubscribersMailinglistsTable extends Table
 	 */
 	public function storeMailinglistsOfSubscriber(int $subscriber_id, array $mailinglist_ids): bool
 	{
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->columns(
@@ -270,7 +270,7 @@ class SubscribersMailinglistsTable extends Table
 	 */
 	public function hasSubscriptionForMailinglist(int $subscriberId, int $mailinglistId)
 	{
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('subscriber_id'));
@@ -315,7 +315,7 @@ class SubscribersMailinglistsTable extends Table
 	 */
 	public function deleteMailinglistSubscribers(int $id): bool
 	{
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->delete($db->quoteName($this->_tbl));
@@ -352,7 +352,7 @@ class SubscribersMailinglistsTable extends Table
 	{
 		$mailinglist_ids = array();
 
-		$db    = $this->_db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName('mailinglist_id'));

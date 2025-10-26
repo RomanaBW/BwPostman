@@ -186,7 +186,7 @@ class TemplateModel extends AdminModel
 			//get data from #__bwpostman_templates_tags
 			if ($item->tpl_id === 0 || $item->tpl_id === '0')
 			{
-				$db    = $this->_db;
+				$db    = $this->getDatabase();
 				$query = $db->getQuery(true);
 
 				$query->select('*');
@@ -425,7 +425,7 @@ class TemplateModel extends AdminModel
 		}
 
 		// Check to show created data
-		$nullDate = $this->_db->getNullDate();
+		$nullDate = $this->getDatabase()->getNullDate();
 		$c_date   = $form->getValue('created_date');
 
 		if ($c_date === $nullDate || $c_date === null)
@@ -485,7 +485,7 @@ class TemplateModel extends AdminModel
 	 */
 	public function archive(array $cid = array(), int $archive = 1): bool
 	{
-		$db   = $this->_db;
+		$db   = $this->getDatabase();
 		$app  = Factory::getApplication();
 		$uid  = $app->getIdentity()->id;
 		$cid  = ArrayHelper::toInteger($cid);

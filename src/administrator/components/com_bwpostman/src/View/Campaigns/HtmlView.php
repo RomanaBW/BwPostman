@@ -40,6 +40,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\Event\Event;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * BwPostman Campaigns View
@@ -150,12 +152,13 @@ class HtmlView extends BaseHtmlView
 		PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
 		// Get data from the model
-		$this->state			= $this->get('State');
-		$this->items			= $this->get('Items');
-		$this->filterForm		= $this->get('FilterForm');
-		$this->activeFilters	= $this->get('ActiveFilters');
-		$this->pagination		= $this->get('Pagination');
-		$this->total			= $this->get('total');
+        $model = $this->getModel();
+		$this->state			= $model->getState();
+		$this->items			= $model->getItems();
+		$this->filterForm		= $model->getFilterForm();
+		$this->activeFilters	= $model->getActiveFilters();;
+		$this->pagination		= $model->getPagination();;
+		$this->total			= $model->getTotal();
 
 		// trigger Plugin BwTimeControl event and get results
 //		$this->auto_nbr	= $app->triggerEvent('onBwPostmanCampaignsPrepare', array (&$this->items));
@@ -231,7 +234,11 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// trigger BwTimeControl event
-		Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepareToolbar', array());
+        $event = new Event('onBwPostmanCampaignsPrepareToolbar', [
+            'subject'  => ArrayHelper::fromObject($this),
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
 		$manualButton = BwPostmanHTMLHelper::getManualButton('campaigns');
 		$forumButton  = BwPostmanHTMLHelper::getForumButton();

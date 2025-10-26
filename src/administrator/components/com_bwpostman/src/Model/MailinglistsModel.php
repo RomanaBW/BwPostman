@@ -170,7 +170,7 @@ class MailinglistsModel extends ListModel
 	 */
 	protected function getListQuery()
 	{
-		$db          = $this->_db;
+		$db          = $this->getDatabase();
 		$this->query = $db->getQuery(true);
 		$sub_query   = $this->getSubQuery();
 
@@ -190,7 +190,7 @@ class MailinglistsModel extends ListModel
 
 		try
 		{
-			$this->_db->setQuery($this->query);
+			$db->setQuery($this->query);
 		}
 		catch (RuntimeException $exception)
 		{
@@ -213,7 +213,7 @@ class MailinglistsModel extends ListModel
 	 */
 	private function getSubQuery(): QueryInterface
 	{
-		$db         = $this->_db;
+		$db         = $this->getDatabase();
 		$sub_query  = $db->getQuery(true);
 		$sub_query2	= $db->getQuery(true);
 
@@ -238,7 +238,7 @@ class MailinglistsModel extends ListModel
 	 */
 	private function getQueryJoins()
 	{
-		$db = $this->_db;
+		$db = $this->getDatabase();
 
 		// Join over the users for the checked out user.
 		$this->query->select($db->quoteName('uc.name') . ' AS editor');
@@ -290,7 +290,7 @@ class MailinglistsModel extends ListModel
 	 */
 	private function getQueryOrder()
 	{
-		$db        = $this->_db;
+		$db        = $this->getDatabase();
 		$orderCol  = $this->state->get('list.ordering');
 		$orderDirn = $this->state->get('list.direction', 'asc');
 
@@ -314,7 +314,7 @@ class MailinglistsModel extends ListModel
 	 */
 	private function getFilterByAccessLevelFilter()
 	{
-		$db     = $this->_db;
+		$db     = $this->getDatabase();
 		$access = $this->getState('filter.access');
 
 		if ($access)
@@ -334,7 +334,7 @@ class MailinglistsModel extends ListModel
 	 */
 	private function getFilterByViewLevel()
 	{
-		$db = $this->_db;
+		$db = $this->getDatabase();
 
 		if (Factory::getApplication()->isClient('site'))
 		{
@@ -359,7 +359,7 @@ class MailinglistsModel extends ListModel
 	 */
 //	private function getFilterByComponentPermissions()
 //	{
-//		$db            = $this->_db;
+//		$db            = $this->getDatabase();
 //		$allowed_items = BwPostmanHelper::getAllowedRecords('mailinglist', 'edit');
 //
 //		if ($allowed_items != 'all')
@@ -378,7 +378,7 @@ class MailinglistsModel extends ListModel
 	 */
 	private function getFilterByPublishedState()
 	{
-		$db        = $this->_db;
+		$db        = $this->getDatabase();
 		$published = $this->getState('filter.published');
 
 		if (is_numeric($published))
@@ -402,7 +402,7 @@ class MailinglistsModel extends ListModel
 	 */
 	private function getFilterByArchiveState()
 	{
-		$db = $this->_db;
+		$db = $this->getDatabase();
 		$this->query->where($db->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
@@ -415,7 +415,7 @@ class MailinglistsModel extends ListModel
 	 */
 	private function getFilterBySearchword()
 	{
-		$db           = $this->_db;
+		$db           = $this->getDatabase();
 		$filtersearch = $this->getState('filter.search_filter');
 		$search       = '%' . $db->escape($this->getState('filter.search'), true) . '%';
 

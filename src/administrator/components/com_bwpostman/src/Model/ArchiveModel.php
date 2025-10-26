@@ -319,7 +319,7 @@ class ArchiveModel extends ListModel
 	protected function getListQuery()
 	{
 		// Set some shortcuts
-		$db        = $this->_db;
+		$db        = $this->getDatabase();
 		$pef_tbl_a = $db->quoteName('a');
 		$pef_tbl_b = $db->quoteName('b');
 		$pef_tbl_c = $db->quoteName('c');
@@ -503,7 +503,7 @@ class ArchiveModel extends ListModel
 	 */
 	protected function buildQueryWhere(string $layout, object &$query)
 	{
-		$db = $this->_db;
+		$db = $this->getDatabase();
 		$pef_tbl_a = $db->quoteName('a');
 		$pef_tbl_c = $db->quoteName('c');
 

@@ -243,7 +243,7 @@ class HtmlView extends BaseHtmlView
 		}
 		else
 		{
-			$subscriber = $this->get('Item');
+			$subscriber = $this->getItem();
 		}
 
 		return $subscriber;

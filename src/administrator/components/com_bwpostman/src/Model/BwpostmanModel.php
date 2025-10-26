@@ -234,7 +234,7 @@ class BwpostmanModel extends BaseDatabaseModel
 	public function storePermissions(string $permission = null)
 	{
 		$app  = Factory::getApplication();
-		$db   = $this->_db;
+		$db   = $this->getDatabase();
 		$user = $app->getIdentity();
 
 		$statePermissions = $app->getUserState('com_bwpm.permissions', []);

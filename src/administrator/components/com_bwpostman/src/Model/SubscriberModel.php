@@ -178,7 +178,7 @@ class SubscriberModel extends AdminModel
 	public function getSubscriberData(int $sub_id = null): stdClass
 	{
 		$subscriber = new stdClass();
-		$db         = $this->_db;
+		$db         = $this->getDatabase();
 		$pre_tbl_u  = $db->quoteName('u');
 		$pre_tbl_s  = $db->quoteName('s');
 
@@ -599,9 +599,9 @@ class SubscriberModel extends AdminModel
 	public function archive(array $cid = array(), int $archive = 1): bool
 	{
 		$app  = Factory::getApplication();
-		$date = $this->_db->quote(Factory::getDate()->toSql(), false);
+		$date = $this->getDatabase()->quote(Factory::getDate()->toSql(), false);
 		$user = $app->getIdentity();
-		$db   = $this->_db;
+		$db   = $this->getDatabase();
 		$cid  = ArrayHelper::toInteger($cid);
 
 		if ($archive == 1)
@@ -1302,7 +1302,7 @@ class SubscriberModel extends AdminModel
 	 */
 	private function buildExportSubQuery(int $status0 = 0, int $status1 = 0, int $status9 = 0, int $archive0 = 0, int $archive1 = 0): string
 	{
-		$db       = $this->_db;
+		$db       = $this->getDatabase();
 		$subQuery = '';
 		$where    = false;
 
@@ -1656,7 +1656,7 @@ class SubscriberModel extends AdminModel
 	 */
 	private function getSubscribersToExport(array $data)
 	{
-		$db            = $this->_db;
+		$db            = $this->getDatabase();
 		$export_fields = $data['export_fields'];
 
 

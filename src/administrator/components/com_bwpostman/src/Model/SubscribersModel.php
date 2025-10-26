@@ -176,7 +176,7 @@ class SubscribersModel extends ListModel
 	 */
 	protected function getListQuery()
 	{
-		$this->query = $this->_db->getQuery(true);
+		$this->query = $this->getDatabase()->getQuery(true);
 
 		$sub_query = $this->getSubQuery();
 
@@ -188,7 +188,7 @@ class SubscribersModel extends ListModel
 				', a.emailformat, a.user_id, a.status, a.registered_by'
 			) . ', (' . $sub_query . ') AS mailinglists'
 		);
-		$this->query->from($this->_db->quoteName('#__bwpostman_subscribers', 'a'));
+		$this->query->from($this->getDatabase()->quoteName('#__bwpostman_subscribers', 'a'));
 
 		$this->getQueryJoins();
 		$this->getQueryWhere();
@@ -196,7 +196,7 @@ class SubscribersModel extends ListModel
 
 		try
 		{
-			$this->_db->setQuery($this->query);
+			$this->getDatabase()->setQuery($this->query);
 		}
 		catch (RuntimeException $exception)
 		{
@@ -220,7 +220,7 @@ class SubscribersModel extends ListModel
 	 */
 	private function getSubQuery(): QueryInterface
 	{
-		$db = $this->_db;
+		$db = $this->getDatabase();
 		$sub_query  = $db->getQuery(true);
 
 		$sub_query->select('COUNT(' . $db->quoteName('b.mailinglist_id') . ') AS ' . $db->quoteName('mailinglists'));
@@ -241,7 +241,7 @@ class SubscribersModel extends ListModel
 	 */
 	private function getQueryJoins()
 	{
-		$db = $this->_db;
+		$db = $this->getDatabase();
 
 		// Join over the users for the checked out user.
 		$this->query->select($db->quoteName('uc.name') . ' AS editor');
@@ -294,7 +294,7 @@ class SubscribersModel extends ListModel
 			$orderCol = 'ag.title';
 		}
 
-		$this->query->order($this->_db->quoteName($this->_db->escape($orderCol)) . ' ' . $this->_db->escape($orderDirn));
+		$this->query->order($this->getDatabase()->quoteName($this->getDatabase()->escape($orderCol)) . ' ' . $this->getDatabase()->escape($orderDirn));
 	}
 
 	/**
@@ -315,7 +315,7 @@ class SubscribersModel extends ListModel
 			$access = $this->getState('filter.access');
 			if ($access)
 			{
-				$this->query->where($this->_db->quoteName('a.access') . ' = ' . (int) $access);
+				$this->query->where($this->getDatabase()->quoteName('a.access') . ' = ' . (int) $access);
 			}
 		}
 	}
@@ -340,7 +340,7 @@ class SubscribersModel extends ListModel
 			if (!$user->authorise('core.admin'))
 			{
 				$groups = implode(',', $user->getAuthorisedViewLevels());
-				$this->query->where($this->_db->quoteName('a.access') . ' IN (' . $groups . ')');
+				$this->query->where($this->getDatabase()->quoteName('a.access') . ' IN (' . $groups . ')');
 			}
 		}
 	}
@@ -363,7 +363,7 @@ class SubscribersModel extends ListModel
 //		if ($allowed_items != 'all')
 //		{
 //			$allowed_ids = implode(',', $allowed_items);
-//			$this->query->where($this->_db->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
+//			$this->query->where($this->getDatabase()->quoteName('a.id') . ' IN (' . $allowed_ids . ')');
 //		}
 //	}
 
@@ -420,11 +420,11 @@ class SubscribersModel extends ListModel
 
 		if ($mailinglist)
 		{
-			$query	= $this->_db->getQuery(true);
+			$query	= $this->getDatabase()->getQuery(true);
 
-			$query->select($this->_db->quoteName('c.subscriber_id'));
-			$query->from($this->_db->quoteName('#__bwpostman_subscribers_mailinglists', 'c'));
-			$query->where($this->_db->quoteName('c.mailinglist_id') . ' = ' . (int) $mailinglist);
+			$query->select($this->getDatabase()->quoteName('c.subscriber_id'));
+			$query->from($this->getDatabase()->quoteName('#__bwpostman_subscribers_mailinglists', 'c'));
+			$query->where($this->getDatabase()->quoteName('c.mailinglist_id') . ' = ' . (int) $mailinglist);
 
 			$this->query->where('a.id IN (' . $query . ')');
 		}
@@ -445,7 +445,7 @@ class SubscribersModel extends ListModel
 
 		if ($emailformat != '')
 		{
-			$this->query->where($this->_db->quoteName('a.emailformat') . ' = ' . (int) $emailformat);
+			$this->query->where($this->getDatabase()->quoteName('a.emailformat') . ' = ' . (int) $emailformat);
 		}
 	}
 
@@ -460,7 +460,7 @@ class SubscribersModel extends ListModel
 	 */
 	private function getFilterByArchiveState()
 	{
-		$this->query->where($this->_db->quoteName('a.archive_flag') . ' = ' . 0);
+		$this->query->where($this->getDatabase()->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
 	/**
@@ -475,7 +475,7 @@ class SubscribersModel extends ListModel
 	private function getFilterBySearchword()
 	{
 		$filtersearch = $this->getState('filter.search_filter');
-		$search       = $this->_db->escape($this->getState('filter.search'), true);
+		$search       = $this->getDatabase()->escape($this->getState('filter.search'), true);
 
 		if (!empty($search))
 		{
@@ -484,12 +484,12 @@ class SubscribersModel extends ListModel
 			switch ($filtersearch)
 			{
 				case 'email':
-					$this->query->where($this->_db->quoteName('a.email') . ' LIKE ' . $this->_db->quote($search, false));
+					$this->query->where($this->getDatabase()->quoteName('a.email') . ' LIKE ' . $this->getDatabase()->quote($search, false));
 					break;
 				case 'name_email':
 					$this->query->where(
-						'(' . $this->_db->quoteName('a.email') . ' LIKE ' . $this->_db->quote($search, false) .
-						' OR ' . $this->_db->quoteName('a.name') . ' LIKE ' . $this->_db->quote($search, false) . ')'
+						'(' . $this->getDatabase()->quoteName('a.email') . ' LIKE ' . $this->getDatabase()->quote($search, false) .
+						' OR ' . $this->getDatabase()->quoteName('a.name') . ' LIKE ' . $this->_db->quote($search, false) . ')'
 					);
 					break;
 				case 'fullname':

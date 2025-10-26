@@ -195,14 +195,15 @@ class HtmlView extends BaseHtmlView
 		$uri->setQuery($uri_query);
 
 		// Get data from the model
-		$this->state			= $this->get('State');
-		$this->items			= $this->get('Items');
+        $model = $this->getModel();
+		$this->state			= $model->getState();;
+		$this->items			= $model->getItems();;
 		$this->filterForm		= $this->getModel()->getFilterForm();
-		$this->activeFilters	= $this->get('ActiveFilters');
-		$this->pagination		= $this->get('Pagination');
-		$this->queuePagination	= $this->get('QueuePagination');
-		$this->total 			= $this->get('total');
-		$this->count_queue		= $this->get('CountQueue');
+		$this->activeFilters	= $model->getActiveFilters();;
+		$this->pagination		= $model->getPagination();;
+		$this->queuePagination	= $model->getQueuePagination();
+		$this->total 			= $model->getTotal();
+		$this->count_queue		= $model->getCountQueue();
 		$this->context			= 'com_bwpostman.newsletters';
 
 		$this->addToolbar();

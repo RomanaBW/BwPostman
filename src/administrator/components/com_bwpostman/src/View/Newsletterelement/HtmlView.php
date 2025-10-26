@@ -121,8 +121,9 @@ class HtmlView extends BaseHtmlView
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NLS'), 'envelope');
 
 		// Get data from the model
-		$items 		= $this->get('data');
-		$pagination = $this->get('pagination');
+        $model = $this->getModel();
+		$items 		= $model->getData();
+		$pagination = $model->getPagination();;
 
 		// Table ordering
 		$lists['order'] = $filter_order;

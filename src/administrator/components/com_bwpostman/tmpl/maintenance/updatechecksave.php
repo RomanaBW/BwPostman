@@ -34,7 +34,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Session\Session;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 
-$wa = $this->document->getWebAssetManager();
+$wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('com_bwpostman.admin-bwpm_maintenance_doAjax');
 $wa->useScript('com_bwpostman.admin-bwpm_update_checksave');
 

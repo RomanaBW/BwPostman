@@ -33,6 +33,7 @@ use Exception;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\CMS\Language\Text;
@@ -170,7 +171,7 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolbar();
 
-		$wa = $this->document->getWebAssetManager();
+		$wa = $this->getDocument()->getWebAssetManager();
 		$wa->useScript('com_bwpostman.admin-bwpm_confirm_unarchive');
 		$wa->useScript('com_bwpostman.admin-bwpm_confirm_delete_cam_nls');
 
@@ -191,7 +192,7 @@ class HtmlView extends BaseHtmlView
 		$jinput	= $app->input;
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance();
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ARC'), 'list');

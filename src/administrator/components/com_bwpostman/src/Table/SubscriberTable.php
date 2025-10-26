@@ -337,7 +337,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	{
 //		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 //		$asset      = $MvcFactory->createTable('Asset', 'Administrator');
-		$asset = Table::getInstance('Asset');
+		$asset = new Asset($this->_db);
 
 		$asset->loadByName('com_bwpostman.subscriber');
 		return $asset->id;
@@ -574,7 +574,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 			if ($params->get('use_captcha', '0') == 2)
 			{
 				// Temp folder of captcha-images
-				$captchaDir = JPATH_COMPONENT_SITE . '/assets/capimgdir/';
+				$captchaDir = JPATH_SITE . '/components/com_bwpostman/assets/capimgdir/';
 				// del old images after ? minutes
 				$delFile = 10;
 				// start check

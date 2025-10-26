@@ -31,7 +31,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Session\Session;
 
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nl_send');
+$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nl_send');
 
 $model		= $this->getModel();
 $token      = Session::getFormToken();

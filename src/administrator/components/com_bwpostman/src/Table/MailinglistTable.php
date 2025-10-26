@@ -260,7 +260,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	{
 //		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 //		$asset      = $MvcFactory->createTable('Asset', 'Administrator');
-		$asset = Table::getInstance('Asset');
+		$asset = new Asset($this->_db);
 
 		$asset->loadByName('com_bwpostman.mailinglist');
 		return (int)$asset->id;

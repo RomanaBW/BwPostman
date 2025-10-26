@@ -50,7 +50,7 @@ $nullDate   = Factory::getContainer()->get(DatabaseInterface::class)->getNullDat
 
 $iconImage = Uri::getInstance()->base() . 'media/com_bwpostman/images/icon-48-newsletters.png';
 
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
+$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
 
 Factory::getApplication()->setUserState($this->context . 'tab', 'sent');
 ?>

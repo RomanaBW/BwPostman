@@ -30,6 +30,8 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Helper;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
+use Joomla\CMS\Event\Application\AfterRenderEvent;
+use Joomla\CMS\Event\Application\BeforeRenderEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -108,7 +110,15 @@ class ContentRenderer
 
 		$nl_content = ArrayHelper::toInteger($nl_content);
 
-		$app->triggerEvent('onBwpmBeforeRenderNewsletter', array(&$nl_content, &$tpl, &$text_tpl, &$content));
+        $event = new BeforeRenderEvent('onBwpmBeforeRenderNewsletter', [
+            'subject'    => ArrayHelper::fromObject($this),
+            'nl_content' => $nl_content,
+            'tpl'        => $tpl,
+            'text_tpl'   => $text_tpl,
+            'content'    => $content,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
 		if ($nl_content == null)
 		{
@@ -119,7 +129,15 @@ class ContentRenderer
 		{
 			foreach ($nl_content as $content_id)
 			{
-				$app->triggerEvent('onBwpmBeforeRenderNewsletterArticle', array(&$nl_content, &$tpl, &$text_tpl, &$content));
+                $event = new BeforeRenderEvent('onBwpmBeforeRenderNewsletterArticle', [
+                    'subject'    => ArrayHelper::fromObject($this),
+                    'nl_content' => $nl_content,
+                    'tpl'        => $tpl,
+                    'text_tpl'   => $text_tpl,
+                    'content'    => $content,
+                ]);
+                Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+                $eventResults = $event->getArgument('result', []);
 
 				if ($tpl->tpl_id && $template_id > 0)
 				{
@@ -149,11 +167,28 @@ class ContentRenderer
 					$content['text_version'] .= $this->replaceContentText($content_id, $text_tpl);
 				}
 
-				$app->triggerEvent('onBwpmAfterRenderNewsletterArticle', array(&$nl_content, &$tpl, &$text_tpl, &$content, $content_id, 'bwpostman'));
+                $event = new AfterRenderEvent('onBwpmAfterRenderNewsletterArticle', [
+                    'subject'    => ArrayHelper::fromObject($this),
+                    'nl_content' => $nl_content,
+                    'tpl'        => $tpl,
+                    'text_tpl'   => $text_tpl,
+                    'content'    => $content,
+                    'content_id' => $content_id,
+                ]);
+                Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+                $eventResults = $event->getArgument('result', []);
 			}
 		}
 
-		$app->triggerEvent('onBwpmAfterRenderNewsletter', array(&$nl_content, &$tpl, &$text_tpl, &$content));
+        $event = new AfterRenderEvent('onBwpmAfterRenderNewsletter', [
+            'subject'    => ArrayHelper::fromObject($this),
+            'nl_content' => $nl_content,
+            'tpl'        => $tpl,
+            'text_tpl'   => $text_tpl,
+            'content'    => $content,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
 		return $content;
 	}
@@ -373,7 +408,12 @@ class ContentRenderer
 					if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
 					{
 						PluginHelper::importPlugin('bwpostman');
-						$app->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
+                        $event = new AfterRenderEvent('onBwPostmanSubstituteReadon', [
+                            'subject' => ArrayHelper::fromObject($this),
+                            'link'    => $link,
+                        ]);
+                        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+                        $eventResults = $event->getArgument('result', []);
 					}
 
 					$tag_readon = str_replace('[%readon_href%]', $link, $tag_readon);
@@ -508,7 +548,12 @@ class ContentRenderer
 				if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
 				{
 					PluginHelper::importPlugin('bwpostman');
-					$app->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
+                    $event = new AfterRenderEvent('onBwPostmanSubstituteReadon', [
+                        'subject' => ArrayHelper::fromObject($this),
+                        'link'    => $link,
+                    ]);
+                    Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+                    $eventResults = $event->getArgument('result', []);
 				}
 
 				$content = str_replace('[%readon_href%]', $link, $content);
@@ -581,7 +626,12 @@ class ContentRenderer
 				if (Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
 				{
 					PluginHelper::importPlugin('bwpostman');
-					Factory::getApplication()->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
+                    $event = new AfterRenderEvent('onBwPostmanSubstituteReadon', [
+                        'subject' => ArrayHelper::fromObject($this),
+                        'link'    => $link,
+                    ]);
+                    Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+                    $eventResults = $event->getArgument('result', []);
 				}
 
 				$content = str_replace('[%readon_href%]', $link . "\n", $content);
@@ -659,7 +709,12 @@ class ContentRenderer
 					if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
 					{
 						PluginHelper::importPlugin('bwpostman');
-						$app->triggerEvent('onBwPostmanSubstituteReadon', array(&$link));
+                        $event = new AfterRenderEvent('onBwPostmanSubstituteReadon', [
+                            'subject' => ArrayHelper::fromObject($this),
+                            'link'    => $link,
+                        ]);
+                        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+                        $eventResults = $event->getArgument('result', []);
 					}
 
 					$content .= Text::_('READ_MORE') . ": \n" . str_replace('administrator/', '', $link) . "\n\n";
@@ -899,7 +954,12 @@ class ContentRenderer
 		}
 
 		PluginHelper::importPlugin('bwpostman');
-		Factory::getApplication()->triggerEvent('onBwPostmanBeforeCustomCss', array(&$newtext));
+        $event = new Event('onBwPostmanBeforeCustomCss', [
+            'subject' => ArrayHelper::fromObject($this),
+            'link'    => $newtext,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
 		if (isset($tpl->basics['custom_css']))
 		{
@@ -987,7 +1047,14 @@ class ContentRenderer
 			if($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
 			{
 				PluginHelper::importPlugin('bwpostman');
-				$app->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
+                $event = new Event('onBwPostmanSubstituteLinks', [
+                    'subject'         => ArrayHelper::fromObject($this),
+                    'unsubscribeLink' => $unsubscribelink,
+                    'editLink'        => $editlink,
+                    'siteLink'        => $sitelink,
+                ]);
+                Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+                $eventResults = $event->getArgument('result', []);
 			}
 
 			if ($del_sub_1_click === '0')
@@ -1026,7 +1093,13 @@ class ContentRenderer
 			$text = str_replace("[dummy]", "<div class=\"footer-outer\"><p class=\"footer-inner\">$replace</p></div>", $text);
 		}
 
-		$app->triggerEvent('onBwPostmanAfterObligatoryFooter', array(&$text, $templateId));
+        $event = new Event('onBwPostmanAfterObligatoryFooter', [
+            'subject'    => ArrayHelper::fromObject($this),
+            'text'       => $text,
+            'templateId' => $templateId,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
 		return true;
 	}
@@ -1071,12 +1144,19 @@ class ContentRenderer
 
 		// Trigger Plugin "substitutelinks"
 		if($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
-		{
-			PluginHelper::importPlugin('bwpostman');
-			$app->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
-		}
+        {
+            PluginHelper::importPlugin('bwpostman');
+            $event = new Event('onBwPostmanSubstituteLinks', [
+                'subject'         => ArrayHelper::fromObject($this),
+                'unsubscribeLink' => $unsubscribelink,
+                'editLink'        => $editlink,
+                'siteLink'        => $sitelink,
+            ]);
+            Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+            $eventResults = $event->getArgument('result', []);
+        }
 
-		// replace edit and unsubscribe link
+        // replace edit and unsubscribe link
 		$replace1 = '+ ' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . " +\n  " . $unsubscribelink;
 		$text     = str_replace('[%unsubscribe_link%]', $replace1, $text);
 		$replace2 = '+ ' . Text::_('COM_BWPOSTMAN_TPL_EDIT_LINK_TEXT') . " +\n  " . $editlink;
@@ -1133,7 +1213,14 @@ class ContentRenderer
 		if($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
 		{
 			PluginHelper::importPlugin('bwpostman');
-			$app->triggerEvent('onBwPostmanSubstituteLinks', array(&$unsubscribelink, &$editlink, &$sitelink));
+            $event = new Event('onBwPostmanSubstituteLinks', [
+                'subject'         => ArrayHelper::fromObject($this),
+                'unsubscribeLink' => $unsubscribelink,
+                'editLink'        => $editlink,
+                'siteLink'        => $sitelink,
+            ]);
+            Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+            $eventResults = $event->getArgument('result', []);
 		}
 
 		if (strpos($text, '[%impressum%]') !== false)
@@ -1228,7 +1315,14 @@ class ContentRenderer
 			// Trigger Plugin "substitutelinks"
 			if ((integer)$app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') === 1 || $substituteLinks === 1)
 			{
-				$app->triggerEvent('onBwPostmanSubstituteBody', array(&$body, &$itemid_edit, &$itemid_unsubscribe));
+                $event = new Event('onBwPostmanSubstituteBody', [
+                    'subject'         => ArrayHelper::fromObject($this),
+                    'body'            => $body,
+                    'itemidEdit'      => $itemid_edit,
+                    'itemidUnsubscribe' => $itemid_unsubscribe,
+                ]);
+                Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+                $eventResults = $event->getArgument('result', []);
 			}
 			else
 			{

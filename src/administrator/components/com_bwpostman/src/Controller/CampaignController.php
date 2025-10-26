@@ -30,6 +30,7 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Controller;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
+use Joomla\CMS\Event\Model\AfterSaveEvent;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
@@ -308,15 +309,17 @@ class CampaignController extends FormController
 			jexit(Text::_('JINVALID_TOKEN'));
 		}
 
-		parent::save();
+        $result = parent::save();
 
 		PluginHelper::importPlugin('bwpostman');
-//		$arguments = array('subject' => '');
-//		$event = AbstractEvent::create('onBwPostmanAfterCampaignControllerSave', $arguments);
 
-//		Factory::getApplication()->getDispatcher()->dispatch('onBwPostmanAfterCampaignControllerSave', $event);
-		Factory::getApplication()->triggerEvent('onBwPostmanAfterCampaignControllerSave');
-	}
+        $event = new AfterSaveEvent('onBwPostmanAfterCampaignControllerSave', [
+            'subject'      => ArrayHelper::fromObject($this),
+            'savingResult' => $result,
+        ]);
+        $this->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
+    }
 
 	/**
 	 * Method to archive one or more campaigns and if the user want also the assigned newsletters

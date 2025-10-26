@@ -241,7 +241,7 @@ class HtmlView extends BaseHtmlView
 		$layout = $app->input->getCmd('layout', '');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance();
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 		$document = $app->getDocument();
 
 		// Set toolbar title
@@ -308,8 +308,6 @@ class HtmlView extends BaseHtmlView
 			$document->getWebassetManager()->addInlineStyle($style);
 			$document->getWebassetManager()->useStyle('com_bwpostman.install');
 		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
 		$manualButton = BwPostmanHTMLHelper::getManualButton('maintenance');
 		$forumButton  = BwPostmanHTMLHelper::getForumButton();

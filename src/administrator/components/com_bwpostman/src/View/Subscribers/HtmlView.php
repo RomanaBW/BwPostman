@@ -33,6 +33,7 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\CMS\Component\ComponentHelper;
@@ -252,9 +253,9 @@ class HtmlView extends BaseHtmlView
 		$tab = $app->input->get('tab', 'confirmed');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance();
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-		$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscribers');
+		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscribers');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB'), 'users');
@@ -369,8 +370,6 @@ class HtmlView extends BaseHtmlView
 				}
 				break;
 		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
 		$manualButton = BwPostmanHTMLHelper::getManualButton('subscribers');
 		$forumButton  = BwPostmanHTMLHelper::getForumButton();

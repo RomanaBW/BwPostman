@@ -47,7 +47,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $this->context	= 'Archive.templates';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'templates');
 
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
+$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
 
 //
 /**

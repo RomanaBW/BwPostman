@@ -38,8 +38,8 @@ HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('bootstrap.modal');
 
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_campaign');
+$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
+$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_campaign');
 
 /**
  * BwPostman Single Campaign Layout

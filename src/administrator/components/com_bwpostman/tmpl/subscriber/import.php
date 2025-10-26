@@ -35,7 +35,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 // Keep session alive while importing
 HTMLHelper::_('behavior.keepalive');
 
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber_import');
+$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber_import');
 
 $jinput	= Factory::getApplication()->input;
 $image	= '<i class="fa fa-info-circle fa-lg"></i>';

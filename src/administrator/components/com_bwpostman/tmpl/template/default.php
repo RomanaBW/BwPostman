@@ -36,7 +36,7 @@ use Joomla\CMS\Router\Route;
 // Load the tooltip behavior for the notes
 HTMLHelper::_('behavior.keepalive');
 
-$wa = $this->document->getWebAssetManager();
+$wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('com_bwpostman.admin-bwpm_template');
 $wa->useScript('com_bwpostman.admin-bwpm_template_base');
 ?>

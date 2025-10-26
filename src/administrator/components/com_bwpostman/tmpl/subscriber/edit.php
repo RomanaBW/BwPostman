@@ -46,7 +46,7 @@ HTMLHelper::_('behavior.keepalive');
 
 $new_test	= Factory::getApplication()->getUserState('com_bwpostman.subscriber.new_test', $this->item->status);
 
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
+$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
 ?>
 
 <div id="bwp_editform">

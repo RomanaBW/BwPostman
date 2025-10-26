@@ -400,7 +400,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	{
 //		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 //		$asset      = $MvcFactory->createTable('Asset', 'Administrator');
-		$asset = Table::getInstance('Asset');
+		$asset = new Asset($this->_db);
 
 		$asset->loadByName('com_bwpostman.newsletter');
 		return (int)$asset->id;
@@ -745,7 +745,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 */
 	public function archive(array $cid, int $archive): bool
 	{
-		$uid = Factory::getApplication()->getIdentity()->get('id');
+		$uid = Factory::getApplication()->getIdentity()->id;
 		$db  = $this->_db;
 		$cid = ArrayHelper::toInteger($cid);
 

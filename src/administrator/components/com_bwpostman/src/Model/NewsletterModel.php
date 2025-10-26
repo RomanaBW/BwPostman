@@ -1826,7 +1826,13 @@ class NewsletterModel extends AdminModel
 		$query->where($db->quoteName('trial') . ' < ' . $trial);
 		$query->order($db->quoteName($table) . ' ASC LIMIT 0,1');
 
-		$app->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
+        $event = new Event('onBwPostmanGetAdditionalQueueWhere', [
+            'subject'         => ArrayHelper::fromObject($this),
+            'query'           => $query,
+            'fromComponent'   => true,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
 		$tblSendmailQueue = $this->getTable('Sendmailqueue');
 
@@ -1921,7 +1927,14 @@ class NewsletterModel extends AdminModel
 		// needed for changing table objects for queue and content, show/hide messages, ...
 		if (!$fromComponent)
 		{
-			$app->triggerEvent('onBwPostmanBeforeNewsletterSend', array(&$queueTableName, &$tblSendMailQueue, &$tblSendMailContent));
+            $event = new Event('onBwPostmanBeforeNewsletterSend', [
+                'subject'            => ArrayHelper::fromObject($this),
+                'queueTableName'     => $queueTableName,
+                'tblSendMailQueue'   => $tblSendMailQueue,
+                'tblSendMailContent' => $tblSendMailContent,
+            ]);
+            Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+            $eventResults = $event->getArgument('result', []);
 		}
 
 		// Get first entry from sendmailqueue

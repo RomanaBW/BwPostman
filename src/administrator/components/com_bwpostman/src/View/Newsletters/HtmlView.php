@@ -32,6 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -233,9 +234,9 @@ class HtmlView extends BaseHtmlView
 		$tab	= $this->state->get('tab', 'unsent');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance();
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-		$wa = $this->document->getWebAssetManager();
+		$wa = $this->getDocument()->getWebAssetManager();
 		$wa->useScript('com_bwpostman.admin-bwpm_nls');
 
 		// Set toolbar title
@@ -362,8 +363,6 @@ class HtmlView extends BaseHtmlView
 				}
 				break;
 		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
 		$manualButton = BwPostmanHTMLHelper::getManualButton('newsletters');
 		$forumButton  = BwPostmanHTMLHelper::getForumButton();

@@ -32,6 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
@@ -148,7 +149,7 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar()
 	{
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance();
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN'), 'envelope');
@@ -158,8 +159,6 @@ class HtmlView extends BaseHtmlView
 		{
 			$toolbar->preferences('com_bwpostman');
 		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
 		$manualButton = BwPostmanHTMLHelper::getManualButton('bwpostman');
 		$forumButton  = BwPostmanHTMLHelper::getForumButton();

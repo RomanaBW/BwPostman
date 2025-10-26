@@ -56,7 +56,7 @@ class DisplayController extends BaseController
 	public function __construct($config = array())
 	{
 		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
-		$config['view_path'] = JPATH_COMPONENT . '/src/View';
+		$config['view_path'] = JPATH_BASE . '/components/com_bwpostman/src/View';
 
 		parent::__construct($config, $this->factory);
 	}

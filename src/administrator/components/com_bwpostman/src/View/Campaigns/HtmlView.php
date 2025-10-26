@@ -33,6 +33,7 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -179,9 +180,9 @@ class HtmlView extends BaseHtmlView
 		PluginHelper::importPlugin('bwpostman');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance();
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-		$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_confirm_archive_cam_nls');
+		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_confirm_archive_cam_nls');
 
 		// Set toolbar title
 		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_CAMS'), 'list');
@@ -231,8 +232,6 @@ class HtmlView extends BaseHtmlView
 
 		// trigger BwTimeControl event
 		Factory::getApplication()->triggerEvent('onBwPostmanCampaignsPrepareToolbar', array());
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
 		$manualButton = BwPostmanHTMLHelper::getManualButton('campaigns');
 		$forumButton  = BwPostmanHTMLHelper::getForumButton();

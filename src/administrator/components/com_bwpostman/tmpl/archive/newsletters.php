@@ -49,7 +49,7 @@ $nullDate   = Factory::getContainer()->get(DatabaseInterface::class)->getNullDat
 $this->context	= 'Archive.newsletters';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'newsletters');
 
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
+$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
 
 //
 /**

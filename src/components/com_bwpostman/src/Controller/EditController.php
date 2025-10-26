@@ -116,7 +116,7 @@ class EditController extends FormController
 		$err->err_code	= 0;
 
 		$user 	        = $app->getIdentity();
-		$user_is_guest  = $user->get('guest');
+		$user_is_guest  = $user->guest;
 		$userid 		= (int) $user->id;
 		$subsTable      = $this->getModel('subscriber', 'Administrator')->getTable('Subscriber');
 
@@ -373,7 +373,7 @@ class EditController extends FormController
 			{
 				$newEmail					= true;
 				$post['status'] 			= 0;
-				$post['confirmation_date'] 	= $model->getDbo()->getNullDate();
+				$post['confirmation_date'] 	= $model->getDatabase()->getNullDate();
 				$post['confirmed_by'] 		= -1;
 				$post['activation']			= $subsTable->createActivation();
 			}

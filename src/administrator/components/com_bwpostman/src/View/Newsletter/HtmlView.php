@@ -261,11 +261,11 @@ class HtmlView extends BaseHtmlView
 	{
 		$app    = Factory::getApplication();
 		$app->input->set('hidemainmenu', true);
-		$userId		= $app->getIdentity()->get('id');
+		$userId		= $app->getIdentity()->id;
 		$layout		= $app->input->get('layout', '');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance();
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
 		// Get document object, set document title and add css
 		$document	= $app->getDocument();
@@ -363,8 +363,6 @@ class HtmlView extends BaseHtmlView
 				$toolbar->cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
 			}
 		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
 		$manualButton = BwPostmanHTMLHelper::getManualButton('newsletter');
 		$forumButton  = BwPostmanHTMLHelper::getForumButton();

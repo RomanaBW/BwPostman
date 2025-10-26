@@ -32,7 +32,6 @@ defined('_JEXEC') or die ('Restricted access');
 use Exception;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
@@ -83,7 +82,7 @@ class TemplatesTplModel extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  bool|CMSObject    Object on success, false on failure.
+	 * @return  bool|\stdClass    Object on success, false on failure.
 	 *
 	 * @since   1.1.0
 	 */

@@ -71,7 +71,7 @@ if (file_exists(JPATH_BASE . '/' . $css_filename))
 		<div class="content_inner">
 			<?php
 			if (property_exists($this->success, 'editlink')) { // Case 1
-				if (Factory::getApplication()->getIdentity()->get('guest'))
+				if (Factory::getApplication()->getIdentity()->guest)
 				{
 					if (is_null($this->success->itemid))
 					{

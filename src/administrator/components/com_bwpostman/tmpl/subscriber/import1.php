@@ -35,7 +35,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 // Keep session alive while editing
 HTMLHelper::_('behavior.keepalive');
 
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber_import');
+$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber_import');
 
 HTMLHelper::_('bootstrap.tooltip');
 $jinput	= Factory::getApplication()->input;

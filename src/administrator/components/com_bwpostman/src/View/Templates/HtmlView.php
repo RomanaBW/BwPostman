@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -194,9 +195,9 @@ class HtmlView extends BaseHtmlView
 		$layout	= $jinput->getCmd('layout', '');
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance();
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-		$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_templates');
+		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_templates');
 
 		$options['name'] = 'back';
 		$options['url'] = 'index.php?option=com_bwpostman&view=templates';
@@ -310,8 +311,6 @@ class HtmlView extends BaseHtmlView
 					$toolbar->AppendButton($button);
 				}
 		}
-
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
 
 		$manualButton = BwPostmanHTMLHelper::getManualButton('templates');
 		$forumButton  = BwPostmanHTMLHelper::getForumButton();

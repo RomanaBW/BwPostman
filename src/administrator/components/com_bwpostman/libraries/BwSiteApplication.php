@@ -34,6 +34,7 @@ use InvalidArgumentException;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Application\MultiFactorAuthenticationHandler;
 use Joomla\CMS\Cache\Controller\OutputController;
+use Joomla\CMS\Event\Application\AfterDispatchEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
@@ -274,7 +275,10 @@ final class BwSiteApplication extends CMSApplication
 
 		// Trigger the onAfterDispatch event.
 		PluginHelper::importPlugin('system');
-		$this->triggerEvent('onAfterDispatch');
+        $this->dispatchEvent(
+            'onAfterDispatch',
+            new AfterDispatchEvent('onAfterDispatch', ['subject' => $this])
+        );
 	}
 
     /**
@@ -827,7 +831,7 @@ final class BwSiteApplication extends CMSApplication
      */
 	protected function render(): void
     {
-		switch ($this->document->getType())
+		switch ($this->getDocument()->getType())
 		{
 			case 'feed':
 				// No special processing for feeds
@@ -941,7 +945,10 @@ final class BwSiteApplication extends CMSApplication
 
 		// Trigger the onAfterRoute event.
 		PluginHelper::importPlugin('system');
-		$this->triggerEvent('onAfterRoute');
+        $this->dispatchEvent(
+            'onAfterRoute',
+            new AfterDispatchEvent('onAfterRoute', ['subject' => $this])
+        );
 
 		$Itemid = $this->input->getInt('Itemid');
 		$this->authorise($Itemid);

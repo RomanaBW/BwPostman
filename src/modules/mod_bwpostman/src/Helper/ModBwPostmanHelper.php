@@ -62,7 +62,7 @@ class ModBwPostmanHelper
 		$app  = Factory::getApplication();
 		$user = $app->getIdentity();
 
-		if ($user->get('guest'))
+		if ($user->guest)
 		{ // User is guest
 			$session              = $app->getSession();
 			$session_subscriberid = $session->get('session_subscriberid');

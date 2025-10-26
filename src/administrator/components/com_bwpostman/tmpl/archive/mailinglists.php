@@ -47,7 +47,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $this->context	= 'Archive.mailinglists';
 $tab			= Factory::getApplication()->setUserState($this->context . '.tab', 'mailinglists');
 
-$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
+$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
 
 //
 /**

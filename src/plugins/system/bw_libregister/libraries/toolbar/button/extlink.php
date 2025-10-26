@@ -51,7 +51,7 @@ class JButtonExtlink extends ToolbarButton
 		$this->options = $options;
 
 		// Instantiate a new LayoutFile instance and render the layout
-		$layout = new FileLayout('layouts.toolbar.extlink', JPATH_COMPONENT_ADMINISTRATOR );
+		$layout = new FileLayout('layouts.toolbar.extlink', JPATH_ADMINISTRATOR . '/component/com_bwpostman' );
 
 		return $layout->render($options);
 	}

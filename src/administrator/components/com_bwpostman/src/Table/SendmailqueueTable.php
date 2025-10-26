@@ -590,8 +590,8 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       3.0.0
 	 */
-	public function checkTrials(int $trial = 2, int $count = 0)
-	{
+	public function checkTrials(int $trial = 2, int $count = 0): bool|int
+    {
 		$db	= $this->getDatabase();
 		$query	= $db->getQuery(true);
 
@@ -654,8 +654,8 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since  3.0.0
 	 */
-	public function getId()
-	{
+	public function getId(): mixed
+    {
 		$key = $this->getKeyName();
 
 		return $this->$key;

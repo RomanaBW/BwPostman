@@ -102,8 +102,8 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since   1.0.1
 	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
+	protected function populateState($ordering = null, $direction = null): void
+    {
 		$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
@@ -168,8 +168,8 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since       0.9.1
 	 */
-	protected function getListQuery()
-	{
+	protected function getListQuery(): object|false|QueryInterface
+    {
 		$db          = $this->getDatabase();
 		$this->query = $db->getQuery(true);
 		$sub_query   = $this->getSubQuery();
@@ -236,8 +236,8 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryJoins()
-	{
+	private function getQueryJoins(): void
+    {
 		$db = $this->getDatabase();
 
 		// Join over the users for the checked out user.
@@ -271,8 +271,8 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryWhere()
-	{
+	private function getQueryWhere(): void
+    {
 		$this->getFilterByAccessLevelFilter();
 		$this->getFilterByViewLevel();
 //		$this->getFilterByComponentPermissions();
@@ -288,8 +288,8 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryOrder()
-	{
+	private function getQueryOrder(): void
+    {
 		$db        = $this->getDatabase();
 		$orderCol  = $this->state->get('list.ordering');
 		$orderDirn = $this->state->get('list.direction', 'asc');
@@ -312,8 +312,8 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByAccessLevelFilter()
-	{
+	private function getFilterByAccessLevelFilter(): void
+    {
 		$db     = $this->getDatabase();
 		$access = $this->getState('filter.access');
 
@@ -332,8 +332,8 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByViewLevel()
-	{
+	private function getFilterByViewLevel(): void
+    {
 		$db = $this->getDatabase();
 
 		if (Factory::getApplication()->isClient('site'))
@@ -376,8 +376,8 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByPublishedState()
-	{
+	private function getFilterByPublishedState(): void
+    {
 		$db        = $this->getDatabase();
 		$published = $this->getState('filter.published');
 
@@ -400,8 +400,8 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByArchiveState()
-	{
+	private function getFilterByArchiveState(): void
+    {
 		$db = $this->getDatabase();
 		$this->query->where($db->quoteName('a.archive_flag') . ' = ' . 0);
 	}
@@ -413,8 +413,8 @@ class MailinglistsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterBySearchword()
-	{
+	private function getFilterBySearchword(): void
+    {
 		$db           = $this->getDatabase();
 		$filtersearch = $this->getState('filter.search_filter');
 		$search       = '%' . $db->escape($this->getState('filter.search'), true) . '%';

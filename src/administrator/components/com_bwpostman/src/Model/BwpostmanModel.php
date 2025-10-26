@@ -85,8 +85,8 @@ class BwpostmanModel extends BaseDatabaseModel
 	 *
 	 * @since  3.0.0
 	 */
-	public function getTable($name = 'Newsletter', $prefix = 'Administrator', $options = array())
-	{
+	public function getTable($name = 'Newsletter', $prefix = 'Administrator', $options = array()): Table|bool
+    {
 		return parent::getTable($name, $prefix, $options);
 	}
 
@@ -231,8 +231,8 @@ class BwpostmanModel extends BaseDatabaseModel
 	 *
 	 * @since   2.0
 	 */
-	public function storePermissions(string $permission = null)
-	{
+	public function storePermissions(string $permission = null): bool|array
+    {
 		$app  = Factory::getApplication();
 		$db   = $this->getDatabase();
 		$user = $app->getIdentity();

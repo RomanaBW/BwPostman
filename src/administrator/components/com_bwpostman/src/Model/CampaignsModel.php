@@ -103,8 +103,8 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since   1.0.1
 	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
+	protected function populateState($ordering = null, $direction = null): void
+    {
 		$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
@@ -170,8 +170,8 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since   0.9.1
 	 */
-	protected function getListQuery()
-	{
+	protected function getListQuery(): object|false|QueryInterface
+    {
         $db          = $this->getDatabase();
 		$this->query = $db->getQuery(true);
 		$sub_query   = $this->getSubQuery();
@@ -233,8 +233,8 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryJoins()
-	{
+	private function getQueryJoins(): void
+    {
         $db = $this->getDatabase();
 
 		// Join over the users for the checked out user.
@@ -268,8 +268,8 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryWhere()
-	{
+	private function getQueryWhere(): void
+    {
 		$this->getFilterByAccessLevelFilter();
 		$this->getFilterByViewLevel();
 //		$this->getFilterByComponentPermissions();
@@ -285,8 +285,8 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryOrder()
-	{
+	private function getQueryOrder(): void
+    {
 		$orderCol  = $this->state->get('list.ordering');
 		$orderDirn = $this->state->get('list.direction', 'asc');
 
@@ -308,8 +308,8 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByAccessLevelFilter()
-	{
+	private function getFilterByAccessLevelFilter(): void
+    {
 		if (Factory::getApplication()->isClient('site'))
 		{
 			$access = $this->getState('filter.access');
@@ -330,8 +330,8 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByViewLevel()
-	{
+	private function getFilterByViewLevel(): void
+    {
 		if (Factory::getApplication()->isClient('site'))
 		{
 			$user = Factory::getApplication()->getIdentity();
@@ -372,8 +372,8 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByPublishedState()
-	{
+	private function getFilterByPublishedState(): void
+    {
 		$published = $this->getState('filter.published');
 
 		if (is_numeric($published))
@@ -393,8 +393,8 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByArchiveState()
-	{
+	private function getFilterByArchiveState(): void
+    {
 		$this->query->where($this->getDatabase()->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
@@ -405,8 +405,8 @@ class CampaignsModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterBySearchword()
-	{
+	private function getFilterBySearchword(): void
+    {
         $db           = $this->getDatabase();
 		$filtersearch = $this->getState('filter.search_filter');
 		$search       = '%' . $db->escape($this->getState('filter.search'), true) . '%';

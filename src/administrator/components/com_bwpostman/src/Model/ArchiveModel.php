@@ -195,8 +195,8 @@ class ArchiveModel extends ListModel
 	 *
 	 * @since   1.0.1
 	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
+	protected function populateState($ordering = null, $direction = null): void
+    {
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 
@@ -316,8 +316,8 @@ class ArchiveModel extends ListModel
 	 *
 	 * @since       0.9.1
 	 */
-	protected function getListQuery()
-	{
+	protected function getListQuery(): false|QueryInterface
+    {
 		// Set some shortcuts
 		$db        = $this->getDatabase();
 		$pef_tbl_a = $db->quoteName('a');
@@ -501,8 +501,8 @@ class ArchiveModel extends ListModel
 	 *
 	 * @since       0.9.1
 	 */
-	protected function buildQueryWhere(string $layout, object &$query)
-	{
+	protected function buildQueryWhere(string $layout, object &$query): void
+    {
 		$db = $this->getDatabase();
 		$pef_tbl_a = $db->quoteName('a');
 		$pef_tbl_c = $db->quoteName('c');

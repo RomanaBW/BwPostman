@@ -150,8 +150,8 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($name = 'Campaign', $prefix = 'Administrator', $options = array())
-	{
+	public function getTable($name = 'Campaign', $prefix = 'Administrator', $options = array()): Table|bool
+    {
 		return parent::getTable($name, $prefix, $options);
 	}
 
@@ -162,8 +162,8 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function setId(int $id)
-	{
+	public function setId(int $id): void
+    {
 		$this->id   = $id;
 		$this->data = null;
 	}
@@ -195,8 +195,8 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since   1.0.1
 	 */
-	public function getItem($pk = null)
-	{
+	public function getItem($pk = null): bool|stdClass
+    {
 		$app	= Factory::getApplication();
 		$data	= $app->getUserState('com_bwpostman.edit.campaign.data');
 		$id     = 0;
@@ -268,8 +268,8 @@ class CampaignModel extends AdminModel
 	 *@since	1.6
 	 *
 	 */
-	public function getForm($data = array(), $loadData = true)
-	{
+	public function getForm($data = array(), $loadData = true): false|Form
+    {
 		// Get the form.
 		$form     = $this->loadForm('com_bwpostman.campaign', 'Campaign', array('control' => 'jform', 'load_data' => $loadData));
 		$nullDate = $this->getDatabase()->getNullDate();
@@ -309,8 +309,8 @@ class CampaignModel extends AdminModel
 	 *
 	 * @since	1.6
 	 */
-	protected function loadFormData()
-	{
+	protected function loadFormData(): object|bool|stdClass
+    {
 		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.campaign.id', 0);
 
 		// Check the session for previously entered form data.

@@ -118,8 +118,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   1.0.1
 	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
+	protected function populateState($ordering = null, $direction = null): void
+    {
 		$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
@@ -210,8 +210,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since       0.9.1
 	 */
-	protected function getListQuery()
-	{
+	protected function getListQuery(): object|false|QueryInterface
+    {
 		$db          = $this->getDatabase();
 		$jinput      = Factory::getApplication()->input;
 		$this->query = $db->getQuery(true);
@@ -281,8 +281,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryJoins(string $tab)
-	{
+	private function getQueryJoins(string $tab): void
+    {
 		$db = $this->getDatabase();
 
 		if ($tab == 'sent' || $tab == 'unsent')
@@ -339,8 +339,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryWhere(string $tab)
-	{
+	private function getQueryWhere(string $tab): void
+    {
 		$this->getFilterByAccessLevelFilter();
 		$this->getFilterByViewLevel();
 //		$this->getFilterByComponentPermissions();
@@ -368,8 +368,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryOrder(string $tab)
-	{
+	private function getQueryOrder(string $tab): void
+    {
 		$db        = $this->getDatabase();
 		$orderCol  = $this->state->get('list.ordering', 'a.subject');
 		$orderDirn = $this->state->get('list.direction', 'asc');
@@ -409,8 +409,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByAccessLevelFilter()
-	{
+	private function getFilterByAccessLevelFilter(): void
+    {
 		$db = $this->getDatabase();
 
 		if (Factory::getApplication()->isClient('site'))
@@ -433,8 +433,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByViewLevel()
-	{
+	private function getFilterByViewLevel(): void
+    {
 		$db = $this->getDatabase();
 
 		if (Factory::getApplication()->isClient('site'))
@@ -479,8 +479,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByCampaign(string $tab)
-	{
+	private function getFilterByCampaign(string $tab): void
+    {
 		$campaign = $this->getState('filter.campaign_id');
 
 		if ($campaign)
@@ -505,8 +505,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByIsTemplate(string $tab)
-	{
+	private function getFilterByIsTemplate(string $tab): void
+    {
 		$isTemplate = $this->getState('filter.is_template');
 
 		if ($isTemplate !== "")
@@ -527,8 +527,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByAuthor(string $tab)
-	{
+	private function getFilterByAuthor(string $tab): void
+    {
 		$authors = $this->getState('filter.authors');
 
 		if ($authors)
@@ -553,8 +553,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterBySearchword(string $tab)
-	{
+	private function getFilterBySearchword(string $tab): void
+    {
 		$db           = $this->getDatabase();
 		$filtersearch = $this->getState('filter.search_filter');
 		$search       = $db->escape($this->getState('filter.search'), true);
@@ -635,8 +635,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByPublishedState()
-	{
+	private function getFilterByPublishedState(): void
+    {
 		// Define null and now dates, get params
 		$db       = $this->getDatabase();
 		$nullDate = $db->quote($db->getNullDate());
@@ -688,8 +688,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByArchiveState()
-	{
+	private function getFilterByArchiveState(): void
+    {
 		$db = $this->getDatabase();
 
 		$this->query->where($db->quoteName('a.archive_flag') . ' = ' . 0);
@@ -702,8 +702,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByMailinglist()
-	{
+	private function getFilterByMailinglist(): void
+    {
 		$mailinglist = $this->getState('filter.mailinglists');
 
 		if ($mailinglist)
@@ -720,8 +720,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByUsergroup()
-	{
+	private function getFilterByUsergroup(): void
+    {
 		$usergroup = $this->getState('filter.usergroups');
 
 		if ($usergroup)
@@ -740,8 +740,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByMailingDate(string $tab)
-	{
+	private function getFilterByMailingDate(string $tab): void
+    {
 		switch ($tab)
 		{
 			case ("unsent"):
@@ -837,8 +837,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since   4.3.0
 	 */
-	public function getFilterForm($data = [], $loadData = true)
-	{
+	public function getFilterForm($data = [], $loadData = true): ?Form
+    {
 		$layout = Factory::getApplication()->input->get('tab', 'unsent');
 		$this->filterFormName = 'filter_newsletters_' . $layout;
 

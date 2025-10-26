@@ -57,11 +57,11 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 class com_bwpostmanInstallerScript
 {
 	/**
-	 * @var InstallerAdapter $parentInstaller
+	 * @var ?InstallerAdapter $parentInstaller
 	 *
 	 * @since       0.9.6.3
 	 */
-	public InstallerAdapter $parentInstaller;
+	public InstallerAdapter|null $parentInstaller;
 
 	/**
 	 * @var string $minimum_joomla_release
@@ -458,8 +458,8 @@ class com_bwpostmanInstallerScript
 	 * @since       0.9.6.3
 	 */
 
-	public function install()
-	{
+	public function install(): void
+    {
 		$session = Factory::getApplication()->getSession();
 		$session->set('update', false);
 		$this->bwpostman_install();
@@ -476,8 +476,8 @@ class com_bwpostmanInstallerScript
 	 * @since       0.9.6.3
 	 */
 
-	public function update()
-	{
+	public function update(): void
+    {
 		$session = Factory::getApplication()->getSession();
 		$session->set('update', true);
 		$this->bwpostman_install();
@@ -496,8 +496,8 @@ class com_bwpostmanInstallerScript
 	 * @since       0.9.6.3
 	 */
 
-	public function uninstall()
-	{
+	public function uninstall(): void
+    {
 		$this->deleteBwPmAdminFromRootAsset();
 		$this->deleteBwPmAdminFromViewlevels();
 		$this->deleteSampleUsergroups();
@@ -536,8 +536,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since       0.9.6.3
 	 */
-	private function getManifestVar(string $name)
-	{
+	private function getManifestVar(string $name): mixed
+    {
 		$manifest = array();
 		$db       = Factory::getContainer()->get(DatabaseInterface::class);
 		$query    = $db->getQuery(true);
@@ -568,8 +568,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since
 	 */
-	private function correctCamId()
-	{
+	private function correctCamId(): void
+    {
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
@@ -595,8 +595,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since
 	 */
-	private function fillCamCrossTable()
-	{
+	private function fillCamCrossTable(): void
+    {
 		$all_cams = array();
 		$db       = Factory::getContainer()->get(DatabaseInterface::class);
 		$query    = $db->getQuery(true);
@@ -681,8 +681,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	private function copyTemplateImagesToMedia(object $m_params)
-	{
+	private function copyTemplateImagesToMedia(object $m_params): void
+    {
 		$image_path = JPATH_ROOT . '/' . $m_params->get('image_path', 'images') . '/com_bwpostman/';
 		$media_path = JPATH_ROOT . '/media/com_bwpostman/images/';
 
@@ -727,8 +727,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	private function copyTemplateImagesToImages()
-	{
+	private function copyTemplateImagesToImages(): void
+    {
 		$dest = JPATH_ROOT . '/images/com_bwpostman';
 
 		if (!Folder::exists($dest))
@@ -773,8 +773,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	private function checkSampleTemplates()
-	{
+	private function checkSampleTemplates(): void
+    {
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
@@ -829,8 +829,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	private function createSampleUsergroups()
-	{
+	private function createSampleUsergroups(): void
+    {
 		try
 		{
 			// get the model for user groups
@@ -913,8 +913,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	private function addBwPmAdminToViewlevel()
-	{
+	private function addBwPmAdminToViewlevel(): void
+    {
 		try
 		{
 			if (!(int) $this->adminUsergroup)
@@ -948,8 +948,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	private function addBwPmAdminToRootAsset()
-	{
+	private function addBwPmAdminToRootAsset(): void
+    {
 		try
 		{
 			// Get group ID of BwPostmanAdmin and section admins
@@ -1007,8 +1007,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	private function deleteSampleUsergroups()
-	{
+	private function deleteSampleUsergroups(): void
+    {
 		try
 		{
 			$db               = Factory::getContainer()->get(DatabaseInterface::class);
@@ -1110,8 +1110,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	private function deleteBwPmAdminFromViewlevels()
-	{
+	private function deleteBwPmAdminFromViewlevels(): void
+    {
 		// get group ID of BwPostmanAdmin
 		$adminGroup = $this->getGroupId('BwPostmanAdmin');
 
@@ -1149,8 +1149,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	private function deleteBwPmAdminFromRootAsset()
-	{
+	private function deleteBwPmAdminFromRootAsset(): void
+    {
 		try
 		{
 			// Get group ID of BwPostmanAdmin
@@ -1187,8 +1187,8 @@ class com_bwpostmanInstallerScript
 	 * @since 2.3.0
 	 */
 
-	private function removeOwnManagerFiles()
-	{
+	private function removeOwnManagerFiles(): void
+    {
 		$removeFolders = array(
 			JPATH_ROOT . '/media/com_bwpostman/js',
 			JPATH_ROOT . '/administrator/components/com_bwpostman/views/media',
@@ -1254,8 +1254,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since   2.0.0
 	 */
-	private function removeDoubleExtensionsEntries()
-	{
+	private function removeDoubleExtensionsEntries(): void
+    {
 		$db          = Factory::getContainer()->get(DatabaseInterface::class);
 		$extensionId = $this->getExtensionId(0);
 
@@ -1286,8 +1286,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since   4.0.0
 	 */
-	private function removeObsoleteFilesAndFolders()
-	{
+	private function removeObsoleteFilesAndFolders(): void
+    {
 		$feFilesArray = array(
 			'views/edit/metadata.xml',
 			'views/newsletter/metadata.xml',
@@ -1552,8 +1552,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since 2.1.1
 	 */
-	protected function installSampleUsergroups()
-	{
+	protected function installSampleUsergroups(): void
+    {
 		$this->createSampleUsergroups();
 		$this->addBwPmAdminToViewlevel();
 		$this->addBwPmAdminToRootAsset();
@@ -1585,8 +1585,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since 2.1.1
 	 */
-	protected function repairRootAsset()
-	{
+	protected function repairRootAsset(): void
+    {
 		$rootRules = $this->getRootAsset();
 
 		$repairedRules = str_replace('"":1,', '', $rootRules);
@@ -1605,8 +1605,8 @@ class com_bwpostmanInstallerScript
 	 *
 	 * @since
 	 */
-	public function showFinished(bool $update)
-	{
+	public function showFinished(bool $update): void
+    {
 		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
 		$lang->load('com_bwpostman.sys', JPATH_ADMINISTRATOR, 'en_GB', true);
@@ -1918,8 +1918,8 @@ EOS;
 	 * @since
 	 */
 
-	private function installdata(string $sql)
-	{
+	private function installdata(string $sql): void
+    {
 		$app = Factory::getApplication();
 		$db  = Factory::getContainer()->get(DatabaseInterface::class);
 
@@ -1967,8 +1967,8 @@ EOS;
 	 *
 	 * @since
 	 */
-	private function setDefaultParams()
-	{
+	private function setDefaultParams(): void
+    {
 		$params_default = array();
 		$config	= Factory::getApplication()->getConfig();
 
@@ -2062,8 +2062,8 @@ EOS;
 	 *
 	 * @since	1.2.0
 	 */
-	private function updateRules()
-	{
+	private function updateRules(): void
+    {
 		$default_rules	= array(
 								"core.admin" => array('7' => 1),
 								"core.manage" => array('7' => 1, '6' => 1),
@@ -2139,8 +2139,8 @@ EOS;
 	 *
 	 * @since version
 	 */
-	private function getRootAsset()
-	{
+	private function getRootAsset(): mixed
+    {
 		$rootRules = null;
 
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
@@ -2171,8 +2171,8 @@ EOS;
 	 *
 	 * @since version
 	 */
-	private function saveRootAsset($newRootRules)
-	{
+	private function saveRootAsset($newRootRules): void
+    {
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
@@ -2204,8 +2204,8 @@ EOS;
 	 *
 	 * @since version
 	 */
-	private function getExtensionId(int $clientId, string $extensionName = 'com_bwpostman')
-	{
+	private function getExtensionId(int $clientId, string $extensionName = 'com_bwpostman'): int|string
+    {
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$result = 0;
 

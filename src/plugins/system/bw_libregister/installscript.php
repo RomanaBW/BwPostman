@@ -48,8 +48,8 @@ class PlgSystemBW_LibregisterInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	public function install()
-	{
+	public function install(): void
+    {
 		sleep(5);
 	}
 
@@ -90,8 +90,8 @@ class PlgSystemBW_LibregisterInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	public function postflight(string $type)
-	{
+	public function postflight(string $type): void
+    {
 		$oldLibPath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/toolbar/';
 		if (Folder::exists($oldLibPath))
 		{

@@ -68,11 +68,11 @@ class EditModel extends AdminModel
 	/**
 	 * Subscriber data
 	 *
-	 * @var array
+	 * @var ?array
 	 *
 	 * @since       0.9.1
 	 */
-	private array $data;
+	private ?array $data;
 
     /**
 	 * Constructor
@@ -143,8 +143,8 @@ class EditModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function populateState()
-	{
+	protected function populateState(): void
+    {
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 
@@ -179,8 +179,8 @@ class EditModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	public function getForm($data = array(), $loadData = true)
-	{
+	public function getForm($data = array(), $loadData = true): false|Form
+    {
 		// Get the form
 		$form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));
 
@@ -234,8 +234,8 @@ class EditModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	protected function setData(int $id)
-	{
+	protected function setData(int $id): void
+    {
 		$this->id   = $id;
 		$this->data = null;
 	}
@@ -251,8 +251,8 @@ class EditModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function getItem($pk = null)
-	{
+	public function getItem($pk = null): mixed
+    {
 		$app	        = Factory::getApplication();
 		$_db	        = $this->getDatabase();
 		$query	        = $_db->getQuery(true);

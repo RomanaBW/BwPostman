@@ -137,8 +137,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl = null)
-	{
+	public function display($tpl = null): void
+    {
 		$app	= Factory::getApplication();
 
 		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
@@ -187,8 +187,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbar()
-	{
+	protected function addToolbar(): void
+    {
 		$app    = Factory::getApplication();
 		$jinput	= $app->input;
 
@@ -301,8 +301,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	private function checkForAllowedTabs()
-	{
+	private function checkForAllowedTabs(): bool|string
+    {
 		$uri        = Uri::getInstance();
 		$uriString = $uri->toString();
 		$uriShort  = substr($uriString, strrpos($uriString, '/') + 1, strlen($uriString));
@@ -339,8 +339,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since 1.3.2
 	 */
-	private function extractLayout(string $uri_string)
-	{
+	private function extractLayout(string $uri_string): bool|string
+    {
 		$uri_array = explode('&', $uri_string);
 
 		if (count($uri_array) != 3)

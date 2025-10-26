@@ -189,8 +189,8 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	public function postflight(string $type)
-	{
+	public function postflight(string $type): void
+    {
 		// We only need to perform this if the extension is being installed, not updated
 		if ($type == 'install')
 		{
@@ -236,8 +236,8 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	private function getManifestVar(string $name, string $extension)
-	{
+	private function getManifestVar(string $name, string $extension): bool|string
+    {
 		$db		= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $db->getQuery(true);
 

@@ -168,8 +168,8 @@ class NewsletterelementModel extends BaseDatabaseModel
 	 *
 	 * @since
 	 */
-	public function getPagination()
-	{
+	public function getPagination(): object|Pagination|null
+    {
 		// Load the content if it doesn't already exist
 		if (empty($this->pagination))
 		{

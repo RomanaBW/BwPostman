@@ -182,8 +182,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
+	protected function populateState($ordering = null, $direction = null): void
+    {
 		// Initialize variables.
 		$app	= Factory::getApplication();
 		$jinput	= $app->input;
@@ -294,8 +294,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function setId(int $id = 0)
-	{
+	public function setId(int $id = 0): void
+    {
 		// Set new venue ID and wipe data
 		$this->id   = $id;
 		$this->data = null;
@@ -514,8 +514,8 @@ class NewslettersModel extends ListModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function getListQuery()
-	{
+	protected function getListQuery(): false|QueryInterface
+    {
 		// define variables
 		$db		= $this->getDatabase();
 		$query		= $db->getQuery(true);

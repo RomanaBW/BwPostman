@@ -178,8 +178,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbar()
-	{
+	protected function addToolbar(): void
+    {
 		PluginHelper::importPlugin('bwpostman');
 
 		// Get the toolbar object instance

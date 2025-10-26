@@ -74,8 +74,8 @@ final class Bw_libregister extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @since  2.0.0
 	 */
-	public function onAfterInitialise()
-	{
+	public function onAfterInitialise(): void
+    {
 		JLoader::registerPrefix('J', JPATH_PLUGINS . '/system/bw_libregister/libraries/toolbar');
 	}
 }

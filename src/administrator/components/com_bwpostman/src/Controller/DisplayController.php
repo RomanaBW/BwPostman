@@ -49,8 +49,8 @@ class DisplayController extends BaseController
 	 *
 	 * @since   4.0.0
 	 */
-	public function display($cachable = false, $urlparams = array())
-	{
+	public function display($cachable = false, $urlparams = array()): BaseController|bool
+    {
 		// Get the user object
 		$app  = Factory::getApplication();
 		$user = $app->getIdentity();

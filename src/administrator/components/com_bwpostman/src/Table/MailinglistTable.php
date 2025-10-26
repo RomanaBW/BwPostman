@@ -121,11 +121,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	public int $created_by = 0;
 
 	/**
-	 * @var ?datetime last modification date of the mailinglist
+	 * @var DateTime|string|null last modification date of the mailinglist
 	 *
 	 * @since       0.9.1
 	 */
-	public ?DateTime $modified_time = null;
+	public DateTime|string|null $modified_time = null;
 
 	/**
 	 * @var int user ID
@@ -826,8 +826,8 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  2.4.0
 	 */
-	public function getId()
-	{
+	public function getId(): array|string
+    {
 		$key = $this->getKeyName();
 
 		return $this->$key;

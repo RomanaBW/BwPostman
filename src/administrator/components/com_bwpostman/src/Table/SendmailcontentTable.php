@@ -116,11 +116,11 @@ class SendmailcontentTable extends Table
 	public ?string $bcc_email = null;
 
 	/**
-	 * @var string Attachment
+	 * @var string|array Attachment
 	 *
 	 * @since       0.9.1
 	 */
-	public string $attachment = '';
+	public string|array $attachment = '';
 
 	/**
 	 * @var ?string Reply-to email
@@ -308,8 +308,8 @@ class SendmailcontentTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function load($keys = null, $reset = true)
-	{
+	public function load($keys = null, $reset = true): bool|int
+    {
 		if (!$keys)
 		{
 			return 0;
@@ -392,8 +392,8 @@ class SendmailcontentTable extends Table
 	 *
 	 * @since  2.4.0
 	 */
-	public function getId()
-	{
+	public function getId(): mixed
+    {
 		$key = $this->getKeyName();
 
 		return $this->$key;

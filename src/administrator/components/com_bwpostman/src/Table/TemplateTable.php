@@ -235,11 +235,11 @@ class TemplateTable extends Table implements VersionableTableInterface
 	public int $created_by = 0;
 
 	/**
-	 * @var ?datetime last modification date of the newsletter
+	 * @var DateTime|string|null last modification date of the newsletter
 	 *
 	 * @since       1.1.0
 	 */
-	public ?DateTime $modified_time = null;
+	public DateTime|string|null $modified_time = null;
 
 	/**
 	 * @var int user ID
@@ -696,8 +696,8 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 1.1.0
 	 */
-	private function converttostr(object $data)
-	{
+	private function converttostr(object $data): void
+    {
 		// array to string
 		if (isset($data->basics) && is_array($data->basics))
 		{
@@ -828,8 +828,8 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0 (here, before since 2.3.0 at template helper)
 	 */
-	public function getNbrOfTemplates(string $mode, bool $archived, ?string $title = '')
-	{
+	public function getNbrOfTemplates(string $mode, bool $archived, ?string $title = ''): bool|int
+    {
 		$archiveFlag = 0;
 
 		if ($archived)
@@ -887,8 +887,8 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0
 	 */
-	public function getTemplateTitle(int $id)
-	{
+	public function getTemplateTitle(int $id): bool|string
+    {
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
@@ -1132,8 +1132,8 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 4.1.0
 	 */
-	public function resetDefaultTpl(int $id)
-	{
+	public function resetDefaultTpl(int $id): void
+    {
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
@@ -1170,8 +1170,8 @@ class TemplateTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  3.0.0
 	 */
-	public function getId()
-	{
+	public function getId(): mixed
+    {
 		$key = $this->getKeyName();
 
 		return $this->$key;

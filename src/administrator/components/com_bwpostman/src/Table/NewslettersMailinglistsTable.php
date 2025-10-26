@@ -175,8 +175,8 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @since  3.0.0
 	 */
-	public function getId()
-	{
+	public function getId(): array|string
+    {
 		$key = $this->getKeyName();
 
 		return $this->$key;
@@ -209,8 +209,8 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @since       3.0.0
 	 */
-	public function deleteNewsletter(int $nlId)
-	{
+	public function deleteNewsletter(int $nlId): void
+    {
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
@@ -242,8 +242,8 @@ class NewslettersMailinglistsTable extends Table
 	 *
 	 * @since       3.0.0
 	 */
-	public function insertNewsletter(int $nlId, int $mlId)
-	{
+	public function insertNewsletter(int $nlId, int $mlId): void
+    {
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 

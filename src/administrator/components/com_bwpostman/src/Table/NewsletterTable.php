@@ -219,11 +219,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	public int $created_by = 0;
 
 	/**
-	 * @var ?datetime last modification date of the newsletter
+	 * @var DateTime|string|null last modification date of the newsletter
 	 *
 	 * @since       0.9.1
 	 */
-	public ?DateTime $modified_time = null;
+	public DateTime|string|null $modified_time = null;
 
 	/**
 	 * @var int user ID
@@ -649,8 +649,8 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       2.2.0
 	 */
-	public function changeIsTemplate(int $id = null)
-	{
+	public function changeIsTemplate(int $id = null): bool|int
+    {
 		if ($id)
 		{
 			// Take the given id
@@ -796,8 +796,8 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0
 	 */
-	public function getNewsletterData(int $nlId)
-	{
+	public function getNewsletterData(int $nlId): object|bool
+    {
 		$db	   = $this->getDatabase();
 		$query = $db->getQuery(true);
 
@@ -911,8 +911,8 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0 (here, before since 2.3.0 at newsletter helper)
 	 */
-	public function getNbrOfNewsletters(bool $sent, bool $archived)
-	{
+	public function getNbrOfNewsletters(bool $sent, bool $archived): bool|int
+    {
 		$archiveFlag         = 0;
 		$mailingDateOperator = "=";
 		$nullDateOperator    = ' IS NULL';
@@ -1054,8 +1054,8 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  3.0.0
 	 */
-	public function getId()
-	{
+	public function getId(): mixed
+    {
 		$key = $this->getKeyName();
 
 		return $this->$key;

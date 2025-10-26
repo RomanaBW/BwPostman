@@ -61,8 +61,8 @@ class Pkg_BwPostmanInstallerScript
 	 * @since       2.2.1
 	 */
 
-	public function install($installer)
-	{
+	public function install($installer): void
+    {
 		sleep(5);
 		$session = Factory::getApplication()->getSession();
 		$session->set('update', false, 'bwpostman');
@@ -87,8 +87,8 @@ class Pkg_BwPostmanInstallerScript
 	 * @since   2.2.1
 	 */
 
-	public function update($installer)
-	{
+	public function update($installer): void
+    {
         $app     = Factory::getApplication();
 		$session = $app->getSession();
 		$session->set('update', true, 'bwpostman');
@@ -182,8 +182,8 @@ class Pkg_BwPostmanInstallerScript
 	 *
 	 * @since   4.0.0
 	 */
-	private function removeObsoleteExtensions(string $type, InstallerAdapter $parent)
-	{
+	private function removeObsoleteExtensions(string $type, InstallerAdapter $parent): void
+    {
 		if ($type == 'update')
 		{
 			$obsoleteExtensions = array('bwpm_mediaoverride');
@@ -226,8 +226,8 @@ class Pkg_BwPostmanInstallerScript
 	 *
 	 * @since 4.0.0
 	 */
-	private function getExtensionId(int $clientId, string $extensionName = 'com_bwpostman')
-	{
+	private function getExtensionId(int $clientId, string $extensionName = 'com_bwpostman'): int|string
+    {
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$result = 0;
 
@@ -327,8 +327,8 @@ class Pkg_BwPostmanInstallerScript
 	 *
 	 * @since
 	 */
-	public function showFinished(bool $update)
-	{
+	public function showFinished(bool $update): void
+    {
 		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
 		$lang->load('com_bwpostman.sys', JPATH_ADMINISTRATOR, 'en_GB', true);

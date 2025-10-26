@@ -163,8 +163,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	private function displayError()
-	{
+	private function displayError(): void
+    {
 		$session	    = Factory::getApplication()->getSession();
 		$this->error    = new stdClass();
 		$err	    = $session->get('session_error', null);
@@ -192,8 +192,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since          0.9.1
 	 */
-	private function displaySuccess()
-	{
+	private function displaySuccess(): void
+    {
 		$session	    = Factory::getApplication()->getSession();
 		$this->success  = new stdClass();
 
@@ -217,8 +217,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since          0.9.1
 	 */
-	private function displayDefault()
-	{
+	private function displayDefault(): void
+    {
 		$user		= Factory::getApplication()->getIdentity();
 		$session	= Factory::getApplication()->getSession();
 		$subscriber	= new stdClass();

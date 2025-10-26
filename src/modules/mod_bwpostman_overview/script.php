@@ -73,8 +73,8 @@ class Mod_BwPostman_OverviewInstallerScript
 	 *
 	 * @since       1.2.0
 	 */
-	public function install()
-	{
+	public function install(): void
+    {
 		$this->showFinished(false);
 	}
 
@@ -87,8 +87,8 @@ class Mod_BwPostman_OverviewInstallerScript
 	 *
 	 * @since       1.2.0
 	 */
-	public function uninstall()
-	{
+	public function uninstall(): void
+    {
 		Factory::getApplication()->enqueueMessage(Text::_('MOD_BWPOSTMAN_OVERVIEW_UNINSTALL_THANKYOU'), 'message');
 	}
 
@@ -101,8 +101,8 @@ class Mod_BwPostman_OverviewInstallerScript
 	 *
 	 * @since       1.2.0
 	 */
-	public function update()
-	{
+	public function update(): void
+    {
 		$this->showFinished(true);
 	}
 
@@ -208,8 +208,8 @@ class Mod_BwPostman_OverviewInstallerScript
 	 *
 	 * @since       1.2.0
 	 */
-	public function postflight(string $type, object $parent)
-	{
+	public function postflight(string $type, object $parent): void
+    {
 		if ($type == 'update')
 		{
 			// remove obsolete files
@@ -226,8 +226,8 @@ class Mod_BwPostman_OverviewInstallerScript
 	 *
 	 * @since   4.0.0
 	 */
-	private function removeObsoleteFilesAndFolders()
-	{
+	private function removeObsoleteFilesAndFolders(): void
+    {
 		$feFilesArray = array(
 			'helper.php',
 			'css/bwpostman_overview.css',
@@ -300,8 +300,8 @@ class Mod_BwPostman_OverviewInstallerScript
 	 *
 	 * @since       1.2.0
 	 */
-	public function showFinished(bool $update)
-	{
+	public function showFinished(bool $update): void
+    {
 		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
 		$lang->load('mod_bwpostman_overview.sys', JPATH_SITE, 'en_GB', true);

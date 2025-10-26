@@ -286,8 +286,8 @@ class TemplatesController extends AdminController
 	 *
 	 * @since       2.1.0
 	 */
-	public function exportTpl()
-	{
+	public function exportTpl(): void
+    {
 		// get newsletter ID to send
 		$cids     = $this->input->get('cid', array(), 'array');
 		$this->id = (int)$cids[0];

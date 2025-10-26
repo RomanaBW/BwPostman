@@ -154,11 +154,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	public int $access = 1;
 
 	/**
-	 * @var ?datetime Registration date
+	 * @var DateTime|string|null Registration date
 	 *
 	 * @since       0.9.1
 	 */
-	public ?DateTime $registration_date = null;
+	public DateTime|string|null $registration_date = null;
 
 	/**
 	 * @var ?int ID --> 0 = subscriber registered himself, another ID = administrator from users-table
@@ -197,11 +197,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	public ?string $confirmation_ip = null;
 
 	/**
-	 * @var ?datetime last modification date of the subscriber
+	 * @var DateTime|string|null last modification date of the subscriber
 	 *
 	 * @since       0.9.1
 	 */
-	public ?DateTime $modified_time = null;
+	public DateTime|string|null $modified_time = null;
 
 	/**
 	 * @var int user ID
@@ -904,8 +904,8 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  3.0.0
 	 */
-	public function getId()
-	{
+	public function getId(): mixed
+    {
 		$key = $this->getKeyName();
 
 		return $this->$key;
@@ -1031,8 +1031,8 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since       0.9.1
 	 */
-	public function getSubscriberIdByEmail(string $email, bool $isTester = false)
-	{
+	public function getSubscriberIdByEmail(string $email, bool $isTester = false): int|array
+    {
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$id    = 0;
@@ -1310,8 +1310,8 @@ class SubscriberTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0 here
 	 */
-	public function createActivation()
-	{
+	public function createActivation(): false|string
+    {
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 

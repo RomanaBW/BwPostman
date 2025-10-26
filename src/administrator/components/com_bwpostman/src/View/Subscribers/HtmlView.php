@@ -248,8 +248,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbar()
-	{
+	protected function addToolbar(): void
+    {
 		$app = Factory::getApplication();
 		$tab = $app->input->get('tab', 'confirmed');
 

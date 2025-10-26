@@ -132,8 +132,8 @@ class BwPostmanHelper
 	 *
 	 * @since   0.9.1
 	 */
-	static public function getInstalledBwPostmanVersion()
-	{
+	static public function getInstalledBwPostmanVersion(): false|string
+    {
 		$app   = Factory::getApplication();
 
 		try
@@ -439,8 +439,8 @@ class BwPostmanHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function setPermissionsState()
-	{
+	public static function setPermissionsState(): void
+    {
 		$app = Factory::getApplication();
 
 		// Debugging variable, normally set to false
@@ -1222,8 +1222,8 @@ class BwPostmanHelper
 	 * @since
 	 */
 
-	public static function showCaptcha()
-	{
+	public static function showCaptcha(): void
+    {
 		/**
 		 * Method to generate captcha
 		 *
@@ -1459,8 +1459,8 @@ class BwPostmanHelper
 	 *
 	 * @since   2.0.0
 	 */
-	public static function getAllowedRecords(string $view, string $action, int $fromArchive = 0)
-	{
+	public static function getAllowedRecords(string $view, string $action, int $fromArchive = 0): array|string
+    {
 		// check for general permissions
 		if (self::canAdmin($view))
 		{
@@ -1513,8 +1513,8 @@ class BwPostmanHelper
 	 *
 	 * @since   2.0.0
 	 */
-	public static function getItemsSeparatedByArchive(string $view, int $fromArchive, array $itemRecords)
-	{
+	public static function getItemsSeparatedByArchive(string $view, int $fromArchive, array $itemRecords): array|string|null
+    {
 		$itemsToCheck = array();
 		$reducedItems = null;
 

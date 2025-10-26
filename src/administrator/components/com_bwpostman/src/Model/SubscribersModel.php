@@ -103,8 +103,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   1.0.1
 	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
+	protected function populateState($ordering = null, $direction = null): void
+    {
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 
@@ -174,8 +174,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since       0.9.1
 	 */
-	protected function getListQuery()
-	{
+	protected function getListQuery(): object|false|QueryInterface
+    {
         $db		= $this->getDatabase();
 		$this->query = $db->getQuery(true);
 
@@ -240,8 +240,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryJoins()
-	{
+	private function getQueryJoins(): void
+    {
 		$db = $this->getDatabase();
 
 		// Join over the users for the checked out user.
@@ -263,8 +263,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryWhere()
-	{
+	private function getQueryWhere(): void
+    {
 		$this->getFilterByAccessLevelFilter();
 		$this->getFilterByViewLevel();
 //		$this->getFilterByComponentPermissions();
@@ -284,8 +284,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryOrder()
-	{
+	private function getQueryOrder(): void
+    {
 		$orderCol  = $this->state->get('list.ordering');
 		$orderDirn = $this->state->get('list.direction', 'asc');
 
@@ -309,8 +309,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByAccessLevelFilter()
-	{
+	private function getFilterByAccessLevelFilter(): void
+    {
 		if (Factory::getApplication()->isClient('site'))
 		{
 			$access = $this->getState('filter.access');
@@ -332,8 +332,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByViewLevel()
-	{
+	private function getFilterByViewLevel(): void
+    {
 		if (Factory::getApplication()->isClient('site'))
 		{
 			$user = Factory::getApplication()->getIdentity();
@@ -379,8 +379,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterBySubscriberState()
-	{
+	private function getFilterBySubscriberState(): void
+    {
 		//Get the tab in which we are for correct query
 		$tab = Factory::getApplication()->input->get('tab', '');
 
@@ -415,8 +415,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByMailinglist()
-	{
+	private function getFilterByMailinglist(): void
+    {
         $db = $this->getDatabase();
 		$mailinglist = $this->getState('filter.mailinglist');
 
@@ -441,8 +441,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByMailformat()
-	{
+	private function getFilterByMailformat(): void
+    {
 		$emailformat = $this->getState('filter.emailformat');
 
 		if ($emailformat != '')
@@ -460,8 +460,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByArchiveState()
-	{
+	private function getFilterByArchiveState(): void
+    {
 		$this->query->where($this->getDatabase()->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
@@ -474,8 +474,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterBySearchword()
-	{
+	private function getFilterBySearchword(): void
+    {
         $db = $this->getDatabase();
 		$filtersearch = $this->getState('filter.search_filter');
 		$search       = $db->escape($this->getState('filter.search'), true);
@@ -545,8 +545,8 @@ class SubscribersModel extends ListModel
 	 *
 	 * @since   4.3.0
 	 */
-	public function getFilterForm($data = [], $loadData = true)
-	{
+	public function getFilterForm($data = [], $loadData = true): ?Form
+    {
 		$layout = Factory::getApplication()->input->get('tab', 'confirmed');
 		$this->filterFormName = 'filter_subscribers_' . $layout;
 

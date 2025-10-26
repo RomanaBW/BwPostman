@@ -147,8 +147,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbar()
-	{
+	protected function addToolbar(): void
+    {
 		// Get the toolbar object instance
 		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
@@ -175,8 +175,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       3.0.1
 	 */
-	protected function checkGeneralStatisticsData()
-	{
+	protected function checkGeneralStatisticsData(): void
+    {
 		if (!key_exists('nl_unsent', $this->general))
 		{
 			$this->general['nl_unsent'] = '';
@@ -230,8 +230,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       3.0.1
 	 */
-	protected function checkArchiveStatisticsData()
-	{
+	protected function checkArchiveStatisticsData(): void
+    {
 		if (!key_exists('arc_nl', $this->archive))
 		{
 			$this->archive['arc_nl'] = '';

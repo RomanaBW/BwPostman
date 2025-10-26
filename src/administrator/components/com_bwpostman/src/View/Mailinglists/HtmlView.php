@@ -168,8 +168,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbar()
-	{
+	protected function addToolbar(): void
+    {
 		// Get the toolbar object instance
 		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 

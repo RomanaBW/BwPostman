@@ -246,8 +246,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since	1.1.0
 	 */
-	protected function addToolbar()
-	{
+	protected function addToolbar(): void
+    {
 		$app    = Factory::getApplication();
 		$app->input->set('hidemainmenu', true);
 		$uri		= Uri::getInstance();

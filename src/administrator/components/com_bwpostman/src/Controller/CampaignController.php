@@ -127,8 +127,8 @@ class CampaignController extends FormController
 	 *
 	 * @since    4.0.0
 	 */
-	public function getModel($name = 'Campaign', $prefix = 'Administrator', $config = array('ignore_request' => true))
-	{
+	public function getModel($name = 'Campaign', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel
+    {
 		return $this->factory->createModel($name, $prefix, $config);
 	}
 

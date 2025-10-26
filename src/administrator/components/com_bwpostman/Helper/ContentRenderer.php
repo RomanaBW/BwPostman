@@ -205,8 +205,8 @@ class ContentRenderer
      *
      * @since       0.9.1
      */
-	public function  retrieveContent(int $id, int $show_readon)
-	{
+	public function  retrieveContent(int $id, int $show_readon): object|stdClass|null
+    {
 		$row   = new stdClass();
 		$app   = Factory::getApplication();
 		$_db   = Factory::getContainer()->get(DatabaseInterface::class);
@@ -738,8 +738,8 @@ class ContentRenderer
 	 *
 	 * @since	2.3.0 (here, since 1.0.7 at newsletter model)
 	 */
-	private function getArticleLanguage(int $id)
-	{
+	private function getArticleLanguage(int $id): mixed
+    {
 		if (Multilanguage::isEnabled())
 		{
 			$result = '';
@@ -888,8 +888,8 @@ class ContentRenderer
 	 *
 	 * @since	3.0.0 (here, moved from newsletter model)
 	 */
-	public function replaceAllFooterLinks(string &$body, int $subscriberId, int $mode)
-	{
+	public function replaceAllFooterLinks(string &$body, int $subscriberId, int $mode): void
+    {
 		$footerid = 0;
 
 		if ($subscriberId)
@@ -1263,8 +1263,8 @@ class ContentRenderer
 	 *
 	 * @since 3.0.0 (here, moved from newsletter model)
 	 */
-	public function addTestrecipientsFooter(string &$body)
-	{
+	public function addTestrecipientsFooter(string &$body): void
+    {
 		$body = str_replace("[%edit_link%]", "", $body);
 		$body = str_replace("[%unsubscribe_link%]", "", $body);
 		$body = str_replace("[%impressum%]", "", $body);
@@ -1285,8 +1285,8 @@ class ContentRenderer
 	 *
 	 * @since 3.0.0 (here, moved from newsletter model)
 	 */
-	public function replaceContentPlaceholders(string &$body, object $tblSendMailQueue, ?string $itemid_edit, ?string $itemid_unsubscribe, string $editlink, int $substituteLinks)
-	{
+	public function replaceContentPlaceholders(string &$body, object $tblSendMailQueue, ?string $itemid_edit, ?string $itemid_unsubscribe, string $editlink, int $substituteLinks): void
+    {
 		$app = Factory::getApplication();
 		$uri = Uri::getInstance();
 

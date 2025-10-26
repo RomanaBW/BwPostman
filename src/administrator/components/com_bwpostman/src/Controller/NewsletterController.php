@@ -226,8 +226,8 @@ class NewsletterController extends FormController
 	 *
 	 * @since    4.0.0
 	 */
-	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true))
-	{
+	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel|bool
+    {
 		return $this->factory->createModel($name, $prefix, $config);
 	}
 

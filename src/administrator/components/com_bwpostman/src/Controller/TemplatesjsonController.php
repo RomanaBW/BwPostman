@@ -57,8 +57,8 @@ class TemplatesjsonController extends AdminController
 	 *
 	 * @since       1.1.0
 	 */
-	public function installtpl()
-	{
+	public function installtpl(): void
+    {
 		try
 		{
 			// Check for request forgeries

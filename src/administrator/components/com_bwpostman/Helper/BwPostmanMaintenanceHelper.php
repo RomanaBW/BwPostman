@@ -146,8 +146,8 @@ abstract class BwPostmanMaintenanceHelper
 	 *
 	 * @since    2.0.0
 	 */
-	public static function decompressBackupFile(string $srcFileName, string $packName)
-	{
+	public static function decompressBackupFile(string $srcFileName, string $packName): false|string
+    {
 		$destPath	= Factory::getApplication()->getConfig()->get('tmp_path') . "/bwpm_unzipped";
 
 		if (Folder::exists($destPath))

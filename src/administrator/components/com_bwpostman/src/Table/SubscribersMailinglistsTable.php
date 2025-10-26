@@ -268,8 +268,8 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since 3.0.0 here
 	 */
-	public function hasSubscriptionForMailinglist(int $subscriberId, int $mailinglistId)
-	{
+	public function hasSubscriptionForMailinglist(int $subscriberId, int $mailinglistId): bool|int
+    {
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
@@ -382,8 +382,8 @@ class SubscribersMailinglistsTable extends Table
 	 *
 	 * @since  3.0.0
 	 */
-	public function getId()
-	{
+	public function getId(): mixed
+    {
 		$key = $this->getKeyName();
 
 		return $this->$key;

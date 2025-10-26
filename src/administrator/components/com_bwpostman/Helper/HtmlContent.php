@@ -53,8 +53,8 @@ class HtmlContent
 	 *
 	 * @since       0.9.1
 	 */
-	public function Title(object $row, object $params)
-	{
+	public function Title(object $row, object $params): void
+    {
 		?>
 		<h2><?php echo $row->title; ?></h2>
 		<?php
@@ -97,8 +97,8 @@ class HtmlContent
 	 *
 	 * @since       0.9.1
 	 */
-	public function Author(object $row)
-	{
+	public function Author(object $row): void
+    {
 		?>
 		<span class="created_by">
 			<small>
@@ -118,8 +118,8 @@ class HtmlContent
 	 *
 	 * @since       0.9.1
 	 */
-	public function CreateDate(object $row)
-	{
+	public function CreateDate(object $row): void
+    {
 		$create_date = null;
 
 		if (intval($row->created) != 0)

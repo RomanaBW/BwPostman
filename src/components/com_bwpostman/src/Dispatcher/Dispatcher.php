@@ -54,8 +54,8 @@ class Dispatcher extends ComponentDispatcher
 	 *
 	 * @since   4.0.0
 	 */
-	public function dispatch()
-	{
+	public function dispatch(): void
+    {
 		$this->applyViewAndController();
 
 		parent::dispatch();

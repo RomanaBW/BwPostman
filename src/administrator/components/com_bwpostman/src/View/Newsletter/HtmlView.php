@@ -267,8 +267,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbar()
-	{
+	protected function addToolbar(): void
+    {
 		$app    = Factory::getApplication();
 		$app->input->set('hidemainmenu', true);
 		$userId		= $app->getIdentity()->id;
@@ -388,8 +388,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.4.0
 	 */
-	private function buildDelayMessage()
-	{
+	private function buildDelayMessage(): void
+    {
 		// Get the params
 		$params      = ComponentHelper::getParams('com_bwpostman');
 		$this->delay = (int) $params->get('mails_per_pageload_delay', '10') * (int) $params->get('mails_per_pageload_delay_unit', '1000');
@@ -438,8 +438,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.4.0
 	 */
-	private function setContentFlags()
-	{
+	private function setContentFlags(): void
+    {
 		// flag, if rendered content exists or not
 		if ($this->item->html_version || $this->item->text_version)
 		{

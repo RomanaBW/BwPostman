@@ -133,8 +133,8 @@ class RegisterController extends FormController
 	 *
 	 * @throws Exception
 	 */
-	public function display($cachable = false, $urlparams = false)
-	{
+	public function display($cachable = false, $urlparams = false): void
+    {
 		parent::display();
 	}
 
@@ -168,8 +168,8 @@ class RegisterController extends FormController
 	 *
 	 * @since	1.0.1
 	 */
-	public function save($key = null, $urlVar = null)
-	{
+	public function save($key = null, $urlVar = null): bool
+    {
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 
@@ -361,8 +361,8 @@ class RegisterController extends FormController
 	 *
 	 * @since       2.0.0
 	 */
-	public function activate()
-	{
+	public function activate(): void
+    {
 		// Initialize variables
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
@@ -422,8 +422,8 @@ class RegisterController extends FormController
 	 *
 	 * @since       2.0.0
 	 */
-	public function sendActivation()
-	{
+	public function sendActivation(): void
+    {
 		$jinput	    = Factory::getApplication()->input;
 		$subs_id    = null;
 
@@ -520,8 +520,8 @@ class RegisterController extends FormController
 	 *
 	 * @since    1.0.1
 	 */
-	public function showCaptcha()
-	{
+	public function showCaptcha(): void
+    {
 		BwPostmanHelper::showCaptcha();
 	}
 }

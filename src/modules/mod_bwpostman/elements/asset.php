@@ -55,8 +55,8 @@ class JFormFieldAsset extends FormField
 	 *
 	 * @since
 	 */
-	protected function getInput()
-	{
+	protected function getInput(): null
+    {
 
 		$text = Text::_('MOD_BWPOSTMAN_FIELD_OBLIGATION');
 

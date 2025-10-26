@@ -100,8 +100,8 @@ class CampaignsController extends AdminController
 	 *
 	 * @since	1.0.1
 	 */
-	public function getModel($name = 'Campaign', $prefix = 'Administrator', $config = array('ignore_request' => true))
-	{
+	public function getModel($name = 'Campaign', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel|bool
+    {
 		return $this->factory->createModel($name, $prefix, $config);
 	}
 

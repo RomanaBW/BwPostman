@@ -44,8 +44,8 @@ class BwWebApp extends WebApplication
 	 *
 	 * @since   2.4.0
 	 */
-	public function doExecute()
-	{
+	public function doExecute(): void
+    {
 		parent::execute();
 	}
 }

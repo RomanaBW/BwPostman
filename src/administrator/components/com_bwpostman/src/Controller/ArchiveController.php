@@ -172,8 +172,8 @@ class ArchiveController extends AdminController
 	 *
 	 * @since   0.9.1
 	 */
-	public function unarchive()
-	{
+	public function unarchive(): BaseController|bool
+    {
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 
@@ -418,8 +418,8 @@ class ArchiveController extends AdminController
 	 *
 	 * @since   0.9.1
 	 */
-	public function delete()
-	{
+	public function delete(): BaseController|bool
+    {
 		$app    = Factory::getApplication();
 		$jinput	= $app->input;
 

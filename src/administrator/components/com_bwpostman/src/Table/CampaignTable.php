@@ -106,11 +106,11 @@ class CampaignTable extends Table implements VersionableTableInterface
 	public int $created_by = 0;
 
 	/**
-	 * @var datetime last modification date of the campaign
+	 * @var DateTime|string|null last modification date of the campaign
 	 *
 	 * @since       0.9.1
 	 */
-	public ?DateTime $modified_time = null;
+	public DateTime|string|null $modified_time = null;
 
 	/**
 	 * @var int user ID
@@ -428,8 +428,8 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 *
 	 * @since 3.0.0 (here. before since 2.3.0 at campaign helper)
 	 */
-	public function getNbrOfCampaigns(bool $archived)
-	{
+	public function getNbrOfCampaigns(bool $archived): bool|int
+    {
 		$archiveFlag = 0;
 
 		if ($archived)
@@ -538,8 +538,8 @@ class CampaignTable extends Table implements VersionableTableInterface
 	 *
 	 * @since  3.0.0
 	 */
-	public function getId()
-	{
+	public function getId(): mixed
+    {
 		$key = $this->getKeyName();
 
 		return $this->$key;

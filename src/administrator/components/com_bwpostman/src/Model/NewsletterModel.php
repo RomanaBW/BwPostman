@@ -209,8 +209,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function setId(int $id)
-	{
+	public function setId(int $id): void
+    {
 		$this->id   = $id;
 		$this->data = null;
 	}
@@ -242,8 +242,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since   1.0.1
 	 */
-	public function getItem($pk = null)
-	{
+	public function getItem($pk = null): object|bool|stdClass
+    {
 		$app  = Factory::getApplication();
 		$item = new stdClass();
 		PluginHelper::importPlugin('bwpostman');
@@ -393,8 +393,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	public function getForm($data = array(), $loadData = true)
-	{
+	public function getForm($data = array(), $loadData = true): object|bool
+    {
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$config = Factory::getApplication()->getConfig();
 		$user   = Factory::getApplication()->getIdentity();
@@ -505,8 +505,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function loadFormData()
-	{
+	protected function loadFormData(): mixed
+    {
 		$recordId = Factory::getApplication()->getUserState('com_bwpostman.newsletter.id', 0);
 
 		// Check the session for previously entered form data for this record id.
@@ -731,8 +731,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since   3.0.0
 	 */
-	public function validate($form, $data, $group = null)
-	{
+	public function validate($form, $data, $group = null): bool|array
+    {
 		if (!isset($data['attachment']) || $data['attachment'] === "")
 		{
 			$data['attachment'] = array();
@@ -1068,8 +1068,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since   1.6
 	 */
-	public function changeIsTemplate(int $id)
-	{
+	public function changeIsTemplate(int $id): bool|int
+    {
 		$user  = Factory::getApplication()->getIdentity();
 		$table = $this->getTable();
 
@@ -1122,8 +1122,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 2.3.0
 	 */
-	public function preSendChecks(array &$error, int $recordId = 0, bool $automation = false)
-	{
+	public function preSendChecks(array &$error, int $recordId = 0, bool $automation = false): bool|array
+    {
 		// Access check.
 		if (!BwPostmanHelper::canSend($recordId))
 		{
@@ -1383,8 +1383,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	public function changeTab()
-	{
+	public function changeTab(): void
+    {
 		$app         = Factory::getApplication();
 		$jinput      = $app->input;
 		$form_data   = $jinput->get('jform', '', 'array');
@@ -1616,8 +1616,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since
 	 */
-	private function addSendMailContent(int $nl_id)
-	{
+	private function addSendMailContent(int $nl_id): bool|int
+    {
 		if (!$nl_id)
 		{
 			return false;
@@ -1812,8 +1812,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 1.0.3
 	 */
-	public function checkTrials(int $trial = 2, int $count = 0)
-	{
+	public function checkTrials(int $trial = 2, int $count = 0): bool|int
+    {
 		PluginHelper::importPlugin('bwpostman');
 		$app = Factory::getApplication();
 		$table = '#__sendmailqueue';
@@ -2210,7 +2210,7 @@ class NewsletterModel extends AdminModel
      *
      * @since 4.2.6
      */
-    private function getBounceAddress()
+    private function getBounceAddress(): string
     {
         return '';
     }
@@ -2226,8 +2226,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 2.0.0
 	 */
-	private function processTestMode()
-	{
+	private function processTestMode(): void
+    {
 		$test_plugin = PluginHelper::getPlugin('system', 'bwtestmode');
 
 		if ($test_plugin)
@@ -2254,8 +2254,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 2.3.0
 	 */
-	private function presetOldHTMLTemplate(object &$item)
-	{
+	private function presetOldHTMLTemplate(object &$item): void
+    {
 		$html_tpl = null;
 		$db       = $this->getDatabase();
 
@@ -2304,8 +2304,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 2.3.0
 	 */
-	private function presetOldTextTemplate(object &$item)
-	{
+	private function presetOldTextTemplate(object &$item): void
+    {
 		$text_tpl = null;
 		$db       = $this->_db;
 
@@ -2517,8 +2517,8 @@ class NewsletterModel extends AdminModel
 	 *
 	 * @since 2.3.0
 	 */
-	private function getSubscriberChecks(array $mailinglists, bool &$check_subscribers, array &$usergroups)
-	{
+	private function getSubscriberChecks(array $mailinglists, bool &$check_subscribers, array &$usergroups): void
+    {
 		foreach ($mailinglists as $mailinglist)
 		{
 			// Mailinglists

@@ -94,8 +94,8 @@ class JButtonExtlink extends ToolbarButton
 	 *
 	 * @since  2.4.0
 	 */
-	protected function prepareOptions(array &$options)
-	{
+	protected function prepareOptions(array &$options): void
+    {
 		$options['name']  = $this->getName();
 		$options['text']  = Text::_($this->getText());
 		$options['class'] = $this->getIcon() ?: $this->fetchIconClass($this->getName());

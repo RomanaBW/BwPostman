@@ -103,8 +103,8 @@ class RawView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public function display($tpl = null)
-	{
+	public function display($tpl = null): bool|static
+    {
 		$app 	  = Factory::getApplication();
 		$jinput	  = $app->input;
 		$task	  = $jinput->get('task', 'export');

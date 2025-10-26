@@ -106,8 +106,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since  1.1.0
 	 */
-	public function getTable($name = 'Template', $prefix = 'Administrator', $options = array())
-	{
+	public function getTable($name = 'Template', $prefix = 'Administrator', $options = array()): Table|bool
+    {
 		return parent::getTable($name, $prefix, $options);
 	}
 
@@ -118,8 +118,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	private function setId(int $id)
-	{
+	private function setId(int $id): void
+    {
 		$this->id   = $id;
 		$this->data = null;
 	}
@@ -152,8 +152,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since   1.1.0
 	 */
-	public function getItem($pk = null)
-	{
+	public function getItem($pk = null): bool|stdClass
+    {
 		$app       = Factory::getApplication();
 		$cid       = $app->getUserState('com_bwpostman.edit.template.id', 0);
 		$data      = $app->getUserState('com_bwpostman.edit.template.data');
@@ -371,8 +371,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since	1.1.0
 	 */
-	public function getForm($data = array(), $loadData = true)
-	{
+	public function getForm($data = array(), $loadData = true): false|Form
+    {
 		// Get the form.
 		$form = $this->loadForm('com_bwpostman.template', 'template', array('control' => 'jform', 'load_data' => $loadData));
 
@@ -455,8 +455,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since	1.1.0
 	 */
-	protected function loadFormData()
-	{
+	protected function loadFormData(): mixed
+    {
 		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.template.id', 0);
 
 		// Check the session for previously entered form data.
@@ -633,8 +633,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	public function makeTemplate(object $item, object $tpl)
-	{
+	public function makeTemplate(object $item, object $tpl): array|string|null
+    {
 		$header = '';
 		// replace placeholders
 		switch ($item->header['header_style'])
@@ -983,8 +983,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	private function makePreview(object $item)
-	{
+	private function makePreview(object $item): void
+    {
 		// make preview
 		// first get templates tpls
 		$tpl_id    = $item->tpl_id;
@@ -1045,8 +1045,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	private function makePreviewHtml(object $item)
-	{
+	private function makePreviewHtml(object $item): void
+    {
 		// make preview
 
 		// make html preview data
@@ -1110,8 +1110,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	private function makePreviewText(object $item)
-	{
+	private function makePreviewText(object $item): void
+    {
 		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
 		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
 
@@ -1177,8 +1177,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 1.1.0
 	 */
-	private function makePreviewTextStd(object $item)
-	{
+	private function makePreviewTextStd(object $item): void
+    {
 		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
 		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
 
@@ -1329,8 +1329,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 3.0.0
 	 */
-	private function replaceZoomPaddingBasics($item, $content)
-	{
+	private function replaceZoomPaddingBasics($item, $content): array|string|null
+    {
 		$zp      = $item->basics['zoom_padding'];
 		//@ToDo: redundant character escapes \% and ] in RegExp
 		$content = preg_replace_callback(
@@ -1399,8 +1399,8 @@ class TemplateModel extends AdminModel
 	 *
 	 * @since 3.0.0
 	 */
-	private function replaceEditAndUnsubscribeLink(?string $itemid_edit, string $preview_text)
-	{
+	private function replaceEditAndUnsubscribeLink(?string $itemid_edit, string $preview_text): array|string
+    {
 		$replace1 = '+ ' . Text::_('COM_BWPOSTMAN_TPL_UNSUBSCRIBE_LINK_TEXT') . ' +<br />&nbsp;&nbsp;' .
 			Uri::root(true) . 'index.php?option=com_bwpostman&amp;Itemid=' . $itemid_edit . '&amp;view=edit&amp;task=unsub&amp;editlink=[EDITLINK]';
 

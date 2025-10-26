@@ -90,11 +90,11 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * property to hold request url
 	 *
-	 * @var object  $request_url
+	 * @var string  $request_url
 	 *
 	 * @since       0.9.1
 	 */
-	protected object $request_url;
+	protected string $request_url;
 
 	/**
 	 * property to hold template
@@ -169,8 +169,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbar()
-	{
+	protected function addToolbar(): void
+    {
 		$app    = Factory::getApplication();
 		$app->input->set('hidemainmenu', true);
 		$uri		= Uri::getInstance();

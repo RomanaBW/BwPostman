@@ -104,8 +104,8 @@ class BwPostmanInstallHelper
 	 *
 	 * @since   2.0.0
 	 */
-	public static function convertToUtf8Mb4(string $reference_table = '', string $conversion_file = '')
-	{
+	public static function convertToUtf8Mb4(string $reference_table = '', string $conversion_file = ''): void
+    {
 		$_db       = Factory::getContainer()->get(DatabaseInterface::class);
 		$converted = false;
 

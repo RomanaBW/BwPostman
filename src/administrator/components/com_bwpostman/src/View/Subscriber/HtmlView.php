@@ -305,8 +305,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	private function displayImportForm()
-	{
+	private function displayImportForm(): void
+    {
 		$app		= Factory::getApplication();
 		$params 	= ComponentHelper::getParams('com_bwpostman');
 		$session 	= $app->getSession();
@@ -410,8 +410,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	private function displayExportForm()
-	{
+	private function displayExportForm(): void
+    {
 		$app = Factory::getApplication();
 
 		$template	= $app->getTemplate();
@@ -442,8 +442,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected function addToolbar()
-	{
+	protected function addToolbar(): void
+    {
 		$app    = Factory::getApplication();
 		$app->input->set('hidemainmenu', true);
 		$uri    = Uri::getInstance();

@@ -156,8 +156,8 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public function setEmailFrom(string $email)
-	{
+	public function setEmailFrom(string $email): void
+    {
 		if (!self::validate($email))
 		{
 			$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_SENDER_EMAIL', $email);
@@ -173,8 +173,8 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public function setConnectionTimeout(int $seconds)
-	{
+	public function setConnectionTimeout(int $seconds): void
+    {
 		if ($seconds > 0)
 		{
 			$this->maxConnectionTimeout = $seconds;
@@ -188,8 +188,8 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public function setStreamTimeout(int $seconds)
-	{
+	public function setStreamTimeout(int $seconds): void
+    {
 		if ($seconds > 0)
 		{
 			$this->streamTimeout = $seconds;
@@ -203,8 +203,8 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public function setStreamTimeoutWait(int $seconds)
-	{
+	public function setStreamTimeoutWait(int $seconds): void
+    {
 		if ($seconds >= 0)
 		{
 			$this->streamTimeoutWait = $seconds;
@@ -272,8 +272,8 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	public static function parseEmail(string $email, bool $domainOnly = true)
-	{
+	public static function parseEmail(string $email, bool $domainOnly = true): array|string
+    {
 		sscanf($email, "%[^@]@%s", $user, $domain);
 
 		if ($domainOnly)
@@ -293,8 +293,8 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected function setError(string $msg)
-	{
+	protected function setError(string $msg): void
+    {
 		$this->errorCounter++;
 		$this->recentError = $msg;
 	}
@@ -468,8 +468,8 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected function streamResponse(int $timed = 0)
-	{
+	protected function streamResponse(int $timed = 0): bool|string
+    {
 		$reply = stream_get_line($this->stream, 1);
 		$status = stream_get_meta_data($this->stream);
 
@@ -502,8 +502,8 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	protected function streamCode(string $str)
-	{
+	protected function streamCode(string $str): bool|string
+    {
 		preg_match('/^(?<code>[0-9]{3})(\s|-)(.*)$/ims', $str, $matches);
 
 		if (isset($matches['code']) && $matches['code'])

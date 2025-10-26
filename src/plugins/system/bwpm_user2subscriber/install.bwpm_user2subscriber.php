@@ -91,8 +91,8 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 *
 	 * @since     0.9.8
 	 */
-	public function postflight(string $type, object $parent)
-	{
+	public function postflight(string $type, object $parent): void
+    {
 		if ($type == 'update')
 		{
 			// remove obsolete files
@@ -153,8 +153,8 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 *
 	 * @since   4.0.0
 	 */
-	private function removeObsoleteFilesAndFolders()
-	{
+	private function removeObsoleteFilesAndFolders(): void
+    {
 		$plgFilesArray = array(
 			'helpers/bwpm_user2subscriberhelper.php',
 		);

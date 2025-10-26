@@ -122,8 +122,8 @@ class TemplateController extends FormController
 	 *
 	 * @since	1.1.0
 	 */
-	public function addtext()
-	{
+	public function addtext(): void
+    {
 		$jinput	= Factory::getApplication()->input;
 
 		$jinput->set('hidemainmenu', 1);
@@ -142,8 +142,8 @@ class TemplateController extends FormController
 	 *
 	 * @since	1.1.0
 	 */
-	public function addhtml()
-	{
+	public function addhtml(): void
+    {
 		$jinput	= Factory::getApplication()->input;
 
 		$jinput->set('hidemainmenu', 1);
@@ -318,8 +318,8 @@ class TemplateController extends FormController
 	 * @since	1.0.1
 	 *
 	 */
-	public function save($key = null, $urlVar = 'id')
-	{
+	public function save($key = null, $urlVar = 'id'): void
+    {
 		parent::save();
 
 		PluginHelper::importPlugin('bwpostman');
@@ -458,8 +458,8 @@ class TemplateController extends FormController
 	 *
 	 * @since	1.1.0
 	 */
-	public function setDefault()
-	{
+	public function setDefault(): void
+    {
 		$jinput	= Factory::getApplication()->input;
 
 		// Check for request forgeries

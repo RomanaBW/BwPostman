@@ -67,8 +67,8 @@ class CustomscriptField extends FormField
 	 *
 	 * @since   2.2.0
 	 */
-	protected function getinput()
-	{
+	protected function getinput(): void
+    {
 		$doc  = Factory::getApplication()->getDocument();
 		$text = Text::_('COM_BWPOSTMAN_FIELD_OBLIGATION');
 

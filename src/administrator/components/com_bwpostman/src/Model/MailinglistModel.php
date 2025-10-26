@@ -100,8 +100,8 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($name = 'Mailinglist', $prefix = 'Administrator', $options = array())
-	{
+	public function getTable($name = 'Mailinglist', $prefix = 'Administrator', $options = array()): Table|bool
+    {
 		return parent::getTable($name, $prefix, $options);
 	}
 
@@ -114,8 +114,8 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function setId(int $id)
-	{
+	public function setId(int $id): void
+    {
 		$this->id   = $id;
 		$this->data = null;
 	}
@@ -147,8 +147,8 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @since   1.0.1
 	 */
-	public function getItem($pk = null)
-	{
+	public function getItem($pk = null): bool|stdClass
+    {
 		$app  = Factory::getApplication();
 		$data = $app->getUserState('com_bwpostman.edit.mailinglist.data');
 
@@ -183,8 +183,8 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	public function getForm($data = array(), $loadData = true)
-	{
+	public function getForm($data = array(), $loadData = true): false|Form
+    {
 		// Get the form.
 		$form = $this->loadForm('com_bwpostman.mailinglist', 'mailinglist', array('control' => 'jform', 'load_data' => $loadData));
 
@@ -274,8 +274,8 @@ class MailinglistModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function loadFormData()
-	{
+	protected function loadFormData(): mixed
+    {
 		$recordId = (int)Factory::getApplication()->getUserState('com_bwpostman.edit.mailinglist.id', 0);
 
 		// Check the session for previously entered form data.

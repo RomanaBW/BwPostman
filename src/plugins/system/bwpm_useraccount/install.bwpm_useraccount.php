@@ -90,8 +90,8 @@ class PlgSystemBwPm_UserAccountInstallerScript
 	 *
 	 * @since     4.1.0
 	 */
-	public function postflight(string $type)
-	{
+	public function postflight(string $type): void
+    {
 		// We only need to perform this if the extension is being installed, not update
 		if ($type == 'install')
 		{

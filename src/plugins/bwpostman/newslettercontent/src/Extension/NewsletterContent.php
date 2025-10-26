@@ -303,8 +303,8 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	public function getTemplate($siteApp, bool $params = false)
-	{
+	public function getTemplate($siteApp, bool $params = false): string|stdClass
+    {
 		if (is_object($siteApp->template)) {
 			if ($siteApp->template->parent) {
 				if (!is_file(JPATH_THEMES . '/' . $siteApp->template->template . '/index.php')) {
@@ -601,8 +601,8 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	protected function _load(string $position, string $style = 'none')
-	{
+	protected function _load(string $position, string $style = 'none'): false|string
+    {
 		$modules  = $this->getModuleByPosition($position);
 		$params   = ['style' => $style];
 		ob_start();
@@ -628,8 +628,8 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	protected function _loadmod(string $module, string $title, string $style = 'none')
-	{
+	protected function _loadmod(string $module, string $title, string $style = 'none'): false|string
+    {
 		$mod      = $this->getModuleByName($module, $title);
 
 		// If the module without the mod_ isn't found, try it with mod_.
@@ -660,8 +660,8 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	protected function _loadid(string $id)
-	{
+	protected function _loadid(string $id): false|string
+    {
 		$modules  = $this->getModuleById($id);
 		$params   = ['style' => 'none'];
 		ob_start();
@@ -685,8 +685,8 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	private function getModuleByName(string $name, string $title = null)
-	{
+	private function getModuleByName(string $name, string $title = null): ?stdClass
+    {
 		$result  = null;
 		$modules = $this->getModules();
 		$total   = count($modules);
@@ -1076,8 +1076,8 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	private function dispatch($module, $siteApp, $input)
-	{
+	private function dispatch($module, $siteApp, $input): void
+    {
 		$path = JPATH_ROOT . '/modules/' . $module->module . '/' . $module->module . '.php';
 
 		if (!is_file($path)) {

@@ -49,8 +49,8 @@ abstract class BwPostmanNewsletterHelper {
 	 *
 	 * @since 2.3.0 (since 3.0.0 here, before at BE newsletter model)
 	 */
-	public static function countUsersOfNewsletter(array $usergroup)
-	{
+	public static function countUsersOfNewsletter(array $usergroup): int|string|null
+    {
 		$count_users = 0;
 		$usergroup   = ArrayHelper::toInteger($usergroup);
 

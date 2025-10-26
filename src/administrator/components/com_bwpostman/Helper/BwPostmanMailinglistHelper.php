@@ -71,8 +71,8 @@ class BwPostmanMailinglistHelper {
 	 *
 	 * @since 3.0.0
 	 */
-	public static function mergeMailinglists(array &$data = array())
-	{
+	public static function mergeMailinglists(array &$data = array()): void
+    {
 		if (isset($data['ml_available']))
 		{
 			foreach ($data['ml_available'] as $value)

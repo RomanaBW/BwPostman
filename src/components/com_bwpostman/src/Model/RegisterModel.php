@@ -100,8 +100,8 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function populateState()
-	{
+	protected function populateState(): void
+    {
 		$jinput	= Factory::getApplication()->input;
 
 		// Load state from the request.
@@ -134,8 +134,8 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since    1.0.1
 	 */
-	public function getForm($data = array(), $loadData = true)
-	{
+	public function getForm($data = array(), $loadData = true): false|Form
+    {
 		$form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));
 
 		// @ToDo: $this->loadForm throws RuntimeException, if form or file not found => there is never an empty form
@@ -305,8 +305,8 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function activateSubscriber(string $activation, string &$ret_err_msg, string &$ret_editlink, string $activation_ip)
-	{
+	public function activateSubscriber(string $activation, string &$ret_err_msg, string &$ret_editlink, string $activation_ip): bool|int
+    {
 		$subsTable  = $this->getTable();
 		$subscriber = $subsTable->getSubscriberActivationData($activation);
 
@@ -383,8 +383,8 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since       2.0.3
 	 */
-	public function sendDeactivationNotification(object $subscriber)
-	{
+	public function sendDeactivationNotification(object $subscriber): void
+    {
 		// set subject
 		$subject = Text::_('COM_BWPOSTMAN_NEW_DEACTIVATION');
 
@@ -423,8 +423,8 @@ class RegisterModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function sendActivationNotification(int $subscriber_id)
-	{
+	public function sendActivationNotification(int $subscriber_id): void
+    {
 		// set subject
 		$subject = Text::_('COM_BWPOSTMAN_NEW_ACTIVATION');
 

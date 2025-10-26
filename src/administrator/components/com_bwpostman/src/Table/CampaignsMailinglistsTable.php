@@ -368,8 +368,8 @@ class CampaignsMailinglistsTable extends Table
 	 *
 	 * @since  3.0.0
 	 */
-	public function getId()
-	{
+	public function getId(): mixed
+    {
 		$key = $this->getKeyName();
 
 		return $this->$key;

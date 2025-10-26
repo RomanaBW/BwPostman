@@ -87,8 +87,8 @@ class NewslettersController extends AdminController
 	 *
 	 * @since       2.0.0
 	 */
-	public function display($cachable = false, $urlparams = false)
-	{
+	public function display($cachable = false, $urlparams = false): void
+    {
 		$Itemid = Factory::getApplication()->input->get('Itemid', null, 'STRING');
 		Factory::getApplication()->setUserState('com_bwpostman.newsletters.itemid', $Itemid);
 

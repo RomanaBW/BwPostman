@@ -190,8 +190,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       1.1.0
 	 */
-	protected function addToolbar()
-	{
+	protected function addToolbar(): void
+    {
 		$jinput	= Factory::getApplication()->input;
 		$layout	= $jinput->getCmd('layout', '');
 

@@ -228,8 +228,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since 4.0.0
 	 */
-	private function getSubscriber()
-	{
+	private function getSubscriber(): mixed
+    {
 		// If there occurred an error while storing the data load the data from the session
 		$session         = Factory::getApplication()->getSession();
 		$subscriber_data = $session->get('subscriber_data');

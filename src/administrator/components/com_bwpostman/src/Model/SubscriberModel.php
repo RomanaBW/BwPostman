@@ -129,8 +129,8 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since  1.0.1
 	 */
-	public function getTable($name = 'Subscriber', $prefix = 'Administrator', $options = array())
-	{
+	public function getTable($name = 'Subscriber', $prefix = 'Administrator', $options = array()): Table|bool
+    {
 		return parent::getTable($name, $prefix, $options);
 	}
 
@@ -141,8 +141,8 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since       0.9.1
 	 */
-	public function setId(int $id)
-	{
+	public function setId(int $id): void
+    {
 		$this->id   = $id;
 		$this->data = null;
 	}
@@ -290,8 +290,8 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since	1.0,1
 	 */
-	public function getItem($pk = null)
-	{
+	public function getItem($pk = null): object|bool
+    {
 		$app          = Factory::getApplication();
 		$data         = $app->getUserState('com_bwpostman.edit.subscriber.data');
 		$mailinglists = $app->getUserState('com_bwpostman.edit.subscriber.mailinglists');
@@ -375,8 +375,8 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	public function getForm($data = array(), $loadData = true)
-	{
+	public function getForm($data = array(), $loadData = true): false|Form
+    {
 		Form::addFieldPath('JPATH_ADMINISTRATOR/components/com_bwpostman/models/fields');
 
 		// Get the form.
@@ -427,8 +427,8 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since	1.0.1
 	 */
-	protected function loadFormData()
-	{
+	protected function loadFormData(): mixed
+    {
 		$recordId = Factory::getApplication()->getUserState('com_bwpostman.edit.subscriber.id');
 
 		// Check the session for previously entered form data.
@@ -1212,8 +1212,8 @@ class SubscriberModel extends AdminModel
 	 * @throws Exception
 	 * @since       0.9.1
 	 */
-	public function export(array $data)
-	{
+	public function export(array $data): bool|string
+    {
 		// Access check
 		if (!$this->permissions['com']['admin'])
 		{
@@ -1438,8 +1438,8 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since   1.0.8
 	 */
-	public function batch($commands, $pks, $contexts)
-	{
+	public function batch($commands, $pks, $contexts): false|int|array
+    {
 		// Sanitize user ids.
 		$old_list = Factory::getApplication()->getSession()->get('com_bwpostman.subscriber.batch_filter_mailinglist', null);
 		$pks      = array_unique($pks);
@@ -1544,8 +1544,8 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since	1.0.8
 	 */
-	protected function batchAdd(int $mailinglist, array $pks)
-	{
+	protected function batchAdd(int $mailinglist, array $pks): false|array
+    {
 		// Access check
 		if (!BwPostmanHelper::canEdit('subscriber', $pks))
 		{
@@ -1595,8 +1595,8 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since   1.0.8
 	 */
-	protected function batchRemove(int $mailinglist, array $pks)
-	{
+	protected function batchRemove(int $mailinglist, array $pks): bool|array
+    {
 		// Access check
 		if (!BwPostmanHelper::canEdit('subscriber', $pks))
 		{
@@ -1654,8 +1654,8 @@ class SubscriberModel extends AdminModel
 	 *
 	 * @since 3.0.0
 	 */
-	private function getSubscribersToExport(array $data)
-	{
+	private function getSubscribersToExport(array $data): mixed
+    {
 		$db            = $this->getDatabase();
 		$export_fields = $data['export_fields'];
 

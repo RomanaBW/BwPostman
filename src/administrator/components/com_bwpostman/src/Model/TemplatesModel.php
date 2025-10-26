@@ -160,8 +160,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since  1.1.0
 	 */
-	public function getTable($name = 'Template', $prefix = 'Administrator', $options = array())
-	{
+	public function getTable($name = 'Template', $prefix = 'Administrator', $options = array()): Table|bool
+    {
 		return parent::getTable($name, $prefix, $options);
 	}
 
@@ -179,8 +179,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   1.1.0
 	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
+	protected function populateState($ordering = null, $direction = null): void
+    {
 		$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
@@ -245,8 +245,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since 1.1.0
 	 */
-	protected function getListQuery()
-	{
+	protected function getListQuery(): object|false|QueryInterface
+    {
 		$this->query = $this->getDatabase()->getQuery(true);
 
 		// Select the required fields from the table.
@@ -285,8 +285,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryJoins()
-	{
+	private function getQueryJoins(): void
+    {
 		$db = $this->getDatabase();
 		// Join over the users for the checked out user.
 		$this->query->select($db->quoteName('uc.name') . ' AS editor');
@@ -321,8 +321,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryWhere()
-	{
+	private function getQueryWhere(): void
+    {
 		$this->getFilterByAccessLevelFilter();
 		$this->getFilterByViewLevel();
 //		$this->getFilterByComponentPermissions();
@@ -340,8 +340,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getQueryOrder()
-	{
+	private function getQueryOrder(): void
+    {
 		$orderCol  = $this->state->get('list.ordering');
 		$orderDirn = $this->state->get('list.direction', 'asc');
 
@@ -365,8 +365,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByAccessLevelFilter()
-	{
+	private function getFilterByAccessLevelFilter(): void
+    {
 		if (Factory::getApplication()->isClient('site'))
 		{
 			$access = $this->getState('filter.access');
@@ -386,8 +386,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByViewLevel()
-	{
+	private function getFilterByViewLevel(): void
+    {
 		if (Factory::getApplication()->isClient('site'))
 		{
 			$user = Factory::getApplication()->getIdentity();
@@ -431,8 +431,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByNewTemplates()
-	{
+	private function getFilterByNewTemplates(): void
+    {
 		// Filter show only the new templates id > 0
 		$this->query->where($this->getDatabase()->quoteName('a.id') . ' > ' . 0);
 	}
@@ -447,8 +447,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByTemplateFormat()
-	{
+	private function getFilterByTemplateFormat(): void
+    {
         $db = $this->getDatabase();
 		// Filter show only the new templates id > 0
 		$this->query->where($db->quoteName('a.id') . ' > ' . 0);
@@ -479,8 +479,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByPublishedState()
-	{
+	private function getFilterByPublishedState(): void
+    {
         $db = $this->getDatabase();
 		$published = $this->getState('filter.published');
 
@@ -501,8 +501,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterByArchiveState()
-	{
+	private function getFilterByArchiveState(): void
+    {
 		$this->query->where($this->getDatabase()->quoteName('a.archive_flag') . ' = ' . 0);
 	}
 
@@ -513,8 +513,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since   2.0.0
 	 */
-	private function getFilterBySearchword()
-	{
+	private function getFilterBySearchword(): void
+    {
         $db = $this->getDatabase();
 		$filtersearch = $this->getState('filter.search_filter');
 		$search       = $db->escape($this->getState('filter.search'), true);
@@ -552,8 +552,8 @@ class TemplatesModel extends ListModel
 	 * @throws Exception
 	 * @since 1.1.0
 	 */
-	public function uploadTplFiles(array $file)
-	{
+	public function uploadTplFiles(array $file): bool|string
+    {
 		// Access check.
 		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
@@ -993,8 +993,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since	2.1.0
 	 */
-	public function getExportTpl(int $id = NULL, int $tpl_id = NULL)
-	{
+	public function getExportTpl(int $id = NULL, int $tpl_id = NULL): bool|string
+    {
 		$id          = $this->exportId;
 		$zip_created = '';
 
@@ -1277,8 +1277,8 @@ class TemplatesModel extends ListModel
 	 *
 	 * @since	2.1.0
 	 */
-	protected function errRedirect(string $errormsg, string $type = 'error')
-	{
+	protected function errRedirect(string $errormsg, string $type = 'error'): void
+    {
 		// Delete thumbnail in tmp folder
 		Folder::delete($this->tmp_path . 'images');
 

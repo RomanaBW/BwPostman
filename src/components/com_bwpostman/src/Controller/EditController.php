@@ -254,8 +254,8 @@ class EditController extends FormController
 	 *
 	 * @since   2.0.0
 	 */
-	public function setData(int $subscriberid = 0, int $userid = 0)
-	{
+	public function setData(int $subscriberid = 0, int $userid = 0): void
+    {
 		$app	= Factory::getApplication();
 		$app->setUserState('subscriber.id', $subscriberid);
 
@@ -275,8 +275,8 @@ class EditController extends FormController
 	 *
 	 * @since   2.0.0
 	 */
-	public function display($cachable = false, $urlparams = false)
-	{
+	public function display($cachable = false, $urlparams = false): void
+    {
 		$app     = Factory::getApplication();
 		$jinput	 = $app->input;
 		$session = $app->getSession();
@@ -314,8 +314,8 @@ class EditController extends FormController
 	 *
 	 * @since   2.0.0
 	 */
-	public function save($key = null, $urlVar = null)
-	{
+	public function save($key = null, $urlVar = null): void
+    {
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 
@@ -488,8 +488,8 @@ class EditController extends FormController
 	 *
 	 * @since   2.0.0
 	 */
-	public function unsubscribe(int $id = 0)
-	{
+	public function unsubscribe(int $id = 0): void
+    {
 		// Initialize some variables
 		$app    = Factory::getApplication();
 		$jinput	= $app->input;
@@ -564,8 +564,8 @@ class EditController extends FormController
 	 *
 	 * @since   2.0.0
 	 */
-	public function sendEditlink()
-	{
+	public function sendEditlink(): void
+    {
 		// Check for request forgeries
 		if (!Session::checkToken())
 		{

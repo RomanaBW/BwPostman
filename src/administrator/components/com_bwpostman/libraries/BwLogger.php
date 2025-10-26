@@ -164,8 +164,8 @@ class BwLogger extends W3cLogger implements LoggerAwareInterface
 	 *
 	 * @throws  RuntimeException
 	 */
-	public function addEntry(LogEntry $entry)
-	{
+	public function addEntry(LogEntry $entry): void
+    {
 		// Get component option loglevel
 		$param    = ComponentHelper::getParams('com_bwpostman');
 		$loglevel = $param->get('loglevel', self::BW_ERROR);

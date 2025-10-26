@@ -72,8 +72,8 @@ class TemplatesTplModel extends AdminModel
 	 *
 	 * @since  1.1.0
 	 */
-	public function getTable($name = 'TemplatesTpl', $prefix = 'Administrator', $options = array())
-	{
+	public function getTable($name = 'TemplatesTpl', $prefix = 'Administrator', $options = array()): Table|bool
+    {
 		return parent::getTable($name, $prefix, $options);
 	}
 
@@ -87,8 +87,8 @@ class TemplatesTplModel extends AdminModel
 	 * @since   1.1.0
 	 */
 
-	public function getItem($pk = null)
-	{
+	public function getItem($pk = null): bool|\stdClass
+    {
 		$item = parent::getItem($pk);
 
 		// convert header_tpl string to array

@@ -88,8 +88,8 @@ class NewsletterController extends FormController
 	 *
 	 * @since       2.0.0
 	 */
-	public function display($cachable = false, $urlparams = false)
-	{
+	public function display($cachable = false, $urlparams = false): void
+    {
 		Factory::getApplication()->input->set('view', 'newsletter');
 
 		parent::display();

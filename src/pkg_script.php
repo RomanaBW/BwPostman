@@ -51,15 +51,16 @@ class Pkg_BwPostmanInstallerScript
 	 */
 	private ?string $release = null;
 
-	/**
-	 * Called on installation
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.2.1
-	 */
+    /**
+     * Called on installation
+     *
+     * @param $installer
+     *
+     * @return void
+     *
+     * @throws Exception
+     * @since       2.2.1
+     */
 
 	public function install($installer): void
     {
@@ -77,15 +78,16 @@ class Pkg_BwPostmanInstallerScript
 		$this->showFinished(false);
   }
 
-	/**
-	 * Called on update
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.2.1
-	 */
+    /**
+     * Called on update
+     *
+     * @param $installer
+     *
+     * @return void
+     *
+     * @throws Exception
+     * @since   2.2.1
+     */
 
 	public function update($installer): void
     {
@@ -214,18 +216,17 @@ class Pkg_BwPostmanInstallerScript
 		}
 	}
 
-	/**
-	 * Get id of installed extension
-	 *
-	 * @param integer $clientId
-	 * @param string  $extensionName
-	 *
-	 * @return string
-	 *
-	 * @throws Exception
-	 *
-	 * @since 4.0.0
-	 */
+    /**
+     * Get id of installed extension
+     *
+     * @param integer $clientId
+     * @param string  $extensionName
+     *
+     * @return int|string
+     *
+     * @throws Exception
+     * @since 4.0.0
+     */
 	private function getExtensionId(int $clientId, string $extensionName = 'com_bwpostman'): int|string
     {
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);

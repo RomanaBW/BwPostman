@@ -3661,19 +3661,18 @@ class MaintenanceModel extends BaseDatabaseModel
 		return  true;
 	}
 
-	/**
-	 * Method to get the base asset of BwPostman. If state exists, catch values from state, else use asset table
-	 * Base asset is the asset of the component or a specific section.
-	 *
-	 * @param string  $table
-	 * @param boolean $onlyHeal
-	 *
-	 * @return array|boolean    $base_asset     base asset of BwPostman
-	 *
-	 * @throws exception
-	 *
-	 * @since    1.3.0
-	 */
+    /**
+     * Method to get the base asset of BwPostman. If state exists, catch values from state, else use asset table
+     * Base asset is the asset of the component or a specific section.
+     *
+     * @param string  $table
+     * @param boolean $onlyHeal
+     *
+     * @return int|bool|array $base_asset     base asset of BwPostman
+     *
+     * @throws Exception
+     * @since    1.3.0
+     */
 	protected function getBaseAsset(string $table = 'component', bool $onlyHeal = false): int|bool|array
     {
 		$stateAssetsRaw = '';
@@ -4087,15 +4086,15 @@ class MaintenanceModel extends BaseDatabaseModel
 		return $data_loop_max;
 	}
 
-	/**
-	 * Method to see if user groups have changed, get new IDs or create new user groups if needed
-	 *
-	 * @param array $usergroups user groups from backup file
-	 *
-	 * @return  array|boolean $group    array of old_id and new_id or false if no group id has changed. According groups were skipped.
-	 *
-	 * @since    1.3.0
-	 */
+    /**
+     * Method to see if user groups have changed, get new IDs or create new user groups if needed
+     *
+     * @param array $usergroups user groups from backup file
+     *
+     * @return int|bool|array $group    array of old_id and new_id or false if no group id has changed. According groups were skipped.
+     *
+     * @since    1.3.0
+     */
 	private function getCurrentUserGroups(array $usergroups): int|bool|array
     {
 		$groups              = array();

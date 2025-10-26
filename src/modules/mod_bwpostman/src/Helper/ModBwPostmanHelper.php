@@ -190,19 +190,18 @@ class ModBwPostmanHelper
 		return $subscriberid;
 	}
 
-	/**
-	 * Method to get the data of a user who has no newsletter account
-	 *
-	 * @access           public
-	 *
-	 * @param int $userid Joomla! user id
-	 *
-	 * @return    object  $user       user data
-	 *
-	 * @throws Exception
-	 *
-	 * @since            0.9.1
-	 */
+    /**
+     * Method to get the data of a user who has no newsletter account
+     *
+     * @access           public
+     *
+     * @param int $userid Joomla! user id
+     *
+     * @return object|null $user       user data
+     *
+     * @throws Exception
+     * @since            0.9.1
+     */
 	public static function getUserData(int $userid): ?object
 	{
 		$id	   = 0;

@@ -40,15 +40,14 @@ use RuntimeException;
  * @since
  */
 abstract class BwPostmanNewsletterHelper {
-	/**
-	 * @param array $usergroup
-	 *
-	 * @return string|null
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.3.0 (since 3.0.0 here, before at BE newsletter model)
-	 */
+    /**
+     * @param array $usergroup
+     *
+     * @return int|string|null
+     *
+     * @throws Exception
+     * @since 2.3.0 (since 3.0.0 here, before at BE newsletter model)
+     */
 	public static function countUsersOfNewsletter(array $usergroup): int|string|null
     {
 		$count_users = 0;

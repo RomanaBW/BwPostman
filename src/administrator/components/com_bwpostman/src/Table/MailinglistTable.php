@@ -193,13 +193,13 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		return self::_getAssetName();
 	}
 
-	/**
-	 * Alias function
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0.1
-	 */
+    /**
+     * Alias function
+     *
+     * @return string|null
+     *
+     * @since   1.0.1
+     */
 	public function getAssetTitle(): ?string
 	{
 		return self::_getAssetTitle();
@@ -234,13 +234,13 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		return 'com_bwpostman.mailinglist.' . $this->$k;
 	}
 
-	/**
-	 * Method to return the title to use for the asset table.
-	 *
-	 * @return  string
-	 *
-	 * @since   11.1
-	 */
+    /**
+     * Method to return the title to use for the asset table.
+     *
+     * @return string|null
+     *
+     * @since   11.1
+     */
 	protected function _getAssetTitle(): ?string
 	{
 		return $this->title;
@@ -446,20 +446,19 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		return $res;
 	}
 
-	/**
-	 * Method to get the mailinglists by restriction of archive, published and access
-	 *
-	 * @param array   $mailinglists
-	 * @param string  $condition
-	 * @param integer $archived
-	 * @param boolean $restricted
-	 *
-	 * @return array
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.4.0 (here, before since 2.3.0 at mailinglist helper)
-	 */
+    /**
+     * Method to get the mailinglists by restriction of archive, published and access
+     *
+     * @param array   $mailinglists
+     * @param string  $condition
+     * @param integer $archived
+     * @param boolean $restricted
+     *
+     * @return array|null
+     *
+     * @throws Exception
+     * @since 2.4.0 (here, before since 2.3.0 at mailinglist helper)
+     */
 	public function getMailinglistsByRestriction(array $mailinglists, string $condition = 'available', int $archived = 0, bool $restricted = true): ?array
 	{
 		$mls = null;
@@ -520,16 +519,16 @@ class MailinglistTable extends Table implements VersionableTableInterface
 		return $restrictedMls;
 	}
 
-	/**
-	 * Method to get all mailinglists which the user is authorized to see
-	 *
-	 * @param integer $userId the user ID f this subscriber
-	 *
-	 * @return    array Mailinglists
-	 *
-	 * @throws Exception
-	 * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
-	 */
+    /**
+     * Method to get all mailinglists which the user is authorized to see
+     *
+     * @param integer $userId the user ID f this subscriber
+     *
+     * @return array|null Mailinglists
+     *
+     * @throws Exception
+     * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
+     */
 	public function getAuthorizedMailinglists(int $userId): ?array
 	{
 		$app          = Factory::getApplication();

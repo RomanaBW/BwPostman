@@ -119,17 +119,16 @@ class SubscribersMailinglistsTable extends Table
 		return parent::bind($src, $ignore);
 	}
 
-	/**
-	 * Method to get the subscribers of a specific mailinglist
-	 *
-	 * @param array|integer $ids id of mailinglist
-	 *
-	 * @return 	array       $subscribers of this mailinglist
-	 *
-	 * @throws Exception
-	 *
-	 * @since       3.0.0 (here, before since 2.2.0 at mailinglist helper)
-	 */
+    /**
+     * Method to get the subscribers of a specific mailinglist
+     *
+     * @param array|integer $ids id of mailinglist
+     *
+     * @return array|null $subscribers of this mailinglist
+     *
+     * @throws Exception
+     * @since       3.0.0 (here, before since 2.2.0 at mailinglist helper)
+     */
 	public function getSubscribersOfMailinglist(array|int $ids): ?array
 	{
 		$subscribersOfMailinglist = null;
@@ -168,9 +167,9 @@ class SubscribersMailinglistsTable extends Table
 	/**
 	 * Method to delete all or selected mailinglist entries for the subscriber_id from subscribers_mailinglists-table
 	 *
-	 * @param integer $subscriber_id
-	 * @param array|null
-	 *
+	 * @param integer    $subscriber_id
+	 * @param array|null $mailinglists
+     *
 	 * @return boolean
 	 *
 	 * @throws Exception

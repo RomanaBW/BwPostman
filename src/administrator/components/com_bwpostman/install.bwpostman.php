@@ -78,7 +78,7 @@ class com_bwpostmanInstallerScript
 	private string $minimum_php_version = "7.2.5";
 
 	/**
-	 * @var string release
+	 * @var string|null release
 	 *
 	 * @since       2.0.0
 	 */
@@ -136,7 +136,7 @@ class com_bwpostmanInstallerScript
 									);
 
 	/**
-	 * @var string ID of BwPostmanAdmin usergroup
+	 * @var string|null ID of BwPostmanAdmin usergroup
 	 *
 	 * @since       2.0.0
 	 */
@@ -2192,18 +2192,17 @@ EOS;
 		$db->execute();
 	}
 
-	/**
-	 * Get id of installed extension
-	 *
-	 * @param integer $clientId
-	 * @param string  $extensionName
-	 *
-	 * @return string
-	 *
-	 * @throws Exception
-	 *
-	 * @since version
-	 */
+    /**
+     * Get id of installed extension
+     *
+     * @param integer $clientId
+     * @param string  $extensionName
+     *
+     * @return int|string
+     *
+     * @throws Exception
+     * @since version
+     */
 	private function getExtensionId(int $clientId, string $extensionName = 'com_bwpostman'): int|string
     {
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);

@@ -307,13 +307,13 @@ class TemplateTable extends Table implements VersionableTableInterface
 		return self::_getAssetName();
 	}
 
-	/**
-	 * Alias function
-	 *
-	 * @return  string
-	 *
-	 * @since   1.1.0
-	 */
+    /**
+     * Alias function
+     *
+     * @return string|null
+     *
+     * @since   1.1.0
+     */
 	public function getAssetTitle(): ?string
 	{
 		return self::_getAssetTitle();
@@ -348,13 +348,13 @@ class TemplateTable extends Table implements VersionableTableInterface
 		return 'com_bwpostman.template.' . (int) $this->$k;
 	}
 
-	/**
-	 * Method to return the title to use for the asset table.
-	 *
-	 * @return  string
-	 *
-	 * @since   1.1.0
-	 */
+    /**
+     * Method to return the title to use for the asset table.
+     *
+     * @return string|null
+     *
+     * @since   1.1.0
+     */
 	protected function _getAssetTitle(): ?string
 	{
 		return $this->title;

@@ -62,7 +62,7 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	var string $bwpmMinRelease = '2.3.0';
 
 	/**
-	 * @var string release
+	 * @var string|null release
 	 *
 	 * @since       2.3.0
 	 */

@@ -51,14 +51,14 @@ defined('_JEXEC') or die('Restricted access');
 class CampaignsMailinglistsTable extends Table
 {
 	/**
-	 * @var int Primary Key Campaign-ID
+	 * @var int|null Primary Key Campaign-ID
 	 *
 	 * @since
 	 */
 	public ?int $campaign_id = null;
 
 	/**
-	 * @var int Primary Key Mailinglist-ID
+	 * @var int|null Primary Key Mailinglist-ID
 	 *
 	 * @since
 	 */

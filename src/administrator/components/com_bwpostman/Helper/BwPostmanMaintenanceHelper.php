@@ -134,18 +134,17 @@ abstract class BwPostmanMaintenanceHelper
 		return true;
 	}
 
-	/**
-	 * Method to decompress backup file
-	 *
-	 * @param string $srcFileName name of the file to decompress
-	 * @param string $packName    name of the packed file
-	 *
-	 * @return   string    $decompressedFile
-	 *
-	 * @throws Exception
-	 *
-	 * @since    2.0.0
-	 */
+    /**
+     * Method to decompress backup file
+     *
+     * @param string $srcFileName name of the file to decompress
+     * @param string $packName    name of the packed file
+     *
+     * @return false|string $decompressedFile
+     *
+     * @throws Exception
+     * @since    2.0.0
+     */
 	public static function decompressBackupFile(string $srcFileName, string $packName): false|string
     {
 		$destPath	= Factory::getApplication()->getConfig()->get('tmp_path') . "/bwpm_unzipped";

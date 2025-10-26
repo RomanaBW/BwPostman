@@ -673,18 +673,17 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 		return ob_get_clean();
 	}
 
-	/**
-	 * Get module by name (real, eg 'Breadcrumbs' or folder, eg 'mod_breadcrumbs')
-	 *
-	 * @param string      $name  The name of the module
-	 * @param string|null $title The title of the module, optional
-	 *
-	 * @return  stdClass  The Module object
-	 *
-	 * @throws Exception
-	 *
-	 * @since   4.2.0
-	 */
+    /**
+     * Get module by name (real, eg 'Breadcrumbs' or folder, eg 'mod_breadcrumbs')
+     *
+     * @param string      $name  The name of the module
+     * @param string|null $title The title of the module, optional
+     *
+     * @return stdClass|null The Module object
+     *
+     * @throws Exception
+     * @since   4.2.0
+     */
 	private function getModuleByName(string $name, string $title = null): ?stdClass
     {
 		$result  = null;
@@ -1068,14 +1067,17 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 		return $module->content;
 	}
 
-
-	/**
-	 * Dispatches the dispatcher.
-	 *
-	 * @return  void
-	 *
-	 * @since   4.2.0
-	 */
+    /**
+     * Dispatches the dispatcher.
+     *
+     * @param $module
+     * @param $siteApp
+     * @param $input
+     *
+     * @return  void
+     *
+     * @since   4.2.0
+     */
 	private function dispatch($module, $siteApp, $input): void
     {
 		$path = JPATH_ROOT . '/modules/' . $module->module . '/' . $module->module . '.php';

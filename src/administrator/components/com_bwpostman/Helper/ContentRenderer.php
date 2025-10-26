@@ -199,10 +199,9 @@ class ContentRenderer
      * @param int $id
      * @param int $show_readon
      *
-     * @return object|null
+     * @return object|stdClass|null
      *
      * @throws Exception
-     *
      * @since       0.9.1
      */
 	public function  retrieveContent(int $id, int $show_readon): object|stdClass|null

@@ -623,16 +623,16 @@ class TemplateModel extends AdminModel
 		return true;
 	}
 
-	/**
-	 * Method to make the template
-	 *
-	 * @param object $item
-	 * @param object $tpl
-	 *
-	 * @return 	string  $content
-	 *
-	 * @since 1.1.0
-	 */
+    /**
+     * Method to make the template
+     *
+     * @param object $item
+     * @param object $tpl
+     *
+     * @return array|string|null $content
+     *
+     * @since 1.1.0
+     */
 	public function makeTemplate(object $item, object $tpl): array|string|null
     {
 		$header = '';

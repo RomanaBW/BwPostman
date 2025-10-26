@@ -110,9 +110,9 @@ class TemplatesModel extends ListModel
 	protected string $exportId;
 
 	/**
-	 * @var	object
-	 *
 	 * @since       2.4.0
+     * @var	object|BwLogger
+	 *
 	 */
 	protected BwLogger|object $logger;
 
@@ -981,18 +981,17 @@ class TemplatesModel extends ListModel
 		return $this->basename;
 	}
 
-	/**
-	 * Method to call the template export process
-	 *
-	 * @param integer|null $id     ID to export
-	 * @param integer|null $tpl_id template ID
-	 *
-	 * @return  string
-	 *
-	 * @throws Exception
-	 *
-	 * @since	2.1.0
-	 */
+    /**
+     * Method to call the template export process
+     *
+     * @param integer|null $id     ID to export
+     * @param integer|null $tpl_id template ID
+     *
+     * @return bool|string
+     *
+     * @throws Exception
+     * @since    2.1.0
+     */
 	public function getExportTpl(int $id = NULL, int $tpl_id = NULL): bool|string
     {
 		$id          = $this->exportId;

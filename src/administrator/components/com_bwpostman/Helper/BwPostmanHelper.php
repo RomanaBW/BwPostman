@@ -123,15 +123,14 @@ class BwPostmanHelper
 		return true;
 	}
 
-	/**
-	 * Method to get the version of BwPostman installed
-	 *
-	 * @return string
-	 *
-	 * @throws Exception
-	 *
-	 * @since   0.9.1
-	 */
+    /**
+     * Method to get the version of BwPostman installed
+     *
+     * @return false|string
+     *
+     * @throws Exception
+     * @since   0.9.1
+     */
 	static public function getInstalledBwPostmanVersion(): false|string
     {
 		$app   = Factory::getApplication();
@@ -1500,19 +1499,18 @@ class BwPostmanHelper
 		return array_unique($allowed_items);
 	}
 
-	/**
-	 * Method to get only archived or only not archived records
-	 *
-	 * @param string  $view        The name of the context.
-	 * @param integer $fromArchive Do we come from archive?
-	 * @param array   $itemRecords items to check for
-	 *
-	 * @return  array|string  $allowed_items or string 'all'
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
+    /**
+     * Method to get only archived or only not archived records
+     *
+     * @param string  $view        The name of the context.
+     * @param integer $fromArchive Do we come from archive?
+     * @param array   $itemRecords items to check for
+     *
+     * @return array|string|null $allowed_items or string 'all'
+     *
+     * @throws Exception
+     * @since   2.0.0
+     */
 	public static function getItemsSeparatedByArchive(string $view, int $fromArchive, array $itemRecords): array|string|null
     {
 		$itemsToCheck = array();
@@ -1859,10 +1857,10 @@ class BwPostmanHelper
 	}
 
     /**
-     * @param Exception|RuntimeException $exception
-     * @param string                     $category
-     * @param string                     $severity
-     * @param string                     $preMessage
+     * @param Exception $exception
+     * @param string    $category
+     * @param string    $severity
+     * @param string    $preMessage
      *
      * @since 4.3.0
      */

@@ -231,17 +231,16 @@ class NewsletterModel extends AdminModel
 		return BwPostmanHelper::canEditState('newsletter', (int) $record->id);
 	}
 
-	/**
-	 * Method to get a single record.
-	 *
-	 * @param   integer  $pk  The id of the primary key.
-	 *
-	 * @return  object|bool    Object on success, false on failure.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.1
-	 */
+    /**
+     * Method to get a single record.
+     *
+     * @param null $pk The id of the primary key.
+     *
+     * @return object|bool|stdClass Object on success, false on failure.
+     *
+     * @throws Exception
+     * @since   1.0.1
+     */
 	public function getItem($pk = null): object|bool|stdClass
     {
 		$app  = Factory::getApplication();
@@ -1899,7 +1898,7 @@ class NewsletterModel extends AdminModel
 	 * CAUTION! This always begins with the first entry! If there are entries left from previous attempts,
 	 * then it begins with them!
 	 *
-	 * @param	bool 	true if we came from component
+	 * @param	bool $fromComponent true if we came from component
 	 *
 	 * @return	int		(-1, if there was an error; 0, if no mail addresses left in the queue; 1, if one Mail was send).
 	 *

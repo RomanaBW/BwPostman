@@ -147,17 +147,16 @@ class BwPostmanMailinglistHelper {
 		return ArrayHelper::toInteger($mailinglists);
 	}
 
-	/**
-	 * Method to get the data of a single Mailinglist for raw view
-	 *
-	 * @param int|null $ml_id Mailinglist ID
-	 *
-	 * @return 	object Mailinglist
-	 *
-	 * @throws Exception
-	 *
-	 * @since 3.0.0 here
-	 */
+    /**
+     * Method to get the data of a single Mailinglist for raw view
+     *
+     * @param int|null $ml_id Mailinglist ID
+     *
+     * @return object|null Mailinglist
+     *
+     * @throws Exception
+     * @since 3.0.0 here
+     */
 	public static function getSingleMailinglist(int $ml_id = null): ?object
 	{
 		$mailinglist = null;
@@ -192,17 +191,16 @@ class BwPostmanMailinglistHelper {
 		return $mailinglist;
 	}
 
-	/**
-	 * Method to get the options for the form fields comcam and comcam_noarc
-	 *
-	 * @param boolean $archiveMatters
-	 *
-	 * @return 	array
-	 *
-	 * @throws Exception
-	 *
-	 * @since 3.0.0
-	 */
+    /**
+     * Method to get the options for the form fields comcam and comcam_noarc
+     *
+     * @param boolean $archiveMatters
+     *
+     * @return array|null
+     *
+     * @throws Exception
+     * @since 3.0.0
+     */
 	public static function getMailinglistsFieldlistOptions(bool $archiveMatters = false): ?array
 	{
 		$options   = null;

@@ -270,13 +270,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		return self::_getAssetName();
 	}
 
-	/**
-	 * Alias function
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0.1
-	 */
+    /**
+     * Alias function
+     *
+     * @return string|null
+     *
+     * @since   1.0.1
+     */
 	public function getAssetTitle(): ?string
 	{
 		return self::_getAssetTitle();
@@ -311,13 +311,13 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		return 'com_bwpostman.subscriber.' . (int) $this->$k;
 	}
 
-	/**
-	 * Method to return the title to use for the asset table.
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0.1
-	 */
+    /**
+     * Method to return the title to use for the asset table.
+     *
+     * @return string|null
+     *
+     * @since   1.0.1
+     */
 	protected function _getAssetTitle(): ?string
 	{
 		return $this->name;
@@ -1301,15 +1301,14 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		return true;
 	}
 
-	/**
-	 * Method to create the activation and check if the string does not exist twice or more
-	 *
-	 * @return string   $activation
-	 *
-	 * @throws Exception
-	 *
-	 * @since 3.0.0 here
-	 */
+    /**
+     * Method to create the activation and check if the string does not exist twice or more
+     *
+     * @return false|string $activation
+     *
+     * @throws Exception
+     * @since 3.0.0 here
+     */
 	public function createActivation(): false|string
     {
 		$db    = $this->getDatabase();
@@ -1349,17 +1348,16 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		return $newActivation;
 	}
 
-	/**
-	 * Method to get the complete subscriber data by email
-	 *
-	 * @param integer $id
-	 *
-	 * @return  object
-	 *
-	 * @throws Exception
-	 *
-	 * @since   3.0.0
-	 */
+    /**
+     * Method to get the complete subscriber data by email
+     *
+     * @param integer $id
+     *
+     * @return object|null
+     *
+     * @throws Exception
+     * @since   3.0.0
+     */
 	public function getSingleSubscriberData(int $id): ?object
 	{
 		$subscriber = null;
@@ -1387,17 +1385,16 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		return $subscriber;
 	}
 
-	/**
-	 * Method to get the complete subscriber data by email
-	 *
-	 * @param array $values
-	 *
-	 * @return  object|boolean|null
-	 *
-	 * @throws Exception
-	 *
-	 * @since   3.0.0 (here)
-	 */
+    /**
+     * Method to get the complete subscriber data by email
+     *
+     * @param array $values
+     *
+     * @return object|null
+     *
+     * @throws Exception
+     * @since   3.0.0 (here)
+     */
 	public function getSubscriberDataByEmail(array $values): ?object
 	{
 		$db    = $this->getDatabase();
@@ -1525,18 +1522,17 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		return true;
 	}
 
-	/**
-	 * Method to validate edit link, if exists return subscriber id
-	 *
-	 * @param string  $email    email of the demanded unsubscription
-	 * @param string  $editlink editlink provided by the unsubscription
-	 *
-	 * @return  integer|boolean false on failure
-	 *
-	 * @throws Exception
-	 *
-	 * @since   3.0.0
-	 */
+    /**
+     * Method to validate edit link, if exists return subscriber id
+     *
+     * @param string $email    email of the demanded unsubscription
+     * @param string $editlink editlink provided by the unsubscription
+     *
+     * @return int|null false on failure
+     *
+     * @throws Exception
+     * @since   3.0.0
+     */
 	public function validateSubscriberEditlink(string $email, string $editlink): ?int
 	{
 		$db    = $this->getDatabase();
@@ -1568,17 +1564,16 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		return $id;
 	}
 
-	/**
-	 * Method to get the mail address of a subscriber from the subscribers-table depending on the subscriber ID
-	 *
-	 * @param int $id subscriber ID
-	 *
-	 * @return 	string	user ID
-	 *
-	 * @throws Exception
-	 *
-	 * @since  3.0.0
-	 */
+    /**
+     * Method to get the mail address of a subscriber from the subscribers-table depending on the subscriber ID
+     *
+     * @param int $id subscriber ID
+     *
+     * @return string|null user ID
+     *
+     * @throws Exception
+     * @since  3.0.0
+     */
 	public function getEmailaddress(int $id): ?string
 	{
 		$emailaddress = null;
@@ -1606,17 +1601,16 @@ class SubscriberTable extends Table implements VersionableTableInterface
 		return $emailaddress;
 	}
 
-	/**
-	 * Checks if an editlink exists in the subscribers-table
-	 *
-	 * @param string $editlink to edit the subscriber data
-	 *
-	 * @return 	int subscriber ID
-	 *
-	 * @throws Exception
-	 *
-	 * @since  3.0.0
-	 */
+    /**
+     * Checks if an editlink exists in the subscribers-table
+     *
+     * @param string $editlink to edit the subscriber data
+     *
+     * @return int|null subscriber ID
+     *
+     * @throws Exception
+     * @since  3.0.0
+     */
 	public function checkEditlink(string $editlink): ?int
 	{
 		$id    = null;

@@ -235,7 +235,7 @@ class SendmailcontentTable extends Table
 	 *
 	 * @access 	public
 	 *
-	 * @param	boolean True to update fields even if they are null.
+	 * @param	boolean $updateNulls True to update fields even if they are null.
 	 *
 	 * @return 	boolean
 	 *

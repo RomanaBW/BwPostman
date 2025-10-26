@@ -127,7 +127,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	public int $checked_out = 0;
 
 	/**
-	 * @var datetime Checked-out time
+	 * @var datetime|null Checked-out time
 	 *
 	 * @since       0.9.1
 	 */
@@ -141,7 +141,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 	public int $archive_flag = 0;
 
 	/**
-	 * @var datetime Archive-date
+	 * @var datetime|null Archive-date
 	 *
 	 * @since       0.9.1
 	 */
@@ -178,13 +178,13 @@ class CampaignTable extends Table implements VersionableTableInterface
 		return self::_getAssetName();
 	}
 
-	/**
-	 * Alias function
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0.1
-	 */
+    /**
+     * Alias function
+     *
+     * @return string|null
+     *
+     * @since   1.0.1
+     */
 	public function getAssetTitle(): ?string
 	{
 		return self::_getAssetTitle();
@@ -219,13 +219,13 @@ class CampaignTable extends Table implements VersionableTableInterface
 		return 'com_bwpostman.campaign.' . $this->$k;
 	}
 
-	/**
-	 * Method to return the title to use for the asset table.
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0.1
-	 */
+    /**
+     * Method to return the title to use for the asset table.
+     *
+     * @return string|null
+     *
+     * @since   1.0.1
+     */
 	protected function _getAssetTitle(): ?string
 	{
 		return $this->title;

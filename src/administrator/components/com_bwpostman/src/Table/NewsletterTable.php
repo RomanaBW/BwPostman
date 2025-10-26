@@ -333,13 +333,13 @@ class NewsletterTable extends Table implements VersionableTableInterface
 		return self::_getAssetName();
 	}
 
-	/**
-	 * Alias function
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0.1
-	 */
+    /**
+     * Alias function
+     *
+     * @return string|null
+     *
+     * @since   1.0.1
+     */
 	public function getAssetTitle(): ?string
 	{
 		return self::_getAssetTitle();
@@ -374,13 +374,13 @@ class NewsletterTable extends Table implements VersionableTableInterface
 		return 'com_bwpostman.newsletter.' . (int) $this->$k;
 	}
 
-	/**
-	 * Method to return the title to use for the asset table.
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0.1
-	 */
+    /**
+     * Method to return the title to use for the asset table.
+     *
+     * @return string|null
+     *
+     * @since   1.0.1
+     */
 	protected function _getAssetTitle(): ?string
 	{
 		return $this->subject;

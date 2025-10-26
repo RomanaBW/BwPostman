@@ -159,15 +159,14 @@ class NewsletterelementModel extends BaseDatabaseModel
 		return $this->total;
 	}
 
-	/**
-	 * Method to get a pagination object for the mailinglists view
-	 *
-	 * @return 	object Pagination
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
+    /**
+     * Method to get a pagination object for the mailinglists view
+     *
+     * @return object|Pagination|null Pagination
+     *
+     * @throws Exception
+     * @since
+     */
 	public function getPagination(): object|Pagination|null
     {
 		// Load the content if it doesn't already exist

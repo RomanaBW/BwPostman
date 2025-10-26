@@ -750,6 +750,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
      */
 	public function onUserBeforeSave(Event $event): void
 	{
+        $isNew = false;
 //        new BeforeSaveEvent('onEventName', ['subject' => $oldUserArray, 'isNew' => $isNew, 'data' => $data]);
 
         if ($this->debug)

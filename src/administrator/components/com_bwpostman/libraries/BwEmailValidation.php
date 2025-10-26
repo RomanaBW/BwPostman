@@ -126,7 +126,7 @@ class BwEmailValidation
 	 *
 	 * @since 3.0.0
 	 */
-	const CRLF = "\r\n";
+    public const string CRLF = "\r\n";
 
 	/**
 	 * Holds the most recent error message

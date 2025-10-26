@@ -54,7 +54,7 @@ class BwLogger extends W3cLogger implements LoggerAwareInterface
 	 * @var    integer
 	 * @since  3.0.0
 	 */
-	const BW_ERROR = 1;
+    public const int BW_ERROR = 1;
 
 	/**
 	 * Warning conditions
@@ -62,7 +62,7 @@ class BwLogger extends W3cLogger implements LoggerAwareInterface
 	 * @var    integer
 	 * @since  3.0.0
 	 */
-	const BW_WARNING = 2;
+    public const int  BW_WARNING = 2;
 
 	/**
 	 * Informational message.
@@ -70,7 +70,7 @@ class BwLogger extends W3cLogger implements LoggerAwareInterface
 	 * @var    integer
 	 * @since  3.0.0
 	 */
-	const BW_INFO = 4;
+    public const int  BW_INFO = 4;
 
 	/**
 	 * Debugging message.
@@ -78,7 +78,7 @@ class BwLogger extends W3cLogger implements LoggerAwareInterface
 	 * @var    integer
 	 * @since  3.0.0
 	 */
-	const BW_DEBUG = 8;
+    public const int  BW_DEBUG = 8;
 
 	/**
 	 * Trace message.
@@ -86,7 +86,7 @@ class BwLogger extends W3cLogger implements LoggerAwareInterface
 	 * @var    integer
 	 * @since  3.0.0
 	 */
-	const BW_DEVELOPMENT = 16;
+    public const int  BW_DEVELOPMENT = 16;
 
 	/**
 	 * Translation array for LogEntry priorities to text strings.

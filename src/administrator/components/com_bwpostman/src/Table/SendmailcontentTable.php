@@ -247,19 +247,19 @@ class SendmailcontentTable extends Table
     {
         $k     = $this->_tbl_key;
         $res   = null;
-        $query = $this->getDatabase()->getQuery(true);
+        $query = $this->_db->getQuery(true);
 
         if (!$this->$k)
         {
             // Find the next possible id and insert
-            $query->select('IFNULL(MAX(id)+1,1) AS ' . $this->getDatabase()->quoteName('id'));
-            $query->from($this->getDatabase()->quoteName($this->_tbl));
+            $query->select('IFNULL(MAX(id)+1,1) AS ' . $this->_db->quoteName('id'));
+            $query->from($this->_db->quoteName($this->_tbl));
 
             try
             {
-                $this->getDatabase()->setQuery($query);
+                $this->_db->setQuery($query);
 
-                $res = $this->getDatabase()->loadResult();
+                $res = $this->_db->loadResult();
             }
             catch (RuntimeException $exception)
             {
@@ -279,7 +279,7 @@ class SendmailcontentTable extends Table
             // An id value is set
             try
             {
-                $this->getDatabase()->insertObject($this->_tbl, $this);
+                $this->_db->insertObject($this->_tbl, $this);
             }
             catch (RuntimeException $exception)
             {
@@ -318,7 +318,7 @@ class SendmailcontentTable extends Table
         // If (empty($mode)) return 0;
         $app    = Factory::getApplication();
         $mode   = $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
-        $db     = $this->getDatabase();
+        $db     = $this->_db;
         $query  = $db->getQuery(true);
         $result = null;
 
@@ -360,7 +360,7 @@ class SendmailcontentTable extends Table
     {
         $newsletter = null;
 
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         // build query

@@ -375,7 +375,7 @@ class TemplateTable extends Table implements VersionableTableInterface
     {
 //		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 //		$asset      = $MvcFactory->createTable('Asset', 'Administrator');
-        $asset = new Asset($this->getDatabase());
+        $asset = new Asset($this->_db);
 
         $asset->loadByName('com_bwpostman.template');
 
@@ -447,7 +447,7 @@ class TemplateTable extends Table implements VersionableTableInterface
     public function check(): bool
     {
         $app   = Factory::getApplication();
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
         $fault = false;
         $xid   = 0;
@@ -610,7 +610,7 @@ class TemplateTable extends Table implements VersionableTableInterface
         {
             $db->setQuery($query);
 
-            $xid = intval($this->getDatabase()->loadResult());
+            $xid = intval($this->_db->loadResult());
         }
         catch (RuntimeException $exception)
         {
@@ -680,7 +680,7 @@ class TemplateTable extends Table implements VersionableTableInterface
 
         foreach ($nulldateCols as $nulldateCol)
         {
-            if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->getDatabase()->getNullDate())
+            if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->_db->getNullDate())
             {
                 $this->$nulldateCol = null;
             }
@@ -792,7 +792,7 @@ class TemplateTable extends Table implements VersionableTableInterface
     {
         $count_std = 0;
 
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         // count selected standard templates
@@ -841,7 +841,7 @@ class TemplateTable extends Table implements VersionableTableInterface
             $archiveFlag = 1;
         }
 
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->select('COUNT(*)');
@@ -894,7 +894,7 @@ class TemplateTable extends Table implements VersionableTableInterface
      */
     public function getTemplateTitle(int $id): bool|string
     {
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         // get template title
@@ -934,7 +934,7 @@ class TemplateTable extends Table implements VersionableTableInterface
      */
     public function setTemplateTitle(int $id, string $title): bool
     {
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         // get template title
@@ -974,7 +974,7 @@ class TemplateTable extends Table implements VersionableTableInterface
     public function getTemplate(int $template_id): ?object
     {
         $tpl   = new stdClass();
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->select($db->quoteName('id'));
@@ -1019,7 +1019,7 @@ class TemplateTable extends Table implements VersionableTableInterface
     public function getStandardTpl(string $mode = 'html'): ?string
     {
         $tpl   = null;
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         // Id of the standard template
@@ -1076,7 +1076,7 @@ class TemplateTable extends Table implements VersionableTableInterface
         }
 
         // Reset the standard fields for the templates.
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->update($db->quoteName($this->_tbl));
@@ -1140,7 +1140,7 @@ class TemplateTable extends Table implements VersionableTableInterface
      */
     public function resetDefaultTpl(int $id): void
     {
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->update($db->quoteName($this->_tbl));

@@ -204,7 +204,7 @@ class SendmailqueueTable extends Table
         $this->reset();
         $result = array();
 
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->select('*');
@@ -270,7 +270,7 @@ class SendmailqueueTable extends Table
      */
     public function push(int $content_id, int $emailformat, string $email, string $name, string $firstname, int $subscriber_id, int $trial = 0): bool
     {
-        $db	= $this->getDatabase();
+        $db	= $this->_db;
         $query	= $db->getQuery(true);
 
         $query->insert($db->quoteName($this->_tbl));
@@ -337,7 +337,7 @@ class SendmailqueueTable extends Table
         $subscribers = array();
         $MvcFactory  = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         if ($nl_id)
@@ -438,7 +438,7 @@ class SendmailqueueTable extends Table
             return false;
         }
 
-        $db      = $this->getDatabase();
+        $db      = $this->_db;
         $sub_res = array();
 
         $subQuery1 = $db->getQuery(true);
@@ -524,7 +524,7 @@ class SendmailqueueTable extends Table
      */
     public function resetTrials(): bool
     {
-        $db	= $this->getDatabase();
+        $db	= $this->_db;
         $query	= $db->getQuery(true);
 
         $query->update($db->quoteName($this->_tbl));
@@ -557,7 +557,7 @@ class SendmailqueueTable extends Table
      */
     public function clearQueue(): bool
     {
-        $db	= $this->getDatabase();
+        $db	= $this->_db;
 
         $query = "TRUNCATE TABLE $this->_tbl ";
 
@@ -592,7 +592,7 @@ class SendmailqueueTable extends Table
      */
     public function checkTrials(int $trial = 2, int $count = 0): bool|int
     {
-        $db	= $this->getDatabase();
+        $db	= $this->_db;
         $query	= $db->getQuery(true);
 
         $query->select('COUNT(' . $db->quoteName('id') . ')');

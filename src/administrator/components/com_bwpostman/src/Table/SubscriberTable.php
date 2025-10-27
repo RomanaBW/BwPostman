@@ -338,7 +338,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
     {
 //		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 //		$asset      = $MvcFactory->createTable('Asset', 'Administrator');
-        $asset = new Asset($this->getDatabase());
+        $asset = new Asset($this->_db);
 
         $asset->loadByName('com_bwpostman.subscriber');
         return $asset->id;
@@ -742,7 +742,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
     {
         $testrecipients = null;
 
-        $db	   = $this->getDatabase();
+        $db	   = $this->_db;
         $query = $db->getQuery(true);
 
         $query->select('COUNT(' . $db->quoteName('id') . ')');
@@ -786,7 +786,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
     {
         $result = array();
         $this->reset();
-        $db	= $this->getDatabase();
+        $db	= $this->_db;
         $query	= $db->getQuery(true);
 
         $query->select('*');
@@ -855,7 +855,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
         foreach ($nulldateCols as $nulldateCol)
         {
-            if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->getDatabase()->getNullDate())
+            if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->_db->getNullDate())
             {
                 $this->$nulldateCol = null;
             }
@@ -947,7 +947,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
             $this->reset();
         }
 
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->select($db->quoteName('id'));
@@ -990,7 +990,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
      */
     public function getSubscriberIdByUserId(int $uid): int
     {
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->select($db->quoteName('id'));
@@ -1033,7 +1033,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
      */
     public function getSubscriberIdByEmail(string $email, bool $isTester = false): int|array
     {
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
         $id    = 0;
 
@@ -1053,11 +1053,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
 
             if (!$isTester)
             {
-                $id = (int)$this->getDatabase()->loadResult();
+                $id = (int)$this->_db->loadResult();
             }
             else
             {
-                $id = $this->getDatabase()->loadColumn();
+                $id = $this->_db->loadColumn();
             }
         }
         catch (RuntimeException $exception)
@@ -1087,7 +1087,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
     public function getSubscriberState(int $id): ?object
     {
         $subscriber = null;
-        $db         = $this->getDatabase();
+        $db         = $this->_db;
         $query      = $db->getQuery(true);
 
         $query->select('*');
@@ -1126,7 +1126,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
     public function getUserIdOfSubscriber(int $id): ?int
     {
         $user_id    = null;
-        $db	    = $this->getDatabase();
+        $db	    = $this->_db;
         $query	    = $db->getQuery(true);
 
         $query->select($db->quoteName('user_id'));
@@ -1182,7 +1182,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
             $archiveFlag = 1;
         }
 
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->select('COUNT(*)');
@@ -1221,7 +1221,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
      */
     public function getEditlink(): string
     {
-        $db              = $this->getDatabase();
+        $db              = $this->_db;
         $newEditlink     = "";
         $editlinkMatches = true;
 
@@ -1270,7 +1270,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
      */
     public function updateEditlink(int $subscriberId, string $editlink): bool
     {
-        $db = $this->getDatabase();
+        $db = $this->_db;
 
         $query = $db->getQuery(true);
 
@@ -1311,7 +1311,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
      */
     public function createActivation(): false|string
     {
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $newActivation     = "";
@@ -1362,7 +1362,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
     {
         $subscriber = null;
 
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->select('*');
@@ -1397,7 +1397,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
      */
     public function getSubscriberDataByEmail(array $values): object|bool
     {
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         // Sanitize values
@@ -1448,7 +1448,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
     {
         $subscriber = null;
 
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->select($db->quoteName('id'));
@@ -1495,7 +1495,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
         $date = Factory::getDate();
         $time = $date->toSql();
 
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->update($db->quoteName($this->_tbl));
@@ -1535,7 +1535,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
      */
     public function validateSubscriberEditlink(string $email, string $editlink): ?int
     {
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         // Sanitize values
@@ -1578,7 +1578,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
     {
         $emailaddress = null;
 
-        $db	   = $this->getDatabase();
+        $db	   = $this->_db;
         $query = $db->getQuery(true);
 
         $query->select($db->quoteName('email'));
@@ -1614,7 +1614,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
     public function checkEditlink(string $editlink): ?int
     {
         $id    = null;
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $editlink = $db->escape($editlink);
@@ -1656,7 +1656,7 @@ class SubscriberTable extends Table implements VersionableTableInterface
     public function getSubscriberDataForSendmailqueue(int $content_id, string $status, array $subscribers): array
     {
         $data  = array();
-        $db    = $this->getDatabase();
+        $db    = $this->_db;
         $query = $db->getQuery(true);
 
         $query->select($db->quote($content_id) . ' AS content_id');

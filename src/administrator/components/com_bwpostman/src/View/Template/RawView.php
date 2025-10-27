@@ -48,11 +48,11 @@ class RawView extends BaseHtmlView
     /**
      * property to hold preview data
      *
-     * @var string  $pre
+     * @var ?string  $pre
      *
      * @since       1.1.0
      */
-    protected string $pre;
+    protected ?string $pre;
 
     /**
      * property to hold permissions as array

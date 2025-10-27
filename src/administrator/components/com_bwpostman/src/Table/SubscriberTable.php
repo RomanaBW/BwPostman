@@ -69,11 +69,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
     public int $id = 0;
 
     /**
-     * @var ?int asset_id
+     * @var int|string|null asset_id
      *
      * @since       1.0.1
      */
-    public int|null $asset_id = null;
+    public int|string|null $asset_id = null;
 
     /**
      * @var ?int User-ID --> 0 = subscriber is not registered for the website, another ID = Subscriber is registered for

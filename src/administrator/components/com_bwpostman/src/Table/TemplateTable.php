@@ -67,11 +67,11 @@ class TemplateTable extends Table implements VersionableTableInterface
     public ?int $id = null;
 
     /**
-     * @var ?int asset_id
+     * @var int|string|null asset_id
      *
      * @since       1.1.0
      */
-    public ?int $asset_id = null;
+    public int|string|null $asset_id = null;
 
     /**
      * @var int standard template

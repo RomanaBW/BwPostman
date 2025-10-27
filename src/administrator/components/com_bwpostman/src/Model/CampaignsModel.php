@@ -51,309 +51,309 @@ use RuntimeException;
 class CampaignsModel extends ListModel
 {
 
-	/**
-	 * The query object
-	 *
-	 * @var	object
-	 *
-	 * @since       2.0.0
-	 */
-	protected $query;
+    /**
+     * The query object
+     *
+     * @var	object
+     *
+     * @since       2.0.0
+     */
+    protected $query;
 
-	/**
-	 * Constructor
-	 * --> handles the pagination and set the campaigns key
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function __construct()
-	{
-		if (empty($config['filter_fields']))
-		{
-			$config['filter_fields'] = array(
-				'id', 'a.id',
-				'title', 'a.title',
-				'description', 'a.description',
-				'checked_out', 'a.checked_out',
-				'checked_out_time', 'a.checked_out_time',
-				'newsletters', 'a.newsletters',
-				'published', 'a.published',
-				'access', 'a.access', 'access_level',
-				'created_date', 'a.created_date',
-				'created_by', 'a.created_by'
-			);
-		}
-
-		parent::__construct($config);
-	}
-
-	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @param   string  $ordering   An optional ordering field.
-	 * @param   string  $direction  An optional direction (asc|desc).
-	 *
-	 * @return  void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.1
-	 */
-	protected function populateState($ordering = null, $direction = null): void
+    /**
+     * Constructor
+     * --> handles the pagination and set the campaigns key
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function __construct()
     {
-		$app = Factory::getApplication();
+        if (empty($config['filter_fields']))
+        {
+            $config['filter_fields'] = array(
+                'id', 'a.id',
+                'title', 'a.title',
+                'description', 'a.description',
+                'checked_out', 'a.checked_out',
+                'checked_out_time', 'a.checked_out_time',
+                'newsletters', 'a.newsletters',
+                'published', 'a.published',
+                'access', 'a.access', 'access_level',
+                'created_date', 'a.created_date',
+                'created_by', 'a.created_by'
+            );
+        }
 
-		// Adjust the context to support modal layouts.
-		$layout = $app->input->get('layout');
+        parent::__construct($config);
+    }
 
-		if ($layout)
-		{
-			$this->context .= '.' . $layout;
-		}
+    /**
+     * Method to auto-populate the model state.
+     *
+     * Note. Calling getState in this method will result in recursion.
+     *
+     * @param   string  $ordering   An optional ordering field.
+     * @param   string  $direction  An optional direction (asc|desc).
+     *
+     * @return  void
+     *
+     * @throws Exception
+     *
+     * @since   1.0.1
+     */
+    protected function populateState($ordering = null, $direction = null): void
+    {
+        $app = Factory::getApplication();
 
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
+        // Adjust the context to support modal layouts.
+        $layout = $app->input->get('layout');
 
-		$filtersearch = $this->getUserStateFromRequest($this->context . '.filter.search_filter', 'filter_search_filter');
-		$this->setState('filter.search_filter', $filtersearch);
+        if ($layout)
+        {
+            $this->context .= '.' . $layout;
+        }
 
-		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
-		$this->setState('filter.access', $access);
+        $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+        $this->setState('filter.search', $search);
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
-		$this->setState('filter.published', $published);
+        $filtersearch = $this->getUserStateFromRequest($this->context . '.filter.search_filter', 'filter_search_filter');
+        $this->setState('filter.search_filter', $filtersearch);
 
-		// List state information.
-		parent::populateState('a.title', 'asc');
+        $access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
+        $this->setState('filter.access', $access);
 
-		$limitstart = $app->input->get->post->get('limitstart');
-		$this->setState('list.start', $limitstart);
-	}
+        $published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
+        $this->setState('filter.published', $published);
 
-	/**
-	 * Method to get a store id based on model configuration state.
-	 *
-	 * This is necessary because the model is used by the component and
-	 * different modules that might need different sets of data or different
-	 * ordering requirements.
-	 *
-	 * @param	string		$id	A prefix for the store id.
-	 *
-	 * @return	string		A store id.
-	 *
-	 * @since	1.0.1
-	 */
-	protected function getStoreId($id = ''): string
-	{
-		// Compile the store id.
-		$id	.= ':' . $this->getState('filter.search');
-		$id	.= ':' . $this->getState('filter.search_filter');
-		$id	.= ':' . $this->getState('filter.title');
-		$id	.= ':' . $this->getState('filter.description');
-		$id	.= ':' . $this->getState('filter.newsletters');
-		$id	.= ':' . $this->getState('filter.access');
-		$id	.= ':' . $this->getState('filter.published');
+        // List state information.
+        parent::populateState('a.title', 'asc');
 
-		return parent::getStoreId($id);
-	}
+        $limitstart = $app->input->get->post->get('limitstart');
+        $this->setState('list.start', $limitstart);
+    }
 
-	/**
-	 * Method to build the MySQL query
-	 *
-	 * @return    false|QueryInterface      query
-	 *
-	 * @throws Exception
-	 *
-	 * @since   0.9.1
-	 */
-	protected function getListQuery(): false|QueryInterface
+    /**
+     * Method to get a store id based on model configuration state.
+     *
+     * This is necessary because the model is used by the component and
+     * different modules that might need different sets of data or different
+     * ordering requirements.
+     *
+     * @param	string		$id	A prefix for the store id.
+     *
+     * @return	string		A store id.
+     *
+     * @since	1.0.1
+     */
+    protected function getStoreId($id = ''): string
+    {
+        // Compile the store id.
+        $id	.= ':' . $this->getState('filter.search');
+        $id	.= ':' . $this->getState('filter.search_filter');
+        $id	.= ':' . $this->getState('filter.title');
+        $id	.= ':' . $this->getState('filter.description');
+        $id	.= ':' . $this->getState('filter.newsletters');
+        $id	.= ':' . $this->getState('filter.access');
+        $id	.= ':' . $this->getState('filter.published');
+
+        return parent::getStoreId($id);
+    }
+
+    /**
+     * Method to build the MySQL query
+     *
+     * @return    false|QueryInterface      query
+     *
+     * @throws Exception
+     *
+     * @since   0.9.1
+     */
+    protected function getListQuery(): false|QueryInterface
     {
         $db          = $this->getDatabase();
-		$this->query = $db->getQuery(true);
-		$sub_query   = $this->getSubQuery();
+        $this->query = $db->getQuery(true);
+        $sub_query   = $this->getSubQuery();
 
-		// Select the required fields from the table.
-		$this->query->select(
-			$this->getState(
-				'list.select',
-				'a.id, a.title, a.description, a.checked_out, a.checked_out_time' .
-				', a.published, a.access, a.created_date, a.created_by'
-			) . ', (' . $sub_query . ') AS newsletters'
-		);
-		$this->query->from($db->quoteName('#__bwpostman_campaigns', 'a'));
+        // Select the required fields from the table.
+        $this->query->select(
+            $this->getState(
+                'list.select',
+                'a.id, a.title, a.description, a.checked_out, a.checked_out_time' .
+                ', a.published, a.access, a.created_date, a.created_by'
+            ) . ', (' . $sub_query . ') AS newsletters'
+        );
+        $this->query->from($db->quoteName('#__bwpostman_campaigns', 'a'));
 
-		$this->getQueryJoins();
-		$this->getQueryWhere();
-		$this->getQueryOrder();
+        $this->getQueryJoins();
+        $this->getQueryWhere();
+        $this->getQueryOrder();
 
-		try
-		{
-			$db->setQuery($this->query);
-		}
-		catch (RuntimeException $exception)
-		{
+        try
+        {
+            $db->setQuery($this->query);
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'CampaignsModel BE');
 
             Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_GET_LIST_QUERY_ERROR'), 'error');
-			return false;
-		}
+            return false;
+        }
 
-		return $this->query;
-	}
+        return $this->query;
+    }
 
-	/**
-	 * Method to get the subquery this query needs
-	 * This subquery counts the newsletters of each campaign
-	 *
-	 * @return QueryInterface
-	 *
-	 * @since   2.0.0
-	 */
-	private function getSubQuery(): QueryInterface
-	{
+    /**
+     * Method to get the subquery this query needs
+     * This subquery counts the newsletters of each campaign
+     *
+     * @return QueryInterface
+     *
+     * @since   2.0.0
+     */
+    private function getSubQuery(): QueryInterface
+    {
         $db        = $this->getDatabase();
-		$sub_query = $db->getQuery(true);
+        $sub_query = $db->getQuery(true);
 
-		$sub_query->select('COUNT(' . $db->quoteName('b.id') . ') AS ' . $db->quoteName('newsletters'));
-		$sub_query->from($db->quoteName('#__bwpostman_newsletters') . 'AS ' . $db->quoteName('b'));
-		$sub_query->where($db->quoteName('b.archive_flag') . ' = ' . 0);
-		$sub_query->where($db->quoteName('b.campaign_id') . ' = ' . $db->quoteName('a.id'));
+        $sub_query->select('COUNT(' . $db->quoteName('b.id') . ') AS ' . $db->quoteName('newsletters'));
+        $sub_query->from($db->quoteName('#__bwpostman_newsletters') . 'AS ' . $db->quoteName('b'));
+        $sub_query->where($db->quoteName('b.archive_flag') . ' = ' . 0);
+        $sub_query->where($db->quoteName('b.campaign_id') . ' = ' . $db->quoteName('a.id'));
 
-		return $sub_query;
-	}
+        return $sub_query;
+    }
 
-	/**
-	 * Method to get the joins this query needs
-	 *
-	 * @return 	void
-	 *
-	 * @since   2.0.0
-	 */
-	private function getQueryJoins(): void
+    /**
+     * Method to get the joins this query needs
+     *
+     * @return 	void
+     *
+     * @since   2.0.0
+     */
+    private function getQueryJoins(): void
     {
         $db = $this->getDatabase();
 
-		// Join over the users for the checked out user.
-		$this->query->select($db->quoteName('uc.name') . ' AS editor');
-		$this->query->join(
-			'LEFT',
-			$db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out')
-		);
+        // Join over the users for the checked out user.
+        $this->query->select($db->quoteName('uc.name') . ' AS editor');
+        $this->query->join(
+            'LEFT',
+            $db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out')
+        );
 
-		// Join over the asset groups.
-		$this->query->select($db->quoteName('ag.title') . ' AS access_level');
-		$this->query->join(
-			'LEFT',
-			$db->quoteName('#__viewlevels', 'ag') . ' ON ' . $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access')
-		);
+        // Join over the asset groups.
+        $this->query->select($db->quoteName('ag.title') . ' AS access_level');
+        $this->query->join(
+            'LEFT',
+            $db->quoteName('#__viewlevels', 'ag') . ' ON ' . $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access')
+        );
 
-		// Join over the users for the author.
-		$this->query->select($db->quoteName('ua.name'), ' AS author_name');
-		$this->query->join(
-			'LEFT',
-			$db->quoteName('#__users', 'ua') . ' ON ' . $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by')
-		);
-	}
+        // Join over the users for the author.
+        $this->query->select($db->quoteName('ua.name'), ' AS author_name');
+        $this->query->join(
+            'LEFT',
+            $db->quoteName('#__users', 'ua') . ' ON ' . $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by')
+        );
+    }
 
-	/**
-	 * Method to build the MySQL query 'where' part
-	 *
-	 * @return 	void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function getQueryWhere(): void
+    /**
+     * Method to build the MySQL query 'where' part
+     *
+     * @return 	void
+     *
+     * @throws Exception
+     *
+     * @since   2.0.0
+     */
+    private function getQueryWhere(): void
     {
-		$this->getFilterByAccessLevelFilter();
-		$this->getFilterByViewLevel();
+        $this->getFilterByAccessLevelFilter();
+        $this->getFilterByViewLevel();
 //		$this->getFilterByComponentPermissions();
-		$this->getFilterByPublishedState();
-		$this->getFilterByArchiveState();
-		$this->getFilterBySearchword();
-	}
+        $this->getFilterByPublishedState();
+        $this->getFilterByArchiveState();
+        $this->getFilterBySearchword();
+    }
 
-	/**
-	 * Method to build the MySQL query 'order' part
-	 *
-	 * @return 	void
-	 *
-	 * @since   2.0.0
-	 */
-	private function getQueryOrder(): void
+    /**
+     * Method to build the MySQL query 'order' part
+     *
+     * @return 	void
+     *
+     * @since   2.0.0
+     */
+    private function getQueryOrder(): void
     {
-		$orderCol  = $this->state->get('list.ordering');
-		$orderDirn = $this->state->get('list.direction', 'asc');
+        $orderCol  = $this->state->get('list.ordering');
+        $orderDirn = $this->state->get('list.direction', 'asc');
 
-		//sqlsrv change
-		if ($orderCol == 'access_level')
-		{
-			$orderCol = 'ag.title';
-		}
+        //sqlsrv change
+        if ($orderCol == 'access_level')
+        {
+            $orderCol = 'ag.title';
+        }
 
-		$this->query->order($this->getDatabase()->quoteName($this->getDatabase()->escape($orderCol)) . ' ' . $this->getDatabase()->escape($orderDirn));
-	}
+        $this->query->order($this->getDatabase()->quoteName($this->getDatabase()->escape($orderCol)) . ' ' . $this->getDatabase()->escape($orderDirn));
+    }
 
-	/**
-	 * Method to get the filter by access level
-	 *
-	 * @return 	void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterByAccessLevelFilter(): void
+    /**
+     * Method to get the filter by access level
+     *
+     * @return 	void
+     *
+     * @throws Exception
+     *
+     * @since   2.0.0
+     */
+    private function getFilterByAccessLevelFilter(): void
     {
-		if (Factory::getApplication()->isClient('site'))
-		{
-			$access = $this->getState('filter.access');
+        if (Factory::getApplication()->isClient('site'))
+        {
+            $access = $this->getState('filter.access');
 
-			if ($access)
-			{
-				$this->query->where($this->getDatabase()->quoteName('a.access') . ' = ' . (int) $access);
-			}
-		}
-	}
+            if ($access)
+            {
+                $this->query->where($this->getDatabase()->quoteName('a.access') . ' = ' . (int) $access);
+            }
+        }
+    }
 
-	/**
-	 * Method to get the filter by Joomla view level
-	 *
-	 * @return 	void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterByViewLevel(): void
+    /**
+     * Method to get the filter by Joomla view level
+     *
+     * @return 	void
+     *
+     * @throws Exception
+     *
+     * @since   2.0.0
+     */
+    private function getFilterByViewLevel(): void
     {
-		if (Factory::getApplication()->isClient('site'))
-		{
-			$user = Factory::getApplication()->getIdentity();
+        if (Factory::getApplication()->isClient('site'))
+        {
+            $user = Factory::getApplication()->getIdentity();
 
-			if (!$user->authorise('core.admin'))
-			{
-				$groups = $user->getAuthorisedViewLevels();
-				$groups = implode(',', ArrayHelper::toInteger($groups));
-				$this->query->where($this->getDatabase()->quoteName('a.access') . ' IN (' . $groups . ')');
-			}
-		}
-	}
+            if (!$user->authorise('core.admin'))
+            {
+                $groups = $user->getAuthorisedViewLevels();
+                $groups = implode(',', ArrayHelper::toInteger($groups));
+                $this->query->where($this->getDatabase()->quoteName('a.access') . ' IN (' . $groups . ')');
+            }
+        }
+    }
 
-	/**
-	 * Method to get the filter by BwPostman permissions
-	 *
-	 * @return    void
-	 *
-	 * @throws Exception
-	 *
-	 * @since     2.0.0
-	 */
+    /**
+     * Method to get the filter by BwPostman permissions
+     *
+     * @return    void
+     *
+     * @throws Exception
+     *
+     * @since     2.0.0
+     */
 //	private function getFilterByComponentPermissions()
 //	{
 //		$allowed_items  = BwPostmanHelper::getAllowedRecords('campaign');
@@ -365,70 +365,70 @@ class CampaignsModel extends ListModel
 //		}
 //	}
 
-	/**
-	 * Method to get the filter by published state
-	 *
-	 * @return 	void
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterByPublishedState(): void
+    /**
+     * Method to get the filter by published state
+     *
+     * @return 	void
+     *
+     * @since   2.0.0
+     */
+    private function getFilterByPublishedState(): void
     {
-		$published = $this->getState('filter.published');
+        $published = $this->getState('filter.published');
 
-		if (is_numeric($published))
-		{
-			$this->query->where($this->getDatabase()->quoteName('a.published') . ' = ' . (int) $published);
-		}
-		elseif ($published === '')
-		{
-			$this->query->where('(' . $this->getDatabase()->quoteName('a.published') . ' = 0 OR ' . $this->getDatabase()->quoteName('a.published') . ' = 1)');
-		}
-	}
+        if (is_numeric($published))
+        {
+            $this->query->where($this->getDatabase()->quoteName('a.published') . ' = ' . (int) $published);
+        }
+        elseif ($published === '')
+        {
+            $this->query->where('(' . $this->getDatabase()->quoteName('a.published') . ' = 0 OR ' . $this->getDatabase()->quoteName('a.published') . ' = 1)');
+        }
+    }
 
-	/**
-	 * Method to get the filter by archived state
-	 *
-	 * @return 	void
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterByArchiveState(): void
+    /**
+     * Method to get the filter by archived state
+     *
+     * @return 	void
+     *
+     * @since   2.0.0
+     */
+    private function getFilterByArchiveState(): void
     {
-		$this->query->where($this->getDatabase()->quoteName('a.archive_flag') . ' = ' . 0);
-	}
+        $this->query->where($this->getDatabase()->quoteName('a.archive_flag') . ' = ' . 0);
+    }
 
-	/**
-	 * Method to get the filter by search word
-	 *
-	 * @return 	void
-	 *
-	 * @since   2.0.0
-	 */
-	private function getFilterBySearchword(): void
+    /**
+     * Method to get the filter by search word
+     *
+     * @return 	void
+     *
+     * @since   2.0.0
+     */
+    private function getFilterBySearchword(): void
     {
         $db           = $this->getDatabase();
-		$filtersearch = $this->getState('filter.search_filter');
-		$search       = '%' . $db->escape($this->getState('filter.search'), true) . '%';
+        $filtersearch = $this->getState('filter.search_filter');
+        $search       = '%' . $db->escape($this->getState('filter.search'), true) . '%';
 
-		if (!empty($search))
-		{
-			switch ($filtersearch)
-			{
-				case 'description':
-					$this->query->where($db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false));
-					break;
-				case 'title_description':
-					$this->query->where(
-						'(' . $db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false) .
-						' OR ' . $db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false) . ')'
-					);
-					break;
-				case 'title':
-					$this->query->where($db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false));
-					break;
-				default:
-			}
-		}
-	}
+        if (!empty($search))
+        {
+            switch ($filtersearch)
+            {
+                case 'description':
+                    $this->query->where($db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false));
+                    break;
+                case 'title_description':
+                    $this->query->where(
+                        '(' . $db->quoteName('a.description') . ' LIKE ' . $db->quote($search, false) .
+                        ' OR ' . $db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false) . ')'
+                    );
+                    break;
+                case 'title':
+                    $this->query->where($db->quoteName('a.title') . ' LIKE ' . $db->quote($search, false));
+                    break;
+                default:
+            }
+        }
+    }
 }

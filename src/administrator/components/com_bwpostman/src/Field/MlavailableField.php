@@ -48,242 +48,242 @@ use RuntimeException;
  */
 class MlavailableField extends RadioField
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 *
-	 * @since  1.0.1
-	 */
-	public $type = 'Mlavailable';
+    /**
+     * The form field type.
+     *
+     * @var    string
+     *
+     * @since  1.0.1
+     */
+    public $type = 'Mlavailable';
 
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @since   1.0.1
-	 */
-	public function getLabel(): string
-	{
-		return Text::_($this->element['label']);
-	}
+    /**
+     * Method to get the field input markup.
+     *
+     * @return  string  The field input markup.
+     *
+     * @since   1.0.1
+     */
+    public function getLabel(): string
+    {
+        return Text::_($this->element['label']);
+    }
 
-	/**
-	 * Method to get the radio button field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.1
-	 */
-	public function getInput(): string
-	{
-		$app       = Factory::getApplication();
-		$db        = Factory::getContainer()->get(DatabaseInterface::class);
-		$query     = $db->getQuery(true);
-		$ml_select = array();
-		$selected  = '';
+    /**
+     * Method to get the radio button field input markup.
+     *
+     * @return  string  The field input markup.
+     *
+     * @throws Exception
+     *
+     * @since   1.0.1
+     */
+    public function getInput(): string
+    {
+        $app       = Factory::getApplication();
+        $db        = Factory::getContainer()->get(DatabaseInterface::class);
+        $query     = $db->getQuery(true);
+        $ml_select = array();
+        $selected  = '';
 
-		// Get item and selected mailinglists
-		$item    = $app->getUserState('com_bwpostman.edit.newsletter.data');
-		$nl_id   = $app->getUserState('com_bwpostman.edit.newsletter.id');
-		$subs_id = $app->getUserState('com_bwpostman.edit.subscriber.id');
+        // Get item and selected mailinglists
+        $item    = $app->getUserState('com_bwpostman.edit.newsletter.data');
+        $nl_id   = $app->getUserState('com_bwpostman.edit.newsletter.id');
+        $subs_id = $app->getUserState('com_bwpostman.edit.subscriber.id');
 
-		$disabled   = $this->element['disabled'] == 'true' ? true : false;
-		$readonly   = $this->element['readonly'] == 'true' ? true : false;
-		$attributes = ' ';
-		$return     = '';
+        $disabled   = $this->element['disabled'] == 'true' ? true : false;
+        $readonly   = $this->element['readonly'] == 'true' ? true : false;
+        $attributes = ' ';
+        $return     = '';
 
-		$type = 'checkbox';
-		$v    = $this->element['class'];
+        $type = 'checkbox';
+        $v    = $this->element['class'];
 
-		if ($v)
-		{
-			$attributes .= 'class="' . $v . '" ';
-		}
+        if ($v)
+        {
+            $attributes .= 'class="' . $v . '" ';
+        }
 
-		$m = $this->element['multiple'];
+        $m = $this->element['multiple'];
 
-		if ($m)
-		{
-			$type = 'checkbox';
-		}
+        if ($m)
+        {
+            $type = 'checkbox';
+        }
 
-		$value = $this->value;
+        $value = $this->value;
 
-		if (!is_array($value))
-		{
-			// Convert the selections field to an array.
-			$registry = new Registry;
-			$registry->loadString($value);
-		}
+        if (!is_array($value))
+        {
+            // Convert the selections field to an array.
+            $registry = new Registry;
+            $registry->loadString($value);
+        }
 
-		if ($disabled || $readonly)
-		{
-			$attributes .= 'disabled="disabled"';
-		}
+        if ($disabled || $readonly)
+        {
+            $attributes .= 'disabled="disabled"';
+        }
 
-		$options = $this->getOptions();
+        $options = $this->getOptions();
 
-		if (is_object($item))
-		{
-			(property_exists($item, 'ml_available')) ? $ml_select = $item->ml_available : $ml_select = '';
-		}
-		elseif (is_array($nl_id) && !empty($nl_id))
-		{
-			$nl_id = ArrayHelper::toInteger($nl_id);
-			$query->select("m.mailinglist_id AS selected");
-			$query->from($db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS m');
-			$query->where($db->quoteName('m.newsletter_id') . ' IN (' . implode(',', $nl_id) . ')');
+        if (is_object($item))
+        {
+            (property_exists($item, 'ml_available')) ? $ml_select = $item->ml_available : $ml_select = '';
+        }
+        elseif (is_array($nl_id) && !empty($nl_id))
+        {
+            $nl_id = ArrayHelper::toInteger($nl_id);
+            $query->select("m.mailinglist_id AS selected");
+            $query->from($db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS m');
+            $query->where($db->quoteName('m.newsletter_id') . ' IN (' . implode(',', $nl_id) . ')');
 
-			try
-			{
-				$db->setQuery($query);
+            try
+            {
+                $db->setQuery($query);
 
-				$ml_select = $db->loadColumn();
-			}
-			catch (RuntimeException $exception)
-			{
+                $ml_select = $db->loadColumn();
+            }
+            catch (RuntimeException $exception)
+            {
                 BwPostmanHelper::logException($exception, 'MlAvailableField BE');
 
                 Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-			}
-		}
-		elseif (is_array($value) && !empty($value))
-		{
-			foreach ($value as $ml)
-			{
-				$ml_select[] = $ml[0];
-			}
-		}
+            }
+        }
+        elseif (is_array($value) && !empty($value))
+        {
+            foreach ($value as $ml)
+            {
+                $ml_select[] = $ml[0];
+            }
+        }
 
-		if (is_array($subs_id) && !empty($subs_id))
-		{
-			$subs_id = ArrayHelper::toInteger($subs_id);
-			$query->select("s.mailinglist_id AS selected");
-			$query->from($db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS s');
-			$query->where($db->quoteName('s.subscriber_id') . ' IN (' . implode(',', $subs_id) . ')');
+        if (is_array($subs_id) && !empty($subs_id))
+        {
+            $subs_id = ArrayHelper::toInteger($subs_id);
+            $query->select("s.mailinglist_id AS selected");
+            $query->from($db->quoteName('#__bwpostman_subscribers_mailinglists') . ' AS s');
+            $query->where($db->quoteName('s.subscriber_id') . ' IN (' . implode(',', $subs_id) . ')');
 
-			try
-			{
-				$db->setQuery($query);
+            try
+            {
+                $db->setQuery($query);
 
-				$ml_select = $db->loadColumn();
-			}
-			catch (RuntimeException $exception)
-			{
+                $ml_select = $db->loadColumn();
+            }
+            catch (RuntimeException $exception)
+            {
                 BwPostmanHelper::logException($exception, 'MlAvailableField BE');
 
                 Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-			}
-		}
+            }
+        }
 
-		$i = 0;
+        $i = 0;
 
-		foreach ($options as $option)
-		{
-			if (is_array($ml_select))
-			{
-				$selected = (in_array($option->value, $ml_select) ? ' checked="checked"' : '');
-			}
+        foreach ($options as $option)
+        {
+            if (is_array($ml_select))
+            {
+                $selected = (in_array($option->value, $ml_select) ? ' checked="checked"' : '');
+            }
 
-			$i++;
-			$return .= '<div class="mllabel mb-1 form-check" aria-describedby="tip-sub-' . $this->id . '_' . $i . '">';
-			$return .= '	<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]" ';
-			$return .= 'value="' . $option->value . '"' . $attributes . $selected . ' />';
-			$return .= '	<label class="form-check-label" for="' . $this->id . '_' . $i . '">' . $option->title . '</label>';
-			$return .= '</div>';
-			$return .= '<div role="tooltip" id="tip-sub-' . $this->id . '_' . $i . '">' . $option->text . '</div>';
+            $i++;
+            $return .= '<div class="mllabel mb-1 form-check" aria-describedby="tip-sub-' . $this->id . '_' . $i . '">';
+            $return .= '	<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]" ';
+            $return .= 'value="' . $option->value . '"' . $attributes . $selected . ' />';
+            $return .= '	<label class="form-check-label" for="' . $this->id . '_' . $i . '">' . $option->title . '</label>';
+            $return .= '</div>';
+            $return .= '<div role="tooltip" id="tip-sub-' . $this->id . '_' . $i . '">' . $option->text . '</div>';
 
-		}
+        }
 
-		return $return;
-	}
+        return $return;
+    }
 
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return	array	The field option objects.
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.0.1
-	 */
-	public function getOptions(): array
-	{
-		$app	= Factory::getApplication();
+    /**
+     * Method to get the field options.
+     *
+     * @return	array	The field option objects.
+     *
+     * @throws Exception
+     *
+     * @since	1.0.1
+     */
+    public function getOptions(): array
+    {
+        $app	= Factory::getApplication();
 
-		// Initialize variables.
-		$user_id      = null;
-		$accesslevels = array();
-		$options      = array();
-		$subs_id      = $app->getUserState('com_bwpostman.edit.subscriber.id');
+        // Initialize variables.
+        $user_id      = null;
+        $accesslevels = array();
+        $options      = array();
+        $subs_id      = $app->getUserState('com_bwpostman.edit.subscriber.id');
 
-		// prepare query
-		$db         = Factory::getContainer()->get(DatabaseInterface::class);
-		$query      = $db->getQuery(true);
-		$query_user = $db->getQuery(true);
+        // prepare query
+        $db         = Factory::getContainer()->get(DatabaseInterface::class);
+        $query      = $db->getQuery(true);
+        $query_user = $db->getQuery(true);
 
-		// get user_ids if exists
-		if (is_array($subs_id) && !empty($subs_id))
-		{
-			$query_user->select($db->quoteName('user_id'));
-			$query_user->from($db->quoteName('#__bwpostman_subscribers'));
-			$query_user->where($db->quoteName('id') . ' = ' . (int) $subs_id[0]);
+        // get user_ids if exists
+        if (is_array($subs_id) && !empty($subs_id))
+        {
+            $query_user->select($db->quoteName('user_id'));
+            $query_user->from($db->quoteName('#__bwpostman_subscribers'));
+            $query_user->where($db->quoteName('id') . ' = ' . (int) $subs_id[0]);
 
-			try
-			{
-				$db->setQuery($query_user);
+            try
+            {
+                $db->setQuery($query_user);
 
-				$user_id = $db->loadResult();
-			}
-			catch (RuntimeException $exception)
-			{
+                $user_id = $db->loadResult();
+            }
+            catch (RuntimeException $exception)
+            {
                 BwPostmanHelper::logException($exception, 'MlAvailableField BE');
 
                 $app->enqueueMessage($exception->getMessage(), 'error');
-			}
-		}
+            }
+        }
 
-		// get authorized viewlevels
-		if ($user_id)
-		{
-			$accesslevels = Access::getAuthorisedViewLevels($user_id);
-		}
+        // get authorized viewlevels
+        if ($user_id)
+        {
+            $accesslevels = Access::getAuthorisedViewLevels($user_id);
+        }
 
-		$query->select("id AS value, title, description AS text");
-		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('published') . ' = ' . 1);
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+        $query->select("id AS value, title, description AS text");
+        $query->from($db->quoteName('#__bwpostman_mailinglists'));
+        $query->where($db->quoteName('published') . ' = ' . 1);
+        $query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
-		if (is_array($accesslevels) && !empty($accesslevels))
-		{
-			$query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
-		}
-		else
-		{
-			$query->where($db->quoteName('access') . ' = ' . 1);
-		}
+        if (is_array($accesslevels) && !empty($accesslevels))
+        {
+            $query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
+        }
+        else
+        {
+            $query->where($db->quoteName('access') . ' = ' . 1);
+        }
 
-		$query->order('title');
+        $query->order('title');
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
+            $options = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'MlAvailableField BE');
 
             $app->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		// Merge any additional options in the XML definition.
-		return array_merge(parent::getOptions(), $options);
-	}
+        // Merge any additional options in the XML definition.
+        return array_merge(parent::getOptions(), $options);
+    }
 }

@@ -45,55 +45,55 @@ use stdClass;
  */
 class AllmailinglistsField extends ListField
 {
-	/**
-	 * property to hold all mailing lists
-	 *
-	 * @var string  $type
-	 *
-	 * @since
-	 */
-	protected $type = 'Allmailinglists';
+    /**
+     * property to hold all mailing lists
+     *
+     * @var string  $type
+     *
+     * @since
+     */
+    protected $type = 'Allmailinglists';
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return  array  The field option objects.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.8
-	 */
-	protected function getOptions(): array
-	{
-		// Get a db connection.
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->getQuery(true);
+    /**
+     * Method to get the field options.
+     *
+     * @return  array  The field option objects.
+     *
+     * @throws Exception
+     *
+     * @since   1.0.8
+     */
+    protected function getOptions(): array
+    {
+        // Get a db connection.
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->getQuery(true);
 
-		// Get # of all published mailinglists
-		$query->select($db->quoteName('id') . ' AS value');
-		$query->select($db->quoteName('title') . ' AS text');
-		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+        // Get # of all published mailinglists
+        $query->select($db->quoteName('id') . ' AS value');
+        $query->select($db->quoteName('title') . ' AS text');
+        $query->from($db->quoteName('#__bwpostman_mailinglists'));
+        $query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
+            $options = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'AllMailinglistsField BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		$parent = new stdClass;
-		$parent->value = '';
-		$parent->text = Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS');
-		array_unshift($options, $parent);
+        $parent = new stdClass;
+        $parent->value = '';
+        $parent->text = Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS');
+        array_unshift($options, $parent);
 
-		// Merge any additional options in the XML definition.
-		return array_merge(parent::getOptions(), $options);
-	}
+        // Merge any additional options in the XML definition.
+        return array_merge(parent::getOptions(), $options);
+    }
 }

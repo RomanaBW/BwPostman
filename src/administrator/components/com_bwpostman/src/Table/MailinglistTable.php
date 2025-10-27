@@ -57,141 +57,141 @@ defined('_JEXEC') or die('Restricted access');
  */
 class MailinglistTable extends Table implements VersionableTableInterface
 {
-	/**
-	 * @var ?int Primary Key
-	 *
-	 * @since       0.9.1
-	 */
-	public ?int $id = null;
+    /**
+     * @var ?int Primary Key
+     *
+     * @since       0.9.1
+     */
+    public ?int $id = null;
 
-	/**
-	 * @var ?int asset_id
-	 *
-	 * @since       1.0.1
-	 */
-	public ?int $asset_id = null;
+    /**
+     * @var ?int asset_id
+     *
+     * @since       1.0.1
+     */
+    public ?int $asset_id = null;
 
-	/**
-	 * @var ?string Mailinglist title
-	 *
-	 * @since       0.9.1
-	 */
-	public ?string $title = null;
+    /**
+     * @var ?string Mailinglist title
+     *
+     * @since       0.9.1
+     */
+    public ?string $title = null;
 
-	/**
-	 * @var ?string Mailinglist description
-	 *
-	 * @since       0.9.1
-	 */
-	public ?string $description = null;
+    /**
+     * @var ?string Mailinglist description
+     *
+     * @since       0.9.1
+     */
+    public ?string $description = null;
 
-	/**
-	 * @var ?int campaign ID
-	 *
-	 * @since       0.9.1
-	 */
-	public ?int $campaign_id = 0;
+    /**
+     * @var ?int campaign ID
+     *
+     * @since       0.9.1
+     */
+    public ?int $campaign_id = 0;
 
-	/**
-	 * @var int access level/view level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
-	 *
-	 * @since       0.9.1
-	 */
-	public int $access = 1;
+    /**
+     * @var int access level/view level --> 1 = Public, 2 = Registered, 3 = Special, >3 = user defined viewlevels
+     *
+     * @since       0.9.1
+     */
+    public int $access = 1;
 
-	/**
-	 * @var int Published
-	 *
-	 * @since       0.9.1
-	 */
-	public int $published = 0;
+    /**
+     * @var int Published
+     *
+     * @since       0.9.1
+     */
+    public int $published = 0;
 
-	/**
-	 * @var string|datetime creation date of the mailinglist
-	 *
-	 * @since       0.9.1
-	 */
-	public string|DateTime $created_date = '0000-00-00 00:00:00';
+    /**
+     * @var string|datetime creation date of the mailinglist
+     *
+     * @since       0.9.1
+     */
+    public string|DateTime $created_date = '0000-00-00 00:00:00';
 
-	/**
-	 * @var int user ID
-	 *
-	 * @since       0.9.1
-	 */
-	public int $created_by = 0;
+    /**
+     * @var int user ID
+     *
+     * @since       0.9.1
+     */
+    public int $created_by = 0;
 
-	/**
-	 * @var DateTime|string|null last modification date of the mailinglist
-	 *
-	 * @since       0.9.1
-	 */
-	public DateTime|string|null $modified_time = null;
+    /**
+     * @var DateTime|string|null last modification date of the mailinglist
+     *
+     * @since       0.9.1
+     */
+    public DateTime|string|null $modified_time = null;
 
-	/**
-	 * @var int user ID
-	 *
-	 * @since       0.9.1
-	 */
-	public int $modified_by = 0;
+    /**
+     * @var int user ID
+     *
+     * @since       0.9.1
+     */
+    public int $modified_by = 0;
 
-	/**
-	 * @var int Checked-out owner
-	 *
-	 * @since       0.9.1
-	 */
-	public int $checked_out = 0;
+    /**
+     * @var int Checked-out owner
+     *
+     * @since       0.9.1
+     */
+    public int $checked_out = 0;
 
-	/**
-	 * @var ?datetime Checked-out time
-	 *
-	 * @since       0.9.1
-	 */
-	public ?DateTime $checked_out_time = null;
+    /**
+     * @var ?datetime Checked-out time
+     *
+     * @since       0.9.1
+     */
+    public ?DateTime $checked_out_time = null;
 
-	/**
-	 * @var int Archive-flag --> 0 = not archived, 1 = archived
-	 *
-	 * @since       0.9.1
-	 */
-	public int $archive_flag = 0;
+    /**
+     * @var int Archive-flag --> 0 = not archived, 1 = archived
+     *
+     * @since       0.9.1
+     */
+    public int $archive_flag = 0;
 
-	/**
-	 * @var ?datetime Archive-date
-	 *
-	 * @since       0.9.1
-	 */
-	public ?DateTime $archive_date = null;
+    /**
+     * @var ?datetime Archive-date
+     *
+     * @since       0.9.1
+     */
+    public ?DateTime $archive_date = null;
 
-	/**
-	 * @var int ID --> 0 = mailinglist is not archived, another ID = account is archived by an administrator
-	 *
-	 * @since       0.9.1
-	 */
-	public int $archived_by = 0;
+    /**
+     * @var int ID --> 0 = mailinglist is not archived, another ID = account is archived by an administrator
+     *
+     * @since       0.9.1
+     */
+    public int $archived_by = 0;
 
-	/**
-	 * Constructor
-	 *
-	 * @param 	DatabaseDriver  $db Database object
-	 *
-	 * @since       0.9.1
-	 */
-	public function __construct($db = null)
-	{
-		parent::__construct('#__bwpostman_mailinglists', 'id', $db);
-	}
+    /**
+     * Constructor
+     *
+     * @param 	DatabaseDriver  $db Database object
+     *
+     * @since       0.9.1
+     */
+    public function __construct($db = null)
+    {
+        parent::__construct('#__bwpostman_mailinglists', 'id', $db);
+    }
 
-	/**
-	 * Alias function
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0.1
-	 */
-	public function getAssetName(): string
-	{
-		return self::_getAssetName();
-	}
+    /**
+     * Alias function
+     *
+     * @return  string
+     *
+     * @since   1.0.1
+     */
+    public function getAssetName(): string
+    {
+        return self::_getAssetName();
+    }
 
     /**
      * Alias function
@@ -200,39 +200,39 @@ class MailinglistTable extends Table implements VersionableTableInterface
      *
      * @since   1.0.1
      */
-	public function getAssetTitle(): ?string
-	{
-		return self::_getAssetTitle();
-	}
+    public function getAssetTitle(): ?string
+    {
+        return self::_getAssetTitle();
+    }
 
-	/**
-	 * Alias function
-	 *
-	 * @return  int
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.1
-	 */
-	public function getAssetParentId(): int
-	{
-		return self::_getAssetParentId();
-	}
+    /**
+     * Alias function
+     *
+     * @return  int
+     *
+     * @throws Exception
+     *
+     * @since   1.0.1
+     */
+    public function getAssetParentId(): int
+    {
+        return self::_getAssetParentId();
+    }
 
-	/**
-	 * Method to compute the default name of the asset.
-	 * The default name is in the form table_name.id
-	 * where id is the value of the primary key of the table.
-	 *
-	 * @return  string
-	 *
-	 * @since   11.1
-	 */
-	protected function _getAssetName(): string
-	{
-		$k = $this->_tbl_key;
-		return 'com_bwpostman.mailinglist.' . $this->$k;
-	}
+    /**
+     * Method to compute the default name of the asset.
+     * The default name is in the form table_name.id
+     * where id is the value of the primary key of the table.
+     *
+     * @return  string
+     *
+     * @since   11.1
+     */
+    protected function _getAssetName(): string
+    {
+        $k = $this->_tbl_key;
+        return 'com_bwpostman.mailinglist.' . $this->$k;
+    }
 
     /**
      * Method to return the title to use for the asset table.
@@ -241,210 +241,210 @@ class MailinglistTable extends Table implements VersionableTableInterface
      *
      * @since   11.1
      */
-	protected function _getAssetTitle(): ?string
-	{
-		return $this->title;
-	}
+    protected function _getAssetTitle(): ?string
+    {
+        return $this->title;
+    }
 
-	/**
-	 * Method to get the parent asset id for the record
-	 *
-	 * @param Table|null $table A Table object (optional) for the asset parent
-	 * @param null       $id    The id (optional) of the content.
-	 *
-	 * @return  integer
-	 *
-	 * @throws Exception
-	 * @since   11.1
-	 */
-	protected function _getAssetParentId(Table $table = null, $id = null): int
-	{
+    /**
+     * Method to get the parent asset id for the record
+     *
+     * @param Table|null $table A Table object (optional) for the asset parent
+     * @param null       $id    The id (optional) of the content.
+     *
+     * @return  integer
+     *
+     * @throws Exception
+     * @since   11.1
+     */
+    protected function _getAssetParentId(Table $table = null, $id = null): int
+    {
 //		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 //		$asset      = $MvcFactory->createTable('Asset', 'Administrator');
-		$asset = new Asset($this->getDatabase());
+        $asset = new Asset($this->getDatabase());
 
-		$asset->loadByName('com_bwpostman.mailinglist');
-		return (int)$asset->id;
-	}
+        $asset->loadByName('com_bwpostman.mailinglist');
+        return (int)$asset->id;
+    }
 
-	/**
-	 * Overloaded bind function
-	 *
-	 * @access public
-	 *
-	 * @param   array|object  $src     An associative array or object to bind to the Table instance.
-	 * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
-	 *
-	 * @return boolean
-	 *
-	 * @throws BwException
-	 *
-	 * @since       0.9.1
-	 */
-	public function bind($src, $ignore=''): bool
-	{
-		// Bind the rules.
-		if (is_object($src))
-		{
-			if (property_exists($src, 'rules') && is_array($src->rules))
-			{
-				$rules = new Rules($src->rules);
-				$this->setRules($rules);
-			}
-		}
-		elseif (is_array($src))
-		{
-			if (array_key_exists('rules', $src) && is_array($src['rules']))
-			{
-				$rules = new Rules($src['rules']);
-				$this->setRules($rules);
-			}
-		}
-		else
-		{
-			throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
-		}
+    /**
+     * Overloaded bind function
+     *
+     * @access public
+     *
+     * @param   array|object  $src     An associative array or object to bind to the Table instance.
+     * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
+     *
+     * @return boolean
+     *
+     * @throws BwException
+     *
+     * @since       0.9.1
+     */
+    public function bind($src, $ignore=''): bool
+    {
+        // Bind the rules.
+        if (is_object($src))
+        {
+            if (property_exists($src, 'rules') && is_array($src->rules))
+            {
+                $rules = new Rules($src->rules);
+                $this->setRules($rules);
+            }
+        }
+        elseif (is_array($src))
+        {
+            if (array_key_exists('rules', $src) && is_array($src['rules']))
+            {
+                $rules = new Rules($src['rules']);
+                $this->setRules($rules);
+            }
+        }
+        else
+        {
+            throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+        }
 
-		// Cast properties
-		$this->id	= (int) $this->id;
+        // Cast properties
+        $this->id	= (int) $this->id;
 
-		return parent::bind($src, $ignore);
-	}
+        return parent::bind($src, $ignore);
+    }
 
-	/**
-	 * Overloaded check method to ensure data integrity
-	 *
-	 * @access public
-	 *
-	 * @return boolean True
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function check(): bool
-	{
-		$app   = Factory::getApplication();
-		$db    = $this->getDatabase();
-		$query = $db->getQuery(true);
-		$fault = false;
-		$xid   = 0;
+    /**
+     * Overloaded check method to ensure data integrity
+     *
+     * @access public
+     *
+     * @return boolean True
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function check(): bool
+    {
+        $app   = Factory::getApplication();
+        $db    = $this->getDatabase();
+        $query = $db->getQuery(true);
+        $fault = false;
+        $xid   = 0;
 
-		// Remove all HTML tags from the title and description
-		$filter = new InputFilter(array(), array(), 0, 0);
+        // Remove all HTML tags from the title and description
+        $filter = new InputFilter(array(), array(), 0, 0);
 
-		$this->id               = $filter->clean($this->id, 'UINT');
-		$this->asset_id         = $filter->clean($this->asset_id, 'UINT');
-		$this->title            = trim($filter->clean($this->title));
-		$this->description      = $filter->clean($this->description);
-		$this->campaign_id      = $filter->clean($this->campaign_id, 'UINT');
-		$this->access           = $filter->clean($this->access, 'UINT');
-		$this->published        = $filter->clean($this->published, 'UINT');
-		$this->created_date     = $filter->clean($this->created_date);
-		$this->created_by       = $filter->clean($this->created_by, 'INT');
-		$this->modified_time    = $filter->clean($this->modified_time);
-		$this->modified_by      = $filter->clean($this->modified_by, 'INT');
-		$this->checked_out      = $filter->clean($this->checked_out, 'INT');
-		$this->checked_out_time = $filter->clean($this->checked_out_time);
-		$this->archive_flag     = $filter->clean($this->archive_flag, 'UINT');
-		$this->archive_date     = $filter->clean($this->archive_date);
-		$this->archived_by      = $filter->clean($this->archived_by, 'INT');
+        $this->id               = $filter->clean($this->id, 'UINT');
+        $this->asset_id         = $filter->clean($this->asset_id, 'UINT');
+        $this->title            = trim($filter->clean($this->title));
+        $this->description      = $filter->clean($this->description);
+        $this->campaign_id      = $filter->clean($this->campaign_id, 'UINT');
+        $this->access           = $filter->clean($this->access, 'UINT');
+        $this->published        = $filter->clean($this->published, 'UINT');
+        $this->created_date     = $filter->clean($this->created_date);
+        $this->created_by       = $filter->clean($this->created_by, 'INT');
+        $this->modified_time    = $filter->clean($this->modified_time);
+        $this->modified_by      = $filter->clean($this->modified_by, 'INT');
+        $this->checked_out      = $filter->clean($this->checked_out, 'INT');
+        $this->checked_out_time = $filter->clean($this->checked_out_time);
+        $this->archive_flag     = $filter->clean($this->archive_flag, 'UINT');
+        $this->archive_date     = $filter->clean($this->archive_date);
+        $this->archived_by      = $filter->clean($this->archived_by, 'INT');
 
-		// Check for valid title
-		if ($this->title === '')
-		{
-			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ML_ERROR_TITLE'), 'error');
-			$fault = true;
-		}
+        // Check for valid title
+        if ($this->title === '')
+        {
+            $app->enqueueMessage(Text::_('COM_BWPOSTMAN_ML_ERROR_TITLE'), 'error');
+            $fault = true;
+        }
 
-		// Check for valid title
-		if (trim($this->description) == '')
-		{
-			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION'), 'error');
-			$fault = true;
-		}
+        // Check for valid title
+        if (trim($this->description) == '')
+        {
+            $app->enqueueMessage(Text::_('COM_BWPOSTMAN_ML_ERROR_DESCRIPTION'), 'error');
+            $fault = true;
+        }
 
-		// Check for existing title
-		$query->select($db->quoteName('id'));
-		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('title') . ' = ' . $db->quote($this->title));
+        // Check for existing title
+        $query->select($db->quoteName('id'));
+        $query->from($db->quoteName($this->_tbl));
+        $query->where($db->quoteName('title') . ' = ' . $db->quote($this->title));
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$xid = intval($db->loadResult());
-		}
-		catch (RuntimeException $exception)
-		{
+            $xid = intval($db->loadResult());
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'MailinglistTable BE');
 
             $app->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		if ($xid && $xid !== intval($this->id)) {
-			$app->enqueueMessage((Text::sprintf('COM_BWPOSTMAN_ML_ERROR_TITLE_DOUBLE', $this->title, $xid)), 'error');
-			return false;
-		}
+        if ($xid && $xid !== intval($this->id)) {
+            $app->enqueueMessage((Text::sprintf('COM_BWPOSTMAN_ML_ERROR_TITLE_DOUBLE', $this->title, $xid)), 'error');
+            return false;
+        }
 
-		if ($fault)
-		{
-			$app->setUserState('com_bwpostman.edit.mailinglist.data', $this);
-			return false;
-		}
+        if ($fault)
+        {
+            $app->setUserState('com_bwpostman.edit.mailinglist.data', $this);
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Overridden Table::store to set created/modified and user id.
-	 *
-	 * @param   boolean  $updateNulls  True to update fields even if they are null.
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.1
-	 */
-	public function store($updateNulls = false): bool
-	{
-		$date = Factory::getDate();
-		$user = Factory::getApplication()->getIdentity();
+    /**
+     * Overridden Table::store to set created/modified and user id.
+     *
+     * @param   boolean  $updateNulls  True to update fields even if they are null.
+     *
+     * @return  boolean  True on success.
+     *
+     * @throws Exception
+     *
+     * @since   1.0.1
+     */
+    public function store($updateNulls = false): bool
+    {
+        $date = Factory::getDate();
+        $user = Factory::getApplication()->getIdentity();
 
-		if ($this->id)
-		{
-			// Existing mailing list
-			$this->modified_time = $date->toSql();
-			$this->modified_by   = $user->id;
-		}
-		else
-		{
-			// New mailing list
-			$this->created_date = $date->toSql();
-			$this->created_by   = $user->id;
-		}
+        if ($this->id)
+        {
+            // Existing mailing list
+            $this->modified_time = $date->toSql();
+            $this->modified_by   = $user->id;
+        }
+        else
+        {
+            // New mailing list
+            $this->created_date = $date->toSql();
+            $this->created_by   = $user->id;
+        }
 
-		// Ensure nulldate columns have correct nulldate
-		$nulldateCols = array(
-			'modified_time',
-			'checked_out_time',
-			'archive_date',
-		);
+        // Ensure nulldate columns have correct nulldate
+        $nulldateCols = array(
+            'modified_time',
+            'checked_out_time',
+            'archive_date',
+        );
 
-		foreach ($nulldateCols as $nulldateCol)
-		{
-			if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->getDatabase()->getNullDate())
-			{
-				$this->$nulldateCol = null;
-			}
-		}
+        foreach ($nulldateCols as $nulldateCol)
+        {
+            if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->getDatabase()->getNullDate())
+            {
+                $this->$nulldateCol = null;
+            }
+        }
 
-		$res = parent::store($updateNulls);
-		Factory::getApplication()->setUserState('com_bwpostman.edit.mailinglist.id', $this->id);
+        $res = parent::store($updateNulls);
+        Factory::getApplication()->setUserState('com_bwpostman.edit.mailinglist.id', $this->id);
 
-		return $res;
-	}
+        return $res;
+    }
 
     /**
      * Method to get the mailinglists by restriction of archive, published and access
@@ -459,65 +459,65 @@ class MailinglistTable extends Table implements VersionableTableInterface
      * @throws Exception
      * @since 2.4.0 (here, before since 2.3.0 at mailinglist helper)
      */
-	public function getMailinglistsByRestriction(array $mailinglists, string $condition = 'available', int $archived = 0, bool $restricted = true): ?array
-	{
-		$mls = null;
-		$restrictedMls = array();
+    public function getMailinglistsByRestriction(array $mailinglists, string $condition = 'available', int $archived = 0, bool $restricted = true): ?array
+    {
+        $mls = null;
+        $restrictedMls = array();
 
-		$db    = $this->getDatabase();
-		$query = $db->getQuery(true);
+        $db    = $this->getDatabase();
+        $query = $db->getQuery(true);
 
-		$query->select('id');
-		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('archive_flag') . ' = ' . $archived);
+        $query->select('id');
+        $query->from($db->quoteName($this->_tbl));
+        $query->where($db->quoteName('archive_flag') . ' = ' . $archived);
 
-		if ($archived === 0)
-		{
-			switch ($condition)
-			{
-				case 'available':
-					$query->where($db->quoteName('published') . ' = ' . 1);
-					$query->where($db->quoteName('access') . ' = ' . 1);
-					break;
-				case 'unavailable':
-					$query->where($db->quoteName('published') . ' = ' . 1);
-					$query->where($db->quoteName('access') . ' > ' . 1);
-					break;
-				case 'internal':
-					$query->where($db->quoteName('published') . ' = ' . 0);
-					break;
-			}
-		}
+        if ($archived === 0)
+        {
+            switch ($condition)
+            {
+                case 'available':
+                    $query->where($db->quoteName('published') . ' = ' . 1);
+                    $query->where($db->quoteName('access') . ' = ' . 1);
+                    break;
+                case 'unavailable':
+                    $query->where($db->quoteName('published') . ' = ' . 1);
+                    $query->where($db->quoteName('access') . ' > ' . 1);
+                    break;
+                case 'internal':
+                    $query->where($db->quoteName('published') . ' = ' . 0);
+                    break;
+            }
+        }
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$mls = $db->loadColumn();
-		}
-		catch (RuntimeException $exception)
-		{
+            $mls = $db->loadColumn();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'MailinglistTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		if ($restricted === true)
-		{
-			$resultingMls = array_intersect(ArrayHelper::toInteger($mailinglists), $mls);
-		}
-		else
-		{
-			$resultingMls = $mls;
-		}
+        if ($restricted === true)
+        {
+            $resultingMls = array_intersect(ArrayHelper::toInteger($mailinglists), $mls);
+        }
+        else
+        {
+            $resultingMls = $mls;
+        }
 
-		if (count($resultingMls) > 0)
-		{
-			$restrictedMls = $resultingMls;
-		}
+        if (count($resultingMls) > 0)
+        {
+            $restrictedMls = $resultingMls;
+        }
 
-		return $restrictedMls;
-	}
+        return $restrictedMls;
+    }
 
     /**
      * Method to get all mailinglists which the user is authorized to see
@@ -529,337 +529,337 @@ class MailinglistTable extends Table implements VersionableTableInterface
      * @throws Exception
      * @since       2.4.0 (here, before since 2.0.0 at subscriber helper)
      */
-	public function getAuthorizedMailinglists(int $userId): ?array
-	{
-		$app          = Factory::getApplication();
-		$mailinglists = null;
-		$db           = $this->getDatabase();
-		$query        = $db->getQuery(true);
+    public function getAuthorizedMailinglists(int $userId): ?array
+    {
+        $app          = Factory::getApplication();
+        $mailinglists = null;
+        $db           = $this->getDatabase();
+        $query        = $db->getQuery(true);
 
-		// Get the access levels for the user, preset with access level guest and public
-		$publicAccess = array(1, 5);
-		$userAccess   = Access::getAuthorisedViewLevels($userId);
-		$accesslevels  = array_unique(array_merge($publicAccess, $userAccess));
+        // Get the access levels for the user, preset with access level guest and public
+        $publicAccess = array(1, 5);
+        $userAccess   = Access::getAuthorisedViewLevels($userId);
+        $accesslevels  = array_unique(array_merge($publicAccess, $userAccess));
 
-		$query->select('*');
-		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
-		$query->where($db->quoteName('published') . ' = ' . 1);
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
-		$query->order($db->quoteName('title') . 'ASC');
+        $query->select('*');
+        $query->from($db->quoteName($this->_tbl));
+        $query->where($db->quoteName('access') . ' IN (' . implode(',', $accesslevels) . ')');
+        $query->where($db->quoteName('published') . ' = ' . 1);
+        $query->where($db->quoteName('archive_flag') . ' = ' . 0);
+        $query->order($db->quoteName('title') . 'ASC');
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$mailinglists = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
+            $mailinglists = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'MailinglistTable BE');
 
             $app->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		// Does the subscriber already has internal mailinglists?
-		$selected = $app->getUserState('com_bwpostman.subscriber.selected_lists', '');
+        // Does the subscriber already has internal mailinglists?
+        $selected = $app->getUserState('com_bwpostman.subscriber.selected_lists', '');
 
-		if (is_array($selected))
-		{
-			$ml_ids  = array();
-			$add_mls = array();
+        if (is_array($selected))
+        {
+            $ml_ids  = array();
+            $add_mls = array();
 
-			// compare available mailinglists with selected mailinglists, get difference
-			foreach ($mailinglists as $value)
-			{
-				$ml_ids[] = $value->id;
-			}
+            // compare available mailinglists with selected mailinglists, get difference
+            foreach ($mailinglists as $value)
+            {
+                $ml_ids[] = $value->id;
+            }
 
-			$get_mls = array_diff(ArrayHelper::toInteger($selected), $ml_ids);
+            $get_mls = array_diff(ArrayHelper::toInteger($selected), $ml_ids);
 
-			// if there are internal mailinglists selected, get them ...
-			if (is_array($get_mls) && !empty($get_mls))
-			{
-				$query->clear();
-				$query->select('*');
-				$query->from($db->quoteName($this->_tbl));
-				$query->where($db->quoteName('id') . ' IN (' . implode(',', $get_mls) . ')');
-				$query->order($db->quoteName('title') . 'ASC');
+            // if there are internal mailinglists selected, get them ...
+            if (is_array($get_mls) && !empty($get_mls))
+            {
+                $query->clear();
+                $query->select('*');
+                $query->from($db->quoteName($this->_tbl));
+                $query->where($db->quoteName('id') . ' IN (' . implode(',', $get_mls) . ')');
+                $query->order($db->quoteName('title') . 'ASC');
 
-				try
-				{
-					$db->setQuery($query);
+                try
+                {
+                    $db->setQuery($query);
 
-					$add_mls = $db->loadObjectList();
-				}
-				catch (RuntimeException $exception)
-				{
+                    $add_mls = $db->loadObjectList();
+                }
+                catch (RuntimeException $exception)
+                {
                     BwPostmanHelper::logException($exception, 'MailinglistTable BE');
 
                     $app->enqueueMessage($exception->getMessage(), 'error');
-				}
-			}
-		}
+                }
+            }
+        }
 
-		// ...and add them to the mailinglists array
-		if (!empty($add_mls))
-		{
-			$mailinglists = array_merge($mailinglists, $add_mls);
-		}
+        // ...and add them to the mailinglists array
+        if (!empty($add_mls))
+        {
+            $mailinglists = array_merge($mailinglists, $add_mls);
+        }
 
-		return $mailinglists;
-	}
+        return $mailinglists;
+    }
 
-	/**
-	 * Method to get the data of the mailinglists a user is subscribed to from their mailinglist ids
-	 *
-	 * @param array $mailinglist_ids
-	 *
-	 * @return array|null
-	 *
-	 * @throws Exception
-	 *
-	 * @since 2.4.0
-	 */
-	public function getCompleteMailinglistsOfSubscriber(array $mailinglist_ids): ?array
-	{
-		$lists = array();
-
-		if (!empty($mailinglist_ids))
-		{
-			$mailinglists = implode(',', $mailinglist_ids);
-		}
-		else
-		{
-			$mailinglists = 0;
-		}
-
-		$db    = $this->getDatabase();
-		$query = $db->getQuery(true);
-
-		$query->select($db->quoteName('id'));
-		$query->select($db->quoteName('title'));
-		$query->select($db->quoteName('description'));
-		$query->select($db->quoteName('archive_flag'));
-		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' IN  (' . $mailinglists . ')');
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
-
-		try
-		{
-			$db->setQuery($query);
-
-			$lists = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
-            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
-
-            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
-
-		return $lists;
-	}
-
-	/**
-	 * Method to get id and title of all provided mailinglist ids
-	 *
-	 * @param array $mls ids of mailinglists to get the title for
-	 *
-	 * @return 	array|null mailinglists
-	 *
-	 * @throws Exception
-	 *
-	 * @since  2.4.0
-	 */
-	public function getMailinglistsIdTitle(array $mls): ?array
-	{
-		$mailinglists = array();
-		$db     = $this->getDatabase();
-		$query	= $db->getQuery(true);
-
-		$query->select($db->quoteName('id'));
-		$query->select($db->quoteName('title'));
-		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('id') . ' IN (' . implode(',', $mls) . ')');
-
-		try
-		{
-			$db->setQuery($query);
-
-			$mailinglists = $db->loadAssocList();
-		}
-		catch (RuntimeException $exception)
-		{
-            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
-
-            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
-
-		return $mailinglists;
-	}
-
-	/**
-	 * Method to get id as value and title as text of all mailinglists
-	 *
-	 * @return 	array|null mailinglists
-	 *
-	 * @throws Exception
-	 *
-	 * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
-	 */
-	public function getMailinglistsValueText(): ?array
-	{
-		$mailinglists = array();
-		$db     = $this->getDatabase();
-		$query	= $db->getQuery(true);
-
-		$query->select($db->quoteName('id') . ' AS value');
-		$query->select($db->quoteName('title') . ' AS text');
-		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
-		$query->order('title');
-
-		try
-		{
-			$db->setQuery($query);
-
-			$mailinglists = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
-            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
-
-            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
-
-		return $mailinglists;
-	}
-
-	/**
-	 * Method to get id and title of all mailinglists
-	 *
-	 * @access 	public
-	 *
-	 * @return 	array|null mailinglists
-	 *
-	 * @throws Exception
-	 *
-	 * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
-	 */
-	public function getPublishedMailinglistsIds(): ?array
-	{
-		$mailinglists = array();
-		$db     = $this->getDatabase();
-		$query	= $db->getQuery(true);
-
-		$query->select('id');
-		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('published') . ' = ' . 1);
-
-		try
-		{
-			$this->getDatabase()->setQuery($query);
-
-			$mailinglists = $db->loadColumn();
-		}
-		catch (RuntimeException $exception)
-		{
-            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
-
-            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
-
-		return $mailinglists;
-	}
-
-	/**
-	 * Method to get all published mailing lists which the user is authorized to see
-	 *
-	 * @param array $viewLevels the access levels to search for
-	 *
-	 * @return 	array|null	ID and title of allowed mailinglists
-	 *
-	 * @throws Exception
-	 *
-	 * @since  2.4.0 (here, before since 1.0.1 at FE newsletters model)
-	 */
-	public function getAllowedMailinglists(array $viewLevels): ?array
-	{
-		$mailinglists   = null;
-		$db    = $this->getDatabase();
-		$query = $db->getQuery(true);
-
-		$query->select('id');
-		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('access') . ' IN (' . implode(',', $viewLevels) . ')');
-		$query->where($db->quoteName('published') . ' = ' . 1);
-
-		try
-		{
-			$db->setQuery($query);
-
-			$mailinglists = $db->loadAssocList();
-		}
-		catch (RuntimeException $exception)
-		{
-            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
-
-            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
-
-		$allowed = array();
-
-		foreach ($mailinglists as $item)
-		{
-			$allowed[] = $item['id'];
-		}
-
-		return $allowed;
-	}
-
-	/**
-	 * Returns the identity (primary key) value of this record
-	 *
-	 * @return  array|string
-	 *
-	 * @since  2.4.0
-	 */
-	public function getId(): array|string
+    /**
+     * Method to get the data of the mailinglists a user is subscribed to from their mailinglist ids
+     *
+     * @param array $mailinglist_ids
+     *
+     * @return array|null
+     *
+     * @throws Exception
+     *
+     * @since 2.4.0
+     */
+    public function getCompleteMailinglistsOfSubscriber(array $mailinglist_ids): ?array
     {
-		$key = $this->getKeyName();
+        $lists = array();
 
-		return $this->$key;
-	}
+        if (!empty($mailinglist_ids))
+        {
+            $mailinglists = implode(',', $mailinglist_ids);
+        }
+        else
+        {
+            $mailinglists = 0;
+        }
 
-	/**
-	 * Check if the record has a property (applying a column alias if it exists)
-	 *
-	 * @param string $key key to be checked
-	 *
-	 * @return  boolean
-	 *
-	 * @since   2.4.0
-	 */
-	public function hasField($key): bool
-	{
-		$key = $this->getColumnAlias($key);
+        $db    = $this->getDatabase();
+        $query = $db->getQuery(true);
 
-		return property_exists($this, $key);
-	}
+        $query->select($db->quoteName('id'));
+        $query->select($db->quoteName('title'));
+        $query->select($db->quoteName('description'));
+        $query->select($db->quoteName('archive_flag'));
+        $query->from($db->quoteName($this->_tbl));
+        $query->where($db->quoteName('id') . ' IN  (' . $mailinglists . ')');
+        $query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
-	/**
-	 * Get the type alias for the history table
-	 *
-	 * The type alias generally is the internal component name with the
-	 * content type. Ex.: com_content.article
-	 *
-	 * @return  string  The alias as described above
-	 *
-	 * @since   4.0.0
-	 */
-	public function getTypeAlias(): string
-	{
-		return 'com_bwpostman.mailinglist';
-	}
+        try
+        {
+            $db->setQuery($query);
+
+            $lists = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
+        }
+
+        return $lists;
+    }
+
+    /**
+     * Method to get id and title of all provided mailinglist ids
+     *
+     * @param array $mls ids of mailinglists to get the title for
+     *
+     * @return 	array|null mailinglists
+     *
+     * @throws Exception
+     *
+     * @since  2.4.0
+     */
+    public function getMailinglistsIdTitle(array $mls): ?array
+    {
+        $mailinglists = array();
+        $db     = $this->getDatabase();
+        $query	= $db->getQuery(true);
+
+        $query->select($db->quoteName('id'));
+        $query->select($db->quoteName('title'));
+        $query->from($db->quoteName($this->_tbl));
+        $query->where($db->quoteName('id') . ' IN (' . implode(',', $mls) . ')');
+
+        try
+        {
+            $db->setQuery($query);
+
+            $mailinglists = $db->loadAssocList();
+        }
+        catch (RuntimeException $exception)
+        {
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
+        }
+
+        return $mailinglists;
+    }
+
+    /**
+     * Method to get id as value and title as text of all mailinglists
+     *
+     * @return 	array|null mailinglists
+     *
+     * @throws Exception
+     *
+     * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
+     */
+    public function getMailinglistsValueText(): ?array
+    {
+        $mailinglists = array();
+        $db     = $this->getDatabase();
+        $query	= $db->getQuery(true);
+
+        $query->select($db->quoteName('id') . ' AS value');
+        $query->select($db->quoteName('title') . ' AS text');
+        $query->from($db->quoteName($this->_tbl));
+        $query->where($db->quoteName('archive_flag') . ' = ' . 0);
+        $query->order('title');
+
+        try
+        {
+            $db->setQuery($query);
+
+            $mailinglists = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
+        }
+
+        return $mailinglists;
+    }
+
+    /**
+     * Method to get id and title of all mailinglists
+     *
+     * @access 	public
+     *
+     * @return 	array|null mailinglists
+     *
+     * @throws Exception
+     *
+     * @since  2.4.0 (here, before since 1.0.8 at subscribers model)
+     */
+    public function getPublishedMailinglistsIds(): ?array
+    {
+        $mailinglists = array();
+        $db     = $this->getDatabase();
+        $query	= $db->getQuery(true);
+
+        $query->select('id');
+        $query->from($db->quoteName($this->_tbl));
+        $query->where($db->quoteName('published') . ' = ' . 1);
+
+        try
+        {
+            $this->getDatabase()->setQuery($query);
+
+            $mailinglists = $db->loadColumn();
+        }
+        catch (RuntimeException $exception)
+        {
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
+        }
+
+        return $mailinglists;
+    }
+
+    /**
+     * Method to get all published mailing lists which the user is authorized to see
+     *
+     * @param array $viewLevels the access levels to search for
+     *
+     * @return 	array|null	ID and title of allowed mailinglists
+     *
+     * @throws Exception
+     *
+     * @since  2.4.0 (here, before since 1.0.1 at FE newsletters model)
+     */
+    public function getAllowedMailinglists(array $viewLevels): ?array
+    {
+        $mailinglists   = null;
+        $db    = $this->getDatabase();
+        $query = $db->getQuery(true);
+
+        $query->select('id');
+        $query->from($db->quoteName('#__bwpostman_mailinglists'));
+        $query->where($db->quoteName('access') . ' IN (' . implode(',', $viewLevels) . ')');
+        $query->where($db->quoteName('published') . ' = ' . 1);
+
+        try
+        {
+            $db->setQuery($query);
+
+            $mailinglists = $db->loadAssocList();
+        }
+        catch (RuntimeException $exception)
+        {
+            BwPostmanHelper::logException($exception, 'MailinglistTable BE');
+
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
+        }
+
+        $allowed = array();
+
+        foreach ($mailinglists as $item)
+        {
+            $allowed[] = $item['id'];
+        }
+
+        return $allowed;
+    }
+
+    /**
+     * Returns the identity (primary key) value of this record
+     *
+     * @return  array|string
+     *
+     * @since  2.4.0
+     */
+    public function getId(): array|string
+    {
+        $key = $this->getKeyName();
+
+        return $this->$key;
+    }
+
+    /**
+     * Check if the record has a property (applying a column alias if it exists)
+     *
+     * @param string $key key to be checked
+     *
+     * @return  boolean
+     *
+     * @since   2.4.0
+     */
+    public function hasField($key): bool
+    {
+        $key = $this->getColumnAlias($key);
+
+        return property_exists($this, $key);
+    }
+
+    /**
+     * Get the type alias for the history table
+     *
+     * The type alias generally is the internal component name with the
+     * content type. Ex.: com_content.article
+     *
+     * @return  string  The alias as described above
+     *
+     * @since   4.0.0
+     */
+    public function getTypeAlias(): string
+    {
+        return 'com_bwpostman.mailinglist';
+    }
 }

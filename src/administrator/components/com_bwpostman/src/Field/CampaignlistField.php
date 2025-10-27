@@ -45,56 +45,56 @@ use stdClass;
  */
 class CampaignlistField extends ListField
 {
-	/**
-	 * property to hold campaigns
-	 *
-	 * @var string  $type
-	 *
-	 * @since       1.0.8
-	 */
-	protected $type = 'Campaignlist';
+    /**
+     * property to hold campaigns
+     *
+     * @var string  $type
+     *
+     * @since       1.0.8
+     */
+    protected $type = 'Campaignlist';
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return  array  The field option objects.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.8
-	 */
-	protected function getOptions(): array
-	{
-		// Get a db connection.
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->getQuery(true);
+    /**
+     * Method to get the field options.
+     *
+     * @return  array  The field option objects.
+     *
+     * @throws Exception
+     *
+     * @since   1.0.8
+     */
+    protected function getOptions(): array
+    {
+        // Get a db connection.
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->getQuery(true);
 
-		// Get all published campaigns
-		$query->select($db->quoteName('id') . ' AS value');
-		$query->select($db->quoteName('title') . 'AS text');
-		$query->select($db->quoteName('description') . ' AS description');
-		$query->from($db->quoteName('#__bwpostman_campaigns'));
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
+        // Get all published campaigns
+        $query->select($db->quoteName('id') . ' AS value');
+        $query->select($db->quoteName('title') . 'AS text');
+        $query->select($db->quoteName('description') . ' AS description');
+        $query->from($db->quoteName('#__bwpostman_campaigns'));
+        $query->where($db->quoteName('archive_flag') . ' = ' . 0);
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
+            $options = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'CamList BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		$parent = new stdClass;
-		$parent->value	= '-1';
-		$parent->text	= '- ' . Text::_('COM_BWPOSTMAN_NL_FILTER_CAMPAIGN') . ' -';
-		array_unshift($options, $parent);
+        $parent = new stdClass;
+        $parent->value	= '-1';
+        $parent->text	= '- ' . Text::_('COM_BWPOSTMAN_NL_FILTER_CAMPAIGN') . ' -';
+        array_unshift($options, $parent);
 
-		// Merge any additional options in the XML definition.
-		return array_merge(parent::getOptions(), $options);
-	}
+        // Merge any additional options in the XML definition.
+        return array_merge(parent::getOptions(), $options);
+    }
 }

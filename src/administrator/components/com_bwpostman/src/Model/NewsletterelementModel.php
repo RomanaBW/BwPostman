@@ -47,117 +47,117 @@ use Joomla\CMS\Pagination\Pagination;
 class NewsletterelementModel extends BaseDatabaseModel
 {
 
-	/**
-	 * Newsletters data
-	 *
-	 * @var ?array
-	 *
-	 * @since
-	 */
-	private ?array $data = null;
+    /**
+     * Newsletters data
+     *
+     * @var ?array
+     *
+     * @since
+     */
+    private ?array $data = null;
 
-	/**
-	 * Number of all newsletters
-	 *
-	 * @var ?int
-	 *
-	 * @since
-	 */
-	private ?int $total = null;
+    /**
+     * Number of all newsletters
+     *
+     * @var ?int
+     *
+     * @since
+     */
+    private ?int $total = null;
 
-	/**
-	 * Pagination object
-	 *
-	 * @var ?object
-	 *
-	 * @since
-	 */
-	private ?object $pagination = null;
+    /**
+     * Pagination object
+     *
+     * @var ?object
+     *
+     * @since
+     */
+    private ?object $pagination = null;
 
-	/**
-	 * Newsletters search
-	 *
-	 * @var ?string
-	 *
-	 * @since
-	 */
-	private ?string $search = null;
+    /**
+     * Newsletters search
+     *
+     * @var ?string
+     *
+     * @since
+     */
+    private ?string $search = null;
 
-	/**
-	 * Mailinglists key
-	 * --> we need this as identifier for the different mailinglists filters (e.g. filter_order, state, search ...)
-	 * --> value will be "mailinglists"
-	 *
-	 * @var	string
-	 *
-	 * @since
-	 */
-	private string $key;
+    /**
+     * Mailinglists key
+     * --> we need this as identifier for the different mailinglists filters (e.g. filter_order, state, search ...)
+     * --> value will be "mailinglists"
+     *
+     * @var	string
+     *
+     * @since
+     */
+    private string $key;
 
-	/**
-	 * Constructor
-	 * --> handles the pagination and set the mailinglists key
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	public function __construct()
-	{
-		parent::__construct();
+    /**
+     * Constructor
+     * --> handles the pagination and set the mailinglists key
+     *
+     * @throws Exception
+     *
+     * @since
+     */
+    public function __construct()
+    {
+        parent::__construct();
 
-		$app = Factory::getApplication();
+        $app = Factory::getApplication();
 
-		$this->key = $this->getName();
+        $this->key = $this->getName();
 
-		// Get the pagination request variables
-		$limit      = $app->getUserStateFromRequest($this->key . '_limit', 'limit', $app->get('list_limit'), 0);
-		$limitstart = $app->getUserStateFromRequest($this->key . '_limitstart', 'limitstart', 0);
+        // Get the pagination request variables
+        $limit      = $app->getUserStateFromRequest($this->key . '_limit', 'limit', $app->get('list_limit'), 0);
+        $limitstart = $app->getUserStateFromRequest($this->key . '_limitstart', 'limitstart', 0);
 
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-	}
+        $this->setState('limit', $limit);
+        $this->setState('limitstart', $limitstart);
+    }
 
-	/**
-	 * Method to get the mailinglists data
-	 *
-	 * @return 	array Mailinglists-data
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	public function getData(): array
-	{
-		if (empty($this->data))
-		{
-			$query      = $this->buildQuery();
-			$this->data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-		}
+    /**
+     * Method to get the mailinglists data
+     *
+     * @return 	array Mailinglists-data
+     *
+     * @throws Exception
+     *
+     * @since
+     */
+    public function getData(): array
+    {
+        if (empty($this->data))
+        {
+            $query      = $this->buildQuery();
+            $this->data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+        }
 
-		return $this->data;
-	}
+        return $this->data;
+    }
 
-	/**
-	 * Method to get the total number of mailinglists that shall be displayed
-	 *
-	 * @return 	int Total number
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	public function getTotal(): int
-	{
-		// Load the content if it doesn't already exist
-		if (!$this->total)
-		{
-			$query       = $this->buildQuery();
-			$this->total = $this->_getListCount($query);
-		}
+    /**
+     * Method to get the total number of mailinglists that shall be displayed
+     *
+     * @return 	int Total number
+     *
+     * @throws Exception
+     *
+     * @since
+     */
+    public function getTotal(): int
+    {
+        // Load the content if it doesn't already exist
+        if (!$this->total)
+        {
+            $query       = $this->buildQuery();
+            $this->total = $this->_getListCount($query);
+        }
 
-		return $this->total;
-	}
+        return $this->total;
+    }
 
     /**
      * Method to get a pagination object for the mailinglists view
@@ -167,93 +167,93 @@ class NewsletterelementModel extends BaseDatabaseModel
      * @throws Exception
      * @since
      */
-	public function getPagination(): Pagination|null
+    public function getPagination(): Pagination|null
     {
-		// Load the content if it doesn't already exist
-		if (empty($this->pagination))
-		{
-			$this->pagination = new Pagination($this->getTotal(), (int) $this->getState('limitstart'), (int) $this->getState('limit'));
-		}
+        // Load the content if it doesn't already exist
+        if (empty($this->pagination))
+        {
+            $this->pagination = new Pagination($this->getTotal(), (int) $this->getState('limitstart'), (int) $this->getState('limit'));
+        }
 
-		return $this->pagination;
-	}
+        return $this->pagination;
+    }
 
-	/**
-	 * Method to build the MySQL query
-	 *
-	 * @return 	string Query
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	private function buildQuery(): string
-	{
-		$app   = Factory::getApplication();
-		$db    = $this->getDatabase();
-		$query = $db->getQuery(true);
+    /**
+     * Method to build the MySQL query
+     *
+     * @return 	string Query
+     *
+     * @throws Exception
+     *
+     * @since
+     */
+    private function buildQuery(): string
+    {
+        $app   = Factory::getApplication();
+        $db    = $this->getDatabase();
+        $query = $db->getQuery(true);
 
-		// Build the query
-		$query->select('a.id, a.subject, a.description,  a.mailing_date, a.published, a.archive_flag');
-		$query->from('#__bwpostman_newsletters AS a');
+        // Build the query
+        $query->select('a.id, a.subject, a.description,  a.mailing_date, a.published, a.archive_flag');
+        $query->from('#__bwpostman_newsletters AS a');
 
-		// Filter by published state
-		$query->where('a.published != ' . 0);
-		$query->where($db->quoteName('a.mailing_date') . ' != ' . $db->quote($db->getNullDate())
-			. ' OR a.mailing_date IS NOT NULL');
+        // Filter by published state
+        $query->where('a.published != ' . 0);
+        $query->where($db->quoteName('a.mailing_date') . ' != ' . $db->quote($db->getNullDate())
+            . ' OR a.mailing_date IS NOT NULL');
 
-		// Get the search string
-		$search = $this->getSearch();
+        // Get the search string
+        $search = $this->getSearch();
 
-		// Get the search filter
-		$filter_search = $app->getUserStateFromRequest($this->key . '_filter_search', 'filter_search', 'subject', 'string');
+        // Get the search filter
+        $filter_search = $app->getUserStateFromRequest($this->key . '_filter_search', 'filter_search', 'subject', 'string');
 
-		if ($search != '')
-		{
-			$fields = explode(',', $filter_search);
+        if ($search != '')
+        {
+            $fields = explode(',', $filter_search);
 
-			foreach ($fields as $field)
-			{
-				$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
-				$query->where('a.' . $field . " LIKE " . $search);
-			}
-		}
+            foreach ($fields as $field)
+            {
+                $search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
+                $query->where('a.' . $field . " LIKE " . $search);
+            }
+        }
 
-		// Get the filter order
-		$filter_order     = $app->getUserStateFromRequest($this->key . '_filter_order', '.filter_order', 'a.subject', 'word');
-		$filter_order_Dir = $app->getUserStateFromRequest($this->key . '_filter_order_Dir', 'filter_order_Dir', '', 'word');
+        // Get the filter order
+        $filter_order     = $app->getUserStateFromRequest($this->key . '_filter_order', '.filter_order', 'a.subject', 'word');
+        $filter_order_Dir = $app->getUserStateFromRequest($this->key . '_filter_order_Dir', 'filter_order_Dir', '', 'word');
 
-		if ($filter_order == 'a.subject')
-		{
-			$query->order('a.subject ' . $filter_order_Dir);
-		}
-		else
-		{
-			$query->order($db->escape($filter_order . ' ' . $filter_order_Dir));
-		}
+        if ($filter_order == 'a.subject')
+        {
+            $query->order('a.subject ' . $filter_order_Dir);
+        }
+        else
+        {
+            $query->order($db->escape($filter_order . ' ' . $filter_order_Dir));
+        }
 
-		return $query;
-	}
+        return $query;
+    }
 
-	/**
-	 * Method to get the search term
-	 *
-	 * @return 	string
-	 *
-	 * @throws Exception
-	 *
-	 * @since
-	 */
-	private function getSearch(): string
-	{
-		if (!$this->search)
-		{
-			$app = Factory::getApplication();
+    /**
+     * Method to get the search term
+     *
+     * @return 	string
+     *
+     * @throws Exception
+     *
+     * @since
+     */
+    private function getSearch(): string
+    {
+        if (!$this->search)
+        {
+            $app = Factory::getApplication();
 
-			$search       = $app->getUserStateFromRequest($this->key . '_search', 'search', '', 'string');
-			$this->search = StringHelper::strtolower($search);
-		}
+            $search       = $app->getUserStateFromRequest($this->key . '_search', 'search', '', 'string');
+            $this->search = StringHelper::strtolower($search);
+        }
 
-		return $this->search;
-	}
+        return $this->search;
+    }
 }

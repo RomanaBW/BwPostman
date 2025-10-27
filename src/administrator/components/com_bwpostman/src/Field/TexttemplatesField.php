@@ -48,151 +48,151 @@ use RuntimeException;
  */
 class TexttemplatesField extends RadioField
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 *
-	 * @since  1.2.0
-	 */
-	protected $type = 'Texttemplates';
+    /**
+     * The form field type.
+     *
+     * @var    string
+     *
+     * @since  1.2.0
+     */
+    protected $type = 'Texttemplates';
 
-	/**
-	 * Method to get the Text template field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.2.0
-	 */
-	protected function getInput(): string
-	{
-		$item     = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data');
-		$html     = array();
-		$selected = '';
+    /**
+     * Method to get the Text template field input markup.
+     *
+     * @return  string  The field input markup.
+     *
+     * @throws Exception
+     *
+     * @since   1.2.0
+     */
+    protected function getInput(): string
+    {
+        $item     = Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data');
+        $html     = array();
+        $selected = '';
 
-		// Initialize some field attributes.
-		$readonly = $this->readonly;
+        // Initialize some field attributes.
+        $readonly = $this->readonly;
 
-		// Get the field options.
-		$options = $this->getOptions();
+        // Get the field options.
+        $options = $this->getOptions();
 
-		// Get selected template.
-		if (is_object($item))
-		{
-			$selected = $item->text_template_id;
-		}
+        // Get selected template.
+        if (is_object($item))
+        {
+            $selected = $item->text_template_id;
+        }
 
-		// note for old templates
-		if ($selected < 1)
-		{
-			$html[] = Text::_('COM_BWPOSTMAN_NOTE_OLD_TEMPLATE');
-		}
+        // note for old templates
+        if ($selected < 1)
+        {
+            $html[] = Text::_('COM_BWPOSTMAN_NOTE_OLD_TEMPLATE');
+        }
 
-		if (count($options) > 0)
-		{
-			// Build the radio field output.
-			foreach ($options as $i => $option)
-			{
-				// Initialize some option attributes.
-				$checked    = ((string) $option->value == (string) $selected) ? ' checked="checked"' : '';
-				$lblclass   = ' class="mailinglists form-check-label"';
-				$inputclass = ' class="mailinglists form-check-input"';
+        if (count($options) > 0)
+        {
+            // Build the radio field output.
+            foreach ($options as $i => $option)
+            {
+                // Initialize some option attributes.
+                $checked    = ((string) $option->value == (string) $selected) ? ' checked="checked"' : '';
+                $lblclass   = ' class="mailinglists form-check-label"';
+                $inputclass = ' class="mailinglists form-check-input"';
 
-				$disabled   = !empty($option->disable) || ($readonly && !$checked);
+                $disabled   = !empty($option->disable) || ($readonly && !$checked);
 
-				$disabled   = $disabled ? ' disabled' : '';
+                $disabled   = $disabled ? ' disabled' : '';
 
-				// Initialize some JavaScript option attributes.
-				$onclick    = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
-				$onchange   = !empty($option->onchange) ? ' onchange="' . $option->onchange . '"' : '';
+                // Initialize some JavaScript option attributes.
+                $onclick    = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
+                $onchange   = !empty($option->onchange) ? ' onchange="' . $option->onchange . '"' : '';
 
-				$html[] = '<div class="form-check" aria-describedby="tip-' . $this->id . $i . '">';
-				$html[] = '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="'
-							. htmlspecialchars($option->value, ENT_COMPAT) . '"' . $checked . $inputclass . $onclick
-							. $onchange . $disabled . ' />';
-				$html[] = '<label for="' . $this->id . $i . '"' . $lblclass . ' >';
-				$html[] = $option->title . '</label>';
+                $html[] = '<div class="form-check" aria-describedby="tip-' . $this->id . $i . '">';
+                $html[] = '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="'
+                            . htmlspecialchars($option->value, ENT_COMPAT) . '"' . $checked . $inputclass . $onclick
+                            . $onchange . $disabled . ' />';
+                $html[] = '<label for="' . $this->id . $i . '"' . $lblclass . ' >';
+                $html[] = $option->title . '</label>';
 
-				$tooltip = '<strong>' . $option->description . '</strong><br /><br />'
-					. '<div><img src="' . Uri::root() . $option->thumbnail . '" alt="' . $option->title . '"'
-					.'style="max-width:160px; max-height:100px;" /></div>';
-				$html[] = '<div role="tooltip" id="tip-' . $this->id . $i . '">'.$tooltip.'</div>';
-				$html[] = '</div>';
-			}
-		}
-		else
-		{
-			$html[] = Text::_('COM_BWPOSTMAN_NO_DATA');
-		}
+                $tooltip = '<strong>' . $option->description . '</strong><br /><br />'
+                    . '<div><img src="' . Uri::root() . $option->thumbnail . '" alt="' . $option->title . '"'
+                    .'style="max-width:160px; max-height:100px;" /></div>';
+                $html[] = '<div role="tooltip" id="tip-' . $this->id . $i . '">'.$tooltip.'</div>';
+                $html[] = '</div>';
+            }
+        }
+        else
+        {
+            $html[] = Text::_('COM_BWPOSTMAN_NO_DATA');
+        }
 
-		// End the radio field output.
+        // End the radio field output.
 //		$html[]	= '</div>';
 
-		return implode($html);
-	}
+        return implode($html);
+    }
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return	array	The field option objects.
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.2.0
-	 */
-	public function getOptions(): array
-	{
-		$app = Factory::getApplication();
+    /**
+     * Method to get the field options.
+     *
+     * @return	array	The field option objects.
+     *
+     * @throws Exception
+     *
+     * @since	1.2.0
+     */
+    public function getOptions(): array
+    {
+        $app = Factory::getApplication();
 
-		// Initialize variables.
-		$item    = $app->getUserState('com_bwpostman.edit.newsletter.data');
-		$options = array();
+        // Initialize variables.
+        $item    = $app->getUserState('com_bwpostman.edit.newsletter.data');
+        $options = array();
 
-		// prepare query
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+        // prepare query
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
 
-		// Build the select list for the templates
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('id') . ' AS ' . $db->quoteName('value'));
-		$query->select($db->quoteName('title') . ' AS ' . $db->quoteName('title'));
-		$query->select($db->quoteName('description') . ' AS ' . $db->quoteName('description'));
-		$query->select($db->quoteName('thumbnail') . ' AS ' . $db->quoteName('thumbnail'));
-		$query->from($db->quoteName('#__bwpostman_templates'));
+        // Build the select list for the templates
+        $query = $db->getQuery(true);
+        $query->select($db->quoteName('id') . ' AS ' . $db->quoteName('value'));
+        $query->select($db->quoteName('title') . ' AS ' . $db->quoteName('title'));
+        $query->select($db->quoteName('description') . ' AS ' . $db->quoteName('description'));
+        $query->select($db->quoteName('thumbnail') . ' AS ' . $db->quoteName('thumbnail'));
+        $query->from($db->quoteName('#__bwpostman_templates'));
 
-		// special for old newsletters with template_id < 1
-		if (is_object($item))
-		{
-			if ($item->text_template_id < 1 && !is_null($item->text_template_id))
-			{
-				$query->where($db->quoteName('id') . ' >= ' . $db->quote('-2'));
-			}
-			else
-			{
-				$query->where($db->quoteName('id') . ' > ' . $db->quote('0'));
-			}
-		}
+        // special for old newsletters with template_id < 1
+        if (is_object($item))
+        {
+            if ($item->text_template_id < 1 && !is_null($item->text_template_id))
+            {
+                $query->where($db->quoteName('id') . ' >= ' . $db->quote('-2'));
+            }
+            else
+            {
+                $query->where($db->quoteName('id') . ' > ' . $db->quote('0'));
+            }
+        }
 
-		$query->where($db->quoteName('archive_flag') . ' = ' . $db->quote('0'));
-		$query->where($db->quoteName('published') . ' = ' . $db->quote('1'));
-		$query->where($db->quoteName('tpl_id') . ' > ' . $db->quote('997'));
-		$query->order($db->quoteName('title') . ' ASC');
+        $query->where($db->quoteName('archive_flag') . ' = ' . $db->quote('0'));
+        $query->where($db->quoteName('published') . ' = ' . $db->quote('1'));
+        $query->where($db->quoteName('tpl_id') . ' > ' . $db->quote('997'));
+        $query->order($db->quoteName('title') . ' ASC');
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
+            $options = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'TextTemplatesField BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		// Merge any additional options in the XML definition.
-		return array_merge(parent::getOptions(), $options);
-	}
+        // Merge any additional options in the XML definition.
+        return array_merge(parent::getOptions(), $options);
+    }
 }

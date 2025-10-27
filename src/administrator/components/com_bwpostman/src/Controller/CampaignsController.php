@@ -49,138 +49,138 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
  */
 class CampaignsController extends AdminController
 {
-	/**
-	 * @var		string		The prefix to use with controller messages.
+    /**
+     * @var		string		The prefix to use with controller messages.
      *
-	 * @since	1.0.4
-	 */
-	protected $text_prefix = 'COM_BWPOSTMAN_CAMS';
+     * @since	1.0.4
+     */
+    protected $text_prefix = 'COM_BWPOSTMAN_CAMS';
 
-	/**
-	 * property to hold permissions as array
-	 *
-	 * @var array $permissions
-	 *
-	 * @since       2.0.0
-	 */
-	public array $permissions;
+    /**
+     * property to hold permissions as array
+     *
+     * @var array $permissions
+     *
+     * @since       2.0.0
+     */
+    public array $permissions;
 
-	/**
-	 * Constructor
-	 *
-	 * @param	array	$config		An optional associative array of configuration settings.
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.0.1
-	 *
-	 * @see		JController
-	 */
-	public function __construct($config = array())
-	{
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
-
-		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
-
-		parent::__construct($config, $this->factory);
-
-		// Register Extra tasks
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
-	}
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @param	string	$name   	The name of the model.
-	 * @param	string	$prefix 	The prefix for the PHP class name.
-	 * @param	array	$config		An optional associative array of configuration settings.
-	 *
-	 * @return bool|BaseDatabaseModel
-	 *
-	 * @since	1.0.1
-	 */
-	public function getModel($name = 'Campaign', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel|bool
+    /**
+     * Constructor
+     *
+     * @param	array	$config		An optional associative array of configuration settings.
+     *
+     * @throws Exception
+     *
+     * @since	1.0.1
+     *
+     * @see		JController
+     */
+    public function __construct($config = array())
     {
-		return $this->factory->createModel($name, $prefix, $config);
-	}
+        $this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
-	/**
-	 * Display
-	 *
-	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
-	 *
-	 * @return  CampaignsController		This object to support chaining.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function display($cachable = false, $urlparams = array()): CampaignsController
-	{
-		if (!$this->permissions['view']['campaign'])
-		{
-			$this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
-			$this->redirect();
-			return $this;
-		}
+        $this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
-		$jinput	= Factory::getApplication()->input;
+        parent::__construct($config, $this->factory);
 
-		switch($this->getTask())
-		{
-			case 'add':
-			case 'edit':
-				$jinput->set('hidemainmenu', 1);
-				$jinput->set('layout', 'form');
-				$jinput->set('view', 'campaign');
-				break;
-			default:
-				$jinput->set('hidemainmenu', 0);
-				$jinput->set('view', 'campaigns');
-				break;
-		}
-		parent::display();
-		return $this;
-	}
+        // Register Extra tasks
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
+    }
 
-	/**
-	 * Override method to check in an existing record, based on Joomla method.
-	 * We need an override, because we want to handle this a bit different from Joomla at this point
-	 *
-	 * @return	boolean		True if access level check and checkout passes, false otherwise.
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.0.1
-	 */
-	public function checkin(): bool
-	{
-		// Check for request forgeries.
-		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+    /**
+     * Proxy for getModel.
+     *
+     * @param	string	$name   	The name of the model.
+     * @param	string	$prefix 	The prefix for the PHP class name.
+     * @param	array	$config		An optional associative array of configuration settings.
+     *
+     * @return bool|BaseDatabaseModel
+     *
+     * @since	1.0.1
+     */
+    public function getModel($name = 'Campaign', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel|bool
+    {
+        return $this->factory->createModel($name, $prefix, $config);
+    }
 
-		$ids = Factory::getApplication()->input->post->get('cid', array(), 'array');
-		$ids = ArrayHelper::toInteger($ids);
-		$res = true;
+    /**
+     * Display
+     *
+     * @param   boolean  $cachable   If true, the view output will be cached
+     * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+     *
+     * @return  CampaignsController		This object to support chaining.
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function display($cachable = false, $urlparams = array()): CampaignsController
+    {
+        if (!$this->permissions['view']['campaign'])
+        {
+            $this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
+            $this->redirect();
+            return $this;
+        }
 
-		foreach ($ids as $item)
-		{
-			$allowed = BwPostmanHelper::canCheckin('campaign', $item);
+        $jinput	= Factory::getApplication()->input;
 
-			// Access check.
-			if ($allowed)
-			{
-				$res = parent::checkin();
-			}
-			else
-			{
-				Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
-				$this->setRedirect(Route::_('index.php?option=com_bwpostman&view=campaigns', false));
-				return false;
-			}
-		}
+        switch($this->getTask())
+        {
+            case 'add':
+            case 'edit':
+                $jinput->set('hidemainmenu', 1);
+                $jinput->set('layout', 'form');
+                $jinput->set('view', 'campaign');
+                break;
+            default:
+                $jinput->set('hidemainmenu', 0);
+                $jinput->set('view', 'campaigns');
+                break;
+        }
+        parent::display();
+        return $this;
+    }
 
-		return $res;
-	}
+    /**
+     * Override method to check in an existing record, based on Joomla method.
+     * We need an override, because we want to handle this a bit different from Joomla at this point
+     *
+     * @return	boolean		True if access level check and checkout passes, false otherwise.
+     *
+     * @throws Exception
+     *
+     * @since	1.0.1
+     */
+    public function checkin(): bool
+    {
+        // Check for request forgeries.
+        Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+
+        $ids = Factory::getApplication()->input->post->get('cid', array(), 'array');
+        $ids = ArrayHelper::toInteger($ids);
+        $res = true;
+
+        foreach ($ids as $item)
+        {
+            $allowed = BwPostmanHelper::canCheckin('campaign', $item);
+
+            // Access check.
+            if ($allowed)
+            {
+                $res = parent::checkin();
+            }
+            else
+            {
+                Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDITSTATE_NO_PERMISSION'), 'error');
+                $this->setRedirect(Route::_('index.php?option=com_bwpostman&view=campaigns', false));
+                return false;
+            }
+        }
+
+        return $res;
+    }
 }

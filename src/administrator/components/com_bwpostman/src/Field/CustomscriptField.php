@@ -45,153 +45,153 @@ use Joomla\CMS\Language\Text;
 class CustomscriptField extends FormField
 {
 
-	/**
-	 * Method to get the field label markup
-	 * We need no label.
-	 *
-	 * @return  string  The field label markup.
-	 *
-	 * @since   2.2.0
-	 */
-	protected function getLabel(): string
-	{
-		return ' ';
-	}
-
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return  void
-	 *
-	 * @throws Exception
-	 *
-	 * @since   2.2.0
-	 */
-	protected function getinput(): void
+    /**
+     * Method to get the field label markup
+     * We need no label.
+     *
+     * @return  string  The field label markup.
+     *
+     * @since   2.2.0
+     */
+    protected function getLabel(): string
     {
-		$doc  = Factory::getApplication()->getDocument();
-		$text = Text::_('COM_BWPOSTMAN_FIELD_OBLIGATION');
+        return ' ';
+    }
 
-		$css = "
-			.obligation {
-				color: red;
-				opacity: 0;
-				line-height: 0px;
-				transition: all 0.5s linear;
-			}
-			.obligation.down {
-				opacity: 1;
-				line-height: 20px;
-				transition: all 0.5s linear;
-			}
-		";
-		$doc->getWebassetManager()->addInlineStyle($css);
+    /**
+     * Method to get the field input markup.
+     *
+     * @return  void
+     *
+     * @throws Exception
+     *
+     * @since   2.2.0
+     */
+    protected function getinput(): void
+    {
+        $doc  = Factory::getApplication()->getDocument();
+        $text = Text::_('COM_BWPOSTMAN_FIELD_OBLIGATION');
 
-		$js = "
+        $css = "
+            .obligation {
+                color: red;
+                opacity: 0;
+                line-height: 0px;
+                transition: all 0.5s linear;
+            }
+            .obligation.down {
+                opacity: 1;
+                line-height: 20px;
+                transition: all 0.5s linear;
+            }
+        ";
+        $doc->getWebassetManager()->addInlineStyle($css);
 
-			// Displays a tip
-			function bwpcheck(a, init){
-				var click_fields    = [
-					'show_firstname_field',
-					'show_name_field',
-					'show_special'
-				];
-				var check_fields    = [
-					'firstname_field_obligation',
-					'name_field_obligation',
-					'special_field_obligation'
-				];
-				var value1 = document.querySelector('input[name=\"jform['+click_fields[a]+']\"]:checked').value;
-				var value2 = document.querySelector('input[name=\"jform['+check_fields[a]+']\"]:checked').value;
-				var elem = document.getElementById('jform_'+click_fields[a]);
+        $js = "
 
-				if (init == 1)
-				{
-					var text = '$text';
-					elem.insertAdjacentHTML('afterend',text);
-				}
+            // Displays a tip
+            function bwpcheck(a, init){
+                var click_fields    = [
+                    'show_firstname_field',
+                    'show_name_field',
+                    'show_special'
+                ];
+                var check_fields    = [
+                    'firstname_field_obligation',
+                    'name_field_obligation',
+                    'special_field_obligation'
+                ];
+                var value1 = document.querySelector('input[name=\"jform['+click_fields[a]+']\"]:checked').value;
+                var value2 = document.querySelector('input[name=\"jform['+check_fields[a]+']\"]:checked').value;
+                var elem = document.getElementById('jform_'+click_fields[a]);
 
-				if (value1 == 0 && value2 == 1)
-				{
-					upOrDown(elem, 'down');
-				}
-				else
-				{
-					upOrDown(elem, 'up');
-				}
-			}
+                if (init == 1)
+                {
+                    var text = '$text';
+                    elem.insertAdjacentHTML('afterend',text);
+                }
 
-			function upOrDown(elem, slide) {
-				// Get the next sibling element
-				var sibling = elem.nextElementSibling;
+                if (value1 == 0 && value2 == 1)
+                {
+                    upOrDown(elem, 'down');
+                }
+                else
+                {
+                    upOrDown(elem, 'up');
+                }
+            }
 
-				// If the sibling matches our selector, use it
-				// If not, jump to the next sibling and continue the loop
-				while (sibling)
-				{
-					if (sibling.matches('.obligation'))
-					{
-						if (slide == 'up')
-						{
-							sibling.classList.remove('down');
-						}
-						else
-						{
-							sibling.classList.add('down');
-						}
-						return;
-					}
-					sibling = sibling.nextElementSibling
-				}
-			}
+            function upOrDown(elem, slide) {
+                // Get the next sibling element
+                var sibling = elem.nextElementSibling;
 
-			function ready(callbackFunc) {
-				if (document.readyState !== 'loading')
-				{
-					// Document is already ready, call the callback directly
-					callbackFunc();
-				}
-				else if (document.addEventListener)
-				{
-					// All modern browsers to register DOMContentLoaded
-					document.addEventListener('DOMContentLoaded', callbackFunc);
-				}
-				else
-				{
-					// Old IE browsers
-					document.attachEvent('onreadystatechange', function() {
-						if (document.readyState === 'complete')
-						{
-							callbackFunc();
-						}
-					});
-				}
-			}
+                // If the sibling matches our selector, use it
+                // If not, jump to the next sibling and continue the loop
+                while (sibling)
+                {
+                    if (sibling.matches('.obligation'))
+                    {
+                        if (slide == 'up')
+                        {
+                            sibling.classList.remove('down');
+                        }
+                        else
+                        {
+                            sibling.classList.add('down');
+                        }
+                        return;
+                    }
+                    sibling = sibling.nextElementSibling
+                }
+            }
 
-			ready(function() {
-				// check obligation fields after page rendering
-				for (a = 0; a < 3; a++)
-	      		{
-					bwpcheck(a, 1);
-	      		}
-			});
-		";
+            function ready(callbackFunc) {
+                if (document.readyState !== 'loading')
+                {
+                    // Document is already ready, call the callback directly
+                    callbackFunc();
+                }
+                else if (document.addEventListener)
+                {
+                    // All modern browsers to register DOMContentLoaded
+                    document.addEventListener('DOMContentLoaded', callbackFunc);
+                }
+                else
+                {
+                    // Old IE browsers
+                    document.attachEvent('onreadystatechange', function() {
+                        if (document.readyState === 'complete')
+                        {
+                            callbackFunc();
+                        }
+                    });
+                }
+            }
 
-		$doc->getWebAssetManager()->addInlineScript($js);
-	}
+            ready(function() {
+                // check obligation fields after page rendering
+                for (a = 0; a < 3; a++)
+                {
+                    bwpcheck(a, 1);
+                }
+            });
+        ";
 
-	/**
-	 * Method to get a control group with label and input.
-	 *
-	 * @return  string  A string containing the html for the control group
-	 *
-	 * @since   3.0.0
-	 */
-	public function renderField($options = array()): string
-	{
-		$options['class'] = empty($options['class']) ? 'hidden' : $options['class'] . ' hidden';
+        $doc->getWebAssetManager()->addInlineScript($js);
+    }
 
-		return parent::renderField($options);
-	}
+    /**
+     * Method to get a control group with label and input.
+     *
+     * @return  string  A string containing the html for the control group
+     *
+     * @since   3.0.0
+     */
+    public function renderField($options = array()): string
+    {
+        $options['class'] = empty($options['class']) ? 'hidden' : $options['class'] . ' hidden';
+
+        return parent::renderField($options);
+    }
 }
 

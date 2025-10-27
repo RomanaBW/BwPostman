@@ -46,160 +46,160 @@ use RuntimeException;
  */
 class CammlinternField extends RadioField
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 *
-	 * @since  1.0.1
-	 */
-	public $type = 'Cammlintern';
+    /**
+     * The form field type.
+     *
+     * @var    string
+     *
+     * @since  1.0.1
+     */
+    public $type = 'Cammlintern';
 
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @since   1.0.1
-	 */
-	public function getLabel(): string
-	{
-		return Text::_($this->element['label']);
-	}
+    /**
+     * Method to get the field input markup.
+     *
+     * @return  string  The field input markup.
+     *
+     * @since   1.0.1
+     */
+    public function getLabel(): string
+    {
+        return Text::_($this->element['label']);
+    }
 
-	/**
-	 * Method to get the radio button field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.1
-	 */
-	public function getInput(): string
-	{
-		$app       = Factory::getApplication();
+    /**
+     * Method to get the radio button field input markup.
+     *
+     * @return  string  The field input markup.
+     *
+     * @throws Exception
+     *
+     * @since   1.0.1
+     */
+    public function getInput(): string
+    {
+        $app       = Factory::getApplication();
 
-		// Get item and selected mailinglists
-		$cam_id  = $app->getUserState('com_bwpostman.edit.campaign.id', 0);
-		$options = $this->getOptions();
+        // Get item and selected mailinglists
+        $cam_id  = $app->getUserState('com_bwpostman.edit.campaign.id', 0);
+        $options = $this->getOptions();
 
-		$db        = Factory::getContainer()->get(DatabaseInterface::class);
-		$query     = $db->getQuery(true);
-		$ml_select = array();
-		$selected  = '';
+        $db        = Factory::getContainer()->get(DatabaseInterface::class);
+        $query     = $db->getQuery(true);
+        $ml_select = array();
+        $selected  = '';
 
-		$disabled   = $this->element['disabled'] == 'true' ? true : false;
-		$readonly   = $this->element['readonly'] == 'true' ? true : false;
-		$attributes = ' ';
-		$return     = '';
+        $disabled   = $this->element['disabled'] == 'true' ? true : false;
+        $readonly   = $this->element['readonly'] == 'true' ? true : false;
+        $attributes = ' ';
+        $return     = '';
 
-		$type = 'checkbox';
-		$v    = $this->element['class'];
+        $type = 'checkbox';
+        $v    = $this->element['class'];
 
-		if ($v)
-		{
-			$attributes .= 'class="' . $v . '" ';
-		}
+        if ($v)
+        {
+            $attributes .= 'class="' . $v . '" ';
+        }
 
-		$m = $this->element['multiple'];
+        $m = $this->element['multiple'];
 
-		if ($m)
-		{
-			$type = 'checkbox';
-		}
+        if ($m)
+        {
+            $type = 'checkbox';
+        }
 
-		$value = $this->value;
+        $value = $this->value;
 
-		if (!is_array($value))
-		{
-			// Convert the selections field to an array.
-			$registry = new Registry;
-			$registry->loadString($value);
-		}
+        if (!is_array($value))
+        {
+            // Convert the selections field to an array.
+            $registry = new Registry;
+            $registry->loadString($value);
+        }
 
-		if ($disabled || $readonly)
-		{
-			$attributes .= 'disabled="disabled"';
-		}
+        if ($disabled || $readonly)
+        {
+            $attributes .= 'disabled="disabled"';
+        }
 
-		$query->select("m.mailinglist_id AS selected");
-		$query->from($db->quoteName('#__bwpostman_campaigns_mailinglists') . ' AS m');
-		$query->where($db->quoteName('m.campaign_id') . ' = ' . $db->quote((int)$cam_id));
+        $query->select("m.mailinglist_id AS selected");
+        $query->from($db->quoteName('#__bwpostman_campaigns_mailinglists') . ' AS m');
+        $query->where($db->quoteName('m.campaign_id') . ' = ' . $db->quote((int)$cam_id));
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$ml_select = $db->loadColumn();
-		}
-		catch (RuntimeException $exception)
-		{
+            $ml_select = $db->loadColumn();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'CamInternField BE');
 
             $app->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		$i = 0;
+        $i = 0;
 
-		foreach ($options as $option)
-		{
-			if (is_array($ml_select))
-			{
-				$selected = (in_array($option->value, $ml_select) ? ' checked="checked"' : '');
-			}
+        foreach ($options as $option)
+        {
+            if (is_array($ml_select))
+            {
+                $selected = (in_array($option->value, $ml_select) ? ' checked="checked"' : '');
+            }
 
-			$i++;
-			$return .= '<div class="mllabel mb-1 form-check" aria-describedby="tip-sub-' . $this->id . '_' . $i . '">';
-			$return .= '	<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]" ';
-			$return .= 'value="' . $option->value . '"' . $attributes . $selected . ' />';
-			$return .= '	<label class="form-check-label" for="' . $this->id . '_' . $i . '">' . $option->title . '</label>';
-			$return .= '</div>';
-			$return .= '<div role="tooltip" id="tip-sub-' . $this->id . '_' . $i . '">' . $option->text . '</div>';
-		}
+            $i++;
+            $return .= '<div class="mllabel mb-1 form-check" aria-describedby="tip-sub-' . $this->id . '_' . $i . '">';
+            $return .= '	<input type="' . $type . '" id="' . $this->id . '_' . $i . '" name="' . $this->name . '[]" ';
+            $return .= 'value="' . $option->value . '"' . $attributes . $selected . ' />';
+            $return .= '	<label class="form-check-label" for="' . $this->id . '_' . $i . '">' . $option->title . '</label>';
+            $return .= '</div>';
+            $return .= '<div role="tooltip" id="tip-sub-' . $this->id . '_' . $i . '">' . $option->text . '</div>';
+        }
 
-		return $return;
-	}
+        return $return;
+    }
 
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return	array	The field option objects.
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.0.1
-	 */
-	public function getOptions(): array
-	{
-		// Initialize variables.
-		$options        = array();
+    /**
+     * Method to get the field options.
+     *
+     * @return	array	The field option objects.
+     *
+     * @throws Exception
+     *
+     * @since	1.0.1
+     */
+    public function getOptions(): array
+    {
+        // Initialize variables.
+        $options        = array();
 
-		// prepare query
-		$db		= Factory::getContainer()->get(DatabaseInterface::class);
-		$query		= $db->getQuery(true);
+        // prepare query
+        $db		= Factory::getContainer()->get(DatabaseInterface::class);
+        $query		= $db->getQuery(true);
 
-		$query->select("id AS value, title, description AS text");
-		$query->from($db->quoteName('#__bwpostman_mailinglists'));
-		$query->where($db->quoteName('published') . ' = ' . 0);
-		$query->where($db->quoteName('archive_flag') . ' = ' . 0);
-		$query->order('title');
+        $query->select("id AS value, title, description AS text");
+        $query->from($db->quoteName('#__bwpostman_mailinglists'));
+        $query->where($db->quoteName('published') . ' = ' . 0);
+        $query->where($db->quoteName('archive_flag') . ' = ' . 0);
+        $query->order('title');
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
+            $options = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'CamInternField BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		// Merge any additional options in the XML definition.
-		return array_merge(parent::getOptions(), $options);
-	}
+        // Merge any additional options in the XML definition.
+        return array_merge(parent::getOptions(), $options);
+    }
 }

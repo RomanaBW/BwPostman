@@ -46,144 +46,144 @@ use RuntimeException;
  */
 class SelectedcontentField extends ListField
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 *
-	 * @since  1.0.1
-	 */
-	public $type = 'SelectedContent';
+    /**
+     * The form field type.
+     *
+     * @var    string
+     *
+     * @since  1.0.1
+     */
+    public $type = 'SelectedContent';
 
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @since   1.0.1
-	 */
-	public function getLabel(): string
-	{
-		return '<label for="' . $this->id . '" class="form-label selected_content_label">' . Text::_($this->element['label']) . '</label>';
-	}
+    /**
+     * Method to get the field input markup.
+     *
+     * @return  string  The field input markup.
+     *
+     * @since   1.0.1
+     */
+    public function getLabel(): string
+    {
+        return '<label for="' . $this->id . '" class="form-label selected_content_label">' . Text::_($this->element['label']) . '</label>';
+    }
 
-	/**
-	 * Method to get the radio button field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.1
-	 */
-	public function getInput(): string
-	{
-		// Initialize variables.
-		$html = array();
-		$attr = '';
+    /**
+     * Method to get the radio button field input markup.
+     *
+     * @return  string  The field input markup.
+     *
+     * @throws Exception
+     *
+     * @since   1.0.1
+     */
+    public function getInput(): string
+    {
+        // Initialize variables.
+        $html = array();
+        $attr = '';
 
-		// Initialize some field attributes.
-		$attr .= $this->element['class'] ? ' class="' . $this->element['class'] . '"' : '';
+        // Initialize some field attributes.
+        $attr .= $this->element['class'] ? ' class="' . $this->element['class'] . '"' : '';
 
-		// To avoid user's confusion, readonly="true" should imply disabled="true".
-		if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true')
-		{
-			$attr .= ' disabled="disabled"';
-		}
+        // To avoid user's confusion, readonly="true" should imply disabled="true".
+        if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true')
+        {
+            $attr .= ' disabled="disabled"';
+        }
 
-		$attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-		$attr .= $this->multiple ? ' multiple multiple="multiple"' : '';
+        $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $attr .= $this->multiple ? ' multiple multiple="multiple"' : '';
 
-		// Initialize JavaScript field attributes.
-		$attr .= $this->element['onchange'] ? ' onchange="' . $this->element['onchange'] . '"' : '';
-		$attr .= $this->element['ondblclick'] ? ' ondblclick="' . $this->element['ondblclick'] . '"' : '';
+        // Initialize JavaScript field attributes.
+        $attr .= $this->element['onchange'] ? ' onchange="' . $this->element['onchange'] . '"' : '';
+        $attr .= $this->element['ondblclick'] ? ' ondblclick="' . $this->element['ondblclick'] . '"' : '';
 
-		// Get the field options.
-		$options = $this->getOptions();
+        // Get the field options.
+        $options = $this->getOptions();
 
-		// Create a regular list.
-		$html[] = HTMLHelper::_('select.genericlist', $options, $this->name, trim($attr), 'value', 'text', '', $this->id);
+        // Create a regular list.
+        $html[] = HTMLHelper::_('select.genericlist', $options, $this->name, trim($attr), 'value', 'text', '', $this->id);
 
-		return implode($html);
-	}
+        return implode($html);
+    }
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return	array	The field option objects.
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.0.1
-	 */
-	public function getOptions(): array
-	{
-		$options = $this->getSelectedContent();
+    /**
+     * Method to get the field options.
+     *
+     * @return	array	The field option objects.
+     *
+     * @throws Exception
+     *
+     * @since	1.0.1
+     */
+    public function getOptions(): array
+    {
+        $options = $this->getSelectedContent();
 
-		// Merge any additional options in the XML definition.
-		return array_merge(parent::getOptions(), $options);
-	}
+        // Merge any additional options in the XML definition.
+        return array_merge(parent::getOptions(), $options);
+    }
 
-	/**
-	 * Method to get the available content items which can be used to compose a newsletter
-	 *
-	 * @return	array
-	 *
-	 * @throws Exception
-	 *
-	 * @since       1.0.1
-	 */
-	private function getSelectedContent(): array
-	{
-		$app              = Factory::getApplication();
-		$db               = Factory::getContainer()->get(DatabaseInterface::class);
-		$options          = array();
-		$selected_content = '';
+    /**
+     * Method to get the available content items which can be used to compose a newsletter
+     *
+     * @return	array
+     *
+     * @throws Exception
+     *
+     * @since       1.0.1
+     */
+    private function getSelectedContent(): array
+    {
+        $app              = Factory::getApplication();
+        $db               = Factory::getContainer()->get(DatabaseInterface::class);
+        $options          = array();
+        $selected_content = '';
 
-		if (is_object($app->getUserState('com_bwpostman.edit.newsletter.data')))
-		{
-			$selected_content = $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
-		}
+        if (is_object($app->getUserState('com_bwpostman.edit.newsletter.data')))
+        {
+            $selected_content = $app->getUserState('com_bwpostman.edit.newsletter.data')->selected_content;
+        }
 
-		if ($selected_content)
-		{
-			if (!is_array($selected_content))
-			{
-				$selected_content = explode(',', $selected_content);
-			}
+        if ($selected_content)
+        {
+            if (!is_array($selected_content))
+            {
+                $selected_content = explode(',', $selected_content);
+            }
 
-			// We do a foreach to protect our ordering
-			foreach ($selected_content as $value)
-			{
-				$subquery = $db->getQuery(true);
-				$subquery->select($db->quoteName('cc') . '.' . $db->quoteName('path'));
-				$subquery->from($db->quoteName('#__categories') . ' AS ' . $db->quoteName('cc'));
-				$subquery->where($db->quoteName('cc') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('c') . '.' . $db->quoteName('catid'));
+            // We do a foreach to protect our ordering
+            foreach ($selected_content as $value)
+            {
+                $subquery = $db->getQuery(true);
+                $subquery->select($db->quoteName('cc') . '.' . $db->quoteName('path'));
+                $subquery->from($db->quoteName('#__categories') . ' AS ' . $db->quoteName('cc'));
+                $subquery->where($db->quoteName('cc') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('c') . '.' . $db->quoteName('catid'));
 
-				$query = $db->getQuery(true);
-				$query->select($db->quoteName('c') . '.' . $db->quoteName('id') . 'AS value');
-				$query->select(
-					'CONCAT((' . $subquery . '), " = ",' . $db->quoteName('c') . '.' . $db->quoteName('title') . ') AS '
-					. $db->quoteName('text')
-				);
-				$query->from($db->quoteName('#__content') . ' AS ' . $db->quoteName('c'));
-				$query->where($db->quoteName('c') . '.' . $db->quoteName('id') . ' = ' . (int) $value);
+                $query = $db->getQuery(true);
+                $query->select($db->quoteName('c') . '.' . $db->quoteName('id') . 'AS value');
+                $query->select(
+                    'CONCAT((' . $subquery . '), " = ",' . $db->quoteName('c') . '.' . $db->quoteName('title') . ') AS '
+                    . $db->quoteName('text')
+                );
+                $query->from($db->quoteName('#__content') . ' AS ' . $db->quoteName('c'));
+                $query->where($db->quoteName('c') . '.' . $db->quoteName('id') . ' = ' . (int) $value);
 
-				try
-				{
-					$db->setQuery($query);
+                try
+                {
+                    $db->setQuery($query);
 
-					$options[] = $db->loadAssoc();
-				}
-				catch (RuntimeException $exception)
-				{
+                    $options[] = $db->loadAssoc();
+                }
+                catch (RuntimeException $exception)
+                {
                     BwPostmanHelper::logException($exception, 'SelectedContentField BE');
 
                     $app->enqueueMessage($exception->getMessage(), 'error');
-				}
-			}
-		}
+                }
+            }
+        }
 
-		return $options;
-	}
+        return $options;
+    }
 }

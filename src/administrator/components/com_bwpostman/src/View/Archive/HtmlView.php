@@ -52,333 +52,333 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper
  */
 class HtmlView extends BaseHtmlView
 {
-	/**
-	 * property to hold selected items
-	 *
-	 * @var array   $items
-	 *
-	 * @since       0.9.1
-	 */
-	protected array $items;
+    /**
+     * property to hold selected items
+     *
+     * @var array   $items
+     *
+     * @since       0.9.1
+     */
+    protected array $items;
 
-	/**
-	 * property to hold pagination object
-	 *
-	 * @var object  $pagination
-	 *
-	 * @since       0.9.1
-	 */
-	protected object $pagination;
+    /**
+     * property to hold pagination object
+     *
+     * @var object  $pagination
+     *
+     * @since       0.9.1
+     */
+    protected object $pagination;
 
-	/**
-	 * property to hold state
-	 *
-	 * @var array|object  $state
-	 *
-	 * @since       0.9.1
-	 */
-	protected array|object $state;
+    /**
+     * property to hold state
+     *
+     * @var array|object  $state
+     *
+     * @since       0.9.1
+     */
+    protected array|object $state;
 
-	/**
-	 * property to hold user permissions
-	 *
-	 * @var array  $permissions
-	 *
-	 * @since       2.0.0
-	 */
-	protected array $permissions;
+    /**
+     * property to hold user permissions
+     *
+     * @var array  $permissions
+     *
+     * @since       2.0.0
+     */
+    protected array $permissions;
 
-	/**
-	 * property to hold filter form
-	 *
-	 * @var object  $filterForm
-	 *
-	 * @since       0.9.1
-	 */
-	public object $filterForm;
+    /**
+     * property to hold filter form
+     *
+     * @var object  $filterForm
+     *
+     * @since       0.9.1
+     */
+    public object $filterForm;
 
-	/**
-	 * property to hold active filters
-	 *
-	 * @var object  $activeFilters
-	 *
-	 * @since       0.9.1
-	 */
-	public object $activeFilters;
+    /**
+     * property to hold active filters
+     *
+     * @var object  $activeFilters
+     *
+     * @since       0.9.1
+     */
+    public object $activeFilters;
 
-	/**
-	 * property to hold request url
-	 *
-	 * @var string $request_url
-	 *
-	 * @since       0.9.1
-	 */
-	public string $request_url;
+    /**
+     * property to hold request url
+     *
+     * @var string $request_url
+     *
+     * @since       0.9.1
+     */
+    public string $request_url;
 
-	/**
-	 * property to hold sidebar
-	 *
-	 * @var object  $sidebar
-	 *
-	 * @since       0.9.1
-	 */
-	public object $sidebar;
+    /**
+     * property to hold sidebar
+     *
+     * @var object  $sidebar
+     *
+     * @since       0.9.1
+     */
+    public object $sidebar;
 
-	/**
-	 * Display
-	 *
-	 * @access	public
-	 *
-	 * @param	string $tpl Template
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function display($tpl = null): void
+    /**
+     * Display
+     *
+     * @access	public
+     *
+     * @param	string $tpl Template
+     *
+     * @return void
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function display($tpl = null): void
     {
-		$app	= Factory::getApplication();
+        $app	= Factory::getApplication();
 
-		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
+        $this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
-		if (!$this->permissions['view']['archive'])
-		{
-			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_ARC')), 'error');
-			$app->redirect('index.php?option=com_bwpostman');
-		}
+        if (!$this->permissions['view']['archive'])
+        {
+            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_ARC')), 'error');
+            $app->redirect('index.php?option=com_bwpostman');
+        }
 
-		// Get data from the model
+        // Get data from the model
         $model = $this->getModel();
-		$this->items 			= $model->getItems();
-		$this->pagination		= $model->getPagination();
-		$this->filterForm		= $model->getFilterForm(array(), true, $this->_layout);
-		$this->activeFilters	= $model->getActiveFilters();
-		$this->state			= $model->getState();
+        $this->items 			= $model->getItems();
+        $this->pagination		= $model->getPagination();
+        $this->filterForm		= $model->getFilterForm(array(), true, $this->_layout);
+        $this->activeFilters	= $model->getActiveFilters();
+        $this->state			= $model->getState();
 
-		$request_result = $this->checkForAllowedTabs();
+        $request_result = $this->checkForAllowedTabs();
 
-		if ($request_result === false)
-		{
-			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_ARC')), 'error');
-			$app->redirect('index.php?option=com_bwpostman');
-		}
+        if ($request_result === false)
+        {
+            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_ARC')), 'error');
+            $app->redirect('index.php?option=com_bwpostman');
+        }
 
-		if ($request_result === 'redirect')
-		{
-			$app->redirect($this->request_url);
-		}
+        if ($request_result === 'redirect')
+        {
+            $app->redirect($this->request_url);
+        }
 
-		$this->addToolbar();
+        $this->addToolbar();
 
-		$wa = $this->getDocument()->getWebAssetManager();
-		$wa->useScript('com_bwpostman.admin-bwpm_confirm_unarchive');
-		$wa->useScript('com_bwpostman.admin-bwpm_confirm_delete_cam_nls');
+        $wa = $this->getDocument()->getWebAssetManager();
+        $wa->useScript('com_bwpostman.admin-bwpm_confirm_unarchive');
+        $wa->useScript('com_bwpostman.admin-bwpm_confirm_delete_cam_nls');
 
-		// Call parent display
-		parent::display($tpl);
-	}
+        // Call parent display
+        parent::display($tpl);
+    }
 
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	protected function addToolbar(): void
+    /**
+     * Add the page title and toolbar.
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    protected function addToolbar(): void
     {
-		$app    = Factory::getApplication();
-		$jinput	= $app->input;
+        $app    = Factory::getApplication();
+        $jinput	= $app->input;
 
-		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        // Get the toolbar object instance
+                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ARC'), 'list');
+        // Set toolbar title
+        ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ARC'), 'list');
 
-		// Set toolbar items for the page (depending on the tab which we are in)
-		$layout = $jinput->get('layout', 'newsletters');
-		switch ($layout)
-		{ // Which tab are we in?
-			case "newsletters":
-				if (BwPostmanHelper::canRestore('newsletter'))
-				{
-					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
-				}
+        // Set toolbar items for the page (depending on the tab which we are in)
+        $layout = $jinput->get('layout', 'newsletters');
+        switch ($layout)
+        { // Which tab are we in?
+            case "newsletters":
+                if (BwPostmanHelper::canRestore('newsletter'))
+                {
+                    $toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
+                }
 
-				if (BwPostmanHelper::canDelete('newsletter'))
-				{
-					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
-					//@ToDo: This one does not create a confirmation popup
+                if (BwPostmanHelper::canDelete('newsletter'))
+                {
+                    ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL'), 'archive.delete');
+                    //@ToDo: This one does not create a confirmation popup
 //					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_NL')->listCheck(true);
-				}
-				break;
-			case "subscribers":
-				if (BwPostmanHelper::canRestore('subscriber'))
-				{
-					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
-				}
+                }
+                break;
+            case "subscribers":
+                if (BwPostmanHelper::canRestore('subscriber'))
+                {
+                    $toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
+                }
 
-				if (BwPostmanHelper::canDelete('subscriber'))
-				{
-					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
-					//@ToDo: This one does not create a confirmation popup
+                if (BwPostmanHelper::canDelete('subscriber'))
+                {
+                    ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB'), 'archive.delete');
+                    //@ToDo: This one does not create a confirmation popup
 //					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_SUB')->listCheck(true);
-				}
-				break;
-			case "campaigns":
-				// Special unarchive and delete button because we need a confirm dialog with 3 options
-				if (BwPostmanHelper::canRestore('campaign'))
-				{
-					$options['url'] = "index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive";
-					$options['icon'] = "icon-unarchive";
-					$options['text'] = "COM_BWPOSTMAN_UNARCHIVE";
-					$options['bodyHeight'] = 50;
-					$options['name'] = 'unarchive';
+                }
+                break;
+            case "campaigns":
+                // Special unarchive and delete button because we need a confirm dialog with 3 options
+                if (BwPostmanHelper::canRestore('campaign'))
+                {
+                    $options['url'] = "index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmunarchive";
+                    $options['icon'] = "icon-unarchive";
+                    $options['text'] = "COM_BWPOSTMAN_UNARCHIVE";
+                    $options['bodyHeight'] = 50;
+                    $options['name'] = 'unarchive';
 
-					$button = new PopupButton('unarchive');
-					$button->setOptions($options);
-					$button->listCheck(true);
+                    $button = new PopupButton('unarchive');
+                    $button->setOptions($options);
+                    $button->listCheck(true);
 
-					$toolbar->AppendButton($button);
-				}
+                    $toolbar->AppendButton($button);
+                }
 
-				if (BwPostmanHelper::canDelete('campaign'))
-				{
-					$options['url'] = "index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmdelete";
-					$options['icon'] = "icon-delete";
-					$options['text'] = "delete";
-					$options['bodyHeight'] = 50;
-					$options['name'] = 'delete';
+                if (BwPostmanHelper::canDelete('campaign'))
+                {
+                    $options['url'] = "index.php?option=com_bwpostman&amp;view=archive&amp;format=raw&amp;layout=campaigns_confirmdelete";
+                    $options['icon'] = "icon-delete";
+                    $options['text'] = "delete";
+                    $options['bodyHeight'] = 50;
+                    $options['name'] = 'delete';
 
-					$button = new PopupButton('delete');
-					$button->setOptions($options);
-					$button->listCheck(true);
+                    $button = new PopupButton('delete');
+                    $button->setOptions($options);
+                    $button->listCheck(true);
 
-					$toolbar->AppendButton($button);
-				}
-				break;
-			case "mailinglists":
-				if (BwPostmanHelper::canRestore('mailinglist'))
-				{
-					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
-				}
+                    $toolbar->AppendButton($button);
+                }
+                break;
+            case "mailinglists":
+                if (BwPostmanHelper::canRestore('mailinglist'))
+                {
+                    $toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
+                }
 
-				if (BwPostmanHelper::canDelete('mailinglist'))
-				{
-					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
-					//@ToDo: This one does not create a confirmation popup
+                if (BwPostmanHelper::canDelete('mailinglist'))
+                {
+                    ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML'), 'archive.delete');
+                    //@ToDo: This one does not create a confirmation popup
 //					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_ML')->listCheck(true);
-				}
-				break;
-			case "templates":
-				if (BwPostmanHelper::canRestore('template'))
-				{
-					$toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
-				}
+                }
+                break;
+            case "templates":
+                if (BwPostmanHelper::canRestore('template'))
+                {
+                    $toolbar->unarchive('archive.unarchive', 'COM_BWPOSTMAN_UNARCHIVE')->listCheck(true);
+                }
 
-				if (BwPostmanHelper::canDelete('template'))
-				{
-					ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
-					//@ToDo: This one does not create a confirmation popup
+                if (BwPostmanHelper::canDelete('template'))
+                {
+                    ToolbarHelper::deleteList(Text::_('COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL'), 'archive.delete');
+                    //@ToDo: This one does not create a confirmation popup
 //					$toolbar->delete('archive.delete', 'COM_BWPOSTMAN_ARC_CONFIRM_REMOVING_TPL')->listCheck(true);
-				}
-				break;
-		}
+                }
+                break;
+        }
 
 
-		$manualButton = BwPostmanHTMLHelper::getManualButton('archive');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+        $manualButton = BwPostmanHTMLHelper::getManualButton('archive');
+        $forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
+        $toolbar->appendButton($manualButton);
+        $toolbar->appendButton($forumButton);
+    }
 
-	/**
-	 * Check permission for archive tab and set layout to allowed one, if needed
-	 *
-	 * @since       2.0.0
-	 */
-	private function checkForAllowedTabs(): bool|string
+    /**
+     * Check permission for archive tab and set layout to allowed one, if needed
+     *
+     * @since       2.0.0
+     */
+    private function checkForAllowedTabs(): bool|string
     {
-		$uri        = Uri::getInstance();
-		$uriString = $uri->toString();
-		$uriShort  = substr($uriString, strrpos($uriString, '/') + 1, strlen($uriString));
+        $uri        = Uri::getInstance();
+        $uriString = $uri->toString();
+        $uriShort  = substr($uriString, strrpos($uriString, '/') + 1, strlen($uriString));
 
-		$layout = $this->extractLayout($uriShort);
-		if ($layout == false)
-		{
-			return false;
-		}
+        $layout = $this->extractLayout($uriShort);
+        if ($layout == false)
+        {
+            return false;
+        }
 
-		$allowedLayouts = $this->getAllowedLayouts();
+        $allowedLayouts = $this->getAllowedLayouts();
 
-		if (!count($allowedLayouts))
-		{
-			return false;
-		}
+        if (!count($allowedLayouts))
+        {
+            return false;
+        }
 
-		if (!in_array($layout, $allowedLayouts))
-		{
-			$this->request_url = str_replace($layout, $allowedLayouts[0], $uriShort);
-			return 'redirect';
-		}
+        if (!in_array($layout, $allowedLayouts))
+        {
+            $this->request_url = str_replace($layout, $allowedLayouts[0], $uriShort);
+            return 'redirect';
+        }
 
-		$this->request_url = $uriShort;
+        $this->request_url = $uriShort;
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 *
-	 * @param string $uri_string
-	 *
-	 * @return string|bool $layout  requested layout or false on error
-	 *
-	 * @since 1.3.2
-	 */
-	private function extractLayout(string $uri_string): bool|string
+    /**
+     *
+     * @param string $uri_string
+     *
+     * @return string|bool $layout  requested layout or false on error
+     *
+     * @since 1.3.2
+     */
+    private function extractLayout(string $uri_string): bool|string
     {
-		$uri_array = explode('&', $uri_string);
+        $uri_array = explode('&', $uri_string);
 
-		if (count($uri_array) != 3)
-		{
-			return false;
-		}
+        if (count($uri_array) != 3)
+        {
+            return false;
+        }
 
-		$layout_arr = explode('=', $uri_array[2]);
+        $layout_arr = explode('=', $uri_array[2]);
 
-		if (count($layout_arr) != 2)
-		{
-			return false;
-		}
+        if (count($layout_arr) != 2)
+        {
+            return false;
+        }
 
-		return $layout_arr[1];
-	}
+        return $layout_arr[1];
+    }
 
-	/**
-	 *
-	 * @return array $allowedLayouts  allowed layouts
-	 *
-	 * @since 1.3.2
-	 */
-	private function getAllowedLayouts(): array
-	{
-		$allowedLayouts = array();
+    /**
+     *
+     * @return array $allowedLayouts  allowed layouts
+     *
+     * @since 1.3.2
+     */
+    private function getAllowedLayouts(): array
+    {
+        $allowedLayouts = array();
 
-		// check for allowed layouts
-		$allLayouts    = array('newsletter', 'subscriber', 'campaign', 'mailinglist', 'template');
-		foreach ($allLayouts as $item)
-		{
-			$allowedView	= $this->permissions['view'][$item];
-			if ($allowedView)
-			{
-				$allowedLayouts[] = $item . 's';
-			}
-		}
+        // check for allowed layouts
+        $allLayouts    = array('newsletter', 'subscriber', 'campaign', 'mailinglist', 'template');
+        foreach ($allLayouts as $item)
+        {
+            $allowedView	= $this->permissions['view'][$item];
+            if ($allowedView)
+            {
+                $allowedLayouts[] = $item . 's';
+            }
+        }
 
-		return $allowedLayouts;
-	}
+        return $allowedLayouts;
+    }
 }

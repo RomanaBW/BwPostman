@@ -45,59 +45,59 @@ use stdClass;
  */
 class ArcmailinglistsField extends ListField
 {
-	/**
-	 * property to hold archived mailing lists
-	 *
-	 * @var string  $type
-	 *
-	 * @since       1.2.0
-	 */
-	protected $type = 'ArcMailinglists';
+    /**
+     * property to hold archived mailing lists
+     *
+     * @var string  $type
+     *
+     * @since       1.2.0
+     */
+    protected $type = 'ArcMailinglists';
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return	array  The field option objects.
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.2.0
-	 */
-	protected function getOptions(): array
-	{
-		// Get a db connection.
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->getQuery(true);
+    /**
+     * Method to get the field options.
+     *
+     * @return	array  The field option objects.
+     *
+     * @throws Exception
+     *
+     * @since	1.2.0
+     */
+    protected function getOptions(): array
+    {
+        // Get a db connection.
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->getQuery(true);
 
-		// Get # of all published mailinglists
-		$query->select('DISTINCT (nm.mailinglist_id) AS value');
-		$query->select('m.title AS text');
-		$query->from('#__bwpostman_newsletters_mailinglists AS nm');
-		$query->where('nm.mailinglist_id > 0');
-		$query->rightJoin('#__bwpostman_newsletters AS n ON n.id = nm.newsletter_id');
-		$query->where('n.archive_flag = 1');
-		$query->leftJoin('#__bwpostman_mailinglists AS m ON m.id = nm.mailinglist_id');
-		$query->order('m.title');
+        // Get # of all published mailinglists
+        $query->select('DISTINCT (nm.mailinglist_id) AS value');
+        $query->select('m.title AS text');
+        $query->from('#__bwpostman_newsletters_mailinglists AS nm');
+        $query->where('nm.mailinglist_id > 0');
+        $query->rightJoin('#__bwpostman_newsletters AS n ON n.id = nm.newsletter_id');
+        $query->where('n.archive_flag = 1');
+        $query->leftJoin('#__bwpostman_mailinglists AS m ON m.id = nm.mailinglist_id');
+        $query->order('m.title');
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
+            $options = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'ArcMailinglistsField BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		$parent = new stdClass;
-		$parent->value = '';
-		$parent->text = Text::_('COM_BWPOSTMAN_ARC_FILTER_MAILINGLISTS');
-		array_unshift($options, $parent);
+        $parent = new stdClass;
+        $parent->value = '';
+        $parent->text = Text::_('COM_BWPOSTMAN_ARC_FILTER_MAILINGLISTS');
+        array_unshift($options, $parent);
 
-		// Merge any additional options in the XML definition.
-		return array_merge(parent::getOptions(), $options);
-	}
+        // Merge any additional options in the XML definition.
+        return array_merge(parent::getOptions(), $options);
+    }
 }

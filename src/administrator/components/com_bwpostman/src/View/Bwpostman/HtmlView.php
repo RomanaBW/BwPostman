@@ -51,220 +51,220 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-	/**
-	 * property to hold archive data
-	 *
-	 * @var array $archive
-	 *
-	 * @since       0.9.1
-	 */
-	public array $archive;
+    /**
+     * property to hold archive data
+     *
+     * @var array $archive
+     *
+     * @since       0.9.1
+     */
+    public array $archive;
 
-	/**
-	 * property to hold general data
-	 *
-	 * @var array $general
-	 *
-	 * @since       0.9.1
-	 */
-	public array $general;
+    /**
+     * property to hold general data
+     *
+     * @var array $general
+     *
+     * @since       0.9.1
+     */
+    public array $general;
 
-	/**
-	 * property to hold request url
-	 *
-	 * @var string $request_url
-	 *
-	 * @since       0.9.1
-	 */
-	public string $request_url;
+    /**
+     * property to hold request url
+     *
+     * @var string $request_url
+     *
+     * @since       0.9.1
+     */
+    public string $request_url;
 
-	/**
-	 * property to hold permissions as array
-	 *
-	 * @var array $permissions
-	 *
-	 * @since       2.0.0
-	 */
-	public array $permissions;
+    /**
+     * property to hold permissions as array
+     *
+     * @var array $permissions
+     *
+     * @since       2.0.0
+     */
+    public array $permissions;
 
-	/**
-	 * property to hold queue entries property
-	 *
-	 * @var boolean $queueEntries
-	 *
-	 * @since       0.9.1
-	 */
-	public bool $queueEntries;
+    /**
+     * property to hold queue entries property
+     *
+     * @var boolean $queueEntries
+     *
+     * @since       0.9.1
+     */
+    public bool $queueEntries;
 
-	/**
-	 * property to hold sidebar
-	 *
-	 * @var object  $sidebar
-	 *
-	 * @since       0.9.1
-	 */
-	public object $sidebar;
+    /**
+     * property to hold sidebar
+     *
+     * @var object  $sidebar
+     *
+     * @since       0.9.1
+     */
+    public object $sidebar;
 
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  HtmlView  A string if successful, otherwise a JError object.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function display($tpl = null): HtmlView
-	{
-		$uri		= Uri::getInstance();
-		$uri_string	= $uri->toString();
+    /**
+     * Execute and display a template script.
+     *
+     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+     *
+     * @return  HtmlView  A string if successful, otherwise a JError object.
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function display($tpl = null): HtmlView
+    {
+        $uri		= Uri::getInstance();
+        $uri_string	= $uri->toString();
 
-		//check for queue entries
-		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
+        //check for queue entries
+        $this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
-		// Get data from the model
+        // Get data from the model
         $model = $this->getModel();
-		$this->archive     = $model->getArchivedata();
-		$this->checkArchiveStatisticsData();
-		$this->general     = $model->getGeneraldata();
-		$this->checkGeneralStatisticsData();
-		$this->request_url = $uri_string;
-		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
+        $this->archive     = $model->getArchivedata();
+        $this->checkArchiveStatisticsData();
+        $this->general     = $model->getGeneraldata();
+        $this->checkGeneralStatisticsData();
+        $this->request_url = $uri_string;
+        $this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
-		$this->addToolbar();
+        $this->addToolbar();
 
-		parent::display($tpl);
+        parent::display($tpl);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	protected function addToolbar(): void
+    /**
+     * Add the page title and toolbar.
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    protected function addToolbar(): void
     {
-		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        // Get the toolbar object instance
+                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN'), 'envelope');
+        // Set toolbar title
+        ToolbarHelper::title(Text::_('COM_BWPOSTMAN'), 'envelope');
 
-		// Set toolbar items for the page
-		if ($this->permissions['com']['admin'])
-		{
-			$toolbar->preferences('com_bwpostman');
-		}
+        // Set toolbar items for the page
+        if ($this->permissions['com']['admin'])
+        {
+            $toolbar->preferences('com_bwpostman');
+        }
 
-		$manualButton = BwPostmanHTMLHelper::getManualButton('bwpostman');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+        $manualButton = BwPostmanHTMLHelper::getManualButton('bwpostman');
+        $forumButton  = BwPostmanHTMLHelper::getForumButton();
 
 
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
-	/**
-	 * Check array of general statistics data
-	 *
-	 * @throws Exception
-	 *
-	 * @since       3.0.1
-	 */
-	protected function checkGeneralStatisticsData(): void
+        $toolbar->appendButton($manualButton);
+        $toolbar->appendButton($forumButton);
+    }
+    /**
+     * Check array of general statistics data
+     *
+     * @throws Exception
+     *
+     * @since       3.0.1
+     */
+    protected function checkGeneralStatisticsData(): void
     {
-		if (!key_exists('nl_unsent', $this->general))
-		{
-			$this->general['nl_unsent'] = '';
-		}
+        if (!key_exists('nl_unsent', $this->general))
+        {
+            $this->general['nl_unsent'] = '';
+        }
 
-		if (!key_exists('nl_sent', $this->general))
-		{
-			$this->general['nl_sent'] = '';
-		}
+        if (!key_exists('nl_sent', $this->general))
+        {
+            $this->general['nl_sent'] = '';
+        }
 
-		if (!key_exists('sub', $this->general))
-		{
-			$this->general['sub'] = '';
-		}
+        if (!key_exists('sub', $this->general))
+        {
+            $this->general['sub'] = '';
+        }
 
-		if (!key_exists('test', $this->general))
-		{
-			$this->general['test'] = '';
-		}
+        if (!key_exists('test', $this->general))
+        {
+            $this->general['test'] = '';
+        }
 
-		if (!key_exists('cam', $this->general))
-		{
-			$this->general['cam'] = '';
-		}
+        if (!key_exists('cam', $this->general))
+        {
+            $this->general['cam'] = '';
+        }
 
-		if (!key_exists('ml_published', $this->general))
-		{
-			$this->general['ml_published'] = '';
-		}
+        if (!key_exists('ml_published', $this->general))
+        {
+            $this->general['ml_published'] = '';
+        }
 
-		if (!key_exists('ml_unpublished', $this->general))
-		{
-			$this->general['ml_unpublished'] = '';
-		}
+        if (!key_exists('ml_unpublished', $this->general))
+        {
+            $this->general['ml_unpublished'] = '';
+        }
 
-		if (!key_exists('html_templates', $this->general))
-		{
-			$this->general['html_templates'] = '';
-		}
+        if (!key_exists('html_templates', $this->general))
+        {
+            $this->general['html_templates'] = '';
+        }
 
-		if (!key_exists('text_templates', $this->general))
-		{
-			$this->general['text_templates'] = '';
-		}
-	}
+        if (!key_exists('text_templates', $this->general))
+        {
+            $this->general['text_templates'] = '';
+        }
+    }
 
-	/**
-	 * Check array of archive statistics data
-	 *
-	 * @throws Exception
-	 *
-	 * @since       3.0.1
-	 */
-	protected function checkArchiveStatisticsData(): void
+    /**
+     * Check array of archive statistics data
+     *
+     * @throws Exception
+     *
+     * @since       3.0.1
+     */
+    protected function checkArchiveStatisticsData(): void
     {
-		if (!key_exists('arc_nl', $this->archive))
-		{
-			$this->archive['arc_nl'] = '';
-		}
+        if (!key_exists('arc_nl', $this->archive))
+        {
+            $this->archive['arc_nl'] = '';
+        }
 
-		if (!key_exists('arc_sub', $this->archive))
-		{
-			$this->archive['arc_sub'] = '';
-		}
+        if (!key_exists('arc_sub', $this->archive))
+        {
+            $this->archive['arc_sub'] = '';
+        }
 
-		if (!key_exists('sub', $this->archive))
-		{
-			$this->archive['sub'] = '';
-		}
+        if (!key_exists('sub', $this->archive))
+        {
+            $this->archive['sub'] = '';
+        }
 
-		if (!key_exists('arc_cam', $this->archive))
-		{
-			$this->archive['arc_cam'] = '';
-		}
+        if (!key_exists('arc_cam', $this->archive))
+        {
+            $this->archive['arc_cam'] = '';
+        }
 
-		if (!key_exists('arc_ml', $this->archive))
-		{
-			$this->archive['arc_ml'] = '';
-		}
+        if (!key_exists('arc_ml', $this->archive))
+        {
+            $this->archive['arc_ml'] = '';
+        }
 
-		if (!key_exists('arc_html_templates', $this->archive))
-		{
-			$this->archive['arc_html_templates'] = '';
-		}
+        if (!key_exists('arc_html_templates', $this->archive))
+        {
+            $this->archive['arc_html_templates'] = '';
+        }
 
-		if (!key_exists('arc_text_templates', $this->archive))
-		{
-			$this->archive['arc_text_templates'] = '';
-		}
-	}
+        if (!key_exists('arc_text_templates', $this->archive))
+        {
+            $this->archive['arc_text_templates'] = '';
+        }
+    }
 }

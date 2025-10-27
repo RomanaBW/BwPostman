@@ -250,7 +250,7 @@ class HtmlView extends BaseHtmlView
 
                     $childBar = $dropdown->getChildToolbar();
 
-                    if (BwPostmanHelper::canEdit('template'))
+                    if (BwPostmanHelper::canEdit('template', []))
                     {
                         $childBar->edit('template.edit')->listCheck(true);
                     }

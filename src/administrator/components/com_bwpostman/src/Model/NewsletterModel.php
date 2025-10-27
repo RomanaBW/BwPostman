@@ -1075,7 +1075,7 @@ class NewsletterModel extends AdminModel
         // Access checks.
         if ($table->load($id))
         {
-            if (!BwPostmanHelper::canEdit('newsletter', array('id' => $id)))
+            if (!BwPostmanHelper::canEdit('newsletter', ['id' => $id]))
             {
                 $this->logger->addEntry(new LogEntry(Text::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), BwLogger::BW_WARNING, 'newsletter'));
 

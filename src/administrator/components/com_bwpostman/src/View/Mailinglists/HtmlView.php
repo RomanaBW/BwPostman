@@ -88,11 +88,11 @@ class HtmlView extends BaseHtmlView
     /**
      * property to hold active filters
      *
-     * @var object  $activeFilters
+     * @var array  $activeFilters
      *
      * @since       0.9.1
      */
-    public object $activeFilters;
+    public array $activeFilters;
 
     /**
      * property to hold total value

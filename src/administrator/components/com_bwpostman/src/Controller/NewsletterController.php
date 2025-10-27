@@ -255,6 +255,8 @@ class NewsletterController extends FormController
         $cid     = $this->input->post->get('cid', array(), 'array');
         $context = "$this->option.edit.$this->context";
 
+        $app->setUserState('com_bwpostman.edit.subscriber.id', null);
+
         $cid = ArrayHelper::toInteger($cid);
 
         // Determine the name of the primary key for the data.

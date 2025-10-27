@@ -51,324 +51,324 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-	/**
-	 * property to hold selected items
-	 *
-	 * @var array   $items
-	 *
-	 * @since       0.9.1
-	 */
-	protected array $items;
+    /**
+     * property to hold selected items
+     *
+     * @var array   $items
+     *
+     * @since       0.9.1
+     */
+    protected array $items;
 
-	/**
-	 * property to hold pagination object
-	 *
-	 * @var object  $pagination
-	 *
-	 * @since       0.9.1
-	 */
-	protected object $pagination;
+    /**
+     * property to hold pagination object
+     *
+     * @var object  $pagination
+     *
+     * @since       0.9.1
+     */
+    protected object $pagination;
 
-	/**
-	 * property to hold pagination object for queue
-	 *
-	 * @var object  $pagination
-	 *
-	 * @since       0.9.1
-	 */
-	protected object $queuePagination;
+    /**
+     * property to hold pagination object for queue
+     *
+     * @var object  $pagination
+     *
+     * @since       0.9.1
+     */
+    protected object $queuePagination;
 
-	/**
-	 * property to hold state
-	 *
-	 * @var array|object  $state
-	 *
-	 * @since       0.9.1
-	 */
-	protected array|object $state;
+    /**
+     * property to hold state
+     *
+     * @var array|object  $state
+     *
+     * @since       0.9.1
+     */
+    protected array|object $state;
 
-	/**
-	 * property to hold filter form
-	 *
-	 * @var object  $filterForm
-	 *
-	 * @since       0.9.1
-	 */
-	public object $filterForm;
+    /**
+     * property to hold filter form
+     *
+     * @var object  $filterForm
+     *
+     * @since       0.9.1
+     */
+    public object $filterForm;
 
-	/**
-	 * property to hold active filters
-	 *
-	 * @var object  $activeFilters
-	 *
-	 * @since       0.9.1
-	 */
-	public object $activeFilters;
+    /**
+     * property to hold active filters
+     *
+     * @var object  $activeFilters
+     *
+     * @since       0.9.1
+     */
+    public object $activeFilters;
 
-	/**
-	 * property to hold queue entries property
-	 *
-	 * @var bool $queueEntries
-	 *
-	 * @since       0.9.1
-	 */
-	public bool $queueEntries;
+    /**
+     * property to hold queue entries property
+     *
+     * @var bool $queueEntries
+     *
+     * @since       0.9.1
+     */
+    public bool $queueEntries;
 
-	/**
-	 * property to hold total value
-	 *
-	 * @var string $total
-	 *
-	 * @since       0.9.1
-	 */
-	public string $total;
+    /**
+     * property to hold total value
+     *
+     * @var string $total
+     *
+     * @since       0.9.1
+     */
+    public string $total;
 
-	/**
-	 * property to hold count queue
-	 *
-	 * @var string $count_queue
-	 *
-	 * @since       0.9.1
-	 */
-	public string $count_queue;
+    /**
+     * property to hold count queue
+     *
+     * @var string $count_queue
+     *
+     * @since       0.9.1
+     */
+    public string $count_queue;
 
-	/**
-	 * property to hold context
-	 *
-	 * @var string $context
-	 *
-	 * @since       0.9.1
-	 */
-	public string $context;
+    /**
+     * property to hold context
+     *
+     * @var string $context
+     *
+     * @since       0.9.1
+     */
+    public string $context;
 
-	/**
-	 * property to hold permissions as array
-	 *
-	 * @var array $permissions
-	 *
-	 * @since       2.0.0
-	 */
-	public array $permissions;
+    /**
+     * property to hold permissions as array
+     *
+     * @var array $permissions
+     *
+     * @since       2.0.0
+     */
+    public array $permissions;
 
-	/**
-	 * property to hold sidebar
-	 *
-	 * @var object  $sidebar
-	 *
-	 * @since       0.9.1
-	 */
-	public object $sidebar;
+    /**
+     * property to hold sidebar
+     *
+     * @var object  $sidebar
+     *
+     * @since       0.9.1
+     */
+    public object $sidebar;
 
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  HtmlView  A string if successful, otherwise a JError object.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function display($tpl = null): HtmlView
-	{
-		$app	= Factory::getApplication();
-
-		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
-
-		if (!$this->permissions['view']['newsletter'])
-		{
-			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_NLS')), 'error');
-			$app->redirect('index.php?option=com_bwpostman');
-		}
-
-		$jinput		= $app->input;
-		$uri		= Uri::getInstance();
-
-		//check for queue entries
-		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
-
-		$app->setUserState('com_bwpostman.edit.newsletter.referrer', 'Newsletters');
-		// The query always contains the tab which we are in, but this might be confusing
-		// That's why we will set the query only to controller = newsletters
-		$uri_query	= 'option=com_bwpostman&view=newsletters';
-		$uri->setQuery($uri_query);
-
-		// Get data from the model
-        $model = $this->getModel();
-		$this->state			= $model->getState();
-		$this->items			= $model->getItems();
-		$this->filterForm		= $this->getModel()->getFilterForm();
-		$this->activeFilters	= $model->getActiveFilters();
-		$this->pagination		= $model->getPagination();
-		$this->queuePagination	= $model->getQueuePagination();
-		$this->total 			= $model->getTotal();
-		$this->count_queue		= $model->getCountQueue();
-		$this->context			= 'com_bwpostman.newsletters';
-
-		$this->addToolbar();
-
-		// Show the layout depending on the tab
-		$tpl = $jinput->get('tab', 'unsent');
-
-		if ($tpl === 'queue' && (int)$this->count_queue === 0)
-		{
-			$tpl = 'unsent';
-		}
-
-		$app->setUserState('com_bwpostman.newsletters.layout', $tpl);
-
-		// Call parent display
-		parent::display($tpl);
-		return $this;
-	}
-
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	protected function addToolbar(): void
+    /**
+     * Execute and display a template script.
+     *
+     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+     *
+     * @return  HtmlView  A string if successful, otherwise a JError object.
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function display($tpl = null): HtmlView
     {
-		$tab	= $this->state->get('tab', 'unsent');
+        $app	= Factory::getApplication();
 
-		// Get the toolbar object instance
+        $this->permissions		= $app->getUserState('com_bwpm.permissions', []);
+
+        if (!$this->permissions['view']['newsletter'])
+        {
+            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_NLS')), 'error');
+            $app->redirect('index.php?option=com_bwpostman');
+        }
+
+        $jinput		= $app->input;
+        $uri		= Uri::getInstance();
+
+        //check for queue entries
+        $this->queueEntries	= BwPostmanHelper::checkQueueEntries();
+
+        $app->setUserState('com_bwpostman.edit.newsletter.referrer', 'Newsletters');
+        // The query always contains the tab which we are in, but this might be confusing
+        // That's why we will set the query only to controller = newsletters
+        $uri_query	= 'option=com_bwpostman&view=newsletters';
+        $uri->setQuery($uri_query);
+
+        // Get data from the model
+        $model = $this->getModel();
+        $this->state			= $model->getState();
+        $this->items			= $model->getItems();
+        $this->filterForm		= $this->getModel()->getFilterForm();
+        $this->activeFilters	= $model->getActiveFilters();
+        $this->pagination		= $model->getPagination();
+        $this->queuePagination	= $model->getQueuePagination();
+        $this->total 			= $model->getTotal();
+        $this->count_queue		= $model->getCountQueue();
+        $this->context			= 'com_bwpostman.newsletters';
+
+        $this->addToolbar();
+
+        // Show the layout depending on the tab
+        $tpl = $jinput->get('tab', 'unsent');
+
+        if ($tpl === 'queue' && (int)$this->count_queue === 0)
+        {
+            $tpl = 'unsent';
+        }
+
+        $app->setUserState('com_bwpostman.newsletters.layout', $tpl);
+
+        // Call parent display
+        parent::display($tpl);
+        return $this;
+    }
+
+    /**
+     * Add the page title and toolbar.
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    protected function addToolbar(): void
+    {
+        $tab	= $this->state->get('tab', 'unsent');
+
+        // Get the toolbar object instance
         $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-		$wa = $this->getDocument()->getWebAssetManager();
-		$wa->useScript('com_bwpostman.admin-bwpm_nls');
+        $wa = $this->getDocument()->getWebAssetManager();
+        $wa->useScript('com_bwpostman.admin-bwpm_nls');
 
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NLS'), 'envelope');
+        // Set toolbar title
+        ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NLS'), 'envelope');
 
-		// Set toolbar items for the page
+        // Set toolbar items for the page
 
-		switch ($tab)
-		{ // The layout-variable tells us which tab we are in
-			case "sent":
-				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter'))
-				{
-					$dropdown = $toolbar->dropdownButton('status-group')
-						->text('JTOOLBAR_CHANGE_STATUS')
-						->toggleSplit(false)
-						->icon('fa fa-ellipsis-h')
-						->buttonClass('btn btn-action')
-						->listCheck(true);
+        switch ($tab)
+        { // The layout-variable tells us which tab we are in
+            case "sent":
+                if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter'))
+                {
+                    $dropdown = $toolbar->dropdownButton('status-group')
+                        ->text('JTOOLBAR_CHANGE_STATUS')
+                        ->toggleSplit(false)
+                        ->icon('fa fa-ellipsis-h')
+                        ->buttonClass('btn btn-action')
+                        ->listCheck(true);
 
-					$childBar = $dropdown->getChildToolbar();
+                    $childBar = $dropdown->getChildToolbar();
 
-					if (BwPostmanHelper::canEdit('newsletter'))
-					{
-						$childBar->edit('newsletter.edit')->listCheck(true);
-					}
+                    if (BwPostmanHelper::canEdit('newsletter'))
+                    {
+                        $childBar->edit('newsletter.edit')->listCheck(true);
+                    }
 
-					if (BwPostmanHelper::canEditState('newsletter'))
-					{
-						$childBar->publish('newsletters.publish')->listCheck(true);
-						$childBar->unpublish('newsletters.unpublish')->listCheck(true);
-					}
+                    if (BwPostmanHelper::canEditState('newsletter'))
+                    {
+                        $childBar->publish('newsletters.publish')->listCheck(true);
+                        $childBar->unpublish('newsletters.unpublish')->listCheck(true);
+                    }
 
-					if (BwPostmanHelper::canEdit('newsletter', []) || BwPostmanHelper::canEditState('newsletter'))
-					{
-						$childBar->checkin('newsletters.checkin')->listCheck(true);
-					}
+                    if (BwPostmanHelper::canEdit('newsletter', []) || BwPostmanHelper::canEditState('newsletter'))
+                    {
+                        $childBar->checkin('newsletters.checkin')->listCheck(true);
+                    }
 
-					if (BwPostmanHelper::canArchive('newsletter'))
-					{
-						$childBar->archive('newsletter.archive')->listCheck(true);
-					}
-				}
+                    if (BwPostmanHelper::canArchive('newsletter'))
+                    {
+                        $childBar->archive('newsletter.archive')->listCheck(true);
+                    }
+                }
 
-				if ($this->permissions['newsletter']['create'])
-				{
-					ToolbarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
-				}
+                if ($this->permissions['newsletter']['create'])
+                {
+                    ToolbarHelper::custom('newsletter.copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
+                }
 
-				break;
-			case "queue":
-				if ($this->permissions['newsletter']['send'])
-				{
-					ToolbarHelper::custom(
-						'newsletters.resetSendAttempts',
-						'checkin.png',
-						'unpublish_f2.png',
-						'COM_BWPOSTMAN_NL_RESET_TRIAL',
-						false
-					);
-					$url = "index.php?option=com_bwpostman&view=newsletter&task=startsending&layout=nl_send";
-					$icon = "envelope";
-					$text = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
-					$toolbar->AppendButton('Link', $icon, $text, $url);
+                break;
+            case "queue":
+                if ($this->permissions['newsletter']['send'])
+                {
+                    ToolbarHelper::custom(
+                        'newsletters.resetSendAttempts',
+                        'checkin.png',
+                        'unpublish_f2.png',
+                        'COM_BWPOSTMAN_NL_RESET_TRIAL',
+                        false
+                    );
+                    $url = "index.php?option=com_bwpostman&view=newsletter&task=startsending&layout=nl_send";
+                    $icon = "envelope";
+                    $text = "COM_BWPOSTMAN_NL_CONTINUE_SENDING";
+                    $toolbar->AppendButton('Link', $icon, $text, $url);
 
-					ToolbarHelper::custom('newsletters.clear_queue', 'trash.png', 'delete_f2.png', 'COM_BWPOSTMAN_NL_CLEAR_QUEUE', false);
-				}
-				break;
-			case "unsent":
-			default:
-				if ($this->permissions['newsletter']['create'])
-				{
-					ToolbarHelper::addNew('newsletter.add');
-				}
+                    ToolbarHelper::custom('newsletters.clear_queue', 'trash.png', 'delete_f2.png', 'COM_BWPOSTMAN_NL_CLEAR_QUEUE', false);
+                }
+                break;
+            case "unsent":
+            default:
+                if ($this->permissions['newsletter']['create'])
+                {
+                    ToolbarHelper::addNew('newsletter.add');
+                }
 
-				if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter'))
-				{
-					$dropdown = $toolbar->dropdownButton('status-group')
-						->text('JTOOLBAR_CHANGE_STATUS')
-						->toggleSplit(false)
-						->icon('fa fa-ellipsis-h')
-						->buttonClass('btn btn-action')
-						->listCheck(true);
+                if (BwPostmanHelper::canArchive('newsletter') || BwPostmanHelper::canEdit('newsletter') || BwPostmanHelper::canEditState('newsletter'))
+                {
+                    $dropdown = $toolbar->dropdownButton('status-group')
+                        ->text('JTOOLBAR_CHANGE_STATUS')
+                        ->toggleSplit(false)
+                        ->icon('fa fa-ellipsis-h')
+                        ->buttonClass('btn btn-action')
+                        ->listCheck(true);
 
-					$childBar = $dropdown->getChildToolbar();
+                    $childBar = $dropdown->getChildToolbar();
 
-					if (BwPostmanHelper::canEdit('newsletter'))
-					{
-						$childBar->edit('newsletter.edit')->listCheck(true);
-					}
+                    if (BwPostmanHelper::canEdit('newsletter'))
+                    {
+                        $childBar->edit('newsletter.edit')->listCheck(true);
+                    }
 
-					if (BwPostmanHelper::canEdit('newsletter', []) || BwPostmanHelper::canEditState('newsletter'))
-					{
-						$childBar->checkin('newsletters.checkin')->listCheck(true);
-					}
+                    if (BwPostmanHelper::canEdit('newsletter', []) || BwPostmanHelper::canEditState('newsletter'))
+                    {
+                        $childBar->checkin('newsletters.checkin')->listCheck(true);
+                    }
 
-					if (BwPostmanHelper::canArchive('newsletter'))
-					{
-						$childBar->archive('newsletter.archive')->listCheck(true);
-					}
+                    if (BwPostmanHelper::canArchive('newsletter'))
+                    {
+                        $childBar->archive('newsletter.archive')->listCheck(true);
+                    }
 
-					if ($this->permissions['newsletter']['create'])
-					{
-						$html = '<joomla-toolbar-button id="status-group-children-duplicate" task="newsletter.copy" list-selection="">';
-						$html .= '<button class="button-duplicate dropdown-item" type="button">';
-						$html .= '<span class="icon-copy" aria-hidden="true"></span>';
-						$html .= Text::_('JTOOLBAR_DUPLICATE');
-						$html .= '</button>';
-						$html .= '</joomla-toolbar-button>';
+                    if ($this->permissions['newsletter']['create'])
+                    {
+                        $html = '<joomla-toolbar-button id="status-group-children-duplicate" task="newsletter.copy" list-selection="">';
+                        $html .= '<button class="button-duplicate dropdown-item" type="button">';
+                        $html .= '<span class="icon-copy" aria-hidden="true"></span>';
+                        $html .= Text::_('JTOOLBAR_DUPLICATE');
+                        $html .= '</button>';
+                        $html .= '</joomla-toolbar-button>';
 
-						$childBar->appendButton('Custom', $html);
-					}
+                        $childBar->appendButton('Custom', $html);
+                    }
 
-					if ($this->permissions['newsletter']['send'])
-					{
-						$html = '<joomla-toolbar-button id="status-group-children-send" task="newsletter.sendOut" list-selection="">';
-						$html .= '<button class="button-send dropdown-item" type="button">';
-						$html .= '<span class="icon-envelope" aria-hidden="true"></span>';
-						$html .= Text::_('COM_BWPOSTMAN_NL_SEND');
-						$html .= '</button>';
-						$html .= '</joomla-toolbar-button>';
+                    if ($this->permissions['newsletter']['send'])
+                    {
+                        $html = '<joomla-toolbar-button id="status-group-children-send" task="newsletter.sendOut" list-selection="">';
+                        $html .= '<button class="button-send dropdown-item" type="button">';
+                        $html .= '<span class="icon-envelope" aria-hidden="true"></span>';
+                        $html .= Text::_('COM_BWPOSTMAN_NL_SEND');
+                        $html .= '</button>';
+                        $html .= '</joomla-toolbar-button>';
 
-						$childBar->appendButton('Custom', $html);
-					}
-				}
-				break;
-		}
+                        $childBar->appendButton('Custom', $html);
+                    }
+                }
+                break;
+        }
 
-		$manualButton = BwPostmanHTMLHelper::getManualButton('newsletters');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+        $manualButton = BwPostmanHTMLHelper::getManualButton('newsletters');
+        $forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
+        $toolbar->appendButton($manualButton);
+        $toolbar->appendButton($forumButton);
+    }
 }

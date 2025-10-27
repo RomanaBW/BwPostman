@@ -37,23 +37,23 @@ $wa->useScript('com_bwpostman.admin-bwpm_template_import');
 
 ?>
 <div id="checkResult" class="row">
-	<div class="col-lg-6">
-		<div class="card card-body">
-			<h2><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL'); ?></h2>
-			<p id="step1" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_1'); ?></p>
-			<p id="step2" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_2'); ?></p>
-			<p id="step3" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_3'); ?></p>
-			<p id="step4" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_4'); ?></p>
-			<p id="step5" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_5'); ?></p>
-		</div>
-	</div>
-	<div class="col-lg-6">
-		<div id="resultSet" class="card card-body">
-			<h2><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_RESULT'); ?></h2>
-			<div id="loader" class="text-center my-3"><i class="fas fa-spinner fa-pulse fa-5x"></i></div>
-			<div id="result"></div>
-		</div>
-	</div>
+    <div class="col-lg-6">
+        <div class="card card-body">
+            <h2><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL'); ?></h2>
+            <p id="step1" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_1'); ?></p>
+            <p id="step2" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_2'); ?></p>
+            <p id="step3" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_3'); ?></p>
+            <p id="step4" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_4'); ?></p>
+            <p id="step5" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_STEP_5'); ?></p>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div id="resultSet" class="card card-body">
+            <h2><?php echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_RESULT'); ?></h2>
+            <div id="loader" class="text-center my-3"><i class="fas fa-spinner fa-pulse fa-5x"></i></div>
+            <div id="result"></div>
+        </div>
+    </div>
 </div>
 
 <input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=templatesjson.installtpl&format=json&<?php echo Session::getFormToken(); ?>=1" />

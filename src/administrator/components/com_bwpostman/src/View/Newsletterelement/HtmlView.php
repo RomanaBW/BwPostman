@@ -44,103 +44,103 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-	/**
-	 * property to hold selected items
-	 *
-	 * @var array   $items
-	 *
-	 * @since       1.0.1
-	 */
-	protected array $items;
+    /**
+     * property to hold selected items
+     *
+     * @var array   $items
+     *
+     * @since       1.0.1
+     */
+    protected array $items;
 
-	/**
-	 * property to hold pagination object
-	 *
-	 * @var object  $pagination
-	 *
-	 * @since       1.0.1
-	 */
-	protected object $pagination;
+    /**
+     * property to hold pagination object
+     *
+     * @var object  $pagination
+     *
+     * @since       1.0.1
+     */
+    protected object $pagination;
 
-	/**
-	 * property to hold mailing lists
-	 *
-	 * @var array   $lists
-	 *
-	 * @since       1.0.1
-	 */
-	protected array $lists;
+    /**
+     * property to hold mailing lists
+     *
+     * @var array   $lists
+     *
+     * @since       1.0.1
+     */
+    protected array $lists;
 
-	/**
-	 * property to hold user object
-	 *
-	 * @var object  $user
-	 *
-	 * @since       1.0.1
-	 */
-	protected object $user;
+    /**
+     * property to hold user object
+     *
+     * @var object  $user
+     *
+     * @since       1.0.1
+     */
+    protected object $user;
 
-	/**
-	 * property to hold request url
-	 *
-	 * @var string   $request_url
-	 *
-	 * @since       1.0.1
-	 */
-	protected string $request_url;
+    /**
+     * property to hold request url
+     *
+     * @var string   $request_url
+     *
+     * @since       1.0.1
+     */
+    protected string $request_url;
 
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  HtmlView  A string if successful, otherwise a JError object.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       1.0.1
-	 */
-	public function display($tpl = null): HtmlView
-	{
-		$app = Factory::getApplication();
+    /**
+     * Execute and display a template script.
+     *
+     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+     *
+     * @return  HtmlView  A string if successful, otherwise a JError object.
+     *
+     * @throws Exception
+     *
+     * @since       1.0.1
+     */
+    public function display($tpl = null): HtmlView
+    {
+        $app = Factory::getApplication();
 
-		$user		= $app->getIdentity();
-		$uri		= Uri::getInstance();
-		$uri_string	= str_replace('&', '&amp;', $uri->toString());
+        $user		= $app->getIdentity();
+        $uri		= Uri::getInstance();
+        $uri_string	= str_replace('&', '&amp;', $uri->toString());
 
-		// Build the key for the userState
-		$key = $this->getName();
+        // Build the key for the userState
+        $key = $this->getName();
 
-		// Load the ordering, the search and the filters
-		$filter_order 		= $app->getUserStateFromRequest($key . '_filter_order', 'filter_order', 'a.subject', 'cmd');
-		$filter_order_Dir 	= $app->getUserStateFromRequest($key . '_filter_order_Dir', 'filter_order_Dir', '', 'word');
-		$search				= $app->getUserStateFromRequest($key . '_search', 'search', '', 'string');
-		$search				= StringHelper::strtolower($search);
+        // Load the ordering, the search and the filters
+        $filter_order 		= $app->getUserStateFromRequest($key . '_filter_order', 'filter_order', 'a.subject', 'cmd');
+        $filter_order_Dir 	= $app->getUserStateFromRequest($key . '_filter_order_Dir', 'filter_order_Dir', '', 'word');
+        $search				= $app->getUserStateFromRequest($key . '_search', 'search', '', 'string');
+        $search				= StringHelper::strtolower($search);
 
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NLS'), 'envelope');
+        // Set toolbar title
+        ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NLS'), 'envelope');
 
-		// Get data from the model
+        // Get data from the model
         $model = $this->getModel();
-		$items 		= $model->getData();
-		$pagination = $model->getPagination();
+        $items 		= $model->getData();
+        $pagination = $model->getPagination();
 
-		// Table ordering
-		$lists['order'] = $filter_order;
-		$lists['order_Dir'] = $filter_order_Dir;
+        // Table ordering
+        $lists['order'] = $filter_order;
+        $lists['order_Dir'] = $filter_order_Dir;
 
-		// Search filter
-		$lists['search'] = $search;
+        // Search filter
+        $lists['search'] = $search;
 
-		// Save a reference into view
-		$this->items        = $items;
-		$this->lists        = $lists;
-		$this->pagination   = $pagination;
-		$this->request_url  = $uri_string;
-		$this->user         = $user;
+        // Save a reference into view
+        $this->items        = $items;
+        $this->lists        = $lists;
+        $this->pagination   = $pagination;
+        $this->request_url  = $uri_string;
+        $this->user         = $user;
 
-		// Call parent display
-		parent::display($tpl);
-		return $this;
-	}
+        // Call parent display
+        parent::display($tpl);
+        return $this;
+    }
 }//end class

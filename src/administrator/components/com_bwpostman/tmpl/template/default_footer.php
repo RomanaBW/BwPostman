@@ -32,15 +32,15 @@ use Joomla\CMS\Language\Text;
 $fieldSets = $this->form->getFieldsets('footer');
 
 foreach ($fieldSets as $name => $fieldSet) :
-	?>
-	<fieldset class="panelform options-grid-form options-grid-form-full">
-		<legend><?php echo $this->escape(Text::_($fieldSet->label)); ?></legend>
-		<div>
-			<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-				<?php echo $field->renderField(); ?>
-			<?php endforeach; ?>
-		</div>
-	</fieldset>
-	<?php echo $this->loadTemplate('button'); ?>
+    ?>
+    <fieldset class="panelform options-grid-form options-grid-form-full">
+        <legend><?php echo $this->escape(Text::_($fieldSet->label)); ?></legend>
+        <div>
+            <?php foreach ($this->form->getFieldset($name) as $field) : ?>
+                <?php echo $field->renderField(); ?>
+            <?php endforeach; ?>
+        </div>
+    </fieldset>
+    <?php echo $this->loadTemplate('button'); ?>
 <?php endforeach;
 ?>

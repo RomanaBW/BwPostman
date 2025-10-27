@@ -45,59 +45,59 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class RawView extends BaseHtmlView
 {
-	/**
-	 * property to hold preview data
-	 *
-	 * @var string  $pre
-	 *
-	 * @since       1.1.0
-	 */
-	protected string $pre;
+    /**
+     * property to hold preview data
+     *
+     * @var string  $pre
+     *
+     * @since       1.1.0
+     */
+    protected string $pre;
 
-	/**
-	 * property to hold permissions as array
-	 *
-	 * @var array $permissions
-	 *
-	 * @since       2.0.0
-	 */
-	public array $permissions;
+    /**
+     * property to hold permissions as array
+     *
+     * @var array $permissions
+     *
+     * @since       2.0.0
+     */
+    public array $permissions;
 
-	/**
-	 * Display
-	 *
-	 * @param	string $tpl Template
-	 *
-	 * @return RawView
-	 *
-	 *@throws Exception
-	 *
-	 * @since	1.1.0
-	 *
-	 */
-	public function display($tpl = null): RawView
-	{
-		$app		= Factory::getApplication();
+    /**
+     * Display
+     *
+     * @param	string $tpl Template
+     *
+     * @return RawView
+     *
+     *@throws Exception
+     *
+     * @since	1.1.0
+     *
+     */
+    public function display($tpl = null): RawView
+    {
+        $app		= Factory::getApplication();
 
-		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
+        $this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
-		if (!$this->permissions['view']['template'])
-		{
-			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_TPLS')), 'error');
-			$app->redirect('index.php?option=com_bwpostman');
-		}
+        if (!$this->permissions['view']['template'])
+        {
+            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_TPLS')), 'error');
+            $app->redirect('index.php?option=com_bwpostman');
+        }
 
-		// load template data and decode object
-		$pre = $app->getUserState('com_bwpostman.edit.template.tpldata');
+        // load template data and decode object
+        $pre = $app->getUserState('com_bwpostman.edit.template.tpldata');
 
-		$this->pre	= $pre;
+        $this->pre	= $pre;
 
-		// clear preview data
-		$app->setUserState('com_bwpostman.edit.template.tpldata', null);
+        // clear preview data
+        $app->setUserState('com_bwpostman.edit.template.tpldata', null);
 
-		// Call parent display
-		parent::display($tpl);
+        // Call parent display
+        parent::display($tpl);
 
-		return $this;
-	}
+        return $this;
+    }
 }

@@ -49,176 +49,176 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-	/**
-	 * property to hold selected items
-	 *
-	 * @var array   $items
-	 *
-	 * @since       0.9.1
-	 */
-	protected array $items;
+    /**
+     * property to hold selected items
+     *
+     * @var array   $items
+     *
+     * @since       0.9.1
+     */
+    protected array $items;
 
-	/**
-	 * property to hold pagination object
-	 *
-	 * @var object  $pagination
-	 *
-	 * @since       0.9.1
-	 */
-	protected object $pagination;
+    /**
+     * property to hold pagination object
+     *
+     * @var object  $pagination
+     *
+     * @since       0.9.1
+     */
+    protected object $pagination;
 
-	/**
-	 * property to hold state
-	 *
-	 * @var array|object  $state
-	 *
-	 * @since       0.9.1
-	 */
-	protected array|object $state;
+    /**
+     * property to hold state
+     *
+     * @var array|object  $state
+     *
+     * @since       0.9.1
+     */
+    protected array|object $state;
 
-	/**
-	 * property to hold filter form
-	 *
-	 * @var object  $filterForm
-	 *
-	 * @since       0.9.1
-	 */
-	public object $filterForm;
+    /**
+     * property to hold filter form
+     *
+     * @var object  $filterForm
+     *
+     * @since       0.9.1
+     */
+    public object $filterForm;
 
-	/**
-	 * property to hold active filters
-	 *
-	 * @var object  $activeFilters
-	 *
-	 * @since       0.9.1
-	 */
-	public object $activeFilters;
+    /**
+     * property to hold active filters
+     *
+     * @var object  $activeFilters
+     *
+     * @since       0.9.1
+     */
+    public object $activeFilters;
 
-	/**
-	 * property to hold total value
-	 *
-	 * @var string $total
-	 *
-	 * @since       0.9.1
-	 */
-	public string $total;
+    /**
+     * property to hold total value
+     *
+     * @var string $total
+     *
+     * @since       0.9.1
+     */
+    public string $total;
 
-	/**
-	 * property to hold permissions as array
-	 *
-	 * @var array $permissions
-	 *
-	 * @since       2.0.0
-	 */
-	public array $permissions;
+    /**
+     * property to hold permissions as array
+     *
+     * @var array $permissions
+     *
+     * @since       2.0.0
+     */
+    public array $permissions;
 
-	/**
-	 * property to hold sidebar
-	 *
-	 * @var object  $sidebar
-	 *
-	 * @since       0.9.1
-	 */
-	public object $sidebar;
+    /**
+     * property to hold sidebar
+     *
+     * @var object  $sidebar
+     *
+     * @since       0.9.1
+     */
+    public object $sidebar;
 
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  HtmlView  A string if successful, otherwise a JError object.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function display($tpl = null): HtmlView
-	{
-		$app	= Factory::getApplication();
-
-		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
-
-		if (!$this->permissions['view']['mailinglist'])
-		{
-			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_MLS')), 'error');
-			$app->redirect('index.php?option=com_bwpostman');
-		}
-
-		// Get data from the model
-        $model = $this->getModel();
-		$this->state			= $model->getState();
-		$this->items			= $model->getItems();
-		$this->filterForm		= $model->getFilterForm();
-		$this->activeFilters	= $model->getActiveFilters();
-		$this->pagination		= $model->getPagination();
-		$this->total			= $model->getTotal();
-
-		$this->addToolbar();
-
-		// Call parent display
-		parent::display($tpl);
-
-		return $this;
-	}
-
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	protected function addToolbar(): void
+    /**
+     * Execute and display a template script.
+     *
+     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+     *
+     * @return  HtmlView  A string if successful, otherwise a JError object.
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function display($tpl = null): HtmlView
     {
-		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        $app	= Factory::getApplication();
 
-		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_confirm_archive');
+        $this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MLS'), 'list');
+        if (!$this->permissions['view']['mailinglist'])
+        {
+            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_MLS')), 'error');
+            $app->redirect('index.php?option=com_bwpostman');
+        }
 
-		// Set toolbar items for the page
-		if ($this->permissions['mailinglist']['create'])
-		{
-			$toolbar->addNew('mailinglist.add');
-		}
+        // Get data from the model
+        $model = $this->getModel();
+        $this->state			= $model->getState();
+        $this->items			= $model->getItems();
+        $this->filterForm		= $model->getFilterForm();
+        $this->activeFilters	= $model->getActiveFilters();
+        $this->pagination		= $model->getPagination();
+        $this->total			= $model->getTotal();
 
-		if (BwPostmanHelper::canEdit('mailinglist') || BwPostmanHelper::canEditState('mailinglist') || BwPostmanHelper::canArchive('mailinglist'))
-		{
-			$dropdown = $toolbar->dropdownButton('status-group')
-				->text('JTOOLBAR_CHANGE_STATUS')
-				->toggleSplit(false)
-				->icon('fa fa-ellipsis-h')
-				->buttonClass('btn btn-action')
-				->listCheck(true);
+        $this->addToolbar();
 
-			$childBar = $dropdown->getChildToolbar();
+        // Call parent display
+        parent::display($tpl);
 
-			if (BwPostmanHelper::canEdit('mailinglist'))
-			{
-				$childBar->edit('mailinglist.edit')->listCheck(true);
-			}
+        return $this;
+    }
+
+    /**
+     * Add the page title and toolbar.
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    protected function addToolbar(): void
+    {
+        // Get the toolbar object instance
+                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+
+        $this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_confirm_archive');
+
+        // Set toolbar title
+        ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MLS'), 'list');
+
+        // Set toolbar items for the page
+        if ($this->permissions['mailinglist']['create'])
+        {
+            $toolbar->addNew('mailinglist.add');
+        }
+
+        if (BwPostmanHelper::canEdit('mailinglist') || BwPostmanHelper::canEditState('mailinglist') || BwPostmanHelper::canArchive('mailinglist'))
+        {
+            $dropdown = $toolbar->dropdownButton('status-group')
+                ->text('JTOOLBAR_CHANGE_STATUS')
+                ->toggleSplit(false)
+                ->icon('fa fa-ellipsis-h')
+                ->buttonClass('btn btn-action')
+                ->listCheck(true);
+
+            $childBar = $dropdown->getChildToolbar();
+
+            if (BwPostmanHelper::canEdit('mailinglist'))
+            {
+                $childBar->edit('mailinglist.edit')->listCheck(true);
+            }
 
 
-			$childBar->publish('mailinglists.publish')->listCheck(true);
-			$childBar->unpublish('mailinglists.unpublish')->listCheck(true);
+            $childBar->publish('mailinglists.publish')->listCheck(true);
+            $childBar->unpublish('mailinglists.unpublish')->listCheck(true);
 
-			if (BwPostmanHelper::canArchive('mailinglist'))
-			{
-				$childBar->archive('mailinglist.archive')->listCheck(true);
-			}
+            if (BwPostmanHelper::canArchive('mailinglist'))
+            {
+                $childBar->archive('mailinglist.archive')->listCheck(true);
+            }
 
-			if (BwPostmanHelper::canEdit('mailinglist', []) || BwPostmanHelper::canEditState('mailinglist'))
-			{
-				$childBar->checkin('mailinglists.checkin')->listCheck(true);
-			}
-		}
+            if (BwPostmanHelper::canEdit('mailinglist', []) || BwPostmanHelper::canEditState('mailinglist'))
+            {
+                $childBar->checkin('mailinglists.checkin')->listCheck(true);
+            }
+        }
 
-		$manualButton = BwPostmanHTMLHelper::getManualButton('mailinglists');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+        $manualButton = BwPostmanHTMLHelper::getManualButton('mailinglists');
+        $forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
+        $toolbar->appendButton($manualButton);
+        $toolbar->appendButton($forumButton);
+    }
 }

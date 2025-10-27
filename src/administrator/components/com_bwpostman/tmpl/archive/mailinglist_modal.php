@@ -32,58 +32,58 @@ use Joomla\CMS\Uri\Uri;
 
 ?>
 <table>
-	<tr>
-		<td><img src="<?php echo Uri::base() . 'media/com_bwpostman/images/icon-48-mailinglists.png'; ?>" alt="Mailinglists Icon" /></td>
-		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_ML') ?></strong></td>
-	</tr>
+    <tr>
+        <td><img src="<?php echo Uri::base() . 'media/com_bwpostman/images/icon-48-mailinglists.png'; ?>" alt="Mailinglists Icon" /></td>
+        <td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_ML') ?></strong></td>
+    </tr>
 </table>
 <br />
 <fieldset class="adminform">
-	<table class="admintable">
-		<tr>
-			<td style="text-align: right;">
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_TITLE');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->ml->title;?></td>
-		</tr>
-		<tr>
-			<td style="text-align: right;">
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_DESC');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->ml->description;?></td>
-		</tr>
-		<tr>
-			<td style="text-align: right;">
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_ACCESS');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->ml->access_level; ?></td>
-		</tr>
-		<tr>
-			<td style="text-align: right;">
-				<strong>
-					<?php echo Text::_('PUBLISHED');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td>
-				<?php
-				switch ($this->ml->published) {
-					case "0":
-						echo Text::_('COM_BWPOSTMAN_NO');
-						break;
-					case "1":
-						echo Text::_('COM_BWPOSTMAN_YES');
-				} ?>
-			</td>
-		</tr>
-	</table>
+    <table class="admintable">
+        <tr>
+            <td style="text-align: right;">
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_TITLE');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->ml->title;?></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_DESC');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->ml->description;?></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_ACCESS');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->ml->access_level; ?></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">
+                <strong>
+                    <?php echo Text::_('PUBLISHED');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td>
+                <?php
+                switch ($this->ml->published) {
+                    case "0":
+                        echo Text::_('COM_BWPOSTMAN_NO');
+                        break;
+                    case "1":
+                        echo Text::_('COM_BWPOSTMAN_YES');
+                } ?>
+            </td>
+        </tr>
+    </table>
 </fieldset>

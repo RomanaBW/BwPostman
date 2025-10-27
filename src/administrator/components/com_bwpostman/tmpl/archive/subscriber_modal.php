@@ -32,123 +32,123 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <table>
-	<tr>
-		<td><img src="<?php echo Uri::base() . 'media/com_bwpostman/images/icon-48-subscribers.png'; ?>" alt="Subscribers Icon" /></td>
-		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_SUB') ?></strong></td>
-	</tr>
+    <tr>
+        <td><img src="<?php echo Uri::base() . 'media/com_bwpostman/images/icon-48-subscribers.png'; ?>" alt="Subscribers Icon" /></td>
+        <td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_SUB') ?></strong></td>
+    </tr>
 </table>
 
 <fieldset class="adminform">
-	<table class="admintable">
-		<tr>
-			<td>
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_NAME');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->sub->name;?></td>
-		</tr>
-		<tr>
-			<td>
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_EMAIL');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->sub->email;?></td>
-		</tr>
-		<tr>
-			<td>
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->sub->emailformat;?></td>
-		</tr>
-		<tr>
-			<td>
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_SUB_REGISTRATION_DATE');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->sub->registration_date;?></td>
-		</tr>
-		<tr>
-			<td>
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_SUB_REGISTERED_BY');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->sub->registered_by;?></td>
-		</tr>
-		<tr>
-			<td>
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRMATION_DATE');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->sub->confirmation_date;?></td>
-		</tr>
-		<tr>
-			<td>
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRMED_BY');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->sub->confirmed_by;?></td>
-		</tr>
-		<tr>
-			<td>
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVE_DATE');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->sub->archive_date;?></td>
-		</tr>
-		<tr>
-			<td>
-				<strong>
-					<?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVED_BY');
-					echo ':'; ?>
-				</strong>
-			</td>
-			<td><?php echo $this->sub->archived_by;?></td>
-		</tr>
-	</table>
+    <table class="admintable">
+        <tr>
+            <td>
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_NAME');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->sub->name;?></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_EMAIL');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->sub->email;?></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->sub->emailformat;?></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_SUB_REGISTRATION_DATE');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->sub->registration_date;?></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_SUB_REGISTERED_BY');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->sub->registered_by;?></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRMATION_DATE');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->sub->confirmation_date;?></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_SUB_CONFIRMED_BY');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->sub->confirmed_by;?></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVE_DATE');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->sub->archive_date;?></td>
+        </tr>
+        <tr>
+            <td>
+                <strong>
+                    <?php echo Text::_('COM_BWPOSTMAN_SUB_ARCHIVED_BY');
+                    echo ':'; ?>
+                </strong>
+            </td>
+            <td><?php echo $this->sub->archived_by;?></td>
+        </tr>
+    </table>
 </fieldset>
 
 <fieldset class="adminform">
-	<table>
-		<tr>
-			<td><strong><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_SUBSCRIBED'); ?></strong></td>
-		</tr>
-		<tr>
-			<td>
-				<?php
-				$lists = $this->sub->lists;
+    <table>
+        <tr>
+            <td><strong><?php echo Text::_('COM_BWPOSTMAN_SUB_ML_SUBSCRIBED'); ?></strong></td>
+        </tr>
+        <tr>
+            <td>
+                <?php
+                $lists = $this->sub->lists;
 
-				if (!empty($lists))
-				{
-					echo "<ul>";
-					foreach ($lists AS $list) {
-						echo "<li><strong>$list->title:</strong> $list->description</li>";
-					}
+                if (!empty($lists))
+                {
+                    echo "<ul>";
+                    foreach ($lists AS $list) {
+                        echo "<li><strong>$list->title:</strong> $list->description</li>";
+                    }
 
-					echo "</ul>";
-				}
-				else
-					{
-					echo Text::_('COM_BWPOSTMAN_ARC_SUB_NO_ASSIGNED_ML');
-				}
-				?>
-			</td>
-		</tr>
-	</table>
+                    echo "</ul>";
+                }
+                else
+                    {
+                    echo Text::_('COM_BWPOSTMAN_ARC_SUB_NO_ASSIGNED_ML');
+                }
+                ?>
+            </td>
+        </tr>
+    </table>
 </fieldset>

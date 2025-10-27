@@ -32,27 +32,27 @@ use Joomla\CMS\Language\Text;
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de-de" lang="de-de" dir="ltr">
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<title><?php echo Text::_('COM_BWPOSTMAN_UNARCHIVE'); ?></title>
-	</head>
-	<body>
-		<form name="popupForm" action="#" method="get">
-			<fieldset>
-				<table width="100%" id="confirm-unarchive">
-					<tr>
-						<th height="30" align="center"><?php echo Text::_("COM_BWPOSTMAN_ARC_CONFIRM_UNARCHIVEING_CAM_NL"); ?></th>
-					</tr>
-					<tr>
-						<td height="30" align="center">
-							<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive('1');"
-									value="<?php echo Text::_("COM_BWPOSTMAN_YES");?>" />
-							<input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive('0');"
-									value="<?php echo Text::_("COM_BWPOSTMAN_NO");?>" />
-						</td>
-					</tr>
-				</table>
-			</fieldset>
-		</form>
-	</body>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title><?php echo Text::_('COM_BWPOSTMAN_UNARCHIVE'); ?></title>
+    </head>
+    <body>
+        <form name="popupForm" action="#" method="get">
+            <fieldset>
+                <table width="100%" id="confirm-unarchive">
+                    <tr>
+                        <th height="30" align="center"><?php echo Text::_("COM_BWPOSTMAN_ARC_CONFIRM_UNARCHIVEING_CAM_NL"); ?></th>
+                    </tr>
+                    <tr>
+                        <td height="30" align="center">
+                            <input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive('1');"
+                                    value="<?php echo Text::_("COM_BWPOSTMAN_YES");?>" />
+                            <input type="button" name="submitbutton" onClick="window.parent.confirmUnarchive('0');"
+                                    value="<?php echo Text::_("COM_BWPOSTMAN_NO");?>" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </body>
 </html>

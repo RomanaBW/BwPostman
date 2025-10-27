@@ -52,283 +52,283 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-	/**
-	 * property to hold form data
-	 *
-	 * @var array   $form
-	 *
-	 * @since       1.1.0
-	 */
-	protected $form;
+    /**
+     * property to hold form data
+     *
+     * @var array   $form
+     *
+     * @since       1.1.0
+     */
+    protected $form;
 
-	/**
-	 * property to hold selected item
-	 *
-	 * @var object   $item
-	 *
-	 * @since       1.1.0
-	 */
-	protected object $item;
+    /**
+     * property to hold selected item
+     *
+     * @var object   $item
+     *
+     * @since       1.1.0
+     */
+    protected object $item;
 
-	/**
-	 * property to hold state
-	 *
-	 * @var array|object  $state
-	 *
-	 * @since       1.1.0
-	 */
-	protected array|object $state;
+    /**
+     * property to hold state
+     *
+     * @var array|object  $state
+     *
+     * @since       1.1.0
+     */
+    protected array|object $state;
 
-	/**
-	 * property to hold queue entries
-	 *
-	 * @var boolean $queueEntries
-	 *
-	 * @since       1.1.0
-	 */
-	public bool $queueEntries;
+    /**
+     * property to hold queue entries
+     *
+     * @var boolean $queueEntries
+     *
+     * @since       1.1.0
+     */
+    public bool $queueEntries;
 
-	/**
-	 * property to hold template
-	 *
-	 * @var boolean $template
-	 *
-	 * @since       1.1.0
-	 */
-	public bool $template;
+    /**
+     * property to hold template
+     *
+     * @var boolean $template
+     *
+     * @since       1.1.0
+     */
+    public bool $template;
 
-	/**
-	 * property to hold request url
-	 *
-	 * @var string $request_url
-	 *
-	 * @since       1.1.0
-	 */
-	public string $request_url;
+    /**
+     * property to hold request url
+     *
+     * @var string $request_url
+     *
+     * @since       1.1.0
+     */
+    public string $request_url;
 
-	/**
-	 * @var string $request_url
-	 *
-	 * @since       2.0.0
-	 */
-	public string $headTag = '';
+    /**
+     * @var string $request_url
+     *
+     * @since       2.0.0
+     */
+    public string $headTag = '';
 
-	/**
-	 * @var string $request_url
-	 *
-	 * @since       2.0.0
-	 */
-	public string $bodyTag = '';
+    /**
+     * @var string $request_url
+     *
+     * @since       2.0.0
+     */
+    public string $bodyTag = '';
 
-	/**
-	 * @var string $request_url
-	 *
-	 * @since       2.0.0
-	 */
-	public string $articleTagBegin = '';
+    /**
+     * @var string $request_url
+     *
+     * @since       2.0.0
+     */
+    public string $articleTagBegin = '';
 
-	/**
-	 * @var string $request_url
-	 *
-	 * @since       2.0.0
-	 */
-	public string $articleTagEnd = '';
+    /**
+     * @var string $request_url
+     *
+     * @since       2.0.0
+     */
+    public string $articleTagEnd = '';
 
-	/**
-	 * @var string $request_url
-	 *
-	 * @since       2.0.0
-	 */
-	public string $readonTag = '';
+    /**
+     * @var string $request_url
+     *
+     * @since       2.0.0
+     */
+    public string $readonTag = '';
 
-	/**
-	 * @var string $request_url
-	 *
-	 * @since       2.0.0
-	 */
-	public string $legalTagBegin = '';
+    /**
+     * @var string $request_url
+     *
+     * @since       2.0.0
+     */
+    public string $legalTagBegin = '';
 
-	/**
-	 * @var string $request_url
-	 *
-	 * @since       2.0.0
-	 */
-	public string $legalTagEnd = '';
+    /**
+     * @var string $request_url
+     *
+     * @since       2.0.0
+     */
+    public string $legalTagEnd = '';
 
-	/**
-	 * property to hold permissions as array
-	 *
-	 * @var array $permissions
-	 *
-	 * @since       2.0.0
-	 */
-	public array $permissions;
+    /**
+     * property to hold permissions as array
+     *
+     * @var array $permissions
+     *
+     * @since       2.0.0
+     */
+    public array $permissions;
 
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  HtmlView  A string if successful, otherwise a JError object.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.1.0
-	 */
-	public function display($tpl = null): HtmlView
-	{
-		$app		= Factory::getApplication();
-		$template	= $app->getTemplate();
-		$uri		= Uri::getInstance();
-		$uri_string	= str_replace('&', '&amp;', $uri->toString());
+    /**
+     * Execute and display a template script.
+     *
+     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+     *
+     * @return  HtmlView  A string if successful, otherwise a JError object.
+     *
+     * @throws Exception
+     *
+     * @since   1.1.0
+     */
+    public function display($tpl = null): HtmlView
+    {
+        $app		= Factory::getApplication();
+        $template	= $app->getTemplate();
+        $uri		= Uri::getInstance();
+        $uri_string	= str_replace('&', '&amp;', $uri->toString());
 
-		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
+        $this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
-		if (!$this->permissions['view']['template'])
-		{
-			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_TPLS')), 'error');
-			$app->redirect('index.php?option=com_bwpostman');
-		}
+        if (!$this->permissions['view']['template'])
+        {
+            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_TPLS')), 'error');
+            $app->redirect('index.php?option=com_bwpostman');
+        }
 
-		$app->setUserState('com_bwpostman.edit.template.id', $app->input->getInt('id', 0));
+        $app->setUserState('com_bwpostman.edit.template.id', $app->input->getInt('id', 0));
 
-		//check for queue entries
-		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
+        //check for queue entries
+        $this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
         $model = $this->getModel();
-		$this->form		= $model->getForm();
-		$this->item		= $model->getItem();
-		$this->state	= $model->getState();
+        $this->form		= $model->getForm();
+        $this->item		= $model->getItem();
+        $this->state	= $model->getState();
 
-		// Save a reference into view
-		$this->request_url	= $uri_string;
-		$this->template		= $template;
+        // Save a reference into view
+        $this->request_url	= $uri_string;
+        $this->template		= $template;
 
-		$this->addToolbar();
+        $this->addToolbar();
 
-		// call user-made html template
-		if ($this->item->tpl_id == '0')
-		{
-			$tpl = 'html';
-		}
+        // call user-made html template
+        if ($this->item->tpl_id == '0')
+        {
+            $tpl = 'html';
+        }
 
-		// call user-made text template
-		if ($this->item->tpl_id == '998')
-		{
-			$tpl = 'text';
-		}
+        // call user-made text template
+        if ($this->item->tpl_id == '998')
+        {
+            $tpl = 'text';
+        }
 
-		// call standard text template
-		if ($this->item->tpl_id > '999')
-		{
-			$tpl = 'text_std';
-		}
+        // call standard text template
+        if ($this->item->tpl_id > '999')
+        {
+            $tpl = 'text_std';
+        }
 
-		// get standard tags
-		$this->headTag         = BwPostmanTplHelper::getHeadTag();
-		$this->bodyTag         = BwPostmanTplHelper::getBodyTag();
-		$this->articleTagBegin = BwPostmanTplHelper::getArticleTagBegin();
-		$this->articleTagEnd   = BwPostmanTplHelper::getArticleTagEnd();
-		$this->readonTag       = BwPostmanTplHelper::getReadonTag();
-		$this->legalTagBegin   = BwPostmanTplHelper::getLegalTagBegin();
-		$this->legalTagEnd     = BwPostmanTplHelper::getLegalTagEnd();
+        // get standard tags
+        $this->headTag         = BwPostmanTplHelper::getHeadTag();
+        $this->bodyTag         = BwPostmanTplHelper::getBodyTag();
+        $this->articleTagBegin = BwPostmanTplHelper::getArticleTagBegin();
+        $this->articleTagEnd   = BwPostmanTplHelper::getArticleTagEnd();
+        $this->readonTag       = BwPostmanTplHelper::getReadonTag();
+        $this->legalTagBegin   = BwPostmanTplHelper::getLegalTagBegin();
+        $this->legalTagEnd     = BwPostmanTplHelper::getLegalTagEnd();
 
-		// Call parent display
-		parent::display($tpl);
+        // Call parent display
+        parent::display($tpl);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Add the page title, styles and toolbar.
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.1.0
-	 */
-	protected function addToolbar(): void
+    /**
+     * Add the page title, styles and toolbar.
+     *
+     * @throws Exception
+     *
+     * @since	1.1.0
+     */
+    protected function addToolbar(): void
     {
-		$app    = Factory::getApplication();
-		$app->input->set('hidemainmenu', true);
-		$uri		= Uri::getInstance();
-		$userId		= $app->getIdentity()->id;
+        $app    = Factory::getApplication();
+        $app->input->set('hidemainmenu', true);
+        $uri		= Uri::getInstance();
+        $userId		= $app->getIdentity()->id;
 
-		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        // Get the toolbar object instance
+                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-		// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
-		$isNew          = ($this->item->id < 1);
-		$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+        // Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
+        $isNew          = ($this->item->id < 1);
+        $checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
-		// Set toolbar title and items
+        // Set toolbar title and items
 
-		// For new records, check the create permission.
-		if ($isNew && $this->permissions['template']['create'])
-		{
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPL_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
+        // For new records, check the create permission.
+        if ($isNew && $this->permissions['template']['create'])
+        {
+            ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPL_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
 
-			$toolbar->apply('template.apply');
+            $toolbar->apply('template.apply');
 
-			$saveGroup = $toolbar->dropdownButton('save-group');
+            $saveGroup = $toolbar->dropdownButton('save-group');
 
-			$saveGroup->configure(
-				function (Toolbar $childBar)
-				{
-					$childBar->save('template.save');
-					$childBar->save2new('template.save2new');
-				}
-			);
+            $saveGroup->configure(
+                function (Toolbar $childBar)
+                {
+                    $childBar->save('template.save');
+                    $childBar->save2new('template.save2new');
+                }
+            );
 
-			$toolbar->cancel('template.cancel', 'JTOOLBAR_CANCEL');
-		}
-		else
-		{
-			// Can't save the record if it's checked out.
-			if (!$checkedOut)
-			{
-				ToolbarHelper::title(
-					Text::_('COM_BWPOSTMAN_TPL_DETAILS') . ':  <strong>' . $this->item->title .
-					'  </strong><small>[ ' . Text::_('EDIT') . ' ]</small> ',
-					'edit'
-				);
+            $toolbar->cancel('template.cancel', 'JTOOLBAR_CANCEL');
+        }
+        else
+        {
+            // Can't save the record if it's checked out.
+            if (!$checkedOut)
+            {
+                ToolbarHelper::title(
+                    Text::_('COM_BWPOSTMAN_TPL_DETAILS') . ':  <strong>' . $this->item->title .
+                    '  </strong><small>[ ' . Text::_('EDIT') . ' ]</small> ',
+                    'edit'
+                );
 
-				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-				if (BwPostmanHelper::canEdit('template', $this->item))
-				{
-					$toolbar->apply('template.apply');
+                // Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
+                if (BwPostmanHelper::canEdit('template', $this->item))
+                {
+                    $toolbar->apply('template.apply');
 
-					$saveGroup = $toolbar->dropdownButton('save-group');
+                    $saveGroup = $toolbar->dropdownButton('save-group');
 
-					$saveGroup->configure(
-						function (Toolbar $childBar)
-						{
-							$childBar->save('template.save');
-							if ($this->permissions['template']['create'])
-							{
-								$childBar->save2new('template.save2new');
-								$childBar->save2copy('template.save2copy');
-							}
-						}
-					);
+                    $saveGroup->configure(
+                        function (Toolbar $childBar)
+                        {
+                            $childBar->save('template.save');
+                            if ($this->permissions['template']['create'])
+                            {
+                                $childBar->save2new('template.save2new');
+                                $childBar->save2copy('template.save2copy');
+                            }
+                        }
+                    );
 
-					$toolbar->cancel('template.cancel');
-				}
-			}
-		}
+                    $toolbar->cancel('template.cancel');
+                }
+            }
+        }
 
-		$backlink 	= $app->input->server->get('HTTP_REFERER', '', '');
-		$siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
+        $backlink 	= $app->input->server->get('HTTP_REFERER', '', '');
+        $siteURL 	= $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
 
-		// If we came from the cover page we will show a back-button
-		if ($backlink == $siteURL)
-		{
-			$toolbar->back();
-		}
+        // If we came from the cover page we will show a back-button
+        if ($backlink == $siteURL)
+        {
+            $toolbar->back();
+        }
 
-		$manualButton = BwPostmanHTMLHelper::getManualButton('template');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+        $manualButton = BwPostmanHTMLHelper::getManualButton('template');
+        $forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
+        $toolbar->appendButton($manualButton);
+        $toolbar->appendButton($forumButton);
+    }
 }

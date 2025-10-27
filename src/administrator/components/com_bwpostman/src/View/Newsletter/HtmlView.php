@@ -57,187 +57,187 @@ use Joomla\Utilities\ArrayHelper;
  */
 class HtmlView extends BaseHtmlView
 {
-	/**
-	 * property to hold form data
-	 *
-	 * @var array   $form
-	 *
-	 * @since       0.9.1
-	 */
-	protected $form;
+    /**
+     * property to hold form data
+     *
+     * @var array   $form
+     *
+     * @since       0.9.1
+     */
+    protected $form;
 
-	/**
-	 * property to hold selected item
-	 *
-	 * @var object   $item
-	 *
-	 * @since       0.9.1
-	 */
-	protected object $item;
+    /**
+     * property to hold selected item
+     *
+     * @var object   $item
+     *
+     * @since       0.9.1
+     */
+    protected object $item;
 
-	/**
-	 * property to hold state
-	 *
-	 * @var array|object  $state
-	 *
-	 * @since       0.9.1
-	 */
-	protected array|object $state;
+    /**
+     * property to hold state
+     *
+     * @var array|object  $state
+     *
+     * @since       0.9.1
+     */
+    protected array|object $state;
 
-	/**
-	 * property to hold queue entries property
-	 *
-	 * @var bool $queueEntries
-	 *
-	 * @since       0.9.1
-	 */
-	public bool $queueEntries;
+    /**
+     * property to hold queue entries property
+     *
+     * @var bool $queueEntries
+     *
+     * @since       0.9.1
+     */
+    public bool $queueEntries;
 
-	/**
-	 * property to hold params
-	 *
-	 * @var object $params
-	 *
-	 * @since       0.9.1
-	 */
-	public object $params;
+    /**
+     * property to hold params
+     *
+     * @var object $params
+     *
+     * @since       0.9.1
+     */
+    public object $params;
 
-	/**
-	 * property to hold content_exists
-	 *
-	 * @var bool $content_exists
-	 *
-	 * @since       0.9.1
-	 */
-	public bool $content_exists;
+    /**
+     * property to hold content_exists
+     *
+     * @var bool $content_exists
+     *
+     * @since       0.9.1
+     */
+    public bool $content_exists;
 
-	/**
-	 * property to hold selected_content_old
-	 *
-	 * @var string $selected_content_old
-	 *
-	 * @since       0.9.1
-	 */
-	public string $selected_content_old;
+    /**
+     * property to hold selected_content_old
+     *
+     * @var string $selected_content_old
+     *
+     * @since       0.9.1
+     */
+    public string $selected_content_old;
 
-	/**
-	 * property to hold old id of template
-	 *
-	 * @var bool $template_id_old
-	 *
-	 * @since       0.9.1
-	 */
-	public bool $template_id_old;
+    /**
+     * property to hold old id of template
+     *
+     * @var bool $template_id_old
+     *
+     * @since       0.9.1
+     */
+    public bool $template_id_old;
 
-	/**
-	 * property to old id of text template
-	 *
-	 * @var bool $text_template_id_old
-	 *
-	 * @since       0.9.1
-	 */
-	public bool $text_template_id_old;
+    /**
+     * property to old id of text template
+     *
+     * @var bool $text_template_id_old
+     *
+     * @since       0.9.1
+     */
+    public bool $text_template_id_old;
 
-	/**
-	 * @var string
-	 *
-	 * @since       2.0.0
-	 */
-	public string $template;
+    /**
+     * @var string
+     *
+     * @since       2.0.0
+     */
+    public string $template;
 
-	/**
-	 * property to hold permissions as array
-	 *
-	 * @var array $permissions
-	 *
-	 * @since       2.0.0
-	 */
-	public array $permissions;
+    /**
+     * property to hold permissions as array
+     *
+     * @var array $permissions
+     *
+     * @since       2.0.0
+     */
+    public array $permissions;
 
-	/**
-	 * @var bool
-	 *
-	 * @since       2.0.0
-	 */
-	public bool $substitute;
+    /**
+     * @var bool
+     *
+     * @since       2.0.0
+     */
+    public bool $substitute;
 
-	/**
-	 * @var string   $delay_message
-	 *
-	 * @since       2.4.0
-	 */
-	protected string $delay_message;
+    /**
+     * @var string   $delay_message
+     *
+     * @since       2.4.0
+     */
+    protected string $delay_message;
 
-	/**
-	 * @var int $delay
-	 *
-	 * @since       2.4.0
-	 */
-	protected int $delay;
+    /**
+     * @var int $delay
+     *
+     * @since       2.4.0
+     */
+    protected int $delay;
 
-	/**
-	 * @var object   $logger
-	 *
-	 * @since       2.4.0
-	 */
-	protected object $logger;
+    /**
+     * @var object   $logger
+     *
+     * @since       2.4.0
+     */
+    protected object $logger;
 
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  HtmlView  A string if successful, otherwise a JError object.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function display($tpl=null): HtmlView
-	{
-		// Initialize variables
-		$app = Factory::getApplication();
-		$app->setUserState('bwpostman.send.alsoUnconfirmed', false);
-		// reset trial error
-		$app->setUserState('com_bwpostman.newsletter.trial.error', false);
+    /**
+     * Execute and display a template script.
+     *
+     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+     *
+     * @return  HtmlView  A string if successful, otherwise a JError object.
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function display($tpl=null): HtmlView
+    {
+        // Initialize variables
+        $app = Factory::getApplication();
+        $app->setUserState('bwpostman.send.alsoUnconfirmed', false);
+        // reset trial error
+        $app->setUserState('com_bwpostman.newsletter.trial.error', false);
 
-		$log_options  = array();
-		$this->logger = BwLogger::getInstance($log_options);
+        $log_options  = array();
+        $this->logger = BwLogger::getInstance($log_options);
 
-		$this->permissions = $app->getUserState('com_bwpm.permissions', []);
+        $this->permissions = $app->getUserState('com_bwpm.permissions', []);
 
-		if (!$this->permissions['view']['newsletter'])
-		{
-			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_NLS')), 'error');
-			$app->redirect('index.php?option=com_bwpostman');
-		}
+        if (!$this->permissions['view']['newsletter'])
+        {
+            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_NLS')), 'error');
+            $app->redirect('index.php?option=com_bwpostman');
+        }
 
-		//check for queue entries
-		$this->queueEntries = BwPostmanHelper::checkQueueEntries();
+        //check for queue entries
+        $this->queueEntries = BwPostmanHelper::checkQueueEntries();
 
-		PluginHelper::importPlugin('bwpostman');
-		if (PluginHelper::isEnabled('bwpostman', 'substitutelinks'))
-		{
-			$this->substitute = true;
-		}
+        PluginHelper::importPlugin('bwpostman');
+        if (PluginHelper::isEnabled('bwpostman', 'substitutelinks'))
+        {
+            $this->substitute = true;
+        }
 
-		// Get input data
-		$jinput   = $app->input;
-		$referrer = $jinput->get->get('referrer', '', 'string');
-		$task	= $jinput->get('task', 'edit');
+        // Get input data
+        $jinput   = $app->input;
+        $referrer = $jinput->get->get('referrer', '', 'string');
+        $task	= $jinput->get('task', 'edit');
 
-		if ($task == 'startsending')
-		{
-			$this->buildDelayMessage();
-		}
-		else
-		{
+        if ($task == 'startsending')
+        {
+            $this->buildDelayMessage();
+        }
+        else
+        {
             $model = $this->getModel();
-			$this->form     = $model->getForm();
-			$this->item     = $model->getItem();
-			$this->state    = $model->getState();
-			$this->template = $app->getTemplate();
-			$this->params   = ComponentHelper::getParams('com_bwpostman');
+            $this->form     = $model->getForm();
+            $this->item     = $model->getItem();
+            $this->state    = $model->getState();
+            $this->template = $app->getTemplate();
+            $this->params   = ComponentHelper::getParams('com_bwpostman');
 
             $event = new Event('onBwPostmanBeforeNewsletterEdit', [
                 'subject'  => ArrayHelper::fromObject($this),
@@ -247,235 +247,235 @@ class HtmlView extends BaseHtmlView
             Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
             $eventResults = $event->getArgument('result', []);
 
-			$this->setContentFlags();
-		}
+            $this->setContentFlags();
+        }
 
-		$this->addToolbar();
+        $this->addToolbar();
 
-		// reset temporary state
-		$app->setUserState('com_bwpostman.edit.newsletter.changeTab', false);
+        // reset temporary state
+        $app->setUserState('com_bwpostman.edit.newsletter.changeTab', false);
 
-		// Call parent display
-		parent::display($tpl);
-		return $this;
-	}
+        // Call parent display
+        parent::display($tpl);
+        return $this;
+    }
 
-	/**
-	 * Add the page title, styles and toolbar.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	protected function addToolbar(): void
+    /**
+     * Add the page title, styles and toolbar.
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    protected function addToolbar(): void
     {
-		$app    = Factory::getApplication();
-		$app->input->set('hidemainmenu', true);
-		$userId		= $app->getIdentity()->id;
-		$layout		= $app->input->get('layout', '');
+        $app    = Factory::getApplication();
+        $app->input->set('hidemainmenu', true);
+        $userId		= $app->getIdentity()->id;
+        $layout		= $app->input->get('layout', '');
 
-		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        // Get the toolbar object instance
+                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-		// Get document object, set document title and add css
-		$document	= $app->getDocument();
-		$document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
-		$document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nl');
+        // Get document object, set document title and add css
+        $document	= $app->getDocument();
+        $document->setTitle(Text::_('COM_BWPOSTMAN_NL_DETAILS'));
+        $document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nl');
 
-		// Set toolbar title and items
-		if ($layout == 'nl_send')
-		{
-			$options['text'] = "COM_BWPOSTMAN_BACK";
-			$options['name'] = 'back';
-			$options['url'] = "index.php?option=com_bwpostman&view=newsletters";
-			$options['icon'] = "icon-arrow-left";
+        // Set toolbar title and items
+        if ($layout == 'nl_send')
+        {
+            $options['text'] = "COM_BWPOSTMAN_BACK";
+            $options['name'] = 'back';
+            $options['url'] = "index.php?option=com_bwpostman&view=newsletters";
+            $options['icon'] = "icon-arrow-left";
 
-			$button = new LinkButton('back');
+            $button = new LinkButton('back');
 
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ACTION_SEND'), 'envelope');
+            ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ACTION_SEND'), 'envelope');
 
-			$button->setOptions($options);
+            $button->setOptions($options);
 
-			$toolbar->appendButton($button);
-		}
-		// If we come from sent newsletters, we have to do other stuff than normal
-		elseif ($layout == 'edit_publish')
-		{
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
+            $toolbar->appendButton($button);
+        }
+        // If we come from sent newsletters, we have to do other stuff than normal
+        elseif ($layout == 'edit_publish')
+        {
+            ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_PUBLISHING_DETAILS') . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
 
-			$toolbar->apply('newsletter.publish_apply');
-			$toolbar->save('newsletter.publish_save');
+            $toolbar->apply('newsletter.publish_apply');
+            $toolbar->save('newsletter.publish_save');
 
-			$toolbar->cancel('newsletter.cancel');
-		}
-		else
-		{
-			$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+            $toolbar->cancel('newsletter.cancel');
+        }
+        else
+        {
+            $checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
-			$isNew = ($this->item->id == 0);
+            $isNew = ($this->item->id == 0);
 
-			// For new records, check the create permission.
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
+            // For new records, check the create permission.
+            ToolbarHelper::title(Text::_('COM_BWPOSTMAN_NL_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
 
-			if ($isNew && $this->permissions['newsletter']['create'])
-			{
+            if ($isNew && $this->permissions['newsletter']['create'])
+            {
 
-				$toolbar->apply('newsletter.apply');
+                $toolbar->apply('newsletter.apply');
 
-				$saveGroup = $toolbar->dropdownButton('save-group');
+                $saveGroup = $toolbar->dropdownButton('save-group');
 
-				$saveGroup->configure(
-					function (Toolbar $childBar)
-					{
-						$childBar->save('newsletter.save');
-						$childBar->save2new('newsletter.save2new');
-					}
-				);
+                $saveGroup->configure(
+                    function (Toolbar $childBar)
+                    {
+                        $childBar->save('newsletter.save');
+                        $childBar->save2new('newsletter.save2new');
+                    }
+                );
 
-				$task		= $app->input->get('task', '', 'string');
-				// If we came from the main page we will show a back button
-				if ($task == 'add')
-				{
-					$toolbar->back();
-				}
-				else
-				{
-					$toolbar->cancel('newsletter.cancel', 'JTOOLBAR_CANCEL');
-				}
-			}
-			else
-			{
-				// Can't save the record if it's checked out.
-				if (!$checkedOut)
-				{
-					// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-					if (BwPostmanHelper::canEdit('newsletter', $this->item->id))
-					{
-						$toolbar->apply('newsletter.apply');
+                $task		= $app->input->get('task', '', 'string');
+                // If we came from the main page we will show a back button
+                if ($task == 'add')
+                {
+                    $toolbar->back();
+                }
+                else
+                {
+                    $toolbar->cancel('newsletter.cancel', 'JTOOLBAR_CANCEL');
+                }
+            }
+            else
+            {
+                // Can't save the record if it's checked out.
+                if (!$checkedOut)
+                {
+                    // Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
+                    if (BwPostmanHelper::canEdit('newsletter', $this->item->id))
+                    {
+                        $toolbar->apply('newsletter.apply');
 
-						if ($this->permissions['newsletter']['create'])
-						{
-							$saveGroup = $toolbar->dropdownButton('save-group');
+                        if ($this->permissions['newsletter']['create'])
+                        {
+                            $saveGroup = $toolbar->dropdownButton('save-group');
 
-							$saveGroup->configure(
-								function (Toolbar $childBar)
-								{
-									$childBar->save('newsletter.save');
-									$childBar->save2new('newsletter.save2new');
-									$childBar->save2copy('newsletter.save2copy');
-								}
-							);
-						}
-					}
-				}
+                            $saveGroup->configure(
+                                function (Toolbar $childBar)
+                                {
+                                    $childBar->save('newsletter.save');
+                                    $childBar->save2new('newsletter.save2new');
+                                    $childBar->save2copy('newsletter.save2copy');
+                                }
+                            );
+                        }
+                    }
+                }
 
-				// Rename the cancel button for existing items
-				$toolbar->cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
-			}
-		}
+                // Rename the cancel button for existing items
+                $toolbar->cancel('newsletter.cancel', 'COM_BWPOSTMAN_CLOSE');
+            }
+        }
 
-		$manualButton = BwPostmanHTMLHelper::getManualButton('newsletter');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+        $manualButton = BwPostmanHTMLHelper::getManualButton('newsletter');
+        $forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
+        $toolbar->appendButton($manualButton);
+        $toolbar->appendButton($forumButton);
+    }
 
-	/**
-	 * Build the delay message needed at task startsending
-	 *
-	 * @return  void
-	 *
-	 * @since       2.4.0
-	 */
-	private function buildDelayMessage(): void
+    /**
+     * Build the delay message needed at task startsending
+     *
+     * @return  void
+     *
+     * @since       2.4.0
+     */
+    private function buildDelayMessage(): void
     {
-		// Get the params
-		$params      = ComponentHelper::getParams('com_bwpostman');
-		$this->delay = (int) $params->get('mails_per_pageload_delay', '10') * (int) $params->get('mails_per_pageload_delay_unit', '1000');
-		$this->logger->addEntry(new LogEntry('View raw delay: ' . $this->delay, BwLogger::BW_DEBUG, 'send'));
+        // Get the params
+        $params      = ComponentHelper::getParams('com_bwpostman');
+        $this->delay = (int) $params->get('mails_per_pageload_delay', '10') * (int) $params->get('mails_per_pageload_delay_unit', '1000');
+        $this->logger->addEntry(new LogEntry('View raw delay: ' . $this->delay, BwLogger::BW_DEBUG, 'send'));
 
-		if ((int) $params->get('mails_per_pageload_delay_unit', '1000') == 1000)
-		{
-			if ((int) $params->get('mails_per_pageload_delay', '10') == 1)
-			{
-				$this->delay_message = Text::sprintf(
-					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-					Text::_('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_SECONDS')
-				);
-			}
-			else
-			{
-				$this->delay_message = Text::sprintf(
-					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_SECONDS', $this->delay / 1000)
-				);
-			}
-		}
-		else
-		{
-			if ((int) $params->get('mails_per_pageload_delay', '10') == 1)
-			{
-				$this->delay_message = Text::sprintf(
-					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-					Text::_('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_MINUTES')
-				);
-			}
-			else
-			{
-				$this->delay_message = Text::sprintf(
-					'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
-					Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_MINUTES', $this->delay / 60000)
-				);
-			}
-		}
-	}
+        if ((int) $params->get('mails_per_pageload_delay_unit', '1000') == 1000)
+        {
+            if ((int) $params->get('mails_per_pageload_delay', '10') == 1)
+            {
+                $this->delay_message = Text::sprintf(
+                    'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+                    Text::_('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_SECONDS')
+                );
+            }
+            else
+            {
+                $this->delay_message = Text::sprintf(
+                    'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+                    Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_SECONDS', $this->delay / 1000)
+                );
+            }
+        }
+        else
+        {
+            if ((int) $params->get('mails_per_pageload_delay', '10') == 1)
+            {
+                $this->delay_message = Text::sprintf(
+                    'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+                    Text::_('COM_BWPOSTMAN_MAILS_DELAY_TEXT_1_MINUTES')
+                );
+            }
+            else
+            {
+                $this->delay_message = Text::sprintf(
+                    'COM_BWPOSTMAN_MAILS_DELAY_MESSAGE',
+                    Text::sprintf('COM_BWPOSTMAN_MAILS_DELAY_TEXT_N_MINUTES', $this->delay / 60000)
+                );
+            }
+        }
+    }
 
-	/**
-	 * Set some flags for the content
-	 *
-	 * @return  void
-	 *
-	 * @since       2.4.0
-	 */
-	private function setContentFlags(): void
+    /**
+     * Set some flags for the content
+     *
+     * @return  void
+     *
+     * @since       2.4.0
+     */
+    private function setContentFlags(): void
     {
-		// flag, if rendered content exists or not
-		if ($this->item->html_version || $this->item->text_version)
-		{
-			$this->content_exists = true;
-		}
-		else
-		{
-			$this->content_exists = false;
-		}
+        // flag, if rendered content exists or not
+        if ($this->item->html_version || $this->item->text_version)
+        {
+            $this->content_exists = true;
+        }
+        else
+        {
+            $this->content_exists = false;
+        }
 
-		// flag for selected content before editing
-		if (is_array($this->item->selected_content))
-		{
-			$this->selected_content_old = implode(',', $this->item->selected_content);
-		}
-		elseif (isset($this->item->selected_content))
-		{
-			$this->selected_content_old = $this->item->selected_content;
-		}
-		else
-		{
-			$this->selected_content_old = '';
-		}
+        // flag for selected content before editing
+        if (is_array($this->item->selected_content))
+        {
+            $this->selected_content_old = implode(',', $this->item->selected_content);
+        }
+        elseif (isset($this->item->selected_content))
+        {
+            $this->selected_content_old = $this->item->selected_content;
+        }
+        else
+        {
+            $this->selected_content_old = '';
+        }
 
-		// flags for template ids before editing
-		$this->template_id_old      = 0;
-		$this->text_template_id_old = 0;
+        // flags for template ids before editing
+        $this->template_id_old      = 0;
+        $this->text_template_id_old = 0;
 
-		if (property_exists($this->item, 'template_id_old'))
-		{
-			$this->template_id_old      = $this->item->template_id_old;
-		}
+        if (property_exists($this->item, 'template_id_old'))
+        {
+            $this->template_id_old      = $this->item->template_id_old;
+        }
 
-		if (property_exists($this->item, 'text_template_id_old'))
-		{
-			$this->text_template_id_old = $this->item->text_template_id_old;
-		}
-	}
+        if (property_exists($this->item, 'text_template_id_old'))
+        {
+            $this->text_template_id_old = $this->item->text_template_id_old;
+        }
+    }
 }

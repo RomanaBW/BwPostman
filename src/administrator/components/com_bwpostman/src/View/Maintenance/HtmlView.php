@@ -54,265 +54,265 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-	/**
-	 * property to hold queue entries
-	 *
-	 * @var bool $queueEntries
-	 *
-	 * @since       1.0.1
-	 */
-	protected bool $queueEntries;
+    /**
+     * property to hold queue entries
+     *
+     * @var bool $queueEntries
+     *
+     * @since       1.0.1
+     */
+    protected bool $queueEntries;
 
-	/**
-	 * property to hold template object
-	 *
-	 * @var object  $template
-	 *
-	 * @since       1.0.1
-	 */
-	protected object $template;
+    /**
+     * property to hold template object
+     *
+     * @var object  $template
+     *
+     * @since       1.0.1
+     */
+    protected object $template;
 
-	/**
-	 * property to hold state
-	 *
-	 * @var array|object  $state
-	 *
-	 * @since       1.0.1
-	 */
-	protected array|object $state;
+    /**
+     * property to hold state
+     *
+     * @var array|object  $state
+     *
+     * @since       1.0.1
+     */
+    protected array|object $state;
 
-	/**
-	 * property to hold filter form
-	 *
-	 * @var object  $filterForm
-	 *
-	 * @since       1.0.1
-	 */
-	public object $filterForm;
+    /**
+     * property to hold filter form
+     *
+     * @var object  $filterForm
+     *
+     * @since       1.0.1
+     */
+    public object $filterForm;
 
-	/**
-	 * property to hold active filters
-	 *
-	 * @var object  $activeFilters
-	 *
-	 * @since       1.0.1
-	 */
-	public object $activeFilters;
+    /**
+     * property to hold active filters
+     *
+     * @var object  $activeFilters
+     *
+     * @since       1.0.1
+     */
+    public object $activeFilters;
 
-	/**
-	 * property to hold check res
-	 *
-	 * @var string $check_res
-	 *
-	 * @since       1.0.1
-	 */
-	public string $check_res;
+    /**
+     * property to hold check res
+     *
+     * @var string $check_res
+     *
+     * @since       1.0.1
+     */
+    public string $check_res;
 
-	/**
-	 * property to hold sidebar
-	 *
-	 * @var object  $sidebar
-	 *
-	 * @since       1.0.1
-	 */
-	public object $sidebar;
+    /**
+     * property to hold sidebar
+     *
+     * @var object  $sidebar
+     *
+     * @since       1.0.1
+     */
+    public object $sidebar;
 
-	/**
-	 * property to hold permissions as array
-	 *
-	 * @var array $permissions
-	 *
-	 * @since       2.0.0
-	 */
-	public array $permissions;
+    /**
+     * property to hold permissions as array
+     *
+     * @var array $permissions
+     *
+     * @since       2.0.0
+     */
+    public array $permissions;
 
-	/**
-	 * property to hold total value
-	 *
-	 * @var object  $total
-	 *
-	 * @since       1.0.1
-	 */
-	public object $total;
+    /**
+     * property to hold total value
+     *
+     * @var object  $total
+     *
+     * @since       1.0.1
+     */
+    public object $total;
 
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param	string $tpl Template
-	 *
-	 * @return  HtmlView  A string if successful, otherwise a JError object.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       1.0.1
-	 */
-	public function display($tpl = null): HtmlView
-	{
-		$app	= Factory::getApplication();
-		HTMLHelper::_('bootstrap.framework');
+    /**
+     * Execute and display a template script.
+     *
+     * @param	string $tpl Template
+     *
+     * @return  HtmlView  A string if successful, otherwise a JError object.
+     *
+     * @throws Exception
+     *
+     * @since       1.0.1
+     */
+    public function display($tpl = null): HtmlView
+    {
+        $app	= Factory::getApplication();
+        HTMLHelper::_('bootstrap.framework');
 
-		PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+        PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
-		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
+        $this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
-		if (!$this->permissions['view']['maintenance'])
-		{
-			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_MAINTENANCE')), 'error');
-			$app->redirect('index.php?option=com_bwpostman');
-		}
+        if (!$this->permissions['view']['maintenance'])
+        {
+            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_MAINTENANCE')), 'error');
+            $app->redirect('index.php?option=com_bwpostman');
+        }
 
-		$jinput		= $app->input;
-		$model		= $this->getModel();
-		$layout		= $jinput->getCmd('layout', '');
+        $jinput		= $app->input;
+        $model		= $this->getModel();
+        $layout		= $jinput->getCmd('layout', '');
 
-		//check for queue entries
-		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
+        //check for queue entries
+        $this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
-		if (PluginHelper::isEnabled('bwpostman', 'bwtimecontrol'))
-		{
+        if (PluginHelper::isEnabled('bwpostman', 'bwtimecontrol'))
+        {
             \JLoader::registerNamespace('BoldtWebservice\\Plugin\\Bwpostman\\Bwtimecontrol\\Helper', JPATH_PLUGINS . '/bwpostman/bwtimecontrol/helpers');
 
             $cron = new BwPostmanPhpCron;
-			$refreshInterval = 60;
+            $refreshInterval = 60;
 
-			// Check for start file
-			if (property_exists($cron, 'startFile') && File::exists(JPATH_PLUGINS . $cron->startFile))
-			{
-				$url = 'index.php?option=' . $jinput->getCmd('option', 'com_bwpostman') . '&view=maintenance';
-				echo '<meta http-equiv="refresh" content="' . $refreshInterval . '; URL=' . $url . '">';
+            // Check for start file
+            if (property_exists($cron, 'startFile') && File::exists(JPATH_PLUGINS . $cron->startFile))
+            {
+                $url = 'index.php?option=' . $jinput->getCmd('option', 'com_bwpostman') . '&view=maintenance';
+                echo '<meta http-equiv="refresh" content="' . $refreshInterval . '; URL=' . $url . '">';
 
-				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_STARTING_CRON'), 'Info');
-			}
+                $app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_STARTING_CRON'), 'Info');
+            }
 
-			// Check for started file
-			if (property_exists($cron, 'startedFile') && File::exists(JPATH_PLUGINS . $cron->startedFile))
-			{
-				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STARTED'), 'Info');
-			}
+            // Check for started file
+            if (property_exists($cron, 'startedFile') && File::exists(JPATH_PLUGINS . $cron->startedFile))
+            {
+                $app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STARTED'), 'Info');
+            }
 
-			// Check for stop file
-			if (property_exists($cron, 'stopFile') && File::exists(JPATH_PLUGINS . $cron->stopFile))
-			{
-				$url = 'index.php?option=' . $jinput->getCmd('option', 'com_bwpostman') . '&view=maintenance';
-				echo '<meta http-equiv="refresh" content="' . $refreshInterval . '; URL=' . $url . '">';
+            // Check for stop file
+            if (property_exists($cron, 'stopFile') && File::exists(JPATH_PLUGINS . $cron->stopFile))
+            {
+                $url = 'index.php?option=' . $jinput->getCmd('option', 'com_bwpostman') . '&view=maintenance';
+                echo '<meta http-equiv="refresh" content="' . $refreshInterval . '; URL=' . $url . '">';
 
-				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_STOPPING_CRON'), '');
-			}
+                $app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_STOPPING_CRON'), '');
+            }
 
-			// Check for stopped file
-			if (property_exists($cron, 'stoppedFile') && File::exists(JPATH_PLUGINS . $cron->stoppedFile))
-			{
-				$app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STOPPED'), 'Info');
-			}
-		}
+            // Check for stopped file
+            if (property_exists($cron, 'stoppedFile') && File::exists(JPATH_PLUGINS . $cron->stoppedFile))
+            {
+                $app->enqueueMessage(Text::_('PLG_BWTIMECONTROL_MAINTENANCE_CRON_STOPPED'), 'Info');
+            }
+        }
 
-		$this->template	= $app->getTemplate();
+        $this->template	= $app->getTemplate();
 
-		$this->addToolbar();
+        $this->addToolbar();
 
-		switch ($layout)
-		{
-			case 'saveTables':
-				$this->check_res	= $model->saveTables(null, false);
-				break;
-			case 'updateCheckSave':
-			case 'checkTables':
-			case 'restoreTables':
-			case 'doRestore':
-				break;
-			default:
-		}
+        switch ($layout)
+        {
+            case 'saveTables':
+                $this->check_res	= $model->saveTables(null, false);
+                break;
+            case 'updateCheckSave':
+            case 'checkTables':
+            case 'restoreTables':
+            case 'doRestore':
+                break;
+            default:
+        }
 
-		parent::display($tpl);
+        parent::display($tpl);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       2.4.0
-	 */
-	protected function addToolbar(): void
+    /**
+     * Add the page title and toolbar.
+     *
+     * @throws Exception
+     *
+     * @since       2.4.0
+     */
+    protected function addToolbar(): void
     {
-		$app    = Factory::getApplication();
-		$layout = $app->input->getCmd('layout', '');
+        $app    = Factory::getApplication();
+        $layout = $app->input->getCmd('layout', '');
 
-		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
-		$document = $app->getDocument();
+        // Get the toolbar object instance
+                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        $document = $app->getDocument();
 
-		// Set toolbar title
-		ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
+        // Set toolbar title
+        ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
 
-		$options['text'] = "COM_BWPOSTMAN_BACK";
-		$options['name'] = 'back';
-		$options['url'] = "index.php?option=com_bwpostman&view=maintenance";
-		$options['icon'] = "icon-arrow-left";
+        $options['text'] = "COM_BWPOSTMAN_BACK";
+        $options['name'] = 'back';
+        $options['url'] = "index.php?option=com_bwpostman&view=maintenance";
+        $options['icon'] = "icon-arrow-left";
 
-		$button = new LinkButton('back');
+        $button = new LinkButton('back');
 
-		// Set toolbar items for the page
-		if ($layout == 'restoreTables')
-		{
-			$app->input->set('hidemainmenu', true);
-			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
+        // Set toolbar items for the page
+        if ($layout == 'restoreTables')
+        {
+            $app->input->set('hidemainmenu', true);
+            $document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'));
+            ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE'), 'download');
 
-			$button->setOptions($options);
+            $button->setOptions($options);
 
-			$toolbar->appendButton($button);
-		}
+            $toolbar->appendButton($button);
+        }
 
-		if ($layout == 'doRestore')
-		{
-			$app->input->set('hidemainmenu', true);
-			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
+        if ($layout == 'doRestore')
+        {
+            $app->input->set('hidemainmenu', true);
+            $document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'));
+            ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DO_RESTORE'), 'download');
 
-			$button->setOptions($options);
+            $button->setOptions($options);
 
-			$toolbar->appendButton($button);
-		}
+            $toolbar->appendButton($button);
+        }
 
-		if ($layout == 'checkTables')
-		{
-			$app->input->set('hidemainmenu', true);
-			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
+        if ($layout == 'checkTables')
+        {
+            $app->input->set('hidemainmenu', true);
+            $document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'));
+            ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECKTABLES'), 'download');
 
-			$button->setOptions($options);
+            $button->setOptions($options);
 
-			$toolbar->appendButton($button);
-		}
+            $toolbar->appendButton($button);
+        }
 
-		if ($layout == 'updateCheckSave')
-		{
-			$document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'));
-			ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');
+        if ($layout == 'updateCheckSave')
+        {
+            $document->setTitle(Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'));
+            ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE'), 'download');
 
-			$options['text'] = "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
-			$options['name'] = 'back';
-			$options['url'] = "javascript:window.close()";
-			$options['icon'] = "icon-arrow-left";
+            $options['text'] = "COM_BWPOSTMAN_INSTALL_GO_BWPOSTMAN";
+            $options['name'] = 'back';
+            $options['url'] = "javascript:window.close()";
+            $options['icon'] = "icon-arrow-left";
 
-			$button->setOptions($options);
+            $button->setOptions($options);
 
-			$toolbar->appendButton($button);
+            $toolbar->appendButton($button);
 
-			$style = '.layout-updateCheckSave .navbar {display:none;}'
-				. '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
-				. 'body {padding-top:0;}';
-			$document->getWebassetManager()->addInlineStyle($style);
-			$document->getWebassetManager()->useStyle('com_bwpostman.install');
-		}
+            $style = '.layout-updateCheckSave .navbar {display:none;}'
+                . '.layout-updateCheckSave .subhead-fixed {position: relative;top: 0;}'
+                . 'body {padding-top:0;}';
+            $document->getWebassetManager()->addInlineStyle($style);
+            $document->getWebassetManager()->useStyle('com_bwpostman.install');
+        }
 
-		$manualButton = BwPostmanHTMLHelper::getManualButton('maintenance');
-		$forumButton  = BwPostmanHTMLHelper::getForumButton();
+        $manualButton = BwPostmanHTMLHelper::getManualButton('maintenance');
+        $forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-		$toolbar->appendButton($manualButton);
-		$toolbar->appendButton($forumButton);
-	}
+        $toolbar->appendButton($manualButton);
+        $toolbar->appendButton($forumButton);
+    }
 }

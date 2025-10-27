@@ -68,11 +68,11 @@ class EditModel extends AdminModel
     /**
      * Subscriber data
      *
-     * @var ?array
+     * @var array|object|null
      *
      * @since       0.9.1
      */
-    private ?array $data;
+    private array|object|null $data;
 
     /**
      * Constructor

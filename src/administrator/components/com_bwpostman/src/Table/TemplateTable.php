@@ -137,11 +137,11 @@ class TemplateTable extends Table implements VersionableTableInterface
     public ?int $tpl_id = null;
 
     /**
-     * @var ?string basics
+     * @var array|string|null basics
      *
      * @since       1.1.0
      */
-    public ?string $basics = '';
+    public array|string|null $basics = '';
 
     /**
      * @var ?string header

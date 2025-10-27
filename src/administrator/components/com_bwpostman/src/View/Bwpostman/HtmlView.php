@@ -149,8 +149,9 @@ class HtmlView extends BaseHtmlView
      */
     protected function addToolbar(): void
     {
-        // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        // Get the toolbar
+//        $toolbarFactory = Factory::getContainer()->get(ToolbarFactoryInterface::class);
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
 
         // Set toolbar title
         ToolbarHelper::title(Text::_('COM_BWPOSTMAN'), 'envelope');

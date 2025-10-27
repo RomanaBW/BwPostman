@@ -461,7 +461,7 @@ class HtmlView extends BaseHtmlView
         }
 
         // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
 
         $this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber');
 

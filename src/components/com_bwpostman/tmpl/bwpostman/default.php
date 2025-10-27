@@ -30,6 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div id="view_bwpostman">
-	<div class="clr clearfix"></div>
+    <div class="clr clearfix"></div>
 </div>
 

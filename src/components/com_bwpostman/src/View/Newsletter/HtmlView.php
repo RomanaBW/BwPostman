@@ -43,148 +43,148 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-	/**
-	 * Attachment enabled?
-	 *
-	 * @var    bool
-	 *
-	 * @since       0.9.1
-	 */
-	public bool $attachment_enabled = true;
+    /**
+     * Attachment enabled?
+     *
+     * @var    bool
+     *
+     * @since       0.9.1
+     */
+    public bool $attachment_enabled = true;
 
-	/**
-	 * Page title
-	 *
-	 * @var    bool
-	 *
-	 * @since       0.9.1
-	 */
-	public bool $page_title = true;
+    /**
+     * Page title
+     *
+     * @var    bool
+     *
+     * @since       0.9.1
+     */
+    public bool $page_title = true;
 
-	/**
-	 * Backlink
-	 *
-	 * @var    bool
-	 *
-	 * @since       0.9.1
-	 */
-	public bool $backlink = true;
+    /**
+     * Backlink
+     *
+     * @var    bool
+     *
+     * @since       0.9.1
+     */
+    public bool $backlink = true;
 
-	/**
-	 * The current newsletter
-	 *
-	 * @var    bool
-	 *
-	 * @since       0.9.1
-	 */
-	public bool $newsletter = true;
+    /**
+     * The current newsletter
+     *
+     * @var    bool
+     *
+     * @since       0.9.1
+     */
+    public bool $newsletter = true;
 
-	/**
-	 * Params
-	 *
-	 * @var    bool|object JRegistry object
-	 *
-	 * @since       0.9.1
-	 */
-	public bool|object $params = true;
+    /**
+     * Params
+     *
+     * @var    bool|object JRegistry object
+     *
+     * @since       0.9.1
+     */
+    public bool|object $params = true;
 
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  HtmlView
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function display($tpl = null): HtmlView
-	{
-		$app        = Factory::getApplication();
-		$id         = $app->input->getInt('id', 0);
-		$params     = ComponentHelper::getParams('com_bwpostman');
-		$MvcFactory = $app->bootComponent('com_bwpostman')->getMVCFactory();
+    /**
+     * Execute and display a template script.
+     *
+     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+     *
+     * @return  HtmlView
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function display($tpl = null): HtmlView
+    {
+        $app        = Factory::getApplication();
+        $id         = $app->input->getInt('id', 0);
+        $params     = ComponentHelper::getParams('com_bwpostman');
+        $MvcFactory = $app->bootComponent('com_bwpostman')->getMVCFactory();
 
-		// Count how often the newsletter has been viewed
-		$newsletter = $MvcFactory->createTable('Newsletter', 'Administrator');
-		$newsletter->load($id);
-		$newsletter->hit($id);
+        // Count how often the newsletter has been viewed
+        $newsletter = $MvcFactory->createTable('Newsletter', 'Administrator');
+        $newsletter->load($id);
+        $newsletter->hit($id);
 
-		// Get document object, set document title
-		$document     = $app->getDocument();
+        // Get document object, set document title
+        $document     = $app->getDocument();
 
-		if ($params->get('page_heading', '') != '')
-		{
-			$document->setTitle($params->get('page_title', ''));
-		}
-		else
-		{
-			$document->setTitle($newsletter->subject);
-		}
+        if ($params->get('page_heading', '') != '')
+        {
+            $document->setTitle($params->get('page_title', ''));
+        }
+        else
+        {
+            $document->setTitle($newsletter->subject);
+        }
 
-		// Get the global list params and preset them
-		$globalParams				= ComponentHelper::getParams('com_bwpostman', true);
-		$this->attachment_enabled	= $globalParams->get('attachment_single_enable', '1');
-		$this->page_title			= $globalParams->get('subject_as_title', '1');
+        // Get the global list params and preset them
+        $globalParams				= ComponentHelper::getParams('com_bwpostman', true);
+        $this->attachment_enabled	= $globalParams->get('attachment_single_enable', '1');
+        $this->page_title			= $globalParams->get('subject_as_title', '1');
 
-		$menuParams = new Registry;
-		$menu = $app->getMenu()->getActive();
+        $menuParams = new Registry;
+        $menu = $app->getMenu()->getActive();
 
-		if ($menu)
-		{
-			$menuParams->loadString($menu->getParams());
-		}
+        if ($menu)
+        {
+            $menuParams->loadString($menu->getParams());
+        }
 
-		// if we came from list view to show single newsletter, then params of list view shall take effect
-		if (is_object($menu))
-		{
-			if (stristr($menu->link, 'view=newsletter&') === false)
-			{
-				// Get the menu item state
-				$nls_state	= $app->getUserState('com_bwpostman.newsletters.params');
+        // if we came from list view to show single newsletter, then params of list view shall take effect
+        if (is_object($menu))
+        {
+            if (stristr($menu->link, 'view=newsletter&') === false)
+            {
+                // Get the menu item state
+                $nls_state	= $app->getUserState('com_bwpostman.newsletters.params');
 
-				// if we have a menu state, use this and overwrite global settings
-				if (is_object($nls_state))
-				{
-					if ($nls_state->get('attachment_enable', '1') !== null) {
-						$this->attachment_enabled	= $nls_state->get('attachment_enable', '1');
-					}
-				}
-			}
-			else
-			{
-				// we come from single menu link, use menu params if set, otherwise global details params are used
-				if ($menuParams->get('attachment_single_enable', '1') !== null)
-				{
-					$this->attachment_enabled	= $menuParams->get('attachment_single_enable', '1');
-				}
-				else
-				{
-					$this->attachment_enabled	= $globalParams->get('attachment_single_enable', '1');
-				}
-			}
-		}
+                // if we have a menu state, use this and overwrite global settings
+                if (is_object($nls_state))
+                {
+                    if ($nls_state->get('attachment_enable', '1') !== null) {
+                        $this->attachment_enabled	= $nls_state->get('attachment_enable', '1');
+                    }
+                }
+            }
+            else
+            {
+                // we come from single menu link, use menu params if set, otherwise global details params are used
+                if ($menuParams->get('attachment_single_enable', '1') !== null)
+                {
+                    $this->attachment_enabled	= $menuParams->get('attachment_single_enable', '1');
+                }
+                else
+                {
+                    $this->attachment_enabled	= $globalParams->get('attachment_single_enable', '1');
+                }
+            }
+        }
 
-		if ((int)$newsletter->published === 0)
-		{
-			$app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_NL_NOT_AVAILABLE'), 'error');
-		}
+        if ((int)$newsletter->published === 0)
+        {
+            $app->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_NL_NOT_AVAILABLE'), 'error');
+        }
 
-		// Setting the backlink
-		$backlink = $app->input->server->get('HTTP_REFERER', '', '');
+        // Setting the backlink
+        $backlink = $app->input->server->get('HTTP_REFERER', '', '');
 
-		// Save a reference into the view
-		$this->backlink = $backlink;
-		$this->newsletter = $newsletter;
-		$this->params = $params;
+        // Save a reference into the view
+        $this->backlink = $backlink;
+        $this->newsletter = $newsletter;
+        $this->params = $params;
 
-		// switch frontend layout
-		$tpl = $this->params->get('fe_layout_detail', null);
+        // switch frontend layout
+        $tpl = $this->params->get('fe_layout_detail', null);
 
-		// Set parent display
-		parent::display($tpl);
+        // Set parent display
+        parent::display($tpl);
 
-		return $this;
-	}
+        return $this;
+    }
 }

@@ -38,302 +38,302 @@ $lists      = $displayData['lists'];
 ?>
 
 <div class="contentpane<?php echo $params->get('pageclass_sfx', ''); ?>">
-	<?php // Show pretext only if set in basic parameters
-	if ($params->get('pretext', ''))
-	{
-		$preText = Text::_($params->get('pretext', ''));
-		?>
-		<p class="pre_text"><?php echo $preText; ?></p>
-		<?php
-	} // End: Show pretext only if set in basic parameters ?>
+    <?php // Show pretext only if set in basic parameters
+    if ($params->get('pretext', ''))
+    {
+        $preText = Text::_($params->get('pretext', ''));
+        ?>
+        <p class="pre_text"><?php echo $preText; ?></p>
+        <?php
+    } // End: Show pretext only if set in basic parameters ?>
 
-	<?php // Show editlink only if the user is not logged in
-	if (Factory::getApplication()->input->get('view') !== 'edit')
-	{
-		$link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
-		?><p class="user_edit">
-			<a href="<?php echo $link; ?>">
-				<?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
-			</a>
-		</p><?php
-	}
+    <?php // Show editlink only if the user is not logged in
+    if (Factory::getApplication()->input->get('view') !== 'edit')
+    {
+        $link = Uri::base() . 'index.php?option=com_bwpostman&view=edit';
+        ?><p class="user_edit">
+            <a href="<?php echo $link; ?>">
+                <?php echo Text::_('COM_BWPOSTMAN_LINK_TO_EDITLINKFORM'); ?>
+            </a>
+        </p><?php
+    }
 
-	// End: Show editlink only if the user is not logged in ?>
+    // End: Show editlink only if the user is not logged in ?>
 
-	<?php // Show formfield gender only if enabled in basic parameters
-	if ($params->get('show_gender', '1') == 1)
-	{
-		?><p class="edit_gender">
-			<label id="gendermsg"> <?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label><?php
-			echo $lists['gender']; ?>
-		</p><?php
-	} // End gender ?>
+    <?php // Show formfield gender only if enabled in basic parameters
+    if ($params->get('show_gender', '1') == 1)
+    {
+        ?><p class="edit_gender">
+            <label id="gendermsg"> <?php echo Text::_('COM_BWPOSTMAN_GENDER'); ?>:</label><?php
+            echo $lists['gender']; ?>
+        </p><?php
+    } // End gender ?>
 
-	<?php // Show first name-field only if set in basic parameters
-	if ($params->get('show_firstname_field', '1') || $params->get('firstname_field_obligation', '1'))
-	{
-		?><p class="user_firstname input<?php echo ($params->get('firstname_field_obligation', '1')) ? '-append' : '' ?>">
-			<label id="firstnamemsg" for="firstname"><?php
-				echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label><?php
-			// Is filling out the firstname field obligating
-			if ($params->get('firstname_field_obligation', '1'))
-			{
-				?><input type="text" name="firstname" id="firstname" size="40"
-						value="<?php
-						if (!empty($subscriber->firstname))
-						{
-							echo $subscriber->firstname;
-						} ?>"
-						class="<?php
-						if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
-						{
-							echo "invalid";
-						} ?>"
-						maxlength="50" /><span class="append-area"><i class="icon-star"></i></span>
-			<?php
-			}
-			else
-			{
-				?><input type="text" name="firstname" id="firstname" size="40"
-						value="<?php echo $subscriber->firstname; ?>"
-						class="<?php
-						if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
-						{
-							echo "invalid";
-						} ?>"
-						maxlength="50" />
-			<?php
-			}
+    <?php // Show first name-field only if set in basic parameters
+    if ($params->get('show_firstname_field', '1') || $params->get('firstname_field_obligation', '1'))
+    {
+        ?><p class="user_firstname input<?php echo ($params->get('firstname_field_obligation', '1')) ? '-append' : '' ?>">
+            <label id="firstnamemsg" for="firstname"><?php
+                echo Text::_('COM_BWPOSTMAN_FIRSTNAME'); ?>: </label><?php
+            // Is filling out the firstname field obligating
+            if ($params->get('firstname_field_obligation', '1'))
+            {
+                ?><input type="text" name="firstname" id="firstname" size="40"
+                        value="<?php
+                        if (!empty($subscriber->firstname))
+                        {
+                            echo $subscriber->firstname;
+                        } ?>"
+                        class="<?php
+                        if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
+                        {
+                            echo "invalid";
+                        } ?>"
+                        maxlength="50" /><span class="append-area"><i class="icon-star"></i></span>
+            <?php
+            }
+            else
+            {
+                ?><input type="text" name="firstname" id="firstname" size="40"
+                        value="<?php echo $subscriber->firstname; ?>"
+                        class="<?php
+                        if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
+                        {
+                            echo "invalid";
+                        } ?>"
+                        maxlength="50" />
+            <?php
+            }
 
-			// End: Is filling out the firstname field obligating
-			?>
-		</p><?php
-	}
+            // End: Is filling out the firstname field obligating
+            ?>
+        </p><?php
+    }
 
-	// End: Show first name-field only if set in basic parameters ?>
-
-
-	<?php // Show name-field only if set in basic parameters
-	if ($params->get('show_name_field', '1') || $params->get('name_field_obligation', '1'))
-	{ ?><p class="user_name edit_name input<?php echo ($params->get('name_field_obligation', '1')) ? '-append' : '' ?>">
-			<label id="namemsg" for="name"
-				<?php
-				if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
-				{
-					echo "class=\"invalid\"";
-				} ?>>
-				<?php echo Text::_('COM_BWPOSTMAN_NAME'); ?>: </label><?php
-			// Is filling out the name field obligating
-			if ($params->get('name_field_obligation', '1'))
-			{
-				?><input type="text" name="name" id="name" size="40" value="<?php echo $subscriber->name; ?>"
-						class="<?php
-						if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
-						{
-							echo "invalid";
-						} ?>"
-						maxlength="50" /><span class="append-area"><i class="icon-star"></i></span> <?php
-			}
-			else
-			{ ?><input type="text" name="name" id="name" size="40" value="<?php echo $subscriber->name; ?>"
-					class="<?php
-					if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1)) {
-						echo "invalid";
-					} ?>"
-					maxlength="50" /> <?php
-			}
-
-			// End: Is filling out the name field obligating
-			?>
-		</p> <?php
-	}
-
-	// End: Show name-fields only if set in basic parameters ?>
-
-	<?php // Show special only if set in basic parameters or required
-	if ($params->get('show_special', '1') || $params->get('special_field_obligation', '0'))
-	{
-		if ($params->get('special_desc', '') != '')
-		{
-			$tip = Text::_($params->get('special_desc', ''));
-		}
-		else
-		{
-			$tip = Text::_('COM_BWPOSTMAN_SPECIAL');
-		}
-
-		?><p class="edit_special input<?php echo ($params->get('special_field_obligation', '0')) ? '-append' : '' ?>">
-			<label id="specialmsg" class="hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special"
-				<?php
-				if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
-				{
-					echo " class=\"invalid\"";
-				}?>
-				>
-				<?php
-				if ($params->get('special_label', '') != '')
-				{
-					echo Text::_($params->get('special_label', ''));
-				}
-				else
-				{
-					echo Text::_('COM_BWPOSTMAN_SPECIAL');
-				}
-				?>:
-			</label><?php
-			// Is filling out the special field obligating
-			if ($params->get('special_field_obligation', '0'))
-			{ ?><input type="text" name="special" id="special" size="40" value="<?php echo $subscriber->special; ?>"
-						class="<?php
-						if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
-						{
-							echo "invalid";
-						} ?>"
-						maxlength="50" /><span class="append-area"><i class="icon-star"></i></span><?php
-			}
-			else
-			{ ?><input type="text" name="special" id="special" size="40" value="<?php echo $subscriber->special; ?>"
-						class="<?php
-						if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
-						{
-							echo "invalid";
-						} ?>"
-						maxlength="50" /> <?php
-			}
-
-			// End: Is filling out the special field obligating
-			?>
-		</p> <?php
-	} // End: Show special field only if set in basic parameters ?>
+    // End: Show first name-field only if set in basic parameters ?>
 
 
-	<p class="user_email edit_email input-append">
-		<label id="emailmsg" for="email"
-			<?php
-			if ((!empty($subscriber->err_code)) && ($subscriber->err_code != 1))
-			{
-				echo "class=\"invalid\"";
-			} ?>>
-			<?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:
-		</label><input type="text" id="email" name="email" size="40" value="<?php echo $subscriber->email; ?>"
-			class="<?php
-			if ((!empty($subscriber->err_code)) && ($subscriber->err_code != 1))
-			{
-				echo "invalid";
-			}
-			else
-			{
-				echo "validate-email";
-			} ?>"
-			maxlength="100" /><span class="append-area"><i class="icon-star"></i></span>
-	</p>
-	<?php
-	// Show formfield email format only if enabled in basic parameters
-	if ($params->get('show_emailformat', '1') == 1)
-	{
-		?><div class="user_mailformat edit_emailformat">
-			<label id="emailformatmsg"> <?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label><?php
-			echo $lists['emailformat']; ?>
-		</div>
-	<?php
-	}
-	else
-	{
-		// hidden field with the default email format
-		?><input type="hidden" name="emailformat" value="<?php echo $params->get('default_emailformat', '1'); ?>" />
-	<?php
-	}
+    <?php // Show name-field only if set in basic parameters
+    if ($params->get('show_name_field', '1') || $params->get('name_field_obligation', '1'))
+    { ?><p class="user_name edit_name input<?php echo ($params->get('name_field_obligation', '1')) ? '-append' : '' ?>">
+            <label id="namemsg" for="name"
+                <?php
+                if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
+                {
+                    echo "class=\"invalid\"";
+                } ?>>
+                <?php echo Text::_('COM_BWPOSTMAN_NAME'); ?>: </label><?php
+            // Is filling out the name field obligating
+            if ($params->get('name_field_obligation', '1'))
+            {
+                ?><input type="text" name="name" id="name" size="40" value="<?php echo $subscriber->name; ?>"
+                        class="<?php
+                        if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
+                        {
+                            echo "invalid";
+                        } ?>"
+                        maxlength="50" /><span class="append-area"><i class="icon-star"></i></span> <?php
+            }
+            else
+            { ?><input type="text" name="name" id="name" size="40" value="<?php echo $subscriber->name; ?>"
+                    class="<?php
+                    if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1)) {
+                        echo "invalid";
+                    } ?>"
+                    maxlength="50" /> <?php
+            }
 
-	// End email format
-	?>
+            // End: Is filling out the name field obligating
+            ?>
+        </p> <?php
+    }
 
-	<?php
-	// Show available mailinglists
-	if ($lists['available_mailinglists'])
-	{
-		?><div class="maindivider<?php echo $params->get('pageclass_sfx', ''); ?>"></div>
+    // End: Show name-fields only if set in basic parameters ?>
 
-		<div class="contentpane<?php echo $params->get('pageclass_sfx', ''); ?>">
-			<?php
-			$n = count($lists['available_mailinglists']);
+    <?php // Show special only if set in basic parameters or required
+    if ($params->get('show_special', '1') || $params->get('special_field_obligation', '0'))
+    {
+        if ($params->get('special_desc', '') != '')
+        {
+            $tip = Text::_($params->get('special_desc', ''));
+        }
+        else
+        {
+            $tip = Text::_('COM_BWPOSTMAN_SPECIAL');
+        }
 
-			$descLength = $params->get('desc_length', '150');
+        ?><p class="edit_special input<?php echo ($params->get('special_field_obligation', '0')) ? '-append' : '' ?>">
+            <label id="specialmsg" class="hasTooltip" title="<?php echo HtmlHelper::tooltipText($tip); ?>" for="special"
+                <?php
+                if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
+                {
+                    echo " class=\"invalid\"";
+                }?>
+                >
+                <?php
+                if ($params->get('special_label', '') != '')
+                {
+                    echo Text::_($params->get('special_label', ''));
+                }
+                else
+                {
+                    echo Text::_('COM_BWPOSTMAN_SPECIAL');
+                }
+                ?>:
+            </label><?php
+            // Is filling out the special field obligating
+            if ($params->get('special_field_obligation', '0'))
+            { ?><input type="text" name="special" id="special" size="40" value="<?php echo $subscriber->special; ?>"
+                        class="<?php
+                        if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
+                        {
+                            echo "invalid";
+                        } ?>"
+                        maxlength="50" /><span class="append-area"><i class="icon-star"></i></span><?php
+            }
+            else
+            { ?><input type="text" name="special" id="special" size="40" value="<?php echo $subscriber->special; ?>"
+                        class="<?php
+                        if ((!empty($subscriber->err_code)) && ($subscriber->err_code == 1))
+                        {
+                            echo "invalid";
+                        } ?>"
+                        maxlength="50" /> <?php
+            }
 
-			if ($lists['available_mailinglists'] && ($n > 0))
-			{
-				if ($n == 1)
-				{
-					?><input title="mailinglists_array" type="checkbox" style="display: none;" id="<?php echo "mailinglists0"; ?>"
-							name="<?php echo "mailinglists[]"; ?>" value="<?php echo $lists['available_mailinglists'][0]->id; ?>" checked="checked" />
-					<?php
-					if ($params->get('show_desc', '1') == 1)
-					{
-						?><p class="mail_available">
-							<?php echo Text::_('COM_BWPOSTMAN_MAILINGLIST'); ?>
-						</p>
-						<p class="mailinglist-description-single">
-							<span class="mail_available_list_title">
-								<?php echo $lists['available_mailinglists'][0]->title . ": "; ?>
-							</span>
-							<?php
-							echo substr(Text::_($lists['available_mailinglists'][0]->description), 0, $descLength);
+            // End: Is filling out the special field obligating
+            ?>
+        </p> <?php
+    } // End: Show special field only if set in basic parameters ?>
 
-							if (strlen(Text::_($lists['available_mailinglists'][0]->description)) > $descLength)
-							{
-								echo '... ';
-								echo HtmlHelper::tooltip(Text::_($lists['available_mailinglists'][0]->description),
-									$lists['available_mailinglists'][0]->title);
-							} ?>
-						</p>
-						<?php
-					}
-				}
-				else
-				{
-					?><p class="mail_available">
-						<?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="icon-star"></i></sup>'; ?>
-					</p>
-					<?php
-					foreach ($lists['available_mailinglists'] as $i => $item)
-					{
-						?><p class="mail_available_list <?php echo "mailinglists$i"; ?>">
-							<input title="mailinglists_array" type="checkbox" id="<?php echo "mailinglists$i"; ?>"
-									name="<?php echo "mailinglists[]"; ?>" value="<?php echo $item->id; ?>"
-							<?php
-							if ((is_array($subscriber->mailinglists)) && (in_array((int) $item->id,
-									$subscriber->mailinglists)))
-							{
-								echo "checked=\"checked\"";
-							} ?> />
-							<span class="mail_available_list_title">
-								<?php echo $params->get('show_desc', '1') == 1 ? $item->title . ": " : $item->title; ?>
-							</span>
-							<?php
-							if ($params->get('show_desc', '1') == 1)
-							{ ?>
-							<span>
-								<?php
-								echo substr(Text::_($item->description), 0, $descLength);
-								if (strlen(Text::_($item->description)) > $descLength)
-								{
-									echo '... ';
-									echo HtmlHelper::tooltip(Text::_($item->description), $item->title);
-								} ?>
-							</span>
-							<?php
-							} ?>
-						</p>
-						<?php
-					} ?>
-					<div class="maindivider<?php echo $params->get('pageclass_sfx', ''); ?>"></div>
-					<?php
-				}
-			}?>
-		</div>
 
-		<?php
-	}
+    <p class="user_email edit_email input-append">
+        <label id="emailmsg" for="email"
+            <?php
+            if ((!empty($subscriber->err_code)) && ($subscriber->err_code != 1))
+            {
+                echo "class=\"invalid\"";
+            } ?>>
+            <?php echo Text::_('COM_BWPOSTMAN_EMAIL'); ?>:
+        </label><input type="text" id="email" name="email" size="40" value="<?php echo $subscriber->email; ?>"
+            class="<?php
+            if ((!empty($subscriber->err_code)) && ($subscriber->err_code != 1))
+            {
+                echo "invalid";
+            }
+            else
+            {
+                echo "validate-email";
+            } ?>"
+            maxlength="100" /><span class="append-area"><i class="icon-star"></i></span>
+    </p>
+    <?php
+    // Show formfield email format only if enabled in basic parameters
+    if ($params->get('show_emailformat', '1') == 1)
+    {
+        ?><div class="user_mailformat edit_emailformat">
+            <label id="emailformatmsg"> <?php echo Text::_('COM_BWPOSTMAN_EMAILFORMAT'); ?>: </label><?php
+            echo $lists['emailformat']; ?>
+        </div>
+    <?php
+    }
+    else
+    {
+        // hidden field with the default email format
+        ?><input type="hidden" name="emailformat" value="<?php echo $params->get('default_emailformat', '1'); ?>" />
+    <?php
+    }
 
-	// End Mailinglists ?>
+    // End email format
+    ?>
+
+    <?php
+    // Show available mailinglists
+    if ($lists['available_mailinglists'])
+    {
+        ?><div class="maindivider<?php echo $params->get('pageclass_sfx', ''); ?>"></div>
+
+        <div class="contentpane<?php echo $params->get('pageclass_sfx', ''); ?>">
+            <?php
+            $n = count($lists['available_mailinglists']);
+
+            $descLength = $params->get('desc_length', '150');
+
+            if ($lists['available_mailinglists'] && ($n > 0))
+            {
+                if ($n == 1)
+                {
+                    ?><input title="mailinglists_array" type="checkbox" style="display: none;" id="<?php echo "mailinglists0"; ?>"
+                            name="<?php echo "mailinglists[]"; ?>" value="<?php echo $lists['available_mailinglists'][0]->id; ?>" checked="checked" />
+                    <?php
+                    if ($params->get('show_desc', '1') == 1)
+                    {
+                        ?><p class="mail_available">
+                            <?php echo Text::_('COM_BWPOSTMAN_MAILINGLIST'); ?>
+                        </p>
+                        <p class="mailinglist-description-single">
+                            <span class="mail_available_list_title">
+                                <?php echo $lists['available_mailinglists'][0]->title . ": "; ?>
+                            </span>
+                            <?php
+                            echo substr(Text::_($lists['available_mailinglists'][0]->description), 0, $descLength);
+
+                            if (strlen(Text::_($lists['available_mailinglists'][0]->description)) > $descLength)
+                            {
+                                echo '... ';
+                                echo HtmlHelper::tooltip(Text::_($lists['available_mailinglists'][0]->description),
+                                    $lists['available_mailinglists'][0]->title);
+                            } ?>
+                        </p>
+                        <?php
+                    }
+                }
+                else
+                {
+                    ?><p class="mail_available">
+                        <?php echo Text::_('COM_BWPOSTMAN_MAILINGLISTS') . ' <sup><i class="icon-star"></i></sup>'; ?>
+                    </p>
+                    <?php
+                    foreach ($lists['available_mailinglists'] as $i => $item)
+                    {
+                        ?><p class="mail_available_list <?php echo "mailinglists$i"; ?>">
+                            <input title="mailinglists_array" type="checkbox" id="<?php echo "mailinglists$i"; ?>"
+                                    name="<?php echo "mailinglists[]"; ?>" value="<?php echo $item->id; ?>"
+                            <?php
+                            if ((is_array($subscriber->mailinglists)) && (in_array((int) $item->id,
+                                    $subscriber->mailinglists)))
+                            {
+                                echo "checked=\"checked\"";
+                            } ?> />
+                            <span class="mail_available_list_title">
+                                <?php echo $params->get('show_desc', '1') == 1 ? $item->title . ": " : $item->title; ?>
+                            </span>
+                            <?php
+                            if ($params->get('show_desc', '1') == 1)
+                            { ?>
+                            <span>
+                                <?php
+                                echo substr(Text::_($item->description), 0, $descLength);
+                                if (strlen(Text::_($item->description)) > $descLength)
+                                {
+                                    echo '... ';
+                                    echo HtmlHelper::tooltip(Text::_($item->description), $item->title);
+                                } ?>
+                            </span>
+                            <?php
+                            } ?>
+                        </p>
+                        <?php
+                    } ?>
+                    <div class="maindivider<?php echo $params->get('pageclass_sfx', ''); ?>"></div>
+                    <?php
+                }
+            }?>
+        </div>
+
+        <?php
+    }
+
+    // End Mailinglists ?>
 
 </div>

@@ -45,7 +45,7 @@ $css_filename = 'templates/' . $templateName . '/css/com_bwpostman.css';
 
 if (file_exists(JPATH_BASE . '/' . $css_filename))
 {
-	$wa->registerAndUseStyle('customCss', Uri::root() . $css_filename);
+    $wa->registerAndUseStyle('customCss', Uri::root() . $css_filename);
 }
 
 
@@ -58,62 +58,62 @@ if (file_exists(JPATH_BASE . '/' . $css_filename))
 ?>
 
 <div id="bwpostman" class="mt">
-	<div id="bwp_com_register_success">
-		<?php
-		if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != ''))
-		{
-			?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
-				<?php echo $this->escape($this->params->get('page_heading', '')); ?>
-			</h1>
-		<?php } ?>
+    <div id="bwp_com_register_success">
+        <?php
+        if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != ''))
+        {
+            ?>
+            <h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
+                <?php echo $this->escape($this->params->get('page_heading', '')); ?>
+            </h1>
+        <?php } ?>
 
-		<div class="content_inner">
-			<?php
-			if (property_exists($this->success, 'editlink')) { // Case 1
-				if (Factory::getApplication()->getIdentity()->guest)
-				{
-					if (is_null($this->success->itemid))
-					{
-						$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;editlink={$this->success->editlink}");
-					}
-					else
-					{
-						$link = Route::_(
-							Uri::root() . "index.php?option=com_bwpostman&amp;
-							Itemid={$this->success->itemid}&amp;view=edit&amp;editlink={$this->success->editlink}"
-						);
-					}
-				}
-				else
-				{
-					if (is_null($this->success->itemid))
-					{
-						$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit");
-					}
-					else
-					{
-						$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;Itemid={$this->success->itemid}&amp;view=edit");
-					}
-				}
+        <div class="content_inner">
+            <?php
+            if (property_exists($this->success, 'editlink')) { // Case 1
+                if (Factory::getApplication()->getIdentity()->guest)
+                {
+                    if (is_null($this->success->itemid))
+                    {
+                        $link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;editlink={$this->success->editlink}");
+                    }
+                    else
+                    {
+                        $link = Route::_(
+                            Uri::root() . "index.php?option=com_bwpostman&amp;
+                            Itemid={$this->success->itemid}&amp;view=edit&amp;editlink={$this->success->editlink}"
+                        );
+                    }
+                }
+                else
+                {
+                    if (is_null($this->success->itemid))
+                    {
+                        $link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit");
+                    }
+                    else
+                    {
+                        $link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;Itemid={$this->success->itemid}&amp;view=edit");
+                    }
+                }
 
-				$msg = '<div class="success-message">' . Text::sprintf($this->success->success_msg, $link) . '</div>';
+                $msg = '<div class="success-message">' . Text::sprintf($this->success->success_msg, $link) . '</div>';
 
-				echo $msg;
-			}
-			else
-			{	// Case 2, 3, 4
-				if (property_exists($this->success, 'success_msg'))
-				{
-					echo '<div class="success-message">' . Text::_($this->success->success_msg) . '</div>';
-				}
-			}
+                echo $msg;
+            }
+            else
+            {	// Case 2, 3, 4
+                if (property_exists($this->success, 'success_msg'))
+                {
+                    echo '<div class="success-message">' . Text::_($this->success->success_msg) . '</div>';
+                }
+            }
 
-			if ($this->params->get('show_boldt_link', '1') === '1')
-			{ ?>
-				<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
-			<?php
-			} ?>
-		</div>
-	</div>
+            if ($this->params->get('show_boldt_link', '1') === '1')
+            { ?>
+                <p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
+            <?php
+            } ?>
+        </div>
+    </div>
 </div>

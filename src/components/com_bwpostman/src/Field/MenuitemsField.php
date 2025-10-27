@@ -46,53 +46,53 @@ use RuntimeException;
  */
 class MenuitemsField extends ListField
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 * @since  1.2.0
-	 */
-	protected $type = 'Menuitems';
+    /**
+     * The form field type.
+     *
+     * @var    string
+     * @since  1.2.0
+     */
+    protected $type = 'Menuitems';
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return  array  The field option objects.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.2.0
-	 */
-	protected function getOptions(): array
-	{
-		$options    = null;
-		$db	    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query	    = $db->getQuery(true);
+    /**
+     * Method to get the field options.
+     *
+     * @return  array  The field option objects.
+     *
+     * @throws Exception
+     *
+     * @since   1.2.0
+     */
+    protected function getOptions(): array
+    {
+        $options    = null;
+        $db	    = Factory::getContainer()->get(DatabaseInterface::class);
+        $query	    = $db->getQuery(true);
 
-		$query->select($db->quoteName('id') . ' AS value');
-		$query->select($db->quoteName('title') . ' AS text');
-		$query->from($db->quoteName('#__menu'));
-		$query->where(
-			$db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=archive')
-			. ' OR ' . $db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=newsletters')
-		);
-		$query->where($db->quoteName('client_id') . ' = ' . 0);
-		$query->order($db->quoteName('title') . ' ASC');
+        $query->select($db->quoteName('id') . ' AS value');
+        $query->select($db->quoteName('title') . ' AS text');
+        $query->from($db->quoteName('#__menu'));
+        $query->where(
+            $db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=archive')
+            . ' OR ' . $db->quoteName('link') . ' = ' . $db->quote('index.php?option=com_bwpostman&view=newsletters')
+        );
+        $query->where($db->quoteName('client_id') . ' = ' . 0);
+        $query->order($db->quoteName('title') . ' ASC');
 
-		try
-		{
-			$db->setQuery($query);
+        try
+        {
+            $db->setQuery($query);
 
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $exception)
-		{
+            $options = $db->loadObjectList();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'FE MenuItemField');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-		}
+        }
 
-		// Merge any additional options in the XML definition.
-		return array_merge(parent::getOptions(), $options);
-	}
+        // Merge any additional options in the XML definition.
+        return array_merge(parent::getOptions(), $options);
+    }
 }

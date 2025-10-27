@@ -47,334 +47,334 @@ use RuntimeException;
 class EditModel extends AdminModel
 {
 
-	/**
-	 * Subscriber ID
-	 *
-	 * @var int
-	 *
-	 * @since       0.9.1
-	 */
-	private int $id;
-
-	/**
-	 * User ID in subscriber-table
-	 *
-	 * @var int
-	 *
-	 * @since       0.9.1
-	 */
-	private int $userid;
-
-	/**
-	 * Subscriber data
-	 *
-	 * @var ?array
-	 *
-	 * @since       0.9.1
-	 */
-	private ?array $data;
+    /**
+     * Subscriber ID
+     *
+     * @var int
+     *
+     * @since       0.9.1
+     */
+    private int $id;
 
     /**
-	 * Constructor
-	 * Builds object, determines the subscriber ID and the viewlevel
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function __construct()
-	{
-		parent::__construct();
+     * User ID in subscriber-table
+     *
+     * @var int
+     *
+     * @since       0.9.1
+     */
+    private int $userid;
 
-		$app  = Factory::getApplication();
-		$user = $app->getIdentity();
-		$id   = 0;
+    /**
+     * Subscriber data
+     *
+     * @var ?array
+     *
+     * @since       0.9.1
+     */
+    private ?array $data;
 
-		if ($user->guest)
-		{
-			// Subscriber is guest
-			$session				= $app->getSession();
-			$session_subscriberid	= $session->get('session_subscriberid');
-
-			if(isset($session_subscriberid) && is_array($session_subscriberid))
-			{
-				// Session contains subscriber ID
-				$id	= $session_subscriberid['id'];
-			}
-		}
-		else
-		{
-			// Subscriber is user
-			// Get the subscriber ID from the subscribers-table
-			$id	= $this->getTable()->getSubscriberIdByUserId($user->id);
-		}
-
-		$this->setData($id);
-	}
-
-	/**
-	 * Returns a Table object, always creating it.
-	 *
-	 * @param	string $name    The table type to instantiate
-	 * @param	string $prefix  A prefix for the table class name. Optional.
-	 * @param	array  $options Configuration array for model. Optional.
-	 *
-	 * @return	Table	A database object
-	 *
-	 * @throws Exception
-	 *
-	 * @since  1.0.1
-	 */
-	public function getTable($name = 'Subscriber', $prefix = 'Administrator', $options = array()): Table
-	{
-		return parent::getTable($name, $prefix, $options);
-	}
-
-	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.0.1
-	 */
-	protected function populateState(): void
+    /**
+     * Constructor
+     * Builds object, determines the subscriber ID and the viewlevel
+     *
+     * @return void
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function __construct()
     {
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
+        parent::__construct();
 
-		// Load state from the request.
-		$pk = $jinput->getInt('id');
-		$this->setState('subscriber.id', $pk);
+        $app  = Factory::getApplication();
+        $user = $app->getIdentity();
+        $id   = 0;
 
-		$offset = $jinput->getUint('limitstart');
-		$this->setState('list.offset', $offset);
+        if ($user->guest)
+        {
+            // Subscriber is guest
+            $session				= $app->getSession();
+            $session_subscriberid	= $session->get('session_subscriberid');
 
-		// TODO: Tune these values based on other permissions.
-		$user = $app->getIdentity();
+            if(isset($session_subscriberid) && is_array($session_subscriberid))
+            {
+                // Session contains subscriber ID
+                $id	= $session_subscriberid['id'];
+            }
+        }
+        else
+        {
+            // Subscriber is user
+            // Get the subscriber ID from the subscribers-table
+            $id	= $this->getTable()->getSubscriberIdByUserId($user->id);
+        }
 
-		if ((!$user->authorise('bwpm.edit.state', 'com_bwpostman')) &&  (!$user->authorise('bwpm.edit', 'com_bwpostman')))
-		{
-			$this->setState('filter.published', 1);
-			$this->setState('filter.archived', 2);
-		}
+        $this->setData($id);
+    }
 
-		$this->setState('filter.language', Multilanguage::isEnabled());
-	}
-
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 *
-	 * @return    false|Form    A JForm object on success, false on failure
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.0.1
-	 */
-	public function getForm($data = array(), $loadData = true): false|Form
+    /**
+     * Returns a Table object, always creating it.
+     *
+     * @param	string $name    The table type to instantiate
+     * @param	string $prefix  A prefix for the table class name. Optional.
+     * @param	array  $options Configuration array for model. Optional.
+     *
+     * @return	Table	A database object
+     *
+     * @throws Exception
+     *
+     * @since  1.0.1
+     */
+    public function getTable($name = 'Subscriber', $prefix = 'Administrator', $options = array()): Table
     {
-		// Get the form
-		$form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));
+        return parent::getTable($name, $prefix, $options);
+    }
 
-		// @ToDo: $this->loadForm throws RuntimeException, if form or file not found => there is never an empty form
-		if (empty($form))
-		{
-			return false;
-		}
-
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$id     = $jinput->get('id', 0);
-		$user   = $app->getIdentity();
-
-		// Check for existing subscriber.
-		// Modify the form based on Edit State access controls.
-		if ($id != 0 && (!$user->authorise('bwpm.subscriber.edit.state', 'com_bwpostman.subscriber.' . (int) $id))
-			|| ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman')))
-		{
-			// Disable fields for display.
-			$form->setFieldAttribute('status', 'disabled', 'true');
-
-			// Disable fields while saving.
-			// The controller has already verified this is an subscriber you can edit.
-			$form->setFieldAttribute('state', 'filter', 'unset');
-		}
-
-		// Check for required name
-		if (!$form->getValue('name_field_obligation'))
-		{
-			$form->setFieldAttribute('name', 'required', false);
-		}
-
-		// Check for required first name
-		if ($form->getValue('firstname_field_obligation'))
-		{
-			$form->setFieldAttribute('firstname', 'required', true);
-		}
-
-		BwPostmanSubscriberHelper::customizeSubscriberDataFields($form);
-
-		return $form;
-	}
-
-	/**
-	 * Method to reset the subscriber ID, view level and the subscriber data
-	 *
-	 * @access      public
-	 *
-	 * @param int $id subscriber ID
-	 *
-	 * @since       0.9.1
-	 */
-	protected function setData(int $id): void
+    /**
+     * Method to auto-populate the model state.
+     *
+     * Note. Calling getState in this method will result in recursion.
+     *
+     * @return void
+     *
+     * @throws Exception
+     *
+     * @since	1.0.1
+     */
+    protected function populateState(): void
     {
-		$this->id   = $id;
-		$this->data = null;
-	}
+        $app    = Factory::getApplication();
+        $jinput = $app->input;
 
-	/**
-	 * Method to get subscriber data.
-	 *
-	 * @param	int|null     $pk 	The id of the subscriber.
-	 *
-	 * @return	mixed	Menu item data object on success, false on failure.
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function getItem($pk = null): mixed
+        // Load state from the request.
+        $pk = $jinput->getInt('id');
+        $this->setState('subscriber.id', $pk);
+
+        $offset = $jinput->getUint('limitstart');
+        $this->setState('list.offset', $offset);
+
+        // TODO: Tune these values based on other permissions.
+        $user = $app->getIdentity();
+
+        if ((!$user->authorise('bwpm.edit.state', 'com_bwpostman')) &&  (!$user->authorise('bwpm.edit', 'com_bwpostman')))
+        {
+            $this->setState('filter.published', 1);
+            $this->setState('filter.archived', 2);
+        }
+
+        $this->setState('filter.language', Multilanguage::isEnabled());
+    }
+
+    /**
+     * Method to get the record form.
+     *
+     * @param	array	$data		Data for the form.
+     * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+     *
+     * @return    false|Form    A JForm object on success, false on failure
+     *
+     * @throws Exception
+     *
+     * @since	1.0.1
+     */
+    public function getForm($data = array(), $loadData = true): false|Form
     {
-		$app	        = Factory::getApplication();
-		$_db	        = $this->getDatabase();
-		$query	        = $_db->getQuery(true);
+        // Get the form
+        $form = $this->loadForm('com_bwpostman.subscriber', 'subscriber', array('control' => 'jform', 'load_data' => $loadData));
 
-		// Initialise variables.
-		$pk = (!empty($pk)) ? $pk : (int) $app->getUserState('subscriber.id');
+        // @ToDo: $this->loadForm throws RuntimeException, if form or file not found => there is never an empty form
+        if (empty($form))
+        {
+            return false;
+        }
 
-		// Get subscriber data from subscribers table
-		$query->select('*');
-		$query->from($_db->quoteName('#__bwpostman_subscribers'));
-		$query->where($_db->quoteName('id') . ' = ' . (int) $pk);
+        $app    = Factory::getApplication();
+        $jinput = $app->input;
+        $id     = $jinput->get('id', 0);
+        $user   = $app->getIdentity();
 
-		try
-		{
-			$_db->setQuery($query);
+        // Check for existing subscriber.
+        // Modify the form based on Edit State access controls.
+        if ($id != 0 && (!$user->authorise('bwpm.subscriber.edit.state', 'com_bwpostman.subscriber.' . (int) $id))
+            || ($id == 0 && !$user->authorise('bwpm.edit.state', 'com_bwpostman')))
+        {
+            // Disable fields for display.
+            $form->setFieldAttribute('status', 'disabled', 'true');
 
-			$this->data = $_db->loadObject();
-		}
-		catch (RuntimeException $exception)
-		{
+            // Disable fields while saving.
+            // The controller has already verified this is an subscriber you can edit.
+            $form->setFieldAttribute('state', 'filter', 'unset');
+        }
+
+        // Check for required name
+        if (!$form->getValue('name_field_obligation'))
+        {
+            $form->setFieldAttribute('name', 'required', false);
+        }
+
+        // Check for required first name
+        if ($form->getValue('firstname_field_obligation'))
+        {
+            $form->setFieldAttribute('firstname', 'required', true);
+        }
+
+        BwPostmanSubscriberHelper::customizeSubscriberDataFields($form);
+
+        return $form;
+    }
+
+    /**
+     * Method to reset the subscriber ID, view level and the subscriber data
+     *
+     * @access      public
+     *
+     * @param int $id subscriber ID
+     *
+     * @since       0.9.1
+     */
+    protected function setData(int $id): void
+    {
+        $this->id   = $id;
+        $this->data = null;
+    }
+
+    /**
+     * Method to get subscriber data.
+     *
+     * @param	int|null     $pk 	The id of the subscriber.
+     *
+     * @return	mixed	Menu item data object on success, false on failure.
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function getItem($pk = null): mixed
+    {
+        $app	        = Factory::getApplication();
+        $_db	        = $this->getDatabase();
+        $query	        = $_db->getQuery(true);
+
+        // Initialise variables.
+        $pk = (!empty($pk)) ? $pk : (int) $app->getUserState('subscriber.id');
+
+        // Get subscriber data from subscribers table
+        $query->select('*');
+        $query->from($_db->quoteName('#__bwpostman_subscribers'));
+        $query->where($_db->quoteName('id') . ' = ' . (int) $pk);
+
+        try
+        {
+            $_db->setQuery($query);
+
+            $this->data = $_db->loadObject();
+        }
+        catch (RuntimeException $exception)
+        {
             BwPostmanHelper::logException($exception, 'Edit subscription');
 
-			$app->enqueueMessage($exception->getMessage(), 'error');
-		}
+            $app->enqueueMessage($exception->getMessage(), 'error');
+        }
 
-		// if no data get, take default values
-		if (!is_object($this->data))
-		{
-			$this->data = BwPostmanSubscriberHelper::fillVoidSubscriber();
-		}
+        // if no data get, take default values
+        if (!is_object($this->data))
+        {
+            $this->data = BwPostmanSubscriberHelper::fillVoidSubscriber();
+        }
 
-		// set id and mailinglists property
-		$this->id                 = $pk;
-		$this->data->mailinglists = $this->getTable('SubscribersMailinglists')->getMailinglistIdsOfSubscriber($pk);
+        // set id and mailinglists property
+        $this->id                 = $pk;
+        $this->data->mailinglists = $this->getTable('SubscribersMailinglists')->getMailinglistIdsOfSubscriber($pk);
 
-		return $this->data;
-	}
+        return $this->data;
+    }
 
-	/**
-	 * Method to get the mail address of a subscriber from the subscribers-table depending on the subscriber ID
-	 *
-	 * @param int $id subscriber ID
-	 *
-	 * @return 	string	user ID
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function getEmailaddress(int $id): string
-	{
-		return $this->getTable()->getEmailaddress($id);
-	}
+    /**
+     * Method to get the mail address of a subscriber from the subscribers-table depending on the subscriber ID
+     *
+     * @param int $id subscriber ID
+     *
+     * @return 	string	user ID
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function getEmailaddress(int $id): string
+    {
+        return $this->getTable()->getEmailaddress($id);
+    }
 
-	/**
-	 * Checks if an editlink exists in the subscribers-table
-	 *
-	 * @param string $editlink to edit the subscriber data
-	 *
-	 * @return 	int subscriber ID, 0 means no subscription
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function checkEditlink(string $editlink): int
-	{
-		if ($editlink === null)
-		{
-			return 0;
-		}
+    /**
+     * Checks if an editlink exists in the subscribers-table
+     *
+     * @param string $editlink to edit the subscriber data
+     *
+     * @return 	int subscriber ID, 0 means no subscription
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function checkEditlink(string $editlink): int
+    {
+        if ($editlink === null)
+        {
+            return 0;
+        }
 
-		$id = $this->getTable()->checkEditlink($editlink);
+        $id = $this->getTable()->checkEditlink($editlink);
 
-		if (empty($id))
-		{
-			$id = 0;
-		}
+        if (empty($id))
+        {
+            $id = 0;
+        }
 
-		return (int)$id;
-	}
+        return (int)$id;
+    }
 
-	/**
-	 * Method to save the subscriber data
-	 *
-	 * @access    public
-	 *
-	 * @param array $data associative array of data to store
-	 *
-	 * @return    Boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since     1.0.1
-	 */
-	public function save($data): bool
-	{
-		// Check input values
-		if (!BwPostmanSubscriberHelper::checkSubscriberInputFields($data))
-		{
-			return false;
-		}
+    /**
+     * Method to save the subscriber data
+     *
+     * @access    public
+     *
+     * @param array $data associative array of data to store
+     *
+     * @return    Boolean
+     *
+     * @throws Exception
+     *
+     * @since     1.0.1
+     */
+    public function save($data): bool
+    {
+        // Check input values
+        if (!BwPostmanSubscriberHelper::checkSubscriberInputFields($data))
+        {
+            return false;
+        }
 
 
-		parent::save($data);
+        parent::save($data);
 
-		// Get the subscriber id
-		$subscriber_id = (int)$data['id'];
+        // Get the subscriber id
+        $subscriber_id = (int)$data['id'];
 
-		// Delete all mailinglist entries for the subscriber_id from newsletters_mailinglists-table
-		$subsMlTable = $this->getTable('SubscribersMailinglists');
-		$subsMlTable->deleteMailinglistsOfSubscriber($subscriber_id);
+        // Delete all mailinglist entries for the subscriber_id from newsletters_mailinglists-table
+        $subsMlTable = $this->getTable('SubscribersMailinglists');
+        $subsMlTable->deleteMailinglistsOfSubscriber($subscriber_id);
 
-		// Store subscribed mailinglists in newsletters_mailinglists-table
-		if (isset($data['mailinglists']))
-		{
-			if (($data['mailinglists']) != '')
-			{
-				$subsMlTable->storeMailinglistsOfSubscriber($subscriber_id, $data['mailinglists']);
-			}
-		}
+        // Store subscribed mailinglists in newsletters_mailinglists-table
+        if (isset($data['mailinglists']))
+        {
+            if (($data['mailinglists']) != '')
+            {
+                $subsMlTable->storeMailinglistsOfSubscriber($subscriber_id, $data['mailinglists']);
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

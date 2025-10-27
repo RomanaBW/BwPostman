@@ -45,205 +45,205 @@ use stdClass;
  */
 class HtmlView extends BaseHtmlView
 {
-	/**
-	 * property to hold state data
-	 *
-	 * @var object   $state
-	 *
-	 * @since       0.9.1
-	 */
-	protected object $state;
+    /**
+     * property to hold state data
+     *
+     * @var object   $state
+     *
+     * @since       0.9.1
+     */
+    protected object $state;
 
-	/**
-	 * property to hold selected item
-	 *
-	 * @var object   $params
-	 *
-	 * @since       0.9.1
-	 */
-	protected object $params;
+    /**
+     * property to hold selected item
+     *
+     * @var object   $params
+     *
+     * @since       0.9.1
+     */
+    protected object $params;
 
-	/**
-	 * property to hold items
-	 *
-	 * @var array   $items
-	 *
-	 * @since       0.9.1
-	 */
-	protected array $items;
+    /**
+     * property to hold items
+     *
+     * @var array   $items
+     *
+     * @since       0.9.1
+     */
+    protected array $items;
 
-	/**
-	 * property to hold item id
-	 *
-	 * @var integer   $Itemid
-	 *
-	 * @since       3.0.0
-	 */
-	protected int $Itemid;
+    /**
+     * property to hold item id
+     *
+     * @var integer   $Itemid
+     *
+     * @since       3.0.0
+     */
+    protected int $Itemid;
 
-	/**
-	 * property to hold pagination object
-	 *
-	 * @var Pagination|null  $pagination
-	 *
-	 * @since       0.9.1
-	 */
-	protected ?Pagination $pagination	= null;
+    /**
+     * property to hold pagination object
+     *
+     * @var Pagination|null  $pagination
+     *
+     * @since       0.9.1
+     */
+    protected ?Pagination $pagination	= null;
 
-	/**
-	 * property to hold form object
-	 *
-	 * @var ?object  $form
-	 *
-	 * @since       0.9.1
-	 */
-	protected ?object $form	= null;
+    /**
+     * property to hold form object
+     *
+     * @var ?object  $form
+     *
+     * @since       0.9.1
+     */
+    protected ?object $form	= null;
 
-	/**
-	 * property to hold filter form object
-	 *
-	 * @var ?object  $filterForm
-	 *
-	 * @since       0.9.1
-	 */
-	protected ?object $filterForm	= null;
+    /**
+     * property to hold filter form object
+     *
+     * @var ?object  $filterForm
+     *
+     * @since       0.9.1
+     */
+    protected ?object $filterForm	= null;
 
-	/**
-	 * property to hold active filters object
-	 *
-	 * @var array   $activeFilters
-	 *
-	 * @since       0.9.1
-	 */
-	protected array $activeFilters	= [];
+    /**
+     * property to hold active filters object
+     *
+     * @var array   $activeFilters
+     *
+     * @since       0.9.1
+     */
+    protected array $activeFilters	= [];
 
-	/**
-	 * property to hold mailinglists
-	 *
-	 * @var ?array  $mailinglists
-	 *
-	 * @since       0.9.1
-	 */
-	protected ?array $mailinglists	= null;
+    /**
+     * property to hold mailinglists
+     *
+     * @var ?array  $mailinglists
+     *
+     * @since       0.9.1
+     */
+    protected ?array $mailinglists	= null;
 
-	/**
-	 * property to hold campaigns
-	 *
-	 * @var array|null $campaigns
-	 *
-	 * @since       0.9.1
-	 */
-	protected ?array $campaigns	= null;
+    /**
+     * property to hold campaigns
+     *
+     * @var array|null $campaigns
+     *
+     * @since       0.9.1
+     */
+    protected ?array $campaigns	= null;
 
-	/**
-	 * property to hold usergroups object
-	 *
-	 * @var ?array $usergroups
-	 *
-	 * @since       0.9.1
-	 */
-	protected ?array $usergroups	= null;
+    /**
+     * property to hold usergroups object
+     *
+     * @var ?array $usergroups
+     *
+     * @since       0.9.1
+     */
+    protected ?array $usergroups	= null;
 
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  HtmlView
-	 *
-	 * @throws Exception
-	 *
-	 * @since       0.9.1
-	 */
-	public function display($tpl = null): HtmlView
-	{
+    /**
+     * Execute and display a template script.
+     *
+     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+     *
+     * @return  HtmlView
+     *
+     * @throws Exception
+     *
+     * @since       0.9.1
+     */
+    public function display($tpl = null): HtmlView
+    {
 
-		$app   = Factory::getApplication();
+        $app   = Factory::getApplication();
         $model = $this->getModel();
-		$menu  = $app->getMenu()->getActive();
+        $menu  = $app->getMenu()->getActive();
 
-		$state		= $model->getState();
-		$items		= $model->getItems();
-		$pagination	= $model->getPagination();
-		$form		= new stdClass;
+        $state		= $model->getState();
+        $items		= $model->getItems();
+        $pagination	= $model->getPagination();
+        $form		= new stdClass;
 
-		if ($state->params->get('date_filter_enable', '1') != 'hide')
-		{
-			// get all possible mailingdate options
-			$date_options = $model->getDateOptions();
-			$months = $date_options['months'];
-			$form->monthField = HtmlHelper::_(
-				'select.genericlist',
-				$months,
-				'month',
-				array(
-					'list.attr' => 'class="form-select" size="1" onchange="document.getElementById(\'adminForm\').submit();"',
-					'list.select' => $state->get('filter.month'),
-					'option.key' => null
-				)
-			);
-			$years = $date_options['years'];
-			$form->yearField = HtmlHelper::_(
-				'select.genericlist',
-				$years,
-				'year',
-				array(
-					'list.attr' => 'class="form-select" size="1" onchange="document.getElementById(\'adminForm\').submit();"',
-					'list.select' => $state->get('filter.year')
-				)
-			);
-		}
-		$form->limitField = $pagination->getLimitBox();
+        if ($state->params->get('date_filter_enable', '1') != 'hide')
+        {
+            // get all possible mailingdate options
+            $date_options = $model->getDateOptions();
+            $months = $date_options['months'];
+            $form->monthField = HtmlHelper::_(
+                'select.genericlist',
+                $months,
+                'month',
+                array(
+                    'list.attr' => 'class="form-select" size="1" onchange="document.getElementById(\'adminForm\').submit();"',
+                    'list.select' => $state->get('filter.month'),
+                    'option.key' => null
+                )
+            );
+            $years = $date_options['years'];
+            $form->yearField = HtmlHelper::_(
+                'select.genericlist',
+                $years,
+                'year',
+                array(
+                    'list.attr' => 'class="form-select" size="1" onchange="document.getElementById(\'adminForm\').submit();"',
+                    'list.select' => $state->get('filter.year')
+                )
+            );
+        }
+        $form->limitField = $pagination->getLimitBox();
 
-		$this->items			= &$items;
-		$this->state			= &$state;
-		$this->pagination		= &$pagination;
-		$this->form				= &$form;
-		$this->params			= $this->state->params;
-		$this->filterForm		= $model->getFilterForm();
-		$this->activeFilters	= $model->getActiveFilters();
-		$this->mailinglists		= $model->getAccessibleMailinglists();
-		$this->campaigns		= $model->getAccessibleCampaigns();
-		$this->usergroups		= $model->getAccessibleUsergroups();
-		$this->Itemid			= $model->getMenuItemid();
+        $this->items			= &$items;
+        $this->state			= &$state;
+        $this->pagination		= &$pagination;
+        $this->form				= &$form;
+        $this->params			= $this->state->params;
+        $this->filterForm		= $model->getFilterForm();
+        $this->activeFilters	= $model->getActiveFilters();
+        $this->mailinglists		= $model->getAccessibleMailinglists();
+        $this->campaigns		= $model->getAccessibleCampaigns();
+        $this->usergroups		= $model->getAccessibleUsergroups();
+        $this->Itemid			= $model->getMenuItemid();
 
-		if (is_array($this->mailinglists))
-		{
-			array_unshift($this->mailinglists, array ('id' => '0', 'title' => Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS')));
-		}
+        if (is_array($this->mailinglists))
+        {
+            array_unshift($this->mailinglists, array ('id' => '0', 'title' => Text::_('COM_BWPOSTMAN_SUB_FILTER_MAILINGLISTS')));
+        }
 
-		if (is_array($this->campaigns))
-		{
-			array_unshift($this->campaigns, array ('id' => '0', 'title' => Text::_('COM_BWPOSTMAN_SUB_FILTER_CAMPAIGNS')));
-		}
+        if (is_array($this->campaigns))
+        {
+            array_unshift($this->campaigns, array ('id' => '0', 'title' => Text::_('COM_BWPOSTMAN_SUB_FILTER_CAMPAIGNS')));
+        }
 
-		if (is_array($this->usergroups))
-		{
-			array_unshift($this->usergroups, array ('id' => '0', 'title' => Text::_('COM_BWPOSTMAN_SUB_FILTER_USERGROUPS')));
-		}
+        if (is_array($this->usergroups))
+        {
+            array_unshift($this->usergroups, array ('id' => '0', 'title' => Text::_('COM_BWPOSTMAN_SUB_FILTER_USERGROUPS')));
+        }
 
-		// Because the application sets a default page title, we need to get it
-		// right from the menu item itself
-		if (is_object($menu))
-		{
-			$menu_params = new Registry();
-			$menu_params->loadString($menu->getParams());
-			if (!$menu_params->get('page_heading', ''))
-			{
-				$this->params->set('page_heading',	Text::_('COM_BWPOSTMAN_NLS'));
-			}
-		}
-		else
-		{
-			$this->params->set('page_heading',	Text::_('COM_BWPOSTMAN_NLS'));
-		}
+        // Because the application sets a default page title, we need to get it
+        // right from the menu item itself
+        if (is_object($menu))
+        {
+            $menu_params = new Registry();
+            $menu_params->loadString($menu->getParams());
+            if (!$menu_params->get('page_heading', ''))
+            {
+                $this->params->set('page_heading',	Text::_('COM_BWPOSTMAN_NLS'));
+            }
+        }
+        else
+        {
+            $this->params->set('page_heading',	Text::_('COM_BWPOSTMAN_NLS'));
+        }
 
-		// switch frontend layout
-		$tpl = $this->params->get('fe_layout_list', null);
+        // switch frontend layout
+        $tpl = $this->params->get('fe_layout_list', null);
 
-		// Set parent display
-		parent::display($tpl);
+        // Set parent display
+        parent::display($tpl);
 
-		return $this;
-	}
+        return $this;
+    }
 }

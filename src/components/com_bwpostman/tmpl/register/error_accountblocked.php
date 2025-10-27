@@ -45,7 +45,7 @@ $css_filename = 'templates/' . $templateName . '/css/com_bwpostman.css';
 
 if (file_exists(JPATH_BASE . '/' . $css_filename))
 {
-	$wa->registerAndUseStyle('customCss', Uri::root() . $css_filename);
+    $wa->registerAndUseStyle('customCss', Uri::root() . $css_filename);
 }
 
 // Displays an error message and a mailto-link of the admin email address
@@ -58,38 +58,38 @@ if (file_exists(JPATH_BASE . '/' . $css_filename))
 
 
 <div id="bwpostman">
-	<div id="bwp_com_error_account_blocked">
-		<?php
-		if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != ''))
-		{
-			?>
-			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
-				<?php echo $this->escape($this->params->get('page_heading', '')); ?>
-			</h1>
-		<?php
-		}
+    <div id="bwp_com_error_account_blocked">
+        <?php
+        if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != ''))
+        {
+            ?>
+            <h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
+                <?php echo $this->escape($this->params->get('page_heading', '')); ?>
+            </h1>
+        <?php
+        }
 
-		$admin_email = $this->params->def('default_from_email', Factory::getApplication()->getConfig()->get('mailfrom'));
+        $admin_email = $this->params->def('default_from_email', Factory::getApplication()->getConfig()->get('mailfrom'));
 
-		echo '<p class="bwp-error">' . Text::_('COM_BWPOSTMAN_ERROR') . '</p>';
+        echo '<p class="bwp-error">' . Text::_('COM_BWPOSTMAN_ERROR') . '</p>';
 
-		if (!$this->error->err_email)
-		{ // Case 1, 2, 3
-			echo '<p class="error-message">' . Text::_($this->error->err_msg) . '</p>';
-		}
-		else
-		{ // Case 4
-			$msg = '<p class="error-message">' . Text::sprintf($this->error->err_msg, $this->error->err_email) . '</p>';
-			echo $msg;
-		}
+        if (!$this->error->err_email)
+        { // Case 1, 2, 3
+            echo '<p class="error-message">' . Text::_($this->error->err_msg) . '</p>';
+        }
+        else
+        { // Case 4
+            $msg = '<p class="error-message">' . Text::sprintf($this->error->err_msg, $this->error->err_email) . '</p>';
+            echo $msg;
+        }
 
-		$msg1 = Text::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email);
-		echo '<p class="contact-admin">' . HtmlHelper::_('content.prepare', $msg1) . '</p>';
+        $msg1 = Text::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email);
+        echo '<p class="contact-admin">' . HtmlHelper::_('content.prepare', $msg1) . '</p>';
 
-		if ($this->params->get('show_boldt_link', '1') === '1')
-		{ ?>
-			<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
-		<?php
-		} ?>
-	</div>
+        if ($this->params->get('show_boldt_link', '1') === '1')
+        { ?>
+            <p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
+        <?php
+        } ?>
+    </div>
 </div>

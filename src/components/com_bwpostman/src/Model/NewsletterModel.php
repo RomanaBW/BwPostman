@@ -43,25 +43,25 @@ use Joomla\Event\Event;
  */
 class NewsletterModel extends BaseDatabaseModel
 {
-	/**
-	 * Method to get  newsletter content
-	 *
-	 * @return	string|null	string on success, null on failure.
-	 *
-	 * @throws Exception
-	 *
-	 * @since	1.2.0
-	 */
-	public function getContent(): ?string
-	{
-		$app        = Factory::getApplication();
-		$id         = $app->input->getInt('id', 0);
-		$user       = $app->getIdentity();
+    /**
+     * Method to get  newsletter content
+     *
+     * @return	string|null	string on success, null on failure.
+     *
+     * @throws Exception
+     *
+     * @since	1.2.0
+     */
+    public function getContent(): ?string
+    {
+        $app        = Factory::getApplication();
+        $id         = $app->input->getInt('id', 0);
+        $user       = $app->getIdentity();
 
-		$newsletter = $this->getTable('Sendmailcontent')->getContent($id);
+        $newsletter = $this->getTable('Sendmailcontent')->getContent($id);
 
-		// Get the dispatcher and include bwpostman plugins
-		PluginHelper::importPlugin('bwpostman');
+        // Get the dispatcher and include bwpostman plugins
+        PluginHelper::importPlugin('bwpostman');
 
         $eventArgs = array(
             'context' => 'com_bwpostman.view',
@@ -77,24 +77,24 @@ class NewsletterModel extends BaseDatabaseModel
             $newsletter = $eventResults[0];
         }
 
-		return $newsletter;
-	}
+        return $newsletter;
+    }
 
-	/**
-	 * Method to get an item.
-	 *
-	 * @param integer|null $pk The id of the item
-	 *
-	 * @return  object
-	 *
-	 * @throws Exception
-	 *
-	 * @since 4.0.0
-	 */
-	public function getItem(?int $pk = null): object
-	{
-		$model = new AdminNewsletterModel();
+    /**
+     * Method to get an item.
+     *
+     * @param integer|null $pk The id of the item
+     *
+     * @return  object
+     *
+     * @throws Exception
+     *
+     * @since 4.0.0
+     */
+    public function getItem(?int $pk = null): object
+    {
+        $model = new AdminNewsletterModel();
 
-		return $model->getItem((int)$pk);
-	}
+        return $model->getItem((int)$pk);
+    }
 }

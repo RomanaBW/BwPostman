@@ -45,38 +45,38 @@ use Joomla\CMS\Menu\AbstractMenu;
 class Router extends RouterView
 {
 
-	/**
-	 * BwPostman Component router constructor
-	 *
-	 * @param   SiteApplication  $app   The application object
-	 * @param   AbstractMenu     $menu  The menu object to work with
-	 *
-	 * @since 4.0.0
-	 */
-	public function __construct(SiteApplication $app, AbstractMenu $menu)
-	{
-		$this->registerView(new RouterViewConfiguration('bwpostman'));
-		$edit = new RouterViewConfiguration('edit');
-		$edit->addLayout('editlink_form');
-		$this->registerView($edit);
-		$newsletter = new RouterViewConfiguration('newsletter');
-		$newsletter->addLayout('nl_preview');
-		$this->registerView($newsletter);
-		$this->registerView(new RouterViewConfiguration('newsletters'));
-		$register = new RouterViewConfiguration('register');
-		$register->addLayout('error_accountblocked');
-		$register->addLayout('error_accountgeneral');
-		$register->addLayout('error_accountnotactivated');
-		$register->addLayout('error_email');
-		$register->addLayout('error_geteditlink');
-		$register->addLayout('success_msg');
-		$this->registerView($register);
+    /**
+     * BwPostman Component router constructor
+     *
+     * @param   SiteApplication  $app   The application object
+     * @param   AbstractMenu     $menu  The menu object to work with
+     *
+     * @since 4.0.0
+     */
+    public function __construct(SiteApplication $app, AbstractMenu $menu)
+    {
+        $this->registerView(new RouterViewConfiguration('bwpostman'));
+        $edit = new RouterViewConfiguration('edit');
+        $edit->addLayout('editlink_form');
+        $this->registerView($edit);
+        $newsletter = new RouterViewConfiguration('newsletter');
+        $newsletter->addLayout('nl_preview');
+        $this->registerView($newsletter);
+        $this->registerView(new RouterViewConfiguration('newsletters'));
+        $register = new RouterViewConfiguration('register');
+        $register->addLayout('error_accountblocked');
+        $register->addLayout('error_accountgeneral');
+        $register->addLayout('error_accountnotactivated');
+        $register->addLayout('error_email');
+        $register->addLayout('error_geteditlink');
+        $register->addLayout('success_msg');
+        $this->registerView($register);
 
-		parent::__construct($app, $menu);
+        parent::__construct($app, $menu);
 
-		$this->attachRule(new MenuRules($this));
-		$this->attachRule(new StandardRules($this));
-		$this->attachRule(new NomenuRules($this));
-	}
+        $this->attachRule(new MenuRules($this));
+        $this->attachRule(new StandardRules($this));
+        $this->attachRule(new NomenuRules($this));
+    }
 
 }

@@ -39,33 +39,33 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class RawView extends BaseHtmlView
 {
-	/**
-	 * Property to hold newsletter content
-	 *
-	 * @var object
-	 *
-	 * @since       0.9.1
-	 */
-	protected object $newsletter;
+    /**
+     * Property to hold newsletter content
+     *
+     * @var object
+     *
+     * @since       0.9.1
+     */
+    protected object $newsletter;
 
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param string $tpl The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  RawView
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.2.0
-	 */
-	public function display($tpl = null): RawView
-	{
-		$this->newsletter = $this->getModel()->getContent();
+    /**
+     * Execute and display a template script.
+     *
+     * @param string $tpl The name of the template file to parse; automatically searches through the template paths.
+     *
+     * @return  RawView
+     *
+     * @throws Exception
+     *
+     * @since   1.2.0
+     */
+    public function display($tpl = null): RawView
+    {
+        $this->newsletter = $this->getModel()->getContent();
 
-		// Call parent display
-		parent::display($tpl);
+        // Call parent display
+        parent::display($tpl);
 
-		return $this;
-	}
+        return $this;
+    }
 }

@@ -886,13 +886,13 @@ class TemplateTable extends Table implements VersionableTableInterface
      *
      * @param integer $id
      *
-     * @return    string|boolean title of template or false
+     * @return    string|boolean|null title of template or false
      *
      * @throws Exception
      *
      * @since 3.0.0
      */
-    public function getTemplateTitle(int $id): bool|string
+    public function getTemplateTitle(int $id): bool|string|null
     {
         $db    = $this->_db;
         $query = $db->getQuery(true);

@@ -63,60 +63,60 @@ class TemplatesTplTable extends Table implements VersionableTableInterface
     public ?string $title = null;
 
     /**
-     * @var string css
+     * @var ?string css
      *
      * @since       1.1.0
      */
-    public string $css = '';
+    public ?string $css = '';
 
     /**
-     * @var string header_tpl
+     * @var ?string header_tpl
      *
      * @since       1.1.0
      */
-    public string $header_tpl = '';
+    public ?string $header_tpl = '';
 
     /**
-     * @var string intro_tpl
+     * @var ?string intro_tpl
      *
      * @since       1.1.0
      */
-    public string $intro_tpl = '';
+    public ?string $intro_tpl = '';
 
     /**
-     * @var string divider_tpl
+     * @var ?string divider_tpl
      *
      * @since       1.1.0
      */
-    public string $divider_tpl = '';
+    public ?string $divider_tpl = '';
 
     /**
-     * @var string article_tpl
+     * @var ?string article_tpl
      *
      * @since       1.1.0
      */
-    public string $article_tpl = '';
+    public ?string $article_tpl = '';
 
     /**
-     * @var string readon_tpl
+     * @var ?string readon_tpl
      *
      * @since       1.1.0
      */
-    public string $readon_tpl = '';
+    public ?string $readon_tpl = '';
 
     /**
-     * @var string footer_tpl
+     * @var ?string footer_tpl
      *
      * @since       1.1.0
      */
-    public string $footer_tpl = '';
+    public ?string $footer_tpl = '';
 
     /**
-     * @var string button_tpl
+     * @var ?string button_tpl
      *
      * @since       1.1.0
      */
-    public string $button_tpl = '';
+    public ?string $button_tpl = '';
 
     /**
      * Constructor

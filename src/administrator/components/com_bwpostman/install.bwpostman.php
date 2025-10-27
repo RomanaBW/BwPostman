@@ -28,6 +28,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Session\Session;
@@ -48,7 +49,6 @@ use Joomla\Component\Users\Administrator\Model\LevelModel;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanInstallHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
-
 /**
  * Class Com_BwPostmanInstallerScript
  *
@@ -57,11 +57,11 @@ use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 class com_bwpostmanInstallerScript
 {
     /**
-     * @var InstallerAdapter $parentInstaller
+     * @var Installer $parentInstaller
      *
      * @since       0.9.6.3
      */
-    public InstallerAdapter $parentInstaller;
+    public Installer $parentInstaller;
 
     /**
      * @var string $minimum_joomla_release

@@ -200,10 +200,12 @@ class HtmlView extends BaseHtmlView
         $this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
         $layout = $jinput->get('layout', '');
+        $model  = $this->getModel();
 
         switch ($layout)
         {
             case 'export':
+                $this->item = $model->getItem();
                 self::displayExportForm();
                 break;
             case 'import':
@@ -217,7 +219,6 @@ class HtmlView extends BaseHtmlView
                 $this->template	= $app->getTemplate();
 
                 // Get the data from the model
-                $model = $this->getModel();
                 $this->form		= $model->getForm();
                 $this->item		= $model->getItem();
                 $this->state	= $model->getState();

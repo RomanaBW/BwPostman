@@ -111,11 +111,11 @@ class HtmlView extends BaseHtmlView
     /**
      * property to hold total value
      *
-     * @var object  $total
+     * @var int  $total
      *
      * @since       0.9.1
      */
-    public object $total;
+    public int $total;
 
     /**
      * property to hold permissions as array

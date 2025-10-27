@@ -112,11 +112,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
     public ?int $emailformat = null;
 
     /**
-     * @var int gender --> 0 = male, 1 = female NULL = unknown
+     * @var ?int gender --> 0 = male, 1 = female NULL = unknown
      *
      * @since       0.9.1
      */
-    public int $gender = 2;
+    public ?int $gender = 2;
 
     /**
      * @var ?string special field
@@ -175,11 +175,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
     public ?string $registration_ip = null;
 
     /**
-     * @var ?datetime Confirmation date of the subscription
+     * @var DateTime|string|null Confirmation date of the subscription
      *
      * @since       0.9.1
      */
-    public ?DateTime $confirmation_date = null;
+    public DateTime|string|null $confirmation_date = null;
 
     /**
      * @var ?int ID --> -1 = account is not confirmed, 0 = subscriber confirmed the subscription by himself, another ID
@@ -218,11 +218,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
     public int $checked_out = 0;
 
     /**
-     * @var ?datetime Checked-out time
+     * @var DateTime|string|null Checked-out time
      *
      * @since       0.9.1
      */
-    public ?DateTime $checked_out_time = null;
+    public DateTime|string|null $checked_out_time = null;
 
     /**
      * @var int Archive-flag --> 0 = not archived, 1 = archived
@@ -232,11 +232,11 @@ class SubscriberTable extends Table implements VersionableTableInterface
     public int $archive_flag = 0;
 
     /**
-     * @var ?datetime Archive-date
+     * @var DateTime|string|null Archive-date
      *
      * @since       0.9.1
      */
-    public ?DateTime $archive_date = null;
+    public DateTime|string|null $archive_date = null;
 
     /**
      * @var int ID --> -1 = account is not archived, 0 = account is archived by the subscriber himself, another ID =

@@ -226,7 +226,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		parent::__construct();
 
-		$this->db = $this->_db;
+		$this->db = $this->getDatabase();
 	}
 
 	/**
@@ -5974,11 +5974,11 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @param string $assetName
 	 *
-	 * @return string|boolean
+	 * @return string|boolean|null
 	 *
 	 * @since 2.0.0
 	 */
-	private function getAssetFromAssetsTableByName(string $assetName): bool|string
+	private function getAssetFromAssetsTableByName(string $assetName): bool|string|null
     {
 		$query = $this->db->getQuery(true);
 

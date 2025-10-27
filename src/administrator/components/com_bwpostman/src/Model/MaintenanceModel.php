@@ -5974,11 +5974,11 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @param string $assetName
 	 *
-	 * @return string|boolean|null
+	 * @return string|array|null
 	 *
 	 * @since 2.0.0
 	 */
-	private function getAssetFromAssetsTableByName(string $assetName): bool|string|null
+	private function getAssetFromAssetsTableByName(string $assetName): bool|array|null
     {
 		$query = $this->db->getQuery(true);
 

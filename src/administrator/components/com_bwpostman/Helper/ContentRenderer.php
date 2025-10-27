@@ -63,10 +63,10 @@ class ContentRenderer
     /**
      * string which holds the width of the newsletter
      *
-     * @var    string
+     * @var    ?string
      * @since  4.3.3
      */
-    private string $nl_width = '';
+    private ?string $nl_width = '';
 
     /**
      * This is the main function to render the content from an ID to HTML
@@ -110,7 +110,7 @@ class ContentRenderer
 
         $nl_content = ArrayHelper::toInteger($nl_content);
 
-        $event = new BeforeRenderEvent('onBwpmBeforeRenderNewsletter', [
+        $event = new Event('onBwpmBeforeRenderNewsletter', [
             'subject'    => ArrayHelper::fromObject($this),
             'nl_content' => $nl_content,
             'tpl'        => $tpl,
@@ -129,7 +129,7 @@ class ContentRenderer
         {
             foreach ($nl_content as $content_id)
             {
-                $event = new BeforeRenderEvent('onBwpmBeforeRenderNewsletterArticle', [
+                $event = new Event('onBwpmBeforeRenderNewsletterArticle', [
                     'subject'    => ArrayHelper::fromObject($this),
                     'nl_content' => $nl_content,
                     'tpl'        => $tpl,
@@ -167,7 +167,7 @@ class ContentRenderer
                     $content['text_version'] .= $this->replaceContentText($content_id, $text_tpl);
                 }
 
-                $event = new AfterRenderEvent('onBwpmAfterRenderNewsletterArticle', [
+                $event = new Event('onBwpmAfterRenderNewsletterArticle', [
                     'subject'    => ArrayHelper::fromObject($this),
                     'nl_content' => $nl_content,
                     'tpl'        => $tpl,
@@ -180,7 +180,7 @@ class ContentRenderer
             }
         }
 
-        $event = new AfterRenderEvent('onBwpmAfterRenderNewsletter', [
+        $event = new Event('onBwpmAfterRenderNewsletter', [
             'subject'    => ArrayHelper::fromObject($this),
             'nl_content' => $nl_content,
             'tpl'        => $tpl,
@@ -407,7 +407,7 @@ class ContentRenderer
                     if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
                     {
                         PluginHelper::importPlugin('bwpostman');
-                        $event = new AfterRenderEvent('onBwPostmanSubstituteReadon', [
+                        $event = new Event('onBwPostmanSubstituteReadon', [
                             'subject' => ArrayHelper::fromObject($this),
                             'link'    => $link,
                         ]);
@@ -547,7 +547,7 @@ class ContentRenderer
                 if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
                 {
                     PluginHelper::importPlugin('bwpostman');
-                    $event = new AfterRenderEvent('onBwPostmanSubstituteReadon', [
+                    $event = new Event('onBwPostmanSubstituteReadon', [
                         'subject' => ArrayHelper::fromObject($this),
                         'link'    => $link,
                     ]);
@@ -625,7 +625,7 @@ class ContentRenderer
                 if (Factory::getApplication()->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
                 {
                     PluginHelper::importPlugin('bwpostman');
-                    $event = new AfterRenderEvent('onBwPostmanSubstituteReadon', [
+                    $event = new Event('onBwPostmanSubstituteReadon', [
                         'subject' => ArrayHelper::fromObject($this),
                         'link'    => $link,
                     ]);
@@ -708,7 +708,7 @@ class ContentRenderer
                     if ($app->getUserState('com_bwpostman.edit.newsletter.data.substitutelinks', '0') == '1')
                     {
                         PluginHelper::importPlugin('bwpostman');
-                        $event = new AfterRenderEvent('onBwPostmanSubstituteReadon', [
+                        $event = new Event('onBwPostmanSubstituteReadon', [
                             'subject' => ArrayHelper::fromObject($this),
                             'link'    => $link,
                         ]);
@@ -793,7 +793,11 @@ class ContentRenderer
             $registry = new Registry;
             $registry->loadString($tpl->basics);
             $tpl->basics = $registry->toArray();
-            $this->nl_width = $tpl->basics['nl_width'];
+
+            if (key_exists('nl_width', $tpl->basics))
+            {
+                $this->nl_width = $tpl->basics['nl_width'];
+            }
         }
 
         if (is_string($tpl->article))

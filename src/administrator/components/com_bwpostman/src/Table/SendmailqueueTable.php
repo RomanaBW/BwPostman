@@ -471,46 +471,43 @@ class SendmailqueueTable extends Table
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
         }
 
-        if ($sub_res)
+        $data = array();
+
+        foreach ($sub_res as $subscribersDatum)
         {
-            $data = array();
+            $quotedDatum = array();
 
-            foreach ($sub_res as $subscribersDatum)
+            foreach ($subscribersDatum as $datum)
             {
-                $quotedDatum = array();
-
-                foreach ($subscribersDatum as $datum)
-                {
-                    $quotedDatum[] = $db->quote($datum);
-                }
-                $data[] = implode(',', $quotedDatum);
+                $quotedDatum[] = $db->quote($datum);
             }
+            $data[] = implode(',', $quotedDatum);
+        }
 
-            $query = $db->getQuery(true);
+        $query = $db->getQuery(true);
 
-            $query->insert($db->quoteName($this->_tbl));
-            $query->columns(
-                array(
-                    $db->quoteName('content_id'),
-                    $db->quoteName('recipient'),
-                    $db->quoteName('mode'),
-                    $db->quoteName('name'),
-                    $db->quoteName('subscriber_id'),
-                )
-            );
-            $query->values($data);
+        $query->insert($db->quoteName($this->_tbl));
+        $query->columns(
+            array(
+                $db->quoteName('content_id'),
+                $db->quoteName('recipient'),
+                $db->quoteName('mode'),
+                $db->quoteName('name'),
+                $db->quoteName('subscriber_id'),
+            )
+        );
+        $query->values($data);
 
-            try
-            {
-                $db->setQuery($query);
-                $db->execute();
-            }
-            catch (RuntimeException $exception)
-            {
-                BwPostmanHelper::logException($exception, 'SendmailQueueTable BE');
+        try
+        {
+            $db->setQuery($query);
+            $db->execute();
+        }
+        catch (RuntimeException $exception)
+        {
+            BwPostmanHelper::logException($exception, 'SendmailQueueTable BE');
 
-                Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-            }
+            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
         }
 
         return true;

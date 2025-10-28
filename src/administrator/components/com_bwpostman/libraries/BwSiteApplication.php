@@ -40,7 +40,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\Application\Web\WebClient;
 use Joomla\CMS\Cache\CacheControllerFactoryAwareTrait;
-use Joomla\CMS\Input\Input;
+use Joomla\Input\Input;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Pathway\Pathway;
 use Joomla\CMS\Router\Route;

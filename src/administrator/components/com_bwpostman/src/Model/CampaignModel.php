@@ -34,7 +34,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -189,7 +188,7 @@ class CampaignModel extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  bool|CMSObject|stdClass    Data object on success, false on failure.
+	 * @return  bool|stdClass    Data object on success, false on failure.
 	 *
 	 * @throws Exception
 	 *

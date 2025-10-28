@@ -34,7 +34,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -147,7 +146,7 @@ class TemplateModel extends AdminModel
 	 *
 	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @return  bool|CMSObject|stdClass    Object on success, false on failure.
+	 * @return  bool|stdClass    Object on success, false on failure.
 	 *
 	 * @throws Exception
 	 *

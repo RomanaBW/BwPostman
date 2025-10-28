@@ -67,7 +67,7 @@ class RegisterController extends FormController
      *
      * @since       2.0.0
      */
-    protected int $userid = 0;
+    protected int $userid;
 
     /**
      * Constructor
@@ -268,7 +268,7 @@ class RegisterController extends FormController
         $app->setUserState('com_bwpostman.subscriber.register.data', $post);
 
         // Subscriber is guest
-        if (!$this->userid)
+        if (!property_exists($this, 'userid') || !$this->userid)
         {
             // Check if the email address from the registration form is stored in user table and gives back the id
             $post['user_id'] = $model->isRegUser($post['email']);

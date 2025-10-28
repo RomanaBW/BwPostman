@@ -54,535 +54,535 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-    /**
-     * property to hold form data
-     *
-     * @var array   $form
-     *
-     * @since       0.9.1
-     */
-    protected $form;
+	/**
+	 * property to hold form data
+	 *
+	 * @var array   $form
+	 *
+	 * @since       0.9.1
+	 */
+	protected $form;
 
-    /**
-     * property to hold selected item
-     *
-     * @var object   $item
-     *
-     * @since       0.9.1
-     */
-    protected object $item;
+	/**
+	 * property to hold selected item
+	 *
+	 * @var object   $item
+	 *
+	 * @since       0.9.1
+	 */
+	protected object $item;
 
-    /**
-     * property to hold row object
-     *
-     * @var object   $row
-     *
-     * @since       0.9.1
-     */
-    protected object $row;
+	/**
+	 * property to hold row object
+	 *
+	 * @var object   $row
+	 *
+	 * @since       0.9.1
+	 */
+	protected object $row;
 
-    /**
-     * property to hold state
-     *
-     * @var array|object  $state
-     *
-     * @since       0.9.1
-     */
-    protected array|object $state;
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
+	 */
+	protected array|object $state;
 
-    /**
-     * property to hold obligation values
-     *
-     * @var array   $obligation
-     *
-     * @since       0.9.1
-     */
-    protected array $obligation;
+	/**
+	 * property to hold obligation values
+	 *
+	 * @var array   $obligation
+	 *
+	 * @since       0.9.1
+	 */
+	protected array $obligation;
 
-    /**
-     * property to hold queue entries
-     *
-     * @var bool $queueEntries
-     *
-     * @since       0.9.1
-     */
-    public bool $queueEntries;
+	/**
+	 * property to hold queue entries
+	 *
+	 * @var bool $queueEntries
+	 *
+	 * @since       0.9.1
+	 */
+	public bool $queueEntries;
 
-    /**
-     * property to hold template
-     *
-     * @var bool $template
-     *
-     * @since       0.9.1
-     */
-    public bool $template;
+	/**
+	 * property to hold template
+	 *
+	 * @var bool $template
+	 *
+	 * @since       0.9.1
+	 */
+	public bool $template;
 
-    /**
-     * property to hold import
-     *
-     * @var array $import
-     *
-     * @since       0.9.1
-     */
-    public array $import;
+	/**
+	 * property to hold import
+	 *
+	 * @var array $import
+	 *
+	 * @since       0.9.1
+	 */
+	public array $import;
 
-    /**
-     * property to hold lists
-     *
-     * @var array $lists
-     *
-     * @since       0.9.1
-     */
-    public array $lists;
+	/**
+	 * property to hold lists
+	 *
+	 * @var array $lists
+	 *
+	 * @since       0.9.1
+	 */
+	public array $lists;
 
-    /**
-     * property to hold request url
-     *
-     * @var string $request_url
-     *
-     * @since       0.9.1
-     */
-    public string $request_url;
+	/**
+	 * property to hold request url
+	 *
+	 * @var string $request_url
+	 *
+	 * @since       0.9.1
+	 */
+	public string $request_url;
 
-    /**
-     * property to hold raw format of request url
-     *
-     * @var string $request_url_raw
-     *
-     * @since       0.9.1
-     */
-    public string $request_url_raw;
+	/**
+	 * property to hold raw format of request url
+	 *
+	 * @var string $request_url_raw
+	 *
+	 * @since       0.9.1
+	 */
+	public string $request_url_raw;
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
-    /**
-     * property to hold result
-     *
-     * @var string $result
-     *
-     * @since       0.9.1
-     */
-    public string $result;
+	/**
+	 * property to hold result
+	 *
+	 * @var string $result
+	 *
+	 * @since       0.9.1
+	 */
+	public string $result;
 
-    /**
-     * Execute and display a template script.
-     *
-     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-     *
-     * @return  HtmlView  A string if successful, otherwise a JError object.
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    public function display($tpl=null): HtmlView
-    {
-        $app	= Factory::getApplication();
-        $jinput	= $app->input;
-        $params = ComponentHelper::getParams('com_bwpostman');
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	public function display($tpl=null): HtmlView
+	{
+		$app	= Factory::getApplication();
+		$jinput	= $app->input;
+		$params = ComponentHelper::getParams('com_bwpostman');
 
-        $this->permissions		= $app->getUserState('com_bwpm.permissions', []);
+		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
-        if (!$this->permissions['view']['subscriber'])
-        {
-            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_SUB')), 'error');
-            $app->redirect('index.php?option=com_bwpostman');
-        }
+		if (!$this->permissions['view']['subscriber'])
+		{
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_SUB')), 'error');
+			$app->redirect('index.php?option=com_bwpostman');
+		}
 
-        //check for queue entries
-        $this->queueEntries	= BwPostmanHelper::checkQueueEntries();
+		//check for queue entries
+		$this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
-        $layout = $jinput->get('layout', '');
+		$layout = $jinput->get('layout', '');
 
-        switch ($layout)
-        {
-            case 'export':
-                self::displayExportForm();
-                break;
-            case 'import':
-            case 'import1':
-            case 'import2':
-                self::displayImportForm();
-                break;
-            case 'edit':
-            default:
-                // get template name
-                $this->template	= $app->getTemplate();
+		switch ($layout)
+		{
+			case 'export':
+				self::displayExportForm();
+				break;
+			case 'import':
+			case 'import1':
+			case 'import2':
+				self::displayImportForm();
+				break;
+			case 'edit':
+			default:
+				// get template name
+				$this->template	= $app->getTemplate();
 
-                // Get the data from the model
+				// Get the data from the model
                 $model = $this->getModel();
-                $this->form		= $model->getForm();
-                $this->item		= $model->getItem();
-                $this->state	= $model->getState();
+				$this->form		= $model->getForm();
+				$this->item		= $model->getItem();
+				$this->state	= $model->getState();
 
-                if ($this->item->id)
-                {
-                    $app->setUserState('com_bwpostman.subscriber.new_test', $this->item->status);
-                    $app->setUserState('com_bwpostman.subscriber.subscriber_id', $this->item->id);
-                }
+				if ($this->item->id)
+				{
+					$app->setUserState('com_bwpostman.subscriber.new_test', $this->item->status);
+					$app->setUserState('com_bwpostman.subscriber.subscriber_id', $this->item->id);
+				}
 
-                // Get show fields
-                if (!$params->get('show_name_field', '1') && !$params->get('name_field_obligation', '1'))
-                {
-                    $this->form->setFieldAttribute('name', 'type', 'hidden');
-                }
+				// Get show fields
+				if (!$params->get('show_name_field', '1') && !$params->get('name_field_obligation', '1'))
+				{
+					$this->form->setFieldAttribute('name', 'type', 'hidden');
+				}
 
-                if (!$params->get('show_firstname_field', '1') && !$params->get('firstname_field_obligation', '1'))
-                {
-                    $this->form->setFieldAttribute('firstname', 'type', 'hidden');
-                }
+				if (!$params->get('show_firstname_field', '1') && !$params->get('firstname_field_obligation', '1'))
+				{
+					$this->form->setFieldAttribute('firstname', 'type', 'hidden');
+				}
 
-                if (!$params->get('show_gender', '1'))
-                {
-                    $this->form->setFieldAttribute('gender', 'type', 'hidden');
-                }
+				if (!$params->get('show_gender', '1'))
+				{
+					$this->form->setFieldAttribute('gender', 'type', 'hidden');
+				}
 
-                if (!$params->get('show_special', '1') && !$params->get('special_field_obligation', '0'))
-                {
-                    $this->form->setFieldAttribute('special', 'type', 'hidden');
-                }
+				if (!$params->get('show_special', '1') && !$params->get('special_field_obligation', '0'))
+				{
+					$this->form->setFieldAttribute('special', 'type', 'hidden');
+				}
 
-                if (!$params->get('show_emailformat', '1'))
-                {
-                    $this->form->setFieldAttribute('emailformat', 'type', 'hidden');
-                }
-                else
-                {
-                    $this->form->setFieldAttribute('default_emailformat', 'default', $params->get('default_emailformat', '1'));
-                }
+				if (!$params->get('show_emailformat', '1'))
+				{
+					$this->form->setFieldAttribute('emailformat', 'type', 'hidden');
+				}
+				else
+				{
+					$this->form->setFieldAttribute('default_emailformat', 'default', $params->get('default_emailformat', '1'));
+				}
 
-                // Set required fields
-                $this->obligation['name']		    = $params->get('name_field_obligation', '1');
-                $this->obligation['firstname']  	= $params->get('firstname_field_obligation', '1');
-                $this->obligation['special']	    = $params->get('special_field_obligation', '0');
-                $this->obligation['special_label']	= Text::_($params->get('special_label', ''));
+				// Set required fields
+				$this->obligation['name']		    = $params->get('name_field_obligation', '1');
+				$this->obligation['firstname']  	= $params->get('firstname_field_obligation', '1');
+				$this->obligation['special']	    = $params->get('special_field_obligation', '0');
+				$this->obligation['special_label']	= Text::_($params->get('special_label', ''));
 
-                if ($params->get('name_field_obligation', '1'))
-                {
-                    $this->form->setFieldAttribute('name', 'required', 'true');
-                }
+				if ($params->get('name_field_obligation', '1'))
+				{
+					$this->form->setFieldAttribute('name', 'required', 'true');
+				}
 
-                if ($params->get('firstname_field_obligation', '1'))
-                {
-                    $this->form->setFieldAttribute('firstname', 'required', 'true');
-                }
+				if ($params->get('firstname_field_obligation', '1'))
+				{
+					$this->form->setFieldAttribute('firstname', 'required', 'true');
+				}
 
-                if ($params->get('special_field_obligation', '0'))
-                {
-                    $this->form->setFieldAttribute('special', 'required', 'true');
-                }
+				if ($params->get('special_field_obligation', '0'))
+				{
+					$this->form->setFieldAttribute('special', 'required', 'true');
+				}
 
-                // Set label and description/tooltip for additional field
-                if ($params->get('special_desc', '') != '')
-                {
-                    $this->form->setFieldAttribute('special', 'description', Text::_($params->get('special_desc', '')));
-                }
+				// Set label and description/tooltip for additional field
+				if ($params->get('special_desc', '') != '')
+				{
+					$this->form->setFieldAttribute('special', 'description', Text::_($params->get('special_desc', '')));
+				}
 
-                if ($params->get('special_label', '') != '')
-                {
-                    $this->form->setFieldAttribute('special', 'label', Text::_($params->get('special_label', '')));
-                }
+				if ($params->get('special_label', '') != '')
+				{
+					$this->form->setFieldAttribute('special', 'label', Text::_($params->get('special_label', '')));
+				}
 
-            $this->addToolbar();
-        }
+			$this->addToolbar();
+		}
 
-        parent::display($tpl);
+		parent::display($tpl);
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * View Import Forms
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    private function displayImportForm(): void
+	/**
+	 * View Import Forms
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	private function displayImportForm(): void
     {
-        $app		= Factory::getApplication();
-        $params 	= ComponentHelper::getParams('com_bwpostman');
-        $session 	= $app->getSession();
-        $template	= $app->getTemplate();
-        $uri		= Uri::getInstance();
-        $uri_string	= str_replace('&', '&amp;', $uri->toString());
+		$app		= Factory::getApplication();
+		$params 	= ComponentHelper::getParams('com_bwpostman');
+		$session 	= $app->getSession();
+		$template	= $app->getTemplate();
+		$uri		= Uri::getInstance();
+		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
-        $import					= array();
-        $lists					= array();
-        $session_delimiter		= ';';
-        $session_enclosure		= '"';
-        $result                 = true;
+		$import					= array();
+		$lists					= array();
+		$session_delimiter		= ';';
+		$session_enclosure		= '"';
+		$result                 = true;
 
-        $app->setUserState('com_bwpostman.subscriber.import', true);
+		$app->setUserState('com_bwpostman.subscriber.import', true);
 
-        // Get the data from the model
+		// Get the data from the model
         $model = $this->getModel();
-        $this->form		= $model->getForm();
-        $this->state	= $model->getState();
+		$this->form		= $model->getForm();
+		$this->state	= $model->getState();
 
-        // Get general import data from the session (fileformat, filename ...)
-        $import_general_data = $session->get('import_general_data');
-        if(isset($import_general_data) && is_array($import_general_data))
-        {
-            $import = $import_general_data;
-        }
+		// Get general import data from the session (fileformat, filename ...)
+		$import_general_data = $session->get('import_general_data');
+		if(isset($import_general_data) && is_array($import_general_data))
+		{
+			$import = $import_general_data;
+		}
 
-        // get the fileformat select list for the layouts import1 and import2
-        $lists['fileformat']	= BwPostmanHTMLHelper::getFileFormatList();
+		// get the fileformat select list for the layouts import1 and import2
+		$lists['fileformat']	= BwPostmanHTMLHelper::getFileFormatList();
 
-        // Get the csv-delimiter select list for the layouts import1 and import2
-        // Delimiter which is stored in the session
-        if (isset($import['delimiter']))
-        {
-            $session_delimiter = $import['delimiter'];
-        }
+		// Get the csv-delimiter select list for the layouts import1 and import2
+		// Delimiter which is stored in the session
+		if (isset($import['delimiter']))
+		{
+			$session_delimiter = $import['delimiter'];
+		}
 
-        $lists['delimiter']	= BwPostmanHTMLHelper::getDelimiterList($session_delimiter);
+		$lists['delimiter']	= BwPostmanHTMLHelper::getDelimiterList($session_delimiter);
 
-        // Get the csv-enclosure select list for the layouts import1 and import2
-        // Enclosure which is stored in the session
-        if (isset($import['enclosure']))
-        {
-            $session_enclosure = $import['enclosure'];
-        }
+		// Get the csv-enclosure select list for the layouts import1 and import2
+		// Enclosure which is stored in the session
+		if (isset($import['enclosure']))
+		{
+			$session_enclosure = $import['enclosure'];
+		}
 
-        $lists['enclosure']	= BwPostmanHTMLHelper::getEnclosureList($session_enclosure);
+		$lists['enclosure']	= BwPostmanHTMLHelper::getEnclosureList($session_enclosure);
 
-        // Get the import database fields list for the layout import2
-        $lists['db_fields']	= BwPostmanHTMLHelper::getDbFieldsList();
+		// Get the import database fields list for the layout import2
+		$lists['db_fields']	= BwPostmanHTMLHelper::getDbFieldsList();
 
-        // Build the select list for the importfile fields from the session object for the layout import2
-        $import_fields = $session->get('import_fields');
-        if (isset($import_fields))
-        {
-            $lists['import_fields']	= HTMLHelper::_(
-                'select.genericlist',
-                $import_fields,
-                'import_fields[]',
-                'class="custom-select w-auto" size="10" multiple multiple="multiple"',
-                'value',
-                'text'
-            );
-        }
+		// Build the select list for the importfile fields from the session object for the layout import2
+		$import_fields = $session->get('import_fields');
+		if (isset($import_fields))
+		{
+			$lists['import_fields']	= HTMLHelper::_(
+				'select.genericlist',
+				$import_fields,
+				'import_fields[]',
+				'class="custom-select w-auto" size="10" multiple multiple="multiple"',
+				'value',
+				'text'
+			);
+		}
 
-        // Get the emailformat select list for the layout import2
-        $lists['emailformat']	= BwPostmanHTMLHelper::getMailFormatList($params->get('default_emailformat', '1'));
+		// Get the emailformat select list for the layout import2
+		$lists['emailformat']	= BwPostmanHTMLHelper::getMailFormatList($params->get('default_emailformat', '1'));
 
-        // Get import result data from the session for the layout import2
-        $import_result = $session->get('com_bwpostman.subscriber.import.messages', null);
+		// Get import result data from the session for the layout import2
+		$import_result = $session->get('com_bwpostman.subscriber.import.messages', null);
 
-        if(isset($import_result) && is_array($import_result))
-        {
-            $result = $import_result;
-        }
+		if(isset($import_result) && is_array($import_result))
+		{
+			$result = $import_result;
+		}
 
 //		Cleanup session messages
-        $session->set('com_bwpostman.subscriber.import.messages', null);
+		$session->set('com_bwpostman.subscriber.import.messages', null);
 
-        // Save a reference into view
-        $this->import       = $import;
-        $this->lists        = $lists;
-        $this->request_url  = $uri_string;
-        $this->result       = $result;
-        $this->template     = $template;
+		// Save a reference into view
+		$this->import       = $import;
+		$this->lists        = $lists;
+		$this->request_url  = $uri_string;
+		$this->result       = $result;
+		$this->template     = $template;
 
-        if ($this->getLayout() === 'import2')
-        {
-            $session->clear('com_bwpostman.subscriber.import.messages');
-            $session->clear('import_fields');
-            $session->clear('import_general_data');
-        }
+		if ($this->getLayout() === 'import2')
+		{
+			$session->clear('com_bwpostman.subscriber.import.messages');
+			$session->clear('import_fields');
+			$session->clear('import_general_data');
+		}
 
-            $this->addToolbar();
-    }
+			$this->addToolbar();
+	}
 
-    /**
-     * View Export Form
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    private function displayExportForm(): void
+	/**
+	 * View Export Form
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	private function displayExportForm(): void
     {
-        $app = Factory::getApplication();
+		$app = Factory::getApplication();
 
-        $template	= $app->getTemplate();
-        $uri		= Uri::getInstance();
-        $uri_string	= str_replace('&', '&amp;', $uri->toString());
+		$template	= $app->getTemplate();
+		$uri		= Uri::getInstance();
+		$uri_string	= str_replace('&', '&amp;', $uri->toString());
 
-        // Get the select lists for the export_fields, file format, delimiter, enclosure
-        $lists['export_fields']	= BwPostmanHTMLHelper::getExportFieldsList();
-        $lists['fileformat']	= BwPostmanHTMLHelper::getFileFormatList();
-        $lists['delimiter']		= BwPostmanHTMLHelper::getDelimiterList();
-        $lists['enclosure']		= BwPostmanHTMLHelper::getEnclosureList();
+		// Get the select lists for the export_fields, file format, delimiter, enclosure
+		$lists['export_fields']	= BwPostmanHTMLHelper::getExportFieldsList();
+		$lists['fileformat']	= BwPostmanHTMLHelper::getFileFormatList();
+		$lists['delimiter']		= BwPostmanHTMLHelper::getDelimiterList();
+		$lists['enclosure']		= BwPostmanHTMLHelper::getEnclosureList();
 
-        // We need a RAW-view for the export function
-        $uri->setVar('format', 'raw');
+		// We need a RAW-view for the export function
+		$uri->setVar('format', 'raw');
 
-        // Save a reference into view
-        $this->lists            = $lists;
-        $this->request_url_raw  = $uri_string;
-        $this->template         = $template;
+		// Save a reference into view
+		$this->lists            = $lists;
+		$this->request_url_raw  = $uri_string;
+		$this->template         = $template;
 
-        $this->addToolbar();
-    }
+		$this->addToolbar();
+	}
 
-    /**
-     * Add the page title, styles and toolbar.
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    protected function addToolbar(): void
+	/**
+	 * Add the page title, styles and toolbar.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	protected function addToolbar(): void
     {
-        $app    = Factory::getApplication();
-        $app->input->set('hidemainmenu', true);
-        $uri    = Uri::getInstance();
-        $userId = $app->getIdentity()->id;
-        $layout = $app->input->get('layout', '');
-        $tester = false;
-        $status = 1;
+		$app    = Factory::getApplication();
+		$app->input->set('hidemainmenu', true);
+		$uri    = Uri::getInstance();
+		$userId = $app->getIdentity()->id;
+		$layout = $app->input->get('layout', '');
+		$tester = false;
+		$status = 1;
 
-        if (is_object($this->item)) {
-            $status	= $this->item->status;
-        }
+		if (is_object($this->item)) {
+			$status	= $this->item->status;
+		}
 
-        if ($app->getUserState('com_bwpostman.subscriber.new_test', $status) == '9') {
-            $tester	= true;
-        }
+		if ($app->getUserState('com_bwpostman.subscriber.new_test', $status) == '9') {
+			$tester	= true;
+		}
 
-        // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+		// Get the toolbar object instance
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-        $this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber');
+		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber');
 
-        switch ($layout)
-        {
-            case 'export':
-                // Set toolbar items
-                ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'), 'upload');
+		switch ($layout)
+		{
+			case 'export':
+				// Set toolbar items
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_EXPORT_SUBS'), 'upload');
 
-                $toolbar->cancel('subscriber.cancel');
-                break;
+				$toolbar->cancel('subscriber.cancel');
+				break;
 
-            case 'import':
-                ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
+			case 'import':
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
 
-                $toolbar->cancel('subscriber.cancel');
-                break;
+				$toolbar->cancel('subscriber.cancel');
+				break;
 
-            case 'import1':
-                ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
+			case 'import1':
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_SUBS'), 'download');
 
-                $options['text'] = "COM_BWPOSTMAN_BACK";
-                $options['name'] = 'back';
-                $options['url'] = "index.php?option=com_bwpostman&view=subscriber&layout=import";
-                $options['icon'] = "icon-arrow-left";
+				$options['text'] = "COM_BWPOSTMAN_BACK";
+				$options['name'] = 'back';
+				$options['url'] = "index.php?option=com_bwpostman&view=subscriber&layout=import";
+				$options['icon'] = "icon-arrow-left";
 
-                $button = new LinkButton('back');
-                $button->setOptions($options);
+				$button = new LinkButton('back');
+				$button->setOptions($options);
 
-                $toolbar->appendButton($button);
-                $toolbar->cancel('subscriber.cancel');
-                break;
+				$toolbar->appendButton($button);
+				$toolbar->cancel('subscriber.cancel');
+				break;
 
-            case 'import2':
-                ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'), 'info');
+			case 'import2':
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB_IMPORT_RESULT'), 'info');
 
-                $toolbar->cancel('subscriber.cancel');
-                break;
+				$toolbar->cancel('subscriber.cancel');
+				break;
 
-            case 'edit':
-            default:
-                if ($tester) {
-                    $title	= (Text::_('COM_BWPOSTMAN_TEST_DETAILS'));
-                }
-                else {
-                    $title	= (Text::_('COM_BWPOSTMAN_SUB_DETAILS'));
-                }
+			case 'edit':
+			default:
+				if ($tester) {
+					$title	= (Text::_('COM_BWPOSTMAN_TEST_DETAILS'));
+				}
+				else {
+					$title	= (Text::_('COM_BWPOSTMAN_SUB_DETAILS'));
+				}
 
-                // Set toolbar title and items
-                $checkedOut = 0;
-                if (property_exists($this->item, 'checked_out'))
-                {
-                    $checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-                }
+				// Set toolbar title and items
+				$checkedOut = 0;
+				if (property_exists($this->item, 'checked_out'))
+				{
+					$checkedOut		= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+				}
 
-                // Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
-                // For new records, check the create permission.
-                if ($this->item->id < 1 && $this->permissions['subscriber']['create'])
-                {
-                    ToolbarHelper::title($title . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
+				// Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
+				// For new records, check the create permission.
+				if ($this->item->id < 1 && $this->permissions['subscriber']['create'])
+				{
+					ToolbarHelper::title($title . ': <small>[ ' . Text::_('NEW') . ' ]</small>', 'plus');
 
-                    $toolbar->apply('subscriber.apply');
+					$toolbar->apply('subscriber.apply');
 
-                    $saveGroup = $toolbar->dropdownButton('save-group');
+					$saveGroup = $toolbar->dropdownButton('save-group');
 
-                    $saveGroup->configure(
-                        function (Toolbar $childBar)
-                        {
-                            $childBar->save('subscriber.save');
-                            $childBar->save2new('subscriber.save2new');
-                            $childBar->save2copy('subscriber.save2copy');
-                        }
-                    );
+					$saveGroup->configure(
+						function (Toolbar $childBar)
+						{
+							$childBar->save('subscriber.save');
+							$childBar->save2new('subscriber.save2new');
+							$childBar->save2copy('subscriber.save2copy');
+						}
+					);
 
-                }
-                else
-                {
-                    // Can't save the record if it's checked out.
-                    if (!$checkedOut) {
-                        ToolbarHelper::title($title . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
+				}
+				else
+				{
+					// Can't save the record if it's checked out.
+					if (!$checkedOut) {
+						ToolbarHelper::title($title . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
 
-                        // Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-                        if (BwPostmanHelper::canEdit('subscriber', $this->item))
-                        {
-                            $toolbar->apply('subscriber.apply');
+						// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
+						if (BwPostmanHelper::canEdit('subscriber', $this->item))
+						{
+							$toolbar->apply('subscriber.apply');
 
-                            if ($this->permissions['subscriber']['create'])
-                            {
-                                $saveGroup = $toolbar->dropdownButton('save-group');
+							if ($this->permissions['subscriber']['create'])
+							{
+								$saveGroup = $toolbar->dropdownButton('save-group');
 
-                                $saveGroup->configure(
-                                    function (Toolbar $childBar)
-                                    {
-                                        $childBar->save('subscriber.save');
-                                        $childBar->save2new('subscriber.save2new');
-                                        $childBar->save2copy('subscriber.save2copy');
-                                    }
-                                );
-                            }
-                        }
-                    }
+								$saveGroup->configure(
+									function (Toolbar $childBar)
+									{
+										$childBar->save('subscriber.save');
+										$childBar->save2new('subscriber.save2new');
+										$childBar->save2copy('subscriber.save2copy');
+									}
+								);
+							}
+						}
+					}
 
-                    // Rename the cancel button for existing items
-                }
+					// Rename the cancel button for existing items
+				}
 
-                $toolbar->cancel('subscriber.cancel');
+				$toolbar->cancel('subscriber.cancel');
 
-                $backlink = $app->input->server->get('HTTP_REFERER', '', '');
-                $siteURL  = $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
+				$backlink = $app->input->server->get('HTTP_REFERER', '', '');
+				$siteURL  = $uri->base() . 'index.php?option=com_bwpostman&view=bwpostman';
 
-                // If we came from the cover page we will show a back-button
-                if ($backlink == $siteURL)
-                {
-                    $toolbar->back();
-                }
-        }
+				// If we came from the cover page we will show a back-button
+				if ($backlink == $siteURL)
+				{
+					$toolbar->back();
+				}
+		}
 
-        $manualButton = BwPostmanHTMLHelper::getManualButton('subscriber');
-        $forumButton  = BwPostmanHTMLHelper::getForumButton();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('subscriber');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-        $toolbar->appendButton($manualButton);
-        $toolbar->appendButton($forumButton);
-    }
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
+	}
 }

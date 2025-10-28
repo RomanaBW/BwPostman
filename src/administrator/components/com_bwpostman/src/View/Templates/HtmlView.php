@@ -54,269 +54,269 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-    /**
-     * property to hold selected items
-     *
-     * @var array   $items
-     *
-     * @since       1.1.0
-     */
-    protected array $items;
+	/**
+	 * property to hold selected items
+	 *
+	 * @var array   $items
+	 *
+	 * @since       1.1.0
+	 */
+	protected array $items;
 
-    /**
-     * property to hold pagination object
-     *
-     * @var object  $pagination
-     *
-     * @since       1.1.0
-     */
-    protected object $pagination;
+	/**
+	 * property to hold pagination object
+	 *
+	 * @var object  $pagination
+	 *
+	 * @since       1.1.0
+	 */
+	protected object $pagination;
 
-    /**
-     * property to hold state
-     *
-     * @var array|object  $state
-     *
-     * @since       1.1.0
-     */
-    protected array|object $state;
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       1.1.0
+	 */
+	protected array|object $state;
 
-    /**
-     * property to hold filter form
-     *
-     * @var object  $filterForm
-     *
-     * @since       1.1.0
-     */
-    public object $filterForm;
+	/**
+	 * property to hold filter form
+	 *
+	 * @var object  $filterForm
+	 *
+	 * @since       1.1.0
+	 */
+	public object $filterForm;
 
-    /**
-     * property to hold active filters
-     *
-     * @var object  $activeFilters
-     *
-     * @since       1.1.0
-     */
-    public object $activeFilters;
+	/**
+	 * property to hold active filters
+	 *
+	 * @var object  $activeFilters
+	 *
+	 * @since       1.1.0
+	 */
+	public object $activeFilters;
 
-    /**
-     * property to hold total value
-     *
-     * @var string $total
-     *
-     * @since       1.1.0
-     */
-    public string $total;
+	/**
+	 * property to hold total value
+	 *
+	 * @var string $total
+	 *
+	 * @since       1.1.0
+	 */
+	public string $total;
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
-    /**
-     * property to hold sidebar
-     *
-     * @var object  $sidebar
-     *
-     * @since       1.1.0
-     */
-    public object $sidebar;
+	/**
+	 * property to hold sidebar
+	 *
+	 * @var object  $sidebar
+	 *
+	 * @since       1.1.0
+	 */
+	public object $sidebar;
 
-    /**
-     * Execute and display a template script.
-     *
-     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-     *
-     * @return  HtmlView  A string if successful, otherwise a JError object.
-     *
-     * @throws Exception
-     *
-     * @since   1.1.0
-     */
-    public function display($tpl = null): HtmlView
-    {
-        $app		= Factory::getApplication();
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  HtmlView  A string if successful, otherwise a JError object.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   1.1.0
+	 */
+	public function display($tpl = null): HtmlView
+	{
+		$app		= Factory::getApplication();
         $model = $this->getModel();
 
-        $this->permissions		= $app->getUserState('com_bwpm.permissions', []);
+		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
-        if (!$this->permissions['view']['template'])
-        {
-            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_TPLS')), 'error');
-            $app->redirect('index.php?option=com_bwpostman');
-        }
+		if (!$this->permissions['view']['template'])
+		{
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_TPLS')), 'error');
+			$app->redirect('index.php?option=com_bwpostman');
+		}
 
-        // Template export
-        $jinput	= $app->input;
-        $task = $jinput->get('task');
-        if ($task == 'export')
-        {
-            $basename    = $model->getBaseName();
-            $zip_created = $model->getExportTpl();
+		// Template export
+		$jinput	= $app->input;
+		$task = $jinput->get('task');
+		if ($task == 'export')
+		{
+			$basename    = $model->getBaseName();
+			$zip_created = $model->getExportTpl();
 
-            if (isset($zip_created))
-            {
-                $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_TPL_EXPORTTPL_OK',
-                    Route::_(Uri::root() . 'images/com_bwpostman/templates/' . $basename),
-                    Text::_('COM_BWPOSTMAN_TPL_DOWNLOAD'), Text::_('JCANCEL')), 'message');
-                $app->redirect('index.php?option=com_bwpostman&view=templates');
-            }
-        }
+			if (isset($zip_created))
+			{
+				$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_TPL_EXPORTTPL_OK',
+					Route::_(Uri::root() . 'images/com_bwpostman/templates/' . $basename),
+					Text::_('COM_BWPOSTMAN_TPL_DOWNLOAD'), Text::_('JCANCEL')), 'message');
+				$app->redirect('index.php?option=com_bwpostman&view=templates');
+			}
+		}
 
-        // Get data from the model
-        $this->state			= $model->getState();
-        $this->items			= $model->getItems();
-        $this->filterForm		= $model->getFilterForm();
-        $this->activeFilters	= $model->getActiveFilters();
-        $this->pagination		= $model->getPagination();
-        $this->total			= $model->getTotal();
+		// Get data from the model
+		$this->state			= $model->getState();
+		$this->items			= $model->getItems();
+		$this->filterForm		= $model->getFilterForm();
+		$this->activeFilters	= $model->getActiveFilters();
+		$this->pagination		= $model->getPagination();
+		$this->total			= $model->getTotal();
 
-        $this->addToolbar();
+		$this->addToolbar();
 
-        // Call parent display
-        parent::display($tpl);
+		// Call parent display
+		parent::display($tpl);
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Add the page title and toolbar.
-     *
-     * @throws Exception
-     *
-     * @since       1.1.0
-     */
-    protected function addToolbar(): void
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       1.1.0
+	 */
+	protected function addToolbar(): void
     {
-        $jinput	= Factory::getApplication()->input;
-        $layout	= $jinput->getCmd('layout', '');
+		$jinput	= Factory::getApplication()->input;
+		$layout	= $jinput->getCmd('layout', '');
 
-        // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+		// Get the toolbar object instance
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-        $this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_templates');
+		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_templates');
 
-        $options['name'] = 'back';
-        $options['url'] = 'index.php?option=com_bwpostman&view=templates';
-        $options['text'] = "COM_BWPOSTMAN_BACK";
-        $options['icon'] = "icon-arrow-left";
+		$options['name'] = 'back';
+		$options['url'] = 'index.php?option=com_bwpostman&view=templates';
+		$options['text'] = "COM_BWPOSTMAN_BACK";
+		$options['icon'] = "icon-arrow-left";
 
-        switch ($layout)
-        {
-            case 'uploadtpl':
-                ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPL_UPLOADTPL'), 'upload');
+		switch ($layout)
+		{
+			case 'uploadtpl':
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPL_UPLOADTPL'), 'upload');
 
-                $button = new LinkButton('back');
-                $button->setOptions($options);
+				$button = new LinkButton('back');
+				$button->setOptions($options);
 
-                $toolbar->AppendButton($button);
-                break;
-            case 'installtpl':
-                $jinput->set('hidemainmenu', true);
-                ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPL_INSTALLTPL'), 'plus');
+				$toolbar->AppendButton($button);
+				break;
+			case 'installtpl':
+				$jinput->set('hidemainmenu', true);
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPL_INSTALLTPL'), 'plus');
 
-                $button = new LinkButton('back');
-                $button->setOptions($options);
+				$button = new LinkButton('back');
+				$button->setOptions($options);
 
-                $toolbar->AppendButton($button);
-                break;
-            default:
-                // Set toolbar title
-                ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPLS'), 'picture');
+				$toolbar->AppendButton($button);
+				break;
+			default:
+				// Set toolbar title
+				ToolbarHelper::title(Text::_('COM_BWPOSTMAN_TPLS'), 'picture');
 
-                // Set toolbar items for the page
-                if ($this->permissions['template']['create'])
-                {
-                    ToolbarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);
-                }
+				// Set toolbar items for the page
+				if ($this->permissions['template']['create'])
+				{
+					ToolbarHelper::custom('template.addhtml', 'calendar', 'HTML', 'COM_BWPOSTMAN_TPL_ADDHTML', false);
+				}
 
-                if ($this->permissions['template']['create'])
-                {
-                    ToolbarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
-                }
+				if ($this->permissions['template']['create'])
+				{
+					ToolbarHelper::custom('template.addtext', 'new', 'TEXT', 'COM_BWPOSTMAN_TPL_ADDTEXT', false);
+				}
 
-                if (BwPostmanHelper::canEdit('template', []) || BwPostmanHelper::canEditState('template') || BwPostmanHelper::canArchive('template'))
-                {
-                    $dropdown = $toolbar->dropdownButton('status-group')
-                        ->text('JTOOLBAR_CHANGE_STATUS')
-                        ->toggleSplit(false)
-                        ->icon('fa fa-ellipsis-h')
-                        ->buttonClass('btn btn-action')
-                        ->listCheck(true);
+				if (BwPostmanHelper::canEdit('template', []) || BwPostmanHelper::canEditState('template') || BwPostmanHelper::canArchive('template'))
+				{
+					$dropdown = $toolbar->dropdownButton('status-group')
+						->text('JTOOLBAR_CHANGE_STATUS')
+						->toggleSplit(false)
+						->icon('fa fa-ellipsis-h')
+						->buttonClass('btn btn-action')
+						->listCheck(true);
 
-                    $childBar = $dropdown->getChildToolbar();
+					$childBar = $dropdown->getChildToolbar();
 
-                    if (BwPostmanHelper::canEdit('template'))
-                    {
-                        $childBar->edit('template.edit')->listCheck(true);
-                    }
+					if (BwPostmanHelper::canEdit('template'))
+					{
+						$childBar->edit('template.edit')->listCheck(true);
+					}
 
-                    if (BwPostmanHelper::canEditState('template'))
-                    {
-                        $childBar->publish('templates.publish')->listCheck(true);
-                        $childBar->unpublish('templates.unpublish')->listCheck(true);
-                        $childBar->makeDefault('template.setDefault', 'COM_BWPOSTMAN_TPL_SET_DEFAULT')->listCheck(true);
-                    }
+					if (BwPostmanHelper::canEditState('template'))
+					{
+						$childBar->publish('templates.publish')->listCheck(true);
+						$childBar->unpublish('templates.unpublish')->listCheck(true);
+						$childBar->makeDefault('template.setDefault', 'COM_BWPOSTMAN_TPL_SET_DEFAULT')->listCheck(true);
+					}
 
-                    if (BwPostmanHelper::canArchive('template'))
-                    {
-                        $childBar->archive('template.archive')->listCheck(true);
-                    }
+					if (BwPostmanHelper::canArchive('template'))
+					{
+						$childBar->archive('template.archive')->listCheck(true);
+					}
 
-                    if (BwPostmanHelper::canEdit('template', []) || BwPostmanHelper::canEditState('template'))
-                    {
-                        $childBar->checkin('templates.checkin')->listCheck(true);
-                    }
+					if (BwPostmanHelper::canEdit('template', []) || BwPostmanHelper::canEditState('template'))
+					{
+						$childBar->checkin('templates.checkin')->listCheck(true);
+					}
 
-                    // template upload and export
-                    if (BwPostmanHelper::canAdd('template'))
-                    {
-                        $html = '<joomla-toolbar-button id="status-group-children-export" task="templates.exportTpl" list-selection="">';
-                        $html .= '<button class="button-download dropdown-item" type="button">';
-                        $html .= '<span class="icon-download" aria-hidden="true"></span>';
-                        $html .= Text::_('COM_BWPOSTMAN_TPL_EXPORTTPL');
-                        $html .= '</button>';
-                        $html .= '</joomla-toolbar-button>';
+					// template upload and export
+					if (BwPostmanHelper::canAdd('template'))
+					{
+						$html = '<joomla-toolbar-button id="status-group-children-export" task="templates.exportTpl" list-selection="">';
+						$html .= '<button class="button-download dropdown-item" type="button">';
+						$html .= '<span class="icon-download" aria-hidden="true"></span>';
+						$html .= Text::_('COM_BWPOSTMAN_TPL_EXPORTTPL');
+						$html .= '</button>';
+						$html .= '</joomla-toolbar-button>';
 
-                        $options['text'] = "COM_BWPOSTMAN_TPL_INSTALLTPL";
-                        $options['html'] = $html;
+						$options['text'] = "COM_BWPOSTMAN_TPL_INSTALLTPL";
+						$options['html'] = $html;
 
-                        $button = new CustomButton('upload');
-                        $button->setOptions($options);
+						$button = new CustomButton('upload');
+						$button->setOptions($options);
 
-                        $childBar->AppendButton($button);
-                    }
-                }
+						$childBar->AppendButton($button);
+					}
+				}
 
-                // template upload
-                if (BwPostmanHelper::canAdd('template'))
-                {
-                    $installLink = Route::_('index.php?option=com_bwpostman&view=templates&layout=uploadtpl');
-                    $html = '<joomla-toolbar-button id="toolbar-upload">';
-                    $html .= '<a id="toolbar-install-template" class="button-upload btn btn-sm btn-primary" href="' . $installLink . '" rel="{handler: \'iframe\', size: {x: 850, y: 500}, iframeOptions: {id: \'uploadFrame\'}}">';
-                    $html .= '<span class="icon-upload"></span>';
-                    $html .= Text::_('COM_BWPOSTMAN_TPL_INSTALLTPL');
-                    $html .= '</a>';
-                    $html .= '</joomla-toolbar-button>';
+				// template upload
+				if (BwPostmanHelper::canAdd('template'))
+				{
+					$installLink = Route::_('index.php?option=com_bwpostman&view=templates&layout=uploadtpl');
+					$html = '<joomla-toolbar-button id="toolbar-upload">';
+					$html .= '<a id="toolbar-install-template" class="button-upload btn btn-sm btn-primary" href="' . $installLink . '" rel="{handler: \'iframe\', size: {x: 850, y: 500}, iframeOptions: {id: \'uploadFrame\'}}">';
+					$html .= '<span class="icon-upload"></span>';
+					$html .= Text::_('COM_BWPOSTMAN_TPL_INSTALLTPL');
+					$html .= '</a>';
+					$html .= '</joomla-toolbar-button>';
 
-                    $options['text'] = "COM_BWPOSTMAN_TPL_INSTALLTPL";
-                    $options['html'] = $html;
+					$options['text'] = "COM_BWPOSTMAN_TPL_INSTALLTPL";
+					$options['html'] = $html;
 
-                    $button = new CustomButton('upload');
-                    $button->setOptions($options);
+					$button = new CustomButton('upload');
+					$button->setOptions($options);
 
-                    $toolbar->AppendButton($button);
-                }
-        }
+					$toolbar->AppendButton($button);
+				}
+		}
 
-        $manualButton = BwPostmanHTMLHelper::getManualButton('templates');
-        $forumButton  = BwPostmanHTMLHelper::getForumButton();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('templates');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
-        $toolbar->appendButton($manualButton);
-        $toolbar->appendButton($forumButton);
-    }
+		$toolbar->appendButton($manualButton);
+		$toolbar->appendButton($forumButton);
+	}
 }

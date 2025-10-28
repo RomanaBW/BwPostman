@@ -31,16 +31,16 @@ use Joomla\CMS\Layout\LayoutHelper;
 ?>
 
 <table>
-    <tr>
-        <td>
-        <table class="adminlist">
-            <tr>
-                <td>
-                    <div id="cpanel" class="cpanel_j3"></div>
-                </td>
-            </tr>
-        </table>
-    </tr>
+	<tr>
+		<td>
+		<table class="adminlist">
+			<tr>
+				<td>
+					<div id="cpanel" class="cpanel_j3"></div>
+				</td>
+			</tr>
+		</table>
+	</tr>
 </table>
 
 

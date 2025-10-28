@@ -45,52 +45,52 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class RawView extends BaseHtmlView
 {
-    /**
-     * property to hold selected item
-     *
-     * @var object   $item
-     *
-     * @since   2.0.0
-     */
-    protected object $item;
+	/**
+	 * property to hold selected item
+	 *
+	 * @var object   $item
+	 *
+	 * @since   2.0.0
+	 */
+	protected object $item;
 
-    /**
-     * Execute and display a template script.
-     *
-     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-     *
-     * @return  RawView  A string if successful, otherwise a JError object.
-     *
-     * @throws Exception
-     *
-     * @since   2.0.0
-     */
-    public function display($tpl = null): RawView
-    {
-        $app 	= Factory::getApplication();
-        $jinput	= $app->input;
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  RawView  A string if successful, otherwise a JError object.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function display($tpl = null): RawView
+	{
+		$app 	= Factory::getApplication();
+		$jinput	= $app->input;
 
-        if (!BwPostmanHelper::canView('newsletter'))
-        {
-            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_NLS')), 'error');
-            $app->redirect('index.php?option=com_bwpostman');
-        }
+		if (!BwPostmanHelper::canView('newsletter'))
+		{
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_NLS')), 'error');
+			$app->redirect('index.php?option=com_bwpostman');
+		}
 
-        $model	= $this->getModel('Newsletter');
-        $task	= $jinput->get('task', 'previewHTML');
-        $nl_id	= $jinput->get('nl_id');
-        $app->setUserState('com_bwpostman.viewraw.newsletter.id', $nl_id);
+		$model	= $this->getModel('Newsletter');
+		$task	= $jinput->get('task', 'previewHTML');
+		$nl_id	= $jinput->get('nl_id');
+		$app->setUserState('com_bwpostman.viewraw.newsletter.id', $nl_id);
 
-        if ($task == 'insideModal')
-        {
-            // Get the newsletter
-            $this->item	= $model->getItem($nl_id);
-        }
+		if ($task == 'insideModal')
+		{
+			// Get the newsletter
+			$this->item	= $model->getItem($nl_id);
+		}
 
-        $this->item = $model->getSingleNewsletter();
+		$this->item = $model->getSingleNewsletter();
 
-        // Call parent display
-        parent::display($tpl);
-        return $this;
-    }
+		// Call parent display
+		parent::display($tpl);
+		return $this;
+	}
 }

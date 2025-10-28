@@ -29,9 +29,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $fieldSets = $this->form->getFieldsets('basics');
 foreach ($fieldSets as $name => $fieldSet) :
-    ?>
-    <?php foreach ($this->form->getFieldset($name) as $field) : ?>
-        <?php echo $field->renderField(); ?>
-    <?php endforeach; ?>
+	?>
+	<?php foreach ($this->form->getFieldset($name) as $field) : ?>
+		<?php echo $field->renderField(); ?>
+	<?php endforeach; ?>
 <?php endforeach;
 ?>

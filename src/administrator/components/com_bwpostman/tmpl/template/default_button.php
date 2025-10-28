@@ -36,22 +36,22 @@ echo '  <div class="clr clearfix"></div>';
 echo HTMLHelper::_('uitab.startTabSet', 'buttons', ['active' => 'bpanel1']);
 
 while ($i <= 5) :
-    $fieldSets = $this->form->getFieldsets('button' . $i);
-    foreach ($fieldSets as $name => $fieldSet) :
-        echo HTMLHelper::_('uitab.addTab', 'buttons', 'bpanel' . $i, Text::_($fieldSet->label) . ' ' . $i);
-        ?>
-        <fieldset class="panelform options-grid-form options-grid-form-full">
-            <legend><?php echo $this->escape(Text::_($fieldSet->label)) . ' ' . $i; ?></legend>
-            <div>
-                <?php foreach ($this->form->getFieldset($name) as $field) : ?>
-                    <?php echo $field->renderField(); ?>
-                <?php endforeach; ?>
-            </div>
-        </fieldset>
-    <?php
-        echo HTMLHelper::_('uitab.endTab');
-    endforeach;
-    $i++;
+	$fieldSets = $this->form->getFieldsets('button' . $i);
+	foreach ($fieldSets as $name => $fieldSet) :
+		echo HTMLHelper::_('uitab.addTab', 'buttons', 'bpanel' . $i, Text::_($fieldSet->label) . ' ' . $i);
+		?>
+		<fieldset class="panelform options-grid-form options-grid-form-full">
+			<legend><?php echo $this->escape(Text::_($fieldSet->label)) . ' ' . $i; ?></legend>
+			<div>
+				<?php foreach ($this->form->getFieldset($name) as $field) : ?>
+					<?php echo $field->renderField(); ?>
+				<?php endforeach; ?>
+			</div>
+		</fieldset>
+	<?php
+		echo HTMLHelper::_('uitab.endTab');
+	endforeach;
+	$i++;
 endwhile;
 
 echo HTMLHelper::_('uitab.endTabSet');

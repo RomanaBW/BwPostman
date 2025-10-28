@@ -62,11 +62,11 @@ $manual	= "https://www.boldt-webservice.de/$lang_ver/downloads/bwpostman/bwpostm
 
 if ($update)
 {
-    $string_special		= Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_SPECIAL_NOTE_DESC');
+	$string_special		= Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_SPECIAL_NOTE_DESC');
 }
 else
 {
-    $string_special		= Text::_('COM_BWPOSTMAN_INSTALLATION_INSTALL_SPECIAL_NOTE_DESC');
+	$string_special		= Text::_('COM_BWPOSTMAN_INSTALLATION_INSTALL_SPECIAL_NOTE_DESC');
 }
 $string_new			= Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_NEW_DESC');
 $string_improvement	= Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_IMPROVEMENT_DESC');
@@ -74,55 +74,55 @@ $string_bugfix		= Text::_('COM_BWPOSTMAN_INSTALLATION_UPDATE_BUGFIX_DESC');
 
 if (($string_bugfix != '' || $string_improvement != '' || $string_new != '') && $update)
 {
-    $show_update	= true;
+	$show_update	= true;
 }
 if ($show_update || $string_special != '')
 {
-    $show_right	= true;
+	$show_right	= true;
 }
 ?>
 
 <div id="com_bwp_install_header">
-    <a href="https://www.boldt-webservice.de" target="_blank">
-        <img class="img-fluid" src="<?php echo Uri::root(); ?>media/com_bwpostman/images/bw_header.png" alt="Boldt Webservice" />
-    </a>
+	<a href="https://www.boldt-webservice.de" target="_blank">
+		<img class="img-fluid" src="<?php echo Uri::root(); ?>media/com_bwpostman/images/bw_header.png" alt="Boldt Webservice" />
+	</a>
 </div>
 <div class="top_line"></div>
 
 <div id="com_bwp_install_outer">
 </div>
 <div class="row mt-2">
-    <div id="checkResult" class="col-12">
-        <div id="warn" class="alert alert-warning my-3 p-2">
-            <?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_WARNING'); ?>
-        </div>
-        <div id="info" class="alert alert-info my-3 p-2" style="display:none;">
-            <?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_INFO'); ?>
-        </div>
-    </div>
+	<div id="checkResult" class="col-12">
+		<div id="warn" class="alert alert-warning my-3 p-2">
+			<?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_WARNING'); ?>
+		</div>
+		<div id="info" class="alert alert-info my-3 p-2" style="display:none;">
+			<?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_UPDATECHECKSAVE_INFO'); ?>
+		</div>
+	</div>
 </div>
 <div id="checkResult" class="row">
-    <div class="col-lg-6">
-        <div class="card card-body">
-            <h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES'); ?></h2>
-            <p id="step0" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_0'); ?></p>
-            <h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
-            <p id="step1" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
-            <p id="step2" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
-            <p id="step3" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
-            <p id="step4" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
-            <p id="step5" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
-            <p id="step6" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_6'); ?></p>
-            <p id="step7" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_7'); ?></p>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <div id="resultSet" class="resultSet card card-body">
-            <h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
-            <div id="loading2" class="text-center my-3"></div>
-            <div id="result"></div>
-        </div>
-    </div>
+	<div class="col-lg-6">
+		<div class="card card-body">
+			<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES'); ?></h2>
+			<p id="step0" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_0'); ?></p>
+			<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES'); ?></h2>
+			<p id="step1" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_1'); ?></p>
+			<p id="step2" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_2'); ?></p>
+			<p id="step3" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_3'); ?></p>
+			<p id="step4" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_4'); ?></p>
+			<p id="step5" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_5'); ?></p>
+			<p id="step6" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_6'); ?></p>
+			<p id="step7" class="alert alert-secondary mt-0"><span class="fa fa-pulse me-2"></span><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_STEP_7'); ?></p>
+		</div>
+	</div>
+	<div class="col-lg-6">
+		<div id="resultSet" class="resultSet card card-body">
+			<h2><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_AND_REPAIR_RESULT'); ?></h2>
+			<div id="loading2" class="text-center my-3"></div>
+			<div id="result"></div>
+		</div>
+	</div>
 </div>
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 

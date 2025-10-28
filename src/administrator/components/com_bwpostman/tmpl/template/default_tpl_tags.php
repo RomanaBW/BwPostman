@@ -34,20 +34,20 @@ echo HTMLHelper::_('uitab.startTabSet', 'tpl_tags', array('startOffset' => 0));
 echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag1', Text::_('COM_BWPOSTMAN_TPL_TAGS_HEAD_LABEL'));
 ?>
 <fieldset class="panelform card-body">
-    <?php echo Text::_('COM_BWPOSTMAN_TPL_HEAD_DESC'); ?>
-    <?php echo $this->form->renderField('tpl_tags_head'); ?>
+	<?php echo Text::_('COM_BWPOSTMAN_TPL_HEAD_DESC'); ?>
+	<?php echo $this->form->renderField('tpl_tags_head'); ?>
 
-    <div class="control-group">
-        <label>
-            <?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
-        </label>
-        <div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->headTag)); ?></div>
-    </div>
+	<div class="control-group">
+		<label>
+			<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
+		</label>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->headTag)); ?></div>
+	</div>
 
-    <div class="control-group">
-        <?php echo $this->form->getLabel('tpl_tags_head_advanced'); ?>
-        <?php echo $this->form->getInput('tpl_tags_head_advanced'); ?>
-    </div>
+	<div class="control-group">
+		<?php echo $this->form->getLabel('tpl_tags_head_advanced'); ?>
+		<?php echo $this->form->getInput('tpl_tags_head_advanced'); ?>
+	</div>
 </fieldset>
 <?php
 echo HTMLHelper::_('uitab.endTab');
@@ -55,20 +55,20 @@ echo HTMLHelper::_('uitab.endTab');
 echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag2', Text::_('COM_BWPOSTMAN_TPL_TAGS_BODY_LABEL'));
 ?>
 <fieldset class="panelform card-body">
-    <?php echo Text::_('COM_BWPOSTMAN_TPL_HEAD_DESC'); ?>
-    <?php echo $this->form->renderField('tpl_tags_body'); ?>
+	<?php echo Text::_('COM_BWPOSTMAN_TPL_HEAD_DESC'); ?>
+	<?php echo $this->form->renderField('tpl_tags_body'); ?>
 
-    <div class="control-group">
-            <label>
-                <?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
-            </label>
-        <div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->bodyTag)); ?></div>
-    </div>
+	<div class="control-group">
+			<label>
+				<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
+			</label>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->bodyTag)); ?></div>
+	</div>
 
-    <div class="control-group">
-        <?php echo $this->form->getLabel('tpl_tags_body_advanced'); ?>
-        <?php echo $this->form->getInput('tpl_tags_body_advanced'); ?>
-    </div>
+	<div class="control-group">
+		<?php echo $this->form->getLabel('tpl_tags_body_advanced'); ?>
+		<?php echo $this->form->getInput('tpl_tags_body_advanced'); ?>
+	</div>
 </fieldset>
 <?php
 echo HTMLHelper::_('uitab.endTab');
@@ -76,24 +76,24 @@ echo HTMLHelper::_('uitab.endTab');
 echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag3', Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_LABEL'));
 ?>
 <fieldset class="panelform card-body">
-    <?php echo Text::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC'); ?>
-    <?php echo $this->form->renderField('tpl_tags_article'); ?>
+	<?php echo Text::_('COM_BWPOSTMAN_TPL_ARTICLE_DESC'); ?>
+	<?php echo $this->form->renderField('tpl_tags_article'); ?>
 
-    <div class="control-group">
-        <label>
-            <?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
-        </label>
-        <div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->articleTagBegin)); ?></div>
-        <div class="my-2"><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></div>
-        <div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->articleTagEnd)); ?></div>
-    </div>
+	<div class="control-group">
+		<label>
+			<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
+		</label>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->articleTagBegin)); ?></div>
+		<div class="my-2"><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></div>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->articleTagEnd)); ?></div>
+	</div>
 
-    <div class="control-group">
-        <?php echo $this->form->getLabel('tpl_tags_article_advanced_b'); ?>
-        <?php echo $this->form->getInput('tpl_tags_article_advanced_b'); ?>
-        <div class="my-2"><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></div>
-        <?php echo $this->form->getInput('tpl_tags_article_advanced_e'); ?>
-    </div>
+	<div class="control-group">
+		<?php echo $this->form->getLabel('tpl_tags_article_advanced_b'); ?>
+		<?php echo $this->form->getInput('tpl_tags_article_advanced_b'); ?>
+		<div class="my-2"><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_ARTICLE_INFO'); ?></div>
+		<?php echo $this->form->getInput('tpl_tags_article_advanced_e'); ?>
+	</div>
 </fieldset>
 <?php
 echo HTMLHelper::_('uitab.endTab');
@@ -101,20 +101,20 @@ echo HTMLHelper::_('uitab.endTab');
 echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag4', Text::_('COM_BWPOSTMAN_TPL_TAGS_READON_LABEL'));
 ?>
 <fieldset class="panelform card-body">
-    <?php echo Text::_('COM_BWPOSTMAN_TPL_READON_DESC'); ?>
-    <?php echo $this->form->renderField('tpl_tags_readon'); ?>
+	<?php echo Text::_('COM_BWPOSTMAN_TPL_READON_DESC'); ?>
+	<?php echo $this->form->renderField('tpl_tags_readon'); ?>
 
-    <div class="control-group">
-        <label>
-            <?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
-        </label>
-        <div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->readonTag)); ?></div>
-    </div>
+	<div class="control-group">
+		<label>
+			<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
+		</label>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->readonTag)); ?></div>
+	</div>
 
-    <div class="control-group">
-        <?php echo $this->form->getLabel('tpl_tags_readon_advanced'); ?>
-        <?php echo $this->form->getInput('tpl_tags_readon_advanced'); ?>
-    </div>
+	<div class="control-group">
+		<?php echo $this->form->getLabel('tpl_tags_readon_advanced'); ?>
+		<?php echo $this->form->getInput('tpl_tags_readon_advanced'); ?>
+	</div>
 </fieldset>
 <?php
 echo HTMLHelper::_('uitab.endTab');
@@ -122,24 +122,24 @@ echo HTMLHelper::_('uitab.endTab');
 echo HTMLHelper::_('uitab.addTab', 'tpl_tags', 'tpl_tag5', Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_LABEL'));
 ?>
 <fieldset class="panelform card-body">
-    <?php echo Text::_('COM_BWPOSTMAN_TPL_LEGAL_DESC'); ?>
-    <?php echo $this->form->renderField('tpl_tags_legal'); ?>
+	<?php echo Text::_('COM_BWPOSTMAN_TPL_LEGAL_DESC'); ?>
+	<?php echo $this->form->renderField('tpl_tags_legal'); ?>
 
-    <div class="control-group">
-        <label>
-            <?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
-        </label>
-        <div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->legalTagBegin)); ?></div>
-        <div class="my-2"><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></div>
-        <div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->legalTagEnd)); ?></div>
-    </div>
+	<div class="control-group">
+		<label>
+			<?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_STANDARD_LABEL'); ?>
+		</label>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->legalTagBegin)); ?></div>
+		<div class="my-2"><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></div>
+		<div class="textarea form-control h-auto readonly w-100"><?php echo nl2br(htmlentities($this->legalTagEnd)); ?></div>
+	</div>
 
-    <div class="control-group">
-        <?php echo $this->form->getLabel('tpl_tags_legal_advanced_b'); ?>
-            <?php echo $this->form->getInput('tpl_tags_legal_advanced_b'); ?>
-        <div class="my-2"><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></div>
-        <?php echo $this->form->getInput('tpl_tags_legal_advanced_e'); ?>
-    </div>
+	<div class="control-group">
+		<?php echo $this->form->getLabel('tpl_tags_legal_advanced_b'); ?>
+			<?php echo $this->form->getInput('tpl_tags_legal_advanced_b'); ?>
+		<div class="my-2"><?php echo Text::_('COM_BWPOSTMAN_TPL_TAGS_LEGAL_INFO'); ?></div>
+		<?php echo $this->form->getInput('tpl_tags_legal_advanced_e'); ?>
+	</div>
 </fieldset>
 
 <?php

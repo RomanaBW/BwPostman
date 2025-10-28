@@ -30,5 +30,5 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <?php
-    echo $this->item->html_formatted;
+	echo $this->item->html_formatted;
 ?>

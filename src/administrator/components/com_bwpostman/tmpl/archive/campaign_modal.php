@@ -32,64 +32,64 @@ use Joomla\CMS\Uri\Uri;
 ?>
 
 <table class="admintable">
-    <tr>
-        <td><img src="<?php echo Uri::base() . 'media/com_bwpostman/images/icon-48-campaigns.png'; ?>" alt="Campaigns Icon" /></td>
-        <td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_CAM') ?></strong></td>
-    </tr>
+	<tr>
+		<td><img src="<?php echo Uri::base() . 'media/com_bwpostman/images/icon-48-campaigns.png'; ?>" alt="Campaigns Icon" /></td>
+		<td><strong><?php echo Text::_('COM_BWPOSTMAN_ARC_SHOW_CAM') ?></strong></td>
+	</tr>
 </table>
 <br />
 <fieldset class="adminform">
-    <table class="admintable">
-        <tr>
-            <td style="text-align: right;">
-                <strong>
-                    <?php echo Text::_('COM_BWPOSTMAN_TITLE');
-                    echo ':'; ?>
-                </strong>
-            </td>
-            <td><?php echo $this->cam->title;?></td>
-        </tr>
-        <tr>
-            <td style="text-align: right;">
-                <strong>
-                    <?php echo Text::_('COM_BWPOSTMAN_DESC');
-                    echo ':'; ?>
-                </strong>
-            </td>
-            <td><?php echo $this->cam->description;?></td>
-        </tr>
-    </table>
+	<table class="admintable">
+		<tr>
+			<td style="text-align: right;">
+				<strong>
+					<?php echo Text::_('COM_BWPOSTMAN_TITLE');
+					echo ':'; ?>
+				</strong>
+			</td>
+			<td><?php echo $this->cam->title;?></td>
+		</tr>
+		<tr>
+			<td style="text-align: right;">
+				<strong>
+					<?php echo Text::_('COM_BWPOSTMAN_DESC');
+					echo ':'; ?>
+				</strong>
+			</td>
+			<td><?php echo $this->cam->description;?></td>
+		</tr>
+	</table>
 </fieldset>
 <br />
 <fieldset class="adminform">
-    <table>
-        <tr>
-            <td><strong><?php echo Text::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL'); ?></strong></td>
-        </tr>
-        <tr>
-            <td><?php
-            $newsletters = $this->cam->newsletters;
+	<table>
+		<tr>
+			<td><strong><?php echo Text::_('COM_BWPOSTMAN_CAM_ASSIGNED_NL'); ?></strong></td>
+		</tr>
+		<tr>
+			<td><?php
+			$newsletters = $this->cam->newsletters;
 
-            if (!empty($newsletters))
-            {
-                echo "<ul>";
+			if (!empty($newsletters))
+			{
+				echo "<ul>";
 
-                foreach ($newsletters AS $newsletter) {
-                    if ($newsletter->archive_flag == 0) {
-                        echo "<li><strong>$newsletter->subject</strong> (ID: $newsletter->id)</li>";
-                    }
-                    else
-                    {
-                        echo "<li><strong>$newsletter->subject</strong> (ID: $newsletter->id, " . Text::_('COM_BWPOSTMAN_ARC_NL') . ")</li>";
-                    }
-                }
+				foreach ($newsletters AS $newsletter) {
+					if ($newsletter->archive_flag == 0) {
+						echo "<li><strong>$newsletter->subject</strong> (ID: $newsletter->id)</li>";
+					}
+					else
+					{
+						echo "<li><strong>$newsletter->subject</strong> (ID: $newsletter->id, " . Text::_('COM_BWPOSTMAN_ARC_NL') . ")</li>";
+					}
+				}
 
-                echo "</ul>";
-            }
-            else {
-                echo Text::_('COM_BWPOSTMAN_ARC_CAM_NO_ASSIGNED_NL');
-            }
-            ?></td>
-        </tr>
-    </table>
+				echo "</ul>";
+			}
+			else {
+				echo Text::_('COM_BWPOSTMAN_ARC_CAM_NO_ASSIGNED_NL');
+			}
+			?></td>
+		</tr>
+	</table>
 </fieldset>

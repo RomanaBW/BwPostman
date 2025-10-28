@@ -283,7 +283,7 @@ class HtmlView extends BaseHtmlView
 
                     $childBar = $dropdown->getChildToolbar();
 
-                    if (BwPostmanHelper::canEdit('subscriber', []))
+                    if (BwPostmanHelper::canEdit('subscriber'))
                     {
                         $childBar->edit('subscriber.edit')->listCheck(true);
                     }
@@ -299,7 +299,7 @@ class HtmlView extends BaseHtmlView
                     }
 
                     // Add a batch button
-                    if (BwPostmanHelper::canEdit('subscriber', []))
+                    if (BwPostmanHelper::canEdit('subscriber'))
                     {
                         $childBar->popupButton('batch')
                             ->text('JTOOLBAR_BATCH')
@@ -360,7 +360,7 @@ class HtmlView extends BaseHtmlView
 
                 $childBar = $dropdown->getChildToolbar();
 
-                if (BwPostmanHelper::canEdit('subscriber', []))
+                if (BwPostmanHelper::canEdit('subscriber'))
                 {
                     $childBar->edit('subscriber.edit')->listCheck(true);
                 }

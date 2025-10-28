@@ -259,7 +259,7 @@ class HtmlView extends BaseHtmlView
 
                     $childBar = $dropdown->getChildToolbar();
 
-                    if (BwPostmanHelper::canEdit('newsletter', []))
+                    if (BwPostmanHelper::canEdit('newsletter'))
                     {
                         $childBar->edit('newsletter.edit')->listCheck(true);
                     }
@@ -323,7 +323,7 @@ class HtmlView extends BaseHtmlView
 
                     $childBar = $dropdown->getChildToolbar();
 
-                    if (BwPostmanHelper::canEdit('newsletter', []))
+                    if (BwPostmanHelper::canEdit('newsletter'))
                     {
                         $childBar->edit('newsletter.edit')->listCheck(true);
                     }

@@ -349,7 +349,7 @@ class HtmlView extends BaseHtmlView
                 if (!$checkedOut)
                 {
                     // Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-                    if (BwPostmanHelper::canEdit('newsletter', ['id' => $this->item->id]))
+                    if (BwPostmanHelper::canEdit('newsletter', $this->item->id))
                     {
                         $toolbar->apply('newsletter.apply');
 

@@ -30,12 +30,12 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 defined('_JEXEC') or die('Restricted access');
 
 use Exception;
+use Joomla\CMS\Event\Model\AfterSaveEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
-use Joomla\Event\Event;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
@@ -491,7 +491,7 @@ class CampaignModel extends AdminModel
 
                 PluginHelper::importPlugin('bwpostman');
 
-                $event = new Event('onBwPostmanCampaignSave', [
+                $event = new AfterSaveEvent('onBwPostmanCampaignSave', [
                     'subject' => ArrayHelper::fromObject($this),
                     'data'    => $data,
                 ]);

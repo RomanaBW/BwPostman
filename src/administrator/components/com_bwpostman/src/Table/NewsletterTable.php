@@ -65,11 +65,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public ?int $id = null;
 
     /**
-     * @var int|string|null asset_id
+     * @var ?int asset_id
      *
      * @since       1.0.1
      */
-    public int|string|null $asset_id = null;
+    public ?int $asset_id = null;
 
     /**
      * @var ?string Sender name
@@ -114,11 +114,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public ?int $campaign_id = null;
 
     /**
-     * @var array|string|null Usergroups
+     * @var ?string Usergroups
      *
      * @since       0.9.1
      */
-    public array|string|null $usergroups = null;
+    public ?string $usergroups = null;
 
     /**
      * @var ?string Selected content
@@ -149,11 +149,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public int $access = 1;
 
     /**
-     * @var ?string attachment
+     * @var string attachment
      *
      * @since       0.9.7
      */
-    public ?string $attachment = "";
+    public string $attachment = "";
 
     /**
      * @var ?string HTML headline
@@ -226,11 +226,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public DateTime|string|null $modified_time = null;
 
     /**
-     * @var ?int user ID
+     * @var int user ID
      *
      * @since       0.9.1
      */
-    public ?int $modified_by = 0;
+    public int $modified_by = 0;
 
     /**
      * @var DateTime|string|null Mailing date
@@ -261,11 +261,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public DateTime|string|null $publish_down = null;
 
     /**
-     * @var ?int Checked-out Owner
+     * @var int Checked-out Owner
      *
      * @since       0.9.1
      */
-    public ?int $checked_out = 0;
+    public int $checked_out = 0;
 
     /**
      * @var DateTime|string|null Checked-out time

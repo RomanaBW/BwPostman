@@ -95,11 +95,11 @@ class SendmailcontentTable extends Table
     public ?string $subject = null;
 
     /**
-     * @var ?string Email-body
+     * @var String Email-body
      *
      * @since       0.9.1
      */
-    public ?string $body = '';
+    public string $body = '';
 
     /**
      * @var ?string CC email
@@ -116,11 +116,11 @@ class SendmailcontentTable extends Table
     public ?string $bcc_email = null;
 
     /**
-     * @var null|string|array Attachment
+     * @var string|array Attachment
      *
      * @since       0.9.1
      */
-    public null|string|array $attachment = '';
+    public string|array $attachment = '';
 
     /**
      * @var ?string Reply-to email

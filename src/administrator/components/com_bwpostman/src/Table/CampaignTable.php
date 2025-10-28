@@ -63,11 +63,11 @@ class CampaignTable extends Table implements VersionableTableInterface
     public int $id = 0;
 
     /**
-     * @var int|string|null asset_id
+     * @var ?int asset_id
      *
      * @since       1.0.1
      */
-    public int|string|null $asset_id = null;
+    public ?int $asset_id = null;
 
     /**
      * @var ?string Campaign title

@@ -275,7 +275,7 @@ class HtmlView extends BaseHtmlView
         $layout		= $app->input->get('layout', '');
 
         // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
         // Get document object, set document title and add css
         $document	= $app->getDocument();

@@ -183,7 +183,7 @@ class HtmlView extends BaseHtmlView
         PluginHelper::importPlugin('bwpostman');
 
         // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
         $this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_confirm_archive_cam_nls');
 

@@ -40,166 +40,166 @@ use Joomla\Registry\Registry;
  */
 class BwPostmanHelperQuery
 {
-    /**
-     * Translate an order code to a field for primary category ordering.
-     *
-     * @param string $orderby The ordering code.
-     *
-     * @return	string	The SQL field(s) to order by.
-     *
-     * @since	1.2.0
-     */
-    public static function orderbyPrimary(string $orderby): string
-    {
-        switch ($orderby)
-        {
-            case 'alpha':
-                $orderby = 'c.path, ';
-                break;
+	/**
+	 * Translate an order code to a field for primary category ordering.
+	 *
+	 * @param string $orderby The ordering code.
+	 *
+	 * @return	string	The SQL field(s) to order by.
+	 *
+	 * @since	1.2.0
+	 */
+	public static function orderbyPrimary(string $orderby): string
+	{
+		switch ($orderby)
+		{
+			case 'alpha':
+				$orderby = 'c.path, ';
+				break;
 
-            case 'ralpha':
-                $orderby = 'c.path DESC, ';
-                break;
+			case 'ralpha':
+				$orderby = 'c.path DESC, ';
+				break;
 
-            case 'order':
-                $orderby = 'c.lft, ';
-                break;
+			case 'order':
+				$orderby = 'c.lft, ';
+				break;
 
-            default:
-                $orderby = '';
-                break;
-        }
+			default:
+				$orderby = '';
+				break;
+		}
 
-        return $orderby;
-    }
+		return $orderby;
+	}
 
-    /**
-     * Translate an order code to a field for secondary category ordering.
-     *
-     * @param string $orderby   The ordering code.
-     * @param string $orderDate The ordering code for the date.
-     *
-     * @return  string  The SQL field(s) to order by.
-     *
-     * @since	1.2.0
-     */
-    public static function orderbySecondary(string $orderby, string $orderDate = 'mailing_date'): string
-    {
-        $queryDate = self::getQueryDate($orderDate);
+	/**
+	 * Translate an order code to a field for secondary category ordering.
+	 *
+	 * @param string $orderby   The ordering code.
+	 * @param string $orderDate The ordering code for the date.
+	 *
+	 * @return  string  The SQL field(s) to order by.
+	 *
+	 * @since	1.2.0
+	 */
+	public static function orderbySecondary(string $orderby, string $orderDate = 'mailing_date'): string
+	{
+		$queryDate = self::getQueryDate($orderDate);
 
-        switch ($orderby)
-        {
-            case 'date':
-                $orderby = $queryDate;
-                break;
+		switch ($orderby)
+		{
+			case 'date':
+				$orderby = $queryDate;
+				break;
 
-            case 'rdate':
-                $orderby = $queryDate . ' DESC ';
-                break;
+			case 'rdate':
+				$orderby = $queryDate . ' DESC ';
+				break;
 
-            case 'alpha':
-                $orderby = 'a.subject';
-                break;
+			case 'alpha':
+				$orderby = 'a.subject';
+				break;
 
-            case 'ralpha':
-                $orderby = 'a.subject DESC';
-                break;
+			case 'ralpha':
+				$orderby = 'a.subject DESC';
+				break;
 
-            case 'hits':
-                $orderby = 'a.hits DESC';
-                break;
+			case 'hits':
+				$orderby = 'a.hits DESC';
+				break;
 
-            case 'rhits':
-                $orderby = 'a.hits';
-                break;
+			case 'rhits':
+				$orderby = 'a.hits';
+				break;
 
-            case 'author':
-                $orderby = 'author';
-                break;
+			case 'author':
+				$orderby = 'author';
+				break;
 
-            case 'rauthor':
-                $orderby = 'author DESC';
-                break;
+			case 'rauthor':
+				$orderby = 'author DESC';
+				break;
 
-            case 'front':
-                $orderby = 'a.featured DESC, fp.ordering, ' . $queryDate . ' DESC ';
-                break;
+			case 'front':
+				$orderby = 'a.featured DESC, fp.ordering, ' . $queryDate . ' DESC ';
+				break;
 
-            case 'order':
-            default:
-                $orderby = 'a.ordering';
-                break;
-        }
+			case 'order':
+			default:
+				$orderby = 'a.ordering';
+				break;
+		}
 
-        return $orderby;
-    }
+		return $orderby;
+	}
 
-    /**
-     * Translate an order code to a field for primary category ordering.
-     *
-     * @param string $orderDate The ordering code.
-     *
-     * @return	string	The SQL field(s) to order by.
-     *
-     * @since	1.2.0
-     */
-    public static function getQueryDate(string $orderDate): string
-    {
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+	/**
+	 * Translate an order code to a field for primary category ordering.
+	 *
+	 * @param string $orderDate The ordering code.
+	 *
+	 * @return	string	The SQL field(s) to order by.
+	 *
+	 * @since	1.2.0
+	 */
+	public static function getQueryDate(string $orderDate): string
+	{
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 
-        switch ($orderDate)
-        {
-            case 'modified':
-                $queryDate = ' CASE WHEN (a.modified = ' . $db->quote($db->getNullDate()) . ' OR a.modified = null) THEN a.created_date ELSE a.modified END';
-                break;
+		switch ($orderDate)
+		{
+			case 'modified':
+				$queryDate = ' CASE WHEN (a.modified = ' . $db->quote($db->getNullDate()) . ' OR a.modified = null) THEN a.created_date ELSE a.modified END';
+				break;
 
-            // Use created if publish_up is not set
-            case 'published':
-                $queryDate = ' CASE WHEN (a.publish_up = ' . $db->quote($db->getNullDate()) . ' OR a.publish_up = null) THEN a.created_date ELSE a.publish_up END ';
-                break;
+			// Use created if publish_up is not set
+			case 'published':
+				$queryDate = ' CASE WHEN (a.publish_up = ' . $db->quote($db->getNullDate()) . ' OR a.publish_up = null) THEN a.created_date ELSE a.publish_up END ';
+				break;
 
-            case 'created_date':
-                $queryDate = ' a.created_date ';
-                break;
-            case 'mailing_date':
-            default:
-                $queryDate = ' a.mailing_date ';
-                break;
-        }
+			case 'created_date':
+				$queryDate = ' a.created_date ';
+				break;
+			case 'mailing_date':
+			default:
+				$queryDate = ' a.mailing_date ';
+				break;
+		}
 
-        return $queryDate;
-    }
+		return $queryDate;
+	}
 
-    /**
-     * Get join information for the voting query.
-     *
-     * @param Registry|null $params An options object for the newsletter.
-     *
-     * @return	array  A named array with "select" and "join" keys.
-     *
-     * @since	1.2.0
-     */
-    public static function buildVotingQuery(Registry $params = null): array
-    {
-        if (!$params)
-        {
-            $params = ComponentHelper::getParams('com_content');
-        }
+	/**
+	 * Get join information for the voting query.
+	 *
+	 * @param Registry|null $params An options object for the newsletter.
+	 *
+	 * @return	array  A named array with "select" and "join" keys.
+	 *
+	 * @since	1.2.0
+	 */
+	public static function buildVotingQuery(Registry $params = null): array
+	{
+		if (!$params)
+		{
+			$params = ComponentHelper::getParams('com_content');
+		}
 
-        $voting = $params->get('show_vote', '');
+		$voting = $params->get('show_vote', '');
 
-        if ($voting)
-        {
-            // Calculate voting count
-            $select = ' , ROUND(v.rating_sum / v.rating_count) AS rating, v.rating_count';
-            $join = ' LEFT JOIN #__content_rating AS v ON a.id = v.content_id';
-        }
-        else
-        {
-            $select = '';
-            $join = '';
-        }
+		if ($voting)
+		{
+			// Calculate voting count
+			$select = ' , ROUND(v.rating_sum / v.rating_count) AS rating, v.rating_count';
+			$join = ' LEFT JOIN #__content_rating AS v ON a.id = v.content_id';
+		}
+		else
+		{
+			$select = '';
+			$join = '';
+		}
 
-        return array ('select' => $select, 'join' => $join);
-    }
+		return array ('select' => $select, 'join' => $join);
+	}
 }

@@ -41,57 +41,57 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class NewsletterController extends FormController
 {
-    /**
-     * Constructor
-     *
-     * @param	array	$config		An optional associative array of configuration settings.
-     *
-     * @throws Exception
-     *
-     * @since       2.0.0
-     */
-    public function __construct($config = array())
+	/**
+	 * Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.0.0
+	 */
+	public function __construct($config = array())
+	{
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+
+		parent::__construct($config, $this->factory);
+	}
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @param string $name   The name of the model.
+	 * @param string $prefix The prefix for the PHP class name.
+	 * @param array  $config An optional associative array of configuration settings.
+	 *
+	 * @return BaseDatabaseModel
+	 *
+	 * @throws Exception
+	 *
+	 * @since    4.0.0
+	 */
+	public function getModel($name = 'newsletter', $prefix = 'Site', $config = array('ignore_request' => true)): BaseDatabaseModel
+	{
+		return $this->factory->createModel($name, $prefix, $config);
+	}
+
+
+	/**
+	 * Display
+	 *
+	 * @param	boolean		$cachable	If true, the view output will be cached
+	 * @param	boolean		$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.0.0
+	 */
+	public function display($cachable = false, $urlparams = false): void
     {
-        $this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+		Factory::getApplication()->input->set('view', 'newsletter');
 
-        parent::__construct($config, $this->factory);
-    }
-
-    /**
-     * Proxy for getModel.
-     *
-     * @param string $name   The name of the model.
-     * @param string $prefix The prefix for the PHP class name.
-     * @param array  $config An optional associative array of configuration settings.
-     *
-     * @return BaseDatabaseModel
-     *
-     * @throws Exception
-     *
-     * @since    4.0.0
-     */
-    public function getModel($name = 'newsletter', $prefix = 'Site', $config = array('ignore_request' => true)): BaseDatabaseModel
-    {
-        return $this->factory->createModel($name, $prefix, $config);
-    }
-
-
-    /**
-     * Display
-     *
-     * @param	boolean		$cachable	If true, the view output will be cached
-     * @param	boolean		$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
-     *
-     * @return void
-     *
-     * @throws Exception
-     *
-     * @since       2.0.0
-     */
-    public function display($cachable = false, $urlparams = false): void
-    {
-        Factory::getApplication()->input->set('view', 'newsletter');
-
-        parent::display();
-    }
+		parent::display();
+	}
 }

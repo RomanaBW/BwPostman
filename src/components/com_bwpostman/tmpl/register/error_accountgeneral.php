@@ -46,7 +46,7 @@ $css_filename = 'templates/' . $templateName . '/css/com_bwpostman.css';
 
 if (file_exists(JPATH_BASE . '/' . $css_filename))
 {
-    $wa->registerAndUseStyle('customCss', Uri::root() . $css_filename);
+	$wa->registerAndUseStyle('customCss', Uri::root() . $css_filename);
 }
 
 
@@ -59,81 +59,81 @@ if (file_exists(JPATH_BASE . '/' . $css_filename))
 ?>
 
 <div id="bwpostman">
-    <div id="bwp_com_error_account_general">
-        <?php
-        if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != ''))
-        {
-            ?>
-            <h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
-                <?php echo $this->escape($this->params->get('page_heading', '')); ?>
-            </h1>
-        <?php
-        }
+	<div id="bwp_com_error_account_general">
+		<?php
+		if (($this->params->get('show_page_heading', '0') != 0) && ($this->params->get('page_heading', '') != ''))
+		{
+			?>
+			<h1 class="componentheading<?php echo $this->params->get('pageclass_sfx', ''); ?>">
+				<?php echo $this->escape($this->params->get('page_heading', '')); ?>
+			</h1>
+		<?php
+		}
 
-        echo '<p class="bwp-error">' . Text::_('COM_BWPOSTMAN_ERROR') . '</p>';
-        $msg = '';
+		echo '<p class="bwp-error">' . Text::_('COM_BWPOSTMAN_ERROR') . '</p>';
+		$msg = '';
 
-        if (is_null($this->error->err_code))
-        {
-            if ($this->error->err_msg == 'COM_BWPOSTMAN_ERROR_UNSUBSCRIBE')
-            { // Case 4
-                echo '<p class="error-message">' . Text::_($this->error->err_msg) . '</p>';
+		if (is_null($this->error->err_code))
+		{
+			if ($this->error->err_msg == 'COM_BWPOSTMAN_ERROR_UNSUBSCRIBE')
+			{ // Case 4
+				echo '<p class="error-message">' . Text::_($this->error->err_msg) . '</p>';
 
-                $admin_email = $this->params->def('default_from_email', Factory::getApplication()->getConfig()->get('mailfrom'));
+				$admin_email = $this->params->def('default_from_email', Factory::getApplication()->getConfig()->get('mailfrom'));
 
-                $msg1 = '<p class="contact-admin">' . Text::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email) . '</p>';
-                echo HtmlHelper::_('content.prepare', $msg1);
-            }
-            else
-            {
-                // Case 1
-                if (!property_exists($this->error, 'err_itemid'))
-                {
-                    $link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit");
-                }
-                else
-                {
-                    $link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;Itemid={$this->error->err_itemid}");
-                }
+				$msg1 = '<p class="contact-admin">' . Text::sprintf('COM_BWPOSTMAN_ERROR_CONTACTADMIN', $admin_email) . '</p>';
+				echo HtmlHelper::_('content.prepare', $msg1);
+			}
+			else
+			{
+				// Case 1
+				if (!property_exists($this->error, 'err_itemid'))
+				{
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit");
+				}
+				else
+				{
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;Itemid={$this->error->err_itemid}");
+				}
 
-                $msg = '<p class="error-message">' . Text::sprintf($this->error->err_msg, $link) . '</p>';
-            }
-        }
-        else
-        {
-            if ($this->error->err_code == 0) {
-                // Case 2
-                if (!property_exists($this->error, 'err_itemid'))
-                {
-                    $link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=register");
-                }
-                else
-                {
-                    $link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=register&amp;Itemid={$this->error->err_itemid}");
-                }
-            }
-            else
-            {
-                // Case 3
-                if (!property_exists($this->error, 'err_itemid'))
-                {
-                    $link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit");
-                }
-                else
-                {
-                    $link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;Itemid={$this->error->err_itemid}");
-                }
-            }
+				$msg = '<p class="error-message">' . Text::sprintf($this->error->err_msg, $link) . '</p>';
+			}
+		}
+		else
+		{
+			if ($this->error->err_code == 0) {
+				// Case 2
+				if (!property_exists($this->error, 'err_itemid'))
+				{
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=register");
+				}
+				else
+				{
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=register&amp;Itemid={$this->error->err_itemid}");
+				}
+			}
+			else
+			{
+				// Case 3
+				if (!property_exists($this->error, 'err_itemid'))
+				{
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit");
+				}
+				else
+				{
+					$link = Route::_(Uri::root() . "index.php?option=com_bwpostman&amp;view=edit&amp;Itemid={$this->error->err_itemid}");
+				}
+			}
 
-            $msg = '<p class="error-message">' . Text::sprintf($this->error->err_msg, $this->error->err_email, $link) . '</p>';
-        }
+			$msg = '<p class="error-message">' . Text::sprintf($this->error->err_msg, $this->error->err_email, $link) . '</p>';
+		}
 
-        echo $msg;
+		echo $msg;
 
-        if ($this->params->get('show_boldt_link', '1') === '1')
-        { ?>
-            <p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
-        <?php
-        } ?>
-    </div>
+		if ($this->params->get('show_boldt_link', '1') === '1')
+		{ ?>
+			<p class="bwpm_copyright"><?php echo BwPostmanSite::footer(); ?></p>
+		<?php
+		} ?>
+	</div>
 </div>

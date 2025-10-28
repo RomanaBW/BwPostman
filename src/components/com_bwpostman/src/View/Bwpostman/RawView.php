@@ -50,50 +50,50 @@ use Joomla\Registry\Registry;
  */
 class RawView extends BaseHtmlView
 {
-    /**
-     * property to hold form data
-     *
-     * @var array   $form
-     *
-     * @since       4.0.0
-     */
-    protected $form;
+	/**
+	 * property to hold form data
+	 *
+	 * @var array   $form
+	 *
+	 * @since       4.0.0
+	 */
+	protected $form;
 
-    /**
-     * property to hold selected item
-     *
-     * @var object   $item
-     *
-     * @since       4.0.0
-     */
-    protected object $item;
+	/**
+	 * property to hold selected item
+	 *
+	 * @var object   $item
+	 *
+	 * @since       4.0.0
+	 */
+	protected object $item;
 
-    /**
-     * property to hold subscriber data
-     *
-     * @var object   $sub
-     *
-     * @since       4.0.0
-     */
-    protected object $sub;
+	/**
+	 * property to hold subscriber data
+	 *
+	 * @var object   $sub
+	 *
+	 * @since       4.0.0
+	 */
+	protected object $sub;
 
-    /**
-     * property to hold row object
-     *
-     * @var object   $row
-     *
-     * @since       0.9.1
-     */
-    protected object $row;
+	/**
+	 * property to hold row object
+	 *
+	 * @var object   $row
+	 *
+	 * @since       0.9.1
+	 */
+	protected object $row;
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
     /**
      * Method to do the cron loop

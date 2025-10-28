@@ -39,24 +39,24 @@ use Joomla\CMS\Plugin\PluginHelper;
  */
 class BwPostmanSite
 {
-    /**
-     * Method to write the BwPostman footer
-     *
-     * @return string
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    public static function footer(): string
-    {
+	/**
+	 * Method to write the BwPostman footer
+	 *
+	 * @return string
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	public static function footer(): string
+	{
 
-        PluginHelper::importPlugin('bwpostman', 'copyright');
+		PluginHelper::importPlugin('bwpostman', 'copyright');
 
-        $copyright = '<span>BwPostman by </span><a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
+		$copyright = '<span>BwPostman by </span><a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
 
-        $arguments = array(&$copyright);
+		$arguments = array(&$copyright);
 
-        return $arguments[0];
-    }
+		return $arguments[0];
+	}
 }

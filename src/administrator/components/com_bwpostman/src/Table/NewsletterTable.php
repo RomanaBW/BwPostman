@@ -167,7 +167,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
      *
      * @since       1.1.0
      */
-    public ?string $intro_text = '';
+    public string $intro_text = '';
 
     /**
      * @var ?string TEXT headline
@@ -177,25 +177,25 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public ?string $intro_text_headline = null;
 
     /**
-     * @var ?string TEXT intro text
+     * @var string TEXT intro text
      *
      * @since       1.1.0
      */
-    public ?string $intro_text_text = '';
+    public string $intro_text_text = '';
 
     /**
-     * @var ?string HTML-version
+     * @var string HTML-version
      *
      * @since       0.9.1
      */
-    public ?string $html_version = '';
+    public string $html_version = '';
 
     /**
-     * @var ?string Text-version
+     * @var string Text-version
      *
      * @since       0.9.1
      */
-    public ?string $text_version = '';
+    public string $text_version = '';
 
     /**
      * @var ?int $is_template
@@ -205,11 +205,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public ?int $is_template = null;
 
     /**
-     * @var string|DateTime|null creation date of the newsletter
+     * @var string|DateTime creation date of the newsletter
      *
      * @since       0.9.1
      */
-    public string|DateTime|null $created_date = '0000-00-00 00:00:00';
+    public string|DateTime $created_date = '0000-00-00 00:00:00';
 
     /**
      * @var int Author
@@ -233,11 +233,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public int $modified_by = 0;
 
     /**
-     * @var DateTime|string|null Mailing date
+     * @var ?datetime Mailing date
      *
      * @since       0.9.1
      */
-    public DateTime|string|null $mailing_date = null;
+    public ?DateTime $mailing_date = null;
 
     /**
      * @var ?int Published
@@ -247,18 +247,18 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public ?int $published = null;
 
     /**
-     * @var DateTime|string|null for publishing up a newsletter
+     * @var ?datetime for publishing up a newsletter
      *
      * @since       1.2.0
      */
-    public DateTime|string|null $publish_up = null;
+    public ?DateTime $publish_up = null;
 
     /**
-     * @var DateTime|string|null for publishing down a newsletter
+     * @var ?datetime for publishing down a newsletter
      *
      * @since       1.2.0
      */
-    public DateTime|string|null $publish_down = null;
+    public ?DateTime $publish_down = null;
 
     /**
      * @var int Checked-out Owner
@@ -268,11 +268,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public int $checked_out = 0;
 
     /**
-     * @var DateTime|string|null Checked-out time
+     * @var ?datetime Checked-out time
      *
      * @since       0.9.1
      */
-    public DateTime|string|null $checked_out_time = null;
+    public ?DateTime $checked_out_time = null;
 
     /**
      * @var int Archive-flag --> 0 = not archived, 1 = archived
@@ -282,11 +282,11 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public int $archive_flag = 0;
 
     /**
-     * @var DateTime|string|null Archive-date
+     * @var ?datetime Archive-date
      *
      * @since       0.9.1
      */
-    public DateTime|string|null $archive_date = null;
+    public ?DateTime $archive_date = null;
 
     /**
      * @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator

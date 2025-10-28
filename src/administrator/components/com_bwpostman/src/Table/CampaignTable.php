@@ -92,11 +92,11 @@ class CampaignTable extends Table implements VersionableTableInterface
     public int $access = 1;
 
     /**
-     * @var DateTime|string|null creation date of the campaign
+     * @var string|datetime creation date of the campaign
      *
      * @since       0.9.1
      */
-    public DateTime|string|null $created_date = '0000-00-00 00:00:00';
+    public string|DateTime $created_date = '0000-00-00 00:00:00';
 
     /**
      * @var int user ID
@@ -131,7 +131,7 @@ class CampaignTable extends Table implements VersionableTableInterface
      *
      * @since       0.9.1
      */
-    public DateTime|string|null $checked_out_time = null;
+    public ?DateTime $checked_out_time = null;
 
     /**
      * @var int Archive-flag --> 0 = not archived, 1 = archived
@@ -145,7 +145,7 @@ class CampaignTable extends Table implements VersionableTableInterface
      *
      * @since       0.9.1
      */
-    public DateTime|string|null $archive_date = null;
+    public ?DateTime $archive_date = null;
 
     /**
      * @var int ID --> 0 = campaign is not archived, another ID = account is archived by an administrator

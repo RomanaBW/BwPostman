@@ -99,11 +99,11 @@ class HtmlView extends BaseHtmlView
     /**
      * property to hold template
      *
-     * @var object|string $template
+     * @var object $template
      *
      * @since       0.9.1
      */
-    public object|string $template;
+    public object $template;
 
 
     /**

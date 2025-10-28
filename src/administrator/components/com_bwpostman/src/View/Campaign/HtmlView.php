@@ -90,11 +90,11 @@ class HtmlView extends BaseHtmlView
     /**
      * property to hold newsletters list
      *
-     * @var array|object $newsletters
+     * @var array $newsletters
      *
      * @since       0.9.1
      */
-    public array|object $newsletters;
+    public array $newsletters;
 
     /**
      * property to hold permissions as array

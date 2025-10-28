@@ -102,32 +102,32 @@ class TemplateTable extends Table implements VersionableTableInterface
     public ?string $thumbnail = null;
 
     /**
-     * @var ?string tpl_html
+     * @var string tpl_html
      *
      * @since       1.1.0
      */
-    public ?string $tpl_html = '';
+    public string $tpl_html = '';
 
     /**
-     * @var ?string tpl_css
+     * @var string tpl_css
      *
      * @since       1.1.0
      */
-    public ?string $tpl_css = '';
+    public string $tpl_css = '';
 
     /**
-     * @var ?string tpl_article
+     * @var string tpl_article
      *
      * @since       1.1.0
      */
-    public ?string $tpl_article = '';
+    public string $tpl_article = '';
 
     /**
-     * @var ?string tpl_divider
+     * @var string tpl_divider
      *
      * @since       1.1.0
      */
-    public ?string $tpl_divider = '';
+    public string $tpl_divider = '';
 
     /**
      * @var ?int tpl_id
@@ -137,11 +137,11 @@ class TemplateTable extends Table implements VersionableTableInterface
     public ?int $tpl_id = null;
 
     /**
-     * @var ?string basics
+     * @var string basics
      *
      * @since       1.1.0
      */
-    public ?string $basics = '';
+    public string $basics = '';
 
     /**
      * @var ?string header
@@ -151,25 +151,25 @@ class TemplateTable extends Table implements VersionableTableInterface
     public ?string $header = null;
 
     /**
-     * @var ?string intro
+     * @var string intro
      *
      * @since       1.1.0
      */
-    public ?string $intro = '';
+    public string $intro = '';
 
     /**
-     * @var null|string|array article
+     * @var string|array article
      *
      * @since       1.1.0
      */
-    public null|string|array $article = '';
+    public string|array $article = '';
 
     /**
-     * @var null|string|array footer
+     * @var ?array footer
      *
      * @since       1.1.0
      */
-    public null|string|array $footer = null;
+    public ?array $footer = null;
 
     /**
      * @var ?string button1
@@ -221,11 +221,11 @@ class TemplateTable extends Table implements VersionableTableInterface
     public int $published = 0;
 
     /**
-     * @var DateTime|string|null creation date of the newsletter
+     * @var string|datetime creation date of the newsletter
      *
      * @since       1.1.0
      */
-    public DateTime|string|null $created_date = '0000-00-00 00:00:00';
+    public string|DateTime $created_date = '0000-00-00 00:00:00';
 
     /**
      * @var int Author
@@ -256,11 +256,11 @@ class TemplateTable extends Table implements VersionableTableInterface
     public int $checked_out = 0;
 
     /**
-     * @var DateTime|string|null Checked-out time
+     * @var ?datetime Checked-out time
      *
      * @since       1.1.0
      */
-    public DateTime|string|null $checked_out_time = null;
+    public ?DateTime $checked_out_time = null;
 
     /**
      * @var int Archive-flag --> 0 = not archived, 1 = archived
@@ -270,11 +270,11 @@ class TemplateTable extends Table implements VersionableTableInterface
     public int $archive_flag = 0;
 
     /**
-     * @var DateTime|string|null Archive-date
+     * @var ?datetime Archive-date
      *
      * @since       1.1.0
      */
-    public DateTime|string|null $archive_date = null;
+    public ?DateTime $archive_date = null;
 
     /**
      * @var int ID --> 0 = newsletter is not archived, another ID = account is archived by an administrator

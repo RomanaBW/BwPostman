@@ -107,11 +107,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
     public int $published = 0;
 
     /**
-     * @var DateTime|string|null creation date of the mailinglist
+     * @var string|datetime creation date of the mailinglist
      *
      * @since       0.9.1
      */
-    public DateTime|string|null $created_date = '0000-00-00 00:00:00';
+    public string|DateTime $created_date = '0000-00-00 00:00:00';
 
     /**
      * @var int user ID
@@ -142,11 +142,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
     public int $checked_out = 0;
 
     /**
-     * @var DateTime|string|null Checked-out time
+     * @var ?datetime Checked-out time
      *
      * @since       0.9.1
      */
-    public DateTime|string|null $checked_out_time = null;
+    public ?DateTime $checked_out_time = null;
 
     /**
      * @var int Archive-flag --> 0 = not archived, 1 = archived
@@ -156,11 +156,11 @@ class MailinglistTable extends Table implements VersionableTableInterface
     public int $archive_flag = 0;
 
     /**
-     * @var DateTime|string|null Archive-date
+     * @var ?datetime Archive-date
      *
      * @since       0.9.1
      */
-    public DateTime|string|null $archive_date = null;
+    public ?DateTime $archive_date = null;
 
     /**
      * @var int ID --> 0 = mailinglist is not archived, another ID = account is archived by an administrator

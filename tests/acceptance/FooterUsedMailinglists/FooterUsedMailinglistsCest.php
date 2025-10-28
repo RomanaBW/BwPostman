@@ -99,23 +99,12 @@ class FooterUsedMailinglistsCest
 		$I->clickAndWait(FooterPage::$listViewFirstElement, 1);
 		$I->waitForElementVisible(NlEdit::$tab1, 30);
 
-        $nbrRecipients = FooterPage::$text_preview_add_footer_ml_available_nbr;
+		$nbrRecipients = FooterPage::$text_preview_add_footer_ml_available_nbr;
 
 		// Switch to tab 4 (preview)
-		$I->click(NlEdit::$tab4);
+		$I->clickAndWait(NlEdit::$tab4, 3);
 
-        try
-        {
-            $I->acceptPopup();
-            $I->wait(2);
-        }
-        catch (\RuntimeException $e)
-        {
-            codecept_debug('Error on check preview');
-            codecept_debug($e->getMessage());
-        }
-
-        // Check HTML version
+		// Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
 		$I->wait(1);
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);

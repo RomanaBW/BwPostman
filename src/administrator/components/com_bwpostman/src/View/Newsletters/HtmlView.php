@@ -234,7 +234,7 @@ class HtmlView extends BaseHtmlView
 		$tab	= $this->state->get('tab', 'unsent');
 
 		// Get the toolbar object instance
-        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
 		$wa = $this->document->getWebAssetManager();
 		$wa->useScript('com_bwpostman.admin-bwpm_nls');

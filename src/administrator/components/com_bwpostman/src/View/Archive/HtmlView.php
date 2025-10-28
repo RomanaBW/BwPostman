@@ -192,7 +192,7 @@ class HtmlView extends BaseHtmlView
         $jinput	= $app->input;
 
 		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
         // Set toolbar title
         ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ARC'), 'list');

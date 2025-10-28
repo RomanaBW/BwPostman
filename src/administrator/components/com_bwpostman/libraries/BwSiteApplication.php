@@ -151,7 +151,7 @@ final class BwSiteApplication extends CMSApplication
 	protected function authorise($itemid)
 	{
 		$menus = $this->getMenu();
-		$user  = Factory::getUser();
+		$user  = Factory::getApplication()->getIdentity();
 
 		if (!$menus->authorise($itemid))
 		{
@@ -667,7 +667,7 @@ final class BwSiteApplication extends CMSApplication
 	 */
 	public function initialiseApp($options = [])
 	{
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		// If the user is a guest we populate it with the guest user group.
 		if ($user->guest)
@@ -828,7 +828,7 @@ final class BwSiteApplication extends CMSApplication
 					$this->set('themeFile', 'index.php');
 				}
 
-				if ($this->get('offline') && !Factory::getUser()->authorise('core.login.offline'))
+				if ($this->get('offline') && !Factory::getApplication()->getIdentity()->authorise('core.login.offline'))
 				{
 					$this->setUserState('users.login.form.data', ['return' => Uri::getInstance()->toString()]);
 					$this->set('themeFile', 'offline.php');

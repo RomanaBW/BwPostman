@@ -120,12 +120,25 @@ class TestNewslettersDetailsCest
 		$I->seeElement(NlEdit::$attachment_selected2);
 
 		$I->scrollTo(Generals::$toolbar4['Save & Close'],0, -100);
+
 		$I->wait(1);
 		$I->click(Generals::$toolbar4['Save & Close']);
-		$I->waitForElementVisible(Generals::$alert_header, 5);
-		NlEdit::checkSuccess($I, Generals::$admin['author']);
 
-		// Check list view attachment
+        try
+        {
+            $I->acceptPopup();
+            $I->wait(2);
+        }
+        catch (\RuntimeException $e)
+        {
+            codecept_debug('Error on check preview');
+            codecept_debug($e->getMessage());
+        }
+
+        $I->waitForElementVisible(Generals::$alert_header, 5);
+        NlEdit::checkSuccess($I, Generals::$admin['author']);
+
+        // Check list view attachment
 		$I->seeElement(NlEdit::$attachment_listview_icon);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);

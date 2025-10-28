@@ -172,39 +172,39 @@ class TemplateTable extends Table implements VersionableTableInterface
     public null|string|array $footer = null;
 
     /**
-     * @var array|string|null button1
+     * @var ?string button1
      *
      * @since       1.1.0
      */
-    public array|string|null $button1 = null;
+    public ?string $button1 = null;
 
     /**
-     * @var array|string|null button2
+     * @var ?string button2
      *
      * @since       1.1.0
      */
-    public array|string|null $button2 = null;
+    public ?string $button2 = null;
 
     /**
-     * @var array|string|null button3
+     * @var ?string button3
      *
      * @since       1.1.0
      */
-    public array|string|null $button3 = null;
+    public ?string $button3 = null;
 
     /**
-     * @var array|string|null button4
+     * @var ?string button4
      *
      * @since       1.1.0
      */
-    public array|string|null $button4 = null;
+    public ?string $button4 = null;
 
     /**
-     * @var array|string|null button5
+     * @var ?string button5
      *
      * @since       1.1.0
      */
-    public array|string|null $button5 = null;
+    public ?string $button5 = null;
 
     /**
      * @var int access

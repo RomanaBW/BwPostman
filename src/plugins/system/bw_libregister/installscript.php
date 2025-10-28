@@ -30,7 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
-use Joomla\Database\DatabaseInterface;
 use Joomla\Filesystem\Folder;
 
 /**
@@ -48,8 +47,8 @@ class PlgSystemBW_LibregisterInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	public function install(): void
-    {
+	public function install()
+	{
 		sleep(5);
 	}
 
@@ -90,8 +89,8 @@ class PlgSystemBW_LibregisterInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	public function postflight(string $type): void
-    {
+	public function postflight(string $type)
+	{
 		$oldLibPath = JPATH_ADMINISTRATOR . '/components/com_bwpostman/libraries/toolbar/';
 		if (Folder::exists($oldLibPath))
 		{
@@ -101,7 +100,7 @@ class PlgSystemBW_LibregisterInstallerScript
 		// We only need to perform this if the extension is being installed, not update
 		if ($type == 'install')
 		{
-			$db = Factory::getContainer()->get(DatabaseInterface::class);
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			$fields = array(

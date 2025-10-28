@@ -42,14 +42,14 @@ $forAttr = '';
 
 if ($required)
 {
-    $classes[] = 'required';
+	$classes[] = 'required';
 }
 
 if(!isset($displayData['field']->skipLabelFor) || $displayData['field']->skipLabelFor !== true)
 {
-    $forAttr = 'for="' . $for . '"';
+	$forAttr = 'for="' . $for . '"';
 }
 ?>
 <label id="<?php echo $id; ?>" <?php echo $forAttr; ?><?php if (!empty($classes)) echo ' class="' . implode(' ', $classes) . '"'; ?>>
-    <?php echo $text; ?><?php if ($required) : ?><span class="star" aria-hidden="true">&#160;*</span><?php endif; ?>
+	<?php echo $text; ?><?php if ($required) : ?><span class="star" aria-hidden="true">&#160;*</span><?php endif; ?>
 </label>

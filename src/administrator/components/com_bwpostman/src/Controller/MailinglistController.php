@@ -32,7 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 use Exception;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\Event\Event;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
@@ -50,336 +49,332 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
  */
 class MailinglistController extends FormController
 {
-    /**
-     * @var		string  The prefix to use with controller messages.
-     *
-     * @since	1.0.4
-     */
-    protected $text_prefix = 'COM_BWPOSTMAN_ML';
+	/**
+	 * @var		string  The prefix to use with controller messages.
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	 * @since	1.0.4
+	 */
+	protected $text_prefix = 'COM_BWPOSTMAN_ML';
 
-    /**
-     * Constructor.
-     *
-     * @param 	array	$config		An optional associative array of configuration settings.
-     *
-     * @throws Exception
-     *
-     * @since	1.0.1
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
-     * @see		JController
-     */
-    public function __construct($config = array())
-    {
-        $this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
+	/**
+	 * Constructor.
+	 *
+	 * @param 	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @throws Exception
+	 *
+	 * @since	1.0.1
 
-        $this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+	 * @see		JController
+	 */
+	public function __construct($config = array())
+	{
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
-        parent::__construct($config, $this->factory);
-    }
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
-    /**
-     * Display
-     *
-     * @param   boolean  $cachable   If true, the view output will be cached
-     * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
-     *
-     * @return  MailinglistController		This object to support chaining.
-     *
-     * @throws Exception
-     *
-     * @since   2.0.0
-     */
-    public function display($cachable = false, $urlparams = array()): MailinglistController
-    {
-        if (!$this->permissions['view']['mailinglist'])
-        {
-            $this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
-            $this->redirect();
-            return $this;
-        }
+		parent::__construct($config, $this->factory);
+	}
 
-        parent::display();
-        return $this;
-    }
+	/**
+	 * Display
+	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
+	 *
+	 * @return  MailinglistController		This object to support chaining.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   2.0.0
+	 */
+	public function display($cachable = false, $urlparams = array()): MailinglistController
+	{
+		if (!$this->permissions['view']['mailinglist'])
+		{
+			$this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
+			$this->redirect();
+			return $this;
+		}
 
-    /**
-     * Proxy for getModel.
-     *
-     * @param string $name   The name of the model.
-     * @param string $prefix The prefix for the PHP class name.
-     * @param array  $config An optional associative array of configuration settings.
-     *
-     * @return bool|BaseDatabaseModel
-     *
-     * @throws Exception
-     *
-     * @since    4.0.0
-     */
-    public function getModel($name = 'Mailinglist', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel|bool
-    {
-        return $this->factory->createModel($name, $prefix, $config);
-    }
+		parent::display();
+		return $this;
+	}
 
-    /**
-     * Method override to check if you can add a new record.
-     *
-     * @param array $data An array of input data.
-     *
-     * @return    boolean
-     *
-     * @throws Exception
-     *
-     * @since    1.0.1
-     */
-    protected function allowAdd($data = array()): bool
-    {
-        return BwPostmanHelper::canAdd('mailinglist');
-    }
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @param string $name   The name of the model.
+	 * @param string $prefix The prefix for the PHP class name.
+	 * @param array  $config An optional associative array of configuration settings.
+	 *
+	 * @return bool|BaseDatabaseModel
+	 *
+	 * @throws Exception
+	 *
+	 * @since    4.0.0
+	 */
+	public function getModel($name = 'Mailinglist', $prefix = 'Administrator', $config = array('ignore_request' => true))
+	{
+		return $this->factory->createModel($name, $prefix, $config);
+	}
 
-    /**
-     * Method override to check if you can edit a record.
-     *
-     * @param	array	$data		An array of input data.
-     * @param	string	$key		The name of the key for the primary key.
-     *
-     * @return	boolean
-     *
-     * @throws Exception
-     *
-     * @since	1.0.1
-     */
-    protected function allowEdit($data = array(), $key = 'id'): bool
-    {
-        return BwPostmanHelper::canEdit('mailinglist', $data);
-    }
+	/**
+	 * Method override to check if you can add a new record.
+	 *
+	 * @param array $data An array of input data.
+	 *
+	 * @return    boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since    1.0.1
+	 */
+	protected function allowAdd($data = array()): bool
+	{
+		return BwPostmanHelper::canAdd('mailinglist');
+	}
 
-    /**
-     * Method to check if you can archive records
-     *
-     * @param array $recordIds an array of items to check permission for
-     *
-     * @return	boolean
-     *
-     * @throws Exception
-     *
-     * @since	2.0.0
-     */
-    protected function allowArchive(array $recordIds = array()): bool
-    {
-        foreach ($recordIds as $recordId)
-        {
-            $allowed = BwPostmanHelper::canArchive('mailinglist', 0, (int) $recordId);
+	/**
+	 * Method override to check if you can edit a record.
+	 *
+	 * @param	array	$data		An array of input data.
+	 * @param	string	$key		The name of the key for the primary key.
+	 *
+	 * @return	boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since	1.0.1
+	 */
+	protected function allowEdit($data = array(), $key = 'id'): bool
+	{
+		return BwPostmanHelper::canEdit('mailinglist', $data);
+	}
 
-            if (!$allowed)
-            {
-                return false;
-            }
-        }
+	/**
+	 * Method to check if you can archive records
+	 *
+	 * @param array $recordIds an array of items to check permission for
+	 *
+	 * @return	boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.0.0
+	 */
+	protected function allowArchive(array $recordIds = array()): bool
+	{
+		foreach ($recordIds as $recordId)
+		{
+			$allowed = BwPostmanHelper::canArchive('mailinglist', 0, (int) $recordId);
 
-        return true;
-    }
+			if (!$allowed)
+			{
+				return false;
+			}
+		}
 
-    /**
-     * Override method to edit an existing record, based on Joomla method.
-     * We need an override, because we want to handle state a bit different from Joomla at this point
-     *
-     * @param	string	$key		The name of the primary key of the URL variable.
-     * @param	string	$urlVar		The name of the URL variable if different from the primary key
-     * (sometimes required to avoid router collisions).
-     *
-     * @return	boolean		True if access level check and checkout passes, false otherwise.
-     *
-     * @throws Exception
-     *
-     * @since	1.0.1
-     */
-    public function edit($key = null, $urlVar = null): bool
-    {
-        // Initialise variables.
-        $jinput  = Factory::getApplication()->input;
-        $model   = $this->getModel();
-        $table   = $model->getTable();
-        $cid     = $jinput->post->get('cid', array(), 'array');
-        $context = "$this->option.edit.$this->context";
+		return true;
+	}
 
-        // Determine the name of the primary key for the data.
-        if (empty($key))
-        {
-            $key = $table->getKeyName();
-        }
+	/**
+	 * Override method to edit an existing record, based on Joomla method.
+	 * We need an override, because we want to handle state a bit different from Joomla at this point
+	 *
+	 * @param	string	$key		The name of the primary key of the URL variable.
+	 * @param	string	$urlVar		The name of the URL variable if different from the primary key
+	 * (sometimes required to avoid router collisions).
+	 *
+	 * @return	boolean		True if access level check and checkout passes, false otherwise.
+	 *
+	 * @throws Exception
+	 *
+	 * @since	1.0.1
+	 */
+	public function edit($key = null, $urlVar = null): bool
+	{
+		// Initialise variables.
+		$jinput  = Factory::getApplication()->input;
+		$model   = $this->getModel();
+		$table   = $model->getTable();
+		$cid     = $jinput->post->get('cid', array(), 'array');
+		$context = "$this->option.edit.$this->context";
 
-        // To avoid data collisions the urlVar may be different from the primary key.
-        if (empty($urlVar))
-        {
-            $urlVar = $key;
-        }
+		// Determine the name of the primary key for the data.
+		if (empty($key))
+		{
+			$key = $table->getKeyName();
+		}
 
-        // Get the previous record id (if any) and the current record id.
-        $recordId = (int) (count($cid) ? $cid[0] : $jinput->getInt($urlVar));
-        $checkin  = property_exists($table, 'checked_out');
+		// To avoid data collisions the urlVar may be different from the primary key.
+		if (empty($urlVar))
+		{
+			$urlVar = $key;
+		}
 
-        // Access check.
-        if ($recordId === 0)
-        {
-            $allowed = $this->allowAdd();
-        }
-        else
-        {
-            $allowed = $this->allowEdit(array('id' => $recordId));
-        }
+		// Get the previous record id (if any) and the current record id.
+		$recordId = (int) (count($cid) ? $cid[0] : $jinput->getInt($urlVar));
+		$checkin  = property_exists($table, 'checked_out');
 
-        if (!$allowed)
-        {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
-            $this->setRedirect(
-                Route::_(
-                    'index.php?option=' . $this->option . '&view=' . $this->view_list
-                    . $this->getRedirectToListAppend(),
-                    false
-                )
-            );
-            return false;
-        }
+		// Access check.
+		if ($recordId === 0)
+		{
+			$allowed = $this->allowAdd();
+		}
+		else
+		{
+			$allowed = $this->allowEdit(array('id' => $recordId));
+		}
 
-        // Attempt to check out the new record for editing and redirect.
-        if ($checkin && !$model->checkout($recordId))
-        {
-            // Check-out failed, display a notice…
-            Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()), 'error');
+		if (!$allowed)
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ERROR_EDIT_NO_PERMISSION'), 'error');
+			$this->setRedirect(
+				Route::_(
+					'index.php?option=' . $this->option . '&view=' . $this->view_list
+					. $this->getRedirectToListAppend(),
+					false
+				)
+			);
+			return false;
+		}
 
-            // …and do not allow the user to see the record.
-            $this->setRedirect(
-                Route::_(
-                    'index.php?option=' . $this->option . '&view=' . $this->view_list
-                    . $this->getRedirectToItemAppend($recordId, $urlVar),
-                    false
-                )
-            );
+		// Attempt to check out the new record for editing and redirect.
+		if ($checkin && !$model->checkout($recordId))
+		{
+			// Check-out failed, display a notice…
+			Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()), 'error');
 
-            return false;
-        }
-        else
-        {
-            // Check-out succeeded, push the new record id into the session.
-            $this->holdEditId($context, $recordId);
+			// …and do not allow the user to see the record.
+			$this->setRedirect(
+				Route::_(
+					'index.php?option=' . $this->option . '&view=' . $this->view_list
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
+				)
+			);
 
-            $this->setRedirect(
-                Route::_(
-                    'index.php?option=' . $this->option . '&view=' . $this->view_item
-                    . $this->getRedirectToItemAppend($recordId, $urlVar),
-                    false
-                )
-            );
+			return false;
+		}
+		else
+		{
+			// Check-out succeeded, push the new record id into the session.
+			$this->holdEditId($context, $recordId);
 
-            return true;
-        }
-    }
+			$this->setRedirect(
+				Route::_(
+					'index.php?option=' . $this->option . '&view=' . $this->view_item
+					. $this->getRedirectToItemAppend($recordId, $urlVar),
+					false
+				)
+			);
 
-    /**
-     * Override method to save a mailinglist
-     *
-     * @access	public
-     *
-     * @param   string  $key     The name of the primary key of the URL variable.
-     * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
-     *
-     * @return  void
-     *
-     * @throws Exception
-     *
-     * @since	1.0.1
-     *
-     */
-    public function save($key = null, $urlVar = null): void
-    {
+			return true;
+		}
+	}
 
-        parent::save();
+	/**
+	 * Override method to save a mailinglist
+	 *
+	 * @access	public
+	 *
+	 * @param   string  $key     The name of the primary key of the URL variable.
+	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 *
+	 * @since	1.0.1
+	 *
+	 */
+	public function save($key = null, $urlVar = null): void
+	{
 
-        PluginHelper::importPlugin('bwpostman');
-        $event = new Event('onBwPostmanAfterMailinglistControllerSave', [
-            'subject'         => ArrayHelper::fromObject($this),
-        ]);
-        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
-        $eventResults = $event->getArgument('result', []);
-    }
+		parent::save();
 
-    /**
-     * Method to archive one or more mailinglists
-     * --> mailinglists-table: archive_flag = 1, set archive_date
-     *
-     * @return 	void
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    public function archive(): void
-    {
-        $jinput	= Factory::getApplication()->input;
+		PluginHelper::importPlugin('bwpostman');
+		Factory::getApplication()->triggerEvent('onBwPostmanAfterMailinglistControllerSave');
+	}
 
-        // Check for request forgeries
-        if (!Session::checkToken())
-        {
-            jexit(Text::_('JINVALID_TOKEN'));
-        }
+	/**
+	 * Method to archive one or more mailinglists
+	 * --> mailinglists-table: archive_flag = 1, set archive_date
+	 *
+	 * @return 	void
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	public function archive(): void
+	{
+		$jinput	= Factory::getApplication()->input;
 
-        // Get the selected mailinglist(s)
-        $cid = $jinput->get('cid', array(0), 'post');
-        $cid = ArrayHelper::toInteger($cid);
+		// Check for request forgeries
+		if (!Session::checkToken())
+		{
+			jexit(Text::_('JINVALID_TOKEN'));
+		}
 
-        // Access check.
-        if (!$this->allowArchive($cid))
-        {
-            $this->setRedirect(
-                Route::_(
-                    'index.php?option=' . $this->option . '&view=' . $this->view_list
-                    . $this->getRedirectToListAppend(),
-                    false
-                )
-            );
-            Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
+		// Get the selected mailinglist(s)
+		$cid = $jinput->get('cid', array(0), 'post');
+		$cid = ArrayHelper::toInteger($cid);
 
-            return;
-        }
+		// Access check.
+		if (!$this->allowArchive($cid))
+		{
+			$this->setRedirect(
+				Route::_(
+					'index.php?option=' . $this->option . '&view=' . $this->view_list
+					. $this->getRedirectToListAppend(),
+					false
+				)
+			);
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_ERROR_ARCHIVE_NO_PERMISSION'), 'error');
 
-        $n = count($cid);
+			return;
+		}
 
-        $model = $this->getModel('mailinglist');
+		$n = count($cid);
 
-        if(!$model->archive($cid, 1))
-        {
-            if ($n > 1)
-            {
-                echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_MLS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
-            }
-            else
-            {
-                echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_ML_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
-            }
-        }
-        else
-        {
-            if ($n > 1)
-            {
-                $msg = Text::_('COM_BWPOSTMAN_MLS_ARCHIVED');
-            }
-            else
-            {
-                $msg = Text::_('COM_BWPOSTMAN_ML_ARCHIVED');
-            }
+		$model = $this->getModel('mailinglist');
 
-            $link = Route::_('index.php?option=com_bwpostman&view=mailinglists', false);
+		if(!$model->archive($cid, 1))
+		{
+			if ($n > 1)
+			{
+				echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_MLS_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
+			}
+			else
+			{
+				echo "<script> alert ('" . Text::_('COM_BWPOSTMAN_ML_ERROR_ARCHIVING', true) . "'); window.history.go(-1); </script>\n";
+			}
+		}
+		else
+		{
+			if ($n > 1)
+			{
+				$msg = Text::_('COM_BWPOSTMAN_MLS_ARCHIVED');
+			}
+			else
+			{
+				$msg = Text::_('COM_BWPOSTMAN_ML_ARCHIVED');
+			}
 
-            $this->setRedirect($link, $msg);
-        }
-    }
+			$link = Route::_('index.php?option=com_bwpostman&view=mailinglists', false);
+
+			$this->setRedirect($link, $msg);
+		}
+	}
 }

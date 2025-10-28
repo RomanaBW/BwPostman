@@ -45,28 +45,28 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	var string $minJoomlaRelease;
+	var $minJoomlaRelease;
 
 	/**
 	 * @var string $minPhpRelease
 	 *
 	 * @since       2.3.0
 	 */
-	var string $minPhpRelease = '7.2.5';
+	var $minPhpRelease = '7.2.5';
 
 	/**
 	 * @var string minimum version of BwPostman
 	 *
 	 * @since       2.3.0
 	 */
-	var string $bwpmMinRelease = '2.3.0';
+	var $bwpmMinRelease = '2.3.0';
 
 	/**
-	 * @var string|null release
+	 * @var string release
 	 *
 	 * @since       2.3.0
 	 */
-	var ?string $release = null;
+	var $release = null;
 
 	/**
 	 * Method to install the extension
@@ -189,8 +189,8 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	public function postflight(string $type): void
-    {
+	public function postflight(string $type)
+	{
 		// We only need to perform this if the extension is being installed, not updated
 		if ($type == 'install')
 		{
@@ -236,8 +236,8 @@ class PlgBwPostmanFooterUsedMailinglistsInstallerScript
 	 *
 	 * @since       2.3.0
 	 */
-	private function getManifestVar(string $name, string $extension): bool|string
-    {
+	private function getManifestVar(string $name, string $extension)
+	{
 		$db		= Factory::getContainer()->get(DatabaseInterface::class);
 		$query	= $db->getQuery(true);
 

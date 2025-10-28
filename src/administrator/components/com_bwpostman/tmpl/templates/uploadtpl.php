@@ -45,45 +45,45 @@ $option	= $jinput->getCmd('option');
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
-    <fieldset class="adminform">
-        <legend><?php echo Text::_('COM_BWPOSTMAN_TPL_SELECT_UPLOAD_FILE'); ?></legend>
-        <div class="card card-body mb-3"><?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_USER_MESSAGE')?></div>
-        <?php
-        if (BwPostmanHelper::canAdd('template'))
-        {
-            ?>
-            <div class="card card-body">
-                <div class="row">
-                    <div class="admintable bwptable uploadtpl col-12">
-                        <div class="form-group row">
-                            <div class="key col-md-6 text-md-right">
-                                <span class="editlinktip me-2" aria-labelledby="tip-desc">
-                                    <?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE'); ?>&nbsp;&nbsp;<?php echo $image; ?>
-                                </span>
-                                <div role="tooltip" id="tip-desc"><?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?></div>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="file" class="form-control-file" name="uploadfile" id="uploadfile" />
-                            </div>
-                        </div>
-                        <div class="button form-group row mt-3">
-                            <div class="key col-12 text-center">
-                                <input type="button" class="btn btn-success" name="submitbutton"
-                                    onclick="Joomla.submitbutton('templates.uploadtpl'); document.getElementById('loading').style.display = 'block';"
-                                    value="<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_BUTTON'); ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php
-        }
-        ?>
-    </fieldset>
-    <input type="hidden" name="task" value="uploadtpl" />
-    <input type="hidden" name="controller" value="templates" />
-    <input type="hidden" name="option" value="<?php echo $option; ?>" />
-    <?php echo HTMLHelper::_('form.token'); ?>
+	<fieldset class="adminform">
+		<legend><?php echo Text::_('COM_BWPOSTMAN_TPL_SELECT_UPLOAD_FILE'); ?></legend>
+		<div class="card card-body mb-3"><?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_USER_MESSAGE')?></div>
+		<?php
+		if (BwPostmanHelper::canAdd('template'))
+		{
+			?>
+			<div class="card card-body">
+				<div class="row">
+					<div class="admintable bwptable uploadtpl col-12">
+						<div class="form-group row">
+							<div class="key col-md-6 text-md-right">
+								<span class="editlinktip me-2" aria-labelledby="tip-desc">
+									<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE'); ?>&nbsp;&nbsp;<?php echo $image; ?>
+								</span>
+	                            <div role="tooltip" id="tip-desc"><?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_NOTE'); ?></div>
+							</div>
+							<div class="col-md-6">
+								<input type="file" class="form-control-file" name="uploadfile" id="uploadfile" />
+							</div>
+						</div>
+						<div class="button form-group row mt-3">
+							<div class="key col-12 text-center">
+								<input type="button" class="btn btn-success" name="submitbutton"
+									onclick="Joomla.submitbutton('templates.uploadtpl'); document.getElementById('loading').style.display = 'block';"
+									value="<?php echo Text::_('COM_BWPOSTMAN_TPL_UPLOAD_FILE_BUTTON'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+		?>
+	</fieldset>
+	<input type="hidden" name="task" value="uploadtpl" />
+	<input type="hidden" name="controller" value="templates" />
+	<input type="hidden" name="option" value="<?php echo $option; ?>" />
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <div id="loading" style="display: none;"></div>
 

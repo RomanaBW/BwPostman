@@ -30,13 +30,13 @@ defined('_JEXEC') or die('Restricted access');
 $fieldSets = $this->form->getFieldsets('header');
 
 foreach ($fieldSets as $name => $fieldSet) :
-    ?>
-    <fieldset class="panelform options-grid-form options-grid-form-full">
-        <div>
-            <?php foreach ($this->form->getFieldset($name) as $field) : ?>
-                <?php echo $field->renderField(); ?>
-            <?php endforeach; ?>
-        </div>
-    </fieldset>
+	?>
+	<fieldset class="panelform options-grid-form options-grid-form-full">
+		<div>
+			<?php foreach ($this->form->getFieldset($name) as $field) : ?>
+				<?php echo $field->renderField(); ?>
+			<?php endforeach; ?>
+		</div>
+	</fieldset>
 <?php endforeach;
 

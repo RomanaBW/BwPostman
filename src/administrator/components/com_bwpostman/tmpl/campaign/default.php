@@ -38,8 +38,8 @@ HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('bootstrap.modal');
 
-$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
-$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_campaign');
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_tabshelper');
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_campaign');
 
 /**
  * BwPostman Single Campaign Layout
@@ -50,85 +50,85 @@ $this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_
 
 ?>
 
-    <?php
-    if ($this->queueEntries)
-    {
-        Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
-    }
-    ?>
-    <div id="bwp_view_single">
-        <form action="<?php echo Route::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
-                method="post" name="adminForm" id="item-form">
-            <div class="main-card">
-                <?php
-                $detailText = $this->item->id ? Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id) : Text::_('COM_BWPOSTMAN_NEW_CAM');
-                echo HTMLHelper::_('uitab.startTabSet', 'campaign_tabs', ['active' => 'details', 'recall' => true, 'breakpoint' => 768]);
+	<?php
+	if ($this->queueEntries)
+	{
+		Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_ENTRIES_IN_QUEUE'), 'warning');
+	}
+	?>
+	<div id="bwp_view_single">
+		<form action="<?php echo Route::_('index.php?option=com_bwpostman&layout=default&id=' . (int) $this->item->id); ?>"
+				method="post" name="adminForm" id="item-form">
+			<div class="main-card">
+				<?php
+				$detailText = $this->item->id ? Text::sprintf('COM_BWPOSTMAN_EDIT_CAM', $this->item->id) : Text::_('COM_BWPOSTMAN_NEW_CAM');
+				echo HTMLHelper::_('uitab.startTabSet', 'campaign_tabs', ['active' => 'details', 'recall' => true, 'breakpoint' => 768]);
 
-                echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'details', $detailText);
-                ?>
-                <div class="mb-3">
-                    <?php echo $this->loadTemplate('basic'); ?>
-                </div>
-                    <?php
-                    echo HTMLHelper::_('uitab.endTab');
+				echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'details', $detailText);
+				?>
+				<div class="mb-3">
+					<?php echo $this->loadTemplate('basic'); ?>
+				</div>
+					<?php
+					echo HTMLHelper::_('uitab.endTab');
 
-                    echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'unsent', Text::_('COM_BWPOSTMAN_CAM_UNSENT_NLS'));
-                    ?>
-                <div class="card card-body mb-3 com_config">
-                    <?php echo $this->loadTemplate('unsent'); ?>
-                </div>
-                <?php
-                echo HTMLHelper::_('uitab.endTab');
+					echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'unsent', Text::_('COM_BWPOSTMAN_CAM_UNSENT_NLS'));
+					?>
+				<div class="card card-body mb-3 com_config">
+					<?php echo $this->loadTemplate('unsent'); ?>
+				</div>
+				<?php
+				echo HTMLHelper::_('uitab.endTab');
 
-                echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'sent', Text::_('COM_BWPOSTMAN_NL_SENT'));
-                ?>
-                <div class="card card-body mb-3 com_config">
-                    <?php echo $this->loadTemplate('sent'); ?>
-                </div>
-                <?php
-                echo HTMLHelper::_('uitab.endTab');
+				echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'sent', Text::_('COM_BWPOSTMAN_NL_SENT'));
+				?>
+				<div class="card card-body mb-3 com_config">
+					<?php echo $this->loadTemplate('sent'); ?>
+				</div>
+				<?php
+				echo HTMLHelper::_('uitab.endTab');
 
-                if ($this->permissions['com']['admin'] || $this->permissions['admin']['mailinglist'])
-                {
-                    echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'rules', Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'));
-                    ?>
-                    <div class="card card-body mb-3 com_config">
-                        <?php echo $this->form->getInput('rules'); ?>
-                    </div>
-                    <?php
-                    echo HTMLHelper::_('uitab.endTab');
-                }
-                echo HTMLHelper::_('uitab.endTabSet');
-                ?>
-                <input type="hidden" name="task" value="" />
+				if ($this->permissions['com']['admin'] || $this->permissions['admin']['mailinglist'])
+				{
+					echo HTMLHelper::_('uitab.addTab', 'campaign_tabs', 'rules', Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'));
+					?>
+					<div class="card card-body mb-3 com_config">
+						<?php echo $this->form->getInput('rules'); ?>
+					</div>
+					<?php
+					echo HTMLHelper::_('uitab.endTab');
+				}
+				echo HTMLHelper::_('uitab.endTabSet');
+				?>
+				<input type="hidden" name="task" value="" />
 
-                <?php echo $this->form->getInput('id'); ?>
-                <?php echo $this->form->getInput('asset_id'); ?>
-                <?php echo $this->form->getInput('checked_out'); ?>
-                <?php echo $this->form->getInput('archive_flag'); ?>
-                <?php echo $this->form->getInput('archive_time'); ?>
-                <?php echo HTMLHelper::_('form.token'); ?>
+				<?php echo $this->form->getInput('id'); ?>
+				<?php echo $this->form->getInput('asset_id'); ?>
+				<?php echo $this->form->getInput('checked_out'); ?>
+				<?php echo $this->form->getInput('archive_flag'); ?>
+				<?php echo $this->form->getInput('archive_time'); ?>
+				<?php echo HTMLHelper::_('form.token'); ?>
 
-                <input type="hidden" id="alertTitle" value="<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>" />
-                <input type="hidden" id="alertRecipients" value="<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'); ?>" />
-            </div>
-        </form>
-    </div>
+				<input type="hidden" id="alertTitle" value="<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_TITLE', true); ?>" />
+				<input type="hidden" id="alertRecipients" value="<?php echo Text::_('COM_BWPOSTMAN_CAM_ERROR_NO_RECIPIENTS_SELECTED'); ?>" />
+			</div>
+		</form>
+	</div>
 
-    <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
+	<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 <div id="bwp-modal" class="joomla-modal modal fade" role="dialog" tabindex="-1">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title text-center">&nbsp;</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"></button>
-            </div>
-            <div class="modal-body p-3">
-                <iframe class="modal-frame" width="100%"></iframe>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-dark btn-sm" data-bs-dismiss="modal" type="button" title="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title text-center">&nbsp;</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"></button>
+			</div>
+			<div class="modal-body p-3">
+				<iframe class="modal-frame" width="100%"></iframe>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-dark btn-sm" data-bs-dismiss="modal" type="button" title="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
+			</div>
+		</div>
+	</div>
 </div>

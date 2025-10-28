@@ -37,7 +37,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 HTMLHelper::_('behavior.multiselect');
 
 $user		= Factory::getApplication()->getIdentity();
-$userId		= $user->id;
+$userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
@@ -51,99 +51,99 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
 
 <div id="bwp_view_lists">
-    <form action="<?php echo Route::_('index.php?option=com_bwpostman&view=campaigns'); ?>"
-            method="post" name="adminForm" id="adminForm">
-        <div class="row">
-            <div class="col-12">
-                <div id="j-main-container" class="j-main-container">
-                    <?php
-                        // Search tools bar
-                        echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
-                    ?>
+	<form action="<?php echo Route::_('index.php?option=com_bwpostman&view=campaigns'); ?>"
+			method="post" name="adminForm" id="adminForm">
+		<div class="row">
+			<div class="col-12">
+				<div id="j-main-container" class="j-main-container">
+					<?php
+						// Search tools bar
+						echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+					?>
 
-                    <table id="main-table" class="table">
-                        <caption id="captionTable" class="sr-only">
-                            <?php echo Text::_('COM_BWPOSTMAN_CAM_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
-                        </caption>
-                        <thead>
-                            <tr>
-                                <th class="text-center w-1">
-                                    <?php echo HTMLHelper::_('grid.checkall'); ?>
-                                </th>
-                                <th scope="col" class="w-30">
-                                    <?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
-                                <th scope="col">
-                                    <?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
-                                </th>
-                                <th scope="col" class="d-none d-lg-table-cell w-10">
-                                    <?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?>
-                                </th>
-                                <th scope="col" class="w-1" aria-sort="ascending">
-                                    <?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            if (count($this->items) > 0)
-                            {
-                                foreach ($this->items as $i => $item)
-                                {
-                                    ?>
-                                    <tr class="row<?php echo $i % 2; ?>">
-                                        <td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
-                                        <td>
-                                        <?php
-                                        if ($item->checked_out)
-                                        { ?>
-                                            <?php
-                                            echo HTMLHelper::_(
-                                                'jgrid.checkedout',
-                                                $i,
-                                                $item->editor,
-                                                $item->checked_out_time,
-                                                'campaigns.',
-                                                BwPostmanHelper::canCheckin('campaign', $item->checked_out)
-                                            );
-                                        } ?>
-                                        <?php
-                                        if (BwPostmanHelper::canEdit('campaign', $item))
-                                        { ?>
-                                            <a href="<?php echo Route::_('index.php?option=com_bwpostman&task=campaign.edit&id=' . $item->id); ?>">
-                                                <?php echo $this->escape($item->title); ?>
-                                            </a> <?php
-                                        }
-                                        else
-                                        {
-                                            echo $this->escape($item->title);
-                                        } ?>
-                                        </td>
-                                        <td><?php echo $item->description; ?></td>
-                                        <td class="text-center"><?php echo $item->newsletters; ?></td>
-                                        <td class="d-none d-lg-table-cell text-center"><?php echo $item->id; ?></td>
-                                    </tr>
-                                <?php
-                                }
-                            }
-                            else
-                            { ?>
-                                <tr class="row1">
-                                    <td colspan="5"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
-                                </tr><?php
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
-            <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
+					<table id="main-table" class="table">
+						<caption id="captionTable" class="sr-only">
+							<?php echo Text::_('COM_BWPOSTMAN_CAM_TABLE_CAPTION'); ?>, <?php echo Text::_('JGLOBAL_SORTED_BY'); ?>
+						</caption>
+						<thead>
+							<tr>
+								<th class="text-center w-1">
+									<?php echo HTMLHelper::_('grid.checkall'); ?>
+								</th>
+								<th scope="col" class="w-30">
+									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_TITLE', 'a.title', $listDirn, $listOrder); ?></th>
+								<th scope="col">
+									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_DESCRIPTION', 'a.description', $listDirn, $listOrder); ?>
+								</th>
+								<th scope="col" class="d-none d-lg-table-cell w-10">
+									<?php echo HTMLHelper::_('searchtools.sort',  'COM_BWPOSTMAN_CAM_NL_NUM', 'newsletters', $listDirn, $listOrder); ?>
+								</th>
+								<th scope="col" class="w-1" aria-sort="ascending">
+									<?php echo HTMLHelper::_('searchtools.sort',  'NUM', 'a.id', $listDirn, $listOrder); ?>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							if (count($this->items) > 0)
+							{
+								foreach ($this->items as $i => $item)
+								{
+									?>
+									<tr class="row<?php echo $i % 2; ?>">
+										<td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+										<td>
+										<?php
+										if ($item->checked_out)
+										{ ?>
+											<?php
+											echo HTMLHelper::_(
+												'jgrid.checkedout',
+												$i,
+												$item->editor,
+												$item->checked_out_time,
+												'campaigns.',
+												BwPostmanHelper::canCheckin('campaign', $item->checked_out)
+											);
+										} ?>
+										<?php
+										if (BwPostmanHelper::canEdit('campaign', $item))
+										{ ?>
+											<a href="<?php echo Route::_('index.php?option=com_bwpostman&task=campaign.edit&id=' . $item->id); ?>">
+												<?php echo $this->escape($item->title); ?>
+											</a> <?php
+										}
+										else
+										{
+											echo $this->escape($item->title);
+										} ?>
+										</td>
+										<td><?php echo $item->description; ?></td>
+										<td class="text-center"><?php echo $item->newsletters; ?></td>
+										<td class="d-none d-lg-table-cell text-center"><?php echo $item->id; ?></td>
+									</tr>
+								<?php
+								}
+							}
+							else
+							{ ?>
+								<tr class="row1">
+									<td colspan="5"><strong><?php echo Text::_('COM_BWPOSTMAN_NO_DATA'); ?></strong></td>
+								</tr><?php
+							}
+							?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="pagination"><?php echo $this->pagination->getListFooter(); ?></div>
+			<?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
-            <input type="hidden" name="task" value="" />
-            <input type="hidden" name="boxchecked" value="0" />
-            <input type="hidden" name="archive_nl" value="0" />
-            <?php echo HTMLHelper::_('form.token'); ?>
+			<input type="hidden" name="task" value="" />
+			<input type="hidden" name="boxchecked" value="0" />
+			<input type="hidden" name="archive_nl" value="0" />
+			<?php echo HTMLHelper::_('form.token'); ?>
 
-        </div>
-    </form>
+		</div>
+	</form>
 </div>

@@ -47,7 +47,7 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 *
 	 * @since 2.0.0
 	 */
-	protected string $min_bwpostman_version    = '1.3.2';
+	protected $min_bwpostman_version    = '1.3.2';
 
 	/**
 	 * Called before any type of action
@@ -88,13 +88,11 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 * @param object $parent is the class calling this method
 	 *
 	 * @return void
-     *
-     * @throws Exception
 	 *
 	 * @since     0.9.8
 	 */
-	public function postflight(string $type, object $parent): void
-    {
+	public function postflight(string $type, object $parent)
+	{
 		if ($type == 'update')
 		{
 			// remove obsolete files
@@ -155,8 +153,8 @@ class PlgSystemBwPm_User2SubscriberInstallerScript
 	 *
 	 * @since   4.0.0
 	 */
-	private function removeObsoleteFilesAndFolders(): void
-    {
+	private function removeObsoleteFilesAndFolders()
+	{
 		$plgFilesArray = array(
 			'helpers/bwpm_user2subscriberhelper.php',
 		);

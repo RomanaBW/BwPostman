@@ -62,7 +62,6 @@ use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Registry\Registry;
 use Joomla\Session\SessionInterface;
-use Joomla\Utilities\ArrayHelper;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use stdClass;
@@ -303,8 +302,8 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	public function getTemplate($siteApp, bool $params = false): string|stdClass
-    {
+	public function getTemplate($siteApp, bool $params = false)
+	{
 		if (is_object($siteApp->template)) {
 			if ($siteApp->template->parent) {
 				if (!is_file(JPATH_THEMES . '/' . $siteApp->template->template . '/index.php')) {
@@ -601,8 +600,8 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	protected function _load(string $position, string $style = 'none'): false|string
-    {
+	protected function _load(string $position, string $style = 'none')
+	{
 		$modules  = $this->getModuleByPosition($position);
 		$params   = ['style' => $style];
 		ob_start();
@@ -628,8 +627,8 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	protected function _loadmod(string $module, string $title, string $style = 'none'): false|string
-    {
+	protected function _loadmod(string $module, string $title, string $style = 'none')
+	{
 		$mod      = $this->getModuleByName($module, $title);
 
 		// If the module without the mod_ isn't found, try it with mod_.
@@ -660,8 +659,8 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	protected function _loadid(string $id): false|string
-    {
+	protected function _loadid(string $id)
+	{
 		$modules  = $this->getModuleById($id);
 		$params   = ['style' => 'none'];
 		ob_start();
@@ -673,19 +672,20 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 		return ob_get_clean();
 	}
 
-    /**
-     * Get module by name (real, eg 'Breadcrumbs' or folder, eg 'mod_breadcrumbs')
-     *
-     * @param string      $name  The name of the module
-     * @param string|null $title The title of the module, optional
-     *
-     * @return stdClass|null The Module object
-     *
-     * @throws Exception
-     * @since   4.2.0
-     */
-	private function getModuleByName(string $name, string $title = null): ?stdClass
-    {
+	/**
+	 * Get module by name (real, eg 'Breadcrumbs' or folder, eg 'mod_breadcrumbs')
+	 *
+	 * @param string      $name  The name of the module
+	 * @param string|null $title The title of the module, optional
+	 *
+	 * @return  stdClass  The Module object
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.2.0
+	 */
+	private function getModuleByName(string $name, string $title = null)
+	{
 		$result  = null;
 		$modules = $this->getModules();
 		$total   = count($modules);
@@ -761,7 +761,7 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 	 *
 	 * @since   4.2.0
 	 */
-	private function getModuleById(string $id): stdClass
+	private function getModuleById($id): stdClass
     {
 		$modules = $this->getModules();
 
@@ -958,13 +958,7 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 		$module->style = $attribs['style'];
 
 		// If the $module is nulled it will return an empty content, otherwise it will render the module normally.
-        $event = new Event('onRenderModule', [
-            'subject'         => ArrayHelper::fromObject($this),
-            'module'          => $module,
-            'attribs'        => $attribs,
-        ]);
-        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
-        $eventResults = $event->getArgument('result', []);
+		$app->triggerEvent('onRenderModule', [&$module, &$attribs]);
 
 		if ($module === null || !isset($module->content)) {
 			return '';
@@ -990,13 +984,7 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 		// Revert the scope
 		$app->scope = $scope;
 
-        $event = new Event('onAfterRenderModule', [
-            'subject'         => ArrayHelper::fromObject($this),
-            'module'          => $module,
-            'attribs'        => $attribs,
-        ]);
-        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
-        $eventResults = $event->getArgument('result', []);
+		$app->triggerEvent('onAfterRenderModule', [&$module, &$attribs]);
 
 		if (JDEBUG) {
 			Profiler::getInstance('Application')->mark('afterRenderModule ' . $module->module . ' (' . $module->title . ')');
@@ -1067,19 +1055,16 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 		return $module->content;
 	}
 
-    /**
-     * Dispatches the dispatcher.
-     *
-     * @param $module
-     * @param $siteApp
-     * @param $input
-     *
-     * @return  void
-     *
-     * @since   4.2.0
-     */
-	private function dispatch($module, $siteApp, $input): void
-    {
+
+	/**
+	 * Dispatches the dispatcher.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.2.0
+	 */
+	private function dispatch($module, $siteApp, $input)
+	{
 		$path = JPATH_ROOT . '/modules/' . $module->module . '/' . $module->module . '.php';
 
 		if (!is_file($path)) {

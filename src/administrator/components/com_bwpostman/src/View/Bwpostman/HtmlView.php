@@ -32,7 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
@@ -51,59 +50,59 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-    /**
-     * property to hold archive data
-     *
-     * @var array $archive
-     *
-     * @since       0.9.1
-     */
-    public array $archive;
+	/**
+	 * property to hold archive data
+	 *
+	 * @var array $archive
+	 *
+	 * @since       0.9.1
+	 */
+	public array $archive;
 
-    /**
-     * property to hold general data
-     *
-     * @var array $general
-     *
-     * @since       0.9.1
-     */
-    public array $general;
+	/**
+	 * property to hold general data
+	 *
+	 * @var array $general
+	 *
+	 * @since       0.9.1
+	 */
+	public array $general;
 
-    /**
-     * property to hold request url
-     *
-     * @var string $request_url
-     *
-     * @since       0.9.1
-     */
-    public string $request_url;
+	/**
+	 * property to hold request url
+	 *
+	 * @var string $request_url
+	 *
+	 * @since       0.9.1
+	 */
+	public string $request_url;
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
-    /**
-     * property to hold queue entries property
-     *
-     * @var boolean $queueEntries
-     *
-     * @since       0.9.1
-     */
-    public bool $queueEntries;
+	/**
+	 * property to hold queue entries property
+	 *
+	 * @var boolean $queueEntries
+	 *
+	 * @since       0.9.1
+	 */
+	public bool $queueEntries;
 
-    /**
-     * property to hold sidebar
-     *
-     * @var object  $sidebar
-     *
-     * @since       0.9.1
-     */
-    public object $sidebar;
+	/**
+	 * property to hold sidebar
+	 *
+	 * @var object  $sidebar
+	 *
+	 * @since       0.9.1
+	 */
+	public object $sidebar;
 
     /**
      * Execute and display a template script.
@@ -124,14 +123,14 @@ class HtmlView extends BaseHtmlView
         //check for queue entries
         $this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
-        // Get data from the model
+		// Get data from the model
         $model = $this->getModel();
-        $this->archive     = $model->getArchivedata();
-        $this->checkArchiveStatisticsData();
-        $this->general     = $model->getGeneraldata();
-        $this->checkGeneralStatisticsData();
-        $this->request_url = $uri_string;
-        $this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
+		$this->archive     = $model->getArchivedata();
+		$this->checkArchiveStatisticsData();
+		$this->general     = $model->getGeneraldata();
+		$this->checkGeneralStatisticsData();
+		$this->request_url = $uri_string;
+		$this->permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
         $this->addToolbar();
 
@@ -140,17 +139,18 @@ class HtmlView extends BaseHtmlView
         return $this;
     }
 
-    /**
-     * Add the page title and toolbar.
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    protected function addToolbar(): void
-    {
-        // Get the toolbar
-        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	protected function addToolbar()
+	{
+		// Get the toolbar object instance
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
         // Set toolbar title
         ToolbarHelper::title(Text::_('COM_BWPOSTMAN'), 'envelope');
@@ -161,8 +161,8 @@ class HtmlView extends BaseHtmlView
             $toolbar->preferences('com_bwpostman');
         }
 
-        $manualButton = BwPostmanHTMLHelper::getManualButton('bwpostman');
-        $forumButton  = BwPostmanHTMLHelper::getForumButton();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('bwpostman');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
 
         $toolbar->appendButton($manualButton);

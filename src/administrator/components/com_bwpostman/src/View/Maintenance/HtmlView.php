@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use BoldtWebservice\Plugin\Bwpostman\Bwtimecontrol\Helper\BwPostmanPhpCron;
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\LinkButton;
 use Joomla\CMS\Language\Text;
@@ -54,86 +54,86 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-    /**
-     * property to hold queue entries
-     *
-     * @var bool $queueEntries
-     *
-     * @since       1.0.1
-     */
-    protected bool $queueEntries;
+	/**
+	 * property to hold queue entries
+	 *
+	 * @var bool $queueEntries
+	 *
+	 * @since       1.0.1
+	 */
+	protected bool $queueEntries;
 
-    /**
-     * property to hold template object
-     *
-     * @var object|string  $template
-     *
-     * @since       1.0.1
-     */
-    protected object|string $template;
+	/**
+	 * property to hold template object
+	 *
+	 * @var object  $template
+	 *
+	 * @since       1.0.1
+	 */
+	protected object $template;
 
-    /**
-     * property to hold state
-     *
-     * @var array|object  $state
-     *
-     * @since       1.0.1
-     */
-    protected array|object $state;
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       1.0.1
+	 */
+	protected array|object $state;
 
-    /**
-     * property to hold filter form
-     *
-     * @var object  $filterForm
-     *
-     * @since       1.0.1
-     */
-    public object $filterForm;
+	/**
+	 * property to hold filter form
+	 *
+	 * @var object  $filterForm
+	 *
+	 * @since       1.0.1
+	 */
+	public object $filterForm;
 
-    /**
-     * property to hold active filters
-     *
-     * @var array  $activeFilters
-     *
-     * @since       1.0.1
-     */
-    public array $activeFilters;
+	/**
+	 * property to hold active filters
+	 *
+	 * @var object  $activeFilters
+	 *
+	 * @since       1.0.1
+	 */
+	public object $activeFilters;
 
-    /**
-     * property to hold check res
-     *
-     * @var string $check_res
-     *
-     * @since       1.0.1
-     */
-    public string $check_res;
+	/**
+	 * property to hold check res
+	 *
+	 * @var string $check_res
+	 *
+	 * @since       1.0.1
+	 */
+	public string $check_res;
 
-    /**
-     * property to hold sidebar
-     *
-     * @var object  $sidebar
-     *
-     * @since       1.0.1
-     */
-    public object $sidebar;
+	/**
+	 * property to hold sidebar
+	 *
+	 * @var object  $sidebar
+	 *
+	 * @since       1.0.1
+	 */
+	public object $sidebar;
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
-    /**
-     * property to hold total value
-     *
-     * @var object  $total
-     *
-     * @since       1.0.1
-     */
-    public object $total;
+	/**
+	 * property to hold total value
+	 *
+	 * @var object  $total
+	 *
+	 * @since       1.0.1
+	 */
+	public object $total;
 
     /**
      * Execute and display a template script.
@@ -240,9 +240,9 @@ class HtmlView extends BaseHtmlView
         $app    = Factory::getApplication();
         $layout = $app->input->getCmd('layout', '');
 
-        // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
-        $document = $app->getDocument();
+		// Get the toolbar object instance
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+		$document = $app->getDocument();
 
         // Set toolbar title
         ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MAINTENANCE'), 'wrench');
@@ -309,8 +309,8 @@ class HtmlView extends BaseHtmlView
             $document->getWebassetManager()->useStyle('com_bwpostman.install');
         }
 
-        $manualButton = BwPostmanHTMLHelper::getManualButton('maintenance');
-        $forumButton  = BwPostmanHTMLHelper::getForumButton();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('maintenance');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
         $toolbar->appendButton($manualButton);
         $toolbar->appendButton($forumButton);

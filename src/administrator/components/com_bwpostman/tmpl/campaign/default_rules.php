@@ -31,8 +31,8 @@ use Joomla\CMS\Language\Text;
 ?>
 
 <fieldset id="fieldset-rules" class="options-grid-form options-grid-form-full">
-    <legend><?php echo Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'); ?></legend>
-    <div class="com_config">
-        <?php echo $this->form->getInput('rules'); ?>
-    </div>
+	<legend><?php echo Text::_('COM_BWPOSTMAN_CAM_FIELDSET_RULES'); ?></legend>
+	<div class="com_config">
+		<?php echo $this->form->getInput('rules'); ?>
+	</div>
 </fieldset>

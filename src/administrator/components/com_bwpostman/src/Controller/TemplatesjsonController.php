@@ -48,143 +48,143 @@ use RuntimeException;
  */
 class TemplatesjsonController extends AdminController
 {
-    /**
-     * Method to call the layout for the template upload and install process
-     *
-     * @return void
-     *
-     * @throws Exception
-     *
-     * @since       1.1.0
-     */
-    public function installtpl(): void
-    {
-        try
-        {
-            // Check for request forgeries
-            if (!Session::checkToken('get'))
-            {
-                throw new Exception((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
-            }
+	/**
+	 * Method to call the layout for the template upload and install process
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since       1.1.0
+	 */
+	public function installtpl()
+	{
+		try
+		{
+			// Check for request forgeries
+			if (!Session::checkToken('get'))
+			{
+				throw new Exception((Text::_('COM_BWPOSTMAN_JINVALID_TOKEN')));
+			}
 
-            $app    = Factory::getApplication();
-            $appWeb = new BwWebApp();
-            $jinput	= $app->input;
+			$app    = Factory::getApplication();
+			$appWeb = new BwWebApp();
+			$jinput	= $app->input;
 
-            $step       = $jinput->get('step', 1);
-            $alertClass = 'success';
-            $ready      = "0";
+			$step       = $jinput->get('step', 1);
+			$alertClass = 'success';
+			$ready      = "0";
 
-            // Get file details from uploaded file
-            $file = $app->getUserState('com_bwpostman.templates.uploadfile', '');
+			// Get file details from uploaded file
+			$file = $app->getUserState('com_bwpostman.templates.uploadfile', '');
 
-            $model = $this->getModel('templates');
+			$model = $this->getModel('templates');
 
-            // start output buffer
-            ob_start();
+			// start output buffer
+			ob_start();
 
-            switch($step)
-            {
-                default:
-                case 'step1':
-                    $step = "2";
-                    // extract archive
-                    if ($file === '')
-                    {
-                        throw new Exception(Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD').Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_NO_FILE'));
-                    }
+			switch($step)
+			{
+				default:
+				case 'step1':
+					$step = "2";
+					// extract archive
+					if ($file === '')
+					{
+						throw new Exception(Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD').Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_NO_FILE'));
+					}
 
-                    if (!$model->extractTplFiles($file))
-                    {
-                        $model->deleteTempFolder($file);
-                        echo '<h3 class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
-                        $alertClass = 'error';
-                        $ready = "1";
-                    }
+					if (!$model->extractTplFiles($file))
+					{
+						$model->deleteTempFolder($file);
+						echo '<h3 class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
+						$alertClass = 'error';
+						$ready = "1";
+					}
 
-                    break;
+					break;
 
-                case 'step2':
-                    $step = "3";
-                    // install data to table #__bwpostman_templates_tpl
-                    $templatestplsql = 'bwp_templatestpl.sql';
-                    if (!$model->installTplFiles($templatestplsql, "STEP2"))
-                    {
-                        $model->deleteTempFolder($file);
-                        echo '<h3 class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
-                        $alertClass = 'error';
-                        $ready = "1";
-                    }
+				case 'step2':
+					$step = "3";
+					// install data to table #__bwpostman_templates_tpl
+					$templatestplsql = 'bwp_templatestpl.sql';
+					if (!$model->installTplFiles($templatestplsql, "STEP2"))
+					{
+						$model->deleteTempFolder($file);
+						echo '<h3 class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
+						$alertClass = 'error';
+						$ready = "1";
+					}
 
-                    break;
+					break;
 
-                case 'step3':
-                    $step = "4";
-                    // install data to table #__bwpostman_templates
-                    $templatessql = 'bwp_templates.sql';
-                    if (!$model->installTplFiles($templatessql, "STEP3"))
-                    {
-                        $model->deleteTempFolder($file);
-                        echo '<h3 class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
-                        $alertClass = 'error';
-                        $ready = "1";
-                    }
+				case 'step3':
+					$step = "4";
+					// install data to table #__bwpostman_templates
+					$templatessql = 'bwp_templates.sql';
+					if (!$model->installTplFiles($templatessql, "STEP3"))
+					{
+						$model->deleteTempFolder($file);
+						echo '<h3 class="text-danger">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '</h3>';
+						$alertClass = 'error';
+						$ready = "1";
+					}
 
-                    break;
+					break;
 
-                case 'step4':
-                    $step = "5";
-                    // copy thumbnail
-                    if (!$model->copyThumbsFiles())
-                    {
-                        $alertClass = 'warning';
-                    }
+				case 'step4':
+					$step = "5";
+					// copy thumbnail
+					if (!$model->copyThumbsFiles())
+					{
+						$alertClass = 'warning';
+					}
 
-                    break;
+					break;
 
-                case 'step5':
-                    $step = "6";
-                    // delete temp folder
-                    if (!$model->deleteTempFolder($file))
-                    {
-                        $alertClass = 'warning';
-                    }
+				case 'step5':
+					$step = "6";
+					// delete temp folder
+					if (!$model->deleteTempFolder($file))
+					{
+						$alertClass = 'warning';
+					}
 
-                    $app->setUserState('com_bwpostman.templates.uploadfile', '');
-                    $ready = "1";
-                    echo '<h3 class="text-success">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_OK') . '</h3>';
-                    break;
-            }
+					$app->setUserState('com_bwpostman.templates.uploadfile', '');
+					$ready = "1";
+					echo '<h3 class="text-success">' . Text::_('COM_BWPOSTMAN_TPL_INSTALL_OK') . '</h3>';
+					break;
+			}
 
-            // return the contents of the output buffer
-            $content = ob_get_contents();
-            $result  = $content;
+			// return the contents of the output buffer
+			$content = ob_get_contents();
+			$result  = $content;
 
-            // clean the output buffer and turn off output buffering
-            ob_end_clean();
+			// clean the output buffer and turn off output buffering
+			ob_end_clean();
 
-            // set json response
-            $res = array(
-                "aClass"  => $alertClass,
-                "ready"   => $ready,
-                "result"  => $result,
-                "step"    => $step
-            );
+			// set json response
+			$res = array(
+				"aClass"  => $alertClass,
+				"ready"   => $ready,
+				"result"  => $result,
+				"step"    => $step
+			);
 
 
-            // ajax response
-            $appWeb->setHeader('Content-Type', 'application/json', true);
-            echo json_encode($res);
-            $app->close();
-        }
-        catch (RuntimeException | Exception $exception)
-        {
+			// ajax response
+			$appWeb->setHeader('Content-Type', 'application/json', true);
+			echo json_encode($res);
+			$app->close();
+		}
+		catch (RuntimeException | Exception $exception)
+		{
             BwPostmanHelper::logException($exception, 'TemplatesJsonController BE');
 
             echo Text::_('COM_BWPOSTMAN_TPL_INSTALL_ERROR') . '<br />';
-            echo $exception->getMessage();
-            header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
-            exit;
-        }
-    }
+			echo $exception->getMessage();
+			header('HTTP/1.1 400 ' . Text::_('COM_BWPOSTMAN_ERROR_MSG'));
+			exit;
+		}
+	}
 }

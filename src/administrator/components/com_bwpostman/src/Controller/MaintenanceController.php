@@ -54,336 +54,336 @@ use Joomla\Registry\Registry;
  */
 class MaintenanceController extends BaseController
 {
-    /**
-     * @var		string	The prefix to use with controller messages.
-     *
-     * @since	1.0.4
-     */
-    protected string $text_prefix = 'COM_BWPOSTMAN_MAINTENANCE';
+	/**
+	 * @var		string	The prefix to use with controller messages.
+	 *
+	 * @since	1.0.4
+	 */
+	protected string $text_prefix = 'COM_BWPOSTMAN_MAINTENANCE';
 
-    /**
-     * Constructor
-     *
-     * @param	array	$config		An optional associative array of configuration settings.
-     *
-     * @return void
-     *
-     * @throws Exception
-     *
-     * @since	1.0.1
-     *
-     * @see		JController
-     */
-    public function __construct($config = array())
-    {
-        $this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
+	/**
+	 * Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since	1.0.1
+	 *
+	 * @see		JController
+	 */
+	public function __construct($config = array())
+	{
+		$this->factory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 
-        parent::__construct($config, $this->factory);
+		parent::__construct($config, $this->factory);
 
-        // Register Extra tasks
-        $this->registerTask('checkTables', 'checkTables');
-        $this->registerTask('saveTables', 'saveTables');
-        $this->registerTask('restoreTables', 'restoreTables');
-        $this->registerTask('updateCheckSave', 'updateCheckSave');
-    }
+		// Register Extra tasks
+		$this->registerTask('checkTables', 'checkTables');
+		$this->registerTask('saveTables', 'saveTables');
+		$this->registerTask('restoreTables', 'restoreTables');
+		$this->registerTask('updateCheckSave', 'updateCheckSave');
+	}
 
-    /**
-     * Proxy for getModel.
-     *
-     * @param	string	$name	The name of the model.
-     * @param	string	$prefix	The prefix for the PHP class name.
-     * @param	array	$config		An optional associative array of configuration settings.
-     *
-     * @return	BaseDatabaseModel
-     *
-     * @since	1.0.1
-     */
-    public function getModel($name = 'Maintenance', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel
-    {
-        return $this->factory->createModel($name, $prefix, $config);
-    }
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @param	string	$name	The name of the model.
+	 * @param	string	$prefix	The prefix for the PHP class name.
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 *
+	 * @return	BaseDatabaseModel
+	 *
+	 * @since	1.0.1
+	 */
+	public function getModel($name = 'Maintenance', $prefix = 'Administrator', $config = array('ignore_request' => true)): BaseDatabaseModel
+	{
+		return $this->factory->createModel($name, $prefix, $config);
+	}
 
-    /**
-     * Display
-     *
-     * @param   boolean  $cachable   If true, the view output will be cached
-     * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
-     *
-     * @return  MaintenanceController		This object to support chaining.
-     *
-     * @throws Exception
-     *
-     * @since   1.0.1
-     */
-    public function display($cachable = false, $urlparams = array()): MaintenanceController
-    {
-        if (!BwPostmanHelper::canView('maintenance'))
-        {
-            $this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
-            $this->redirect();
-            return $this;
-        }
+	/**
+	 * Display
+	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link FilterInput::clean()}.
+	 *
+	 * @return  MaintenanceController		This object to support chaining.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   1.0.1
+	 */
+	public function display($cachable = false, $urlparams = array()): MaintenanceController
+	{
+		if (!BwPostmanHelper::canView('maintenance'))
+		{
+			$this->setRedirect(Route::_('index.php?option=com_bwpostman', false));
+			$this->redirect();
+			return $this;
+		}
 
-        parent::display();
+		parent::display();
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Method to call the view for the save tables process
-     * --> we will take the raw-view which calls the saveTables-function in the model
-     *
-     * @return    void
-     *
-     * @throws Exception
-     *
-     * @since    1.3.0
-     */
-    public function updateCheckSave(): void
-    {
-        $model = new MaintenanceModel();
+	/**
+	 * Method to call the view for the save tables process
+	 * --> we will take the raw-view which calls the saveTables-function in the model
+	 *
+	 * @return    void
+	 *
+	 * @throws Exception
+	 *
+	 * @since    1.3.0
+	 */
+	public function updateCheckSave(): void
+	{
+		$model = new MaintenanceModel();
 
-        ob_start();
+		ob_start();
 
-        // first save all tables
-        echo '<br /><br /><div class="well">';
-        echo '<h2>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES') . '</h2>';
-        $model->saveTables(null, true);
-        ob_flush();
-        flush();
+		// first save all tables
+		echo '<br /><br /><div class="well">';
+		echo '<h2>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES') . '</h2>';
+		$model->saveTables(null, true);
+		ob_flush();
+		flush();
 
-        // then make the checks (function repairs tables automatically)
-        echo '<br /><br /><h2>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h2>';
-        $this->checkTables();
-        echo '</div>';
-        ob_flush();
-        flush();
+		// then make the checks (function repairs tables automatically)
+		echo '<br /><br /><h2>' . Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES') . '</h2>';
+		$this->checkTables();
+		echo '</div>';
+		ob_flush();
+		flush();
 
-        $link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=checkTables', false);
-        $this->setRedirect($link);
-    }
+		$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=checkTables', false);
+		$this->setRedirect($link);
+	}
 
-    /**
-     * Method to call the view for the save tables process
-     * --> we will take the raw-view which calls the saveTables-function in the model
-     *
-     * @return boolean
-     *
-     * @throws Exception
-     *
-     * @since       1.0.1
-     */
-    public function saveTables(): bool
-    {
-        // Access check.
-        if (!BwPostmanHelper::canAdmin('maintenance'))
-        {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
-            $link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
-            $this->setRedirect($link);
-            return false;
-        }
+	/**
+	 * Method to call the view for the save tables process
+	 * --> we will take the raw-view which calls the saveTables-function in the model
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since       1.0.1
+	 */
+	public function saveTables(): bool
+	{
+		// Access check.
+		if (!BwPostmanHelper::canAdmin('maintenance'))
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
+			$this->setRedirect($link);
+			return false;
+		}
 
-        $jinput   = Factory::getApplication()->input;
-        $document = Factory::getApplication()->getDocument();
+		$jinput   = Factory::getApplication()->input;
+		$document = Factory::getApplication()->getDocument();
 
-        $jinput->set('view', 'subscriber');
+		$jinput->set('view', 'subscriber');
 
-        $document->setType('raw');
+		$document->setType('raw');
 
-        $link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=saveTables&format=raw', false);
-        $this->setRedirect($link);
-        return true;
-    }
+		$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=saveTables&format=raw', false);
+		$this->setRedirect($link);
+		return true;
+	}
 
-    /**
-     * Method to call the layout for the check tables process
-     *
-     * @return boolean
-     *
-     * @throws Exception
-     *
-     * @since       1.0.1
-     */
-    public function checkTables(): bool
-    {
-        // Access check.
-        if (!BwPostmanHelper::canAdmin('maintenance'))
-        {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
-            $link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
-            $this->setRedirect($link);
-            return false;
-        }
+	/**
+	 * Method to call the layout for the check tables process
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since       1.0.1
+	 */
+	public function checkTables(): bool
+	{
+		// Access check.
+		if (!BwPostmanHelper::canAdmin('maintenance'))
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
+			$this->setRedirect($link);
+			return false;
+		}
 
-        $link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=checkTables', false);
-        $this->setRedirect($link);
-        return true;
-    }
+		$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=checkTables', false);
+		$this->setRedirect($link);
+		return true;
+	}
 
-    /**
-     * Method to call the layout for the restore tables process
-     *
-     * @return boolean
-     *
-     * @throws Exception
-     *
-     * @since       1.0.1
-     */
-    public function restoreTables(): bool
-    {
-        // Access check.
-        if (!BwPostmanHelper::canAdmin('maintenance'))
-        {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
-            $link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
-            $this->setRedirect($link);
-            return false;
-        }
+	/**
+	 * Method to call the layout for the restore tables process
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since       1.0.1
+	 */
+	public function restoreTables(): bool
+	{
+		// Access check.
+		if (!BwPostmanHelper::canAdmin('maintenance'))
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_MISSING_RIGHTS'), 'warning');
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
+			$this->setRedirect($link);
+			return false;
+		}
 
-        $link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables', false);
-        $this->setRedirect($link);
-        return true;
-    }
+		$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables', false);
+		$this->setRedirect($link);
+		return true;
+	}
 
-    /**
-     * Method to call the layout for the restore tables process
-     *
-     * @return boolean
-     *
-     * @throws Exception
-     *
-     * @since       1.0.1
-     */
-    public function doRestore(): bool
-    {
-        // Check for request forgeries
-        if (!Session::checkToken())
-        {
-            jexit(Text::_('JINVALID_TOKEN'));
-        }
+	/**
+	 * Method to call the layout for the restore tables process
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since       1.0.1
+	 */
+	public function doRestore(): bool
+	{
+		// Check for request forgeries
+		if (!Session::checkToken())
+		{
+			jexit(Text::_('JINVALID_TOKEN'));
+		}
 
-        // Access check.
-        if (!BwPostmanHelper::canAdmin('maintenance'))
-        {
-            $link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
-            $this->setRedirect($link);
-            return false;
-        }
+		// Access check.
+		if (!BwPostmanHelper::canAdmin('maintenance'))
+		{
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
+			$this->setRedirect($link);
+			return false;
+		}
 
-        $app    = Factory::getApplication();
-        $jinput = $app->input;
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
 
-        // Retrieve file details from uploaded file, sent from upload form
-        $file = $jinput->files->get('restorefile', null, 'RAW');
+		// Retrieve file details from uploaded file, sent from upload form
+		$file = $jinput->files->get('restorefile', null, 'RAW');
 
-        // Clean up filename to get rid of strange characters like spaces etc
+		// Clean up filename to get rid of strange characters like spaces etc
 //		$filename = File::makeSafe($file['name']);
         $filename = $file['name'];
 
-        // Set up the source and destination of the file
-        $src = $file['tmp_name'];
+		// Set up the source and destination of the file
+		$src = $file['tmp_name'];
 
-        // If the file isn't okay, redirect to restoretables.php
-        if ($file['error'] > 0)
-        {
-            //http://de.php.net/features.file-upload.errors
-            $msg = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD');
+		// If the file isn't okay, redirect to restoretables.php
+		if ($file['error'] > 0)
+		{
+			//http://de.php.net/features.file-upload.errors
+			$msg = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD');
 
-            switch ($file['error'])
-            {
-                case '1':
-                case '2':
-                    $msg .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_SIZE');
-                    break;
-                case '3':
-                    $msg .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_PART');
-                    break;
-                case '4':
-                    $msg .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_FILE');
-                    break;
-            }
+			switch ($file['error'])
+			{
+				case '1':
+				case '2':
+					$msg .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_SIZE');
+					break;
+				case '3':
+					$msg .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_UPLOAD_PART');
+					break;
+				case '4':
+					$msg .= Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ERROR_NO_FILE');
+					break;
+			}
 
-            $link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
-            $this->setRedirect($link, $msg, 'error');
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
+			$this->setRedirect($link, $msg, 'error');
 
-        }
-        else
-        { // The file is okay
-            // Check if the file has the right extension, we need xml
-            // --> if the extension is wrong, redirect to restoretables.php
-            $fileExt = File::getExt($filename);
-            $dest    = $app->getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $fileExt;
+		}
+		else
+		{ // The file is okay
+			// Check if the file has the right extension, we need xml
+			// --> if the extension is wrong, redirect to restoretables.php
+			$fileExt = File::getExt($filename);
+			$dest    = $app->getConfig()->get('tmp_path') . '/tmp_bwpostman_tablesav.' . $fileExt;
 
-            if ($fileExt !== 'xml' && $fileExt !== 'zip')
-            {
-                $msg = Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_TYPE');
-                $link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
-                $this->setRedirect($link, $msg, 'error');
+			if ($fileExt !== 'xml' && $fileExt !== 'zip')
+			{
+				$msg = Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_TYPE');
+				$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
+				$this->setRedirect($link, $msg, 'error');
 
-                // Check if the extension is identical to the selected file format
-                // --> if not, redirect to import.php
-            }
-            else
-            { // Everything is fine
-                if (File::upload($src, $dest, false, true) === false)
-                {
-                    $msg	= Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_FILE');
-                    $link	= Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
-                    $this->setRedirect($link, $msg, 'error');
-                }
-                else
-                {
-                    if ($fileExt === 'zip')
-                    {
-                        $dest = BwPostmanMaintenanceHelper::decompressBackupFile($dest, $filename);
-                    }
+				// Check if the extension is identical to the selected file format
+				// --> if not, redirect to import.php
+			}
+			else
+			{ // Everything is fine
+				if (File::upload($src, $dest, false, true) === false)
+				{
+					$msg	= Text::_('COM_BWPOSTMAN_SUB_IMPORT_ERROR_UPLOAD_FILE');
+					$link	= Route::_('index.php?option=com_bwpostman&view=maintenance&layout=restoreTables&task=restoreTables', false);
+					$this->setRedirect($link, $msg, 'error');
+				}
+				else
+				{
+					if ($fileExt === 'zip')
+					{
+						$dest = BwPostmanMaintenanceHelper::decompressBackupFile($dest, $filename);
+					}
 
-                    $app->setUserState('com_bwpostman.maintenance.dest', $dest);
+					$app->setUserState('com_bwpostman.maintenance.dest', $dest);
 
-                    $link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=doRestore', false);
-                }
-            }
-        }
+					$link = Route::_('index.php?option=com_bwpostman&view=maintenance&layout=doRestore', false);
+				}
+			}
+		}
 
-        $this->setRedirect($link);
-        return true;
-    }
+		$this->setRedirect($link);
+		return true;
+	}
 
-    /**
-     * Method to start cron server
-     *
-     * @return boolean
-     *
-     * @throws  Exception
-     *
-     * @since       2.3.0
-     */
-    public function startCron(): bool
-    {
-        $lang = Factory::getApplication()->getLanguage();
-        $lang->load('plg_bwpostman_bwtimecontrol', JPATH_PLUGINS . '/bwpostman/bwtimecontrol');
+	/**
+	 * Method to start cron server
+	 *
+	 * @return boolean
+	 *
+	 * @throws  Exception
+	 *
+	 * @since       2.3.0
+	 */
+	public function startCron(): bool
+	{
+		$lang = Factory::getApplication()->getLanguage();
+		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_PLUGINS . '/bwpostman/bwtimecontrol');
 
-        $plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
+		$plugin = PluginHelper::getPlugin('bwpostman', 'bwtimecontrol');
 
-        $pluginParams = new Registry();
-        $pluginParams->loadString($plugin->params);
+		$pluginParams = new Registry();
+		$pluginParams->loadString($plugin->params);
 
-        $pluginUser = $pluginParams->get('bwtimecontrol_username', '');
-        $pluginPw   = $pluginParams->get('bwtimecontrol_passwd', '');
+		$pluginUser = $pluginParams->get('bwtimecontrol_username', '');
+		$pluginPw   = $pluginParams->get('bwtimecontrol_passwd', '');
 
-        if ($pluginUser === null || $pluginPw === null)
-        {
-            Factory::getApplication()->enqueueMessage(Text::_('PLG_BWTIMECONTROL_NO_CREDENTIALS'), 'error');
+		if ($pluginUser === null || $pluginPw === null)
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('PLG_BWTIMECONTROL_NO_CREDENTIALS'), 'error');
 
-            $link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
-            $this->setRedirect($link);
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
+			$this->setRedirect($link);
 
-            return false;
-        }
-        else
-        {
-            PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+			return false;
+		}
+		else
+		{
+			PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
             $eventArgs = array(
                 'context' => 'bwpostman.maintenance'
@@ -392,40 +392,40 @@ class MaintenanceController extends BaseController
             Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
             $results = $event->getArgument('result', []);
 
-            if ($results[0] !== true)
-            {
-                $error = '';
+			if ($results[0] !== true)
+			{
+				$error = '';
 
-                foreach ($results as $result)
-                {
-                    $error .= $result . '<br />';
-                }
+				foreach ($results as $result)
+				{
+					$error .= $result . '<br />';
+				}
 
-                $error .= Text::_('PLG_BWTIMECONTROL_MAINTENANCE_ERROR_CRON_START');
-                Factory::getApplication()->enqueueMessage($error, 'error');
-            }
+				$error .= Text::_('PLG_BWTIMECONTROL_MAINTENANCE_ERROR_CRON_START');
+				Factory::getApplication()->enqueueMessage($error, 'error');
+			}
 
-            $link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
-            $this->setRedirect($link);
-            return true;
-        }
-    }
+			$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
+			$this->setRedirect($link);
+			return true;
+		}
+	}
 
-    /**
-     * Method to stop cron server
-     *
-     * @return boolean
-     *
-     * @throws Exception
-     *
-     * @since       2.3.0
-     */
-    public function stopCron(): bool
-    {
-        $lang = Factory::getApplication()->getLanguage();
-        $lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
+	/**
+	 * Method to stop cron server
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since       2.3.0
+	 */
+	public function stopCron(): bool
+	{
+		$lang = Factory::getApplication()->getLanguage();
+		$lang->load('plg_bwpostman_bwtimecontrol', JPATH_ADMINISTRATOR);
 
-        PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
+		PluginHelper::importPlugin('bwpostman', 'bwtimecontrol');
 
         $eventArgs = array(
             'context' => 'bwpostman.maintenance'
@@ -433,8 +433,8 @@ class MaintenanceController extends BaseController
         $event = new Event('onBwPostmanMaintenanceStopCron', $eventArgs);
         Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
 
-        $link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
-        $this->setRedirect($link);
-        return true;
-    }
+		$link = Route::_('index.php?option=com_bwpostman&view=maintenance', false);
+		$this->setRedirect($link);
+		return true;
+	}
 }

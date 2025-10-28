@@ -50,344 +50,344 @@ defined('_JEXEC') or die('Restricted access');
  */
 class CampaignsMailinglistsTable extends Table
 {
-    /**
-     * @var int|null Primary Key Campaign-ID
-     *
-     * @since
-     */
-    public ?int $campaign_id = null;
+	/**
+	 * @var int Primary Key Campaign-ID
+	 *
+	 * @since
+	 */
+	public $campaign_id = null;
 
-    /**
-     * @var int|null Primary Key Mailinglist-ID
-     *
-     * @since
-     */
-    public ?int $mailinglist_id = null;
+	/**
+	 * @var int Primary Key Mailinglist-ID
+	 *
+	 * @since
+	 */
+	public $mailinglist_id = null;
 
-    /**
-     * Constructor
-     *
-     * @param 	DatabaseDriver  $db Database object
-     *
-     * @since
-     */
-    public function __construct($db = null)
-    {
-        parent::__construct('#__bwpostman_campaigns_mailinglists', 'campaign_id', $db);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param 	DatabaseDriver  $db Database object
+	 *
+	 * @since
+	 */
+	public function __construct($db = null)
+	{
+		parent::__construct('#__bwpostman_campaigns_mailinglists', 'campaign_id', $db);
+	}
 
-    /**
-     * Overloaded check method to ensure data integrity
-     *
-     * @access public
-     *
-     * @return boolean True
-     *
-     * @throws Exception
-     *
-     * @since  3.0.0
-     */
-    public function check(): bool
-    {
-        // Remove all HTML tags from the title and description
-        $filter = new InputFilter(array(), array(), 0, 0);
+	/**
+	 * Overloaded check method to ensure data integrity
+	 *
+	 * @access public
+	 *
+	 * @return boolean True
+	 *
+	 * @throws Exception
+	 *
+	 * @since  3.0.0
+	 */
+	public function check(): bool
+	{
+		// Remove all HTML tags from the title and description
+		$filter = new InputFilter(array(), array(), 0, 0);
 
-        $this->campaign_id    = $filter->clean($this->campaign_id, 'UINT');
-        $this->mailinglist_id = $filter->clean($this->mailinglist_id, 'UINT');
+		$this->campaign_id    = $filter->clean($this->campaign_id, 'UINT');
+		$this->mailinglist_id = $filter->clean($this->mailinglist_id, 'UINT');
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Method to copy the entries of this table for one or more campaigns
-     *
-     * @access	public
-     *
-     * @param int $oldid ID of the existing campaign
-     * @param int $newid ID of the copied campaign
-     *
-     * @return 	boolean
-     *
-     * @throws Exception
-     *
-     * @since
-     */
-    public function copyLists(int $oldid, int $newid): bool
-    {
-        $lists    = array();
-        $_db      = $this->_db;
-        $query    = $_db->getQuery(true);
-        $subQuery = $_db->getQuery(true);
+	/**
+	 * Method to copy the entries of this table for one or more campaigns
+	 *
+	 * @access	public
+	 *
+	 * @param int $oldid ID of the existing campaign
+	 * @param int $newid ID of the copied campaign
+	 *
+	 * @return 	boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since
+	 */
+	public function copyLists(int $oldid, int $newid): bool
+	{
+		$lists    = array();
+		$_db      = $this->_db;
+		$query    = $_db->getQuery(true);
+		$subQuery = $_db->getQuery(true);
 
-        $subQuery->select($_db->quote($newid) . ' AS ' . $_db->quoteName('campaign_id'));
-        $subQuery->select($_db->quoteName('mailinglist_id'));
-        $subQuery->from($_db->quoteName($this->_tbl));
-        $subQuery->where($_db->quoteName('campaign_id') . ' = ' . $oldid);
+		$subQuery->select($_db->quote($newid) . ' AS ' . $_db->quoteName('campaign_id'));
+		$subQuery->select($_db->quoteName('mailinglist_id'));
+		$subQuery->from($_db->quoteName($this->_tbl));
+		$subQuery->where($_db->quoteName('campaign_id') . ' = ' . $oldid);
 
-        try
-        {
-            $_db->setQuery($subQuery);
+		try
+		{
+			$_db->setQuery($subQuery);
 
-            $lists = $_db->loadAssocList();
-        }
-        catch (RuntimeException $exception)
-        {
+			$lists = $_db->loadAssocList();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'CamMlTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-        }
+		}
 
-        foreach ($lists as $list)
-        {
-            $query->clear();
-            $query->insert($_db->quoteName($this->_tbl));
-            $query->columns(
-                array(
-                $_db->quoteName('campaign_id'),
-                $_db->quoteName('mailinglist_id')
-                )
-            );
-            $query->values(
-                (int) $list['campaign_id'] . ',' .
-                    (int) $list['mailinglist_id']
-            );
+		foreach ($lists as $list)
+		{
+			$query->clear();
+			$query->insert($_db->quoteName($this->_tbl));
+			$query->columns(
+				array(
+				$_db->quoteName('campaign_id'),
+				$_db->quoteName('mailinglist_id')
+				)
+			);
+			$query->values(
+				(int) $list['campaign_id'] . ',' .
+					(int) $list['mailinglist_id']
+			);
 
-            try
-            {
-                $_db->setQuery($query);
-                $_db->execute();
-            }
-            catch (RuntimeException $exception)
-            {
+			try
+			{
+				$_db->setQuery($query);
+				$_db->execute();
+			}
+			catch (RuntimeException $exception)
+			{
                 BwPostmanHelper::logException($exception, 'CamMlTable BE');
 
                 Factory::getApplication()->enqueueMessage(Text::_('COM_BWPOSTMAN_CAM_COPY_MAILINGLISTS_FAILED'), 'error');
-                return false;
-            }
-        }
+				return false;
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Method to get the mailinglist ids for a single campaign
-     *
-     * @param integer $cam_id campaign id
-     *
-     * @return array
-     *
-     * @throws Exception
-     *
-     * @since 3.0.0 (here, before since 2.3.0 at BE newsletter model)
-     */
-    public function getAssociatedMailinglistsByCampaign(int $cam_id): array
-    {
-        $mailinglists = array();
-        $db	= $this->_db;
+	/**
+	 * Method to get the mailinglist ids for a single campaign
+	 *
+	 * @param integer $cam_id campaign id
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 3.0.0 (here, before since 2.3.0 at BE newsletter model)
+	 */
+	public function getAssociatedMailinglistsByCampaign(int $cam_id): array
+	{
+		$mailinglists = array();
+		$db	= $this->_db;
 
-        $query = $db->getQuery(true);
-        $query->select($db->quoteName('mailinglist_id'));
-        $query->from($db->quoteName($this->_tbl));
-        $query->where($db->quoteName('campaign_id') . ' = ' . $cam_id);
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('mailinglist_id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('campaign_id') . ' = ' . $cam_id);
 
-        try
-        {
-            $db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-            $mailinglists = $db->loadColumn();
-        }
-        catch (RuntimeException $exception)
-        {
+			$mailinglists = $db->loadColumn();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'CamMlTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-        }
+		}
 
-        return $mailinglists;
-    }
+		return $mailinglists;
+	}
 
-    /**
-     * Method to get all campaign ids by specified mailinglists and campaigns
-     *
-     * @param array $mls  mailinglist ids
-     * @param array $cams campaign ids
-     *
-     * @return 	array
-     *
-     * @throws Exception
-     *
-     * @since	3.0.0
-     */
-    public function getAllCampaignIdsByMlCam(array $mls, array $cams): array
-    {
-        $db         = $this->_db;
-        $query      = $db->getQuery(true);
+	/**
+	 * Method to get all campaign ids by specified mailinglists and campaigns
+	 *
+	 * @param array $mls  mailinglist ids
+	 * @param array $cams campaign ids
+	 *
+	 * @return 	array
+	 *
+	 * @throws Exception
+	 *
+	 * @since	3.0.0
+	 */
+	public function getAllCampaignIdsByMlCam(array $mls, array $cams): array
+	{
+		$db         = $this->_db;
+		$query      = $db->getQuery(true);
 
-        $query->select('DISTINCT (' . $db->quoteName('campaign_id') . ')');
-        $query->from($db->quoteName($this->_tbl));
-        $query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $mls) . ')');
-        $query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
+		$query->select('DISTINCT (' . $db->quoteName('campaign_id') . ')');
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $mls) . ')');
+		$query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
 
-        try
-        {
-            $this->_db->setQuery($query);
+		try
+		{
+			$this->_db->setQuery($query);
 
-            $cams = $db->loadColumn();
-        }
-        catch (RuntimeException $exception)
-        {
+			$cams = $db->loadColumn();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'CamMlTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-        }
+		}
 
-        return $cams;
-    }
+		return $cams;
+	}
 
-    /**
-     * Method to remove the campaign from the cross table #__bwpostman_campaigns_mailinglists
-     *
-     * @param integer $id
-     *
-     * @return bool
-     *
-     * @throws Exception
-     *
-     * @since   3.0.0 (here, before since 2.0.0 at campaign model)
-     */
-    public function deleteCampaignsMailinglistsEntry(int $id): bool
-    {
-        $db   = $this->_db;
-        $query = $db->getQuery(true);
+	/**
+	 * Method to remove the campaign from the cross table #__bwpostman_campaigns_mailinglists
+	 *
+	 * @param integer $id
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.0.0 (here, before since 2.0.0 at campaign model)
+	 */
+	public function deleteCampaignsMailinglistsEntry(int $id): bool
+	{
+		$db   = $this->_db;
+		$query = $db->getQuery(true);
 
-        $query->delete($db->quoteName($this->_tbl));
-        $query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote($id));
+		$query->delete($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('campaign_id') . ' =  ' . $db->quote($id));
 
-        try
-        {
-            $db->setQuery($query);
-            $db->execute();
-        }
-        catch (RuntimeException $exception)
-        {
+		try
+		{
+			$db->setQuery($query);
+			$db->execute();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'CamMlTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-            return false;
-        }
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Method to remove the mailinglist from the cross table #__bwpostman_campaigns_mailinglists
-     *
-     * @param integer $id
-     *
-     * @return bool
-     *
-     * @throws Exception
-     *
-     * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
-     */
-    public function deleteMailinglistsCampaignsEntry(int $id): bool
-    {
-        $db            = $this->_db;
-        $query          = $db->getQuery(true);
+	/**
+	 * Method to remove the mailinglist from the cross table #__bwpostman_campaigns_mailinglists
+	 *
+	 * @param integer $id
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 *
+	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
+	 */
+	public function deleteMailinglistsCampaignsEntry(int $id): bool
+	{
+		$db            = $this->_db;
+		$query          = $db->getQuery(true);
 
-        $query->delete($db->quoteName($this->_tbl));
-        $query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
+		$query->delete($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
 
-        try
-        {
-            $db->setQuery($query);
-            $db->execute();
-        }
-        catch (RuntimeException $exception)
-        {
+		try
+		{
+			$db->setQuery($query);
+			$db->execute();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'CamMlTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-            return false;
-        }
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Method to add the campaign to the cross table #__bwpostman_campaigns_mailinglists
-     *
-     * @param array $data
-     *
-     * @return boolean
-     *
-     * @throws Exception
-     *
-     * @since 3.0.0
-     */
-    public function addCampaignsMailinglistsEntry(array $data): bool
-    {
-        foreach ($data['mailinglists'] as $mailinglists_value)
-        {
-            $db    = $this->_db;
-            $query = $db->getQuery(true);
+	/**
+	 * Method to add the campaign to the cross table #__bwpostman_campaigns_mailinglists
+	 *
+	 * @param array $data
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since 3.0.0
+	 */
+	public function addCampaignsMailinglistsEntry(array $data): bool
+	{
+		foreach ($data['mailinglists'] as $mailinglists_value)
+		{
+			$db    = $this->_db;
+			$query = $db->getQuery(true);
 
-            $query->insert($db->quoteName($this->_tbl));
-            $query->columns(
-                array(
-                    $db->quoteName('campaign_id'),
-                    $db->quoteName('mailinglist_id')
-                )
-            );
-            $query->values(
-                (int) $data['id'] . ',' .
-                (int) $mailinglists_value
-            );
+			$query->insert($db->quoteName($this->_tbl));
+			$query->columns(
+				array(
+					$db->quoteName('campaign_id'),
+					$db->quoteName('mailinglist_id')
+				)
+			);
+			$query->values(
+				(int) $data['id'] . ',' .
+				(int) $mailinglists_value
+			);
 
-            try
-            {
-                $db->setQuery($query);
-                $db->execute();
-            }
-            catch (RuntimeException $exception)
-            {
+			try
+			{
+				$db->setQuery($query);
+				$db->execute();
+			}
+			catch (RuntimeException $exception)
+			{
                 BwPostmanHelper::logException($exception, 'CamMlTable BE');
 
                 Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-                return false;
-            }
-        }
+				return false;
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Returns the identity (primary key) value of this record
-     *
-     * @return  mixed
-     *
-     * @since  3.0.0
-     */
-    public function getId(): mixed
-    {
-        $key = $this->getKeyName();
+	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 *
+	 * @since  3.0.0
+	 */
+	public function getId()
+	{
+		$key = $this->getKeyName();
 
-        return $this->$key;
-    }
+		return $this->$key;
+	}
 
-    /**
-     * Check if the record has a property (applying a column alias if it exists)
-     *
-     * @param string $key key to be checked
-     *
-     * @return  boolean
-     *
-     * @since   3.0.0
-     */
-    public function hasField($key): bool
-    {
-        $key = $this->getColumnAlias($key);
+	/**
+	 * Check if the record has a property (applying a column alias if it exists)
+	 *
+	 * @param string $key key to be checked
+	 *
+	 * @return  boolean
+	 *
+	 * @since   3.0.0
+	 */
+	public function hasField($key): bool
+	{
+		$key = $this->getColumnAlias($key);
 
-        return property_exists($this, $key);
-    }
+		return property_exists($this, $key);
+	}
 }

@@ -31,7 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -61,108 +60,108 @@ class HtmlView extends BaseHtmlView
      */
     protected $form;
 
-    /**
-     * property to hold selected item
-     *
-     * @var object   $item
-     *
-     * @since       1.1.0
-     */
-    protected object $item;
+	/**
+	 * property to hold selected item
+	 *
+	 * @var object   $item
+	 *
+	 * @since       1.1.0
+	 */
+	protected object $item;
 
-    /**
-     * property to hold state
-     *
-     * @var array|object  $state
-     *
-     * @since       1.1.0
-     */
-    protected array|object $state;
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       1.1.0
+	 */
+	protected array|object $state;
 
-    /**
-     * property to hold queue entries
-     *
-     * @var boolean $queueEntries
-     *
-     * @since       1.1.0
-     */
-    public bool $queueEntries;
+	/**
+	 * property to hold queue entries
+	 *
+	 * @var boolean $queueEntries
+	 *
+	 * @since       1.1.0
+	 */
+	public bool $queueEntries;
 
-    /**
-     * property to hold template
-     *
-     * @var boolean $template
-     *
-     * @since       1.1.0
-     */
-    public bool $template;
+	/**
+	 * property to hold template
+	 *
+	 * @var boolean $template
+	 *
+	 * @since       1.1.0
+	 */
+	public bool $template;
 
-    /**
-     * property to hold request url
-     *
-     * @var string $request_url
-     *
-     * @since       1.1.0
-     */
-    public string $request_url;
+	/**
+	 * property to hold request url
+	 *
+	 * @var string $request_url
+	 *
+	 * @since       1.1.0
+	 */
+	public string $request_url;
 
-    /**
-     * @var string $request_url
-     *
-     * @since       2.0.0
-     */
-    public string $headTag = '';
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public string $headTag = '';
 
-    /**
-     * @var string $request_url
-     *
-     * @since       2.0.0
-     */
-    public string $bodyTag = '';
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public string $bodyTag = '';
 
-    /**
-     * @var string $request_url
-     *
-     * @since       2.0.0
-     */
-    public string $articleTagBegin = '';
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public string $articleTagBegin = '';
 
-    /**
-     * @var string $request_url
-     *
-     * @since       2.0.0
-     */
-    public string $articleTagEnd = '';
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public string $articleTagEnd = '';
 
-    /**
-     * @var string $request_url
-     *
-     * @since       2.0.0
-     */
-    public string $readonTag = '';
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public string $readonTag = '';
 
-    /**
-     * @var string $request_url
-     *
-     * @since       2.0.0
-     */
-    public string $legalTagBegin = '';
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public string $legalTagBegin = '';
 
-    /**
-     * @var string $request_url
-     *
-     * @since       2.0.0
-     */
-    public string $legalTagEnd = '';
+	/**
+	 * @var string $request_url
+	 *
+	 * @since       2.0.0
+	 */
+	public string $legalTagEnd = '';
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
     /**
      * Execute and display a template script.
@@ -196,9 +195,9 @@ class HtmlView extends BaseHtmlView
         $this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
         $model = $this->getModel();
-        $this->form		= $model->getForm();
-        $this->item		= $model->getItem();
-        $this->state	= $model->getState();
+		$this->form		= $model->getForm();
+		$this->item		= $model->getItem();
+		$this->state	= $model->getState();;
 
         // Save a reference into view
         $this->request_url	= $uri_string;
@@ -239,22 +238,22 @@ class HtmlView extends BaseHtmlView
         return $this;
     }
 
-    /**
-     * Add the page title, styles and toolbar.
-     *
-     * @throws Exception
-     *
-     * @since	1.1.0
-     */
-    protected function addToolbar(): void
-    {
-        $app    = Factory::getApplication();
-        $app->input->set('hidemainmenu', true);
-        $uri		= Uri::getInstance();
-        $userId		= $app->getIdentity()->id;
+	/**
+	 * Add the page title, styles and toolbar.
+	 *
+	 * @throws Exception
+	 *
+	 * @since	1.1.0
+	 */
+	protected function addToolbar()
+	{
+		$app    = Factory::getApplication();
+		$app->input->set('hidemainmenu', true);
+		$uri		= Uri::getInstance();
+		$userId		= $app->getIdentity()->id;
 
-        // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+		// Get the toolbar object instance
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
         // Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
         $isNew          = ($this->item->id < 1);
@@ -325,8 +324,8 @@ class HtmlView extends BaseHtmlView
             $toolbar->back();
         }
 
-        $manualButton = BwPostmanHTMLHelper::getManualButton('template');
-        $forumButton  = BwPostmanHTMLHelper::getForumButton();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('template');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
         $toolbar->appendButton($manualButton);
         $toolbar->appendButton($forumButton);

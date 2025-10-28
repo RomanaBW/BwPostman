@@ -31,65 +31,65 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Session\Session;
 
-$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nl_send');
+$this->document->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_nl_send');
 
 $model		= $this->getModel();
 $token      = Session::getFormToken();
 ?>
 
 <div id="sendResult" class="card mb-3">
-    <div class="row">
-        <div class="col-12 text-center mb-2">
-            <div class="card-header">
-                <div class="h1"><?php echo Text::_('COM_BWPOSTMAN_NL_SENDMAIL'); ?></div>
-            </div>
-        </div>
-        <div class="col-md-6 inner">
-            <div class="card-body">
-                <div class="h2"><?php echo Text::_('JSTATUS'); ?></div>
-                <div class="progress mb-3" style="height: 2rem; font-size: 1rem;">
-                    <div id="nl_bar" class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                        role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">0%
-                    </div>
-                </div>
-                <div id="nl_to_send_message" class="mb-4">&nbsp;</div>
-                <div id="sending" class="alert alert-success">
-                    <i class="fas fa-spinner fa-pulse fa-lg"></i>&nbsp;&nbsp;
-                    <?php echo Text::_('COM_BWPOSTMAN_NL_SENDING_PROCESS'); ?>
-                </div>
-                <div id="delay_msg" class="alert alert-secondary">
-                    <i class="fas fa-spinner fa-pulse fa-lg"></i>&nbsp;&nbsp;
-                    <?php echo $this->delay_message; ?>
-                </div>
-                <div id="complete" class="alert alert-secondary">
-                    <i class="fas fa-check-circle fa-lg"></i>&nbsp;&nbsp;
-                    <?php echo Text::_('COM_BWPOSTMAN_NL_QUEUE_COMPLETED'); ?>
-                </div>
-                <div id="published" class="alert alert-secondary">
-                    <i class="fas fa-check-circle fa-lg"></i>&nbsp;&nbsp;
-                    <?php echo Text::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_1'); ?>
-                </div>
-                <div id="nopublished" class="alert alert-secondary">
-                    <i class="fas fa-exclamation-circle fa-lg"></i>&nbsp;&nbsp;
-                    <?php echo Text::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_0'); ?>
-                </div>
-                <div id="error" class="alert alert-secondary">
-                    <i class="fas fa-exclamation-circle fa-lg"></i>&nbsp;&nbsp;
-                    <?php echo Text::_('JERROR_AN_ERROR_HAS_OCCURRED'); ?>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card-body">
-                <div class="h2"><?php echo Text::_('COM_BWPOSTMAN_NL_SENDING_DETAILS'); ?></div>
-                <div id="load" class="text-center"><i class="fas fa-spinner fa-pulse fa-3x"></i></div>
-                <div id="result" class="mt-2"></div>
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-12 text-center mb-2">
+			<div class="card-header">
+				<div class="h1"><?php echo Text::_('COM_BWPOSTMAN_NL_SENDMAIL'); ?></div>
+			</div>
+		</div>
+		<div class="col-md-6 inner">
+			<div class="card-body">
+				<div class="h2"><?php echo Text::_('JSTATUS'); ?></div>
+				<div class="progress mb-3" style="height: 2rem; font-size: 1rem;">
+					<div id="nl_bar" class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+						role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">0%
+					</div>
+				</div>
+				<div id="nl_to_send_message" class="mb-4">&nbsp;</div>
+				<div id="sending" class="alert alert-success">
+					<i class="fas fa-spinner fa-pulse fa-lg"></i>&nbsp;&nbsp;
+					<?php echo Text::_('COM_BWPOSTMAN_NL_SENDING_PROCESS'); ?>
+				</div>
+				<div id="delay_msg" class="alert alert-secondary">
+					<i class="fas fa-spinner fa-pulse fa-lg"></i>&nbsp;&nbsp;
+					<?php echo $this->delay_message; ?>
+				</div>
+				<div id="complete" class="alert alert-secondary">
+					<i class="fas fa-check-circle fa-lg"></i>&nbsp;&nbsp;
+					<?php echo Text::_('COM_BWPOSTMAN_NL_QUEUE_COMPLETED'); ?>
+				</div>
+				<div id="published" class="alert alert-secondary">
+					<i class="fas fa-check-circle fa-lg"></i>&nbsp;&nbsp;
+					<?php echo Text::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_1'); ?>
+				</div>
+				<div id="nopublished" class="alert alert-secondary">
+					<i class="fas fa-exclamation-circle fa-lg"></i>&nbsp;&nbsp;
+					<?php echo Text::_('COM_BWPOSTMAN_NLS_N_ITEMS_PUBLISHED_0'); ?>
+				</div>
+				<div id="error" class="alert alert-secondary">
+					<i class="fas fa-exclamation-circle fa-lg"></i>&nbsp;&nbsp;
+					<?php echo Text::_('JERROR_AN_ERROR_HAS_OCCURRED'); ?>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="card-body">
+				<div class="h2"><?php echo Text::_('COM_BWPOSTMAN_NL_SENDING_DETAILS'); ?></div>
+				<div id="load" class="text-center"><i class="fas fa-spinner fa-pulse fa-3x"></i></div>
+				<div id="result" class="mt-2"></div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <?php echo LayoutHelper::render('footer', null, JPATH_ADMINISTRATOR . '/components/com_bwpostman/layouts/footer'); ?>
 
-    <input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=newsletterjson.startsending&format=json&<?php echo Session::getFormToken(); ?>=1" />
-    <input type="hidden" id="delay" value="<?php echo $this->delay; ?>" />
+	<input type="hidden" id="startUrl" value="index.php?option=com_bwpostman&task=newsletterjson.startsending&format=json&<?php echo Session::getFormToken(); ?>=1" />
+	<input type="hidden" id="delay" value="<?php echo $this->delay; ?>" />

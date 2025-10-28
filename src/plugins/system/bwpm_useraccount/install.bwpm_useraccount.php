@@ -45,7 +45,7 @@ class PlgSystemBwPm_UserAccountInstallerScript
 	 *
 	 * @since 4.1.0
 	 */
-	protected string $min_bwpostman_version    = '4.0';
+	protected $min_bwpostman_version    = '4.0';
 
 	/**
 	 * Called before any type of action
@@ -90,12 +90,12 @@ class PlgSystemBwPm_UserAccountInstallerScript
 	 *
 	 * @since     4.1.0
 	 */
-	public function postflight(string $type): void
-    {
+	public function postflight(string $type)
+	{
 		// We only need to perform this if the extension is being installed, not update
 		if ($type == 'install')
 		{
-			$db = Factory::getContainer()->get(DatabaseInterface::class);
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			$fields = array(

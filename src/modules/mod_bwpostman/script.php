@@ -47,21 +47,21 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @since       0.9.8
 	 */
-	protected InstallerAdapter $parentInstaller;
+	protected $parentInstaller;
 
 	/**
 	 * @var string $minimum_joomla_release
 	 *
 	 * @since       0.9.8
 	 */
-	protected string $minimum_joomla_release;
+	protected $minimum_joomla_release;
 
 	/**
-	 * @var ?string release
+	 * @var string release
 	 *
 	 * @since       0.9.8
 	 */
-	protected ?string $release = null;
+	protected $release = null;
 
 	/**
 	 * Method to install the extension
@@ -72,8 +72,8 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @since     0.9.8
 	 */
-	public function install(): void
-    {
+	public function install()
+	{
 		$this->showFinished(false);
 	}
 
@@ -86,8 +86,8 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @since     0.9.8
 	 */
-	public function uninstall(): void
-    {
+	public function uninstall()
+	{
 		Factory::getApplication()->enqueueMessage(Text::_('MOD_BWPOSTMAN_UNINSTALL_THANKYOU'), 'message');
 	}
 
@@ -100,8 +100,8 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @since     0.9.8
 	 */
-	public function update(): void
-    {
+	public function update()
+	{
 		$this->showFinished(true);
 	}
 
@@ -203,12 +203,10 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @return void
 	 *
-     * @throws Exception
-     *
-     * @since     0.9.8
+	 * @since     0.9.8
 	 */
-	public function postflight(string $type, object $parent): void
-    {
+	public function postflight(string $type, object $parent)
+	{
 		if ($type == 'update')
 		{
 			// remove obsolete files
@@ -225,8 +223,8 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @since   4.0.0
 	 */
-	private function removeObsoleteFilesAndFolders(): void
-    {
+	private function removeObsoleteFilesAndFolders()
+	{
 		$feFilesArray = array(
 			'helper.php',
 			'css/bwpm_register.css',
@@ -308,8 +306,8 @@ class Mod_BwPostmanInstallerScript
 	 *
 	 * @since     0.9.8
 	 */
-	public function showFinished(bool $update): void
-    {
+	public function showFinished(bool $update)
+	{
 		$lang = Factory::getApplication()->getLanguage();
 		//Load first english files
 		$lang->load('mod_bwpostman.sys', JPATH_SITE, 'en_GB', true);

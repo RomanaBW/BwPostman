@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
@@ -49,77 +49,77 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-    /**
-     * property to hold selected items
-     *
-     * @var array   $items
-     *
-     * @since       0.9.1
-     */
-    protected array $items;
+	/**
+	 * property to hold selected items
+	 *
+	 * @var array   $items
+	 *
+	 * @since       0.9.1
+	 */
+	protected array $items;
 
-    /**
-     * property to hold pagination object
-     *
-     * @var object  $pagination
-     *
-     * @since       0.9.1
-     */
-    protected object $pagination;
+	/**
+	 * property to hold pagination object
+	 *
+	 * @var object  $pagination
+	 *
+	 * @since       0.9.1
+	 */
+	protected object $pagination;
 
-    /**
-     * property to hold state
-     *
-     * @var array|object  $state
-     *
-     * @since       0.9.1
-     */
-    protected array|object $state;
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
+	 */
+	protected array|object $state;
 
-    /**
-     * property to hold filter form
-     *
-     * @var object  $filterForm
-     *
-     * @since       0.9.1
-     */
-    public object $filterForm;
+	/**
+	 * property to hold filter form
+	 *
+	 * @var object  $filterForm
+	 *
+	 * @since       0.9.1
+	 */
+	public object $filterForm;
 
-    /**
-     * property to hold active filters
-     *
-     * @var array  $activeFilters
-     *
-     * @since       0.9.1
-     */
-    public array $activeFilters;
+	/**
+	 * property to hold active filters
+	 *
+	 * @var object  $activeFilters
+	 *
+	 * @since       0.9.1
+	 */
+	public object $activeFilters;
 
-    /**
-     * property to hold total value
-     *
-     * @var string $total
-     *
-     * @since       0.9.1
-     */
-    public string $total;
+	/**
+	 * property to hold total value
+	 *
+	 * @var string $total
+	 *
+	 * @since       0.9.1
+	 */
+	public string $total;
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
-    /**
-     * property to hold sidebar
-     *
-     * @var object  $sidebar
-     *
-     * @since       0.9.1
-     */
-    public object $sidebar;
+	/**
+	 * property to hold sidebar
+	 *
+	 * @var object  $sidebar
+	 *
+	 * @since       0.9.1
+	 */
+	public object $sidebar;
 
     /**
      * Execute and display a template script.
@@ -144,14 +144,14 @@ class HtmlView extends BaseHtmlView
             $app->redirect('index.php?option=com_bwpostman');
         }
 
-        // Get data from the model
+		// Get data from the model
         $model = $this->getModel();
-        $this->state			= $model->getState();
-        $this->items			= $model->getItems();
-        $this->filterForm		= $model->getFilterForm();
-        $this->activeFilters	= $model->getActiveFilters();
-        $this->pagination		= $model->getPagination();
-        $this->total			= $model->getTotal();
+		$this->state			= $model->getState();;
+		$this->items			= $model->getItems();;
+		$this->filterForm		= $model->getFilterForm();
+		$this->activeFilters	= $model->getActiveFilters();;
+		$this->pagination		= $model->getPagination();;
+		$this->total			= $model->getTotal();
 
         $this->addToolbar();
 
@@ -161,19 +161,19 @@ class HtmlView extends BaseHtmlView
         return $this;
     }
 
-    /**
-     * Add the page title and toolbar.
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    protected function addToolbar(): void
-    {
-        // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	protected function addToolbar()
+	{
+		// Get the toolbar object instance
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-        $this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_confirm_archive');
+		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_confirm_archive');
 
         // Set toolbar title
         ToolbarHelper::title(Text::_('COM_BWPOSTMAN_MLS'), 'list');
@@ -209,14 +209,14 @@ class HtmlView extends BaseHtmlView
                 $childBar->archive('mailinglist.archive')->listCheck(true);
             }
 
-            if (BwPostmanHelper::canEdit('mailinglist', []) || BwPostmanHelper::canEditState('mailinglist'))
-            {
-                $childBar->checkin('mailinglists.checkin')->listCheck(true);
-            }
-        }
+			if (BwPostmanHelper::canEdit('mailinglist', []) || BwPostmanHelper::canEditState('mailinglist'))
+			{
+				$childBar->checkin('mailinglists.checkin')->listCheck(true);
+			}
+		}
 
-        $manualButton = BwPostmanHTMLHelper::getManualButton('mailinglists');
-        $forumButton  = BwPostmanHTMLHelper::getForumButton();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('mailinglists');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
         $toolbar->appendButton($manualButton);
         $toolbar->appendButton($forumButton);

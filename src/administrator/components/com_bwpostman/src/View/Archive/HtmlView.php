@@ -33,7 +33,6 @@ use Exception;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\CMS\Language\Text;
@@ -52,77 +51,77 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper
  */
 class HtmlView extends BaseHtmlView
 {
-    /**
-     * property to hold selected items
-     *
-     * @var array   $items
-     *
-     * @since       0.9.1
-     */
-    protected array $items;
+	/**
+	 * property to hold selected items
+	 *
+	 * @var array   $items
+	 *
+	 * @since       0.9.1
+	 */
+	protected array $items;
 
-    /**
-     * property to hold pagination object
-     *
-     * @var object  $pagination
-     *
-     * @since       0.9.1
-     */
-    protected object $pagination;
+	/**
+	 * property to hold pagination object
+	 *
+	 * @var object  $pagination
+	 *
+	 * @since       0.9.1
+	 */
+	protected object $pagination;
 
-    /**
-     * property to hold state
-     *
-     * @var array|object  $state
-     *
-     * @since       0.9.1
-     */
-    protected array|object $state;
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
+	 */
+	protected array|object $state;
 
-    /**
-     * property to hold user permissions
-     *
-     * @var array  $permissions
-     *
-     * @since       2.0.0
-     */
-    protected array $permissions;
+	/**
+	 * property to hold user permissions
+	 *
+	 * @var array  $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	protected array $permissions;
 
-    /**
-     * property to hold filter form
-     *
-     * @var object  $filterForm
-     *
-     * @since       0.9.1
-     */
-    public object $filterForm;
+	/**
+	 * property to hold filter form
+	 *
+	 * @var object  $filterForm
+	 *
+	 * @since       0.9.1
+	 */
+	public object $filterForm;
 
-    /**
-     * property to hold active filters
-     *
-     * @var array  $activeFilters
-     *
-     * @since       0.9.1
-     */
-    public array $activeFilters;
+	/**
+	 * property to hold active filters
+	 *
+	 * @var object  $activeFilters
+	 *
+	 * @since       0.9.1
+	 */
+	public object $activeFilters;
 
-    /**
-     * property to hold request url
-     *
-     * @var string $request_url
-     *
-     * @since       0.9.1
-     */
-    public string $request_url;
+	/**
+	 * property to hold request url
+	 *
+	 * @var string $request_url
+	 *
+	 * @since       0.9.1
+	 */
+	public string $request_url;
 
-    /**
-     * property to hold sidebar
-     *
-     * @var object  $sidebar
-     *
-     * @since       0.9.1
-     */
-    public object $sidebar;
+	/**
+	 * property to hold sidebar
+	 *
+	 * @var object  $sidebar
+	 *
+	 * @since       0.9.1
+	 */
+	public object $sidebar;
 
     /**
      * Display
@@ -149,13 +148,13 @@ class HtmlView extends BaseHtmlView
             $app->redirect('index.php?option=com_bwpostman');
         }
 
-        // Get data from the model
+		// Get data from the model
         $model = $this->getModel();
-        $this->items 			= $model->getItems();
-        $this->pagination		= $model->getPagination();
-        $this->filterForm		= $model->getFilterForm(array(), true, $this->_layout);
-        $this->activeFilters	= $model->getActiveFilters();
-        $this->state			= $model->getState();
+		$this->items 			= $model->getItems();;
+		$this->pagination		= $model->getPagination();;
+		$this->filterForm		= $model->getFilterForm(array(), true, $this->_layout);
+		$this->activeFilters	= $model->getActiveFilters();;
+		$this->state			= $model->getState();;
 
         $request_result = $this->checkForAllowedTabs();
 
@@ -172,9 +171,9 @@ class HtmlView extends BaseHtmlView
 
         $this->addToolbar();
 
-        $wa = $this->getDocument()->getWebAssetManager();
-        $wa->useScript('com_bwpostman.admin-bwpm_confirm_unarchive');
-        $wa->useScript('com_bwpostman.admin-bwpm_confirm_delete_cam_nls');
+		$wa = $this->getDocument()->getWebAssetManager();
+		$wa->useScript('com_bwpostman.admin-bwpm_confirm_unarchive');
+		$wa->useScript('com_bwpostman.admin-bwpm_confirm_delete_cam_nls');
 
         // Call parent display
         parent::display($tpl);
@@ -192,8 +191,8 @@ class HtmlView extends BaseHtmlView
         $app    = Factory::getApplication();
         $jinput	= $app->input;
 
-        // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+		// Get the toolbar object instance
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
         // Set toolbar title
         ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ARC'), 'list');

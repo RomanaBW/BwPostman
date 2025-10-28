@@ -45,59 +45,59 @@ use stdClass;
  */
 class AllusergroupsField extends ListField
 {
-    /**
-     * property to hold all user groups
-     *
-     * @var string  $type
-     *
-     * @since
-     */
-    protected $type = 'AllUsergroups';
+	/**
+	 * property to hold all user groups
+	 *
+	 * @var string  $type
+	 *
+	 * @since
+	 */
+	protected $type = 'AllUsergroups';
 
-    /**
-     * Method to get the field options.
-     *
-     * @return	array  The field option objects.
-     *
-     * @throws Exception
-     *
-     * @since	1.2.0
-     */
-    protected function getOptions(): array
-    {
-        // Get a db connection.
-        $db    = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true);
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return	array  The field option objects.
+	 *
+	 * @throws Exception
+	 *
+	 * @since	1.2.0
+	 */
+	protected function getOptions(): array
+	{
+		// Get a db connection.
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->getQuery(true);
 
-        // Get # of all published mailinglists
-        $query->select('DISTINCT (nm.mailinglist_id) AS value');
-        $query->select('u.title AS text');
-        $query->from('#__bwpostman_newsletters_mailinglists AS nm');
-        $query->where('nm.mailinglist_id < 0');
-        $query->rightJoin('#__bwpostman_newsletters AS n ON n.id = nm.newsletter_id');
-        $query->where('n.archive_flag = 0');
-        $query->leftJoin('#__usergroups AS u ON CONCAT("-", u.id) = nm.mailinglist_id');
-        $query->order('u.title');
+		// Get # of all published mailinglists
+		$query->select('DISTINCT (nm.mailinglist_id) AS value');
+		$query->select('u.title AS text');
+		$query->from('#__bwpostman_newsletters_mailinglists AS nm');
+		$query->where('nm.mailinglist_id < 0');
+		$query->rightJoin('#__bwpostman_newsletters AS n ON n.id = nm.newsletter_id');
+		$query->where('n.archive_flag = 0');
+		$query->leftJoin('#__usergroups AS u ON CONCAT("-", u.id) = nm.mailinglist_id');
+		$query->order('u.title');
 
-        try
-        {
-            $db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-            $options = $db->loadObjectList();
-        }
-        catch (RuntimeException $exception)
-        {
+			$options = $db->loadObjectList();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'AllUsergroupsField BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-        }
+		}
 
-        $parent = new stdClass;
-        $parent->value = '';
-        $parent->text = Text::_('COM_BWPOSTMAN_ARC_FILTER_USERGROUPS');
-        array_unshift($options, $parent);
+		$parent = new stdClass;
+		$parent->value = '';
+		$parent->text = Text::_('COM_BWPOSTMAN_ARC_FILTER_USERGROUPS');
+		array_unshift($options, $parent);
 
-        // Merge any additional options in the XML definition.
-        return array_merge(parent::getOptions(), $options);
-    }
+		// Merge any additional options in the XML definition.
+		return array_merge(parent::getOptions(), $options);
+	}
 }

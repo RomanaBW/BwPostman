@@ -33,7 +33,6 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\CMS\Component\ComponentHelper;
@@ -52,140 +51,140 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends BaseHtmlView
 {
-    /**
-     * property to hold selected items
-     *
-     * @var array   $items
-     *
-     * @since       0.9.1
-     */
-    protected array $items;
+	/**
+	 * property to hold selected items
+	 *
+	 * @var array   $items
+	 *
+	 * @since       0.9.1
+	 */
+	protected array $items;
 
-    /**
-     * property to hold pagination object
-     *
-     * @var object  $pagination
-     *
-     * @since       0.9.1
-     */
-    protected object $pagination;
+	/**
+	 * property to hold pagination object
+	 *
+	 * @var object  $pagination
+	 *
+	 * @since       0.9.1
+	 */
+	protected object $pagination;
 
-    /**
-     * property to hold state
-     *
-     * @var array|object  $state
-     *
-     * @since       0.9.1
-     */
-    protected array|object $state;
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
+	 */
+	protected array|object $state;
 
-    /**
-     * property to hold filter form
-     *
-     * @var object  $filterForm
-     *
-     * @since       0.9.1
-     */
-    public object $filterForm;
+	/**
+	 * property to hold filter form
+	 *
+	 * @var object  $filterForm
+	 *
+	 * @since       0.9.1
+	 */
+	public object $filterForm;
 
-    /**
-     * property to hold active filters
-     *
-     * @var array  $activeFilters
-     *
-     * @since       0.9.1
-     */
-    public array $activeFilters;
+	/**
+	 * property to hold active filters
+	 *
+	 * @var object  $activeFilters
+	 *
+	 * @since       0.9.1
+	 */
+	public object $activeFilters;
 
-    /**
-     * property to hold total value
-     *
-     * @var string $total
-     *
-     * @since       0.9.1
-     */
-    public string $total;
+	/**
+	 * property to hold total value
+	 *
+	 * @var string $total
+	 *
+	 * @since       0.9.1
+	 */
+	public string $total;
 
-    /**
-     * property to hold sidebar
-     *
-     * @var object  $sidebar
-     *
-     * @since       0.9.1
-     */
-    public object $sidebar;
+	/**
+	 * property to hold sidebar
+	 *
+	 * @var object  $sidebar
+	 *
+	 * @since       0.9.1
+	 */
+	public object $sidebar;
 
-    /**
-     * property to hold mailinglists
-     *
-     * @var array  $mailinglists
-     *
-     * @since       0.9.1
-     */
-    public array $mailinglists;
+	/**
+	 * property to hold mailinglists
+	 *
+	 * @var array  $mailinglists
+	 *
+	 * @since       0.9.1
+	 */
+	public array $mailinglists;
 
-    /**
-     * property to hold params
-     *
-     * @var object  $params
-     *
-     * @since       0.9.1
-     */
-    public object $params;
+	/**
+	 * property to hold params
+	 *
+	 * @var object  $params
+	 *
+	 * @since       0.9.1
+	 */
+	public object $params;
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
-    /**
-     * property to hold context
-     *
-     * @var string  $context
-     *
-     * @since       0.9.1
-     */
-    public string $context;
+	/**
+	 * property to hold context
+	 *
+	 * @var string  $context
+	 *
+	 * @since       0.9.1
+	 */
+	public string $context;
 
-    /**
-     * property to hold filtering mailinglist
-     *
-     * @var string  $filterMl
-     *
-     * @since       2.2.0
-     */
-    public string $filterMl;
+	/**
+	 * property to hold filtering mailinglist
+	 *
+	 * @var string  $filterMl
+	 *
+	 * @since       2.2.0
+	 */
+	public string $filterMl;
 
-    /**
-     * Array for confirmed subscribers
-     *
-     * @var    array
-     *
-     * @since  3.0.0
-     */
-    public array $confirmed;
+	/**
+	 * Array for confirmed subscribers
+	 *
+	 * @var    array
+	 *
+	 * @since  3.0.0
+	 */
+	public array $confirmed;
 
-    /**
-     * Array for unconfirmed subscribers
-     *
-     * @var    array
-     *
-     * @since  3.0.0
-     */
-    public array $unconfirmed;
+	/**
+	 * Array for unconfirmed subscribers
+	 *
+	 * @var    array
+	 *
+	 * @since  3.0.0
+	 */
+	public array $unconfirmed;
 
-    /**
-     * Array for test recipients
-     *
-     * @var    array
-     *
-     * @since  3.0.0
-     */
-    public array $testers;
+	/**
+	 * Array for test recipients
+	 *
+	 * @var    array
+	 *
+	 * @since  3.0.0
+	 */
+	public array $testers;
 
     /**
      * Execute and display a template script.
@@ -211,18 +210,18 @@ class HtmlView extends BaseHtmlView
         }
 
 
-        // Get data from the model
+		// Get data from the model
         $model = $this->getModel();
-        $this->state			= $model->getState();
-        $this->items 			= $model->getItems();
-        $this->mailinglists 	= $model->getMailinglists();
-        $this->filterForm		= $model->getFilterForm();
-        $this->activeFilters	= $model->getActiveFilters();
-        $this->pagination		= $model->getPagination();
-        $this->total 			= $model->getTotal();
-        $this->params           = ComponentHelper::getParams('com_bwpostman');
-        $this->context			= 'com_bwpostman.subscribers';
-        $this->filterMl         = $this->state->get('filter.mailinglist');
+		$this->state			= $model->getState();;
+		$this->items 			= $model->getItems();;
+		$this->mailinglists 	= $model->getMailinglists();
+		$this->filterForm		= $model->getFilterForm();
+		$this->activeFilters	= $model->getActiveFilters();;
+		$this->pagination		= $model->getPagination();;
+		$this->total 			= $model->getTotal();
+		$this->params           = ComponentHelper::getParams('com_bwpostman');
+		$this->context			= 'com_bwpostman.subscribers';
+		$this->filterMl         = $this->state->get('filter.mailinglist');
 
         $this->addToolbar();
 
@@ -253,10 +252,10 @@ class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
         $tab = $app->input->get('tab', 'confirmed');
 
-        // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+		// Get the toolbar object instance
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-        $this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscribers');
+		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscribers');
 
         // Set toolbar title
         ToolbarHelper::title(Text::_('COM_BWPOSTMAN_SUB'), 'users');
@@ -283,7 +282,7 @@ class HtmlView extends BaseHtmlView
 
                     $childBar = $dropdown->getChildToolbar();
 
-                    if (BwPostmanHelper::canEdit('subscriber', []))
+                    if (BwPostmanHelper::canEdit('subscriber'))
                     {
                         $childBar->edit('subscriber.edit')->listCheck(true);
                     }
@@ -299,7 +298,7 @@ class HtmlView extends BaseHtmlView
                     }
 
                     // Add a batch button
-                    if (BwPostmanHelper::canEdit('subscriber', []))
+                    if (BwPostmanHelper::canEdit('subscriber'))
                     {
                         $childBar->popupButton('batch')
                             ->text('JTOOLBAR_BATCH')
@@ -360,7 +359,7 @@ class HtmlView extends BaseHtmlView
 
                 $childBar = $dropdown->getChildToolbar();
 
-                if (BwPostmanHelper::canEdit('subscriber', []))
+                if (BwPostmanHelper::canEdit('subscriber'))
                 {
                     $childBar->edit('subscriber.edit')->listCheck(true);
                 }
@@ -372,8 +371,8 @@ class HtmlView extends BaseHtmlView
                 break;
         }
 
-        $manualButton = BwPostmanHTMLHelper::getManualButton('subscribers');
-        $forumButton  = BwPostmanHTMLHelper::getForumButton();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('subscribers');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
         $toolbar->appendButton($manualButton);
         $toolbar->appendButton($forumButton);

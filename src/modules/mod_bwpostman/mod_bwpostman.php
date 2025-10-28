@@ -68,7 +68,7 @@ $wr->addRegistryFile('media/mod_bwpostman/joomla.asset.json');
 
 
 $module = ModuleHelper::getModule('mod_bwpostman');
-$userid = (int)$app->getIdentity()->id;
+$userid = (int)$app->getIdentity()->get('id');
 
 $subscriberid = ModBwPostmanHelper::getSubscriberID();
 $captcha      = BwPostmanHelper::getCaptcha();

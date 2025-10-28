@@ -20,7 +20,7 @@ return new class () implements ServiceProviderInterface {
      *
      * @since   4.2.6
      */
-    public function register(Container $container): void
+    public function register(Container $container)
     {
         $container->set(
             PluginInterface::class,

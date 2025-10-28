@@ -28,6 +28,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Installer\InstallerAdapter;
@@ -257,7 +258,7 @@ class PlgVmUserfieldBwPm_Buyer2SubscriberInstallerScript
 	 */
 	protected function setInitialValues()
 	{
-		$this->user_id  = Factory::getApplication()->getIdentity()->id;
+		$this->user_id  = Factory::getApplication()->getIdentity()->get('id');
 		$this->now_date = Factory::getDate()->toSql();
 
 		$this->vm_vendor_id = $this->getVmVendorId();

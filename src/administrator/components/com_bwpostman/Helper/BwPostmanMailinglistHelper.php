@@ -40,209 +40,211 @@ use RuntimeException;
  * @since 2.2.0
  */
 class BwPostmanMailinglistHelper {
-    /**
-     * Method to get the mailinglist ids for a single campaign
-     *
-     * @param array $mailinglists list of mailinglists
-     *
-     * @return array
-     *
-     * @since 3.0.0
-     */
-    public static function extractAssociatedUsergroups(array $mailinglists = array()): array
-    {
-        $usergroups	= array();
+	/**
+	 * Method to get the mailinglist ids for a single campaign
+	 *
+	 * @param array $mailinglists list of mailinglists
+	 *
+	 * @return array
+	 *
+	 * @since 3.0.0
+	 */
+	public static function extractAssociatedUsergroups(array $mailinglists = array()): array
+	{
+		$usergroups	= array();
 
-        foreach ($mailinglists as $mailinglist)
-        {
-            if ((int) $mailinglist < 0)
-            {
-                $usergroups[]	= -(int) $mailinglist;
-            }
-        }
+		foreach ($mailinglists as $mailinglist)
+		{
+			if ((int) $mailinglist < 0)
+			{
+				$usergroups[]	= -(int) $mailinglist;
+			}
+		}
 
-        return $usergroups;
-    }
+		return $usergroups;
+	}
 
-    /**
-     * Method to merge the parts of the mailinglists (available, unavailable, internal, usergroups)
-     *
-     * @param array $data list of mailinglists
-     *
-     * @since 3.0.0
-     */
-    public static function mergeMailinglists(array &$data = array()): void
-    {
-        if (isset($data['ml_available']))
-        {
-            foreach ($data['ml_available'] as $value)
-            {
-                $data['mailinglists'][] 	= $value;
-            }
-        }
+	/**
+	 * Method to merge the parts of the mailinglists (available, unavailable, internal, usergroups)
+	 *
+	 * @param array $data list of mailinglists
+	 *
+	 * @since 3.0.0
+	 */
+	public static function mergeMailinglists(array &$data = array())
+	{
+		if (isset($data['ml_available']))
+		{
+			foreach ($data['ml_available'] as $value)
+			{
+				$data['mailinglists'][] 	= $value;
+			}
+		}
 
-        if (isset($data['ml_unavailable']))
-        {
-            foreach ($data['ml_unavailable'] as $value)
-            {
-                $data['mailinglists'][] 	= $value;
-            }
-        }
+		if (isset($data['ml_unavailable']))
+		{
+			foreach ($data['ml_unavailable'] as $value)
+			{
+				$data['mailinglists'][] 	= $value;
+			}
+		}
 
-        if (isset($data['ml_intern']))
-        {
-            foreach ($data['ml_intern'] as $value)
-            {
-                $data['mailinglists'][] 	= $value;
-            }
-        }
+		if (isset($data['ml_intern']))
+		{
+			foreach ($data['ml_intern'] as $value)
+			{
+				$data['mailinglists'][] 	= $value;
+			}
+		}
 
-        // merge usergroups into mailinglists, single array may not exist, therefore array_merge would not give a result
-        if (!empty($data['usergroups']))
-        {
-            foreach ($data['usergroups'] as $value)
-            {
-                $data['mailinglists'][] = '-' . $value;
-            }
-        }
-    }
+		// merge usergroups into mailinglists, single array may not exist, therefore array_merge would not give a result
+		if (!empty($data['usergroups']))
+		{
+			foreach ($data['usergroups'] as $value)
+			{
+				$data['mailinglists'][] = '-' . $value;
+			}
+		}
+	}
 
-    /**
-     * Method to merge the parts of the mailinglists (available, unavailable, internal) to one single array
-     *
-     * @param array $data list of mailinglists
-     *
-     * @return array
-     *
-     * @since 3.0.0
-     */
-    public static function mergeMailinglistsOnly(array $data = array()): array
-    {
-        $mailinglists = array();
+	/**
+	 * Method to merge the parts of the mailinglists (available, unavailable, internal) to one single array
+	 *
+	 * @param array $data list of mailinglists
+	 *
+	 * @return array
+	 *
+	 * @since 3.0.0
+	 */
+	public static function mergeMailinglistsOnly(array $data = array()): array
+	{
+		$mailinglists = array();
 
-        if (isset($data['ml_available']))
-        {
-            foreach ($data['ml_available'] as $value)
-            {
-                $mailinglists[] 	= $value;
-            }
-        }
+		if (isset($data['ml_available']))
+		{
+			foreach ($data['ml_available'] as $value)
+			{
+				$mailinglists[] 	= $value;
+			}
+		}
 
-        if (isset($data['ml_unavailable']))
-        {
-            foreach ($data['ml_unavailable'] as $value)
-            {
-                $mailinglists[] 	= $value;
-            }
-        }
+		if (isset($data['ml_unavailable']))
+		{
+			foreach ($data['ml_unavailable'] as $value)
+			{
+				$mailinglists[] 	= $value;
+			}
+		}
 
-        if (isset($data['ml_intern']))
-        {
-            foreach ($data['ml_intern'] as $value)
-            {
-                $mailinglists[] 	= $value;
-            }
-        }
+		if (isset($data['ml_intern']))
+		{
+			foreach ($data['ml_intern'] as $value)
+			{
+				$mailinglists[] 	= $value;
+			}
+		}
 
-        return ArrayHelper::toInteger($mailinglists);
-    }
+		return ArrayHelper::toInteger($mailinglists);
+	}
 
-    /**
-     * Method to get the data of a single Mailinglist for raw view
-     *
-     * @param int|null $ml_id Mailinglist ID
-     *
-     * @return object|null Mailinglist
-     *
-     * @throws Exception
-     * @since 3.0.0 here
-     */
-    public static function getSingleMailinglist(int $ml_id = null): ?object
-    {
-        $mailinglist = null;
+	/**
+	 * Method to get the data of a single Mailinglist for raw view
+	 *
+	 * @param int|null $ml_id Mailinglist ID
+	 *
+	 * @return 	object Mailinglist
+	 *
+	 * @throws Exception
+	 *
+	 * @since 3.0.0 here
+	 */
+	public static function getSingleMailinglist(int $ml_id = null): ?object
+	{
+		$mailinglist = null;
 
-        $db    = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->getQuery(true);
 
-        $query->select($db->quoteName('a') . '.*');
-        $query->from($db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $db->quoteName('a'));
-        $query->where($db->quoteName('a') . '.' . $db->quoteName('id') . ' = ' . (int) $ml_id);
-        // Join over the asset groups.
-        $query->select($db->quoteName('ag') . '.' . $db->quoteName('title') . ' AS ' . $db->quoteName('access_level'));
-        $query->join(
-            'LEFT',
-            $db->quoteName('#__viewlevels') . ' AS ' . $db->quoteName('ag') . ' ON ' .
-            $db->quoteName('ag') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('access')
-        );
+		$query->select($db->quoteName('a') . '.*');
+		$query->from($db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $db->quoteName('a'));
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('id') . ' = ' . (int) $ml_id);
+		// Join over the asset groups.
+		$query->select($db->quoteName('ag') . '.' . $db->quoteName('title') . ' AS ' . $db->quoteName('access_level'));
+		$query->join(
+			'LEFT',
+			$db->quoteName('#__viewlevels') . ' AS ' . $db->quoteName('ag') . ' ON ' .
+			$db->quoteName('ag') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('access')
+		);
 
-        try
-        {
-            $db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-            $mailinglist = $db->loadObject();
-        }
-        catch (RuntimeException $exception)
-        {
+			$mailinglist = $db->loadObject();
+		}
+		catch (RuntimeException $exception)
+		{
+            BwPostmanHelper::logException($exception, 'MailinglistHelper BE');
+
+			Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
+		}
+
+		return $mailinglist;
+	}
+
+	/**
+	 * Method to get the options for the form fields comcam and comcam_noarc
+	 *
+	 * @param boolean $archiveMatters
+	 *
+	 * @return 	array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 3.0.0
+	 */
+	public static function getMailinglistsFieldlistOptions(bool $archiveMatters = false): ?array
+	{
+		$options   = null;
+		$db        = Factory::getContainer()->get(DatabaseInterface::class);
+		$query     = $db->getQuery(true);
+
+		$query->select($db->quoteName('a') . '.' . $db->quoteName('id')  . ' AS value');
+		$query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');
+		$query->select($db->quoteName('a') . '.' . $db->quoteName('description'));
+		$query->select($db->quoteName('a') . '.' . $db->quoteName('access'));
+		$query->select($db->quoteName('a') . '.' . $db->quoteName('published'));
+		$query->select($db->quoteName('a') . '.' . $db->quoteName('archive_flag')  . ' AS archived');
+		$query->from($db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $db->quoteName('a'));
+
+		if ($archiveMatters)
+		{
+			$query->where($db->quoteName('a') . '.' . $db->quoteName('archive_flag') . ' = ' . 0);
+		}
+
+		// Join over the asset groups.
+		$query->select($db->quoteName('ag') . '.' . $db->quoteName('title')  . ' AS access_level');
+		$query->join(
+			'LEFT',
+			$db->quoteName('#__viewlevels') .
+			' AS ' . $db->quoteName('ag') .
+			' ON ' . $db->quoteName('ag') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('access')
+		);
+		$query->order($db->quoteName('text') . 'ASC');
+
+		try
+		{
+			$db->setQuery($query);
+
+			$options = $db->loadObjectList();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'MailinglistHelper BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-        }
+		}
 
-        return $mailinglist;
-    }
-
-    /**
-     * Method to get the options for the form fields comcam and comcam_noarc
-     *
-     * @param boolean $archiveMatters
-     *
-     * @return array|null
-     *
-     * @throws Exception
-     * @since 3.0.0
-     */
-    public static function getMailinglistsFieldlistOptions(bool $archiveMatters = false): ?array
-    {
-        $options   = null;
-        $db        = Factory::getContainer()->get(DatabaseInterface::class);
-        $query     = $db->getQuery(true);
-
-        $query->select($db->quoteName('a') . '.' . $db->quoteName('id')  . ' AS value');
-        $query->select($db->quoteName('a') . '.' . $db->quoteName('title')  . ' AS text');
-        $query->select($db->quoteName('a') . '.' . $db->quoteName('description'));
-        $query->select($db->quoteName('a') . '.' . $db->quoteName('access'));
-        $query->select($db->quoteName('a') . '.' . $db->quoteName('published'));
-        $query->select($db->quoteName('a') . '.' . $db->quoteName('archive_flag')  . ' AS archived');
-        $query->from($db->quoteName('#__bwpostman_mailinglists') . ' AS ' . $db->quoteName('a'));
-
-        if ($archiveMatters)
-        {
-            $query->where($db->quoteName('a') . '.' . $db->quoteName('archive_flag') . ' = ' . 0);
-        }
-
-        // Join over the asset groups.
-        $query->select($db->quoteName('ag') . '.' . $db->quoteName('title')  . ' AS access_level');
-        $query->join(
-            'LEFT',
-            $db->quoteName('#__viewlevels') .
-            ' AS ' . $db->quoteName('ag') .
-            ' ON ' . $db->quoteName('ag') . '.' . $db->quoteName('id') . ' = ' . $db->quoteName('a') . '.' . $db->quoteName('access')
-        );
-        $query->order($db->quoteName('text') . 'ASC');
-
-        try
-        {
-            $db->setQuery($query);
-
-            $options = $db->loadObjectList();
-        }
-        catch (RuntimeException $exception)
-        {
-            BwPostmanHelper::logException($exception, 'MailinglistHelper BE');
-
-            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-        }
-
-        return $options;
-    }
+		return $options;
+	}
 }

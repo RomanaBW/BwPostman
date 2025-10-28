@@ -31,7 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Button\LinkButton;
@@ -43,8 +42,6 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\Event\Event;
-use Joomla\Utilities\ArrayHelper;
 
 /**
  * BwPostman Newsletter View
@@ -66,121 +63,121 @@ class HtmlView extends BaseHtmlView
      */
     protected $form;
 
-    /**
-     * property to hold selected item
-     *
-     * @var object   $item
-     *
-     * @since       0.9.1
-     */
-    protected object $item;
+	/**
+	 * property to hold selected item
+	 *
+	 * @var object   $item
+	 *
+	 * @since       0.9.1
+	 */
+	protected object $item;
 
-    /**
-     * property to hold state
-     *
-     * @var array|object  $state
-     *
-     * @since       0.9.1
-     */
-    protected array|object $state;
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
+	 */
+	protected array|object $state;
 
-    /**
-     * property to hold queue entries property
-     *
-     * @var bool $queueEntries
-     *
-     * @since       0.9.1
-     */
-    public bool $queueEntries;
+	/**
+	 * property to hold queue entries property
+	 *
+	 * @var bool $queueEntries
+	 *
+	 * @since       0.9.1
+	 */
+	public bool $queueEntries;
 
-    /**
-     * property to hold params
-     *
-     * @var object $params
-     *
-     * @since       0.9.1
-     */
-    public object $params;
+	/**
+	 * property to hold params
+	 *
+	 * @var object $params
+	 *
+	 * @since       0.9.1
+	 */
+	public object $params;
 
-    /**
-     * property to hold content_exists
-     *
-     * @var bool $content_exists
-     *
-     * @since       0.9.1
-     */
-    public bool $content_exists;
+	/**
+	 * property to hold content_exists
+	 *
+	 * @var bool $content_exists
+	 *
+	 * @since       0.9.1
+	 */
+	public bool $content_exists;
 
-    /**
-     * property to hold selected_content_old
-     *
-     * @var string $selected_content_old
-     *
-     * @since       0.9.1
-     */
-    public string $selected_content_old;
+	/**
+	 * property to hold selected_content_old
+	 *
+	 * @var string $selected_content_old
+	 *
+	 * @since       0.9.1
+	 */
+	public string $selected_content_old;
 
-    /**
-     * property to hold old id of template
-     *
-     * @var bool $template_id_old
-     *
-     * @since       0.9.1
-     */
-    public bool $template_id_old;
+	/**
+	 * property to hold old id of template
+	 *
+	 * @var bool $template_id_old
+	 *
+	 * @since       0.9.1
+	 */
+	public bool $template_id_old;
 
-    /**
-     * property to old id of text template
-     *
-     * @var bool $text_template_id_old
-     *
-     * @since       0.9.1
-     */
-    public bool $text_template_id_old;
+	/**
+	 * property to old id of text template
+	 *
+	 * @var bool $text_template_id_old
+	 *
+	 * @since       0.9.1
+	 */
+	public bool $text_template_id_old;
 
-    /**
-     * @var string
-     *
-     * @since       2.0.0
-     */
-    public string $template;
+	/**
+	 * @var string
+	 *
+	 * @since       2.0.0
+	 */
+	public string $template;
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
-    /**
-     * @var bool
-     *
-     * @since       2.0.0
-     */
-    public bool $substitute;
+	/**
+	 * @var bool
+	 *
+	 * @since       2.0.0
+	 */
+	public bool $substitute;
 
-    /**
-     * @var string   $delay_message
-     *
-     * @since       2.4.0
-     */
-    protected string $delay_message;
+	/**
+	 * @var string   $delay_message
+	 *
+	 * @since       2.4.0
+	 */
+	protected string $delay_message;
 
-    /**
-     * @var int $delay
-     *
-     * @since       2.4.0
-     */
-    protected int $delay;
+	/**
+	 * @var int $delay
+	 *
+	 * @since       2.4.0
+	 */
+	protected int $delay;
 
-    /**
-     * @var object   $logger
-     *
-     * @since       2.4.0
-     */
-    protected object $logger;
+	/**
+	 * @var object   $logger
+	 *
+	 * @since       2.4.0
+	 */
+	protected object $logger;
 
     /**
      * Execute and display a template script.
@@ -226,26 +223,20 @@ class HtmlView extends BaseHtmlView
         $referrer = $jinput->get->get('referrer', '', 'string');
         $task	= $jinput->get('task', 'edit');
 
-        if ($task == 'startsending')
-        {
-            $this->buildDelayMessage();
-        }
-        else
-        {
+		if ($task == 'startsending')
+		{
+			$this->buildDelayMessage();
+		}
+		else
+		{
             $model = $this->getModel();
-            $this->form     = $model->getForm();
-            $this->item     = $model->getItem();
-            $this->state    = $model->getState();
-            $this->template = $app->getTemplate();
-            $this->params   = ComponentHelper::getParams('com_bwpostman');
+			$this->form     = $model->getForm();
+			$this->item     = $model->getItem();
+			$this->state    = $model->getState();;
+			$this->template = $app->getTemplate();
+			$this->params   = ComponentHelper::getParams('com_bwpostman');
 
-            $event = new Event('onBwPostmanBeforeNewsletterEdit', [
-                'subject'  => ArrayHelper::fromObject($this),
-                'item'     => $this->item,
-                'referrer' => $referrer,
-            ]);
-            Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
-            $eventResults = $event->getArgument('result', []);
+			$app->triggerEvent('onBwPostmanBeforeNewsletterEdit', array(&$this->item, $referrer));
 
             $this->setContentFlags();
         }
@@ -260,22 +251,22 @@ class HtmlView extends BaseHtmlView
         return $this;
     }
 
-    /**
-     * Add the page title, styles and toolbar.
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    protected function addToolbar(): void
-    {
-        $app    = Factory::getApplication();
-        $app->input->set('hidemainmenu', true);
-        $userId		= $app->getIdentity()->id;
-        $layout		= $app->input->get('layout', '');
+	/**
+	 * Add the page title, styles and toolbar.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	protected function addToolbar()
+	{
+		$app    = Factory::getApplication();
+		$app->input->set('hidemainmenu', true);
+		$userId		= $app->getIdentity()->id;
+		$layout		= $app->input->get('layout', '');
 
-        // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+		// Get the toolbar object instance
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
         // Get document object, set document title and add css
         $document	= $app->getDocument();
@@ -349,7 +340,7 @@ class HtmlView extends BaseHtmlView
                 if (!$checkedOut)
                 {
                     // Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-                    if (BwPostmanHelper::canEdit('newsletter', ['id' => $this->item->id]))
+                    if (BwPostmanHelper::canEdit('newsletter', $this->item->id))
                     {
                         $toolbar->apply('newsletter.apply');
 
@@ -374,8 +365,8 @@ class HtmlView extends BaseHtmlView
             }
         }
 
-        $manualButton = BwPostmanHTMLHelper::getManualButton('newsletter');
-        $forumButton  = BwPostmanHTMLHelper::getForumButton();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('newsletter');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
         $toolbar->appendButton($manualButton);
         $toolbar->appendButton($forumButton);

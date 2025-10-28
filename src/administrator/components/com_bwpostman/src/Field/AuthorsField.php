@@ -45,61 +45,61 @@ use stdClass;
  */
 class AuthorsField extends ListField
 {
-    /**
-     * property to hold authors
-     *
-     * @var string  $type
-     *
-     * @since       1.0.8
-     */
-    protected $type = 'Authors';
+	/**
+	 * property to hold authors
+	 *
+	 * @var string  $type
+	 *
+	 * @since       1.0.8
+	 */
+	protected $type = 'Authors';
 
-    /**
-     * Method to get the field options.
-     *
-     * @return  array  The field option objects.
-     *
-     * @throws Exception
-     *
-     * @since   1.0.8
-     */
-    protected function getOptions(): array
-    {
-        // Get a db connection.
-        $db        = Factory::getContainer()->get(DatabaseInterface::class);
-        $query     = $db->getQuery(true);
-        $sub_query = $db->getQuery(true);
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return  array  The field option objects.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   1.0.8
+	 */
+	protected function getOptions(): array
+	{
+		// Get a db connection.
+		$db        = Factory::getContainer()->get(DatabaseInterface::class);
+		$query     = $db->getQuery(true);
+		$sub_query = $db->getQuery(true);
 
-        // Build the sub query
-        $sub_query->select('nl.created_by');
-        $sub_query->from('#__bwpostman_newsletters AS nl');
-        $sub_query->group('nl.created_by');
+		// Build the sub query
+		$sub_query->select('nl.created_by');
+		$sub_query->from('#__bwpostman_newsletters AS nl');
+		$sub_query->group('nl.created_by');
 
-        // Get all authors that composed a newsletter
-        $query->select('u.id AS value');
-        $query->select('u.name AS text');
-        $query->from('#__users AS u');
-        $query->where('u.id IN (' . $sub_query . ')');
+		// Get all authors that composed a newsletter
+		$query->select('u.id AS value');
+		$query->select('u.name AS text');
+		$query->from('#__users AS u');
+		$query->where('u.id IN (' . $sub_query . ')');
 
-        try
-        {
-            $db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-            $options = $db->loadObjectList();
-        }
-        catch (RuntimeException $exception)
-        {
+			$options = $db->loadObjectList();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'AuthorsField BE');
 
-            Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-        }
+			Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
+		}
 
-        $parent = new stdClass;
-        $parent->value	= '';
-        $parent->text	= '- ' . Text::_('COM_BWPOSTMAN_NL_FILTER_AUTHOR') . ' -';
-        array_unshift($options, $parent);
+		$parent = new stdClass;
+		$parent->value	= '';
+		$parent->text	= '- ' . Text::_('COM_BWPOSTMAN_NL_FILTER_AUTHOR') . ' -';
+		array_unshift($options, $parent);
 
-        // Merge any additional options in the XML definition.
-        return array_merge(parent::getOptions(), $options);
-    }
+		// Merge any additional options in the XML definition.
+		return array_merge(parent::getOptions(), $options);
+	}
 }

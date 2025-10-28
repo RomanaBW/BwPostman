@@ -41,19 +41,19 @@ use Exception;
  */
 class BwPostmanAdmin {
 
-    /**
-     * Method to write the BwPostman footer
-     *
-     * @return string
-     *
-     * @since   0.9.1
-     *
-     * @throws Exception
-     */
-    static public function footer(): string
-    {
-        $version = BwPostmanHelper::getInstalledBwPostmanVersion();
+	/**
+	 * Method to write the BwPostman footer
+	 *
+	 * @return string
+	 *
+	 * @since   0.9.1
+	 *
+	 * @throws Exception
+	 */
+	static public function footer(): string
+	{
+		$version = BwPostmanHelper::getInstalledBwPostmanVersion();
 
-        return 'BwPostman version ' . $version . ' by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
-    }
+		return 'BwPostman version ' . $version . ' by <a href="https://www.boldt-webservice.de" target="_blank">Boldt Webservice</a>';
+	}
 }

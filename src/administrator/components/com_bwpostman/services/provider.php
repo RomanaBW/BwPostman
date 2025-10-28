@@ -34,33 +34,33 @@ use Joomla\DI\ServiceProviderInterface;
  */
 return new class implements ServiceProviderInterface
 {
-    /**
-     * Registers the service provider with a DI container.
-     *
-     * @param   Container  $container  The DI container.
-     *
-     * @return  void
-     *
-     * @since   4.0.0
-     */
-    public function register(Container $container): void
-    {
-        $container->registerServiceProvider(new MVCFactory('\\BoldtWebservice\\Component\\BwPostman'));
-        $container->registerServiceProvider(new ComponentDispatcherFactory('\\BoldtWebservice\\Component\\BwPostman'));
-        $container->registerServiceProvider(new RouterFactory('\\BoldtWebservice\\Component\\BwPostman'));
+	/**
+	 * Registers the service provider with a DI container.
+	 *
+	 * @param   Container  $container  The DI container.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	public function register(Container $container)
+	{
+		$container->registerServiceProvider(new MVCFactory('\\BoldtWebservice\\Component\\BwPostman'));
+		$container->registerServiceProvider(new ComponentDispatcherFactory('\\BoldtWebservice\\Component\\BwPostman'));
+		$container->registerServiceProvider(new RouterFactory('\\BoldtWebservice\\Component\\BwPostman'));
 
-        $container->set(
-            ComponentInterface::class,
-            function (Container $container)
-            {
-                $component = new BwPostmanComponent($container->get(ComponentDispatcherFactoryInterface::class));
+		$container->set(
+			ComponentInterface::class,
+			function (Container $container)
+			{
+				$component = new BwPostmanComponent($container->get(ComponentDispatcherFactoryInterface::class));
 
-                $component->setRegistry($container->get(Registry::class));
-                $component->setMVCFactory($container->get(MVCFactoryInterface::class));
-                $component->setRouterFactory($container->get(RouterFactoryInterface::class));
+				$component->setRegistry($container->get(Registry::class));
+				$component->setMVCFactory($container->get(MVCFactoryInterface::class));
+				$component->setRouterFactory($container->get(RouterFactoryInterface::class));
 
-                return $component;
-            }
-        );
-    }
+				return $component;
+			}
+		);
+	}
 };

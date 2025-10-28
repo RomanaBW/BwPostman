@@ -48,71 +48,71 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class RawView extends BaseHtmlView
 {
-    /**
-     * property to hold subscriber object
-     *
-     * @var object  $sub
-     *
-     * @since       0.9.1
-     */
-    protected object $sub;
+	/**
+	 * property to hold subscriber object
+	 *
+	 * @var object  $sub
+	 *
+	 * @since       0.9.1
+	 */
+	protected $sub;
 
-    /**
-     * property to hold campaign object
-     *
-     * @var object  $cam
-     *
-     * @since       0.9.1
-     */
-    protected object $cam;
+	/**
+	 * property to hold campaign object
+	 *
+	 * @var object  $cam
+	 *
+	 * @since       0.9.1
+	 */
+	protected $cam;
 
-    /**
-     * property to hold mailinglist object
-     *
-     * @var object  $ml
-     *
-     * @since       0.9.1
-     */
-    protected object $ml;
+	/**
+	 * property to hold mailinglist object
+	 *
+	 * @var object  $ml
+	 *
+	 * @since       0.9.1
+	 */
+	protected $ml;
 
-    /**
-     * Execute and display a template script.
-     *
-     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-     *
-     * @return  RawView  A string if successful, otherwise a JError object.
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    public function display($tpl = null): RawView
-    {
-        $app	= Factory::getApplication();
-        $jinput	= $app->input;
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  RawView  A string if successful, otherwise a JError object.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	public function display($tpl = null): RawView
+	{
+		$app	= Factory::getApplication();
+		$jinput	= $app->input;
 
-        if (!BwPostmanHelper::canView('archive'))
-        {
-            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_ARC')), 'error');
-            $app->redirect('index.php?option=com_bwpostman');
-        }
+		if (!BwPostmanHelper::canView('archive'))
+		{
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_ARC')), 'error');
+			$app->redirect('index.php?option=com_bwpostman');
+		}
 
-        $layout	= $jinput->get('layout');
+		$layout	= $jinput->get('layout');
 
-        switch ($layout)
-        { // Which tab are we in?
-            case "campaign_modal":
-                $cam_id		= $jinput->get('cam_id');
-                $this->cam	= BwPostmanCampaignHelper::getSingleCampaign((int) $cam_id);
-                break;
-            case "mailinglist_modal":
-                $ml_id		= $jinput->get('ml_id');
-                $this->ml	= BwPostmanMailinglistHelper::getSingleMailinglist((int) $ml_id);
-                break;
-        }
+		switch ($layout)
+		{ // Which tab are we in?
+			case "campaign_modal":
+				$cam_id		= $jinput->get('cam_id');
+				$this->cam	= BwPostmanCampaignHelper::getSingleCampaign((int) $cam_id);
+				break;
+			case "mailinglist_modal":
+				$ml_id		= $jinput->get('ml_id');
+				$this->ml	= BwPostmanMailinglistHelper::getSingleMailinglist((int) $ml_id);
+				break;
+		}
 
-        // Call parent display
-        parent::display($tpl);
-        return $this;
-    }
+		// Call parent display
+		parent::display($tpl);
+		return $this;
+	}
 }

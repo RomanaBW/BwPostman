@@ -32,6 +32,7 @@ defined('_JEXEC') or die ('Restricted access');
 use Exception;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
@@ -47,76 +48,76 @@ use Joomla\Registry\Registry;
  */
 class TemplatesTplModel extends AdminModel
 {
-    /**
-     * Alias Constructor
-     *
-     * @throws Exception
-     *
-     * @since 1.1.0
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+	/**
+	 * Alias Constructor
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.1.0
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+	}
 
-    /**
-     * Returns a Table object, always creating it.
-     *
-     * @param	string $name    The table type to instantiate
-     * @param	string $prefix  A prefix for the table class name. Optional.
-     * @param	array  $options Configuration array for model. Optional.
-     *
-     * @return	boolean|Table	A database object
-     *
-     * @throws Exception
-     *
-     * @since  1.1.0
-     */
-    public function getTable($name = 'TemplatesTpl', $prefix = 'Administrator', $options = array()): Table|bool
-    {
-        return parent::getTable($name, $prefix, $options);
-    }
+	/**
+	 * Returns a Table object, always creating it.
+	 *
+	 * @param	string $name    The table type to instantiate
+	 * @param	string $prefix  A prefix for the table class name. Optional.
+	 * @param	array  $options Configuration array for model. Optional.
+	 *
+	 * @return	boolean|Table	A database object
+	 *
+	 * @throws Exception
+	 *
+	 * @since  1.1.0
+	 */
+	public function getTable($name = 'TemplatesTpl', $prefix = 'Administrator', $options = array())
+	{
+		return parent::getTable($name, $prefix, $options);
+	}
 
-    /**
-     * Method to get a single record.
-     *
-     * @param   integer  $pk  The id of the primary key.
-     *
-     * @return  bool|\stdClass    Object on success, false on failure.
-     *
-     * @since   1.1.0
-     */
+	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  bool|CMSObject    Object on success, false on failure.
+	 *
+	 * @since   1.1.0
+	 */
 
-    public function getItem($pk = null): bool|\stdClass
-    {
-        $item = parent::getItem($pk);
+	public function getItem($pk = null)
+	{
+		$item = parent::getItem($pk);
 
-        // convert header_tpl string to array
-        if (is_string($item->header_tpl))
-        {
-            $registry = new Registry;
-            $registry->loadString($item->header_tpl);
-            $item->header_tpl = $registry->toArray();
-        }
+		// convert header_tpl string to array
+		if (is_string($item->header_tpl))
+		{
+			$registry = new Registry;
+			$registry->loadString($item->header_tpl);
+			$item->header_tpl = $registry->toArray();
+		}
 
-        return $item;
-    }
+		return $item;
+	}
 
-    /**
-     * Alias Method
-     *
-     * @param array   $data     Data for the form.
-     * @param boolean $loadData True if the form is to load its own data (default case), false if not.
-     *
-     * @return    Form    A JForm object on success, false on failure
-     *
-     * @throws Exception
-     *
-     * @since    1.1.0
-     */
-    public function getForm($data = array(), $loadData = true): Form
-    {
-        // Get the form.
-        return $this->loadForm('com_bwpostman.template', 'Template', array('control' => 'jform', 'load_data' => $loadData));
-    }
+	/**
+	 * Alias Method
+	 *
+	 * @param array   $data     Data for the form.
+	 * @param boolean $loadData True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return    Form    A JForm object on success, false on failure
+	 *
+	 * @throws Exception
+	 *
+	 * @since    1.1.0
+	 */
+	public function getForm($data = array(), $loadData = true): Form
+	{
+		// Get the form.
+		return $this->loadForm('com_bwpostman.template', 'Template', array('control' => 'jform', 'load_data' => $loadData));
+	}
 }

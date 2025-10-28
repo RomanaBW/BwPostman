@@ -37,15 +37,15 @@ defined('_JEXEC') or die('Restricted access');
  */
 class BwWebApp extends WebApplication
 {
-    /**
-     * Execute the application.
-     *
-     * @return  void
-     *
-     * @since   2.4.0
-     */
-    public function doExecute(): void
-    {
-        parent::execute();
-    }
+	/**
+	 * Execute the application.
+	 *
+	 * @return  void
+	 *
+	 * @since   2.4.0
+	 */
+	public function doExecute()
+	{
+		parent::execute();
+	}
 }

@@ -31,7 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -60,60 +59,60 @@ class HtmlView extends BaseHtmlView
      */
     protected $form;
 
-    /**
-     * property to hold selected item
-     *
-     * @var object   $item
-     *
-     * @since       0.9.1
-     */
-    protected object $item;
+	/**
+	 * property to hold selected item
+	 *
+	 * @var object   $item
+	 *
+	 * @since       0.9.1
+	 */
+	protected object $item;
 
-    /**
-     * property to hold state
-     *
-     * @var array|object  $state
-     *
-     * @since       0.9.1
-     */
-    protected array|object $state;
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
+	 */
+	protected array|object $state;
 
-    /**
-     * property to hold queue entries property
-     *
-     * @var bool $queueEntries
-     *
-     * @since       0.9.1
-     */
-    public bool $queueEntries;
+	/**
+	 * property to hold queue entries property
+	 *
+	 * @var bool $queueEntries
+	 *
+	 * @since       0.9.1
+	 */
+	public bool $queueEntries;
 
-    /**
-     * property to hold request url
-     *
-     * @var string  $request_url
-     *
-     * @since       0.9.1
-     */
-    protected string $request_url;
+	/**
+	 * property to hold request url
+	 *
+	 * @var object  $request_url
+	 *
+	 * @since       0.9.1
+	 */
+	protected object $request_url;
 
-    /**
-     * property to hold template
-     *
-     * @var object|string $template
-     *
-     * @since       0.9.1
-     */
-    public object|string $template;
+	/**
+	 * property to hold template
+	 *
+	 * @var object $template
+	 *
+	 * @since       0.9.1
+	 */
+	public object $template;
 
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
     /**
      * Execute and display a template script.
@@ -147,9 +146,9 @@ class HtmlView extends BaseHtmlView
         $this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
         $model = $this->getModel();
-        $this->form		= $model->getForm();
-        $this->item		= $model->getItem();
-        $this->state	= $model->getState();
+		$this->form		= $model->getForm();
+		$this->item		= $model->getItem();
+		$this->state	= $model->getState();;
 
         // Save a reference into view
         $this->request_url	= $uri_string;
@@ -162,24 +161,24 @@ class HtmlView extends BaseHtmlView
         return $this;
     }
 
-    /**
-     * Add the page title, styles and toolbar.
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    protected function addToolbar(): void
-    {
-        $app    = Factory::getApplication();
-        $app->input->set('hidemainmenu', true);
-        $uri		= Uri::getInstance();
-        $userId		= $app->getIdentity()->id;
+	/**
+	 * Add the page title, styles and toolbar.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	protected function addToolbar()
+	{
+		$app    = Factory::getApplication();
+		$app->input->set('hidemainmenu', true);
+		$uri		= Uri::getInstance();
+		$userId		= $app->getIdentity()->id;
 
-        // Get the toolbar object instance
-        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+		// Get the toolbar object instance
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-        $this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_mailinglist');
+		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_mailinglist');
 
         // Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
         $isNew = ($this->item->id < 1);
@@ -211,7 +210,7 @@ class HtmlView extends BaseHtmlView
             if (!$checkedOut)
             {
                 // Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-                if (BwPostmanHelper::canEdit('mailinglist', []))
+                if (BwPostmanHelper::canEdit('mailinglist'))
                 {
                     ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ML_DETAILS') . ': <small>[ ' . Text::_('EDIT') . ' ]</small>', 'edit');
 
@@ -246,8 +245,8 @@ class HtmlView extends BaseHtmlView
             $toolbar->back();
         }
 
-        $manualButton = BwPostmanHTMLHelper::getManualButton('mailinglist');
-        $forumButton  = BwPostmanHTMLHelper::getForumButton();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('mailinglist');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
         $toolbar->appendButton($manualButton);
         $toolbar->appendButton($forumButton);

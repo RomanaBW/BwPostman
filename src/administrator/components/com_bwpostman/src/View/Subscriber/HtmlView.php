@@ -31,7 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -63,113 +62,113 @@ class HtmlView extends BaseHtmlView
      */
     protected $form;
 
-    /**
-     * property to hold selected item
-     *
-     * @var object   $item
-     *
-     * @since       0.9.1
-     */
-    protected object $item;
+	/**
+	 * property to hold selected item
+	 *
+	 * @var object   $item
+	 *
+	 * @since       0.9.1
+	 */
+	protected object $item;
 
-    /**
-     * property to hold row object
-     *
-     * @var object   $row
-     *
-     * @since       0.9.1
-     */
-    protected object $row;
+	/**
+	 * property to hold row object
+	 *
+	 * @var object   $row
+	 *
+	 * @since       0.9.1
+	 */
+	protected object $row;
 
-    /**
-     * property to hold state
-     *
-     * @var array|object  $state
-     *
-     * @since       0.9.1
-     */
-    protected array|object $state;
+	/**
+	 * property to hold state
+	 *
+	 * @var array|object  $state
+	 *
+	 * @since       0.9.1
+	 */
+	protected array|object $state;
 
-    /**
-     * property to hold obligation values
-     *
-     * @var array   $obligation
-     *
-     * @since       0.9.1
-     */
-    protected array $obligation;
+	/**
+	 * property to hold obligation values
+	 *
+	 * @var array   $obligation
+	 *
+	 * @since       0.9.1
+	 */
+	protected array $obligation;
 
-    /**
-     * property to hold queue entries
-     *
-     * @var bool $queueEntries
-     *
-     * @since       0.9.1
-     */
-    public bool $queueEntries;
+	/**
+	 * property to hold queue entries
+	 *
+	 * @var bool $queueEntries
+	 *
+	 * @since       0.9.1
+	 */
+	public bool $queueEntries;
 
-    /**
-     * property to hold template
-     *
-     * @var bool $template
-     *
-     * @since       0.9.1
-     */
-    public bool $template;
+	/**
+	 * property to hold template
+	 *
+	 * @var bool $template
+	 *
+	 * @since       0.9.1
+	 */
+	public bool $template;
 
-    /**
-     * property to hold import
-     *
-     * @var array $import
-     *
-     * @since       0.9.1
-     */
-    public array $import;
+	/**
+	 * property to hold import
+	 *
+	 * @var array $import
+	 *
+	 * @since       0.9.1
+	 */
+	public array $import;
 
-    /**
-     * property to hold lists
-     *
-     * @var array $lists
-     *
-     * @since       0.9.1
-     */
-    public array $lists;
+	/**
+	 * property to hold lists
+	 *
+	 * @var array $lists
+	 *
+	 * @since       0.9.1
+	 */
+	public array $lists;
 
-    /**
-     * property to hold request url
-     *
-     * @var string $request_url
-     *
-     * @since       0.9.1
-     */
-    public string $request_url;
+	/**
+	 * property to hold request url
+	 *
+	 * @var string $request_url
+	 *
+	 * @since       0.9.1
+	 */
+	public string $request_url;
 
-    /**
-     * property to hold raw format of request url
-     *
-     * @var string $request_url_raw
-     *
-     * @since       0.9.1
-     */
-    public string $request_url_raw;
+	/**
+	 * property to hold raw format of request url
+	 *
+	 * @var string $request_url_raw
+	 *
+	 * @since       0.9.1
+	 */
+	public string $request_url_raw;
 
-    /**
-     * property to hold permissions as array
-     *
-     * @var array $permissions
-     *
-     * @since       2.0.0
-     */
-    public array $permissions;
+	/**
+	 * property to hold permissions as array
+	 *
+	 * @var array $permissions
+	 *
+	 * @since       2.0.0
+	 */
+	public array $permissions;
 
-    /**
-     * property to hold result
-     *
-     * @var string $result
-     *
-     * @since       0.9.1
-     */
-    public string $result;
+	/**
+	 * property to hold result
+	 *
+	 * @var string $result
+	 *
+	 * @since       0.9.1
+	 */
+	public string $result;
 
     /**
      * Execute and display a template script.
@@ -200,8 +199,6 @@ class HtmlView extends BaseHtmlView
         $this->queueEntries	= BwPostmanHelper::checkQueueEntries();
 
         $layout = $jinput->get('layout', '');
-        $model  = $this->getModel();
-        $this->item = $model->getItem();
 
         switch ($layout)
         {
@@ -218,9 +215,10 @@ class HtmlView extends BaseHtmlView
                 // get template name
                 $this->template	= $app->getTemplate();
 
-                // Get the data from the model
-                $this->form		= $model->getForm();
-                $this->state	= $model->getState();
+				// Get the data from the model
+				$this->form		= $this->getForm;
+				$this->item		= $this->getItem();
+				$this->state	= $model->getState();;
 
                 if ($this->item->id)
                 {
@@ -322,10 +320,9 @@ class HtmlView extends BaseHtmlView
 
         $app->setUserState('com_bwpostman.subscriber.import', true);
 
-        // Get the data from the model
-        $model = $this->getModel();
-        $this->form		= $model->getForm();
-        $this->state	= $model->getState();
+		// Get the data from the model
+		$this->form		= $this->getForm;
+		$this->state	= $model->getState();;
 
         // Get general import data from the session (fileformat, filename ...)
         $import_general_data = $session->get('import_general_data');
@@ -435,22 +432,22 @@ class HtmlView extends BaseHtmlView
         $this->addToolbar();
     }
 
-    /**
-     * Add the page title, styles and toolbar.
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    protected function addToolbar(): void
-    {
-        $app    = Factory::getApplication();
-        $app->input->set('hidemainmenu', true);
-        $uri    = Uri::getInstance();
-        $userId = $app->getIdentity()->id;
-        $layout = $app->input->get('layout', '');
-        $tester = false;
-        $status = 1;
+	/**
+	 * Add the page title, styles and toolbar.
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	protected function addToolbar()
+	{
+		$app    = Factory::getApplication();
+		$app->input->set('hidemainmenu', true);
+		$uri    = Uri::getInstance();
+		$userId = $app->getIdentity()->id;
+		$layout = $app->input->get('layout', '');
+		$tester = false;
+		$status = 1;
 
         if (is_object($this->item)) {
             $status	= $this->item->status;
@@ -460,10 +457,10 @@ class HtmlView extends BaseHtmlView
             $tester	= true;
         }
 
-        // Get the toolbar object instance
-                $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
+		// Get the toolbar object instance
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
 
-        $this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber');
+		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber');
 
         switch ($layout)
         {
@@ -579,8 +576,8 @@ class HtmlView extends BaseHtmlView
                 }
         }
 
-        $manualButton = BwPostmanHTMLHelper::getManualButton('subscriber');
-        $forumButton  = BwPostmanHTMLHelper::getForumButton();
+		$manualButton = BwPostmanHTMLHelper::getManualButton('subscriber');
+		$forumButton  = BwPostmanHTMLHelper::getForumButton();
 
         $toolbar->appendButton($manualButton);
         $toolbar->appendButton($forumButton);

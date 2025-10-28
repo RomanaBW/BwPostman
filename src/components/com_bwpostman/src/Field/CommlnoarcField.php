@@ -45,117 +45,117 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglis
  */
 class CommlnoarcField extends CheckboxesField
 {
-    /**
-     * The form field type.
-     *
-     * @var    string
-     * @since  11.1
-     */
-    protected $type = 'Commlnoarc';
+	/**
+	 * The form field type.
+	 *
+	 * @var    string
+	 * @since  11.1
+	 */
+	protected $type = 'Commlnoarc';
 
-    /**
-     * Flag to tell the field to always be in multiple values mode.
-     *
-     * @var    boolean
-     * @since  11.1
-     */
-    protected $forceMultiple = true;
+	/**
+	 * Flag to tell the field to always be in multiple values mode.
+	 *
+	 * @var    boolean
+	 * @since  11.1
+	 */
+	protected $forceMultiple = true;
 
-    /**
-     * Method to get the field input markup for check boxes.
-     *
-     * @return  string  The field input markup.
-     *
-     * @throws Exception
-     *
-     * @since   11.1
-     */
-    protected function getInput(): string
-    {
-        // Initialize variables.
-        $html	= array();
-        $stub	= "'mb'";
+	/**
+	 * Method to get the field input markup for check boxes.
+	 *
+	 * @return  string  The field input markup.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   11.1
+	 */
+	protected function getInput(): string
+	{
+		// Initialize variables.
+		$html	= array();
+		$stub	= "'mb'";
 
-        // Initialize some field attributes.
-        $class = $this->element['class'] ? ' class="checkboxes ' . $this->element['class'] . '"' : ' class="checkboxes"';
+		// Initialize some field attributes.
+		$class = $this->element['class'] ? ' class="checkboxes ' . $this->element['class'] . '"' : ' class="checkboxes"';
 
-        // Start the checkbox field output.
-        $html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
+		// Start the checkbox field output.
+		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
 
-        // Get the field options.
-        $options = $this->getOptions();
+		// Get the field options.
+		$options = $this->getOptions();
 
-        // Build the checkbox field output.
-        $html[] = '	    <div class="well well-small">';
-        $html[] = '			<table class="adminlist table">';
-        $html[] = '				<thead>';
-        $html[] = '					<tr>';
-        $html[] = '						<th nowrap="nowrap">' . Text::_('JGRID_HEADING_ID') . '</th>';
-        $html[] = '						<th nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="'
-            . Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
-        $html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
-        $html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_DESCRIPTION') . '</th>';
-        $html[] = '						<th nowrap="nowrap">' . Text::_('COM_BWPOSTMAN_PUBLISHED') . '</th>';
-        $html[] = '						<th nowrap="nowrap">' . Text::_('JFIELD_ACCESS_LABEL') . '</th>';
-        $html[] = '					</tr>';
-        $html[] = '				</thead>';
-        $html[] = '				<tbody>';
+		// Build the checkbox field output.
+		$html[] = '	    <div class="well well-small">';
+		$html[] = '			<table class="adminlist table">';
+		$html[] = '				<thead>';
+		$html[] = '					<tr>';
+		$html[] = '						<th nowrap="nowrap">' . Text::_('JGRID_HEADING_ID') . '</th>';
+		$html[] = '						<th nowrap="nowrap"><input type="checkbox" name="checkall-toggle" value="" title="'
+			. Text::_('JGLOBAL_CHECK_ALL') . '" onclick="Joomla.checkAll(this, ' . $stub . ')" /></th>';
+		$html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_TITLE') . '</th>';
+		$html[] = '						<th nowrap="nowrap">' . Text::_('JGLOBAL_DESCRIPTION') . '</th>';
+		$html[] = '						<th nowrap="nowrap">' . Text::_('COM_BWPOSTMAN_PUBLISHED') . '</th>';
+		$html[] = '						<th nowrap="nowrap">' . Text::_('JFIELD_ACCESS_LABEL') . '</th>';
+		$html[] = '					</tr>';
+		$html[] = '				</thead>';
+		$html[] = '				<tbody>';
 
-        if (count($options) > 0)
-        {
-            foreach ($options as $i => $option)
-            {
-                // Initialize some option attributes.
-                $checked	= (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
-                $class		= !empty($option->class) ? ' class="' . $option->class . '"' : '';
-                $disabled	= !empty($option->disable) ? ' disabled="disabled"' : '';
-                $published	= ($option->published) ? '<i class="icon-publish"></i>' : '<i class="icon-unpublish"></i>';
+		if (count($options) > 0)
+		{
+			foreach ($options as $i => $option)
+			{
+				// Initialize some option attributes.
+				$checked	= (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
+				$class		= !empty($option->class) ? ' class="' . $option->class . '"' : '';
+				$disabled	= !empty($option->disable) ? ' disabled="disabled"' : '';
+				$published	= ($option->published) ? '<i class="icon-publish"></i>' : '<i class="icon-unpublish"></i>';
 
-                // Initialize some JavaScript option attributes.
-                $onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
+				// Initialize some JavaScript option attributes.
+				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
-                $html[] = '							<tr class="row' . $i % 2 . '">';
-                $html[] = '								<td>' . Text::_($option->value) . '</td>';
-                $html[] = '								<td><input type="checkbox" id="mb' . $i . '" name="' . $this->name . '" value="'
-                    . htmlspecialchars($option->value, ENT_COMPAT) . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
-                $html[] = '								<td>' . Text::_($option->text) . '</td>';
-                $html[] = '								<td>' . Text::_($option->description) . '</td>';
-                $html[] = '								<td style="text-align: center;">' . $published . '</td>';
-                $html[] = '								<td>' . Text::_($option->access_level) . '</td>';
-                $html[] = '						  </tr>';
-            }
-        }
-        else
-        {
-            $html[] = '							<tr class="row1">';
-            $html[] = '								<td colspan="6"><strong>' . Text::_('COM_BWPOSTMAN_NO_ML') . '</strong></td>';
-            $html[] = '							</tr>';
-        }
+				$html[] = '							<tr class="row' . $i % 2 . '">';
+				$html[] = '								<td>' . Text::_($option->value) . '</td>';
+				$html[] = '								<td><input type="checkbox" id="mb' . $i . '" name="' . $this->name . '" value="'
+					. htmlspecialchars($option->value, ENT_COMPAT) . '" ' . $checked . $class . $onclick . $disabled . '/></td>';
+				$html[] = '								<td>' . Text::_($option->text) . '</td>';
+				$html[] = '								<td>' . Text::_($option->description) . '</td>';
+				$html[] = '								<td style="text-align: center;">' . $published . '</td>';
+				$html[] = '								<td>' . Text::_($option->access_level) . '</td>';
+				$html[] = '						  </tr>';
+			}
+		}
+		else
+		{
+			$html[] = '							<tr class="row1">';
+			$html[] = '								<td colspan="6"><strong>' . Text::_('COM_BWPOSTMAN_NO_ML') . '</strong></td>';
+			$html[] = '							</tr>';
+		}
 
-        $html[] = '				</tbody>';
-        $html[] = '			</table>';
-        $html[] = '		</div>';
+		$html[] = '				</tbody>';
+		$html[] = '			</table>';
+		$html[] = '		</div>';
 
-        // End the checkbox field output.
-        $html[] = '</fieldset>';
+		// End the checkbox field output.
+		$html[] = '</fieldset>';
 
-        return implode($html);
-    }
+		return implode($html);
+	}
 
-    /**
-     * Method to get the field options.
-     *
-     * @return  array  The field option objects.
-     *
-     * @throws Exception
-     *
-     * @since   11.1
-     */
-    protected function getOptions(): array
-    {
-        $options = BwPostmanMailinglistHelper::getMailinglistsFieldlistOptions(true);
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return  array  The field option objects.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   11.1
+	 */
+	protected function getOptions(): array
+	{
+		$options = BwPostmanMailinglistHelper::getMailinglistsFieldlistOptions(true);
 
-        // Merge any additional options in the XML definition.
-        return array_merge(parent::getOptions(), $options);
-    }
+		// Merge any additional options in the XML definition.
+		return array_merge(parent::getOptions(), $options);
+	}
 }

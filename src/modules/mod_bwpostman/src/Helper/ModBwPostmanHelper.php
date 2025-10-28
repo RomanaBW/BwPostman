@@ -62,7 +62,7 @@ class ModBwPostmanHelper
 		$app  = Factory::getApplication();
 		$user = $app->getIdentity();
 
-		if ($user->guest)
+		if ($user->get('guest'))
 		{ // User is guest
 			$session              = $app->getSession();
 			$session_subscriberid = $session->get('session_subscriberid');
@@ -78,7 +78,7 @@ class ModBwPostmanHelper
 		}
 		else
 		{ // User is logged in
-			$subscriberid = self::getSubscriberIdFromUserID((int)$user->id);
+			$subscriberid = self::getSubscriberIdFromUserID((int)$user->get('id'));
 		}
 
 		return $subscriberid;
@@ -190,18 +190,19 @@ class ModBwPostmanHelper
 		return $subscriberid;
 	}
 
-    /**
-     * Method to get the data of a user who has no newsletter account
-     *
-     * @access           public
-     *
-     * @param int $userid Joomla! user id
-     *
-     * @return object|null $user       user data
-     *
-     * @throws Exception
-     * @since            0.9.1
-     */
+	/**
+	 * Method to get the data of a user who has no newsletter account
+	 *
+	 * @access           public
+	 *
+	 * @param int $userid Joomla! user id
+	 *
+	 * @return    object  $user       user data
+	 *
+	 * @throws Exception
+	 *
+	 * @since            0.9.1
+	 */
 	public static function getUserData(int $userid): ?object
 	{
 		$id	   = 0;

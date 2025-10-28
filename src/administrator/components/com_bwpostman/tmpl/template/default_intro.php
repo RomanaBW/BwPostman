@@ -33,41 +33,41 @@ use Joomla\CMS\Uri\Uri;
 
 $fieldSets = $this->form->getFieldsets('intro');
 foreach ($fieldSets as $name => $fieldSet) :
-    ?>
-    <fieldset class="panelform options-grid-form options-grid-form-full">
-        <legend><?php echo $this->escape(Text::_($fieldSet->label)); ?></legend>
-        <div>
-            <?php foreach ($this->form->getFieldset($name) as $field) : ?>
-                <?php echo $field->renderField(); ?>
-            <?php endforeach; ?>
-            <div class="clr clearfix"></div>
-            <div><?php echo Text::_('COM_BWPOSTMAN_TPL_INTRO_TEXT_DESC'); ?></div>
-            <?php
-            $link = Uri::base() . '#';
-            if(PluginHelper::isEnabled('bwpostman', 'personalize'))
-            {
-                $button_text = Text::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
-                $linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
-            }
-            else
-            {
-                $linktexts = array('[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
-            }
+	?>
+	<fieldset class="panelform options-grid-form options-grid-form-full">
+		<legend><?php echo $this->escape(Text::_($fieldSet->label)); ?></legend>
+		<div>
+			<?php foreach ($this->form->getFieldset($name) as $field) : ?>
+				<?php echo $field->renderField(); ?>
+			<?php endforeach; ?>
+			<div class="clr clearfix"></div>
+			<div><?php echo Text::_('COM_BWPOSTMAN_TPL_INTRO_TEXT_DESC'); ?></div>
+			<?php
+			$link = Uri::base() . '#';
+			if(PluginHelper::isEnabled('bwpostman', 'personalize'))
+			{
+				$button_text = Text::_('COM_BWPOSTMAN_TPL_HTML_PERS_BUTTON');
+				$linktexts = array('PERS' => $button_text, '[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
+			}
+			else
+			{
+				$linktexts = array('[FIRSTNAME]', '[LASTNAME]', '[FULLNAME]');
+			}
 
-            foreach ($linktexts as $key => $linktext)
-            {
-                echo "                    <div class=\"clearfix mb-2\">";
-                echo "                    	<span class=\"btn btn-info btn-sm\" onclick=\"InsertAtCaret('" . $linktext . "');\">" . $linktext . "</span>";
-                echo '                    	<span>&nbsp;' . Text::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</span>';
-                echo '                    </div>';
-            }
+			foreach ($linktexts as $key => $linktext)
+			{
+				echo "                    <div class=\"clearfix mb-2\">";
+				echo "                    	<span class=\"btn btn-info btn-sm\" onclick=\"InsertAtCaret('" . $linktext . "');\">" . $linktext . "</span>";
+				echo '                    	<span>&nbsp;' . Text::_('COM_BWPOSTMAN_TPL_HTML_DESC' . $key) . '</span>';
+				echo '                    </div>';
+			}
 
-            if(PluginHelper::isEnabled('bwpostman', 'personalize'))
-            {
-                echo Text::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
-            }
-            ?>
-        </div>
-        <div class="clr clearfix"></div>
-    </fieldset>
+			if(PluginHelper::isEnabled('bwpostman', 'personalize'))
+			{
+				echo Text::_('COM_BWPOSTMAN_TPL_HTML_DESC_PERSONALIZE');
+			}
+			?>
+		</div>
+		<div class="clr clearfix"></div>
+	</fieldset>
 <?php endforeach;

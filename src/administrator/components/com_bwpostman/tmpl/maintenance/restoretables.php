@@ -42,40 +42,40 @@ $option	= $jinput->getCmd('option');
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_bwpostman'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
-    <fieldset class="adminform card card-body mb-2">
-        <div class="h2"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_SELECT_RESTORE_FILE'); ?></div>
-        <div class="alert alert-warning"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_USER_MESSAGE')?></div>
-        <div>
-            <div class="row-fluid">
-                <table class="admintable bwptable restore">
-                    <tr>
-                        <td class="key">
-                            <div class="editlinktip me-2" aria-labelledby="tip-desc">
-                                <span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE'); ?>:</span>
-                                <?php echo $image; ?>&nbsp;&nbsp;
-                            </div>
+	<fieldset class="adminform card card-body mb-2">
+		<div class="h2"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_SELECT_RESTORE_FILE'); ?></div>
+		<div class="alert alert-warning"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_USER_MESSAGE')?></div>
+		<div>
+			<div class="row-fluid">
+				<table class="admintable bwptable restore">
+					<tr>
+						<td class="key">
+							<div class="editlinktip me-2" aria-labelledby="tip-desc">
+								<span class="bwplabel"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE'); ?>:</span>
+								<?php echo $image; ?>&nbsp;&nbsp;
+							</div>
                             <div role="tooltip" id="tip-desc"><?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_FILE_NOTE'); ?></div>
-                        </td>
-                        <td>
-                            <input type="file" name="restorefile" id="restorefile" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="key">
-                            <input type="button" class="btn btn-success mt-3" name="submitbutton"
-                                    onclick="Joomla.submitbutton('maintenance.doRestore');
-                                        document.getElementById('loading').style.display = 'block';"
-                                    value="<?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_BUTTON'); ?>">
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </fieldset>
-    <input type="hidden" name="task" value="doRestore" />
-    <input type="hidden" name="controller" value="maintenance" />
-    <input type="hidden" name="option" value="<?php echo $option; ?>" />
-    <?php echo HTMLHelper::_('form.token'); ?>
+						</td>
+						<td>
+							<input type="file" name="restorefile" id="restorefile" />
+						</td>
+					</tr>
+					<tr>
+						<td class="key">
+							<input type="button" class="btn btn-success mt-3" name="submitbutton"
+									onclick="Joomla.submitbutton('maintenance.doRestore');
+										document.getElementById('loading').style.display = 'block';"
+									value="<?php echo Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_BUTTON'); ?>">
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</fieldset>
+	<input type="hidden" name="task" value="doRestore" />
+	<input type="hidden" name="controller" value="maintenance" />
+	<input type="hidden" name="option" value="<?php echo $option; ?>" />
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <div id="loading" style="display: none;"></div>
 

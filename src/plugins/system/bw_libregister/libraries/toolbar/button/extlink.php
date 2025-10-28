@@ -27,7 +27,7 @@ class JButtonExtlink extends ToolbarButton
 	 *
 	 * @since 2.2.0
 	 */
-	protected string $_name = 'Extlink';
+	protected $_name = 'Extlink';
 
 	/**
 	 * Fetch the HTML for the button
@@ -51,7 +51,7 @@ class JButtonExtlink extends ToolbarButton
 		$this->options = $options;
 
 		// Instantiate a new LayoutFile instance and render the layout
-		$layout = new FileLayout('layouts.toolbar.extlink', JPATH_ADMINISTRATOR . '/component/com_bwpostman' );
+		$layout = new FileLayout('layouts.toolbar.extlink', JPATH_COMPONENT_ADMINISTRATOR );
 
 		return $layout->render($options);
 	}
@@ -94,8 +94,8 @@ class JButtonExtlink extends ToolbarButton
 	 *
 	 * @since  2.4.0
 	 */
-	protected function prepareOptions(array &$options): void
-    {
+	protected function prepareOptions(array &$options)
+	{
 		$options['name']  = $this->getName();
 		$options['text']  = Text::_($this->getText());
 		$options['class'] = $this->getIcon() ?: $this->fetchIconClass($this->getName());

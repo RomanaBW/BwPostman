@@ -52,366 +52,366 @@ use RuntimeException;
  */
 class SendmailcontentTable extends Table
 {
-    /**
-     * @var ?int Primary Key --> every ID exists twice (once for mode text, once for mode html
-     *
-     * @since       0.9.1
-     */
-    public ?int $id = null;
+	/**
+	 * @var int Primary Key --> every ID exists twice (once for mode text, once for mode html
+	 *
+	 * @since       0.9.1
+	 */
+	public $id = null;
 
-    /**
-     * @var ?int Primary Key --> 0 = Text, 1 = HTML
-     *
-     * @since       0.9.1
-     */
-    public ?int $mode = null;
+	/**
+	 * @var int Primary Key --> 0 = Text, 1 = HTML
+	 *
+	 * @since       0.9.1
+	 */
+	public $mode = null;
 
-    /**
-     * @var ?int Newsletter-ID
-     *
-     * @since       0.9.1
-     */
-    public ?int $nl_id = null;
+	/**
+	 * @var int Newsletter-ID
+	 *
+	 * @since       0.9.1
+	 */
+	public $nl_id = null;
 
-    /**
-     * @var ?string Sender name
-     *
-     * @since       0.9.1
-     */
-    public ?string $from_name = null;
+	/**
+	 * @var string Sender name
+	 *
+	 * @since       0.9.1
+	 */
+	public $from_name = null;
 
-    /**
-     * @var ?string Sender email
-     *
-     * @since       0.9.1
-     */
-    public ?string $from_email = null;
+	/**
+	 * @var string Sender email
+	 *
+	 * @since       0.9.1
+	 */
+	public $from_email = null;
 
-    /**
-     * @var ?string Subject
-     *
-     * @since       0.9.1
-     */
-    public ?string $subject = null;
+	/**
+	 * @var string Subject
+	 *
+	 * @since       0.9.1
+	 */
+	public $subject = null;
 
-    /**
-     * @var ?string Email-body
-     *
-     * @since       0.9.1
-     */
-    public ?string $body = '';
+	/**
+	 * @var String Email-body
+	 *
+	 * @since       0.9.1
+	 */
+	public $body = '';
 
-    /**
-     * @var ?string CC email
-     *
-     * @since       0.9.1
-     */
-    public ?string $cc_email = null;
+	/**
+	 * @var string CC email
+	 *
+	 * @since       0.9.1
+	 */
+	public $cc_email = null;
 
-    /**
-     * @var ?string BCC email
-     *
-     * @since       0.9.1
-     */
-    public ?string $bcc_email = null;
+	/**
+	 * @var string BCC email
+	 *
+	 * @since       0.9.1
+	 */
+	public $bcc_email = null;
 
-    /**
-     * @var null|string|array Attachment
-     *
-     * @since       0.9.1
-     */
-    public null|string|array $attachment = '';
+	/**
+	 * @var string Attachment
+	 *
+	 * @since       0.9.1
+	 */
+	public $attachment = '';
 
-    /**
-     * @var ?string Reply-to email
-     *
-     * @since       0.9.1
-     */
-    public ?string $reply_email = null;
+	/**
+	 * @var string Reply-to email
+	 *
+	 * @since       0.9.1
+	 */
+	public $reply_email = null;
 
-    /**
-     * @var ?string Reply-to name
-     *
-     * @since       0.9.1
-     */
-    public ?string $reply_name = null;
+	/**
+	 * @var string Reply-to name
+	 *
+	 * @since       0.9.1
+	 */
+	public $reply_name = null;
 
-    /**
-     * @var ?int substitute links --> 0 = no, 1 = yes
-     *
-     * @since       2.0.0
-     */
-    public ?int $substitute_links = null;
+	/**
+	 * @var int substitute links --> 0 = no, 1 = yes
+	 *
+	 * @since       2.0.0
+	 */
+	public $substitute_links = null;
 
-    /**
-     * Constructor
-     *
-     * @param 	DatabaseDriver  $db Database object
-     *
-     * @since       0.9.1
-     */
-    public function __construct($db = null)
-    {
-        parent::__construct('#__bwpostman_sendmailcontent', 'id', $db);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param 	DatabaseDriver  $db Database object
+	 *
+	 * @since       0.9.1
+	 */
+	public function __construct($db = null)
+	{
+		parent::__construct('#__bwpostman_sendmailcontent', 'id', $db);
+	}
 
-    /**
-     * Overloaded bind function
-     *
-     * @access public
-     *
-     * @param   array|object  $src     An associative array or object to bind to the Table instance.
-     * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
-     *
-     * @return boolean
-     *
-     * @throws BwException
-     *
-     * @since       0.9.1
-     */
-    public function bind($src, $ignore=''): bool
-    {
-        // Bind the rules.
-        if (is_object($src))
-        {
-            if (property_exists($src, 'rules') && is_array($src->rules))
-            {
-                $rules = new Rules($src->rules);
-                $this->setRules($rules);
-            }
-        }
-        elseif (is_array($src))
-        {
-            if (array_key_exists('rules', $src) && is_array($src['rules']))
-            {
-                $rules = new Rules($src['rules']);
-                $this->setRules($rules);
-            }
-        }
-        else
-        {
-            throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
-        }
+	/**
+	 * Overloaded bind function
+	 *
+	 * @access public
+	 *
+	 * @param   array|object  $src     An associative array or object to bind to the Table instance.
+	 * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
+	 *
+	 * @return boolean
+	 *
+	 * @throws BwException
+	 *
+	 * @since       0.9.1
+	 */
+	public function bind($src, $ignore=''): bool
+	{
+		// Bind the rules.
+		if (is_object($src))
+		{
+			if (property_exists($src, 'rules') && is_array($src->rules))
+			{
+				$rules = new Rules($src->rules);
+				$this->setRules($rules);
+			}
+		}
+		elseif (is_array($src))
+		{
+			if (array_key_exists('rules', $src) && is_array($src['rules']))
+			{
+				$rules = new Rules($src['rules']);
+				$this->setRules($rules);
+			}
+		}
+		else
+		{
+			throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+		}
 
-        // Cast properties
-        $this->id = (int) $this->id;
+		// Cast properties
+		$this->id = (int) $this->id;
 
-        return parent::bind($src, $ignore);
-    }
+		return parent::bind($src, $ignore);
+	}
 
-    /**
-     * Overloaded check method to ensure data integrity
-     *
-     * @access public
-     *
-     * @return boolean True
-     *
-     * @since       0.9.1
-     */
-    public function check(): bool
-    {
-        $filter = new InputFilter(array(), array(), 0, 0);
+	/**
+	 * Overloaded check method to ensure data integrity
+	 *
+	 * @access public
+	 *
+	 * @return boolean True
+	 *
+	 * @since       0.9.1
+	 */
+	public function check(): bool
+	{
+		$filter = new InputFilter(array(), array(), 0, 0);
 
-        $this->id               = $filter->clean($this->id, 'UINT');
-        $this->mode             = $filter->clean($this->mode, 'UINT');
-        $this->nl_id            = $filter->clean($this->nl_id, 'UINT');
-        $this->from_name        = trim($filter->clean($this->from_name));
-        $this->from_email       = trim($filter->clean($this->from_email));
-        $this->subject          = trim($filter->clean($this->subject));
-        $this->body             = $filter->clean($this->body, 'RAW');
-        $this->cc_email         = trim($filter->clean($this->cc_email));
-        $this->bcc_email        = trim($filter->clean($this->bcc_email));
-        $this->attachment       = trim($filter->clean($this->attachment));
-        $this->reply_name       = trim($filter->clean($this->reply_name));
-        $this->reply_email      = trim($filter->clean($this->reply_email));
-        $this->substitute_links = $filter->clean($this->substitute_links, 'UINT');
+		$this->id               = $filter->clean($this->id, 'UINT');
+		$this->mode             = $filter->clean($this->mode, 'UINT');
+		$this->nl_id            = $filter->clean($this->nl_id, 'UINT');
+		$this->from_name        = trim($filter->clean($this->from_name));
+		$this->from_email       = trim($filter->clean($this->from_email));
+		$this->subject          = trim($filter->clean($this->subject));
+		$this->body             = $filter->clean($this->body, 'RAW');
+		$this->cc_email         = trim($filter->clean($this->cc_email));
+		$this->bcc_email        = trim($filter->clean($this->bcc_email));
+		$this->attachment       = trim($filter->clean($this->attachment));
+		$this->reply_name       = trim($filter->clean($this->reply_name));
+		$this->reply_email      = trim($filter->clean($this->reply_email));
+		$this->substitute_links = $filter->clean($this->substitute_links, 'UINT');
 
-        return true;
-    }
+		return true;
+	}
 
 
-    /**
-     * Overloaded store method
-     *
-     * @access 	public
-     *
-     * @param	boolean $updateNulls True to update fields even if they are null.
-     *
-     * @return 	boolean
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    public function store($updateNulls = false): bool
-    {
-        $k     = $this->_tbl_key;
-        $res   = null;
-        $query = $this->_db->getQuery(true);
+	/**
+	 * Overloaded store method
+	 *
+	 * @access 	public
+	 *
+	 * @param	boolean True to update fields even if they are null.
+	 *
+	 * @return 	boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	public function store($updateNulls = false): bool
+	{
+		$k     = $this->_tbl_key;
+		$res   = null;
+		$query = $this->_db->getQuery(true);
 
-        if (!$this->$k)
-        {
-            // Find the next possible id and insert
-            $query->select('IFNULL(MAX(id)+1,1) AS ' . $this->_db->quoteName('id'));
-            $query->from($this->_db->quoteName($this->_tbl));
+		if (!$this->$k)
+		{
+			// Find the next possible id and insert
+			$query->select('IFNULL(MAX(id)+1,1) AS ' . $this->_db->quoteName('id'));
+			$query->from($this->_db->quoteName($this->_tbl));
 
-            try
-            {
-                $this->_db->setQuery($query);
+			try
+			{
+				$this->_db->setQuery($query);
 
-                $res = $this->_db->loadResult();
-            }
-            catch (RuntimeException $exception)
-            {
+				$res = $this->_db->loadResult();
+			}
+			catch (RuntimeException $exception)
+			{
                 BwPostmanHelper::logException($exception, 'SendmailContentTable BE');
 
                 Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-            }
+			}
 
-            if ($res)
-            {
-                $this->$k = $res;
-            }
-        }
+			if ($res)
+			{
+				$this->$k = $res;
+			}
+		}
 
-        if ($this->$k)
-        {
-            // An id value is set
-            try
-            {
-                $this->_db->insertObject($this->_tbl, $this);
-            }
-            catch (RuntimeException $exception)
-            {
+		if ($this->$k)
+		{
+			// An id value is set
+			try
+			{
+				$this->_db->insertObject($this->_tbl, $this);
+			}
+			catch (RuntimeException $exception)
+			{
                 BwPostmanHelper::logException($exception, 'SendmailContentTable BE');
 
                 Factory::getApplication()->enqueueMessage(get_class($this) . '::store failed - ' . $exception->getMessage());
 
-                return false;
-            }
-        }
+				return false;
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Overloaded load method
-     *
-     * @access	public
-     *
-     * @param 	int		    $keys       ID
-     * @param 	boolean	    $reset      Mode (0 = Text, 1 = HTML)
-     *
-     * @return bool|int
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    public function load($keys = null, $reset = true): bool|int
-    {
-        if (!$keys)
-        {
-            return 0;
-        }
+	/**
+	 * Overloaded load method
+	 *
+	 * @access	public
+	 *
+	 * @param 	int		    $keys       ID
+	 * @param 	boolean	    $reset      Mode (0 = Text, 1 = HTML)
+	 *
+	 * @return bool|int
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	public function load($keys = null, $reset = true)
+	{
+		if (!$keys)
+		{
+			return 0;
+		}
 
-        // If (empty($mode)) return 0;
-        $app    = Factory::getApplication();
-        $mode   = $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
-        $db     = $this->_db;
-        $query  = $db->getQuery(true);
-        $result = null;
+		// If (empty($mode)) return 0;
+		$app    = Factory::getApplication();
+		$mode   = $app->getUserState('com_bwpostman.newsletter.send.mode', 1);
+		$db     = $this->_db;
+		$query  = $db->getQuery(true);
+		$result = null;
 
-        $this->reset();
+		$this->reset();
 
-        $query->select('*');
-        $query->from($db->quoteName($this->_tbl));
-        $query->where($db->quoteName('id') . ' = ' . (int) $keys);
-        $query->where($db->quoteName('mode') . ' = ' . (int) $mode);
+		$query->select('*');
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('id') . ' = ' . (int) $keys);
+		$query->where($db->quoteName('mode') . ' = ' . (int) $mode);
 
-        try
-        {
-            $db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-            $result = $db->loadAssoc();
-        }
-        catch (RuntimeException $exception)
-        {
+			$result = $db->loadAssoc();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'SendmailContentTable BE');
 
             $app->enqueueMessage($exception->getMessage(), 'error');
-        }
+		}
 
-        return $this->bind($result);
-    }
+		return $this->bind($result);
+	}
 
-    /**
-     * Method to get  newsletter content
-     *
-     * @param int $id id of the content
-     *
-     * @return	string|null string on success, null on failure.
-     *
-     * @throws Exception
-     *
-     * @since	2.4.0
-     */
-    public function getContent(int $id): ?string
-    {
-        $newsletter = null;
+	/**
+	 * Method to get  newsletter content
+	 *
+	 * @param int $id id of the content
+	 *
+	 * @return	string|null string on success, null on failure.
+	 *
+	 * @throws Exception
+	 *
+	 * @since	2.4.0
+	 */
+	public function getContent(int $id): ?string
+	{
+		$newsletter = null;
 
-        $db    = $this->_db;
-        $query = $db->getQuery(true);
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
-        // build query
-        $query->select($db->quoteName('body'));
-        $query->from($db->quoteName($this->_tbl) . ' AS ' . $db->quoteName('a'));
-        $query->where($db->quoteName('a') . '.' . $db->quoteName('nl_id') . ' = ' . $id);
-        $query->where($db->quoteName('a') . '.' . $db->quoteName('mode') . ' = ' . 1);
+		// build query
+		$query->select($db->quoteName('body'));
+		$query->from($db->quoteName($this->_tbl) . ' AS ' . $db->quoteName('a'));
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('nl_id') . ' = ' . $id);
+		$query->where($db->quoteName('a') . '.' . $db->quoteName('mode') . ' = ' . 1);
 
-        try
-        {
-            $db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-            $newsletter = $db->loadResult();
-        }
-        catch (RuntimeException $exception)
-        {
+			$newsletter = $db->loadResult();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'SendmailContentTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-        }
+		}
 
-        return $newsletter;
-    }
+		return $newsletter;
+	}
 
-    /**
-     * Returns the identity (primary key) value of this record
-     *
-     * @return  mixed
-     *
-     * @since  2.4.0
-     */
-    public function getId(): mixed
-    {
-        $key = $this->getKeyName();
+	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 *
+	 * @since  2.4.0
+	 */
+	public function getId()
+	{
+		$key = $this->getKeyName();
 
-        return $this->$key;
-    }
+		return $this->$key;
+	}
 
-    /**
-     * Check if the record has a property (applying a column alias if it exists)
-     *
-     * @param string $key key to be checked
-     *
-     * @return  boolean
-     *
-     * @since   2.4.0
-     */
-    public function hasField($key): bool
-    {
-        $key = $this->getColumnAlias($key);
+	/**
+	 * Check if the record has a property (applying a column alias if it exists)
+	 *
+	 * @param string $key key to be checked
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.4.0
+	 */
+	public function hasField($key): bool
+	{
+		$key = $this->getColumnAlias($key);
 
-        return property_exists($this, $key);
-    }
+		return property_exists($this, $key);
+	}
 }

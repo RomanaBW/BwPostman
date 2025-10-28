@@ -38,75 +38,75 @@ use Joomla\CMS\Dispatcher\ComponentDispatcher;
  */
 class Dispatcher extends ComponentDispatcher
 {
-    /**
-     * The default controller (and view), if none is specified in the request.
-     *
-     * @var   string
-     *
-     * @since 1.0.0
-     */
-    protected string $defaultController = 'display';
+	/**
+	 * The default controller (and view), if none is specified in the request.
+	 *
+	 * @var   string
+	 *
+	 * @since 1.0.0
+	 */
+	protected string $defaultController = 'display';
 
-    /**
-     * Dispatch a controller task. Redirecting the user if appropriate.
-     *
-     * @throws Exception
-     *
-     * @since   4.0.0
-     */
-    public function dispatch(): void
-    {
-        $this->applyViewAndController();
+	/**
+	 * Dispatch a controller task. Redirecting the user if appropriate.
+	 *
+	 * @throws Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function dispatch()
+	{
+		$this->applyViewAndController();
 
-        parent::dispatch();
-    }
-    /**
-     * Applies the view and controller to the input object communicated to the MVC objects.
-     *
-     * If we have a controller without view or just a task=controllerName.taskName we populate the view to make things
-     * easier and more consistent for us to handle.
-     *
-     * @return  void
-     *
-     * @since 1.0.0
-     */
-    protected function applyViewAndController(): void
-    {
-        $controller = $this->input->getCmd('controller');
-        $view       = $this->input->getCmd('view');
-        $task       = $this->input->getCmd('task');
+		parent::dispatch();
+	}
+	/**
+	 * Applies the view and controller to the input object communicated to the MVC objects.
+	 *
+	 * If we have a controller without view or just a task=controllerName.taskName we populate the view to make things
+	 * easier and more consistent for us to handle.
+	 *
+	 * @return  void
+	 *
+	 * @since 1.0.0
+	 */
+	protected function applyViewAndController(): void
+	{
+		$controller = $this->input->getCmd('controller');
+		$view       = $this->input->getCmd('view');
+		$task       = $this->input->getCmd('task');
 
-        if (!is_null($task) && strpos($task, '.') !== false)
-        {
-            // Explode the controller.task command.
-            [$controller, $task] = explode('.', $task);
-            $view = null;
-        }
+		if (!is_null($task) && strpos($task, '.') !== false)
+		{
+			// Explode the controller.task command.
+			[$controller, $task] = explode('.', $task);
+			$view = null;
+		}
 
-        if (empty($controller) && empty($view))
-        {
-            $controller = $this->defaultController;
-            $view       = $this->defaultController;
-        }
-        elseif (empty($controller) && !empty($view))
-        {
-            $controller = $view;
-        }
-        elseif (!empty($controller) && empty($view))
-        {
-            $view = $controller;
-        }
+		if (empty($controller) && empty($view))
+		{
+			$controller = $this->defaultController;
+			$view       = $this->defaultController;
+		}
+		elseif (empty($controller) && !empty($view))
+		{
+			$controller = $view;
+		}
+		elseif (!empty($controller) && empty($view))
+		{
+			$view = $controller;
+		}
 
-        if ($task === 'doCron')
-        {
-            $controller = 'display';
-        }
+		if ($task === 'doCron')
+		{
+			$controller = 'display';
+		}
 
-        $controller = strtolower($controller);
-        $view       = strtolower($view);
+		$controller = strtolower($controller);
+		$view       = strtolower($view);
 
-        $this->input->set('view', $view);
-        $this->input->set('controller', $controller);
-        $this->input->set('task', $task);
-    }
+		$this->input->set('view', $view);
+		$this->input->set('controller', $controller);
+		$this->input->set('task', $task);
+	}
 }

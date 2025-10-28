@@ -45,243 +45,243 @@ use stdClass;
  */
 class HtmlView extends BaseHtmlView
 {
-    /**
-     * The subscriber data
-     *
-     * @var    ?object
-     *
-     * @since       0.9.1
-     */
-    public ?object $subscriber = null;
+	/**
+	 * The subscriber data
+	 *
+	 * @var    object
+	 *
+	 * @since       0.9.1
+	 */
+	public $subscriber = null;
 
-    /**
-     * several needed lists
-     *
-     * @var    ?array
-     *
-     * @since       0.9.1
-     */
-    public ?array $lists = null;
+	/**
+	 * several needed lists
+	 *
+	 * @var    array
+	 *
+	 * @since       0.9.1
+	 */
+	public $lists = null;
 
-    /**
-     * The component parameters
-     *
-     * @var    ?object   Registry object
-     *
-     * @since       0.9.1
-     */
-    public ?object $params = null;
+	/**
+	 * The component parameters
+	 *
+	 * @var    object   Registry object
+	 *
+	 * @since       0.9.1
+	 */
+	public $params = null;
 
-    /**
-     * The component captcha
-     *
-     * @var    ?string
-     *
-     * @since       0.9.1
-     */
-    public ?string $captcha = null;
+	/**
+	 * The component captcha
+	 *
+	 * @var    string
+	 *
+	 * @since       0.9.1
+	 */
+	public $captcha = null;
 
-    /**
-     * The current error object
-     *
-     * @var    ?object
-     *
-     * @since       0.9.1
-     */
-    public ?object $error = null;
+	/**
+	 * The current error object
+	 *
+	 * @var    object
+	 *
+	 * @since       0.9.1
+	 */
+	public $error = null;
 
-    /**
-     * The current success object
-     *
-     * @var    ?object
-     *
-     * @since       0.9.1
-     */
-    public ?object $success = null;
+	/**
+	 * The current success object
+	 *
+	 * @var    object
+	 *
+	 * @since       0.9.1
+	 */
+	public $success = null;
 
-    /**
-     * Execute and display a template script.
-     *
-     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-     *
-     * @return  HtmlView
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    public function display($tpl=null): HtmlView
-    {
-        $app      = Factory::getApplication();
-        $layout   = $this->getLayout();
-        $params   = ComponentHelper::getParams('com_bwpostman', true);
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  HtmlView
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	public function display($tpl=null): HtmlView
+	{
+		$app      = Factory::getApplication();
+		$layout   = $this->getLayout();
+		$params   = ComponentHelper::getParams('com_bwpostman', true);
 
-        $menuParams = new Registry;
-        $menu       = $app->getMenu()->getActive();
+		$menuParams = new Registry;
+		$menu       = $app->getMenu()->getActive();
 
-        if ($menu)
-        {
-            $menuParams->loadString($menu->getParams());
-        }
+		if ($menu)
+		{
+			$menuParams->loadString($menu->getParams());
+		}
 
-        $mergedParams = clone $menuParams;
-        $params->merge($mergedParams);
+		$mergedParams = clone $menuParams;
+		$params->merge($mergedParams);
 
-        $this->params  = $params;
-        $this->captcha = BwPostmanHelper::getCaptcha();
+		$this->params  = $params;
+		$this->captcha = BwPostmanHelper::getCaptcha();
 
-        switch ($layout)
-        {
-            case "error_accountblocked":
-            case "error_accountgeneral":
-            case "error_accountnotactivated":
-            case "error_email":
-            case "error_geteditlink":
-                $this->displayError();
-                break;
-            case "success_msg":
-                $this->displaySuccess();
-                break;
-            default:
-                // switch frontend layout
-                $tpl = $this->params->get('fe_layout_detail', 'cassiopeia');
-                $this->displayDefault();
-                break;
-        }
+		switch ($layout)
+		{
+			case "error_accountblocked":
+			case "error_accountgeneral":
+			case "error_accountnotactivated":
+			case "error_email":
+			case "error_geteditlink":
+				$this->displayError();
+				break;
+			case "success_msg":
+				$this->displaySuccess();
+				break;
+			default:
+				// switch frontend layout
+				$tpl = $this->params->get('fe_layout_detail', 'cassiopeia');
+				$this->displayDefault();
+				break;
+		}
 
-        parent::display($tpl);
+		parent::display($tpl);
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * View Error Display
-     *
-     * @return void
-     *
-     * @throws Exception
-     *
-     * @since       0.9.1
-     */
-    private function displayError(): void
-    {
-        $session	    = Factory::getApplication()->getSession();
-        $this->error    = new stdClass();
-        $err	    = $session->get('session_error', null);
+	/**
+	 * View Error Display
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since       0.9.1
+	 */
+	private function displayError()
+	{
+		$session	    = Factory::getApplication()->getSession();
+		$this->error    = new stdClass();
+		$err	    = $session->get('session_error', null);
 
-        if(isset($err) && is_array($err))
-        {
-            foreach ($err AS $key => $value)
-            {
-                $this->error->$key = $value;
-            }
+		if(isset($err) && is_array($err))
+		{
+			foreach ($err AS $key => $value)
+			{
+				$this->error->$key = $value;
+			}
 
-            $session->clear('session_error');
-        }
+			$session->clear('session_error');
+		}
 
-        //reset error state
-        Factory::getApplication()->setUserState('com_bwpostman.subscriber.register.error', null);
-    }
+		//reset error state
+		Factory::getApplication()->setUserState('com_bwpostman.subscriber.register.error', null);
+	}
 
-    /**
-     * View Success Display
-     *
-     * @return void
-     *
-     * @throws Exception
-     *
-     * @since          0.9.1
-     */
-    private function displaySuccess(): void
-    {
-        $session	    = Factory::getApplication()->getSession();
-        $this->success  = new stdClass();
+	/**
+	 * View Success Display
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since          0.9.1
+	 */
+	private function displaySuccess()
+	{
+		$session	    = Factory::getApplication()->getSession();
+		$this->success  = new stdClass();
 
-        $session_success = $session->get('session_success');
-        if(isset($session_success) && is_array($session_success))
-        {
-            foreach ($session_success AS $key => $value)
-            {
-                $this->success->$key = $value;
-                $session->clear('session_success');
-            }
-        }
-    }
+		$session_success = $session->get('session_success');
+		if(isset($session_success) && is_array($session_success))
+		{
+			foreach ($session_success AS $key => $value)
+			{
+				$this->success->$key = $value;
+				$session->clear('session_success');
+			}
+		}
+	}
 
-    /**
-     * View Default Display
-     *
-     * @return void
-     *
-     * @throws Exception
-     *
-     * @since          0.9.1
-     */
-    private function displayDefault(): void
-    {
-        $user		= Factory::getApplication()->getIdentity();
-        $session	= Factory::getApplication()->getSession();
-        $subscriber	= new stdClass();
-        $lists      = array();
+	/**
+	 * View Default Display
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since          0.9.1
+	 */
+	private function displayDefault()
+	{
+		$user		= Factory::getApplication()->getIdentity();
+		$session	= Factory::getApplication()->getSession();
+		$subscriber	= new stdClass();
+		$lists      = array();
 
-        // If there occurred an error while storing the data load the data from the session
-        $subscriber_data = $session->get('subscriber_data');
+		// If there occurred an error while storing the data load the data from the session
+		$subscriber_data = $session->get('subscriber_data');
 
-        if(isset($subscriber_data) && is_array($subscriber_data))
-        {
-            foreach ($subscriber_data AS $key => $value)
-            {
-                $subscriber->$key = $value;
-            }
+		if(isset($subscriber_data) && is_array($subscriber_data))
+		{
+			foreach ($subscriber_data AS $key => $value)
+			{
+				$subscriber->$key = $value;
+			}
 
-            $subscriber->id	= 0;
-            $session->clear('subscriber_data');
-        }
-        else
-        {
-            $subscriber = BwPostmanSubscriberHelper::fillVoidSubscriber();
-            // If the user is logged into the website get the data from users-table
-            if (!$user->guest)
-            {
-                $subscriber->name = $user->name;
-                $subscriber->email = $user->email;
-            }
-        }
+			$subscriber->id	= 0;
+			$session->clear('subscriber_data');
+		}
+		else
+		{
+			$subscriber = BwPostmanSubscriberHelper::fillVoidSubscriber();
+			// If the user is logged into the website get the data from users-table
+			if (!$user->get('guest'))
+			{
+				$subscriber->name = $user->get('name');
+				$subscriber->email = $user->get('email');
+			}
+		}
 
-        // Get the mailinglists which the subscriber is authorized to see
-        $model = $this->getModel();
-        $mlTable = $model->getTable('Mailinglist');
-        $subsTable = $model->getTable('Subscriber');
-        $userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
-        $lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists((int)$userId);
+		// Get the mailinglists which the subscriber is authorized to see
+		$model = $this->getModel();
+		$mlTable = $model->getTable('Mailinglist');
+		$subsTable = $model->getTable('Subscriber');
+		$userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
+		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists((int)$userId);
 
-        // Build the email format select list
-        if (!isset($subscriber->emailformat))
-        {
-            $mailformat_selected = $this->params->get('default_emailformat', '1');
-        }
-        else
-        {
-            $mailformat_selected = $subscriber->emailformat;
-        }
+		// Build the email format select list
+		if (!isset($subscriber->emailformat))
+		{
+			$mailformat_selected = $this->params->get('default_emailformat', '1');
+		}
+		else
+		{
+			$mailformat_selected = $subscriber->emailformat;
+		}
 
-        $lists['emailformat'] = BwPostmanSubscriberHelper::buildMailformatSelectList($mailformat_selected);
+		$lists['emailformat'] = BwPostmanSubscriberHelper::buildMailformatSelectList($mailformat_selected);
 
-        // Build the gender select list
-        if (!isset($subscriber->gender))
-        {
-            $gender_selected = 2;
-        }
-        else
-        {
-            $gender_selected = $subscriber->gender;
-        }
+		// Build the gender select list
+		if (!isset($subscriber->gender))
+		{
+			$gender_selected = 2;
+		}
+		else
+		{
+			$gender_selected = $subscriber->gender;
+		}
 
-        $lists['gender'] = BwPostmanSubscriberHelper::buildGenderList($gender_selected);
+		$lists['gender'] = BwPostmanSubscriberHelper::buildGenderList($gender_selected);
 
-        // Save references into view
-        $this->lists        = $lists;
-        $this->subscriber   = $subscriber;
-        $this->subscriber->missingValues = $session->set('subscriber.register.missingValues', array());
-    }
+		// Save references into view
+		$this->lists        = $lists;
+		$this->subscriber   = $subscriber;
+		$this->subscriber->missingValues = $session->set('subscriber.register.missingValues', array());
+	}
 }

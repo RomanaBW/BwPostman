@@ -44,48 +44,48 @@ use Joomla\CMS\HTML\HTMLHelper;
  */
 class MycolorField extends ColorField
 {
-    /**
-     * The form field type.
-     *
-     * @var    string
-     *
-     * @since  11.3
-     */
-    protected $type = 'MyColor';
+	/**
+	 * The form field type.
+	 *
+	 * @var    string
+	 *
+	 * @since  11.3
+	 */
+	protected $type = 'MyColor';
 
-    /**
-     * Method to get the field input markup.
-     *
-     * @return  string  The field input markup.
-     *
-     * @since   11.3
-     */
-    protected function getInput(): string
-    {
-        // Initialize some field attributes.
-        $size     = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-        $classes  = (string) $this->element['class'];
-        $disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+	/**
+	 * Method to get the field input markup.
+	 *
+	 * @return  string  The field input markup.
+	 *
+	 * @since   11.3
+	 */
+	protected function getInput(): string
+	{
+		// Initialize some field attributes.
+		$size     = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+		$classes  = (string) $this->element['class'];
+		$disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
 
-        if (!$disabled)
-        {
-            HTMLHelper::_('behavior.colorpicker');
-            $classes .= ' input-colorpicker';
-        }
+		if (!$disabled)
+		{
+			HTMLHelper::_('behavior.colorpicker');
+			$classes .= ' input-colorpicker';
+		}
 
-        if (empty($this->value))
-        {
-            // A color field can't be empty, we default to black. This is the same as the HTML5 spec.
-            $this->value = '#000000';
-        }
+		if (empty($this->value))
+		{
+			// A color field can't be empty, we default to black. This is the same as the HTML5 spec.
+			$this->value = '#000000';
+		}
 
-        // Initialize JavaScript field attributes.
-        $onchange = $this->element['onchange'] ? ' onchange="' . $this->element['onchange'] . '"' : '';
-        $onblur   = $this->element['onblur'] ? ' onblur="' . $this->element['onblur'] . '"' : '';
+		// Initialize JavaScript field attributes.
+		$onchange = $this->element['onchange'] ? ' onchange="' . $this->element['onchange'] . '"' : '';
+		$onblur   = $this->element['onblur'] ? ' onblur="' . $this->element['onblur'] . '"' : '';
 
-        $class = $classes ? ' class="' . trim($classes) . '"' : '';
+		$class = $classes ? ' class="' . trim($classes) . '"' : '';
 
-        return '<input type="text" name="' . $this->name . '" id="' . $this->id . '" value="'
-            . htmlspecialchars($this->value, ENT_COMPAT) . '"' . $class . $size . $disabled . $onchange . $onblur . '/>';
-    }
+		return '<input type="text" name="' . $this->name . '" id="' . $this->id . '" value="'
+			. htmlspecialchars($this->value, ENT_COMPAT) . '"' . $class . $size . $disabled . $onchange . $onblur . '/>';
+	}
 }

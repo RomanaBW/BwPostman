@@ -52,355 +52,356 @@ use RuntimeException;
  */
 class SubscribersMailinglistsTable extends Table
 {
-    /**
-     * @var ?int Primary Key subscriber-id
-     *
-     * @since       0.9.1
-     */
-    public ?int $subscriber_id = null;
+	/**
+	 * @var int Primary Key subscriber-id
+	 *
+	 * @since       0.9.1
+	 */
+	public $subscriber_id = null;
 
-    /**
-     * @var ?int Primary Key list-id
-     *
-     * @since       0.9.1
-     */
-    public ?int $mailinglist_id = null;
+	/**
+	 * @var int Primary Key list-id
+	 *
+	 * @since       0.9.1
+	 */
+	public $mailinglist_id = null;
 
-    /**
-     * Constructor
-     *
-     * @param 	DatabaseDriver  $db Database object
-     *
-     * @since       0.9.1
-     */
-    public function __construct($db = null)
-    {
-        parent::__construct('#__bwpostman_subscribers_mailinglists', 'subscriber_id', $db);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param 	DatabaseDriver  $db Database object
+	 *
+	 * @since       0.9.1
+	 */
+	public function __construct($db = null)
+	{
+		parent::__construct('#__bwpostman_subscribers_mailinglists', 'subscriber_id', $db);
+	}
 
-    /**
-     * Overloaded bind function
-     *
-     * @access public
-     *
-     * @param   array|object  $src     An associative array or object to bind to the Table instance.
-     * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
-     *
-     * @return boolean
-     *
-     * @throws  BwException
-     *
-     * @since       0.9.1
-     */
-    public function bind($src, $ignore=''): bool
-    {
-        // Bind the rules.
-        if (is_object($src))
-        {
-            if (property_exists($src, 'rules') && is_array($src->rules))
-            {
-                $rules = new Rules($src->rules);
-                $this->setRules($rules);
-            }
-        }
-        elseif (is_array($src))
-        {
-            if (array_key_exists('rules', $src) && is_array($src['rules']))
-            {
-                $rules = new Rules($src['rules']);
-                $this->setRules($rules);
-            }
-        }
-        else
-        {
-            throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
-        }
+	/**
+	 * Overloaded bind function
+	 *
+	 * @access public
+	 *
+	 * @param   array|object  $src     An associative array or object to bind to the Table instance.
+	 * @param   array|string  $ignore  An optional array or space separated list of properties to ignore while binding.
+	 *
+	 * @return boolean
+	 *
+	 * @throws  BwException
+	 *
+	 * @since       0.9.1
+	 */
+	public function bind($src, $ignore=''): bool
+	{
+		// Bind the rules.
+		if (is_object($src))
+		{
+			if (property_exists($src, 'rules') && is_array($src->rules))
+			{
+				$rules = new Rules($src->rules);
+				$this->setRules($rules);
+			}
+		}
+		elseif (is_array($src))
+		{
+			if (array_key_exists('rules', $src) && is_array($src['rules']))
+			{
+				$rules = new Rules($src['rules']);
+				$this->setRules($rules);
+			}
+		}
+		else
+		{
+			throw new BwException(Text::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+		}
 
-        return parent::bind($src, $ignore);
-    }
+		return parent::bind($src, $ignore);
+	}
 
-    /**
-     * Method to get the subscribers of a specific mailinglist
-     *
-     * @param array|integer $ids id of mailinglist
-     *
-     * @return array|null $subscribers of this mailinglist
-     *
-     * @throws Exception
-     * @since       3.0.0 (here, before since 2.2.0 at mailinglist helper)
-     */
-    public function getSubscribersOfMailinglist(array|int $ids): ?array
-    {
-        $subscribersOfMailinglist = null;
+	/**
+	 * Method to get the subscribers of a specific mailinglist
+	 *
+	 * @param 	array|integer $ids id of mailinglist
+	 *
+	 * @return 	array       $subscribers of this mailinglist
+	 *
+	 * @throws Exception
+	 *
+	 * @since       3.0.0 (here, before since 2.2.0 at mailinglist helper)
+	 */
+	public function getSubscribersOfMailinglist($ids): ?array
+	{
+		$subscribersOfMailinglist = null;
 
-        if (!is_array($ids))
-        {
-            $ids = array((int)$ids);
-        }
+		if (!is_array($ids))
+		{
+			$ids = array((int)$ids);
+		}
 
-        $ids = ArrayHelper::toInteger($ids);
+		$ids = ArrayHelper::toInteger($ids);
 
-        $db    = $this->_db;
-        $query = $db->getQuery(true);
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
-        $query->select($db->quoteName('subscriber_id'));
-        $query->from($db->quoteName($this->_tbl));
-        $query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $ids) . ')');
+		$query->select($db->quoteName('subscriber_id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $ids) . ')');
 
-        try
-        {
-            $db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-            $subscribersOfMailinglist = $db->loadColumn();
-        }
-        catch (RuntimeException $exception)
-        {
+			$subscribersOfMailinglist = $db->loadColumn();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'SubsMlTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-        }
+		}
 
 
-        return $subscribersOfMailinglist;
-    }
+		return $subscribersOfMailinglist;
+	}
 
-    /**
-     * Method to delete all or selected mailinglist entries for the subscriber_id from subscribers_mailinglists-table
-     *
-     * @param integer    $subscriber_id
-     * @param array|null $mailinglists
-     *
-     * @return boolean
-     *
-     * @throws Exception
-     *
-     * @since   3.0.0 (here, before since 2.0.0 at subscriber helper)
-     */
-    public function deleteMailinglistsOfSubscriber(int $subscriber_id, array $mailinglists = null): bool
-    {
-        $db    = $this->_db;
-        $query = $db->getQuery(true);
+	/**
+	 * Method to delete all or selected mailinglist entries for the subscriber_id from subscribers_mailinglists-table
+	 *
+	 * @param integer $subscriber_id
+	 * @param array|null
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.0.0 (here, before since 2.0.0 at subscriber helper)
+	 */
+	public function deleteMailinglistsOfSubscriber(int $subscriber_id, $mailinglists = null): bool
+	{
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
-        $query->delete($db->quoteName($this->_tbl));
-        $query->where($db->quoteName('subscriber_id') . ' =  ' . $subscriber_id);
+		$query->delete($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('subscriber_id') . ' =  ' . $subscriber_id);
 
-        if (!is_null($mailinglists))
-        {
-            $query->where($db->quoteName('mailinglist_id') . ' IN (' . (implode('.', $mailinglists)) . ')');
-        }
+		if (!is_null($mailinglists))
+		{
+			$query->where($db->quoteName('mailinglist_id') . ' IN (' . (implode('.', $mailinglists)) . ')');
+		}
 
-        try
-        {
-            $db->setQuery($query);
-            $db->execute();
+		try
+		{
+			$db->setQuery($query);
+			$db->execute();
 
-            return true;
-        }
-        catch (RuntimeException $exception)
-        {
+			return true;
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'SubsMlTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
 
-            return false;
-        }
-    }
+			return false;
+		}
+	}
 
-    /**
-     * Method to store subscribed mailinglists in newsletters_mailinglists table
-     *
-     * @param integer $subscriber_id
-     * @param array   $mailinglist_ids
-     *
-     * @return boolean
-     *
-     * @throws Exception
-     *
-     * @since   3.0.0 (here, before since 2.0.0 at subscriber helper)
-     */
-    public function storeMailinglistsOfSubscriber(int $subscriber_id, array $mailinglist_ids): bool
-    {
-        $db    = $this->_db;
-        $query = $db->getQuery(true);
+	/**
+	 * Method to store subscribed mailinglists in newsletters_mailinglists table
+	 *
+	 * @param integer $subscriber_id
+	 * @param array   $mailinglist_ids
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since   3.0.0 (here, before since 2.0.0 at subscriber helper)
+	 */
+	public function storeMailinglistsOfSubscriber(int $subscriber_id, array $mailinglist_ids): bool
+	{
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
-        $query->columns(
-            array(
-                $db->quoteName('subscriber_id'),
-                $db->quoteName('mailinglist_id')
-            )
-        );
+		$query->columns(
+			array(
+				$db->quoteName('subscriber_id'),
+				$db->quoteName('mailinglist_id')
+			)
+		);
 
-        foreach ($mailinglist_ids AS $list_id)
-        {
-            $query->insert($db->quoteName($this->_tbl));
-            $query->values(
-                $subscriber_id . ',' .
-                (int) $list_id
-            );
-        }
+		foreach ($mailinglist_ids AS $list_id)
+		{
+			$query->insert($db->quoteName($this->_tbl));
+			$query->values(
+				$subscriber_id . ',' .
+				(int) $list_id
+			);
+		}
 
-        try
-        {
-            $db->setQuery($query);
-            $db->execute();
+		try
+		{
+			$db->setQuery($query);
+			$db->execute();
 
-            return  true;
-        }
-        catch (RuntimeException $exception)
-        {
+			return  true;
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'SubsMlTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-            return false;
-        }
-    }
+			return false;
+		}
+	}
 
-    /**
-     * Method to check if a subscriber has a subscription to a specific mailinglist
-     *
-     * @param integer $subscriberId  ID of subscriber to check
-     * @param integer $mailinglistId ID of mailinglist to check
-     *
-     * @return boolean|integer
-     *
-     * @throws Exception
-     *
-     * @since 3.0.0 here
-     */
-    public function hasSubscriptionForMailinglist(int $subscriberId, int $mailinglistId): bool|int
-    {
-        $db    = $this->_db;
-        $query = $db->getQuery(true);
+	/**
+	 * Method to check if a subscriber has a subscription to a specific mailinglist
+	 *
+	 * @param integer $subscriberId  ID of subscriber to check
+	 * @param integer $mailinglistId ID of mailinglist to check
+	 *
+	 * @return boolean|integer
+	 *
+	 * @throws Exception
+	 *
+	 * @since 3.0.0 here
+	 */
+	public function hasSubscriptionForMailinglist(int $subscriberId, int $mailinglistId)
+	{
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
-        $query->select($db->quoteName('subscriber_id'));
-        $query->from($db->quoteName($this->_tbl));
-        $query->where($db->quoteName('subscriber_id') . ' = ' . $subscriberId);
-        $query->where($db->quoteName('mailinglist_id') . ' = ' . $mailinglistId);
+		$query->select($db->quoteName('subscriber_id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('subscriber_id') . ' = ' . $subscriberId);
+		$query->where($db->quoteName('mailinglist_id') . ' = ' . $mailinglistId);
 
-        try
-        {
-            $db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-            $subsIdExists = $db->loadResult();
-        }
-        catch (RuntimeException $exception)
-        {
+			$subsIdExists = $db->loadResult();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'SubsMlTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-            return -1;
-        }
+			return -1;
+		}
 
-        if ($subsIdExists === null)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
+		if ($subsIdExists === null)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 
-    /**
-     * Method to remove the mailinglist from the cross table #__bwpostman_subscribers_mailinglists
-     *
-     * @param integer $id
-     *
-     * @return bool
-     *
-     * @throws Exception
-     *
-     * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
-     */
-    public function deleteMailinglistSubscribers(int $id): bool
-    {
-        $db    = $this->_db;
-        $query = $db->getQuery(true);
+	/**
+	 * Method to remove the mailinglist from the cross table #__bwpostman_subscribers_mailinglists
+	 *
+	 * @param integer $id
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 *
+	 * @since  3.0.0 (here, before since 2.0.0 at mailinglist model)
+	 */
+	public function deleteMailinglistSubscribers(int $id): bool
+	{
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
-        $query->delete($db->quoteName($this->_tbl));
-        $query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
+		$query->delete($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('mailinglist_id') . ' =  ' . $db->quote($id));
 
-        try
-        {
-            $db->setQuery($query);
-            $db->execute();
-        }
-        catch (RuntimeException $exception)
-        {
+		try
+		{
+			$db->setQuery($query);
+			$db->execute();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'SubsMlTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-            return false;
-        }
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Method to get the mailinglist ids which a subscriber is subscribed to
-     *
-     * @param integer $sub_id
-     *
-     * @return array
-     *
-     * @throws Exception
-     *
-     * @since 3.0.0
-     */
-    public function getMailinglistIdsOfSubscriber(int $sub_id): array
-    {
-        $mailinglist_ids = array();
+	/**
+	 * Method to get the mailinglist ids which a subscriber is subscribed to
+	 *
+	 * @param integer $sub_id
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 *
+	 * @since 3.0.0
+	 */
+	public function getMailinglistIdsOfSubscriber(int $sub_id): array
+	{
+		$mailinglist_ids = array();
 
-        $db    = $this->_db;
-        $query = $db->getQuery(true);
+		$db    = $this->_db;
+		$query = $db->getQuery(true);
 
-        $query->select($db->quoteName('mailinglist_id'));
-        $query->from($db->quoteName($this->_tbl));
-        $query->where($db->quoteName('subscriber_id') . ' = ' . $sub_id);
+		$query->select($db->quoteName('mailinglist_id'));
+		$query->from($db->quoteName($this->_tbl));
+		$query->where($db->quoteName('subscriber_id') . ' = ' . $sub_id);
 
-        try
-        {
-            $db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
 
-            $mailinglist_ids = $db->loadColumn();
-        }
-        catch (RuntimeException $exception)
-        {
+			$mailinglist_ids = $db->loadColumn();
+		}
+		catch (RuntimeException $exception)
+		{
             BwPostmanHelper::logException($exception, 'SubsMlTable BE');
 
             Factory::getApplication()->enqueueMessage($exception->getMessage(), 'error');
-        }
+		}
 
-        return ArrayHelper::toInteger($mailinglist_ids);
-    }
+		return ArrayHelper::toInteger($mailinglist_ids);
+	}
 
-    /**
-     * Returns the identity (primary key) value of this record
-     *
-     * @return  mixed
-     *
-     * @since  3.0.0
-     */
-    public function getId(): mixed
-    {
-        $key = $this->getKeyName();
+	/**
+	 * Returns the identity (primary key) value of this record
+	 *
+	 * @return  mixed
+	 *
+	 * @since  3.0.0
+	 */
+	public function getId()
+	{
+		$key = $this->getKeyName();
 
-        return $this->$key;
-    }
+		return $this->$key;
+	}
 
-    /**
-     * Check if the record has a property (applying a column alias if it exists)
-     *
-     * @param string $key key to be checked
-     *
-     * @return  boolean
-     *
-     * @since   3.0.0
-     */
-    public function hasField($key): bool
-    {
-        $key = $this->getColumnAlias($key);
+	/**
+	 * Check if the record has a property (applying a column alias if it exists)
+	 *
+	 * @param string $key key to be checked
+	 *
+	 * @return  boolean
+	 *
+	 * @since   3.0.0
+	 */
+	public function hasField($key): bool
+	{
+		$key = $this->getColumnAlias($key);
 
-        return property_exists($this, $key);
-    }
+		return property_exists($this, $key);
+	}
 }

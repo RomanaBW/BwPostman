@@ -254,7 +254,7 @@ class HtmlView extends BaseHtmlView
 		$userId		= $app->getIdentity()->id;
 
 		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
 
         // Set toolbar title depending on the state of the item: Is it a new item? --> Create; Is it an existing record? --> Edit
         $isNew          = ($this->item->id < 1);

@@ -177,7 +177,7 @@ class HtmlView extends BaseHtmlView
 		$userId		= $app->getIdentity()->id;
 
 		// Get the toolbar object instance
-        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
 
 		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_mailinglist');
 

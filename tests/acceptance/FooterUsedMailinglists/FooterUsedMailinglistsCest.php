@@ -115,6 +115,7 @@ class FooterUsedMailinglistsCest
             codecept_debug($e->getMessage());
         }
 
+
         // Check HTML version
 		$I->scrollTo(NlEdit::$tab4_preview_html);
 		$I->wait(1);

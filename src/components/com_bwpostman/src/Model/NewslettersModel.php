@@ -356,7 +356,7 @@ class NewslettersModel extends ListModel
 	{
 		$items	= parent::getItems();
 		$user	= Factory::getApplication()->getIdentity();
-		$userId	= $user->get('id');
+		$userId	= $user->id;
 		$guest	= $user->get('guest');
 		$groups	= $user->getAuthorisedViewLevels();
 

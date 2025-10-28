@@ -745,7 +745,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 	 */
 	public function archive(array $cid, int $archive): bool
 	{
-		$uid = Factory::getApplication()->getIdentity()->get('id');
+		$uid = Factory::getApplication()->getIdentity()->id;
 		$db  = $this->_db;
 		$cid = ArrayHelper::toInteger($cid);
 
@@ -978,13 +978,13 @@ class NewsletterTable extends Table implements VersionableTableInterface
 		{
 			// Existing newsletter
 			$this->modified_time = $date->toSql();
-			$this->modified_by = $user->get('id');
+			$this->modified_by = $user->id;
 		}
 		else
 		{
 			// New newsletter
 			$this->created_date = $date->toSql();
-			$this->created_by = $user->get('id');
+			$this->created_by = $user->id;
 		}
 
 		// Ensure nulldate columns have correct nulldate

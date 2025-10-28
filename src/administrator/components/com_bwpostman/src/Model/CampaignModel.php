@@ -34,6 +34,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -360,7 +361,7 @@ class CampaignModel extends AdminModel
 	 */
 	public function archive(array $cid = array(0), int $archive = 1, int $archive_nl = 1): bool
 	{
-		$uid      = Factory::getApplication()->getIdentity()->get('id');
+		$uid      = Factory::getApplication()->getIdentity()->id;
 		$db       = $this->_db;
 		$query    = $db->getQuery(true);
 

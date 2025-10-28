@@ -487,7 +487,7 @@ class TemplateModel extends AdminModel
 	{
 		$db   = $this->_db;
 		$app  = Factory::getApplication();
-		$uid  = $app->getIdentity()->get('id');
+		$uid  = $app->getIdentity()->id;
 		$cid  = ArrayHelper::toInteger($cid);
 
 		if ($archive == 1)

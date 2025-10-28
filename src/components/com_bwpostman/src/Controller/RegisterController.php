@@ -88,7 +88,7 @@ class RegisterController extends FormController
 
 		$app    = Factory::getApplication();
 		$user   = $app->getIdentity();
-		$userId = (int) $user->get('id');
+		$userId = (int) $user->id;
 
 		$subscriberId = 0;
 

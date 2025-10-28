@@ -117,7 +117,7 @@ class EditController extends FormController
 
 		$user 	        = $app->getIdentity();
 		$user_is_guest  = $user->get('guest');
-		$userid 		= (int) $user->get('id');
+		$userid 		= (int) $user->id;
 		$subsTable      = $this->getModel('subscriber', 'Administrator')->getTable('Subscriber');
 
 		// if user is logged in fetch subscriber id (subscriber id = 0 means the user has no newsletter subscription)

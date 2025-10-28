@@ -1011,7 +1011,7 @@ class com_bwpostmanInstallerScript
 		try
 		{
 			$db               = Factory::getDbo();
-			$user_id          = Factory::getApplication()->getIdentity()->get('id');
+			$user_id          = Factory::getApplication()->getIdentity()->id;
 			$bwpostman_groups = array(0);
 			$query            = $db->getQuery(true);
 

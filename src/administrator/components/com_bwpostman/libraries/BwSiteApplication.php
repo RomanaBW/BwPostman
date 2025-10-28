@@ -155,7 +155,7 @@ final class BwSiteApplication extends CMSApplication
 
 		if (!$menus->authorise($itemid))
 		{
-			if ($user->get('id') == 0)
+			if ($user->id == 0)
 			{
 				// Set the data
 				$this->setUserState('users.login.form.data', ['return' => Uri::getInstance()->toString()]);

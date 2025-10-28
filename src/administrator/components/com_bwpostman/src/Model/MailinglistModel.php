@@ -305,7 +305,7 @@ class MailinglistModel extends AdminModel
 	public function archive(array $cid = array(0), int $archive = 1): bool
 	{
 		$db   = $this->_db;
-		$uid  = Factory::getApplication()->getIdentity()->get('id');
+		$uid  = Factory::getApplication()->getIdentity()->id;
 		$cid  = ArrayHelper::toInteger($cid);
 
 		if ($archive == 1)

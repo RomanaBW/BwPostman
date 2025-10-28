@@ -943,7 +943,7 @@ class NewsletterModel extends AdminModel
 		$date = Factory::getDate();
 		$time = $date->toSql();
 		$user = $app->getIdentity();
-		$uid  = $user->get('id');
+		$uid  = $user->id;
 
 		// Reset some item specific values
 		$newsletters_data_copy->id               = null;

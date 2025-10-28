@@ -656,13 +656,13 @@ class TemplateTable extends Table implements VersionableTableInterface
 		{
 			// Existing mailing list
 			$this->modified_time = $date->toSql();
-			$this->modified_by   = $user->get('id');
+			$this->modified_by   = $user->id;
 		}
 		else
 		{
 			// New template
 			$this->created_date = $date->toSql();
-			$this->created_by   = $user->get('id');
+			$this->created_by   = $user->id;
 		}
 
 		// Ensure nulldate columns have correct nulldate

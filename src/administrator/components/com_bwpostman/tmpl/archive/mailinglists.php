@@ -39,7 +39,7 @@ HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('bootstrap.modal');
 
 $user		= Factory::getApplication()->getIdentity();
-$userId		= $user->get('id');
+$userId		= $user->id;
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 

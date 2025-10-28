@@ -675,7 +675,11 @@ class NewsletterController extends FormController
 					$app->setUserState('com_bwpostman.edit.newsletter.data', null);
 
 					PluginHelper::importPlugin('bwpostman');
-					$app->triggerEvent('onBwPostmanAfterNewsletterSave');
+                    $event = new Event('onBwPostmanAfterNewsletterSave', [
+                    'subject'    => ArrayHelper::fromObject($this),
+                    ]);
+                    Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+                    $eventResults = $event->getArgument('result', []);
 
 					// Redirect to the list screen.
 					$this->setRedirect(
@@ -981,7 +985,11 @@ class NewsletterController extends FormController
 				if ($res === true)
 				{
 					PluginHelper::importPlugin('bwpostman');
-					$app->triggerEvent('onBwPostmanAfterNewsletterCopy');
+                    $event = new Event('onBwPostmanAfterNewsletterCopy', [
+                        'subject'    => ArrayHelper::fromObject($this),
+                    ]);
+                    Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+                    $eventResults = $event->getArgument('result', []);
 				}
 			}
 		}
@@ -1037,9 +1045,17 @@ class NewsletterController extends FormController
 		}
 
 		PluginHelper::importPlugin('bwpostman');
-		Factory::getApplication()->triggerEvent('onBwPostmanBeforeNewsletterArchive', array(&$cid, &$msg, &$res));
+        $event = new Event('onBwPostmanBeforeNewsletterArchive', [
+            'subject'    => ArrayHelper::fromObject($this),
+            'cid'        => $cid,
+            'msg'        => $msg,
+            'res'        => $res,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
-		if ($res === false)
+
+        if ($res === false)
 		{
 			$link = Route::_('index.php?option=com_bwpostman&view=newsletters&layout=' . $layout, false);
 			$this->setRedirect($link, $msg, 'error');

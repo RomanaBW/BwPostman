@@ -38,6 +38,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use Joomla\Database\DatabaseDriver;
+use Joomla\Event\Event;
+use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
 
 /**
@@ -212,7 +214,13 @@ class SendmailqueueTable extends Table
 
 		PluginHelper::importPlugin('bwpostman');
 
-		Factory::getApplication()->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, $fromComponent));
+        $event = new Event( 'onBwPostmanGetAdditionalQueueWhere', [
+            'subject'       => ArrayHelper::fromObject($this),
+            'query'         => $query,
+            'fromComponent' => $fromComponent,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
 		try
 		{

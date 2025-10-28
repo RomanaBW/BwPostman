@@ -34,8 +34,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
+use Joomla\Event\Event;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
@@ -492,7 +492,11 @@ class CampaignModel extends AdminModel
 
 				PluginHelper::importPlugin('bwpostman');
 
-				$app->triggerEvent('onBwPostmanCampaignSave', array ($data));
+                $event = new Event('onBwPostmanCampaignSave', [
+                    'subject'  => ArrayHelper::fromObject($this),
+                ]);
+                Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+                $eventResults = $event->getArgument('result', []);
 			}
 		}
 		else

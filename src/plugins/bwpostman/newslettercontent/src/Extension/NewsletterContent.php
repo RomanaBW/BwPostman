@@ -62,6 +62,7 @@ use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Registry\Registry;
 use Joomla\Session\SessionInterface;
+use Joomla\Utilities\ArrayHelper;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use stdClass;
@@ -958,7 +959,13 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 		$module->style = $attribs['style'];
 
 		// If the $module is nulled it will return an empty content, otherwise it will render the module normally.
-		$app->triggerEvent('onRenderModule', [&$module, &$attribs]);
+        $event = new Event('onRenderModule', [
+            'subject'    => ArrayHelper::fromObject($this),
+            'module'     => $module,
+            'attribs'    => $attribs,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
 		if ($module === null || !isset($module->content)) {
 			return '';
@@ -984,7 +991,13 @@ final class NewsletterContent extends CMSPlugin implements SubscriberInterface, 
 		// Revert the scope
 		$app->scope = $scope;
 
-		$app->triggerEvent('onAfterRenderModule', [&$module, &$attribs]);
+        $event = new Event('onAfterRenderModule', [
+            'subject'    => ArrayHelper::fromObject($this),
+            'module'     => $module,
+            'attribs'    => $attribs,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
 		if (JDEBUG) {
 			Profiler::getInstance('Application')->mark('afterRenderModule ' . $module->module . ' (' . $module->title . ')');

@@ -43,6 +43,8 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\Event\Event;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * BwPostman Newsletter View
@@ -237,7 +239,13 @@ class HtmlView extends BaseHtmlView
 			$this->template = $app->getTemplate();
 			$this->params   = ComponentHelper::getParams('com_bwpostman');
 
-			$app->triggerEvent('onBwPostmanBeforeNewsletterEdit', array(&$this->item, $referrer));
+            $event = new Event('onBwPostmanBeforeNewsletterEdit', [
+                'subject'  => ArrayHelper::fromObject($this),
+                'item'     => $this->item,
+                'referrer' => $referrer,
+            ]);
+            Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+            $eventResults = $event->getArgument('result', []);
 
             $this->setContentFlags();
         }

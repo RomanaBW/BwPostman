@@ -32,6 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 use Exception;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Event\Event;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
@@ -311,11 +312,11 @@ class CampaignController extends FormController
 		parent::save();
 
 		PluginHelper::importPlugin('bwpostman');
-//		$arguments = array('subject' => '');
-//		$event = AbstractEvent::create('onBwPostmanAfterCampaignControllerSave', $arguments);
-
-//		Factory::getApplication()->getDispatcher()->dispatch('onBwPostmanAfterCampaignControllerSave', $event);
-		Factory::getApplication()->triggerEvent('onBwPostmanAfterCampaignControllerSave');
+        $event = new Event('onBwPostmanAfterCampaignControllerSave', [
+            'subject'  => ArrayHelper::fromObject($this),
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 	}
 
 	/**

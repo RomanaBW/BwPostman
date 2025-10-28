@@ -37,6 +37,7 @@ use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Event\Event;
 use Joomla\Registry\Registry;
 use Joomla\Application\Web\WebClient;
 use Joomla\CMS\Cache\CacheControllerFactoryAwareTrait;
@@ -48,7 +49,7 @@ use Joomla\CMS\Router\SiteRouter;
 use Joomla\CMS\Uri\Uri;
 use Joomla\DI\Container;
 use Joomla\String\StringHelper;
-
+use Joomla\Utilities\ArrayHelper;
 
 if (!ComponentHelper::isEnabled('com_bwpostman')) {
 	Factory::getApplication()->enqueueMessage(
@@ -266,7 +267,12 @@ final class BwSiteApplication extends CMSApplication
 
 		// Trigger the onAfterDispatch event.
 		PluginHelper::importPlugin('system');
-		$this->triggerEvent('onAfterDispatch');
+        $event = new Event('onAfterDispatch', [
+            'subject'  => ArrayHelper::fromObject($this),
+            'item'     => $this->item,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 	}
 
 	/**
@@ -299,7 +305,7 @@ final class BwSiteApplication extends CMSApplication
 			 * $this->input->getCmd('option'); or $this->input->getCmd('view');
 			 * ex: due of the sef urls
 			 */
-			$this->checkUserRequireReset('com_users', 'profile', 'edit',
+			$this->checkUserRequiresReset('com_users', 'profile', 'edit',
 				'com_users/profile.save,com_users/profile.apply,com_users/user.logout');
 		}
 
@@ -924,7 +930,11 @@ final class BwSiteApplication extends CMSApplication
 
 		// Trigger the onAfterRoute event.
 		PluginHelper::importPlugin('system');
-		$this->triggerEvent('onAfterRoute');
+        $event = new Event('onAfterRoute', [
+            'subject'  => ArrayHelper::fromObject($this),
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
 		$Itemid = $this->input->getInt('Itemid', null);
 		$this->authorise($Itemid);

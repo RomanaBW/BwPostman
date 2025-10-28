@@ -219,7 +219,7 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
     {
         $tpl_assets = array();
 
-        $db	= $this->_db;
+        $db	= $this->getDatabase();
         $query	= $db->getQuery(true);
         $query->select('*');
         $query->from($db->quoteName($this->_tbl));
@@ -261,7 +261,7 @@ class TemplatesTagsTable extends Table implements VersionableTableInterface
      */
     public function saveTags(array $data, int $tplId): bool
     {
-        $db	= $this->_db;
+        $db	= $this->getDatabase();
         $query	= $db->getQuery(true);
 
         if (empty($data['templates_table_id']))

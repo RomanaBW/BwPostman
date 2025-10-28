@@ -401,7 +401,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
     {
 //		$MvcFactory = Factory::getApplication()->bootComponent('com_bwpostman')->getMVCFactory();
 //		$asset      = $MvcFactory->createTable('Asset', 'Administrator');
-        $asset = new Asset($this->_db);
+        $asset = new Asset($this->getDatabase());
 
         $asset->loadByName('com_bwpostman.newsletter');
         return (int)$asset->id;
@@ -465,7 +465,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public function check(): bool
     {
         $app	= Factory::getApplication();
-        $db     = $this->_db;
+        $db     = $this->getDatabase();
         $query	= $db->getQuery(true);
         $fault	= false;
         $xid    = 0;
@@ -615,7 +615,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
             $nl_id = $this->id;
         }
 
-        $db	= $this->_db;
+        $db	= $this->getDatabase();
         $query	= $db->getQuery(true);
 
         $query->update($db->quoteName($this->_tbl));
@@ -669,7 +669,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
         $newIsTemplate = ($this->is_template + 1) % 2;
 
-        $db	    = $this->_db;
+        $db	    = $this->getDatabase();
         $query	= $db->getQuery(true);
 
         $query->update($db->quoteName($this->_tbl));
@@ -704,7 +704,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
      */
     public function isTemplate(int $id): bool
     {
-        $db    = $this->_db;
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true);
 
         $query->select($db->quoteName('is_template'));
@@ -747,7 +747,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
     public function archive(array $cid, int $archive): bool
     {
         $uid = Factory::getApplication()->getIdentity()->id;
-        $db  = $this->_db;
+        $db  = $this->getDatabase();
         $cid = ArrayHelper::toInteger($cid);
 
         if ($archive === 1)
@@ -798,7 +798,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
      */
     public function getNewsletterData(int $nlId): object|bool
     {
-        $db	   = $this->_db;
+        $db	   = $this->getDatabase();
         $query = $db->getQuery(true);
 
         $query->select('*');
@@ -838,7 +838,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
     {
         $content_ids = '';
 
-        $db	   = $this->_db;
+        $db	   = $this->getDatabase();
         $query = $db->getQuery(true);
 
         $query->select($db->quoteName('selected_content'));
@@ -876,7 +876,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
     {
         $campaignId = -1;
 
-        $db	    = $this->_db;
+        $db	    = $this->getDatabase();
         $query	= $db->getQuery(true);
 
         $query->select($db->quoteName('campaign_id'));
@@ -928,7 +928,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
             $archiveFlag = 1;
         }
 
-        $db    = $this->_db;
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true);
 
         $query->select('COUNT(*)');
@@ -1000,7 +1000,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
 
         foreach ($nulldateCols as $nulldateCol)
         {
-            if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->_db->getNullDate())
+            if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->getDatabase()->getNullDate())
             {
                 $this->$nulldateCol = null;
             }
@@ -1025,7 +1025,7 @@ class NewsletterTable extends Table implements VersionableTableInterface
      */
     public function deleteCampaignsNewsletters(int $id): bool
     {
-        $db    = $this->_db;
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true);
 
         $query->delete($db->quoteName($this->_tbl));

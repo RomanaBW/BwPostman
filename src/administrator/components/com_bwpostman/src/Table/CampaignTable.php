@@ -244,7 +244,7 @@ class CampaignTable extends Table implements VersionableTableInterface
      */
     protected function _getAssetParentId(Table $table = null, $id = null): int
     {
-        $asset = new Asset($this->_db);
+        $asset = new Asset($this->getDatabase());
 
         $asset->loadByName('com_bwpostman.campaign');
         return (integer)$asset->id;
@@ -305,7 +305,7 @@ class CampaignTable extends Table implements VersionableTableInterface
     public function check(): bool
     {
         $app	= Factory::getApplication();
-        $db     = $this->_db;
+        $db     = $this->getDatabase();
         $query	= $db->getQuery(true);
         $fault	= false;
         $xid    = 0;
@@ -406,7 +406,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 
         foreach ($nulldateCols as $nulldateCol)
         {
-            if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->_db->getNullDate())
+            if ($this->$nulldateCol === '' || $this->$nulldateCol === $this->getDatabase()->getNullDate())
             {
                 $this->$nulldateCol = null;
             }
@@ -437,7 +437,7 @@ class CampaignTable extends Table implements VersionableTableInterface
             $archiveFlag = 1;
         }
 
-        $db    = $this->_db;
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true);
 
         $query->select('COUNT(*)');
@@ -471,7 +471,7 @@ class CampaignTable extends Table implements VersionableTableInterface
     public function getAllCampaignIds(): array
     {
         $cams  = array();
-        $db    = $this->_db;
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true);
 
         $query->select('id');
@@ -479,7 +479,7 @@ class CampaignTable extends Table implements VersionableTableInterface
 
         try
         {
-            $this->_db->setQuery($query);
+            $this->getDatabase()->setQuery($query);
 
             $cams = $db->loadColumn();
         }
@@ -507,7 +507,7 @@ class CampaignTable extends Table implements VersionableTableInterface
     public function getCampaignsIdTitle(array $cams): array
     {
         $campaigns = array();
-        $db     = $this->_db;
+        $db     = $this->getDatabase();
         $query	= $db->getQuery(true);
 
         $query->select($db->quoteName('id'));

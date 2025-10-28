@@ -30,6 +30,7 @@ defined('_JEXEC') or die;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use Exception;
+use Joomla\CMS\User\UserFactoryInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Table\Asset;
@@ -1413,7 +1414,7 @@ class BwAccess
 		$authorised = array(1);
 
 		// Check for the recovery mode setting and return early.
-		$user      = Factory::getUser($userId);
+        $user      = Factory::getContainer()->get(UserFactoryInterface::class)->loadUserById($userId);
 		$root_user = Factory::getApplication()->getConfig()->get('root_user');
 
 		if (($user->username && $user->username == $root_user) || (is_numeric($root_user) && $user->id > 0 && $user->id == $root_user))

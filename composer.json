@@ -4,6 +4,8 @@
     "phpmailer/phpmailer": "~6.1",
     "ext-simplexml": "*",
     "ext-gd": "*",
-    "ext-dom": "*"
+    "ext-dom": "*",
+    "ext-mysqli": "*",
+    "ext-pdo": "*"
   }
 }

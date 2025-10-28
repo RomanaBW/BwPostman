@@ -201,11 +201,11 @@ class HtmlView extends BaseHtmlView
 
         $layout = $jinput->get('layout', '');
         $model  = $this->getModel();
-        $this->item = $model->getItem();
 
         switch ($layout)
         {
             case 'export':
+                $this->item = $model->getItem();
                 self::displayExportForm();
                 break;
             case 'import':
@@ -220,6 +220,7 @@ class HtmlView extends BaseHtmlView
 
                 // Get the data from the model
                 $this->form		= $model->getForm();
+                $this->item		= $model->getItem();
                 $this->state	= $model->getState();
 
                 if ($this->item->id)

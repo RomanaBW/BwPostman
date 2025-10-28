@@ -144,18 +144,18 @@ class TemplateTable extends Table implements VersionableTableInterface
     public array|string|null $basics = '';
 
     /**
-     * @var ?string header
+     * @var array|string|null header
      *
      * @since       1.1.0
      */
-    public ?string $header = null;
+    public array|string|null $header = null;
 
     /**
-     * @var ?string intro
+     * @var array|string|null intro
      *
      * @since       1.1.0
      */
-    public ?string $intro = '';
+    public array|string|null $intro = '';
 
     /**
      * @var null|string|array article

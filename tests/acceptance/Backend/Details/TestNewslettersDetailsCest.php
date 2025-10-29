@@ -157,7 +157,7 @@ class TestNewslettersDetailsCest
 
 		$this->fillFormExtended($I);
 
-		$I->click(Generals::$toolbar4['Cancel']);
+		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
 		$I->see("Newsletters", Generals::$pageTitle);
 	}
 

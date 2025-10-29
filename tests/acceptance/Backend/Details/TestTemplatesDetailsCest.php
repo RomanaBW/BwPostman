@@ -274,7 +274,7 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one HTML template, save, modify and save as copy");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElementVisible(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar4['Add HTML-Template']);
+		$I->clickAndWait(Generals::$toolbar4['Add HTML-Template'], 1);
 
 		$this->fillFormSimpleHtml($I);
 

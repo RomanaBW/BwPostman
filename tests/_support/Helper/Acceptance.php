@@ -1197,6 +1197,7 @@ class Acceptance extends Codeception\Module
 		}
 
 		$this->switchToSection($I, $manage_data);
+        $I->wait(1);
 	}
 
 	/**
@@ -1212,6 +1213,7 @@ class Acceptance extends Codeception\Module
 	public function HelperArchiveItems(\AcceptanceTester $I, $manage_data, $edit_data, $isTester = false)
 	{
 		// ensure we are on the section list page
+        $I->wait(1);
 		$I->see($manage_data['section'], Generals::$pageTitle);
 		// select items to archive
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
@@ -1226,7 +1228,7 @@ class Acceptance extends Codeception\Module
 //			$searchButton = Generals::$search_button_span;
 //		}
 
-		$I->click($searchButton);
+		$I->clickAndWait($searchButton, 1);
 
 		$mainTableId = Generals::$main_table;
 
@@ -1298,11 +1300,11 @@ class Acceptance extends Codeception\Module
 	{
 		// select items to delete
 		$I->fillField(Generals::$search_field, $edit_data['field_title']);
-		$I->click(Generals::$filterOptionsSwitcher);
+		$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
 		$I->clickAndWait(Generals::$search_list, 1);
 		$I->selectOption(Generals::$search_list, $edit_data['delete_identifier']);
 
-		$I->click(Generals::$search_button);
+		$I->clickAndWait(Generals::$search_button, 1);
 
 		$I->waitForElementVisible(Generals::$main_table);
 
@@ -1432,7 +1434,7 @@ class Acceptance extends Codeception\Module
 
 		$I->see(Generals::$archive_txt, Generals::$pageTitle);
 		$I->wait(1);
-		$I->click($archive_tab);
+		$I->clickAndWait($archive_tab, 1);
 	}
 
 	/**
@@ -1445,6 +1447,7 @@ class Acceptance extends Codeception\Module
 	public function switchToSection(\AcceptanceTester $I, $manage_data)
 	{
 		$I->amOnPage($manage_data['url']);
+        $I->wait(1);
 		$I->see($manage_data['section'], Generals::$pageTitle);
 	}
 

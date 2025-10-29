@@ -496,7 +496,7 @@ class TestNewslettersDetailsCest
 
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
-		$I->click(Generals::$toolbar4['Cancel']);
+		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
 
 		$I->HelperArcDelItems($I, NlManage::$arc_del_array, NlEdit::$arc_del_array, true);
 		$I->see('Newsletters', Generals::$pageTitle);

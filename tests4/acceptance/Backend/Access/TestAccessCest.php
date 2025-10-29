@@ -528,7 +528,7 @@ class TestAccessCest
 				codecept_debug('Allowed: ' . $allowed);
 
 				$I->amOnPage(MainView::$url);
-				$I->waitForElement(Generals::$pageTitle, 30);
+				$I->waitForElementVisible(Generals::$pageTitle, 30);
 				$I->see('BwPostman');
 				$I->seeElement(Generals::$toolbar4['BwPostman Forum']);
 				$I->seeElement(Generals::$toolbar4['BwPostman Manual']);
@@ -536,7 +536,7 @@ class TestAccessCest
 				if ($allowed)
 				{
 					$I->click($link);
-					$I->waitForElement(Generals::$pageTitle, 30);
+					$I->waitForElementVisible(Generals::$pageTitle, 30);
 
 					if ($button != 'Archive' && $button != 'Basic settings' && $button != 'Maintenance')
 					{
@@ -605,7 +605,7 @@ class TestAccessCest
 						$I->see('BwPostman Configuration', Generals::$pageTitle);
 						$I->waitForElementVisible(Generals::$toolbar['Save & Close'], 5);
 						$I->click(Generals::$toolbar['Save & Close']);
-						$I->waitForElement(Generals::$pageTitle, 10);
+						$I->waitForElementVisible(Generals::$pageTitle, 10);
 						$I->see('BwPostman');
 
 						$I->seeElement(Generals::$toolbar4['Options']);
@@ -661,7 +661,7 @@ class TestAccessCest
 		$allowed    = $permission_array[$button]['permissions']['Create'];
 
 		$I->click(Generals::$toolbar['New']);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 
 		if ($allowed)
 		{
@@ -683,7 +683,7 @@ class TestAccessCest
 				}
 			}
 
-			$I->waitForElement(Generals::$pageTitle, 5);
+			$I->waitForElementVisible(Generals::$pageTitle, 5);
 			$I->see('BwPostman');
 		}
 		else
@@ -757,7 +757,7 @@ class TestAccessCest
 		{
 			$I->seeLink($check_content);
 			$I->click(sprintf($check_link, $check_content));
-			$I->waitForElement(Generals::$pageTitle, 30);
+			$I->waitForElementVisible(Generals::$pageTitle, 30);
 
 			$this->checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
 		}
@@ -840,7 +840,7 @@ class TestAccessCest
 			}
 		}
 
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 	}
 
 	/**
@@ -902,7 +902,7 @@ class TestAccessCest
 				$I->scrollTo(NewsletterManagerPage::$tab1, 0, -100);
 				$I->wait(1);
 				$I->click(NewsletterManagerPage::$tab1);// switch to tab unsent newsletters to finish
-				$I->waitForElement(".//*[@id='main-table']/thead/tr/th[5]/a", 20);
+				$I->waitForElementVisible(".//*[@id='main-table']/thead/tr/th[5]/a", 20);
 			}
 
 			$I->clickAndWait(Generals::$clear_button, 1);
@@ -1302,7 +1302,7 @@ class TestAccessCest
 	{
 		// click link a wait for page loaded
 		$I->amOnPage($link);
-		$I->waitForElement('.//*[@id=\'isisJsData\']/div/div', 30);
+		$I->waitForElementVisible('.//*[@id=\'isisJsData\']/div/div', 30);
 
 		// Check for allowed/forbidden
 		return $this->getExpectedResultByUser($I, $user, $link);
@@ -1353,7 +1353,7 @@ class TestAccessCest
 		$action = '';
 
 		// @SpecialNote: following is dummy to eliminate IDE warning while coding is not ready
-		$I->waitForElement($link);
+		$I->waitForElementVisible($link);
 
 		return $action;
 	}
@@ -1464,7 +1464,7 @@ class TestAccessCest
 	private function setDefaultTemplate(AcceptanceTester $I, array $item_permission_array): void
 	{
 		$I->amOnPage(TemplateManagerPage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->wantTo("check setting default template by permissions");
 
 		$set_default_allowed = $item_permission_array['Templates']['permissions']['ModifyState'];

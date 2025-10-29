@@ -626,7 +626,7 @@ class TemplateEditPage
 		$I->scrollTo(Generals::$joomlaHeader, 0, 100);
 		$I->wait(1);
 
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 
 		$I->click(Generals::$toolbar['Add Text-Template']);
 
@@ -701,7 +701,7 @@ class TemplateEditPage
 		$I->wait(1);
 
 		$I->waitForElementVisible("//*[@id='com-media']", 5);
-		$I-> waitForElement(self::$thumb_select, 5);
+		$I-> waitForElementVisible(self::$thumb_select, 5);
 		$I->scrollTo(self::$thumb_select, 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(self::$thumb_select, 1);

@@ -67,10 +67,10 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template and cancel from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addHtmlTemplateButton);
-		$I->waitForElement(TplEdit::$tpl_tab1, 30);
+		$I->waitForElementVisible(TplEdit::$tpl_tab1, 30);
 
 		$this->fillFormSimpleHtml($I);
 
@@ -100,7 +100,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template complete from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->click(MainView::$addHtmlTemplateButton);
@@ -150,7 +150,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template cancel list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
@@ -190,7 +190,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
@@ -223,7 +223,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template, save and get new record list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
@@ -273,7 +273,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one HTML template, save, modify and save as copy");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
@@ -341,7 +341,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create HTML template twice list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar4['Add HTML-Template']);
 
 		$this->fillFormSimpleHtml($I);
@@ -406,7 +406,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template and cancel from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->click(MainView::$addTextTemplateButton);
@@ -417,7 +417,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
         $I->clickAndWait(Generals::$toolbar4['Back'], 1);
 
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
 
@@ -440,7 +440,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template complete from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->click(MainView::$addTextTemplateButton);
@@ -479,7 +479,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template cancel list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		$this->fillFormExtendedText($I);
@@ -518,7 +518,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
@@ -552,7 +552,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template, save and get new record list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
@@ -602,7 +602,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template, save, modify and save as copy");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
@@ -670,7 +670,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create one Text template list view, archive and restore");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(Generals::$toolbar4['Add Text-Template']);
 
 		TplEdit::fillFormSimpleText($I);
@@ -712,7 +712,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Create Text template twice list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 
 		$I->click(Generals::$toolbar4['Add Text-Template']);
 
@@ -775,7 +775,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Edit default template, save and get new record list view");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(TplManage::$tableRowForDefault);
 		$I->waitForElementVisible(TplEdit::$tpl_tab1);
 
@@ -823,7 +823,7 @@ class TestTemplatesDetailsCest
 	{
 		$I->wantTo("Edit default template, save as copy");
 		$I->amOnPage(TplManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 5);
+		$I->waitForElementVisible(Generals::$pageTitle, 5);
 		$I->click(TplManage::$tableRowForDefault);
 		$I->waitForElementVisible(TplEdit::$tpl_tab1);
 

@@ -318,7 +318,7 @@ class AcceptanceTester extends \Codeception\Actor
 				$this->wait(1);
 				$this->click(Generals::$next_page);
 
-				$this->waitForElement(Generals::$pageTitle, 30);
+				$this->waitForElementVisible(Generals::$pageTitle, 30);
 				$count++;
 			}
 		}

@@ -73,7 +73,7 @@ class TestNewslettersDetailsCest
 		NlEdit::addContentWithCustomField($I);
 
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addNewsletterButton);
 
@@ -102,7 +102,7 @@ class TestNewslettersDetailsCest
 	{
 		$I->wantTo("Create one Newsletter, archive and delete from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addNewsletterButton);
 
@@ -700,7 +700,7 @@ class TestNewslettersDetailsCest
 
 		$I->click(NlEdit::$toolbar['Save & Close']);
 
-		$I->waitForElement(Generals::$alert_heading);
+		$I->waitForElementVisible(Generals::$alert_heading);
 		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 	}
@@ -828,7 +828,7 @@ class TestNewslettersDetailsCest
 		$I->clickAndWait(NlEdit::$tab2, 3);
 //		$I->executeJS("document.getElementById('" . NlEdit::$tab2_iframe . "').setAttribute('name', '" . NlEdit::$tab2_iframe . "');");
 		$I->switchToIFrame(NlEdit::$tab2_iframe);
-		$I->waitForElement(NlEdit::$tab2_editor);
+		$I->waitForElementVisible(NlEdit::$tab2_editor);
 		$I->waitForText($content_title, 30);
 		$I->see($content_title, NlEdit::$tab2_editor);
 		$I->switchToIFrame();
@@ -837,7 +837,7 @@ class TestNewslettersDetailsCest
 		$I->scrollTo(Generals::$nlTabBar, 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(NlEdit::$tab3, 3);
-		$I->waitForElement(NlEdit::$tab3_editor);
+		$I->waitForElementVisible(NlEdit::$tab3_editor);
 		$I->waitForText($content_title, 30);
 		$I->see($content_title, NlEdit::$tab3_editor);
 
@@ -850,7 +850,7 @@ class TestNewslettersDetailsCest
 		$I->switchToIFrame(NlEdit::$tab4_preview_html_iframe);
 		$I->scrollTo(NlEdit::$tab4_preview_html_divider, 0, 20); // scroll to divider before article
 		$I->wait(1);
-		$I->waitForElement(NlEdit::$preview_html);
+		$I->waitForElementVisible(NlEdit::$preview_html);
 		$I->waitForText($content_title, 30);
 		$I->see($content_title, NlEdit::$preview_html);
 		$I->switchToIFrame();
@@ -1123,13 +1123,13 @@ class TestNewslettersDetailsCest
 		$I->wantTo("edit published, publish up and down and change description of a sent newsletter");
 
 		$I->amOnPage(NlManage::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->clickAndWait(NlManage::$tab2, 1);
 
 		$I->click(NlManage::$first_list_entry_tab2);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->click(Generals::$toolbar4['Edit']);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see('Newsletter Publishing Details', Generals::$pageTitle);
 
 		// make changes
@@ -1171,7 +1171,7 @@ class TestNewslettersDetailsCest
 
 		// revert changes
 		$I->click(NlManage::$first_list_link);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see('Newsletter Publishing Details', Generals::$pageTitle);
 
 		// make changes
@@ -1186,7 +1186,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$description, NlEdit::$field_description);
 
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		Generals::dontSeeAnyWarning($I);
 
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);

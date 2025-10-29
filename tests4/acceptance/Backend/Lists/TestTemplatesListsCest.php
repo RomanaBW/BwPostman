@@ -320,7 +320,7 @@ class TestTemplatesListsCest
 		$I->amOnPage(TplManage::$url);
 
 		$I->click(TplManage::$import_button);
-		$I->waitForElement(TplManage::$importPageTitleField);
+		$I->waitForElementVisible(TplManage::$importPageTitleField);
 		$I->see(TplManage::$importPageTitle, TplManage::$importPageTitleField);
 
 		$I->attachFile(TplManage::$importField, TplManage::$importFile);

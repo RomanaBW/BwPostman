@@ -75,11 +75,11 @@ class SubscribeModuleCest
         $I->wait(2);
 
 		$I->clickAndWait(InstallationPage::$registrationModuleLine, 2);
-		$I->waitForElement(InstallationPage::$positionField, 5);
+		$I->waitForElementVisible(InstallationPage::$positionField, 5);
 
 		// Fill module tab
 		$I->click(InstallationPage::$registrationTabs['Module']);
-		$I->waitForElement(InstallationPage::$publishedField);
+		$I->waitForElementVisible(InstallationPage::$publishedField);
 
 		$I->clickAndWait(InstallationPage::$positionField, 1);
 		$I->clickAndWait(InstallationPage::$positionValue, 1);
@@ -88,12 +88,12 @@ class SubscribeModuleCest
 
 		// Fill menu assignment tab
 		$I->click(InstallationPage::$registrationTabs['Menu Assignment']);
-		$I->waitForElement(InstallationPage::$menuAssignmentList);
+		$I->waitForElementVisible(InstallationPage::$menuAssignmentList);
 
 		$I->selectOption(InstallationPage::$menuAssignmentList, "On all pages");
 
 		$I->click(Generals::$toolbar4['Save & Close']);
-		$I->waitForElement(Generals::$alert_success4, 5);
+		$I->waitForElementVisible(Generals::$alert_success4, 5);
 
 		// Preset module options
 		Helper::presetModuleOptions($I);
@@ -122,7 +122,7 @@ class SubscribeModuleCest
 		$this->subscribeByModule($I);
 
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete, 5);
+		$I->waitForElementVisible(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		$this->activate($I, SubsView::$mail_fill_1);
@@ -153,7 +153,7 @@ class SubscribeModuleCest
 		$this->subscribeByModule($I);
 
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete, 5);
+		$I->waitForElementVisible(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		$this->activate($I, SubsView::$mail_fill_1);
@@ -187,7 +187,7 @@ class SubscribeModuleCest
 		$this->subscribeByModule($I, 'small');
 
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete, 5);
+		$I->waitForElementVisible(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		$this->activate($I, SubsView::$mail_fill_1);
@@ -222,7 +222,7 @@ class SubscribeModuleCest
 		$this->subscribeByModule($I, 'big');
 
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete, 5);
+		$I->waitForElementVisible(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		$this->activate($I, SubsView::$mail_fill_1);
@@ -332,7 +332,7 @@ class SubscribeModuleCest
 		$I->scrollTo(Helper::$mod_button_edit,0, -150);
 		$I->wait(2);
 		$I->click(Helper::$mod_button_edit);
-		$I->waitForElement(SubsView::$mail, 3);
+		$I->waitForElementVisible(SubsView::$mail, 3);
 		$I->see(SubsView::$edit_get_text);
 	}
 
@@ -822,7 +822,7 @@ class SubscribeModuleCest
 		$I->scrollTo(Helper::$mod_button_register, 0, -100);
 		$I->wait(1);
 		$I->click(Helper::$mod_button_register);
-		$I->waitForElement(SubsView::$registration_complete, 5);
+		$I->waitForElementVisible(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		$this->activate($I, SubsView::$mail_fill_1);
@@ -1157,7 +1157,7 @@ class SubscribeModuleCest
 	private function unsubscribe(AcceptanceTester $I, $button)
 	{
 		$I->click($button);
-		$I->waitForElement(SubsView::$view_edit, 5);
+		$I->waitForElementVisible(SubsView::$view_edit, 5);
 		$I->seeElement(SubsView::$view_edit);
 
 		$I->scrollTo(SubsView::$button_unsubscribe, 0, -100);

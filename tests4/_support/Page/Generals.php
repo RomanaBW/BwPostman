@@ -1336,7 +1336,7 @@ class Generals
 	 */
 	public static function dontSeeAnyWarning(\AcceptanceTester $I)
 	{
-		$I->waitForElement(self::$alert_header, 30);
+		$I->waitForElementVisible(self::$alert_header, 30);
 
 		$I->dontSee(self::$alert_warn_txt, self::$alert);
 		$I->dontSee(self::$alert_error_txt, self::$alert);

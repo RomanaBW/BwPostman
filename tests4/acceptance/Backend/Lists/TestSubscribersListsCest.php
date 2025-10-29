@@ -775,7 +775,7 @@ class TestSubscribersListsCest
 
 		$I->click(SubsManage::$import_button_import);
 
-		$I->waitForElement(SubsManage::$import_success_container, 60);
+		$I->waitForElementVisible(SubsManage::$import_success_container, 60);
 		$I->see(SubsManage::$import_msg_success, SubsManage::$import_success_container);
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
@@ -837,7 +837,7 @@ class TestSubscribersListsCest
 
 		$I->click(SubsManage::$import_button_import);
 
-		$I->waitForElement(SubsManage::$import_success_container, 60);
+		$I->waitForElementVisible(SubsManage::$import_success_container, 60);
 		$I->see(SubsManage::$import_msg_success, SubsManage::$import_success_container);
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);

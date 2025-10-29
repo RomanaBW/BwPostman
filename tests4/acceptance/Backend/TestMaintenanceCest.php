@@ -71,7 +71,7 @@ class TestMaintenanceCest
         $I->wait(1);
         $I->click(MainView::$maintenanceButton);
 
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(MaintenancePage::$heading);
 
 		$versionToTest = $this->getVersionNumber($I);
@@ -132,7 +132,7 @@ class TestMaintenanceCest
         $I->wait(1);
 		$I->click(MainView::$maintenanceButton);
 
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(MaintenancePage::$heading);
 
 		$versionToTest = $this->getVersionNumber($I);
@@ -191,19 +191,19 @@ class TestMaintenanceCest
         $I->wait(1);
         $I->click(MainView::$maintenanceButton);
 
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(MaintenancePage::$heading);
 
 		$I->click(MaintenancePage::$checkTablesButton);
-		$I->waitForElement(MaintenancePage::$step1Field, 30);
-		$I->waitForElement(MaintenancePage::$step2Field, 30);
-		$I->waitForElement(MaintenancePage::$step3Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step1Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step2Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step3Field, 30);
 		$I->wait(10);
-		$I->waitForElement(MaintenancePage::$step4Field, 30);
-		$I->waitForElement(MaintenancePage::$step5Field, 90);
-		$I->waitForElement(MaintenancePage::$step6Field, 30);
-		$I->waitForElement(MaintenancePage::$step7Field, 30);
-		$I->waitForElement(MaintenancePage::$step7SuccessClass, 30);
+		$I->waitForElementVisible(MaintenancePage::$step4Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step5Field, 90);
+		$I->waitForElementVisible(MaintenancePage::$step6Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step7Field, 30);
+		$I->waitForElementVisible(MaintenancePage::$step7SuccessClass, 30);
 		$I->see(MaintenancePage::$step7SuccessMsg, MaintenancePage::$successIdentifierResult);
 
 		$resultsWarn = $I->grabMultiple(MaintenancePage::$warningIdentifier);
@@ -338,7 +338,7 @@ class TestMaintenanceCest
         $I->wait(1);
         $I->click(MainView::$maintenanceButton);
 
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(MaintenancePage::$heading);
 
 		$I->clickAndWait(MaintenancePage::$settingsButton, 2);
@@ -373,12 +373,12 @@ class TestMaintenanceCest
             $I->wait(1);
             $I->click(MainView::$maintenanceButton);
 
-			$I->waitForElement(Generals::$pageTitle, 30);
+			$I->waitForElementVisible(Generals::$pageTitle, 30);
 			$I->see(MaintenancePage::$heading);
 
 			$I->click(MaintenancePage::$forumButton);
 			$I->switchToNextTab();
-			$I->waitForElement(MaintenancePage::$forumText, 20);
+			$I->waitForElementVisible(MaintenancePage::$forumText, 20);
 //			$I->see("In this category you can ask your questions for the Joomla! extension BwPostman.");
 		}
 	}

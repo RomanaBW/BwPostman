@@ -75,11 +75,11 @@ class ModuleOverviewCest
         $I->wait(2);
 
 		$I->clickAndWait(InstallationPage::$overviewModuleLine, 2);
-		$I->waitForElement(InstallationPage::$positionField, 5);
+		$I->waitForElementVisible(InstallationPage::$positionField, 5);
 
 		// Fill module tab
 		$I->click(InstallationPage::$overviewTabs['Module']);
-		$I->waitForElement(InstallationPage::$publishedField);
+		$I->waitForElementVisible(InstallationPage::$publishedField);
 
 		$I->clickAndWait(InstallationPage::$positionField, 1);
 		$I->clickAndWait(InstallationPage::$positionValue, 1);
@@ -88,12 +88,12 @@ class ModuleOverviewCest
 
 		// Fill menu assignment tab
 		$I->click(InstallationPage::$overviewTabs['Menu Assignment']);
-		$I->waitForElement(InstallationPage::$menuAssignmentList);
+		$I->waitForElementVisible(InstallationPage::$menuAssignmentList);
 
 		$I->selectOption(InstallationPage::$menuAssignmentList, "On all pages");
 
 		$I->click(Generals::$toolbar4['Save & Close']);
-		$I->waitForElement(Generals::$alert_success4, 5);
+		$I->waitForElementVisible(Generals::$alert_success4, 5);
 
 		// Preset module options
 		Helper::presetModuleOptions($I);

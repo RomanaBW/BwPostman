@@ -580,7 +580,7 @@ class Buyer2SubscriberCest
 	private function gotoProductPage(AcceptanceTester $I)
 	{
 		$I->amOnPage(BuyerPage::$link_to_product);
-		$I->waitForElement(BuyerPage::$product_page_identifier, 30);
+		$I->waitForElementVisible(BuyerPage::$product_page_identifier, 30);
 		$I->see(BuyerPage::$product_page_header_text);
 	}
 
@@ -608,7 +608,7 @@ class Buyer2SubscriberCest
 	 */
 	private function verifyCartReached(AcceptanceTester $I)
 	{
-		$I->waitForElement(BuyerPage::$header_cart_identifier, 30);
+		$I->waitForElementVisible(BuyerPage::$header_cart_identifier, 30);
 		$I->see(BuyerPage::$header_cart_text);
 		$I->see(BuyerPage::$sku_text, BuyerPage::$sku_identifier);
 	}
@@ -623,7 +623,7 @@ class Buyer2SubscriberCest
 	private function gotoAddressEditPage(AcceptanceTester $I)
 	{
 		$I->click(BuyerPage::$button_enter_address);
-		$I->waitForElement(BuyerPage::$header_account_details);
+		$I->waitForElementVisible(BuyerPage::$header_account_details);
 		$I->see(BuyerPage::$header_account_details_text);
 	}
 
@@ -844,7 +844,7 @@ class Buyer2SubscriberCest
 
 		if (!$this->omitted)
 		{
-			$I->waitForElement(BuyerPage::$header_cart_identifier, 30);
+			$I->waitForElementVisible(BuyerPage::$header_cart_identifier, 30);
 
 			$this->checkoutCart($I);
 

@@ -620,11 +620,11 @@ class MaintenancePage
         $I->wait(1);
         $I->click(MainView::$maintenanceButton);
 
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(self::$heading);
 
 		$I->click(self::$restoreTablesButton);
-		$I->waitForElement(self::$headingRestoreFile, 30);
+		$I->waitForElementVisible(self::$headingRestoreFile, 30);
 
 		if($filename === '')
 		{
@@ -663,7 +663,7 @@ class MaintenancePage
 		}
 
 		$I->click(self::$checkBackButton);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(self::$heading, Generals::$pageTitle);
 
 		$I->amOnPage(MainView::$url);

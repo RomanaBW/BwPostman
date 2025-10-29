@@ -66,14 +66,14 @@ class TestSubscribersDetailsCest
 	{
 		$I->wantTo("Create one Subscriber and cancel from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addSubscriberButton);
 
 		SubEdit::fillFormSimple($I);
 
 		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
 
@@ -112,7 +112,7 @@ class TestSubscribersDetailsCest
 		$I->setManifestOption('com_bwpostman', 'default_emailformat', '1');
 
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addSubscriberButton);
 
@@ -599,7 +599,7 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		// Check error message first name
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see("danger", Generals::$alert_header);
 		$I->see(SubEdit::$errorAbuseFirstName, Generals::$alert_error_1);
 
@@ -617,7 +617,7 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		// Check error message last name
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see("danger", Generals::$alert_header);
 		$I->see(SubEdit::$errorAbuseLastName, Generals::$alert_error_1);
 
@@ -635,7 +635,7 @@ class TestSubscribersDetailsCest
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		// Check error message special
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see("danger", Generals::$alert_header);
 		$I->see(sprintf(SubEdit::$errorAbuseSpecial, trim(SubEdit::$specialTitle)), Generals::$alert_error_1);
 
@@ -663,14 +663,14 @@ class TestSubscribersDetailsCest
 	{
 		$I->wantTo("Create one test recipient and cancel from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 		$I->click(MainView::$addTestRecipientButton);
 
 		SubEdit::fillFormSimple($I, 1, 2, true);
 
 		$I->clickAndWait(Generals::$toolbar4['Back'], 1);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(Generals::$extension, Generals::$pageTitle);
 	}
 

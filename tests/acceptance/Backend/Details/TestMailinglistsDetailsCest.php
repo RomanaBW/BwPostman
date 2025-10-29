@@ -93,7 +93,7 @@ class TestMailinglistsDetailsCest
 	{
 		$I->wantTo("Create one mailinglist complete from main view");
 		$I->amOnPage(MainView::$url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see('BwPostman', Generals::$pageTitle);
 		$I->click(MainView::$addMailinglistButton);
 
@@ -316,7 +316,7 @@ class TestMailinglistsDetailsCest
 		$I->see(MlEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->click(Generals::$toolbar4['Cancel']);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see("Mailinglists", Generals::$pageTitle);
 
 		$I->HelperArcDelItems($I, MlManage::$arc_del_array, MlEdit::$arc_del_array, true);

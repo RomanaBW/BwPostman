@@ -64,7 +64,7 @@ class Subscribe extends \AcceptanceTester
 		$I->checkOption($subscriberView::$mod_ml2);
 		$I->checkOption($subscriberView::$mod_disclaimer);
 		$I->click($subscriberView::$mod_button_register);
-		$I->waitForElement($subscriberView::$registration_complete, 30);
+		$I->waitForElementVisible($subscriberView::$registration_complete, 30);
 		$I->see($subscriberView::$registration_completed_text, $subscriberView::$registration_complete);
 	}
 
@@ -111,11 +111,11 @@ class Subscribe extends \AcceptanceTester
 		$I->wantTo('Get edit link');
 		$I->expectTo('see message edit link sent');
 		$I->click($subscriberView::$get_edit_Link);
-		$I->waitForElement($subscriberView::$view_edit_link, 30);
+		$I->waitForElementVisible($subscriberView::$view_edit_link, 30);
 		$I->see($subscriberView::$edit_get_text);
 		$I->fillField($subscriberView::$edit_mail, $mailaddress);
 		$I->click($subscriberView::$send_edit_link);
-		$I->waitForElement($subscriberView::$success_message, 30);
+		$I->waitForElementVisible($subscriberView::$success_message, 30);
 		$I->see($subscriberView::$editlink_sent_text);
 
 		$editlink_code = $I->getEditlinkCode($mailaddress);
@@ -140,7 +140,7 @@ class Subscribe extends \AcceptanceTester
 		$I->wantTo("Unsubscribe from mailinglist");
 		$I->expectTo('see unsubscribe message');
 		$I->click($button);
-		$I->waitForElement($subscriberView::$view_edit, 30);
+		$I->waitForElementVisible($subscriberView::$view_edit, 30);
 		$I->seeElement($subscriberView::$view_edit);
 		$I->checkOption($subscriberView::$button_unsubscribe);
 		$I->click($subscriberView::$button_submitleave);

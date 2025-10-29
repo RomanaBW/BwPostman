@@ -77,7 +77,7 @@ class InstallVirtuemartCest
 		$I->wantTo("Install additional extensions");
 		$I->expectTo("see success messages");
 		$I->amOnPage(InstallPage::$install_url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingInstall);
 
 		$envInstallFiles = getenv('ADDITIONAL_EXTENSIONS');
@@ -96,7 +96,7 @@ class InstallVirtuemartCest
 				continue;
 			}
 
-			$I->waitForElement(Generals::$alert_success, 30);
+			$I->waitForElementVisible(Generals::$alert_success, 30);
 			$I->see(self::$installSuccessMsg1, Generals::$alert_success);
 			$I->see(self::$installSuccessMsg2, Generals::$alert_success);
 			$I->dontSee("Error", Generals::$alert_heading);

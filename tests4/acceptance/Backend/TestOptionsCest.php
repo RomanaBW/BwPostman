@@ -88,10 +88,10 @@ class TestOptionsCest
 		$I->amOnPage(MainView::$url);
 
 		$I->click(MainView::$addNewsletterButton);
-		$I->waitForElement(NlEditPage::$from_name, 30);
+		$I->waitForElementVisible(NlEditPage::$from_name, 30);
 		$I->seeInField(NlEditPage::$from_name, OptionsPage::$sendersNameByJoomla);
 		$I->click(Generals::$toolbar['Back']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 		$I->wantTo("Preset sender name at options of BwPostman");
 		$I->expectTo("see self set sender name at create newsletters");
@@ -100,18 +100,18 @@ class TestOptionsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['Options']);
-		$I->waitForElement("#config", 30);
+		$I->waitForElementVisible("#config", 30);
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->fillField(OptionsPage::$sendersName, OptionsPage::$sendersNameByOption);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 		$I->click(MainView::$addNewsletterButton);
-		$I->waitForElement(NlEditPage::$from_name, 30);
+		$I->waitForElementVisible(NlEditPage::$from_name, 30);
 		$I->seeInField(NlEditPage::$from_name, OptionsPage::$sendersNameByOption);
 		$I->click(Generals::$toolbar['Back']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 		$I->setManifestOption('com_bwpostman', 'default_from_name', '');
 	}
@@ -137,10 +137,10 @@ class TestOptionsCest
 		$I->amOnPage(MainView::$url);
 
 		$I->click(MainView::$addNewsletterButton);
-		$I->waitForElement(NlEditPage::$from_email, 30);
+		$I->waitForElementVisible(NlEditPage::$from_email, 30);
 		$I->seeInField(NlEditPage::$from_email, OptionsPage::$sendersMailByJoomla);
 		$I->click(Generals::$toolbar['Back']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 		$I->wantTo("Preset sender email at options of BwPostman");
 		$I->expectTo("see self set sender email at create newsletters");
@@ -149,18 +149,18 @@ class TestOptionsCest
 		$I->see(Generals::$extension, Generals::$pageTitle);
 
 		$I->click(Generals::$toolbar['Options']);
-		$I->waitForElement("#config", 30);
+		$I->waitForElementVisible("#config", 30);
 		$I->clickAndWait(OptionsPage::$tab_basics, 1);
 
 		$I->fillField(OptionsPage::$sendersEmail, OptionsPage::$sendersMailByOption);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 		$I->click(MainView::$addNewsletterButton);
-		$I->waitForElement(NlEditPage::$from_email, 30);
+		$I->waitForElementVisible(NlEditPage::$from_email, 30);
 		$I->seeInField(NlEditPage::$from_email, OptionsPage::$sendersMailByOption);
 		$I->click(Generals::$toolbar['Back']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 		$I->setManifestOption('com_bwpostman', 'default_from_email', '');
 	}
@@ -186,10 +186,10 @@ class TestOptionsCest
 		$I->amOnPage(MainView::$url);
 
 		$I->click(MainView::$addNewsletterButton);
-		$I->waitForElement(NlEditPage::$reply_email, 30);
+		$I->waitForElementVisible(NlEditPage::$reply_email, 30);
 		$I->seeInField(NlEditPage::$reply_email, OptionsPage::$replyMailByJoomla);
 		$I->click(Generals::$toolbar['Back']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 		$I->wantTo("Preset reply email at options of BwPostman");
 		$I->expectTo("see self set reply to email at create newsletters");
@@ -202,13 +202,13 @@ class TestOptionsCest
 
 		$I->fillField(OptionsPage::$replyEmail, OptionsPage::$replyMailByOption);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 		$I->click(MainView::$addNewsletterButton);
-		$I->waitForElement(NlEditPage::$reply_email, 30);
+		$I->waitForElementVisible(NlEditPage::$reply_email, 30);
 		$I->seeInField(NlEditPage::$reply_email, OptionsPage::$replyMailByOption);
 		$I->click(Generals::$toolbar['Back']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 		$I->setManifestOption('com_bwpostman', 'default_reply_email', '');
 	}
@@ -286,7 +286,7 @@ class TestOptionsCest
 		$I->assertEquals("- - - Animals (en-GB)", $excluded);
 
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 		// Get second available content
 		$I->click(MainView::$addNewsletterButton);
@@ -343,7 +343,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->fillField(OptionsPage::$numberNlsToSend, OptionsPage::$newslettersPerStep);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 
 		NlEditPage::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
@@ -363,7 +363,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->fillField(OptionsPage::$numberNlsToSend, OptionsPage::$newslettersPerStepDefault);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 	}
 
 	/**
@@ -396,7 +396,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->fillField(OptionsPage::$delayTime, OptionsPage::$numberOfSeconds);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 
 		NlEditPage::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
@@ -416,7 +416,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->fillField(OptionsPage::$delayTime, OptionsPage::$numberOfSecondsDefault);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 	}
 
 	/**
@@ -449,7 +449,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->click(OptionsPage::$delayUnitMinutes);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 
 		NlEditPage::CreateNewsletterWithoutCleanup($I, Generals::$admin['author']);
 
@@ -469,7 +469,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->click(OptionsPage::$delayUnitSeconds);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 
 	}
 
@@ -505,7 +505,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->click(OptionsPage::$publishNlsAtSendingYes);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 
 		$configJson = $I->grabFromDatabase(Generals::$db_prefix . 'extensions', 'params', array('element' => 'com_bwpostman'));
 		$configObject = json_decode($configJson);
@@ -523,7 +523,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->click(OptionsPage::$publishNlsAtSendingNo);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 
 		$configJson = $I->grabFromDatabase(Generals::$db_prefix . 'extensions', 'params', array('element' => 'com_bwpostman'));
 		$configObject = json_decode($configJson);
@@ -561,7 +561,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->click(OptionsPage::$compressBackupFileNo);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 
 		$configJson = $I->grabFromDatabase(Generals::$db_prefix . 'extensions', 'params', array('element' => 'com_bwpostman'));
 		$configObject = json_decode($configJson);
@@ -579,7 +579,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->click(OptionsPage::$compressBackupFileYes);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 
 		$configJson = $I->grabFromDatabase(Generals::$db_prefix . 'extensions', 'params', array('element' => 'com_bwpostman'));
 		$configObject = json_decode($configJson);
@@ -617,7 +617,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->click(OptionsPage::$showBwLinkNo);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 
 		$FE= $I->haveFriend('Frontend');
 		$FE->does(
@@ -644,7 +644,7 @@ class TestOptionsCest
 		$I->wait(1);
 		$I->click(OptionsPage::$showBwLinkYes);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$pageTitle);
+		$I->waitForElementVisible(Generals::$pageTitle);
 
 		$FE= $I->haveFriend('Frontend');
 		$FE->does(
@@ -1427,11 +1427,11 @@ class TestOptionsCest
 		$I->fillField(OptionsPage::$unsubscriptionSenderName, OptionsPage::$unsubscriptionSenderNameValue);
 		$I->fillField(OptionsPage::$unsubscriptionSenderMail, OptionsPage::$unsubscriptionSenderMailValue);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 		// Subscribe
 		SubsView::subscribeByComponent($I);
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElementVisible(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		// Activate
@@ -1452,7 +1452,7 @@ class TestOptionsCest
 
 		$I->clickAndWait(OptionsPage::$unsubscriptionToWebmasterNo, 1);
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(MainView::$dashboard, 30);
+		$I->waitForElementVisible(MainView::$dashboard, 30);
 
 	}
 
@@ -1839,7 +1839,7 @@ class TestOptionsCest
 			$I->wait(1);
 
 			$I->click($slider);
-			$I->waitForElement($slider, 30);
+			$I->waitForElementVisible($slider, 30);
 
 			// check success
 			foreach ($rules as $rule)

@@ -82,7 +82,7 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
-		$I->waitForElement(SubsView::$registration_complete, 30);
+		$I->waitForElementVisible(SubsView::$registration_complete, 30);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		SubsView::logoutFromFrontend($I);
@@ -121,7 +121,7 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
-		$I->waitForElement(SubsView::$err_activation_incomplete, 30);
+		$I->waitForElementVisible(SubsView::$err_activation_incomplete, 30);
 		$I->see(SubsView::$error_occurred_text, SubsView::$err_activation_incomplete);
 
 		SubsView::activate($I, SubsView::$mail_fill_1);
@@ -150,19 +150,19 @@ class SubscribeComponentCest
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
-		$I->waitForElement(SubsView::$registration_complete, 5);
+		$I->waitForElementVisible(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		SubsView::subscribeByComponent($I);
 		$I->click(SubsView::$button_register);
 
-		$I->waitForElement(SubsView::$err_activation_incomplete, 5);
+		$I->waitForElementVisible(SubsView::$err_activation_incomplete, 5);
 		$I->see(SubsView::$error_occurred_text, SubsView::$err_activation_incomplete);
 
 		$I->scrollTo(SubsView::$button_send_activation);
 		$I->wait(1);
 		$I->click(SubsView::$button_send_activation);
-		$I->waitForElement(SubsView::$success_message, 30);
+		$I->waitForElementVisible(SubsView::$success_message, 30);
 		$I->see(SubsView::$activation_sent_text, SubsView::$success_message);
 
 		SubsView::activate($I, SubsView::$mail_fill_1);
@@ -205,7 +205,7 @@ class SubscribeComponentCest
 
 		$I->scrollTo(SubsView::$err_already_subscribed);
 		$I->wait(1);
-		$I->waitForElement(SubsView::$err_already_subscribed, 30);
+		$I->waitForElementVisible(SubsView::$err_already_subscribed, 30);
 		$I->see(SubsView::$error_occurred_text, SubsView::$err_already_subscribed);
 
 		$editlink_code  = $this->gotoEdit($I);
@@ -303,7 +303,7 @@ class SubscribeComponentCest
 
 		$I->scrollTo(SubsView::$registration_complete);
 		$I->wait(2);
-		$I->waitForElement(SubsView::$registration_complete, 5);
+		$I->waitForElementVisible(SubsView::$registration_complete, 5);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		// Activate
@@ -359,7 +359,7 @@ class SubscribeComponentCest
 		$I->waitForElementVisible(Generals::$alert_heading, 5);
 		$I->wait(1);
 		$I->see(SubsView::$msg_saved_successfully);
-		$I->waitForElement(SubsView::$view_edit, 5);
+		$I->waitForElementVisible(SubsView::$view_edit, 5);
 		$I-> seeCheckboxIsChecked(SubsView::$ml2);
 
 		$I->scrollTo(SubsView::$ml1);
@@ -376,7 +376,7 @@ class SubscribeComponentCest
 		$I->scrollTo(SubsView::$button_submit);
 		$I->wait(1);
 		$I->click(SubsView::$button_submit);
-		$I->waitForElement(Generals::$alert_info, 5);
+		$I->waitForElementVisible(Generals::$alert_info, 5);
 		$I->wait(1);
 		$I->see(SubsView::$msg_changed_mailaddress);
 
@@ -420,7 +420,7 @@ class SubscribeComponentCest
 		SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
 
 		SubsView::activate($I, SubsView::$mail_fill_1, false);
-		$I->waitForElement(SubsView::$err_not_activated, 30);
+		$I->waitForElementVisible(SubsView::$err_not_activated, 30);
 		$I->see(SubsView::$msg_err_occurred);
 		$I->see(SubsView::$msg_err_invalid_link);
 	}
@@ -452,7 +452,7 @@ class SubscribeComponentCest
 
 		$I->scrollTo(SubsView::$err_get_editlink, 0, -100);
 		$I->wait(1);
-		$I->waitForElement(SubsView::$err_get_editlink, 5);
+		$I->waitForElementVisible(SubsView::$err_get_editlink, 5);
 		$I->see(SubsView::$msg_err_occurred);
 		$I->see(SubsView::$msg_err_no_subscription);
 	}
@@ -475,18 +475,18 @@ class SubscribeComponentCest
 
 		$I->amOnPage(SubsView::$unsubscribe_link_faulty);
 
-		$I->waitForElement(SubsView::$err_get_editlink, 30);
+		$I->waitForElementVisible(SubsView::$err_get_editlink, 30);
 		$I->wait(2);
 		$I->see(SubsView::$msg_err_occurred);
 		$I->see(SubsView::$msg_err_wrong_editlink);
 
 		$I->amOnPage(SubsView::$unsubscribe_link_empty);
-		$I->waitForElement(SubsView::$err_get_editlink, 30);
+		$I->waitForElementVisible(SubsView::$err_get_editlink, 30);
 		$I->see(SubsView::$msg_err_occurred);
 		$I->see(SubsView::$msg_err_wrong_editlink);
 
 		$I->amOnPage(SubsView::$unsubscribe_link_missing);
-		$I->waitForElement(SubsView::$mail, 30);
+		$I->waitForElementVisible(SubsView::$mail, 30);
 		$I->see(SubsView::$edit_get_text);
 	}
 
@@ -1091,7 +1091,7 @@ class SubscribeComponentCest
 		$I->scrollTo("//*/div/nav/ol");
 		$I->wait(1);
 
-		$I->waitForElement(SubsView::$registration_complete, 3);
+		$I->waitForElementVisible(SubsView::$registration_complete, 3);
 		$I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
 
 		SubsView::activate($I, SubsView::$mail_fill_1);
@@ -1152,11 +1152,11 @@ class SubscribeComponentCest
 		$I->click(SubsView::$get_edit_Link);
 		$I->scrollTo(SubsView::$view_edit_link,0 , -50);
 		$I->wait(1);
-		$I->waitForElement(SubsView::$view_edit_link, 5);
+		$I->waitForElementVisible(SubsView::$view_edit_link, 5);
 		$I->see(SubsView::$edit_get_text);
 		$I->fillField(SubsView::$edit_mail, SubsView::$mail_fill_1);
 		$I->click(SubsView::$send_edit_link);
-		$I->waitForElement(SubsView::$success_message, 5);
+		$I->waitForElementVisible(SubsView::$success_message, 5);
 		$I->see(SubsView::$editlink_sent_text);
 
 		$editlink_code = $I->getEditlinkCode(SubsView::$mail_fill_1);

@@ -1037,7 +1037,7 @@ class SubscriberviewPage
 		$I->scrollTo($button, 0, -150);
 		$I->wait(1);
 		$I->click($button);
-		$I->waitForElement(self::$view_edit, 30);
+		$I->waitForElementVisible(self::$view_edit, 30);
 		$I->seeElement(self::$view_edit);
 		$I->scrollTo(self::$button_submitleave, 0, -150);
 		$I->wait(1);

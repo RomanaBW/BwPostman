@@ -257,7 +257,7 @@ class TestCampaignsDetailsCest
 		$I->clickAndWait(Generals::$toolbarSaveActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Save as Copy'], 1);
 
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 		$I->seeInField(CamEdit::$title, CamEdit::$field_title2);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);

@@ -80,7 +80,7 @@ class Buyer2SubscriberInstallCest
 //
 //		$this->installPlugin($I);
 //
-//		$I->waitForElement(Generals::$alert_error, 30);
+//		$I->waitForElementVisible(Generals::$alert_error, 30);
 //		$I->see(InstallPage::$installB2SErrorComMsg, Generals::$alert_error);
 //		$I->dontSee("Success", Generals::$alert_heading);
 //
@@ -115,7 +115,7 @@ class Buyer2SubscriberInstallCest
 
 		$this->installPlugin($I);
 
-		$I->waitForElement(Generals::$alert_success, 30);
+		$I->waitForElementVisible(Generals::$alert_success, 30);
 		$I->see(InstallPage::$installB2SSuccessMsg, Generals::$alert_success);
 		$I->dontSee("Error", Generals::$alert_heading);
 
@@ -167,17 +167,17 @@ class Buyer2SubscriberInstallCest
 		$I->checkOption(Generals::$check_all_button);
 		$I->click(Generals::$toolbar['Enable']);
 
-		$I->waitForElement(Generals::$alert_success, 30);
+		$I->waitForElementVisible(Generals::$alert_success, 30);
 		$I->see(InstallPage::$pluginEnableSuccessMsg, Generals::$alert_success);
 		$I->seeElement(InstallPage::$icon_published);
 
 		$I->click(".//*[@id='pluginList']/tbody/tr/td[4]/a");
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingPlugins . ": " . BuyerPage::$plugin_name);
 
 		// set mailinglist
 		$I->click(".//*[@id='myTabTabs']/li[4]/a");
-		$I->waitForElement(".//*[@id='jform_params_ml_available']/div", 30);
+		$I->waitForElementVisible(".//*[@id='jform_params_ml_available']/div", 30);
 
 		$checked    = $I->grabAttributeFrom(".//*[@id='mb9']", "checked");
 		if (!$checked)
@@ -186,7 +186,7 @@ class Buyer2SubscriberInstallCest
 		}
 
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$alert_success, 30);
+		$I->waitForElementVisible(Generals::$alert_success, 30);
 		$I->see(InstallPage::$pluginSavedSuccess, Generals::$alert_success);
 	}
 
@@ -351,7 +351,7 @@ class Buyer2SubscriberInstallCest
 	private function gotoVMUserfieldsPage(AcceptanceTester $I)
 	{
 		$I->amOnPage(BuyerPage::$link_to_shopper_fields);
-		$I->waitForElement(BuyerPage::$userfield_page_identifier, 30);
+		$I->waitForElementVisible(BuyerPage::$userfield_page_identifier, 30);
 		$I->see(BuyerPage::$userfield_page_header_text);
 	}
 
@@ -367,7 +367,7 @@ class Buyer2SubscriberInstallCest
 		$I->click(BuyerPage::$button_enter_address);
 		$I->scrollTo('//*[@id="userForm"]');
 		$I->wait(1);
-		$I->waitForElement(BuyerPage::$header_account_details);
+		$I->waitForElementVisible(BuyerPage::$header_account_details);
 		$I->see(BuyerPage::$header_account_details_text);
 	}
 
@@ -438,7 +438,7 @@ class Buyer2SubscriberInstallCest
 	private function installPlugin(AcceptanceTester $I)
 	{
 		$I->amOnPage(InstallPage::$install_url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingInstall);
 
 		$new_j_installer = true;
@@ -460,7 +460,7 @@ class Buyer2SubscriberInstallCest
 			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: none');");
 		}
 
-		$I->waitForElement(Generals::$sys_message_container, 30);
+		$I->waitForElementVisible(Generals::$sys_message_container, 30);
 	}
 
 	/**

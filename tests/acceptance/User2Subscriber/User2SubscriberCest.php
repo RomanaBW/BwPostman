@@ -198,19 +198,19 @@ class User2SubscriberCest
 		$I->setExtensionStatus('bwpm_user2subscriber', 1);
 
 		$I->amOnPage(InstallPage::$plugin_manage_url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingPlugins);
 
 		$I->fillField(Generals::$search_field, Generals::$plugin_u2s);
 		$I->click(Generals::$search_button);
 
 		$I->click(RegPage::$plugin_edit_identifier);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(Generals::$plugin_u2s);
 
 		// set mailinglist
 		$I->click(RegPage::$plugin_tab_mailinglists);
-		$I->waitForElement("//*[@id='jform_params_ml_available']/div", 30);
+		$I->waitForElementVisible("//*[@id='jform_params_ml_available']/div", 30);
 
 		$I->scrollTo(sprintf(RegPage::$plugin_checkbox_mailinglist, 6), 0, -100);
 		$I->wait(1);
@@ -225,7 +225,7 @@ class User2SubscriberCest
 		$I->wait(1);
 
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$alert_success, 30);
+		$I->waitForElementVisible(Generals::$alert_success, 30);
 		$I->see(InstallPage::$pluginSavedSuccess, Generals::$alert_success);
 	}
 

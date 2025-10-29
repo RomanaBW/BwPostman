@@ -1157,7 +1157,7 @@ class Acceptance extends Codeception\Module
 				}
 
 				$I->click($searchButton);
-				$I->waitForElement($mainTable);
+				$I->waitForElementVisible($mainTable);
 				// check result
 				if ((int) $search_data_array['search_res'][$j][$i] == 0)
 				{
@@ -1234,7 +1234,7 @@ class Acceptance extends Codeception\Module
 		{
 			$mainTableId = $edit_data['mainTableId'];
 		}
-		$I->waitForElement($mainTableId);
+		$I->waitForElementVisible($mainTableId);
 		$I->see($edit_data['field_title'], $edit_data['archive_title_col']);
 
 		//count items
@@ -1304,7 +1304,7 @@ class Acceptance extends Codeception\Module
 
 		$I->click(Generals::$search_button);
 
-		$I->waitForElement(Generals::$main_table);
+		$I->waitForElementVisible(Generals::$main_table);
 
 		$I->see($edit_data['field_title']);
 
@@ -1428,7 +1428,7 @@ class Acceptance extends Codeception\Module
 	public function switchToArchive(\AcceptanceTester $I, $archive_tab)
 	{
 		$I->amOnPage(Generals::$archive_url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 
 		$I->see(Generals::$archive_txt, Generals::$pageTitle);
 		$I->wait(1);

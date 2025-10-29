@@ -80,7 +80,7 @@ class TimeControlCest
 
 		$this->installPlugin($I);
 
-		$I->waitForElement(Generals::$alert_success, 30);
+		$I->waitForElementVisible(Generals::$alert_success, 30);
 		$I->see(InstallPage::$installPackageSuccessMsg, Generals::$alert_success);
 		$I->dontSee("Error", Generals::$alert_heading);
 
@@ -131,7 +131,7 @@ class TimeControlCest
 		$I->checkOption(Generals::$check_all_button);
 		$I->click(Generals::$toolbar['Enable']);
 
-		$I->waitForElement(Generals::$alert_success, 30);
+		$I->waitForElementVisible(Generals::$alert_success, 30);
 		$I->see(InstallPage::$pluginEnableSuccessMsg, Generals::$alert_success);
 		$I->seeElement(InstallPage::$icon_published);
 
@@ -199,7 +199,7 @@ class TimeControlCest
 		{
 			// Create user, if not exists
 			$I->click(Generals::$toolbar['New']);
-			$I->waitForElement(UsersPage::$registerName);
+			$I->waitForElementVisible(UsersPage::$registerName);
 			$I->click(UsersPage::$accountDetailsTab);
 
 			# Add user
@@ -211,7 +211,7 @@ class TimeControlCest
 
 			// Set usergroup
 			$I->click(UsersPage::$usergroupTab);
-			$I->waitForElement(UsersPage::$publicGroup);
+			$I->waitForElementVisible(UsersPage::$publicGroup);
 
 			$checkbox = sprintf(UsersPage::$usergroupCheckbox, $groupId[0]);
 			$I->scrollTo($checkbox, 0, -100);
@@ -222,11 +222,11 @@ class TimeControlCest
 			$I->scrollTo('/html/body/div[2]/section/div/div/form/fieldset/div/div[2]/div[3]/div/label', 0, -300);
 			$I->wait(1);
 			$I->click(TimeControlPage::$userTimezoneTab);
-			$I->waitForElement(TimeControlPage::$pluginUserTimezoneField);
+			$I->waitForElementVisible(TimeControlPage::$pluginUserTimezoneField);
 			$I->clickSelectList(TimeControlPage::$pluginUserTimezoneField, TimeControlPage::$pluginUserTimezoneValue, TimeControlPage::$pluginUserTimezoneFieldId);
 
 			$I->click(Generals::$toolbar['Save & Close']);
-			$I->waitForElement(Generals::$alert_success, 10);
+			$I->waitForElementVisible(Generals::$alert_success, 10);
 			$I->see(UsersPage::$createSuccessMsg, Generals::$alert_success);
 		}
 	}
@@ -530,7 +530,7 @@ class TimeControlCest
 	private function installPlugin(AcceptanceTester $I)
 	{
 		$I->amOnPage(InstallPage::$install_url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingInstall);
 
 		$new_j_installer = true;
@@ -552,7 +552,7 @@ class TimeControlCest
 			$I->executeJS("document.getElementById('legacy-uploader').setAttribute('style', 'display: none');");
 		}
 
-		$I->waitForElement(Generals::$sys_message_container, 30);
+		$I->waitForElementVisible(Generals::$sys_message_container, 30);
 	}
 
 
@@ -582,7 +582,7 @@ class TimeControlCest
 	private function saveCloseOptions(AcceptanceTester $I)
 	{
 		$I->click(Generals::$toolbar['Save & Close']);
-		$I->waitForElement(Generals::$alert_success, 150);
+		$I->waitForElementVisible(Generals::$alert_success, 150);
 		$I->see(InstallPage::$pluginSavedSuccess, Generals::$alert_success);
 	}
 
@@ -657,7 +657,7 @@ class TimeControlCest
 		$I->see(TimeControlPage::$pluginName);
 
 		$I->click(".//*[@id='pluginList']/tbody/tr/td[4]/a");
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(InstallPage::$headingPlugins . ": " . TimeControlPage::$pluginName);
 	}
 

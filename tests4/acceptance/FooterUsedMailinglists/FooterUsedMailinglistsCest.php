@@ -111,7 +111,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->dontSeeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->dontSeeElement(FooterPage::$html_preview_add_footer_mls);
@@ -209,7 +209,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->seeElement(FooterPage::$html_preview_add_footer_mls);
@@ -308,7 +308,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->seeElement(FooterPage::$html_preview_add_footer_mls);
@@ -407,7 +407,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->seeElement(FooterPage::$html_preview_add_footer_mls);
@@ -506,7 +506,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->dontSeeElement(FooterPage::$html_preview_add_footer_mls);
@@ -605,7 +605,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->seeElement(FooterPage::$html_preview_add_footer_mls);
@@ -706,7 +706,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->seeElement(FooterPage::$html_preview_add_footer_mls);
@@ -807,7 +807,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->seeElement(FooterPage::$html_preview_add_footer_mls);
@@ -908,7 +908,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->dontSeeElement(FooterPage::$html_preview_add_footer_mls);
@@ -1014,7 +1014,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->seeElement(FooterPage::$html_preview_add_footer_mls);
@@ -1121,7 +1121,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->seeElement(FooterPage::$html_preview_add_footer_mls);
@@ -1226,7 +1226,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->dontSeeElement(FooterPage::$html_preview_add_footer_mls);
@@ -1329,7 +1329,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(FooterPage::$html_preview_footer_legal, 0, -150); // scroll to before legal
 		$I->wait(1);
 
-		$I->waitForElement(FooterPage::$html_preview_footer_legal, 30);
+		$I->waitForElementVisible(FooterPage::$html_preview_footer_legal, 30);
 		$I->seeElement(FooterPage::$html_preview_add_footer_outer);
 
 		$I->dontSeeElement(FooterPage::$html_preview_add_footer_mls);
@@ -1438,7 +1438,7 @@ class FooterUsedMailinglistsCest
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 30);
 //		$I->see("Message", Generals::$alert_heading);
 		$I->see(NlEdit::$success_saved, Generals::$alert_success);
 

@@ -796,7 +796,7 @@ class InstallationPage
 		$I->wantTo("Install BwPostman");
 		$I->expectTo("see success message and component in menu");
 		$I->amOnPage(self::$install_url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(self::$headingInstall);
 
 		self::doInstallation($I);
@@ -809,13 +809,13 @@ class InstallationPage
 			self::unInstallation($I);
 
 			$I->amOnPage(self::$install_url);
-			$I->waitForElement(Generals::$pageTitle, 30);
+			$I->waitForElementVisible(Generals::$pageTitle, 30);
 			$I->see(self::$headingInstall);
 
 			self::doInstallation($I);
 		}
 
-		$I->waitForElement(Generals::$alert_success4, 30);
+		$I->waitForElementVisible(Generals::$alert_success4, 30);
 		$I->see(self::$installSuccessMsg, Generals::$alert_success4);
 		$I->see(self::$installSuccessMsg2, self::$installedText);
 		$I->dontSee("Error", Generals::$alert_heading4);
@@ -853,7 +853,7 @@ class InstallationPage
 //			$I->executeJS("document.getElementById('legacy-uploader').className = 'hidden';");
 //		}
 
-		$I->waitForElement(Generals::$sys_message_container, 150);
+		$I->waitForElementVisible(Generals::$sys_message_container, 150);
 
 		return;
 	}
@@ -879,7 +879,7 @@ class InstallationPage
 		$I->expectTo("see success message and component not in menu");
 
 		$I->amOnPage(self::$extension_manage_url);
-		$I->waitForElement(Generals::$pageTitle, 30);
+		$I->waitForElementVisible(Generals::$pageTitle, 30);
 		$I->see(self::$headingManage);
 
 		$I->fillField(Generals::$search_field, Generals::$extension);
@@ -893,8 +893,8 @@ class InstallationPage
 			$I->click(self::$delete_button);
 			$I->acceptPopup();
 
-			$I->waitForElement(Generals::$sys_message_container, 180);
-			$I->waitForElement(Generals::$alert_success, 30);
+			$I->waitForElementVisible(Generals::$sys_message_container, 180);
+			$I->waitForElementVisible(Generals::$alert_success, 30);
 			$I->see(self::$uninstallSuccessMsg, Generals::$alert_success);
 
 			// @ToDo: reset auto increment at usergroups

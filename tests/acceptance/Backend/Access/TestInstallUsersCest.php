@@ -117,7 +117,7 @@ class TestInstallUsersCest
 				codecept_debug('User does not exist, so create it');
 
 				$I->click(Generals::$toolbar['New']);
-				$I->waitForElement(UsersPage::$registerName);
+				$I->waitForElementVisible(UsersPage::$registerName);
 				$I->click(UsersPage::$accountDetailsTab);
 
 				# Add user
@@ -128,7 +128,7 @@ class TestInstallUsersCest
 				$I->fillField(UsersPage::$registerEmail, $user['user'] . "@tester-net.nil");
 
 				$I->click(Generals::$toolbar4['Save & Close']);
-				$I->waitForElement(Generals::$alert_success, 10);
+				$I->waitForElementVisible(Generals::$alert_success, 10);
 				$I->see(UsersPage::$createSuccessMsg, Generals::$alert_success);
 			}
 

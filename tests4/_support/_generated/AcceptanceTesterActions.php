@@ -3124,17 +3124,17 @@ trait AcceptanceTesterActions
      *
      * ``` php
      * <?php
-     * $I->waitForElement('#agree_button', 30); // secs
+     * $I->waitForElementVisible('#agree_button', 30); // secs
      * $I->click('#agree_button');
      * ```
      *
      * @param string|array|WebDriverBy $element
      * @param int $timeout seconds
      * @throws Exception
-     * @see \Codeception\Module\WebDriver::waitForElement()
+     * @see \Codeception\Module\WebDriver::waitForElementVisible()
      */
-    public function waitForElement($element, int $timeout = 10): void {
-        $this->getScenario()->runStep(new \Codeception\Step\Action('waitForElement', func_get_args()));
+    public function waitForElementVisible($element, int $timeout = 10): void {
+        $this->getScenario()->runStep(new \Codeception\Step\Action('waitForElementVisible', func_get_args()));
     }
 
  
@@ -3811,8 +3811,8 @@ trait AcceptanceTesterActions
      * Waits for element and runs a sequence of actions inside its context.
      * Actions can be defined with array, callback, or `Codeception\Util\ActionSequence` instance.
      *
-     * Actions as array are recommended for simple to combine "waitForElement" with assertions;
-     * `waitForElement($el)` and `see('text', $el)` can be simplified to:
+     * Actions as array are recommended for simple to combine "waitForElementVisible" with assertions;
+     * `waitForElementVisible($el)` and `see('text', $el)` can be simplified to:
      *
      * ```php
      * <?php

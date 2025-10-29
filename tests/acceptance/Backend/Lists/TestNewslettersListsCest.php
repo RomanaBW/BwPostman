@@ -272,7 +272,7 @@ class TestNewslettersListsCest
 
 		$I->searchLoop($I, NlManage::$search_data_array, false, false);
 
-		$I->click(Generals::$clear_button);
+		$I->clickAndWait(Generals::$clear_button, 1);
 		$I->see(NlManage::$search_clear_val);
 	}
 
@@ -562,7 +562,7 @@ class TestNewslettersListsCest
 
 		$I->searchLoop($I, NlManage::$search_sent_data_array, false, false);
 
-		$I->click(Generals::$clear_button);
+		$I->clickAndWait(Generals::$clear_button, 1);
 		$I->see(NlManage::$search_sent_clear_val);
 	}
 

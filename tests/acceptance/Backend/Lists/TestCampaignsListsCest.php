@@ -119,7 +119,7 @@ class TestCampaignsListsCest
 
 		$I->searchLoop($I, CamManage::$search_data_array, true);
 
-		$I->click(Generals::$clear_button);
+		$I->clickAndWait(Generals::$clear_button, 1);
 		$I->see(CamManage::$search_clear_val);
 	}
 

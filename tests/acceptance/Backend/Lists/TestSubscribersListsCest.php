@@ -204,7 +204,7 @@ class TestSubscribersListsCest
 
 		$I->searchLoop($I, SubsManage::$search_data_array, true, false, SubsManage::$confirmedMainTable);
 
-		$I->click(Generals::$clear_button);
+		$I->clickAndWait(Generals::$clear_button, 1);
 		$I->see(SubsManage::$search_clear_val);
 	}
 
@@ -433,7 +433,7 @@ class TestSubscribersListsCest
 
 		$I->searchLoop($I, SubsManage::$search_data_array_unconfirmed, true, false, SubsManage::$unconfirmedMainTable);
 
-		$I->click(Generals::$clear_button);
+		$I->clickAndWait(Generals::$clear_button, 1);
 		$I->see(SubsManage::$search_clear_val_unconfirmed);
 	}
 
@@ -666,7 +666,7 @@ class TestSubscribersListsCest
 //
 //		$I->searchLoop($I, SubsManage::$search_data_array, true, true);
 //
-//		$I->click(Generals::$clear_button);
+//		$I->clickAndWait(Generals::$clear_button, 1);
 //		$I->see(SubsManage::$search_clear_val);
 //	}
 

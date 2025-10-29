@@ -983,7 +983,7 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->clickAndWait(Generals::$toolbar['Cancel'], 1);
 	}
 
 	/**

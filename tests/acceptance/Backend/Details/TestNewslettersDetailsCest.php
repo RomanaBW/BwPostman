@@ -1294,7 +1294,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$from_email, '');
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(Generals::$toolbar4['Save']);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_sender_email, Generals::$alert_warn);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -1308,7 +1308,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$reply_email, '');
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(Generals::$toolbar4['Save']);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_replyto_email, Generals::$alert_warn);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
@@ -1336,7 +1336,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$subject, '');
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(Generals::$toolbar4['Save']);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_subject, Generals::$alert_warn);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);

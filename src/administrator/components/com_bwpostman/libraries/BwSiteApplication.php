@@ -37,6 +37,7 @@ use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Router\Router;
 use Joomla\Event\Event;
 use Joomla\Registry\Registry;
 use Joomla\Application\Web\WebClient;
@@ -441,7 +442,7 @@ final class BwSiteApplication extends CMSApplication
 	 * @param string $name    The name of the application.
 	 * @param array  $options An optional associative array of configuration settings.
 	 *
-	 * @return  \Joomla\CMS\Router\Router
+	 * @return  Router
 	 *
 	 * @since       3.2
 	 *
@@ -449,9 +450,9 @@ final class BwSiteApplication extends CMSApplication
 	 *              Inject the router or load it from the dependency injection container
 	 *              Example: Factory::getContainer()->get(SiteRouter::class);
 	 */
-	public static function getRouter($name = 'site', array $options = [])
-	{
-		return parent::getRouter($name, $options);
+	public static function getRouter($name = 'site', array $options = []): Router
+    {
+        return Factory::getContainer()->get(SiteRouter::class);
 	}
 
 	/**

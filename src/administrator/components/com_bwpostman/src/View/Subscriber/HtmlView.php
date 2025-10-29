@@ -313,6 +313,7 @@ class HtmlView extends BaseHtmlView
         $template	= $app->getTemplate();
         $uri		= Uri::getInstance();
         $uri_string	= str_replace('&', '&amp;', $uri->toString());
+        $model      = $this->getModel();
 
         $import					= array();
         $lists					= array();

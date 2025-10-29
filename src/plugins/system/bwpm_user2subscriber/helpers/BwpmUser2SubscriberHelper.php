@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BoldtWebservice\Plugin\BwPostman\System\U2S\Helper;
+namespace BoldtWebservice\Plugin\BwPostman\System\Bwpm_user2subscriber\Helper;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');

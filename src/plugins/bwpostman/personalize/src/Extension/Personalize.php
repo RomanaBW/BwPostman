@@ -176,7 +176,7 @@ final class Personalize extends CMSPlugin implements SubscriberInterface, Databa
 
 			$gender = $db->loadResult();
 
-			if ($gender === null)
+			if ($gender === null || $gender === 3)
 			{
 				$gender = 2;
 			}
@@ -219,7 +219,7 @@ final class Personalize extends CMSPlugin implements SubscriberInterface, Databa
 
 			$gender = $db->loadResult();
 
-			if ($gender === null)
+			if ($gender === null || $gender === 3)
 			{
 				$gender = 2;
 			}

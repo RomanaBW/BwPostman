@@ -458,7 +458,8 @@ class BwPostmanSubscriberHelper
 		$body    = html_entity_decode($body, ENT_QUOTES);
 
 		// Get a JMail instance and fill in mailer data
-        $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
+		$mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
+
 		$sender = self::getSender();
 		$reply  = self::getReplyTo();
 
@@ -505,14 +506,6 @@ class BwPostmanSubscriberHelper
 		$genderId = $idPrefix . 'gender';
 		$gender = '<select id="' . $genderId . '"' . $class . ' name="'  . $name . '">';
 
-        $gender .= '<option value="3"';
-        if ($gender_selected == '3')
-        {
-            $gender .= ' selected="selected"';
-        }
-
-        $gender .= '>' . Text::_('COM_BWPOSTMAN_NON_BINARY') . '</option>';
-
         $gender .= '<option value="2"';
 		if ($gender_selected == '2')
 		{
@@ -520,6 +513,14 @@ class BwPostmanSubscriberHelper
 		}
 
 		$gender .= '>' . Text::_('COM_BWPOSTMAN_NO_GENDER') . '</option>';
+
+		$gender .= '<option value="1"';
+		if ($gender_selected == '1')
+		{
+			$gender .= ' selected="selected"';
+		}
+
+		$gender .= '>' . Text::_('COM_BWPOSTMAN_FEMALE') . '</option>';
 
 		$gender .= '<option value="0"';
 		if ($gender_selected == '0')
@@ -529,13 +530,13 @@ class BwPostmanSubscriberHelper
 
 		$gender .= '>' . Text::_('COM_BWPOSTMAN_MALE') . '</option>';
 
-		$gender .= '<option value="1"';
-		if ($gender_selected == '1')
-		{
-			$gender .= ' selected="selected"';
-		}
+        $gender .= '<option value="3"';
+        if ($gender_selected == '3')
+        {
+            $gender .= ' selected="selected"';
+        }
 
-		$gender .= '>' . Text::_('COM_BWPOSTMAN_FEMALE') . '</option>';
+        $gender .= '>' . Text::_('COM_BWPOSTMAN_NON_BINARY') . '</option>';
 
 		$gender .= '</select>';
 

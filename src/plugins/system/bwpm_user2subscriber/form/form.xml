@@ -40,12 +40,12 @@
 		>
 			<option value="2">
 				COM_BWPOSTMAN_NO_GENDER</option>
-			<option value="3">
-				COM_BWPOSTMAN_NON_BINARY</option>
 			<option value="1">
 				COM_BWPOSTMAN_FEMALE</option>
 			<option value="0">
 				COM_BWPOSTMAN_MALE</option>
+			<option value="3">
+				COM_BWPOSTMAN_NON_BINARY</option>
 		</field>
 
 		<field

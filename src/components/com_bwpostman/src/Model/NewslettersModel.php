@@ -357,7 +357,7 @@ class NewslettersModel extends ListModel
 		$items	= parent::getItems();
 		$user	= Factory::getApplication()->getIdentity();
 		$userId	= $user->id;
-		$guest	= $user->get('guest');
+		$guest	= $user->guest;
 		$groups	= $user->getAuthorisedViewLevels();
 
 //		$this->pagination = parent::getPagination();
@@ -640,7 +640,7 @@ class NewslettersModel extends ListModel
 					$query->where(
 						'(a.archive_flag = 1
 							OR (
-								(a.publish_down <> ' . $nullDate . ' OR a.publish_down IS NOT NULL) 
+								(a.publish_down <> ' . $nullDate . ' OR a.publish_down IS NOT NULL)
 								AND a.publish_down <= ' . $nowDate . '
 								AND a.publish_up <= ' . $nowDate . '
 							))'
@@ -801,7 +801,7 @@ class NewslettersModel extends ListModel
 
 		// fetch only from mailing lists, which are selected, if so
 		$all_mls = $params->get('ml_selected_all', 'no');
-		$sel_mls = $params->get('ml_available', '');
+		$sel_mls = $params->get('ml_available', array());
 		$mls     = $sel_mls;
 
 		if ($all_mls !== 'no')
@@ -859,7 +859,7 @@ class NewslettersModel extends ListModel
 
 		// fetch only from campaigns, which are selected, if so
 		$all_cams = $params->get('cam_selected_all', 'no');
-		$sel_cams = $params->get('cam_available', '');
+		$sel_cams = $params->get('cam_available', array());
 		$cams     = $sel_cams;
 
 		if ($all_cams !== 'no')
@@ -920,7 +920,7 @@ class NewslettersModel extends ListModel
 
 		// fetch only from usergroups, which are selected, if so
 		$all_groups	= $params->get('groups_selected_all', 'no');
-		$sel_groups	= $params->get('groups_available', '');
+		$sel_groups	= $params->get('groups_available', array());
 		$c_groups	= $sel_groups;
 
 		if ($all_groups !== 'no')
@@ -1031,7 +1031,7 @@ class NewslettersModel extends ListModel
 	private function getModuleById(int $id = 0): ?object
 	{
 		$module = null;
-		$db	= $this->getDbo();
+		$db	= $this->getDatabase();
 		$query	= $db->getQuery(true);
 
 		$query->select('m.id, m.title, m.module, m.position, m.content, m.showtitle, m.params');

@@ -746,13 +746,13 @@ class TestSubscribersListsCest
 		$I->wait(2);
 		$I->dontSeeElement(SubsManage::$import_search_button);
 
-		$I->click(SubsManage::$import_csv_button);
+		$I->clickAndWait(SubsManage::$import_csv_button, 1);
 		$I->seeElement(SubsManage::$import_search_button);
 		$I->attachFile(SubsManage::$import_search_button, SubsManage::$import_csv_file);
 
-		$I->click(SubsManage::$import_csv_caption);
+		$I->clickAndWait(SubsManage::$import_csv_caption, 1);
 
-		$I->click(SubsManage::$import_button_further);
+		$I->clickAndWait(SubsManage::$import_button_further, 1);
 
 		$I->see(SubsManage::$import_csv_file);
 		$I->see('Yes');
@@ -767,20 +767,20 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$import_legend_mls, 0, -100);
 		$I->wait(1);
-		$I->click(SubsManage::$import_mls_target);
+		$I->clickAndWait(SubsManage::$import_mls_target, 1);
 
 		$I->scrollTo(SubsManage::$import_legend_format, 0, -100);
 		$I->wait(1);
-		$I->click(SubsManage::$import_cb_confirm_subs);
+		$I->clickAndWait(SubsManage::$import_cb_confirm_subs, 1);
 
-		$I->click(SubsManage::$import_button_import);
+		$I->clickAndWait(SubsManage::$import_button_import, 1);
 
 		$I->waitForElementVisible(SubsManage::$import_success_container, 60);
 		$I->see(SubsManage::$import_msg_success, SubsManage::$import_success_container);
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->clickAndWait(Generals::$toolbar['Cancel'], 1);
 
 		$this->cleanupImportedSubscribers($I, SubsManage::$import_csv_subscribers);
 	}
@@ -806,12 +806,12 @@ class TestSubscribersListsCest
 		$I->amOnPage(SubsManage::$url);
 		$I->wait(1);
 
-		$I->click(Generals::$toolbar['Import']);
+		$I->clickAndWait(Generals::$toolbar['Import'], 1);
 		$I->waitForElementVisible(SubsManage::$import_xml_button, 5);
 		$I->wait(2);
 		$I->dontSeeElement(SubsManage::$import_search_button);
 
-		$I->click(SubsManage::$import_xml_button);
+		$I->clickAndWait(SubsManage::$import_xml_button, 1);
 		$I->seeElement(SubsManage::$import_search_button);
 		$I->attachFile(SubsManage::$import_search_button, SubsManage::$import_xml_file);
 
@@ -829,20 +829,20 @@ class TestSubscribersListsCest
 
 		$I->scrollTo(SubsManage::$import_legend_mls, 0, -100);
 		$I->wait(1);
-		$I->click(SubsManage::$import_mls_target);
+		$I->clickAndWait(SubsManage::$import_mls_target, 1);
 
 		$I->scrollTo(SubsManage::$import_legend_format, 0, -100);
 		$I->wait(1);
-		$I->click(SubsManage::$import_cb_confirm_subs);
+		$I->clickAndWait(SubsManage::$import_cb_confirm_subs, 1);
 
-		$I->click(SubsManage::$import_button_import);
+		$I->clickAndWait(SubsManage::$import_button_import, 1);
 
 		$I->waitForElementVisible(SubsManage::$import_success_container, 60);
 		$I->see(SubsManage::$import_msg_success, SubsManage::$import_success_container);
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->clickAndWait(Generals::$toolbar['Cancel'], 1);
 		$this->cleanupImportedSubscribers($I, SubsManage::$import_xml_subscribers);
 	}
 
@@ -1735,11 +1735,11 @@ class TestSubscribersListsCest
 				'search_res' => array(array(1), array(1)),
 			);
 
-			$I->click(SubsManage::$tab_confirmed);
+			$I->clickAndWait(SubsManage::$tab_confirmed, 1);
 
 			if ($subscriber['status'] == '0')
 			{
-				$I->click(SubsManage::$tab_unconfirmed);
+				$I->clickAndWait(SubsManage::$tab_unconfirmed, 1);
 			}
 
 			$I->searchLoop($I, $search_data_array, true, false, SubsManage::$confirmedMainTable);

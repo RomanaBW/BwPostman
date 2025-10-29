@@ -174,7 +174,10 @@ class HtmlView extends BaseHtmlView
 	{
 		$app	= Factory::getApplication();
 
-		$this->permissions		= $app->getUserState('com_bwpm.permissions', []);
+		// clear data - content_id of table sendmailqueue to send only the right NL
+		$app->setUserState('com_bwpostman.sendmailqueue.content_id', 0);
+
+    $this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
 		if (!$this->permissions['view']['newsletter'])
 		{

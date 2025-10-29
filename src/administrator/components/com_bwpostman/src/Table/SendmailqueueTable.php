@@ -192,6 +192,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @param integer $trial         Only pop entries with < trial
 	 * @param boolean $fromComponent do we come from component or from plugin
+     * @param int     $content_id    ID of the content of the newsletter to handle
 	 *
 	 * @return    bool --> 0 if nothing was selected
 	 *
@@ -199,7 +200,7 @@ class SendmailqueueTable extends Table
 	 *
 	 * @since       0.9.1
 	 */
-	public function pop(int $trial = 2, bool $fromComponent = true): bool
+	public function pop(int $trial = 2, bool $fromComponent = true, int $content_id = 0): bool
 	{
 		$this->reset();
 		$result = array();
@@ -209,6 +210,7 @@ class SendmailqueueTable extends Table
 
 		$query->select('*');
 		$query->from($db->quoteName($this->_tbl));
+		if ($content_id !== 0) $query->where($db->quoteName('content_id') . ' = ' . $content_id);
 		$query->where($db->quoteName('trial') . ' < ' . $trial);
 		$query->order($db->quoteName($this->_tbl_key) . ' ASC LIMIT 0,1');
 
@@ -581,22 +583,24 @@ class SendmailqueueTable extends Table
 	/**
 	 * Method to check if there are entries. Depending on $count the result is true or a number of entries
 	 *
-	 * @param integer $trial number of sending trials
-	 * @param integer $count 1: only count, 0: check for number of trials
-	 *
+	 * @param integer $trial   number of sending trials
+	 * @param integer $count   1: only count, 0: check for number of trials
+     * @param int $content_id  ID of the content of the newsletter to handle
+     *
 	 * @return	bool|int	true if no entries or there are entries with number trials less than 2, otherwise false
 	 *
 	 * @throws Exception
 	 *
 	 * @since       3.0.0
 	 */
-	public function checkTrials(int $trial = 2, int $count = 0)
+	public function checkTrials(int $trial = 2, int $count = 0, int $content_id = 0)
 	{
 		$db	= $this->_db;
 		$query	= $db->getQuery(true);
 
 		$query->select('COUNT(' . $db->quoteName('id') . ')');
 		$query->from($db->quoteName($this->_tbl));
+		if ($content_id !== 0) $query->where($db->quoteName('content_id') . ' = ' . $content_id);
 
 		try
 		{

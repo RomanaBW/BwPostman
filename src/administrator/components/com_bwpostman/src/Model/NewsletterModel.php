@@ -1541,7 +1541,12 @@ class NewsletterModel extends AdminModel
 	 */
 	public function sendNewsletter(string &$ret_msg, string $recipients, int $nl_id, bool $unconfirmed, int $cam_id): bool
 	{
-		// Access check
+		$app         = Factory::getApplication();
+
+		// clear data
+		$app->setUserState('com_bwpostman.sendmailqueue.content_id', 0);
+
+        // Access check
 		if (!BwPostmanHelper::canSend($nl_id))
 		{
 			$ret_msg .= 'Model sendNewsletter: Access denied';
@@ -1574,7 +1579,10 @@ class NewsletterModel extends AdminModel
 			$tblNewsletters->markAsSent($nl_id);
 		}
 
-		return true;
+		// content_id of table sendmailqueue to send only the right NL
+		$app->setUserState('com_bwpostman.sendmailqueue.content_id', $id);
+
+        return true;
 
 		// The actual sending of the newsletter is executed only in
 		// Sendmail Queue layout.
@@ -1815,6 +1823,7 @@ class NewsletterModel extends AdminModel
 	{
 		PluginHelper::importPlugin('bwpostman');
 		$app = Factory::getApplication();
+		$content_id = $app->getUserState('com_bwpostman.sendmailqueue.content_id', 0);
 		$table = '#__sendmailqueue';
 
 		$db    = $this->_db;
@@ -1822,20 +1831,15 @@ class NewsletterModel extends AdminModel
 
 		$query->select('*');
 		$query->from($db->quoteName($table));
+		if ($content_id != 0) $query->where($db->quoteName('content_id') . ' = ' . $content_id);
 		$query->where($db->quoteName('trial') . ' < ' . $trial);
 		$query->order($db->quoteName($table) . ' ASC LIMIT 0,1');
 
-        $event = new Event('onBwPostmanGetAdditionalQueueWhere', [
-            'subject'       => ArrayHelper::fromObject($this),
-            'query'         => $query,
-            'fromComponent' => true,
-        ]);
-        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
-        $eventResults = $event->getArgument('result', []);
+		$app->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
 
 		$tblSendmailQueue = $this->getTable('Sendmailqueue');
 
-		return $tblSendmailQueue->checkTrials($trial, $count);
+		return $tblSendmailQueue->checkTrials($trial, $count, $content_id);
 	}
 
 	/**
@@ -1911,6 +1915,7 @@ class NewsletterModel extends AdminModel
 		// initialize
 		$renderer           = new contentRenderer();
 		$app                = Factory::getApplication();
+		$content_id = $app->getUserState('com_bwpostman.sendmailqueue.content_id', null);
 		$itemid_unsubscribe = BwPostmanSubscriberHelper::getMenuItemid('register');
 		$itemid_edit        = BwPostmanSubscriberHelper::getMenuItemid('edit');
 		$res                = false;
@@ -1938,7 +1943,7 @@ class NewsletterModel extends AdminModel
 
 		// Get first entry from sendmailqueue
 		// Nothing has been returned, so the queue should be empty
-		if (!$tblSendMailQueue->pop(2, $fromComponent))
+		if (!$tblSendMailQueue->pop(2, $fromComponent, $content_id))
 		{
 			return 0;
 		}

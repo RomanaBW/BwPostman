@@ -70,7 +70,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected object $item;
+	protected $item;
 
 	/**
 	 * property to hold row object
@@ -79,7 +79,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected object $row;
+	protected $row;
 
 	/**
 	 * property to hold state
@@ -88,7 +88,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array|object $state;
+	protected $state;
 
 	/**
 	 * property to hold obligation values
@@ -97,25 +97,25 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array $obligation;
+	protected $obligation;
 
 	/**
 	 * property to hold queue entries
 	 *
-	 * @var bool $queueEntries
+	 * @var boolean $queueEntries
 	 *
 	 * @since       0.9.1
 	 */
-	public bool $queueEntries;
+	public $queueEntries;
 
 	/**
 	 * property to hold template
 	 *
-	 * @var bool $template
+	 * @var boolean $template
 	 *
 	 * @since       0.9.1
 	 */
-	public bool $template;
+	public $template;
 
 	/**
 	 * property to hold import
@@ -124,7 +124,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public array $import;
+	public $import;
 
 	/**
 	 * property to hold lists
@@ -133,7 +133,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public array $lists;
+	public $lists;
 
 	/**
 	 * property to hold request url
@@ -142,7 +142,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public string $request_url;
+	public $request_url;
 
 	/**
 	 * property to hold raw format of request url
@@ -151,7 +151,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public string $request_url_raw;
+	public $request_url_raw;
 
 	/**
 	 * property to hold permissions as array
@@ -160,7 +160,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public array $permissions;
+	public $permissions;
 
 	/**
 	 * property to hold result
@@ -169,7 +169,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public string $result;
+	public $result;
 
     /**
      * Execute and display a template script.
@@ -187,6 +187,7 @@ class HtmlView extends BaseHtmlView
         $app	= Factory::getApplication();
         $jinput	= $app->input;
         $params = ComponentHelper::getParams('com_bwpostman');
+        $model  = $this->getModel();
 
         $this->permissions		= $app->getUserState('com_bwpm.permissions', []);
 
@@ -217,8 +218,8 @@ class HtmlView extends BaseHtmlView
                 $this->template	= $app->getTemplate();
 
 				// Get the data from the model
-				$this->form		= $this->getForm;
-				$this->item		= $this->getItem();
+				$this->form		= $model->getForm();
+				$this->item		= $model->getItem();
 				$this->state	= $model->getState();;
 
                 if ($this->item->id)
@@ -322,7 +323,7 @@ class HtmlView extends BaseHtmlView
         $app->setUserState('com_bwpostman.subscriber.import', true);
 
 		// Get the data from the model
-		$this->form		= $this->getForm;
+		$this->form		= $model->getForm();
 		$this->state	= $model->getState();;
 
         // Get general import data from the session (fileformat, filename ...)
@@ -459,7 +460,7 @@ class HtmlView extends BaseHtmlView
         }
 
 		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
 
 		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscriber');
 

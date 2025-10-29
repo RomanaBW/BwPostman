@@ -39,6 +39,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\Event\Event;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * BwPostman Campaigns View
@@ -58,7 +60,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array $items;
+	protected $items;
 
 	/**
 	 * property to hold pagination object
@@ -67,7 +69,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected object $pagination;
+	protected $pagination;
 
 	/**
 	 * property to hold state
@@ -76,7 +78,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array|object $state;
+	protected $state;
 
 	/**
 	 * property to hold filter form
@@ -85,7 +87,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $filterForm;
+	public $filterForm;
 
 	/**
 	 * property to hold active filters
@@ -94,7 +96,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $activeFilters;
+	public $activeFilters;
 
 	/**
 	 * property to hold sidebar
@@ -103,7 +105,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $sidebar;
+	public $sidebar;
 
 	/**
 	 * property to hold total value
@@ -112,7 +114,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $total;
+	public $total;
 
 	/**
 	 * property to hold permissions as array
@@ -121,7 +123,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public array $permissions;
+	public $permissions;
 
     /**
      * Execute and display a template script.
@@ -180,7 +182,7 @@ class HtmlView extends BaseHtmlView
         PluginHelper::importPlugin('bwpostman');
 
 		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
 
 		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_confirm_archive_cam_nls');
 

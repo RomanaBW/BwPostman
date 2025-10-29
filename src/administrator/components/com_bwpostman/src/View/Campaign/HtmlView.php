@@ -67,7 +67,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected object $item;
+	protected $item;
 
 	/**
 	 * property to hold state
@@ -76,16 +76,16 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array|object $state;
+	protected $state;
 
 	/**
 	 * property to hold queue entries property
 	 *
-	 * @var bool $queueEntries
+	 * @var boolean $queueEntries
 	 *
 	 * @since       0.9.1
 	 */
-	public bool $queueEntries;
+	public $queueEntries;
 
 	/**
 	 * property to hold newsletters list
@@ -94,7 +94,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public array $newsletters;
+	public $newsletters;
 
 	/**
 	 * property to hold permissions as array
@@ -103,7 +103,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public array $permissions;
+	public $permissions;
 
     /**
      * Execute and display a template script.
@@ -169,7 +169,7 @@ class HtmlView extends BaseHtmlView
 		$userId		= $app->getIdentity()->id;
 
 		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
 
 		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_campaign');
 

@@ -57,7 +57,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array $items;
+	protected $items;
 
 	/**
 	 * property to hold pagination object
@@ -66,7 +66,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected object $pagination;
+	protected $pagination;
 
 	/**
 	 * property to hold state
@@ -75,7 +75,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array|object $state;
+	protected $state;
 
 	/**
 	 * property to hold filter form
@@ -84,7 +84,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $filterForm;
+	public $filterForm;
 
 	/**
 	 * property to hold active filters
@@ -93,7 +93,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $activeFilters;
+	public $activeFilters;
 
 	/**
 	 * property to hold total value
@@ -102,7 +102,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public string $total;
+	public $total;
 
 	/**
 	 * property to hold permissions as array
@@ -111,7 +111,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public array $permissions;
+	public $permissions;
 
 	/**
 	 * property to hold sidebar
@@ -120,7 +120,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $sidebar;
+	public $sidebar;
 
     /**
      * Execute and display a template script.
@@ -172,7 +172,7 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar()
 	{
 		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
 
 		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_confirm_archive');
 

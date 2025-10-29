@@ -58,7 +58,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array $items;
+	protected $items;
 
 	/**
 	 * property to hold pagination object
@@ -67,7 +67,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected object $pagination;
+	protected $pagination;
 
 	/**
 	 * property to hold state
@@ -76,7 +76,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array|object $state;
+	protected $state;
 
 	/**
 	 * property to hold filter form
@@ -85,7 +85,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $filterForm;
+	public $filterForm;
 
 	/**
 	 * property to hold active filters
@@ -94,7 +94,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $activeFilters;
+	public $activeFilters;
 
 	/**
 	 * property to hold total value
@@ -103,7 +103,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public string $total;
+	public $total;
 
 	/**
 	 * property to hold sidebar
@@ -112,7 +112,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $sidebar;
+	public $sidebar;
 
 	/**
 	 * property to hold mailinglists
@@ -121,7 +121,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public array $mailinglists;
+	public $mailinglists;
 
 	/**
 	 * property to hold params
@@ -130,7 +130,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $params;
+	public $params;
 
 	/**
 	 * property to hold permissions as array
@@ -139,7 +139,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public array $permissions;
+	public $permissions;
 
 	/**
 	 * property to hold context
@@ -148,7 +148,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public string $context;
+	public $context;
 
 	/**
 	 * property to hold filtering mailinglist
@@ -157,7 +157,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.2.0
 	 */
-	public string $filterMl;
+	public $filterMl;
 
 	/**
 	 * Array for confirmed subscribers
@@ -166,7 +166,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since  3.0.0
 	 */
-	public array $confirmed;
+	public $confirmed;
 
 	/**
 	 * Array for unconfirmed subscribers
@@ -175,7 +175,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since  3.0.0
 	 */
-	public array $unconfirmed;
+	public $unconfirmed;
 
 	/**
 	 * Array for test recipients
@@ -184,7 +184,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since  3.0.0
 	 */
-	public array $testers;
+	public $testers;
 
     /**
      * Execute and display a template script.
@@ -253,7 +253,7 @@ class HtmlView extends BaseHtmlView
         $tab = $app->input->get('tab', 'confirmed');
 
 		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
 
 		$this->getDocument()->getWebAssetManager()->useScript('com_bwpostman.admin-bwpm_subscribers');
 

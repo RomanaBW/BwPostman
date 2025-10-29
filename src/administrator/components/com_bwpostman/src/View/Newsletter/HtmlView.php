@@ -73,7 +73,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected object $item;
+	protected $item;
 
 	/**
 	 * property to hold state
@@ -82,16 +82,16 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array|object $state;
+	protected $state;
 
 	/**
 	 * property to hold queue entries property
 	 *
-	 * @var bool $queueEntries
+	 * @var boolean $queueEntries
 	 *
 	 * @since       0.9.1
 	 */
-	public bool $queueEntries;
+	public $queueEntries;
 
 	/**
 	 * property to hold params
@@ -100,16 +100,16 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $params;
+	public $params;
 
 	/**
 	 * property to hold content_exists
 	 *
-	 * @var bool $content_exists
+	 * @var boolean $content_exists
 	 *
 	 * @since       0.9.1
 	 */
-	public bool $content_exists;
+	public $content_exists;
 
 	/**
 	 * property to hold selected_content_old
@@ -118,32 +118,32 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public string $selected_content_old;
+	public $selected_content_old;
 
 	/**
 	 * property to hold old id of template
 	 *
-	 * @var bool $template_id_old
+	 * @var boolean $template_id_old
 	 *
 	 * @since       0.9.1
 	 */
-	public bool $template_id_old;
+	public $template_id_old;
 
 	/**
 	 * property to old id of text template
 	 *
-	 * @var bool $text_template_id_old
+	 * @var boolean $text_template_id_old
 	 *
 	 * @since       0.9.1
 	 */
-	public bool $text_template_id_old;
+	public $text_template_id_old;
 
 	/**
 	 * @var string
 	 *
 	 * @since       2.0.0
 	 */
-	public string $template;
+	public $template;
 
 	/**
 	 * property to hold permissions as array
@@ -152,35 +152,35 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	public array $permissions;
+	public $permissions;
 
 	/**
-	 * @var bool
+	 * @var boolean
 	 *
 	 * @since       2.0.0
 	 */
-	public bool $substitute;
+	public $substitute;
 
 	/**
 	 * @var string   $delay_message
 	 *
 	 * @since       2.4.0
 	 */
-	protected string $delay_message;
+	protected $delay_message;
 
 	/**
-	 * @var int $delay
+	 * @var integer   $delay
 	 *
 	 * @since       2.4.0
 	 */
-	protected int $delay;
+	protected $delay;
 
 	/**
 	 * @var object   $logger
 	 *
 	 * @since       2.4.0
 	 */
-	protected object $logger;
+	protected $logger;
 
     /**
      * Execute and display a template script.
@@ -275,7 +275,7 @@ class HtmlView extends BaseHtmlView
 		$layout		= $app->input->get('layout', '');
 
 		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
 
         // Get document object, set document title and add css
         $document	= $app->getDocument();

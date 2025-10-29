@@ -58,7 +58,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array $items;
+	protected $items;
 
 	/**
 	 * property to hold pagination object
@@ -67,7 +67,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected object $pagination;
+	protected  $pagination;
 
 	/**
 	 * property to hold state
@@ -76,7 +76,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	protected array|object $state;
+	protected  $state;
 
 	/**
 	 * property to hold user permissions
@@ -85,7 +85,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       2.0.0
 	 */
-	protected array $permissions;
+	protected  $permissions;
 
 	/**
 	 * property to hold filter form
@@ -94,7 +94,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $filterForm;
+	public  $filterForm;
 
 	/**
 	 * property to hold active filters
@@ -103,7 +103,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $activeFilters;
+	public  $activeFilters;
 
 	/**
 	 * property to hold request url
@@ -112,7 +112,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public string $request_url;
+	public  $request_url;
 
 	/**
 	 * property to hold sidebar
@@ -121,7 +121,7 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	public object $sidebar;
+	public  $sidebar;
 
     /**
      * Display
@@ -192,7 +192,7 @@ class HtmlView extends BaseHtmlView
         $jinput	= $app->input;
 
 		// Get the toolbar object instance
-		        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar();
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar()->getInstance();
 
         // Set toolbar title
         ToolbarHelper::title(Text::_('COM_BWPOSTMAN_ARC'), 'list');

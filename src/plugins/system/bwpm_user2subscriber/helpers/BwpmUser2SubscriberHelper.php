@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BoldtWebservice\Plugin\BwPostman\System\Bwpm_user2subscriber\Helper;
+namespace BoldtWebservice\Plugin\System\Bwpm_user2subscriber\Helper;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -40,7 +40,6 @@ use RuntimeException;
 use stdClass;
 
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Table', JPATH_ADMINISTRATOR.'/components/com_bwpostman/src/Table');
-
 
 /**
  * Class BwpmUser2SubscriberHelper

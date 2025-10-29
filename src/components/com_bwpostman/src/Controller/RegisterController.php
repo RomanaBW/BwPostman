@@ -66,7 +66,7 @@ class RegisterController extends FormController
 	 *
 	 * @since       2.0.0
 	 */
-	protected $userid;
+	protected $userid = 0;
 
 	/**
 	 * Constructor

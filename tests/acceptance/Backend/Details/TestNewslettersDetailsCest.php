@@ -536,6 +536,7 @@ class TestNewslettersDetailsCest
 			codecept_debug("No file to delete or not accessible");
 		}
 
+        $I->wait(1);
 		$I->clickAndWait(NlEdit::$attachments_add_button, 1);
 		$I->clickAndWait(NlEdit::$attachment_select_button1, 1);
         $I->executeJS("document.getElementsByClassName('iframe-content')[0].setAttribute('name', 'Change Image');");
@@ -1320,7 +1321,7 @@ class TestNewslettersDetailsCest
         $I->fillField(NlEdit::$subject, NlEdit::$field_subject);
         $I->clickAndWait(NlEdit::$description, 1);
         $I->click(Generals::$toolbar4['Save']);
-        $I->waitForElement(Generals::$alert_header, 30);
+        $I->waitForElementVisible(Generals::$alert_header, 30);
         $I->see(Generals::$alert_warn_txt);
         $I->see(NlEdit::$msg_required_sender_name, Generals::$alert_warn);
         $I->clickAndWait(Generals::$systemMessageClose, 1);

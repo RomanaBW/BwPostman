@@ -1322,7 +1322,7 @@ class TestNewslettersDetailsCest
 		$I->fillField(NlEdit::$subject, '');
 		$I->clickAndWait(NlEdit::$description, 1);
 		$I->click(Generals::$toolbar4['Save']);
-		$I->waitForElement(Generals::$alert_header, 30);
+		$I->waitForElementVisible(Generals::$alert_header, 30);
 		$I->see(Generals::$alert_warn_txt);
 		$I->see(NlEdit::$msg_required_subject, Generals::$alert_warn);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);

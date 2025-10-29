@@ -34,6 +34,7 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
+use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
@@ -476,8 +477,8 @@ class RegisterModel extends AdminModel
 	 */
 	private function setNotificationAddresses(string $mode = 'activation'): object
 	{
-		$mailer	    = Factory::getMailer();
-		$params     = ComponentHelper::getParams('com_bwpostman');
+        $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
+		$params = ComponentHelper::getParams('com_bwpostman');
 
 		// set sender and reply-to
 		$sender = BwPostmanSubscriberHelper::getSender();

@@ -1097,8 +1097,7 @@ class NewsletterModel extends AdminModel
 
 		if ($changeResult === false)
 		{
-//			$this->setError($table->getError());
-//            throw new Exception($table->getError());
+			$this->setError($table->getError());
 
 			return false;
 		}
@@ -2098,7 +2097,6 @@ class NewsletterModel extends AdminModel
 		$unsubscribe_url = $renderer->generateUnsubscribeUrl($itemid_unsubscribe, $tblSendMailQueue->recipient, $editlink);
 
 		// Get a JMail instance
-//		$mailer = Factory::getMailer();
         $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
 		$mailer->SMTPDebug = true;
 

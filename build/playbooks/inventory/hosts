@@ -157,6 +157,22 @@ bwpm_fast_db-5 ansible_connection=docker
 bwpm_fast_web-5 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.9
 bwpm_fast_tester-5 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.10
 
+bwpm_rights1_db-6 ansible_connection=docker
+bwpm_rights1_web-6 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.11
+bwpm_rights1_tester-6 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.10
+
+bwpm_rights2_db-6 ansible_connection=docker
+bwpm_rights2_web-6 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.11
+bwpm_rights2_tester-6 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.10
+
+bwpm_rights3_db-6 ansible_connection=docker
+bwpm_rights3_web-6 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.11
+bwpm_rights3_tester-6 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.10
+
+bwpm_rights4_db-6 ansible_connection=docker
+bwpm_rights4_web-6 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.11
+bwpm_rights4_tester-6 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.10
+
 bwpm_rights1_db-5 ansible_connection=docker
 bwpm_rights1_web-5 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.9
 bwpm_rights1_tester-5 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3.10

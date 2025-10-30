@@ -181,7 +181,7 @@ class TestAccessCest
 		{
 			$I->see($button, sprintf(AccessPage::$j_menu_bwpostman_sub_item, $button));
 
-			$I->click(sprintf(AccessPage::$j_menu_bwpostman_sub_item, $button));
+			$I->clickAndWait(sprintf(AccessPage::$j_menu_bwpostman_sub_item, $button), 1);
 
 			if ($allowed)
 			{
@@ -669,7 +669,7 @@ class TestAccessCest
 
 			$I->see($title_to_see, Generals::$pageTitle);
 
-			$I->click(Generals::$toolbar4['Cancel']);
+			$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
 			if ($button === 'Templates')
 			{
 				try
@@ -769,12 +769,12 @@ class TestAccessCest
 		// by checkbox
 		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
 
-		$I->click($checkbox);
+		$I->clickAndWait($checkbox, 1);
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
-		$I->click(Generals::$toolbarActions);
+		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->waitForElementVisible(Generals::$toolbar4['Edit'], 3);
-		$I->click(Generals::$toolbar4['Edit']);
+		$I->clickAndWait(Generals::$toolbar4['Edit'], 1);
 
 		$this->checkForEditResult($I, $button, $check_content, $check_locator, $allowed);
 
@@ -799,7 +799,7 @@ class TestAccessCest
 			try
 			{
 				// Click off message that a content template wants to be edited
-				$I->click(Generals::$systemMessageClose);
+				$I->clickAndWait(Generals::$systemMessageClose, 1);
 				$I->waitForElementNotVisible(Generals::$systemMessageClose, 3);
 
 			}
@@ -816,7 +816,7 @@ class TestAccessCest
 			$I->see($title_to_see, Generals::$pageTitle);
 			$I->seeInField($check_locator, $check_content);
 
-			$I->click(Generals::$toolbar4['Cancel']);
+			$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
 		}
 		else
 		{
@@ -824,7 +824,7 @@ class TestAccessCest
 			$I->see($button, Generals::$pageTitle);
 			// for button tests I may only get here at edit other owners items!
 			$I->see('No permission to edit this item!', Generals::$alert_error_1);
-			$I->click(Generals::$systemMessageClose);
+			$I->clickAndWait(Generals::$systemMessageClose, 1);
 			$I->waitForElementNotVisible(Generals::$systemMessageClose, 3);
 		}
 
@@ -1043,7 +1043,7 @@ class TestAccessCest
 		// by icon
         codecept_debug("Checkin by Icon");
         $I->seeElement($lock_icon);
-		$I->click($lock_icon);
+		$I->clickAndWait($lock_icon, 1);
 		$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
 
         codecept_debug("Open item for checkin by toolbar");
@@ -1055,12 +1055,12 @@ class TestAccessCest
 		// by toolbar
         codecept_debug("Checkin by toolbar");
 		$checkbox       = $this->getCheckbox($I, $check_content, $tableId);
-		$I->click($checkbox);
+		$I->clickAndWait($checkbox, 1);
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
-		$I->click(Generals::$toolbar4['Check-In']);
+		$I->clickAndWait(Generals::$toolbar4['Check-In'], 1);
 		$this->checkCheckinResult($I, $check_content, $lock_icon, $button, $tableId);
 	}
 
@@ -1191,7 +1191,7 @@ class TestAccessCest
 			$lock_icon  = sprintf(AccessPage::$checkout_icon, $row_nbr, $col_nbr);
 
 			$I->seeElement($lock_icon);
-			$I->click($lock_icon);
+			$I->clickAndWait($lock_icon, 1);
 
 			if ($current_user['name'] == 'BwPostmanAdmin')
 			{
@@ -1485,7 +1485,7 @@ class TestAccessCest
 
 			if ($linkToFirstPage === 1)
 			{
-				$I->click(Generals::$first_page);
+				$I->clickAndWait(Generals::$first_page, 1);
 			}
 		}
 		catch (Exception $e)

@@ -883,14 +883,14 @@ class InstallationPage
 		$I->see(self::$headingManage);
 
 		$I->fillField(Generals::$search_field, Generals::$extension);
-		$I->click(Generals::$search_button);
+		$I->clickAndWait(Generals::$search_button, 1);
 
 		$to_uninstall = $I->elementExists($I, "//*[@id='manageList']");
 
 		if ($to_uninstall)
 		{
 			$I->checkOption(Generals::$check_all_button);
-			$I->click(self::$delete_button);
+			$I->clickAndWait(self::$delete_button, 1);
 			$I->acceptPopup();
 
 			$I->waitForElementVisible(Generals::$sys_message_container, 180);

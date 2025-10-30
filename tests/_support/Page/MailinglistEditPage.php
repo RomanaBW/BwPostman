@@ -286,7 +286,7 @@ class MailinglistEditPage
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, 100);
 		$I->wait(1);
-		$I->click(Generals::$toolbar['New']);
+		$I->clickAndWait(Generals::$toolbar['New'], 1);
 
 		self::fillFormSimple($I);
 

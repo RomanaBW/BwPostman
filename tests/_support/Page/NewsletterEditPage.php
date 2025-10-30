@@ -1317,14 +1317,14 @@ class NewsletterEditPage
 		$I->wantTo("Copy a newsletter");
 		$I->amOnPage(NlManage::$url);
 
-		$I->click(Generals::$toolbar['New']);
+		$I->clickAndWait(Generals::$toolbar['New'], 1);
 		self::fillFormSimple($I);
 		if ($isTemplate)
 		{
 			$I->selectOption(self::$is_template, 'Yes');
 		}
 
-		$I->click(Generals::$toolbar4['Save & Close']);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		self::checkSuccess($I, $username);
 		$I->see('Newsletters', Generals::$pageTitle);
 		if ($isTemplate)
@@ -1335,7 +1335,7 @@ class NewsletterEditPage
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
 
-		$I->click(Generals::$first_list_entry);
+		$I->clickAndWait(Generals::$first_list_entry, 1);
 		$I->clickAndWait(Generals::$toolbarActions, 1);
 		$I->clickAndWait(Generals::$toolbar4['Duplicate'], 1);
 		$I->waitForText(self::$duplicate_prefix . self::$field_subject . "'", 30);
@@ -1382,7 +1382,7 @@ class NewsletterEditPage
 		$I->waitForElementVisible(Generals::$systemMessageClose, 5);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see(self::$success_saved, Generals::$alert_success);
-		$I->click(Generals::$systemMessageClose);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		$I->see(self::$field_subject, self::$success_inList_subject);
 		$I->see(self::$field_description, self::$success_inList_desc);
@@ -1422,8 +1422,8 @@ class NewsletterEditPage
 
 		$I->scrollTo(self::$legend_templates, 0, -100);
 		$I->wait(2);
-		$I->click(self::$template_html);
-		$I->click(self::$template_text);
+		$I->clickAndWait(self::$template_html, 1);
+		$I->clickAndWait(self::$template_text, 1);
 		$I->wait(1);
 
 		self::selectRecipients($I, $toUsergroup);
@@ -1566,13 +1566,13 @@ class NewsletterEditPage
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
-		$I->click(Generals::$toolbar['New']);
+		$I->clickAndWait(Generals::$toolbar['New'], 1);
 
 		self::fillFormSimple($I, $toUsergroup, $withAttachment);
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
-		$I->click(Generals::$toolbar4['Save & Close']);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 //		$I->waitForElementVisible(Generals::$alert_header, 5);
 		self::checkSuccess($I, $username);
 		$I->see('Newsletters', Generals::$pageTitle);
@@ -1737,7 +1737,7 @@ class NewsletterEditPage
 	public static function SendNewsletterOptionsCheck(\AcceptanceTester $I, $iframeTime = 20, $stepSize = 100, $timeDelay = 1, $timeDelayUnit = 'second')
 	{
 		$I->click(self::$mark_to_send);
-		$I->click(Generals::$toolbar['Send']);
+		$I->clickAndWait(Generals::$toolbar['Send'], 1);
 		$I->see(self::$tab5_legend1);
 
 		$nbrToSend  = self::$nbr_only_confirmed;
@@ -1823,7 +1823,7 @@ class NewsletterEditPage
 			$I->clickAndWait("//*/button[contains(@aria-controls, 'attrib-basic')]", 1);
 			$I->fillField('#jform_params_hint', 'Date to insert');
 
-			$I->click(Generals::$toolbar4['Save & Close']);
+			$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		}
 	}
 

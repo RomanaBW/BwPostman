@@ -635,7 +635,7 @@ class MaintenancePage
 
 		$I->attachFile(self::$buttonGetFile, $filename);
 
-		$I->click(self::$buttonStartRestore);
+		$I->clickAndWait(self::$buttonStartRestore, 1);
 		$I->dontSeeElement(Generals::$alert_error);
 
 		// Check result of regular backup

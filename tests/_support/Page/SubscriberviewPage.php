@@ -966,7 +966,7 @@ class SubscriberviewPage
 		if ($options->show_gender)
 		{
 			$I->clickAndWait(self::$gender, 1);
-			$I->click(self::$gender_female);
+			$I->clickAndWait(self::$gender_female, 1);
 		}
 
 		if ($options->show_firstname_field || $options->firstname_field_obligation)
@@ -1042,7 +1042,7 @@ class SubscriberviewPage
 		$I->scrollTo(self::$button_submitleave, 0, -150);
 		$I->wait(1);
 		$I->checkOption(self::$button_unsubscribe);
-		$I->click(self::$button_submitleave);
+		$I->clickAndWait(self::$button_submitleave, 1);
 		$I->dontSee(self::$mail_fill_1, self::$mail);
 	}
 

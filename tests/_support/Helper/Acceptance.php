@@ -683,8 +683,8 @@ class Acceptance extends Codeception\Module
 				}
 				else
 				{
-					$I->click(Generals::$filterOptionsSwitcher);
-					$I->click(Generals::$ordering_list);
+					$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
+					$I->clickAndWait(Generals::$ordering_list, 1);
 					$I->selectOption(Generals::$ordering_list, $sort_data_array['sort_criteria_select'][$key] . " " . $order);
 					$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 				}
@@ -693,7 +693,7 @@ class Acceptance extends Codeception\Module
 				$I->waitForElementVisible(sprintf(Generals::$table_headcol_arrow_location, $i, Generals::$sort_arrows[$arrow]), 5);
 				$I->seeElement(sprintf(Generals::$table_headcol_arrow_location, $i, Generals::$sort_arrows[$arrow]));
 				$I->expectTo('see text ' . $sort_data_array['sort_criteria_select'][$key] . ' ' . $order);
-				$I->click(Generals::$filterOptionsSwitcher);
+				$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
 				$orderingText = $sort_data_array['sort_criteria_select'][$key] . ' ' . $order;
 				$I->see(
 					$orderingText,
@@ -787,8 +787,8 @@ class Acceptance extends Codeception\Module
 	public function filterByStatus(\AcceptanceTester $I)
 	{
 		// select published
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$status_list_id);
+		$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
+		$I->clickAndWait(Generals::$status_list_id, 1);
 		$I->selectOption(Generals::$status_list_id, Generals::$status_published);
 
 		$I->dontSeeElement(Generals::$icon_unpublished);
@@ -850,7 +850,7 @@ class Acceptance extends Codeception\Module
 		// Confirm success message
 		if ($extra_click === '')
 		{
-			$I->click(Generals::$systemMessageClose);
+			$I->clickAndWait(Generals::$systemMessageClose, 1);
 		}
 	}
 
@@ -875,7 +875,7 @@ class Acceptance extends Codeception\Module
 		{
 			$I->scrollTo(Generals::$first_list_entry, 0, -250);
 			$I->wait(1);
-			$I->click(Generals::$first_list_entry);
+			$I->clickAndWait(Generals::$first_list_entry, 1);
 
 			$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 			$I->wait(1);
@@ -890,7 +890,7 @@ class Acceptance extends Codeception\Module
 
 		$I->scrollTo($publish_by_toolbar['publish_button'], 0, -250);
 		$I->wait(1);
-		$I->click($publish_by_toolbar['publish_button']);
+		$I->clickAndWait($publish_by_toolbar['publish_button'], 1);
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, -100);
 		$I->wait(1);
@@ -906,11 +906,10 @@ class Acceptance extends Codeception\Module
 		$I->wait(1);
 
 		$I->waitForElementVisible(Generals::$systemMessageClose, 5);
-		$I->click(Generals::$systemMessageClose);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		if ($item == 'newsletter')
 		{
-			$I->wait(1);
 			$I->clickAndWait($extra_click, 2);
 		}
 
@@ -931,11 +930,10 @@ class Acceptance extends Codeception\Module
 
 		// Confirm success message
 		$I->waitForElementVisible(Generals::$systemMessageClose, 5);
-		$I->click(Generals::$systemMessageClose);
+		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
 		if ($item == 'newsletter')
 		{
-			$I->wait(1);
 			$I->clickAndWait($extra_click, 2);
 		}
 
@@ -1041,26 +1039,26 @@ class Acceptance extends Codeception\Module
 	{
 		$I->assertEquals(20, count($I->GetTableRows($I, $tableIdentifier)));
 
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$limit_list_id);
+		$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
+		$I->clickAndWait(Generals::$limit_list_id, 1);
 		$I->selectOption(Generals::$limit_list_id, Generals::$limit_5);
 		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 		$I->assertEquals(5, count($I->GetTableRows($I, $tableIdentifier)));
 
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$limit_list_id);
+		$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
+		$I->clickAndWait(Generals::$limit_list_id, 1);
 		$I->selectOption(Generals::$limit_list_id, Generals::$limit_15);
 		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 		$I->assertEquals(15, count($I->GetTableRows($I, $tableIdentifier)));
 
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$limit_list_id);
+		$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
+		$I->clickAndWait(Generals::$limit_list_id, 1);
 		$I->selectOption(Generals::$limit_list_id, Generals::$limit_20);
 		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 		$I->assertEquals(20, count($I->GetTableRows($I, $tableIdentifier)));
 
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$limit_list_id);
+		$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
+		$I->clickAndWait(Generals::$limit_list_id, 1);
 		$I->selectOption(Generals::$limit_list_id, Generals::$limit_10);
 		$I->waitForElementNotVisible(Generals::$filterOptionsPopup, 10);
 		$I->assertEquals(10, count($I->GetTableRows($I, $tableIdentifier)));
@@ -1078,8 +1076,8 @@ class Acceptance extends Codeception\Module
 	public function filterByAccess(\AcceptanceTester $I)
 	{
 		// select public
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$access_list_id);
+		$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
+		$I->clickAndWait(Generals::$access_list_id, 1);
 		$I->selectOption(Generals::$access_list_id, Generals::$access_public);
 
 		$I->dontSee("Guest", Generals::$access_column);
@@ -1143,8 +1141,8 @@ class Acceptance extends Codeception\Module
 			for ($i = 0; $i < count($search_data_array['search_by']); $i++)
 			{
 				// open 'search by' list, select 'search by' value
-				$I->click(Generals::$filterOptionsSwitcher);
-				$I->click(Generals::$search_list);
+				$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
+				$I->clickA(Generals::$search_list, 1);
 				$I->selectOption(Generals::$search_list, $search_data_array['search_by'][$i]);
 				$I->wait(1);
 

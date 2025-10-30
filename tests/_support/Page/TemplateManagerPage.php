@@ -546,7 +546,7 @@ class TemplateManagerPage
 			$I->seeElement(self::$default_result1);
 			$I->dontSeeElement(self::$no_default_result1);
 
-			$I->click(self::$default_button2);
+			$I->clickAndWait(self::$default_button2, 1);
 			$I->seeElement(self::$default_result2);
 			$I->dontSeeElement(self::$no_default_result2);
 		}

@@ -341,7 +341,7 @@ class AcceptanceTester extends \Codeception\Actor
 	public function clickSelectList($select_list, $select_value, $select_list_id)
 	{
 		// open select list
-		$this->click($select_list);
+		$this->clickAndWait($select_list, 1);
 //		$this->waitForElementVisible(sprintf(Generals::$select_list_open, $select_list_id), 30);
 
 		// click wanted value
@@ -380,14 +380,14 @@ class AcceptanceTester extends \Codeception\Actor
 
 		if ($pagination_accessible > 0)
 		{
-			$this->click(Generals::$last_page);
+			$this->clickAndWait(Generals::$last_page, 1);
 			$this->scrollTo(Generals::$pagination_bar);
 			$this->wait(1);
 			$last_page = $this->grabTextFrom(Generals::$last_page_identifier);
 
 			$this->scrollTo(Generals::$pagination_bar);
 			$this->wait(1);
-			$this->click(Generals::$first_page);
+			$this->clickAndWait(Generals::$first_page, 1);
 		}
 
 		return $last_page;

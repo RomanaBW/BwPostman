@@ -138,7 +138,7 @@ class Login
 
 		$I->scrollTo(Generals::$pageTop, 0, -100);
 		$I->wait(1);
-		$I->click(Generals::$nav_user_menu);
+		$I->clickAndWait(Generals::$nav_user_menu, 1);
 		$I->click(Generals::$nav_user_menu_logout);
 
 		$I->waitForElementVisible($loginArea, 30);

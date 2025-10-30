@@ -628,7 +628,7 @@ class TemplateEditPage
 
 		$I->waitForElementVisible(Generals::$pageTitle, 30);
 
-		$I->click(Generals::$toolbar['Add Text-Template']);
+		$I->clickAndWait(Generals::$toolbar['Add Text-Template'], 1);
 
 		self::fillFormSimpleText($I, $user);
 
@@ -722,7 +722,7 @@ class TemplateEditPage
 		$text_style_content   = self::getFileContent('tests/_data/text-newsletter.txt');
 
 		$I->wait(1);
-		$I->click(self::$tpl_tab2);
+		$I->clickAndWait(self::$tpl_tab2, 1);
 		$I->fillField(self::$text_style, $text_style_content);
 		$I->scrollTo(self::$button_refresh_preview, 0, -100);
 		$I->wait(1);

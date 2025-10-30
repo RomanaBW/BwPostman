@@ -36,7 +36,7 @@ class Subscribe extends \AcceptanceTester
 		$I->fillField($subscriberView::$mail, $mailaddress);
 		$I->checkOption($subscriberView::$ml1);
 		$I->checkOption($subscriberView::$disclaimer);
-		$I->click($subscriberView::$button_register);
+		$I->clickAndWait($subscriberView::$button_register, 1);
 	}
 
 	/**
@@ -143,7 +143,7 @@ class Subscribe extends \AcceptanceTester
 		$I->waitForElementVisible($subscriberView::$view_edit, 30);
 		$I->seeElement($subscriberView::$view_edit);
 		$I->checkOption($subscriberView::$button_unsubscribe);
-		$I->click($subscriberView::$button_submitleave);
+		$I->clickAndWait($subscriberView::$button_submitleave, 1);
 		$I->dontSee($mailaddress, $subscriberView::$mail);
 	}
 }

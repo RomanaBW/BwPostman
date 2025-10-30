@@ -472,7 +472,7 @@ class SubscriberEditPage
 
 		$I->scrollTo(Generals::$joomlaHeader, 0, 100);
 		$I->wait(1);
-		$I->click(Generals::$toolbar['New']);
+		$I->clickAndWait(Generals::$toolbar['New'], 1);
 
 		self::fillFormSimple($I);
 
@@ -518,7 +518,7 @@ class SubscriberEditPage
 
 		if ($options->show_emailformat)
 		{
-			$I->click(self::$mailformat);
+			$I->clickAndWait(self::$mailformat, 1);
 			$I->selectOption(self::$mailformat, $format);
 			$I->wait(1);
 			$I->waitForText("Text", 5);

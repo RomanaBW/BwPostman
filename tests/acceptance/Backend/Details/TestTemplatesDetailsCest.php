@@ -480,7 +480,7 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one Text template cancel list view");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElementVisible(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar4['Add Text-Template']);
+		$I->clickAndWait(Generals::$toolbar4['Add Text-Template'], 1);
 
 		$this->fillFormExtendedText($I);
 
@@ -519,7 +519,7 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Create one Text template list view");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElementVisible(Generals::$pageTitle, 5);
-		$I->click(Generals::$toolbar4['Add Text-Template']);
+		$I->clickAndWait(Generals::$toolbar4['Add Text-Template'], 1);
 
 		TplEdit::fillFormSimpleText($I);
 

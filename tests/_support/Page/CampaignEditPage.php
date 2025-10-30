@@ -191,7 +191,7 @@ class CampaignEditPage
 		$I->scrollTo(Generals::$joomlaHeader, 0, 100);
 		$I->wait(1);
 
-		$I->click(Generals::$toolbar['New']);
+		$I->clickAndWait(Generals::$toolbar['New'], 1);
 
 		self::fillFormSimple($I);
 
@@ -217,6 +217,6 @@ class CampaignEditPage
 	{
 		$I->fillField(self::$title, self::$field_title);
 		$I->fillField(self::$description, self::$field_description);
-		$I->click(sprintf(Generals::$mls_accessible, 2));
+		$I->clickAndWait(sprintf(Generals::$mls_accessible, 2), 1);
 	}
 }

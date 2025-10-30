@@ -1094,8 +1094,8 @@ class SubscriberManagerPage
 	{
 		$I->fillField(Generals::$search_field, $search_value);
 
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(Generals::$search_list);
+		$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
+		$I->clickAndWait(Generals::$search_list, 1);
 		$I->selectOption(Generals::$search_list, $search_for);
 	}
 }

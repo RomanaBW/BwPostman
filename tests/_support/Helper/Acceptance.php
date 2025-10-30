@@ -1220,6 +1220,7 @@ class Acceptance extends Codeception\Module
 		$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
 		$I->clickAndWait(Generals::$search_list, 1);
 		$I->selectOption(Generals::$search_list, $edit_data['archive_identifier']);
+        $I->wait(1);
 
 		$searchButton = Generals::$search_button;
 

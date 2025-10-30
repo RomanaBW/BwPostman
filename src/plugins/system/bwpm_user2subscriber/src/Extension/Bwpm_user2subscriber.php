@@ -38,6 +38,7 @@ use Joomla\CMS\Event\User\AfterDeleteEvent;
 use Joomla\CMS\Event\User\AfterSaveEvent;
 use Joomla\CMS\Event\User\BeforeSaveEvent;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\LanguageFactoryInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -366,7 +367,10 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
      */
     protected function loadLanguageFiles(): void
     {
-        $lang = Factory::getApplication()->getLanguage();
+        // The new one only delivers method createLanguage
+        $lang_new = Factory::getContainer()->get(LanguageFactoryInterface::class);
+        // The old one is with version 6.0.0 still used by Joomla, see libraries/src/Component/ComponentHelper.php
+        $lang     = Factory::getLanguage();
 
         if (is_object($lang))
         {

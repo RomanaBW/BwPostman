@@ -8,17 +8,19 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 
 Version 4.3.3 released (2025-xx-xx)----
 
+New
+- Works with Joomla! 6.
+- Add non-binary as gender.
+
 Bugfix
-# Adjustments to replace with Joomla! 6 deprecated methods to be able to work with Joomla! 6
-# Correct plugin name at provider for plugins UserAccount and User2Subscriber
-# Correct redirect link after export of newsletter template
-# Remove not needed imports
+# Correct plugin name at provider for plugins UserAccount and User2Subscriber.
+# Correct redirect link after export of newsletter template.
 
 Improvement
-~ Add width for imprint at newsletter templates
-~ Add non-binary as gender
-~ Enable to send different newsletters independently, send selected content at table sendmailQueue
-~ Repair some code styles, correct docBlocs
+~ Enable to send different newsletters independently.
+~ Imprint now has the same width as the footer at newsletter templates.
+~ Repair some code styles, correct docBlocs.
+~ Remove not needed class imports.
 
 
 

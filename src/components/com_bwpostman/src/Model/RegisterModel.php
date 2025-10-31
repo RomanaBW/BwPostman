@@ -481,11 +481,11 @@ class RegisterModel extends AdminModel
 		$params = ComponentHelper::getParams('com_bwpostman');
 
 		// set sender and reply-to
-		$sender = BwPostmanSubscriberHelper::getSender();
-		$reply  = BwPostmanSubscriberHelper::getReplyTo();
+		$sender = BwPostmanSubscriberHelper::getSender($mode);
+		$reply  = BwPostmanSubscriberHelper::getReplyTo($mode);
 
 		$mailer->setSender($sender);
-		$mailer->addReplyTo($reply);
+		$mailer->addReplyTo($reply[0], $reply[1]);
 
 		// set recipient
 		$recipient_mail = MailHelper::cleanAddress($params->get('activation_to_webmaster_email', ''));

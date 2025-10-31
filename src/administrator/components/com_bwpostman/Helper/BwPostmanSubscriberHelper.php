@@ -1034,6 +1034,8 @@ class BwPostmanSubscriberHelper
 
 	/**
 	 * Method to get sender name and mail address from config
+     *
+     * @param string $mode activation or deactivation of subscription
 	 *
 	 * @return array
 	 *
@@ -1041,20 +1043,40 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since 4.0.0
 	 */
-	public static function getSender(): array
+	public static function getSender(string $mode = 'activation'): array
 	{
 		$config = Factory::getApplication()->getConfig();
 		$params = ComponentHelper::getParams('com_bwpostman');
 		$sender = array();
 
-		$sender[0] = MailHelper::cleanAddress($params->get('default_from_email', $config->get('mailfrom')));
-		$sender[1] = Text::_($params->get('default_from_name', $config->get('fromname')));
+        $sender[0] = MailHelper::cleanAddress($params->get('activation_to_webmaster_email', $params->get('default_from_email')));
+        $sender[1] = Text::_($params->get('activation_from_name', $params->get('default_from_name')));
+
+        if ($mode === 'deactivation')
+        {
+            $sender[0] = MailHelper::cleanAddress($params->get('deactivation_to_webmaster_email', $params->get('default_from_email')));
+            $sender[1] = Text::_($params->get('deactivation_from_name', $params->get('default_from_name')));
+        }
+
+        if (!isset($sender[0]))
+        {
+            $sender[0] = MailHelper::cleanAddress($params->get('default_from_email', $config->get('mailfrom')));
+        }
+
+        if (!isset($sender[1]))
+        {
+            $sender[1] = Text::_($params->get('default_from_name', $config->get('fromname')));
+        }
+
+        $sender[2] = $sender[0];
 
 		return $sender;
 	}
 
 	/**
 	 * Method to get reply to name and mail address from config
+     *
+     * @param string $mode activation or deactivation of subscription
 	 *
 	 * @return array
 	 *
@@ -1062,7 +1084,7 @@ class BwPostmanSubscriberHelper
 	 *
 	 * @since 4.0.0
 	 */
-	public static function getReplyTo(): array
+	public static function getReplyTo(string $mode = 'activation'): array
 	{
 		$config = Factory::getApplication()->getConfig();
 		$params = ComponentHelper::getParams('com_bwpostman');

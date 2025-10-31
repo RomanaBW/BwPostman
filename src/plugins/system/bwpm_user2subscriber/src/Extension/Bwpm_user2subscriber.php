@@ -369,7 +369,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
     {
         // The new one only delivers method createLanguage
         $lang_new = Factory::getContainer()->get(LanguageFactoryInterface::class);
-        // The old one is with version 6.0.0 still used by Joomla, see libraries/src/Component/ComponentHelper.php
+        // The old one is with version 6.0.0 still used by Joomla, see libraries/src/Component/ComponentHelper.php -> renderComponent()
         $lang     = Factory::getLanguage();
 
         if (is_object($lang))
@@ -1121,8 +1121,8 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			// @ToDo: How could I get here with no object $this->stored_subscriber_data
 			if ($send_mail && $res && $subscriber_id)
 			{
-//				require_once(JPATH_SITE . '/components/com_bwpostman/models/register.php');
-				$model = new RegisterModel();
+                $this->loadLanguageFiles();
+    			$model = new RegisterModel();
 
 				$model->sendActivationNotification($this->stored_subscriber_data['id']);
 			}

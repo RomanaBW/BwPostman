@@ -7,18 +7,18 @@ networks:
     ipam:
         driver: default
         config:
-            - subnet: 172.118.4.56/29
+            - subnet: 172.118.5.56/29
 
 services:
     #  Database
   bwpm-fast-previous-db:
     container_name: bwpm-fast-previous-db
-    image: universe3:5000/romana/joomla_enh_db-4:7.4.33-4.4.14-4.3.3
+    image: universe3:5000/romana/joomla_enh_db-5:8.1.0-5.4.0-4.3.3
     volumes:
-        - db_testdata_44:/var/lib/mariadb
+        - db_testdata_54:/var/lib/mariadb
     networks:
       bwpm-fast-previous:
-        ipv4_address: 172.118.4.58
+        ipv4_address: 172.118.5.58
     expose:
         - 3446
     command: '--default-authentication-plugin=mysql_native_password'
@@ -41,18 +41,18 @@ services:
     # Webserver
   bwpm-fast-previous-joomla:
     container_name: bwpm-fast-previous-joomla
-    image: universe3:5000/romana/joomla_enh_web-4:7.4.33-4.4.14-4.3.3
+    image: universe3:5000/romana/joomla_enh_web-5:8.1.0-5.4.0-4.3.3
     ports:
         - 75:80
     healthcheck:
-        test: curl --fail http://172.118.4.59/index.php || exit 1
+        test: curl --fail http://172.118.5.59/index.php || exit 1
         start_period: 5s
         interval: 10s
         timeout: 10s
         retries: 5
     networks:
       bwpm-fast-previous:
-        ipv4_address: 172.118.4.59
+        ipv4_address: 172.118.5.59
     depends_on:
       bwpm-fast-previous-db:
         condition: service_healthy
@@ -64,7 +64,7 @@ services:
     volumes:
         # mount webserver root
         - type: bind
-          source: /home/container-files/j4current
+          source: /home/container-files/j5current
           target: /var/www/html
         # mount Joomla configuration
         - type: bind
@@ -257,10 +257,10 @@ services:
     image: phpmyadmin
     networks:
       bwpm-fast-previous:
-        ipv4_address: 172.118.4.61
+        ipv4_address: 172.118.5.61
     healthcheck:
         #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
-        test: curl --fail http://172.118.4.61/LICENSE || exit 1
+        test: curl --fail http://172.118.5.61/LICENSE || exit 1
         start_period: 10s
         interval: 10s
         timeout: 5s
@@ -273,7 +273,7 @@ services:
         PMA_HOST: bwpm-fast-previous-db
 
 volumes:
-  db_testdata_44:
+  db_testdata_54:
 
 secrets:
     db_password:

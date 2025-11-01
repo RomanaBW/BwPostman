@@ -6,7 +6,7 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.118.5.48/29
+        - subnet: 172.118.6.48/29
 
 services:
   bwpm-fast5-db:
@@ -16,7 +16,7 @@ services:
       - db_testdata_520:/var/lib/mariadb
     networks:
       bwpm-test5:
-        ipv4_address: 172.118.5.50
+        ipv4_address: 172.118.6.50
     expose:
       - 3456
     restart: no
@@ -42,14 +42,14 @@ services:
       - 85:80
     restart: no
     healthcheck:
-      test: curl --fail http://172.118.5.51/index.php || exit 1
+      test: curl --fail http://172.118.6.51/index.php || exit 1
       start_period: 5s
       interval: 10s
       timeout: 10s
       retries: 5
     networks:
       bwpm-test5:
-        ipv4_address: 172.118.5.51
+        ipv4_address: 172.118.6.51
     depends_on:
       bwpm-fast5-db:
         condition: service_healthy
@@ -254,16 +254,16 @@ services:
     image: phpmyadmin
     networks:
       bwpm-test5:
-        ipv4_address: 172.118.5.53
+        ipv4_address: 172.118.6.53
     environment:
-      JOOMLA_DB_HOST: 172.118.5.50
-      PMA_HOST: 172.118.5.50
+      JOOMLA_DB_HOST: 172.118.6.50
+      PMA_HOST: 172.118.6.50
     depends_on:
       bwpm-fast5-db:
         condition: service_healthy
     healthcheck:
 #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
-      test: curl --fail http://172.118.5.53/LICENSE || exit 1
+      test: curl --fail http://172.118.6.53/LICENSE || exit 1
       start_period: 10s
       interval: 10s
       timeout: 5s

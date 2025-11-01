@@ -67,17 +67,17 @@
       debug:
         msg: "{{ test_dir }}"
 
-        #    - name: Set command for new database dump
-#      set_fact:
-#        sql_dump_command: "mariadb-dump --ssl=0 -h {{ database_ip }} -u {{ test_db_user }} -p{{ test_db_password }} --opt --extended-insert --complete-insert {{ test_db_dbname }} > {{ test_dir }}/backups/{{ project_name }}.sql"
-#
-#    - name: Show command for new database dump
-#      debug:
-#        msg: "{{ sql_dump_command }}"
-#
-#    - name: Execute command for new database dump
-#      shell: "{{ sql_dump_command }}"
-#
+    - name: Set command for new database dump
+      set_fact:
+        sql_dump_command: "mariadb-dump --ssl=0 -h {{ database_ip }} -u {{ test_db_user }} -p{{ test_db_password }} --opt --extended-insert --complete-insert {{ test_db_dbname }} > {{ test_dir }}/backups/{{ project_name }}.sql"
+
+    - name: Show command for new database dump
+      debug:
+        msg: "{{ sql_dump_command }}"
+
+    - name: Execute command for new database dump
+      shell: "{{ sql_dump_command }}"
+
     - name: Handle backups of BwPostman
       block:
         - name: Get file name of XML backup file
@@ -108,8 +108,8 @@
           debug:
             msg: "{{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
 
-#        - name: Move XML backup file from tester folder to repository
-#          shell: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
+        - name: Move XML backup file from tester folder to repository
+          shell: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
 
         - name: Get file name of ZIP backup file
           find:
@@ -131,6 +131,6 @@
           debug:
             msg: "{{ found_zip_name }}"
 
-#        - name: Move ZIP backup file from tester folder to repository
-#          shell: "mv -f {{ found_zip_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml.zip"
+        - name: Move ZIP backup file from tester folder to repository
+          shell: "mv -f {{ found_zip_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml.zip"
       when: j_main_version is not defined or j_main_version == '5'

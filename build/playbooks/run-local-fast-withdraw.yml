@@ -12,15 +12,15 @@
   tasks:
     - name: Get variables if joomla main version is provided as extra_vars
       include_vars: vars/previous-withdraw-vars.yml
-      when: j_main_version is defined and j_main_version == '4'
+      when: j_main_version is defined and j_main_version == '5'
 
     - name: Get variables if joomla main version is provided as extra_vars
       include_vars: ../docker/vars/vars_previous_dev.yml
-      when: j_main_version is defined and j_main_version == '4'
+      when: j_main_version is defined and j_main_version == '5'
 
     - name: Get variables if joomla main version is provided as extra_vars
       include_vars: ../docker/vars/vars_previous_fast.yml
-      when: j_main_version is defined and j_main_version == '4'
+      when: j_main_version is defined and j_main_version == '5'
 
     - name: Set DB host and webserver
       set_fact:
@@ -85,20 +85,20 @@
       set_fact:
         reduced_date: "{{ year_to_save }}_{{ month_to_save }}"
 
-    - name: Copy current backups of BwPostman to file with year and month
-      copy:
-        src: "{{ repo_data_dir }}/{{ item.src }}"
-        dest: "{{ repo_data_dir }}/{{ item.dest }}"
-      with_items:
-        - src: "{{ backup_name_raw }}.xml"
-          dest: "{{ backup_name_raw }}_{{ reduced_date }}.xml"
-        - src: "{{ backup_name_raw }}.xml.zip"
-          dest: "{{ backup_name_raw }}_{{ reduced_date }}.xml.zip"
-
-    - name: Copy current table dump to file with year and month
-      copy:
-        src: "{{ artifacts_path }}/backups/{{ project_name }}.sql"
-        dest: "{{ artifacts_path }}/backups/{{ project_name }}_{{ reduced_date }}.sql"
+#    - name: Copy current backups of BwPostman to file with year and month
+#      copy:
+#        src: "{{ repo_data_dir }}/{{ item.src }}"
+#        dest: "{{ repo_data_dir }}/{{ item.dest }}"
+#      with_items:
+#        - src: "{{ backup_name_raw }}.xml"
+#          dest: "{{ backup_name_raw }}_{{ reduced_date }}.xml"
+#        - src: "{{ backup_name_raw }}.xml.zip"
+#          dest: "{{ backup_name_raw }}_{{ reduced_date }}.xml.zip"
+#
+#    - name: Copy current table dump to file with year and month
+#      copy:
+#        src: "{{ artifacts_path }}/backups/{{ project_name }}.sql"
+#        dest: "{{ artifacts_path }}/backups/{{ project_name }}_{{ reduced_date }}.sql"
 
     - name: Show start infrastructure command
       debug:
@@ -136,8 +136,8 @@
          msg: "{{ sql_withdraw_command }}"
 
 # Comment for debugging
-    - name: Execute withdraw at database
-      shell: "{{ sql_withdraw_command }}"
+#    - name: Execute withdraw at database
+#      shell: "{{ sql_withdraw_command }}"
 
 # Comment for debugging
 #    - name: Pause after withdraw
@@ -177,6 +177,10 @@
             mode: 0664
             owner: romana
             group: users
+
+        - name: Show tester compose file path
+          debug:
+            msg: "{{ artifacts_base }}/{{ project_name }}"
 
         - name: Create tester start script
           become: yes

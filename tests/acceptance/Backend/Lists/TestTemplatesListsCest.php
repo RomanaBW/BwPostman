@@ -185,15 +185,17 @@ class TestTemplatesListsCest
 		$I->wait(1);
 
 		// select text
-		$I->click(Generals::$filterOptionsSwitcher);
-		$I->click(TplManage::$format_list_id);
+		$I->clickAndWait(Generals::$filterOptionsSwitcher, 1);
+		$I->clickAndWait(TplManage::$format_list_id, 1);
 		$I->selectOption(TplManage::$format_list_id, TplManage::$format_text);
+        $I->wait(1);
 
 		$I->see(TplManage::$format_text_text, TplManage::$format_text_column);
 		$I->dontSee(TplManage::$format_text_html, TplManage::$format_text_column);
 
 		// select unpublished
 		$I->selectOption(TplManage::$format_list_id, TplManage::$format_html);
+        $I->wait(1);
 
 		$I->see(TplManage::$format_text_html, TplManage::$format_text_column);
 		$I->dontSee(TplManage::$format_text_text, TplManage::$format_text_column);

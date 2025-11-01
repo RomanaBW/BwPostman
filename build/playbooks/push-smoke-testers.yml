@@ -48,14 +48,14 @@
       with_items: "{{ acceptance_j5_folders }}"
       when: j_main_version == '5'
 
-    - name: create acceptance webroot folders and copy joomla files for J4
+    - name: create acceptance webroot folders and copy joomla files for J5
       include_role:
         name: romanabw.create-copy-webroot-folders
       vars:
         target_folder: "{{ item }}"
         source_folder: "{{ joomla_base_folders[sub_path] }}"
       with_items: "{{ acceptance_j4_folders }}"
-      when: j_main_version == '4'
+      when: j_main_version == '5'
 
     - name: create acceptance webroot folders and copy joomla files for J3
       include_role:

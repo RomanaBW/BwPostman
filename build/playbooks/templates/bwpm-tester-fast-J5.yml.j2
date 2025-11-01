@@ -47,10 +47,10 @@ services:
     # Wegen Projektname, Test Runner (=/data/bwpm_test_runner.sh), Display, Test-Cat, Screen Size
     entrypoint: /tester_entry_point.sh
     networks:
-      bwpm-fast-current:
+      bwpm-fast-previous:
         ipv4_address: "{{ testcontainer_ip }}"
 
 networks:
-  bwpm-fast-current:
+  bwpm-fast-previous:
     external: true
-    name: bwpm-fast-current
+    name: bwpm-fast-previous

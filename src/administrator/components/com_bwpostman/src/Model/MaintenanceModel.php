@@ -236,7 +236,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @access      public
 	 *
-	 * @param string  $fileName
+	 * @param ?string  $fileName
 	 * @param boolean $update
 	 *
 	 * @return  string|boolean
@@ -245,7 +245,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since       1.0.1
 	 */
-	public function saveTables(string $fileName, bool $update = false)
+	public function saveTables(?string $fileName, bool $update = false)
 	{
 		// Access check.
 		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);

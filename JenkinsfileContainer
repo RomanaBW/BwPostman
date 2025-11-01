@@ -10,11 +10,11 @@ pipeline {
 					JOOMLA_VERSION_PREVIOUS = "5.4.0"
 					JOOMLA_VERSION_CURRENT  = "6.0.0"
 
-					DO_CURRENT_GENERAL   = 'false'
+					DO_CURRENT_GENERAL   = 'true'
 					DO_PREVIOUS_GENERAL  = 'true'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'false'
+					PACK_PACKAGE  = 'true'
 
 					DO_CURRENT_SMOKE  = 'true'
 					DO_CURRENT_ACCEPT = 'true'

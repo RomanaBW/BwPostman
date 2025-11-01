@@ -64,7 +64,7 @@ services:
     volumes:
         # mount webserver root
         - type: bind
-          source: /home/container-files/j5current
+          source: /home/container-files/j5previous
           target: /var/www/html
         # mount Joomla configuration
         - type: bind

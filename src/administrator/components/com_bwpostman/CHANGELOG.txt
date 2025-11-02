@@ -9,11 +9,11 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 Version 4.3.3 released (2025-xx-xx)----
 
 New
-- Works with Joomla! 6.
+- BwPostman now works with Joomla! 6.
 - Add non-binary as gender.
 
 Bugfix
-# Correct plugin name at provider for plugins UserAccount and User2Subscriber.
+# Correct plugin name at their internal provider for plugins UserAccount and User2Subscriber.
 # Correct redirect link after export of newsletter template.
 
 Improvement

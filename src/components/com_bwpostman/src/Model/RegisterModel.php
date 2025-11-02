@@ -488,21 +488,21 @@ class RegisterModel extends AdminModel
 		$mailer->addReplyTo($reply[0], $reply[1]);
 
 		// set recipient
-		$recipient_mail = MailHelper::cleanAddress($params->get('activation_to_webmaster_email', ''));
-		$recipient_name	= Text::_($params->get('activation_from_name', ''));
+		$recipient_mail = MailHelper::cleanAddress($params->get('activation_to_webmaster_email', $params->get('default_from_email')));
+		$recipient_name	= Text::_($params->get('activation_from_name', $params->get('default_from_name')));
 
 		if ($mode === 'deactivation')
 		{
-			$recipient_mail = MailHelper::cleanAddress($params->get('deactivation_to_webmaster_email', ''));
-			$recipient_name	= Text::_($params->get('deactivation_from_name', ''));
+			$recipient_mail = MailHelper::cleanAddress($params->get('deactivation_to_webmaster_email', $params->get('default_from_email')));
+			$recipient_name	= Text::_($params->get('deactivation_from_name', $params->get('default_from_name')));
 		}
 
-		if (!is_string($recipient_mail))
+		if (empty($recipient_mail))
 		{
 			$recipient_mail = $sender[0];
 		}
 
-		if (!is_string($recipient_name))
+		if (empty($recipient_name))
 		{
 			$recipient_name = $sender[1];
 		}

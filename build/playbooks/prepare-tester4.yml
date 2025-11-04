@@ -2,7 +2,7 @@
 - hosts: localhost
   connection: local
   vars_files:
-    - vars/fast-test-vars4.yml
+    - vars/fast-test-vars-previous.yml
     - vars/previous-withdraw-vars.yml
     - ../docker/vars/vars_versions.yml
     - ../docker/vars/vars_previous.yml

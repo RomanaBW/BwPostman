@@ -1,5 +1,5 @@
 ---
-tester_image: "universe3:5000/romana/bwpm_enh_tester-6:6.0.0-4.3.3"
+tester_image: "universe3:5000/romana/bwpm_enh_tester-6:6.0.0-4.3.4"
 webserver_url: "172.118.5.35"
 database_ip: "172.118.5.34"
 testcontainer_ip: "172.118.5.38"
@@ -9,9 +9,9 @@ screen_size: "1920x1080"
 screen_size_opts: "1920,1080"
 j_main: '6'
 joomla_version: "6.0.0"
-bwpm_version: "4.3.3"
-bwpm_version_dotted: "4.3.3"
-bwpm_version_previous: "4.3.2"
+bwpm_version: "4.3.4"
+bwpm_version_dotted: "4.3.4"
+bwpm_version_previous: "4.3.3"
 
 j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 

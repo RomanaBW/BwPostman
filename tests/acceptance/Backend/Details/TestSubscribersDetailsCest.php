@@ -482,7 +482,7 @@ class TestSubscribersDetailsCest
 		$I->see(SubEdit::$error_save, Generals::$alert_error_1);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 
-		$I->click(Generals::$toolbar4['Cancel']);
+		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
 		$I->see("Subscribers", Generals::$pageTitle);
 
 		$edit_arc_del_array = SubEdit::prepareDeleteArray($I);

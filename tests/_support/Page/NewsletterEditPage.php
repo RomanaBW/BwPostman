@@ -1486,7 +1486,7 @@ class NewsletterEditPage
         $I->executeJS("document.getElementsByClassName('iframe-content')[0].setAttribute('name', 'Change Image');");
 		$I->switchToIFrame(Generals::$media_frame1);
 		$I->waitForElementVisible("div.media-browser-grid", 5);
-
+        $I->wait(2);
 
 		$I->scrollTo(self::$attachment_scrollto_select2, 0, 0);
 		$I->wait(2);

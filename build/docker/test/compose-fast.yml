@@ -1,21 +1,21 @@
 networks:
-  bwpm-test5:
+  bwpm-test6:
     driver: bridge
     attachable: true
-    name: bwpm-test5
+    name: bwpm-test6
     ipam:
       driver: default
       config:
         - subnet: 172.118.6.48/29
 
 services:
-  bwpm-fast5-db:
-    container_name: bwpm-fast5-db
-    image: universe3:5000/romana/joomla_enh_db-5:8.1.0-5.2.0-4.3.2
+  bwpm-fast6-db:
+    container_name: bwpm-fast6-db
+    image: universe3:5000/romana/joomla_enh_db-6:8.3.0-6.0.0-4.3.4
     volumes:
-      - db_testdata_520:/var/lib/mariadb
+      - db_testdata_600:/var/lib/mariadb
     networks:
-      bwpm-test5:
+      bwpm-test6:
         ipv4_address: 172.118.6.50
     expose:
       - 3456
@@ -35,9 +35,9 @@ services:
       - db_root_password
       - db_password
 
-  bwpm-fast5-joomla:
-    container_name: bwpm-fast5-joomla
-    image: universe3:5000/romana/joomla_enh_web-5:8.1.0-5.2.0-4.3.2
+  bwpm-fast6-joomla:
+    container_name: bwpm-fast6-joomla
+    image: universe3:5000/romana/joomla_enh_web6:8.3.0-6.0.0-4.3.4
     ports:
       - 85:80
     restart: no
@@ -48,10 +48,10 @@ services:
       timeout: 10s
       retries: 5
     networks:
-      bwpm-test5:
+      bwpm-test6:
         ipv4_address: 172.118.6.51
     depends_on:
-      bwpm-fast5-db:
+      bwpm-fast6-db:
         condition: service_healthy
     secrets:
       - j_root_password
@@ -60,7 +60,7 @@ services:
     volumes:
       # mount webserver root
       - type: bind
-        source: /home/container-files/j520
+        source: /home/container-files/j600
         target: /var/www/html
       # mount Joomla configuration
       - type: bind
@@ -249,17 +249,17 @@ services:
         source: /home/romana/PhpstormProjects/BwPostman_J4/src/language/en-GB/en-GB.mod_bwpostman.sys.ini
         target: /var/www/html/language/en-GB/en-GB.mod_bwpostman.sys.ini
 
-  bwpm-fast5-phpmyadmin:
-    container_name: bwpm-fast5-phpmyadmin
+  bwpm-fast6-phpmyadmin:
+    container_name: bwpm-fast6-phpmyadmin
     image: phpmyadmin
     networks:
-      bwpm-test5:
+      bwpm-test6:
         ipv4_address: 172.118.6.53
     environment:
       JOOMLA_DB_HOST: 172.118.6.50
       PMA_HOST: 172.118.6.50
     depends_on:
-      bwpm-fast5-db:
+      bwpm-fast6-db:
         condition: service_healthy
     healthcheck:
 #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
@@ -273,7 +273,7 @@ services:
     restart: no
 
 volumes:
-  db_testdata_520:
+  db_testdata_600:
 
 secrets:
   db_password:

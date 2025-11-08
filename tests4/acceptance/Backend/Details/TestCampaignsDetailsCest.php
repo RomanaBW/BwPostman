@@ -237,7 +237,7 @@ class TestCampaignsDetailsCest
 		$I->amOnPage(MainView::$url);
 
 		$I->see(Generals::$extension, Generals::$pageTitle);
-		$I->click(MainView::$addCampaignButton);
+		$I->clickAndWait(MainView::$addCampaignButton, 1);
 		$I->waitForText('Campaign details', 30);
 
 		CamEdit::fillFormSimple($I);
@@ -267,7 +267,7 @@ class TestCampaignsDetailsCest
 
 		$I->assertGreaterThan($id1[0], $id2[0]);
 
-		$I->click(Generals::$toolbar['Cancel']);
+		$I->clickAndWait(Generals::$toolbar['Cancel'], 1);
 		$I->see("Campaigns", Generals::$pageTitle);
 
 		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array, true);
@@ -293,10 +293,10 @@ class TestCampaignsDetailsCest
 	{
 		$I->wantTo("Create one campaign, archive, restore, archive and delete");
 		$I->amOnPage(CamManage::$url);
-		$I->click(Generals::$toolbar['New']);
+		$I->clickAndWait(Generals::$toolbar['New'], 1);
 
 		CamEdit::fillFormSimple($I);
-		$I->click(Generals::$toolbar4['Save & Close']);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
@@ -339,23 +339,23 @@ class TestCampaignsDetailsCest
 
 		CamEdit::fillFormSimple($I);
 
-		$I->click(Generals::$toolbar4['Save & Close']);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 		$I->see(CamEdit::$success_save, Generals::$alert_success);
 
 		$I->see('Campaigns', Generals::$pageTitle);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
-		$I->click(Generals::$toolbar['New']);
+		$I->clickAndWait(Generals::$toolbar['New'], 1);
 
 		CamEdit::fillFormSimple($I);
-		$I->click(Generals::$toolbar4['Save & Close']);
+		$I->clickAndWait(Generals::$toolbar4['Save & Close'], 1);
 		$I->waitForElementVisible(Generals::$alert_header, 5);
 
 		$I->see("danger", Generals::$alert_heading);
 		$I->see(CamEdit::$error_save, Generals::$alert_error);
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
-		$I->click(Generals::$toolbar4['Cancel']);
+		$I->clickAndWait(Generals::$toolbar4['Cancel'], 1);
 		$I->see("Campaigns", Generals::$pageTitle);
 
 		$I->HelperArcDelItems($I, CamManage::$arc_del_array, CamEdit::$arc_del_array, true);

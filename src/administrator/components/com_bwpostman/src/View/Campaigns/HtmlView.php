@@ -160,7 +160,14 @@ class HtmlView extends BaseHtmlView
 		$this->total			= $model->getTotal();
 
         // trigger Plugin BwTimeControl event and get results
-//		$this->auto_nbr	= $app->triggerEvent('onBwPostmanCampaignsPrepare', array (&$this->items));
+        PluginHelper::importPlugin('bwpostman');
+
+        $event = new Event( 'onBwPostmanCampaignsPrepare', [
+            'subject'       => ArrayHelper::fromObject($this),
+            'items'         => $this->items,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
         $this->addToolbar();
 

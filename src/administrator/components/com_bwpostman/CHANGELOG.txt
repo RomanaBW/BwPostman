@@ -2,8 +2,16 @@
 Changelog for BwPostman Component
 *********************************
 
-This is a changelog for the Joomla!3.3.6+ component BwPostman 3.x and for Joomla!4.0.0 and BwPostman 4.x
+This is the changelog for the Joomla!5.0.0+ component BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
+
+
+Version 4.3.4 released (2025-11-11)----
+
+Bugfix
+# Correct parameter type at method for logging exceptions.
+# Check if by event modified query is returned for sending newsletters.
+# Replace last deprecated triggerEvent call with new event trigger.
 
 
 Version 4.3.3 released (2025-11-04)----

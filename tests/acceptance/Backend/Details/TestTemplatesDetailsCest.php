@@ -714,7 +714,7 @@ class TestTemplatesDetailsCest
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElementVisible(Generals::$pageTitle, 5);
 
-		$I->click(Generals::$toolbar4['Add Text-Template']);
+		$I->clickAndWait(Generals::$toolbar4['Add Text-Template'], 1);
 
 		TplEdit::fillFormSimpleText($I);
 
@@ -725,7 +725,7 @@ class TestTemplatesDetailsCest
 		$I->clickAndWait(Generals::$systemMessageClose, 1);
 		$I->see('Template', Generals::$pageTitle);
 
-		$I->click(Generals::$toolbar4['Add Text-Template']);
+		$I->clickAndWait(Generals::$toolbar4['Add Text-Template'], 1);
 
 		TplEdit::fillFormSimpleText($I);
 
@@ -824,7 +824,7 @@ class TestTemplatesDetailsCest
 		$I->wantTo("Edit default template, save as copy");
 		$I->amOnPage(TplManage::$url);
 		$I->waitForElementVisible(Generals::$pageTitle, 5);
-		$I->click(TplManage::$tableRowForDefault);
+		$I->clickAndWait(TplManage::$tableRowForDefault, 1);
 		$I->waitForElementVisible(TplEdit::$tpl_tab1);
 
 		// Grab ID of first template

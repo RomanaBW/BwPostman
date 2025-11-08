@@ -1835,9 +1835,20 @@ class NewsletterModel extends AdminModel
 		$query->where($db->quoteName('trial') . ' < ' . $trial);
 		$query->order($db->quoteName($table) . ' ASC LIMIT 0,1');
 
-		$app->triggerEvent('onBwPostmanGetAdditionalQueueWhere', array(&$query, true));
+        $event = new Event( 'onBwPostmanGetAdditionalQueueWhere', [
+            'subject'       => ArrayHelper::fromObject($this),
+            'query'         => $query,
+            'fromComponent' => true,
+        ]);
+        Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
+        $eventResults = $event->getArgument('result', []);
 
-		$tblSendmailQueue = $this->getTable('Sendmailqueue');
+        if (count($eventResults) > 0)
+        {
+            $query = $eventResults[0];
+        }
+
+        $tblSendmailQueue = $this->getTable('Sendmailqueue');
 
 		return $tblSendmailQueue->checkTrials($trial, $count, $content_id);
 	}

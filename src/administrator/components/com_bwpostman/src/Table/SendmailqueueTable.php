@@ -223,7 +223,11 @@ class SendmailqueueTable extends Table
         ]);
         Factory::getApplication()->getDispatcher()->dispatch($event->getName(), $event);
         $eventResults = $event->getArgument('result', []);
-        $query = $eventResults[0];
+
+        if (count($eventResults) > 0)
+        {
+            $query = $eventResults[0];
+        }
 
 		try
 		{

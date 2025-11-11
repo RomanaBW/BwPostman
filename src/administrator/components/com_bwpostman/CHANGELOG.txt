@@ -6,7 +6,7 @@ This is the changelog for the Joomla!5.0.0+ component BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
-Version 4.3.4 released (2025-11-11)----
+Version 4.3.4 released (2025-11-13)----
 
 Bugfix
 # Correct parameter type at method for logging exceptions.

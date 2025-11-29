@@ -1791,7 +1791,7 @@ class BwPostmanHelper
 
 		if (!empty($mls))
 		{
-			$whereMlsClause .= 'm.mailinglist_id IN (' . implode(',', $mls) . ')';
+			$whereMlsClause .= self::getDbo()->quoteName('m.mailinglist_id') . ' IN (' . implode(',', $mls) . ')';
 		}
 
 		return $whereMlsClause;
@@ -1812,7 +1812,7 @@ class BwPostmanHelper
 
 		if (!empty($cams))
 		{
-			$whereCamsClause .= 'a.campaign_id IN (' . implode(',', $cams) . ')';
+			$whereCamsClause .= self::getDbo()->quoteName('a.campaign_id') . ' IN (' . implode(',', $cams) . ')';
 		}
 
 		return $whereCamsClause;

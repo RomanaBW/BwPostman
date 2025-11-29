@@ -599,7 +599,7 @@ class NewslettersModel extends ListModel
 		. ' AND ' . $db->quoteName('a') . '.' . $db->quoteName('mailing_date') . ' IS NOT NULL');
 
 		// Filter by mailing lists, user groups and campaigns
-		$query->leftJoin('#__bwpostman_newsletters_mailinglists AS m ON a.id = m.newsletter_id');
+		$query->leftJoin($db->quoteName('#__bwpostman_newsletters_mailinglists') . ' AS ' . $db->quoteName('m') . ' ON ' . $db->quoteName('a.id') . ' = ' . $db->quoteName('m.newsletter_id'));
 
 		$whereMlsCamsClause = BwPostmanHelper::getWhereMlsCamsClause($mls, $cams);
 
@@ -662,14 +662,14 @@ class NewslettersModel extends ListModel
 		$month = $this->getState('filter.month', '');
 		if ($month !== '')
 		{
-			$query->where($query->month('a.mailing_date') . ' = ' . $month);
+			$query->where($query->month($db->quoteName('a.mailing_date')) . ' = ' . $month);
 		}
 
 		// Filter on year
 		$year = $this->getState('filter.year', '');
 		if ($year !== '')
 		{
-			$query->where($query->year('a.mailing_date') . ' = ' . $year);
+			$query->where($query->year($db->quoteName('a.mailing_date')) . ' = ' . $year);
 		}
 
 		// Set the list limit
@@ -678,9 +678,9 @@ class NewslettersModel extends ListModel
 		$this->setState('filter.limit', $limit);
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering', 'a.mailing_date');
-		$orderDirn	= $this->state->get('list.direction', 'DESC');
-		$query->order($db->escape($orderCol . ' ' . $orderDirn));
+		$orderCol	= $db->escape('a.' . $this->state->get('list.ordering', 'a.mailing_date'));
+		$orderDirn	= $db->escape($this->state->get('list.direction', 'DESC'));
+		$query->order($db->quoteName($orderCol) . ' ' . $orderDirn);
 		$query->group($db->quoteName('a.mailing_date'));
 
 		try

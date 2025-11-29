@@ -274,7 +274,7 @@ class ContentRenderer
 
 			$row->params = $params;
 //			$row->text   = $row->introtext;
-      $row->text = ($row->fulltext !== null && trim($row->fulltext) != '' && $show_readon !== 1) ? $row->introtext . ' ' . $row->fulltext : $row->introtext;
+            $row->text = ($row->fulltext !== null && trim($row->fulltext) != '' && $show_readon !== 1) ? $row->introtext . ' ' . $row->fulltext : $row->introtext;
 		}
 
 		return $row;

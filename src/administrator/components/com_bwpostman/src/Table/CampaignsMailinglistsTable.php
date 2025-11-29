@@ -225,8 +225,16 @@ class CampaignsMailinglistsTable extends Table
 
 		$query->select('DISTINCT (' . $db->quoteName('campaign_id') . ')');
 		$query->from($db->quoteName($this->_tbl));
-		$query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $mls) . ')');
-		$query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
+
+		if (count($mls) > 0)
+		{
+			$query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $mls) . ')');
+		}
+
+		if (count($cams) > 0)
+		{
+			$query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', $cams) . ')');
+		}
 
 		try
 		{

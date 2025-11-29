@@ -380,8 +380,16 @@ class ModBwPostmanOverviewHelper
 
 			$query->select('DISTINCT (' . $db->quoteName('campaign_id') . ')');
 			$query->from($db->quoteName('#__bwpostman_campaigns_mailinglists'));
-			$query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $acc_mls) . ')');
-			$query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', (array)$cams) . ')');
+
+			if (count($acc_mls) > 0)
+			{
+				$query->where($db->quoteName('mailinglist_id') . ' IN (' . implode(',', $acc_mls) . ')');
+			}
+
+			if (count($cams) > 0)
+			{
+				$query->where($db->quoteName('campaign_id') . ' IN (' . implode(',', (array)$cams) . ')');
+			}
 
 			try
 			{

@@ -12,7 +12,7 @@ bwpm_joomla_name: "bwpm-dev-current-joomla"
 bwpm_joomla_ip: "172.18.6.59"
 bwpm_joomla_volume: "bwpm_joomla"
 bwpm_joomla_image: "universe3:5000/romana/bwpm-configured-files:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}"
-bwpm_joomla_ports: "80:80"
+bwpm_joomla_ports: "8680:80"
 
 bwpm_pma_name: "bwpm-dev-current-phpmyadmin"
 bwpm_pma_ip: "172.18.6.61"

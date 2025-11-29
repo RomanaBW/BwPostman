@@ -1712,6 +1712,7 @@ class NewsletterEditPage
 		$I->clickAndWait(NlManage::$tab2, 2);
 		$I->clickAndWait(Generals::$filterbar_button, 2);
 		$I->clickSelectList(Generals::$ordering_list, 'ID descending', Generals::$ordering_id);
+		$I->wait(1);
 		$I->seeElement($published);
 	}
 

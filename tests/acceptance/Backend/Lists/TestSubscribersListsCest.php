@@ -405,6 +405,7 @@ class TestSubscribersListsCest
 		$I->clickAndWait(Generals::$filterbar_button, 1);
 		// select 01 Mailingliste 3 A
 		$I->clickSelectList(SubsManage::$ml_list, SubsManage::$ml_select_unconfirmed, SubsManage::$ml_list_id);
+		$I->wait(1);
 
 		$I->assertFilterResult(SubsManage::$filter_subs_unconfirmed_result, SubsManage::$unconfirmedMainTable);
 	}

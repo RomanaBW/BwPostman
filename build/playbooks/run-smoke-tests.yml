@@ -2,28 +2,28 @@
 - hosts: localhost
   connection: local
   vars_files:
-    - ../docker/vars/vars_versions.yml
-    - ../docker/vars/vars_current.yml
+#    - ../docker/vars/vars_versions.yml
+#    - ../docker/vars/vars_current.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
     - vars/codecept_paths.yml
 
   tasks:
-    - name: Get variables if joomla main version is provided as extra_vars
-      include_vars: ../docker/vars/vars_previous.yml
-      when: joomla_version is defined and joomla_version[0] == '5'
-
+#    - name: Get variables if joomla main version is provided as extra_vars
+#      include_vars: ../docker/vars/vars_previous.yml
+#      when: joomla_version is defined and joomla_version[0] == '5'
+#
     - name: Show Joomla version
       debug:
         msg: "Joomla version {{ joomla_version }}"
 
     - name: Set variable for source webroot folder
       set_fact:
-        sub_path_source: "ext_install_j{{ joomla_version[0] }}"
+        sub_path_source: "ext_install_j{{ j_main_version }}"
 
     - name: Set variable for smoke webroot folder
       set_fact:
-        sub_path_smoke: "smoke_j{{ joomla_version[0] }}"
+        sub_path_smoke: "smoke_j{{ j_main_version }}"
 
 #    - name: create acceptance webroot folders and copy joomla files
 #      include_role:
@@ -91,7 +91,7 @@
         target: "{{ smoke_target }}"
         webroot_path: "{{ joomla_base_folders[sub_path_smoke] }}"
         container_web_root: "{{ tester_web_root }}"
-        subnet_part: "{{ joomla_version[0] }}0"
+        subnet_part: "{{ j_main_version }}0"
 
 
 - hosts: "{{ smoke_source.web_container_name }}"
@@ -130,7 +130,7 @@
   tasks:
     - name: Show Joomla master version
       debug:
-        msg: "{{ joomla_version[0] }}"
+        msg: "{{ j_main_version }}"
 
     - name: Show Joomla version
       debug:

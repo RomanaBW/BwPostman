@@ -13,7 +13,7 @@
 #    - name: Get variables if joomla main version is provided as extra_vars
 #      include_vars: ../docker/vars/vars_previous.yml
 #      when: joomla_version is defined and joomla_version[0] == '5'
-#
+
     - name: push all test containers (db, webserver, tester)
       include_role:
         name: romanabw.push-complete-infrastructure

@@ -4,16 +4,16 @@
     - include_vars: vars/codecept_paths.yml
   connection: local
   vars_files:
-    - ../docker/vars/vars_versions.yml
-    - ../docker/vars/vars_current.yml
+#    - ../docker/vars/vars_versions.yml
+#    - ../docker/vars/vars_current.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
 
   tasks:
-    - name: Get variables if joomla main version is provided as extra_vars
-      include_vars: ../docker/vars/vars_previous.yml
-      when: joomla_version is defined and joomla_version[0] == '5'
-
+#    - name: Get variables if joomla main version is provided as extra_vars
+#      include_vars: ../docker/vars/vars_previous.yml
+#      when: joomla_version is defined and joomla_version[0] == '5'
+#
     - name: push all test containers (db, webserver, tester)
       include_role:
         name: romanabw.push-complete-infrastructure

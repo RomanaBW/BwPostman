@@ -1,7 +1,5 @@
 ---
-j_main_version: "{{ bwpm_joomla_version[0] }}"
-
-tester_image: "universe3:5000/romana/bwpm_enh_tester-{{ j_main_version }}:{{ bwpm_joomla_version }}-{{ bwpm_project_version }}"
+tester_image: "universe3:5000/romana/bwpm_enh_tester-6:6.0.1-4.3.5"
 webserver_url: "172.118.6.35"
 database_ip: "172.118.6.34"
 testcontainer_ip: "172.118.6.38"
@@ -10,14 +8,14 @@ display: "45"
 screen_size: "1920x1080"
 screen_size_opts: "1920,1080"
 j_main: '6'
-joomla_version: "{{ bwpm_joomla_version }}"
-bwpm_version: "{{ bwpm_project_version }}"
-bwpm_version_dotted: "{{ bwpm_project_version }}"
+joomla_version: "6.0.1"
+bwpm_version: "4.3.5"
+bwpm_version_dotted: "4.3.5"
 bwpm_version_previous: "4.3.4"
 
 j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 
-php_minimum_version: "8.3.0"
+php_minimum_version: "8.1.0"
 php_current_version: "8.3.0"
 
 php_selected_version: "{{ php_current_version }}"
@@ -29,6 +27,7 @@ php_selected_version: "{{ php_current_version }}"
 j_package_name:
   j4: "Joomla_{{ j_version_hyphen }}-Stable-Full_Package.zip"
 
+j_main_version: "{{ joomla_version[0] }}"
 
 joomla_packages:
   - src: "https://downloads.joomla.org/cms/Joomla4/{{ j_version_hyphen }}/{{ j_package_name.j4 }}"

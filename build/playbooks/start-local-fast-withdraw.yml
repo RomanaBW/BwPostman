@@ -41,13 +41,24 @@
   connection: local
   gather_facts: no
   vars_files:
+    - ../docker/vars/vars_versions.yml
+    - ../docker/vars/vars_current.yml
+    - ../docker/vars/vars_current_dev.yml
+    - ../docker/vars/vars_current_fast.yml
     - vars/general-withdraw-vars.yml
     - vars/current-withdraw-vars.yml
-    - ../docker/vars/vars_current_fast.yml
 
   tasks:
     - name: Get variables if joomla main version is provided as extra_vars
       include_vars: vars/previous-withdraw-vars.yml
+      when: j_main_version is defined and j_main_version == '5'
+
+    - name: Get variables if joomla main version is provided as extra_vars
+      include_vars: ../docker/vars/vars_previous_dev.yml
+      when: j_main_version is defined and j_main_version == '5'
+
+    - name: Get variables if joomla main version is provided as extra_vars
+      include_vars: ../docker/vars/vars_previous_fast.yml
       when: j_main_version is defined and j_main_version == '5'
 
     - name: Handle tests to backup BwPostman

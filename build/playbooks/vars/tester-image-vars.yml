@@ -15,6 +15,8 @@ bwpm_version_previous: "4.3.4"
 
 j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 
+j_main_version: "{{ joomla_version[0] }}"
+
 php_minimum_version: "8.1.0"
 php_current_version: "8.3.0"
 
@@ -26,8 +28,6 @@ php_selected_version: "{{ php_current_version }}"
 
 j_package_name:
   j4: "Joomla_{{ j_version_hyphen }}-Stable-Full_Package.zip"
-
-j_main_version: "{{ joomla_version[0] }}"
 
 joomla_packages:
   - src: "https://downloads.joomla.org/cms/Joomla4/{{ j_version_hyphen }}/{{ j_package_name.j4 }}"

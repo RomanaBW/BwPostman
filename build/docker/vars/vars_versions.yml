@@ -1,8 +1,8 @@
 ---
 bwpm_project_version: "4.3.5"
 
-bwpm_joomla_current: "6.0.1"
-bwpm_joomla_previous: "5.4.1"
+bwpm_joomla_current: "6.0.2"
+bwpm_joomla_previous: "5.4.2"
 
 bwpm_joomla_sub_version_current: "60"
 bwpm_joomla_sub_version_previous: "54"

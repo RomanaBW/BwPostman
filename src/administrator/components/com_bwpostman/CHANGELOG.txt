@@ -6,10 +6,11 @@ This is the changelog for the Joomla!5.0.0+ component BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
-Version 4.3.5 released (2025-12-20)----
+Version 4.3.5 released (2026-02-21)----
 
 Bugfix
 # SQL error produced by module overview, if all newsletters belongs to a campaign and the related mailing list is not published.
+# Single newsletter display at front end did not use the content of the sent newsletter but perhaps the content of a test sending.
 
 
 Version 4.3.4 released (2025-11-13)----

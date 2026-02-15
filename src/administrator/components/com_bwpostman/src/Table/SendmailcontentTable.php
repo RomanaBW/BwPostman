@@ -368,6 +368,7 @@ class SendmailcontentTable extends Table
 		$query->from($db->quoteName($this->_tbl) . ' AS ' . $db->quoteName('a'));
 		$query->where($db->quoteName('a') . '.' . $db->quoteName('nl_id') . ' = ' . $id);
 		$query->where($db->quoteName('a') . '.' . $db->quoteName('mode') . ' = ' . 1);
+		$query->order($db->quoteName('a') . '.' . $db->quoteName('id') . 'DESC');
 
 		try
 		{

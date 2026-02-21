@@ -6,6 +6,12 @@ This is the changelog for the Joomla!5.0.0+ component BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
+Version 4.3.6 released (2026-05-23)----
+
+Bugfix
+#
+
+
 Version 4.3.5 released (2026-02-21)----
 
 Bugfix

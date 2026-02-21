@@ -190,4 +190,4 @@
             mode: 0775
             owner: romana
             group: users
-      when: j_main_version is not defined or j_main_version == '5'
+      when: j_main_version is not defined or j_main_version == '6'

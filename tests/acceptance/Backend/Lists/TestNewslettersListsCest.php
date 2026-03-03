@@ -158,6 +158,7 @@ class TestNewslettersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(NlManage::$filter_authors_list_id);
 		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_1);
+		$I->wait(1);
 
 		$I->see(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_2_txt, NlManage::$authors_col);
@@ -414,6 +415,7 @@ class TestNewslettersListsCest
 		$I->click(Generals::$filterOptionsSwitcher);
 		$I->click(NlManage::$filter_authors_list_id);
 		$I->selectOption(NlManage::$filter_authors_list_id, NlManage::$filter_author_1);
+		$I->wait(1);
 
 		$I->see(NlManage::$filter_author_1_txt, NlManage::$authors_col);
 		$I->dontSee(NlManage::$filter_author_2_txt, NlManage::$authors_col);

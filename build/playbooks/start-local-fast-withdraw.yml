@@ -1,33 +1,35 @@
 ---
-#- hosts: localhost
-#  gather_facts: no
-#  vars_files:
-#    - vars/general-withdraw-vars.yml
-#
-#  tasks:
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars/general-withdraw-vars.yml
+
+  tasks:
 #    - name: Get variables if joomla main version is provided as extra_vars
 #      include_vars: vars/previous-withdraw-vars.yml
 #      when: j_main_version is defined and j_main_version == '5'
 
     # Synchronize var files to repo before used by following playbook and tasks
-#    - name: Synchronize playbook folder to repo
-#      become: yes
-#      copy:
-#        src: "{{ project_src_dir }}/build/playbooks/"
-#        dest: "{{ repo_dir }}/build/playbooks"
-#        delete: yes
+    - name: Synchronize playbook folder to repo
+      become: yes
+      copy:
+        src: "{{ project_src_dir }}/build/playbooks/"
+        dest: "{{ repo_dir }}/build/playbooks"
+#        delete: no
 #        archive: yes
 #        partial: yes
 #        mode: pull
 #        rsync_opts:
 #          - "--update"
 #          - "--quiet"
+      when: j_main_version is not defined or j_main_version == '6'
 
-#    - name: Synchronize docker folder to repo
-#      become: yes
-#      copy:
-#        src: "{{ project_src_dir }}/build/docker/"
-#        dest: "{{ repo_dir }}/build/docker"
+    - name: Synchronize docker vars folder to repo
+      become: yes
+      copy:
+        src: "{{ project_src_dir }}/build/docker/vars"
+        dest: "{{ repo_dir }}/build/docker/vars"
+      when: j_main_version is not defined or j_main_version == '6'
 
 - hosts: localhost
   connection: local
@@ -49,15 +51,15 @@
     - vars/current-withdraw-vars.yml
 
   tasks:
-    - name: Get variables if joomla main version is provided as extra_vars
+    - name: Get previous-withdraw-vars if joomla main version is provided as extra_vars
       include_vars: vars/previous-withdraw-vars.yml
       when: j_main_version is defined and j_main_version == '5'
 
-    - name: Get variables if joomla main version is provided as extra_vars
+    - name: Get vars_previous_dev if joomla main version is provided as extra_vars
       include_vars: ../docker/vars/vars_previous_dev.yml
       when: j_main_version is defined and j_main_version == '5'
 
-    - name: Get variables if joomla main version is provided as extra_vars
+    - name: Get vars_previous_fast if joomla main version is provided as extra_vars
       include_vars: ../docker/vars/vars_previous_fast.yml
       when: j_main_version is defined and j_main_version == '5'
 
@@ -68,7 +70,7 @@
 
         - name: Remove tester
           shell: "docker rm bwpm-tester{{ j_main }}"
-      when: j_main_version is not defined or j_main_version == '5'
+      when: j_main_version is not defined or j_main_version == '6'
 
     - name: Set test_dir
       set_fact:
@@ -89,59 +91,59 @@
     - name: Execute command for new database dump
       shell: "{{ sql_dump_command }}"
 
-    - name: Handle backups of BwPostman
-      block:
-        - name: Get file name of XML backup file
-          find:
-            paths: "{{ test_dir }}/backups"
-            patterns: "*.xml"
-            recurse: no
-            file_type: file
-          register: found_files
-
-        - name: Show found files
-          debug:
-            msg: "{{ found_files }}"
-
-        - name: Set found XML file
-          set_fact:
-            found_xml: "{{ found_files.files }}"
-
-        - name: Set found XML file name
-          set_fact:
-            found_xml_name: "{{ found_xml[0].path }}"
-
-        - name: Show found XML file name
-          debug:
-            msg: "{{ found_xml_name }}"
-
-        - name: Show target XML file name
-          debug:
-            msg: "{{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
-
-        - name: Move XML backup file from tester folder to repository
-          shell: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
-
-        - name: Get file name of ZIP backup file
-          find:
-            paths: "{{ test_dir }}/backups"
-            patterns: "*.xml.zip"
-            recurse: no
-            file_type: file
-          register: found_files
-
-        - name: Set found ZIP file
-          set_fact:
-            found_zip: "{{ found_files.files }}"
-
-        - name: Set found ZIP file name
-          set_fact:
-            found_zip_name: "{{ found_zip[0].path }}"
-
-        - name: Show found ZIP file name
-          debug:
-            msg: "{{ found_zip_name }}"
-
-        - name: Move ZIP backup file from tester folder to repository
-          shell: "mv -f {{ found_zip_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml.zip"
-      when: j_main_version is not defined or j_main_version == '5'
+#    - name: Handle backups of BwPostman
+#      block:
+#        - name: Get file name of XML backup file
+#          find:
+#            paths: "{{ test_dir }}/backups"
+#            patterns: "*.xml"
+#            recurse: no
+#            file_type: file
+#          register: found_files
+#
+#        - name: Show found files
+#          debug:
+#            msg: "{{ found_files }}"
+#
+#        - name: Set found XML file
+#          set_fact:
+#            found_xml: "{{ found_files.files }}"
+#
+#        - name: Set found XML file name
+#          set_fact:
+#            found_xml_name: "{{ found_xml[0].path }}"
+#
+#        - name: Show found XML file name
+#          debug:
+#            msg: "{{ found_xml_name }}"
+#
+#        - name: Show target XML file name
+#          debug:
+#            msg: "{{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
+#
+#        - name: Move XML backup file from tester folder to repository
+#          shell: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
+#
+#        - name: Get file name of ZIP backup file
+#          find:
+#            paths: "{{ test_dir }}/backups"
+#            patterns: "*.xml.zip"
+#            recurse: no
+#            file_type: file
+#          register: found_files
+#
+#        - name: Set found ZIP file
+#          set_fact:
+#            found_zip: "{{ found_files.files }}"
+#
+#        - name: Set found ZIP file name
+#          set_fact:
+#            found_zip_name: "{{ found_zip[0].path }}"
+#
+#        - name: Show found ZIP file name
+#          debug:
+#            msg: "{{ found_zip_name }}"
+#
+#        - name: Move ZIP backup file from tester folder to repository
+#          shell: "mv -f {{ found_zip_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml.zip"
+#      when: j_main_version is not defined or j_main_version == '6'

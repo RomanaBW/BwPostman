@@ -340,7 +340,7 @@ class NewsletterEditPage
 	 *
 	 * @since   2.0.0
 	 */
-	public static $nbr_usergroup        = 23;
+	public static $nbr_usergroup        = 4;
 
 
 	/**

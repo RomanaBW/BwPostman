@@ -9,43 +9,43 @@
 
   # Remove entry point from upper images and do push to registry
   tasks:
-    - name: Ensure version folder exists
-      ansible.builtin.file:
-        path: "{{ bwpm_base_path }}"
-        state: directory
-
-    - name: Create compose file
-      ansible.builtin.template:
-        src: "compose.yml.j2"
-        dest: "{{ bwpm_base_path }}/compose.yml"
-
-    - name: Create Dockerfile
-      ansible.builtin.template:
-        src: "Dockerfile-push.j2"
-        dest: "{{ bwpm_base_path }}/Dockerfile"
-
-    - name: Create Joomla configuration
-      ansible.builtin.template:
-        src: "configuration.php.j2"
-        dest: "{{ bwpm_base_path }}/configuration.php"
-
-    - name: Create push script
-      ansible.builtin.template:
-        src: "push-bwpm-configured-images.sh.j2"
-        dest: "{{ bwpm_base_path }}/push-bwpm-configured-images.sh"
-        mode: 0755
-
-    - name: Create push middleware
-      shell: docker compose up -d
-      args:
-        chdir: "{{ bwpm_base_path }}"
-
-    - name: Wait for push middleware to be completely up
-      pause:
-        seconds: 30
-
-    - name: Push push middleware
-      shell: "{{ bwpm_base_path }}/push-bwpm-configured-images.sh"
+#    - name: Ensure version folder exists
+#      ansible.builtin.file:
+#        path: "{{ bwpm_base_path }}"
+#        state: directory
+#
+#    - name: Create compose file
+#      ansible.builtin.template:
+#        src: "compose.yml.j2"
+#        dest: "{{ bwpm_base_path }}/compose.yml"
+#
+#    - name: Create Dockerfile
+#      ansible.builtin.template:
+#        src: "Dockerfile-push.j2"
+#        dest: "{{ bwpm_base_path }}/Dockerfile"
+#
+#    - name: Create Joomla configuration
+#      ansible.builtin.template:
+#        src: "configuration.php.j2"
+#        dest: "{{ bwpm_base_path }}/configuration.php"
+#
+#    - name: Create push script
+#      ansible.builtin.template:
+#        src: "push-bwpm-configured-images.sh.j2"
+#        dest: "{{ bwpm_base_path }}/push-bwpm-configured-images.sh"
+#        mode: 0755
+#
+#    - name: Create push middleware
+#      shell: docker compose up -d
+#      args:
+#        chdir: "{{ bwpm_base_path }}"
+#
+#    - name: Wait for push middleware to be completely up
+#      pause:
+#        seconds: 30
+#
+#    - name: Push push middleware
+#      shell: "{{ bwpm_base_path }}/push-bwpm-configured-images.sh"
 
     - name: Shut down push middleware
       shell: docker compose down --volumes

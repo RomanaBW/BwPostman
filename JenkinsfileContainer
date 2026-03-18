@@ -16,9 +16,9 @@ pipeline {
 					DO_DEV_UPLOAD = 'true'
 					PACK_PACKAGE  = 'false'
 
-					DO_CURRENT_SMOKE  = 'false'
-					DO_CURRENT_ACCEPT = 'false'
-					DO_CURRENT_PERMS  = 'false'
+					DO_CURRENT_SMOKE  = 'true'
+					DO_CURRENT_ACCEPT = 'true'
+					DO_CURRENT_PERMS  = 'true'
 
 					DO_PREVIOUS_SMOKE  = 'true'
 					DO_PREVIOUS_ACCEPT = 'true'

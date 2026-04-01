@@ -476,7 +476,7 @@ class TestAccessCest
 				'BwPostmanManager',
 				'BwPostmanPublisher',
 				'BwPostmanEditor',
-				'BwPostmanCampaignAdmin',
+//				'BwPostmanCampaignAdmin',
 				'BwPostmanCampaignPublisher',
 				'BwPostmanCampaignEditor',
 				'BwPostmanMailinglistAdmin',

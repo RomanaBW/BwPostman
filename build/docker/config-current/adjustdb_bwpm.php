@@ -445,8 +445,7 @@ function getQueryToInsertUsers(): string
 
 function getQueryToInsertUsersToGroups(): string
 {
-    $query = 'REPLACE INTO `jos_user_usergroup_map` VALUES 
-        (\'847\',\'8\')';
+    $query = 'REPLACE INTO `jos_user_usergroup_map` VALUES (\'847\',\'8\')';
 
     return $query;
 }

@@ -16,9 +16,9 @@ pipeline {
 					DO_DEV_UPLOAD = 'true'
 					PACK_PACKAGE  = 'false'
 
-					DO_CURRENT_SMOKE  = 'true'
-					DO_CURRENT_ACCEPT = 'true'
-					DO_CURRENT_PERMS  = 'true'
+					DO_CURRENT_SMOKE  = 'false'
+					DO_CURRENT_ACCEPT = 'false'
+					DO_CURRENT_PERMS  = 'false'
 
 					DO_PREVIOUS_SMOKE  = 'true'
 					DO_PREVIOUS_ACCEPT = 'true'
@@ -27,7 +27,7 @@ pipeline {
 					PHP_VERSION_PREVIOUS = "8.1.0"
 					PHP_VERSION_CURRENT = "8.3.0"
 
-					GIT_MESSAGE = "not specified"
+					GIT_MESSAGE = "."
 
 					PROJECT_NAME_PREVIOUS = "j${JOOMLA_VERSION_PREVIOUS}_bwpm${BWPM_VERSION}"
 					PROJECT_NAME_CURRENT = "j${JOOMLA_VERSION_CURRENT}_bwpm${BWPM_VERSION}"

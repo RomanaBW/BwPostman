@@ -14,7 +14,7 @@ pipeline {
 					DO_PREVIOUS_GENERAL  = 'true'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'true'
+					PACK_PACKAGE  = 'false'
 
 					DO_CURRENT_SMOKE  = 'true'
 					DO_CURRENT_ACCEPT = 'true'

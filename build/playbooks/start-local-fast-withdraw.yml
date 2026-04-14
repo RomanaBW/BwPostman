@@ -43,6 +43,7 @@
   connection: local
   gather_facts: no
   vars_files:
+    - /repositories/systemscripts/Ansible/general_vars/general_joomla_versions.yml
     - ../docker/vars/vars_versions.yml
     - ../docker/vars/vars_current.yml
     - ../docker/vars/vars_current_dev.yml

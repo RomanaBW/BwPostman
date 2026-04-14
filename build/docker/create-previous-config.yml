@@ -3,6 +3,8 @@
   connection: local
   gather_facts: no
   vars_files:
+    - /repositories/systemscripts/Ansible/general_vars/general_bw_vault.yml
+    - /repositories/systemscripts/Ansible/general_vars/general_joomla_versions.yml
     - ../vars/vars_previous.yml
     - ../vars/vars_versions.yml
     - ../vars/vars_previous_config.yml

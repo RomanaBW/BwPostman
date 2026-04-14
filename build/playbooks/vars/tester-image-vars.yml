@@ -132,7 +132,7 @@ debug_joomla_level: 'maximum'
 
 # SMTP configuration is not really needed
 tester_smtp_user: "info@boldt-webservice.de"
-tester_smtp_password: "@Miriam02#"
+tester_smtp_password: "{{ bw_smtp_password }}"
 tester_smtp_host: "192.168.2.100"
 
 phantom_dir: "/opt/phantomJS"

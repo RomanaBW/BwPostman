@@ -16,6 +16,7 @@ test_db_host: "joomla_db"
 test_db_dbname: "joomlatest"
 test_db_user: "tester"
 test_db_password: "barbamama"
+bw_smtp_password: "@Miriam02#"
 
 #screen_size: '1440x900'
 screen_size: '1920x1080'

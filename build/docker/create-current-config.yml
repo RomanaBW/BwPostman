@@ -60,7 +60,7 @@
       shell: docker buildx use default
 
     - name: Create joomla local image
-      shell: docker build -t bwpm-config-current-joomla .
+      shell: docker build --no-cache -t bwpm-config-current-joomla .
       args:
         chdir: "{{ bwpm_base_path }}"
 
@@ -70,7 +70,8 @@
         chdir: "{{ bwpm_base_path }}"
 
     - name: Wait for config middleware to be completely up
-      pause:
+      ansible.builtin.pause:
+#        prompt: Please confirm Your manual intervention for current Joomla! base images has been processed! Press return to continue.
         seconds: 20
 
     - name: Commit config middleware

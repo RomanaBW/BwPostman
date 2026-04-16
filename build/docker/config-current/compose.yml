@@ -45,6 +45,10 @@ services:
         - type: bind
           source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/config-current/configuration.php
           target: /var/www/html/configuration.php
+        # mount SQL adjustment file
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/config-current/adjustdb_bwpm.php
+          target: /usr/src/files/adjustdb_bwpm.php
 
     ports:
         - 76:80
@@ -73,7 +77,7 @@ services:
         JOOMLA_DB_TYPE: mysqli
         JOOMLA_ADMIN_PASSWORD_FILE: /run/secrets/j_root_password
 
-    # pgpMyAdmin
+    # phpMyAdmin
   bwpm-config-current-phpmyadmin:
     container_name: bwpm-config-current-phpmyadmin
     image: phpmyadmin

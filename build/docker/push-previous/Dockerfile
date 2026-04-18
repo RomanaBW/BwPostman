@@ -1,4 +1,4 @@
-FROM universe3:5000/romana/bwpm-base-files:7.4.33-4.4.14
+FROM universe3:5000/romana/bwpm-base-files:8.1.0-5.4.5
 LABEL maintainer=" Romana Boldt <info@boldt-webservice.de> "
 
 # Custom cache invalidation

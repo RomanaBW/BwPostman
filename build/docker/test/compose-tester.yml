@@ -18,7 +18,7 @@ services:
         target: /data/codeception.yml
       # Mount output folders
       - type: bind
-        source: "/home/container-files/artifacts/default/j534_bwpm433"
+        source: "/home/container-files/artifacts/default/j600_bwpm433"
         target: /data/output
       # Mount repositories folder for artifacts.
       # *** Probably it would be better to mount the specific path for this project.
@@ -29,7 +29,7 @@ services:
       # This is needed to be able to delete the uploaded attachment.
       # Otherwise, this could make the next upload impossible.
       # *** Probably it would be better to mount the specific media path for this project.
-      - /home/container-files/j534:/www_path
+      - /home/container-files/j600:/www_path
 
       # Mount tester entry point
       - type: bind
@@ -38,7 +38,7 @@ services:
 
     environment:
       - BW_TEST_BWPM_VERSION=433
-      - BW_TEST_CAT=lists_subs
+      - BW_TEST_CAT=lists_cam
       - BW_TEST_DEBUG=--debug
       - SYMFONY_DEPRECATIONS_HELPER=weak
     working_dir: /data
@@ -47,7 +47,7 @@ services:
     entrypoint: /tester_entry_point.sh
     networks:
       bwpm-fast-current:
-        ipv4_address: "172.118.5.62"
+        ipv4_address: "172.118.6.62"
 
 networks:
   bwpm-fast-current:

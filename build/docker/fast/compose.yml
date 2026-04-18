@@ -7,18 +7,18 @@ networks:
     ipam:
         driver: default
         config:
-            - subnet: 172.118.5.56/29
+            - subnet: 172.118.6.56/29
 
 services:
     #  Database
   bwpm-fast-current-db:
     container_name: bwpm-fast-current-db
-    image: universe3:5000/romana/joomla_enh_db-6:8.3.0-6.0.4-4.3.6
+    image: universe3:5000/romana/joomla_enh_db-6:8.3.0-6.1.0-4.3.6
     volumes:
-        - db_testdata_60:/var/lib/mariadb
+        - db_testdata_61:/var/lib/mariadb
     networks:
       bwpm-fast-current:
-        ipv4_address: 172.118.5.58
+        ipv4_address: 172.118.6.58
     expose:
         - 3456
     command: '--default-authentication-plugin=mysql_native_password'
@@ -41,18 +41,18 @@ services:
     # Webserver
   bwpm-fast-current-joomla:
     container_name: bwpm-fast-current-joomla
-    image: universe3:5000/romana/joomla_enh_web-6:8.3.0-6.0.4-4.3.6
+    image: universe3:5000/romana/joomla_enh_web-6:8.3.0-6.1.0-4.3.6
     ports:
         - 86:80
     healthcheck:
-        test: curl --fail http://172.118.5.59/index.php || exit 1
+        test: curl --fail http://172.118.6.59/index.php || exit 1
         start_period: 5s
         interval: 10s
         timeout: 10s
         retries: 5
     networks:
       bwpm-fast-current:
-        ipv4_address: 172.118.5.59
+        ipv4_address: 172.118.6.59
     depends_on:
       bwpm-fast-current-db:
         condition: service_healthy
@@ -257,10 +257,10 @@ services:
     image: phpmyadmin
     networks:
       bwpm-fast-current:
-        ipv4_address: 172.118.5.61
+        ipv4_address: 172.118.6.61
     healthcheck:
         #    See https://stackoverflow.com/questions/67904609/how-do-you-perform-a-healthcheck-in-the-redis-docker-image
-        test: curl --fail http://172.118.5.61/LICENSE || exit 1
+        test: curl --fail http://172.118.6.61/LICENSE || exit 1
         start_period: 10s
         interval: 10s
         timeout: 5s
@@ -273,7 +273,7 @@ services:
         PMA_HOST: bwpm-fast-current-db
 
 volumes:
-  db_testdata_60:
+  db_testdata_61:
 
 secrets:
     db_password:

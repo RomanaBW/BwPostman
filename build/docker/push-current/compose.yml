@@ -73,7 +73,7 @@ services:
         JOOMLA_DB_TYPE: mysqli
         JOOMLA_ADMIN_PASSWORD_FILE: /run/secrets/j_root_password
 
-    # pgpMyAdmin
+    # phpMyAdmin
   bwpm-push-current-phpmyadmin:
     container_name: bwpm-push-current-phpmyadmin
     image: phpmyadmin

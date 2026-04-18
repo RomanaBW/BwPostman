@@ -445,10 +445,32 @@ function getQueryToInsertUsers(): string
 
 function getQueryToInsertUsersToGroups(): string
 {
-	$query = 'REPLACE INTO `jos_user_usergroup_map` VALUES (\'847\',\'8\')';
+	$query = "REPLACE INTO `jos_user_usergroup_map` VALUES 
+        (827,10), /* BwPostmanAdmin */
+        (828,12), /* BwPostmanPublisher */
+        (829,13), /* BwPostmanEditor */
+        (830,23), /* BwPostmanCampaignAdmin */
+        (831,24), /* BwPostmanCampaignPublisher */
+        (832,25), /* BwPostmanCampaignEditor */
+        (833,14), /* BwPostmanMailinglistAdmin */
+        (834,15), /* BwPostmanMailinglistPublisher */
+        (835,16), /* BwPostmanMailinglistEditor */
+        (836,11), /* BwPostmanManager */
+        (837,20), /* BwPostmanNewsletterAdmin */
+        (838,21), /* BwPostmanNewsletterPublisher */
+        (839,22), /* BwPostmanNewsletterEditor */
+        (841,17), /* BwPostmanSubscriberAdmin */
+        (842,18), /* BwPostmanSubscriberPublisher */
+        (843,19), /* BwPostmanSubscriberEditor */
+        (844,26), /* BwPostmanTemplateAdmin */
+        (845,28), /* BwPostmanTemplateEditor */
+        (846,27), /* BwPostmanTemplatePublisher */
+        (847,8)   /* Cron user */
+       ";
 
 	return $query;
 }
+
 
 function getQueryToCreateToken(): string
 {

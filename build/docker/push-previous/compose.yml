@@ -11,7 +11,7 @@ services:
     #  Database
   bwpm-push-previous-db:
     container_name: bwpm-push-previous-db
-    image: universe3:5000/romana/bwpm-base-tables:8.1.0-5.4.5
+    image: universe3:5000/romana/bwpm-base-tables:8.1.0-5.4.6
     networks:
       bwpm-push-previous.nil:
         ipv4_address: 172.118.1.26

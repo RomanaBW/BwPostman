@@ -11,7 +11,7 @@ services:
     #  Database
   bwpm-config-previous-db:
     container_name: bwpm-config-previous-db
-    image: universe3:5000/romana/joomla-tables-8.1.0:5.4.5
+    image: universe3:5000/romana/joomla-tables-8.1.0:5.4.6
     networks:
       bwpm-config-previous.nil:
         ipv4_address: 172.118.1.34
@@ -46,9 +46,9 @@ services:
           source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/config-previous/configuration.php
           target: /var/www/html/configuration.php
         # mount SQL adjustment file
-#        - type: bind
-#          source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/config-previous/adjustdb_bwpm.php
-#          target: /usr/src/files/adjustdb_bwpm.php
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/build/docker/config-previous/adjustdb_bwpm.php
+          target: /usr/src/files/adjustdb_bwpm.php
 
     ports:
         - 74:80

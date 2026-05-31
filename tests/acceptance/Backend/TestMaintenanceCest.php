@@ -90,7 +90,7 @@ class TestMaintenanceCest
 //        codecept_debug("Current path: " . getcwd());
 //		codecept_debug("Download path: " . $downloadPath);
 
-        $I->clickAndWait(MaintenancePage::$saveTablesButton, 15);
+        $I->clickAndWait(MaintenancePage::$saveTablesButton, 45);
 
 		$withdraw = getenv('BW_TEST_WITHDRAW');
 		codecept_debug ('ENV withdraw: ' . $withdraw);

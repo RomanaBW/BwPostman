@@ -2,7 +2,7 @@
 whoami
 
 echo "Test-Cat: withdraw_testdata"
-echo "Project: j603_bwpm436"
+echo "Project: j611_bwpm436"
 
 sudo chmod 1777 /tmp/.X11-unix
 sudo rm -f /tmp/.X45-lock

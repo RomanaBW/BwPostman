@@ -41,7 +41,7 @@
 
 - hosts: localhost
   connection: local
-  gather_facts: no
+  gather_facts: yes
   vars_files:
     - /repositories/systemscripts/Ansible/general_vars/general_joomla_versions.yml
     - ../docker/vars/vars_versions.yml
@@ -92,59 +92,76 @@
     - name: Execute command for new database dump
       shell: "{{ sql_dump_command }}"
 
-#    - name: Handle backups of BwPostman
-#      block:
-#        - name: Get file name of XML backup file
-#          find:
-#            paths: "{{ test_dir }}/backups"
-#            patterns: "*.xml"
-#            recurse: no
-#            file_type: file
-#          register: found_files
-#
+    - name: Set underlined version of BwPostman and date variable
+      set_fact:
+        backup_date: "{{ ansible_date_time.date }}"
+        bwpm_underlined: "{{ bwpm_project_version  | replace('.', '_') }}"
+
+    - name: Set first part of BwPostman backup filename
+      set_fact:
+        backup_filename_prefix: "BwPostman_{{ bwpm_underlined }}_Tables_{{ backup_date }}_"
+
+#    - name: Show backup filename prefix
+#      debug:
+#        msg: "{{ backup_filename_prefix }}"
+
+    - name: Handle backups of BwPostman
+      block:
+        - name: Get file name of XML backup file
+          find:
+            paths: "{{ test_dir }}/backups"
+            patterns: "{{ backup_filename_prefix }}*.xml"
+            recurse: no
+            file_type: file
+          register: found_files
+
 #        - name: Show found files
 #          debug:
 #            msg: "{{ found_files }}"
-#
-#        - name: Set found XML file
-#          set_fact:
-#            found_xml: "{{ found_files.files }}"
-#
-#        - name: Set found XML file name
-#          set_fact:
-#            found_xml_name: "{{ found_xml[0].path }}"
-#
-#        - name: Show found XML file name
-#          debug:
-#            msg: "{{ found_xml_name }}"
-#
-#        - name: Show target XML file name
-#          debug:
-#            msg: "{{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
-#
-#        - name: Move XML backup file from tester folder to repository
-#          shell: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
-#
-#        - name: Get file name of ZIP backup file
-#          find:
-#            paths: "{{ test_dir }}/backups"
-#            patterns: "*.xml.zip"
-#            recurse: no
-#            file_type: file
-#          register: found_files
-#
-#        - name: Set found ZIP file
-#          set_fact:
-#            found_zip: "{{ found_files.files }}"
-#
-#        - name: Set found ZIP file name
-#          set_fact:
-#            found_zip_name: "{{ found_zip[0].path }}"
-#
-#        - name: Show found ZIP file name
-#          debug:
-#            msg: "{{ found_zip_name }}"
-#
-#        - name: Move ZIP backup file from tester folder to repository
-#          shell: "mv -f {{ found_zip_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml.zip"
-#      when: j_main_version is not defined or j_main_version == '6'
+
+        - name: Set found XML file
+          set_fact:
+            found_xml: '{{ (found_files.files | sort(attribute="atime", reverse=true) | first) }}'
+
+        - name: Set found XML file name
+          set_fact:
+            found_xml_name: "{{ found_xml.path }}"
+
+        - name: Show found XML file name
+          debug:
+            msg: "{{ found_xml_name }}"
+
+        - name: Show target XML file name
+          debug:
+            msg: "{{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
+
+        - name: Show move XML command
+          debug:
+            msg: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
+
+        - name: Move XML backup file from tester folder to repository
+          shell: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
+
+        - name: Get file name of ZIP backup file
+          find:
+            paths: "{{ test_dir }}/backups"
+            patterns: "{{ backup_filename_prefix }}*.xml.zip"
+            recurse: no
+            file_type: file
+          register: found_files
+
+        - name: Set found ZIP file
+          set_fact:
+            found_zip: '{{ (found_files.files | sort(attribute="atime", reverse=true) | first) }}'
+
+        - name: Set found ZIP file name
+          set_fact:
+            found_zip_name: "{{ found_zip.path }}"
+
+        - name: Show found ZIP file name
+          debug:
+            msg: "{{ found_zip_name }}"
+
+        - name: Move ZIP backup file from tester folder to repository
+          shell: "mv -f {{ found_zip_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml.zip"
+      when: j_main_version is not defined or j_main_version == '6'

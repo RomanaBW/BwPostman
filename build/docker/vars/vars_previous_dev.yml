@@ -4,7 +4,7 @@ bwpm_subnet: "172.18.5.56/29"
 
 bwpm_db_name: "bwpm-dev-previous-db"
 bwpm_db_ip: "172.18.5.58"
-bwpm_db_volume: "bwpm_db"
+bwpm_db_volume: "bwpm_dev_previous_db"
 bwpm_db_image: "universe3:5000/romana/bwpm-configured-tables:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}"
 bwpm_db_expose: "3306"
 

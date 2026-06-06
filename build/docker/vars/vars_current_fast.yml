@@ -4,14 +4,14 @@ bwpm_subnet: "172.118.6.56/29"
 
 bwpm_db_name: "bwpm-fast-current-db"
 bwpm_db_ip: "172.118.6.58"
-bwpm_db_volume: "db_testdata_{{ bwpm_joomla_sub_version_current }}"
-bwpm_db_image: "universe3:5000/romana/joomla_enh_db-6:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}-{{ bwpm_project_version }}"
+bwpm_db_volume: "bwpm_fast_db_{{ bwpm_joomla_sub_version_current }}"
+bwpm_db_image: "universe3:5000/romana/bwpm_enh_db-6:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}-{{ bwpm_project_version }}"
 bwpm_db_expose: "3456"
 
 bwpm_joomla_name: "bwpm-fast-current-joomla"
 bwpm_joomla_ip: "172.118.6.59"
-bwpm_joomla_volume: "bwpm_joomla_{{ bwpm_joomla_sub_version_current }}"
-bwpm_joomla_image: "universe3:5000/romana/joomla_enh_web-6:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}-{{ bwpm_project_version }}"
+bwpm_joomla_volume: "bwpm_fast_joomla_{{ bwpm_joomla_sub_version_current }}"
+bwpm_joomla_image: "universe3:5000/romana/bwpm_enh_web-6:{{ bwpm_php_version }}-{{ bwpm_joomla_version }}-{{ bwpm_project_version }}"
 bwpm_joomla_ports: "86:80"
 
 bwpm_pma_name: "bwpm-fast-current-phpmyadmin"

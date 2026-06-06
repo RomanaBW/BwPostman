@@ -67,3 +67,4 @@
         - "push-current-bwpm-push-current-joomla:latest"
         - "config-current-bwpm-config-current-joomla:latest"
 #        - "{{ bwpm_images_to_delete }}"
+      ignore_errors: yes

@@ -1,0 +1,35 @@
+---
+- name: Get file name of XML backup file
+  find:
+    paths: "{{ backup_dir }}/backups"
+    patterns: "{{ backup_filename_prefix }}*.xml"
+    recurse: no
+    file_type: file
+  register: found_files
+
+#- name: Show found files
+#  debug:
+#    msg: "{{ found_files }}"
+
+- name: Set found XML file
+  set_fact:
+    found_xml: '{{ (found_files.files | sort(attribute="atime", reverse=true) | first) }}'
+
+- name: Set found XML file name
+  set_fact:
+    found_xml_name: "{{ found_xml.path }}"
+
+- name: Show found XML file name
+  debug:
+    msg: "{{ found_xml_name }}"
+
+- name: Show target XML file name
+  debug:
+    msg: "{{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
+
+- name: Show move XML command
+  debug:
+    msg: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
+
+- name: Move XML backup file from tester folder to repository
+  shell: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"

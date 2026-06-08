@@ -1,0 +1,23 @@
+---
+- name: Get file name of ZIP backup file
+  find:
+    paths: "{{ backup_dir }}/backups"
+    patterns: "{{ backup_filename_prefix }}*.xml.zip"
+    recurse: no
+    file_type: file
+  register: found_files
+
+- name: Set found ZIP file
+  set_fact:
+    found_zip: '{{ (found_files.files | sort(attribute="atime", reverse=true) | first) }}'
+
+- name: Set found ZIP file name
+  set_fact:
+    found_zip_name: "{{ found_zip.path }}"
+
+- name: Show found ZIP file name
+  debug:
+    msg: "{{ found_zip_name }}"
+
+- name: Move ZIP backup file from tester folder to repository
+  shell: "mv -f {{ found_zip_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml.zip"

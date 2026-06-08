@@ -1,0 +1,21 @@
+- name: Set middleware startup command
+  ansible.builtin.set_fact:
+    middleware_startup_command: "docker-compose -f {{ project_src_dir }}/build/docker/{{ item }}/compose.yml up -d"
+    sql_rebase_command: "/usr/bin/mariadb --ssl=0 -u {{ test_db_user }} -p{{ test_db_password }} -h {{ database_ip }} {{ test_db_dbname }} < {{ artifacts_path }}/backups/{{ project_name }}.sql"
+#    docker_compose_path: "{{ project_src_dir }}/build/docker/{{ item }}/compose.yml"
+#    db_import_path: "{{ artifacts_path }}/backups/{{ project_name }}.sql"
+
+#- name: Show compose path
+#  debug:
+#    msg: "{{ docker_compose_path }}"
+
+- name: Start middleware
+  ansible.builtin.command: "{{ middleware_startup_command }}"
+
+- name: Rebase database
+  shell: "{{ sql_rebase_command }}"
+
+- name: Shutdown middleware
+  ansible.builtin.command: docker compose down --volumes
+  args:
+    chdir: "{{ project_src_dir }}/build/docker/{{ item }}"

@@ -1,0 +1,21 @@
+---
+- name: Set current month and year
+  set_fact:
+    current_month: "{{ ansible_date_time.month }}"
+    current_year: "{{ ansible_date_time.year }}"
+
+- name: Set month and year to save if current month is not january
+  set_fact:
+    month_to_save: "{{ (current_month | int) -1 }}"
+    year_to_save: "{{ current_year }}"
+  when: current_month | int > 1
+
+- name: Set month and year to save if current month is january
+  set_fact:
+    month_to_save: "12"
+    year_to_save: "{{ (current_year | int) -1 }}"
+  when: current_month | int == 1
+
+- name: Set reduced date
+  set_fact:
+    reduced_date: "{{ year_to_save }}_{{ month_to_save }}"

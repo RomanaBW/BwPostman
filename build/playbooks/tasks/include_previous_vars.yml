@@ -1,0 +1,9 @@
+---
+- name: Get previous withdraw variables
+  include_vars: vars/previous-withdraw-vars.yml
+
+- name: Get previous dev variables
+  include_vars: ../docker/vars/vars_previous_dev.yml
+
+- name: Get previous fast variables
+  include_vars: ../docker/vars/vars_previous_fast.yml

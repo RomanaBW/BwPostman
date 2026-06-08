@@ -5,23 +5,12 @@
     - vars/general-withdraw-vars.yml
 
   tasks:
-#    - name: Get variables if joomla main version is provided as extra_vars
-#      include_vars: vars/previous-withdraw-vars.yml
-#      when: j_main_version is defined and j_main_version == '5'
-
     # Synchronize var files to repo before used by following playbook and tasks
     - name: Synchronize playbook folder to repo
       become: yes
       copy:
         src: "{{ project_src_dir }}/build/playbooks/"
         dest: "{{ repo_dir }}/build/playbooks"
-#        delete: no
-#        archive: yes
-#        partial: yes
-#        mode: pull
-#        rsync_opts:
-#          - "--update"
-#          - "--quiet"
       when: j_main_version is not defined or j_main_version == '6'
 
     - name: Synchronize docker vars folder to repo
@@ -52,38 +41,27 @@
     - vars/current-withdraw-vars.yml
 
   tasks:
-    - name: Get previous-withdraw-vars if joomla main version is provided as extra_vars
-      include_vars: vars/previous-withdraw-vars.yml
-      when: j_main_version is defined and j_main_version == '5'
-
-    - name: Get vars_previous_dev if joomla main version is provided as extra_vars
-      include_vars: ../docker/vars/vars_previous_dev.yml
-      when: j_main_version is defined and j_main_version == '5'
-
-    - name: Get vars_previous_fast if joomla main version is provided as extra_vars
-      include_vars: ../docker/vars/vars_previous_fast.yml
+    - name: Include some other vars for previous Joomla
+      include_tasks: tasks/include_previous_vars.yml
       when: j_main_version is defined and j_main_version == '5'
 
     - name: Handle tests to backup BwPostman
-      block:
-        - name: Start tests
-          shell: "docker-compose -f {{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml up"
-
-        - name: Remove tester
-          shell: "docker rm bwpm-tester{{ j_main }}"
+      include_tasks: tasks/do_bwpostman_backups.yml
       when: j_main_version is not defined or j_main_version == '6'
 
-    - name: Set test_dir
+    - name: Set backup_dir, underlined version of BwPostman and date variable
       set_fact:
-        test_dir: "{{ artifacts_base }}/{{ project_name }}"
+        backup_dir: "{{ artifacts_base }}/{{ project_name }}"
+        backup_date: "{{ ansible_date_time.date }}"
+        bwpm_underlined: "{{ bwpm_project_version  | replace('.', '_') }}"
 
-    - name: Show test_dir path
+    - name: Set SQL command for new dump
+      set_fact:
+        sql_dump_command: "mariadb-dump --ssl=0 -h {{ database_ip }} -u {{ test_db_user }} -p{{ test_db_password }} --opt --extended-insert --complete-insert {{ test_db_dbname }} > {{ backup_dir }}/backups/{{ project_name }}.sql"
+
+    - name: Show backup_dir path
       debug:
-        msg: "{{ test_dir }}"
-
-    - name: Set command for new database dump
-      set_fact:
-        sql_dump_command: "mariadb-dump --ssl=0 -h {{ database_ip }} -u {{ test_db_user }} -p{{ test_db_password }} --opt --extended-insert --complete-insert {{ test_db_dbname }} > {{ test_dir }}/backups/{{ project_name }}.sql"
+        msg: "{{ backup_dir }}"
 
     - name: Show command for new database dump
       debug:
@@ -91,11 +69,6 @@
 
     - name: Execute command for new database dump
       shell: "{{ sql_dump_command }}"
-
-    - name: Set underlined version of BwPostman and date variable
-      set_fact:
-        backup_date: "{{ ansible_date_time.date }}"
-        bwpm_underlined: "{{ bwpm_project_version  | replace('.', '_') }}"
 
     - name: Set first part of BwPostman backup filename
       set_fact:
@@ -107,61 +80,18 @@
 
     - name: Handle backups of BwPostman
       block:
-        - name: Get file name of XML backup file
-          find:
-            paths: "{{ test_dir }}/backups"
-            patterns: "{{ backup_filename_prefix }}*.xml"
-            recurse: no
-            file_type: file
-          register: found_files
+        - name: move new XML backups
+          include_tasks: tasks/move_new_XML_backups.yml
 
-#        - name: Show found files
-#          debug:
-#            msg: "{{ found_files }}"
-
-        - name: Set found XML file
-          set_fact:
-            found_xml: '{{ (found_files.files | sort(attribute="atime", reverse=true) | first) }}'
-
-        - name: Set found XML file name
-          set_fact:
-            found_xml_name: "{{ found_xml.path }}"
-
-        - name: Show found XML file name
-          debug:
-            msg: "{{ found_xml_name }}"
-
-        - name: Show target XML file name
-          debug:
-            msg: "{{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
-
-        - name: Show move XML command
-          debug:
-            msg: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
-
-        - name: Move XML backup file from tester folder to repository
-          shell: "mv -f {{ found_xml_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml"
-
-        - name: Get file name of ZIP backup file
-          find:
-            paths: "{{ test_dir }}/backups"
-            patterns: "{{ backup_filename_prefix }}*.xml.zip"
-            recurse: no
-            file_type: file
-          register: found_files
-
-        - name: Set found ZIP file
-          set_fact:
-            found_zip: '{{ (found_files.files | sort(attribute="atime", reverse=true) | first) }}'
-
-        - name: Set found ZIP file name
-          set_fact:
-            found_zip_name: "{{ found_zip.path }}"
-
-        - name: Show found ZIP file name
-          debug:
-            msg: "{{ found_zip_name }}"
-
-        - name: Move ZIP backup file from tester folder to repository
-          shell: "mv -f {{ found_zip_name }} {{ repo_data_dir }}/BwPostman_{{ bwpm_project_version  | replace('.', '_') }}_Tables.xml.zip"
+        - name: move new ZIP backups
+          include_tasks: tasks/move_new_ZIP_backups.yml
       when: j_main_version is not defined or j_main_version == '6'
+
+    - name: Distribute updated test data to other used middleware
+      include_tasks: tasks/rebase_middleware.yml
+      loop: "{{ additional_rebase_paths }}"
+
+    - name: Shutdown middleware
+      ansible.builtin.command: "{{ middleware_shutdown_command }}"
+
+

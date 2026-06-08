@@ -1,0 +1,14 @@
+---
+- name: Copy sql withdraw file
+  copy:
+    src: "files/joomla4/withdraw_testdata.sql"
+    dest: "/home/container-files/artifacts/withdraw_testdata.sql"
+    mode: 0775
+
+- name: Output withdraw command
+  debug:
+     msg: "{{ sql_withdraw_command }}"
+
+# Comment for debugging
+#- name: Execute withdraw at database
+#  shell: "{{ sql_withdraw_command }}"

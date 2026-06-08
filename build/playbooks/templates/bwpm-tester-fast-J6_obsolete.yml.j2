@@ -34,7 +34,7 @@ services:
 
       # Mount tester entry point
       - type: bind
-        source: "{{ project_src_dir }}/build/docker/test/tester_entry_point.sh"
+        source: "{{ tester_compose_path }}/tester_entry_point.sh"
         target: /tester_entry_point.sh
 
     environment:
@@ -47,10 +47,10 @@ services:
     # Wegen Projektname, Test Runner (=/data/bwpm_test_runner.sh), Display, Test-Cat, Screen Size
     entrypoint: /tester_entry_point.sh
     networks:
-      bwpm-fast-previous:
+      bwpm-fast-current:
         ipv4_address: "{{ testcontainer_ip }}"
 
 networks:
-  bwpm-fast-previous:
+  bwpm-fast-current:
     external: true
-    name: bwpm-fast-previous
+    name: bwpm-fast-current

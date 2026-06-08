@@ -29,7 +29,7 @@
 - name: Create tester compose file
   become: yes
   template:
-    src: "bwpm-tester-fast-J{{ j_main }}.yml.j2"
+    src: "bwpm-tester-fast.yml.j2"
     dest: "{{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml"
     mode: 0664
     owner: romana

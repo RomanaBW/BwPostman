@@ -77,8 +77,8 @@
          msg: "{{ sql_rebase_command }}"
 
 # Comment for debugging
-#    - name: Rebase database
-#      shell: "{{ sql_rebase_command }}"
+    - name: Rebase database
+      shell: "{{ sql_rebase_command }}"
 
 # Comment for debugging
     - name: Pause after rebase

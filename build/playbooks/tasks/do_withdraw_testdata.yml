@@ -10,5 +10,5 @@
      msg: "{{ sql_withdraw_command }}"
 
 # Comment for debugging
-#- name: Execute withdraw at database
-#  shell: "{{ sql_withdraw_command }}"
+- name: Execute withdraw at database
+  shell: "{{ sql_withdraw_command }}"

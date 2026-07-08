@@ -1,8 +1,3 @@
-networks:
-  {{ bwpm_network_name }}:
-  external: true
-  name: {{ bwpm_network_name }}
-
 services:
   bwpm-tester{{ j_main }}:
     # So ist dieses Image nicht gut, denn das gibt es erst, wenn die Pipeline einmal gelaufen ist.
@@ -54,3 +49,9 @@ services:
     networks:
       {{ bwpm_network_name }}:
         ipv4_address: "{{ testcontainer_ip }}"
+
+networks:
+  {{ bwpm_network_name }}:
+    external: true
+    name: {{ bwpm_network_name }}
+

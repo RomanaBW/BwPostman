@@ -34,6 +34,7 @@
         - "{{ artifacts_path }}/htmlreports"
         - "{{ artifacts_path }}/xmlreports"
         - "{{ artifacts_path }}/backups"
+        - "{{ artifacts_path }}/job_scripts"
 
     - name: Show imported parameters
       debug:
@@ -42,7 +43,7 @@
           - "Webserver URL: {{ webserver_url }}"
           - "Database IP: {{ database_ip }}"
           - "Tester IP: {{ testcontainer_ip }}"
-          - "Test-Dir: {{ test_dir }}"
+          - "Test-Dir: {{ artifacts_path }}/job_scripts"
           - "Project name dotted: {{ project_name_dotted }}"
           - "Project name: {{ project_name }}"
 

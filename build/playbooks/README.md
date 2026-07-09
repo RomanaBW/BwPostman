@@ -59,6 +59,22 @@ tests to multiple VMs to reduce and balance runtime.
 
 __Except installation and deinstallation tests all test suites need to import test data!__ 
 
+# Withdraw test data
+This playbook has to be used each change of month, because the test data contains values, which should match current and 
+previous months.
+
+There have to be some tasks:
+* Ensure the test data of the used middleware are on initial state (rebase)
+* Do backup of current backups with past month in name
+  * Backup of the component as XML and zip
+  * Dump of the database
+* Do switch of the test data to new month
+* Do backup of the component as XML and zip
+* Do dump of the database
+* Ensure, current dev middlewares are equipped with the new test data
+
+All this has to be done for the current and previous Joomla! versions
+
 ## License
 
 MIT/BSD
@@ -66,3 +82,4 @@ MIT/BSD
 ## Author Information
 
 This playbook was created in 2018 by [Romana Boldt](https://www.boldt-webservice.de/).
+

@@ -16,7 +16,6 @@ project_name_dotted: "j{{ bwpm_joomla_version }}_bwpm{{ bwpm_project_version }}"
 project_name: "{{ project_name_dotted | replace('.', '')}}"
 
 artifacts_path: "{{ artifacts_base}}/{{ project_name }}"
-test_dir: "/vhosts/dev4/tests"
 
 backup_name_raw: "BwPostman_{{ version_to_test }}_Tables"
 

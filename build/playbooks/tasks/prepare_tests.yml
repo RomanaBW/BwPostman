@@ -43,7 +43,7 @@
   become: yes
   template:
     src: "bwpm_tester_start_withdraw.sh.j2"
-    dest: "{{ test_dir }}/job_scripts/bwpm_tester_start_withdraw.sh"
+    dest: "{{ artifacts_path }}/job_scripts/bwpm_tester_start_withdraw.sh"
     mode: 0775
     owner: romana
     group: users

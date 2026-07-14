@@ -4,4 +4,5 @@
 - import_playbook: create-current-dev.yml
 - import_playbook: create-current-fast.yml
 - import_playbook: create-jenkinsfile.yml
+- import_playbook: create-current-test.yml
 

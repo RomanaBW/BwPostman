@@ -116,7 +116,7 @@ pipeline {
 		    	}
 			}
 			parallel {
-				stage('A5-1: Lists NLS, TPLS, SUBS') {
+				stage('A6-1: Lists NLS, TPLS, SUBS') {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -132,7 +132,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A5-2: Details NL, SUB') {
+				stage('A6-2: Details NL, SUB') {
 					steps {
 //						echo "Dummy 2"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -148,7 +148,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A5-3: Details TPL, CAM, ML, Lists CAMS, MLS, Maintenance + Frontend') {
+				stage('A6-3: Details TPL, CAM, ML, Lists CAMS, MLS, Maintenance + Frontend') {
 					steps {
 //						echo "Dummy 3"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -164,7 +164,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A5-4: Mod Reg, Mod Over, UA, FUM, U2S') {
+				stage('A6-4: Mod Reg, Mod Over, UA, FUM, U2S') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -311,7 +311,7 @@ pipeline {
 		    	}
 			}
 			parallel {
-				stage('P5-1: P1') {
+				stage('P6-1: P1') {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -327,7 +327,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P5-2: P2') {
+				stage('P6-2: P2') {
 					steps {
 //						echo "Dummy 2"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -343,7 +343,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P5-3: P3') {
+				stage('P6-3: P3') {
 					steps {
 //						echo "Dummy 3"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -359,7 +359,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P5-4: P4') {
+				stage('P6-4: P4') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -473,7 +473,7 @@ pipeline {
 		    	}
 			}
 			parallel {
-				stage('A4-1: Lists NLS, TPLS, SUBS') {
+				stage('A5-1: Lists NLS, TPLS, SUBS') {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -489,7 +489,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A4-2: Details NL, SUB') {
+				stage('A5-2: Details NL, SUB') {
 					steps {
 //						echo "Dummy 2"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -505,7 +505,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A4-3: Details TPL, CAM, ML, Lists CAMS, MLS, Maintenance + Frontend') {
+				stage('A5-3: Details TPL, CAM, ML, Lists CAMS, MLS, Maintenance + Frontend') {
 					steps {
 //						echo "Dummy 3"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -521,7 +521,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A4-4: Mod Reg, Mod Over, UA, FUM, U2S') {
+				stage('A5-4: Mod Reg, Mod Over, UA, FUM, U2S') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -588,7 +588,7 @@ pipeline {
 		    	}
 			}
 			parallel {
-				stage('P4-1: P1') {
+				stage('P5-1: P1') {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -604,7 +604,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P4-2: P2') {
+				stage('P5-2: P2') {
 					steps {
 //						echo "Dummy 2"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -620,7 +620,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P4-3: P3') {
+				stage('P5-3: P3') {
 					steps {
 //						echo "Dummy 3"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -636,7 +636,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P4-4: P4') {
+				stage('P5-4: P4') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"

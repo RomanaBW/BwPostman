@@ -1064,7 +1064,7 @@ class SubscriberviewPage
 
 //        Fill login data
         $I->fillField(self::$loginUsernameField, 'BwPostmanPublisher');
-        $I->fillField(self::$loginPasswordField, '@Miriam02#01!');
+        $I->fillField(self::$loginPasswordField, 'BwPostmanTest');
 
 //        Submit login
 		$I->scrollTo(self::$loginButton, 0, -100);

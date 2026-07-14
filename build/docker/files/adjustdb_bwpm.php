@@ -144,20 +144,6 @@ function getQueryToInsertUsers(): string
         `requireReset`
         )
     VALUES
-         (
-            \'757\',
-            \'AdminTester\',
-            \'AdminTester\',
-            \'info@boldt-services.de\',
-            \'$2y$10$VnyP/VSrn9ULXuD6lzEsFeud1uR78wq6jSRCgVaiIkc84Gyj589nO\',
-            \'0\',
-            \'0\',
-            \'2019-04-02 13:18:00\',
-            \'\',
-            \'\',
-            \'0\',
-            \'0\'
-        ),
        (
             \'847\',
             \'Cronuser\',

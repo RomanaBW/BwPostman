@@ -33,7 +33,7 @@ class AccessPage
 	 * @since 2.0.0
 	 */
 	public static $all_users = array(
-		array('user' => 'BwPostmanAdmin', 'password' => '@Miriam02#01!', 'author' => 'BwPostmanAdmin', 'half' => 1),
+		array('user' => 'BwPostmanAdmin', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanAdmin', 'half' => 1),
 		array('user' => 'BwPostmanManager', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanManager', 'half' => 1),
 		array('user' => 'BwPostmanPublisher', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanPublisher', 'half' => 4),
 		array('user' => 'BwPostmanEditor', 'password' => 'BwPostmanTest', 'author' => 'BwPostmanEditor', 'half' => 2),

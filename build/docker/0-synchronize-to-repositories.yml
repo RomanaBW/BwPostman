@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Copy build folder to ensure playbooks there are up to date
+      become: yes
+      ansible.builtin.copy:
+        src: "/home/romana/PhpstormProjects/BwPostman_J4/build/"
+        dest: "/repositories/BwPostman4/build/"
+        owner: romana
+        group: users
+        directory_mode: '0775'

@@ -1,4 +1,5 @@
 ---
+- import_playbook: 0-synchronize-to-repositories.yml
 - import_playbook: create-previous-config.yml
 - import_playbook: create-previous-push.yml
 - import_playbook: create-previous-dev.yml

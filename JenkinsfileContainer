@@ -10,7 +10,7 @@ pipeline {
 					JOOMLA_VERSION_PREVIOUS = "5.4.8"
 					JOOMLA_VERSION_CURRENT  = "6.1.3"
 
-					DO_CURRENT_GENERAL   = 'false'
+					DO_CURRENT_GENERAL   = 'true'
 					DO_PREVIOUS_GENERAL  = 'true'
 
 					DO_DEV_UPLOAD = 'true'

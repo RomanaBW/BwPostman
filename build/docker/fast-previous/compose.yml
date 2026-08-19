@@ -13,9 +13,9 @@ services:
     #  Database
   bwpm-fast-previous-db:
     container_name: bwpm-fast-previous-db
-    image: universe3:5000/romana/bwpm_enh_db-5:8.1.0-5.4.7-4.3.6
+    image: universe3:5000/romana/joomla_enh_db-5:8.1.0-5.4.8-4.3.6
     volumes:
-        - bwpm_fast_db_54:/var/lib/mariadb
+        - db_testdata_54:/var/lib/mariadb
     networks:
       bwpm-fast-previous:
         ipv4_address: 172.118.5.58
@@ -41,7 +41,7 @@ services:
     # Webserver
   bwpm-fast-previous-joomla:
     container_name: bwpm-fast-previous-joomla
-    image: universe3:5000/romana/bwpm_enh_web-5:8.1.0-5.4.7-4.3.6
+    image: universe3:5000/romana/joomla_enh_web-5:8.1.0-5.4.8-4.3.6
     ports:
         - 75:80
     healthcheck:
@@ -273,7 +273,7 @@ services:
         PMA_HOST: bwpm-fast-previous-db
 
 volumes:
-  bwpm_fast_db_54:
+  db_testdata_54:
 
 secrets:
     db_password:

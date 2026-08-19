@@ -13,4 +13,4 @@
     - name: Create Jenkinsfile
       ansible.builtin.template:
         src: "JenkinsfileContainer.j2"
-        dest: "../../JenkinsfileContainer"
+        dest: "/home/romana/PhpstormProjects/BwPostman_J4/JenkinsfileContainer"

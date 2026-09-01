@@ -1,6 +1,6 @@
 ---
 - name: Start tests
-  shell: "docker-compose -f {{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml up"
+  shell: "docker compose -f {{ tester_compose_path }}/bwpm-tester-fast-withdraw.yml up"
 
 - name: Remove tester
   shell: "docker rm bwpm-tester{{ j_main }}"

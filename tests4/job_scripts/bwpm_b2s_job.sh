@@ -60,7 +60,7 @@ export TEST_CAT=buyer2subscriber_single
 
 
 ### start webserver
-docker-compose -f /vms/dockers/containers/infrastructure/run-j-vm-flex.yml -p $TEST_PROJECT up -d
+docker compose -f /vms/dockers/containers/infrastructure/run-j-vm-flex.yml -p $TEST_PROJECT up -d
 
 ### sync IDE files to container
 echo 'Do sync'
@@ -68,10 +68,10 @@ echo 'Do sync'
 
 ### start tester
 echo 'Start Tester'
-docker-compose -f /vms/dockers/containers/testers/bwpm-vm-flex-tester.yml up
+docker compose -f /vms/dockers/containers/testers/bwpm-vm-flex-tester.yml up
 
 ### stop tester (service name!)
 docker rm tester-vm-flex
 
 ### stop webserver
-#docker-compose -f /vms/dockers/containers/infrastructure/run-bwpm.yml -p $TEST_PROJECT down
+#docker compose -f /vms/dockers/containers/infrastructure/run-bwpm.yml -p $TEST_PROJECT down

@@ -9,7 +9,7 @@ Many thanks to all those people who have contributed bug reports and code fixes.
 Version 4.3.6 released (2026-05-23)----
 
 Bugfix
-#
+# Logged in users, which are not also subscribers of BwPostman, are only displayed public mailing lists for registration.
 
 
 Version 4.3.5 released (2026-02-21)----

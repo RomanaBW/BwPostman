@@ -92,7 +92,40 @@ class SubscribeComponentCest
 		SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
 	}
 
-	/**
+    /**
+     * Test method to subscribe as logged-in user by component in front end, activate and unsubscribe
+     *
+     * @param   AcceptanceTester         $I
+     *
+     * @return  void
+     *
+     * @throws Exception
+     * @Miriam01#
+     * @since   4.1.3
+     */
+    public function SubscribeSimpleActivateAndUnsubscribeLoggedInNoSubs(AcceptanceTester $I)
+    {
+        $I->wantTo("Subscribe as logged-in user to mailinglist by component");
+        $I->expectTo('get confirmation mail');
+
+        Generals::presetComponentOptions($I);
+
+        SubsView::loginToFrontend($I, 'BE User 1', '@Miriam01#');
+
+        SubsView::subscribeByComponent($I);
+        $I->click(SubsView::$button_register);
+
+        $I->waitForElementVisible(SubsView::$registration_complete, 30);
+        $I->see(SubsView::$registration_completed_text, SubsView::$registration_complete);
+
+        SubsView::logoutFromFrontend($I);
+
+        SubsView::activate($I, SubsView::$mail_fill_1);
+
+        SubsView::unsubscribe($I, SubsView::$activated_edit_Link);
+    }
+
+    /**
 	 * Test method to subscribe by component in front end twice, activate and unsubscribe
 	 *
 	 * @param   AcceptanceTester                $I

@@ -522,7 +522,7 @@ class MailinglistTable extends Table implements VersionableTableInterface
 	/**
 	 * Method to get all mailinglists which the user is authorized to see
 	 *
-	 * @param integer $userId the user ID f this subscriber
+	 * @param integer $userId the user ID of this subscriber
 	 *
 	 * @return    array Mailinglists
 	 *

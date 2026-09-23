@@ -1,11 +1,11 @@
 <?php
 namespace Page;
 
-/**
+use Exception;/**
  * Class RegisterviewPage
  *
- * @package Page
- * @copyright (C) 2018 Boldt Webservice <forum@boldt-webservice.de>
+ * @since   2.0.0
+ *@copyright (C) 2018 Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
  * @license GNU/GPL, see LICENSE.txt
  * This program is free software: you can redistribute it and/or modify
@@ -949,7 +949,7 @@ class SubscriberviewPage
 	 *
 	 * @param \AcceptanceTester             $I
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.1
 	 */
@@ -1008,7 +1008,7 @@ class SubscriberviewPage
 	 * @param string                        $mailaddress
 	 * @param bool                          $good
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.1
 	 */
@@ -1028,7 +1028,7 @@ class SubscriberviewPage
 	 * @param \AcceptanceTester             $I
 	 * @param string                        $button
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @since   2.2.1
 	 */
@@ -1049,13 +1049,15 @@ class SubscriberviewPage
     /**
      * Test method to login at frontend
      *
-     * @param \AcceptanceTester $I
+     * @param \AcceptanceTester  $I
+     * @param   string           $loginUser
+     * @param   string           $loginPw
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @since   4.1.3
      */
-    public static function loginToFrontend(\AcceptanceTester $I)
+    public static function loginToFrontend(\AcceptanceTester $I, string $loginUser = 'BwPostmanPublisher', string $loginPw = 'BwPostmanTest'): void
     {
 //        Go to login page
         $I->amOnPage(self::$loginPage);
@@ -1063,8 +1065,8 @@ class SubscriberviewPage
         $I->seeElement(self::$loginUsernameField);
 
 //        Fill login data
-        $I->fillField(self::$loginUsernameField, 'BwPostmanPublisher');
-        $I->fillField(self::$loginPasswordField, 'BwPostmanTest');
+        $I->fillField(self::$loginUsernameField, $loginUser);
+        $I->fillField(self::$loginPasswordField, $loginPw);
 
 //        Submit login
 		$I->scrollTo(self::$loginButton, 0, -100);
@@ -1074,7 +1076,7 @@ class SubscriberviewPage
 //        Check success of login
         $I->amOnPage(self::$profilePage);
         $I->wait(1);
-        $I->see('BwPostmanPublisher', self::$profileNameField);
+        $I->see($loginUser, self::$profileNameField);
     }
 
     /**
@@ -1082,7 +1084,7 @@ class SubscriberviewPage
      *
      * @param \AcceptanceTester $I
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @since   4.1.3
      */

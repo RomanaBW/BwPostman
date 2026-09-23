@@ -48,56 +48,56 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * The subscriber data
 	 *
-	 * @var    object
+	 * @var    object|null
 	 *
 	 * @since       0.9.1
 	 */
-	public $subscriber = null;
+	public ?object $subscriber = null;
 
 	/**
 	 * several needed lists
 	 *
-	 * @var    array
+	 * @var    array|null
 	 *
 	 * @since       0.9.1
 	 */
-	public $lists = null;
+	public ?array $lists = null;
 
 	/**
 	 * The component parameters
 	 *
-	 * @var    object   Registry object
+	 * @var    object|null   Registry object
 	 *
 	 * @since       0.9.1
 	 */
-	public $params = null;
+	public ?object $params = null;
 
 	/**
 	 * The component captcha
 	 *
-	 * @var    string
+	 * @var    string|null
 	 *
 	 * @since       0.9.1
 	 */
-	public $captcha = null;
+	public ?string $captcha = null;
 
 	/**
 	 * The current error object
 	 *
-	 * @var    object
+	 * @var    object|null
 	 *
 	 * @since       0.9.1
 	 */
-	public $error = null;
+	public ?object $error = null;
 
 	/**
 	 * The current success object
 	 *
-	 * @var    object
+	 * @var    object|null
 	 *
 	 * @since       0.9.1
 	 */
-	public $success = null;
+	public ?object $success = null;
 
 	/**
 	 * Execute and display a template script.
@@ -116,7 +116,7 @@ class HtmlView extends BaseHtmlView
 		$layout   = $this->getLayout();
 		$params   = ComponentHelper::getParams('com_bwpostman', true);
 
-		$menuParams = new Registry;
+		$menuParams = new Registry();
 		$menu       = $app->getMenu()->getActive();
 
 		if ($menu)
@@ -132,14 +132,14 @@ class HtmlView extends BaseHtmlView
 
 		switch ($layout)
 		{
-			case "error_accountblocked":
-			case "error_accountgeneral":
-			case "error_accountnotactivated":
-			case "error_email":
-			case "error_geteditlink":
+			case 'error_accountblocked':
+			case 'error_accountgeneral':
+			case 'error_accountnotactivated':
+			case 'error_email':
+			case 'error_geteditlink':
 				$this->displayError();
 				break;
-			case "success_msg":
+			case 'success_msg':
 				$this->displaySuccess();
 				break;
 			default:
@@ -163,8 +163,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since       0.9.1
 	 */
-	private function displayError()
-	{
+	private function displayError(): void
+    {
 		$session	    = Factory::getApplication()->getSession();
 		$this->error    = new stdClass();
 		$err	    = $session->get('session_error', null);
@@ -192,8 +192,8 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since          0.9.1
 	 */
-	private function displaySuccess()
-	{
+	private function displaySuccess(): void
+    {
 		$session	    = Factory::getApplication()->getSession();
 		$this->success  = new stdClass();
 
@@ -217,12 +217,12 @@ class HtmlView extends BaseHtmlView
 	 *
 	 * @since          0.9.1
 	 */
-	private function displayDefault()
-	{
+	private function displayDefault(): void
+    {
 		$user		= Factory::getApplication()->getIdentity();
 		$session	= Factory::getApplication()->getSession();
 		$subscriber	= new stdClass();
-		$lists      = array();
+		$lists      = [];
 
 		// If there occurred an error while storing the data load the data from the session
 		$subscriber_data = $session->get('subscriber_data');
@@ -241,19 +241,18 @@ class HtmlView extends BaseHtmlView
 		{
 			$subscriber = BwPostmanSubscriberHelper::fillVoidSubscriber();
 			// If the user is logged into the website get the data from users-table
-			if (!$user->get('guest'))
+			if (!$user->guest)
 			{
-				$subscriber->name = $user->get('name');
-				$subscriber->email = $user->get('email');
+				$subscriber->name = $user->name;
+				$subscriber->email = $user->email;
 			}
 		}
 
 		// Get the mailinglists which the subscriber is authorized to see
 		$model = $this->getModel();
 		$mlTable = $model->getTable('Mailinglist');
-		$subsTable = $model->getTable('Subscriber');
-		$userId  = $subsTable->getUserIdOfSubscriber($subscriber->id);
-		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists((int)$userId);
+
+		$lists['available_mailinglists'] = $mlTable->getAuthorizedMailinglists($user->id);
 
 		// Build the email format select list
 		if (!isset($subscriber->emailformat))
@@ -282,6 +281,6 @@ class HtmlView extends BaseHtmlView
 		// Save references into view
 		$this->lists        = $lists;
 		$this->subscriber   = $subscriber;
-		$this->subscriber->missingValues = $session->set('subscriber.register.missingValues', array());
+		$this->subscriber->missingValues = $session->set('subscriber.register.missingValues', []);
 	}
 }

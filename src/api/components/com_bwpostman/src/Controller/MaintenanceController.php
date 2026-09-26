@@ -62,7 +62,7 @@ class MaintenanceController extends ApiController
      *
      * @since  4.3.0
      */
-    protected $default_view = '';
+    protected $default_view = 'api';
 
     /**
      * Constructor

@@ -16,6 +16,7 @@ package_parts:
   - plg_bwpostman_footerusedmailinglists
   - plg_bwpostman_newslettercontent
   - plg_webservices_bwpostman
+  - plg_console_bwpostman
 
 languages:
   - de-DE
@@ -72,3 +73,4 @@ manifest_list:
   - build/manifests/pkg_bwpostman.xml
   - src/plugins/bwpostman/newslettercontent/newslettercontent.xml
   - src/plugins/webservices/bwpostman/bwpostman.xml
+  - src/plugins/console/bwpostman/bwpostman.xml

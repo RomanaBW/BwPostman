@@ -137,6 +137,9 @@ services:
         - type: bind
           source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/webservices/bwpostman
           target: /var/www/html/plugins/webservices/bwpostman
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/plugins/console/bwpostman
+          target: /var/www/html/plugins/console/bwpostman
         # mount BwTC plugin folders
         - type: bind
           source: /home/romana/PhpstormProjects/BwTimeControl/src/plugins/bwpostman/bwtimecontrol
@@ -217,6 +220,13 @@ services:
         - type: bind
           source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.sys.ini
           target: /var/www/html/administrator/language/en-GB/en-GB.plg_webservices_bwpostman.sys.ini
+      # mount console plugin language files
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_console_bwpostman.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_console_bwpostman.ini
+        - type: bind
+          source: /home/romana/PhpstormProjects/BwPostman_J4/src/administrator/language/en-GB/en-GB.plg_console_bwpostman.sys.ini
+          target: /var/www/html/administrator/language/en-GB/en-GB.plg_console_bwpostman.sys.ini
         # mount BwTC plugin language files
         - type: bind
           source: /home/romana/PhpstormProjects/BwTimeControl/src/language/en-GB/en-GB.pkg_bwtimecontrol.sys.ini

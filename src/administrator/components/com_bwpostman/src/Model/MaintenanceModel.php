@@ -246,19 +246,15 @@ class MaintenanceModel extends BaseDatabaseModel
      */
 	public function saveTables(?string $fileName, bool $update = false): bool|string
     {
-        $isCli   = Factory::getApplication()->isClient('cli');
-        $session = Factory::getApplication()->getSession();
+        $isCli      = Factory::getApplication()->isClient('cli');
+        $session    = Factory::getApplication()->getSession();
+        $backupPath = '/images/com_bwpostman/backup_tables';
 
         if ($isCli)
         {
             $consoleCompressed = $session->get('plg_bwpm_console_backup.compressed', ComponentHelper::getParams('com_bwpostman')->get('compress_backup', true));
             $consoleFilename   = $session->get('plg_bwpm_console_backup.filename', '');
             $backupPath        = $session->get('plg_bwpm_console_backup.backup_path', '/images/com_bwpostman/backup_tables');
-
-            if ($backupPath === '')
-            {
-                $backupPath = '/images/com_bwpostman/backup_tables';
-            }
         }
 
 		// Access check.

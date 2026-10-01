@@ -229,49 +229,65 @@ class MaintenanceModel extends BaseDatabaseModel
 		$this->db = $this->_db;
 	}
 
-	/**
-	 * Method to back up tables
-	 *
-	 * Cannot use File::write() because we want to append data
-	 *
-	 * @access      public
-	 *
-	 * @param ?string  $fileName
-	 * @param boolean $update
-	 *
-	 * @return  string|boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since       1.0.1
-	 */
-	public function saveTables(?string $fileName, bool $update = false)
-	{
+    /**
+     * Method to back up tables
+     *
+     * Cannot use File::write() because we want to append data
+     *
+     * @access      public
+     *
+     * @param ?string   $fileName
+     * @param   bool    $update
+     *
+     * @return  string|bool
+     *
+     * @throws Exception
+     * @since       1.0.1
+     */
+	public function saveTables(?string $fileName, bool $update = false): bool|string
+    {
+        $isCli   = Factory::getApplication()->isClient('cli');
+        $session = Factory::getApplication()->getSession();
+
+        if ($isCli)
+        {
+            $consoleCompressed = $session->get('plg_bwpm_console_backup.compressed', ComponentHelper::getParams('com_bwpostman')->get('compress_backup', true));
+            $consoleFilename   = $session->get('plg_bwpm_console_backup.filename', '');
+            $backupPath        = $session->get('plg_bwpm_console_backup.backup_path', '/images/com_bwpostman/backup_tables');
+
+            if ($backupPath === '')
+            {
+                $backupPath = '/images/com_bwpostman/backup_tables';
+            }
+        }
+
 		// Access check.
 		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
 
-		if (!$permissions['maintenance']['save'])
+		if (!$isCli && !$permissions['maintenance']['save'])
 		{
 			return false;
 		}
 
 		$fileName = File::makeSafe($fileName);
 
-		if ($fileName == "")
+		if ($fileName == '')
 		{
 			$dottedVersion = BwPostmanHelper::getInstalledBwPostmanVersion();
 
 			if ($dottedVersion === false)
 			{
+                $session->set('plg_bwpm_console_backup.errorMsg', Text::_('COM_BWPOSTMAN_CONSOLE_BACKUP_ERROR_NO_INSTALLED_VERSION'));
+
 				return false;
 			}
 
 			$version  = str_replace('.', '_', $dottedVersion);
-			$fileName = "BwPostman_" . $version . "_Tables_" . Factory::getDate()->format("Y-m-d_H_i") . '.xml';
+			$fileName = 'BwPostman_' . $version . '_Tables_' . Factory::getDate()->format('Y-m-d_H_i') . '.xml';
 		}
 
 		// create (empty) backup file
-		$path = JPATH_ROOT . "/images/com_bwpostman/backup_tables";
+		$path = Folder::makeSafe(JPATH_ROOT . $backupPath);
 
 		if (!Folder::exists($path))
 		{
@@ -279,12 +295,13 @@ class MaintenanceModel extends BaseDatabaseModel
 			{
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $path);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
-				if ($update)
+				if ($update && !$isCli)
 				{
 					echo '<p class="text-danger">' . $message . '</p>';
 
-					return false;
+                    return false;
 				}
 			}
 		}
@@ -298,8 +315,9 @@ class MaintenanceModel extends BaseDatabaseModel
 			{
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_WRITABLE', $path);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
-				if ($update)
+				if ($update && !$isCli)
 				{
 					echo '<p class="text-danger">' . $message . '</p>';
 
@@ -310,6 +328,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			// get all names of installed BwPostman tables
 			if ($this->getTableNamesFromDB() === false)
 			{
+                $session->set('plg_bwpm_console_backup.errorMsg', Text::_('COM_BWPOSTMAN_CONSOLE_BACKUP_ERROR_GETTNG_TABLE_NAMES'));
 				return false;
 			}
 
@@ -317,8 +336,9 @@ class MaintenanceModel extends BaseDatabaseModel
 			{
 				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES', $path);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
-				if ($update)
+				if ($update && !$isCli)
 				{
 					echo '<p class="text-danger">' . $message . '</p>';
 
@@ -331,6 +351,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 			if ($xmlHeader === false)
 			{
+                $session->set('plg_bwpm_console_backup.errorMsg', Text::_('COM_BWPOSTMAN_CONSOLE_BACKUP_ERROR_BUILD_XML_HEADER'));
 				return false;
 			}
 
@@ -350,8 +371,9 @@ class MaintenanceModel extends BaseDatabaseModel
 				{
 					$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
-					if ($update)
+					if ($update && !$isCli)
 					{
 						echo '<p class="text-danger">' . $message . '</p>';
 
@@ -363,7 +385,7 @@ class MaintenanceModel extends BaseDatabaseModel
 					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_TABLE_SUCCESS', $tableName);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
 
-					if ($update)
+					if ($update && !$isCli)
 					{
 						echo '<p class="text-success">'	. $message . '</p>';
 					}
@@ -374,8 +396,9 @@ class MaintenanceModel extends BaseDatabaseModel
 				{
 					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
-					if ($update)
+					if ($update && !$isCli)
 					{
 						echo '<p class="text-danger">' . $ $message . '</p>';
 					}
@@ -390,8 +413,9 @@ class MaintenanceModel extends BaseDatabaseModel
 				{
 					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $fileName);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
-					if ($update)
+					if ($update && !$isCli)
 					{
 						echo '<p class="text-danger">' . $message . '</p>';
 					}
@@ -410,6 +434,12 @@ class MaintenanceModel extends BaseDatabaseModel
 			if (fwrite($handle, $file_data) !== false)
 			{
 				$compressed = ComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
+
+                if ($isCli)
+                {
+                    $compressed = $consoleCompressed;
+                }
+
 				$backupFile = $fileName;
 
 				if ($compressed)
@@ -419,8 +449,9 @@ class MaintenanceModel extends BaseDatabaseModel
 
 				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $fileName);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
-				if ($update)
+				if ($update && !$isCli)
 				{
 					echo '<p class="text-success">'	. $message . '</p>';
 				}
@@ -429,8 +460,9 @@ class MaintenanceModel extends BaseDatabaseModel
 			{
 				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
-				if ($update)
+				if ($update && !$isCli)
 				{
 					echo '<p class="text-danger">' . $message . '</p>';
 				}
@@ -446,13 +478,14 @@ class MaintenanceModel extends BaseDatabaseModel
 
             File::delete($fileName);
 			fclose($handle);
+            $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
 			return false;
 		}
 
-		if ($update)
+		if ($update || !$isCli)
 		{
-			return true;
+            return true;
 		}
 		else
 		{
@@ -4584,7 +4617,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @since    1.3.0
 	 *
-	 * @deprecated since 2.4.0
+	 * @deprecated since 2.4.0, will be removed in 4.5ff
 	 */
 	protected function getBwpmTableName(string $table): string
 	{

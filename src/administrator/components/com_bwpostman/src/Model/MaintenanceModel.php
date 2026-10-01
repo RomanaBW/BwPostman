@@ -479,7 +479,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			return false;
 		}
 
-		if ($update || $isCli)
+		if ($update)
 		{
             return true;
 		}

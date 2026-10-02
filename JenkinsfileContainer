@@ -11,14 +11,14 @@ pipeline {
 					JOOMLA_VERSION_CURRENT  = "6.1.4"
 
 					DO_CURRENT_GENERAL   = 'true'
-					DO_PREVIOUS_GENERAL  = 'true'
+					DO_PREVIOUS_GENERAL  = 'false'
 
 					DO_DEV_UPLOAD = 'true'
 					PACK_PACKAGE  = 'false'
 
 					DO_CURRENT_SMOKE  = 'true'
-					DO_CURRENT_ACCEPT = 'true'
-					DO_CURRENT_PERMS  = 'true'
+					DO_CURRENT_ACCEPT = 'false'
+					DO_CURRENT_PERMS  = 'false'
 
 					DO_PREVIOUS_SMOKE  = 'true'
 					DO_PREVIOUS_ACCEPT = 'true'

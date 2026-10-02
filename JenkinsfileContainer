@@ -233,6 +233,9 @@ pipeline {
     				expression {
 	    				return DO_CURRENT_GENERAL == 'true'
 		    		}
+    				expression {
+	    				return fileExists('/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip') == 'true'
+		    		}
 		    	}
 			}
 			steps {

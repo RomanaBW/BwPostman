@@ -46,6 +46,22 @@ pipeline {
 				}
 			}
     }
+		stage('Debug some vars') {
+		  steps {
+				  echo "Do dev upload: ${DO_DEV_UPLOAD}"
+				  echo "Do current general: ${DO_CURRENT_GENERAL}"
+				  script {
+				    if (fileExists('/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip') {
+				      echo "File exists"
+				    } else {
+				      echo "File is absent"
+				    }
+				  error "Test done. Aborting."
+				  }
+				}
+		  }
+		}
+
 
 		stage('Create full package') {
 			when {
@@ -220,14 +236,6 @@ pipeline {
 				)
 			}
     }
-
-		stage('Debug some vars') {
-		  steps {
-				  echo "Do dev upload: ${DO_DEV_UPLOAD}"
-				  echo "Do current general: ${DO_CURRENT_GENERAL}"
-				  echo 'Filepath: /repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip'
-		  }
-		}
 
 
 		stage('Dev-Upload') {

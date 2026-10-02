@@ -225,8 +225,7 @@ pipeline {
 		  steps {
 				  echo "Do dev upload: ${DO_DEV_UPLOAD}"
 				  echo "Do current general: ${DO_CURRENT_GENERAL}"
-				  echo "Filepath: /repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
-				  echo fileExists ('/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip')
+				  echo 'Filepath: /repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip'
 		  }
 		}
 

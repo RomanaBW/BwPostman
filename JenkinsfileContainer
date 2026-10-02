@@ -45,7 +45,7 @@ pipeline {
 					DO_RECORD_7 = "false";
 				}
 			}
-        }
+    }
 
 		stage('Create full package') {
 			when {
@@ -201,7 +201,7 @@ pipeline {
             }
 		}
 
-        stage('Send acceptance success mail for Joomla 6 part') {
+    stage('Send acceptance success mail for Joomla 6 part') {
 			when {
 			    allOf {
     				expression {
@@ -219,9 +219,15 @@ pipeline {
 					to: 'webmaster@boldt-webservice.de'
 				)
 			}
-        }
+    }
 
-
+		stage('Debug some vars') {
+		  steps {
+				  echo "Do dev upload: ${DO_DEV_UPLOAD}"
+				  echo "Do current general: ${DO_CURRENT_GENERAL}"
+				  echo "/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
+		  }
+		}
 
 
 		stage('Dev-Upload') {

@@ -225,7 +225,9 @@ pipeline {
 		  steps {
 				  echo "Do dev upload: ${DO_DEV_UPLOAD}"
 				  echo "Do current general: ${DO_CURRENT_GENERAL}"
-				  echo "/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
+				  echo "Filepath: /repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
+				  def exists = fileExists ('/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip')
+				  echo exists
 		  }
 		}
 
@@ -240,14 +242,7 @@ pipeline {
 	    				return DO_CURRENT_GENERAL == 'true'
 		    		}
     				expression {
-	    				if (fileExists('/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip'))
-	    				{
-	    				  return true
-	    				}
-	    				else
-	    				{
-	    				  return false
-	    				}
+	    				return fileExists ('/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip')
 		    		}
 		    	}
 			}

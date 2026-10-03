@@ -56,7 +56,7 @@ pipeline {
 				echo "Do current general: ${DO_CURRENT_GENERAL}"
 				script {
 				  echo "packagePath: ${packagePath}/${packageName}\n"
-				  if (fileExists(packagePath + '/' + ${packageName})) {
+				  if (fileExists(packagePath + '/' + packageName)) {
 				    echo "Package exists"
 				  } else {
 				    echo "Package is absent"

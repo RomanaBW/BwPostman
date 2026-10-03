@@ -14,7 +14,7 @@ pipeline {
 					DO_PREVIOUS_GENERAL  = 'false'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'true'
+					PACK_PACKAGE  = 'false'
 
 					DO_CURRENT_SMOKE  = 'true'
 					DO_CURRENT_ACCEPT = 'false'
@@ -53,7 +53,7 @@ pipeline {
 		stage('Debug some vars') {
 		  steps {
 				echo "Do dev upload: ${DO_DEV_UPLOAD}"
-				echo "Do current general: ${DO_CURRENT_GENERAL}"
+				echo "Do pack package: ${PACK_PACKAGE}"
 				script {
 				  echo "packagePath: ${packagePath}/${packageName}\n"
 				  if (fileExists(packagePath + '/' + packageName)) {

@@ -43,6 +43,10 @@ pipeline {
 					DO_RECORD_5 = "false";
 					DO_RECORD_6 = "false";
 					DO_RECORD_7 = "false";
+
+//					def packageName = "pkg_bwpostman-${BWPM_VERSION}.${currentBuild.number}.zip"
+					def packageName = "pkg_bwpostman-${BWPM_VERSION}.1189.zip"
+					def packagePath = "/repositories/artifacts/bwpostman4/data"
 				}
 			}
     }
@@ -51,13 +55,11 @@ pipeline {
 				echo "Do dev upload: ${DO_DEV_UPLOAD}"
 				echo "Do current general: ${DO_CURRENT_GENERAL}"
 				script {
-//				  def searchName = "/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${BWPM_VERSION}.${currentBuild.number}.zip"
-      			def searchName = "/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${BWPM_VERSION}.1189.zip"
-				  echo "SearchName: ${searchName}\n"
-				  if (fileExists(searchName)) {
-				    echo "File exists"
+				  echo "packagePath: ${packagePath}/${packageName}\n"
+				  if (fileExists(packagePath + '/' + ${packageName})) {
+				    echo "Package exists"
 				  } else {
-				    echo "File is absent"
+				    echo "Package is absent"
 				  }
 				error "Test done. Aborting."
 				}
@@ -250,22 +252,22 @@ pipeline {
 	    				return DO_CURRENT_GENERAL == 'true'
 		    		}
     				expression {
-	    				return fileExists ('/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip')
+	    				return fileExists (packagePath + '/' + ${packageName})
 		    		}
 		    	}
 			}
 			steps {
-				dir("/repositories/artifacts/bwpostman4/data") {
+				dir(packagePath) {
 					fileOperations([
 						fileCopyOperation(
 							excludes: '',
 						flattenFiles: false,
-						includes: "pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip",
+						includes: packageName,
 						targetLocation: "${WORKSPACE}/tests")
 				])
 				}
 
-				dir("/repositories/artifacts/bwpostman4/data") {
+				dir(packagePath) {
 					fileOperations([
 						fileCopyOperation(
 							excludes: '',
@@ -296,7 +298,7 @@ pipeline {
 					remoteDirectory: "dev/${"${BWPM_VERSION}"}.${currentBuild.number}",
 					remoteDirectorySDF: false,
 					removePrefix: 'tests',
-					sourceFiles: "tests/CHANGELOG, tests/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
+					sourceFiles: "tests/CHANGELOG, tests/${packageName}"
 			)],
 				usePromotionTimestamp: false,
 					useWorkspaceInPromotion: false,

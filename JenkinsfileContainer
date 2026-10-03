@@ -252,7 +252,7 @@ pipeline {
 	    				return DO_CURRENT_GENERAL == 'true'
 		    		}
     				expression {
-	    				return fileExists(packagePath + '/' + packageName))
+	    				return fileExists(packagePath + '/' + packageName)
 		    		}
 		    	}
 			}

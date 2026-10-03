@@ -580,6 +580,7 @@ pipeline {
   //				echo "Dummy Acceptance Remove"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
           }
+        }
 
         stage('Send acceptance success mail for previous Joomla part') {
           when {
@@ -602,7 +603,6 @@ pipeline {
         }
       }
     }
-   }
 
 		stage('Run permissions previous Joomla') {
 			when {

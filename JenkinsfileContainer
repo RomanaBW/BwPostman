@@ -11,14 +11,14 @@ pipeline {
 					JOOMLA_VERSION_CURRENT  = "6.1.4"
 
 					DO_CURRENT_GENERAL   = 'true'
-					DO_PREVIOUS_GENERAL  = 'false'
+					DO_PREVIOUS_GENERAL  = 'true'
 
 					DO_DEV_UPLOAD = 'true'
-					PACK_PACKAGE  = 'false'
+					PACK_PACKAGE  = 'true'
 
 					DO_CURRENT_SMOKE  = 'true'
-					DO_CURRENT_ACCEPT = 'false'
-					DO_CURRENT_PERMS  = 'false'
+					DO_CURRENT_ACCEPT = 'true'
+					DO_CURRENT_PERMS  = 'true'
 
 					DO_PREVIOUS_SMOKE  = 'true'
 					DO_PREVIOUS_ACCEPT = 'true'
@@ -50,21 +50,21 @@ pipeline {
 				}
 			}
     }
-		stage('Debug some vars') {
-		  steps {
-				echo "Do dev upload: ${DO_DEV_UPLOAD}"
-				echo "Do pack package: ${PACK_PACKAGE}"
-				script {
-				  echo "packagePath: ${packagePath}/${packageName}\n"
-				  if (fileExists(packagePath + '/' + packageName)) {
-				    echo "Package exists"
-				  } else {
-				    echo "Package is absent"
-				  }
+//		stage('Debug some vars') {
+//		  steps {
+//				echo "Do dev upload: ${DO_DEV_UPLOAD}"
+//				echo "Do pack package: ${PACK_PACKAGE}"
+//				script {
+//				  echo "packagePath: ${packagePath}/${packageName}\n"
+//				  if (fileExists(packagePath + '/' + packageName)) {
+//				    echo "Package exists"
+//				  } else {
+//				    echo "Package is absent"
+//				  }
 //				error "Test done. Aborting."
-				}
-			}
-		}
+//				}
+//			}
+//		}
 
 
 		stage('Create full package') {
@@ -281,7 +281,7 @@ pipeline {
 					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
 				}
 
-				echo "tests/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip"
+				echo "tests/${packageName}"
 
 				sshPublisher(
 					publishers: [sshPublisherDesc(

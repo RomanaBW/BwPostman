@@ -45,8 +45,8 @@ pipeline {
 					DO_RECORD_7 = "false";
 
 //					def packageName = "pkg_bwpostman-${BWPM_VERSION}.${currentBuild.number}.zip"
-					def packageName = "pkg_bwpostman-${BWPM_VERSION}.1189.zip"
-					def packagePath = "/repositories/artifacts/bwpostman4/data"
+					packageName = "pkg_bwpostman-${BWPM_VERSION}.1189.zip"
+					packagePath = "/repositories/artifacts/bwpostman4/data"
 				}
 			}
     }

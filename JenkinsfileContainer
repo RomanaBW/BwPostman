@@ -79,7 +79,7 @@ pipeline {
 		}
 
 
-		stage('Run smoke tests with J6') {
+		stage('Run smoke tests with current Joomla') {
 			when {
 			    allOf {
     				expression {
@@ -107,7 +107,7 @@ pipeline {
 			}
 		}
 
-		stage('Remove smoke tests container images J6') {
+		stage('Remove smoke tests container images current') {
 			when {
 			    allOf {
     				expression {
@@ -124,7 +124,7 @@ pipeline {
             }
 		}
 
-		stage('Run acceptance Joomla 6') {
+		stage('Run acceptance current Joomla ') {
 			when {
 			    allOf {
     				expression {
@@ -136,7 +136,7 @@ pipeline {
 		    	}
 			}
 			parallel {
-				stage('A5-1: Lists NLS, TPLS, SUBS') {
+				stage('A-C-1: Lists NLS, TPLS, SUBS') {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -152,7 +152,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A5-2: Details NL, SUB') {
+				stage('A-C-2: Details NL, SUB') {
 					steps {
 //						echo "Dummy 2"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -168,7 +168,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A5-3: Details TPL, CAM, ML, Lists CAMS, MLS, Maintenance + Frontend') {
+				stage('A-C-3: Details TPL, CAM, ML, Lists CAMS, MLS, Maintenance + Frontend') {
 					steps {
 //						echo "Dummy 3"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -184,7 +184,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A5-4: Mod Reg, Mod Over, UA, FUM, U2S') {
+				stage('A-C-4: Mod Reg, Mod Over, UA, FUM, U2S') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -203,124 +203,122 @@ pipeline {
 			}
 		}
 
+    stage('Finish current acceptance') {
+      parallel {
+        stage('Remove acceptance tests container images for current') {
+          when {
+              allOf {
+                expression {
+                  return DO_CURRENT_ACCEPT == 'true'
+                }
+                expression {
+                  return DO_CURRENT_GENERAL == 'true'
+                }
+              }
+          }
+          steps {
+    //				echo "Dummy Acceptance Remove"
+            sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
+                }
+        }
 
-		stage('Remove acceptance tests container images for J6') {
-			when {
-			    allOf {
-    				expression {
-	    				return DO_CURRENT_ACCEPT == 'true'
-		    		}
-    				expression {
-	    				return DO_CURRENT_GENERAL == 'true'
-		    		}
-		    	}
-			}
-			steps {
-//				echo "Dummy Acceptance Remove"
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
+      stage('Send acceptance success mail for current Joomla part') {
+        when {
+            allOf {
+              expression {
+                return DO_CURRENT_ACCEPT == 'true'
+              }
+              expression {
+                return DO_CURRENT_GENERAL == 'true'
+              }
             }
-		}
+        }
+        steps {
+          emailext(
+            body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_CURRENT} and php ${PHP_VERSION_CURRENT} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+            subject:"BwPostman J${JOOMLA_VERSION_CURRENT} acceptance php ${PHP_VERSION_CURRENT} build ${currentBuild.number} successful",
+            to: 'webmaster@boldt-webservice.de'
+          )
+        }
+      }
 
-    stage('Send acceptance success mail for Joomla 6 part') {
-			when {
-			    allOf {
-    				expression {
-	    				return DO_CURRENT_ACCEPT == 'true'
-		    		}
-    				expression {
-	    				return DO_CURRENT_GENERAL == 'true'
-		    		}
-		    	}
-			}
-			steps {
-				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_CURRENT} and php ${PHP_VERSION_CURRENT} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J${JOOMLA_VERSION_CURRENT} acceptance php ${PHP_VERSION_CURRENT} build ${currentBuild.number} successful",
-					to: 'webmaster@boldt-webservice.de'
-				)
-			}
+      stage('Dev-Upload') {
+        when {
+            allOf {
+              expression {
+                return DO_DEV_UPLOAD == 'true'
+              }
+              expression {
+                return DO_CURRENT_GENERAL == 'true'
+              }
+              expression {
+                return fileExists(packagePath + '/' + packageName)
+              }
+            }
+        }
+        steps {
+          dir(packagePath) {
+            fileOperations([
+              fileCopyOperation(
+                excludes: '',
+              flattenFiles: false,
+              includes: packageName,
+              targetLocation: "${WORKSPACE}/tests")
+          ])
+          }
+
+          dir(packagePath) {
+            fileOperations([
+              fileCopyOperation(
+                excludes: '',
+              flattenFiles: false,
+              includes: "CHANGELOG",
+              targetLocation: "${WORKSPACE}/tests")
+          ])
+          }
+
+          script {
+            GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
+          }
+
+          echo "tests/${packageName}"
+
+          sshPublisher(
+            publishers: [sshPublisherDesc(
+            configName: 'Web Dev Webservice BwPostman',
+            transfers: [sshTransfer(
+            cleanRemote: false,
+            excludes: '',
+            execCommand: '',
+            execTimeout: 120000,
+            flatten: false,
+            makeEmptyDirs: false,
+            noDefaultExcludes: false,
+            patternSeparator: '[, ]+',
+            remoteDirectory: "dev/${"${BWPM_VERSION}"}.${currentBuild.number}",
+            remoteDirectorySDF: false,
+            removePrefix: 'tests',
+            sourceFiles: "tests/CHANGELOG, tests/${packageName}"
+        )],
+          usePromotionTimestamp: false,
+            useWorkspaceInPromotion: false,
+            verbose: false
+        )]
+        )
+      }
+
+  //				emailext(
+  //					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_PREVIOUS} and php 7 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+  //					subject:"BwPostman J${JOOMLA_VERSION_PREVIOUS} php 7 build ${currentBuild.number} successful",
+  //					to: 'webmaster@boldt-webservice.de'
+  //				)
+  //				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
+  //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
+        }
+      }
     }
 
-
-		stage('Dev-Upload') {
-			when {
-			    allOf {
-    				expression {
-	    				return DO_DEV_UPLOAD == 'true'
-		    		}
-    				expression {
-	    				return DO_CURRENT_GENERAL == 'true'
-		    		}
-    				expression {
-	    				return fileExists(packagePath + '/' + packageName)
-		    		}
-		    	}
-			}
-			steps {
-				dir(packagePath) {
-					fileOperations([
-						fileCopyOperation(
-							excludes: '',
-						flattenFiles: false,
-						includes: packageName,
-						targetLocation: "${WORKSPACE}/tests")
-				])
-				}
-
-				dir(packagePath) {
-					fileOperations([
-						fileCopyOperation(
-							excludes: '',
-						flattenFiles: false,
-						includes: "CHANGELOG",
-						targetLocation: "${WORKSPACE}/tests")
-				])
-				}
-
-				script {
-					GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --pretty=%B")
-				}
-
-				echo "tests/${packageName}"
-
-				sshPublisher(
-					publishers: [sshPublisherDesc(
-					configName: 'Web Dev Webservice BwPostman',
-					transfers: [sshTransfer(
-					cleanRemote: false,
-					excludes: '',
-					execCommand: '',
-					execTimeout: 120000,
-					flatten: false,
-					makeEmptyDirs: false,
-					noDefaultExcludes: false,
-					patternSeparator: '[, ]+',
-					remoteDirectory: "dev/${"${BWPM_VERSION}"}.${currentBuild.number}",
-					remoteDirectorySDF: false,
-					removePrefix: 'tests',
-					sourceFiles: "tests/CHANGELOG, tests/${packageName}"
-			)],
-				usePromotionTimestamp: false,
-					useWorkspaceInPromotion: false,
-					verbose: false
-			)]
-			)
-
-//				emailext(
-//					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_PREVIOUS} and php 7 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-//					subject:"BwPostman J${JOOMLA_VERSION_PREVIOUS} php 7 build ${currentBuild.number} successful",
-//					to: 'webmaster@boldt-webservice.de'
-//				)
-//				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
-//				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
-			}
-		}
-
-
-
-
-
-		stage('Run permissions Joomla 6') {
+		stage('Run permissions current Joomla') {
 			when {
 			    allOf {
     				expression {
@@ -332,7 +330,7 @@ pipeline {
 		    	}
 			}
 			parallel {
-				stage('P5-1: P1') {
+				stage('P-C-1: P1') {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -348,7 +346,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P5-2: P2') {
+				stage('P-C-2: P2') {
 					steps {
 //						echo "Dummy 2"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -364,7 +362,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P5-3: P3') {
+				stage('P-C-3: P3') {
 					steps {
 //						echo "Dummy 3"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -380,7 +378,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P5-4: P4') {
+				stage('P-C-4: P4') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_CURRENT}'"
@@ -399,45 +397,49 @@ pipeline {
 			}
 		}
 
-		stage('Remove permissions tests container images for J6') {
-			when {
-			    allOf {
-    				expression {
-	    				return DO_CURRENT_PERMS == 'true'
-		    		}
-    				expression {
-	    				return DO_CURRENT_GENERAL == 'true'
-		    		}
-		    	}
-			}
-			steps {
-//				echo "Dummy Permissions Remove"
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
-            }
-		}
-
-        stage('Send permissions success mail for Joomla 6 part') {
-			when {
-			    allOf {
-    				expression {
-	    				return DO_CURRENT_PERMS == 'true'
-		    		}
-    				expression {
-	    				return DO_CURRENT_GENERAL == 'true'
-		    		}
-		    	}
-			}
-			steps {
-				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed all permission tests for Joomla ${JOOMLA_VERSION_CURRENT} and php ${PHP_VERSION_CURRENT} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J${JOOMLA_VERSION_CURRENT} permissions php ${PHP_VERSION_CURRENT} build ${currentBuild.number} successful",
-					to: 'webmaster@boldt-webservice.de'
-				)
-			}
+    stage('Finish current permissions') {
+      parallel {
+        stage('Remove permissions tests container images for current Joomla') {
+          when {
+              allOf {
+                expression {
+                  return DO_CURRENT_PERMS == 'true'
+                }
+                expression {
+                  return DO_CURRENT_GENERAL == 'true'
+                }
+              }
+          }
+          steps {
+    //				echo "Dummy Permissions Remove"
+            sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
+                }
         }
 
+        stage('Send permissions success mail for current Joomla part') {
+          when {
+              allOf {
+                expression {
+                  return DO_CURRENT_PERMS == 'true'
+                }
+                expression {
+                  return DO_CURRENT_GENERAL == 'true'
+                }
+              }
+          }
+          steps {
+            emailext(
+              body: "<p>BwPostman build ${currentBuild.number} has passed all permission tests for Joomla ${JOOMLA_VERSION_CURRENT} and php ${PHP_VERSION_CURRENT} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+              subject:"BwPostman J${JOOMLA_VERSION_CURRENT} permissions php ${PHP_VERSION_CURRENT} build ${currentBuild.number} successful",
+              to: 'webmaster@boldt-webservice.de'
+            )
+          }
+        }
+      }
+    }
 
-		stage('Run smoke tests with J5') {
+
+		stage('Run smoke tests with previous Joomla') {
 			when {
 			    allOf {
     				expression {
@@ -465,7 +467,7 @@ pipeline {
 			}
 		}
 
-		stage('Remove smoke tests container images J5') {
+		stage('Remove smoke tests container images previous') {
 			when {
 			    allOf {
     				expression {
@@ -482,7 +484,7 @@ pipeline {
             }
 		}
 
-		stage('Run acceptance Joomla 5') {
+		stage('Run acceptance previous Joomla') {
 			when {
 			    allOf {
     				expression {
@@ -494,7 +496,7 @@ pipeline {
 		    	}
 			}
 			parallel {
-				stage('A4-1: Lists NLS, TPLS, SUBS') {
+				stage('A-P-1: Lists NLS, TPLS, SUBS') {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -510,7 +512,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A4-2: Details NL, SUB') {
+				stage('A-P-2: Details NL, SUB') {
 					steps {
 //						echo "Dummy 2"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -526,7 +528,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A4-3: Details TPL, CAM, ML, Lists CAMS, MLS, Maintenance + Frontend') {
+				stage('A-P-3: Details TPL, CAM, ML, Lists CAMS, MLS, Maintenance + Frontend') {
 					steps {
 //						echo "Dummy 3"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -542,7 +544,7 @@ pipeline {
 						}
 					}
 				}
-				stage('A4-4: Mod Reg, Mod Over, UA, FUM, U2S') {
+				stage('A-P-4: Mod Reg, Mod Over, UA, FUM, U2S') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -561,43 +563,48 @@ pipeline {
 			}
 		}
 
-		stage('Remove acceptance tests container images for J5') {
-			when {
-			    allOf {
-    				expression {
-	    				return DO_PREVIOUS_ACCEPT == 'true'
-		    		}
-    				expression {
-	    				return DO_PREVIOUS_GENERAL == 'true'
-		    		}
-		    	}
-			}
-			steps {
-//				echo "Dummy Acceptance Remove"
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
-            }
-		}
+    stage('Finish previous acceptance') {
+      parallel {
+        stage('Remove acceptance tests container images for previous') {
+          when {
+              allOf {
+                expression {
+                  return DO_PREVIOUS_ACCEPT == 'true'
+                }
+                expression {
+                  return DO_PREVIOUS_GENERAL == 'true'
+                }
+              }
+          }
+          steps {
+  //				echo "Dummy Acceptance Remove"
+            sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
+          }
 
-        stage('Send acceptance success mail for Joomla 5 part') {
-			when {
-			    allOf {
-    				expression {
-	    				return DO_PREVIOUS_ACCEPT == 'true'
-		    		}
-    				expression {
-	    				return DO_PREVIOUS_GENERAL == 'true'
-		    		}
-		    	}
-			}
-			steps {
-				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_PREVIOUS} and php ${PHP_VERSION_PREVIOUS} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J${JOOMLA_VERSION_PREVIOUS} acceptance php ${PHP_VERSION_PREVIOUS} build ${currentBuild.number} successful",
-					to: 'webmaster@boldt-webservice.de'
-				)
-			}
+        stage('Send acceptance success mail for previous Joomla part') {
+          when {
+            allOf {
+              expression {
+                return DO_PREVIOUS_ACCEPT == 'true'
+              }
+              expression {
+                return DO_PREVIOUS_GENERAL == 'true'
+              }
+            }
+    			}
+          steps {
+            emailext(
+              body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_PREVIOUS} and php ${PHP_VERSION_PREVIOUS} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+              subject:"BwPostman J${JOOMLA_VERSION_PREVIOUS} acceptance php ${PHP_VERSION_PREVIOUS} build ${currentBuild.number} successful",
+              to: 'webmaster@boldt-webservice.de'
+            )
+          }
         }
-		stage('Run permissions Joomla 5') {
+      }
+    }
+   }
+
+		stage('Run permissions previous Joomla') {
 			when {
 			    allOf {
     				expression {
@@ -609,7 +616,7 @@ pipeline {
 		    	}
 			}
 			parallel {
-				stage('P4-1: P1') {
+				stage('P-P-1: P1') {
 					steps {
 //						echo "Dummy 1"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -625,7 +632,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P4-2: P2') {
+				stage('P-P-2: P2') {
 					steps {
 //						echo "Dummy 2"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -641,7 +648,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P4-3: P3') {
+				stage('P-P-3: P3') {
 					steps {
 //						echo "Dummy 3"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -657,7 +664,7 @@ pipeline {
 						}
 					}
 				}
-				stage('P4-4: P4') {
+				stage('P-P-4: P4') {
 					steps {
 //						echo "Dummy 4"
 						sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
@@ -676,42 +683,46 @@ pipeline {
 			}
 		}
 
-		stage('Remove permissions tests container images for J5') {
-			when {
-			    allOf {
-    				expression {
-	    				return DO_PREVIOUS_PERMS == 'true'
-		    		}
-    				expression {
-	    				return DO_PREVIOUS_GENERAL == 'true'
-		    		}
-		    	}
-			}
-			steps {
-//				echo "Dummy Permissions Remove"
-				sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
-            }
-		}
-
-        stage('Send permissions success mail for Joomla 5 part') {
-			when {
-			    allOf {
-    				expression {
-	    				return DO_PREVIOUS_PERMS == 'true'
-		    		}
-    				expression {
-	    				return DO_PREVIOUS_GENERAL == 'true'
-		    		}
-		    	}
-			}
-			steps {
-				emailext(
-					body: "<p>BwPostman build ${currentBuild.number} has passed all permission tests for Joomla ${JOOMLA_VERSION_PREVIOUS} and php ${PHP_VERSION_PREVIOUS} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-					subject:"BwPostman J${JOOMLA_VERSION_PREVIOUS} permissions php ${PHP_VERSION_PREVIOUS} build ${currentBuild.number} successful",
-					to: 'webmaster@boldt-webservice.de'
-				)
-			}
+    stage('Finish previous permissions') {
+      parallel {
+        stage('Remove permissions tests container images for previous') {
+          when {
+              allOf {
+                expression {
+                  return DO_PREVIOUS_PERMS == 'true'
+                }
+                expression {
+                  return DO_PREVIOUS_GENERAL == 'true'
+                }
+              }
+          }
+          steps {
+    //				echo "Dummy Permissions Remove"
+            sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
+                }
         }
+
+        stage('Send permissions success mail for previous Joomla part') {
+          when {
+              allOf {
+                expression {
+                  return DO_PREVIOUS_PERMS == 'true'
+                }
+                expression {
+                  return DO_PREVIOUS_GENERAL == 'true'
+                }
+              }
+          }
+          steps {
+            emailext(
+              body: "<p>BwPostman build ${currentBuild.number} has passed all permission tests for Joomla ${JOOMLA_VERSION_PREVIOUS} and php ${PHP_VERSION_PREVIOUS} and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+              subject:"BwPostman J${JOOMLA_VERSION_PREVIOUS} permissions php ${PHP_VERSION_PREVIOUS} build ${currentBuild.number} successful",
+              to: 'webmaster@boldt-webservice.de'
+            )
+          }
+        }
+      }
+    }
 
 
 //		stage('Push to github') {

@@ -51,7 +51,7 @@ pipeline {
 				echo "Do dev upload: ${DO_DEV_UPLOAD}"
 				echo "Do current general: ${DO_CURRENT_GENERAL}"
 				script {
-				  def searchName = '/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${"${BWPM_VERSION}"}.${currentBuild.number}.zip'
+				  def searchName = "/repositories/artifacts/bwpostman4/data/pkg_bwpostman-${BWPM_VERSION}.${currentBuild.number}.zip"
 				  echo "SearchName: ${searchName}\n"
 				  if (fileExists(searchName)) {
 				    echo "File exists"

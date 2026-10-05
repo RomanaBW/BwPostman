@@ -6,10 +6,13 @@ This is the changelog for the Joomla!5.0.0+ component BwPostman 4.x
 Many thanks to all those people who have contributed bug reports and code fixes.
 
 
-Version 4.3.6 released (2026-05-23)----
+Version 4.3.6 released (2026-10-23)----
+
+New
+- Adding CLI application to BwPostman to be able to do backup by command line
 
 Bugfix
-# Logged in users, which are not also subscribers of BwPostman, are only displayed public mailing lists for registration.
+# Logged-in users, which are not also subscribers of BwPostman, are only displayed public mailing lists for registration.
 
 
 Version 4.3.5 released (2026-02-21)----

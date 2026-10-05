@@ -36,6 +36,7 @@ use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\Html\BwPostman;
 use \Joomla\Database\DatabaseAwareTrait;
+use Joomla\DI\Container;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -49,8 +50,17 @@ class BwPostmanComponent extends MVCComponent implements BootableExtensionInterf
 	use DatabaseAwareTrait;
 	use RouterServiceTrait;
 
+    /**
+     * The container we were created with
+     *
+     * @var   Container
+     *
+     * @since 4.3.6
+     */
+    private Container $container;
 
-	/**
+
+    /**
 	 * Booting the extension. This is the function to set up the environment of the extension like
 	 * registering new class loaders, etc.
 	 *
@@ -87,4 +97,19 @@ class BwPostmanComponent extends MVCComponent implements BootableExtensionInterf
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Classes', BWPM_SITE . '/classes', false, false);
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Site\\Field', BWPM_SITE . '/src/Field', false, false);
 	}
+
+    /**
+     * Returns the Container the extension was created with.
+     *
+     * We are going to use it wherever we are not instantiated through the extension object, e.g. fields.
+     *
+     * @return  Container
+     *
+     * @since   4.3.6
+     */
+    public function getContainer(): Container
+    {
+        return $this->container;
+    }
+
 }

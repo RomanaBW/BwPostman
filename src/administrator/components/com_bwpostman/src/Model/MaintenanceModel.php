@@ -29,6 +29,10 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// BwPostman default path for Backups
+//const BWPM_BACKUP = JPATH_SITE . '/images/com_bwpostman/backup_tables';
+if (!defined('BWPM_BACKUP')) define('BWPM_BACKUP', JPATH_SITE . '/images/com_bwpostman/backup_tables');
+
 use DOMDocument;
 use DOMElement;
 use Exception;
@@ -37,6 +41,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Asset;
 use Joomla\Component\Users\Administrator\Model\GroupModel;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Session\SessionInterface;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Filesystem\Folder;
@@ -62,8 +67,7 @@ use stdClass;
  */
 class MaintenanceModel extends BaseDatabaseModel
 {
-
-	/**
+    /**
 	 * Array to hold table names of tables used by BwPostman.
 	 * Needed, because multiple shapes of names are necessary.
 	 * Also needed, because we might hold names of tables used with plugins
@@ -230,86 +234,189 @@ class MaintenanceModel extends BaseDatabaseModel
 	}
 
     /**
+     * Method get actual setting if the backup should be compressed or not
+     * CLI parameter is also considered
+     *
+     * @access      private
+     *
+     * @param   SessionInterface   $session
+     * @param   bool               $isCli
+     *
+     * @return  bool
+     *
+     * @since       4.4.0
+     */
+    private function getCompressed(SessionInterface $session, bool $isCli = false): bool
+    {
+        $compressed = ComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
+
+        if ($isCli)
+        {
+            $compressed = $session->get('plg_bwpm_console_backup.compressed');
+        }
+
+        return $compressed;
+    }
+
+    /**
+     * Method get filename for the backup file
+     * CLI parameter is considered
+     *
+     * @access           private
+     *
+     * @param   SessionInterface  $session
+     * @param   bool              $isCli
+     * @param   string|null       $backupFile
+     *
+     * @return string
+     *
+     * @throws Exception
+     * @since            4.4.0
+     */
+    private function getFilename(SessionInterface $session, bool $isCli = false, ?string $backupFile = ''): string
+    {
+        $backupName = $backupFile;
+
+        if ($isCli)
+        {
+            $backupName = $session->get('plg_bwpm_console_backup.filename', $backupFile);
+        }
+
+        if ($backupName === '')
+        {
+            $dottedVersion = BwPostmanHelper::getInstalledBwPostmanVersion();
+
+            if ($dottedVersion === false)
+            {
+                $session->set('plg_bwpm_console_backup.errorMsg', Text::_('COM_BWPOSTMAN_CONSOLE_BACKUP_ERROR_NO_INSTALLED_VERSION'));
+
+                return false;
+            }
+
+            $version  = str_replace('.', '_', $dottedVersion);
+            $backupName = 'BwPostman_' . $version . '_Tables_' . Factory::getDate()->format('Y-m-d_H_i');
+        }
+        else
+        {
+            // Remove .xml if provided, all others with dot seems part of the filename
+            $filenameParts = explode('.', $backupName);
+
+            while (array_pop($filenameParts) === 'xml')
+            {
+                $backupName = implode('.', $filenameParts);
+            }
+        }
+
+        return File::makeSafe($backupName . '.xml');
+    }
+
+    /**
+     * Method get filepath for the backup file, create it if needed
+     * CLI parameter is considered
+     *
+     * @access      private
+     *
+     * @param   SessionInterface  $session
+     * @param   bool              $isCli
+     * @param   bool              $update
+     *
+     * @return string|bool
+     *
+     * @since       4.4.0
+     */
+    private function getFilepath(SessionInterface $session, bool $isCli = false, bool $update = false): string|bool
+    {
+        $filepath = BWPM_BACKUP;
+
+        if ($isCli)
+        {
+            $filepath = $session->get('plg_bwpm_console_backup.backup_path', BWPM_BACKUP);
+
+//            $pathParts = explode('/', $filepath);
+//
+//            while (end($pathParts) === '')
+//            {
+//                array_pop($pathParts);
+//            }
+//
+//            $filepath = implode('/', $pathParts);
+//
+//            if (!str_contains($filepath, JPATH_ROOT))
+//            {
+//                $filepath = JPATH_ROOT . $filepath;
+//            }
+        }
+
+        $filepath = Folder::makeSafe($filepath);
+
+        // create backup path if needed
+        if (!Folder::exists($filepath))
+        {
+            if (!Folder::create($filepath))
+            {
+                $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $filepath);
+                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $session->set('plg_bwpm_console_backup.errorMsg', $message);
+
+                if ($update && !$isCli)
+                {
+                    echo '<p class="text-danger">' . $message . '</p>';
+
+                    return false;
+                }
+            }
+        }
+
+        return $filepath;
+    }
+
+    /**
      * Method to back up tables
      *
      * Cannot use File::write() because we want to append data
      *
      * @access      public
      *
-     * @param ?string   $fileName
-     * @param   bool    $update
+     * @param ?string  $backupName
+     * @param   bool   $update
      *
      * @return  string|bool
      *
      * @throws Exception
      * @since       1.0.1
      */
-	public function saveTables(?string $fileName, bool $update = false): bool|string
+	public function saveTables(?string $backupName, bool $update = false): bool|string
     {
-        $isCli      = Factory::getApplication()->isClient('cli');
-        $session    = Factory::getApplication()->getSession();
-        $backupPath = '/images/com_bwpostman/backup_tables';
-
-        if ($isCli)
-        {
-            $consoleCompressed = $session->get('plg_bwpm_console_backup.compressed', ComponentHelper::getParams('com_bwpostman')->get('compress_backup', true));
-            $consoleFilename   = $session->get('plg_bwpm_console_backup.filename', '');
-            $backupPath        = $session->get('plg_bwpm_console_backup.backup_path', '/images/com_bwpostman/backup_tables');
-        }
+        $app        = Factory::getApplication();
+        $isCli      = $app->isClient('cli');
 
 		// Access check.
-		$permissions = Factory::getApplication()->getUserState('com_bwpm.permissions', []);
+		$permissions = $app->getUserState('com_bwpm.permissions', []);
 
 		if (!$isCli && !$permissions['maintenance']['save'])
 		{
 			return false;
 		}
 
-		$fileName = File::makeSafe($fileName);
+        $message    = '';
+        $session    = $app->getSession();
+        $compressed = $this->getCompressed($session, $isCli);
+        $backupFile = $this->getFilename($session, $isCli, $backupName);
+        $backupPath = $this->getFilepath($session, $isCli, $update);
 
-		if ($fileName == '')
-		{
-			$dottedVersion = BwPostmanHelper::getInstalledBwPostmanVersion();
+        if (!$backupPath)
+        {
+            return false;
+        }
 
-			if ($dottedVersion === false)
-			{
-                $session->set('plg_bwpm_console_backup.errorMsg', Text::_('COM_BWPOSTMAN_CONSOLE_BACKUP_ERROR_NO_INSTALLED_VERSION'));
-
-				return false;
-			}
-
-			$version  = str_replace('.', '_', $dottedVersion);
-			$fileName = 'BwPostman_' . $version . '_Tables_' . Factory::getDate()->format('Y-m-d_H_i') . '.xml';
-		}
-
-		// create (empty) backup file
-		$path = Folder::makeSafe(JPATH_ROOT . $backupPath);
-
-		if (!Folder::exists($path))
-		{
-			if (!Folder::create($path))
-			{
-				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $path);
-				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-                $session->set('plg_bwpm_console_backup.errorMsg', $message);
-
-				if ($update && !$isCli)
-				{
-					echo '<p class="text-danger">' . $message . '</p>';
-
-                    return false;
-				}
-			}
-		}
-
-		$fileName = $path . '/' . $fileName;
-		$handle   = fopen($fileName, 'wb');
+		$backupName = $backupPath . '/' . $backupFile;
+		$handle     = fopen($backupName, 'wb');
 
 		try
 		{
 			if ($handle === false)
 			{
-				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_WRITABLE', $path);
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_WRITABLE', $backupPath);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
                 $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
@@ -330,7 +437,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 			if ($this->tableNames === null)
 			{
-				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES', $path);
+				$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES', $backupPath);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
                 $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
@@ -365,7 +472,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 				if ($tableStructure === false)
 				{
-					$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
+					$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $backupName);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
                     $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
@@ -390,7 +497,7 @@ class MaintenanceModel extends BaseDatabaseModel
 				// Build table data XML
 				if (!$this->buildXmlData($tableName, $tablesXml))
 				{
-					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $backupName);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
                     $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
@@ -407,7 +514,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 				if ($xmlAssets === false)
 				{
-					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $fileName);
+					$message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $backupName);
 					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
                     $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
@@ -429,21 +536,35 @@ class MaintenanceModel extends BaseDatabaseModel
 
 			if (fwrite($handle, $file_data) !== false)
 			{
-				$compressed = ComponentHelper::getParams('com_bwpostman')->get('compress_backup', true);
+                // Check if XML is valid
+                $testXML = new DOMDocument();
+                $validXML = $testXML->loadXML($file_data);
 
-                if ($isCli)
+                if ($validXML === false)
                 {
-                    $compressed = $consoleCompressed;
+                    $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_NO_VALID_XML');
+                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $session->set('plg_bwpm_console_backup.errorMsg', $message);
+
+                    return false;
                 }
 
-				$backupFile = $fileName;
+                // Check if XML contains some useful data
+                if ($testXML->getElementsByTagName('table_data')->length === 0)
+                {
+                    $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_NO_TABLE_DATA_AT_XML');
+                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $session->set('plg_bwpm_console_backup.errorMsg', $message);
+
+                    return false;
+                }
 
 				if ($compressed)
 				{
-					$backupFile = BwPostmanMaintenanceHelper::compressBackupFile($fileName);
+					$backupFile = BwPostmanMaintenanceHelper::compressBackupFile($backupName);
 				}
 
-				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $fileName);
+				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $backupName);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
                 $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
@@ -454,7 +575,7 @@ class MaintenanceModel extends BaseDatabaseModel
 			}
 			else
 			{
-				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $fileName);
+				$message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $backupName);
 				$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
                 $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
@@ -472,7 +593,7 @@ class MaintenanceModel extends BaseDatabaseModel
 		{
             BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
-            File::delete($fileName);
+            File::delete($backupName);
 			fclose($handle);
             $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
@@ -2909,9 +3030,9 @@ class MaintenanceModel extends BaseDatabaseModel
 	 *
 	 * @param string  $table          generic name of table to rewrite
 	 * @param string  $currentContent current output content
-	 * @param boolean $lastTable      is this the last table?
+	 * @param bool    $lastTable      is this the last table?
 	 *
-	 * @return    boolean
+	 * @return    bool
 	 *
 	 * @throws Exception
 	 *
@@ -3158,7 +3279,7 @@ class MaintenanceModel extends BaseDatabaseModel
 	public function getBwPostmanVersion(): string
 	{
 		$query  = $this->db->getQuery(true);
-		$result = '';
+		$result = null;
 
 		$query->select($this->db->quoteName('manifest_cache'));
 		$query->from($this->db->quoteName('#__extensions'));
@@ -3176,7 +3297,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
 		}
 
-		$manifest = json_decode($result, true);
+		$manifest = json_decode((string)$result, true);
 
 		return $manifest['version'];
 	}

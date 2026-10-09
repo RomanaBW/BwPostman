@@ -9,18 +9,18 @@
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
- * @license GNU/GPL, see LICENSE.txt
+ * @license GNU/GPL, see LICENCE.txt
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * it under the terms of the GNU General Public Licence as published by
+ * the Free Software Foundation, either version 3 of the Licence, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU General Public Licence for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General Public Licence
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -35,23 +35,25 @@ use Joomla\Application\Event\ApplicationEvent;
 use Joomla\CMS\Application\ConsoleApplication;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\Event\DispatcherInterface;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Filesystem\Folder;
+use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Throwable;
 
 /**
  * Class BwPostman Console Plugin extension
  *
- * @since       4.3.6
+ * @since       4.4.0
  */
 final class BwPostman extends CMSPlugin implements SubscriberInterface
 {
+    use MVCFactoryAwareTrait;
+
     /**
      * Load the language file on instantiation.
      *
      * @var    bool
-     * @since  4.3.6
+     * @since  4.4.0
      */
     protected $autoloadLanguage = true;
 
@@ -60,7 +62,7 @@ final class BwPostman extends CMSPlugin implements SubscriberInterface
      *
      * @var   CommandFactoryInterface
      *
-     * @since 4.3.6
+     * @since 4.4.0
      */
     protected CommandFactoryInterface $commandFactory;
 
@@ -69,7 +71,7 @@ final class BwPostman extends CMSPlugin implements SubscriberInterface
      *
      * @param   CommandFactoryInterface  $factory
      *
-     * @since       4.3.6
+     * @since       4.4.0
      */
     public function setCLICommandFactory(CommandFactoryInterface $factory): void
     {
@@ -81,7 +83,7 @@ final class BwPostman extends CMSPlugin implements SubscriberInterface
      *
      * @return  array
      *
-     * @since 4.3.6
+     * @since 4.4.0
      */
     public static function getSubscribedEvents(): array
     {
@@ -97,7 +99,7 @@ final class BwPostman extends CMSPlugin implements SubscriberInterface
      *
      * @param   ApplicationEvent  $event  The before_execute application event being handled
      *
-     * @since        4.3.6
+     * @since        4.4.0
      * @noinspection PhpUnused
      */
     public function registerCLICommands(ApplicationEvent $event): void
@@ -118,6 +120,7 @@ final class BwPostman extends CMSPlugin implements SubscriberInterface
                 return;
             }
         }
+        /** @noinspection PhpUnusedLocalVariableInspection */
         catch (Throwable $e)
         {
             return;
@@ -128,6 +131,7 @@ final class BwPostman extends CMSPlugin implements SubscriberInterface
         {
             $files = Folder::files(JPATH_ADMINISTRATOR . '/components/com_bwpostman/src/CliCommands', '.php');
         }
+        /** @noinspection PhpUnusedLocalVariableInspection */
         catch (Exception $e)
         {
             $files = [];
@@ -156,12 +160,15 @@ final class BwPostman extends CMSPlugin implements SubscriberInterface
              */
             try
             {
-                $app->addCommand(
-                    $this->commandFactory->getCLICommand(basename($file, '.php'))
-                );
+                $commandFactory = $this->commandFactory;
+                $cliCommand     = $commandFactory->getCLICommand(basename($file, '.php'));
+
+                $app->addCommand($cliCommand);
             }
             catch (Throwable $e)
             {
+                /** @noinspection PhpUnusedLocalVariableInspection */
+                $errorMessage = $e->getMessage();
             }
         }
     }

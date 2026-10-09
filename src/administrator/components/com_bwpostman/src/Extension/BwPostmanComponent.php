@@ -55,7 +55,7 @@ class BwPostmanComponent extends MVCComponent implements BootableExtensionInterf
      *
      * @var   Container
      *
-     * @since 4.3.6
+     * @since 4.4.0
      */
     private Container $container;
 
@@ -105,7 +105,7 @@ class BwPostmanComponent extends MVCComponent implements BootableExtensionInterf
      *
      * @return  Container
      *
-     * @since   4.3.6
+     * @since   4.4.0
      */
     public function getContainer(): Container
     {

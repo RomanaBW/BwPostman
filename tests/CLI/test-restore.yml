@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+    - name: Do restore test without params
+      include_tasks: tasks/test-restore-task.yml
+      vars:
+        test_command: "{{ test_restore_1 }}"
+        taget_container_name: "{{ current.target_container }}"
+
+#    - name: Do restore with uncompressed file default path
+#      include_tasks: tasks/test-restore-task.yml
+#      vars:
+#        test_command: "{{ test_restore_2 }}"
+#        taget_container_name: "{{ current.target_container }}"
+#
+#    - name: Do restore with compressed file default path
+#      include_tasks: tasks/test-restore-task.yml
+#      vars:
+#        test_command: "{{ test_restore_3 }}"
+#        taget_container_name: "{{ current.target_container }}"
+#
+#    - name: Do restore with compressed file default path exe as extension
+#      include_tasks: tasks/test-restore-task.yml
+#      vars:
+#        test_command: "{{ test_restore_4 }}"
+#        taget_container_name: "{{ current.target_container }}"
+##        additional_test: ".exe.xml in "

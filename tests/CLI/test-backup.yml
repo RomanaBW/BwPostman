@@ -1,0 +1,58 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+    - name: Do backup test without params
+      include_tasks: tasks/test-backup-task.yml
+      vars:
+        test_command: "{{ test_backup_1 }}"
+        output_file_ext: "xml"
+        taget_container_name: "{{ current.target_container }}"
+
+    - name: Do backup test with compressed true
+      include_tasks: tasks/test-backup-task.yml
+      vars:
+        test_command: "{{ test_backup_2 }}"
+        output_file_ext: "zip"
+        taget_container_name: "{{ current.target_container }}"
+
+    - name: Do backup test with compressed false
+      include_tasks: tasks/test-backup-task.yml
+      vars:
+        test_command: "{{ test_backup_3 }}"
+        output_file_ext: "xml"
+        taget_container_name: "{{ current.target_container }}"
+
+    - name: Do backup test with correct filename
+      include_tasks: tasks/test-backup-task.yml
+      vars:
+        test_command: "{{ test_backup_4 }}"
+        output_file_ext: "xml"
+        taget_container_name: "{{ current.target_container }}"
+
+    - name: Do backup test with filename and double xml extension
+      include_tasks: tasks/test-backup-task.yml
+      vars:
+        test_command: "{{ test_backup_5 }}"
+        output_file_ext: "xml"
+        taget_container_name: "{{ current.target_container }}"
+        additional_test: ".xml.xml not in "
+
+    - name: Do backup test with filename and exe extension
+      include_tasks: tasks/test-backup-task.yml
+      vars:
+        test_command: "{{ test_backup_6 }}"
+        output_file_ext: "xml"
+        taget_container_name: "{{ current.target_container }}"
+        additional_test: ".exe.xml in "
+
+#    - name: Backup test with path should fail
+#      include_tasks: tasks/test-backup-task.yml
+#      vars:
+#        test_command: "{{ test_backup_7 }}"
+#        output_file_ext: "xml"
+#        taget_container_name: "{{ current.target_container }}"
+#        additional_test: ".exe.xml in "

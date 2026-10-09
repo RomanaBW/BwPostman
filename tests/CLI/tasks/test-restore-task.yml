@@ -1,0 +1,42 @@
+---
+- name: Initialize additional test result
+  set_fact:
+    test_restore_additional: true
+
+#- name: Debug command for test
+#  ansible.builtin.debug:
+#    msg: "{{ ide_export }} && {{ command_base }} {{ test_command }}"
+
+- name: Check restore by CLI
+  community.docker.docker_container_exec:
+    container: "{{ taget_container_name }}"
+    argv:
+      - /bin/sh
+      - "-c"
+      - "{{ ide_export }} && {{ command_base }} {{ test_command }}"
+    chdir: "{{ cli_dir }}"
+  register: test_res
+
+#- name: Print test result
+#  ansible.builtin.debug:
+#    var: test_res
+
+- name: Get line with success
+  set_fact:
+    test_restore_success: "{{ item }}"
+  when: 'success_to_search in item'
+  loop: "{{ test_res.stdout_lines }}"
+
+#- name: Test additional restrictions
+#  set_fact:
+#    test_restore_additional: true
+#  when: (additional_test is defined) and ('additional_test test_restore_output')
+
+- name: Fail if no success line
+  fail:
+    msg: "{{ output_file_ext }} Backup not completed successfully"
+  when: (test_restore_success is not defined) or (not test_restore_additional | bool)
+
+#- name: Print output file
+#  ansible.builtin.debug:
+#    var: test_restore_output

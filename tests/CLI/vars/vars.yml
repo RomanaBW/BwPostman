@@ -1,0 +1,36 @@
+---
+# Common values
+webserver_name: Dev_6_Container
+
+cli_dir: "/var/www/html/cli"
+
+ide_export: export PHP_IDE_CONFIG="serverName={{ webserver_name }}"
+command_base: /usr/local/bin/php ./joomla.php
+
+# Current joomla values
+current:
+  target_container: "bwpm-dev-current-joomla"
+
+
+# Previous joomla values
+previous:
+  target_container: "bwpm-dev-previous-joomla"
+
+success_to_search: "[OK]"
+
+# Test backup
+test_backup_1: bwpostman:backup:take
+test_backup_2: bwpostman:backup:take --compressed=true
+test_backup_3: bwpostman:backup:take --compressed=false
+test_backup_4: bwpostman:backup:take --filename=BwPostman_4.4.0_Tables
+test_backup_5: bwpostman:backup:take --filename=BwPostman_4.4.0_Tables.xml.xml
+test_backup_6: bwpostman:backup:take --filename=BwPostman_4.4.0_Tables.exe
+test_backup_7: bwpostman:backup:take --backup_path=/images/com_bwpostman/backup_table_x
+#test_backup_8: bwpostman:backup:take --filename=BwPostman_4.4.0_Tables --backup_path=/images/com_bwpostman//backup_table_x/
+#test_backup_9: bwpostman:backup:take --backup_path=/images/com_bwpostman/backup_table_x --filename=BwPostman_4.4.0_Tables
+
+# Test restore
+test_restore_1: bwpostman:backup:restore
+test_restore_2: bwpostman:backup:restore --filename=BwPostman_4.4.0_Tables.xml
+test_restore_3: bwpostman:backup:restore --filename=BwPostman_4.4.0_Tables.xml.zip
+test_restore_4: bwpostman:backup:restore --filename=BwPostman_4.4.0_Tables.exe.xml.zip

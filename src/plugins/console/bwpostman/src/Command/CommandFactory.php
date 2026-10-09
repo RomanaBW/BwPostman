@@ -9,18 +9,18 @@
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
- * @license GNU/GPL, see LICENSE.txt
+ * @license GNU/GPL, see LICENCE.txt
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * it under the terms of the GNU General Public Licence as published by
+ * the Free Software Foundation, either version 3 of the Licence, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU General Public Licence for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General Public Licence
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -33,15 +33,16 @@ use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseAwareTrait;
+use RuntimeException;
 
-class CommandFactory implements CommandFactoryInterface, DatabaseAwareInterface
+class CommandFactory implements DatabaseAwareInterface, CommandFactoryInterface
 {
     use MVCFactoryAwareTrait;
     use DatabaseAwareTrait;
 
     private ApplicationInterface $app;
 
-    public function setApplication(ApplicationInterface $app)
+    public function setApplication(ApplicationInterface $app): void
     {
         $this->app = $app;
     }
@@ -52,17 +53,17 @@ class CommandFactory implements CommandFactoryInterface, DatabaseAwareInterface
 
         if (!class_exists($classFQN))
         {
-            throw new \RuntimeException(sprintf('Unknown BwPostman CLI command class ‘%s’.', $commandName));
+            throw new RuntimeException(sprintf('Unknown BwPostman CLI command class ‘%s’.', $commandName));
         }
 
         $classParents = class_parents($classFQN);
 
         if (!in_array(AbstractCommand::class, $classParents))
         {
-            throw new \RuntimeException(sprintf('Invalid BwPostman CLI command object ‘%s’.', $commandName));
+            throw new RuntimeException(sprintf('Invalid BwPostman CLI command object ‘%s’.', $commandName));
         }
 
-        $o = new $classFQN;
+        $o = new $classFQN();
 
         if (method_exists($classFQN, 'setMVCFactory'))
         {

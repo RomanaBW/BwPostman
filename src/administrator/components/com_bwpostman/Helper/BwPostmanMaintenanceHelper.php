@@ -50,7 +50,7 @@ abstract class BwPostmanMaintenanceHelper
 	 *
 	 * @param string $fileName name of the file to compress
 	 *
-	 * @return   string    $compressedFile
+	 * @return   string    $compressedFileName
 	 *
 	 * @throws Exception
 	 *

@@ -380,7 +380,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param ?string  $backupName
      * @param   bool   $update
      *
-     * @return  string|bool
+     * @return  string|bool complete file path or false
      *
      * @throws Exception
      * @since       1.0.1
@@ -561,7 +561,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                 if ($compressed)
                 {
-                    $backupFile = BwPostmanMaintenanceHelper::compressBackupFile($backupName);
+                    $backupName = BwPostmanMaintenanceHelper::compressBackupFile($backupName);
                 }
 
                 $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $backupName);
@@ -606,7 +606,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
         else
         {
-            return $backupFile;
+            return $backupName;
         }
     }
 

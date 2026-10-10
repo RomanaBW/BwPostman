@@ -3082,7 +3082,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 $data_max = count($tables[$table]['table_data']);
             }
 
-            if ($base_asset !== -1)
+            if ($base_asset !== -1 && !empty($base_asset))
             {
                 try
                 {
@@ -3861,13 +3861,13 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array   $table
      * @param bool $showMessage
      *
-     * @return string|bool    $base_asset     base asset of BwPostman
+     * @return array|bool    $base_asset     base asset of BwPostman
      *
      * @throws Exception
      *
      * @since    1.3.0
      */
-    public function insertBaseAsset(array $table, bool $showMessage = true): bool|string
+    public function insertBaseAsset(array $table, bool $showMessage = true): bool|array
     {
         // Get asset rules
         $asset     = $this->getBaseAssetItem($table);
@@ -6125,11 +6125,12 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $assetName
      *
-     * @return string|bool
+     * @return array|bool
      *
      * @since 2.0.0
      */
-    private function getAssetFromAssetsTableByName(string $assetName): bool|string
+    private function getAssetFromAssetsTableByName(string $assetName): bool|array
+//    private function getAssetFromAssetsTableByName(string $assetName)
     {
         $query = $this->db->getQuery(true);
 
@@ -6145,7 +6146,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
             if (is_null($base_asset))
             {
-                $base_asset = '';
+                $base_asset = [];
             }
         }
         catch (RuntimeException $exception)
@@ -6217,6 +6218,11 @@ class MaintenanceModel extends BaseDatabaseModel
             $this->db->setQuery($query);
 
             $base_asset = $this->db->loadAssoc();
+
+            if (is_null($base_asset))
+            {
+                $base_asset = [];
+            }
         }
         catch (RuntimeException $exception)
         {

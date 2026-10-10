@@ -9,7 +9,7 @@
  * @author Romana Boldt
  * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
  * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
- * @licence GNU/GPL, see LICENCE.txt
+ * @license GNU/GPL, see LICENCE.txt
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public Licence as published by
  * the Free Software Foundation, either version 3 of the Licence, or
@@ -76,14 +76,14 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 2.0.0
      */
-    protected $tableNames = array();
+    protected array $tableNames = [];
 
     /**
      * @var array
      *
      * @since 2.0.0
      */
-    protected $componentRules = array();
+    protected array $componentRules = [];
 
     /**
      * Array to hold rules of component and sections
@@ -92,7 +92,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 2.0.0
      */
-    protected $sectionRules = array();
+    protected array $sectionRules = [];
 
     /**
      * Array to hold names of columns of asset table
@@ -101,7 +101,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 2.0.0
      */
-    protected $assetColnames = array();
+    protected array $assetColnames = [];
 
     /**
      * Array to hold used groups with title and id
@@ -110,7 +110,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 2.0.0
      */
-    protected $usedGroups = array();
+    protected array $usedGroups = [];
 
     /**
      * Array of tables of sections with assets
@@ -119,7 +119,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 2.0.0
      */
-    protected $assetTargetTables = array('component', 'campaigns', 'mailinglists', 'newsletters', 'subscribers', 'templates');
+    protected array $assetTargetTables = ['component', 'campaigns', 'mailinglists', 'newsletters', 'subscribers', 'templates'];
 
     /**
      * Instance of BwLogger
@@ -128,7 +128,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 2.4.0
      */
-    protected $logger;
+    protected BwLogger $logger;
 
     /**
      * Database object
@@ -137,7 +137,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 2.4.0
      */
-    protected $db;
+    protected mixed $db;
 
     /**
      * DomDocument object
@@ -146,7 +146,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 2.4.0
      */
-    protected $xml;
+    protected object $xml;
 
     /**
      * DomDocument object, database part
@@ -155,7 +155,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 3.0.0
      */
-    protected $databaseXml;
+    protected object $databaseXml;
 
     /**
      * Array of tables which contains text columns that must be encoded with CDATA
@@ -164,14 +164,14 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 4.0.0
      */
-    protected $cdataTables = array(
+    protected array $cdataTables = [
         '#__bwpostman_sendmailcontent',
         '#__bwpostman_tc_settings',
         '#__bwpostman_newsletters',
         '#__bwpostman_templates',
         '#__bwpostman_templates_tpl',
         '#__bwpostman_templates_tags',
-    );
+    ];
 
     /**
      * Array of columns that must be encoded with CDATA
@@ -180,21 +180,21 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 4.0.0
      */
-    protected $cdataColumns = array(
-        '#__bwpostman_sendmailcontent' => array('body'),
-        '#__bwpostman_tc_settings' => array(
+    protected array $cdataColumns = [
+        '#__bwpostman_sendmailcontent' => ['body'],
+        '#__bwpostman_tc_settings' => [
             'nonce',
             'priv',
             'pub',
-            ),
-        '#__bwpostman_newsletters' => array('html_version'),
-        '#__bwpostman_templates' => array(
+            ],
+        '#__bwpostman_newsletters' => ['html_version'],
+        '#__bwpostman_templates' => [
             'tpl_html',
             'tpl_css',
             'tpl_article',
             'tpl_divider',
-        ),
-        '#__bwpostman_templates_tpl' => array(
+        ],
+        '#__bwpostman_templates_tpl' => [
             'css',
             'header_tpl',
             'intro_tpl',
@@ -203,8 +203,8 @@ class MaintenanceModel extends BaseDatabaseModel
             'readon_tpl',
             'footer_tpl',
             'button_tpl',
-        ),
-        '#__bwpostman_templates_tags' => array(
+        ],
+        '#__bwpostman_templates_tags' => [
             'tpl_tags_head_advanced',
             'tpl_tags_body_advanced',
             'tpl_tags_article_advanced_b',
@@ -212,8 +212,8 @@ class MaintenanceModel extends BaseDatabaseModel
             'tpl_tags_readon_advanced',
             'tpl_tags_legal_advanced_b',
             'tpl_tags_legal_advanced_e',
-        ),
-    );
+        ],
+    ];
 
     /**
      * Constructor.
@@ -225,7 +225,7 @@ class MaintenanceModel extends BaseDatabaseModel
      */
     public function __construct()
     {
-        $logOptions   = array();
+        $logOptions   = [];
         $this->logger = BwLogger::getInstance($logOptions);
 
         parent::__construct();
@@ -616,9 +616,9 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * Also sets a list as property of all BwPostman tables with different variations of names
      *
-     * @param boolean $restore are we at restore mode?
+     * @param bool $restore are we at restore mode?
      *
-     * @return   array|boolean
+     * @return   array|bool
      *
      * @throws Exception
      *
@@ -646,16 +646,16 @@ class MaintenanceModel extends BaseDatabaseModel
             return false;
         }
 
-        $tableArray      = array();
-        $tmpTables       = array();
-        $installedTables = array();
+        $tableArray      = [];
+        $tmpTables       = [];
+        $installedTables = [];
 
         foreach ($tableNames as $tableName)
         {
             // Only process real tables, not from restore point (tables with suffix _tmp)
             if (strpos($tableName, '_tmp') === false)
             {
-                $table = array();
+                $table = [];
 
                 $table['tableNameDb']      = $tableName;
                 $table['tableNameGeneric'] = self::getGenericTableName($tableName);
@@ -678,7 +678,7 @@ class MaintenanceModel extends BaseDatabaseModel
         {
             foreach ($differences as $difference)
             {
-                $table = array();
+                $table = [];
 
                 $table['tableNameDb']      = $difference;
                 $table['tableNameGeneric'] = self::getGenericTableName($difference);
@@ -697,7 +697,7 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Builds the XML data header for the tables to export. Based on Joomla JDatabaseExporter
      *
-     * @return    boolean    true on success, false on failure
+     * @return    bool    true on success, false on failure
      *
      * @throws Exception
      *
@@ -833,14 +833,14 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Get all usergroups used by assets of BwPostman
      *
-     * @return    array|boolean            id and name of user groups
+     * @return    array|bool            id and name of user groups
      *
      * @since    1.3.0
      */
     private function getUsergroupsUsedInAssets(): bool|array
     {
         $query     = $this->db->getQuery(true);
-        $allgroups = array();
+        $allgroups = [];
 
         // Get all asset rules of BwPostman
         $query->select('rules');
@@ -881,7 +881,7 @@ class MaintenanceModel extends BaseDatabaseModel
         sort($groups);
 
         // Get the tree paths from the group(node) to the root
-        $res_tree = array();
+        $res_tree = [];
 
         foreach ($groups as $group)
         {
@@ -915,7 +915,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
 
         $allgroups     = array_merge($groups, $res_tree);
-        $groups_unique = array();
+        $groups_unique = [];
 
         foreach ($allgroups as $row)
         {
@@ -925,7 +925,7 @@ class MaintenanceModel extends BaseDatabaseModel
         asort($groups_unique);
 
         // Get all used user groups and their parents sorted by level
-        $res_groups = array();
+        $res_groups = [];
 
         foreach ($groups_unique as $group)
         {
@@ -974,7 +974,7 @@ class MaintenanceModel extends BaseDatabaseModel
     {
         // Import filesystem libraries. Perhaps not necessary, but does not hurt
         // get path to SQL install file of component
-        $paths   = array();
+        $paths   = [];
         $paths[] = JPATH_ADMINISTRATOR . '/components/com_bwpostman/sql/';
 
         // get paths to SQL installation files of plugins at plugin group BwPostman
@@ -994,7 +994,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
 
         $db     = $this->db;
-        $tables = array();
+        $tables = [];
 
         foreach ($paths as $path)
         {
@@ -1014,8 +1014,8 @@ class MaintenanceModel extends BaseDatabaseModel
             else
             {
                 // empty arrays
-                $file_content = array();
-                $txt_array    = array();
+                $file_content = [];
+                $txt_array    = [];
 
                 // get file content
                 while (!feof($fh))
@@ -1034,7 +1034,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     }
                 }
 
-                $queries = array();
+                $queries = [];
                 $string  = '';
                 $i       = 0;
 
@@ -1252,7 +1252,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array  $genericTableNames names of tables, that are installed
      * @param string $mode              mode to check, "check( and repair)" or "restore"
      *
-     * @return    boolean        true if all is ok
+     * @return    bool        true if all is ok
      *
      * @since    1.0.1
      */
@@ -1263,7 +1263,7 @@ class MaintenanceModel extends BaseDatabaseModel
             return false;
         }
 
-        $neededTableNames = array();
+        $neededTableNames = [];
 
         // extract table names from table object list,
         foreach ($neededTables as $table)
@@ -1304,7 +1304,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array $genericTableNames
      * @param array $neededTables
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.4.0
      */
@@ -1320,7 +1320,7 @@ class MaintenanceModel extends BaseDatabaseModel
             echo '<p class="text-warning">' . $message . '</p>';
 
             // set all install queries
-            $queries = array();
+            $queries = [];
 
             foreach ($neededTables as $table)
             {
@@ -1374,7 +1374,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array $genericTableNames
      * @param array $neededTableNames
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.4.0
      */
@@ -1431,7 +1431,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param array $neededTables
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.4.0
      */
@@ -1653,7 +1653,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param object $table
      *
-     * @return string|boolean
+     * @return string|bool
      *
      * @since 2.4.0
      */
@@ -1864,7 +1864,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param object $checkTable object of table from installation file, that must be installed
      *
-     * @return    integer|string
+     * @return    int|string
      *
      * @since    1.0.1
      */
@@ -1875,7 +1875,7 @@ class MaintenanceModel extends BaseDatabaseModel
             return 0;
         }
 
-        $neededColumns    = array();
+        $neededColumns    = [];
 
         foreach ($checkTable->columns as $col)
         {
@@ -1889,14 +1889,14 @@ class MaintenanceModel extends BaseDatabaseModel
             }
         }
 
-        $search_cols_2 = array();
+        $search_cols_2 = [];
 
         foreach ($neededColumns as $col)
         {
             $search_cols_2[] = $col['Field'];
         }
 
-        $installedColumns = array();
+        $installedColumns = [];
 
         try
         {
@@ -1915,7 +1915,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
 
         // prepare check for col names
-        $search_cols_1 = array();
+        $search_cols_1 = [];
 
         foreach ($installedColumns as $col)
         {
@@ -1968,7 +1968,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array   $search_cols_1 columns which are installed
      * @param object  $checkTable    object of table from installation file, that must be installed
      *
-     * @return boolean|integer
+     * @return bool|int
      *
      * @since 2.4.0
      */
@@ -2039,7 +2039,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array  $search_cols_2    columns which are named at installation file
      * @param object $checkTable       object of table from installation file, that must be installed
      *
-     * @return boolean|integer
+     * @return bool|int
      *
      * @since 2.4.0
      */
@@ -2107,13 +2107,13 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array  $installedColumns array of columns which are installed containing an array of all column attributes
      * @param object $checkTable       object of table from installation file, that must be installed
      *
-     * @return    boolean false on error
+     * @return    bool false on error
      *
      * @since 2.4.0
      */
     private function handleColumnAttributes(array $neededColumns, array $installedColumns, object $checkTable): bool
     {
-        $withoutDefault = array(
+        $withoutDefault = [
             'TINYTEXT',
             'TEXT',
             'MEDIUMTEXT',
@@ -2124,7 +2124,7 @@ class MaintenanceModel extends BaseDatabaseModel
             'LONGBLOB',
             ' GEOMETRY',
             'JSON',
-        );
+        ];
 
         for ($i = 0; $i < count($neededColumns); $i++)
         {
@@ -2263,7 +2263,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * Method to check, if column asset_id has a real value. If not, there is no possibility to delete data sets in BwPostman.
      * Therefore, each dataset without real value for asset_id has to be stored one time, to get this value
      *
-     * @return    boolean|string false on error, otherwise success message
+     * @return    bool|string false on error, otherwise success message
      *
      * @throws Exception
      *
@@ -2308,7 +2308,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 // But be careful! This array also contains items, for which an appropriate asset name exists, but with
                 // wrong asset_id at items table. The assets for these items cannot be inserted at assets table, because
                 // they exist. So there is a counter-check necessary at the end of this check.
-                $itemIdsWithoutAssets = array();
+                $itemIdsWithoutAssets = [];
 
                 foreach ($itemAssetList as $item)
                 {
@@ -2355,7 +2355,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                 // Counter check: See, if assets with an asset name matching item exists. If so, collect them to update
                 // items table and remove it from list to insert
-                $assetIdsByName          = array();
+                $assetIdsByName          = [];
                 $nbrItemIdsWithoutAssets = count($itemIdsWithoutAssets);
 
                 if ($nbrItemIdsWithoutAssets > 0)
@@ -2372,7 +2372,7 @@ class MaintenanceModel extends BaseDatabaseModel
                             return false;
                         }
 
-                        if (is_integer($assetId) && $assetId > 0)
+                        if (is_int($assetId) && $assetId > 0)
                         {
                             unset($itemIdsWithoutAssets[$i]);
                             $assetIdsByName[$item] = $assetId;
@@ -2540,7 +2540,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * Method to check, if user_id of subscriber matches ID in joomla user table, updating if mail address exists.
      * Only datasets with entered user_id in table subscribers will be checked
      *
-     * @return    boolean
+     * @return    bool
      *
      * @since    1.0.1
      */
@@ -2597,7 +2597,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param string     $tableName name of table to build structure for
      * @param DOMElement $tablesXml
      *
-     * @return    boolean    true on success, false on database exception.
+     * @return    bool    true on success, false on database exception.
      *
      * @since    1.0.1
      */
@@ -2796,7 +2796,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param string     $tableName name of table
      * @param DOMElement $tablesXml
      *
-     * @return boolean true on success, false on failure
+     * @return bool true on success, false on failure
      *
      * @since    1.0.1
      */
@@ -2851,7 +2851,7 @@ class MaintenanceModel extends BaseDatabaseModel
     public function outputGeneralInformation(): void
     {
         // Output general information
-        $generals = Factory::getApplication()->getUserState('com_bwpostman.maintenance.generals', new stdClass);
+        $generals = Factory::getApplication()->getUserState('com_bwpostman.maintenance.generals', new stdClass());
 
         if (key_exists('BwPostmanVersion', $generals) || key_exists('SaveDate', $generals))
         {
@@ -2877,7 +2877,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * stores the result array in state
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception
      *
@@ -2888,12 +2888,12 @@ class MaintenanceModel extends BaseDatabaseModel
         $app = Factory::getApplication();
 
         // process user groups, if they exist in backup
-        $com_assets = $app->getUserState('com_bwpostman.maintenance.com_assets', array());
-        $usergroups = $app->getUserState('com_bwpostman.maintenance.usergroups', array());
+        $com_assets = $app->getUserState('com_bwpostman.maintenance.com_assets', []);
+        $usergroups = $app->getUserState('com_bwpostman.maintenance.usergroups', []);
         $tmp_file   = $app->getUserState('com_bwpostman.maintenance.tmp_file', '');
         $fp         = fopen($tmp_file, 'r');
         $tables     = unserialize(fread($fp, filesize($tmp_file)));
-        $modifiedAssets = array();
+        $modifiedAssets = [];
         fclose($fp);
 
         foreach ($table_names as $table_name)
@@ -2966,7 +2966,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param array $tables array of generic table names read from backup file
      *
-     * @return    boolean|string boolean on success, string with error message on failure
+     * @return    bool|string bool on success, string with error message on failure
      *
      * @throws Exception
      *
@@ -3043,7 +3043,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $tmp_file        = Factory::getApplication()->getUserState('com_bwpostman.maintenance.tmp_file', '');
         $tmpFileExists   = file_exists($tmp_file);
         $dest            = Factory::getApplication()->getUserState('com_bwpostman.maintenance.dest', '');
-        $assetsFromState = Factory::getApplication()->getUserState('com_bwpostman.maintenance.modifiedAssets', array());
+        $assetsFromState = Factory::getApplication()->getUserState('com_bwpostman.maintenance.modifiedAssets', []);
 
         if ($tmpFileExists)
         {
@@ -3052,7 +3052,7 @@ class MaintenanceModel extends BaseDatabaseModel
             $tables          = unserialize(fread($fp, filesize($tmp_file)));
             $asset_loop      = 0;
             $asset_siblings  = 0;
-            $asset_transform = array();
+            $asset_transform = [];
             $rawTableName    = $this->getRawTableName($table);
 
             $base_asset      = $this->getBaseAsset($rawTableName);
@@ -3157,7 +3157,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                                     //reset loop values
                                     $asset_loop = 0;
-                                    $dataset    = array();
+                                    $dataset    = [];
                                 }
                             } // end foreach table assets
                         } // end switch base asset
@@ -3175,7 +3175,7 @@ class MaintenanceModel extends BaseDatabaseModel
             // if there are data sets
             if ($data_max)
             {
-                $dataset   = array();
+                $dataset   = [];
                 $data_loop = 0;
 
                 // … insert data sets…
@@ -3233,7 +3233,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                         // reset loop values
                         $data_loop = 0;
-                        $dataset   = array();
+                        $dataset   = [];
                     }
                 } // end foreach table items
             } // endif data sets exists
@@ -3326,7 +3326,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $file
      *
-     * @return  array|boolean   $table_names      array of generic table names
+     * @return  array|bool   $table_names      array of generic table names
      *
      * @throws Exception
      *
@@ -3384,7 +3384,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
 
         // Get general data
-        $generals = array();
+        $generals = [];
         if (property_exists($xml->database->Generals, 'BwPostmanVersion'))
         {
             $generals['BwPostmanVersion'] = (string) $xml->database->Generals->BwPostmanVersion;
@@ -3399,7 +3399,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $app->setUserState('com_bwpostman.maintenance.generals', $generals);
 
         // Get component asset
-        $com_assets = array();
+        $com_assets = [];
         if (property_exists($xml->database->Generals, 'component_asset'))
         {
             $com_assets[] = get_object_vars($xml->database->Generals->component_asset);
@@ -3422,7 +3422,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $app->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
 
         // Get backed up user groups
-        $usergroups = array();
+        $usergroups = [];
         if (property_exists($xml->database->Generals, 'component_usergroups'))
         {
             $u_groups = get_object_vars($xml->database->Generals->component_usergroups);
@@ -3443,7 +3443,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
         echo '<h4>' . $message . '</h4>';
 
-        $x_tables = array();
+        $x_tables = [];
 
         foreach ($xml->database->tables as $table)
         {
@@ -3478,7 +3478,7 @@ class MaintenanceModel extends BaseDatabaseModel
         unset($sample_query);
 
         // extract table names
-        $table_names = array();
+        $table_names = [];
         foreach ($x_tables as $table)
         {
             $table_names[] = (string) $table->table_structure->table_name->name;
@@ -3521,7 +3521,7 @@ class MaintenanceModel extends BaseDatabaseModel
             $message =  sprintf('Memory consumption while parsing at very beginning loop: %01.3f MB', $memoryConsumption);
             $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
 
-            $w_table = array();
+            $w_table = [];
 
             // extract install queries
             $w_table['queries'] = (string) $tmp_table->table_structure->install_query->query;
@@ -3537,7 +3537,7 @@ class MaintenanceModel extends BaseDatabaseModel
             // extract table assets
             if (property_exists($tmp_table, 'table_assets'))
             {
-                $assets       = array();
+                $assets       = [];
                 $table_assets = (array) $tmp_table->table_assets;
                 if (key_exists('dataset', $table_assets))
                 {
@@ -3545,7 +3545,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     {
                         foreach ($table_assets['dataset'] as $item)
                         {
-                            $ds    = array();
+                            $ds    = [];
                             $props = get_object_vars($item);
                             foreach ($props as $k => $v)
                             {
@@ -3575,7 +3575,7 @@ class MaintenanceModel extends BaseDatabaseModel
             $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
 
             // get table data; cannot use get_object_vars() because this returns empty objects on empty values, not empty array fields
-            $items = array();
+            $items = [];
             if (property_exists($tmp_table, 'table_data'))
             {
                 $table_data = (array) $tmp_table->table_data;
@@ -3586,7 +3586,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     {
                         foreach ($table_data['dataset'] as $item)
                         {
-                            $ds    = array();
+                            $ds    = [];
                             $props = get_object_vars($item);
 
                             foreach ($props as $k => $v)
@@ -3600,7 +3600,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     }
                     else
                     {
-                        $ds    = array();
+                        $ds    = [];
                         $props = get_object_vars($table_data['dataset']);
 
                         foreach ($props as $k => $v)
@@ -3670,7 +3670,7 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Method to delete all sub assets of component
      *
-     * @return boolean
+     * @return bool
      *
      * @since    1.3.0
      */
@@ -3731,7 +3731,7 @@ class MaintenanceModel extends BaseDatabaseModel
         try
         {
             // com_assets are from state = from input file!
-            $com_assets = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
+            $com_assets = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', []);
             $query      = $this->db->getQuery(true);
 
             // first get lft from main asset com_bwpostman, This is the one already existing in table
@@ -3816,13 +3816,12 @@ class MaintenanceModel extends BaseDatabaseModel
      * Method to get the base asset of BwPostman. If state exists, catch values from state, else use asset table
      * Base asset is the asset of the component or a specific section.
      *
-     * @param string  $table
-     * @param boolean $onlyHeal
+     * @param   string  $table
+     * @param   bool    $onlyHeal
      *
-     * @return array|boolean    $base_asset     base asset of BwPostman
+     * @return int|bool|array $base_asset     base asset of BwPostman
      *
-     * @throws exception
-     *
+     * @throws Exception
      * @since    1.3.0
      */
     protected function getBaseAsset(string $table = 'component', bool $onlyHeal = false): int|bool|array
@@ -3846,7 +3845,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 $table = substr($table,0, -1);
             }
 
-            $base_asset = $this->extractBaseAssetFromState(array('tableNameUC' => $table), $stateAssetsRaw);
+            $base_asset = $this->extractBaseAssetFromState(['tableNameUC' => $table], $stateAssetsRaw);
         }
         else
         {
@@ -3860,9 +3859,9 @@ class MaintenanceModel extends BaseDatabaseModel
      * Method to write a new asset at the table asset. Shifts left and right value at existing assets and inserts the new asset.
      *
      * @param array   $table
-     * @param boolean $showMessage
+     * @param bool $showMessage
      *
-     * @return string|boolean    $base_asset     base asset of BwPostman
+     * @return string|bool    $base_asset     base asset of BwPostman
      *
      * @throws Exception
      *
@@ -3944,7 +3943,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param string $sectionName
      * @param array  $sectionRules
      *
-     * @return boolean
+     * @return bool
      *
      * @since    1.3.0
      */
@@ -3983,11 +3982,11 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param array $asset
      *
-     * @return boolean
+     * @return bool
      *
      * @since    1.3.0
      */
-    protected function updateBaseAsset(array $asset = array()): bool
+    protected function updateBaseAsset(array $asset = []): bool
     {
         if (empty($asset))
         {
@@ -4066,7 +4065,7 @@ class MaintenanceModel extends BaseDatabaseModel
      */
     protected function getOptimizedRules(string $defaultRules, string $currentSection): string
     {
-        $optimizedRules = array();
+        $optimizedRules = [];
         $allRules       = json_decode($defaultRules, true);
         $allRuleNames   = array_keys($allRules);
 
@@ -4091,7 +4090,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array $base_asset          base asset values
      * @param array $mapOldAssetIdsToNew transformation array of asset ids old vs. new
      *
-     * @return boolean
+     * @return bool
      *
      * @since    1.3.0
      */
@@ -4173,7 +4172,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array  $dataset array of data sets to write
      * @param string $table   table name to write in
      *
-     * @return boolean
+     * @return bool
      *
      * @since    1.3.0
      */
@@ -4241,16 +4240,16 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Method to see if user groups have changed, get new IDs or create new user groups if needed
      *
-     * @param array $usergroups user groups from backup file
+     * @param   array  $usergroups  user groups from backup file
      *
-     * @return  array|boolean $group    array of old_id and new_id or false if no group id has changed. According groups were skipped.
+     * @return int|bool|array $group    array of old_id and new_id or false if no group id has changed. According groups were skipped.
      *
      * @since    1.3.0
      */
     private function getCurrentUserGroups(array $usergroups): int|bool|array
     {
-        $groups              = array();
-        $defaultJoomlaGroups = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        $groups              = [];
+        $defaultJoomlaGroups = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
         // first compare current user groups with backed up ones
         foreach ($usergroups as $item)
@@ -4321,7 +4320,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     }
                 }
 
-                $groups[] = array('old_id' => $item['id'], 'new_id' => $result, 'title' => $item['title']);
+                $groups[] = ['old_id' => $item['id'], 'new_id' => $result, 'title' => $item['title']];
             }
             else
             {
@@ -4329,7 +4328,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 if ($result['id'] !== $item['id'])
                 {
                     // memorise new id
-                    $groups[] = array('old_id' => $item['id'], 'new_id' => $result['id'], 'title' => $item['title']);
+                    $groups[] = ['old_id' => $item['id'], 'new_id' => $result['id'], 'title' => $item['title']];
                 }
             }
         }
@@ -4352,7 +4351,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array  $assets          array of the table assets
      * @param array  $groupsToReplace array with old and new ID of changed user groups
      *
-     * @return  boolean
+     * @return  bool
      *
      * @throws Exception
      *
@@ -4360,8 +4359,8 @@ class MaintenanceModel extends BaseDatabaseModel
      */
     private function rewriteAssetUserGroups(string $table, array &$assets, array $groupsToReplace): bool
     {
-        $modifiedAssets  = Factory::getApplication()->getUserState('com_bwpostman.maintenance.modifiedAssets', array());
-        $old_ids         = array();
+        $modifiedAssets  = Factory::getApplication()->getUserState('com_bwpostman.maintenance.modifiedAssets', []);
+        $old_ids         = [];
 
         foreach ($groupsToReplace as $groupToReplace)
         {
@@ -4388,7 +4387,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     foreach ($rules as $action => $rule)
                     {
                         $rewrite = false;
-                        $ruleNew = array();
+                        $ruleNew = [];
 
                         foreach ($rule as $key => $value)
                         {
@@ -4443,7 +4442,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @throws Exception
      *
-     * @return boolean
+     * @return bool
      *
      * @since    1.3.0
      */
@@ -4516,7 +4515,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @throws Exception
      *
-     * @return boolean|string
+     * @return bool|string
      *
      * @since    1.3.0
      */
@@ -4590,7 +4589,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * Method to delete tmp copies of affected tables. This is a very fast method to use as restore point. If error occurred,
      * only delete current tables and rename tmp names to the original ones. If all went well, delete tmp tables.
      *
-     * @return boolean|string
+     * @return bool|string
      *
      * @throws Exception
      *
@@ -4631,9 +4630,9 @@ class MaintenanceModel extends BaseDatabaseModel
      * Method to get the affected tables for restore point, but without temporary tables. Affected tables are not only
      * all tables with bwpostman in their name, but also assets and usergroups
      *
-     * @param boolean $restore are we at restore mode
+     * @param bool $restore are we at restore mode
      *
-     * @return  array|boolean   $tableNames     array of affected tables
+     * @return  array|bool   $tableNames     array of affected tables
      *
      * @throws Exception
      *
@@ -4658,20 +4657,20 @@ class MaintenanceModel extends BaseDatabaseModel
             return  false;
         }
 
-        $tables = array();
+        $tables = [];
         foreach ($this->tableNames as $table)
         {
             $tables[] = $table;
         }
 
-        $table = array();
+        $table = [];
 
         $table['tableNameDb']      = $prefix . 'usergroups';
         $table['tableNameGeneric'] = $prefix . 'usergroups';
 
         $tables[] = $table;
 
-        $table = array();
+        $table = [];
 
         $table['tableNameDb']      = $prefix . 'assets';
         $table['tableNameGeneric'] = $prefix . 'assets';
@@ -4687,7 +4686,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param string $table_name_raw for which table we want to get the base asset
      * @param string $dot            if dot is present, we search for a specific table, else component is meant
      *
-     * @return array|boolean
+     * @return array|bool
      *
      * @since 2.0.0
      */
@@ -4736,6 +4735,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @since    1.3.0
      *
      * @deprecated since 2.4.0, will be removed in 4.5ff
+     * @noinspection PhpUnused
      */
     protected function getBwpmTableName(string $table): string
     {
@@ -4767,17 +4767,17 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $table in format UC first
      *
-     * @return array|boolean
+     * @return array|bool
      *
      * @since 2.0.0
      */
     private function getBwPostmanUsergroups(string $table): bool|array
     {
-        $searchValues = array("'BwPostmanAdmin'", "'BwPostmanManager'", "'BwPostmanPublisher'", "'BwPostmanEditor'");
+        $searchValues = ["'BwPostmanAdmin'", "'BwPostmanManager'", "'BwPostmanPublisher'", "'BwPostmanEditor'"];
 
         if ($table != 'component')
         {
-            $suffixes = array('Admin', 'Publisher', 'Editor');
+            $suffixes = ['Admin', 'Publisher', 'Editor'];
 
             foreach ($suffixes as $suffix)
             {
@@ -4818,7 +4818,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param array $table
      *
-     * @return array|boolean
+     * @return array|bool
      *
      * @throws Exception
      *
@@ -4827,7 +4827,7 @@ class MaintenanceModel extends BaseDatabaseModel
     private function getBaseAssetItem(array $table): bool|array
     {
         // If state is set, use this
-        $stateAssetsRaw = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', array());
+        $stateAssetsRaw = Factory::getApplication()->getUserState('com_bwpostman.maintenance.com_assets', []);
 
         if (is_array($stateAssetsRaw) && count($stateAssetsRaw) > 0)
         {
@@ -4896,7 +4896,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $table as generic table name
      *
-     * @return boolean|integer
+     * @return bool|int
      *
      * @since 2.0.0
      */
@@ -4928,7 +4928,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param array $table
      *
-     * @return array|boolean $mergedRules
+     * @return array|bool $mergedRules
      *
      * @since 2.0.0
      */
@@ -4949,13 +4949,13 @@ class MaintenanceModel extends BaseDatabaseModel
         // If there is no real table, component entries will be overridden. This makes it possible to assign rules in one run
         if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
         {
-            $rules['bwpm.' . $tableName . 'create'] = array(
+            $rules['bwpm.' . $tableName . 'create'] = [
                 $bwpmUserGroups['BwPostmanAdmin']['id'] => true,
-            );
+            ];
         }
 
         // Set rules for edit/edit_own
-        $tmpRule = array();
+        $tmpRule = [];
         if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
         {
             $tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
@@ -4975,13 +4975,13 @@ class MaintenanceModel extends BaseDatabaseModel
 
         if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
         {
-            $rules['bwpm.' . $tableName . 'edit.own'] = array(
+            $rules['bwpm.' . $tableName . 'edit.own'] = [
                 $bwpmUserGroups['BwPostmanAdmin']['id'] => true,
-            );
+            ];
         }
 
         // Set rules for edit_state
-        $tmpRule = array();
+        $tmpRule = [];
         if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
         {
             $tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
@@ -5000,7 +5000,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $rules['bwpm.' . $tableName . 'edit.state'] = $tmpRule;
 
         // Set rules for archive
-        $tmpRule = array();
+        $tmpRule = [];
         if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
         {
             $tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
@@ -5019,7 +5019,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $rules['bwpm.' . $tableName . 'archive'] = $tmpRule;
 
         // Set rules for restore
-        $tmpRule = array();
+        $tmpRule = [];
         if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
         {
             $tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
@@ -5038,7 +5038,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $rules['bwpm.' . $tableName . 'restore'] = $tmpRule;
 
         // Set rules for delete
-        $tmpRule = array();
+        $tmpRule = [];
         if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
         {
             $tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
@@ -5059,7 +5059,7 @@ class MaintenanceModel extends BaseDatabaseModel
         // Set rules for send
         if ($tableNameUC == 'Newsletter')
         {
-            $tmpRule = array();
+            $tmpRule = [];
             if (key_exists('BwPostmanAdmin', $bwpmUserGroups))
             {
                 $tmpRule[$bwpmUserGroups['BwPostmanAdmin']['id']] = true;
@@ -5069,7 +5069,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $rules['bwpm.' . $tableName . 'send'] = $tmpRule;
 
         // Merge specific rules with predefined (basic) rules
-        $mergedRules = array();
+        $mergedRules = [];
         $keys        = array_keys($this->sectionRules);
 
         foreach ($keys as $key)
@@ -5092,9 +5092,9 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Method to initialise assets for component and sections with predefined basic rules at installation and update of component
      *
-     * @param boolean $updateComponent
+     * @param bool $updateComponent
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception
      *
@@ -5119,7 +5119,7 @@ class MaintenanceModel extends BaseDatabaseModel
         else
         {
             // @ToDo: get component rules from state
-            $componentAsset = $this->getBaseAssetItem(array('tableNameUC' => 'component'));
+            $componentAsset = $this->getBaseAssetItem(['tableNameUC' => 'component']);
 
             if ($componentAsset === false)
             {
@@ -5193,7 +5193,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param Rules $rules
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.0.0
      */
@@ -5225,13 +5225,13 @@ class MaintenanceModel extends BaseDatabaseModel
      * Method to initialise asset for component
      * All possible actions for all usergroups BwPostman delivers are set.
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.0.0
      */
     private function initializeComponentAssets(): bool
     {
-        $rules = array();
+        $rules = [];
 
         // Get all BwPostman usergroups
         $bwpmUserGroups = $this->getAllBwpmUserGroups();
@@ -5250,30 +5250,30 @@ class MaintenanceModel extends BaseDatabaseModel
 
         $usedGroups = array_merge($bwpmUserGroups, $joomlaGroups);
 
-        $rules['core.admin'] = array(
+        $rules['core.admin'] = [
             $usedGroups['Administrator']['id']    => true,
             $usedGroups['BwPostmanAdmin']['id']   => true,
             $usedGroups['BwPostmanManager']['id'] => false,
-        );
+        ];
 
-        $rules['core.login.admin'] = array(
+        $rules['core.login.admin'] = [
             $usedGroups['Administrator']['id']  => true,
             $usedGroups['BwPostmanAdmin']['id'] => true,
-        );
+        ];
 
-        $rules['core.manage'] = array(
-            $usedGroups['Administrator']['id']  => true,
-            $usedGroups['Manager']['id']        => true,
-            $usedGroups['BwPostmanAdmin']['id'] => true,
-        );
-
-        $rules['bwpm.create'] = array(
+        $rules['core.manage'] = [
             $usedGroups['Administrator']['id']  => true,
             $usedGroups['Manager']['id']        => true,
             $usedGroups['BwPostmanAdmin']['id'] => true,
-        );
+        ];
 
-        $rules['bwpm.delete'] = array(
+        $rules['bwpm.create'] = [
+            $usedGroups['Administrator']['id']  => true,
+            $usedGroups['Manager']['id']        => true,
+            $usedGroups['BwPostmanAdmin']['id'] => true,
+        ];
+
+        $rules['bwpm.delete'] = [
             $usedGroups['Administrator']['id']                 => true,
             $usedGroups['Manager']['id']                       => true,
             $usedGroups['BwPostmanAdmin']['id']                => true,
@@ -5283,9 +5283,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterPublisher']['id']  => false,
             $usedGroups['BwPostmanSubscriberPublisher']['id']  => false,
             $usedGroups['BwPostmanTemplatePublisher']['id']    => false,
-        );
+        ];
 
-        $rules['bwpm.edit'] = array(
+        $rules['bwpm.edit'] = [
             $usedGroups['Administrator']['id']              => true,
             $usedGroups['Manager']['id']                    => true,
             $usedGroups['BwPostmanAdmin']['id']             => true,
@@ -5295,15 +5295,15 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterEditor']['id']  => false,
             $usedGroups['BwPostmanSubscriberEditor']['id']  => false,
             $usedGroups['BwPostmanTemplateEditor']['id']    => false,
-        );
+        ];
 
-        $rules['bwpm.edit.own'] = array(
+        $rules['bwpm.edit.own'] = [
             $usedGroups['Administrator']['id']  => true,
             $usedGroups['Manager']['id']        => true,
             $usedGroups['BwPostmanAdmin']['id'] => true,
-        );
+        ];
 
-        $rules['bwpm.edit.state'] = array(
+        $rules['bwpm.edit.state'] = [
             $usedGroups['Administrator']['id']              => true,
             $usedGroups['Manager']['id']                    => true,
             $usedGroups['BwPostmanAdmin']['id']             => true,
@@ -5313,9 +5313,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterEditor']['id']  => false,
             $usedGroups['BwPostmanSubscriberEditor']['id']  => false,
             $usedGroups['BwPostmanTemplateEditor']['id']    => false,
-        );
+        ];
 
-        $rules['bwpm.archive'] = array(
+        $rules['bwpm.archive'] = [
             $usedGroups['Administrator']['id']                 => true,
             $usedGroups['Manager']['id']                       => true,
             $usedGroups['BwPostmanAdmin']['id']                => true,
@@ -5325,9 +5325,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterPublisher']['id']  => false,
             $usedGroups['BwPostmanSubscriberPublisher']['id']  => false,
             $usedGroups['BwPostmanTemplatePublisher']['id']    => false,
-        );
+        ];
 
-        $rules['bwpm.restore'] = array(
+        $rules['bwpm.restore'] = [
             $usedGroups['Administrator']['id']                 => true,
             $usedGroups['Manager']['id']                       => true,
             $usedGroups['BwPostmanAdmin']['id']                => true,
@@ -5337,9 +5337,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterPublisher']['id']  => false,
             $usedGroups['BwPostmanSubscriberPublisher']['id']  => false,
             $usedGroups['BwPostmanTemplatePublisher']['id']    => false,
-        );
+        ];
 
-        $rules['bwpm.send'] = array(
+        $rules['bwpm.send'] = [
             $usedGroups['Administrator']['id']             => true,
             $usedGroups['Manager']['id']                   => true,
             $usedGroups['BwPostmanAdmin']['id']            => true,
@@ -5347,9 +5347,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
             $usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
             $usedGroups['BwPostmanTemplateAdmin']['id']    => false,
-        );
+        ];
 
-        $rules['bwpm.view.archive'] = array(
+        $rules['bwpm.view.archive'] = [
             $usedGroups['Administrator']['id']                 => true,
             $usedGroups['Manager']['id']                       => true,
             $usedGroups['BwPostmanAdmin']['id']                => true,
@@ -5359,9 +5359,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterPublisher']['id']  => false,
             $usedGroups['BwPostmanSubscriberPublisher']['id']  => false,
             $usedGroups['BwPostmanTemplatePublisher']['id']    => false,
-        );
+        ];
 
-        $rules['bwpm.view.maintenance'] = array(
+        $rules['bwpm.view.maintenance'] = [
             $usedGroups['Administrator']['id']             => true,
             $usedGroups['Manager']['id']                   => true,
             $usedGroups['BwPostmanAdmin']['id']            => true,
@@ -5371,9 +5371,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
             $usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
             $usedGroups['BwPostmanTemplateAdmin']['id']    => false,
-        );
+        ];
 /*
-        $rules['bwpm.view.manage'] = array(
+        $rules['bwpm.view.manage'] = [
             $usedGroups['Administrator']['id']             => true,
             $usedGroups['Manager']['id']                   => true,
             $usedGroups['BwPostmanPublisher']['id']        => false,
@@ -5384,9 +5384,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
             $usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
             $usedGroups['BwPostmanTemplateAdmin']['id']    => false,
-        );
+        ];
 */
-        $rules['bwpm.view.campaign'] = array(
+        $rules['bwpm.view.campaign'] = [
             $usedGroups['Administrator']['id']             => true,
             $usedGroups['Manager']['id']                   => true,
             $usedGroups['BwPostmanAdmin']['id']            => true,
@@ -5394,9 +5394,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
             $usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
             $usedGroups['BwPostmanTemplateAdmin']['id']    => false,
-        );
+        ];
 
-        $rules['bwpm.view.mailinglist'] = array(
+        $rules['bwpm.view.mailinglist'] = [
             $usedGroups['Administrator']['id']            => true,
             $usedGroups['Manager']['id']                  => true,
             $usedGroups['BwPostmanAdmin']['id']           => true,
@@ -5404,9 +5404,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterAdmin']['id'] => false,
             $usedGroups['BwPostmanSubscriberAdmin']['id'] => false,
             $usedGroups['BwPostmanTemplateAdmin']['id']   => false,
-        );
+        ];
 
-        $rules['bwpm.view.newsletter'] = array(
+        $rules['bwpm.view.newsletter'] = [
             $usedGroups['Administrator']['id']             => true,
             $usedGroups['Manager']['id']                   => true,
             $usedGroups['BwPostmanAdmin']['id']            => true,
@@ -5414,9 +5414,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
             $usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
             $usedGroups['BwPostmanTemplateAdmin']['id']    => false,
-        );
+        ];
 
-        $rules['bwpm.view.subscriber'] = array(
+        $rules['bwpm.view.subscriber'] = [
             $usedGroups['Administrator']['id']             => true,
             $usedGroups['Manager']['id']                   => true,
             $usedGroups['BwPostmanAdmin']['id']            => true,
@@ -5424,9 +5424,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
             $usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
             $usedGroups['BwPostmanTemplateAdmin']['id']    => false,
-        );
+        ];
 
-        $rules['bwpm.view.template'] = array(
+        $rules['bwpm.view.template'] = [
             $usedGroups['Administrator']['id']             => true,
             $usedGroups['Manager']['id']                   => true,
             $usedGroups['BwPostmanAdmin']['id']            => true,
@@ -5434,9 +5434,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanMailinglistAdmin']['id'] => false,
             $usedGroups['BwPostmanNewsletterAdmin']['id']  => false,
             $usedGroups['BwPostmanSubscriberAdmin']['id']  => false,
-        );
+        ];
 
-        $rules['bwpm.admin.campaign'] = array(
+        $rules['bwpm.admin.campaign'] = [
             $usedGroups['Administrator']['id']              => true,
             $usedGroups['Manager']['id']                    => true,
             $usedGroups['BwPostmanAdmin']['id']             => true,
@@ -5446,9 +5446,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanSubscriberAdmin']['id']   => false,
             $usedGroups['BwPostmanTemplateAdmin']['id']     => false,
             $usedGroups['BwPostmanCampaignPublisher']['id'] => false,
-        );
+        ];
 
-        $rules['bwpm.admin.mailinglist'] = array(
+        $rules['bwpm.admin.mailinglist'] = [
             $usedGroups['Administrator']['id']                 => true,
             $usedGroups['Manager']['id']                       => true,
             $usedGroups['BwPostmanAdmin']['id']                => true,
@@ -5458,9 +5458,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanSubscriberAdmin']['id']      => false,
             $usedGroups['BwPostmanTemplateAdmin']['id']        => false,
             $usedGroups['BwPostmanMailinglistPublisher']['id'] => false,
-        );
+        ];
 
-        $rules['bwpm.admin.newsletter'] = array(
+        $rules['bwpm.admin.newsletter'] = [
             $usedGroups['Administrator']['id']                => true,
             $usedGroups['Manager']['id']                      => true,
             $usedGroups['BwPostmanAdmin']['id']               => true,
@@ -5470,9 +5470,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanSubscriberAdmin']['id']     => false,
             $usedGroups['BwPostmanTemplateAdmin']['id']       => false,
             $usedGroups['BwPostmanNewsletterPublisher']['id'] => false,
-        );
+        ];
 
-        $rules['bwpm.admin.subscriber'] = array(
+        $rules['bwpm.admin.subscriber'] = [
             $usedGroups['Administrator']['id']                => true,
             $usedGroups['Manager']['id']                      => true,
             $usedGroups['BwPostmanPublisher']['id']           => false,
@@ -5482,9 +5482,9 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterAdmin']['id']     => false,
             $usedGroups['BwPostmanTemplateAdmin']['id']       => false,
             $usedGroups['BwPostmanSubscriberPublisher']['id'] => false,
-        );
+        ];
 
-        $rules['bwpm.admin.template'] = array(
+        $rules['bwpm.admin.template'] = [
             $usedGroups['Administrator']['id']              => true,
             $usedGroups['Manager']['id']                    => true,
             $usedGroups['BwPostmanAdmin']['id']             => true,
@@ -5494,7 +5494,7 @@ class MaintenanceModel extends BaseDatabaseModel
             $usedGroups['BwPostmanNewsletterAdmin']['id']   => false,
             $usedGroups['BwPostmanSubscriberAdmin']['id']   => false,
             $usedGroups['BwPostmanTemplatePublisher']['id'] => false,
-        );
+        ];
 
         $this->componentRules = $rules;
 
@@ -5505,14 +5505,14 @@ class MaintenanceModel extends BaseDatabaseModel
      * Method to initialise assets for all sections/tables over all possible usergroups
      * To prevent warnings at restore, usergroups are reduced to them that are installed
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.0.0
      */
     private function initializeSectionAssets(): bool
     {
         // Set all actions possible in and with sections
-        $actions = array('create', 'edit', 'edit.own', 'edit.state', 'archive', 'restore', 'delete', 'send');
+        $actions = ['create', 'edit', 'edit.own', 'edit.state', 'archive', 'restore', 'delete', 'send'];
 
         $rules = $this->componentRules;
 
@@ -5596,7 +5596,7 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Method to get all predefined (sample) rules, reduced to installed usergroups
      *
-     * @return array|boolean
+     * @return array|bool
      *
      * @since 2.0.0
      */
@@ -5618,10 +5618,10 @@ class MaintenanceModel extends BaseDatabaseModel
 
         $usedGroups     = array_merge($bwpmUserGroups, $joomlaGroups);
 
-        $allRightsForInstalledGroups = array();
+        $allRightsForInstalledGroups = [];
 
         // First: Set general rules for all sample BwPostman and basic Joomla! usergroups
-        $actions['create'] = array(
+        $actions['create'] = [
             'Administrator'             => true,
             'Manager'                   => true,
             'Publisher'                 => true,
@@ -5635,9 +5635,9 @@ class MaintenanceModel extends BaseDatabaseModel
             'BwPostmanNewsletterAdmin'  => false,
             'BwPostmanSubscriberAdmin'  => false,
             'BwPostmanTemplateAdmin'    => false,
-        );
+        ];
 
-        $actions['edit'] = array(
+        $actions['edit'] = [
             'Administrator'             => true,
             'Manager'                   => true,
             'Publisher'                 => true,
@@ -5651,9 +5651,9 @@ class MaintenanceModel extends BaseDatabaseModel
             'BwPostmanNewsletterAdmin'  => false,
             'BwPostmanSubscriberAdmin'  => false,
             'BwPostmanTemplateAdmin'    => false,
-        );
+        ];
 
-        $actions['edit.own'] = array(
+        $actions['edit.own'] = [
             'Administrator'             => true,
             'Manager'                   => true,
             'Publisher'                 => true,
@@ -5667,9 +5667,9 @@ class MaintenanceModel extends BaseDatabaseModel
             'BwPostmanNewsletterAdmin'  => false,
             'BwPostmanSubscriberAdmin'  => false,
             'BwPostmanTemplateAdmin'    => false,
-        );
+        ];
 
-        $actions['edit.state'] = array(
+        $actions['edit.state'] = [
             'Administrator'             => true,
             'Manager'                   => true,
             'Publisher'                 => true,
@@ -5683,9 +5683,9 @@ class MaintenanceModel extends BaseDatabaseModel
             'BwPostmanNewsletterAdmin'  => false,
             'BwPostmanSubscriberAdmin'  => false,
             'BwPostmanTemplateAdmin'    => false,
-        );
+        ];
 
-        $actions['archive'] = array(
+        $actions['archive'] = [
             'Administrator'             => true,
             'Manager'                   => true,
             'Publisher'                 => true,
@@ -5699,9 +5699,9 @@ class MaintenanceModel extends BaseDatabaseModel
             'BwPostmanNewsletterAdmin'  => false,
             'BwPostmanSubscriberAdmin'  => false,
             'BwPostmanTemplateAdmin'    => false,
-        );
+        ];
 
-        $actions['restore'] = array(
+        $actions['restore'] = [
             'Administrator'             => true,
             'Manager'                   => true,
             'Publisher'                 => true,
@@ -5715,9 +5715,9 @@ class MaintenanceModel extends BaseDatabaseModel
             'BwPostmanNewsletterAdmin'  => false,
             'BwPostmanSubscriberAdmin'  => false,
             'BwPostmanTemplateAdmin'    => false,
-        );
+        ];
 
-        $actions['delete'] = array(
+        $actions['delete'] = [
             'Administrator'             => true,
             'Manager'                   => true,
             'Publisher'                 => true,
@@ -5731,9 +5731,9 @@ class MaintenanceModel extends BaseDatabaseModel
             'BwPostmanNewsletterAdmin'  => false,
             'BwPostmanSubscriberAdmin'  => false,
             'BwPostmanTemplateAdmin'    => false,
-        );
+        ];
 
-        $actions['newsletter.send'] = array(
+        $actions['newsletter.send'] = [
             'Administrator'             => true,
             'Manager'                   => true,
             'Publisher'                 => true,
@@ -5747,7 +5747,7 @@ class MaintenanceModel extends BaseDatabaseModel
             'BwPostmanNewsletterAdmin'  => true,
             'BwPostmanSubscriberAdmin'  => false,
             'BwPostmanTemplateAdmin'    => false,
-        );
+        ];
 
         // Second:; Check if usergroups are installed. If so, take the rule in return array
         // @ToDo: Also remove child groups, if noting changed related to parent
@@ -5837,11 +5837,11 @@ class MaintenanceModel extends BaseDatabaseModel
     {
         $groups = $this->usedGroups;
 
-        $reducedRules = array();
+        $reducedRules = [];
 
         foreach ($actionRules as $action => $groupRules)
         {
-            $reducedRule = array();
+            $reducedRule = [];
             for ($i = 0; $i < count($groupRules); $i++)
             {
                 if (key_exists('Administrator', $groupRules))
@@ -6003,7 +6003,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param $com_asset
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.0.0
      */
@@ -6037,7 +6037,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param $com_asset
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.0.0
      */
@@ -6071,7 +6071,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array $com_asset
      * @param array $asset
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.0.0
      */
@@ -6082,7 +6082,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $query->insert($this->db->quoteName('#__assets'));
 
         $query->columns(
-            array(
+            [
                 $this->db->quoteName('id'),
                 $this->db->quoteName('parent_id'),
                 $this->db->quoteName('lft'),
@@ -6091,7 +6091,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 $this->db->quoteName('name'),
                 $this->db->quoteName('title'),
                 $this->db->quoteName('rules')
-            )
+            ]
         );
         $query->values(
             $this->db->quote(0) . ',' .
@@ -6125,7 +6125,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $assetName
      *
-     * @return string|boolean
+     * @return string|bool
      *
      * @since 2.0.0
      */
@@ -6159,7 +6159,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array $table
      * @param array $stateAssetsRaw
      *
-     * @return mixed array|boolean
+     * @return mixed array|bool
      *
      * @since 2.0.0
      */
@@ -6188,7 +6188,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $table
      *
-     * @return mixed array|boolean
+     * @return mixed array|bool
      *
      * @since 2.0.0
      */
@@ -6263,13 +6263,13 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Method to get all BwPostman usergroups, which are used at sections with assets
      *
-     * @return array|boolean
+     * @return array|bool
      *
      * @since 2.0.0
      */
     private function getAllBwpmUserGroups(): bool|array
     {
-        $bwpmUserGroups = array();
+        $bwpmUserGroups = [];
 
         foreach ($this->tableNames as $table)
         {
@@ -6299,13 +6299,13 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Method to get all Joomla! usergroups that might be used at BwPostman
      *
-     * @return array|boolean
+     * @return array|bool
      *
      * @since 2.0.0
      */
     private function getJoomlaGroups(): bool|array
     {
-        $searchValues = array(7, 6, 5, 4);
+        $searchValues = [7, 6, 5, 4];
 
         $query = $this->db->getQuery(true);
 
@@ -6367,7 +6367,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $tableNameGeneric
      *
-     * @return array|boolean
+     * @return array|bool
      *
      * @since 2.4.0
      *
@@ -6398,9 +6398,9 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Method to check if an asset_id exists at assets table
      *
-     * @param integer $assetId
+     * @param int $assetId
      *
-     * @return boolean|integer
+     * @return bool|int
      *
      * @since 2.4.0
      *
@@ -6437,10 +6437,10 @@ class MaintenanceModel extends BaseDatabaseModel
      * Method to get all Items of a table of BwPostman, which have asset_id = 0. This is the indicator that an asset is needed
      * but not present at asset table.
      *
-     * @param integer $assetId
+     * @param int $assetId
      * @param string  $assetName
      *
-     * @return boolean|integer
+     * @return bool|int
      *
      * @since 2.4.0
      *
@@ -6478,7 +6478,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $assetName
      *
-     * @return integer|boolean
+     * @return int|bool
      *
      * @since 2.4.0
      *
@@ -6494,7 +6494,7 @@ class MaintenanceModel extends BaseDatabaseModel
         {
             $this->db->setQuery($query);
 
-            $assetId = (integer) $this->db->loadResult();
+            $assetId = (int) $this->db->loadResult();
         }
         catch (RuntimeException $exception)
         {
@@ -6517,7 +6517,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param string $tableNameGeneric
      * @param array  $assetIdsByName itemId|assetId
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.4.0
      *
@@ -6555,7 +6555,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param string $tableNameGeneric
      * @param array  $itemIds
      *
-     * @return array|boolean   list of assoc arrays of complete item data
+     * @return array|bool   list of assoc arrays of complete item data
      *
      * @since 2.4.0
      *
@@ -6626,7 +6626,7 @@ class MaintenanceModel extends BaseDatabaseModel
      */
     private function dbQuoteArray(array $arrayData): array
     {
-        $values = array();
+        $values = [];
 
         foreach ($arrayData as $k => $v)
         {
@@ -6645,7 +6645,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array $itemsWithoutAsset
      * @param array $table
      *
-     * @return array|boolean
+     * @return array|bool
      *
      * @throws exception
      *
@@ -6678,7 +6678,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $asset_loop_max   = 200;
         $asset_max        = count($itemsWithoutAsset);
 
-        $mapOldAssetIdsToNew = array();
+        $mapOldAssetIdsToNew = [];
 
         $this->assetColnames = array_keys($this->db->getTableColumns('#__assets'));
 
@@ -6704,7 +6704,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                 //reset loop values
                 $asset_loop = 0;
-                $dataset    = array();
+                $dataset    = [];
             }
         }
 
@@ -6719,7 +6719,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param string        $tableNameGeneric
      * @param   bool|array  $mapOldAssetIdsToNew
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.0.0
      *
@@ -6745,7 +6745,7 @@ class MaintenanceModel extends BaseDatabaseModel
         // If there are data sets
         if ($data_max)
         {
-            $dataset   = array();
+            $dataset   = [];
             $data_loop = 0;
 
             // … insert data sets…
@@ -6787,7 +6787,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                     // reset loop values
                     $data_loop = 0;
-                    $dataset   = array();
+                    $dataset   = [];
                 }
             } // end foreach table items
         } // endif data sets exists
@@ -6800,7 +6800,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $table
      *
-     * @return boolean
+     * @return bool
      *
      * @since 2.0.0
      *
@@ -6842,7 +6842,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param string $table         table to create
      * @param array  $tablesQueries query used for creation
      *
-     * @return    boolean|string boolean on success, string with error message on failure
+     * @return    bool|string bool on success, string with error message on failure
      *
      * @throws Exception
      *
@@ -6911,9 +6911,9 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array   $asset               asset to prepare
      * @param array   $asset_transform     array to hold map for item id, old asset id and newly created asset id
      *                                     item id is already written, old asset id is entered here
-     * @param integer $s                   control counter
+     * @param int $s                   control counter
      * @param array   $base_asset          base asset to get parent id
-     * @param integer $asset_siblings      variable to memorize current values for rgt and lft
+     * @param int $asset_siblings      variable to memorize current values for rgt and lft
      *
      * @return string
      *
@@ -6921,7 +6921,7 @@ class MaintenanceModel extends BaseDatabaseModel
      */
     protected function prepareAssetValues(array $asset, array &$asset_transform, int $s, array $base_asset, int &$asset_siblings): string
     {
-        $values = array();
+        $values = [];
 
         foreach ($asset as $k => $v)
         {
@@ -6955,7 +6955,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $tableName the name of the table to save
      *
-     * @return array|boolean false on failure
+     * @return array|bool false on failure
      *
      * @since 2.4.0
      */

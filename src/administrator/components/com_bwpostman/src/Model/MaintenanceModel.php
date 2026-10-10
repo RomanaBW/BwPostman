@@ -6142,6 +6142,11 @@ class MaintenanceModel extends BaseDatabaseModel
             $this->db->setQuery($query);
 
             $base_asset = $this->db->loadAssoc();
+
+            if (is_null($base_asset))
+            {
+                $base_asset = '';
+            }
         }
         catch (RuntimeException $exception)
         {

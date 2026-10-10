@@ -16,7 +16,7 @@ const BWPM_ADMINISTRATOR = JPATH_ADMINISTRATOR . '/components/com_bwpostman';
 const BWPM_SITE = JPATH_SITE . '/components/com_bwpostman';
 
 // BwPostman default path for Backups
-const BWPM_BACKUP = JPATH_SITE . '/images/com_bwpostman/backup_tables';
+if (!defined('BWPM_BACKUP')) define('BWPM_BACKUP', JPATH_SITE . '/images/com_bwpostman/backup_tables');
 
 use Joomla\CMS\Component\Router\RouterFactoryInterface;
 use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;

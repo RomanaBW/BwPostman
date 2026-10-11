@@ -1,0 +1,18 @@
+---
+tester_image: "universe3:5000/romana/bwpm_enh_tester-{{ joomla_version_current[0] }}:{{ joomla_version_current }}-{{ bwpm_project_version }}"
+webserver_url: "172.118.6.35"
+database_ip: "172.118.6.34"
+testcontainer_ip: "172.118.6.38"
+project_src_dir: "/home/romana/PhpstormProjects/BwPostman_J4"
+display: "45"
+screen_size: "1920x1080"
+screen_size_opts: "1920,1080"
+j_main: '6'
+joomla_version: "{{ joomla_version_current }}"
+bwpm_version: "{{ bwpm_project_version }}"
+bwpm_version_dotted: "{{ bwpm_project_version }}"
+bwpm_version_previous: "{{ bwpm_project_previous_version }}"
+
+php_minimum_version: "{{ bw_php_version_previous }}"
+php_current_version: "{{ bw_php_version_current }}"
+

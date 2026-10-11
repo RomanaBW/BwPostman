@@ -4,6 +4,7 @@
   vars_files:
     - /repositories/systemscripts/Ansible/general_vars/general_bw_vault.yml
     - /repositories/systemscripts/Ansible/general_vars/general_joomla_versions.yml
+    - vars/tester-image-base.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
     - vars/codecept_paths.yml
@@ -77,6 +78,7 @@
   connection: docker
   vars_files:
     - vars/tests.yml
+    - vars/tester-image-base.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
     - vars/codecept_paths.yml
@@ -117,6 +119,7 @@
   connection: docker
   vars_files:
     - vars/tests.yml
+    - vars/tester-image-base.yml
     - vars/tester-image-vars.yml
     - vars/tester-test-vars.yml
     - vars/codecept_paths.yml

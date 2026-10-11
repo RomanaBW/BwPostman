@@ -30,3 +30,8 @@
         src: "configuration_test.php.j2"
         dest: "{{ bwpm_base_path }}/configuration.php"
         mode: 0777
+
+    - name: Create new tester-image-vars
+      ansible.builtin.template:
+        src: "tester-image-base.yml.j2"
+        dest: "../playbooks/vars/tester-image-base.yml"

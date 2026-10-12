@@ -3082,7 +3082,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 $data_max = count($tables[$table]['table_data']);
             }
 
-            if ($base_asset !== -1 && !empty($base_asset))
+            if ($base_asset !== -1)
             {
                 try
                 {
@@ -3861,13 +3861,13 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array   $table
      * @param bool $showMessage
      *
-     * @return array|bool    $base_asset     base asset of BwPostman
+     * @return string|bool    $base_asset     base asset of BwPostman
      *
      * @throws Exception
      *
      * @since    1.3.0
      */
-    public function insertBaseAsset(array $table, bool $showMessage = true): bool|array
+    public function insertBaseAsset(array $table, bool $showMessage = true): bool|string
     {
         // Get asset rules
         $asset     = $this->getBaseAssetItem($table);
@@ -6125,12 +6125,11 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $assetName
      *
-     * @return array|bool
+     * @return string|bool
      *
      * @since 2.0.0
      */
-    private function getAssetFromAssetsTableByName(string $assetName): bool|array
-//    private function getAssetFromAssetsTableByName(string $assetName)
+    private function getAssetFromAssetsTableByName(string $assetName): bool|string
     {
         $query = $this->db->getQuery(true);
 
@@ -6143,11 +6142,6 @@ class MaintenanceModel extends BaseDatabaseModel
             $this->db->setQuery($query);
 
             $base_asset = $this->db->loadAssoc();
-
-            if (is_null($base_asset))
-            {
-                $base_asset = [];
-            }
         }
         catch (RuntimeException $exception)
         {
@@ -6218,11 +6212,6 @@ class MaintenanceModel extends BaseDatabaseModel
             $this->db->setQuery($query);
 
             $base_asset = $this->db->loadAssoc();
-
-            if (is_null($base_asset))
-            {
-                $base_asset = [];
-            }
         }
         catch (RuntimeException $exception)
         {

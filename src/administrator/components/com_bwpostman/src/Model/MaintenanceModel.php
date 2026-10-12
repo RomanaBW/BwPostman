@@ -3819,12 +3819,12 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param   string  $table
      * @param   bool    $onlyHeal
      *
-     * @return int|bool|array $base_asset     base asset of BwPostman
+     * @return array|bool $base_asset     base asset of BwPostman
      *
      * @throws Exception
      * @since    1.3.0
      */
-    protected function getBaseAsset(string $table = 'component', bool $onlyHeal = false): int|bool|array
+    protected function getBaseAsset(string $table = 'component', bool $onlyHeal = false)
     {
         $stateAssetsRaw = '';
 
@@ -3867,7 +3867,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since    1.3.0
      */
-    public function insertBaseAsset(array $table, bool $showMessage = true): bool|string
+    public function insertBaseAsset(array $table, bool $showMessage = true)
     {
         // Get asset rules
         $asset     = $this->getBaseAssetItem($table);
@@ -4246,7 +4246,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since    1.3.0
      */
-    private function getCurrentUserGroups(array $usergroups): int|bool|array
+    private function getCurrentUserGroups(array $usergroups)
     {
         $groups              = [];
         $defaultJoomlaGroups = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -6125,11 +6125,12 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @param string $assetName
      *
-     * @return string|bool
+     * @return array|bool
      *
      * @since 2.0.0
      */
-    private function getAssetFromAssetsTableByName(string $assetName): bool|string
+    private function getAssetFromAssetsTableByName(string $assetName)
+//    private function getAssetFromAssetsTableByName(string $assetName)
     {
         $query = $this->db->getQuery(true);
 

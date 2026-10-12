@@ -1,6 +1,8 @@
 ---
-j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
+bwpm_version_dotted: "{{ bwpm_project_version }}"
+bwpm_version_previous: "{{ bwpm_project_previous_version }}"
 
+j_version_hyphen: "{{ joomla_version | replace('.', '-') }}"
 j_main_version: "{{ joomla_version[0] }}"
 
 php_selected_version: "{{ php_current_version }}"

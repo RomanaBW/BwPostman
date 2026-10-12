@@ -72,8 +72,8 @@ class RawView extends BaseHtmlView
 
 		if (!BwPostmanHelper::canView('maintenance'))
 		{
-            $app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_MAINTENANCE')), 'error');
-            $app->redirect('index.php?option=com_bwpostman');
+			$app->enqueueMessage(Text::sprintf('COM_BWPOSTMAN_VIEW_NOT_ALLOWED', Text::_('COM_BWPOSTMAN_MAINTENANCE')), 'error');
+			$app->redirect('index.php?option=com_bwpostman');
 		}
 
 		$layout	= $jinput->get('layout');
@@ -125,15 +125,7 @@ class RawView extends BaseHtmlView
 			// Get the export data
 			$model	= new MaintenanceModel();
 
-            $backupFile = $model->saveTables($xmlFileName, false);
-
-            if (!File::exists($backupFile))
-            {
-                $app->enqueueMessage(Text::_('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_NO_OUTPUT_FILE'), 'error');
-                $app->redirect('index.php?option=com_bwpostman');
-            }
-
-            readfile($backupFile);
+			readfile($model->saveTables($xmlFileName, false));
 		}
 
 		if ($layout == 'doRestore')

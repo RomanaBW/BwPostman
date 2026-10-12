@@ -1881,7 +1881,7 @@ class MaintenanceModel extends BaseDatabaseModel
         {
             if (is_object($col))
             {
-                $neededColumns[] = ArrayHelper::fromObject($col, true);
+                $neededColumns[] = ArrayHelper::fromObject($col);
             }
             else
             {
@@ -1911,7 +1911,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
         foreach ($columnsObject as $col)
         {
-            $installedColumns[] = ArrayHelper::fromObject($col, true);
+            $installedColumns[] = ArrayHelper::fromObject($col);
         }
 
         // prepare check for col names
@@ -3871,7 +3871,7 @@ class MaintenanceModel extends BaseDatabaseModel
     {
         // Get asset rules
         $asset     = $this->getBaseAssetItem($table);
-        $com_asset = $this->getBaseAsset('component');
+        $com_asset = $this->getBaseAsset();
 
         if ($asset === false || $com_asset === false)
         {
@@ -4839,7 +4839,7 @@ class MaintenanceModel extends BaseDatabaseModel
             }
         }
 
-        $com_asset = $this->getBaseAsset('component');
+        $com_asset = $this->getBaseAsset();
 
         if ($com_asset === false)
         {
@@ -6130,7 +6130,6 @@ class MaintenanceModel extends BaseDatabaseModel
      * @since 2.0.0
      */
     private function getAssetFromAssetsTableByName(string $assetName)
-//    private function getAssetFromAssetsTableByName(string $assetName)
     {
         $query = $this->db->getQuery(true);
 

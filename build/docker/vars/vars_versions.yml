@@ -1,5 +1,5 @@
 ---
-bwpm_project_version: "4.3.6"
+bwpm_project_version: "4.4.0"
 
 bwpm_joomla_current: "{{ joomla_version_current }}"
 bwpm_joomla_previous: "{{ joomla_version_previous }}"

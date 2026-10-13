@@ -13,9 +13,9 @@ services:
     #  Database
   bwpm-fast-current-db:
     container_name: bwpm-fast-current-db
-    image: universe3:5000/romana/bwpm_enh_db-6:8.3.0-6.1.4-4.3.6
+    image: universe3:5000/romana/bwpm_enh_db-6:8.3.0-6.2.0-4.4.0
     volumes:
-        - bwpm_fast_db_61:/var/lib/mariadb
+        - bwpm_fast_db_62:/var/lib/mariadb
     networks:
       bwpm-fast-current:
         ipv4_address: 172.118.6.58
@@ -41,7 +41,7 @@ services:
     # Webserver
   bwpm-fast-current-joomla:
     container_name: bwpm-fast-current-joomla
-    image: universe3:5000/romana/bwpm_enh_web-6:8.3.0-6.1.4-4.3.6
+    image: universe3:5000/romana/bwpm_enh_web-6:8.3.0-6.2.0-4.4.0
     ports:
         - 86:80
     healthcheck:
@@ -285,7 +285,7 @@ services:
         UPLOAD_LIMIT: 8192M
 
 volumes:
-  bwpm_fast_db_61:
+  bwpm_fast_db_62:
 
 secrets:
     db_password:

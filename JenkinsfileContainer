@@ -18,7 +18,7 @@ pipeline {
 
           DO_CURRENT_SMOKE  = 'true'
           DO_CURRENT_ACCEPT = 'false'
-          DO_CURRENT_PERMS  = 'true'
+          DO_CURRENT_PERMS  = 'false'
 
           DO_PREVIOUS_SMOKE  = 'true'
           DO_PREVIOUS_ACCEPT = 'true'
@@ -74,15 +74,15 @@ pipeline {
           }
       }
       steps {
-//				echo "Dummy Smoke"
+//        echo "Dummy Smoke"
         sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-smoke-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} do_record=${DO_RECORD_SMOKE} ${VERSIONS_EXTRA_VAR_CURRENT}'"
         sh "docker exec -t bwpm_enh_tester-6 /data/do-tests.sh ${BWPM_VERSION}"
         sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/push-smoke-testers.yml --extra-vars '${VERSIONS_EXTRA_VAR_CURRENT}'"
       }
       post {
           always {
-//					echo "Dummy Smoke ALWAYS"
-          sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_CURRENT}'"
+          echo "Dummy Smoke ALWAYS"
+//          sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_CURRENT}'"
         }
         failure {
           bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME_CURRENT}")
@@ -102,9 +102,9 @@ pipeline {
           }
       }
       steps {
-//				echo "Dummy Smoke Remove"
-        sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-smoke-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
-            }
+        echo "Dummy Smoke Remove"
+//        sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-smoke-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
+      }
     }
 
     stage('Run acceptance current Joomla ') {
@@ -121,13 +121,13 @@ pipeline {
       parallel {
         stage('A-C-1: Lists NLS, TPLS, SUBS') {
           steps {
-//						echo "Dummy 1"
+//            echo "Dummy 1"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_CURRENT}'"
             sh "docker exec -t bwpm_accept1_tester-6 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 1 always"
+//              echo "Dummy 1 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
             }
             failure {
@@ -137,13 +137,13 @@ pipeline {
         }
         stage('A-C-2: Details NL, SUB') {
           steps {
-//						echo "Dummy 2"
+//            echo "Dummy 2"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_CURRENT}'"
             sh "docker exec -t bwpm_accept2_tester-6 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 2 always"
+//              echo "Dummy 2 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2 ${VERSIONS_EXTRA_VAR_CURRENT}'"
             }
             failure {
@@ -153,13 +153,13 @@ pipeline {
         }
         stage('A-C-3: Details TPL, CAM, ML, Lists CAMS, MLS, Maintenance + Frontend') {
           steps {
-//						echo "Dummy 3"
+//            echo "Dummy 3"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_CURRENT}'"
             sh "docker exec -t bwpm_accept3_tester-6 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 3 always"
+//              echo "Dummy 3 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=accept3 ${VERSIONS_EXTRA_VAR_CURRENT}'"
             }
             failure {
@@ -169,13 +169,13 @@ pipeline {
         }
         stage('A-C-4: Mod Reg, Mod Over, UA, FUM, U2S') {
           steps {
-//						echo "Dummy 4"
+//            echo "Dummy 4"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_CURRENT}'"
             sh "docker exec -t bwpm_accept4_tester-6 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 4 always"
+//              echo "Dummy 4 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4 ${VERSIONS_EXTRA_VAR_CURRENT}'"
             }
             failure {
@@ -200,7 +200,7 @@ pipeline {
               }
           }
           steps {
-    //				echo "Dummy Acceptance Remove"
+    //        echo "Dummy Acceptance Remove"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
                 }
         }
@@ -290,13 +290,13 @@ pipeline {
         )
       }
 
-  //				emailext(
-  //					body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_PREVIOUS} and php 7 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
-  //					subject:"BwPostman J${JOOMLA_VERSION_PREVIOUS} php 7 build ${currentBuild.number} successful",
-  //					to: 'webmaster@boldt-webservice.de'
-  //				)
-  //				@ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
-  //				to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
+  //        emailext(
+  //          body: "<p>BwPostman build ${currentBuild.number} has passed smoke test and all acceptance tests for Joomla ${JOOMLA_VERSION_PREVIOUS} and php 7 and is uploaded to Boldt Webservice for manual testing purpose.</p><p>Last commit message: ${GIT_MESSAGE}</p>",
+  //          subject:"BwPostman J${JOOMLA_VERSION_PREVIOUS} php 7 build ${currentBuild.number} successful",
+  //          to: 'webmaster@boldt-webservice.de'
+  //        )
+  //        @ToDo: NUR WENN ICH GANZ SICHER BIN!!!!!!!!
+  //        to: 'webmaster@boldt-webservice.de, k.klostermann@t-online.de'
         }
       }
     }
@@ -315,14 +315,14 @@ pipeline {
       parallel {
         stage('P-C-1: P1') {
           steps {
-//						echo "Dummy 1"
+//            echo "Dummy 1"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_CURRENT}'"
             sh "docker exec -t bwpm_rights1_tester-6 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-							echo "Dummy 1 always"
-//              sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
+//              echo "Dummy 1 always"
+              sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
             }
             failure {
               bwpmAcceptFailureContainer ("Suite_1", "${PROJECT_NAME_CURRENT}")
@@ -331,13 +331,13 @@ pipeline {
         }
         stage('P-C-2: P2') {
           steps {
-//						echo "Dummy 2"
+//            echo "Dummy 2"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_CURRENT}'"
             sh "docker exec -t bwpm_rights2_tester-6 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 2 always"
+//              echo "Dummy 2 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=rights2 ${VERSIONS_EXTRA_VAR_CURRENT}'"
             }
             failure {
@@ -347,13 +347,13 @@ pipeline {
         }
         stage('P-C-3: P3') {
           steps {
-//						echo "Dummy 3"
+//            echo "Dummy 3"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_CURRENT}'"
             sh "docker exec -t bwpm_rights3_tester-6 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 3 always"
+//              echo "Dummy 3 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=rights3 ${VERSIONS_EXTRA_VAR_CURRENT}'"
             }
             failure {
@@ -363,13 +363,13 @@ pipeline {
         }
         stage('P-C-4: P4') {
           steps {
-//						echo "Dummy 4"
+//            echo "Dummy 4"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_CURRENT}'"
             sh "docker exec -t bwpm_rights4_tester-6 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 4 always"
+//              echo "Dummy 4 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=rights4 ${VERSIONS_EXTRA_VAR_CURRENT}'"
             }
             failure {
@@ -394,7 +394,7 @@ pipeline {
               }
           }
           steps {
-    //				echo "Dummy Permissions Remove"
+    //        echo "Dummy Permissions Remove"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
                 }
         }
@@ -434,14 +434,14 @@ pipeline {
           }
       }
       steps {
-//				echo "Dummy Smoke"
+//        echo "Dummy Smoke"
         sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-smoke-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} do_record=${DO_RECORD_SMOKE} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
         sh "docker exec -t bwpm_enh_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
         sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/push-smoke-testers.yml --extra-vars '${VERSIONS_EXTRA_VAR_PREVIOUS}'"
       }
       post {
           always {
-//					echo "Dummy Smoke ALWAYS"
+//          echo "Dummy Smoke ALWAYS"
           sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_PREVIOUS}'"
         }
         failure {
@@ -462,7 +462,7 @@ pipeline {
           }
       }
       steps {
-//				echo "Dummy Smoke Remove"
+//        echo "Dummy Smoke Remove"
         sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-smoke-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             }
     }
@@ -481,13 +481,13 @@ pipeline {
       parallel {
         stage('A-P-1: Lists NLS, TPLS, SUBS') {
           steps {
-//						echo "Dummy 1"
+//            echo "Dummy 1"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             sh "docker exec -t bwpm_accept1_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 1 always"
+//              echo "Dummy 1 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             }
             failure {
@@ -497,13 +497,13 @@ pipeline {
         }
         stage('A-P-2: Details NL, SUB') {
           steps {
-//						echo "Dummy 2"
+//            echo "Dummy 2"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             sh "docker exec -t bwpm_accept2_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 2 always"
+//              echo "Dummy 2 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=accept2 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             }
             failure {
@@ -513,13 +513,13 @@ pipeline {
         }
         stage('A-P-3: Details TPL, CAM, ML, Lists CAMS, MLS, Maintenance + Frontend') {
           steps {
-//						echo "Dummy 3"
+//            echo "Dummy 3"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             sh "docker exec -t bwpm_accept3_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 3 always"
+//              echo "Dummy 3 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=accept3 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             }
             failure {
@@ -529,13 +529,13 @@ pipeline {
         }
         stage('A-P-4: Mod Reg, Mod Over, UA, FUM, U2S') {
           steps {
-//						echo "Dummy 4"
+//            echo "Dummy 4"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=accept4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             sh "docker exec -t bwpm_accept4_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 4 always"
+//              echo "Dummy 4 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=accept4 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             }
             failure {
@@ -560,7 +560,7 @@ pipeline {
               }
           }
           steps {
-  //				echo "Dummy Acceptance Remove"
+  //        echo "Dummy Acceptance Remove"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
           }
         }
@@ -601,13 +601,13 @@ pipeline {
       parallel {
         stage('P-P-1: P1') {
           steps {
-//						echo "Dummy 1"
+//            echo "Dummy 1"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights1 do_record=${DO_RECORD_1} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             sh "docker exec -t bwpm_rights1_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 1 always"
+//              echo "Dummy 1 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             }
             failure {
@@ -617,13 +617,13 @@ pipeline {
         }
         stage('P-P-2: P2') {
           steps {
-//						echo "Dummy 2"
+//            echo "Dummy 2"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights2 do_record=${DO_RECORD_2} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             sh "docker exec -t bwpm_rights2_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 2 always"
+//              echo "Dummy 2 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=rights2 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             }
             failure {
@@ -633,13 +633,13 @@ pipeline {
         }
         stage('P-P-3: P3') {
           steps {
-//						echo "Dummy 3"
+//            echo "Dummy 3"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights3 do_record=${DO_RECORD_3} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             sh "docker exec -t bwpm_rights3_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 3 always"
+//              echo "Dummy 3 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=rights3 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             }
             failure {
@@ -649,13 +649,13 @@ pipeline {
         }
         stage('P-P-4: P4') {
           steps {
-//						echo "Dummy 4"
+//            echo "Dummy 4"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/run-acceptance-tests.yml --extra-vars 'project_base_dir=${WORKSPACE} test_suite=rights4 do_record=${DO_RECORD_4} ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             sh "docker exec -t bwpm_rights4_tester-5 /data/do-tests.sh ${BWPM_VERSION}"
           }
           post {
             always {
-//							echo "Dummy 4 always"
+//              echo "Dummy 4 always"
               sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-acceptance-tests.yml --extra-vars 'test_suite=rights4 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
             }
             failure {
@@ -680,7 +680,7 @@ pipeline {
               }
           }
           steps {
-    //				echo "Dummy Permissions Remove"
+    //        echo "Dummy Permissions Remove"
             sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-acceptance-images.yml --extra-vars 'test_suite=rights1 ${VERSIONS_EXTRA_VAR_PREVIOUS}'"
                 }
         }
@@ -708,11 +708,11 @@ pipeline {
     }
 
 
-//		stage('Push to github') {
-//			steps {
-//				echo "Push to github"
-//			}
-//		}
+//    stage('Push to github') {
+//      steps {
+//        echo "Push to github"
+//      }
+//    }
 
   }
 }

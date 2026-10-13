@@ -13,12 +13,12 @@ pipeline {
           DO_CURRENT_GENERAL   = 'true'
           DO_PREVIOUS_GENERAL  = 'true'
 
-          DO_DEV_UPLOAD = 'false'
+          DO_DEV_UPLOAD = 'true'
           PACK_PACKAGE  = 'true'
 
           DO_CURRENT_SMOKE  = 'true'
-          DO_CURRENT_ACCEPT = 'false'
-          DO_CURRENT_PERMS  = 'false'
+          DO_CURRENT_ACCEPT = 'true'
+          DO_CURRENT_PERMS  = 'true'
 
           DO_PREVIOUS_SMOKE  = 'true'
           DO_PREVIOUS_ACCEPT = 'true'
@@ -81,8 +81,8 @@ pipeline {
       }
       post {
           always {
-          echo "Dummy Smoke ALWAYS"
-//          sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_CURRENT}'"
+//          echo "Dummy Smoke ALWAYS"
+          sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/stop-smoke-tests.yml --extra-vars '${VERSIONS_EXTRA_VAR_CURRENT}'"
         }
         failure {
           bwpmAcceptFailureContainer ("Smoke", "${PROJECT_NAME_CURRENT}")
@@ -102,8 +102,8 @@ pipeline {
           }
       }
       steps {
-        echo "Dummy Smoke Remove"
-//        sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-smoke-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
+//        echo "Dummy Smoke Remove"
+        sh "ansible-playbook -i ${WORKSPACE}/build/playbooks/inventory/hosts ${WORKSPACE}/build/playbooks/remove-smoke-images.yml --extra-vars 'test_suite=accept1 ${VERSIONS_EXTRA_VAR_CURRENT}'"
       }
     }
 

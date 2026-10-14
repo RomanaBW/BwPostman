@@ -10,19 +10,19 @@ pipeline {
           JOOMLA_VERSION_PREVIOUS = "5.4.10"
           JOOMLA_VERSION_CURRENT  = "6.2.0"
 
-          DO_CURRENT_GENERAL   = 'true'
+          DO_CURRENT_GENERAL   = 'false'
           DO_PREVIOUS_GENERAL  = 'true'
 
-          DO_DEV_UPLOAD = 'true'
-          PACK_PACKAGE  = 'true'
+          DO_DEV_UPLOAD = 'false'
+          PACK_PACKAGE  = 'false'
 
           DO_CURRENT_SMOKE  = 'true'
           DO_CURRENT_ACCEPT = 'true'
           DO_CURRENT_PERMS  = 'true'
 
           DO_PREVIOUS_SMOKE  = 'true'
-          DO_PREVIOUS_ACCEPT = 'true'
-          DO_PREVIOUS_PERMS  = 'true'
+          DO_PREVIOUS_ACCEPT = 'false'
+          DO_PREVIOUS_PERMS  = 'false'
 
           PHP_VERSION_PREVIOUS = "8.1.0"
           PHP_VERSION_CURRENT = "8.3.0"

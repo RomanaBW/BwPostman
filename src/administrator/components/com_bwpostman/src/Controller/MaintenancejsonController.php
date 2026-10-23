@@ -425,7 +425,9 @@ class MaintenancejsonController extends AdminController
                     break;
 
                 case 'step3':
-                    $app->setUserState('com_bwpostman.maintenance.com_assets', '');
+                    // @ToDo: Das überschreibt doch die eingelesenen Werte der Assets, eine weitere Verarbeitung ist
+                    // damit nicht möglich!!!
+//                    $app->setUserState('com_bwpostman.maintenance.com_assets', '');
                     // get needed tables from installation file
                     $neededTableNames = $this->getNeededTables($session, 1030);
 
@@ -466,7 +468,7 @@ class MaintenancejsonController extends AdminController
                         $logger->addEntry(
                             new LogEntry(
                                 sprintf(
-                                    'Speicherverbrauch in Schritt 3: %01.3f MB',
+                                    'Speicherverbrauch in Schritt 4: %01.3f MB',
                                     (memory_get_usage(true) / (1024.0 * 1024.0) - $mem0)
                                 ),
                                 BwLogger::BW_DEBUG, 'maintenance')

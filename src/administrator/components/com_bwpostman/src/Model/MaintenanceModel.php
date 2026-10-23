@@ -3026,7 +3026,7 @@ class MaintenanceModel extends BaseDatabaseModel
     }
 
     /**
-     * Method to the rewrite tables content one by one from backup file
+     * Method to rewrite tables content one by one from backup file
      *
      * @param string  $table          generic name of table to rewrite
      * @param string  $currentContent current output content
@@ -4251,7 +4251,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $groups              = [];
         $defaultJoomlaGroups = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-        // first compare current user groups with backed up ones
+        // first compare current user group names with backed up ones
         foreach ($usergroups as $item)
         {
             $query  = $this->db->getQuery(true);
@@ -4273,7 +4273,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 return -1;
             }
 
-            // user group not found
+            // user group name not found
             if (!$result)
             {
                 // If id of group to restore matches a Joomla default group id we assume these are used
@@ -4288,7 +4288,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                     $data['id']        = 0;
                     $data['title']     = $item['title'];
-                    $data['parent_id'] = $item['parent_id'];
+                    $data['parent_id'] = $groups[$item['parent_id']]['new_id'];
                     $success           = $userModel->save($data);
 
                     if (!$success)
@@ -4301,6 +4301,7 @@ class MaintenanceModel extends BaseDatabaseModel
                         continue;
                     }
 
+                    // Get id of newly created user group
                     $query = $this->db->getQuery(true);
                     $query->select($this->db->quoteName('id'));
                     $query->from($this->db->quoteName('#__usergroups'));
@@ -4320,7 +4321,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     }
                 }
 
-                $groups[] = ['old_id' => $item['id'], 'new_id' => $result, 'title' => $item['title']];
+                $groups[$item['id']] = ['old_id' => $item['id'], 'new_id' => $result, 'title' => $item['title']];
             }
             else
             {
@@ -4328,7 +4329,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 if ($result['id'] !== $item['id'])
                 {
                     // memorise new id
-                    $groups[] = ['old_id' => $item['id'], 'new_id' => $result['id'], 'title' => $item['title']];
+                    $groups[$item['id']] = ['old_id' => $item['id'], 'new_id' => $result['id'], 'title' => $item['title']];
                 }
             }
         }
@@ -4396,7 +4397,7 @@ class MaintenanceModel extends BaseDatabaseModel
                             if ($found !== false)
                             {
                                 $rewrite          = true;
-                                $newKey           = $groupsToReplace[$found]['new_id'];
+                                $newKey           = $groupsToReplace[$key]['new_id'];
                                 $ruleNew[$newKey] = $value;
                             }
                             else
@@ -6907,6 +6908,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
     /**
      * Method to prepare asset dataset for write to asset table
+     * Rewrite parent_id, lft and rgt, reset id to 0 to be able to insert
      *
      * @param array   $asset               asset to prepare
      * @param array   $asset_transform     array to hold map for item id, old asset id and newly created asset id

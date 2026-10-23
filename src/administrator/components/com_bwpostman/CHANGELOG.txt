@@ -13,6 +13,7 @@ New
 
 Improvement
 ~ Do additional check before writing XML to file, to ensure, XML is well-formed and contains some needed tags
+~ User groups provided by backup file are created if not exists
 
 Bugfix
 # Logged-in users, which are not also subscribers of BwPostman, are only displayed public mailing lists for registration.

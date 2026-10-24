@@ -59,9 +59,9 @@ use stdClass;
 /**
  * BwPostman maintenance page model
  *
- * @package		BwPostman-Admin
+ * @package        BwPostman-Admin
  *
- * @subpackage	MaintenancePage
+ * @subpackage    MaintenancePage
  *
  * @since       1.0.1
  */
@@ -490,7 +490,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                     if ($update && !$isCli)
                     {
-                        echo '<p class="text-success">'	. $message . '</p>';
+                        echo '<p class="text-success">'    . $message . '</p>';
                     }
                 }
 
@@ -570,7 +570,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                 if ($update && !$isCli)
                 {
-                    echo '<p class="text-success">'	. $message . '</p>';
+                    echo '<p class="text-success">'    . $message . '</p>';
                 }
             }
             else
@@ -1340,7 +1340,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                     if (!$createDB)
                     {
-                        $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED_CREATE_ERROR',	$missingTable);
+                        $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED_CREATE_ERROR',    $missingTable);
                         $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
                         echo '<p class="text-danger">' . $message . '</p>';
@@ -2212,7 +2212,7 @@ class MaintenanceModel extends BaseDatabaseModel
             }
         }
 
-//		Check if default value of installed columns is set, where it should not be set, i.e. blob columns
+//        Check if default value of installed columns is set, where it should not be set, i.e. blob columns
         for ($i = 0; $i < count($neededColumns); $i++)
         {
             if (!key_exists('Default', $neededColumns[$i])
@@ -4424,7 +4424,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 }
                 else
                 {
-                    $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_USERGROUP_RULE_ERROR',	$asset['rules'], $table);
+                    $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_USERGROUP_RULE_ERROR',    $asset['rules'], $table);
                     $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
 
                     return false;

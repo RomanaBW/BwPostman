@@ -31,7 +31,7 @@ use Exception;
 defined('_JEXEC') or die;
 
 /**
- * Basic exception class implemented by every exception of BwPostman
+ * Basic exception class implemented by every exception to BwPostman
  *
  * @since       2.0.0
  */

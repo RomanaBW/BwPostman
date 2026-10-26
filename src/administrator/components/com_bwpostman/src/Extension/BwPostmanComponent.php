@@ -78,6 +78,7 @@ class BwPostmanComponent extends MVCComponent implements BootableExtensionInterf
 		$this->getRegistry()->register('bwpostman', new BwPostman());
 
         JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman', BWPM_ADMINISTRATOR . '/src');
+		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Traits', BWPM_ADMINISTRATOR . '/src/Traits');
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension', BWPM_ADMINISTRATOR . '/src/Extension');
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', BWPM_ADMINISTRATOR . '/Helper');
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Field', BWPM_ADMINISTRATOR . '/src/Field');

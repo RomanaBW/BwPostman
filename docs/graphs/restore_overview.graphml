@@ -30,8 +30,11 @@
           <y:Geometry height="117.98951048951051" width="344.8053613053613" x="369.50857808857785" y="357.07875238095227"/>
           <y:Fill color="#E8EEF7" color2="#FF00FF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="178.515625" x="83.14486815268066" xml:space="preserve" y="42.932255244755254">$model-&gt;healAssetUserGroups 
+          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="178.515625" x="83.14486815268066" xml:space="preserve" y="42.932255244755254">$model-&gt;healAssetUserGroups
 ($session(trestore_tablenames))<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -42,7 +45,7 @@
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="218.541015625" x="19.7294921875" xml:space="preserve" y="2.40625">Schritt 2:
-Wiederherstellen: Verarbeite allgemeine 
+Wiederherstellen: Verarbeite allgemeine
 Daten<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
@@ -57,7 +60,7 @@ Daten<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:Mode
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="195.853515625" x="31.0732421875" xml:space="preserve" y="14.632357226107217">Schritt 4:
-Wiederherstellen: Gleiche die früher 
+Wiederherstellen: Gleiche die früher
 verwendeten Benutzergruppen an<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
@@ -72,17 +75,20 @@ verwendeten Benutzergruppen an<y:LabelModel><y:SmartNodeLabelModel distance="4.0
           <y:Fill color="#E8EEF7" color2="#FF99CC" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="172.75" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="311.939453125" x="16.432954090180658" xml:space="preserve" y="6.16526913478674">Grobe Struktur:
-* Vorbereitung (Wiederherstellungspunkt muss nicht 
+* Vorbereitung (Wiederherstellungspunkt muss nicht
     vorhanden sein)
   * Daten aus Backup einlesen, gegebenenfalls prüfen
 
-* Tabellen umschreiben  (Wiederherstellungspunkt muss 
+* Tabellen umschreiben  (Wiederherstellungspunkt muss
     vorhanden sein)
 
 * Tabellen mit installierter Version von BwPostman prüfen
     (Wiederherstellungspunkt muss  vorhanden sein)
 
 * Wiederherstellungspunkt kann gelöscht werden<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -93,7 +99,7 @@ verwendeten Benutzergruppen an<y:LabelModel><y:SmartNodeLabelModel distance="4.0
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="220.791015625" x="18.6044921875" xml:space="preserve" y="2.40625">Schritt 1:
-Wiederherstellen: Lese die Daten zu 
+Wiederherstellen: Lese die Daten zu
 Wiederherstellung ein und bereite sie auf<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
@@ -108,6 +114,9 @@ Wiederherstellung ein und bereite sie auf<y:LabelModel><y:SmartNodeLabelModel di
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="175.796875" x="84.50424315268066" xml:space="preserve" y="31.140078671328695">$model-&gt;parseTablesData($file)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -118,6 +127,9 @@ Wiederherstellung ein und bereite sie auf<y:LabelModel><y:SmartNodeLabelModel di
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="142.01171875" x="101.39682127768066" xml:space="preserve" y="28.694857226107217">Table backup file is asked<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -128,6 +140,9 @@ Wiederherstellung ein und bereite sie auf<y:LabelModel><y:SmartNodeLabelModel di
           <y:Fill color="#E8EEF7" color2="#FFFF00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="200.078125" x="72.36361815268066" xml:space="preserve" y="16.46875">$model-&gt;outputGeneralInformation()<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -138,7 +153,7 @@ Wiederherstellung ein und bereite sie auf<y:LabelModel><y:SmartNodeLabelModel di
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="193.75" x="32.125" xml:space="preserve" y="2.40625">Schritt 3:
-Prüfen: Hole Informationen aus der 
+Prüfen: Hole Informationen aus der
 Installationsdatei<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
@@ -153,11 +168,14 @@ Installationsdatei<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Label
           <y:Fill color="#E8EEF7" color2="#FFFF00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="88.375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="326.341796875" x="9.231782215180658" xml:space="preserve" y="-4.016171328671305">$this-&gt;getNeededTables($session, 1030)
-Get needed table names from install files (internal controller 
-method), compares them with table names from import and 
-reduces imported table names to those which have 
+Get needed table names from install files (internal controller
+method), compares them with table names from import and
+reduces imported table names to those which have
 installation script
 Stores them at session trestore_tablenames<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -168,7 +186,7 @@ Stores them at session trestore_tablenames<y:LabelModel><y:SmartNodeLabelModel d
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="141.900390625" x="58.0498046875" xml:space="preserve" y="2.40625">Schritt 5:
-Wiederherstellen: Erstelle 
+Wiederherstellen: Erstelle
 Wiederherstellungspunkt<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
@@ -183,6 +201,9 @@ Wiederherstellungspunkt<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="158.857421875" x="92.97396971518066" xml:space="preserve" y="16.46875">$this-&gt;createRestorePoint(…)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -193,7 +214,7 @@ Wiederherstellungspunkt<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="160.111328125" x="48.9443359375" xml:space="preserve" y="11.864525058275035">Schritt 6:
-Wiederherstellen: Lösche die 
+Wiederherstellen: Lösche die
 vorhandenen Berechtigungen<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
@@ -211,6 +232,9 @@ vorhandenen Berechtigungen<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/><
 $model-&gt;healAssetsTable()
 Deletes all existing asset sub entries of BwPostman at #__assets
 Repairs holes in lft and rgt values, update component asset at #__assets<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -221,7 +245,7 @@ Repairs holes in lft and rgt values, update component asset at #__assets<y:Label
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="253.298828125" x="2.3505859375" xml:space="preserve" y="21.216867435897484">Schritt 7:
-Wiederherstellen: Stelle die einzelnen Tabellen 
+Wiederherstellen: Stelle die einzelnen Tabellen
 und Berechtigungen wieder her<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
@@ -238,6 +262,9 @@ und Berechtigungen wieder her<y:LabelModel><y:SmartNodeLabelModel distance="4.0"
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="266.04296875" x="39.38119627768066" xml:space="preserve" y="2.40625">$model-&gt;anewBwPostmanTables($table_names)
 Loop over all tables: $model-&gt;reWriteTables(…)
 Deletes and creates anew tables<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -248,7 +275,7 @@ Deletes and creates anew tables<y:LabelModel><y:SmartNodeLabelModel distance="4.
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="162.3203125" x="47.83984375" xml:space="preserve" y="2.40625">Schritt 9:
-Prüfen: Prüfe Tabellennamen 
+Prüfen: Prüfe Tabellennamen
 und Tabelleneinstellungen<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
@@ -263,6 +290,9 @@ und Tabelleneinstellungen<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="164.08984375" x="90.35775877768066" xml:space="preserve" y="16.46875">$this-&gt;convertTableNames(…)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -273,7 +303,7 @@ und Tabelleneinstellungen<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="141.0859375" x="58.45703125" xml:space="preserve" y="2.40625">Schritt 12:
-Wiederherstellen: Lösche 
+Wiederherstellen: Lösche
 Wiederherstellungspunkt
 <y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
@@ -289,6 +319,9 @@ Wiederherstellungspunkt
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="158.03125" x="93.38705565268066" xml:space="preserve" y="16.46875">$this-&gt;deleteRestorePoint(…)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -299,7 +332,7 @@ Wiederherstellungspunkt
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="168.54296875" x="44.728515625" xml:space="preserve" y="2.40625">Schritt 8:
-Prüfen: Prüfe, welche Tabellen 
+Prüfen: Prüfe, welche Tabellen
 installiert sind<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
@@ -314,6 +347,9 @@ installiert sind<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelMo
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="186.701171875" x="79.05209471518066" xml:space="preserve" y="16.46875">$this-&gt;getInstalledTableNames(…)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -338,6 +374,9 @@ Prüfen: Prüfe die Tabellenspalten<y:LabelModel><y:SmartNodeLabelModel distance
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="165.150390625" x="89.82748534018066" xml:space="preserve" y="16.46875">$this-&gt;checkTableColumns(…)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -363,6 +402,9 @@ Prüfen: Prüfe Asset-ID's und Benutzer-ID's<y:LabelModel><y:SmartNodeLabelModel
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="180.267578125" x="82.26889159018066" xml:space="preserve" y="9.4375">$this-&gt;checkAssetAndUserIds(…)
 for assets and users<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -376,10 +418,13 @@ for assets and users<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Lab
 - calls one or more methods from maintenance model $model
 - writes an entry at BwLogger with memory usage
 - sometimes writes message to output
-- if no success of method, 
+- if no success of method,
         * BwException with specific error number is thrown
         * Error message is written to GUI output
 <y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -399,7 +444,8 @@ for assets and users<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Lab
           <y:Geometry height="40.0" width="258.0" x="-1387.0887412587415" y="-338.9264923742925"/>
           <y:Fill color="#E8EEF7" color2="#99FF99" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="133.123046875" x="62.4384765625" xml:space="preserve" y="10.96875">Schritt 1: Daten einlesen<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="133.123046875" x="62.4384765625" xml:space="preserve" y="3.9375">Schritt 1: Daten einlesen
+inputData($filename)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
@@ -422,10 +468,11 @@ for assets and users<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Lab
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="74.3125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="215.41796875" x="43.511994645979144" xml:space="preserve" y="0.7907069254902126">- Importdatei einlesen
 - Prüfung auf valides XML
 - eingelesene Daten strukturiert ablegen
-- Ausgabe relevanter Informationen 
+- Ausgabe relevanter Informationen
     (Woher kommt die Sicherung…)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -446,15 +493,16 @@ for assets and users<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Lab
           <y:Geometry height="108.54032866584396" width="302.4419580419583" x="-989.3097202797206" y="-163.19665670721446"/>
           <y:Fill color="#E8EEF7" color2="#99FF99" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="102.4375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="300.595703125" x="0.9231274584791436" xml:space="preserve" y="3.051414332921979">- Mapping der importierten Gruppen zu den 
+          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="102.4375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="300.595703125" x="0.9231274584791436" xml:space="preserve" y="3.051414332921979">- Mapping der importierten Gruppen zu den
    vorhandenen
-- Assets in Items integrieren 
+- Assets in Items integrieren
    (nötig, damit speichern per Model möglich wird)
-- Zugehörige Mailinglisten bei Kampagnen, Newslettern 
+- Zugehörige Mailinglisten bei Kampagnen, Newslettern
    und Abonnenten einbauen
    (nötig, damit speichern per Model möglich wird)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -471,6 +519,7 @@ Muss gemacht werden, bevor eine Manipulation an
 den Tabellen gemacht wird<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -513,12 +562,13 @@ den Tabellen gemacht wird<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="88.375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="263.3828125" x="19.529572770979144" xml:space="preserve" y="4.452872960372929">- Datensätze der Tabellen mit Kreuztabellen-
     Zuordnung per Model-&gt;save(batch) einlesen
-- Datensätze der restlichen Tabellen mit Assets 
+- Datensätze der restlichen Tabellen mit Assets
     einlesen, ebenfalls mittels Model-&gt;save(batch)
-- Datensätze in Tabellen ohne Assets und ohne 
+- Datensätze in Tabellen ohne Assets und ohne
     direkt Kreuztabellen einlesen<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -532,6 +582,7 @@ den Tabellen gemacht wird<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="10.29296875" x="146.07449464597914" xml:space="preserve" y="39.60912296037304">- <y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -545,6 +596,7 @@ den Tabellen gemacht wird<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="163.4453125" x="69.49832277097914" xml:space="preserve" y="10.96875">Kopie dieser Tabellen löschen<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -680,6 +732,7 @@ den Tabellen gemacht wird<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></
 - falsche Version von BwPostman<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -691,22 +744,25 @@ den Tabellen gemacht wird<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></
           <y:Fill color="#E8EEF7" color2="#FF99CC" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="243.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="375.953125" x="14.494322074249283" xml:space="preserve" y="14.511952468120057">Absicherung:
-Die Wiederherstellung löscht die Tabellen von BwPostman 
+Die Wiederherstellung löscht die Tabellen von BwPostman
 und Datensätze aus der #__assets, manipuliert gegebenenfalls
 auch die Benutzergruppen. Sollte ein Schritt daneben gehen,
-kann nicht sicher gestellt werden, dass trotzdem alles so 
-funktioniert, wie es soll, ohne ein Daten-Chaos zu erzeugen. 
+kann nicht sicher gestellt werden, dass trotzdem alles so
+funktioniert, wie es soll, ohne ein Daten-Chaos zu erzeugen.
 
-Folglich ist es unausweichlich, den Stand der Tabellen zu sichern, 
-bevor irgendwelche Änderungen an den Tabellen gemacht werden. 
-Dies wird mit einer Kopie 'der' Tabellen gewährleistet, die Änderungen 
+Folglich ist es unausweichlich, den Stand der Tabellen zu sichern,
+bevor irgendwelche Änderungen an den Tabellen gemacht werden.
+Dies wird mit einer Kopie 'der' Tabellen gewährleistet, die Änderungen
 erhalten könnten.
 
 Geht alles in Ordnung, werden die Kopien gelöscht und alles ist gut.
 
-Tritt ein Fehler auf, wird auf den Stand vor den Änderungen zurück 
-gesetzt, indem die möglicherweise manipulierten Tabellen gelöscht 
+Tritt ein Fehler auf, wird auf den Stand vor den Änderungen zurück
+gesetzt, indem die möglicherweise manipulierten Tabellen gelöscht
 und durch die Kopie ersetzt/zurück gesetzt  werden.<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
+          </y:StyleProperties>
         </y:GenericNode>
       </data>
     </node>
@@ -720,6 +776,7 @@ und durch die Kopie ersetzt/zurück gesetzt  werden.<y:LabelModel><y:SmartNodeLa
 - Kopie dieser Tabellen von oben wiederherstellen<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -741,13 +798,14 @@ und durch die Kopie ersetzt/zurück gesetzt  werden.<y:LabelModel><y:SmartNodeLa
           <y:Fill color="#E8EEF7" color2="#99FF99" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="88.375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="306.1328125" x="-1.8454272290208564" xml:space="preserve" y="10.08266433292198">- fehlende Benutzergruppen anlegen, Mapping erweitern
-- In allen Assets (Komponente, Bereiche, Items) die im 
-   Import vorhandenen IDs der Gruppen mit denen, die im 
+- In allen Assets (Komponente, Bereiche, Items) die im
+   Import vorhandenen IDs der Gruppen mit denen, die im
    Mapping zugeordnet wurden, überschreiben.
-- Datensätze, die Kreuztabellen betreffen, um diese 
+- Datensätze, die Kreuztabellen betreffen, um diese
    Informationen erweitern<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -778,13 +836,14 @@ und durch die Kopie ersetzt/zurück gesetzt  werden.<y:LabelModel><y:SmartNodeLa
           <y:Geometry height="108.54032866584393" width="302.4419580419583" x="-989.3097202797206" y="466.8033432927855"/>
           <y:Fill color="#E8EEF7" color2="#99FF99" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="74.3125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="280.97265625" x="10.734650895979144" xml:space="preserve" y="17.113914332921922">- vorhandene Items per Bereichs-Model 
-    (Model-&gt;delete(batch)) löschen, wenn die Tabelle 
-    Assets enthält; sorgt für gelöschte Assets 
+          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="74.3125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="280.97265625" x="10.734650895979144" xml:space="preserve" y="17.113914332921922">- vorhandene Items per Bereichs-Model
+    (Model-&gt;delete(batch)) löschen, wenn die Tabelle
+    Assets enthält; sorgt für gelöschte Assets
     der Items in der #__assets
 - vorhandene Tabellen löschen<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -816,12 +875,13 @@ Haupt-Assets überschreiben<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/>
           <y:Geometry height="108.54032866584393" width="302.4419580419583" x="-989.3097202797206" y="676.8033432927855"/>
           <y:Fill color="#E8EEF7" color2="#99FF99" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="60.25" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="281.318359375" x="10.561799333479144" xml:space="preserve" y="24.145164332921922">- Tabellen mit den Queries anlegen, die per 
+          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="60.25" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="281.318359375" x="10.561799333479144" xml:space="preserve" y="24.145164332921922">- Tabellen mit den Queries anlegen, die per
    Sicherung geliefert werden
-- Vorhandene Assets der Komponente und Bereiche 
+- Vorhandene Assets der Komponente und Bereiche
     durch Import-Daten überschreiben<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -845,6 +905,7 @@ Haupt-Assets überschreiben<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="164.224609375" x="69.10867433347914" xml:space="preserve" y="28.038936480186464">Fehlercode kommt aus Schritt<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -859,6 +920,7 @@ Haupt-Assets überschreiben<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/>
 <y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -872,6 +934,7 @@ Haupt-Assets überschreiben<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="164.224609375" x="69.10867433347914" xml:space="preserve" y="28.038936480186464">Fehlercode kommt aus Schritt<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -885,6 +948,7 @@ Haupt-Assets überschreiben<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="164.224609375" x="69.10867433347914" xml:space="preserve" y="28.03893648018652">Fehlercode kommt aus Schritt<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -898,6 +962,7 @@ Haupt-Assets überschreiben<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="164.224609375" x="69.10867433347914" xml:space="preserve" y="28.038936480186408">Fehlercode kommt aus Schritt<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -911,6 +976,7 @@ Haupt-Assets überschreiben<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="164.224609375" x="69.10867433347914" xml:space="preserve" y="28.03893648018652">Fehlercode kommt aus Schritt<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -924,6 +990,7 @@ Haupt-Assets überschreiben<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="171.77734375" x="65.33230714597914" xml:space="preserve" y="28.03893648018652">Fehlercode kommt aus Prüfung<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Byte" name="com.yworks.flowchart.style.orientation" value="0"/>
+            <y:Property class="java.lang.Byte" name="LAYER_STYLE_PROPERTY_KEY" value="1"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -935,6 +1002,23 @@ Haupt-Assets überschreiben<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/>
           <y:Fill color="#E8EEF7" color2="#99FF99" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="107.2890625" x="75.35546875" xml:space="preserve" y="16.46875">Fehler aufgetreten?<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n73">
+      <data key="d6">
+        <y:GenericNode configuration="com.yworks.flowchart.annotation">
+          <y:Geometry height="122.78744363087878" width="344.8053613053613" x="-989.3097202797206" y="-518.2338985014985"/>
+          <y:Fill color="#E8EEF7" color2="#FF99CC" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="116.5" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="307.890625" x="18.457368152680715" xml:space="preserve" y="3.1437218154394486">Alle Schritte werden von einem Controller beauftragt. Sie
+werden jeweils in einen Try-Catch-Block gepackt. Die
+jeweiligen Schritte werden im Model ausgeführt.
+
+Jede einzelne Methode sorgt für die "Erfassung" und
+Behandlung von Fehlern. Wenn ein Fehler nicht in dieser
+Methode geklärt werden kann, wird eine Exception
+geworfen, die der Controller behandelt.<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>

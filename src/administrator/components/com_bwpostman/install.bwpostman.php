@@ -351,7 +351,7 @@ class com_bwpostmanInstallerScript
 
 			if (!class_exists('\BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger'))
 			{
-				require_once($tmp_path . '/libraries/BwLogger.php');
+				require_once($tmp_path . '/Libraries/BwLogger.php');
 			}
 
 			$log_options  = array();

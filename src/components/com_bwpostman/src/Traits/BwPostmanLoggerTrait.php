@@ -1,0 +1,110 @@
+<?php
+/**
+ * BwPostman Newsletter Component
+ *
+ * Trait for logging functionality used across BwPostman component.
+ *
+ * @version %%version_number%%
+ * @package BwPostman-Admin
+ * @author Romana Boldt
+ * @copyright (C) %%copyright_year%% Boldt Webservice <forum@boldt-webservice.de>
+ * @support https://www.boldt-webservice.de/en/forum-en/forum/bwpostman.html
+ * @license GNU/GPL, see LICENCE.txt
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public Licence as published by
+ * the Free Software Foundation, either version 3 of the Licence, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public Licence for more details.
+ *
+ * You should have received a copy of the GNU General Public Licence
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+namespace BoldtWebservice\Component\BwPostman\Traits;
+
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use Joomla\CMS\Log\LogEntry;
+
+/**
+ * Trait providing logging methods for BwPostman components.
+ * Can be used in both backend and frontend contexts.
+ *
+ * @package BwPostman-Admin
+ * @since 4.4.0
+ */
+trait BwPostmanLoggerTrait
+{
+    /**
+     * The category used for log entries.
+     * Can be overridden in classes using this trait.
+     *
+     * @var string
+     *
+     * @since 4.4.0
+     */
+    protected string $logCategory = 'maintenance';
+
+    /**
+     * Method to write debug messages to the log
+     *
+     * @param   string  $message  The message to log
+     *
+     * @since 4.4.0
+     */
+    protected function logDebug(string $message): void
+    {
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, $this->logCategory));
+    }
+
+    /**
+     * Method to write error messages to the log
+     *
+     * @param   string  $message  The message to log
+     *
+     * @since 4.4.0
+     */
+    protected function logError(string $message): void
+    {
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->logCategory));
+    }
+
+    /**
+     * Method to write development messages to the log
+     *
+     * @param   string  $message  The message to log
+     *
+     * @since 4.4.0
+     */
+    protected function logDevelopment(string $message): void
+    {
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, $this->logCategory));
+    }
+
+    /**
+     * Method to write info messages to the log
+     *
+     * @param   string  $message  The message to log
+     *
+     * @since 4.4.0
+     */
+    protected function logInfo(string $message): void
+    {
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, $this->logCategory));
+    }
+
+    /**
+     * Method to write warning messages to the log
+     *
+     * @param   string  $message  The message to log
+     *
+     * @since 4.4.0
+     */
+    protected function logWarning(string $message): void
+    {
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, $this->logCategory));
+    }
+}

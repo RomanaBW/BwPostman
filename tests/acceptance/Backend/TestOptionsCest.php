@@ -1930,7 +1930,7 @@ class TestOptionsCest
 
 		if (array_search($rules[$i], $rulesToScroll) !== false)
 		{
-			$I->scrollTo($identifier, 0, -50);
+			$I->scrollTo($identifier, 0, -150);
 			$I->wait(1);
 		}
 

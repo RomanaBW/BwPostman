@@ -42,6 +42,7 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\QueryInterface;
 use RuntimeException;
@@ -58,6 +59,8 @@ use RuntimeException;
  */
 class TemplatesModel extends ListModel
 {
+	use BwPostmanLoggerTrait;
+
 	/**
 	 * The query object
 	 *
@@ -115,6 +118,15 @@ class TemplatesModel extends ListModel
 	 * @since       2.4.0
 	 */
 	protected $logger;
+
+	/**
+	 * The category used for log entries.
+	 *
+	 * @var string
+	 *
+	 * @since 4.4.0
+	 */
+	protected string $logCategory = 'templates';
 
 	/**
 	 * Constructor
@@ -573,9 +585,9 @@ class TemplatesModel extends ListModel
 		// If the file isn't okay, redirect to templates
 		if ($file['error'] > 0)
 		{
-			$this->logger->addEntry(new LogEntry('tmp filename if template to import: ' . $src, BwLogger::BW_DEBUG, 'templates'));
-			$this->logger->addEntry(new LogEntry('archive name if template to import: ' . $archivename, BwLogger::BW_DEBUG, 'templates'));
-			$this->logger->addEntry(new LogEntry('file array: ' . print_r($file, true), BwLogger::BW_DEBUG, 'templates'));
+			$this->logDebug('tmp filename if template to import: ' . $src);
+			$this->logDebug('archive name if template to import: ' . $archivename);
+			$this->logDebug('file array: ' . print_r($file, true));
 
 			//http://de.php.net/features.file-upload.errors
 			$msg = Text::_('COM_BWPOSTMAN_TPL_UPLOAD_ERROR_UPLOAD');

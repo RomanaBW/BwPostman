@@ -42,6 +42,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Mail\MailHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 use RuntimeException;
 use UnexpectedValueException;
 
@@ -52,6 +53,8 @@ use UnexpectedValueException;
  */
 class RegisterModel extends AdminModel
 {
+    use BwPostmanLoggerTrait;
+
     /**
      * property to hold logger
      *
@@ -60,6 +63,15 @@ class RegisterModel extends AdminModel
      * @since       4.3.0
      */
     public $logger;
+
+    /**
+     * The category used for log entries.
+     *
+     * @var string
+     *
+     * @since 4.4.0
+     */
+    protected string $logCategory = 'registration';
 
     /**
 	 * Constructor

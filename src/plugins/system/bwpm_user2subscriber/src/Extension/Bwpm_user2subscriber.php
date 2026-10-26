@@ -59,6 +59,7 @@ use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Site\Model\RegisterModel;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 use BoldtWebservice\Plugin\System\Bwpm_user2subscriber\Helper\BwpmUser2SubscriberHelper;
 use RuntimeException;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
@@ -76,6 +77,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 {
     use UserFactoryAwareTrait;
     use DatabaseAwareTrait;
+    use BwPostmanLoggerTrait;
 
     /**
 	 * @var string
@@ -297,7 +299,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEVELOPMENT, $this->log_cat));
+				$this->logDevelopment(sprintf('Component is enabled: %s', $enabled));
 			}
 		}
 		catch (Exception $exception)
@@ -306,7 +308,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
             $this->_subject->setError($exception->getMessage());
 			$this->BwPostmanComponentEnabled = false;
-			$this->logger->addEntry(new LogEntry($exception->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
+			$this->logError($exception->getMessage());
 		}
 	}
 
@@ -345,7 +347,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('Component version is: %s', $manifest['version']), BwLogger::BW_DEVELOPMENT, $this->log_cat));
+				$this->logDevelopment(sprintf('Component version is: %s', $manifest['version']));
 			}
 		}
 		catch (Exception $exception)
@@ -354,7 +356,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
             $this->_subject->setError($exception->getMessage());
 			$this->BwPostmanComponentVersion = '0.0.0';
-			$this->logger->addEntry(new LogEntry($exception->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
+			$this->logError($exception->getMessage());
 		}
 	}
 
@@ -401,7 +403,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
      */
 	public function onContentPrepareForm(Event $event): void
 	{
-        //		$this->logger->addEntry(new LogEntry('onContentPrepareForm reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+        //		$this->logDevelopment('onContentPrepareForm reached');
 
 		if (!$this->prerequisitesFulfilled())
 		{
@@ -427,7 +429,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
         if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry(sprintf('Context is: %s', $context), BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment(sprintf('Context is: %s', $context));
 		}
 
         if (!in_array($context, $this->allowedContext))
@@ -443,7 +445,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry(sprintf('Count mailinglists is: %s', count($mailinglists)), BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logDebug(sprintf('Count mailinglists is: %s', count($mailinglists)));
 		}
 
 		if ($mailinglists === "0" || !count($mailinglists))
@@ -461,7 +463,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry(sprintf('Array data_helper is empty: %s', !empty($data_helper)), BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment(sprintf('Array data_helper is empty: %s', !empty($data_helper)));
 		}
 
 		$this->form = $form;
@@ -473,10 +475,10 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
         if ($this->debug)
         {
-            $this->logger->addEntry(new LogEntry('Form is not an instance of \Joomla\CMS\Form\Form', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+            $this->logDevelopment('Form is not an instance of \Joomla\CMS\Form\Form');
         }
 
-		$this->logger->addEntry(new LogEntry('Form U2S is instance'));
+		$this->logInfo('Form U2S is instance');
 
 		// Add CSS and JS for the radio fields
 		$doc = $this->getApplication()->getDocument();
@@ -504,7 +506,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 			$this->removeDisclaimerField();
 		}
 
-		$this->logger->addEntry(new LogEntry('Script and CSS added'));
+		$this->logInfo('Script and CSS added');
 
 		$this->processGenderField();
 		$this->processLastnameField();
@@ -541,7 +543,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 		{
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry('Component version not met!', BwLogger::BW_ERROR, $this->log_cat));
+				$this->logError('Component version not met!');
 			}
 
 			return false;
@@ -759,7 +761,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
         if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('onUserBeforeSave reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('onUserBeforeSave reached');
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -833,7 +835,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 
         if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('onUserAfterSave reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('onUserAfterSave reached');
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -976,7 +978,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('process new user', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('process new user');
 		}
 
 		$subscription_wanted    = ArrayHelper::getValue($subscriber_data, 'bwpm_user2subscriber', 0, 'int');
@@ -1032,7 +1034,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('subscribe to BwPostman', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('subscribe to BwPostman');
 		}
 
 		try
@@ -1085,7 +1087,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('activate subscription reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('activate subscription reached');
 		}
 
 		if ($user_mail == '')
@@ -1149,7 +1151,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('update mail address', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('update mail address');
 		}
 
 		$update_email_result    = false;
@@ -1226,7 +1228,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 //        new AfterDeleteEvent('onEventName', ['subject' => $userArray, 'deletingResult' => $result, 'errorMessage' => $errorStr]);
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('onUserAfterDelete reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('onUserAfterDelete reached');
 		}
 
 		if (!$this->BwPostmanComponentEnabled)
@@ -1284,7 +1286,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('delete subscription', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('delete subscription');
 		}
 
 		try
@@ -1326,7 +1328,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('delete subscriber', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('delete subscriber');
 		}
 
 		try
@@ -1363,7 +1365,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('delete mailinglists', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('delete mailinglists');
 		}
 
 		try
@@ -1403,7 +1405,7 @@ final class Bwpm_user2subscriber extends CMSPlugin implements SubscriberInterfac
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('remove UserID from subscription', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('remove UserID from subscription');
 		}
 
 		try

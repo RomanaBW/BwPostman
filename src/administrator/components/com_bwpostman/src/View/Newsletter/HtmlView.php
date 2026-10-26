@@ -42,6 +42,7 @@ use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\Event\Event;
 use Joomla\Utilities\ArrayHelper;
@@ -57,6 +58,8 @@ use Joomla\Utilities\ArrayHelper;
  */
 class HtmlView extends BaseHtmlView
 {
+    use BwPostmanLoggerTrait;
+
     /**
      * property to hold form data
      *
@@ -181,6 +184,15 @@ class HtmlView extends BaseHtmlView
 	 * @since       2.4.0
 	 */
 	protected $logger;
+
+	/**
+	 * The category used for log entries.
+	 *
+	 * @var string
+	 *
+	 * @since 4.4.0
+	 */
+	protected string $logCategory = 'send';
 
     /**
      * Execute and display a template script.
@@ -393,7 +405,7 @@ class HtmlView extends BaseHtmlView
         // Get the params
         $params      = ComponentHelper::getParams('com_bwpostman');
         $this->delay = (int) $params->get('mails_per_pageload_delay', '10') * (int) $params->get('mails_per_pageload_delay_unit', '1000');
-        $this->logger->addEntry(new LogEntry('View raw delay: ' . $this->delay, BwLogger::BW_DEBUG, 'send'));
+        $this->logDebug('View raw delay: ' . $this->delay);
 
         if ((int) $params->get('mails_per_pageload_delay_unit', '1000') == 1000)
         {

@@ -32,6 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 use Exception;
 use JLoader;
 use Joomla\CMS\Component\ComponentHelper;
@@ -63,6 +64,7 @@ JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator
 final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, DatabaseAwareInterface
 {
     use DatabaseAwareTrait;
+    use BwPostmanLoggerTrait;
 
     /**
 	 * @var string
@@ -230,7 +232,7 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEVELOPMENT, $this->log_cat));
+				$this->logDevelopment(sprintf('Component is enabled: %s', $enabled));
 			}
 		}
 		catch (Exception $exception)
@@ -238,7 +240,7 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
             BwPostmanHelper::logException($exception, 'Plg UA FE');
 
             $this->BwPostmanComponentEnabled = false;
-			$this->logger->addEntry(new LogEntry($exception->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
+			$this->logError($exception->getMessage());
 		}
 	}
 
@@ -278,7 +280,7 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('Component version is: %s', $manifest['version']), BwLogger::BW_DEVELOPMENT, $this->log_cat));
+				$this->logDevelopment(sprintf('Component version is: %s', $manifest['version']));
 			}
 		}
 		catch (Exception $exception)
@@ -286,7 +288,7 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
             BwPostmanHelper::logException($exception, 'Plg UA FE');
 
             $this->BwPostmanComponentVersion = '0.0.0';
-			$this->logger->addEntry(new LogEntry($exception->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
+			$this->logError($exception->getMessage());
 		}
 	}
 
@@ -308,7 +310,7 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 		{
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry('Component version not met!', BwLogger::BW_ERROR, $this->log_cat));
+				$this->logError('Component version not met!');
 			}
 
 			return false;
@@ -332,7 +334,7 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('onUserAfterSave reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('onUserAfterSave reached');
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -410,7 +412,7 @@ final class Bwpm_useraccount extends CMSPlugin implements SubscriberInterface, D
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('onUserAfterDelete reached', BwLogger::BW_DEVELOPMENT, $this->log_cat));
+			$this->logDevelopment('onUserAfterDelete reached');
 		}
 
 		if (!$this->prerequisitesFulfilled())

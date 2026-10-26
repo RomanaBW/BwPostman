@@ -70,59 +70,69 @@ trait BwPostmanLoggerTrait
      * Method to write debug messages to the log
      *
      * @param   string  $message  The message to log
+     * @param   string|null  $category  Optional category, uses getLogCategory() if not provided
      *
      * @since 4.4.0
      */
-    protected function logDebug(string $message): void
+    protected function logDebug(string $message, ?string $category = null): void
     {
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, $this->getLogCategory()));
+        $cat = $category ?? $this->getLogCategory();
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, $cat));
     }
 
     /**
      * Method to write error messages to the log
      *
      * @param   string  $message  The message to log
+     * @param   string|null  $category  Optional category, uses getLogCategory() if not provided
      *
      * @since 4.4.0
      */
-    protected function logError(string $message): void
+    protected function logError(string $message, ?string $category = null): void
     {
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->getLogCategory()));
+        $cat = $category ?? $this->getLogCategory();
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $cat));
     }
 
     /**
      * Method to write development messages to the log
      *
      * @param   string  $message  The message to log
+     * @param   string|null  $category  Optional category, uses getLogCategory() if not provided
      *
      * @since 4.4.0
      */
-    protected function logDevelopment(string $message): void
+    protected function logDevelopment(string $message, ?string $category = null): void
     {
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, $this->getLogCategory()));
+        $cat = $category ?? $this->getLogCategory();
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, $cat));
     }
 
     /**
      * Method to write info messages to the log
      *
      * @param   string  $message  The message to log
+     * @param   string|null  $category  Optional category, uses getLogCategory() if not provided
      *
      * @since 4.4.0
      */
-    protected function logInfo(string $message): void
+    protected function logInfo(string $message, ?string $category = null): void
     {
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, $this->getLogCategory()));
+        $cat = $category ?? $this->getLogCategory();
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, $cat));
     }
 
     /**
      * Method to write warning messages to the log
      *
      * @param   string  $message  The message to log
+     * @param   string|null  $category  Optional category, uses getLogCategory() if not provided
      *
      * @since 4.4.0
      */
-    protected function logWarning(string $message): void
+    protected function logWarning(string $message, ?string $category = null): void
     {
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, $this->getLogCategory()));
+        $cat = $category ?? $this->getLogCategory();
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, $cat));
     }
 }

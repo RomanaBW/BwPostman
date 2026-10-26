@@ -44,6 +44,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Database\DatabaseQuery;
 use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 
 /**
  * Class BwPostmanModelNewsletters
@@ -52,6 +53,7 @@ use RuntimeException;
  */
 class NewslettersModel extends ListModel
 {
+	use BwPostmanLoggerTrait;
 
 	/**
 	 * property to hold context
@@ -115,6 +117,15 @@ class NewslettersModel extends ListModel
      * @since       4.3.0
      */
     public $logger;
+
+    /**
+     * The category used for log entries.
+     *
+     * @var string
+     *
+     * @since 4.4.0
+     */
+    protected string $logCategory = 'newsletters';
 
     /**
 	 * Constructor

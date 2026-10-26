@@ -37,6 +37,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 
@@ -61,6 +62,7 @@ if(!include_once(JPATH_ADMINISTRATOR . '/components/com_bwpostman/helpers/helper
  */
 class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 {
+	use BwPostmanLoggerTrait;
 	/**
 	 * Load the language file on instantiation
 	 *
@@ -226,14 +228,14 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('Component is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logDebug(sprintf('Component is enabled: %s', $enabled));
 			}
 		}
 		catch (Exception $e)
 		{
 			$this->subject->setError($e->getMessage());
 			$this->BwPostmanComponentEnabled = false;
-			$this->logger->addEntry(new LogEntry($e->getMessage(), BwLogger::BW_ERROR, $this->log_cat));
+			$this->logError($e->getMessage());
 		}
 	}
 
@@ -262,7 +264,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('Component version is: %s', $manifest['version']), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logDebug(sprintf('Component version is: %s', $manifest['version']));
 			}
 		}
 		catch (Exception $e)
@@ -298,7 +300,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('Plugin User2Subscriber is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logDebug(sprintf('Plugin User2Subscriber is enabled: %s', $enabled));
 			}
 		}
 		catch (Exception $e)
@@ -334,7 +336,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 
 			if ($this->debug)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('Plugin Buyer2Subscriber is enabled: %s', $enabled), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logDebug(sprintf('Plugin Buyer2Subscriber is enabled: %s', $enabled));
 			}
 		}
 		catch (Exception $e)
@@ -412,7 +414,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('plgVmOnGetUserfields reached', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logDebug('plgVmOnGetUserfields reached');
 		}
 
 		if (!$this->allowedContext($type))
@@ -743,7 +745,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 	{
 		if ($this->debug)
 		{
-			$this->logger->addEntry(new LogEntry('plgVmOnUserOrder reached', BwLogger::BW_DEBUG, $this->log_cat));
+			$this->logDebug('plgVmOnUserOrder reached');
 		}
 
 		if (!$this->prerequisitesFulfilled())
@@ -768,7 +770,7 @@ class PlgVmUserfieldBwPm_Buyer2Subscriber extends vmUserfieldPlugin
 		{
 			foreach ($subscription_data as $key=>$value)
 			{
-				$this->logger->addEntry(new LogEntry(sprintf('plgVmOnUserOrder submitted data, key %s value $s ', $key, $value), BwLogger::BW_DEBUG, $this->log_cat));
+				$this->logDebug(sprintf('plgVmOnUserOrder submitted data, key %s value $s ', $key, $value));
 			}
 		}
 

@@ -30,6 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\LogEntry;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 
 /**
  * Email verification class
@@ -48,6 +49,7 @@ use Joomla\CMS\Log\LogEntry;
  */
 class BwEmailValidation
 {
+	use BwPostmanLoggerTrait;
 	/**
 	 * Stream resource
 	 *
@@ -122,6 +124,15 @@ class BwEmailValidation
 	protected $logger;
 
 	/**
+	 * The category used for log entries.
+	 *
+	 * @var string
+	 *
+	 * @since 4.4.0
+	 */
+	protected string $logCategory = 'mailcheck';
+
+	/**
 	 * SMTP RFC standard line ending
 	 *
 	 * @since 3.0.0
@@ -161,7 +172,7 @@ class BwEmailValidation
 		if (!self::validate($email))
 		{
 			$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_SENDER_EMAIL', $email);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
+			$this->logError($message);
 		}
 		$this->from = $email;
 	}
@@ -248,7 +259,7 @@ class BwEmailValidation
 		else
 		{
 			$message = Text::_('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_NO_MX_RECORDS');
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
+			$this->logError($message);
 		}
 
 		 // Last chance: Add A-record (i.e. if no MX record exists)
@@ -313,7 +324,7 @@ class BwEmailValidation
 		if (!self::validate($email))
 		{
 			$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_WRONG_FORMAT', $email);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
+			$this->logError($message);
 
 			return false;
 		}
@@ -335,14 +346,14 @@ class BwEmailValidation
 				if ($errno == 0)
 				{
 					$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_SOCKET_PROBLEM', $email);
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
+					$this->logError($message);
 
 					return false;
 				}
 				else
 				{
 					$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_SOCKET_PROBLEM_2', $mxRecord, $errstr);
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
+					$this->logError($message);
 				}
 			}
 			else
@@ -354,7 +365,7 @@ class BwEmailValidation
 				if ($streamResponse == '220')
 				{
 					$message = sprintf('Connection success for host %s', $mxRecord);
-					$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
+					$this->logDebug($message);
 
 					break;
 				}
@@ -369,7 +380,7 @@ class BwEmailValidation
 		if ($this->stream === false)
 		{
 			$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_SOCKET_PROBLEM_GENERAL', $email);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
+			$this->logError($message);
 
 			return false;
 		}
@@ -383,20 +394,20 @@ class BwEmailValidation
 		$response .= "\n";
 
 		$message = Text::sprintf('Current return code after MAIL FROM: %s', $response);
-		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
+		$this->logDebug($message);
 
 		$this->streamQuery("RCPT TO:<$email>");
 		$code = $this->streamCode($this->streamResponse());
 
 		$message = Text::sprintf('Current return code after RCPT TO : %s', $code);
-		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
+		$this->logDebug($message);
 
 		$this->streamQuery("RSET");
 
 		$code2 = $this->streamCode($this->streamResponse());
 
 		$message = Text::sprintf('Current return code after RSET : %s', $code2);
-		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
+		$this->logDebug($message);
 
 		$this->streamQuery("QUIT");
 
@@ -454,7 +465,7 @@ class BwEmailValidation
 	protected function streamQuery(string $query): bool
 	{
 		$message = Text::sprintf('COM_BWPOSTMAN_SUB_VALIDATING_CURRENT_QUERY', $query);
-		$this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'mailcheck'));
+		$this->logDebug($message);
 
 		return stream_socket_sendto($this->stream, $query . self::CRLF);
 	}
@@ -476,7 +487,7 @@ class BwEmailValidation
 		if (!empty($status['timed_out']))
 		{
 			$message = Text::sprintf('COM_BWPOSTMAN_SUB_ERROR_VALIDATING_EMAIL_STREAM_TIMEOUT', $this->streamTimeout);
-			$this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'mailcheck'));
+			$this->logError($message);
 		}
 
 		if ($reply === false && $status['timed_out'] && $timed < $this->streamTimeoutWait)

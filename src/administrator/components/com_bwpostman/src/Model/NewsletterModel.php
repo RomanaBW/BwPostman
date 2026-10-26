@@ -54,6 +54,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglis
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\ContentRenderer;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 use RuntimeException;
 use stdClass;
 use Throwable;
@@ -71,6 +72,8 @@ use UnexpectedValueException;
  */
 class NewsletterModel extends AdminModel
 {
+	use BwPostmanLoggerTrait;
+
 	/**
 	 * Newsletter id
 	 *
@@ -151,6 +154,17 @@ class NewsletterModel extends AdminModel
 	 * @since       2.3.0
 	 */
 	public $logger;
+
+	/**
+	 * The category used for log entries.
+	 * Defaults to 'send' as most log entries in this model use this category.
+	 * Can be overridden for specific log calls using the $category parameter.
+	 *
+	 * @var string
+	 *
+	 * @since       4.4.0
+	 */
+	protected string $logCategory = 'send';
 
 	/**
 	 * property to messages while sending
@@ -1078,7 +1092,7 @@ class NewsletterModel extends AdminModel
 		{
 			if (!BwPostmanHelper::canEdit('newsletter', array('id' => $id)))
 			{
-				$this->logger->addEntry(new LogEntry(Text::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), BwLogger::BW_WARNING, 'newsletter'));
+				$this->logWarning(Text::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'newsletter');
 
 				return false;
 			}
@@ -1086,7 +1100,7 @@ class NewsletterModel extends AdminModel
 			// If the table is checked out by another user, drop it and report to the user trying to change its state.
 			if (property_exists($table, 'checked_out') && $table->checked_out && ($table->checked_out != $user->id))
 			{
-				$this->logger->addEntry(new LogEntry(Text::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'), BwLogger::BW_WARNING, 'newsletter'));
+				$this->logWarning(Text::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'), 'newsletter');
 
 				return false;
 			}
@@ -1550,7 +1564,7 @@ class NewsletterModel extends AdminModel
 		if (!BwPostmanHelper::canSend($nl_id))
 		{
 			$ret_msg .= 'Model sendNewsletter: Access denied';
-			$this->logger->addEntry(new LogEntry($ret_msg, BwLogger::BW_DEBUG, 'send'));
+			$this->logDebug($ret_msg);
 			return false;
 		}
 
@@ -1560,7 +1574,7 @@ class NewsletterModel extends AdminModel
 		if ($id	=== false)
 		{
 			$ret_msg .= Text::_('COM_BWPOSTMAN_NL_ERROR_CONTENT_PREPARING');
-			$this->logger->addEntry(new LogEntry('Model sendNewsletter:' . $ret_msg, BwLogger::BW_DEBUG, 'send'));
+			$this->logDebug('Model sendNewsletter:' . $ret_msg);
 			return false;
 		}
 
@@ -1568,7 +1582,7 @@ class NewsletterModel extends AdminModel
 		if (!$this->addSendMailQueue($ret_msg, $id, $recipients, $nl_id, $unconfirmed, $cam_id))
 		{
 			$ret_msg .= 'Model sendNewsletter: Addint to sendMailQueue failed';
-			$this->logger->addEntry(new LogEntry($ret_msg, BwLogger::BW_DEBUG, 'send'));
+			$this->logDebug($ret_msg);
 			return false;
 		}
 
@@ -1868,7 +1882,7 @@ class NewsletterModel extends AdminModel
 	 */
 	public function sendMailsFromQueue(int $mailsPerStep = 100, bool $fromComponent = true, int $mailsPerStepDone = 0): int
 	{
-		$this->logger->addEntry(new LogEntry('Model sendMailsFromQueue mails per Step: ' . $mailsPerStep, BwLogger::BW_INFO, 'send'));
+		$this->logInfo('Model sendMailsFromQueue mails per Step: ' . $mailsPerStep);
 		$this->sendmessage = '';
 
 		try
@@ -2056,9 +2070,9 @@ class NewsletterModel extends AdminModel
 			}
 		}
 
-		$this->logger->addEntry(new LogEntry('Model sendMail ItemId edit: ' . $itemid_edit, BwLogger::BW_DEBUG, 'send'));
-		$this->logger->addEntry(new LogEntry('Model sendMail ItemId unsubscribe: ' . $itemid_unsubscribe, BwLogger::BW_DEBUG, 'send'));
-		$this->logger->addEntry(new LogEntry('Model sendMail ItemId editlink: ' . $editlink, BwLogger::BW_DEBUG, 'send'));
+		$this->logDebug('Model sendMail ItemId edit: ' . $itemid_edit);
+		$this->logDebug('Model sendMail ItemId unsubscribe: ' . $itemid_unsubscribe);
+		$this->logDebug('Model sendMail ItemId editlink: ' . $editlink);
 
 		// Replace the links to provide the correct preview
 		$body = $tblSendMailContent->body;
@@ -2087,7 +2101,7 @@ class NewsletterModel extends AdminModel
             {
                 $error_msg_plugin = Text::_('COM_BWPOSTMAN_PERSONALIZE_ERROR');
                 $app->enqueueMessage($error_msg_plugin, 'error');
-                $this->logger->addEntry(new LogEntry($error_msg_plugin, BwLogger::BW_ERROR, 'personalize'));
+                $this->logError($error_msg_plugin, 'personalize');
 
                 $tblSendMailQueue->push(
                     $tblSendMailQueue->content_id,
@@ -2128,7 +2142,7 @@ class NewsletterModel extends AdminModel
 
 		try
 		{
-			$this->logger->addEntry(new LogEntry('Model sendMail recipient to send: ' . $tblSendMailQueue->recipient, BwLogger::BW_DEBUG, 'send'));
+			$this->logDebug('Model sendMail recipient to send: ' . $tblSendMailQueue->recipient);
 
             $mailer->Sender = $this->getBounceAddress();
             $mailer->setSender($sender);
@@ -2156,7 +2170,7 @@ class NewsletterModel extends AdminModel
             if (!$this->arise_queue)
 			{
                 $startTime = microtime(true);
-				$this->logger->addEntry(new LogEntry('Before sending', BwLogger::BW_INFO, 'send'));
+				$this->logInfo('Before sending');
 //				Use the following with care! Complete mails with body are written to log…
 //				$this->logger->addEntry(new LogEntry('Mailer data: ' . print_r($mailer, true), BwLogger::BW_DEVELOPMENT, 'send'));
 
@@ -2169,10 +2183,10 @@ class NewsletterModel extends AdminModel
                     $res = true;
                 }
 
-				$this->logger->addEntry(new LogEntry(sprintf('Sending result: %s', $res), BwLogger::BW_INFO, 'send'));
+				$this->logInfo(sprintf('Sending result: %s', $res));
 
                 $endTime = microtime(true);
-                $this->logger->addEntry(new LogEntry(sprintf('Sending 1 newsletter lasts %s seconds', $endTime - $startTime), BwLogger::BW_INFO, 'send'));
+                $this->logInfo(sprintf('Sending 1 newsletter lasts %s seconds', $endTime - $startTime));
 			}
 		}
 		catch (UnexpectedValueException | InvalidArgumentException | MailDisabledException | \PHPMailer\PHPMailer\Exception  | Exception $exception)

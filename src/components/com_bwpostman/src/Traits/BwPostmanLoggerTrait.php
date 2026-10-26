@@ -49,6 +49,24 @@ trait BwPostmanLoggerTrait
     protected string $logCategory = 'maintenance';
 
     /**
+     * Get the log category to use for log entries.
+     * Supports both $this->logCategory (from trait) and $this->log_cat (from existing classes).
+     *
+     * @return string The log category
+     *
+     * @since 4.4.0
+     */
+    protected function getLogCategory(): string
+    {
+        // Check if the class has a $log_cat property (used in many existing classes)
+        if (property_exists($this, 'log_cat')) {
+            return $this->log_cat;
+        }
+
+        return $this->logCategory;
+    }
+
+    /**
      * Method to write debug messages to the log
      *
      * @param   string  $message  The message to log
@@ -57,7 +75,7 @@ trait BwPostmanLoggerTrait
      */
     protected function logDebug(string $message): void
     {
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, $this->logCategory));
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, $this->getLogCategory()));
     }
 
     /**
@@ -69,7 +87,7 @@ trait BwPostmanLoggerTrait
      */
     protected function logError(string $message): void
     {
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->logCategory));
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, $this->getLogCategory()));
     }
 
     /**
@@ -81,7 +99,7 @@ trait BwPostmanLoggerTrait
      */
     protected function logDevelopment(string $message): void
     {
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, $this->logCategory));
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, $this->getLogCategory()));
     }
 
     /**
@@ -93,7 +111,7 @@ trait BwPostmanLoggerTrait
      */
     protected function logInfo(string $message): void
     {
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, $this->logCategory));
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, $this->getLogCategory()));
     }
 
     /**
@@ -105,6 +123,6 @@ trait BwPostmanLoggerTrait
      */
     protected function logWarning(string $message): void
     {
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, $this->logCategory));
+        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, $this->getLogCategory()));
     }
 }

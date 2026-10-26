@@ -42,7 +42,7 @@ use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHTMLHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
-use BoldtWebservice\Component\BwPostman\Site\Traits\BwPostmanLoggerTrait;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\Event\Event;
 use Joomla\Utilities\ArrayHelper;

@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\LogEntry;
-use BoldtWebservice\Component\BwPostman\Site\Traits\BwPostmanLoggerTrait;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 
 /**
  * Email verification class

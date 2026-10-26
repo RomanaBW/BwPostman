@@ -44,7 +44,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Database\DatabaseQuery;
 use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
-use BoldtWebservice\Component\BwPostman\Site\Traits\BwPostmanLoggerTrait;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 
 /**
  * Class BwPostmanModelNewsletters

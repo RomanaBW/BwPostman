@@ -1564,7 +1564,7 @@ class com_bwpostmanInstallerScript
 		// BwPostman Administration Component
 		define('BWPM_ADMINISTRATOR_INSTALL', JPATH_ADMINISTRATOR.'/components/com_bwpostman');
 
-      JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Traits', BWPM_ADMINISTRATOR . '/src/Traits');
+    JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Traits', BWPM_ADMINISTRATOR_INSTALL . '/src/Traits');
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Extension', BWPM_ADMINISTRATOR_INSTALL . '/src/Extension');
 		JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Service\\Html', BWPM_ADMINISTRATOR_INSTALL . '/src/Service/Html');
 

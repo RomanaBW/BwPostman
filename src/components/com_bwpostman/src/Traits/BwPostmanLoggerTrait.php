@@ -39,18 +39,8 @@ use Joomla\CMS\Log\LogEntry;
 trait BwPostmanLoggerTrait
 {
     /**
-     * The category used for log entries.
-     * Can be overridden in classes using this trait.
-     *
-     * @var string
-     *
-     * @since 4.4.0
-     */
-    protected string $logCategory = 'maintenance';
-
-    /**
      * Get the log category to use for log entries.
-     * Supports both $this->logCategory (from trait) and $this->log_cat (from existing classes).
+     * Supports $this->log_cat (from plugins), $this->logCategory (from classes), or falls back to 'maintenance'.
      *
      * @return string The log category
      *
@@ -63,7 +53,13 @@ trait BwPostmanLoggerTrait
             return $this->log_cat;
         }
 
-        return $this->logCategory;
+        // Check if the class has a $logCategory property (used in most classes)
+        if (property_exists($this, 'logCategory')) {
+            return $this->logCategory;
+        }
+
+        // Fallback to default category
+        return 'maintenance';
     }
 
     /**

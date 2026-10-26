@@ -24,7 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BoldtWebservice\Component\BwPostman\Traits;
+namespace BoldtWebservice\Component\BwPostman\Site\Traits;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use Joomla\CMS\Log\LogEntry;

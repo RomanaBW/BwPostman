@@ -37,7 +37,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanSubscriberHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
-use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
+use BoldtWebservice\Component\BwPostman\Site\Traits\BwPostmanLoggerTrait;
 
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 

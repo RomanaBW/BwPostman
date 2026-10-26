@@ -42,7 +42,7 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
-use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
+use BoldtWebservice\Component\BwPostman\Site\Traits\BwPostmanLoggerTrait;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\QueryInterface;
 use RuntimeException;

@@ -54,7 +54,7 @@ use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMailinglis
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanNewsletterHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\ContentRenderer;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
-use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
+use BoldtWebservice\Component\BwPostman\Site\Traits\BwPostmanLoggerTrait;
 use RuntimeException;
 use stdClass;
 use Throwable;

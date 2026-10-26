@@ -59,7 +59,7 @@ use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Site\Model\RegisterModel;
-use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
+use BoldtWebservice\Component\BwPostman\Site\Traits\BwPostmanLoggerTrait;
 use BoldtWebservice\Plugin\System\Bwpm_user2subscriber\Helper\BwpmUser2SubscriberHelper;
 use RuntimeException;
 use Joomla\Component\Content\Site\Helper\RouteHelper;

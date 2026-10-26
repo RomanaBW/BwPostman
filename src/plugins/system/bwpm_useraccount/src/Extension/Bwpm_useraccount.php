@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
-use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
+use BoldtWebservice\Component\BwPostman\Site\Traits\BwPostmanLoggerTrait;
 use Exception;
 use JLoader;
 use Joomla\CMS\Component\ComponentHelper;

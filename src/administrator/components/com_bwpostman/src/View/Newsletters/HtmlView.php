@@ -367,7 +367,7 @@ class HtmlView extends BaseHtmlView
 				break;
 		}
 
-		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/libraries/toolbar');
+		$toolbar->addButtonPath(JPATH_COMPONENT_ADMINISTRATOR . '/Libraries/toolbar');
 
 		$manualButton = BwPostmanHTMLHelper::getManualButton('newsletters');
 		$forumButton  = BwPostmanHTMLHelper::getForumButton();

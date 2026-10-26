@@ -66,7 +66,7 @@ use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 JLoader::registerNamespace('BoldtWebservice\\Plugin\\System\\Bwpm_user2subscriber\\Helper', JPATH_PLUGINS.'/system/bwpm_user2subscriber/helpers');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', JPATH_ADMINISTRATOR.'/components/com_bwpostman/libraries');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Libraries');
 
 /**
  * Class User2Subscriber

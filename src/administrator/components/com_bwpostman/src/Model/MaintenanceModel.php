@@ -977,13 +977,13 @@ class MaintenanceModel extends BaseDatabaseModel
         // Import filesystem libraries. Perhaps not necessary, but does not hurt
         // get path to SQL install file of component
         $paths   = [];
-        $paths[] = JPATH_ADMINISTRATOR . '/components/com_bwpostman/sql/';
+        $paths[] = BWPM_ADMINISTRATOR . '/sql/';
 
         // get paths to SQL installation files of plugins at plugin group BwPostman
         // @ToDo: In future perhaps there could be SQL installation files for plugins to BwPostman at other plugin groups
-        if (Folder::exists(JPATH_PLUGINS . '/bwpostman/'))
+        if (Folder::exists(JPATH_ROOT . '/plugins/bwpostman/'))
         {
-            $path2     = JPATH_PLUGINS . '/bwpostman/';
+            $path2     = JPATH_ROOT . '/plugins/bwpostman/';
             $p_folders = Folder::folders($path2);
 
             foreach ($p_folders as $folder)

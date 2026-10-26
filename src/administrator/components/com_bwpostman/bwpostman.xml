@@ -6,7 +6,7 @@
 	<authorEmail>forum@boldt-webservice.de</authorEmail>
 	<authorUrl>https://www.boldt-webservice.de</authorUrl>
 	<copyright>www.boldt-webservice.de</copyright>
-	<license>This component is released under the GNU/GPLv3 License or later</license>
+	<license>This component is released under the GNU/GPLv3 Licence or later</license>
 	<version>%%version_number%%</version>
 	<description></description>
 	<namespace path="src">BoldtWebservice\Component\BwPostman</namespace>
@@ -98,7 +98,7 @@
 			<folder>forms</folder>
 			<folder>Helper</folder>
 			<folder>layouts</folder>
-			<folder>libraries</folder>
+			<folder>Libraries</folder>
 			<folder>services</folder>
 			<folder>sql</folder>
 			<folder>src</folder>

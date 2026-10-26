@@ -33,10 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 //const BWPM_BACKUP = JPATH_SITE . '/images/com_bwpostman/backup_tables';
 if (!defined('BWPM_BACKUP')) define('BWPM_BACKUP', JPATH_SITE . '/images/com_bwpostman/backup_tables');
 
+use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
 use DOMDocument;
 use DOMElement;
 use Exception;
 use Joomla\CMS\Access\Rules;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Asset;
 use Joomla\Component\Users\Administrator\Model\GroupModel;
@@ -52,6 +54,7 @@ use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanMaintenanceHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
+use BoldtWebservice\Component\BwPostman\Traits\BwPostmanLoggerTrait;
 use RuntimeException;
 use SimpleXMLElement;
 use stdClass;
@@ -59,14 +62,15 @@ use stdClass;
 /**
  * BwPostman maintenance page model
  *
- * @package        BwPostman-Admin
+ * @package       BwPostman-Admin
  *
  * @subpackage    MaintenancePage
  *
- * @since       1.0.1
+ * @since         1.0.1
  */
 class MaintenanceModel extends BaseDatabaseModel
 {
+    use BwPostmanLoggerTrait;
     /**
      * Array to hold table names of tables used by BwPostman.
      * Needed, because multiple shapes of names are necessary.
@@ -355,7 +359,7 @@ class MaintenanceModel extends BaseDatabaseModel
             if (!Folder::create($filepath))
             {
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_FOUND', $filepath);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $this->logError($message);
                 $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
                 if ($update && !$isCli)
@@ -417,7 +421,7 @@ class MaintenanceModel extends BaseDatabaseModel
             if ($handle === false)
             {
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_FOLDER_NOT_WRITABLE', $backupPath);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $this->logError($message);
                 $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
                 if ($update && !$isCli)
@@ -438,7 +442,7 @@ class MaintenanceModel extends BaseDatabaseModel
             if ($this->tableNames === null)
             {
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES', $backupPath);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $this->logError($message);
                 $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
                 if ($update && !$isCli)
@@ -473,7 +477,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 if ($tableStructure === false)
                 {
                     $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $backupName);
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $this->logError($message);
                     $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
                     if ($update && !$isCli)
@@ -486,7 +490,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 else
                 {
                     $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_TABLE_SUCCESS', $tableName);
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                    $this->logInfo($message);
 
                     if ($update && !$isCli)
                     {
@@ -498,7 +502,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 if (!$this->buildXmlData($tableName, $tablesXml))
                 {
                     $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $backupName);
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $this->logError($message);
                     $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
                     if ($update && !$isCli)
@@ -515,7 +519,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 if ($xmlAssets === false)
                 {
                     $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_ASSETS_WRITE_FILE_ERROR', $backupName);
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $this->logError($message);
                     $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
                     if ($update && !$isCli)
@@ -543,7 +547,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 if ($validXML === false)
                 {
                     $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_NO_VALID_XML');
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $this->logError($message);
                     $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
                     return false;
@@ -553,7 +557,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 if ($testXML->getElementsByTagName('table_data')->length === 0)
                 {
                     $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_NO_TABLE_DATA_AT_XML');
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $this->logError($message);
                     $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
                     return false;
@@ -565,7 +569,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 }
 
                 $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_WRITE_FILE_SUCCESS', $backupName);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                $this->logInfo($message);
                 $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
                 if ($update && !$isCli)
@@ -576,7 +580,7 @@ class MaintenanceModel extends BaseDatabaseModel
             else
             {
                 $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_WRITE_FILE_NAME', $backupName);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $this->logError($message);
                 $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
                 if ($update && !$isCli)
@@ -1005,7 +1009,7 @@ class MaintenanceModel extends BaseDatabaseModel
             if ($fh === false)
             { // File cannot be opened
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_OPEN_INSTALL_FILE_ERROR', $filename);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $this->logError($message);
 
                 echo '<p class="text-danger">' . $message . '</p>';
 
@@ -1315,7 +1319,7 @@ class MaintenanceModel extends BaseDatabaseModel
         if (!empty($diff_1))
         {
             $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED', implode(',', $diff_1));
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+            $this->logInfo($message);
 
             echo '<p class="text-warning">' . $message . '</p>';
 
@@ -1341,7 +1345,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     if (!$createDB)
                     {
                         $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_NEEDED_CREATE_ERROR',    $missingTable);
-                        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                        $this->logError($message);
 
                         echo '<p class="text-danger">' . $message . '</p>';
                     }
@@ -1443,7 +1447,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
 
         $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_ENGINE_OK');
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+        $this->logInfo($message);
 
         echo '<p class="text-success">' . $message . '</p>';
 
@@ -1607,7 +1611,7 @@ class MaintenanceModel extends BaseDatabaseModel
             if (strcasecmp($table->primary_key, $installed_key) != 0)
             {
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_WRONG', $table->name);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
+                $this->logWarning($message);
 
                 echo '<p class="text-warning">' . $message . '</p>';
 
@@ -1753,7 +1757,7 @@ class MaintenanceModel extends BaseDatabaseModel
             if (!$modifyKey)
             {
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_INSTALL_ERROR', $table->name);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                $this->logInfo($message);
 
                 echo '<p class="text-danger">' . $message . '</p>';
 
@@ -1762,7 +1766,7 @@ class MaintenanceModel extends BaseDatabaseModel
             else
             {
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_KEYS_INSTALL_SUCCESS', $table->name);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                $this->logInfo($message);
 
                 echo '<p class="text-success">' . $message . '</p>';
             }
@@ -1818,7 +1822,7 @@ class MaintenanceModel extends BaseDatabaseModel
     private function setCorrectAutoIncrement(object $table): bool
     {
         $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_WRONG', $table->name);
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+        $this->logInfo($message);
 
         echo '<p class="text-warning">' . $message . '</p>';
 
@@ -1835,7 +1839,7 @@ class MaintenanceModel extends BaseDatabaseModel
             if (!$incrementKey)
             {
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_INSTALL_ERROR', $table->name);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $this->logError($message);
 
                 echo '<p class="text-danger">' . $message . '</p>';
 
@@ -1844,7 +1848,7 @@ class MaintenanceModel extends BaseDatabaseModel
             else
             {
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_INCREMENT_INSTALL_SUCCESS', $table->name);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                $this->logInfo($message);
 
                 echo '<p class="text-success">' . $message . '</p>';
             }
@@ -1939,7 +1943,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
 
         $message = str_pad(Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_OK', $checkTable->name), 4096);
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+        $this->logInfo($message);
 
         echo '<p class="text-success">' . $message . '</p>';
 
@@ -1952,7 +1956,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
 
         $message = str_pad(strip_tags(Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_COLS_ATTRIBUTES_OK', $checkTable->name)), 4096);
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+        $this->logInfo($message);
 
         echo '<p class="text-success">' . $message . '</p>';
 
@@ -2000,7 +2004,7 @@ class MaintenanceModel extends BaseDatabaseModel
                         $neededColumns[$i]['Field'],
                         $checkTable->name
                     );
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $this->logError($message);
 
                     echo '<p class="text-danger">' . $message . '</p>';
 
@@ -2014,7 +2018,7 @@ class MaintenanceModel extends BaseDatabaseModel
                             $checkTable->name),
                         4096
                     );
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                    $this->logInfo($message);
 
                     echo '<p class="text-success">' . $message . '</p>';
 
@@ -2051,7 +2055,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 $installedColumns['Field'],
                 $checkTable->name
             );
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+            $this->logInfo($message);
 
             echo '<p class="text-warning">' . $message . '</p>';
 
@@ -2068,7 +2072,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF2_COL_CREATE_ERROR',
                         $installedColumns['Field'],
                         $checkTable->name);
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $this->logError($message);
 
                     echo '<p class="text-danger">' . $message . '</p>';
 
@@ -2082,7 +2086,7 @@ class MaintenanceModel extends BaseDatabaseModel
                             $checkTable->name),
                         4096
                     );
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                    $this->logInfo($message);
 
                     echo '<p class="text-success">' . $message . '</p>';
 
@@ -2136,7 +2140,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     implode(',', array_keys($diff)),
                     $neededColumns[$i]['Field'],
                     $checkTable->name);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
+                $this->logWarning($message);
 
                 echo '<p class="text-warning">' . $message . '</p>';
 
@@ -2182,7 +2186,7 @@ class MaintenanceModel extends BaseDatabaseModel
                                 $missingCol,
                                 $neededColumns[$i]['Field'],
                                 $checkTable->name);
-                            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                            $this->logError($message);
 
                             echo '<p class="text-danger">' . $message . '</p>';
                         }
@@ -2195,7 +2199,7 @@ class MaintenanceModel extends BaseDatabaseModel
                                     $checkTable->name),
                                 4096
                             );
-                            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                            $this->logInfo($message);
 
                             echo '<p class="text-success">' . $message . '</p>';
                         }
@@ -2221,7 +2225,7 @@ class MaintenanceModel extends BaseDatabaseModel
             {
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DEFAULT_WRONG',
                     $neededColumns[$i]['Field'], $checkTable->name);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
+                $this->logWarning($message);
 
                 echo '<p class="text-warning">' . $message . '</p>';
 
@@ -2241,7 +2245,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                     $message .= $exception->getMessage();
 
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $this->logError($message);
 
                     echo '<p class="text-danger">' . $message . '</p>';
 
@@ -2250,7 +2254,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_DROP_DEFAULT_SUCCESS',
                     $neededColumns[$i]['Field'], $checkTable->name);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                $this->logInfo($message);
 
                 echo '<p class="text-success">' . $message . '</p>';
             }
@@ -2422,7 +2426,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 }
 
                 $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_ASSET_OK', $tableNameGeneric);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                $this->logInfo($message);
 
                 $returnMessage .= '<p class="text-success">' . $message . '</p>';
             }
@@ -2955,7 +2959,7 @@ class MaintenanceModel extends BaseDatabaseModel
             $message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_MESSAGE');
 
         }
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+        $this->logInfo($message);
         echo '<p class="text-success">' . $message . '</p>';
 
         return  true;
@@ -3239,7 +3243,7 @@ class MaintenanceModel extends BaseDatabaseModel
             } // endif data sets exists
 
             $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_STORE_SUCCESS', $table);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+            $this->logInfo($message);
 
             $currentContent .= '<p class="text-success">' . $message . '</p>';
 
@@ -3320,7 +3324,38 @@ class MaintenanceModel extends BaseDatabaseModel
     }
 
     /**
-     * Method parse XML data
+     * Method to get backup data from file and store it as session variables
+     *
+     * stores the result array in state?
+     *
+     * @param string $file
+     *
+     * @return  array|bool   $table_names      array of generic table names
+     *
+     * @throws Exception
+     *
+     * @since    4.4.0
+     */
+    public function inputData(string $file): bool|array
+    {
+        $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
+        $message           = sprintf('Memory   consumption before parsing:  %01.3f MB', $memoryConsumption);
+        $this->logDebug($message);
+
+        if (!File::exists($file))
+        {
+            $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_ERROR_NO_FILE');
+            $this->logError($message);
+
+            throw new BwException($message, 1012);
+        }
+
+        return [];
+    }
+
+
+    /**
+     * Methods parse XML data
      *
      * stores the result array in state
      *
@@ -3336,15 +3371,14 @@ class MaintenanceModel extends BaseDatabaseModel
     {
         $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
         $message =  sprintf('Memory   consumption before parsing:  %01.3f MB', $memoryConsumption);
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEBUG, 'maintenance'));
+        $this->logDebug($message);
 
-        // @ToDo: Ensure $file is a file and not a folder
-        if ($file == '')
+        if (!File::exists($file))
         {
             $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_ERROR_NO_FILE');
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $this->logError($message);
 
-            return  false;
+            throw new BwException($message, 1012);
         }
 
         // get import file
@@ -3353,9 +3387,9 @@ class MaintenanceModel extends BaseDatabaseModel
         if ($fh === false)
         { // File cannot be opened
             $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_FILE_ERROR', $file);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $this->logError($message);
 
-            return  false;
+            throw new BwException($message, 1011);
         }
 
         // get XML data
@@ -3363,102 +3397,41 @@ class MaintenanceModel extends BaseDatabaseModel
         fclose($fh);
 
         // check if xml file is OK (most error case: non-xml-conform characters in xml file)
-        if (!is_object($xml))
-        {
-            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_READ_XML_ERROR', $file);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-            return  false;
-        }
-
-        if (!property_exists($xml, 'database'))
-        {
-            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRONG_FILE_ERROR', $file);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
-
-            return  false;
-        }
+        $this->checkForValidXML($xml, $file);
 
         $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
         $message =  sprintf('Memory consumption while parsing with XML file: %01.3f MB', $memoryConsumption);
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
+        $this->logDevelopment($message);
 
         // Get general data
-        $generals = [];
-        if (property_exists($xml->database->Generals, 'BwPostmanVersion'))
-        {
-            $generals['BwPostmanVersion'] = (string) $xml->database->Generals->BwPostmanVersion;
-        }
-
-        if (property_exists($xml->database->Generals, 'SaveDate'))
-        {
-            $generals['SaveDate'] = (string) $xml->database->Generals->SaveDate;
-        }
-
         $app = Factory::getApplication();
+        $generals = $this->getImportedGeneralData($xml);
         $app->setUserState('com_bwpostman.maintenance.generals', $generals);
 
-        // Get component asset
-        $com_assets = [];
-        if (property_exists($xml->database->Generals, 'component_asset'))
-        {
-            $com_assets[] = get_object_vars($xml->database->Generals->component_asset);
-        }
-        else
-        {
-            if (property_exists($xml->database->Generals, 'component_assets'))
-            {
-                $comAssetsXml = get_object_vars($xml->database->Generals->component_assets);
-                if (count($comAssetsXml))
-                {
-                    foreach ($comAssetsXml['dataset'] as $item)
-                    {
-                        $com_assets[] = get_object_vars($item);
-                    }
-                }
-            }
-        }
 
+        // Get component asset
+        $com_assets = $this->getImportedComponentAssets($xml, $app);
         $app->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
 
         // Get backed up user groups
-        $usergroups = [];
-        if (property_exists($xml->database->Generals, 'component_usergroups'))
-        {
-            $u_groups = get_object_vars($xml->database->Generals->component_usergroups);
-            if (count($u_groups))
-            {
-                foreach ($u_groups['usergroup'] as $item)
-                {
-                    $usergroups[] = get_object_vars($item);
-                }
-            }
-        }
-
+        $usergroups = $this->getImportedUsergroups($xml);
         $app->setUserState('com_bwpostman.maintenance.usergroups', $usergroups);
 
         // Get all tables from the xml file converted to arrays recursively, results in an array/list of table-arrays
         $message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_DATA');
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+        $this->logInfo($message);
 
         echo '<h4>' . $message . '</h4>';
 
-        $x_tables = [];
-
-        foreach ($xml->database->tables as $table)
-        {
-            $x_tables[] = $table;
-        }
-
+        $x_tables = $this->getImportedTables($xml);
         unset($xml);
-        unset($table);
 
         if (count($x_tables) === 0)
         {
             $message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_NO_TABLES_ERROR');
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $this->logError($message);
 
-            return  false;
+            throw new BwException($message, 1015);
         }
 
         $adjust_prefix = false;
@@ -3493,7 +3466,7 @@ class MaintenanceModel extends BaseDatabaseModel
         if ($fp === false)
         { // File cannot be opened
             $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_TMPFILE_ERROR', $tmp_file);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $this->logError($message);
 
             return  false;
         }
@@ -3502,14 +3475,14 @@ class MaintenanceModel extends BaseDatabaseModel
         if (ftruncate($fp, 0) === false)
         { // File cannot be truncated
             $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TRUNCATE_TMPFILE_ERROR', $tmp_file);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $this->logError($message);
 
             return  false;
         }
 
         $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
         $message =  sprintf('Memory consumption while parsing before loop: %01.3f MB', $memoryConsumption);
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
+        $this->logDevelopment($message);
 
         // paraphrase tables array per table for better handling and convert simple xml objects to strings
         $i         = 0;
@@ -3519,7 +3492,7 @@ class MaintenanceModel extends BaseDatabaseModel
         {
             $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
             $message =  sprintf('Memory consumption while parsing at very beginning loop: %01.3f MB', $memoryConsumption);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
+            $this->logDevelopment($message);
 
             $w_table = [];
 
@@ -3532,7 +3505,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
             $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
             $message =  sprintf('Memory consumption while parsing at loop with query: %01.3f MB', $memoryConsumption);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
+            $this->logDevelopment($message);
 
             // extract table assets
             if (property_exists($tmp_table, 'table_assets'))
@@ -3572,7 +3545,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
             $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
             $message =  sprintf('Memory consumption while parsing at loop with assets: %01.3f MB', $memoryConsumption);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
+            $this->logDevelopment($message);
 
             // get table data; cannot use get_object_vars() because this returns empty objects on empty values, not empty array fields
             $items = [];
@@ -3618,7 +3591,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
             $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
             $message =  sprintf('Memory consumption while parsing at loop with data sets: %01.3f MB', $memoryConsumption);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
+            $this->logDevelopment($message);
 
             unset($items);
 
@@ -3642,22 +3615,22 @@ class MaintenanceModel extends BaseDatabaseModel
             if (false === fwrite($fp, $write_data))
             {
                 $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRITE_TMPFILE_ERROR', $tmp_file);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $this->logError($message);
 
-                return  false;
+                throw new BwException($message, 1016);
             }
 
             $i++;
 
             $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
             $message =  sprintf('Memory consumption while parsing of table %s: %01.3f MB', $table_names[$i - 1],$memoryConsumption);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_DEVELOPMENT, 'maintenance'));
+            $this->logDevelopment($message);
 
             $tmp_table = array_shift($x_tables);
         }
 
         $message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_SUCCESS');
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+        $this->logInfo($message);
 
         echo '<p class="text-success">' . $message . '</p><br />';
 
@@ -3692,14 +3665,14 @@ class MaintenanceModel extends BaseDatabaseModel
             if (!$asset_delete)
             {
                 $message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_ERROR');
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $this->logError($message);
 
                 return false;
             }
             else
             {
                 $message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_DELETE_SUCCESS');
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                $this->logInfo($message);
 
                 echo '<p class="text-success">' . $message . '</p>';
             }
@@ -3787,14 +3760,14 @@ class MaintenanceModel extends BaseDatabaseModel
             if (!$set_asset_left || !$set_asset_right || !$set_asset_base)
             {
                 $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_ERROR');
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $this->logError($message);
 
                 return false;
             }
             else
             {
                 $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_ASSET_REPAIR_SUCCESS');
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                $this->logInfo($message);
 
                 echo '<p class="text-success">' . $message . '</p><br />';
                 $base_asset['rgt'] = $base_asset['lft'] + 1;
@@ -3876,7 +3849,7 @@ class MaintenanceModel extends BaseDatabaseModel
         if ($asset === false || $com_asset === false)
         {
             $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR');
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $this->logError($message);
 
             return false;
         }
@@ -3888,7 +3861,7 @@ class MaintenanceModel extends BaseDatabaseModel
         if (!$move_asset_left || !$move_asset_right)
         {
             $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR');
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $this->logError($message);
 
             return  false;
         }
@@ -3906,7 +3879,7 @@ class MaintenanceModel extends BaseDatabaseModel
         if (!$writeAsset)
         {
             $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_ERROR');
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $this->logError($message);
 
             return false;
         }
@@ -3927,7 +3900,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
 
         $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_SUCCESS', $writeTableName);
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+        $this->logInfo($message);
 
         if ($showMessage)
         {
@@ -3991,7 +3964,7 @@ class MaintenanceModel extends BaseDatabaseModel
         if (empty($asset))
         {
             $message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_ERROR_EMPTY');
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $this->logError($message);
 
             return false;
         }
@@ -4011,7 +3984,7 @@ class MaintenanceModel extends BaseDatabaseModel
             if (!$update_asset)
             {
                 $message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_UPDATE_TABLE_ASSET_ERROR');
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $this->logError($message);
 
                 return false;
             }
@@ -4109,8 +4082,7 @@ class MaintenanceModel extends BaseDatabaseModel
         {
             $this->db->setQuery($query);
 
-            $this->logger->addEntry(new LogEntry('Write Loop Assets Query 1: ' . $query, BwLogger::BW_DEVELOPMENT,
-                'maintenance'));
+            $this->logDevelopment('Write Loop Assets Query 1: ' . $query);
 
             $this->db->execute();
         }
@@ -4294,7 +4266,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     if (!$success)
                     {
                         $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_PROCESS_USERGROUPS_INCOMPLETE', $item['title']);
-                        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_WARNING, 'maintenance'));
+                        $this->logWarning($message);
 
                         echo '<p class="text-warning">' . $message . '</p>';
 
@@ -4425,7 +4397,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 else
                 {
                     $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_REWRITE_USERGROUP_RULE_ERROR',    $asset['rules'], $table);
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $this->logError($message);
 
                     return false;
                 }
@@ -4571,7 +4543,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 $this->db->execute();
 
                 $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_POINT_RESTORED_WARNING');
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+                $this->logInfo($message);
             }
             catch (RuntimeException $exception)
             {
@@ -4653,7 +4625,7 @@ class MaintenanceModel extends BaseDatabaseModel
         if (!is_array($this->tableNames))
         {
             $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_GET_AFFECTED_TABLES_ERROR');
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $this->logError($message);
 
             return  false;
         }
@@ -4745,7 +4717,7 @@ class MaintenanceModel extends BaseDatabaseModel
         if ($start === false)
         {
             $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_GET_TABLE_NAME_ERROR');
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+            $this->logError($message);
         }
 
         return substr($table, $start + 1);
@@ -6815,7 +6787,7 @@ class MaintenanceModel extends BaseDatabaseModel
             if (!$drop_table)
             {
                 $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_ERROR', $table);
-                $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                $this->logError($message);
 
                 return false;
             }
@@ -6827,7 +6799,7 @@ class MaintenanceModel extends BaseDatabaseModel
             return false;
         }
         $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_DROP_TABLE_SUCCESS', $table);
-        $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+        $this->logInfo($message);
 
         echo '<p class="text-success">' . $message . '</p>';
 
@@ -6887,7 +6859,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 if (!$create_table)
                 {
                     $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_ERROR', $table);
-                    $this->logger->addEntry(new LogEntry($message, BwLogger::BW_ERROR, 'maintenance'));
+                    $this->logError($message);
                 }
             }
             catch (RuntimeException $exception)
@@ -6898,7 +6870,7 @@ class MaintenanceModel extends BaseDatabaseModel
             }
 
             $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_CREATE_TABLE_SUCCESS', $table);
-            $this->logger->addEntry(new LogEntry($message, BwLogger::BW_INFO, 'maintenance'));
+            $this->logInfo($message);
 
             echo '<p class="text-success">' . $message . '</p>';
         }
@@ -7055,4 +7027,135 @@ class MaintenanceModel extends BaseDatabaseModel
         }
         return $diffArray;
     }
+
+    /** Check if imported data are valid XML data
+     * @param   SimpleXMLElement  $xml
+     * @param   string            $file
+     *
+     *
+     * @throws BwException
+     * @since 4.4.0
+     */
+    private function checkForValidXML(SimpleXMLElement $xml, string $file): void
+    {
+        if (!is_object($xml))
+        {
+            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_READ_XML_ERROR', $file);
+            $this->logError($message);
+
+            throw new BwException($message, 1013);
+        }
+
+        if (!property_exists($xml, 'database'))
+        {
+            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRONG_FILE_ERROR', $file);
+            $this->logError($message);
+
+            throw new BwException($message, 1014);
+        }
+    }
+
+    /**
+     * Method to get imported general data as an array
+     * @param   SimpleXMLElement  $xml
+     *
+     * @return array
+     *
+     * @since 4.4.0
+     */
+    private function getImportedGeneralData(SimpleXMLElement $xml): array
+    {
+        $generals = [];
+        if (property_exists($xml->database->Generals, 'BwPostmanVersion'))
+        {
+            $generals['BwPostmanVersion'] = (string) $xml->database->Generals->BwPostmanVersion;
+        }
+
+        if (property_exists($xml->database->Generals, 'SaveDate'))
+        {
+            $generals['SaveDate'] = (string) $xml->database->Generals->SaveDate;
+        }
+
+        return $generals;
+    }
+
+    /**
+     * Method to get imported component assets as an array
+     * @param   SimpleXMLElement              $xml
+     *
+     * @return array
+     *
+     * @since 4.4.0
+     */
+    private function getImportedComponentAssets(SimpleXMLElement $xml): array
+    {
+        $com_assets = [];
+        if (property_exists($xml->database->Generals, 'component_asset'))
+        {
+            $com_assets[] = get_object_vars($xml->database->Generals->component_asset);
+        }
+        else if (property_exists($xml->database->Generals, 'component_assets'))
+        {
+            $comAssetsXml = get_object_vars($xml->database->Generals->component_assets);
+
+            if (count($comAssetsXml))
+            {
+                foreach ($comAssetsXml['dataset'] as $item)
+                {
+                    $com_assets[] = get_object_vars($item);
+                }
+            }
+        }
+
+        return $com_assets;
+    }
+
+    /**
+     * Method to get imported usergroups as an array
+     * @param   SimpleXMLElement                                      $xml
+     *
+     * @return array
+     *
+     * @since 4.4.0
+     */
+    private function getImportedUsergroups(SimpleXMLElement $xml): array
+    {
+        $usergroups = [];
+        if (property_exists($xml->database->Generals, 'component_usergroups'))
+        {
+            $u_groups = get_object_vars($xml->database->Generals->component_usergroups);
+            if (count($u_groups))
+            {
+                foreach ($u_groups['usergroup'] as $item)
+                {
+                    $usergroups[] = get_object_vars($item);
+                }
+            }
+        }
+
+        return $usergroups;
+    }
+
+    /**
+     * Method to get imported tables as an array
+     * @param   SimpleXMLElement  $xml
+     *
+     * @return array
+     *
+     * @since 4.4.0
+     */
+    private function getImportedTables(SimpleXMLElement $xml): array
+    {
+        $x_tables = [];
+
+        foreach ($xml->database->tables as $table)
+        {
+            $x_tables[] = $table;
+        }
+
+        unset($table);
+
+        return $x_tables;
+    }
+
 }

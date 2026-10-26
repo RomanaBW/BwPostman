@@ -55,7 +55,6 @@ use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Log\LogEntry;
 use BoldtWebservice\Component\BwPostman\Administrator\Helper\BwPostmanHelper;
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwLogger;
 use BoldtWebservice\Component\BwPostman\Site\Model\RegisterModel;
@@ -64,7 +63,7 @@ use BoldtWebservice\Plugin\System\Bwpm_user2subscriber\Helper\BwpmUser2Subscribe
 use RuntimeException;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Traits', BWPM_ADMINISTRATOR . '/src/Traits');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Traits', JPATH_ADMINISTRATOR . '/components/com_bwpostman/src/Traits');
 JLoader::registerNamespace('BoldtWebservice\\Plugin\\System\\Bwpm_user2subscriber\\Helper', JPATH_PLUGINS.'/system/bwpm_user2subscriber/helpers');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Libraries');

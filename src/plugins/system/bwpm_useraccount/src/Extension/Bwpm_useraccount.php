@@ -52,7 +52,7 @@ use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use RuntimeException;
 
-JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Traits', BWPM_ADMINISTRATOR . '/src/Traits');
+JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Traits', JPATH_ADMINISTRATOR . '/components/com_bwpostman/src/Traits');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Libraries', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Libraries');
 JLoader::registerNamespace('BoldtWebservice\\Component\\BwPostman\\Administrator\\Helper', JPATH_ADMINISTRATOR.'/components/com_bwpostman/Helper', true);
 

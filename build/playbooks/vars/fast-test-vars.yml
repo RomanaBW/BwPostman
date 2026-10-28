@@ -1,5 +1,5 @@
 ---
-tester_image: "universe3:5000/romana/bwpm_enh_tester-6:6.0.4-4.3.4"
+tester_image: "universe3:5000/romana/bwpm_enh_tester-6:{{ bwpm_joomla_current }}-{{ bwpm_project_version }}"
 webserver_url: "172.118.6.59"
 database_ip: "172.118.6.58"
 testcontainer_ip: "172.118.6.62"

@@ -12,8 +12,8 @@
   tasks:
     - name: Import transmitted environment parameters
       set_fact:
-        joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('510', true) }}"
-        bwpm_version: "{{ lookup('env','BW_TEST_BWPM_VERSION') | d('431', true) }}"
+        joomla_version: "{{ lookup('env','BW_TEST_JOOMLA_VERSION') | d('620', true) }}"
+        bwpm_version: "{{ lookup('env','BW_TEST_BWPM_VERSION') | d('440', true) }}"
         test_cat: "{{ lookup('env','BW_TEST_CAT') | d('maintenance_single', true) }}"
         test_debug: "{{ lookup('env','BW_TEST_DEBUG') | d('--debug', true) }}"
         vm_version: "{{ lookup('env','BW_TEST_VM_VERSION') | d('', true) }}"
@@ -45,6 +45,12 @@
           - "Tester IP: {{ testcontainer_ip }}"
           - "Artifacts base path: {{ artifacts_base }}"
 
+    - name: Ensure xml output folder is removed, ensure an empty folder for each build
+      become: yes
+      file:
+        path: "{{ artifacts_base }}/xmlreports"
+        state: absent
+
     - name: Ensure output folders are present and writable
       become: yes
       file:
@@ -61,6 +67,7 @@
         - "{{ artifacts_base }}/xmlreports"
         - "{{ artifacts_base }}/backups"
         - "{{ artifacts_base }}/output"
+        - "{{ project_src_dir }}/build/docker/test"
 
     - name: Check for failure file
       stat:

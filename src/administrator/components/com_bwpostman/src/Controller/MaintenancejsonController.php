@@ -922,7 +922,7 @@ class MaintenancejsonController extends AdminController
                 $doTableCheck = true;
             }
 
-            // Do nothing, if backup version is newer than installed version, and we are not in dev, to prevent data loss
+            // Do nothing if backup version is newer than installed version, and we are not in dev, to prevent data loss
             if (!$doTableCheck)
             {
                 $message = '<p class="alert alert-warning">';

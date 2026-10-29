@@ -19,8 +19,8 @@ services:
       # Mount output folders
       - type: bind
         source: "{{ artifacts_base }}"
-        target: /data/output
-      # Mount repositories folder for artifacts.
+        target: /data/tests/output
+      # Mount the repositories folder for artefacts.
       # *** Probably it would be better to mount the specific path for this project.
       - type: bind
         source: /repositories

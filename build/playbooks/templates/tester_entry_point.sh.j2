@@ -7,11 +7,13 @@ echo "Project: {{ project_name }}"
 sudo chmod 1777 /tmp/.X11-unix
 sudo rm -f /tmp/.X45-lock
 sudo mkdir -p /home/seluser/.local/share/mc
+sudo mkdir -p /data/output
 sudo chown -R seluser:users /home/seluser
+sudo chown -R seluser:users /data/output
 
 export BW_TEST_WITHDRAW="no"
-VIDEO_NAME=/data/output/videos/{{ test_cat }}.mp4
-VIDEO_LOG=/data/output/logs/ffmpeg.log
+VIDEO_NAME=/data/tests/output/videos/{{ test_cat }}.mp4
+VIDEO_LOG=/data/tests/output/logs/ffmpeg.log
 
 DISPLAY=":{{ display }}"
 
@@ -23,7 +25,7 @@ echo "Video-Name: ${VIDEO_NAME}"
 echo "Display: ${DISPLAY}"
 echo "Withdraw: ${BW_TEST_WITHDRAW}"
 
-java -jar /opt/selenium/selenium-server.jar standalone --port 4445 >/data/output/logs/selenium.log 2>/data/output/logs/selenium.log &
+java -jar /opt/selenium/selenium-server.jar standalone --port 4445 >/data/tests/output/logs/selenium.log 2>/data/tests/output/logs/selenium.log &
 
 # Loop until selenium server is available
 printf 'Waiting Selenium Server to load\n'
@@ -31,7 +33,7 @@ sleep 15
 
 printf '\n'
 
-sudo chmod 0777 /data/output/logs/selenium.log
+sudo chmod 0777 /data/tests/output/logs/selenium.log
 
 # start video recording
 echo 'start recording'
@@ -50,5 +52,4 @@ XVFB_PID="$(pgrep -f /usr/bin/Xvfb)"
 echo "PID: ${XVFB_PID}"
 kill "$(pgrep -f /usr/bin/Xvfb)"
 
-# sleep 120
-
+#sleep 180

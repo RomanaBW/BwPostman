@@ -17,11 +17,15 @@ services:
       - type: bind
         source: /home/romana/PhpstormProjects/BwPostman_J4/tests/codeception.yml
         target: /data/codeception.yml
-      # Mount output folders
+      # Mount report folders
       - type: bind
         source: {{ artifacts_base }}/{{ project_name }}
+        target: /data/tests/output
+      # Mount output folders
+      - type: bind
+        source: {{ artifacts_base }}/output
         target: /data/output
-      # Mount repositories folder for artifacts.
+      # Mount the repositories folder for artefacts.
       # *** Probably it would be better to mount the specific path for this project.
       - type: bind
         source: /repositories

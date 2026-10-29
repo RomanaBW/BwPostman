@@ -45,11 +45,11 @@
           - "Tester IP: {{ testcontainer_ip }}"
           - "Artifacts base path: {{ artifacts_base }}"
 
-    - name: Ensure xml output folder is removed, ensure an empty folder for each build
-      become: yes
-      file:
-        path: "{{ artifacts_base }}/xmlreports"
-        state: absent
+#    - name: Ensure xml output folder is removed, ensure an empty folder for each build
+#      become: yes
+#      file:
+#        path: "{{ artifacts_base }}/xmlreports"
+#        state: absent
 
     - name: Ensure output folders are present and writable
       become: yes

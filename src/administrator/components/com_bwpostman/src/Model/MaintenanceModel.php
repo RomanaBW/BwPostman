@@ -3406,7 +3406,6 @@ class MaintenanceModel extends BaseDatabaseModel
         $generals = $this->getImportedGeneralData($xml);
         $app->setUserState('com_bwpostman.maintenance.generals', $generals);
 
-
         // Get component asset
         $com_assets = $this->getImportedComponentAssets($xml, $app);
         $app->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
@@ -3415,6 +3414,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $usergroups = $this->getImportedUsergroups($xml);
         $app->setUserState('com_bwpostman.maintenance.usergroups', $usergroups);
 
+
         // Get all tables from the xml file converted to arrays recursively, results in an array/list of table-arrays
         $message =  Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_PARSE_DATA');
         $this->logInfo($message);
@@ -3422,7 +3422,7 @@ class MaintenanceModel extends BaseDatabaseModel
         echo '<h4>' . $message . '</h4>';
 
         $x_tables = $this->getImportedTables($xml);
-        unset($xml);
+        $xml = null;
 
         if (count($x_tables) === 0)
         {

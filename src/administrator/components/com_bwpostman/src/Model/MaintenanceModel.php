@@ -1208,7 +1208,7 @@ class MaintenanceModel extends BaseDatabaseModel
                                 }
 
                                 // get autoincrement
-                                $index = array_search('auto_increment', $columnArray);
+//                                $index = array_search('auto_increment', $columnArray);
                                 $start = stripos($column, 'auto_increment');
 
                                 if ($start !== false)
@@ -4666,6 +4666,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
 
         $rules = $this->sectionRules;
+        $asset = [];
 
         switch ($table['tableNameUC'])
         {
@@ -6669,7 +6670,7 @@ class MaintenanceModel extends BaseDatabaseModel
     {
         if ($table != 'component')
         {
-            $tablePrefix   = $this->db->getPrefix();
+//            $tablePrefix   = $this->db->getPrefix();
             $query         = str_replace("\n", '', $tablesQueries[$table]['queries']);
 
             $tableProps = new stdClass();
@@ -7138,7 +7139,6 @@ class MaintenanceModel extends BaseDatabaseModel
     private function extractTableAssets(object $tmp_table): array
     {
         $extracted_items = [];
-        $items_to_write  = [];
         $imported_items  = (array) $tmp_table->table_assets;
 
         if (key_exists('dataset', $imported_items))
@@ -7188,7 +7188,6 @@ class MaintenanceModel extends BaseDatabaseModel
     private function extractTableData(object $tmp_table): array
     {
         $extracted_items = [];
-        $items_to_write  = [];
         $imported_items = (array) $tmp_table->table_data;
         unset($tmp_table);
 

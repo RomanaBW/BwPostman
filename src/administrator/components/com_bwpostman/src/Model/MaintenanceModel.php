@@ -4900,7 +4900,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     return false;
                 }
 
-                if (count($sectionAssetExists) > 0)
+                if (!is_null($sectionAssetExists))
                 {
                     if (!$this->updateSectionAsset($sectionName, $sectionRules))
                     {

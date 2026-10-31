@@ -386,13 +386,13 @@ class CampaignTable extends Table implements VersionableTableInterface
 
 		if ($this->id)
 		{
-			// Existing mailing list
+			// Existing campaign
 			$this->modified_time = $date->toSql();
 			$this->modified_by = $user->id;
 		}
 		else
 		{
-			// New mailing list
+			// New campaign
 			$this->created_date = $date->toSql();
 			$this->created_by = $user->id;
 		}

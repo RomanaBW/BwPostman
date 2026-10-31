@@ -38,6 +38,7 @@ use DOMDocument;
 use DOMElement;
 use Exception;
 use Joomla\CMS\Access\Rules;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Asset;
 use Joomla\Component\Users\Administrator\Model\GroupModel;
@@ -3073,7 +3074,7 @@ class MaintenanceModel extends BaseDatabaseModel
             }
 
             // Set some loop values (block size, …)
-            // To accelerate writing data and assets are pooled to blocks. Block size depends on table.
+            // To speed up writing data and assets are pooled to blocks. Block size depends on table.
             $data_loop_max = $this->getDataLoopMax($table);
             $max_count     = ini_get('max_execution_time');
             $data_max      = 0;
@@ -3324,7 +3325,7 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Method to get backup data from file and store it as session variables
      *
-     * stores the result array in state?
+     * Stores the result array in state?
      *
      * @param string $file
      *
@@ -3355,7 +3356,7 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Methods parse XML data
      *
-     * stores the result array in state
+     * Stores the result array in state
      *
      * @param string $file
      *
@@ -3407,7 +3408,7 @@ class MaintenanceModel extends BaseDatabaseModel
         $app->setUserState('com_bwpostman.maintenance.generals', $generals);
 
         // Get component asset
-        $com_assets = $this->getImportedComponentAssets($xml, $app);
+        $com_assets = $this->getImportedComponentAssets($xml);
         $app->setUserState('com_bwpostman.maintenance.com_assets', $com_assets);
 
         // Get backed up user groups
@@ -3432,51 +3433,11 @@ class MaintenanceModel extends BaseDatabaseModel
             throw new BwException($message, 1015);
         }
 
-        $adjust_prefix = false;
-
-        // get current and backed up db prefix
-        $new_prefix = $this->db->getPrefix();
-
-        $sample_table = $x_tables[0];
-        $sample_query = (string) $sample_table->table_structure->install_query->query;
-        $is_prefix    = substr($sample_query, 14, (strpos($sample_query, '_') - 13));
-        if ($is_prefix != $new_prefix)
-        {
-            $adjust_prefix = true;
-        }
-
-        unset($sample_table);
-        unset($sample_query);
-
         // extract table names
-        $table_names = [];
-        foreach ($x_tables as $table)
-        {
-            $table_names[] = (string) $table->table_structure->table_name->name;
-        }
-
-        unset($table);
+        $table_names = $this->extractTableNames($x_tables);
 
         // get buffer file
-        $tmp_file = $app->getConfig()->get('tmp_path') . '/bwpostman_restore.tmp';
-        $fp       = fopen($tmp_file, 'w+');
-
-        if ($fp === false)
-        { // File cannot be opened
-            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_TMPFILE_ERROR', $tmp_file);
-            $this->logError($message);
-
-            return  false;
-        }
-
-        // empty buffer file
-        if (ftruncate($fp, 0) === false)
-        { // File cannot be truncated
-            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TRUNCATE_TMPFILE_ERROR', $tmp_file);
-            $this->logError($message);
-
-            return  false;
-        }
+        list($tmp_file, $fp) = $this->getBufferFile($app);
 
         $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
         $message =  sprintf('Memory consumption while parsing before loop: %01.3f MB', $memoryConsumption);
@@ -3495,134 +3456,24 @@ class MaintenanceModel extends BaseDatabaseModel
             $w_table = [];
 
             // extract install queries
-            $w_table['queries'] = (string) $tmp_table->table_structure->install_query->query;
-            if ($adjust_prefix)
-            {
-                $w_table['queries'] = str_replace($is_prefix, $new_prefix, $w_table['queries']);
-            }
+            $w_table['queries'] = $this->extractInstallQuery($tmp_table);
 
-            $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
-            $message =  sprintf('Memory consumption while parsing at loop with query: %01.3f MB', $memoryConsumption);
-            $this->logDevelopment($message);
-
-            // extract table assets
+            // extract table assets where needed
             if (property_exists($tmp_table, 'table_assets'))
             {
-                $assets       = [];
-                $table_assets = (array) $tmp_table->table_assets;
-                if (key_exists('dataset', $table_assets))
-                {
-                    if (is_array($table_assets['dataset']))
-                    {
-                        foreach ($table_assets['dataset'] as $item)
-                        {
-                            $ds    = [];
-                            $props = get_object_vars($item);
-                            foreach ($props as $k => $v)
-                            {
-                                $xy     = (string) $v;
-                                $ds[$k] = $xy;
-                            }
-
-                            $assets[] = $ds;
-                        }
-                    }
-                    else
-                    {
-                        $assets[] = get_object_vars($table_assets['dataset']);
-                    }
-
-                    if (count($assets) > 0)
-                    {
-                        $w_table['table_assets'] = $assets;
-                    }
-
-                    unset($assets);
-                }
+                $w_table['table_assets'] = $this->extractTableAssets($tmp_table);
             }
 
-            $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
-            $message =  sprintf('Memory consumption while parsing at loop with assets: %01.3f MB', $memoryConsumption);
-            $this->logDevelopment($message);
-
-            // get table data; cannot use get_object_vars() because this returns empty objects on empty values, not empty array fields
-            $items = [];
+            // get table data
             if (property_exists($tmp_table, 'table_data'))
             {
-                $table_data = (array) $tmp_table->table_data;
-                unset($tmp_table);
-                if (key_exists('dataset', $table_data))
-                {
-                    if (is_array($table_data['dataset']))
-                    {
-                        foreach ($table_data['dataset'] as $item)
-                        {
-                            $ds    = [];
-                            $props = get_object_vars($item);
-
-                            foreach ($props as $k => $v)
-                            {
-                                $xy     = (string) $v;
-                                $ds[$k] = $xy;
-                            }
-
-                            $items[] = $ds;
-                        }
-                    }
-                    else
-                    {
-                        $ds    = [];
-                        $props = get_object_vars($table_data['dataset']);
-
-                        foreach ($props as $k => $v)
-                        {
-                            $xy     = (string) $v;
-                            $ds[$k] = $xy;
-                        }
-
-                        $items[] = $ds;
-                    }
-                }
+                $w_table['table_data'] = $this->extractTableData($tmp_table);
             }
-
-            $w_table['table_data'] = $items;
-
-            $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
-            $message =  sprintf('Memory consumption while parsing at loop with data sets: %01.3f MB', $memoryConsumption);
-            $this->logDevelopment($message);
-
-            unset($items);
 
             // write table data to buffer file
-            $write_data = '';
-
-            if ($i === 0)
-            {
-                $write_data .= 'a:' . count($table_names) . ':{';
-            }
-
-            $write_data .= 's:' . strlen($table_names[$i]) . ':"' . $table_names[$i] . '";';
-            $write_data .= serialize($w_table);
-            unset($w_table);
-
-            if ($i === (count($table_names) - 1))
-            {
-                $write_data .= '}';
-            }
-
-            if (false === fwrite($fp, $write_data))
-            {
-                $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRITE_TMPFILE_ERROR', $tmp_file);
-                $this->logError($message);
-
-                throw new BwException($message, 1016);
-            }
+            $this->writeTableDataToBufferFile($i, $table_names, $w_table, $fp, $tmp_file);
 
             $i++;
-
-            $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
-            $message =  sprintf('Memory consumption while parsing of table %s: %01.3f MB', $table_names[$i - 1],$memoryConsumption);
-            $this->logDevelopment($message);
 
             $tmp_table = array_shift($x_tables);
         }
@@ -3688,10 +3539,10 @@ class MaintenanceModel extends BaseDatabaseModel
     }
 
     /**
-     * Method to heal assets table
+     * Method to heal the table #__assets
      *
-     * repairs lft and rgt values in asset table, updates component asset
-     * closes gap caused by deleting sub assets of BwPostman
+     * Repairs lft and rgt values in the asset table, updates a component asset
+     * closes the gap caused by deleting sub assets of BwPostman
      *
      * @throws Exception
      *
@@ -3832,7 +3683,7 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param array   $table
      * @param bool $showMessage
      *
-     * @return string|bool    $base_asset     base asset of BwPostman
+     * @return array|bool    $base_asset     base asset of BwPostman
      *
      * @throws Exception
      *
@@ -4293,14 +4144,11 @@ class MaintenanceModel extends BaseDatabaseModel
 
                 $groups[$item['id']] = ['old_id' => $item['id'], 'new_id' => $result, 'title' => $item['title']];
             }
-            else
+            // user group has new ID
+            elseif ($result['id'] !== $item['id'])
             {
-                // user group has new ID
-                if ($result['id'] !== $item['id'])
-                {
-                    // memorise new id
-                    $groups[$item['id']] = ['old_id' => $item['id'], 'new_id' => $result['id'], 'title' => $item['title']];
-                }
+                // memorise new id
+                $groups[$item['id']] = ['old_id' => $item['id'], 'new_id' => $result['id'], 'title' => $item['title']];
             }
         }
 
@@ -5146,12 +4994,9 @@ class MaintenanceModel extends BaseDatabaseModel
                         return false;
                     }
                 }
-                else
+                elseif ($this->insertBaseAsset($table, false) === false)
                 {
-                    if ($this->insertBaseAsset($table, false) === false)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
         }
@@ -7064,6 +6909,7 @@ class MaintenanceModel extends BaseDatabaseModel
     private function getImportedGeneralData(SimpleXMLElement $xml): array
     {
         $generals = [];
+
         if (property_exists($xml->database->Generals, 'BwPostmanVersion'))
         {
             $generals['BwPostmanVersion'] = (string) $xml->database->Generals->BwPostmanVersion;
@@ -7088,11 +6934,12 @@ class MaintenanceModel extends BaseDatabaseModel
     private function getImportedComponentAssets(SimpleXMLElement $xml): array
     {
         $com_assets = [];
+
         if (property_exists($xml->database->Generals, 'component_asset'))
         {
             $com_assets[] = get_object_vars($xml->database->Generals->component_asset);
         }
-        else if (property_exists($xml->database->Generals, 'component_assets'))
+        elseif (property_exists($xml->database->Generals, 'component_assets'))
         {
             $comAssetsXml = get_object_vars($xml->database->Generals->component_assets);
 
@@ -7110,7 +6957,8 @@ class MaintenanceModel extends BaseDatabaseModel
 
     /**
      * Method to get imported usergroups as an array
-     * @param   SimpleXMLElement                                      $xml
+     *
+     * @param   SimpleXMLElement   $xml
      *
      * @return array
      *
@@ -7119,9 +6967,11 @@ class MaintenanceModel extends BaseDatabaseModel
     private function getImportedUsergroups(SimpleXMLElement $xml): array
     {
         $usergroups = [];
+
         if (property_exists($xml->database->Generals, 'component_usergroups'))
         {
             $u_groups = get_object_vars($xml->database->Generals->component_usergroups);
+
             if (count($u_groups))
             {
                 foreach ($u_groups['usergroup'] as $item)
@@ -7154,6 +7004,288 @@ class MaintenanceModel extends BaseDatabaseModel
         unset($table);
 
         return $x_tables;
+    }
+
+    /**
+     * Method to get the prefix of the imported tables
+     *
+     * @param   array  $xTables  Array of SimpleXML objects
+     *
+     * @return bool|string Imported prefix or false
+     *
+     * @since 4.4.0
+     */
+    public function shouldAdjustPrefix(array $xTables): bool|string
+    {
+        if (empty($xTables))
+        {
+            return false;
+        }
+
+        $sampleTable = $xTables[0];
+        $sampleQuery = (string) $sampleTable->table_structure->install_query->query;
+
+        // Robust Prefix recognition with regex
+        if (preg_match('/CREATE TABLE `([a-zA-Z0-9_]+)bwpostman/', $sampleQuery, $matches))
+        {
+            return $matches[1];
+        }
+
+        return false;
+    }
+
+    /**
+     * Method to get a buffer file
+     * @param   CMSApplicationInterface|null  $app
+     *
+     * @return array  Buffer file name, file pointer resource
+     *
+     * @throws BwException
+     *
+     * @since 4.4.0
+     */
+    private function getBufferFile(?CMSApplicationInterface $app): array
+    {
+        $tmp_file = $app->getConfig()->get('tmp_path') . '/bwpostman_restore.tmp';
+        $fp       = fopen($tmp_file, 'w+');
+
+        if ($fp === false)
+        { // File cannot be opened
+            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_OPEN_TMPFILE_ERROR', $tmp_file);
+            $this->logError($message);
+
+            throw new BwException($message, 10199);
+        }
+
+        // empty buffer file
+        if (ftruncate($fp, 0) === false)
+        { // File cannot be truncated
+            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_TRUNCATE_TMPFILE_ERROR', $tmp_file);
+            $this->logError($message);
+
+            throw new BwException($message, 10199);
+        }
+
+        return [$tmp_file, $fp];
+    }
+
+    /**
+     * Method to extract table names from XML tables
+     *
+     * @param   array  $x_tables
+     *
+     * @return array List of table names
+     *
+     * @since 4.4.0
+     */
+    private function extractTableNames(array $x_tables): array
+    {
+        $table_names = [];
+
+        foreach ($x_tables as $table)
+        {
+            $table_names[] = (string) $table->table_structure->table_name->name;
+        }
+
+        unset($table);
+
+        return $table_names;
+    }
+
+    /**
+     * Method to extract the installation query from import and writes it to a buffer array
+     * If the prefix is different from the current one, adjust it
+     *
+     * @param   object  $tmp_table
+     *
+     * @return string
+     *
+     * @since 4.4.0
+     */
+    private function extractInstallQuery(object $tmp_table): string
+    {
+        $current_prefix = $this->db->getPrefix();
+        $import_prefix  = null;
+        $query = (string) $tmp_table->table_structure->install_query->query;
+
+        // Robust Prefix recognition with regex
+        if (preg_match('/CREATE TABLE `([a-zA-Z0-9_]+)bwpostman/', $query, $matches))
+        {
+            $import_prefix = $matches[1];
+        }
+
+        if (!($import_prefix === $current_prefix))
+        {
+            $query = str_replace($import_prefix, $current_prefix, $query);
+        }
+
+        $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
+        $message =  sprintf('Memory consumption while parsing at loop with query: %01.3f MB', $memoryConsumption);
+        $this->logDevelopment($message);
+
+        return $query;
+    }
+
+    /**
+     * Method to extract table assets from import
+     *
+     * @param   object  $tmp_table table to extract assets from
+     *
+     * @return array   Modified list of rewritten table data
+     *
+     * @since 4.4.0
+     */
+    private function extractTableAssets(object $tmp_table): array
+    {
+        $extracted_items = [];
+        $items_to_write  = [];
+        $imported_items  = (array) $tmp_table->table_assets;
+
+        if (key_exists('dataset', $imported_items))
+        {
+            if (is_array($imported_items['dataset']))
+            {
+                foreach ($imported_items['dataset'] as $item)
+                {
+                    $single_asset = [];
+                    $properties   = get_object_vars($item);
+
+                    foreach ($properties as $key => $value)
+                    {
+                        $single_asset[$key] = (string) $value;
+                    }
+
+                    $extracted_items[] = $single_asset;
+                }
+            }
+            else
+            {
+                $extracted_items[] = get_object_vars($imported_items['dataset']);
+            }
+        }
+
+        $items_to_write = $extracted_items;
+
+        unset($extracted_items);
+
+        $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
+        $message =  sprintf('Memory consumption while parsing at loop with assets: %01.3f MB', $memoryConsumption);
+        $this->logDevelopment($message);
+
+        return $items_to_write;
+    }
+
+    /**
+     * Method to extract table data from import
+     * Cannot directly use get_object_vars() because this returns empty objects on empty values, not empty array fields
+     *
+     * @param   object  $tmp_table
+     *
+     * @return array Extracted table data
+     *
+     * @since 4.4.0
+     */
+    private function extractTableData(object $tmp_table): array
+    {
+        $extracted_items = [];
+        $items_to_write  = [];
+        $imported_items = (array) $tmp_table->table_data;
+        unset($tmp_table);
+
+        if (key_exists('dataset', $imported_items))
+        {
+            if (is_array($imported_items['dataset']))
+            {
+                foreach ($imported_items['dataset'] as $item)
+                {
+                    $single_item = [];
+                    $properties  = get_object_vars($item);
+
+                    foreach ($properties as $key => $value)
+                    {
+                        $single_item[$key] = (string) $value;
+                    }
+
+                    $extracted_items[] = $single_item;
+                }
+            }
+            else
+            {
+                $single_item = [];
+                $properties  = get_object_vars($imported_items['dataset']);
+
+                foreach ($properties as $key => $value)
+                {
+                    $single_item[$key] = (string) $value;
+                }
+
+                $extracted_items[] = $single_item;
+            }
+        }
+
+        $items_to_write = $extracted_items;
+
+        $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
+        $message           = sprintf('Memory consumption while parsing at loop with data sets: %01.3f MB',
+            $memoryConsumption);
+        $this->logDevelopment($message);
+
+        unset($extracted_items);
+
+        return $items_to_write;
+    }
+
+    /**
+     * Method to write table data to a buffer file
+     * @param   mixed  $i
+     * @param   array  $table_names
+     * @param   array  $w_table
+     * @param   mixed  $fp
+     * @param   mixed  $tmp_file
+     *
+     * @return void
+     *
+     * @throws BwException
+     *
+     * @since 4.4.0
+     */
+    private function writeTableDataToBufferFile(
+        mixed $i,
+        array $table_names,
+        array $w_table,
+        mixed $fp,
+        mixed $tmp_file
+    ): void
+
+    {
+        $write_data = '';
+
+        if ($i === 0)
+        {
+            $write_data .= 'a:' . count($table_names) . ':{';
+        }
+
+        $write_data .= 's:' . strlen($table_names[$i]) . ':"' . $table_names[$i] . '";';
+        $write_data .= serialize($w_table);
+        unset($w_table);
+
+        if ($i === (count($table_names) - 1))
+        {
+            $write_data .= '}';
+        }
+
+        if (false === fwrite($fp, $write_data))
+        {
+            $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_WRITE_TMPFILE_ERROR', $tmp_file);
+            $this->logError($message);
+
+            throw new BwException($message, 1016);
+        }
+
+        $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
+        $message           = sprintf('Memory consumption while parsing of table %s: %01.3f MB', $table_names[$i - 1],
+            $memoryConsumption);
+        $this->logDevelopment($message);
     }
 
 }

@@ -492,7 +492,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                     if ($update && !$isCli)
                     {
-                        echo '<p class="text-danger">' . $ $message . '</p>';
+                        echo '<p class="text-danger">' . $message . '</p>';
                     }
 
                     return false;
@@ -1097,7 +1097,7 @@ class MaintenanceModel extends BaseDatabaseModel
                         // get primary key
                         $start = strripos($query, '(`') + 2;
 
-                        if ($start !== false)
+                        if ($start)
                         {
                             $stop               = strripos($query, '`)');
                             $length             = $stop - $start;
@@ -1247,11 +1247,6 @@ class MaintenanceModel extends BaseDatabaseModel
      */
     public function checkTableNames(array $neededTables, array $genericTableNames, string $mode = 'check'): bool
     {
-        if (!is_array($neededTables) && !is_array($genericTableNames))
-        {
-            return false;
-        }
-
         $neededTableNames = [];
 
         // extract table names from table object list,
@@ -2190,9 +2185,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     {
                         BwPostmanHelper::logException($exception, 'MaintenanceModel BE');
 
-                        $message = $exception->getMessage();
-
-                        return $message;
+                        return $exception->getMessage();
                     }
                 }
             }
@@ -2320,7 +2313,7 @@ class MaintenanceModel extends BaseDatabaseModel
                             // If so, check, if asset name fits component, section and item id
                             $assetNameFits = $this->checkAssetNameFits($item->asset_id, $assetName);
 
-                            if (!$assetNameFits === -1)
+                            if (!$assetNameFits == -1)
                             {
                                 return false;
                             }
@@ -2371,7 +2364,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 {
                     $itemsWithoutAsset = $this->getCompleteItemsWithoutAssetId($tableNameGeneric, $itemIdsWithoutAssets);
 
-                    if ($itemIdsWithoutAssets === false)
+                    if (!$itemIdsWithoutAssets)
                     {
                         return false;
                     }
@@ -3053,7 +3046,7 @@ class MaintenanceModel extends BaseDatabaseModel
                     unlink($dest);
                 }
 
-                return $base_asset;
+                return false;
             }
 
             // Set some loop values (block size, …)
@@ -3097,18 +3090,12 @@ class MaintenanceModel extends BaseDatabaseModel
                     $s     = 0;
                     $count = 0;
 
-                    // if there are data sets
-                    if ($asset_max)
-                    {
-                        $asset_loop = 0;
-                    }
-
                     // … insert data sets…
                     if (isset($tables[$table]['table_assets']))
                     {
                         if ($tables[$table]['table_assets'][0]['name'] === $asset_name)
                         { // update base asset
-                            $update_asset = array_shift($tables[$table]['table_assets']);
+                            $update_asset = (array)array_shift($tables[$table]['table_assets']);
 
                             if (!$this->updateBaseAsset($update_asset))
                             {
@@ -3304,37 +3291,6 @@ class MaintenanceModel extends BaseDatabaseModel
         // Get database name
         return $config->get('db', '');
     }
-
-    /**
-     * Method to get backup data from file and store it as session variables
-     *
-     * Stores the result array in state?
-     *
-     * @param string $file
-     *
-     * @return  array|bool   $table_names      array of generic table names
-     *
-     * @throws Exception
-     *
-     * @since    4.4.0
-     */
-    public function inputData(string $file): bool|array
-    {
-        $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
-        $message           = sprintf('Memory   consumption before parsing:  %01.3f MB', $memoryConsumption);
-        $this->logDebug($message);
-
-        if (!File::exists($file))
-        {
-            $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_TABLES_ERROR_NO_FILE');
-            $this->logError($message);
-
-            throw new BwException($message, 1012);
-        }
-
-        return [];
-    }
-
 
     /**
      * Methods parse XML data
@@ -3602,7 +3558,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 $this->logInfo($message);
 
                 echo '<p class="text-success">' . $message . '</p><br />';
-                $base_asset['rgt'] = $base_asset['lft'] + 1;
+//                $base_asset['rgt'] = $base_asset['lft'] + 1;
             }
         }
         catch (RuntimeException $exception)
@@ -3763,9 +3719,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
             $this->db->setQuery($query);
 
-            $result = $this->db->execute();
-
-            return $result;
+            return $this->db->execute();
         }
         catch (RuntimeException $exception)
         {
@@ -4443,14 +4397,6 @@ class MaintenanceModel extends BaseDatabaseModel
         // get all names of installed BwPostman tables
         if ($this->getTableNamesFromDB($restore) === false)
         {
-            return  false;
-        }
-
-        if (!is_array($this->tableNames))
-        {
-            $message = Text::_('COM_BWPOSTMAN_MAINTENANCE_RESTORE_GET_AFFECTED_TABLES_ERROR');
-            $this->logError($message);
-
             return  false;
         }
 
@@ -6298,12 +6244,7 @@ class MaintenanceModel extends BaseDatabaseModel
             return -1;
         }
 
-        if ($assetId !== null)
-        {
-            return $assetId;
-        }
-
-        return false;
+        return $assetId;
     }
 
     /**

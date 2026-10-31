@@ -438,20 +438,6 @@ class MaintenanceModel extends BaseDatabaseModel
                 return false;
             }
 
-            if ($this->tableNames === null)
-            {
-                $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_GET_TABLE_NAMES', $backupPath);
-                $this->logError($message);
-                $session->set('plg_bwpm_console_backup.errorMsg', $message);
-
-                if ($update && !$isCli)
-                {
-                    echo '<p class="text-danger">' . $message . '</p>';
-
-                    return false;
-                }
-            }
-
             // Build file header XML
             $xmlHeader = $this->buildXmlHeader();
 
@@ -1152,7 +1138,7 @@ class MaintenanceModel extends BaseDatabaseModel
                                 $col_arr->Type = $columnArray[1];
 
                                 // get unsigned
-                                $index = array_search('unsigned', $columnArray);
+                                $index = in_array('unsigned', $columnArray);
 
                                 if ($index !== false)
                                 {
@@ -1275,10 +1261,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
 
         // Ensure needed tables are installed
-        if (!$this->handleNeededTables($neededTableNames, $genericTableNames, $neededTables))
-        {
-            return false;
-        }
+        $this->handleNeededTables($neededTableNames, $genericTableNames, $neededTables);
 
         // Process obsolete tables only if in check mode
         if ($mode === 'check')
@@ -1977,7 +1960,7 @@ class MaintenanceModel extends BaseDatabaseModel
      */
     private function handleNeededColumns(array $neededColumns, $i, array $search_cols_1, object $checkTable): bool|int
     {
-        if (array_search($neededColumns[$i]['Field'], $search_cols_1) === false)
+        if (!in_array($neededColumns[$i]['Field'], $search_cols_1))
         {
             ($neededColumns[$i]['Null'] == 'NO') ? $null = ' NOT NULL' : $null = ' NULL ';
             (isset($neededColumns[$i]['Default'])) ? $default = ' DEFAULT ' . $this->db->quote($neededColumns[$i]['Default']) : $default = '';
@@ -2048,7 +2031,7 @@ class MaintenanceModel extends BaseDatabaseModel
      */
     private function handleObsoleteColumns(array $installedColumns, array $search_cols_2, object $checkTable): bool|int
     {
-        if (array_search($installedColumns['Field'], $search_cols_2) === false)
+        if (!in_array($installedColumns['Field'], $search_cols_2))
         {
             $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_CHECK_TABLES_COMPARE_DIFF2_COLS',
                 $installedColumns['Field'],
@@ -3192,7 +3175,7 @@ class MaintenanceModel extends BaseDatabaseModel
                         $asset_found = false;
                         for ($i = 0; $i < count($asset_transform); $i++)
                         {
-                            $new_id = array_search($item['asset_id'], $asset_transform[$i]);
+                            $new_id = in_array($item['asset_id'], $asset_transform[$i]);
                             if ($new_id !== false)
                             {
                                 $item['asset_id'] = $asset_transform[$i]['newAssetId'];
@@ -3741,12 +3724,7 @@ class MaintenanceModel extends BaseDatabaseModel
             return false;
         }
 
-        $writeTableName = $table;
-
-        if (is_array($table))
-        {
-            $writeTableName = $table['tableNameUC'];
-        }
+        $writeTableName = $table['tableNameUC'];
 
         $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_RESTORE_INSERT_TABLE_ASSET_SUCCESS', $writeTableName);
         $this->logInfo($message);
@@ -4210,7 +4188,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
                         foreach ($rule as $key => $value)
                         {
-                            $found = array_search($key, $old_ids);
+                            $found = in_array($key, $old_ids);
 
                             if ($found !== false)
                             {
@@ -6573,7 +6551,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 // update asset_id
                 for ($i = 0; $i < count($mapOldAssetIdsToNew); $i++)
                 {
-                    $itemIdentified = array_search($item['id'], $mapOldAssetIdsToNew[$i]);
+                    $itemIdentified = in_array($item['id'], $mapOldAssetIdsToNew[$i]);
                     if ($itemIdentified !== false)
                     {
                         $item['asset_id'] = (int) $mapOldAssetIdsToNew[$i]['newAssetId'];
@@ -7005,34 +6983,6 @@ class MaintenanceModel extends BaseDatabaseModel
         unset($table);
 
         return $x_tables;
-    }
-
-    /**
-     * Method to get the prefix of the imported tables
-     *
-     * @param   array  $xTables  Array of SimpleXML objects
-     *
-     * @return bool|string Imported prefix or false
-     *
-     * @since 4.4.0
-     */
-    public function shouldAdjustPrefix(array $xTables): bool|string
-    {
-        if (empty($xTables))
-        {
-            return false;
-        }
-
-        $sampleTable = $xTables[0];
-        $sampleQuery = (string) $sampleTable->table_structure->install_query->query;
-
-        // Robust Prefix recognition with regex
-        if (preg_match('/CREATE TABLE `([a-zA-Z0-9_]+)bwpostman/', $sampleQuery, $matches))
-        {
-            return $matches[1];
-        }
-
-        return false;
     }
 
     /**

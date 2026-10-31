@@ -642,7 +642,7 @@ class MaintenanceModel extends BaseDatabaseModel
         foreach ($tableNames as $tableName)
         {
             // Only process real tables, not from restore point (tables with suffix _tmp)
-            if (strpos($tableName, '_tmp') === false)
+            if (!str_contains($tableName, '_tmp'))
             {
                 $table = [];
 
@@ -1017,7 +1017,7 @@ class MaintenanceModel extends BaseDatabaseModel
                 // eliminate unneeded rows (comments, empty lines, DROP TABLE)
                 foreach ($file_content as $row)
                 {
-                    if ((strpos($row, '--') === false) && (stripos($row, 'DROP') === false) && (trim($row) != ''))
+                    if ((!str_contains($row, '--')) && (stripos($row, 'DROP') === false) && (trim($row) != ''))
                     {
                         $txt_array[] = $row;
                     }
@@ -3601,7 +3601,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
         if (is_array($stateAssetsRaw) && count($stateAssetsRaw) > 0)
         {
-            if (substr($table, -1) === 's')
+            if (str_ends_with($table, 's'))
             {
                 $table = substr($table,0, -1);
             }
@@ -3825,7 +3825,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
         foreach ($allRuleNames as $ruleName)
         {
-            if (strpos($ruleName, $currentSection) !== false)
+            if (str_contains($ruleName, $currentSection))
             {
                 $optimizedRules[$ruleName] = $allRules[$ruleName];
             }
@@ -3968,24 +3968,12 @@ class MaintenanceModel extends BaseDatabaseModel
      */
     protected function getDataLoopMax(string $table): int
     {
-        switch ($table)
+        $data_loop_max = match ($table)
         {
-            case '#__bwpostman_newsletters':
-            case '#__bwpostman_sendmailcontent':
-            case '#__bwpostman_sendmailqueue':
-            case '#__bwpostman_tc_sendmailcontent':
-            case '#__bwpostman_tc_sendmailqueue':
-                $data_loop_max = 20;
-                break;
-            case '#__bwpostman_subscribers_mailinglists':
-            case '#__bwpostman_newsletters_mailinglists':
-            case '#__bwpostman_campaigns_mailinglists':
-                $data_loop_max = 10000;
-                break;
-            default:
-                $data_loop_max = 1000;
-                break;
-        }
+            '#__bwpostman_newsletters', '#__bwpostman_sendmailcontent', '#__bwpostman_sendmailqueue', '#__bwpostman_tc_sendmailcontent', '#__bwpostman_tc_sendmailqueue' => 20,
+            '#__bwpostman_subscribers_mailinglists', '#__bwpostman_newsletters_mailinglists', '#__bwpostman_campaigns_mailinglists' => 10000,
+            default => 1000,
+        };
 
         return $data_loop_max;
     }

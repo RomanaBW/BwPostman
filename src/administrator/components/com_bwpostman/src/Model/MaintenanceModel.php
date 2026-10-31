@@ -3409,6 +3409,8 @@ class MaintenanceModel extends BaseDatabaseModel
                 $w_table['table_data'] = $this->extractTableData($tmp_table);
             }
 
+            // Merge assets in table data
+            $this->mergeAssetsInTableData($w_table);
             // write table data to buffer file
             $this->writeTableDataToBufferFile($i, $table_names, $w_table, $fp, $tmp_file);
 
@@ -5850,13 +5852,13 @@ class MaintenanceModel extends BaseDatabaseModel
     /**
      * Get complete asset from assets table by asset name
      *
-     * @param string $assetName
+     * @param   string  $assetName
      *
-     * @return array|bool
+     * @return bool|array|null
      *
      * @since 2.0.0
      */
-    private function getAssetFromAssetsTableByName(string $assetName): bool|array
+    private function getAssetFromAssetsTableByName(string $assetName): bool|array|null
     {
         $query = $this->db->getQuery(true);
 
@@ -7158,6 +7160,20 @@ class MaintenanceModel extends BaseDatabaseModel
         $message           = sprintf('Memory consumption while parsing of table %s: %01.3f MB', $table_names[$i - 1],
             $memoryConsumption);
         $this->logDevelopment($message);
+    }
+
+    /**
+     * Method to write the asset data into the table data to be able to use model->save(…)
+     *
+     * @param   array  $w_table
+     *
+     * @return array  $w_table
+     *
+     * @since 4.4.0
+     */
+    private function mergeAssetsInTableData(array $w_table): array
+    {
+        return $w_table;
     }
 
 }

@@ -3580,12 +3580,12 @@ class MaintenanceModel extends BaseDatabaseModel
      * @param   string  $table
      * @param   bool    $onlyHeal
      *
-     * @return array|bool $base_asset     base asset of BwPostman
+     * @return int|bool|array $base_asset     base asset of BwPostman
      *
      * @throws Exception
      * @since    1.3.0
      */
-    protected function getBaseAsset(string $table = 'component', bool $onlyHeal = false)
+    protected function getBaseAsset(string $table = 'component', bool $onlyHeal = false): int|bool|array
     {
         $stateAssetsRaw = '';
 
@@ -3628,7 +3628,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since    1.3.0
      */
-    public function insertBaseAsset(array $table, bool $showMessage = true)
+    public function insertBaseAsset(array $table, bool $showMessage = true): bool|array
     {
         // Get asset rules
         $asset     = $this->getBaseAssetItem($table);
@@ -3968,14 +3968,12 @@ class MaintenanceModel extends BaseDatabaseModel
      */
     protected function getDataLoopMax(string $table): int
     {
-        $data_loop_max = match ($table)
+        return match ($table)
         {
             '#__bwpostman_newsletters', '#__bwpostman_sendmailcontent', '#__bwpostman_sendmailqueue', '#__bwpostman_tc_sendmailcontent', '#__bwpostman_tc_sendmailqueue' => 20,
             '#__bwpostman_subscribers_mailinglists', '#__bwpostman_newsletters_mailinglists', '#__bwpostman_campaigns_mailinglists' => 10000,
             default => 1000,
         };
-
-        return $data_loop_max;
     }
 
     /**
@@ -3987,7 +3985,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since    1.3.0
      */
-    private function getCurrentUserGroups(array $usergroups)
+    private function getCurrentUserGroups(array $usergroups): int|bool|array
     {
         $groups              = [];
         $defaultJoomlaGroups = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -5858,7 +5856,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      * @since 2.0.0
      */
-    private function getAssetFromAssetsTableByName(string $assetName)
+    private function getAssetFromAssetsTableByName(string $assetName): bool|array
     {
         $query = $this->db->getQuery(true);
 

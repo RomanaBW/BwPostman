@@ -30,7 +30,6 @@ namespace BoldtWebservice\Component\BwPostman\Administrator\Model;
 defined('_JEXEC') or die('Restricted access');
 
 // BwPostman default path for Backups
-//const BWPM_BACKUP = JPATH_SITE . '/images/com_bwpostman/backup_tables';
 if (!defined('BWPM_BACKUP')) define('BWPM_BACKUP', JPATH_SITE . '/images/com_bwpostman/backup_tables');
 
 use BoldtWebservice\Component\BwPostman\Administrator\Libraries\BwException;
@@ -233,7 +232,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
         parent::__construct();
 
-        $this->db = $this->_db;
+        $this->db = $this->getDatabase();
     }
 
     /**
@@ -2492,9 +2491,9 @@ class MaintenanceModel extends BaseDatabaseModel
                 $query = $this->db->getQuery(true);
 
                 $query->update($this->db->quoteName('#__assets'));
-                $query->set($this->db->quoteName('parent_id') . ' = ' . $this->db->Quote($sectionAsset['id']));
-                $query->where($this->db->quoteName('name') . ' LIKE ' . $this->db->Quote($sectionAsset['name'] . '.%'));
-                $query->where($this->db->quoteName('parent_id') . ' <> ' . $this->db->Quote($sectionAsset['id']));
+                $query->set($this->db->quoteName('parent_id') . ' = ' . $this->db->quote($sectionAsset['id']));
+                $query->where($this->db->quoteName('name') . ' LIKE ' . $this->db->quote($sectionAsset['name'] . '.%'));
+                $query->where($this->db->quoteName('parent_id') . ' <> ' . $this->db->quote($sectionAsset['id']));
 
                 try
                 {
@@ -3410,7 +3409,8 @@ class MaintenanceModel extends BaseDatabaseModel
             }
 
             // Merge assets in table data
-            $this->mergeAssetsInTableData($w_table);
+            $w_table = $this->mergeAssetsInTableData($w_table);
+
             // write table data to buffer file
             $this->writeTableDataToBufferFile($i, $table_names, $w_table, $fp, $tmp_file);
 
@@ -3716,8 +3716,8 @@ class MaintenanceModel extends BaseDatabaseModel
             $query = $this->db->getQuery(true);
 
             $query->update($this->db->quoteName('#__assets'));
-            $query->set($this->db->quoteName('rules') . ' = ' . $this->db->Quote($rules));
-            $query->where($this->db->quoteName('name') . ' = ' . $this->db->Quote($assetName));
+            $query->set($this->db->quoteName('rules') . ' = ' . $this->db->quote($rules));
+            $query->where($this->db->quoteName('name') . ' = ' . $this->db->quote($assetName));
 
             $this->db->setQuery($query);
 
@@ -4932,7 +4932,7 @@ class MaintenanceModel extends BaseDatabaseModel
 
         $query->update($this->db->quoteName('#__assets'));
         $query->set($this->db->quoteName('rules') . ' = ' . $this->db->quote($rules));
-        $query->where($this->db->quoteName('name') . ' = ' . $this->db->Quote('com_bwpostman'));
+        $query->where($this->db->quoteName('name') . ' = ' . $this->db->quote('com_bwpostman'));
 
         try
         {
@@ -6254,8 +6254,8 @@ class MaintenanceModel extends BaseDatabaseModel
         {
             $query = $this->db->getQuery(true);
             $query->update($this->db->quoteName($tableNameGeneric));
-            $query->set($this->db->quoteName('asset_id') . ' = ' . $this->db->Quote($assetId));
-            $query->where($this->db->quoteName('id') . ' = ' . $this->db->Quote($id));
+            $query->set($this->db->quoteName('asset_id') . ' = ' . $this->db->quote($assetId));
+            $query->where($this->db->quoteName('id') . ' = ' . $this->db->quote($id));
 
             try
             {

@@ -6350,14 +6350,10 @@ class MaintenanceModel extends BaseDatabaseModel
      */
     private function dbQuoteArray(array $arrayData): array
     {
-        $values = [];
 
-        foreach ($arrayData as $k => $v)
-        {
-            $values[$k] = $this->db->quote($v);
-        }
-
-        return $values;
+        return array_map(function ($v) {
+            return $this->db->quote($v);
+        }, $arrayData);
     }
 
     /**

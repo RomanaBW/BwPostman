@@ -24,10 +24,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BoldtWebservice\Component\BwPostman\Administrator\MVC;
+namespace BoldtWebservice\Component\BwPostman\MVC;
 
 use BoldtWebservice\Component\BwPostman\Administrator\Service\BwFilesystemServiceAwareInterface;
-use BoldtWebservice\Component\BwPostman\Administrator\Service\BwFilesystemServiceInterface;
+use BoldtWebservice\Component\BwPostman\Administrator\Service\BwFilesystemInterface;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\BwLoggerServiceAwareInterface;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\BwUserStateServiceAwareInterface;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\BwLoggerInterface;
@@ -119,7 +119,7 @@ class BwPostmanMVCFactory extends MVCFactory
     {
         if ($object instanceof BwFilesystemServiceAwareInterface) {
             $object->setFilesystem(
-                $this->container->get(BwFilesystemServiceInterface::class)
+                $this->container->get(BwFilesystemInterface::class)
             );
         }
 

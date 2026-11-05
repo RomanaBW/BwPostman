@@ -35,7 +35,7 @@ const BWPM_SITE = JPATH_SITE . '/components/com_bwpostman';
 // BwPostman default path for Backups
 if (!defined('BWPM_BACKUP')) define('BWPM_BACKUP', JPATH_SITE . '/images/com_bwpostman/backup_tables');
 
-use BoldtWebservice\Component\BwPostman\Administrator\MVC\BwPostmanMVCFactory;
+use BoldtWebservice\Component\BwPostman\MVC\BwPostmanMVCFactory;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\BwFilesystemService;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\BwFilesystemInterface;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\BwLoggerInterface;

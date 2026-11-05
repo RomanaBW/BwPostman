@@ -40,6 +40,7 @@ use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Asset;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Users\Administrator\Model\GroupModel;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Session\SessionInterface;
@@ -521,16 +522,14 @@ class MaintenanceModel extends BaseDatabaseModel
 
             $file_data = $this->xml->saveXML();
 
-
             if (fwrite($handle, $file_data) !== false)
             {
-                // Check if XML is valid
-                $testXML = new DOMDocument();
-                $validXML = $testXML->loadXML($file_data);
-
-                if ($validXML === false)
+                // Check if XML is valid and contains data
+                $errors = $this->checkDTDValidity($file_data);
+                if (count($errors) > 0)
                 {
-                    $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_NO_VALID_XML');
+                    // Error handling
+                    $message = Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_DTD_VALIDATION', $errors[0]->message);
                     $this->logError($message);
                     $session->set('plg_bwpm_console_backup.errorMsg', $message);
 
@@ -538,6 +537,9 @@ class MaintenanceModel extends BaseDatabaseModel
                 }
 
                 // Check if XML contains some useful data
+                $testXML = new DOMDocument();
+                $testXML->loadXML($file_data);
+
                 if ($testXML->getElementsByTagName('table_data')->length === 0)
                 {
                     $message =  Text::sprintf('COM_BWPOSTMAN_MAINTENANCE_SAVE_TABLES_ERROR_NO_TABLE_DATA_AT_XML');
@@ -6781,6 +6783,7 @@ class MaintenanceModel extends BaseDatabaseModel
      *
      *
      * @throws BwException
+     *
      * @since 4.4.0
      */
     private function checkForValidXML(SimpleXMLElement $xml, string $file): void
@@ -7157,7 +7160,7 @@ class MaintenanceModel extends BaseDatabaseModel
         }
 
         $memoryConsumption = memory_get_usage(true) / (1024.0 * 1024.0);
-        $message           = sprintf('Memory consumption while parsing of table %s: %01.3f MB', $table_names[$i - 1],
+        $message           = sprintf('Memory consumption while parsing of table %s: %01.3f MB', $table_names[$i],
             $memoryConsumption);
         $this->logDevelopment($message);
     }
@@ -7176,4 +7179,35 @@ class MaintenanceModel extends BaseDatabaseModel
         return $w_table;
     }
 
+    /**
+     * Method to check the validity of the XML file against the DTD
+     *
+     * @param           $xmlString
+     *
+     * @return array
+     *
+     * @throws BwException
+     *
+     * @since 4.4.0
+     */
+    private function checkDTDValidity($xmlString): array
+    {
+        // Remove existing XML declaration if present to avoid duplication
+        $xmlString = preg_replace('/^<\?xml.*?\?>\s*/', '', $xmlString);
+
+        // Enhance XML string with DOCTYPE and XML declaration
+        $xmlWithDtd = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
+            '<!DOCTYPE mysqldump SYSTEM "' .
+            Uri::root() . 'media/com_bwpostman/dtd/bwpostman_backup.dtd">' . PHP_EOL . $xmlString;
+
+        // Do validity check
+        libxml_use_internal_errors(true);
+        $dom    = new DOMDocument();
+        $dom->loadXML($xmlWithDtd);
+        $errors = libxml_get_errors();
+        libxml_use_internal_errors(false);
+        libxml_clear_errors();
+
+        return $errors;
+    }
 }

@@ -1,0 +1,75 @@
+<!-- BwPostman Backup XML Document Type Definition (DTD) -->
+<!-- This DTD defines the structure for BwPostman backup/restore XML files -->
+
+<!ELEMENT mysqldump (database)>
+<!ATTLIST mysqldump xmlns:xsi CDATA #IMPLIED>
+
+<!ELEMENT database (Generals, tables)>
+<!ATTLIST database name CDATA #REQUIRED>
+
+<!-- ============================================ -->
+<!-- GENERALS SECTION -->
+<!-- ============================================ -->
+
+<!ELEMENT Generals (BwPostmanVersion, SaveDate, component_assets?, component_usergroups?)>
+
+<!ELEMENT BwPostmanVersion (#PCDATA)>
+<!ELEMENT SaveDate (#PCDATA)>
+
+<!ELEMENT component_assets (dataset*)>
+<!ELEMENT dataset (id, parent_id, lft, rgt, level, name, title, rules)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT parent_id (#PCDATA)>
+<!ELEMENT lft (#PCDATA)>
+<!ELEMENT rgt (#PCDATA)>
+<!ELEMENT level (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT rules (#PCDATA)>
+
+<!ELEMENT component_usergroups (usergroup*)>
+<!ELEMENT usergroup (level, id, title, parent_id)>
+
+<!-- ============================================ -->
+<!-- TABLES SECTION -->
+<!-- ============================================ -->
+
+<!ELEMENT tables (table_structure+, table_data+, table_assets*)>
+
+<!-- Table Structure Element -->
+<!ELEMENT table_structure (table_name, install_query, fields, keys)>
+<!ATTLIST table_structure table CDATA #REQUIRED>
+
+<!ELEMENT table_name (name)>
+<!ELEMENT name (#PCDATA)>
+
+<!ELEMENT install_query (query)>
+<!ELEMENT query (#PCDATA)>
+
+<!ELEMENT fields (field+)>
+<!ELEMENT field (Field, Type, Null, Key?, Default?, Extra?)>
+<!ELEMENT Field (#PCDATA)>
+<!ELEMENT Type (#PCDATA)>
+<!ELEMENT Null (#PCDATA)>
+<!ELEMENT Key (#PCDATA)>
+<!ELEMENT Default (#PCDATA)>
+<!ELEMENT Extra (#PCDATA)>
+
+<!ELEMENT keys (key+)>
+<!ELEMENT key (Non_unique, Key_name, Seq_in_index, Column_name, Collation?, Null?, Index_type?, Comment?)>
+<!ELEMENT Non_unique (#PCDATA)>
+<!ELEMENT Key_name (#PCDATA)>
+<!ELEMENT Seq_in_index (#PCDATA)>
+<!ELEMENT Column_name (#PCDATA)>
+<!ELEMENT Collation (#PCDATA)>
+<!ELEMENT Null (#PCDATA)>
+<!ELEMENT Index_type (#PCDATA)>
+<!ELEMENT Comment (#PCDATA)>
+
+<!-- Table Data Element -->
+<!ELEMENT table_data (dataset*)>
+<!ATTLIST table_data table CDATA #REQUIRED>
+
+<!-- Table Assets Element -->
+<!ELEMENT table_assets (dataset*)>
+<!ATTLIST table_assets table CDATA #REQUIRED>

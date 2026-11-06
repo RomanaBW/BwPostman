@@ -35,16 +35,36 @@ const BWPM_SITE = JPATH_SITE . '/components/com_bwpostman';
 // BwPostman default path for Backups
 if (!defined('BWPM_BACKUP')) define('BWPM_BACKUP', JPATH_SITE . '/images/com_bwpostman/backup_tables');
 
-// Load the custom classes to ensure they're available before the service provider is executed
-// This is needed because the classes might not be autoloaded yet during service provider registration
+// Load all custom classes before service registration.
+// Required because the service provider runs before Joomla's component autoloader is set up.
+// Paths are relative to services/ directory: services/../src/... = src/...
+
+// MVC Factory
 require_once __DIR__ . '/../src/MVC/BwPostmanMVCFactory.php';
+
+// Component
 require_once __DIR__ . '/../src/Extension/BwPostmanComponent.php';
-require_once __DIR__ . '/../src/Service/BwFilesystemService.php';
+
+// Service layer - Interfaces
 require_once __DIR__ . '/../src/Service/BwFilesystemInterface.php';
-require_once __DIR__ . '/../src/Service/BwLoggerService.php';
 require_once __DIR__ . '/../src/Service/BwLoggerInterface.php';
-require_once __DIR__ . '/../src/Service/BwUserStateService.php';
 require_once __DIR__ . '/../src/Service/BwUserStateInterface.php';
+
+// Service layer - Implementations
+require_once __DIR__ . '/../src/Service/BwFilesystemService.php';
+require_once __DIR__ . '/../src/Service/BwLoggerService.php';
+require_once __DIR__ . '/../src/Service/BwUserStateService.php';
+
+// Service layer - Aware interfaces and traits
+require_once __DIR__ . '/../src/Service/BwFilesystemServiceAwareInterface.php';
+require_once __DIR__ . '/../src/Service/BwFilesystemServiceAwareTrait.php';
+require_once __DIR__ . '/../src/Service/BwLoggerServiceAwareInterface.php';
+require_once __DIR__ . '/../src/Service/BwLoggerServiceAwareTrait.php';
+require_once __DIR__ . '/../src/Service/BwUserStateServiceAwareInterface.php';
+require_once __DIR__ . '/../src/Service/BwUserStateServiceAwareTrait.php';
+
+// HTML Service
+require_once __DIR__ . '/../src/Service/Html/BwPostman.php';
 
 use BoldtWebservice\Component\BwPostman\MVC\BwPostmanMVCFactory;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\BwFilesystemService;

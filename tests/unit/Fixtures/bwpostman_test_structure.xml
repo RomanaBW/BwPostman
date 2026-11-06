@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mysqldump xmlns:xsi="https://www.w3.org/TR/xmlschema-1">
+  <database name="test_db">
+    <Generals>
+      <BwPostmanVersion>4.4.0</BwPostmanVersion>
+      <SaveDate>2024-01-01_12:00</SaveDate>
+      <component_assets>
+        <dataset>
+          <id>154</id>
+          <parent_id>1</parent_id>
+          <lft>295</lft>
+          <rgt>2464</rgt>
+          <level>1</level>
+          <name>com_bwpostman</name>
+          <title>BwPostman Component</title>
+          <rules>{}</rules>
+        </dataset>
+        <dataset>
+          <id>162</id>
+          <parent_id>154</parent_id>
+          <lft>296</lft>
+          <rgt>393</rgt>
+          <level>2</level>
+          <name>com_bwpostman.campaign</name>
+          <title>BwPostman Campaigns</title>
+          <rules>{}</rules>
+        </dataset>
+      </component_assets>
+      <component_usergroups>
+        <usergroup>
+          <level>0</level>
+          <id>1</id>
+          <title>Public</title>
+          <parent_id>0</parent_id>
+        </usergroup>
+        <usergroup>
+          <level>1</level>
+          <id>10</id>
+          <title>BwPostmanAdmin</title>
+          <parent_id>1</parent_id>
+        </usergroup>
+        <usergroup>
+          <level>2</level>
+          <id>11</id>
+          <title>BwPostmanManager</title>
+          <parent_id>10</parent_id>
+        </usergroup>
+      </component_usergroups>
+    </Generals>
+    <tables>
+      <table_structure table="#__bwpostman_campaigns">
+        <table_name>
+          <name>#__bwpostman_campaigns</name>
+        </table_name>
+        <install_query>
+          <query>CREATE TABLE `test_bwpostman_campaigns` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(400) NOT NULL DEFAULT '',
+  `published` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</query>
+        </install_query>
+        <fields>
+          <field>
+            <Field>id</Field>
+            <Type>int(11)</Type>
+            <Null>NO</Null>
+            <Key>PRI</Key>
+          </field>
+          <field>
+            <Field>title</Field>
+            <Type>varchar(400)</Type>
+            <Null>NO</Null>
+          </field>
+          <field>
+            <Field>published</Field>
+            <Type>tinyint(1)</Type>
+            <Null>NO</Null>
+          </field>
+        </fields>
+        <keys>
+          <key>
+            <Non_unique>0</Non_unique>
+            <Key_name>PRIMARY</Key_name>
+            <Column_name>id</Column_name>
+          </key>
+        </keys>
+      </table_structure>
+      <table_data table="#__bwpostman_campaigns">
+        <dataset>
+          <id>1</id>
+          <title>Test Campaign</title>
+          <published>1</published>
+        </dataset>
+        <dataset>
+          <id>2</id>
+          <title>Another Campaign</title>
+          <published>0</published>
+        </dataset>
+      </table_data>
+      <table_assets table="#__bwpostman_campaigns">
+        <dataset>
+          <id>167</id>
+          <parent_id>162</parent_id>
+          <lft>297</lft>
+          <rgt>298</rgt>
+          <level>3</level>
+          <name>com_bwpostman.campaign.1</name>
+          <title>Test Campaign</title>
+          <rules>[]</rules>
+        </dataset>
+      </table_assets>
+      <table_structure table="#__bwpostman_newsletters">
+        <table_name>
+          <name>#__bwpostman_newsletters</name>
+        </table_name>
+        <install_query>
+          <query>CREATE TABLE `test_bwpostman_newsletters` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subject` varchar(400) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</query>
+        </install_query>
+        <fields>
+          <field>
+            <Field>id</Field>
+            <Type>int(11)</Type>
+            <Null>NO</Null>
+            <Key>PRI</Key>
+          </field>
+          <field>
+            <Field>subject</Field>
+            <Type>varchar(400)</Type>
+            <Null>NO</Null>
+          </field>
+        </fields>
+      </table_structure>
+      <table_data table="#__bwpostman_newsletters">
+        <dataset>
+          <id>1</id>
+          <subject>Test Newsletter</subject>
+        </dataset>
+      </table_data>
+    </tables>
+  </database>
+</mysqldump>

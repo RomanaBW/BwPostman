@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         colors="true"
+         executionOrder="depends,defects"
+         failOnRisky="true"
+         failOnWarning="true">
+    <testsuites>
+        <testsuite name="Unit Tests">
+            <directory suffix=".php">tests/unit</directory>
+            <directory suffix="Test.php">src/components/com_bwpostman/src</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory suffix=".php">src/components/com_bwpostman/src</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">tests</directory>
+            <directory suffix=".php">vendor</directory>
+        </exclude>
+    </source>
+</phpunit>

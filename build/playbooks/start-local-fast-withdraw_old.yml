@@ -1,0 +1,97 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars/general-withdraw-vars.yml
+
+  tasks:
+    # Synchronize var files to repo before used by following playbook and tasks
+    - name: Synchronize playbook folder to repo
+      become: yes
+      copy:
+        src: "{{ project_src_dir }}/build/playbooks/"
+        dest: "{{ repo_dir }}/build/playbooks"
+      when: j_main_version is not defined or j_main_version == '6'
+
+    - name: Synchronize docker vars folder to repo
+      become: yes
+      copy:
+        src: "{{ project_src_dir }}/build/docker/vars"
+        dest: "{{ repo_dir }}/build/docker/vars"
+      when: j_main_version is not defined or j_main_version == '6'
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - vars/general-withdraw-vars.yml
+
+- import_playbook: run-local-fast-withdraw.yml
+
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars_files:
+    - /repositories/systemscripts/Ansible/general_vars/general_joomla_versions.yml
+    - ../docker/vars/vars_versions.yml
+    - ../docker/vars/vars_current.yml
+    - ../docker/vars/vars_current_dev.yml
+    - ../docker/vars/vars_current_fast.yml
+    - vars/general-withdraw-vars.yml
+    - vars/current-withdraw-vars.yml
+
+  tasks:
+    - name: Include some other vars for previous Joomla, if needed
+      include_tasks: tasks/include_previous_vars.yml
+      when: j_main_version is defined and j_main_version == '5'
+
+    - name: Handle tests to backup BwPostman
+      include_tasks: tasks/do_bwpostman_backups.yml
+      when: j_main_version is not defined or j_main_version == '6'
+
+    - name: Set backup_dir, underlined version of BwPostman and date variable
+      set_fact:
+        backup_dir: "{{ artifacts_base }}/{{ project_name }}"
+        backup_date: "{{ ansible_date_time.date }}"
+        bwpm_underlined: "{{ bwpm_project_version  | replace('.', '_') }}"
+
+    - name: Set SQL command for new dump
+      set_fact:
+        sql_dump_command: "mariadb-dump --ssl=0 -h {{ database_ip }} -u {{ test_db_user }} -p{{ test_db_password }} --opt --extended-insert --complete-insert {{ test_db_dbname }} > {{ backup_dir }}/backups/{{ project_name }}.sql"
+
+    - name: Show backup_dir path
+      debug:
+        msg: "{{ backup_dir }}"
+
+    - name: Show command for new database dump
+      debug:
+        msg: "{{ sql_dump_command }}"
+
+    - name: Execute command for new database dump
+      shell: "{{ sql_dump_command }}"
+
+    - name: Set first part of BwPostman backup filename
+      set_fact:
+        backup_filename_prefix: "BwPostman_{{ bwpm_underlined }}_Tables_{{ backup_date }}_"
+
+#    - name: Show backup filename prefix
+#      debug:
+#        msg: "{{ backup_filename_prefix }}"
+
+    - name: Handle backups of BwPostman
+      block:
+        - name: move new XML backups
+          include_tasks: tasks/move_new_XML_backups.yml
+
+        - name: move new ZIP backups
+          include_tasks: tasks/move_new_ZIP_backups.yml
+      when: j_main_version is not defined or j_main_version == '6'
+
+    - name: Distribute updated test data to other used middleware
+      include_tasks: tasks/rebase_middleware.yml
+      loop: "{{ additional_rebase_paths }}"
+
+    - name: Shutdown middleware
+      ansible.builtin.command: "{{ middleware_shutdown_command }}"
+
+

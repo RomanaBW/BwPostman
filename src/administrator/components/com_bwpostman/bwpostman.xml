@@ -88,6 +88,7 @@
 		<files folder="admin">
 			<filename>access.xml</filename>
 			<filename>CHANGELOG.txt</filename>
+			<filename>composer.json</filename>
 			<filename>config.xml</filename>
 			<filename>import_demo.csv</filename>
 			<filename>import_demo.xml</filename>

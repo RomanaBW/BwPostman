@@ -1,0 +1,20 @@
+{
+  "name": "boldt-webservice/bwpostman",
+  "type": "joomla-component",
+  "autoload": {
+    "psr-4": {
+      "BoldtWebservice\\Component\\BwPostman\\": "src/",
+      "BoldtWebservice\\Component\\BwPostman\\Administrator\\": "src/",
+      "BoldtWebservice\\Component\\BwPostman\\MVC\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BoldtWebservice\\Component\\BwPostman\\": "src/",
+      "BoldtWebservice\\Component\\BwPostman\\Administrator\\": "src/",
+      "BoldtWebservice\\Component\\BwPostman\\MVC\\": "src/"
+    }
+  },
+  "require": {},
+  "minimum-stability": "stable"
+}

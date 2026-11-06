@@ -35,6 +35,17 @@ const BWPM_SITE = JPATH_SITE . '/components/com_bwpostman';
 // BwPostman default path for Backups
 if (!defined('BWPM_BACKUP')) define('BWPM_BACKUP', JPATH_SITE . '/images/com_bwpostman/backup_tables');
 
+// Load the custom classes to ensure they're available before the service provider is executed
+// This is needed because the classes might not be autoloaded yet during service provider registration
+require_once __DIR__ . '/../src/MVC/BwPostmanMVCFactory.php';
+require_once __DIR__ . '/../src/Extension/BwPostmanComponent.php';
+require_once __DIR__ . '/../src/Service/BwFilesystemService.php';
+require_once __DIR__ . '/../src/Service/BwFilesystemInterface.php';
+require_once __DIR__ . '/../src/Service/BwLoggerService.php';
+require_once __DIR__ . '/../src/Service/BwLoggerInterface.php';
+require_once __DIR__ . '/../src/Service/BwUserStateService.php';
+require_once __DIR__ . '/../src/Service/BwUserStateInterface.php';
+
 use BoldtWebservice\Component\BwPostman\MVC\BwPostmanMVCFactory;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\BwFilesystemService;
 use BoldtWebservice\Component\BwPostman\Administrator\Service\BwFilesystemInterface;
